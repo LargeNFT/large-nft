@@ -85,21 +85,9 @@ const app = new Framework7({
           //A way to make permalinks
           const url = routeTo.query.url;
 
+
           if (url) {
-
-            let matchingRoute;
-            for (route of app.routes) {
-              if (route.path == url) matchingRoute = route
-            }
-
-            routeTo.route = matchingRoute
-
-            try {
-              await matchingRoute.async(routeTo, routeFrom, resolve, reject)
-            } catch(ex) {
-              console.log("Page not found");
-            }
-
+            app.router.navigate(url)
           } else {
             resolve({ url: 'pages/home.html' })
           }
@@ -122,6 +110,14 @@ const app = new Framework7({
     },
 
     {
+      path: '/profile/static/:id',
+      async async(routeTo, routeFrom, resolve, reject) {
+        console.log(routeTo)
+        await profileController.showStaticProfile(resolve, routeTo.params.id)
+      }
+    },
+
+    {
       path: '/profile/edit',
       async async(routeTo, routeFrom, resolve, reject) {
         await profileController.showProfileEdit(resolve)
@@ -140,3 +136,21 @@ const mainView = app.views.create('.view-main', {
 
 
 
+function findMatchingRoute(url) {
+  
+  let matchingRoute = app.router.findMatchingRoute(url); //doesn't have async function for some reason
+  
+  let path = matchingRoute.route.path
+
+
+  //Doesn't have the async function we need for some reason. So look up from js object.
+  for (route of app.routes) {
+    if (route.path == path) {
+      matchingRoute = route;
+    } 
+  }
+
+
+
+  return matchingRoute;
+}

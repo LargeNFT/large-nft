@@ -8,6 +8,16 @@ class ProfileController {
 
     }
 
+    async showStaticProfile(resolve, id) {
+        let profile = await freedom.read(PROFILE_REPO, id)
+
+        resolve({
+            componentUrl: 'pages/profile/static.html'
+        },
+        {
+            context: profile
+        })
+    }
 
     async showProfile(resolve) {
 

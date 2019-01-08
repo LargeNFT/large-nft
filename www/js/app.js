@@ -1,10 +1,10 @@
 
 /** Shortcut methods for localStorage access */
-Storage.prototype.setObject = function(key, value) {
+Storage.prototype.setObject = function (key, value) {
   this.setItem(key, JSON.stringify(value));
 }
 
-Storage.prototype.getObject = function(key) {
+Storage.prototype.getObject = function (key) {
   var value = this.getItem(key);
   return value && JSON.parse(value);
 }
@@ -41,20 +41,20 @@ const app = new Framework7({
   theme: 'auto', // Automatic theme detection
 
   on: {
-    init: function () {}
+    init: function () { }
   },
 
   methods: {
-    navigate: function(url) {
+    navigate: function (url) {
       this.view.main.router.navigate(url);
     },
 
-    appendFromTemplate: function(appendTo, templateSelector, viewModel) {
+    appendFromTemplate: function (appendTo, templateSelector, viewModel) {
       var template = $$(templateSelector).html();
       var compiledTemplate = Template7.compile(template);
-      
+
       var html = compiledTemplate(viewModel);
-      
+
       $$(appendTo).append(html);
     }
   },
@@ -63,49 +63,68 @@ const app = new Framework7({
   routes: [
     {
       path: '/',
-      async(routeTo, routeFrom, resolve, reject) {
+      async async(routeTo, routeFrom, resolve, reject) {
 
+        //Load settings or home page
         let settings = localStorage.getObject("settings");
 
         if (!settings) {
-          resolve({url: 'pages/settings.html'})
+          resolve({ url: 'pages/settings.html' })
         } else {
-          resolve({url: 'pages/home.html'})
-        }
-      },
-      on: {
-        pageInit: function(e, page) {
-          homeController.init();
+
+          if (!freedom) {
+            freedom = await Freedom({
+              ipfsHost: settings.ipfsHost,
+              ipfsPort: settings.ipfsPort,
+              recordContractAddress: settings.recordContractAddress,
+              recordContractTransactionHash: settings.recordContractTransactionHash
+            });
+          }
+
+          //If the query param "url" is set that means we want to forward to that page instead
+          //A way to make permalinks
+          const url = routeTo.query.url;
+
+          if (url) {
+
+            let matchingRoute;
+            for (route of app.routes) {
+              if (route.path == url) matchingRoute = route
+            }
+
+            routeTo.route = matchingRoute
+
+            try {
+              await matchingRoute.async(routeTo, routeFrom, resolve, reject)
+            } catch(ex) {
+              console.log("Page not found");
+            }
+
+          } else {
+            resolve({ url: 'pages/home.html' })
+          }
+
         }
       }
     },
     {
       path: '/settings',
-      url: 'pages/settings.html',
-      on: {
-        pageInit: function(e, page) {
-          settingsController.showSettingsForm();
-        }
+      async async(routeTo, routeFrom, resolve, reject) {
+        await settingsController.showSettingsForm(resolve)
       }
     },
 
     {
       path: '/profile/show',
-      url: 'pages/profile/show.html',
-      on: {
-        pageInit: function(e, page) {
-          profileController.showProfile(page);
-        }
+      async async(routeTo, routeFrom, resolve, reject) {
+        await profileController.showProfile(resolve)
       }
     },
 
     {
       path: '/profile/edit',
-      url: 'pages/profile/edit.html',
-      on: {
-        pageInit: function(e, page) {
-          profileController.showProfileEdit();
-        }
+      async async(routeTo, routeFrom, resolve, reject) {
+        await profileController.showProfileEdit(resolve)
       }
     }
   ],

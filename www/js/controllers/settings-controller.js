@@ -5,10 +5,17 @@ class SettingsController {
         $$(document).on('click', '#settings-save', self.saveButtonClicked);
     }
 
-    showSettingsForm() {
+    async showSettingsForm(resolve) {
+
         const settings = localStorage.getObject("settings");
-        
-        app.form.fillFromData('#settings-form', settings);
+
+        resolve({
+            componentUrl: 'pages/settings.html'
+        },
+        {
+            context: settings
+        })
+
     }
 
     async saveButtonClicked(e) {

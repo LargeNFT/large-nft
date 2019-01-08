@@ -1,13 +1,14 @@
-<div class="page" data-name="profile-show">
-  <div class="navbar">
-    <div class="navbar-inner sliding">
-      <div class="left">
+<template>
+  <div class="page" data-name="profile-show">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
           <a class="link back icon-only">
             <i class="icon icon-back"></i>
           </a>
-      </div>
-      <div class="title">Profile</div>
-      <div class="right">
+        </div>
+        <div class="title">Profile</div>
+        <div class="right">
           <a class="link" href="/settings">
             <i class="f7-icons">gear_fill</i>
             <span>Settings</span>
@@ -17,35 +18,25 @@
             <i class="f7-icons">person</i>
             <span>Profile</span>
           </a>
-      </div>
-    </div>
-  </div>
-  <div class="page-content">
-
-    <div class="card">
-      <div class="card-header">
-        <div></div>
-        <div>
-            <a href="/profile/edit" class="right button button-fill">Edit Profile</a>
         </div>
       </div>
-      <div class="card-content">
-        <!-- Card content -->
+    </div>
+    <div class="page-content">
+
+      <div class="card">
+        <div class="card-header">
+          <div></div>
+          <div>
+            <a href="/profile/edit" class="right button button-fill">Edit Profile</a>
+          </div>
+        </div>
+        <div class="card-content">
+          <p>Name: {{name}}</p>
+          <p>About Me: {{aboutMe}}</p>
+          <p>Twitter Name: {{twitterName}}
+        </div>
       </div>
     </div>
 
-
   </div>
-
-  <script id="profile-template" type="text/template7">
-    <p>Name: {{name}}</p> 
-    <p>About Me: {{aboutMe}}</p>
-    <p>Twitter Name: {{twitterName}}
-  </script>
-  
-</div>
-
-
-
-
-
+</template>

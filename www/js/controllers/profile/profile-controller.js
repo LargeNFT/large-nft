@@ -8,30 +8,36 @@ class ProfileController {
 
     }
 
-    async showProfile(page) {
 
-        const profile = await freedom.readByOwnedIndex(PROFILE_REPO, 0);
+    async showProfile(resolve) {
 
-        app.methods.appendFromTemplate(
-            $$(page.el).children('.page-content'), 
-            '#profile-template', 
-            profile
-        );
-        
+        let profile = await freedom.readByOwnedIndex(PROFILE_REPO, 0)
+
+        resolve({
+            componentUrl: 'pages/profile/show.html'
+        },
+        {
+            context: profile
+        })
     }
 
-    async showProfileEdit() {
+    async showProfileEdit(resolve) {
 
+        
         //Look up 
         try {
             const profile = await freedom.readByOwnedIndex(PROFILE_REPO, 0);
 
-            app.form.fillFromData('#edit-profile-form', profile);
-
+            resolve({
+                componentUrl: 'pages/profile/edit.html'
+            },
+            {
+                context: profile
+            })
         } catch(ex) {
             console.log(ex);
         }
-        
+
     }
 
     async profileEditSave(e) {
@@ -39,7 +45,7 @@ class ProfileController {
         e.preventDefault();
         
         var profileData = app.form.convertToData('#edit-profile-form');
-
+        console.log(profileData)
         //Validation?
         if (profileData.id) {
             await freedom.update(PROFILE_REPO, profileData.id, profileData);

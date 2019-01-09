@@ -22,10 +22,12 @@ let freedom;
 let settingsController = new SettingsController();
 let homeController = new HomeController();
 let profileController = new ProfileController();
+let postController = new PostController();
 
 
 //REPO Ids
 let PROFILE_REPO = 1;
+let POST_REPO = 2;
 
 
 
@@ -81,16 +83,15 @@ const app = new Framework7({
             });
           }
 
+          resolve({ url: 'pages/home.html' })
+
           //If the query param "url" is set that means we want to forward to that page instead
           //A way to make permalinks
           const url = routeTo.query.url;
 
-
           if (url) {
             app.router.navigate(url)
-          } else {
-            resolve({ url: 'pages/home.html' })
-          }
+          } 
 
         }
       }
@@ -112,7 +113,6 @@ const app = new Framework7({
     {
       path: '/profile/static/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-        console.log(routeTo)
         await profileController.showStaticProfile(resolve, routeTo.params.id)
       }
     },
@@ -122,6 +122,29 @@ const app = new Framework7({
       async async(routeTo, routeFrom, resolve, reject) {
         await profileController.showProfileEdit(resolve)
       }
+    },
+    {
+      path: '/profile/create',
+      url: 'pages/profile/create.html'
+    },
+
+    {
+      path: '/post/show/:id',
+      async async(routeTo, routeFrom, resolve, reject) {
+        await postController.showPost(resolve, routeTo.params.id)
+      }
+    },
+
+    {
+      path: '/post/list',
+      async async(routeTo, routeFrom, resolve, reject) {
+        await postController.showPostList(resolve)
+      }
+    },
+
+    {
+      path: '/post/create',
+      url: 'pages/post/create.html'
     }
   ],
 

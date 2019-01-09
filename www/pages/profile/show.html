@@ -21,23 +21,33 @@
     </div>
     <div class="page-content">
 
-      <div class="card">
-        <div class="card-header">
-          <div>{{name}}</div>
-          <div>
-            <a href="/profile/edit" class="right button button-fill">Edit Profile</a>
+      {{#if profile}}
+        <div class="card">
+          <div class="card-header">
+            <div>{{profile.name}}</div>
+            <div>
+              <a href="/profile/edit" class="right button button-fill">Edit Profile</a>
+            </div>
+          </div>
+          <div class="card-content">
+              <div class="block">
+                  {{profile.aboutMe}}
+              </div>
+
+              {{#if profile.twitterName}}
+                <div class="block">
+                  Twitter: <a href="https://twitter.com/{{twitterName}}">{{profile.twitterName}}</a>
+                </div>
+              {{/if}}
           </div>
         </div>
-        <div class="card-content">
-            <div class="block">
-                {{aboutMe}}
-            </div>
-
-            <div class="block">
-                Twitter Name: {{twitterName}}
-            </div>
+      {{else}}  
+        <div class="block">
+          Create your <a href="/profile/create">public profile</a>
         </div>
-      </div>
+      {{/if}}
+
+
     </div>
 
   </div>

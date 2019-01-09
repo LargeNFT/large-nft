@@ -8,7 +8,6 @@ class SettingsController {
     async showSettingsForm(resolve) {
 
         const settings = localStorage.getObject("settings");
-
         resolve({
             componentUrl: 'pages/settings.html'
         },

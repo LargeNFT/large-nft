@@ -11,7 +11,7 @@ class ProfileService {
   }
 
   async createProfile(profile) {
-    return await freedom.create(PROFILE_REPO, profile);
+    return freedom.create(PROFILE_REPO, profile);
   }
 
   async updateProfile(profile) {

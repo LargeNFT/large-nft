@@ -53,6 +53,11 @@
                       <li>
                           <div class="item-content item-input">
                             <div class="item-inner">
+
+                              {{#if profilePic}}
+                                <img src="{{@global.ipfsGateway}}/{{profilePic}}" />
+                              {{/if}}
+
                               <div class="item-title item-label">Profile Picture</div>
                               <div class="item-input-wrap">
                                 <input type="file" id="profilePic" placeholder="Select a photo to upload" />

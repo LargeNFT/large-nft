@@ -24,6 +24,7 @@ class PostController {
     async showPostList() {
 
         let posts = await this.postService.getPostsDescending(10, 0)
+        console.log(posts)
 
         let model = {
           posts: posts
@@ -50,8 +51,8 @@ class PostController {
         var postData = app.form.convertToData('#edit-post-form');
 
         //Save
-        await freedom.update(POST_REPO, postData.id, postData);
-        
+        await postService.updatePost(postData)
+
         //Redirect
         app.methods.navigate("/post/show/" + postData.id);
     }
@@ -65,17 +66,19 @@ class PostController {
         var postData = app.form.convertToData('#create-post-form');
 
 
-        //Add date
-        postData.dateCreated = JSON.stringify({'now': new Date()})
+        //Get date
+        postData.dateCreated = new Date().toJSON().toString()
 
-        //Add author
+
+        //Get author info
+        let author = await profileService.getCurrentUser()
+        postData.authorId = author.id
 
         //Add main photo
 
-        //Add excerpt
 
         //Save
-        let result = await freedom.create(POST_REPO, postData);
+        let result = await postService.createPost(postData)
 
         console.log(result)
         

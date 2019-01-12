@@ -53,7 +53,6 @@ class ProfileController {
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
-        console.log(profileData)
 
         //Update
         await profileService.updateProfile(profileData)
@@ -72,6 +71,8 @@ class ProfileController {
 
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
+
+
 
         //Save
         await profileService.createProfile(profileData)

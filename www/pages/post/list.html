@@ -39,6 +39,11 @@
                         <div class="item-title">
                           <a href="/post/show/{{id}}">{{title}}</a>
                         </div>
+                        <div class="item-after">
+                          {{#if author}}
+                            by {{author.name}}
+                          {{/if}}
+                        </div>
                       </div>
                     </div>
                   </li>

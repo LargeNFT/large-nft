@@ -29,7 +29,7 @@
           {{profile.aboutMe}}
 
           {{#if profile.profilePic}}
-            <img src="http://{{@global.settings.ipfsHost}}:{{@global.settings.ipfsPort}}/api/v0/block/get?arg={{profile.profilePic}}" />
+            <img src="{{@global.ipfsGateway}}/{{profile.profilePic}}" />
           {{/if}}
 
         </div>

@@ -19,8 +19,9 @@ let freedom;
 
 
 //Services
-let postService = new PostService();
 let profileService = new ProfileService();
+let postService = new PostService(profileService);
+
 let settingsService = new SettingsService();
 
 //Page Controllers
@@ -74,7 +75,8 @@ const app = new Framework7({
         let settings = localStorage.getObject("settings");
 
         Template7.global = {
-          settings: settings
+          settings: settings,
+          ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
         }
 
         if (!settings) {
@@ -84,7 +86,7 @@ const app = new Framework7({
           if (!freedom) {
             freedom = await Freedom({
               ipfsHost: settings.ipfsHost,
-              ipfsPort: settings.ipfsPort,
+              ipfsPort: settings.ipfsApiPort,
               recordContractAddress: settings.recordContractAddress,
               recordContractTransactionHash: settings.recordContractTransactionHash
             });

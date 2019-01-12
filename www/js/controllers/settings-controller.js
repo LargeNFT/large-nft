@@ -28,13 +28,14 @@ class SettingsController {
 
         //Update global
         Template7.global = {
-            settings: settingsData
+            settings: settingsData,
+            ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
         }
 
         //Re-init the freedom object
         freedom = await Freedom({
             ipfsHost: settingsData.ipfsHost,
-            ipfsPort: settingsData.ipfsPort,
+            ipfsPort: settingsData.ipfsApiPort,
             recordContractAddress: settingsData.recordContractAddress,
             recordContractTransactionHash: settingsData.recordContractTransactionHash
         });

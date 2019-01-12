@@ -2,8 +2,13 @@
 
 class PostController {
 
-    constructor() {
+
+    constructor(postService, profileService) {
         const self = this;
+
+        self.postService = postService;
+        self.profileService = profileService;
+
         $$(document).on('submit', '#edit-post-form', self.postEditSave);
         $$(document).on('submit', '#create-post-form', self.postCreateSave);
     }
@@ -12,7 +17,7 @@ class PostController {
         let post;
 
         try {
-            post = await freedom.read(POST_REPO, id)
+            post = await this.postService.getPostById(id)
         } catch(ex) {
             console.log(ex)
         }
@@ -30,7 +35,7 @@ class PostController {
         let posts;
 
         try {
-            posts = await freedom.readList(POST_REPO, 10, 0)
+            posts = await this.postService.getPostsDescending(10, 0)
         } catch(ex) {
 
         }
@@ -51,7 +56,7 @@ class PostController {
         let post;
 
         try {
-            post = await freedom.read(POST_REPO, 0);
+            post = await this.postService.getPostById(id)
         } catch(ex) {
             console.log(ex);
         }
@@ -86,6 +91,16 @@ class PostController {
         
         //Get data
         var postData = app.form.convertToData('#create-post-form');
+
+
+        //Add date
+        postData.dateCreated = JSON.stringify({'now': new Date()})
+
+        //Add author
+
+        //Add main photo
+
+        //Add excerpt
 
         //Save
         let result = await freedom.create(POST_REPO, postData);

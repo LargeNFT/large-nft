@@ -18,16 +18,20 @@ const $$ = Dom7;
 let freedom;
 
 
+//Services
+let postService = new PostService();
+let profileService = new ProfileService();
+let settingsService = new SettingsService();
+
 //Page Controllers
-let settingsController = new SettingsController();
+let settingsController = new SettingsController(settingsService);
 let homeController = new HomeController();
-let profileController = new ProfileController();
-let postController = new PostController();
+let profileController = new ProfileController(profileService);
+let postController = new PostController(postService, profileService);
 
 
 //REPO Ids
-let PROFILE_REPO = 1;
-let POST_REPO = 2;
+
 
 
 
@@ -69,6 +73,10 @@ const app = new Framework7({
 
         //Load settings or home page
         let settings = localStorage.getObject("settings");
+
+        Template7.global = {
+          settings: settings
+        }
 
         if (!settings) {
           resolve({ url: 'pages/settings.html' })

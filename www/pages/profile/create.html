@@ -1,3 +1,4 @@
+<template>
 <div class="page" data-name="profile-create">
   <div class="navbar">
     <div class="navbar-inner sliding">
@@ -38,15 +39,25 @@
                       </div>
                     </li>
                     <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Twitter Name</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="twitterName" placeholder="Enter your twitter handle" />
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
                         <div class="item-content item-input">
                           <div class="item-inner">
-                            <div class="item-title item-label">Twitter Name</div>
+                            <div class="item-title item-label">Profile Picture</div>
                             <div class="item-input-wrap">
-                              <input type="text" name="twitterName" placeholder="Enter your twitter handle" />
+                                <input type="file" id="profilePic" placeholder="Select a photo to upload" />
                             </div>
                           </div>
                         </div>
-                      </li>
+                    </li>
                   </ul>
                 </div>
           </div>

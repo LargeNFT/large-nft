@@ -1,13 +1,18 @@
 class SettingsController {
 
-    constructor() {
+    constructor(settingsService) {
         const self = this;
-        $$(document).on('click', '#settings-save', self.saveButtonClicked);
+
+        this.settingsService = settingsService
+
+        $$(document).on('click', '#settings-save', function(e) {
+            self.saveButtonClicked(e)
+        });
     }
 
     async showSettingsForm(resolve) {
 
-        const settings = localStorage.getObject("settings");
+        const settings = settingsService.getSettings()
         resolve({
             componentUrl: 'pages/settings.html'
         },
@@ -20,17 +25,22 @@ class SettingsController {
     async saveButtonClicked(e) {
 
         //Get the form data
-        var settings = app.form.convertToData('#settings-form');
+        var settingsData = app.form.convertToData('#settings-form');
 
         //Save it
-        localStorage.setObject("settings", settings);
+        settingsService.saveSettings(settingsData)
+
+        //Update global
+        Template7.global = {
+            settings: settingsData
+        }
 
         //Re-init the freedom object
         freedom = await Freedom({
-            ipfsHost: settings.ipfsHost,
-            ipfsPort: settings.ipfsPort,
-            recordContractAddress: settings.recordContractAddress,
-            recordContractTransactionHash: settings.recordContractTransactionHash
+            ipfsHost: settingsData.ipfsHost,
+            ipfsPort: settingsData.ipfsPort,
+            recordContractAddress: settingsData.recordContractAddress,
+            recordContractTransactionHash: settingsData.recordContractTransactionHash
         });
 
         app.methods.navigate("/");

@@ -30,7 +30,6 @@ let profileController = new ProfileController(profileService);
 let postController = new PostController(postService, profileService);
 
 
-//REPO Ids
 
 
 
@@ -107,28 +106,32 @@ const app = new Framework7({
     {
       path: '/settings',
       async async(routeTo, routeFrom, resolve, reject) {
-        await settingsController.showSettingsForm(resolve)
+        let modelView = await settingsController.showSettingsForm()
+        resolveModelView(resolve, modelView)
       }
     },
 
     {
       path: '/profile/show',
       async async(routeTo, routeFrom, resolve, reject) {
-        await profileController.showProfile(resolve)
+        let modelView = await profileController.showProfile()
+        resolveModelView(resolve, modelView)
       }
     },
 
     {
       path: '/profile/static/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-        await profileController.showStaticProfile(resolve, routeTo.params.id)
+        let modelView = await profileController.showStaticProfile(routeTo.params.id)
+        resolveModelView(resolve, modelView)
       }
     },
 
     {
       path: '/profile/edit',
       async async(routeTo, routeFrom, resolve, reject) {
-        await profileController.showProfileEdit(resolve)
+        let modelView = await profileController.showProfileEdit()
+        resolveModelView(resolve, modelView)
       }
     },
     {
@@ -139,14 +142,16 @@ const app = new Framework7({
     {
       path: '/post/show/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-        await postController.showPost(resolve, routeTo.params.id)
+        let modelView = await postController.showPost(routeTo.params.id)
+        resolveModelView(resolve, modelView)
       }
     },
 
     {
       path: '/post/list',
       async async(routeTo, routeFrom, resolve, reject) {
-        await postController.showPostList(resolve)
+        let modelView = await postController.showPostList()
+        resolveModelView(resolve, modelView)
       }
     },
 
@@ -167,21 +172,12 @@ const mainView = app.views.create('.view-main', {
 
 
 
-function findMatchingRoute(url) {
-  
-  let matchingRoute = app.router.findMatchingRoute(url); //doesn't have async function for some reason
-  
-  let path = matchingRoute.route.path
+function resolveModelView(resolve, modelView) {
 
-
-  //Doesn't have the async function we need for some reason. So look up from js object.
-  for (route of app.routes) {
-    if (route.path == path) {
-      matchingRoute = route;
-    } 
-  }
-
-
-
-  return matchingRoute;
+  resolve({
+      componentUrl: modelView.view
+    },
+    {
+      context: modelView.model
+    })
 }

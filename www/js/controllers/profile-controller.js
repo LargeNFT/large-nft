@@ -14,7 +14,7 @@ class ProfileController {
         });
     }
 
-    async showStaticProfile(resolve, id) {
+    async showStaticProfile(id) {
 
         let profile;
 
@@ -24,16 +24,12 @@ class ProfileController {
             console.log(ex)
         }
 
-        resolve({
-            componentUrl: 'pages/profile/static.html'
-        },
-        {
-            context: profile
-        })
+        return new ModelView(profile, 'pages/profile/static.html')
+
 
     }
 
-    async showProfile(resolve) {
+    async showProfile() {
 
         let profile;
 
@@ -43,18 +39,15 @@ class ProfileController {
             console.log(ex)
         }
 
-        resolve({
-            componentUrl: 'pages/profile/show.html'
-        },
-        {
-            context: {
-                profile: profile
-            }
-        })
+        let model = {
+          profile: profile
+        }
+
+        return new ModelView(model, 'pages/profile/show.html')
 
     }
 
-    async showProfileEdit(resolve) {
+    async showProfileEdit() {
 
         let profile;
 
@@ -65,12 +58,7 @@ class ProfileController {
             console.log(ex);
         }
 
-        resolve({
-            componentUrl: 'pages/profile/edit.html'
-        },
-        {
-            context: profile
-        })
+        return new ModelView(profile, 'pages/profile/edit.html')
 
     }
 

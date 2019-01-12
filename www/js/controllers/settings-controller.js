@@ -10,15 +10,11 @@ class SettingsController {
         });
     }
 
-    async showSettingsForm(resolve) {
+    async showSettingsForm() {
 
         const settings = settingsService.getSettings()
-        resolve({
-            componentUrl: 'pages/settings.html'
-        },
-        {
-            context: settings
-        })
+
+        return new ModelView(settings, 'pages/settings.html')
 
     }
 

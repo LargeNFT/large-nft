@@ -12,5 +12,4 @@ class PostService {
     return freedom.readListDescending(POST_REPO, limit, offset)
   }
 
-
 }

@@ -13,7 +13,8 @@ class PostController {
         $$(document).on('submit', '#create-post-form', self.postCreateSave);
     }
 
-    async showPost(resolve, id) {
+    async showPost(id) {
+
         let post;
 
         try {
@@ -22,36 +23,30 @@ class PostController {
             console.log(ex)
         }
 
-        resolve({
-            componentUrl: 'pages/post/static.html'
-        },
-        {
-            context: post
-        })
+        return new ModelView(post, 'pages/post/static.html')
+
     }
 
-    async showPostList(resolve) {
+    async showPostList() {
 
         let posts;
 
         try {
             posts = await this.postService.getPostsDescending(10, 0)
         } catch(ex) {
-
+            console.log(ex)
         }
 
-        resolve({
-            componentUrl: 'pages/post/list.html'
-        },
-        {
-            context: {
-                posts: posts
-            }
-        })
+        let model = {
+          posts: posts
+        }
+
+        return new ModelView(model, 'pages/post/list.html')
+
     }
 
 
-    async showPostEdit(resolve, id) {
+    async showPostEdit(id) {
 
         let post;
 
@@ -61,12 +56,7 @@ class PostController {
             console.log(ex);
         }
 
-        resolve({
-            componentUrl: 'pages/post/edit.html'
-        },
-        {
-            context: post
-        })
+        return new ModelView(post, 'pages/post/edit.html')
 
     }
 

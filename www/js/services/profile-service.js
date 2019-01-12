@@ -10,5 +10,12 @@ class ProfileService {
     return freedom.readByOwnedIndex(PROFILE_REPO, 0)
   }
 
+  async createProfile(profile) {
+    return await freedom.create(PROFILE_REPO, profile);
+  }
+
+  async updateProfile(profile) {
+    return freedom.update(PROFILE_REPO, profile.id, profile);
+  }
 
 }

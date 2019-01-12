@@ -106,32 +106,28 @@ const app = new Framework7({
     {
       path: '/settings',
       async async(routeTo, routeFrom, resolve, reject) {
-        let modelView = await settingsController.showSettingsForm()
-        resolveModelView(resolve, modelView)
+        resolveController(resolve, settingsController.showSettingsForm())
       }
     },
 
     {
       path: '/profile/show',
       async async(routeTo, routeFrom, resolve, reject) {
-        let modelView = await profileController.showProfile()
-        resolveModelView(resolve, modelView)
+        resolveController(resolve, profileController.showProfile())
       }
     },
 
     {
       path: '/profile/static/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-        let modelView = await profileController.showStaticProfile(routeTo.params.id)
-        resolveModelView(resolve, modelView)
+        resolveController(resolve, profileController.showStaticProfile(routeTo.params.id))
       }
     },
 
     {
       path: '/profile/edit',
       async async(routeTo, routeFrom, resolve, reject) {
-        let modelView = await profileController.showProfileEdit()
-        resolveModelView(resolve, modelView)
+        resolveController(resolve, profileController.showProfileEdit())
       }
     },
     {
@@ -142,16 +138,14 @@ const app = new Framework7({
     {
       path: '/post/show/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-        let modelView = await postController.showPost(routeTo.params.id)
-        resolveModelView(resolve, modelView)
+        resolveController(resolve, postController.showPost(routeTo.params.id))
       }
     },
 
     {
       path: '/post/list',
       async async(routeTo, routeFrom, resolve, reject) {
-        let modelView = await postController.showPostList()
-        resolveModelView(resolve, modelView)
+        resolveController(resolve,postController.showPostList())
       }
     },
 
@@ -177,13 +171,24 @@ const mainView = app.views.create('.view-main', {
 });
 
 
+//Handles routing to a controller
+async function resolveController(resolve, controller_promise) {
 
-function resolveModelView(resolve, modelView) {
+  try {
 
-  resolve({
-      componentUrl: modelView.view
-    },
-    {
-      context: modelView.model
-    })
+    let modelView = await controller_promise;
+
+    resolve({
+        componentUrl: modelView.view
+      },
+      {
+        context: modelView.model
+      })
+
+  } catch (ex) {
+    console.log(ex)
+  }
+
 }
+
+

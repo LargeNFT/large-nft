@@ -15,13 +15,7 @@ class PostController {
 
     async showPost(id) {
 
-        let post;
-
-        try {
-            post = await this.postService.getPostById(id)
-        } catch(ex) {
-            console.log(ex)
-        }
+        let post = await this.postService.getPostById(id)
 
         return new ModelView(post, 'pages/post/static.html')
 
@@ -29,13 +23,7 @@ class PostController {
 
     async showPostList() {
 
-        let posts;
-
-        try {
-            posts = await this.postService.getPostsDescending(10, 0)
-        } catch(ex) {
-            console.log(ex)
-        }
+        let posts = await this.postService.getPostsDescending(10, 0)
 
         let model = {
           posts: posts
@@ -48,13 +36,7 @@ class PostController {
 
     async showPostEdit(id) {
 
-        let post;
-
-        try {
-            post = await this.postService.getPostById(id)
-        } catch(ex) {
-            console.log(ex);
-        }
+        let post = await this.postService.getPostById(id)
 
         return new ModelView(post, 'pages/post/edit.html')
 

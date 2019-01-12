@@ -16,13 +16,7 @@ class ProfileController {
 
     async showStaticProfile(id) {
 
-        let profile;
-
-        try {
-            profile = await profileService.getProfileById(id)
-        } catch(ex) {
-            console.log(ex)
-        }
+        let profile = await profileService.getProfileById(id)
 
         return new ModelView(profile, 'pages/profile/static.html')
 
@@ -31,13 +25,7 @@ class ProfileController {
 
     async showProfile() {
 
-        let profile;
-
-        try {
-            profile = await profileService.getCurrentUser()
-        } catch(ex) {
-            console.log(ex)
-        }
+        let profile = await profileService.getCurrentUser()
 
         let model = {
           profile: profile
@@ -49,14 +37,7 @@ class ProfileController {
 
     async showProfileEdit() {
 
-        let profile;
-
-        //Look up 
-        try {
-            profile = await profileService.getCurrentUser()
-        } catch(ex) {
-            console.log(ex);
-        }
+        let profile = await profileService.getCurrentUser()
 
         return new ModelView(profile, 'pages/profile/edit.html')
 
@@ -65,19 +46,19 @@ class ProfileController {
     async profileEditSave(e) {
 
         e.preventDefault();
-        
+
+        //Collect info
         var profileData = app.form.convertToData('#edit-profile-form');
 
-        //Upload photo if we have it
-        const profilePic = document.getElementById("profilePic");
+        //Add photo (if selected)
+        profileData = await this.addProfilePic(profileData)
 
-        if (profilePic.files.length > 0) {
-            profileData.profilePic = await this._uploadImage(profilePic)
-        }
+        console.log(profileData)
 
-        await freedom.update(PROFILE_REPO, profileData.id, profileData);
-        
-        
+        //Update
+        await profileService.updateProfile(profileData)
+
+        //Redirect
         app.methods.navigate("/profile/show");
     }
 
@@ -85,21 +66,39 @@ class ProfileController {
     async profileCreateSave(e) {
 
         e.preventDefault();
-        
+
+        //Collect info
         var profileData = app.form.convertToData('#create-profile-form');
+
+        //Add photo (if selected)
+        profileData = await this.addProfilePic(profileData)
+
+        //Save
+        await profileService.createProfile(profileData)
+
+
+        //Redirect
+        app.methods.navigate("/profile/show");
+    }
+
+
+  /**
+   * UTIL
+   */
+
+
+    async addProfilePic(profileData) {
 
         //Upload photo if we have it
         const profilePic = document.getElementById("profilePic");
 
         if (profilePic.files.length > 0) {
-            profileData.profilePic = await this._uploadImage(profilePic)
+          profileData.profilePic = await this._uploadImage(profilePic)
         }
-     
-        await freedom.create(PROFILE_REPO, profileData);
-        
-        app.methods.navigate("/profile/show");
-    }
 
+        return profileData
+
+    }
 
 
     //TODO: probably move this to some service

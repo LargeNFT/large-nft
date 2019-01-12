@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912e8856-b47f-4673-a468-060953504a6e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/www/js/model-view.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/controllers/post-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/controllers/post-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/controllers/profile-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/controllers/profile-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/controllers/settings-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/controllers/settings-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/services/post-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/post-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/profile/show.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/profile/show.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/js/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/routes.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,20 +13,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/controllers/post-controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="610">
-              <caret line="59" column="6" selection-start-line="59" selection-start-column="6" selection-end-line="59" selection-end-column="6" />
+            <state relative-caret-position="188">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/js/routes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="406">
+              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="590">
-              <caret line="152" column="50" lean-forward="true" selection-start-line="152" selection-start-column="50" selection-end-line="152" selection-end-column="50" />
+            <state relative-caret-position="430">
+              <caret line="165" column="12" lean-forward="true" selection-start-line="165" selection-start-column="12" selection-end-line="165" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -85,8 +87,9 @@
         <option value="$PROJECT_DIR$/www/js/model-view.js" />
         <option value="$PROJECT_DIR$/www/pages/profile/show.html" />
         <option value="$PROJECT_DIR$/www/js/controllers/profile-controller.js" />
-        <option value="$PROJECT_DIR$/www/js/app.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/post-controller.js" />
+        <option value="$PROJECT_DIR$/www/js/routes.js" />
+        <option value="$PROJECT_DIR$/www/js/app.js" />
       </list>
     </option>
   </component>
@@ -128,19 +131,6 @@
               <item name="js" type="462c0819:PsiDirectoryNode" />
               <item name="controllers" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="publishing-dapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="publishing-dapp" type="462c0819:PsiDirectoryNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="publishing-dapp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="publishing-dapp" type="462c0819:PsiDirectoryNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="profile" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -150,7 +140,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547298534150" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547298729370" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../freedom-for-data" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -185,12 +175,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1547157543468</updated>
-      <workItem from="1547157547592" duration="9343000" />
+      <workItem from="1547157547592" duration="9504000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9343000" />
+    <option name="totallyTimeSpent" value="9504000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="1055" extended-state="6" />
@@ -201,12 +191,12 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.2497332" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2497332" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Terminal" sideWeight="0.4994664" weight="0.32937366" />
+      <window_info anchor="bottom" id="Terminal" sideWeight="0.4994664" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Event Log" sideWeight="0.50053364" side_tool="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -317,17 +307,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/app.js">
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/post-controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="152" column="50" lean-forward="true" selection-start-line="152" selection-start-column="50" selection-end-line="152" selection-end-column="50" />
+        <state relative-caret-position="188">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/post-controller.js">
+    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
-          <caret line="59" column="6" selection-start-line="59" selection-start-column="6" selection-end-line="59" selection-end-column="6" />
+        <state relative-caret-position="406">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="165" column="12" lean-forward="true" selection-start-line="165" selection-start-column="12" selection-end-line="165" selection-end-column="12" />
         </state>
       </provider>
     </entry>

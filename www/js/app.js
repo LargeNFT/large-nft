@@ -158,7 +158,13 @@ const app = new Framework7({
     {
       path: '/post/create',
       url: 'pages/post/create.html'
-    }
+    },
+
+    // Default route (404 page). MUST BE THE LAST
+    {
+      path: '(.*)',
+      url: 'pages/404.html',
+    },
   ],
 
 });

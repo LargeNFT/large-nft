@@ -20,7 +20,6 @@ class PostController {
 
     async showCreatePost() {
 
-
       return new ModelView({},  'pages/post/create.html')
 
     }
@@ -29,7 +28,12 @@ class PostController {
 
         let post = await this.postService.getPostById(id)
 
-        return new ModelView(post, 'pages/post/static.html')
+        //Convert content to HTML
+        const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {});
+        post.content = qdc.convert();
+
+
+        return new ModelView(post, 'pages/post/show.html')
 
     }
 
@@ -40,6 +44,7 @@ class PostController {
         let model = {
           posts: posts
         }
+
 
         return new ModelView(model, 'pages/post/list.html')
 
@@ -76,8 +81,6 @@ class PostController {
         
         //Get data
         var postData = await this._getPostData('#create-post-form')
-
-        console.log(postData)
 
         //Save
         let result = await postService.createPost(postData)

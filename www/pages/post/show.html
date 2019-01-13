@@ -8,6 +8,9 @@
           </a>
         </div>
         <div class="right">
+          <a class="link" href="/">
+            <i class="f7-icons">home</i>
+          </a>
           <a class="link" href="/settings">
             <i class="f7-icons">gear_fill</i>
           </a>
@@ -20,16 +23,29 @@
     </div>
     <div class="page-content">
 
-      <div class="card">
-        <div class="card-header">
-          <div>{{title}}</div>
+      <div class="block ">
+
+        <h1 class="story">{{title}}</h1>
+
+        <div class="row">
+          <div class="col-20">
+            {{#if author.profilePic}}
+              <img src="{{@global.ipfsGateway}}/{{author.profilePic}}" class="profile-pic-thumb" />
+            {{else}}
+              <i class="f7-icons" class="profile-pic">person</i>
+            {{/if}}
+          </div>
+          <div class="col-80">
+             <a href="/profile/static/{{author.id}}">{{author.name}}</a> <br />
+             {{ dateCreated }}
+          </div>
         </div>
-        <div class="card-content">
-            <div class="block">
-                {{content}}
-            </div>
-        </div>
+
+
+        {{content}}
+
       </div>
+
     </div>
 
   </div>

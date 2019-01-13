@@ -12,6 +12,7 @@ class HomeController {
         posts: posts
       }
 
+
       return new ModelView(model, 'pages/home.html')
 
     }

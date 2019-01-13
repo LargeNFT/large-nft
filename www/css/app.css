@@ -9,6 +9,11 @@ body, .md body {
   border-radius: 50%;
 }
 
+.profile-pic-thumb {
+  max-width: 50px;
+  border-radius: 50%;
+}
+
 
 h1 {
   margin-block-end: 0em;

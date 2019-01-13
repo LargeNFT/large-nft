@@ -20,7 +20,6 @@ class ProfileController {
 
         return new ModelView(profile, 'pages/profile/static.html')
 
-
     }
 
     async showProfile() {

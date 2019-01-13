@@ -7,7 +7,7 @@
             <i class="icon icon-back"></i>
           </a>
         </div>
-        <div class="title">Profile</div>
+        <div class="title">Author Profile</div>
         <div class="right">
           <a class="link" href="/settings">
             <i class="f7-icons">gear_fill</i>
@@ -21,19 +21,25 @@
     </div>
     <div class="page-content">
 
-      <div class="card">
-        <div class="card-header">
-          <div>{{name}}</div>
-        </div>
-        <div class="card-content">
-            <div class="block">
-                {{aboutMe}}
-            </div>
+      <div class="block row">
 
-            <div class="block">
-                Twitter Name: {{twitterName}}
-            </div>
+        <div class="col-15 text-align-center">
+          {{#if profilePic}}
+          <img src="{{@global.ipfsGateway}}/{{profilePic}}" class="profile-pic" />
+          {{else}}
+          No profile pic
+          {{/if}}
         </div>
+
+        <div class="col-85">
+          <h1>{{name}}</h1>
+
+          <div class="subtitle">
+            {{aboutMe}}
+          </div>
+
+        </div>
+
       </div>
     </div>
 

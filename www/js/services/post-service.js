@@ -9,18 +9,21 @@ class PostService {
   }
 
   async getPostById(id) {
-    return freedom.read(POST_REPO, id)
+    const post = await freedom.read(POST_REPO, id)
+
+    //Fetch author
+    await this._postFetchAuthor(post)
+
+    return post
+
   }
 
   async getPostsDescending(limit, offset) {
     let posts = await freedom.readListDescending(POST_REPO, limit, offset)
 
-
     //Fetch authors
     for (const post of posts) {
-      if (post.authorId) {
-        post.author = await this.profileService.getProfileById(post.authorId)
-      }
+      await this._postFetchAuthor(post)
     }
 
     return posts
@@ -33,6 +36,12 @@ class PostService {
 
   async updatePost(post) {
     return freedom.update(POST_REPO, post.id, post)
+  }
+
+  async _postFetchAuthor(post) {
+    if (post.authorId) {
+      post.author = await this.profileService.getProfileById(post.authorId)
+    }
   }
 
 }

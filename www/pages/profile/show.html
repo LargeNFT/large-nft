@@ -9,11 +9,15 @@
         </div>
         <div class="title">Your Profile</div>
         <div class="right">
+          <a class="link" href="/">
+            <i class="f7-icons">home</i>
+          </a>
+
           <a class="link" href="/settings">
             <i class="f7-icons">gear_fill</i>
           </a>
 
-          <a class="link" href="/profile">
+          <a class="link" href="/profile/show">
             <i class="f7-icons">person</i>
           </a>
         </div>
@@ -23,20 +27,30 @@
 
       {{#if profile}}
         
-        <div class="block">
-          <h1>{{profile.name}}</h1>
+        <div class="block row">
 
-          {{profile.aboutMe}}
+          <div class="col-15 text-align-center">
+            {{#if profile.profilePic}}
+              <img src="{{@global.ipfsGateway}}/{{profile.profilePic}}" class="profile-pic" />
+            {{else}}
+              No profile pic
+            {{/if}}
+          </div>
 
-          {{#if profile.profilePic}}
-            <img src="{{@global.ipfsGateway}}/{{profile.profilePic}}" />
-          {{/if}}
+          <div class="col-85">
+            <h1>{{profile.name}}</h1>
 
-        </div>
-        
-        <div class="block">
+            <div class="subtitle">
+              {{profile.aboutMe}}
+            </div>
+
+            <br /><br />
             <a href="/profile/edit" class="link">Edit Profile</a>
+          </div>
+
+
         </div>
+
 
       {{else}}  
         <div class="block">

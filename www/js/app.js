@@ -26,7 +26,7 @@ let settingsService = new SettingsService();
 
 //Page Controllers
 let settingsController = new SettingsController(settingsService);
-let homeController = new HomeController();
+let homeController = new HomeController(postService);
 let profileController = new ProfileController(profileService);
 let postController = new PostController(postService, profileService);
 
@@ -92,7 +92,9 @@ const app = new Framework7({
             });
           }
 
-          resolve({ url: 'pages/home.html' })
+          resolveController(resolve, homeController.showHomePage())
+
+          // resolve({ url: 'pages/home.html' })
 
           //If the query param "url" is set that means we want to forward to that page instead
           //A way to make permalinks
@@ -100,7 +102,7 @@ const app = new Framework7({
 
           if (url) {
             app.router.navigate(url)
-          } 
+          }
 
         }
       }
@@ -179,6 +181,7 @@ async function resolveController(resolve, controller_promise) {
   try {
 
     let modelView = await controller_promise;
+
 
     resolve({
         componentUrl: modelView.view

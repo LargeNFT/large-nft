@@ -31,6 +31,7 @@ class ProfileController {
           profile: profile
         }
 
+
         return new ModelView(model, 'pages/profile/show.html')
 
     }

@@ -1,1 +1,21 @@
 /* Your app styles here */
+body, .md body {
+  font-family: Helvetica
+}
+
+
+.profile-pic {
+  max-width: 100%;
+  border-radius: 50%;
+}
+
+
+h1 {
+  margin-block-end: 0em;
+  margin-block-start: 0em;
+  padding-bottom: 0px;
+}
+
+.subtitle {
+  font-size: 18px;
+}

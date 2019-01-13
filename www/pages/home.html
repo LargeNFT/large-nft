@@ -1,31 +1,58 @@
-<div class="page" data-name="home">
-  <div class="navbar">
-    <div class="navbar-inner sliding">
-      <div class="title">Home</div>
-      <div class="right">
-          <a class="link" href="/post/create">
-            <i class="f7-icons">add</i>
-          </a>
-          <a class="link" href="/settings">
-            <i class="f7-icons">gear_fill</i>
-          </a>
+<template>
 
-          <a class="link" href="/profile/show">
-            <i class="f7-icons">person</i>
-          </a>
+  <div class="page" data-name="home">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="title">Home</div>
+        <div class="right">
+            <a class="link" href="/post/create">
+              <i class="f7-icons">add</i>
+            </a>
+            <a class="link" href="/settings">
+              <i class="f7-icons">gear_fill</i>
+            </a>
 
+            <a class="link" href="/profile/show">
+              <i class="f7-icons">person</i>
+            </a>
+
+        </div>
       </div>
     </div>
+    <div class="page-content">
+
+      <div class="card">
+        <div class="card-content">
+          <div class="list">
+            <ul>
+              {{#each posts}}
+              <li>
+                <div class="item-content">
+                  <div class="item-media">
+                    <i class="f7-icons">document_text</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title">
+                      <a href="/post/show/{{id}}">{{title}}</a>
+                    </div>
+                    <div class="item-after">
+                      {{#if author}}
+                      by {{author.name}}
+                      {{/if}}
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <div class="page-content">
-    
-    <a href="/post/list">Post List</a>
-    <a href="/post/create">Post Create</a>
 
-  </div>
-</div>
-
-
+</template>
 
 
 

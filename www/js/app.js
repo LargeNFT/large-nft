@@ -13,6 +13,8 @@ Storage.prototype.getObject = function (key) {
 // Dom7
 const $$ = Dom7;
 
+Buffer = Buffer.Buffer;
+
 
 
 let freedom;
@@ -155,7 +157,9 @@ const app = new Framework7({
 
     {
       path: '/post/create',
-      url: 'pages/post/create.html'
+      async async(routeTo, routeFrom, resolve, reject) {
+        resolveController(resolve,postController.showCreatePost())
+      }
     },
 
     // Default route (404 page). MUST BE THE LAST

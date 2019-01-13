@@ -28,11 +28,11 @@ class PostService {
   }
 
   async createPost(post) {
-    await freedom.create(POST_REPO, post)
+    return freedom.create(POST_REPO, post)
   }
 
   async updatePost(post) {
-    await freedom.update(POST_REPO, post.id, post)
+    return freedom.update(POST_REPO, post.id, post)
   }
 
 }

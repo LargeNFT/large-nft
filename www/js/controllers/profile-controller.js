@@ -114,7 +114,7 @@ class ProfileController {
             const reader = new FileReader();
             
             reader.onload = async function () {
-                const buf = Buffer.Buffer(reader.result)
+                const buf = Buffer(reader.result)
 
                 if (buf) {
                     ipfsCid = await freedom.ipfsPutFile(buf);

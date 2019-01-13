@@ -2,15 +2,27 @@
 
 class PostController {
 
-
     constructor(postService, profileService) {
         const self = this;
 
         self.postService = postService;
         self.profileService = profileService;
 
-        $$(document).on('submit', '#edit-post-form', self.postEditSave);
-        $$(document).on('submit', '#create-post-form', self.postCreateSave);
+
+        $$(document).on('submit', '#edit-post-form', function(e) {
+          self.postEditSave(e)
+        });
+
+        $$(document).on('submit', '#create-post-form', function(e) {
+          self.postCreateSave(e)
+        });
+    }
+
+    async showCreatePost() {
+
+
+      return new ModelView({},  'pages/post/create.html')
+
     }
 
     async showPost(id) {
@@ -24,7 +36,6 @@ class PostController {
     async showPostList() {
 
         let posts = await this.postService.getPostsDescending(10, 0)
-        console.log(posts)
 
         let model = {
           posts: posts
@@ -48,7 +59,8 @@ class PostController {
         e.preventDefault();
         
         //Get data
-        var postData = app.form.convertToData('#edit-post-form');
+        var postData = await this._getPostData('#edit-post-form')
+
 
         //Save
         await postService.updatePost(postData)
@@ -63,27 +75,39 @@ class PostController {
         e.preventDefault();
         
         //Get data
-        var postData = app.form.convertToData('#create-post-form');
+        var postData = await this._getPostData('#create-post-form')
 
-
-        //Get date
-        postData.dateCreated = new Date().toJSON().toString()
-
-
-        //Get author info
-        let author = await profileService.getCurrentUser()
-        postData.authorId = author.id
-
-        //Add main photo
-
+        console.log(postData)
 
         //Save
         let result = await postService.createPost(postData)
 
         console.log(result)
-        
         //Redirect
         app.methods.navigate("/post/show/" + result.id);
+    }
+
+
+
+    async _getPostData(formId) {
+
+      //Get data
+      var postData = app.form.convertToData(formId);
+
+      //Get date
+      postData.dateCreated = new Date().toJSON().toString()
+
+      //Get author info
+      let author = await profileService.getCurrentUser()
+      postData.authorId = author.id
+
+      //Add main photo
+
+      //Get story contents. Quill delta
+      postData.content = this.quill.getContents()
+
+
+      return postData
     }
 
 }

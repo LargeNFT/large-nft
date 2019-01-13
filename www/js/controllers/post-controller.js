@@ -29,13 +29,14 @@ class PostController {
         let post = await this.postService.getPostById(id)
 
         //Convert content to HTML
-        const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {});
-        post.content = qdc.convert();
+        this._translatePost(post)
 
 
         return new ModelView(post, 'pages/post/show.html')
 
     }
+
+
 
     async showPostList() {
 
@@ -113,4 +114,18 @@ class PostController {
       return postData
     }
 
+
+    _translatePost(post) {
+
+      //Create content HTML
+      const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {});
+      post.content = qdc.convert();
+
+      //Convert date
+      post.dateCreated = new Date(post.dateCreated).toDateString()
+
+
+
+
+    }
 }

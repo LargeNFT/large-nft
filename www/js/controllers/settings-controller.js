@@ -29,7 +29,7 @@ class SettingsController {
         //Update global
         Template7.global = {
             settings: settingsData,
-            ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
+            ipfsGateway: `http://${settingsData.ipfsHost}:${settingsData.ipfsGatewayPort}/ipfs`
         }
 
         //Re-init the freedom object

@@ -138,7 +138,9 @@ const app = new Framework7({
     },
     {
       path: '/profile/create',
-      url: 'pages/profile/create.html'
+      async async(routeTo, routeFrom, resolve, reject) {
+        resolveController(resolve, profileController.showCreateProfile())
+      }
     },
 
     {

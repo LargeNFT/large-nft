@@ -14,6 +14,10 @@ class ProfileController {
         });
     }
 
+    async showCreateProfile() {
+      return new ModelView({},  'pages/profile/create.html')
+    }
+
     async showStaticProfile(id) {
 
         let profile = await profileService.getProfileById(id)
@@ -24,7 +28,14 @@ class ProfileController {
 
     async showProfile() {
 
-        let profile = await profileService.getCurrentUser()
+        let profile;
+
+        try {
+          profile = await profileService.getCurrentUser()
+        } catch(ex) {
+          console.log("Profile doesn't exist");
+        }
+
 
         let model = {
           profile: profile

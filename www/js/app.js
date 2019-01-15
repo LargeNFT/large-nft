@@ -74,16 +74,16 @@ const app = new Framework7({
       async async(routeTo, routeFrom, resolve, reject) {
 
         //Load settings or home page
-        let settings = localStorage.getObject("settings");
-
-        Template7.global = {
-          settings: settings,
-          ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
-        }
+        let settings = settingsService.getSettings()
 
         if (!settings) {
-          resolve({ url: 'pages/settings.html' })
+          resolveController(resolve, settingsController.showSettingsForm())
         } else {
+
+          Template7.global = {
+            settings: settings,
+            ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
+          }
 
           if (!freedom) {
             freedom = await Freedom({

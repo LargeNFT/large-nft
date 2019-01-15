@@ -80,12 +80,14 @@ const app = new Framework7({
           resolveController(resolve, settingsController.showSettingsForm())
         } else {
 
-          Template7.global = {
-            settings: settings,
-            ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
-          }
+          const reinit = routeTo.query.reinit;
 
-          if (!freedom) {
+          if (!freedom || reinit) {
+            Template7.global = {
+              settings: settings,
+              ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
+            }
+
             freedom = await Freedom({
               ipfsHost: settings.ipfsHost,
               ipfsPort: settings.ipfsApiPort,
@@ -94,9 +96,9 @@ const app = new Framework7({
             });
           }
 
-          resolveController(resolve, homeController.showHomePage())
 
-          // resolve({ url: 'pages/home.html' })
+
+          resolveController(resolve, homeController.showHomePage())
 
           //If the query param "url" is set that means we want to forward to that page instead
           //A way to make permalinks

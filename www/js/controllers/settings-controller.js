@@ -26,21 +26,7 @@ class SettingsController {
         //Save it
         settingsService.saveSettings(settingsData)
 
-        //Update global
-        Template7.global = {
-            settings: settingsData,
-            ipfsGateway: `http://${settingsData.ipfsHost}:${settingsData.ipfsGatewayPort}/ipfs`
-        }
-
-        //Re-init the freedom object
-        freedom = await Freedom({
-            ipfsHost: settingsData.ipfsHost,
-            ipfsPort: settingsData.ipfsApiPort,
-            recordContractAddress: settingsData.recordContractAddress,
-            recordContractTransactionHash: settingsData.recordContractTransactionHash
-        });
-
-        app.methods.navigate("/");
+        app.methods.navigate("/?reinit=true");
 
     }
 

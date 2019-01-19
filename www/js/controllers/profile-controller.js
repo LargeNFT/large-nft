@@ -33,7 +33,8 @@ class ProfileController {
         try {
           profile = await profileService.getCurrentUser()
         } catch(ex) {
-          console.log("Profile doesn't exist");
+          console.log(ex)
+          console.log("Profile doesn't exist")
         }
 
 
@@ -83,14 +84,19 @@ class ProfileController {
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
-
-
         //Save
-        await profileService.createProfile(profileData)
+        try {
+          await profileService.createProfile(profileData)
+
+          //Redirect
+          app.methods.navigate("/profile/show")
+
+        } catch(ex) {
+          app.methods.showExceptionPopup(ex)
+        }
 
 
-        //Redirect
-        app.methods.navigate("/profile/show");
+
     }
 
 

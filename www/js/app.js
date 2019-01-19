@@ -51,8 +51,18 @@ const app = new Framework7({
   methods: {
     navigate: function (url) {
       this.view.main.router.navigate(url);
+    },
+
+    showExceptionPopup: function(ex) {
+      if (ex.name == "IpfsConnectionException") {
+        app.dialog.alert(ex.message, "Problem connecting to IPFS")
+      } else {
+        app.dialog.alert(ex.message, "There was an error")
+      }
+
     }
-  },
+
+},
 
   // App routes
   routes: [
@@ -74,7 +84,7 @@ const app = new Framework7({
           try {
             await homeService.initialize(settings)
           } catch (ex) {
-            showExceptionPopup(ex)
+            app.methods.showExceptionPopup(ex)
             resolveController(resolve, settingsController.showSettingsForm())
             return
           }
@@ -188,15 +198,9 @@ async function resolveController(resolve, controller_promise) {
       })
 
   } catch (ex) {
-    showExceptionPopup(ex)
+    app.methods.showExceptionPopup(ex)
     console.log(ex)
   }
 
 }
 
-
-async function showExceptionPopup(ex) {
-
-  app.dialog.alert(ex.message, "There was an error")
-
-}

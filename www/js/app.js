@@ -13,6 +13,7 @@ Storage.prototype.getObject = function (key) {
 // Dom7
 const $$ = Dom7;
 
+//Probably because I don't know how to properly include this library. but this works
 Buffer = Buffer.Buffer;
 
 
@@ -21,21 +22,16 @@ let freedom;
 
 
 //Services
-let profileService = new ProfileService();
-let postService = new PostService(profileService);
-
-let settingsService = new SettingsService();
+let homeService = new HomeService()
+let profileService = new ProfileService()
+let postService = new PostService(profileService)
+let settingsService = new SettingsService()
 
 //Page Controllers
-let settingsController = new SettingsController(settingsService);
-let homeController = new HomeController(postService);
-let profileController = new ProfileController(profileService);
-let postController = new PostController(postService, profileService);
-
-
-
-
-
+let settingsController = new SettingsController(settingsService)
+let homeController = new HomeController(postService)
+let profileController = new ProfileController(profileService)
+let postController = new PostController(postService, profileService)
 
 
 
@@ -55,15 +51,6 @@ const app = new Framework7({
   methods: {
     navigate: function (url) {
       this.view.main.router.navigate(url);
-    },
-
-    appendFromTemplate: function (appendTo, templateSelector, viewModel) {
-      var template = $$(templateSelector).html();
-      var compiledTemplate = Template7.compile(template);
-
-      var html = compiledTemplate(viewModel);
-
-      $$(appendTo).append(html);
     }
   },
 
@@ -73,42 +60,37 @@ const app = new Framework7({
       path: '/',
       async async(routeTo, routeFrom, resolve, reject) {
 
-        //Load settings or home page
+        //Load settings. If they don't exist show the settings form
         let settings = settingsService.getSettings()
 
         if (!settings) {
           resolveController(resolve, settingsController.showSettingsForm())
-        } else {
-
-          const reinit = routeTo.query.reinit;
-
-          if (!freedom || reinit) {
-            Template7.global = {
-              settings: settings,
-              ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
-            }
-
-            freedom = await Freedom({
-              ipfsHost: settings.ipfsHost,
-              ipfsPort: settings.ipfsApiPort,
-              recordContractAddress: settings.recordContractAddress,
-              recordContractTransactionHash: settings.recordContractTransactionHash
-            });
-          }
-
-
-
-          resolveController(resolve, homeController.showHomePage())
-
-          //If the query param "url" is set that means we want to forward to that page instead
-          //A way to make permalinks
-          const url = routeTo.query.url;
-
-          if (url) {
-            app.router.navigate(url)
-          }
-
+          return
         }
+
+        const reinit = routeTo.query.reinit;
+
+        if (!freedom || reinit) {
+          try {
+            await homeService.initialize(settings)
+          } catch (ex) {
+            showExceptionPopup(ex)
+            resolveController(resolve, settingsController.showSettingsForm())
+            return
+          }
+        }
+
+        resolveController(resolve, homeController.showHomePage())
+
+        //If the query param "url" is set that means we want to forward to that page instead
+        //A way to make permalinks
+        const url = routeTo.query.url;
+
+        if (url) {
+          app.router.navigate(url)
+        }
+
+
       }
     },
     {
@@ -149,6 +131,13 @@ const app = new Framework7({
       path: '/post/show/:id',
       async async(routeTo, routeFrom, resolve, reject) {
         resolveController(resolve, postController.showPost(routeTo.params.id))
+      }
+    },
+
+    {
+      path: '/post/edit/:id',
+      async async(routeTo, routeFrom, resolve, reject) {
+        resolveController(resolve, postController.showPostEdit(routeTo.params.id))
       }
     },
 
@@ -199,9 +188,15 @@ async function resolveController(resolve, controller_promise) {
       })
 
   } catch (ex) {
+    showExceptionPopup(ex)
     console.log(ex)
   }
 
 }
 
 
+async function showExceptionPopup(ex) {
+
+  app.dialog.alert(ex.message, "There was an error")
+
+}

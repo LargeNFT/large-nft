@@ -14,6 +14,9 @@ class PostService {
     //Fetch author
     await this._postFetchAuthor(post)
 
+    //Convert content to HTML
+    this._translatePost(post)
+
     return post
 
   }
@@ -42,6 +45,17 @@ class PostService {
     if (post.authorId) {
       post.author = await this.profileService.getProfileById(post.authorId)
     }
+  }
+
+  _translatePost(post) {
+
+    //Create content HTML
+    const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {});
+    post.content = qdc.convert();
+
+    //Convert date
+    post.dateCreated = new Date(post.dateCreated).toDateString()
+
   }
 
 }

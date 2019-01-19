@@ -28,14 +28,35 @@ class PostController {
 
         let post = await this.postService.getPostById(id)
 
-        //Convert content to HTML
-        this._translatePost(post)
+        //Show the edit button to the owner
+        let currentUser;
+
+        try {
+          currentUser = await profileService.getCurrentUser()
+        } catch(ex) {
+          console.log("Profile doesn't exist");
+        }
 
 
-        return new ModelView(post, 'pages/post/show.html')
+        let model = {
+          post: post,
+          showEditLink: (currentUser && currentUser.id == post.authorId)
+        }
+
+        return new ModelView(model, 'pages/post/show.html')
 
     }
 
+
+    async showEditPost(id) {
+
+      let post = await this.postService.getPostById(id)
+
+      console.log('here')
+
+      return new ModelView(post, 'pages/post/edit.html')
+
+    }
 
 
     async showPostList() {
@@ -45,7 +66,6 @@ class PostController {
         let model = {
           posts: posts
         }
-
 
         return new ModelView(model, 'pages/post/list.html')
 
@@ -66,7 +86,6 @@ class PostController {
         
         //Get data
         var postData = await this._getPostData('#edit-post-form')
-
 
         //Save
         await postService.updatePost(postData)
@@ -115,17 +134,5 @@ class PostController {
     }
 
 
-    _translatePost(post) {
 
-      //Create content HTML
-      const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {});
-      post.content = qdc.convert();
-
-      //Convert date
-      post.dateCreated = new Date(post.dateCreated).toDateString()
-
-
-
-
-    }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="page" data-name="post-static" data-page-title="{{title}}">
+  <div class="page" data-name="post-static" data-page-title="{{post.title}}">
     <div class="navbar">
       <div class="navbar-inner sliding">
         <div class="left">
@@ -25,25 +25,30 @@
 
       <div class="block ">
 
-        <h1 class="story">{{title}}</h1>
-        <div class="subtitle">{{subtitle}}</div>
+        <h1 class="story">{{post.title}}</h1>
+        <div class="subtitle">{{post.subtitle}}</div>
 
         <div class="row">
           <div class="col-20">
-            {{#if author.profilePic}}
-              <img src="{{@global.ipfsGateway}}/{{author.profilePic}}" class="profile-pic-thumb" />
+            {{#if post.author.profilePic}}
+              <img src="{{@global.ipfsGateway}}/{{post.author.profilePic}}" class="profile-pic-thumb" />
             {{else}}
               <i class="f7-icons" class="profile-pic">person</i>
             {{/if}}
           </div>
           <div class="col-80">
-             <a href="/profile/static/{{author.id}}">{{author.name}}</a> <br />
+             <a href="/profile/static/{{post.author.id}}">{{post.author.name}}</a> <br />
              {{ dateCreated }}
+
+             {{#if showEditLink}}
+                <a href="/post/edit/{{post.id}}">Edit Post</a>
+             {{/if}}
+
           </div>
         </div>
 
 
-        {{content}}
+        {{post.content}}
 
       </div>
 

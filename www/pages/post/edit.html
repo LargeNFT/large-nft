@@ -1,5 +1,5 @@
+<!--suppress JSAnnotator -->
 <template>
-
   <div class="page" data-name="post-edit">
     <div class="navbar">
       <div class="navbar-inner sliding">
@@ -13,35 +13,44 @@
       </div>
     </div>
     <div class="page-content">
-  
         <form id="edit-post-form">
           <input type="hidden" name="id" value="{{id}}" />
           <div class="card">
             <div class="card-content">
-                <div class="list no-hairlines-md">
-                    <ul>
-                      <li>
-                        <div class="item-content item-input">
-                          <div class="item-inner">
-                            <div class="item-title item-label">Title</div>
-                            <div class="item-input-wrap">
-                              <input type="text" name="title" value={{title}} placeholder="Enter a title" />
-                            </div>
-                          </div>
+              <div class="list no-hairlines-md">
+                <ul>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Title</div>
+                        <div class="item-input-wrap">
+                          <input type="text" name="title" placeholder="Enter a title" required />
                         </div>
-                      </li>
-                      <li>
-                        <div class="item-content item-input">
-                          <div class="item-inner">
-                            <div class="item-title item-label">Story</div>
-                            <div class="item-input-wrap">
-                              <input type="text" name="content" value="{{content}}" placeholder="Enter your story" />
-                            </div>
-                          </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Subtitle</div>
+                        <div class="item-input-wrap">
+                          <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)" />
                         </div>
-                      </li>
-                    </ul>
-                  </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Story</div>
+                        <div class="item-input-wrap">
+                          <div id="edit-story-editor"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div class="card-footer row">
               <div class="col-66"></div>
@@ -51,9 +60,24 @@
             </div>
           </div>
         </form>
-  
-  
-      
     </div>
   </div>
 </template>
+
+
+<script>
+  // script must return component object
+  return {
+    on: {
+      pageInit: function (e, page) {
+
+        postController.quill = new Quill('#edit-story-editor', {
+          theme: 'snow'
+        });
+
+        postController.quill.setContents(this.content)
+
+      }
+    }
+  }
+</script>

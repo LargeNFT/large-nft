@@ -91,6 +91,8 @@ class PostController {
         //Get data
         var postData = await this._getPostData('#edit-post-form')
 
+        console.log(postData)
+
         //Save
         await postService.updatePost(postData)
 

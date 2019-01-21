@@ -49,8 +49,6 @@ class PostService {
 
   _translatePost(post) {
 
-    // console.log('_translatePost')
-
     //Create content HTML
     const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {});
     post.contentTranslated = qdc.convert();

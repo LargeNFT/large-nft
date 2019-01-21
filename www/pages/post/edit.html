@@ -14,7 +14,7 @@
     </div>
     <div class="page-content">
         <form id="edit-post-form">
-          <input type="hidden" name="id" value="{{id}}" />
+          <input type="hidden" name="id" value="{{post.id}}" />
           <div class="card">
             <div class="card-content">
               <div class="list no-hairlines-md">
@@ -44,7 +44,8 @@
                       <div class="item-inner">
                         <div class="item-title item-label">Story</div>
                         <div class="item-input-wrap">
-                          <div id="edit-story-editor"></div>
+                          <div id="edit-story-editor">
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -72,7 +73,14 @@
       pageInit: function (e, page) {
 
         postController.quill = new Quill('#edit-story-editor', {
-          theme: 'snow'
+          theme: 'snow',
+          modules: {
+            toolbar: [
+              [{ header: [1, 2, false] }],
+              ['bold', 'italic', 'underline'],
+              ['image', 'code-block']
+            ]
+          }
         });
 
         console.log(typeof this.post.content)

@@ -24,7 +24,7 @@
                       <div class="item-inner">
                         <div class="item-title item-label">Title</div>
                         <div class="item-input-wrap">
-                          <input type="text" name="title" placeholder="Enter a title" required />
+                          <input type="text" name="title" placeholder="Enter a title" value="{{post.title}}" required />
                         </div>
                       </div>
                     </div>
@@ -34,7 +34,7 @@
                       <div class="item-inner">
                         <div class="item-title item-label">Subtitle</div>
                         <div class="item-input-wrap">
-                          <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)" />
+                          <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)" value="{{post.subtitle}}" />
                         </div>
                       </div>
                     </div>
@@ -75,7 +75,9 @@
           theme: 'snow'
         });
 
-        postController.quill.setContents(this.content)
+        console.log(typeof this.post.content)
+
+        postController.quill.setContents(this.post.content.ops)
 
       }
     }

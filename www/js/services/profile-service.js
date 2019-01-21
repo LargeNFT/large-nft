@@ -7,7 +7,15 @@ class ProfileService {
   }
 
   async getCurrentUser() {
-    return freedom.readByOwnedIndex(PROFILE_REPO, 0)
+
+    let currentUser
+
+    try {
+      currentUser = await freedom.readByOwnedIndex(PROFILE_REPO, 0)
+    } catch (ex) {}
+
+    return currentUser
+
   }
 
   async createProfile(profile) {

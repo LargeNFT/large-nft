@@ -76,7 +76,11 @@ class PostController {
 
         let post = await this.postService.getPostById(id)
 
-        return new ModelView(post, 'pages/post/edit.html')
+        let model = {
+          post: post
+        }
+
+        return new ModelView(model, 'pages/post/edit.html')
 
     }
 
@@ -102,10 +106,10 @@ class PostController {
         //Get data
         var postData = await this._getPostData('#create-post-form')
 
+
         //Save
         let result = await postService.createPost(postData)
 
-        console.log(result)
         //Redirect
         app.methods.navigate("/post/show/" + result.id);
     }

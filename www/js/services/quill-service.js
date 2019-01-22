@@ -62,6 +62,29 @@ class QuillService {
     DividerBlot.tagName = 'hr';
 
 
+    class IpfsImageBlot extends BlockEmbed {
+      static create(value) {
+        let node = super.create();
+        node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
+        node.setAttribute('ipfsCid', value.ipfsCid);
+
+        return node;
+      }
+
+      static value(node) {
+
+        let ipfsCid = node.getAttribute('ipfsCid')
+
+        return {
+          ipfsCid: ipfsCid
+        };
+      }
+    }
+    IpfsImageBlot.blotName = 'ipfsimage';
+    IpfsImageBlot.tagName = 'img';
+
+
+    Quill.register(IpfsImageBlot)
     Quill.register(DividerBlot)
     Quill.register(HeaderBlot)
     Quill.register(BlockquoteBlot)
@@ -69,9 +92,28 @@ class QuillService {
     Quill.register(BoldBlot)
     Quill.register(ItalicBlot)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return quill
   }
-
 
 }
 

@@ -67,6 +67,10 @@ hr:before {
   content: '...';
 }
 
+.image-button-input{
+  opacity:0;
+  width: 0px;
+}
 
 
 /*.editor-container #tooltip-controls, #sidebar-controls {*/

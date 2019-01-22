@@ -2,12 +2,13 @@
 
 class PostController {
 
-    constructor(postService, profileService, quillService) {
+    constructor(postService, profileService, quillService, uploadService) {
         const self = this;
 
         self.postService = postService
         self.profileService = profileService
         self.quillService = quillService
+        self.uploadService = uploadService
 
 
         $$(document).on('submit', '#edit-post-form', function(e) {
@@ -53,6 +54,16 @@ class PostController {
         $$(document).on('click', '.divider-button', function(e) {
           e.preventDefault()
           self.dividerClick(e)
+        })
+
+        $$(document).on('click', '.image-button', function(e) {
+          e.preventDefault()
+          self.imageClick(e)
+        })
+
+        $$(document).on('change', '.image-button-input', async function(e) {
+          e.preventDefault()
+          await self.imageSelected(this)
         })
     }
 
@@ -219,5 +230,29 @@ class PostController {
       this.quill.setSelection(range.index + 2, Quill.sources.SILENT);
 
     }
+
+    imageClick(e) {
+
+      const imageButtonInput = $$(".image-button-input");
+      imageButtonInput.click()
+
+    }
+
+
+    async imageSelected(fileElement) {
+
+      let imageCid = await this.uploadService.uploadFile(fileElement)
+
+      let range = this.quill.getSelection(true)
+
+      // this.quill.insertText(range.index, '\n', Quill.sources.USER)
+
+      this.quill.insertEmbed(range.index, 'ipfsimage', {
+        ipfsCid: imageCid
+      } , Quill.sources.USER)
+
+      // this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+    }
+
 
 }

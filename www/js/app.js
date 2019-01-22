@@ -27,12 +27,13 @@ let quillService = new QuillService()
 let profileService = new ProfileService()
 let postService = new PostService(profileService)
 let settingsService = new SettingsService()
+let uploadService = new UploadService()
 
 //Page Controllers
 let settingsController = new SettingsController(settingsService)
 let homeController = new HomeController(postService)
-let profileController = new ProfileController(profileService)
-let postController = new PostController(postService, profileService, quillService)
+let profileController = new ProfileController(profileService, uploadService)
+let postController = new PostController(postService, profileService, quillService, uploadService)
 
 
 

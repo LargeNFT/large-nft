@@ -58,6 +58,10 @@ class PostService {
       if (customOp.insert.type === 'divider') {
         return "<hr />"
       }
+
+      if (customOp.insert.type === 'ipfsimage') {
+        return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" />`
+      }
     })
 
 

@@ -1,10 +1,11 @@
 
 class ProfileController {
 
-    constructor(profileService) {
-        const self = this;
+    constructor(profileService, uploadService) {
+        const self = this
 
-        self.profileService = profileService;
+        self.profileService = profileService
+        self.uploadService = uploadService
 
         $$(document).on('submit', '#edit-profile-form', function(e) {
             self.profileEditSave(e)
@@ -33,7 +34,6 @@ class ProfileController {
         try {
           profile = await profileService.getCurrentUser()
         } catch(ex) {
-          console.log(ex)
           console.log("Profile doesn't exist")
         }
 
@@ -95,8 +95,6 @@ class ProfileController {
           app.methods.showExceptionPopup(ex)
         }
 
-
-
     }
 
 
@@ -111,41 +109,12 @@ class ProfileController {
         const profilePic = document.getElementById("profilePic");
 
         if (profilePic.files.length > 0) {
-          profileData.profilePic = await this._uploadImage(profilePic)
+          profileData.profilePic = await this.uploadService.uploadFile(profilePic)
         }
 
         return profileData
 
     }
 
-
-    //TODO: probably move this to some service
-    async _uploadImage(profilePic) {
-
-        const self = this;
-
-        let ipfsCid = '';
-
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            
-            reader.onload = async function () {
-                const buf = Buffer(reader.result)
-
-                if (buf) {
-                    ipfsCid = await freedom.ipfsPutFile(buf);
-                }
-
-                resolve(ipfsCid);
-            };
-
-            if (profilePic.files.length > 0) {
-                reader.readAsArrayBuffer(profilePic.files[0]);
-            } else {
-                resolve(ipfsCid);
-            }
-
-        });
-    }
 
 }

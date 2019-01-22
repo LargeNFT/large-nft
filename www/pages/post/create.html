@@ -53,10 +53,22 @@
                     <li>
                       <div class="item-content item-input">
                         <div class="item-inner">
-                          <div class="item-title item-label">Story</div>
-                          <div class="item-input-wrap">
-                            <div id="create-story-editor"></div>
+
+                          <div class="editor-container">
+                            <div id="tooltip-controls">
+                              <button class="bold-button"><i class="fa fa-bold"></i></button>
+                              <button class="italic-button"><i class="fa fa-italic"></i></button>
+                              <button class="link-button"><i class="fa fa-link"></i></button>
+                              <button class="blockquote-button"><i class="fa fa-quote-right"></i></button>
+                              <button class="header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
+                              <button class="header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>
+                              <button class="image-button"><i class="fa fa-camera"></i></button>
+                              <button class="video-button"><i class="fa fa-play"></i></button>
+                              <button class="divider-button"><i class="fa fa-minus"></i></button>
+                            </div>
+                            <div id="create-story-editor" class="editor"></div>
                           </div>
+
                         </div>
                       </div>
                     </li>
@@ -83,9 +95,7 @@
     on: {
       pageInit: function () {
 
-        postController.quill = new Quill('#create-story-editor', {
-          theme: 'snow'
-        });
+        postController.initializeQuill('#create-story-editor')
 
       }
     }

@@ -2,21 +2,65 @@
 
 class PostController {
 
-    constructor(postService, profileService) {
+    constructor(postService, profileService, quillService) {
         const self = this;
 
-        self.postService = postService;
-        self.profileService = profileService;
+        self.postService = postService
+        self.profileService = profileService
+        self.quillService = quillService
 
 
         $$(document).on('submit', '#edit-post-form', function(e) {
+          e.preventDefault()
           self.postEditSave(e)
         });
 
         $$(document).on('submit', '#create-post-form', function(e) {
+          e.preventDefault()
           self.postCreateSave(e)
         });
+
+        $$(document).on('click', '.bold-button', function(e) {
+          e.preventDefault()
+          self.boldClick(e)
+        })
+
+        $$(document).on('click', '.italic-button', function(e) {
+          e.preventDefault()
+          self.italicClick(e)
+        })
+
+        $$(document).on('click', '.link-button', function(e) {
+          e.preventDefault()
+          self.linkClick(e)
+        })
+
+        $$(document).on('click', '.blockquote-button', function(e) {
+          e.preventDefault()
+          self.blockquoteClick(e)
+        })
+
+        $$(document).on('click', '.header-1-button', function(e) {
+          e.preventDefault()
+          self.header1Click(e)
+        })
+
+        $$(document).on('click', '.header-2-button', function(e) {
+          e.preventDefault()
+          self.header2Click(e)
+        })
+
+        $$(document).on('click', '.divider-button', function(e) {
+          e.preventDefault()
+          self.dividerClick(e)
+        })
     }
+
+
+    initializeQuill(selector) {
+      this.quill = this.quillService.buildQuillPostEditor(selector)
+    }
+
 
     async showCreatePost() {
 
@@ -85,8 +129,6 @@ class PostController {
     }
 
     async postEditSave(e) {
-
-        e.preventDefault();
         
         //Get data
         var postData = await this._getPostData('#edit-post-form')
@@ -102,8 +144,6 @@ class PostController {
 
 
     async postCreateSave(e) {
-        
-        e.preventDefault();
         
         //Get data
         var postData = await this._getPostData('#create-post-form')
@@ -140,5 +180,44 @@ class PostController {
     }
 
 
+    /***EDITOR ACTIONS**/
+    boldClick(e) {
+      const currentFormat = this.quill.getFormat()
+      this.quill.format('bold', !currentFormat.bold)
+    }
+
+    italicClick(e) {
+      const currentFormat = this.quill.getFormat()
+      this.quill.format('italic', !currentFormat.italic)
+    }
+
+    linkClick(e) {
+      let value = prompt('Enter link URL');
+      this.quill.format('link', value)
+    }
+
+    blockquoteClick(e) {
+      const currentFormat = this.quill.getFormat()
+      this.quill.format('blockquote', !currentFormat.blockquote);
+    }
+
+    header1Click(e) {
+      const currentFormat = this.quill.getFormat()
+      this.quill.format('header', currentFormat.header ? undefined : 1);
+    }
+
+    header2Click(e) {
+      const currentFormat = this.quill.getFormat()
+      this.quill.format('header', currentFormat.header ? undefined : 2);
+    }
+
+    dividerClick(e) {
+
+      let range = this.quill.getSelection(true);
+      this.quill.insertText(range.index, '\n', Quill.sources.USER);
+      this.quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
+      this.quill.setSelection(range.index + 2, Quill.sources.SILENT);
+
+    }
 
 }

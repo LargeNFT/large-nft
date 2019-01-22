@@ -23,6 +23,7 @@ let freedom;
 
 //Services
 let homeService = new HomeService()
+let quillService = new QuillService()
 let profileService = new ProfileService()
 let postService = new PostService(profileService)
 let settingsService = new SettingsService()
@@ -31,7 +32,7 @@ let settingsService = new SettingsService()
 let settingsController = new SettingsController(settingsService)
 let homeController = new HomeController(postService)
 let profileController = new ProfileController(profileService)
-let postController = new PostController(postService, profileService)
+let postController = new PostController(postService, profileService, quillService)
 
 
 

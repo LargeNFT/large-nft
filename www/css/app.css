@@ -24,3 +24,51 @@ h1 {
 .subtitle {
   font-size: 18px;
 }
+
+
+.editor-container .editor {
+  display: block;
+  font-family: 'Open Sans', Helvetica, sans-serif;
+  font-size: 1.2em;
+  height: 500px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.editor-container button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 18px;
+  padding: 0;
+  height: 32px;
+  width: 32px;
+  text-align: center;
+}
+
+
+.editor-container button:active, button:focus {
+  outline: none;
+}
+
+blockquote {
+  border-left: 4px solid #111;
+  padding-left: 1em;
+}
+
+hr {
+  border: none;
+  color: #111;
+  letter-spacing: 1em;
+  text-align: center;
+}
+hr:before {
+  content: '...';
+}
+
+
+
+/*.editor-container #tooltip-controls, #sidebar-controls {*/
+  /*text-align: center;*/
+/*}*/

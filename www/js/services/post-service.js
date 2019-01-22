@@ -50,7 +50,17 @@ class PostService {
   _translatePost(post) {
 
     //Create content HTML
-    const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {});
+    const qdc = new window.QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {
+    });
+
+    //Render dividers into HTML
+    qdc.renderCustomWith(function(customOp, contextOp) {
+      if (customOp.insert.type === 'divider') {
+        return "<hr />"
+      }
+    })
+
+
     post.contentTranslated = qdc.convert();
 
     //Convert date

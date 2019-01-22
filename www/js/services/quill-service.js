@@ -1,8 +1,39 @@
+class CustomImageSpec extends QuillBlotFormatter.ImageSpec {
+
+}
+
+
+
 class QuillService {
 
   buildQuillPostEditor(selector) {
 
-    const quill = new Quill(selector);
+    Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
+
+
+    const quill = new Quill(selector, {
+      modules: {
+        blotFormatter: {
+          specs: [
+            QuillBlotFormatter.ImageSpec,
+          ],
+          align: {
+            icons: {
+              left: "<i class='fa fa-align-left'></i>",
+              center: "<i class='fa fa-align-center'></i>",
+              right: "<i class='fa fa-align-right'></i>"
+            },
+
+            toolbar: {
+              svgStyle: {
+                fontSize: '21px',
+              },
+            }
+          },
+
+        }
+      }
+    })
 
     let Inline = Quill.import('blots/inline');
 
@@ -64,9 +95,13 @@ class QuillService {
 
     class IpfsImageBlot extends BlockEmbed {
       static create(value) {
+
         let node = super.create();
         node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
         node.setAttribute('ipfsCid', value.ipfsCid);
+        node.setAttribute('width', value.width)
+        node.setAttribute('height', value.height)
+        node.setAttribute('style', value.style)
 
         return node;
       }
@@ -74,9 +109,15 @@ class QuillService {
       static value(node) {
 
         let ipfsCid = node.getAttribute('ipfsCid')
+        let width = node.getAttribute('width')
+        let height = node.getAttribute('height')
+        let style = node.getAttribute('style')
 
         return {
-          ipfsCid: ipfsCid
+          ipfsCid: ipfsCid,
+          width: width,
+          height: height,
+          style: style
         };
       }
     }
@@ -93,27 +134,12 @@ class QuillService {
     Quill.register(ItalicBlot)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     return quill
   }
 
+
+
 }
+
+
 

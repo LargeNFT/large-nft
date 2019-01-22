@@ -60,7 +60,7 @@ class PostService {
       }
 
       if (customOp.insert.type === 'ipfsimage') {
-        return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" />`
+        return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
       }
     })
 

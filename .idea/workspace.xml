@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912e8856-b47f-4673-a468-060953504a6e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/www/js/services/upload-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/www/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/controllers/post-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/controllers/post-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/controllers/profile-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/controllers/profile-controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/js/services/post-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/post-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/js/services/quill-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/quill-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/post/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/post/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/post/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/post/edit.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,15 +14,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/pages/post/edit.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="62" selection-start-line="62" selection-end-line="62" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -85,20 +68,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/www/js/services/post-service.js">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="61" column="49" selection-start-line="61" selection-start-column="49" selection-end-line="61" selection-end-column="49" />
+            <state relative-caret-position="202">
+              <caret line="46" column="51" selection-start-line="46" selection-start-column="51" selection-end-line="46" selection-end-column="51" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/js/services/post-service.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="511">
+              <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/services/quill-service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="65" column="28" lean-forward="true" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
+            <state relative-caret-position="612">
+              <caret line="103" column="46" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
               <folding>
                 <element signature="n#LinkBlot#0;n#!!block;n#buildQuillPostEditor#0;n#QuillService#0" />
               </folding>
@@ -115,6 +107,7 @@
       <find>web3Exc</find>
       <find>toNumber</find>
       <find>webfont</find>
+      <find>AlignAction</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -144,14 +137,14 @@
         <option value="$PROJECT_DIR$/www/pages/post/show.html" />
         <option value="$PROJECT_DIR$/www/js/services/upload-service.js" />
         <option value="$PROJECT_DIR$/www/js/app.js" />
-        <option value="$PROJECT_DIR$/www/index.html" />
         <option value="$PROJECT_DIR$/www/css/app.css" />
         <option value="$PROJECT_DIR$/www/pages/post/create.html" />
         <option value="$PROJECT_DIR$/www/pages/post/edit.html" />
         <option value="$PROJECT_DIR$/www/js/controllers/post-controller.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/profile-controller.js" />
-        <option value="$PROJECT_DIR$/www/js/services/quill-service.js" />
+        <option value="$PROJECT_DIR$/www/index.html" />
         <option value="$PROJECT_DIR$/www/js/services/post-service.js" />
+        <option value="$PROJECT_DIR$/www/js/services/quill-service.js" />
       </list>
     </option>
   </component>
@@ -188,20 +181,7 @@
               <item name="large" type="462c0819:PsiDirectoryNode" />
               <item name="www" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="large" type="b2602c69:ProjectViewProjectNode" />
-              <item name="large" type="462c0819:PsiDirectoryNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="large" type="b2602c69:ProjectViewProjectNode" />
-              <item name="large" type="462c0819:PsiDirectoryNode" />
-              <item name="www" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="profile" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -214,7 +194,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548176431782" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548193625253" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../freedom-for-data" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -264,12 +244,12 @@
       <workItem from="1547523416389" duration="7443000" />
       <workItem from="1547583423277" duration="19216000" />
       <workItem from="1547864530492" duration="16313000" />
-      <workItem from="1547998221356" duration="44507000" />
+      <workItem from="1547998221356" duration="51843000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131590000" />
+    <option name="totallyTimeSpent" value="138926000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -464,24 +444,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="55" column="19" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/pages/post/show.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="551">
           <caret line="36" column="19" lean-forward="true" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/css/app.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -562,20 +528,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/services/quill-service.js">
+    <entry file="file://$PROJECT_DIR$/www/css/app.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="65" column="28" lean-forward="true" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
-          <folding>
-            <element signature="n#LinkBlot#0;n#!!block;n#buildQuillPostEditor#0;n#QuillService#0" />
-          </folding>
+        <state relative-caret-position="331">
+          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="46" column="51" selection-start-line="46" selection-start-column="51" selection-end-line="46" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/lib/quill-blot-formatter.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="25085" lean-forward="true" selection-start-column="25085" selection-end-column="25085" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/js/services/post-service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="61" column="49" selection-start-line="61" selection-start-column="49" selection-end-line="61" selection-end-column="49" />
+        <state relative-caret-position="511">
+          <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/services/quill-service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="103" column="46" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
+          <folding>
+            <element signature="n#LinkBlot#0;n#!!block;n#buildQuillPostEditor#0;n#QuillService#0" />
+          </folding>
         </state>
       </provider>
     </entry>

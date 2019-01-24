@@ -35,8 +35,10 @@ let homeController = new HomeController(postService)
 let profileController = new ProfileController(profileService, uploadService)
 let postController = new PostController(postService, profileService, quillService, uploadService)
 
-
-
+//Template7 helpers
+Template7.registerHelper('shortDate', function(date) {
+  return moment(date).format('MMM D, YYYY')
+})
 
 
 // Framework7 App main instance

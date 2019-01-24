@@ -92,7 +92,6 @@ class PostController {
           console.log("Profile doesn't exist");
         }
 
-
         let model = {
           post: post,
           showEditLink: (currentUser && currentUser.id == post.authorId)
@@ -101,7 +100,6 @@ class PostController {
         return new ModelView(model, 'pages/post/show.html')
 
     }
-
 
     async showEditPost(id) {
 
@@ -112,7 +110,6 @@ class PostController {
       return new ModelView(post, 'pages/post/edit.html')
 
     }
-
 
     async showPostList() {
 
@@ -125,7 +122,6 @@ class PostController {
         return new ModelView(model, 'pages/post/list.html')
 
     }
-
 
     async showPostEdit(id) {
 
@@ -144,7 +140,8 @@ class PostController {
         //Get data
         var postData = await this._getPostData('#edit-post-form')
 
-        console.log(postData)
+        //Add photo (if selected)
+        postData = await this.addCoverPhoto(postData)
 
         //Save
         await postService.updatePost(postData)
@@ -153,11 +150,13 @@ class PostController {
         app.methods.navigate("/post/show/" + postData.id);
     }
 
-
     async postCreateSave(e) {
         
         //Get data
         var postData = await this._getPostData('#create-post-form')
+
+        //Add photo (if selected)
+        postData = await this.addCoverPhoto(postData)
 
 
         //Save
@@ -166,8 +165,6 @@ class PostController {
         //Redirect
         app.methods.navigate("/post/show/" + result.id);
     }
-
-
 
     async _getPostData(formId) {
 
@@ -252,6 +249,25 @@ class PostController {
       } , Quill.sources.USER)
 
       // this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+    }
+
+
+  /**
+   * UTIL
+   */
+
+
+    async addCoverPhoto(postData) {
+
+      //Upload photo if we have it
+      const coverPhoto = document.getElementById("coverPhoto");
+
+      if (coverPhoto.files.length > 0) {
+        postData.coverPhoto = await this.uploadService.uploadFile(coverPhoto)
+      }
+
+      return postData
+
     }
 
 

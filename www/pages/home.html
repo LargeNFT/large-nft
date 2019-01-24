@@ -1,3 +1,4 @@
+<!--suppress JSAnnotator -->
 <template>
 
   <div class="page" data-name="home">
@@ -19,40 +20,36 @@
         </div>
       </div>
     </div>
-    <div class="page-content">
+    <div class="page-content infinite-scroll-content">
 
-      <div class="card">
-        <div class="card-content">
-          <div class="list">
-            <ul>
-              {{#each posts}}
-              <li>
-                <div class="item-content">
-                  <div class="item-media">
-                    <i class="f7-icons">document_text</i>
-                  </div>
-                  <div class="item-inner">
-                    <div class="item-title">
-                      <a href="/post/show/{{id}}">{{title}}</a>
-                    </div>
-                    <div class="item-after">
-                      {{#if author}}
-                        by {{author.name}}
-                      {{/if}}
-                    </div>
-                  </div>
-                </div>
-              </li>
-              {{/each}}
-            </ul>
-          </div>
-        </div>
+      <div class="list media-list">
+        <ul id="post-list">
+        </ul>
       </div>
+
+      <div class="preloader infinite-scroll-preloader"></div>
 
     </div>
   </div>
 
 </template>
+
+
+
+
+
+
+<script>
+  // script must return component object
+  return {
+    on: {
+      pageInit: async function (e, page) {
+        await homeController.loadMorePosts()
+      }
+    }
+  }
+</script>
+
 
 
 

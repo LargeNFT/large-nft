@@ -72,6 +72,71 @@ hr:before {
   width: 0px;
 }
 
+.cover-photo-thumbnail {
+  max-width: 100px;
+}
+
+.cover-photo {
+  width: 100px;
+  display: inline-block;
+}
+
+.list .item-title {
+  font-weight: bold;
+  white-space: normal;
+  font-size: 19px;
+}
+
+.list .item-subtitle {
+  white-space: normal;
+  color: #000000;
+  opacity: 0.54;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.list .item-author {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  opacity: 0.84;
+}
+
+.list .item-date {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  opacity: 0.54;
+}
+
+.md .list {
+  margin-top: 0px;
+}
+
+.profile-thumbnail-tiny {
+  display: inline;
+}
+
+.profile-thumbnail-tiny .profile-pic {
+  display: inline;
+  max-width: 24px;
+  width: 24px;
+  vertical-align: middle;
+}
+
+#post-list .item-media {
+  width: 100px;
+
+}
+
+#post-list .item-media .f7-icons {
+  font-size: 100px;
+  padding-left: 10px;
+}
+
+
 
 /*.editor-container #tooltip-controls, #sidebar-controls {*/
   /*text-align: center;*/

@@ -42,6 +42,22 @@
                   <li>
                     <div class="item-content item-input">
                       <div class="item-inner">
+                        <div class="item-title item-label">Cover Photo</div>
+                        <div class="item-input-wrap">
+
+                          {{#if post.coverPhoto}}
+                            <img src="{{@global.ipfsGateway}}/{{post.coverPhoto}}" class="cover-photo"/>
+                            <input type="hidden" name="coverPhoto" value="{{post.coverPhoto}}" />
+                          {{/if}}
+
+                          <input type="file" id="coverPhoto" placeholder="Upload a cover photo" />
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
 
                         <div class="editor-container">
                           <div id="tooltip-controls">
@@ -101,3 +117,6 @@
     }
   }
 </script>
+
+
+

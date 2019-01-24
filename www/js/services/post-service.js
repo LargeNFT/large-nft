@@ -33,6 +33,10 @@ class PostService {
 
   }
 
+  async getPostCount() {
+    return freedom.count(POST_REPO)
+  }
+
   async createPost(post) {
     return freedom.create(POST_REPO, post)
   }
@@ -69,6 +73,9 @@ class PostService {
 
     //Convert date
     post.dateCreated = new Date(post.dateCreated).toDateString()
+
+    //TODO: Probably put max display lengths here somewhere. Since we can't really verify on the way in.
+
 
   }
 

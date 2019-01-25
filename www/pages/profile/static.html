@@ -25,41 +25,49 @@
         </div>
       </div>
     </div>
-    <div id="static-profile-infinite-scroll" class="page-content infinite-scroll-content">
+    <div id="static-profile-infinite-scroll" class="page-content infinite-scroll-content row">
 
-      <div class="block row">
+        <div class="col-100 tablet-50 center">
 
-        <div class="col-15 text-align-center">
-          {{#if profilePic}}
-          <img src="{{@global.ipfsGateway}}/{{profilePic}}" class="profile-pic" />
-          {{else}}
-          No profile pic
-          {{/if}}
-        </div>
+          <div class="block">
 
-        <div class="col-85">
-          <input type="hidden" id="static-profile-owner" value="{{owner}}">
-          <h1>{{name}}</h1>
+            <div class="profile-pic-wrapper text-align-center">
+              {{#if profile.profilePic}}
+              <img src="{{@global.ipfsGateway}}/{{profile.profilePic}}" class="profile-pic" />
+              {{else}}
+              <i class="f7-icons profile-pic">person</i>
+              {{/if}}
+            </div>
 
-          <div class="subtitle">
-            {{aboutMe}}
+            <div class="profile-content">
+
+              <input type="hidden" id="static-profile-owner" value="{{profile.owner}}">
+              <h1>
+                {{profile.name}}
+
+                {{#if showEditLink}}
+                <a href="/profile/edit" class="button button-outline edit-profile-button">Edit Profile</a>
+                {{/if}}
+              </h1>
+
+              <div class="subtitle">
+                {{profile.aboutMe}}
+              </div>
+
+            </div>
+
           </div>
 
+          <div class="block-title">Posts</div>
+          <div class="list media-list">
+            <ul id="static-profile-post-list">
+            </ul>
+          </div>
+
+          <div class="preloader infinite-scroll-preloader"></div>
+
+
         </div>
-
-      </div>
-
-
-      <div class="block-title">Posts</div>
-
-
-      <div class="list media-list">
-        <ul id="static-profile-post-list">
-        </ul>
-      </div>
-
-      <div class="preloader infinite-scroll-preloader"></div>
-
 
     </div>
 

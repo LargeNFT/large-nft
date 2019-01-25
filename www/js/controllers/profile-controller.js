@@ -37,7 +37,21 @@ class ProfileController {
 
         let profile = await profileService.getProfileById(id)
 
-        return new ModelView(profile, 'pages/profile/static.html')
+        //Show the edit button if this is their profile
+        let currentUser;
+
+        try {
+          currentUser = await profileService.getCurrentUser()
+        } catch(ex) {
+          console.log("Profile doesn't exist");
+        }
+
+        let model = {
+          profile: profile,
+          showEditLink: (currentUser && currentUser.id == profile.id)
+        }
+
+        return new ModelView(model, 'pages/profile/static.html')
 
     }
 

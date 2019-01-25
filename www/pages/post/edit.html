@@ -12,7 +12,9 @@
         <div class="title">Edit Post</div>
       </div>
     </div>
-    <div class="page-content">
+    <div class="page-content row">
+
+      <div class="col-100 tablet-50 center">
         <form id="edit-post-form">
           <input type="hidden" name="id" value="{{post.id}}" />
           <div class="card">
@@ -46,8 +48,8 @@
                         <div class="item-input-wrap">
 
                           {{#if post.coverPhoto}}
-                            <img src="{{@global.ipfsGateway}}/{{post.coverPhoto}}" class="cover-photo"/>
-                            <input type="hidden" name="coverPhoto" value="{{post.coverPhoto}}" />
+                          <img src="{{@global.ipfsGateway}}/{{post.coverPhoto}}" class="cover-photo"/>
+                          <input type="hidden" name="coverPhoto" value="{{post.coverPhoto}}" />
                           {{/if}}
 
                           <input type="file" id="coverPhoto" placeholder="Upload a cover photo" />
@@ -77,8 +79,8 @@
                               <label><input type="file" class="image-button-input" id="edit-image-button-input"/></label>
 
 
-                            <button class="video-button"><i class="fa fa-play"></i></button>
-                            <button class="divider-button"><i class="fa fa-minus"></i></button>
+                              <button class="video-button"><i class="fa fa-play"></i></button>
+                              <button class="divider-button"><i class="fa fa-minus"></i></button>
                           </div>
                           <div id="edit-story-editor" class="editor"></div>
                         </div>
@@ -97,6 +99,8 @@
             </div>
           </div>
         </form>
+      </div>
+
     </div>
   </div>
 </template>

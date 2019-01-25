@@ -1,17 +1,25 @@
 /* Your app styles here */
 body, .md body {
-  font-family: Helvetica
+  font-family: Helvetica;
+  font-size: 19px;
 }
 
 
-.profile-pic {
+#static-profile-infinite-scroll .profile-pic {
   max-width: 100%;
   border-radius: 50%;
+  font-size: 100px;
 }
 
 .profile-pic-thumb {
   max-width: 50px;
   border-radius: 50%;
+}
+
+.profile-pic-wrapper {
+  width: 115px;
+  float: left;
+  padding-right: 20px;
 }
 
 
@@ -21,10 +29,29 @@ h1 {
   padding-bottom: 0px;
 }
 
-.subtitle {
-  font-size: 18px;
+h1.story {
+  margin-top: 15px;
+  font-size: 42px;
+  line-height: 42px;
+  font-weight: normal;
+  font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
 }
 
+.subtitle {
+  font-size: 25px;
+  line-height: 25px;
+  white-space: normal;
+  color: #000000;
+  opacity: 0.54;
+  font-weight: 400;
+  font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.center {
+  margin: 0 auto;
+}
 
 .editor-container .editor {
   display: block;
@@ -111,9 +138,6 @@ hr:before {
   opacity: 0.54;
 }
 
-.md .list {
-  margin-top: 0px;
-}
 
 .profile-thumbnail-tiny {
   display: inline;
@@ -136,6 +160,13 @@ hr:before {
   padding-left: 10px;
 }
 
+.edit-profile-button {
+  width: 100px;
+  font-size: 14px;
+  margin-left: 15px;
+  display: inline;
+
+}
 
 
 /*.editor-container #tooltip-controls, #sidebar-controls {*/

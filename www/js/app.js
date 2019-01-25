@@ -22,18 +22,22 @@ let freedom;
 
 
 //Services
+let templateService = new TemplateService()
 let homeService = new HomeService()
 let quillService = new QuillService()
 let profileService = new ProfileService()
-let postService = new PostService(profileService)
+let postService = new PostService(profileService, templateService)
 let settingsService = new SettingsService()
 let uploadService = new UploadService()
+
 
 //Page Controllers
 let settingsController = new SettingsController(settingsService)
 let homeController = new HomeController(postService)
-let profileController = new ProfileController(profileService, uploadService)
+let profileController = new ProfileController(profileService, uploadService, postService)
 let postController = new PostController(postService, profileService, quillService, uploadService)
+
+
 
 //Template7 helpers
 Template7.registerHelper('shortDate', function(date) {
@@ -193,6 +197,7 @@ async function resolveController(resolve, controller_promise) {
 
     let modelView = await controller_promise;
 
+    if (!modelView) return
 
     resolve({
         componentUrl: modelView.view

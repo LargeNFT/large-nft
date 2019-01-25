@@ -126,12 +126,12 @@ hr:before {
   vertical-align: middle;
 }
 
-#post-list .item-media {
+.item-media {
   width: 100px;
 
 }
 
-#post-list .item-media .f7-icons {
+.item-media .f7-icons {
   font-size: 100px;
   padding-left: 10px;
 }

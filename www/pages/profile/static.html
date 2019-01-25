@@ -1,3 +1,4 @@
+<!--suppress JSAnnotator -->
 <template>
   <div class="page" data-name="profile-static">
     <div class="navbar">
@@ -9,6 +10,11 @@
         </div>
         <div class="title">Author Profile</div>
         <div class="right">
+
+          <a href="/" class="link">
+            <i class="f7-icons">home</i>
+          </a>
+
           <a class="link" href="/settings">
             <i class="f7-icons">gear_fill</i>
           </a>
@@ -19,7 +25,7 @@
         </div>
       </div>
     </div>
-    <div class="page-content">
+    <div id="static-profile-infinite-scroll" class="page-content infinite-scroll-content">
 
       <div class="block row">
 
@@ -32,6 +38,7 @@
         </div>
 
         <div class="col-85">
+          <input type="hidden" id="static-profile-owner" value="{{owner}}">
           <h1>{{name}}</h1>
 
           <div class="subtitle">
@@ -41,7 +48,33 @@
         </div>
 
       </div>
+
+
+      <div class="block-title">Posts</div>
+
+
+      <div class="list media-list">
+        <ul id="static-profile-post-list">
+        </ul>
+      </div>
+
+      <div class="preloader infinite-scroll-preloader"></div>
+
+
     </div>
 
   </div>
 </template>
+
+
+
+<script>
+  // script must return component object
+  return {
+    on: {
+      pageInit: async function (e, page) {
+        await profileController.loadStaticProfilePosts()
+      }
+    }
+  }
+</script>

@@ -1,11 +1,12 @@
 
 class ProfileController {
 
-    constructor(profileService, uploadService) {
+    constructor(profileService, uploadService, postService) {
         const self = this
 
         self.profileService = profileService
         self.uploadService = uploadService
+        self.postService = postService
 
         $$(document).on('submit', '#edit-profile-form', function(e) {
             self.profileEditSave(e)
@@ -13,6 +14,19 @@ class ProfileController {
         $$(document).on('submit', '#create-profile-form', function(e) {
             self.profileCreateSave(e)
         });
+
+        $$(document).on('infinite', '#static-profile-infinite-scroll', async function(e) {
+
+          // Exit, if loading in progress
+          if (self.loadingInProgress) return;
+
+          self.loadingInProgress = true
+
+          await self.loadStaticProfilePosts(e)
+
+          self.loadingInProgress = false
+
+        })
     }
 
     async showCreateProfile() {
@@ -37,13 +51,11 @@ class ProfileController {
           console.log("Profile doesn't exist")
         }
 
-
-        let model = {
-          profile: profile
+        if (profile) {
+          app.methods.navigate(`/profile/static/${profile.id}`);
+        } else {
+          return new ModelView({}, 'pages/profile/no_profile.html')
         }
-
-
-        return new ModelView(model, 'pages/profile/show.html')
 
     }
 
@@ -81,11 +93,12 @@ class ProfileController {
         //Collect info
         var profileData = app.form.convertToData('#create-profile-form');
 
-        //Add photo (if selected)
-        profileData = await this.addProfilePic(profileData)
-
         //Save
         try {
+
+          //Add photo (if selected)
+          profileData = await this.addProfilePic(profileData)
+
           await profileService.createProfile(profileData)
 
           //Redirect
@@ -96,6 +109,24 @@ class ProfileController {
         }
 
     }
+
+
+
+
+    async loadStaticProfilePosts(e) {
+
+      let owner = $$('#static-profile-owner').val()
+
+      let currentPosts = $$('#static-profile-post-list').children('li').length
+
+      this.postService.loadMorePosts(
+        await this.postService.getPostsByOwner(owner, 10, currentPosts),
+        await this.postService.getPostByOwnerCount(owner),
+        '#static-profile-post-list'
+      )
+
+    }
+
 
 
   /**

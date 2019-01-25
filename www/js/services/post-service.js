@@ -4,8 +4,9 @@ let POST_REPO = 2;
 
 class PostService {
 
-  constructor(profileService) {
+  constructor(profileService, templateService) {
     this.profileService = profileService
+    this.templateService = templateService
   }
 
   async getPostById(id) {
@@ -24,17 +25,30 @@ class PostService {
   async getPostsDescending(limit, offset) {
     let posts = await freedom.readListDescending(POST_REPO, limit, offset)
 
-    //Fetch authors
-    for (const post of posts) {
-      await this._postFetchAuthor(post)
-    }
+    await this._lazyLoadPosts(posts)
 
     return posts
 
   }
 
+
+  async getPostsByOwner(owner, limit, offset) {
+
+    let posts = await freedom.readOwnedListDescending(POST_REPO, owner, limit, offset )
+
+    await this._lazyLoadPosts(posts)
+
+    return posts
+
+  }
+
+
   async getPostCount() {
     return freedom.count(POST_REPO)
+  }
+
+  async getPostByOwnerCount(owner) {
+    return freedom.countOwned(POST_REPO, owner)
   }
 
   async createPost(post) {
@@ -45,11 +59,45 @@ class PostService {
     return freedom.update(POST_REPO, post.id, post)
   }
 
+  async _lazyLoadPosts(posts) {
+    //Fetch authors
+    for (const post of posts) {
+      await this._postFetchAuthor(post)
+    }
+  }
+
+
   async _postFetchAuthor(post) {
     if (post.authorId) {
       post.author = await this.profileService.getProfileById(post.authorId)
     }
   }
+
+
+
+  /**
+   * Should probably move to a service that's view specific. Fine here for now.
+   */
+  loadMorePosts(posts, totalPostCount, listSelector) {
+
+    let postTemplate = this.templateService.getPostTemplate()
+
+    for (let post of posts) {
+      $$(listSelector).append(postTemplate(post))
+    }
+
+    const currentPostCount = $$(listSelector).children('li').length
+    if (currentPostCount >= totalPostCount) {
+      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+      app.infiniteScroll.destroy('.infinite-scroll-content');
+      // Remove preloader
+      $$('.infinite-scroll-preloader').remove();
+      return;
+    }
+
+  }
+
+
 
   _translatePost(post) {
 

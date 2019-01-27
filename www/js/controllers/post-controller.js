@@ -72,7 +72,6 @@ class PostController {
       this.quill = this.quillService.buildQuillPostEditor(selector)
     }
 
-
     async showCreatePost() {
 
       return new ModelView({},  'pages/post/create.html')
@@ -80,7 +79,7 @@ class PostController {
     }
 
     async showPost(id) {
-
+        console.log(0)
         let post = await this.postService.getPostById(id)
 
         //Show the edit button to the owner
@@ -104,8 +103,6 @@ class PostController {
     async showEditPost(id) {
 
       let post = await this.postService.getPostById(id)
-
-      console.log('here')
 
       return new ModelView(post, 'pages/post/edit.html')
 
@@ -242,13 +239,13 @@ class PostController {
 
       let range = this.quill.getSelection(true)
 
-      // this.quill.insertText(range.index, '\n', Quill.sources.USER)
+      this.quill.insertText(range.index, '\n', Quill.sources.USER)
 
       this.quill.insertEmbed(range.index, 'ipfsimage', {
         ipfsCid: imageCid
       } , Quill.sources.USER)
 
-      // this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+      this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
     }
 
 

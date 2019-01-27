@@ -113,6 +113,7 @@ class ProfileController {
           //Add photo (if selected)
           profileData = await this.addProfilePic(profileData)
 
+
           await profileService.createProfile(profileData)
 
           //Redirect

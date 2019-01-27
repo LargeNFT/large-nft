@@ -5,6 +5,17 @@ body, .md body {
 }
 
 
+.title-name {
+  display: block;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.title-sub {
+  display: block;
+  font-size: 15px;
+}
+
 #static-profile-infinite-scroll .profile-pic {
   max-width: 100%;
   border-radius: 50%;
@@ -32,14 +43,14 @@ h1 {
 h1.story {
   margin-top: 15px;
   font-size: 42px;
-  line-height: 42px;
+  line-height: 45px;
   font-weight: normal;
   font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
 }
 
 .subtitle {
   font-size: 25px;
-  line-height: 25px;
+  line-height: 30px;
   white-space: normal;
   color: #000000;
   opacity: 0.54;
@@ -52,6 +63,14 @@ h1.story {
 .center {
   margin: 0 auto;
 }
+
+.author-profile-pic {
+  float: left;
+  margin-right: 10px;
+}
+
+
+
 
 .editor-container .editor {
   display: block;
@@ -155,17 +174,46 @@ hr:before {
 
 }
 
+
+.block-title {
+  font-size: 20px;
+
+}
+
 .item-media .f7-icons {
   font-size: 100px;
   padding-left: 10px;
 }
 
-.edit-profile-button {
+.edit-profile-button, .edit-post-button {
   width: 100px;
   font-size: 14px;
   margin-left: 15px;
   display: inline;
+}
 
+.author {
+  width: 100%;
+  float: left;
+}
+
+.post-content {
+  float: left;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.post-author {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.84;
+}
+
+.post-date {
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.54;
 }
 
 

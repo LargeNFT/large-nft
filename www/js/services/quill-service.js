@@ -1,6 +1,56 @@
-class CustomImageSpec extends QuillBlotFormatter.ImageSpec {
+/**
+ * THESE CLASSES ARE HERE BECAUSE I NEEDED TO OVERRIDE THEM TO FIX A PROBLEM WITH DELETING
+ * IMAGES BUT I DONT KNOW WHERE THEY SHOULD GO. SO THEY'RE HERE FOR NOW
+ */
+class DeleteAction extends QuillBlotFormatter.Action {
+  onCreate() {
+
+    const self = this
+
+    self.keyUpListener = function(e) {
+      self.onKeyUp(e)
+    }
+
+    document.addEventListener('keyup', self.keyUpListener, true);
+    this.formatter.quill.root.addEventListener('input', self.keyUpListener, true);
+  }
+
+  onDestroy() {
+    document.removeEventListener('keyup', self.keyUpListener);
+    this.formatter.quill.root.removeEventListener('input', self.keyUpListener);
+  }
+
+  onKeyUp(e) {
+
+    if (!this.formatter.currentSpec) {
+      return;
+    }
+
+    // delete or backspace
+    if (e.keyCode === 46 || e.keyCode === 8) {
+
+      const blot = Quill.find(this.formatter.currentSpec.getTargetElement());
+      if (blot) {
+        blot.deleteAt(0);
+      }
+      this.formatter.hide();
+    }
+  }
 
 }
+
+
+class CustomImageSpec extends QuillBlotFormatter.ImageSpec {
+  getActions() {
+    return [QuillBlotFormatter.AlignAction, QuillBlotFormatter.ResizeAction, DeleteAction]
+  }
+}
+
+/**
+ * END UTIL
+ */
+
+
 
 
 
@@ -15,7 +65,7 @@ class QuillService {
       modules: {
         blotFormatter: {
           specs: [
-            QuillBlotFormatter.ImageSpec,
+            CustomImageSpec,
           ],
           align: {
             icons: {

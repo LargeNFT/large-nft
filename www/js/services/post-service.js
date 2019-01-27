@@ -87,13 +87,23 @@ class PostService {
     }
 
     const currentPostCount = $$(listSelector).children('li').length
+
+
+    if (currentPostCount > 0) {
+      $$(listSelector).find('.no-results').remove()
+    }
+
     if (currentPostCount >= totalPostCount) {
       // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-      app.infiniteScroll.destroy('.infinite-scroll-content');
+      app.infiniteScroll.destroy('.infinite-scroll-content')
       // Remove preloader
-      $$('.infinite-scroll-preloader').remove();
-      return;
+      $$('.infinite-scroll-preloader').remove()
+      return
     }
+
+
+
+
 
   }
 

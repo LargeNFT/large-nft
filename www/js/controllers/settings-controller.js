@@ -12,7 +12,7 @@ class SettingsController {
 
     async showSettingsForm() {
 
-        const settings = settingsService.getSettings()
+        const settings = this.settingsService.getSettings()
 
         return new ModelView(settings, 'pages/settings.html')
 

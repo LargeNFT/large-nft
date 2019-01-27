@@ -1,6 +1,15 @@
 class HomeService {
 
-  async initialize(settings) {
+  constructor(settingsService) {
+    this.settingsService = settingsService
+  }
+
+  async initialize() {
+
+    const settings = this.settingsService.getSettings()
+    if (!settings) {
+      throw 'No settings found'
+    }
 
     Template7.global = {
       settings: settings,
@@ -14,9 +23,10 @@ class HomeService {
       recordContractTransactionHash: settings.recordContractTransactionHash
     });
 
-
-
   }
+
+
+
 
 
 }

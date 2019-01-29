@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912e8856-b47f-4673-a468-060953504a6e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/www/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/controllers/post-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/controllers/post-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/services/post-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/post-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/services/template-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/template-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/services/upload-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/upload-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/post/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/post/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/post/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/post/edit.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/controllers/post-controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="288" column="36" selection-start-line="288" selection-start-column="36" selection-end-line="288" selection-end-column="36" />
+            <state relative-caret-position="91">
+              <caret line="272" column="81" lean-forward="true" selection-start-line="272" selection-start-column="81" selection-end-line="272" selection-end-column="81" />
               <folding>
                 <element signature="n#!!block;n#showPostList#0;n#PostController#0" />
                 <element signature="n#!!block;n#_getPostData#0;n#PostController#0" />
@@ -123,11 +114,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/css/app.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="691">
-              <caret line="247" column="11" selection-start-line="247" selection-start-column="11" selection-end-line="247" selection-end-column="11" />
+            <state relative-caret-position="631">
+              <caret line="244" column="20" selection-start-line="244" selection-start-column="20" selection-end-line="244" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -189,8 +180,8 @@
         <option value="$PROJECT_DIR$/www/js/services/post-service.js" />
         <option value="$PROJECT_DIR$/www/js/services/template-service.js" />
         <option value="$PROJECT_DIR$/www/pages/post/edit.html" />
-        <option value="$PROJECT_DIR$/www/css/app.css" />
         <option value="$PROJECT_DIR$/www/js/controllers/post-controller.js" />
+        <option value="$PROJECT_DIR$/www/css/app.css" />
       </list>
     </option>
   </component>
@@ -308,12 +299,12 @@
       <workItem from="1548604688201" duration="599000" />
       <workItem from="1548612676893" duration="1214000" />
       <workItem from="1548653352250" duration="12730000" />
-      <workItem from="1548777687022" duration="11135000" />
+      <workItem from="1548777687022" duration="13613000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="250351000" />
+    <option name="totallyTimeSpent" value="252829000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -757,17 +748,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/css/app.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="691">
-          <caret line="247" column="11" selection-start-line="247" selection-start-column="11" selection-end-line="247" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/controllers/post-controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="288" column="36" selection-start-line="288" selection-start-column="36" selection-end-line="288" selection-end-column="36" />
+        <state relative-caret-position="91">
+          <caret line="272" column="81" lean-forward="true" selection-start-line="272" selection-start-column="81" selection-end-line="272" selection-end-column="81" />
           <folding>
             <element signature="n#!!block;n#showPostList#0;n#PostController#0" />
             <element signature="n#!!block;n#_getPostData#0;n#PostController#0" />
@@ -779,6 +763,13 @@
             <element signature="n#!!block;n#header2Click#0;n#PostController#0" />
             <element signature="n#!!block;n#dividerClick#0;n#PostController#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/css/app.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="631">
+          <caret line="244" column="20" selection-start-line="244" selection-start-column="20" selection-end-line="244" selection-end-column="20" />
         </state>
       </provider>
     </entry>

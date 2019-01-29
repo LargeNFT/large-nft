@@ -66,7 +66,7 @@ const app = new Framework7({
     },
 
     showExceptionPopup: function(ex) {
-      if (ex.name == "IpfsConnectionException") {
+      if (ex.name == "IpfsException") {
         app.dialog.alert(ex.message, "Problem connecting to IPFS")
       } else {
         app.dialog.alert(ex.message, "There was an error")

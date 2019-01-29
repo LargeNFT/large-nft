@@ -16,7 +16,7 @@ body, .md body {
   font-size: 15px;
 }
 
-#static-profile-infinite-scroll .profile-pic {
+.profile-pic {
   max-width: 100%;
   border-radius: 50%;
   font-size: 100px;
@@ -31,6 +31,21 @@ body, .md body {
   width: 115px;
   float: left;
   padding-right: 20px;
+}
+
+.profile-pic-chooser {
+  width: 200px;
+  padding-right: 20px;
+  float: left;
+}
+
+.profile-pic.edit {
+  width: 100px;
+  padding: 10px;
+}
+
+#profilePic {
+  vertical-align: middle;
 }
 
 
@@ -128,9 +143,12 @@ hr:before {
 }
 
 .list .item-title {
-  font-weight: bold;
+  font-weight: normal;
   white-space: normal;
-  font-size: 19px;
+  font-size: 21px;
+  line-height: 21px;
+  margin-bottom: 3px;
+  font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
 }
 
 .list .item-subtitle {
@@ -175,9 +193,11 @@ hr:before {
 }
 
 
-.block-title {
-  font-size: 20px;
-
+.page-content .block-title {
+  font-size: 23px;
+  line-height: 23px;
+  color: rgb(0,0,0);
+  font-weight: normal;
 }
 
 .item-media .f7-icons {

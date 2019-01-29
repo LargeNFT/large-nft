@@ -65,21 +65,23 @@ class PostController {
           e.preventDefault()
           await self.imageSelected(this)
         })
-    }
 
+        $$(document).on('click', '.cover-photo-img', function(e) {
+          e.preventDefault()
+          self.selectCoverPhoto(e)
+        })
+    }
 
     initializeQuill(selector) {
       this.quill = this.quillService.buildQuillPostEditor(selector)
     }
 
     async showCreatePost() {
-
       return new ModelView({},  'pages/post/create.html')
-
     }
 
     async showPost(id) {
-        console.log(0)
+
         let post = await this.postService.getPostById(id)
 
         //Show the edit button to the owner
@@ -97,14 +99,6 @@ class PostController {
         }
 
         return new ModelView(model, 'pages/post/show.html')
-
-    }
-
-    async showEditPost(id) {
-
-      let post = await this.postService.getPostById(id)
-
-      return new ModelView(post, 'pages/post/edit.html')
 
     }
 
@@ -133,34 +127,38 @@ class PostController {
     }
 
     async postEditSave(e) {
-        
+
+      try {
         //Get data
         var postData = await this._getPostData('#edit-post-form')
-
-        //Add photo (if selected)
-        postData = await this.addCoverPhoto(postData)
 
         //Save
         await postService.updatePost(postData)
 
         //Redirect
-        app.methods.navigate("/post/show/" + postData.id);
+        app.methods.navigate("/post/show/" + postData.id)
+
+      } catch (ex) {
+        app.methods.showExceptionPopup(ex)
+      }
+
     }
 
     async postCreateSave(e) {
-        
+
+      try {
         //Get data
         var postData = await this._getPostData('#create-post-form')
-
-        //Add photo (if selected)
-        postData = await this.addCoverPhoto(postData)
-
 
         //Save
         let result = await postService.createPost(postData)
 
         //Redirect
         app.methods.navigate("/post/show/" + result.id);
+      } catch (ex) {
+        app.methods.showExceptionPopup(ex)
+      }
+
     }
 
     async _getPostData(formId) {
@@ -246,24 +244,60 @@ class PostController {
       } , Quill.sources.USER)
 
       this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+
+      //Make it the cover photo
+      $$('input[name="coverPhoto"]').val(imageCid)
+
+      this.loadCoverPhotos()
+
     }
 
 
-  /**
-   * UTIL
-   */
+    //TODO: load this from a template7 template somehow instead
+    loadCoverPhotos() {
+
+      const images = this.postService.getImagesFromPostContentOps(this.quill.getContents().ops)
+
+      $$('.cover-photo-img-wrapper').empty()
+      $$('.cover-photo-preview').hide()
 
 
-    async addCoverPhoto(postData) {
-
-      //Upload photo if we have it
-      const coverPhoto = document.getElementById("coverPhoto");
-
-      if (coverPhoto.files.length > 0) {
-        postData.coverPhoto = await this.uploadService.uploadFile(coverPhoto)
+      if (images.length > 0) {
+        $$('.cover-photo-preview').show()
       }
 
-      return postData
+
+      for (let imageCid of images) {
+
+        const imgElement = $$('<img>')
+        $$(imgElement).attr("src", Template7.global.ipfsGateway + '/' + imageCid)
+        $$(imgElement).data("image-cid", imageCid)
+        $$(imgElement).addClass("cover-photo-img")
+
+        $$('.cover-photo-img-wrapper').append(imgElement)
+
+      }
+
+      this.setCoverPhoto($$('input[name="coverPhoto"]').val())
+
+    }
+
+    selectCoverPhoto(e) {
+      this.setCoverPhoto($$(e.target).data("image-cid"))
+    }
+
+    //TODO: can definitely be nicer.
+    setCoverPhoto(imageCid) {
+
+      $$('input[name="coverPhoto"]').val(imageCid)
+
+      $$('.cover-photo-img-wrapper img').removeClass('selected')
+
+      $$('.cover-photo-img-wrapper img').each(function(index, item) {
+        if ($$(item).data("image-cid") == imageCid) {
+          $$(item).addClass('selected')
+        }
+      })
 
     }
 

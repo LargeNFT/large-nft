@@ -48,6 +48,9 @@ body, .md body {
   vertical-align: middle;
 }
 
+.ql-editor {
+  border: 1px solid #cccccc;
+}
 
 h1 {
   margin-block-end: 0em;
@@ -234,6 +237,19 @@ hr:before {
   font-size: 13px;
   font-weight: 400;
   opacity: 0.54;
+}
+
+
+.cover-photo-img {
+  width: 100px;
+}
+
+.cover-photo-img.selected {
+  border: 3px solid #ff0000;
+}
+
+.cover-photo-preview {
+  display: none;
 }
 
 

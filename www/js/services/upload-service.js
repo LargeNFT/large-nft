@@ -14,7 +14,14 @@ class UploadService {
         const buf = Buffer(reader.result)
 
         if (buf) {
-          ipfsCid = await freedom.ipfsPutFile(buf);
+
+          try {
+            ipfsCid = await freedom.ipfsPutFile(buf);
+          } catch (ex) {
+            app.methods.showExceptionPopup(ex)
+          }
+
+
         }
 
         resolve(ipfsCid);

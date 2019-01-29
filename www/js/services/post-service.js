@@ -74,6 +74,20 @@ class PostService {
   }
 
 
+  getImagesFromPostContentOps(ops) {
+
+    const images = []
+
+    for (let op of ops) {
+      if (op.insert && op.insert.ipfsimage) {
+        images.push(op.insert.ipfsimage.ipfsCid)
+      }
+    }
+
+    return images
+
+  }
+
 
   /**
    * Should probably move to a service that's view specific. Fine here for now.

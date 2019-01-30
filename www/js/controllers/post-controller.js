@@ -66,6 +66,19 @@ class PostController {
           await self.imageSelected(this)
         })
 
+
+
+        $$(document).on('click', '.video-button', function(e) {
+          e.preventDefault()
+          self.videoClick(e)
+        })
+
+        $$(document).on('change', '.video-button-input', async function(e) {
+          e.preventDefault()
+          await self.videoSelected(this)
+        })
+
+
         $$(document).on('click', '.cover-photo-img', function(e) {
           e.preventDefault()
           self.selectCoverPhoto(e)
@@ -300,6 +313,31 @@ class PostController {
       })
 
     }
+
+
+    videoClick(e) {
+      const videoButtonInput = $$(".video-button-input");
+      videoButtonInput.click()
+    }
+
+    async videoSelected(fileElement) {
+
+      let videoCid = await this.uploadService.uploadFile(fileElement)
+
+      let range = this.quill.getSelection(true)
+
+
+      this.quill.insertText(range.index, '\n', Quill.sources.USER)
+
+      this.quill.insertEmbed(range.index, 'ipfsvideo', {
+        ipfsCid: videoCid
+      } , Quill.sources.USER)
+
+      this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+
+    }
+
+
 
 
 }

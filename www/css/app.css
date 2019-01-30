@@ -131,10 +131,12 @@ hr:before {
   content: '...';
 }
 
-.image-button-input{
+.image-button-input, .video-button-input {
   opacity:0;
   width: 0px;
 }
+
+
 
 .cover-photo-thumbnail {
   max-width: 100px;
@@ -149,7 +151,7 @@ hr:before {
   font-weight: normal;
   white-space: normal;
   font-size: 21px;
-  line-height: 21px;
+  line-height: 23px;
   margin-bottom: 3px;
   font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
 }

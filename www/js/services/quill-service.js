@@ -171,10 +171,42 @@ class QuillService {
         };
       }
     }
-    IpfsImageBlot.blotName = 'ipfsimage';
-    IpfsImageBlot.tagName = 'img';
 
 
+    class IpfsVideoBlot extends BlockEmbed {
+      static create(value) {
+        let node = super.create();
+        node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
+        node.setAttribute('ipfsCid', value.ipfsCid);
+        node.setAttribute('width', value.width)
+        node.setAttribute('height', value.height)
+        node.setAttribute('style', value.style)
+
+        return node;
+      }
+
+      static value(node) {
+
+        let ipfsCid = node.getAttribute('ipfsCid')
+        let width = node.getAttribute('width')
+        let height = node.getAttribute('height')
+        let style = node.getAttribute('style')
+
+        return {
+          ipfsCid: ipfsCid,
+          width: width,
+          height: height,
+          style: style
+        };
+      }
+    }
+
+
+    IpfsImageBlot.blotName = 'ipfsvideo';
+    IpfsImageBlot.tagName = 'video';
+
+
+    Quill.register(IpfsVideoBlot)
     Quill.register(IpfsImageBlot)
     Quill.register(DividerBlot)
     Quill.register(HeaderBlot)

@@ -208,6 +208,7 @@ async function initAndResolve(resolve, successFunction) {
     resolveController(resolve, successFunction())
   } catch(ex) {
     console.log(ex)
+    app.methods.showExceptionPopup(ex)
     app.methods.navigate("/settings")
   }
 }

@@ -24,7 +24,6 @@ class PostService {
 
   async getPostsDescending(limit, offset) {
     let posts = await freedom.readListDescending(POST_REPO, limit, offset)
-
     await this._lazyLoadPosts(posts)
 
     return posts
@@ -138,6 +137,15 @@ class PostService {
       if (customOp.insert.type === 'ipfsimage') {
         return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
       }
+
+      if (customOp.insert.type === 'ipfsvideo') {
+        return `
+            <video width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}">
+              <source src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" type="video/mp4">
+            </video>
+          `
+      }
+
     })
 
 

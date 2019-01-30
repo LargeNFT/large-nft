@@ -172,6 +172,9 @@ class QuillService {
       }
     }
 
+    IpfsImageBlot.blotName = 'ipfsimage';
+    IpfsImageBlot.tagName = 'img';
+
 
     class IpfsVideoBlot extends BlockEmbed {
       static create(value) {
@@ -202,8 +205,8 @@ class QuillService {
     }
 
 
-    IpfsImageBlot.blotName = 'ipfsvideo';
-    IpfsImageBlot.tagName = 'video';
+    IpfsVideoBlot.blotName = 'ipfsvideo';
+    IpfsVideoBlot.tagName = 'video';
 
 
     Quill.register(IpfsVideoBlot)

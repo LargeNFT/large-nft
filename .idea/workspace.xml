@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="912e8856-b47f-4673-a468-060953504a6e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/www/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/controllers/post-controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/controllers/post-controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/lib/freedom-for-data.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/lib/freedom-for-data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/js/services/post-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/post-service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/www/js/services/quill-service.js" beforeDir="false" afterPath="$PROJECT_DIR$/www/js/services/quill-service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/post/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/post/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/pages/post/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/pages/post/edit.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,11 +21,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/pages/post/edit.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="636">
-              <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
+            <state relative-caret-position="319">
+              <caret line="71" column="95" lean-forward="true" selection-start-line="71" selection-start-column="95" selection-end-line="71" selection-end-column="95" />
             </state>
           </provider>
         </entry>
@@ -99,11 +90,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/services/quill-service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="170" column="10" lean-forward="true" selection-start-line="170" selection-start-column="10" selection-end-line="170" selection-end-column="10" />
+            <state relative-caret-position="230">
+              <caret line="175" column="17" selection-start-line="175" selection-start-column="17" selection-end-line="175" selection-end-column="17" />
               <folding>
                 <element signature="n#DeleteAction#0" />
                 <element signature="n#CustomImageSpec#0" />
@@ -193,10 +184,10 @@
         <option value="$PROJECT_DIR$/www/js/app.js" />
         <option value="$PROJECT_DIR$/www/pages/home.html" />
         <option value="$PROJECT_DIR$/www/js/controllers/home-controller.js" />
-        <option value="$PROJECT_DIR$/www/js/services/quill-service.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/post-controller.js" />
         <option value="$PROJECT_DIR$/www/js/services/post-service.js" />
         <option value="$PROJECT_DIR$/www/pages/post/edit.html" />
+        <option value="$PROJECT_DIR$/www/js/services/quill-service.js" />
       </list>
     </option>
   </component>
@@ -246,7 +237,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548859112476" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548862282996" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../freedom-for-data" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -307,12 +298,12 @@
       <workItem from="1548604688201" duration="599000" />
       <workItem from="1548612676893" duration="1214000" />
       <workItem from="1548653352250" duration="12730000" />
-      <workItem from="1548777687022" duration="21470000" />
+      <workItem from="1548777687022" duration="23296000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="260686000" />
+    <option name="totallyTimeSpent" value="262512000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -748,18 +739,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/services/quill-service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="170" column="10" lean-forward="true" selection-start-line="170" selection-start-column="10" selection-end-line="170" selection-end-column="10" />
-          <folding>
-            <element signature="n#DeleteAction#0" />
-            <element signature="n#CustomImageSpec#0" />
-            <element signature="n#LinkBlot#0;n#!!block;n#buildQuillPostEditor#0;n#QuillService#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/services/post-service.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-263">
@@ -776,8 +755,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/pages/post/edit.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="636">
-          <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
+        <state relative-caret-position="319">
+          <caret line="71" column="95" lean-forward="true" selection-start-line="71" selection-start-column="95" selection-end-line="71" selection-end-column="95" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/services/quill-service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="175" column="17" selection-start-line="175" selection-start-column="17" selection-end-line="175" selection-end-column="17" />
+          <folding>
+            <element signature="n#DeleteAction#0" />
+            <element signature="n#CustomImageSpec#0" />
+            <element signature="n#LinkBlot#0;n#!!block;n#buildQuillPostEditor#0;n#QuillService#0" />
+          </folding>
         </state>
       </provider>
     </entry>

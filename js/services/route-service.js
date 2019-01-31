@@ -6,124 +6,142 @@ class RouteService {
   }
 
 
-  getRoutes(pathPrefix) {
+  getRoutes(baseurl) {
 
     const self = this
 
-    const routes = [
-      {
-        path: pathPrefix,
-        async async(routeTo, routeFrom, resolve, reject) {
 
-          let settings = self.settingsService.getSettings()
+    const homeRoute = async function(routeTo, routeFrom, resolve, reject) {
 
-          if (!settings) {
-            self.resolveController(resolve, settingsController.showSettingsForm())
-            return
-          }
+      let settings = self.settingsService.getSettings()
 
-          self.initAndResolve(resolve,function() {
-            return homeController.showHomePage()
-          })
+      if (!settings) {
+        self.resolveController(resolve, settingsController.showSettingsForm())
+        return
+      }
 
-        }
-      },
-      {
-        path: pathPrefix + 'settings',
-        async async(routeTo, routeFrom, resolve, reject) {
+      self.initAndResolve(resolve,function() {
+        return homeController.showHomePage()
+      })
 
-          self.resolveController(resolve, settingsController.showSettingsForm())
+    }
 
-        }
-      },
+    let routes = []
 
-      {
-        path: pathPrefix + 'profile/show',
-        async async(routeTo, routeFrom, resolve, reject) {
-          self.initAndResolve(resolve,function() {
-            return profileController.showProfile()
-          })
-        }
-      },
+    if (baseurl != '/') {
+      routes.push(      {
+        path: baseurl,
+        async: homeRoute
+      })
+    }
 
-      {
-        path: pathPrefix + 'profile/static/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
+    routes.push(      {
+      path: '/',
+      async: homeRoute
+    })
 
-          self.initAndResolve(resolve,function() {
-            return profileController.showStaticProfile(routeTo.params.id)
-          })
 
-        }
-      },
 
-      {
-        path: pathPrefix + 'profile/edit',
-        async async(routeTo, routeFrom, resolve, reject) {
-          self.initAndResolve(resolve,function() {
-            return profileController.showProfileEdit()
-          })
-        }
-      },
-      {
-        path: pathPrefix + 'profile/create',
-        async async(routeTo, routeFrom, resolve, reject) {
+    routes.push({
+      path: '/settings',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.resolveController(resolve, settingsController.showSettingsForm())
+      }
+    })
 
-          self.initAndResolve(resolve,function() {
-            return profileController.showCreateProfile()
-          })
 
-        }
-      },
+    routes.push({
+      path: '/profile/show',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.initAndResolve(resolve,function() {
+          return profileController.showProfile()
+        })
+      }
+    })
 
-      {
-        path: pathPrefix + 'post/show/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
 
-          self.initAndResolve(resolve,function() {
-            return postController.showPost(routeTo.params.id)
-          })
+    routes.push({
+      path: '/profile/static/:id',
+      async async(routeTo, routeFrom, resolve, reject) {
 
-        }
-      },
+        self.initAndResolve(resolve,function() {
+          return profileController.showStaticProfile(routeTo.params.id)
+        })
 
-      {
-        path: pathPrefix + 'post/edit/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
-          self.initAndResolve(resolve,function() {
-            return postController.showPostEdit(routeTo.params.id)
-          })
-        }
-      },
+      }
+    })
 
-      {
-        path: pathPrefix + 'post/list',
-        async async(routeTo, routeFrom, resolve, reject) {
+    routes.push({
+      path: '/profile/edit',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.initAndResolve(resolve,function() {
+          return profileController.showProfileEdit()
+        })
+      }
+    })
 
-          self.initAndResolve(resolve,function() {
-            return postController.showPostList()
-          })
-        }
-      },
 
-      {
-        path: pathPrefix + 'post/create',
-        async async(routeTo, routeFrom, resolve, reject) {
-          self.initAndResolve(resolve,function() {
-            return postController.showCreatePost()
-          })
-        }
-      },
+    routes.push({
+      path: '/profile/create',
+      async async(routeTo, routeFrom, resolve, reject) {
 
-      // Default route (404 page). MUST BE THE LAST
-      {
-        path: '(.*)',
-        // url: 'pages/404.html',
-        async async(routeTo, routeFrom, resolve, reject) {
-          console.log(routeTo)
-        }
-      },
-    ]
+        self.initAndResolve(resolve,function() {
+          return profileController.showCreateProfile()
+        })
+
+      }
+    })
+
+    routes.push({
+      path: '/post/show/:id',
+      async async(routeTo, routeFrom, resolve, reject) {
+
+        self.initAndResolve(resolve,function() {
+          return postController.showPost(routeTo.params.id)
+        })
+
+      }
+    })
+
+    routes.push({
+      path: '/post/edit/:id',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.initAndResolve(resolve,function() {
+          return postController.showPostEdit(routeTo.params.id)
+        })
+      }
+    })
+
+
+    routes.push({
+      path: '/post/list',
+      async async(routeTo, routeFrom, resolve, reject) {
+
+        self.initAndResolve(resolve,function() {
+          return postController.showPostList()
+        })
+      }
+    })
+
+
+    routes.push({
+      path: '/post/create',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.initAndResolve(resolve,function() {
+          return postController.showCreatePost()
+        })
+      }
+    })
+
+
+    routes.push({
+      path: '(.*)',
+      // url: 'pages/404.html',
+      async async(routeTo, routeFrom, resolve, reject) {
+        console.log(routeTo)
+      }
+    })
+
 
     console.log(routes)
 

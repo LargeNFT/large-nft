@@ -228,6 +228,10 @@ hr:before {
   margin-bottom: 30px;
 }
 
+.post-content img {
+  max-width: 100%;
+}
+
 .post-author {
   margin-top: 10px;
   font-size: 13px;

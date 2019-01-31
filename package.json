@@ -1,15 +1,15 @@
 {
-  "name": "framework7-template-single-view",
+  "name": "large",
   "version": "1.0.0",
-  "description": "Framework7 single view app template",
+  "description": "Large - Publish Yourself",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/framework7io/framework7-template-single-view.git"
+    "url": "git+https://github.com/ptoner/large.git"
   },
   "scripts": {
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
-    "copy-f7": "cpy node_modules/framework7/js/*.* www/framework7/js && cpy node_modules/framework7/css/*.* www/framework7/css && cpy node_modules/framework7-icons/fonts/*.* www/fonts && cpy node_modules/material-design-icons/iconfont/*.{eot,ttf,woff,woff2} www/fonts",
-    "postinstall": "npm run copy-f7"
+    "build": "browserify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.js > ./www/dist/large.js",
+    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.js -o ./www/dist/large.js -v"
   },
   "keywords": [
     "framework7",
@@ -21,20 +21,37 @@
     "cordova",
     "phonegap"
   ],
-  "author": "Vladimir Kharlampidi",
+  "author": "Patrick Toner",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/framework7io/framework7-template-single-view/issues"
+    "url": "https://github.com/ptoner/large/issues"
   },
-  "homepage": "https://github.com/framework7io/framework7-template-single-view#readme",
+  "homepage": "https://github.com/ptoner/large#readme",
   "devDependencies": {
     "cpy-cli": "^1.0.1",
-    "framework7": "^3.0.0",
-    "framework7-icons": "^0.9.1",
-    "http-server": "^0.10.0",
-    "material-design-icons": "^3.0.1"
+
+    "http-server": "^0.10.0"
   },
   "dependencies": {
-    "freedom-for-data": "0.2.0"
+    "freedom-for-data": "0.2.0",
+
+    "framework7": "^3.0.0",
+    "framework7-icons": "^0.9.1",
+
+    "quill-blot-formatter": "1.0.5",
+    "quill": "1.3.6",
+    "quill-delta-to-html": "0.10.7",
+
+    "browserify": "16.2.3",
+    "watchify": "3.11.0",
+    "browser-resolve": "1.11.3",
+    "babelify": "10.0.0",
+    "uglifyify": "5.0.1",
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.2.3",
+    "@babel/polyfill": "7.2.3",
+    "@babel/plugin-proposal-class-properties": "7.2.3",
+    "babel-plugin-add-module-exports": "1.0.0"
+
   }
 }

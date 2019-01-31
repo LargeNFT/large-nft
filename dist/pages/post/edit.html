@@ -1,0 +1,134 @@
+<!--suppress JSAnnotator -->
+<template>
+  <div class="page" data-name="post-edit">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">Edit Post</div>
+      </div>
+    </div>
+    <div class="page-content row">
+
+      <div class="col-100 tablet-50 center">
+        <div class="block">
+          <form id="edit-post-form">
+            <input type="hidden" name="id" value="{{post.id}}" />
+
+            <div class="list no-hairlines-md">
+              <ul>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Title</div>
+                      <div class="item-input-wrap">
+                        <input type="text" name="title" placeholder="Enter a title" value="{{post.title}}" required />
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Subtitle</div>
+                      <div class="item-input-wrap">
+                        <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)" value="{{post.subtitle}}" />
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+
+                      <div class="editor-container">
+                        <div id="tooltip-controls">
+                          <button class="bold-button"><i class="fa fa-bold"></i></button>
+                          <button class="italic-button"><i class="fa fa-italic"></i></button>
+                          <button class="link-button"><i class="fa fa-link"></i></button>
+                          <button class="blockquote-button"><i class="fa fa-quote-right"></i></button>
+                          <button class="header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
+                          <button class="header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>
+
+
+                          <label for="edit-image-button-input" >
+                            <button class="image-button">
+                              <i class="fa fa-camera"></i>
+                            </button>
+
+                            <label><input type="file" class="image-button-input" id="edit-image-button-input"/></label>
+
+                          <label for="edit-video-button-input" >
+                            <button class="video-button">
+                              <i class="fa fa-play"></i>
+                            </button>
+
+                            <label><input type="file" class="video-button-input" id="edit-video-button-input"/></label>
+
+                            <button class="divider-button"><i class="fa fa-minus"></i></button>
+                        </div>
+                        <div id="edit-story-editor" class="editor"></div>
+                      </div>
+
+                    </div>
+                  </div>
+                </li>
+
+                <li class="cover-photo-preview">
+
+                  {{#if post.coverPhoto}}
+                  <input type="hidden" name="coverPhoto" value="{{post.coverPhoto}}" />
+                  {{/if}}
+
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Cover Photo</div>
+                      <div class="item-input-wrap cover-photo-img-wrapper">
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+
+            <div class="row">
+              <div class="col-66"></div>
+              <div class="col-33">
+                <button class="button button-fill" type="submit">Save</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</template>
+
+
+<script>
+  // script must return component object
+  return {
+    on: {
+      pageInit: function (e, page) {
+
+        postController.initializeQuill('#edit-story-editor')
+        postController.quill.setContents(this.post.content.ops)
+
+        postController.loadCoverPhotos()
+
+      }
+    }
+  }
+</script>
+
+
+

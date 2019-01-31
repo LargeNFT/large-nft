@@ -8,8 +8,8 @@
   },
   "scripts": {
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
-    "build": "browserify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.js > ./www/dist/large.js",
-    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.js -o ./www/dist/large.js -v"
+    "build": "./build.sh",
+    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.js -o ./www/js/large.js -v"
   },
   "keywords": [
     "framework7",

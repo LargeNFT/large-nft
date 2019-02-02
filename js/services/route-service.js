@@ -171,7 +171,7 @@ class RouteService {
 
   async initAndResolve(resolve, successFunction) {
     try {
-      await initialize()
+      await this.initialize()
       this.resolveController(resolve, successFunction())
     } catch(ex) {
       console.log(ex)

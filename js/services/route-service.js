@@ -1,8 +1,7 @@
 class RouteService {
 
-  constructor(settingsService, homeService) {
+  constructor(settingsService) {
     this.settingsService = settingsService
-    this.homeService = homeService
   }
 
 
@@ -149,10 +148,30 @@ class RouteService {
   }
 
 
+  async initialize() {
+
+    const settings = this.settingsService.getSettings()
+    if (!settings) {
+      throw 'No settings found'
+    }
+
+    Template7.global = {
+      settings: settings,
+      ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
+    }
+
+    global.freedom = await Freedom({
+      ipfsHost: settings.ipfsHost,
+      ipfsPort: settings.ipfsApiPort,
+      recordContractAddress: settings.recordContractAddress,
+      recordContractTransactionHash: settings.recordContractTransactionHash
+    });
+
+  }
 
   async initAndResolve(resolve, successFunction) {
     try {
-      await this.homeService.initialize()
+      await initialize()
       this.resolveController(resolve, successFunction())
     } catch(ex) {
       console.log(ex)

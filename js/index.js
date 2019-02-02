@@ -1,36 +1,3 @@
-// <script src="framework7/js/framework7.min.js"></script>
-//
-//   <script src="../js/lib/quill-blot-formatter.min.js"></script>
-//   <script src="../js/lib/QuillDeltaToHtmlConverter.bundle.js"></script>
-//   <script src="../js/lib/quill.min.js"></script>
-//   <script src="../js/lib/buffer.min.js"></script>
-//   <script src="../js/lib/freedom-for-data.js"></script>
-//   <script src="../js/lib/moment.min.js"></script>
-//
-//
-//   <!-- Your custom app scripts -->
-//
-//   <script src="../js/model-view.js"></script>
-//
-//   <script src="../js/services/home-service.js"></script>
-//   <script src="../js/services/post-service.js"></script>
-//   <script src="../js/services/profile-service.js"></script>
-//   <script src="../js/services/settings-service.js"></script>
-//   <script src="../js/services/quill-service.js"></script>
-//   <script src="../js/services/upload-service.js"></script>
-//   <script src="../js/services/template-service.js"></script>
-//
-//
-//   <script src="../js/controllers/settings-controller.js"></script>
-//   <script src="../js/controllers/home-controller.js"></script>
-//   <script src="../js/controllers/profile-controller.js"></script>
-//   <script src="../js/controllers/post-controller.js"></script>
-//
-//
-//   <script src="../js/app.js"></script>
-//
-//
-
 global.Framework7 = require('framework7')
 global.Freedom = require('freedom-for-data')
 
@@ -82,11 +49,10 @@ module.exports = function() {
   //Services
   let templateService = new TemplateService()
   let settingsService = new SettingsService()
-  let homeService = new HomeService(settingsService)
   let quillService = new QuillService()
   let profileService = new ProfileService()
   let postService = new PostService(profileService, templateService)
-  let routeService = new RouteService(settingsService, homeService)
+  let routeService = new RouteService(settingsService)
 
   let uploadService = new UploadService()
 

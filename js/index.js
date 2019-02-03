@@ -9,7 +9,6 @@ const moment = require('./lib/moment.min.js')
 
 
 
-const HomeService = require('./services/home-service.js')
 const PostService = require('./services/post-service.js')
 const ProfileService = require('./services/profile-service.js')
 const SettingsService = require('./services/settings-service.js')

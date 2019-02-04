@@ -1,16 +1,22 @@
+import { ModelView } from '../model-view'
+import {ProfileService} from "../services/profile-service";
+import {UploadService} from "../services/upload-service";
+import {PostService} from "../services/post-service";
+import {Global} from "../global";
+import {Dom7} from "framework7";
 
-const ModelView = require('../model-view.js')
-
+var $$ = Dom7
 
 
 class ProfileController {
 
-    constructor(profileService, uploadService, postService) {
-        const self = this
+    loadingInProgress: boolean = false
 
-        self.profileService = profileService
-        self.uploadService = uploadService
-        self.postService = postService
+    constructor(
+      private profileService : ProfileService,
+      private uploadService : UploadService,
+      private postService : PostService) {
+        const self = this
 
         $$(document).on('submit', '#edit-profile-form', function(e) {
             self.profileEditSave(e)
@@ -33,16 +39,16 @@ class ProfileController {
         })
     }
 
-    async showCreateProfile() {
+    async showCreateProfile() : Promise<ModelView> {
       return new ModelView({},  'pages/profile/create.html')
     }
 
-    async showStaticProfile(id) {
+    async showStaticProfile(id: Number) : Promise<ModelView> {
 
-        let profile = await this.profileService.getProfileById(id)
+        let profile: Profile = await this.profileService.getProfileById(id)
 
         //Show the edit button if this is their profile
-        let currentUser;
+        let currentUser: Profile
 
         try {
           currentUser = await this.profileService.getCurrentUser()
@@ -59,9 +65,9 @@ class ProfileController {
 
     }
 
-    async showProfile() {
+    async showProfile() : Promise<ModelView> {
 
-        let profile;
+        let profile: Profile;
 
         try {
           profile = await this.profileService.getCurrentUser()
@@ -70,27 +76,27 @@ class ProfileController {
         }
 
         if (profile) {
-          app.methods.navigate(`/profile/static/${profile.id}`);
+          Global.app.methods.navigate(`/profile/static/${profile.id}`)
         } else {
           return new ModelView({}, 'pages/profile/no_profile.html')
         }
 
     }
 
-    async showProfileEdit() {
+    async showProfileEdit() : Promise<ModelView> {
 
-        let profile = await this.profileService.getCurrentUser()
+        let profile: Profile = await this.profileService.getCurrentUser()
 
         return new ModelView(profile, 'pages/profile/edit.html')
 
     }
 
-    async profileEditSave(e) {
+    async profileEditSave(e: Event): Promise<void> {
 
         e.preventDefault();
 
         //Collect info
-        var profileData = app.form.convertToData('#edit-profile-form');
+        var profileData: Profile = Global.app.form.convertToData('#edit-profile-form');
 
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
@@ -100,16 +106,16 @@ class ProfileController {
         await this.profileService.updateProfile(profileData)
 
         //Redirect
-        app.methods.navigate("/profile/show");
+        Global.app.methods.navigate("/profile/show");
     }
 
 
-    async profileCreateSave(e) {
+    async profileCreateSave(e: Event) : Promise<void> {
 
         e.preventDefault();
 
         //Collect info
-        var profileData = app.form.convertToData('#create-profile-form');
+        let profileData: Profile = Global.app.form.convertToData('#create-profile-form');
 
         //Save
         try {
@@ -121,10 +127,10 @@ class ProfileController {
           await this.profileService.createProfile(profileData)
 
           //Redirect
-          app.methods.navigate("/profile/show")
+          Global.app.methods.navigate("/profile/show")
 
         } catch(ex) {
-          app.methods.showExceptionPopup(ex)
+          Global.app.methods.showExceptionPopup(ex)
         }
 
     }
@@ -132,7 +138,7 @@ class ProfileController {
 
 
 
-    async loadStaticProfilePosts(e) {
+    async loadStaticProfilePosts(e: Event) : Promise<void> {
 
       let owner = $$('#static-profile-owner').val()
 
@@ -153,13 +159,14 @@ class ProfileController {
    */
 
 
-    async addProfilePic(profileData) {
+    async addProfilePic(profileData: Profile) : Promise<Profile> {
 
         //Upload photo if we have it
-        const profilePic = document.getElementById("profilePic");
+        const profilePic: HTMLElement = document.getElementById("profilePic");
 
-        if (profilePic.files.length > 0) {
-          profileData.profilePic = await this.uploadService.uploadFile(profilePic)
+        //@ts-ignore
+        if ((profilePic).files.length > 0) {
+          profileData.profilePic = <string> await this.uploadService.uploadFile(profilePic)
         }
 
         return profileData
@@ -171,5 +178,5 @@ class ProfileController {
 
 
 
-module.exports = ProfileController
+export { ProfileController }
 

@@ -9,5 +9,4 @@ class VideoService {
 
 
 
-
-module.exports = VideoService
+export { VideoService }

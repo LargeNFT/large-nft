@@ -1,7 +1,15 @@
+import {SettingsService} from "./settings-service";
+import {Global} from "../global";
+import {Template7} from "framework7";
+import {ModelView} from "../model-view";
+
+const Freedom: any = require('freedom-for-data')
+
 class RouteService {
 
-  constructor(settingsService) {
-    this.settingsService = settingsService
+  constructor(
+    private settingsService: SettingsService
+  ) {
   }
 
 
@@ -12,15 +20,15 @@ class RouteService {
 
     const homeRoute = async function(routeTo, routeFrom, resolve, reject) {
 
-      let settings = self.settingsService.getSettings()
+      let settings: Settings = self.settingsService.getSettings()
 
       if (!settings) {
-        self.resolveController(resolve, settingsController.showSettingsForm())
+        self.resolveController(resolve, Global.settingsController.showSettingsForm())
         return
       }
 
       self.initAndResolve(resolve,function() {
-        return homeController.showHomePage()
+        return Global.homeController.showHomePage()
       })
 
     }
@@ -44,7 +52,7 @@ class RouteService {
     routes.push({
       path: '/settings',
       async async(routeTo, routeFrom, resolve, reject) {
-        self.resolveController(resolve, settingsController.showSettingsForm())
+        self.resolveController(resolve, Global.settingsController.showSettingsForm())
       }
     })
 
@@ -53,7 +61,7 @@ class RouteService {
       path: '/profile/show',
       async async(routeTo, routeFrom, resolve, reject) {
         self.initAndResolve(resolve,function() {
-          return profileController.showProfile()
+          return Global.profileController.showProfile()
         })
       }
     })
@@ -64,7 +72,7 @@ class RouteService {
       async async(routeTo, routeFrom, resolve, reject) {
 
         self.initAndResolve(resolve,function() {
-          return profileController.showStaticProfile(routeTo.params.id)
+          return Global.profileController.showStaticProfile(routeTo.params.id)
         })
 
       }
@@ -74,7 +82,7 @@ class RouteService {
       path: '/profile/edit',
       async async(routeTo, routeFrom, resolve, reject) {
         self.initAndResolve(resolve,function() {
-          return profileController.showProfileEdit()
+          return Global.profileController.showProfileEdit()
         })
       }
     })
@@ -85,7 +93,7 @@ class RouteService {
       async async(routeTo, routeFrom, resolve, reject) {
 
         self.initAndResolve(resolve,function() {
-          return profileController.showCreateProfile()
+          return Global.profileController.showCreateProfile()
         })
 
       }
@@ -96,7 +104,7 @@ class RouteService {
       async async(routeTo, routeFrom, resolve, reject) {
 
         self.initAndResolve(resolve,function() {
-          return postController.showPost(routeTo.params.id)
+          return Global.postController.showPost(routeTo.params.id)
         })
 
       }
@@ -106,7 +114,7 @@ class RouteService {
       path: '/post/edit/:id',
       async async(routeTo, routeFrom, resolve, reject) {
         self.initAndResolve(resolve,function() {
-          return postController.showPostEdit(routeTo.params.id)
+          return Global.postController.showPostEdit(routeTo.params.id)
         })
       }
     })
@@ -117,7 +125,7 @@ class RouteService {
       async async(routeTo, routeFrom, resolve, reject) {
 
         self.initAndResolve(resolve,function() {
-          return postController.showPostList()
+          return Global.postController.showPostList()
         })
       }
     })
@@ -127,7 +135,7 @@ class RouteService {
       path: '/post/create',
       async async(routeTo, routeFrom, resolve, reject) {
         self.initAndResolve(resolve,function() {
-          return postController.showCreatePost()
+          return Global.postController.showCreatePost()
         })
       }
     })
@@ -141,16 +149,13 @@ class RouteService {
       }
     })
 
-
-    console.log(routes)
-
     return routes
   }
 
 
   async initialize() {
 
-    const settings = this.settingsService.getSettings()
+    const settings:Settings = this.settingsService.getSettings()
     if (!settings) {
       throw 'No settings found'
     }
@@ -160,9 +165,11 @@ class RouteService {
       ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
     }
 
-    global.freedom = await Freedom({
-      ipfsHost: settings.ipfsHost,
-      ipfsPort: settings.ipfsApiPort,
+    Global.freedom = await Freedom({
+      ipfsConfig: {
+        host: settings.ipfsHost,
+        port: settings.ipfsApiPort
+      },
       recordContractAddress: settings.recordContractAddress,
       recordContractTransactionHash: settings.recordContractTransactionHash
     });
@@ -175,18 +182,18 @@ class RouteService {
       this.resolveController(resolve, successFunction())
     } catch(ex) {
       console.log(ex)
-      app.methods.showExceptionPopup(ex)
-      app.methods.navigate("/settings")
+      Global.app.methods.showExceptionPopup(ex)
+      Global.app.methods.navigate("/settings")
     }
   }
 
 
   //Handles routing to a controller
-  async resolveController(resolve, controller_promise) {
+  async resolveController(resolve, controller_promise: Promise<ModelView>) {
 
     try {
 
-      let modelView = await controller_promise;
+      let modelView: ModelView = await controller_promise;
 
       if (!modelView) return
 
@@ -198,7 +205,7 @@ class RouteService {
         })
 
     } catch (ex) {
-      app.methods.showExceptionPopup(ex)
+      Global.app.methods.showExceptionPopup(ex)
       console.log(ex)
     }
 
@@ -208,4 +215,4 @@ class RouteService {
 
 }
 
-module.exports = RouteService
+export { RouteService }

@@ -1,12 +1,9 @@
-global.Framework7 = require('framework7')
-global.Freedom = require('freedom-for-data')
+import {Global} from "./global";
+import Framework7, {Template7} from "framework7";
 
+const Freedom: any = require('freedom-for-data')
 
-
-
-const buffer = require('./lib/buffer.min.js')
-const moment = require('./lib/moment.min.js')
-
+const moment = require('moment')
 
 
 const PostService = require('./services/post-service.js')
@@ -21,9 +18,6 @@ const HomeController = require('./controllers/home-controller.js')
 const SettingsController = require('./controllers/settings-controller.js')
 const ProfileController = require('./controllers/profile-controller.js')
 const PostController = require('./controllers/post-controller.js')
-
-// Dom7
-global.$$ = Dom7;
 
 
 module.exports = function() {
@@ -41,10 +35,6 @@ module.exports = function() {
 
 
 
-//Probably because I don't know how to properly include this library. but this works
-  Buffer = Buffer.Buffer;
-
-
   //Services
   let templateService = new TemplateService()
   let settingsService = new SettingsService()
@@ -57,10 +47,10 @@ module.exports = function() {
 
 
   //Page Controllers
-  global.settingsController = new SettingsController(settingsService)
-  global.homeController = new HomeController(postService)
-  global.profileController = new ProfileController(profileService, uploadService, postService)
-  global.postController = new PostController(postService, profileService, quillService, uploadService)
+  Global.settingsController = new SettingsController(settingsService)
+  Global.homeController = new HomeController(postService)
+  Global.profileController = new ProfileController(profileService, uploadService, postService)
+  Global.postController = new PostController(postService, profileService, quillService, uploadService)
 
 
 
@@ -71,12 +61,13 @@ module.exports = function() {
 
 
   //Detect page root
+  // @ts-ignore
   const rootUrl = new URL(window.location)
 
 
 
   // Framework7 App main instance
-  global.app = new Framework7({
+  Global.app = new Framework7({
     root: '#app', // App root element
     id: 'io.framework7.testapp', // App bundle ID
     name: 'freedom-for-data Demo', // App name
@@ -90,15 +81,18 @@ module.exports = function() {
     },
 
     methods: {
+
+      // @ts-ignore
       navigate: function (url) {
         this.view.main.router.navigate(url);
       },
 
-      showExceptionPopup: function(ex) {
+      // @ts-ignore
+      showExceptionPopup: function(ex) : void {
         if (ex.name == "IpfsException") {
-          app.dialog.alert(ex.message, "Problem connecting to IPFS")
+          Global.app.dialog.alert(ex.message, "Problem connecting to IPFS")
         } else {
-          app.dialog.alert(ex.message, "There was an error")
+          Global.app.dialog.alert(ex.message, "There was an error")
         }
 
       }
@@ -112,7 +106,7 @@ module.exports = function() {
 
 
 // Init/Create main view
-  const mainView = app.views.create('.view-main', {
+  const mainView = Global.app.views.create('.view-main', {
     pushState: true
   });
 

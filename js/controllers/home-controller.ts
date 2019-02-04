@@ -1,16 +1,21 @@
-const ModelView = require('../model-view.js')
+import { ModelView } from '../model-view'
+import {PostService} from "../services/post-service";
+import {TemplateService} from "../services/template-service";
+import {Dom7} from "framework7";
+
+var $$ = Dom7;
 
 class HomeController {
 
-    constructor(postService, templateService) {
+    loadingInProgress: boolean = false
+
+    constructor(private postService: PostService, private templateService: TemplateService) {
 
       const self = this
 
-      this.postService = postService
-      this.templateService = templateService
-
 
       $$(document).on('infinite', '#home-page-infinite-scroll', async function(e) {
+
         // Exit, if loading in progress
         if (self.loadingInProgress) return;
 
@@ -24,13 +29,13 @@ class HomeController {
 
     }
 
-    async showHomePage() {
+    async showHomePage(): Promise<ModelView> {
 
       return new ModelView({}, 'pages/home.html')
 
     }
 
-    async loadMorePosts() {
+    async loadMorePosts(): Promise<void> {
 
       let currentPosts = $$('#post-list').children('li').length
 
@@ -44,5 +49,4 @@ class HomeController {
 
 }
 
-
-module.exports = HomeController
+export { HomeController }

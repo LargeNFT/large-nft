@@ -1,16 +1,25 @@
-const QuillBlotFormatter = require('quill-blot-formatter')
-const Quill = require('quill')
+// const QuillBlotFormatter = require('quill-blot-formatter')
+// const Quill = require('quill')
+
+import {Quill} from 'quill'
+import BlotFormatter, { AlignAction, DeleteAction, ImageSpec } from 'quill-blot-formatter'
+import QuillBlotFormatter = require('quill-blot-formatter');
+import {Template7} from "framework7";
 
 /**
  * THESE CLASSES ARE HERE BECAUSE I NEEDED TO OVERRIDE THEM TO FIX A PROBLEM WITH DELETING
  * IMAGES BUT I DONT KNOW WHERE THEY SHOULD GO. SO THEY'RE HERE FOR NOW
  */
-class DeleteAction extends QuillBlotFormatter.Action {
+
+class CustomDeleteAction extends DeleteAction {
+
+  keyUpListener
+
   onCreate() {
 
     const self = this
 
-    self.keyUpListener = function(e) {
+    this.keyUpListener = function(e: Event) {
       self.onKeyUp(e)
     }
 
@@ -19,11 +28,14 @@ class DeleteAction extends QuillBlotFormatter.Action {
   }
 
   onDestroy() {
+    const self = this
+
     document.removeEventListener('keyup', self.keyUpListener);
     this.formatter.quill.root.removeEventListener('input', self.keyUpListener);
   }
 
-  onKeyUp(e) {
+  //@ts-ignore
+  onKeyUp(e: KeyboardEvent) {
 
     if (!this.formatter.currentSpec) {
       return;
@@ -45,7 +57,7 @@ class DeleteAction extends QuillBlotFormatter.Action {
 
 class CustomImageSpec extends QuillBlotFormatter.ImageSpec {
   getActions() {
-    return [QuillBlotFormatter.AlignAction, QuillBlotFormatter.ResizeAction, DeleteAction]
+    return [QuillBlotFormatter.AlignAction, QuillBlotFormatter.ResizeAction, CustomDeleteAction]
   }
 }
 
@@ -59,7 +71,7 @@ class CustomImageSpec extends QuillBlotFormatter.ImageSpec {
 
 class QuillService {
 
-  buildQuillPostEditor(selector) {
+  buildQuillPostEditor(selector: string): void {
 
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
 
@@ -90,16 +102,33 @@ class QuillService {
 
     let Inline = Quill.import('blots/inline');
 
-    class BoldBlot extends Inline { }
+
+
+    class BoldBlot extends Inline {
+      static blotName?: string
+      static tagName?: string
+    }
+
     BoldBlot.blotName = 'bold';
     BoldBlot.tagName = 'strong';
 
-    class ItalicBlot extends Inline { }
+
+
+
+    class ItalicBlot  extends Inline {
+      static blotName?: string
+      static tagName?: string
+    }
+
     ItalicBlot.blotName = 'italic';
     ItalicBlot.tagName = 'em';
 
 
     class LinkBlot extends Inline {
+
+      static blotName?: string
+      static tagName?: string
+
       static create(value) {
         let node = super.create();
         // Sanitize url value if desired
@@ -120,16 +149,24 @@ class QuillService {
     LinkBlot.blotName = 'link'
     LinkBlot.tagName = 'a'
 
+
     let Block = Quill.import('blots/block')
 
 
-    class BlockquoteBlot extends Block { }
+    class BlockquoteBlot extends Block {
+      static blotName?: string
+      static tagName?: string
+    }
+
     BlockquoteBlot.blotName = 'blockquote'
     BlockquoteBlot.tagName = 'blockquote'
 
 
 
     class HeaderBlot extends Block {
+      static blotName?: string
+      static tagName?: string[]
+
       static formats(node) {
         return HeaderBlot.tagName.indexOf(node.tagName) + 1;
       }
@@ -141,12 +178,18 @@ class QuillService {
     let BlockEmbed = Quill.import('blots/block/embed');
 
 
-    class DividerBlot extends BlockEmbed { }
+    class DividerBlot extends BlockEmbed {
+      static blotName?: string
+      static tagName?: string
+    }
     DividerBlot.blotName = 'divider';
     DividerBlot.tagName = 'hr';
 
 
     class IpfsImageBlot extends BlockEmbed {
+      static blotName?: string
+      static tagName?: string
+
       static create(value) {
 
         let node = super.create();
@@ -180,6 +223,10 @@ class QuillService {
 
 
     class IpfsVideoBlot extends BlockEmbed {
+
+      static blotName?: string
+      static tagName?: string
+
       static create(value) {
         let node = super.create();
         node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
@@ -231,6 +278,6 @@ class QuillService {
 
 
 
-module.exports = QuillService
+export {  QuillService }
 
 

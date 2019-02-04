@@ -1,3 +1,8 @@
+import {Global} from "../global";
+import freedom = Global.freedom;
+
+import {Buffer} from 'buffer'
+
 class UploadService {
 
 
@@ -11,14 +16,15 @@ class UploadService {
       const reader = new FileReader();
 
       reader.onload = async function () {
-        const buf = Buffer(reader.result)
+        // @ts-ignore
+        const buf = new Buffer(reader.result)
 
         if (buf) {
 
           try {
             ipfsCid = await freedom.ipfsPutFile(buf);
           } catch (ex) {
-            app.methods.showExceptionPopup(ex)
+            Global.app.methods.showExceptionPopup(ex)
           }
 
 
@@ -41,5 +47,5 @@ class UploadService {
 
 
 
-module.exports = UploadService
+export { UploadService }
 

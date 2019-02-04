@@ -1,20 +1,26 @@
-const ModelView = require('../model-view.js')
+import { ModelView } from '../model-view'
 
+import {Quill} from 'quill'
+import {PostService} from "../services/post-service";
+import {ProfileService} from "../services/profile-service";
+import {QuillService} from "../services/quill-service";
+import {UploadService} from "../services/upload-service";
 
-
-const Quill = require('quill')
-
+import {Dom7, Template7} from "framework7";
+import {Global} from "../global";
+import {Post} from "../dto/post";
+var $$ = Dom7
 
 class PostController {
 
-    constructor(postService, profileService, quillService, uploadService) {
+    quill: any
+
+    constructor(
+      private postService:PostService,
+      private profileService:ProfileService,
+      private quillService:QuillService,
+      private uploadService:UploadService) {
         const self = this;
-
-        self.postService = postService
-        self.profileService = profileService
-        self.quillService = quillService
-        self.uploadService = uploadService
-
 
         $$(document).on('submit', '#edit-post-form', function(e) {
           e.preventDefault()
@@ -71,8 +77,6 @@ class PostController {
           await self.imageSelected(this)
         })
 
-
-
         $$(document).on('click', '.video-button', function(e) {
           e.preventDefault()
           self.videoClick(e)
@@ -82,7 +86,6 @@ class PostController {
           e.preventDefault()
           await self.videoSelected(this)
         })
-
 
         $$(document).on('click', '.cover-photo-img', function(e) {
           e.preventDefault()
@@ -94,11 +97,11 @@ class PostController {
       this.quill = this.quillService.buildQuillPostEditor(selector)
     }
 
-    async showCreatePost() {
+    async showCreatePost() : Promise<ModelView> {
       return new ModelView({},  'pages/post/create.html')
     }
 
-    async showPost(id) {
+    async showPost(id:Number) : Promise<ModelView> {
 
         let post = await this.postService.getPostById(id)
 
@@ -120,7 +123,7 @@ class PostController {
 
     }
 
-    async showPostList() {
+    async showPostList() : Promise<ModelView> {
 
         let posts = await this.postService.getPostsDescending(10, 0)
 
@@ -132,7 +135,7 @@ class PostController {
 
     }
 
-    async showPostEdit(id) {
+    async showPostEdit(id) : Promise<ModelView> {
 
         let post = await this.postService.getPostById(id)
 
@@ -144,51 +147,52 @@ class PostController {
 
     }
 
-    async postEditSave(e) {
+    async postEditSave(e): Promise<void> {
 
       try {
         //Get data
-        var postData = await this._getPostData('#edit-post-form')
+        const postData: Post = await this._getPostData('#edit-post-form')
 
         //Save
         await this.postService.updatePost(postData)
 
         //Redirect
-        app.methods.navigate("/post/show/" + postData.id)
+        Global.app.methods.navigate("/post/show/" + postData.id)
 
       } catch (ex) {
-        app.methods.showExceptionPopup(ex)
+        Global.app.methods.showExceptionPopup(ex)
       }
 
     }
 
-    async postCreateSave(e) {
+    async postCreateSave(e): Promise<void> {
 
       try {
+
         //Get data
-        var postData = await this._getPostData('#create-post-form')
+        const postData: Post = await this._getPostData('#create-post-form')
 
         //Save
-        let result = await this.postService.createPost(postData)
+        let result: Post = await this.postService.createPost(postData)
 
         //Redirect
-        app.methods.navigate("/post/show/" + result.id);
+        Global.app.methods.navigate("/post/show/" + result.id);
       } catch (ex) {
-        app.methods.showExceptionPopup(ex)
+        Global.app.methods.showExceptionPopup(ex)
       }
 
     }
 
-    async _getPostData(formId) {
+    async _getPostData(formId: string) : Promise<Post> {
 
       //Get data
-      var postData = app.form.convertToData(formId);
+      let postData: Post = <Post> Global.app.form.convertToData(formId);
 
       //Get date
       postData.dateCreated = new Date().toJSON().toString()
 
       //Get author info
-      let author = await this.profileService.getCurrentUser()
+      let author: Profile = await this.profileService.getCurrentUser()
       postData.authorId = author.id
 
       //Add main photo
@@ -249,7 +253,7 @@ class PostController {
     }
 
     //TODO: move to service
-    async imageSelected(fileElement) {
+    async imageSelected(fileElement: Element): Promise<void> {
 
       let imageCid = await this.uploadService.uploadFile(fileElement)
 
@@ -272,7 +276,7 @@ class PostController {
 
 
     //TODO: load this from a template7 template somehow instead
-    loadCoverPhotos() {
+    loadCoverPhotos() : void {
 
       const images = this.postService.getImagesFromPostContentOps(this.quill.getContents().ops)
 
@@ -288,9 +292,9 @@ class PostController {
       for (let imageCid of images) {
 
         const imgElement = $$('<img>')
-        $$(imgElement).attr("src", Template7.global.ipfsGateway + '/' + imageCid)
-        $$(imgElement).data("image-cid", imageCid)
-        $$(imgElement).addClass("cover-photo-img")
+        imgElement.attr("src", Template7.global.ipfsGateway + '/' + imageCid)
+        imgElement.data("image-cid", imageCid)
+        imgElement.addClass("cover-photo-img")
 
         $$('.cover-photo-img-wrapper').append(imgElement)
 
@@ -300,12 +304,12 @@ class PostController {
 
     }
 
-    selectCoverPhoto(e) {
+    selectCoverPhoto(e) : void {
       this.setCoverPhoto($$(e.target).data("image-cid"))
     }
 
     //TODO: can definitely be nicer.
-    setCoverPhoto(imageCid) {
+    setCoverPhoto(imageCid: string) : void {
 
       $$('input[name="coverPhoto"]').val(imageCid)
 
@@ -320,14 +324,14 @@ class PostController {
     }
 
 
-    videoClick(e) {
+    videoClick(e: Event) : void {
       const videoButtonInput = $$(".video-button-input");
       videoButtonInput.click()
     }
 
 
     //TODO: move to service
-    async videoSelected(fileElement) {
+    async videoSelected(fileElement: Element) {
 
       let videoCid = await this.uploadService.uploadFile(fileElement)
 
@@ -350,4 +354,4 @@ class PostController {
 }
 
 
-module.exports = PostController
+export {  PostController }

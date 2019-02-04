@@ -1,14 +1,17 @@
 //This is a temporary place to put functions that deal with Template7 templates to go until
 //we figure out where they should go for real
+import {Template7} from "framework7";
+
 class TemplateService {
 
+  postTemplate: any
 
   getPostTemplate() {
-    if (!self.postTemplate) {
-      self.postTemplate = Template7.compile(this.getPostTemplateText())
+    if (!this.postTemplate) {
+      this.postTemplate = Template7.compile(this.getPostTemplateText())
     }
 
-    return self.postTemplate
+    return this.postTemplate
   }
 
   getPostTemplateText() {
@@ -59,5 +62,5 @@ class TemplateService {
 
 
 
-module.exports = TemplateService
+export { TemplateService }
 

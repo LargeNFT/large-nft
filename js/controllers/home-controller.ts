@@ -9,7 +9,7 @@ class HomeController {
 
     loadingInProgress: boolean = false
 
-    constructor(private postService: PostService, private templateService: TemplateService) {
+    constructor(private postService: PostService) {
 
       const self = this
 

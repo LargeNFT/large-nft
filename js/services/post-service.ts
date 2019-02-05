@@ -100,7 +100,7 @@ class PostService {
   /**
    * Should probably move to a service that's view specific. Fine here for now.
    */
-  loadMorePosts(posts : Post[], totalPostCount: Number, listSelector: HTMLElement) {
+  loadMorePosts(posts : Post[], totalPostCount: Number, listSelector: string) {
 
     let postTemplate = this.templateService.getPostTemplate()
 

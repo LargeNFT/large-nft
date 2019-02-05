@@ -19,7 +19,7 @@ class CustomDeleteAction extends DeleteAction {
 
     const self = this
 
-    this.keyUpListener = function(e: Event) {
+    this.keyUpListener = function(e: KeyboardEvent) {
       self.onKeyUp(e)
     }
 

@@ -58,11 +58,11 @@
 
 
 <script>
-  // script must return component object
   return {
     on: {
       pageInit: async function (e, page) {
-        await homeController.loadMorePosts()
+        console.log('here')
+        await window['homeController'].loadMorePosts()
       }
     }
   }

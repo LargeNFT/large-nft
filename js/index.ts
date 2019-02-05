@@ -1,23 +1,25 @@
 import {Global} from "./global";
-import Framework7, {Template7} from "framework7";
+const Framework7: any = require('framework7')
 
 const Freedom: any = require('freedom-for-data')
 
 const moment = require('moment')
 
 
-const PostService = require('./services/post-service.js')
-const ProfileService = require('./services/profile-service.js')
-const SettingsService = require('./services/settings-service.js')
-const QuillService = require('./services/quill-service.js')
-const UploadService = require('./services/upload-service.js')
-const TemplateService = require('./services/template-service.js')
-const RouteService = require('./services/route-service.js')
+import {PostService} from './services/post-service'
+import {ProfileService} from './services/profile-service'
+import {SettingsService} from './services/settings-service'
+import {QuillService} from './services/quill-service'
+import {UploadService} from './services/upload-service'
+import {TemplateService} from './services/template-service'
+import {RouteService} from './services/route-service'
 
-const HomeController = require('./controllers/home-controller.js')
-const SettingsController = require('./controllers/settings-controller.js')
-const ProfileController = require('./controllers/profile-controller.js')
-const PostController = require('./controllers/post-controller.js')
+import {HomeController} from './controllers/home-controller'
+import {SettingsController} from './controllers/settings-controller'
+import {ProfileController} from './controllers/profile-controller'
+import {PostController}  from './controllers/post-controller'
+import {Template7} from "framework7";
+
 
 
 module.exports = function() {
@@ -52,6 +54,11 @@ module.exports = function() {
   Global.profileController = new ProfileController(profileService, uploadService, postService)
   Global.postController = new PostController(postService, profileService, quillService, uploadService)
 
+  //Make controllers available in window so framework7 components can access them
+  window['settingsController'] = Global.settingsController
+  window['homeController'] = Global.homeController
+  window['profileController'] = Global.profileController
+  window['postController'] = Global.postController
 
 
   //Template7 helpers
@@ -108,7 +115,7 @@ module.exports = function() {
 // Init/Create main view
   const mainView = Global.app.views.create('.view-main', {
     pushState: true
-  });
+  })
 
 
 

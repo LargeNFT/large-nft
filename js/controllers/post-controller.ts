@@ -157,10 +157,10 @@ class PostController {
         await this.postService.updatePost(postData)
 
         //Redirect
-        Global.app.methods.navigate("/post/show/" + postData.id)
+        Global.navigate("/post/show/" + postData.id)
 
       } catch (ex) {
-        Global.app.methods.showExceptionPopup(ex)
+        Global.showExceptionPopup(ex)
       }
 
     }
@@ -176,9 +176,9 @@ class PostController {
         let result: Post = await this.postService.createPost(postData)
 
         //Redirect
-        Global.app.methods.navigate("/post/show/" + result.id);
+        Global.navigate("/post/show/" + result.id);
       } catch (ex) {
-        Global.app.methods.showExceptionPopup(ex)
+        Global.showExceptionPopup(ex)
       }
 
     }

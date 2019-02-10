@@ -35,7 +35,7 @@
   "dependencies": {
     "freedom-for-data": "0.2.0",
 
-    "framework7": "^3.0.0",
+    "framework7": "4.0.1",
     "framework7-icons": "^0.9.1",
 
     "quill-blot-formatter": "1.0.5",

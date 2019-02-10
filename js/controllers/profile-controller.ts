@@ -76,7 +76,7 @@ class ProfileController {
         }
 
         if (profile) {
-          Global.app.methods.navigate(`/profile/static/${profile.id}`)
+          Global.navigate(`/profile/static/${profile.id}`)
         } else {
           return new ModelView({}, 'pages/profile/no_profile.html')
         }
@@ -106,7 +106,7 @@ class ProfileController {
         await this.profileService.updateProfile(profileData)
 
         //Redirect
-        Global.app.methods.navigate("/profile/show");
+        Global.navigate("/profile/show");
     }
 
 
@@ -127,10 +127,10 @@ class ProfileController {
           await this.profileService.createProfile(profileData)
 
           //Redirect
-          Global.app.methods.navigate("/profile/show")
+          Global.navigate("/profile/show")
 
         } catch(ex) {
-          Global.app.methods.showExceptionPopup(ex)
+          Global.showExceptionPopup(ex)
         }
 
     }

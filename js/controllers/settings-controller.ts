@@ -32,7 +32,7 @@ class SettingsController {
         //Save it
         this.settingsService.saveSettings(settingsData)
 
-        Global.app.methods.navigate("/?reinit=true")
+        Global.navigate("/?reinit=true")
 
     }
 

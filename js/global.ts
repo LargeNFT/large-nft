@@ -12,4 +12,20 @@ export namespace Global {
   export var profileController: ProfileController
   export var settingsController: SettingsController
   export var app: any
+
+
+
+  export function navigate(url: string) {
+    Global.app.view.main.router.navigate(url);
+  }
+
+  export function showExceptionPopup(ex) {
+
+    if (ex.name == "IpfsException") {
+      Global.app.dialog.alert(ex.message, "Problem connecting to IPFS")
+    } else {
+      Global.app.dialog.alert(ex.message, "There was an error")
+    }
+  }
+
 }

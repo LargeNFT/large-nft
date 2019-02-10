@@ -1,5 +1,5 @@
 import {Global} from "./global";
-const Framework7: any = require('framework7')
+const Framework7: any = require('framework7/js/framework7.bundle')
 
 const Freedom: any = require('freedom-for-data')
 
@@ -80,31 +80,6 @@ module.exports = function() {
     name: 'freedom-for-data Demo', // App name
     theme: 'auto', // Automatic theme detection
 
-
-
-    on: {
-      init: function () {
-      }
-    },
-
-    methods: {
-
-      // @ts-ignore
-      navigate: function (url) {
-        this.view.main.router.navigate(url);
-      },
-
-      // @ts-ignore
-      showExceptionPopup: function(ex) : void {
-        if (ex.name == "IpfsException") {
-          Global.app.dialog.alert(ex.message, "Problem connecting to IPFS")
-        } else {
-          Global.app.dialog.alert(ex.message, "There was an error")
-        }
-
-      }
-
-    },
 
     // App routes
     routes: routeService.getRoutes(rootUrl.pathname)

@@ -155,6 +155,8 @@ class RouteService {
 
   async initialize() {
 
+    if (Global.freedom) return
+
     const settings:Settings = this.settingsService.getSettings()
     if (!settings) {
       throw 'No settings found'

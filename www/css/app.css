@@ -196,7 +196,10 @@ hr:before {
   width: 100px;
 
 }
-
+/* 
+.block-title-large {
+  margin-top: 30px;
+} */
 
 .page-content .block-title {
   font-size: 23px;
@@ -233,7 +236,6 @@ hr:before {
 }
 
 .post-author {
-  margin-top: 10px;
   font-size: 13px;
   font-weight: 400;
   opacity: 0.84;

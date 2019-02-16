@@ -26,12 +26,14 @@ class ProfileService {
 
   }
 
-  async createProfile(profile: Profile) : Promise<Profile> {
-    return Global.freedom.create(PROFILE_REPO, profile)
-  }
 
   async updateProfile(profile: Profile) : Promise<Profile> {
-    return Global.freedom.update(PROFILE_REPO, profile.id, profile);
+
+    if (profile.id) {
+      return Global.freedom.update(PROFILE_REPO, profile.id, profile)
+    } else {
+      return Global.freedom.create(PROFILE_REPO, profile)
+    }
   }
 
 }

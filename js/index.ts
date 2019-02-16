@@ -1,5 +1,7 @@
 import {Global} from "./global";
+
 const Framework7: any = require('framework7/js/framework7.bundle')
+import {Template7} from 'framework7/js/framework7.bundle'
 
 const Freedom: any = require('freedom-for-data')
 
@@ -18,8 +20,8 @@ import {HomeController} from './controllers/home-controller'
 import {SettingsController} from './controllers/settings-controller'
 import {ProfileController} from './controllers/profile-controller'
 import {PostController}  from './controllers/post-controller'
-import {Template7} from "framework7";
-
+import {QueueController}  from './controllers/queue-controller'
+import {QueueService} from "./services/queue_service";
 
 
 module.exports = function() {
@@ -42,6 +44,7 @@ module.exports = function() {
   let settingsService = new SettingsService()
   let quillService = new QuillService()
   let profileService = new ProfileService()
+  let queueService = new QueueService(templateService)
   let postService = new PostService(profileService, templateService)
   let routeService = new RouteService(settingsService)
 
@@ -52,13 +55,15 @@ module.exports = function() {
   Global.settingsController = new SettingsController(settingsService)
   Global.homeController = new HomeController(postService)
   Global.profileController = new ProfileController(profileService, uploadService, postService)
-  Global.postController = new PostController(postService, profileService, quillService, uploadService)
+  Global.postController = new PostController(queueService, postService, profileService, quillService, uploadService)
+  Global.queueController = new QueueController(queueService, templateService)
 
   //Make controllers available in window so framework7 components can access them
   window['settingsController'] = Global.settingsController
   window['homeController'] = Global.homeController
   window['profileController'] = Global.profileController
   window['postController'] = Global.postController
+  window['queueController'] = Global.queueController
 
 
   //Template7 helpers
@@ -72,14 +77,12 @@ module.exports = function() {
   const rootUrl = new URL(window.location)
 
 
-
   // Framework7 App main instance
   Global.app = new Framework7({
     root: '#app', // App root element
     id: 'io.framework7.testapp', // App bundle ID
     name: 'freedom-for-data Demo', // App name
     theme: 'auto', // Automatic theme detection
-
 
     // App routes
     routes: routeService.getRoutes(rootUrl.pathname)

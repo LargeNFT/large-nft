@@ -1,6 +1,9 @@
 import { ModelView } from '../model-view'
 
-import {Quill} from 'quill'
+
+// import { Quill } from 'quill';
+import Quill = require('quill/dist/quill.js')
+
 import {PostService} from "../services/post-service";
 import {ProfileService} from "../services/profile-service";
 import {QuillService} from "../services/quill-service";
@@ -9,6 +12,8 @@ import {UploadService} from "../services/upload-service";
 import {Dom7, Template7} from "framework7";
 import {Global} from "../global";
 import {Post} from "../dto/post";
+import {PromiseView} from "../promise-view";
+import { QueueService } from '../services/queue_service';
 var $$ = Dom7
 
 class PostController {
@@ -16,6 +21,7 @@ class PostController {
     quill: any
 
     constructor(
+      private queueService: QueueService,
       private postService:PostService,
       private profileService:ProfileService,
       private quillService:QuillService,
@@ -152,12 +158,14 @@ class PostController {
       try {
         //Get data
         const postData: Post = await this._getPostData('#edit-post-form')
-
-        //Save
-        await this.postService.updatePost(postData)
-
-        //Redirect
-        Global.navigate("/post/show/" + postData.id)
+        
+        await this.queueService.queuePromiseView(
+          new PromiseView(
+            this.postService.updatePost(postData),
+            "Saving changes to story '{{title}}'",
+            "/post/show/{id}"
+          )
+        )
 
       } catch (ex) {
         Global.showExceptionPopup(ex)
@@ -172,11 +180,15 @@ class PostController {
         //Get data
         const postData: Post = await this._getPostData('#create-post-form')
 
-        //Save
-        let result: Post = await this.postService.createPost(postData)
 
-        //Redirect
-        Global.navigate("/post/show/" + result.id);
+        await this.queueService.queuePromiseView(
+          new PromiseView(
+            this.postService.createPost(postData),
+            "Creating story '{{title}}'",
+            "/post/show/{id}"
+          )
+        )
+
       } catch (ex) {
         Global.showExceptionPopup(ex)
       }
@@ -238,10 +250,13 @@ class PostController {
 
     dividerClick(e) {
 
-      let range = this.quill.getSelection(true);
-      this.quill.insertText(range.index, '\n', Quill.sources.USER);
-      this.quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER);
-      this.quill.setSelection(range.index + 2, Quill.sources.SILENT);
+      let range = this.quill.getSelection(true)
+
+      this.quill.insertText(range.index, '\n', Quill.sources.USER)
+
+      this.quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER)
+
+      this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
 
     }
 
@@ -257,13 +272,12 @@ class PostController {
 
       let imageCid = await this.uploadService.uploadFile(fileElement)
 
+
       let range = this.quill.getSelection(true)
 
       this.quill.insertText(range.index, '\n', Quill.sources.USER)
 
-      this.quill.insertEmbed(range.index, 'ipfsimage', {
-        ipfsCid: imageCid
-      } , Quill.sources.USER)
+      this.quill.insertEmbed(range.index, 'ipfsimage', {ipfsCid: imageCid} , Quill.sources.USER)
 
       this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
 
@@ -340,9 +354,9 @@ class PostController {
 
       this.quill.insertText(range.index, '\n', Quill.sources.USER)
 
-      this.quill.insertEmbed(range.index, 'ipfsvideo', {
-        ipfsCid: videoCid
-      } , Quill.sources.USER)
+
+      this.quill.insertEmbed(range.index, 'ipfsvideo', {ipfsCid: videoCid} , Quill.sources.USER)
+
 
       this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
 

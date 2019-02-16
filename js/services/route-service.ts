@@ -47,7 +47,14 @@ class RouteService {
       async: homeRoute
     })
 
-
+    routes.push({
+      path: '/queue',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.initAndResolve(resolve,function() {
+          return Global.queueController.showQueue()
+        })
+      }
+    })
 
     routes.push({
       path: '/settings',
@@ -88,16 +95,6 @@ class RouteService {
     })
 
 
-    routes.push({
-      path: '/profile/create',
-      async async(routeTo, routeFrom, resolve, reject) {
-
-        self.initAndResolve(resolve,function() {
-          return Global.profileController.showCreateProfile()
-        })
-
-      }
-    })
 
     routes.push({
       path: '/post/show/:id',
@@ -141,6 +138,8 @@ class RouteService {
     })
 
 
+
+    //Needs to be last
     routes.push({
       path: '(.*)',
       // url: 'pages/404.html',
@@ -148,6 +147,9 @@ class RouteService {
         console.log(routeTo)
       }
     })
+
+
+
 
     return routes
   }
@@ -174,7 +176,7 @@ class RouteService {
       },
       recordContractAddress: settings.recordContractAddress,
       recordContractTransactionHash: settings.recordContractTransactionHash
-    });
+    })
 
   }
 
@@ -184,8 +186,8 @@ class RouteService {
       this.resolveController(resolve, successFunction())
     } catch(ex) {
       console.log(ex)
-      Global.app.methods.showExceptionPopup(ex)
-      Global.app.methods.navigate("/settings")
+      Global.showExceptionPopup(ex)
+      Global.navigate("/settings")
     }
   }
 

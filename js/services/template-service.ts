@@ -1,10 +1,11 @@
 //This is a temporary place to put functions that deal with Template7 templates to go until
 //we figure out where they should go for real
-import {Template7} from "framework7";
+import {Template7} from 'framework7/js/framework7.bundle'
 
 class TemplateService {
 
   postTemplate: any
+  queueTemplate: any
 
   getPostTemplate() {
     if (!this.postTemplate) {
@@ -55,6 +56,27 @@ class TemplateService {
   }
 
 
+  // getQueueTemplate() {
+  //   if (!this.queueTemplate) {
+  //     this.queueTemplate = Template7.compile(this.getPostTemplateText())
+  //   }
+
+  //   return this.queueTemplate
+  // }
+
+  getQueueTemplateText() {
+    return `
+      <li>
+        <div class="item-media"></div>
+        <div class="item-inner">
+          <div class="item-title-row">
+            <div class="item-title">{{title}}</div>
+          </div>
+        </div>
+      </li>
+    
+    `
+  }
 
 
 

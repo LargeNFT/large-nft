@@ -1,7 +1,5 @@
-// const QuillBlotFormatter = require('quill-blot-formatter')
-// const Quill = require('quill')
+import Quill = require('quill/dist/quill.js')
 
-import {Quill} from 'quill'
 import BlotFormatter, { AlignAction, DeleteAction, ImageSpec } from 'quill-blot-formatter'
 import QuillBlotFormatter = require('quill-blot-formatter');
 import {Template7} from "framework7";
@@ -66,12 +64,9 @@ class CustomImageSpec extends QuillBlotFormatter.ImageSpec {
  */
 
 
-
-
-
 class QuillService {
 
-  buildQuillPostEditor(selector: string): void {
+  buildQuillPostEditor(selector: string): Quill {
 
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
 
@@ -99,6 +94,7 @@ class QuillService {
         }
       }
     })
+
 
     let Inline = Quill.import('blots/inline');
 
@@ -152,7 +148,6 @@ class QuillService {
 
     let Block = Quill.import('blots/block')
 
-
     class BlockquoteBlot extends Block {
       static blotName?: string
       static tagName?: string
@@ -160,7 +155,6 @@ class QuillService {
 
     BlockquoteBlot.blotName = 'blockquote'
     BlockquoteBlot.tagName = 'blockquote'
-
 
 
     class HeaderBlot extends Block {
@@ -175,8 +169,8 @@ class QuillService {
     HeaderBlot.tagName = ['H1', 'H2'];
 
 
-    let BlockEmbed = Quill.import('blots/block/embed');
 
+    let BlockEmbed = Quill.import('blots/block/embed');
 
     class DividerBlot extends BlockEmbed {
       static blotName?: string
@@ -271,8 +265,6 @@ class QuillService {
 
     return quill
   }
-
-
 
 }
 

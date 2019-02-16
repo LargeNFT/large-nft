@@ -4,6 +4,7 @@ import {QuillDeltaToHtmlConverter} from "quill-delta-to-html";
 import {Global} from "../global";
 import {ProfileService} from "./profile-service";
 import {TemplateService} from "./template-service";
+import {QueueService} from "./queue_service";
 
 
 var $$ = Dom7; //red flag
@@ -59,11 +60,11 @@ class PostService {
     return Global.freedom.countOwned(POST_REPO, owner)
   }
 
-  async createPost(post: Post): Promise<Post> {
+  async createPost(post: Post): Promise<void> {
     return Global.freedom.create(POST_REPO, post)
   }
 
-  async updatePost(post: Post): Promise<Post> {
+  async updatePost(post: Post): Promise<void> {
     return Global.freedom.update(POST_REPO, post.id, post)
   }
 

@@ -19,11 +19,10 @@ class ProfileController {
         const self = this
 
         $$(document).on('submit', '#edit-profile-form', function(e) {
+            e.preventDefault();
             self.profileEditSave(e)
-        });
-        $$(document).on('submit', '#create-profile-form', function(e) {
-            self.profileCreateSave(e)
-        });
+        })
+
 
         $$(document).on('infinite', '#static-profile-infinite-scroll', async function(e) {
 
@@ -39,9 +38,6 @@ class ProfileController {
         })
     }
 
-    async showCreateProfile() : Promise<ModelView> {
-      return new ModelView({},  'pages/profile/create.html')
-    }
 
     async showStaticProfile(id: Number) : Promise<ModelView> {
 
@@ -92,8 +88,7 @@ class ProfileController {
     }
 
     async profileEditSave(e: Event): Promise<void> {
-
-        e.preventDefault();
+      try {
 
         //Collect info
         var profileData: Profile = Global.app.form.convertToData('#edit-profile-form');
@@ -101,37 +96,15 @@ class ProfileController {
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
-
         //Update
         await this.profileService.updateProfile(profileData)
 
         //Redirect
         Global.navigate("/profile/show");
-    }
 
-
-    async profileCreateSave(e: Event) : Promise<void> {
-
-        e.preventDefault();
-
-        //Collect info
-        let profileData: Profile = Global.app.form.convertToData('#create-profile-form');
-
-        //Save
-        try {
-
-          //Add photo (if selected)
-          profileData = await this.addProfilePic(profileData)
-
-
-          await this.profileService.createProfile(profileData)
-
-          //Redirect
-          Global.navigate("/profile/show")
-
-        } catch(ex) {
-          Global.showExceptionPopup(ex)
-        }
+      } catch (ex) {
+        Global.showExceptionPopup(ex)
+      }
 
     }
 

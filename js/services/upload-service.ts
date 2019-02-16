@@ -22,9 +22,9 @@ class UploadService {
         if (buf) {
 
           try {
-            ipfsCid = await freedom.ipfsPutFile(buf);
+            ipfsCid = await Global.freedom.ipfsPutFile(buf);
           } catch (ex) {
-            Global.app.methods.showExceptionPopup(ex)
+            Global.showExceptionPopup(ex)
           }
 
 

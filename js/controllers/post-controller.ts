@@ -163,6 +163,7 @@ class PostController {
           new PromiseView(
             this.postService.updatePost(postData),
             "Saving changes to story '{{title}}'",
+            postData,
             "/post/show/{id}"
           )
         )
@@ -185,6 +186,7 @@ class PostController {
           new PromiseView(
             this.postService.createPost(postData),
             "Creating story '{{title}}'",
+            postData,
             "/post/show/{id}"
           )
         )

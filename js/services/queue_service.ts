@@ -1,6 +1,7 @@
 import {PromiseView} from "../promise-view";
 import { Global } from "../global";
 import { TemplateService } from "./template-service";
+import { Template7 } from "framework7/js/framework7.bundle";
 
 
 
@@ -31,7 +32,8 @@ class QueueService {
 
       let queueItem: QueueItem = new QueueItem(
         Guid.newGuid(),
-        promiseView.title
+        promiseView.title,
+        promiseView.context
       )
 
       let before = async function () {
@@ -59,24 +61,26 @@ class QueueService {
 
     
     beforeSaveAction(queueItem: QueueItem) : void {     
-      console.log('before')
+      queueItem.title = this._parseTitle(queueItem.titleTemplate, queueItem.context)
       this.currentQueue.push(queueItem)
-
-      console.log(this.currentQueue)
-      
       this.populateList()
-      
     }
 
     afterSaveAction(queueItem: QueueItem): void {
-      console.log('after')
       this.currentQueue = this.currentQueue.filter(obj => obj !== queueItem);
-
-      console.log(this.currentQueue)
-
       this.populateList()
-
     }
+
+
+    _parseTitle(titleTemplate: string, context: any) {
+        console.log(titleTemplate)
+        // compile it with Template7
+        const compiledTemplate = Template7.compile(titleTemplate)
+
+        return compiledTemplate(context)
+    }
+
+    
 
 }
 
@@ -84,9 +88,12 @@ class QueueItem {
 
   // public web3TransactionId: string
 
+  public title: string
+
   constructor(
     public id: string,
-    public title: string
+    public titleTemplate: string,
+    public context: any
   ) {}
 
 }

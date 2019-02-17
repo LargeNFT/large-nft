@@ -114,6 +114,8 @@ class PostService {
 
     if (currentPostCount > 0) {
       $$(listSelector).find('.no-results').remove()
+    } else {
+      $$(listSelector).find('.no-results').show()
     }
 
     if (currentPostCount >= totalPostCount) {

@@ -18,10 +18,30 @@ class QueueController {
 
     async initList() : Promise<void> {
 
+        const items = []
+        for (let i=0; i< 100; i++) {
+
+            let item = new QueueItem(
+                "1",
+                "Saving story {title}",
+                {
+                    title: "The story Title"
+                }
+            )
+
+            item.title = this.queueService._parseTitle(item.titleTemplate, item.context)
+            
+            console.log(item)
+
+            items.push(item)
+
+        }
+
         this.queueService.setVirtualList(
             Global.app.virtualList.create({ 
                 el: '#queue-list',
-                items: this.queueService.currentQueue,
+                // items: this.queueService.currentQueue,
+                items: items,
                 itemTemplate: this.templateService.getQueueTemplateText()
             })
         )

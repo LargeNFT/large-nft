@@ -74,7 +74,6 @@ class TemplateService {
           </div>
         </div>
       </li>
-    
     `
   }
 

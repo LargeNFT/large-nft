@@ -1,0 +1,12 @@
+{
+  "name": "large-contracts",
+  "version": "0.2.0",
+  "description": "Large contracts",
+  "dependencies": {
+    "truffle": "5.0.5",
+    "truffle-hdwallet-provider": "1.0.3",
+    "dotenv": "6.2.0",
+    "loom-truffle-provider": "0.13.0",
+    "loom-js": "1.44.1"
+  }
+}

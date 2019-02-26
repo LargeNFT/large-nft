@@ -7,24 +7,9 @@ import { Template7 } from "framework7/js/framework7.bundle";
 
 class QueueService {
 
-    //Actual items
-    // public currentQueue: QueueItem[] = []
-    
-    //The list element we're populating
-    // private virtualList: any
-
     constructor(
       private templateService: TemplateService
     ) {}
-
-    // setVirtualList(virtualList: any) {
-    //   this.virtualList = virtualList
-    // }
-
-    // populateList() {
-    //   if (!this.virtualList) return
-    //   this.virtualList.replaceAllItems(this.currentQueue)
-    // }
 
     async queuePromiseView(promiseView: PromiseView) : Promise<any> {
 
@@ -49,14 +34,21 @@ class QueueService {
         return promiseView.promise
       }
 
-      let after = async function () {
+      let after = async function (result) {
+        
+        if (result) {
+          queueItem.context = result
+        }
+
         return new Promise((resolve, reject) => {
           self.afterSaveAction(queueItem)
           resolve();
         })
       }
 
-      return before().then(during).then(after)
+      return before()
+              .then(during)
+              .then(after)
 
     }
 
@@ -65,33 +57,48 @@ class QueueService {
     beforeSaveAction(queueItem: QueueItem) : void {     
 
       queueItem.title = this._parseTitle(queueItem.titleTemplate, queueItem.context)
-      queueItem.link = this._parseLink(queueItem.linkTemplate, queueItem.context)
-      
 
-      // Create notification with close button
-      queueItem.notification = Global.app.toast.create({
-        icon: '<i class="f7-icons">' + queueItem.icon + '</i>',
+      // Create toast with close button
+      queueItem.toast = Global.app.toast.create({
         text: queueItem.title,
-        closeButton: true,
-        closeButtonText: 'Ok',
-        closeButtonColor: 'white'
+        closeButton: true
       })
 
-      queueItem.notification.open()
+      queueItem.toast.open()
 
     }
 
     afterSaveAction(queueItem: QueueItem): void {
-      queueItem.notification.close()
+
+      queueItem.toast.close()
+
+      queueItem.link = this._parseLink(queueItem.linkTemplate, queueItem.context)
+
+      console.log(queueItem.context)
+      console.log(queueItem.link)
+
+      Global.app.toast.create({
+        text: "Save Complete",
+        closeButton: true,
+        closeButtonText: "View",
+        closeTimeout: 5000,
+        on: {
+          closed: function() {
+            Global.navigate(queueItem.link)
+          }
+        }
+      }).open()
+
+
     }
 
 
-    _parseTitle(titleTemplate: string, context: any) {
+    _parseTitle(titleTemplate: string, context: any) : string {
         const compiledTemplate = Template7.compile(titleTemplate)
         return compiledTemplate(context)
     }
 
-    _parseLink(linkTemplate: string, context: any) {
+    _parseLink(linkTemplate: string, context: any): string {
       const compiledTemplate = Template7.compile(linkTemplate)
       return compiledTemplate(context)
     }
@@ -105,7 +112,7 @@ class QueueItem {
 
   public title: string
   public link: string
-  public notification: any
+  public toast: any
 
   constructor(
     public id: string,

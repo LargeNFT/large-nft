@@ -53,7 +53,7 @@ module.exports = function() {
   //Page Controllers
   Global.settingsController = new SettingsController(settingsService)
   Global.homeController = new HomeController(postService)
-  Global.profileController = new ProfileController(profileService, uploadService, postService)
+  Global.profileController = new ProfileController(profileService, uploadService, postService, queueService)
   Global.postController = new PostController(queueService, postService, profileService, quillService, uploadService)
 
   //Make controllers available in window so framework7 components can access them

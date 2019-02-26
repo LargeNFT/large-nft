@@ -4,6 +4,9 @@ import {UploadService} from "../services/upload-service";
 import {PostService} from "../services/post-service";
 import {Global} from "../global";
 import {Dom7} from "framework7";
+import { QueueService } from '../services/queue_service';
+import {PromiseView} from "../promise-view";
+
 
 var $$ = Dom7
 
@@ -15,7 +18,9 @@ class ProfileController {
     constructor(
       private profileService : ProfileService,
       private uploadService : UploadService,
-      private postService : PostService) {
+      private postService : PostService,
+      private queueService: QueueService
+      ) {
         const self = this
 
         $$(document).on('submit', '#edit-profile-form', function(e) {
@@ -96,11 +101,20 @@ class ProfileController {
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
-        //Update
-        await this.profileService.updateProfile(profileData)
 
-        //Redirect
-        Global.navigate("/profile/show");
+        //Redirect to home page
+        Global.navigate('/')
+
+        //Kick off save sequence
+        await this.queueService.queuePromiseView(
+          new PromiseView(
+            this.profileService.updateProfile(profileData),
+            "Saving changes to your profile...",
+            "person",
+            profileData,
+            "/profile/show"
+          )
+        )
 
       } catch (ex) {
         Global.showExceptionPopup(ex)

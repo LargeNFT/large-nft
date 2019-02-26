@@ -159,13 +159,16 @@ class PostController {
         //Get data
         const postData: Post = await this._getPostData('#edit-post-form')
         
+        //Redirect to home page
+        Global.navigate('/')
+
         await this.queueService.queuePromiseView(
           new PromiseView(
             this.postService.updatePost(postData),
             "Saving changes to story '{{title}}'",
             "document_text",
             postData,
-            "/post/show/{id}"
+            "/post/show/{{id}}"
           )
         )
 
@@ -182,6 +185,9 @@ class PostController {
         //Get data
         const postData: Post = await this._getPostData('#create-post-form')
 
+        //Redirect to home page
+        Global.navigate('/')
+
 
         await this.queueService.queuePromiseView(
           new PromiseView(
@@ -189,7 +195,7 @@ class PostController {
             "Saving new story titled '{{title}}'",
             "document_text",
             postData,
-            "/post/show/{id}"
+            "/post/show/{{id}}"
           )
         )
 

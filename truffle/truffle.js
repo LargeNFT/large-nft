@@ -26,12 +26,12 @@ module.exports = {
     //   network_id: "*", // Match any network id
     //   gas: 6109322
     // },
-    ropsten: {
-      provider: () => new HDWalletProvider(
-          process.env.MNEMONIC,
-          process.env.ROPSTEN_URL),
-      network_id: 3
-    },
+    // ropsten: {
+    //   provider: () => new HDWalletProvider(
+    //       process.env.MNEMONIC,
+    //       process.env.ROPSTEN_URL),
+    //   network_id: 3
+    // },
     loom_dapp_chain: {
       provider: loomTruffleProvider,
       network_id: '*'

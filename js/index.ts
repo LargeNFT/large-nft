@@ -38,29 +38,8 @@ module.exports = function() {
 
 
 
-  //Services
-  let templateService = new TemplateService()
-  let settingsService = new SettingsService()
-  let quillService = new QuillService()
-  let profileService = new ProfileService()
-  let queueService = new QueueService(templateService)
-  let postService = new PostService(profileService, templateService)
-  let routeService = new RouteService(settingsService)
-
-  let uploadService = new UploadService()
-
-
-  //Page Controllers
-  Global.settingsController = new SettingsController(settingsService)
-  Global.homeController = new HomeController(postService)
-  Global.profileController = new ProfileController(profileService, uploadService, postService, queueService)
-  Global.postController = new PostController(queueService, postService, profileService, quillService, uploadService)
-
-  //Make controllers available in window so framework7 components can access them
-  window['settingsController'] = Global.settingsController
-  window['homeController'] = Global.homeController
-  window['profileController'] = Global.profileController
-  window['postController'] = Global.postController
+  //Services/Controllers
+  Global.init()
 
 
   //Template7 helpers

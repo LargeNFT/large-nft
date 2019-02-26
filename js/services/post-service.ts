@@ -14,13 +14,16 @@ let POST_REPO = 2;
 
 class PostService {
 
+  public freedom: any
+
   constructor(
     private profileService: ProfileService,
-    private templateService: TemplateService) {
+    private templateService: TemplateService
+    ) {
   }
 
   async getPostById(id): Promise<Post> {
-    const post: Post = await Global.freedom.read(POST_REPO, id)
+    const post: Post = await this.freedom.read(POST_REPO, id)
 
     //Fetch author
     await this._postFetchAuthor(post)
@@ -33,7 +36,7 @@ class PostService {
   }
 
   async getPostsDescending(limit: Number, offset: Number) : Promise<Post[]> {
-    let posts : Post[] = await Global.freedom.readListDescending(POST_REPO, limit, offset)
+    let posts : Post[] = await this.freedom.readListDescending(POST_REPO, limit, offset)
     await this._lazyLoadPosts(posts)
 
     return posts
@@ -43,7 +46,7 @@ class PostService {
 
   async getPostsByOwner(owner: string, limit: Number, offset: Number) : Promise<Post[]> {
 
-    let posts : Post[] = await Global.freedom.readOwnedListDescending(POST_REPO, owner, limit, offset)
+    let posts : Post[] = await this.freedom.readOwnedListDescending(POST_REPO, owner, limit, offset)
 
     await this._lazyLoadPosts(posts)
 
@@ -53,19 +56,19 @@ class PostService {
 
 
   async getPostCount() : Promise<Number> {
-    return Global.freedom.count(POST_REPO)
+    return this.freedom.count(POST_REPO)
   }
 
   async getPostByOwnerCount(owner: string) : Promise<Number> {
-    return Global.freedom.countOwned(POST_REPO, owner)
+    return this.freedom.countOwned(POST_REPO, owner)
   }
 
   async createPost(post: Post): Promise<void> {
-    return Global.freedom.create(POST_REPO, post)
+    return this.freedom.create(POST_REPO, post)
   }
 
   async updatePost(post: Post): Promise<void> {
-    return Global.freedom.update(POST_REPO, post.id, post)
+    return this.freedom.update(POST_REPO, post.id, post)
   }
 
   async _lazyLoadPosts(posts: Post[]) {

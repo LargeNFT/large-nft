@@ -7,10 +7,11 @@ const Freedom: any = require('freedom-for-data')
 
 class RouteService {
 
+  public freedom: any
+
   constructor(
     private settingsService: SettingsService
-  ) {
-  }
+  ) {}
 
 
   getRoutes(baseurl) {
@@ -160,14 +161,17 @@ class RouteService {
       ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
     }
 
-    Global.freedom = await Freedom({
-      ipfsConfig: {
-        host: settings.ipfsHost,
-        port: settings.ipfsApiPort
-      },
-      recordContractAddress: settings.recordContractAddress,
-      recordContractTransactionHash: settings.recordContractTransactionHash
-    })
+    //TODO THIS NEEDS TO BE PROPOGATED TO ALL SERVICES SOMEHOW. USED TO BE GLOBAL
+    Global.setFreedom(
+      await Freedom({
+        ipfsConfig: {
+          host: settings.ipfsHost,
+          port: settings.ipfsApiPort
+        },
+        recordContractAddress: settings.recordContractAddress,
+        recordContractTransactionHash: settings.recordContractTransactionHash
+      })
+    )
 
   }
 

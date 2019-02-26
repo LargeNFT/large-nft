@@ -163,6 +163,7 @@ class PostController {
           new PromiseView(
             this.postService.updatePost(postData),
             "Saving changes to story '{{title}}'",
+            "document_text",
             postData,
             "/post/show/{id}"
           )
@@ -185,7 +186,8 @@ class PostController {
         await this.queueService.queuePromiseView(
           new PromiseView(
             this.postService.createPost(postData),
-            "Creating story '{{title}}'",
+            "Saving new story titled '{{title}}'",
+            "document_text",
             postData,
             "/post/show/{id}"
           )

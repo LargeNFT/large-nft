@@ -20,7 +20,6 @@ import {HomeController} from './controllers/home-controller'
 import {SettingsController} from './controllers/settings-controller'
 import {ProfileController} from './controllers/profile-controller'
 import {PostController}  from './controllers/post-controller'
-import {QueueController}  from './controllers/queue-controller'
 import {QueueService} from "./services/queue_service";
 
 
@@ -56,14 +55,12 @@ module.exports = function() {
   Global.homeController = new HomeController(postService)
   Global.profileController = new ProfileController(profileService, uploadService, postService)
   Global.postController = new PostController(queueService, postService, profileService, quillService, uploadService)
-  Global.queueController = new QueueController(queueService, templateService)
 
   //Make controllers available in window so framework7 components can access them
   window['settingsController'] = Global.settingsController
   window['homeController'] = Global.homeController
   window['profileController'] = Global.profileController
   window['postController'] = Global.postController
-  window['queueController'] = Global.queueController
 
 
   //Template7 helpers

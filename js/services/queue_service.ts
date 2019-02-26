@@ -8,23 +8,23 @@ import { Template7 } from "framework7/js/framework7.bundle";
 class QueueService {
 
     //Actual items
-    public currentQueue: QueueItem[] = []
+    // public currentQueue: QueueItem[] = []
     
     //The list element we're populating
-    private virtualList: any
+    // private virtualList: any
 
     constructor(
       private templateService: TemplateService
     ) {}
 
-    setVirtualList(virtualList: any) {
-      this.virtualList = virtualList
-    }
+    // setVirtualList(virtualList: any) {
+    //   this.virtualList = virtualList
+    // }
 
-    populateList() {
-      if (!this.virtualList) return
-      this.virtualList.replaceAllItems(this.currentQueue)
-    }
+    // populateList() {
+    //   if (!this.virtualList) return
+    //   this.virtualList.replaceAllItems(this.currentQueue)
+    // }
 
     async queuePromiseView(promiseView: PromiseView) : Promise<any> {
 
@@ -32,7 +32,9 @@ class QueueService {
 
       let queueItem: QueueItem = new QueueItem(
         Guid.newGuid(),
+        promiseView.icon,
         promiseView.title,
+        promiseView.view,
         promiseView.context
       )
 
@@ -61,25 +63,38 @@ class QueueService {
 
     
     beforeSaveAction(queueItem: QueueItem) : void {     
+
       queueItem.title = this._parseTitle(queueItem.titleTemplate, queueItem.context)
-      this.currentQueue.push(queueItem)
-      this.populateList()
+      queueItem.link = this._parseLink(queueItem.linkTemplate, queueItem.context)
+      
+
+      // Create notification with close button
+      queueItem.notification = Global.app.toast.create({
+        icon: '<i class="f7-icons">' + queueItem.icon + '</i>',
+        text: queueItem.title,
+        closeButton: true,
+        closeButtonText: 'Ok',
+        closeButtonColor: 'white'
+      })
+
+      queueItem.notification.open()
+
     }
 
     afterSaveAction(queueItem: QueueItem): void {
-      this.currentQueue = this.currentQueue.filter(obj => obj !== queueItem);
-      this.populateList()
+      queueItem.notification.close()
     }
 
 
     _parseTitle(titleTemplate: string, context: any) {
-        console.log(titleTemplate)
-        // compile it with Template7
         const compiledTemplate = Template7.compile(titleTemplate)
-
         return compiledTemplate(context)
     }
 
+    _parseLink(linkTemplate: string, context: any) {
+      const compiledTemplate = Template7.compile(linkTemplate)
+      return compiledTemplate(context)
+    }
     
 
 }
@@ -89,10 +104,14 @@ class QueueItem {
   // public web3TransactionId: string
 
   public title: string
+  public link: string
+  public notification: any
 
   constructor(
     public id: string,
+    public icon: string,
     public titleTemplate: string,
+    public linkTemplate: string,
     public context: any
   ) {}
 

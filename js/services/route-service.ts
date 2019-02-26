@@ -48,15 +48,6 @@ class RouteService {
     })
 
     routes.push({
-      path: '/queue',
-      async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
-          return Global.queueController.showQueue()
-        })
-      }
-    })
-
-    routes.push({
       path: '/settings',
       async async(routeTo, routeFrom, resolve, reject) {
         self.resolveController(resolve, Global.settingsController.showSettingsForm())

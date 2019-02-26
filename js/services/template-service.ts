@@ -66,12 +66,15 @@ class TemplateService {
 
   getQueueTemplateText() {
     return `
-      <li>
-        <div class="item-media"></div>
+      <li class="queue-item">
         <div class="item-inner">
           <div class="item-title-row">
             <div class="item-title">{{title}}</div>
           </div>
+          <div class="item-subtitle">
+            Complete. <a href="{{link}}">View</a>
+          </div> 
+
         </div>
       </li>
     `
@@ -80,6 +83,7 @@ class TemplateService {
 
 
 }
+          // <div class="progressbar-infinite"></div>
 
 
 

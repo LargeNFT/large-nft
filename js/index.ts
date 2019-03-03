@@ -61,7 +61,7 @@ module.exports = function() {
     theme: 'auto', // Automatic theme detection
 
     // App routes
-    routes: routeService.getRoutes(rootUrl.pathname)
+    routes: Global.routeService.getRoutes(rootUrl.pathname)
 
   });
 
@@ -70,8 +70,5 @@ module.exports = function() {
   const mainView = Global.app.views.create('.view-main', {
     pushState: true
   })
-
-
-
 
 }

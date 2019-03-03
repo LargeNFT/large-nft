@@ -1,23 +1,25 @@
-const TestServiceFactory = require('./test-service-factory.js');
-const serviceFactory = new TestServiceFactory();
+// const TestServiceFactory = require('./test-service-factory');
 
 
 
-contract('FreedomService', async (accounts) => {
+contract('PostService', async (accounts) => {
+
+
+    const serviceFactory = new TestServiceFactory();
 
 
     before('Setup', async () => {
-        serviceFactory.setRecordServiceContract(await serviceFactory.recordServiceContract.deployed());
-        freedomService = serviceFactory.getFreedomService();
+        // serviceFactory.setRecordServiceContract(await serviceFactory.recordServiceContract.deployed());
+        // freedomService = serviceFactory.getFreedomService();
     });
 
 
     it("Test callReadList: Get empty list", async () => {
+        console.log('here')
 
-        let itemList = await freedomService.readList(TEST_REPO1, 10, 0);
-
-        assert.equal(itemList.length, 0);
     })
 
 
 })
+
+

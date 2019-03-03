@@ -1,33 +1,40 @@
 var ipfsClient = require('ipfs-http-client');
 
-/**
- * IPFS configuration for tests
- */
-const ipfs = ipfsClient({ 
-    host: 'localhost', 
-    port: '5001', 
-    protocol: 'http' 
-  })
+var blah = require('./tests-runnable.js')
 
-/**
- * Get the contract
- */
-const recordServiceContract = artifacts.require("RecordService");
+console.log(blah)
+console.log('here')
+
+
+const Freedom = require('freedom-for-data')
+
+
+
 
 
 class TestServiceFactory {
 
-    constructor(recordServiceContract, ipfs) {
-        this.recordServiceContract = recordServiceContract;
-        this.ipfs = ipfs;
-        // this.freedom = 
+    constructor() {
+        
+        // this.recordServiceContract = artifacts.require("RecordService");
 
-        this.initialize(recordServiceContract, ipfs);
+        // console.log(this.recordServiceContract)
+
+        // // this.freedom = await Freedom({
+        // //     ipfsConfig: {
+        // //       host: settings.ipfsHost,
+        // //       port: settings.ipfsApiPort
+        // //     },
+        // //     recordContractAddress: settings.recordContractAddress,
+        // //     recordContractTransactionHash: settings.recordContractTransactionHash
+        // //   })
+
+        // this.initialize(recordServiceContract, ipfs);
 
     }
 
     initialize(recordServiceContract, ipfs) {
-        // this.freedom = 
+        // this.postService = new PostService() 
     }
 
     /**
@@ -35,14 +42,14 @@ class TestServiceFactory {
      */
 
     getPostService() {
-        return this.postService;
+        // return this.postService;
     }
 
     getProfileService() {
-        return this.profileService;
+        // return this.profileService;
     }
 
 }
 
 
-module.exports = TestServiceFactory;
+export default TestServiceFactory;

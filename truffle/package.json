@@ -2,11 +2,33 @@
   "name": "large-contracts",
   "version": "0.2.0",
   "description": "Large contracts",
+
+  "scripts": {
+    "watch": "watchify --debug -s Tests -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./test/tests.ts -p [ tsify  ] -o ./test/tests-runnable.js -v"
+  },
+
+
   "dependencies": {
     "truffle": "5.0.5",
     "truffle-hdwallet-provider": "1.0.3",
     "dotenv": "6.2.0",
     "loom-truffle-provider": "0.13.0",
-    "loom-js": "1.44.1"
+    "loom-js": "1.44.1",
+    "@types/node": "11.9.5",
+    "@types/mocha": "5.2.6",
+
+    "browserify": "16.2.3",
+    "watchify": "3.11.0",
+    "browser-resolve": "1.11.3",
+    "babelify": "10.0.0",
+    "uglifyify": "5.0.1",
+    "tsify": "4.0.1",
+    "typescript": "3.3.1",
+
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.2.3",
+    "@babel/polyfill": "7.2.3",
+    "@babel/plugin-proposal-class-properties": "7.2.3",
+    "babel-plugin-add-module-exports": "1.0.0"
   }
 }

@@ -27,11 +27,16 @@ class ProfileService {
 
   async updateProfile(profile: Profile) : Promise<Profile> {
 
-    if (profile.id) {
-      return this.freedom.update(PROFILE_REPO, profile.id, profile)
-    } else {
-      return this.freedom.create(PROFILE_REPO, profile)
+    try {
+      if (profile.id) {
+        return this.freedom.update(PROFILE_REPO, profile.id, profile)
+      } else {
+        return this.freedom.create(PROFILE_REPO, profile)
+      }
+    } catch (ex) {
+      console.log(ex)
     }
+
   }
 
 }

@@ -20,21 +20,21 @@ const loomTruffleProvider = new LoomTruffleProvider(chainId, writeUrl, readUrl, 
 
 module.exports = {
   networks: {
-    // development: {
-    //   host: "localhost",
-    //   port: 7545,
-    //   network_id: "*", // Match any network id
-    //   gas: 6109322
-    // },
+    development: {
+      host: "localhost",
+      port: 7545,
+      network_id: "*", // Match any network id
+      gas: 6109322
+    }
     // ropsten: {
     //   provider: () => new HDWalletProvider(
     //       process.env.MNEMONIC,
     //       process.env.ROPSTEN_URL),
     //   network_id: 3
     // },
-    loom_dapp_chain: {
-      provider: loomTruffleProvider,
-      network_id: '*'
-    }
+    // loom_dapp_chain: {
+    //   provider: loomTruffleProvider,
+    //   network_id: '*'
+    // }
   }
 }

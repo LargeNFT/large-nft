@@ -3,7 +3,23 @@ import {Global} from "../global";
 import {Template7} from "framework7";
 import {ModelView} from "../model-view";
 
+const ipfsClient = require('ipfs-http-client')
+
+var TruffleContract = require('truffle-contract')
+
+import * as RecordService from '../../truffle/build/contracts/RecordService.json'
+
+
 const Freedom: any = require('freedom-for-data')
+
+const promisify = (inner) =>
+  new Promise((resolve, reject) =>
+    inner((err, res) => {
+      if (err) { reject(err) }
+      resolve(res);
+    })
+  );
+
 
 class RouteService {
 
@@ -161,17 +177,51 @@ class RouteService {
       ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
     }
 
+
+    let ipfs = ipfsClient({
+      host: settings.ipfsHost,
+      port: settings.ipfsApiPort,
+      protocol: 'http'
+    })
+
+
+
+    // Request account access
+    await window['ethereum'].enable()
+
+    //@ts-ignore
+    window.web3Provider = window.ethereum
+
+    //@ts-ignore
+    web3 = new Web3(window.web3Provider)
+
+    //@ts-ignore  
+    const accounts = await promisify(cb => web3.eth.getAccounts(cb))
+
+    let account = accounts[0]
+    window['currentAccount'] = account
+    
+    const truffleContract = TruffleContract(RecordService);
+
+    let contract
+
+    try {
+        //@ts-ignore
+        truffleContract.setProvider(window.web3Provider)
+        truffleContract.defaults({from: account})
+
+        contract = await truffleContract.deployed()
+    } catch (ex) {
+        console.log(ex)
+    }
+
+
+    let freedom = await Freedom(ipfs, contract)
+
+
+
     //TODO THIS NEEDS TO BE PROPOGATED TO ALL SERVICES SOMEHOW. USED TO BE GLOBAL
-    Global.setFreedom(
-      await Freedom({
-        ipfsConfig: {
-          host: settings.ipfsHost,
-          port: settings.ipfsApiPort
-        },
-        recordContractAddress: settings.recordContractAddress,
-        recordContractTransactionHash: settings.recordContractTransactionHash
-      })
-    )
+    Global.setFreedom(freedom)
 
   }
 

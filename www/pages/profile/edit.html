@@ -42,7 +42,7 @@
                       <div class="item-input-wrap">
 
                         {{#if profilePic}}
-                        <img src="{{@global.ipfsGateway}}/{{profilePic}}" class="profile-pic edit"/>
+                        <img src="http://localhost:8080/ipfs/{{profilePic}}" class="profile-pic edit"/>
                         <input type="hidden" name="profilePic" value="{{profilePic}}" />
                         {{/if}}
 

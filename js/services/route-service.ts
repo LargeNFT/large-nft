@@ -164,7 +164,7 @@ class RouteService {
 
 
   async initialize() {
-
+    console.log(Global.freedom)
     if (Global.freedom) return
 
     const settings:Settings = this.settingsService.getSettings()

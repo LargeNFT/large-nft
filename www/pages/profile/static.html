@@ -33,9 +33,9 @@
 
             <div class="profile-pic-wrapper text-align-center">
               {{#if profile.profilePic}}
-              <img src="{{@global.ipfsGateway}}/{{profile.profilePic}}" class="profile-pic" />
+                <img src="http://localhost:8080/ipfs/{{profile.profilePic}}" class="profile-pic" />
               {{else}}
-              <i class="f7-icons profile-pic" id="profile-pic-not-found">person</i>
+                <i class="f7-icons profile-pic" id="profile-pic-not-found">person</i>
               {{/if}}
             </div>
 

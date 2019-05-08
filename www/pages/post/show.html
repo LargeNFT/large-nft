@@ -40,7 +40,7 @@
 
             <div class="author-profile-pic">
               {{#if post.author.profilePic}}
-              <img src="{{@global.ipfsGateway}}/{{post.author.profilePic}}" class="profile-pic-thumb" />
+              <img src="http://localhost:8080/ipfs/{{post.author.profilePic}}" class="profile-pic-thumb" />
               {{else}}
               <i class="f7-icons" class="profile-pic">person</i>
               {{/if}}

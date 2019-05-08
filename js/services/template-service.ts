@@ -21,7 +21,7 @@ class TemplateService {
           <a href="/post/show/{{id}}" class="item-link item-content">
             <div class="item-media">
               {{#if coverPhoto}}
-              <img src="{{@global.ipfsGateway}}/{{coverPhoto}}" class="cover-photo-thumbnail" />
+              <img src="http://localhost:8080/ipfs/{{coverPhoto}}" class="cover-photo-thumbnail" />
               {{else}}
               <i class="f7-icons">document_text</i>
               {{/if}}

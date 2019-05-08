@@ -41,7 +41,7 @@
     "babelify": "10.0.0",
     "browser-resolve": "1.11.3",
     "browserify": "16.2.3",
-    "framework7": "4.0.1",
+    "framework7": "4.3.1",
     "framework7-icons": "^0.9.1",
     "freedom-for-data": "file:../freedom-for-data",
     "moment": "2.24.0",

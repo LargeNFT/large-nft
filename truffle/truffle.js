@@ -2,6 +2,7 @@
 //   // See <http://truffleframework.com/docs/advanced/configuration>
 //   // to customize your Truffle configuration!
 // };
+require("ts-node/register")
 const { readFileSync } = require('fs')
 
 require('dotenv').config()
@@ -25,7 +26,7 @@ module.exports = {
       port: 7545,
       network_id: "*", // Match any network id
       gas: 6109322
-    }
+    },
     // ropsten: {
     //   provider: () => new HDWalletProvider(
     //       process.env.MNEMONIC,

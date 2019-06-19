@@ -1,41 +1,39 @@
 import {Global} from "../global";
+import { Profile } from "../dto/profile";
 
-let PROFILE_REPO = 1;
 
 class ProfileService {
   
-  public freedom: any
-
-  async getProfileById(id: Number) : Promise<Profile> {
-    return this.freedom.read(PROFILE_REPO, id);
-  }
-
-  async getCurrentUser(): Promise<Profile> {
-
-    let currentUser: Profile
-
-    try {
-      currentUser = await this.freedom.readByOwnedIndex(PROFILE_REPO, window['currentAccount'], 0)
-    } catch (ex) {
-      console.log(ex)
-    }
-
-    return currentUser
-
+  constructor(
+    private ipfs: any
+  ) {
+    this.ipfs = ipfs  
   }
 
 
-  async updateProfile(profile: Profile) : Promise<Profile> {
+  async create(profile:Profile) : Promise<number> {
+    return 0
+  }
 
-    try {
-      if (profile.id) {
-        return this.freedom.update(PROFILE_REPO, profile.id, profile)
-      } else {
-        return this.freedom.create(PROFILE_REPO, profile)
-      }
-    } catch (ex) {
-      console.log(ex)
-    }
+  async read(id:number) : Promise<Profile> {
+
+    const profile: Profile = {}
+
+    // //Fetch author
+    // await this._postFetchAuthor(post)
+
+    // //Convert content to HTML
+    // this._translatePost(post)
+
+    return profile
+
+  }
+
+  async update(profile:Profile) : Promise<void> {
+
+  }
+
+  async delete(id:number) : Promise<void> {
 
   }
 

@@ -1,4 +1,7 @@
+import { Profile } from "./profile";
+
 interface Post {
+  
   id?: Number
   owner?: string
   ipfsCid?: string

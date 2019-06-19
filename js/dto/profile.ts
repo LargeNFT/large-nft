@@ -7,3 +7,7 @@ interface Profile {
   twitterName?: string
   profilePic?: string
 }
+
+export {
+  Profile
+}

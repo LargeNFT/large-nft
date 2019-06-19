@@ -1,10 +1,7 @@
 import {Post} from "../dto/post";
 import {Dom7, Template7} from "framework7";
-import {QuillDeltaToHtmlConverter} from "quill-delta-to-html";
-import {Global} from "../global";
 import {ProfileService} from "./profile-service";
-import {TemplateService} from "./template-service";
-import {QueueService} from "./queue_service";
+
 
 
 var $$ = Dom7; //red flag
@@ -12,9 +9,9 @@ var $$ = Dom7; //red flag
 class PostService {
 
   constructor(
-    private ipfs: any,
-    private profileService: ProfileService
-    ) {
+    private store: any
+  ) {
+  
   }
 
 

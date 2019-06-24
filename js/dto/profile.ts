@@ -1,7 +1,7 @@
 interface Profile {
-  id?: Number
+  _id?: string
+
   owner?: string
-  ipfsCid?: string
   name?: string
   aboutMe?: string
   twitterName?: string

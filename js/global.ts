@@ -9,7 +9,7 @@ import { SettingsService } from "./services/settings-service";
 import { QuillService } from "./services/quill-service";
 import { ProfileService } from "./services/profile-service";
 import { QueueService } from "./services/queue_service";
-import { PostService } from "./services/post-service";
+import { PostService } from "./services/public-post-service";
 import { UploadService } from "./services/upload-service";
 import { inherits } from "util";
 

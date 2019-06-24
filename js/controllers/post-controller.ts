@@ -4,7 +4,7 @@ import { ModelView } from '../model-view'
 // import { Quill } from 'quill';
 import Quill = require('quill/dist/quill.js')
 
-import {PostService} from "../services/post-service";
+import {PublicPostService} from "../services/public-post-service";
 import {ProfileService} from "../services/profile-service";
 import {QuillService} from "../services/quill-service";
 import {UploadService} from "../services/upload-service";
@@ -22,7 +22,7 @@ class PostController {
 
     constructor(
       private queueService: QueueService,
-      private postService:PostService,
+      private publicPostService:PublicPostService,
       private profileService:ProfileService,
       private quillService:QuillService,
       private uploadService:UploadService) {
@@ -107,15 +107,15 @@ class PostController {
       return new ModelView({},  'pages/post/create.html')
     }
 
-    async showPost(id:Number) : Promise<ModelView> {
+    async showPost(id:string) : Promise<ModelView> {
 
-        let post = await this.postService.getPostById(id)
+        let post = await this.publicPostService.read(id)
 
         //Show the edit button to the owner
         let currentUser;
 
         try {
-          currentUser = await this.profileService.getCurrentUser()
+          currentUser = await this.profileService.read()
         } catch(ex) {
           console.log("Profile doesn't exist");
         }

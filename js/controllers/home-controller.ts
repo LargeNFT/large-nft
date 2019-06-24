@@ -1,5 +1,5 @@
 import { ModelView } from '../model-view'
-import {PostService} from "../services/post-service";
+import {PublicPostService} from "../services/public-post-service";
 import {TemplateService} from "../services/template-service";
 import {Dom7} from "framework7";
 
@@ -9,7 +9,7 @@ class HomeController {
 
     loadingInProgress: boolean = false
 
-    constructor(private postService: PostService) {
+    constructor(private postService: PublicPostService) {
 
       const self = this
 

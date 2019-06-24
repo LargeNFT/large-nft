@@ -2,38 +2,54 @@ import { Profile } from "../../js/dto/profile";
 import assert = require('assert');
 import { ProfileService } from "../../js/services/profile-service";
 
+const OrbitDB = require('orbit-db')
+
+
 const ipfsClient = require('ipfs-http-client')
 
 const ipfs = ipfsClient({
     host: "localhost",
     port: 5001,
     protocol: 'http'
-})
+  })
+
 
 //@ts-ignore
-contract('PostService', async (accounts) => {
+contract('ProfileService', async (accounts) => {
 
-    let profileService: ProfileService = new ProfileService(ipfs)
+    let service: ProfileService = new ProfileService(ipfs)
     
+
+    //@ts-ignore
+    before("", async () => {
+
+        const orbitdb = await OrbitDB.createInstance(ipfs, "./orbitdb")
+        let store = await orbitdb.docstore("test-profile")
+
+        service = new ProfileService(store)
+    })
+
+
+
     //@ts-ignore
     it("Test create & get", async () => {
 
         //Arrange
         let profile: Profile = {
             name: "Pat",
-            aboutMe: "Blah"
+            aboutMe: "Blah",
+            _id: accounts[0]
         }
 
         //Act
-        let id:number = await profileService.create(profile)
+        await service.create(profile)
         
         //Assert
-        let fetched: Profile = await profileService.read(id)    
+        let fetched: Profile = await service.read(accounts[0])    
 
         assert.equal(fetched.name, "Pat")
-        assert.equal(fetched.aboutMe, "Again. Hello. World.")
-        assert.equal(fetched.id != undefined, true)
-        assert.equal(fetched.ipfsCid != undefined, true)
+        assert.equal(fetched.aboutMe, "Blah")
+        assert.equal(fetched._id, profile._id)
     })
 
     //@ts-ignore
@@ -42,27 +58,27 @@ contract('PostService', async (accounts) => {
         //Arrange
         let profile: Profile = {
             name: "Pat",
-            aboutMe: "Blah"
+            aboutMe: "Blah",
+            _id: accounts[1]
         }
 
-        let id:number = await profileService.create(profile)
+        await service.create(profile)
         
 
         //Act
-        await profileService.update({
-            id: id,
+        await service.update({
+            _id: profile._id,
             name: "New name",
             aboutMe: "new about me"
         })
 
         //Assert 
-        let fetched: Profile = await profileService.read(id)
+        let fetched: Profile = await service.read(accounts[1])
 
 
-        assert.equal(fetched.aboutMe, "About me")
-        assert.equal(fetched.name, "Name")
-        assert.equal(fetched.id != undefined, true)
-        assert.equal(fetched.ipfsCid != undefined, true)
+        assert.equal(fetched.aboutMe, "new about me")
+        assert.equal(fetched.name, "New name")
+        assert.equal(fetched._id, profile._id)
     })
 
 
@@ -73,17 +89,18 @@ contract('PostService', async (accounts) => {
         //Arrange
         let profile: Profile = {
             name: "Update",
-            aboutMe: "Again"
+            aboutMe: "Again",
+            _id: accounts[2]
         }
 
-        let id:number = await profileService.create(profile)
+        await service.create(profile)
         
         //Act
-        await profileService.delete(id)
+        await service.delete(profile._id)
 
         
         //Assert 
-        let fetched: Profile = await profileService.read(id)
+        let fetched: Profile = await service.read(accounts[2])
 
 
         assert.equal(fetched, undefined)

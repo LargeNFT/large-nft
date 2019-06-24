@@ -1,48 +1,50 @@
 import {Post} from "../dto/post";
-import {Dom7, Template7} from "framework7";
 import {ProfileService} from "./profile-service";
 
 
-
-var $$ = Dom7; //red flag
-
-class PostService {
+class PublicPostService {
 
   constructor(
     private store: any
-  ) {
-  
+  ) {}
+
+  async create(post:Post) : Promise<string> {
+
+    let cid = await this.store.add(post)
+    post._id = cid
+    return cid 
+
   }
 
+  async read(cid:string) : Promise<Post> {
 
-  /**
-   * Refactoring
-   */
-
-  async create(post:Post) : Promise<number> {
-    return 0
-  }
-
-  async read(id:number) : Promise<Post> {
-
-    const post: Post = {}
-
-    // //Fetch author
-    // await this._postFetchAuthor(post)
-
-    // //Convert content to HTML
-    // this._translatePost(post)
-
+    let e = this.store.get(cid)
+    let post:Post = e.payload.value
     return post
+  }
+
+
+  async getRecentPosts(options) : Promise<Post[]> {
+
+    options.reverse = true
+    options.lt = options.before //just want to remember 'before'
+
+    let posts = this.store.iterator(options)
+                          .collect()
+                          .map((e) => {
+                            return e.payload.value
+                          }
+    )
+
+    posts.reverse()
+
+    return posts
 
   }
 
-  async update(post:Post) : Promise<void> {
 
-  }
-
-  async delete(id:number) : Promise<void> {
-
+  async delete(cid:string) : Promise<void> {
+    return this.store.remove(cid)
   }
 
   // async getDescending(limit: number, offset: Number) : Promise<Post[]> {
@@ -181,5 +183,5 @@ class PostService {
 }
 
 
-export { PostService }
+export { PublicPostService }
 

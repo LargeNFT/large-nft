@@ -8,7 +8,7 @@ const Freedom: any = require('freedom-for-data')
 const moment = require('moment')
 
 
-import {PostService} from './services/post-service'
+import {PostService} from './services/public-post-service'
 import {ProfileService} from './services/profile-service'
 import {SettingsService} from './services/settings-service'
 import {QuillService} from './services/quill-service'

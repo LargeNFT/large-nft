@@ -1,7 +1,7 @@
 {
   "name": "large",
   "version": "1.0.0",
-  "description": "Large - Publish Yourself",
+  "description": "You know what it is",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ptoner/large.git"
@@ -29,7 +29,8 @@
   "homepage": "https://github.com/ptoner/large#readme",
   "devDependencies": {
     "cpy-cli": "^1.0.1",
-    "http-server": "^0.10.0"
+    "http-server": "^0.10.0",
+    "truffle": "5.0.24"
   },
   "dependencies": {
     "@babel/core": "7.2.2",
@@ -41,7 +42,7 @@
     "babelify": "10.0.0",
     "browser-resolve": "1.11.3",
     "browserify": "16.2.3",
-    "framework7": "4.3.1",
+    "framework7": "4.4.3",
     "framework7-icons": "^0.9.1",
     "freedom-for-data": "file:../freedom-for-data",
     "moment": "2.24.0",
@@ -49,11 +50,13 @@
     "quill-blot-formatter": "1.0.5",
     "quill-delta-to-html": "0.10.7",
     "scrypt": "^6.0.3",
-    "truffle-contract": "4.0.8",
+    "truffle-contract": "4.0.21",
     "tsify": "4.0.1",
     "typescript": "3.3.1",
     "uglifyify": "5.0.1",
     "watchify": "3.11.0",
-    "ts-node": "8.3.0"
+    "ts-node": "8.3.0",
+    "orbit-db": "0.21.3",
+    "ipfs":"0.36.4"
   }
 }

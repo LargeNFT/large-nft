@@ -5,15 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Test PostService",
+            "name": "Test PublicPostService",
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
-            "args": ["test", "test/test-post-service.ts"],
+            "args": ["test", "test/test-public-post-service.ts"],
             "cwd": "${workspaceRoot}/truffle",
             "outFiles": [
                 "${workspaceRoot}/test/**/*"
             ],
           },
+          {
+            "name": "Test ProfileService",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
+            "args": ["test", "test/test-profile-service.ts"],
+            "cwd": "${workspaceRoot}/truffle",
+            "outFiles": [
+                "${workspaceRoot}/test/**/*"
+            ],
+          }
     ]
 }

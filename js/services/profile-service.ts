@@ -5,36 +5,35 @@ import { Profile } from "../dto/profile";
 class ProfileService {
   
   constructor(
-    private ipfs: any
-  ) {
-    this.ipfs = ipfs  
+    private store: any
+  ) {}
+
+
+  async create(profile:Profile) : Promise<void> {
+    return this.store.put(profile)
+
   }
 
+  async read(address:string) : Promise<Profile> {
 
-  async create(profile:Profile) : Promise<number> {
-    return 0
-  }
+    let profile:Profile
 
-  async read(id:number) : Promise<Profile> {
+    let e = this.store.get(address)
 
-    const profile: Profile = {}
-
-    // //Fetch author
-    // await this._postFetchAuthor(post)
-
-    // //Convert content to HTML
-    // this._translatePost(post)
+    if (e && e.length > 0) {
+      profile = e[0]
+    }
 
     return profile
 
   }
 
   async update(profile:Profile) : Promise<void> {
-
+    return this.store.put(profile)
   }
 
-  async delete(id:number) : Promise<void> {
-
+  async delete(cid:string) : Promise<string> {
+    return this.store.del(cid)
   }
 
 }

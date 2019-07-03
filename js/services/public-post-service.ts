@@ -1,5 +1,4 @@
 import {Post} from "../dto/post";
-import {ProfileService} from "./profile-service";
 
 
 class PublicPostService {
@@ -24,6 +23,15 @@ class PublicPostService {
   }
 
 
+
+
+  async delete(cid:string) : Promise<void> {
+    return this.store.remove(cid)
+  }
+
+
+
+
   async getRecentPosts(options) : Promise<Post[]> {
 
     options.reverse = true
@@ -43,9 +51,9 @@ class PublicPostService {
   }
 
 
-  async delete(cid:string) : Promise<void> {
-    return this.store.remove(cid)
-  }
+
+
+
 
   // async getDescending(limit: number, offset: Number) : Promise<Post[]> {
   //   let posts : Post[] = await this.freedom.readListDescending(POST_REPO, limit, offset)
@@ -91,54 +99,20 @@ class PublicPostService {
   // }
 
 
-  // getImagesFromPostContentOps(ops : any) {
+  getImagesFromPostContentOps(ops : any) {
 
-  //   const images : string[] = []
+    const images : string[] = []
 
-  //   for (let op of ops) {
-  //     if (op.insert && op.insert.ipfsimage) {
-  //       images.push(op.insert.ipfsimage.ipfsCid)
-  //     }
-  //   }
+    for (let op of ops) {
+      if (op.insert && op.insert.ipfsimage) {
+        images.push(op.insert.ipfsimage.ipfsCid)
+      }
+    }
 
-  //   return images
+    return images
 
-  // }
+  }
 
-
-  // /**
-  //  * Should probably move to a service that's view specific. Fine here for now.
-  //  */
-  // loadMorePosts(posts : Post[], totalPostCount: Number, listSelector: string) {
-
-  //   let postTemplate = this.templateService.getPostTemplate()
-
-  //   for (let post of posts) {
-  //     $$(listSelector).append(postTemplate(post))
-  //   }
-
-  //   const currentPostCount = $$(listSelector).children('li').length
-
-
-  //   if (currentPostCount > 0) {
-  //     $$(listSelector).find('.no-results').remove()
-  //   } else {
-  //     $$(listSelector).find('.no-results').show()
-  //   }
-
-  //   if (currentPostCount >= totalPostCount) {
-  //     // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-  //     Global.app.infiniteScroll.destroy('.infinite-scroll-content')
-  //     // Remove preloader
-  //     $$('.infinite-scroll-preloader').remove()
-  //     return
-  //   }
-
-
-
-
-
-  // }
 
 
 

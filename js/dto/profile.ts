@@ -1,4 +1,4 @@
-interface Profile {
+class Profile {
   _id?: string
 
   owner?: string
@@ -6,6 +6,14 @@ interface Profile {
   aboutMe?: string
   twitterName?: string
   profilePic?: string
+
+
+  static get constraints() {
+    return {
+        _id: { primary: true, unique:true, type: 'string' }
+    }
+  }
+  
 }
 
 export {

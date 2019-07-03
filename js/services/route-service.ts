@@ -4,13 +4,22 @@ import {Template7} from "framework7";
 import {ModelView} from "../model-view";
 
 const ipfsClient = require('ipfs-http-client')
-
 var TruffleContract = require('truffle-contract')
+const OrbitDB = require('orbit-db')
+const TableStore = require('orbit-db-tablestore')
+
+
 
 import * as RecordService from '../../truffle/build/contracts/RecordService.json'
+import { HomeController } from "../controllers/home-controller";
+import { PublicPostService } from "./public-post-service";
+import { QuillService } from "./quill-service";
+import { ProfileService } from "./profile-service";
+import { PostController } from "../controllers/post-controller";
+import { ProfileController } from "../controllers/profile-controller";
+import { SettingsController } from "../controllers/settings-controller";
+import { UploadService } from "./upload-service";
 
-
-const Freedom: any = require('freedom-for-data')
 
 const promisify = (inner) =>
   new Promise((resolve, reject) =>
@@ -164,10 +173,10 @@ class RouteService {
 
 
   async initialize() {
-    console.log(Global.freedom)
-    if (Global.freedom) return
 
-    const settings:Settings = this.settingsService.getSettings()
+    if (Global.ipfs) return
+
+    let settings:Settings = this.settingsService.getSettings()
     if (!settings) {
       throw 'No settings found'
     }
@@ -178,13 +187,14 @@ class RouteService {
     }
 
 
-    let ipfs = ipfsClient({
+    Global.ipfs = ipfsClient({
       host: settings.ipfsHost,
       port: settings.ipfsApiPort,
       protocol: 'http'
     })
 
-
+    //Temp until ipfs-http-client properly supports it
+    Global.ipfs.pubsub = null
 
     // Request account access
     await window['ethereum'].enable()
@@ -216,12 +226,52 @@ class RouteService {
     }
 
 
-    let freedom = await Freedom(ipfs, contract)
+
+    /**
+     * Orbit
+     */
+    OrbitDB.addDatabaseType(TableStore.type, TableStore)
+
+    Global.orbitDb = await OrbitDB.createInstance(Global.ipfs)
+
+    if (!settings.dbAddress) {
+      await this.settingsService.generateDatabase(Global.orbitDb)
+      settings = this.settingsService.getSettings()
+    }
+
+
+    let address = OrbitDB.parseAddress(settings.dbAddress)
+
+
+    Global.mainDb = await Global.orbitDb.open(address)
+    await Global.mainDb.load()
+
+
+    //Look up the other database addresses
+    let postFeedAddress = await Global.mainDb.get('postFeed')
+    let profileTableAddress = await Global.mainDb.get('profileTable')
+
+    Global.profileTable = await Global.orbitDb.open(profileTableAddress.path)
+    await Global.profileTable.load()
+
+    Global.postFeed = await Global.orbitDb.open(postFeedAddress.path)
+    await Global.postFeed.load(100)
 
 
 
-    //TODO THIS NEEDS TO BE PROPOGATED TO ALL SERVICES SOMEHOW. USED TO BE GLOBAL
-    Global.setFreedom(freedom)
+      
+    Global.publicPostService = new PublicPostService(Global.postFeed)
+    Global.quillService = new QuillService()
+    Global.profileService = new ProfileService(Global.profileTable)
+    Global.uploadService = new UploadService()
+
+    Global.homeController = new HomeController(Global.publicPostService, Global.templateService)
+    Global.postController = new PostController(Global.queueService, Global.publicPostService, Global.profileService, Global.quillService, Global.uploadService)
+    Global.profileController = new ProfileController(Global.profileService, Global.uploadService, Global.publicPostService, Global.queueService)
+    Global.settingsController = new SettingsController(Global.settingsService)
+
+    window['homeController'] = Global.homeController
+
 
   }
 

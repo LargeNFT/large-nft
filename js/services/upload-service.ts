@@ -1,5 +1,4 @@
 import {Global} from "../global";
-import freedom = Global.freedom;
 
 import {Buffer} from 'buffer'
 
@@ -22,11 +21,10 @@ class UploadService {
         if (buf) {
 
           try {
-            ipfsCid = await Global.freedom.ipfsPutFile(buf);
+            ipfsCid = await Global.ipfs.add( buf)
           } catch (ex) {
             Global.showExceptionPopup(ex)
           }
-
 
         }
 

@@ -1,11 +1,12 @@
 import { ModelView } from '../model-view'
 import {ProfileService} from "../services/profile-service";
 import {UploadService} from "../services/upload-service";
-import {PostService} from "../services/public-post-service";
+import {PublicPostService} from "../services/public-post-service";
 import {Global} from "../global";
 import {Dom7} from "framework7";
 import { QueueService } from '../services/queue_service';
 import {PromiseView} from "../promise-view";
+import { Profile } from '../dto/profile';
 
 
 var $$ = Dom7
@@ -18,7 +19,7 @@ class ProfileController {
     constructor(
       private profileService : ProfileService,
       private uploadService : UploadService,
-      private postService : PostService,
+      private postService : PublicPostService,
       private queueService: QueueService
       ) {
         const self = this
@@ -29,37 +30,37 @@ class ProfileController {
         })
 
 
-        $$(document).on('infinite', '#static-profile-infinite-scroll', async function(e) {
+        // $$(document).on('infinite', '#static-profile-infinite-scroll', async function(e) {
 
-          // Exit, if loading in progress
-          if (self.loadingInProgress) return;
+        //   // Exit, if loading in progress
+        //   if (self.loadingInProgress) return;
 
-          self.loadingInProgress = true
+        //   self.loadingInProgress = true
 
-          await self.loadStaticProfilePosts(e)
+        //   await self.loadStaticProfilePosts(e)
 
-          self.loadingInProgress = false
+        //   self.loadingInProgress = false
 
-        })
+        // })
     }
 
 
-    async showStaticProfile(id: Number) : Promise<ModelView> {
+    async showStaticProfile(address: string) : Promise<ModelView> {
 
-        let profile: Profile = await this.profileService.getProfileById(id)
+        let profile: Profile = await this.profileService.read(address)
 
         //Show the edit button if this is their profile
         let currentUser: Profile
 
         try {
-          currentUser = await this.profileService.getCurrentUser()
+          currentUser = await this.profileService.read(window['currentUser'])
         } catch(ex) {
           console.log("Profile doesn't exist");
         }
 
         let model = {
           profile: profile,
-          showEditLink: (currentUser && currentUser.id == profile.id)
+          showEditLink: (currentUser && currentUser._id == profile._id)
         }
 
         return new ModelView(model, 'pages/profile/static.html')
@@ -71,13 +72,13 @@ class ProfileController {
         let profile: Profile;
 
         try {
-          profile = await this.profileService.getCurrentUser()
+          profile = await this.profileService.read(window['currentUser'])
         } catch(ex) {
           console.log("Profile doesn't exist")
         }
 
         if (profile) {
-          Global.navigate(`/profile/static/${profile.id}`)
+          Global.navigate(`/profile/static/${profile._id}`)
         } else {
           return new ModelView({}, 'pages/profile/no_profile.html')
         }
@@ -86,7 +87,7 @@ class ProfileController {
 
     async showProfileEdit() : Promise<ModelView> {
 
-        let profile: Profile = await this.profileService.getCurrentUser()
+        let profile: Profile = await this.profileService.read(window['currentUser'])
 
         return new ModelView(profile, 'pages/profile/edit.html')
 
@@ -108,7 +109,7 @@ class ProfileController {
         //Kick off save sequence
         await this.queueService.queuePromiseView(
           new PromiseView(
-            this.profileService.updateProfile(profileData),
+            this.profileService.update(profileData),
             "Saving changes to your profile...",
             "person",
             profileData,
@@ -125,19 +126,19 @@ class ProfileController {
 
 
 
-    async loadStaticProfilePosts(e: Event) : Promise<void> {
+    // async loadStaticProfilePosts(e: Event) : Promise<void> {
 
-      let owner = $$('#static-profile-owner').val()
+    //   let owner = $$('#static-profile-owner').val()
 
-      let currentPosts = $$('#static-profile-post-list').children('li').length
+    //   let currentPosts = $$('#static-profile-post-list').children('li').length
 
-      this.postService.loadMorePosts(
-        await this.postService.getPostsByOwner(owner, 10, currentPosts),
-        await this.postService.getPostByOwnerCount(owner),
-        '#static-profile-post-list'
-      )
+    //   this.postService.loadMorePosts(
+    //     await this.postService.getPostsByOwner(owner, 10, currentPosts),
+    //     await this.postService.getPostByOwnerCount(owner),
+    //     '#static-profile-post-list'
+    //   )
 
-    }
+    // }
 
 
 

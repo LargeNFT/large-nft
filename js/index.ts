@@ -2,25 +2,14 @@ import {Global} from "./global";
 
 const Framework7: any = require('framework7/js/framework7.bundle')
 import {Template7} from 'framework7/js/framework7.bundle'
+import { RouteService } from "./services/route-service";
+import { SettingsService } from "./services/settings-service";
+import { QueueService } from "./services/queue_service";
+import { TemplateService } from "./services/template-service";
+import { SettingsController } from "./controllers/settings-controller";
 
-const Freedom: any = require('freedom-for-data')
 
 const moment = require('moment')
-
-
-import {PostService} from './services/public-post-service'
-import {ProfileService} from './services/profile-service'
-import {SettingsService} from './services/settings-service'
-import {QuillService} from './services/quill-service'
-import {UploadService} from './services/upload-service'
-import {TemplateService} from './services/template-service'
-import {RouteService} from './services/route-service'
-
-import {HomeController} from './controllers/home-controller'
-import {SettingsController} from './controllers/settings-controller'
-import {ProfileController} from './controllers/profile-controller'
-import {PostController}  from './controllers/post-controller'
-import {QueueService} from "./services/queue_service";
 
 
 module.exports = function() {
@@ -36,11 +25,11 @@ module.exports = function() {
   }
   /*********************************************/
 
-
-
-  //Services/Controllers
-  Global.init()
-
+  Global.settingsService = new SettingsService()
+  Global.templateService = new TemplateService()
+  Global.queueService = new QueueService(Global.templateService)
+  Global.routeService = new RouteService(Global.settingsService)
+  Global.settingsController = new SettingsController(Global.settingsService)
 
   //Template7 helpers
   Template7.registerHelper('shortDate', function(date) {

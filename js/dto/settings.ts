@@ -4,7 +4,7 @@ interface Settings {
   ipfsApiPort?: Number
   ipfsGatewayPort?: Number
 
-  recordContractAddress?: string
-  recordContractTransactionHash? : string
+  dbAddress?: string 
+
 
 }

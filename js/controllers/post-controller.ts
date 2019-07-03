@@ -14,6 +14,7 @@ import {Global} from "../global";
 import {Post} from "../dto/post";
 import {PromiseView} from "../promise-view";
 import { QueueService } from '../services/queue_service';
+import { Profile } from '../dto/profile';
 var $$ = Dom7
 
 class PostController {
@@ -28,10 +29,6 @@ class PostController {
       private uploadService:UploadService) {
         const self = this;
 
-        $$(document).on('submit', '#edit-post-form', function(e) {
-          e.preventDefault()
-          self.postEditSave(e)
-        });
 
         $$(document).on('submit', '#create-post-form', function(e) {
           e.preventDefault()
@@ -115,7 +112,7 @@ class PostController {
         let currentUser;
 
         try {
-          currentUser = await this.profileService.read()
+          currentUser = await this.profileService.read(window['currentAccount'])
         } catch(ex) {
           console.log("Profile doesn't exist");
         }
@@ -131,7 +128,7 @@ class PostController {
 
     async showPostList() : Promise<ModelView> {
 
-        let posts = await this.postService.getPostsDescending(10, 0)
+        let posts = await this.publicPostService.getRecentPosts({limit: 10})
 
         let model = {
           posts: posts
@@ -141,40 +138,15 @@ class PostController {
 
     }
 
-    async showPostEdit(id) : Promise<ModelView> {
+    async showPostEdit(cid:string) : Promise<ModelView> {
 
-        let post = await this.postService.getPostById(id)
+        let post = await this.publicPostService.read(cid)
 
         let model = {
           post: post
         }
 
         return new ModelView(model, 'pages/post/edit.html')
-
-    }
-
-    async postEditSave(e): Promise<void> {
-
-      try {
-        //Get data
-        const postData: Post = await this._getPostData('#edit-post-form')
-        
-        //Redirect to home page
-        Global.navigate('/')
-
-        await this.queueService.queuePromiseView(
-          new PromiseView(
-            this.postService.updatePost(postData),
-            "Saving changes to story '{{title}}'",
-            "document_text",
-            postData,
-            "/post/show/{{id}}"
-          )
-        )
-
-      } catch (ex) {
-        Global.showExceptionPopup(ex)
-      }
 
     }
 
@@ -191,7 +163,7 @@ class PostController {
 
         await this.queueService.queuePromiseView(
           new PromiseView(
-            this.postService.createPost(postData),
+            this.publicPostService.create(postData),
             "Saving new story titled '{{title}}'",
             "document_text",
             postData,
@@ -214,8 +186,8 @@ class PostController {
       postData.dateCreated = new Date().toJSON().toString()
 
       //Get author info
-      let author: Profile = await this.profileService.getCurrentUser()
-      postData.authorId = author.id
+      let author: Profile = await this.profileService.read(window['currentUser'])
+      postData.authorId = author._id
 
       //Add main photo
 
@@ -302,7 +274,7 @@ class PostController {
     //TODO: load this from a template7 template somehow instead
     loadCoverPhotos() : void {
 
-      const images = this.postService.getImagesFromPostContentOps(this.quill.getContents().ops)
+      const images = this.publicPostService.getImagesFromPostContentOps(this.quill.getContents().ops)
 
       $$('.cover-photo-img-wrapper').empty()
       $$('.cover-photo-preview').hide()

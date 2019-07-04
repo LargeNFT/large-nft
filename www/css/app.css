@@ -2,13 +2,28 @@
 
 
 @media screen and (min-width:1024px) {
-  /* .navbar .left {
+  .navbar .left {
     margin-left: 25%;
   }
   
   .navbar .right {
     margin-right: 25%;
-  } */
+  }
+
+
+  .messagebar {
+    background: #cccccc;
+  }
+
+  .messagebar .toolbar-inner {
+    background: #ffffff;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+
+
+
 }
 
 

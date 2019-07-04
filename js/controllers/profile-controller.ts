@@ -14,12 +14,10 @@ var $$ = Dom7
 
 class ProfileController {
 
-    loadingInProgress: boolean = false
-
     constructor(
       private profileService : ProfileService,
       private uploadService : UploadService,
-      private postService : PublicPostService,
+      private publicPostService : PublicPostService,
       private queueService: QueueService
       ) {
         const self = this
@@ -29,19 +27,6 @@ class ProfileController {
             self.profileEditSave(e)
         })
 
-
-        // $$(document).on('infinite', '#static-profile-infinite-scroll', async function(e) {
-
-        //   // Exit, if loading in progress
-        //   if (self.loadingInProgress) return;
-
-        //   self.loadingInProgress = true
-
-        //   await self.loadStaticProfilePosts(e)
-
-        //   self.loadingInProgress = false
-
-        // })
     }
 
 
@@ -72,7 +57,7 @@ class ProfileController {
         let profile: Profile;
 
         try {
-          profile = await this.profileService.read(window['currentUser'])
+          profile = await this.profileService.read(window['currentAccount'])
         } catch(ex) {
           console.log("Profile doesn't exist")
         }
@@ -87,13 +72,19 @@ class ProfileController {
 
     async showProfileEdit() : Promise<ModelView> {
 
-        let profile: Profile = await this.profileService.read(window['currentUser'])
+        let profile: Profile = await this.profileService.read(window['currentAccount'])
+
+        if (!profile) {
+          profile = new Profile()
+          profile._id = window['currentAccount']
+        }
 
         return new ModelView(profile, 'pages/profile/edit.html')
 
     }
 
     async profileEditSave(e: Event): Promise<void> {
+      
       try {
 
         //Collect info
@@ -102,20 +93,11 @@ class ProfileController {
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
+        await this.profileService.put(profileData)
 
-        //Redirect to home page
-        Global.navigate('/')
+        //Redirect to profile
+        Global.navigate('/profile/show')
 
-        //Kick off save sequence
-        await this.queueService.queuePromiseView(
-          new PromiseView(
-            this.profileService.update(profileData),
-            "Saving changes to your profile...",
-            "person",
-            profileData,
-            "/profile/show"
-          )
-        )
 
       } catch (ex) {
         Global.showExceptionPopup(ex)

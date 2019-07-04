@@ -304,7 +304,7 @@ class RouteService {
         })
 
     } catch (ex) {
-      Global.app.methods.showExceptionPopup(ex)
+      Global.showExceptionPopup(ex)
       console.log(ex)
     }
 

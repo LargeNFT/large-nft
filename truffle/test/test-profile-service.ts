@@ -32,7 +32,7 @@ contract('ProfileService', async (accounts) => {
 
 
     //@ts-ignore
-    it("Test create & get", async () => {
+    it("Test put & get", async () => {
 
         //Arrange
         let profile: Profile = {
@@ -42,7 +42,7 @@ contract('ProfileService', async (accounts) => {
         }
 
         //Act
-        await service.create(profile)
+        await service.put(profile)
         
         //Assert
         let fetched: Profile = await service.read(accounts[0])    
@@ -62,11 +62,11 @@ contract('ProfileService', async (accounts) => {
             _id: accounts[1]
         }
 
-        await service.create(profile)
+        await service.put(profile)
         
 
         //Act
-        await service.update({
+        await service.put({
             _id: profile._id,
             name: "New name",
             aboutMe: "new about me"
@@ -93,7 +93,7 @@ contract('ProfileService', async (accounts) => {
             _id: accounts[2]
         }
 
-        await service.create(profile)
+        await service.put(profile)
         
         //Act
         await service.delete(profile._id)

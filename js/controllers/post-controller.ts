@@ -157,19 +157,10 @@ class PostController {
         //Get data
         const postData: Post = await this._getPostData('#create-post-form')
 
+        let cid:string = await this.publicPostService.create(postData)
+
         //Redirect to home page
-        Global.navigate('/')
-
-
-        await this.queueService.queuePromiseView(
-          new PromiseView(
-            this.publicPostService.create(postData),
-            "Saving new story titled '{{title}}'",
-            "document_text",
-            postData,
-            "/post/show/{{id}}"
-          )
-        )
+        Global.navigate('/post/show/' + cid)
 
       } catch (ex) {
         Global.showExceptionPopup(ex)

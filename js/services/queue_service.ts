@@ -74,8 +74,8 @@ class QueueService {
 
       queueItem.link = this._parseLink(queueItem.linkTemplate, queueItem.context)
 
-      console.log(queueItem.context)
-      console.log(queueItem.link)
+      // console.log(queueItem.context)
+      // console.log(queueItem.link)
 
       Global.app.toast.create({
         text: "Save Complete",

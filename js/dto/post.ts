@@ -8,7 +8,6 @@ interface Post {
   subtitle?: string
   coverPhoto?: string
   dateCreated?: string
-  authorId?: string
   author?: Profile
   content: any
   contentTranslated?: string

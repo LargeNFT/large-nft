@@ -4,7 +4,6 @@ class Profile {
   owner?: string
   name?: string
   aboutMe?: string
-  twitterName?: string
   profilePic?: string
 
 

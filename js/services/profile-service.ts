@@ -8,17 +8,11 @@ class ProfileService {
     private store: any
   ) {}
 
-
-  async create(profile:Profile) : Promise<void> {
-    return this.store.put(profile)
-
-  }
-
   async read(address:string) : Promise<Profile> {
 
     let profile:Profile
 
-    let e = this.store.get(address)
+    let e = await this.store.get(address)
 
     if (e && e.length > 0) {
       profile = e[0]
@@ -28,7 +22,7 @@ class ProfileService {
 
   }
 
-  async update(profile:Profile) : Promise<void> {
+  async put(profile:Profile) : Promise<void> {
     return this.store.put(profile)
   }
 

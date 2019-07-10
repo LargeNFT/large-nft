@@ -18,15 +18,17 @@ class SettingsService {
 
     console.log('Generating database')
 
-    let mainDb = await orbitdb.open("mainDb", {create: true, type: 'table'})
+    let nameSeed = this._uuidv4()
+
+    let mainDb = await orbitdb.open(`mainDb-${nameSeed}`, {create: true, type: 'table'})
     await mainDb.createSchema(Table)
     console.log('Created main schema')
 
-    let profileTable = await orbitdb.open("profile", {create: true, type: 'table'})
+    let profileTable = await orbitdb.open(`profile-${nameSeed}`, {create: true, type: 'table'})
     await profileTable.createSchema(Profile)
     console.log('Created profile table')
 
-    let postFeed = await orbitdb.open("post", {create: true, type: 'feed'})
+    let postFeed = await orbitdb.open(`post-${nameSeed}`, {create: true, type: 'feed'})
     console.log('Created post feed')
 
 
@@ -56,6 +58,15 @@ class SettingsService {
     await this.saveSettings(settings)
 
   }
+
+  _uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+
 
 }
 

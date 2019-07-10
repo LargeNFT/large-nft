@@ -29,14 +29,15 @@ class HomeController {
       self.postMessage(e)
     });
 
-
+    $$(document).on('click', 'a.toggle-sheet', function (e) {
+      e.preventDefault()
+      self.sheetToggle(e);
+    });
 
 
   }
 
   async showHomePage(): Promise<ModelView> {
-
-    await this.initMessages()
 
     return new ModelView({}, 'pages/home.html')
 
@@ -69,8 +70,52 @@ class HomeController {
 
   }
 
+  async postMessage(e:Event): Promise<void> {
 
-  async initMessages(): Promise<void> {
+    let value = this._messagebar.getValue()
+    console.log(value)
+
+    var text = value.replace(/\n/g, '<br>').trim()
+
+    // return if empty message
+    if (!text.length) return
+
+    let post:Post = {
+      owner: window['currentAccount'],
+      title: undefined,
+      subtitle: undefined,
+      coverPhoto: undefined,
+      dateCreated: undefined,
+      content: undefined,
+      contentTranslated: text
+    }
+    
+
+
+    await this.publicPostService.create(post)
+
+
+
+    // Clear area
+    this._messagebar.clear()
+
+    // Return focus to area
+    this._messagebar.focus()
+    
+
+    // Add message to messages
+    this._messages.addMessage({
+      text: text,
+    });
+
+  }
+
+
+  sheetToggle(e:Event) : void {
+    this._messagebar.sheetToggle()
+  }
+
+  initMessages(): void {
 
     // Init Messages
     this._messages = Global.app.messages.create({
@@ -122,45 +167,6 @@ class HomeController {
   }
 
 
-  async postMessage(e:Event): Promise<void> {
-
-    var text = this._messagebar.getValue().replace(/\n/g, '<br>').trim()
-
-    // return if empty message
-    if (!text.length) return
-
-    let post:Post = {
-      owner: window['currentAccount'],
-      title: undefined,
-      subtitle: undefined,
-      coverPhoto: undefined,
-      dateCreated: undefined,
-      content: undefined,
-      contentTranslated: text
-    }
-    
-
-
-    await this.publicPostService.create(post)
-
-
-
-    // Clear area
-    this._messagebar.clear()
-
-    // Return focus to area
-    this._messagebar.focus()
-    
-
-
-    
-
-    // Add message to messages
-    this._messages.addMessage({
-      text: text,
-    });
-
-  }
 
   /**
    * Should probably move to a service that's view specific. Fine here for now.
@@ -174,7 +180,6 @@ class HomeController {
     }
 
   }
-
 
 
   _getPostTemplate() {
@@ -199,7 +204,6 @@ class HomeController {
     return this._postTemplate
 
   }
-
 
 
 }

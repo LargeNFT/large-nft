@@ -2,7 +2,7 @@
 <template>
 
   <div class="page" data-name="home">
-    
+
     <div class="navbar">
       <div class="navbar-inner sliding">
         <div class="left">
@@ -21,23 +21,56 @@
       </div>
     </div>
 
-    <div class="page-content">
+    <div class="toolbar toolbar-bottom messagebar">
+      <div class="toolbar-inner">
 
-      <div class="row">
-          <div class="messages col-100 tablet-50 center">
-      
-          </div>
+        <a class="link toggle-sheet" href="#">
+          <i class="icon f7-icons if-not-md">camera_fill</i>
+          <i class="icon material-icons md-only">camera_alt</i>
+        </a>
+
+
+        <div class="messagebar-area">
+
+          <div class="messagebar-attachments"></div>
+
+          <textarea class="resizable" placeholder="Message"></textarea>
+        </div>
+        <a class="link send-link" href="#">Post</a>
       </div>
+
+
+      <div class="messagebar-sheet">
+        <!-- selectable sheet image -->
+        <label class="checkbox messagebar-sheet-image" style="background-image:url(path/to/image1.png)">
+          <input type="checkbox">
+          <i class="icon icon-checkbox"></i>
+        </label>
+
+        <!-- another selectable sheet image -->
+        <label class="checkbox messagebar-sheet-image" style="background-image:url(path/to/image2.png)">
+          <input type="checkbox">
+          <i class="icon icon-checkbox"></i>
+        </label>
+
+        <!-- some custom sheet item -->
+        <div class="messagebar-sheet-item">
+          <!-- any custom content here -->
+        </div>
+      </div>
+
+
+
+
     </div>
 
 
-    <div class="toolbar toolbar-bottom messagebar">
-        <div class="toolbar-inner">
-          <div class="messagebar-area">
-            <textarea class="resizable" placeholder="Message"></textarea>
-          </div>
-          <a class="link send-link" href="#">Send</a>
+    <div class="page-content">
+      <div class="row">
+        <div class="messages col-100 tablet-50 center">
+
         </div>
+      </div>
     </div>
 
 
@@ -55,6 +88,8 @@
   return {
     on: {
       pageInit: async function (e, page) {
+        window['homeController'].initMessages()
+
         await window['homeController'].loadMorePosts()
       }
     }

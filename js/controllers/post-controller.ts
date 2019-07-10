@@ -119,7 +119,7 @@ class PostController {
 
         let model = {
           post: post,
-          showEditLink: (currentUser && currentUser.id == post.authorId)
+          showEditLink: (currentUser && currentUser.id == post.owner)
         }
 
         return new ModelView(model, 'pages/post/show.html')
@@ -171,14 +171,13 @@ class PostController {
     async _getPostData(formId: string) : Promise<Post> {
 
       //Get data
-      let postData: Post = <Post> Global.app.form.convertToData(formId);
+      let postData: Post = <Post> Global.app.form.convertToData(formId)
 
       //Get date
       postData.dateCreated = new Date().toJSON().toString()
 
       //Get author info
-      let author: Profile = await this.profileService.read(window['currentUser'])
-      postData.authorId = author._id
+      postData.owner = window['currentAccount']
 
       //Add main photo
 

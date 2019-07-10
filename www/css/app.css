@@ -12,7 +12,7 @@
 
 
   .messagebar {
-    background: #cccccc;
+    background: var(--f7-navbar-bg-color,var(--f7-bars-bg-color,var(--f7-theme-color)));
   }
 
   .messagebar .toolbar-inner {

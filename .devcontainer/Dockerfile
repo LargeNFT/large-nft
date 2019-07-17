@@ -8,6 +8,7 @@ FROM node:10
 # Avoid warnings by switching to noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
 
+
 # Configure apt and install packages
 RUN apt-get update \
     && apt-get -y install --no-install-recommends apt-utils 2>&1 \ 
@@ -37,8 +38,6 @@ RUN apt-get update \
     && tar xvfz go-ipfs_v0.4.21_linux-386.tar.gz \
     && cd go-ipfs \
     && ./install.sh \
-    && cd ~ \
-    && ipfs init \
     #
     # Clean up
     && apt-get autoremove -y \
@@ -54,7 +53,10 @@ EXPOSE 8080
 # # HTTP serve
 EXPOSE 8081
 
-ENTRYPOINT ["ipfs", "daemon", "--enable-pubsub-experiment"]
+
+COPY start.sh start.sh 
+
+ENTRYPOINT ./start.sh 
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog

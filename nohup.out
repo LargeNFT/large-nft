@@ -1,0 +1,43 @@
+Initializing daemon...
+go-ipfs version: 0.4.21-
+Repo version: 7
+System version: amd64/linux
+Golang version: go1.12.5
+
+Error: no IPFS repo found in /media/ptoner/Large Files/.ipfs.
+please run: 'ipfs init'
+Initializing daemon...
+go-ipfs version: 0.4.21-
+Repo version: 7
+System version: amd64/linux
+Golang version: go1.12.5
+
+Error: no IPFS repo found in /media/ptoner/Large Files/.ipfs.
+please run: 'ipfs init'
+Initializing daemon...
+go-ipfs version: 0.4.21-
+Repo version: 7
+System version: amd64/linux
+Golang version: go1.12.5
+
+Received another interrupt before graceful shutdown, terminating...
+Initializing daemon...
+go-ipfs version: 0.4.21-
+Repo version: 7
+System version: amd64/linux
+Golang version: go1.12.5
+Swarm listening on /ip6/::1/tcp/4001
+Swarm listening on /p2p-circuit
+Swarm announcing /ip6/::1/tcp/4001
+
+Error: serveHTTPApi: manet.Listen(/ip4/127.0.0.1/tcp/5001) failed: listen tcp4 127.0.0.1:5001: bind: address already in use
+Initializing daemon...
+go-ipfs version: 0.4.21-
+Repo version: 7
+System version: amd64/linux
+Golang version: go1.12.5
+Swarm listening on /ip6/::1/tcp/4001
+Swarm listening on /p2p-circuit
+Swarm announcing /ip6/::1/tcp/4001
+
+Error: serveHTTPApi: manet.Listen(/ip4/127.0.0.1/tcp/5001) failed: listen tcp4 127.0.0.1:5001: bind: address already in use

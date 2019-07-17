@@ -1,10 +1,16 @@
 {
     "name": "Large Docker",
     "dockerFile": "Dockerfile",
-    "appPort": [3000, "0.0.0.0:8080:8080", "0.0.0.0:8081:8081", "0.0.0.0:5001:5001"],
+    "appPort": [],
     "extensions": [
         "dbaeumer.vscode-eslint"
     ],
+    "runArgs": [
+        "-v","/home/ptoner/ipfs-docker:/ipfs",
+        "-e", "IPFS_PATH=/ipfs"
+    ],
+         
+
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
     },

@@ -81,7 +81,7 @@
   return {
     on: {
       pageInit: async function (e, page) {
-        await profileController.loadStaticProfilePosts()
+        await window['profileController'].loadStaticProfilePosts()
       }
     }
   }

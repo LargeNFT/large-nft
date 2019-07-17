@@ -20,36 +20,30 @@ class SettingsService {
 
     let nameSeed = this._uuidv4()
 
-    let mainDb = await orbitdb.open(`mainDb-${nameSeed}`, {create: true, type: 'table'})
-    await mainDb.createSchema(Table)
+    let mainDb = await orbitdb.open(`mainDb-${nameSeed}`, {create: true, type: 'docstore', indexBy: 'name'})
     console.log('Created main schema')
 
-    let profileTable = await orbitdb.open(`profile-${nameSeed}`, {create: true, type: 'table'})
-    await profileTable.createSchema(Profile)
+    let profileTable = await orbitdb.open(`profile-${nameSeed}`, {create: true, type: 'docstore', indexBy: 'name'})
     console.log('Created profile table')
 
     let postFeed = await orbitdb.open(`post-${nameSeed}`, {create: true, type: 'feed'})
     console.log('Created post feed')
 
 
-    let profileTableDTO= { 
+    console.log('Inserting tables into mainDb')
+
+    await mainDb.put({ 
       name: "profileTable", 
       path: profileTable.address.toString()
-    }
+    })
 
-    let postFeedDTO = { 
+    await mainDb.put({ 
       name: "postFeed", 
       path: postFeed.address.toString()
-    }
+    })
 
-
-    await mainDb.put("profileTable", profileTableDTO)
-    await mainDb.put("postFeed", postFeedDTO)
     console.log('Inserted tables into mainDb')
 
-    
-    await mainDb.commit()
-    console.log('Committed mainDb')
 
 
     //Update settings

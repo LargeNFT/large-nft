@@ -8,4 +8,4 @@ ipfs config --json API.HTTPHeaders.Access-Control-Expose-Headers '["Location"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials '["true"]'
 
 
-ipfs daemon --enable-pubsub-experiment;
+ipfs daemon --enable-pubsub-experiment

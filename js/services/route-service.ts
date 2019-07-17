@@ -264,14 +264,17 @@ class RouteService {
 
     let address = OrbitDB.parseAddress(settings.dbAddress)
 
-
-    Global.mainDb = await Global.orbitDb.open(address)
+    Global.mainDb = await Global.orbitDb.open(address.toString())
     await Global.mainDb.load()
 
 
     //Look up the other database addresses
     let postFeedAddress = await Global.mainDb.get('postFeed')
+    postFeedAddress = postFeedAddress[0]
+
+
     let profileTableAddress = await Global.mainDb.get('profileTable')
+    profileTableAddress = profileTableAddress[0]
 
     Global.profileTable = await Global.orbitDb.open(profileTableAddress.path)
     await Global.profileTable.load()

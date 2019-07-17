@@ -8,7 +8,7 @@
   },
   "scripts": {
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
-    "build": "./build.sh",
+    "build": "./scripts/build.sh",
     "test": "cd truffle; truffle test",
     "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 ] -o ./www/js/large.js -v"
   },

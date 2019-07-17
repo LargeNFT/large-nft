@@ -4,10 +4,17 @@ import {Template7} from "framework7";
 import {ModelView} from "../model-view";
 
 const ipfsClient = require('ipfs-http-client')
-var TruffleContract = require('truffle-contract')
+const TruffleContract = require('truffle-contract')
+
 const OrbitDB = require('orbit-db')
 const TableStore = require('orbit-db-tablestore')
+const Keystore = require('orbit-db-keystore/index-browser')
+const EthIdentityProvider = require('orbit-db-identity-provider/src/ethereum-identity-provider')
+const Identities = require('orbit-db-identity-provider')
 
+
+const ethers = require('ethers')
+// const level = require('level-js')
 
 
 import * as RecordService from '../../truffle/build/contracts/RecordService.json'
@@ -230,6 +237,21 @@ class RouteService {
     /**
      * Orbit
      */
+
+    //@ts-ignore
+    let provider = new ethers.providers.Web3Provider(web3.currentProvider)
+    let signer = provider.getSigner(0)
+
+    let keystore = Keystore.create()
+
+    Identities.addIdentityProvider(EthIdentityProvider)
+    const type = EthIdentityProvider.type
+    let identity = await Identities.createIdentity({ type, keystore, signer })
+
+    
+
+
+
     OrbitDB.addDatabaseType(TableStore.type, TableStore)
 
     Global.orbitDb = await OrbitDB.createInstance(Global.ipfs)

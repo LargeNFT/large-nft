@@ -1,0 +1,12 @@
+{
+    "name": "Large Docker",
+    "dockerFile": "Dockerfile",
+    "appPort": [3000, "0.0.0.0:8080:8080", "0.0.0.0:8081:8081", "0.0.0.0:5001:5001"],
+    "extensions": [
+        "dbaeumer.vscode-eslint"
+    ],
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "postCreateCommand": "yarn install"
+}

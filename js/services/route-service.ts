@@ -26,6 +26,7 @@ import { PostController } from "../controllers/post-controller";
 import { ProfileController } from "../controllers/profile-controller";
 import { SettingsController } from "../controllers/settings-controller";
 import { UploadService } from "./upload-service";
+import { IdentityService } from "./identity-service";
 
 
 const promisify = (inner) =>
@@ -42,7 +43,8 @@ class RouteService {
   public freedom: any
 
   constructor(
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private identityService: IdentityService
   ) {}
 
 
@@ -238,15 +240,9 @@ class RouteService {
      * Orbit
      */
 
-    //@ts-ignore
-    let provider = new ethers.providers.Web3Provider(web3.currentProvider)
-    let signer = provider.getSigner(0)
-
     let keystore = Keystore.create()
 
-    Identities.addIdentityProvider(EthIdentityProvider)
-    const type = EthIdentityProvider.type
-    let identity = await Identities.createIdentity({ type, keystore, signer })
+    let identity = await this.identityService.getIdentity(keystore)
 
     
 
@@ -254,7 +250,7 @@ class RouteService {
 
     OrbitDB.addDatabaseType(TableStore.type, TableStore)
 
-    Global.orbitDb = await OrbitDB.createInstance(Global.ipfs)
+    Global.orbitDb = await OrbitDB.createInstance(Global.ipfs, {identity: identity})
 
     if (!settings.dbAddress) {
       await this.settingsService.generateDatabase(Global.orbitDb)
@@ -264,7 +260,7 @@ class RouteService {
 
     let address = OrbitDB.parseAddress(settings.dbAddress)
 
-    Global.mainDb = await Global.orbitDb.open(address.toString())
+    Global.mainDb = await Global.orbitDb.open(address.toString(), {identity: identity})
     await Global.mainDb.load()
 
 
@@ -276,10 +272,10 @@ class RouteService {
     let profileTableAddress = await Global.mainDb.get('profileTable')
     profileTableAddress = profileTableAddress[0]
 
-    Global.profileTable = await Global.orbitDb.open(profileTableAddress.path)
+    Global.profileTable = await Global.orbitDb.open(profileTableAddress.path, {identity: identity})
     await Global.profileTable.load()
 
-    Global.postFeed = await Global.orbitDb.open(postFeedAddress.path)
+    Global.postFeed = await Global.orbitDb.open(postFeedAddress.path, {identity: identity})
     await Global.postFeed.load(100)
 
 

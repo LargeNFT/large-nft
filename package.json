@@ -59,7 +59,8 @@
     "orbit-db": "0.21.3",
     "orbit-db-tablestore": "0.0.13",
     "ipfs": "0.36.4",
-    "orbit-db-identity-provider": "0.1.1",
-    "ethers": "4.0.33"
+    "orbit-db-identity-provider": "0.1.5",
+    "ethers": "4.0.33",
+    "ganache-cli": "6.5.0"
   }
 }

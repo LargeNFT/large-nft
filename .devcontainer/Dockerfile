@@ -39,6 +39,8 @@ RUN apt-get update \
     && cd go-ipfs \
     && ./install.sh \
     #
+    && npm install -g ganache-cli \
+    #
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
@@ -52,6 +54,8 @@ EXPOSE 5001
 EXPOSE 8080
 # # HTTP serve
 EXPOSE 8081
+#Ganache
+EXPOSE 8545
 
 
 COPY start.sh start.sh 

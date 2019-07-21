@@ -12,11 +12,13 @@ import { QueueService } from "./services/queue_service";
 import { PublicPostService } from "./services/public-post-service";
 import { UploadService } from "./services/upload-service";
 import { inherits } from "util";
+import { IdentityService } from "./services/identity-service";
 
 
 export namespace Global {  
   
   /* These 4 are part of every app */
+  export var identityService: IdentityService
   export var templateService: TemplateService
   export var settingsService: SettingsService
   export var queueService: QueueService

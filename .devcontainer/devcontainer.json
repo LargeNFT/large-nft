@@ -7,10 +7,14 @@
     ],
     "runArgs": [
         "-v","/home/ptoner/ipfs-docker:/ipfs",
-        "-e", "IPFS_PATH=/ipfs"
+        "-e", "IPFS_PATH=/ipfs",
+        // "-p", "127.0.0.1:8080:8080",
+        // "-p", "127.0.0.1:8081:8081",
+        // "-p", "127.0.0.1:8545:8545",
+        // "-p", "127.0.0.1:4001:4001",
+        // "-p", "127.0.0.1:5001:5001",
     ],
          
-
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
     },

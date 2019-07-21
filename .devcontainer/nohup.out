@@ -1,8 +1,0 @@
-Initializing daemon...
-go-ipfs version: 0.4.21-
-Repo version: 7
-System version: amd64/linux
-Golang version: go1.12.5
-
-Error: no IPFS repo found in /media/ptoner/Large Files/.ipfs.
-please run: 'ipfs init'

@@ -7,6 +7,7 @@ import { SettingsService } from "./services/settings-service";
 import { QueueService } from "./services/queue_service";
 import { TemplateService } from "./services/template-service";
 import { SettingsController } from "./controllers/settings-controller";
+import { IdentityService } from "./services/identity-service";
 
 
 const moment = require('moment')
@@ -23,12 +24,14 @@ module.exports = function() {
     var value = this.getItem(key);
     return value && JSON.parse(value);
   }
-  /*********************************************/
 
-  Global.settingsService = new SettingsService()
+  
+  /*********************************************/
+  Global.identityService = new IdentityService()
+  Global.settingsService = new SettingsService(Global.identityService)
   Global.templateService = new TemplateService()
   Global.queueService = new QueueService(Global.templateService)
-  Global.routeService = new RouteService(Global.settingsService)
+  Global.routeService = new RouteService(Global.settingsService, Global.identityService)
   Global.settingsController = new SettingsController(Global.settingsService)
 
   //Template7 helpers

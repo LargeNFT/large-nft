@@ -1,13 +1,9 @@
 import { Post } from "../../js/dto/post"
 import assert = require('assert')
 import { PublicPostService } from "../../js/services/public-post-service"
+import { IdentityService } from "../../js/services/identity-service";
 
-const Keystore = require('orbit-db-keystore')
-const Identities = require('orbit-db-identity-provider')
 
-const ethers = require('ethers')
-
-const EthIdentityProvider = require('orbit-db-identity-provider/src/ethereum-identity-provider')
 
 const OrbitDB = require('orbit-db')
 
@@ -27,27 +23,28 @@ const ipfs = ipfsClient({
 contract('PublicPostService', async (accounts) => {
 
     let service: PublicPostService
+    let identityService: IdentityService
     
     //@ts-ignore
     before("", async () => {
 
-        //@ts-ignore
-        let provider = new ethers.providers.Web3Provider(web3.currentProvider)
-        let signer = provider.getSigner(0)
+        identityService = new IdentityService()
+
+        let identity = await identityService.getIdentity(keypath)
 
 
-        Identities.addIdentityProvider(EthIdentityProvider)
-        let keystore = Keystore.create(keypath)
+        const orbitdb = await OrbitDB.createInstance(ipfs, identity, {
+            directory: "./orbitdb"
+        })
+
+        console.log(orbitdb.identity.publicKey)
 
 
-        const type = EthIdentityProvider.type
-        let identity = await Identities.createIdentity({ type, keystore, signer })
+        let ac = identityService.getAccessController(orbitdb)
 
-
-
-
-        const orbitdb = await OrbitDB.createInstance(ipfs, {directory: "./orbitdb", identity: identity})
-        let store = await orbitdb.feed("test-post")
+        let store = await orbitdb.feed("test-post", {
+            accessController: ac
+        })
 
         service = new PublicPostService(store)
     })

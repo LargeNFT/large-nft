@@ -114,13 +114,17 @@ class ProfileController {
 
     //   let currentPosts = $$('#static-profile-post-list').children('li').length
 
-    //   this.postService.loadMorePosts(
-    //     await this.postService.getPostsByOwner(owner, 10, currentPosts),
-    //     await this.postService.getPostByOwnerCount(owner),
+    //   this.publicPostService.loadMorePosts(
+    //     await this.publicPostService.getPostsByOwner(owner, 10, currentPosts),
+    //     await this.publicPostService.getPostByOwnerCount(owner),
     //     '#static-profile-post-list'
     //   )
 
     // }
+
+
+ 
+
 
 
 

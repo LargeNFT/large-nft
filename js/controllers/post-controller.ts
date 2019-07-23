@@ -174,7 +174,7 @@ class PostController {
       let postData: Post = <Post> Global.app.form.convertToData(formId)
 
       //Get date
-      postData.dateCreated = new Date().toJSON().toString()
+      // postData.dateCreated = new Date().toJSON().toString()
 
       //Get author info
       postData.owner = window['currentAccount']
@@ -182,7 +182,7 @@ class PostController {
       //Add main photo
 
       //Get story contents. Quill delta
-      postData.content = this.quill.getContents()
+      // postData.content = this.quill.getContents()
 
 
       return postData

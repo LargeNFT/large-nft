@@ -64,8 +64,6 @@
             </ul>
           </div>
 
-          <div class="preloader infinite-scroll-preloader"></div>
-
 
         </div>
 
@@ -81,7 +79,7 @@
   return {
     on: {
       pageInit: async function (e, page) {
-        await window['profileController'].loadStaticProfilePosts()
+        // await window['profileController'].loadStaticProfilePosts()
       }
     }
   }

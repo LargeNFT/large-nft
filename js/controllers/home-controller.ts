@@ -58,15 +58,21 @@ class HomeController {
       })
 
 
-      this.loadPosts(posts, '#post-list')
+      for (let post of posts) {
 
-
-      if (posts && posts.length > 0) {
-        lastPost = posts[posts.length - 1]._id
+        this._messages.addMessage({
+          text: post.contentTranslated,
+        });
+  
       }
 
-    } while (posts != null && posts.length > 0)
 
+      // if (posts && posts.length > 0) {
+      //   lastPost = posts[posts.length - 1]._id
+      // }
+
+    // } while (posts != null && posts.length > 0)
+    } while(false)
 
   }
 
@@ -82,11 +88,11 @@ class HomeController {
 
     let post:Post = {
       owner: window['currentAccount'],
-      title: undefined,
-      subtitle: undefined,
-      coverPhoto: undefined,
-      dateCreated: undefined,
-      content: undefined,
+      title: '1',
+      subtitle: '2',
+      coverPhoto: '3',
+      dateCreated: '4',
+      content: '5',
       contentTranslated: text
     }
     
@@ -168,18 +174,6 @@ class HomeController {
 
 
 
-  /**
-   * Should probably move to a service that's view specific. Fine here for now.
-   */
-  loadPosts(posts: Post[], listSelector: string) {
-
-    let postTemplate = this._getPostTemplate()
-
-    for (let post of posts) {
-      $$(listSelector).append(postTemplate(post))
-    }
-
-  }
 
 
   _getPostTemplate() {

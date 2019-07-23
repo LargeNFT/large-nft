@@ -28,7 +28,7 @@ module.exports = function() {
   
   /*********************************************/
   Global.identityService = new IdentityService()
-  Global.settingsService = new SettingsService(Global.identityService)
+  Global.settingsService = new SettingsService()
   Global.templateService = new TemplateService()
   Global.queueService = new QueueService(Global.templateService)
   Global.routeService = new RouteService(Global.settingsService, Global.identityService)

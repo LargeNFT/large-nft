@@ -219,20 +219,6 @@ class RouteService {
 
     let account = accounts[0]
     window['currentAccount'] = account
-    
-    const truffleContract = TruffleContract(RecordService);
-
-    let contract
-
-    try {
-        //@ts-ignore
-        truffleContract.setProvider(window.web3Provider)
-        truffleContract.defaults({from: account})
-
-        contract = await truffleContract.deployed()
-    } catch (ex) {
-        console.log(ex)
-    }
 
 
 
@@ -243,42 +229,62 @@ class RouteService {
     let keystore = Keystore.create()
 
     let identity = await this.identityService.getIdentity(keystore)
+    
+
+    OrbitDB.addDatabaseType(TableStore.type, TableStore)
+
+    Global.orbitDb = await OrbitDB.createInstance(Global.ipfs, {
+      identity: identity
+    })
+
+    let ac = this.identityService.getAccessController(Global.orbitDb)
+
+    // console.log(identity)
+    // console.log(ac)
+
+
+    if (!settings.dbAddress) {
+      await this.settingsService.generateDatabase(Global.orbitDb, ac)
+      settings = this.settingsService.getSettings()
+    }
 
     
 
 
-
-    OrbitDB.addDatabaseType(TableStore.type, TableStore)
-
-    Global.orbitDb = await OrbitDB.createInstance(Global.ipfs, {identity: identity})
-
-    if (!settings.dbAddress) {
-      await this.settingsService.generateDatabase(Global.orbitDb)
-      settings = this.settingsService.getSettings()
-    }
-
-
+    //Look up main address
     let address = OrbitDB.parseAddress(settings.dbAddress)
 
-    Global.mainDb = await Global.orbitDb.open(address.toString(), {identity: identity})
+    Global.mainDb = await Global.orbitDb.open(address.toString())
     await Global.mainDb.load()
 
 
-    //Look up the other database addresses
+    //Look up post feed address from mainDb
     let postFeedAddress = await Global.mainDb.get('postFeed')
-    postFeedAddress = postFeedAddress[0]
+    postFeedAddress = OrbitDB.parseAddress(postFeedAddress[0].path)
 
-
+    //Look up profile table address from mainDb
     let profileTableAddress = await Global.mainDb.get('profileTable')
-    profileTableAddress = profileTableAddress[0]
+    profileTableAddress = OrbitDB.parseAddress(profileTableAddress[0].path) 
 
-    Global.profileTable = await Global.orbitDb.open(profileTableAddress.path, {identity: identity})
+
+    //Open profile table
+    Global.profileTable = await Global.orbitDb.docstore(profileTableAddress.toString(), {
+      accessController: ac
+    })
+    
+    console.log('Loading profile table')
     await Global.profileTable.load()
 
-    Global.postFeed = await Global.orbitDb.open(postFeedAddress.path, {identity: identity})
+    //Open post feed
+    Global.postFeed = await Global.orbitDb.feed(postFeedAddress.toString(), {
+      accessController: ac
+    })
+    
+    console.log('Loading post feed')
     await Global.postFeed.load(100)
 
 
+    console.log('Orbit loaded')
 
       
     Global.publicPostService = new PublicPostService(Global.postFeed)
@@ -292,7 +298,9 @@ class RouteService {
     Global.settingsController = new SettingsController(Global.settingsService)
 
     window['homeController'] = Global.homeController
+    window['profileController'] = Global.profileController
 
+    console.log("Initialization complete")
 
   }
 

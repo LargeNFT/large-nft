@@ -7473,7 +7473,15 @@ orbit-db-feedstore@~1.5.0:
   dependencies:
     orbit-db-eventstore "~1.5.0"
 
-orbit-db-identity-provider@0.1.1, orbit-db-identity-provider@~0.1.0:
+orbit-db-identity-provider@0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/orbit-db-identity-provider/-/orbit-db-identity-provider-0.1.5.tgz#77ac6de55dc0fb06787d8f9ef27fbd7848221fff"
+  integrity sha512-mFwSuxLNiTNnv4+WlepzlN8q+Mj2m+s9GFnyoENemDQN+F21WBxJGwZ8uFJ34m3LBe848gJLJuJR7KefGKOIiQ==
+  dependencies:
+    ethers "^4.0.20"
+    orbit-db-keystore "~0.2.0"
+
+orbit-db-identity-provider@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/orbit-db-identity-provider/-/orbit-db-identity-provider-0.1.1.tgz#f4ae09fd61d25033037deee459ff3d06201a0ff0"
   integrity sha512-457LgawjHQazqQw+bMc5cEebWHk0AHx3hDEbajIEScwR59ayesFYLvZd5DSynCemD7ZTg9rpgSb9wgwhtA+N8Q==

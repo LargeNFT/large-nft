@@ -9,7 +9,6 @@ class SettingsService {
 
 
   constructor(
-    private identityService: IdentityService
   ) {}
 
 
@@ -22,49 +21,33 @@ class SettingsService {
   }
 
 
-  async generateDatabase(orbitdb) {
+  async generateDatabase(orbitdb, accessController) {
 
     console.log('Generating database')
-
-    let keystore = Keystore.create()
-    let identity = await this.identityService.getIdentity(keystore)
-
 
 
     let nameSeed = this._uuidv4()
 
-    let mainDb = await orbitdb.open(`mainDb-${nameSeed}`, {
+    let mainDb = await orbitdb.docstore(`mainDb-${nameSeed}`, {
       create: true,
-      type: 'docstore',
       indexBy: 'name',
-      identity: identity,
-      accessController: {
-        write: [orbitdb.identity.publicKey]
-      }
+      accessController: accessController
     })
 
     console.log('Created main schema')
 
-    let profileTable = await orbitdb.open(`profile-${nameSeed}`, {
+    let profileTable = await orbitdb.docstore(`profile-${nameSeed}`, {
       create: true,
-      type: 'docstore',
       indexBy: 'name',
-      identity: identity,
-      accessController: {
-        write: [orbitdb.identity.publicKey]
-      }
+      accessController: accessController
     })
 
 
     console.log('Created profile table')
 
-    let postFeed = await orbitdb.open(`post-${nameSeed}`, {
+    let postFeed = await orbitdb.feed(`post-${nameSeed}`, {
       create: true,
-      type: 'feed',
-      identity: identity,
-      accessController: {
-        write: [orbitdb.identity.publicKey]
-      }
+      accessController: accessController
     })
 
     console.log('Created post feed')
@@ -92,17 +75,6 @@ class SettingsService {
     await this.saveSettings(settings)
 
   }
-
-
-  // getAccessController() {
-  //   return {
-  //     write: [
-  //       // Give access to ourselves
-  //       orbitdb.identity.publicKey
-  //     ]
-  //   }
-  // }
-
 
 
 

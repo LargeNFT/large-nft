@@ -1,7 +1,9 @@
-const Keystore = require('orbit-db-keystore')
 const Identities = require('orbit-db-identity-provider')
 
-const ethers = require('ethers')
+// const ethers = require('ethers')
+const { utils, providers } = require('ethers')
+
+const { Wallet } = require('ethers/wallet.js')
 
 const EthIdentityProvider = require('orbit-db-identity-provider/src/ethereum-identity-provider')
 
@@ -10,19 +12,18 @@ class IdentityService {
     private identity
 
     
-    async getIdentity(keypath) {
+    async getIdentity(keystore) {
 
         if (this.identity) return this.identity
 
         Identities.addIdentityProvider(EthIdentityProvider)
 
-
         //@ts-ignore
-        let provider = new ethers.providers.Web3Provider(web3.currentProvider)
-        let signer = provider.getSigner(0)
+        let provider = new providers.Web3Provider(web3.currentProvider)
+        let signer = provider.getSigner()
 
+        signer.address = await signer.getAddress()
 
-        let keystore = Keystore.create(keypath)
 
 
         const type = EthIdentityProvider.type
@@ -31,7 +32,7 @@ class IdentityService {
         const options = {
             type: type,
             keystore: keystore,
-            signer: signer
+            wallet: signer
         }
 
         this.identity = await Identities.createIdentity(options)
@@ -42,7 +43,7 @@ class IdentityService {
 
     getAccessController(orbitdb) {
         return {
-            write: [orbitdb.identity.publicKey]
+            write: [orbitdb.identity.id]
         }
     }
 

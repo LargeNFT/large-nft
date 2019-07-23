@@ -2,6 +2,7 @@ import { Post } from "../../js/dto/post"
 import assert = require('assert')
 import { PublicPostService } from "../../js/services/public-post-service"
 import { IdentityService } from "../../js/services/identity-service";
+const Keystore = require('orbit-db-keystore')
 
 
 
@@ -30,14 +31,17 @@ contract('PublicPostService', async (accounts) => {
 
         identityService = new IdentityService()
 
-        let identity = await identityService.getIdentity(keypath)
+        let keystore = Keystore.create(keypath)
+
+        let identity = await identityService.getIdentity(keystore)
 
 
-        const orbitdb = await OrbitDB.createInstance(ipfs, identity, {
-            directory: "./orbitdb"
+        const orbitdb = await OrbitDB.createInstance(ipfs, {
+            directory: "./orbitdb",
+            identity: identity
         })
 
-        console.log(orbitdb.identity.publicKey)
+        // console.log(JSON.stringify(orbitdb.identity)) 
 
 
         let ac = identityService.getAccessController(orbitdb)

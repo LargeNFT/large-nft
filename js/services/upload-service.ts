@@ -28,7 +28,9 @@ class UploadService {
 
         }
 
-        resolve(ipfsCid);
+        //@ts-ignore
+        let hash = ipfsCid[0].hash 
+        resolve(hash);
       };
 
       if (fileElement.files.length > 0) {

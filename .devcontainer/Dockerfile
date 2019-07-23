@@ -31,7 +31,7 @@ RUN apt-get update \
     && npm install -g eslint \
     #
     ## Install Truffle
-    && npm install truffle \
+    && npm install -g truffle \
     #
     ## Install IPFS
     && wget https://github.com/ipfs/go-ipfs/releases/download/v0.4.21/go-ipfs_v0.4.21_linux-386.tar.gz \

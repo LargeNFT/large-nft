@@ -8,7 +8,6 @@ interface Post {
   ownerProfilePic?: string 
 
   dateCreated?: string
-  author?: Profile
   content: any
   contentTranslated?: string
 }

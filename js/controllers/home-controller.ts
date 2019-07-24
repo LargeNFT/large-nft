@@ -129,10 +129,9 @@ class HomeController {
     // return if empty message
     if (!content) return
 
-    let date = moment().format()
+    let date: string = moment().format().toString()
 
     let profile: Profile = await this.profileService.getCurrentUser()
-
 
     let post: Post = {
       owner: window['currentAccount'],
@@ -146,9 +145,9 @@ class HomeController {
       post.ownerProfilePic = profile.profilePic
     }
 
+    console.log(post)
 
     await this.publicPostService.create(post)
-
 
     // // Clear area
     // this._messagebar.clear()
@@ -182,6 +181,14 @@ class HomeController {
     if (post.ownerProfilePic) {
       message.profilePic = `${Global.ipfsGateway}/${post.ownerProfilePic}`
     }
+
+      
+    console.log(post.dateCreated)
+
+    let date = moment(post.dateCreated).fromNow()
+    
+    message.dateCreated = date 
+
 
 
     let postTemplate = this._getPostTemplate()
@@ -280,7 +287,8 @@ class HomeController {
             </div>
             <div class="item-inner">
               <div class="item-title-row">
-                <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span> <span class="post-owner">{{owner}}</span></div>
+                <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span> <div class="post-owner">{{owner}}</div></div>
+                <div class="item-after">{{dateCreated}}</div>
               </div>
               <div class="item-subtitle">{{content}}</div>
             </div>

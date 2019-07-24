@@ -17,9 +17,9 @@
 
   .messagebar .toolbar-inner {
     background: #ffffff;
-    width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
+    /* width: 50%; */
+    /* margin-left: 25%;
+    margin-right: 25%; */
   }
 
 
@@ -248,7 +248,7 @@ hr:before {
 
 .list .post-owner {
   color: var(--f7-list-item-text-text-color);
-  max-width: 60x;
+  width: 60x;
   font-size: 11px;
   display: inline-block;
   text-overflow: ellipsis;
@@ -256,6 +256,15 @@ hr:before {
 
 .list .post-owner-display {
   font-weight: bold;
+}
+
+.list .item-subtitle {
+  white-space: normal;
+  font-size: 17px;
+}
+
+.list .item-subtitle p {
+  margin-top: 2px;
 }
 
 

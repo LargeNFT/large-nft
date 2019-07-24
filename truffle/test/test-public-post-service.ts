@@ -58,8 +58,6 @@ contract('PublicPostService', async (accounts) => {
 
         //Arrange
         let post: Post = {
-            title: "Hello world",
-            subtitle: "Again",
             content: "Actual content"
         }
 
@@ -72,8 +70,7 @@ contract('PublicPostService', async (accounts) => {
         
         let fetched: Post = await service.read(post._id)    
 
-        assert.equal(fetched.title, "Hello world")
-        assert.equal(fetched.subtitle, "Again")
+
         assert.equal(fetched.content, "Actual content")
         assert.equal(fetched._id, post._id)
     })

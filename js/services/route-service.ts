@@ -22,7 +22,6 @@ import { HomeController } from "../controllers/home-controller";
 import { PublicPostService } from "./public-post-service";
 import { QuillService } from "./quill-service";
 import { ProfileService } from "./profile-service";
-import { PostController } from "../controllers/post-controller";
 import { ProfileController } from "../controllers/profile-controller";
 import { SettingsController } from "../controllers/settings-controller";
 import { UploadService } from "./upload-service";
@@ -122,46 +121,46 @@ class RouteService {
 
 
 
-    routes.push({
-      path: '/post/show/:id',
-      async async(routeTo, routeFrom, resolve, reject) {
+    // routes.push({
+    //   path: '/post/show/:id',
+    //   async async(routeTo, routeFrom, resolve, reject) {
 
-        self.initAndResolve(resolve,function() {
-          return Global.postController.showPost(routeTo.params.id)
-        })
+    //     self.initAndResolve(resolve,function() {
+    //       return Global.postController.showPost(routeTo.params.id)
+    //     })
 
-      }
-    })
+    //   }
+    // })
 
-    routes.push({
-      path: '/post/edit/:id',
-      async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
-          return Global.postController.showPostEdit(routeTo.params.id)
-        })
-      }
-    })
-
-
-    routes.push({
-      path: '/post/list',
-      async async(routeTo, routeFrom, resolve, reject) {
-
-        self.initAndResolve(resolve,function() {
-          return Global.postController.showPostList()
-        })
-      }
-    })
+    // routes.push({
+    //   path: '/post/edit/:id',
+    //   async async(routeTo, routeFrom, resolve, reject) {
+    //     self.initAndResolve(resolve,function() {
+    //       return Global.postController.showPostEdit(routeTo.params.id)
+    //     })
+    //   }
+    // })
 
 
-    routes.push({
-      path: '/post/create',
-      async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
-          return Global.postController.showCreatePost()
-        })
-      }
-    })
+    // routes.push({
+    //   path: '/post/list',
+    //   async async(routeTo, routeFrom, resolve, reject) {
+
+    //     self.initAndResolve(resolve,function() {
+    //       return Global.postController.showPostList()
+    //     })
+    //   }
+    // })
+
+
+    // routes.push({
+    //   path: '/post/create',
+    //   async async(routeTo, routeFrom, resolve, reject) {
+    //     self.initAndResolve(resolve,function() {
+    //       return Global.postController.showCreatePost()
+    //     })
+    //   }
+    // })
 
 
 
@@ -194,6 +193,8 @@ class RouteService {
       settings: settings,
       ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
     }
+
+    Global.ipfsGateway = `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
 
 
     Global.ipfs = ipfsClient({
@@ -238,9 +239,6 @@ class RouteService {
     })
 
     let ac = this.identityService.getAccessController(Global.orbitDb)
-
-    // console.log(identity)
-    // console.log(ac)
 
 
     if (!settings.dbAddress) {
@@ -292,8 +290,7 @@ class RouteService {
     Global.profileService = new ProfileService(Global.profileTable)
     Global.uploadService = new UploadService()
 
-    Global.homeController = new HomeController(Global.publicPostService, Global.templateService)
-    Global.postController = new PostController(Global.queueService, Global.publicPostService, Global.profileService, Global.quillService, Global.uploadService)
+    Global.homeController = new HomeController(Global.publicPostService, Global.profileService, Global.templateService, Global.quillService, Global.uploadService)
     Global.profileController = new ProfileController(Global.profileService, Global.uploadService, Global.publicPostService, Global.queueService)
     Global.settingsController = new SettingsController(Global.settingsService)
 

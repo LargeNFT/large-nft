@@ -1,4 +1,7 @@
 import {Post} from "../dto/post";
+import {Template7} from "framework7";
+import {QuillDeltaToHtmlConverter} from "quill-delta-to-html";
+
 
 
 class PublicPostService {
@@ -11,6 +14,9 @@ class PublicPostService {
 
     let cid = await this.store.add(post)
     post._id = cid
+
+    this._translatePost(post)
+
     return cid 
 
   }
@@ -18,7 +24,10 @@ class PublicPostService {
   async read(cid:string) : Promise<Post> {
 
     let e = this.store.get(cid)
+    
     let post:Post = e.payload.value
+    post._id = cid
+
     return post
   }
 
@@ -40,11 +49,21 @@ class PublicPostService {
     let posts = this.store.iterator(options)
                           .collect()
                           .map((e) => {
-                            return e.payload.value
+
+                            let post = {
+                              _id: e.hash
+                            }
+
+                            Object.assign(post, e.payload.value)
+
+                            //@ts-ignore
+                            this._translatePost(post)
+
+                            return post
                           }
     )
 
-    posts.reverse()
+    // posts.reverse()
 
     return posts
 
@@ -116,43 +135,43 @@ class PublicPostService {
 
 
 
-  // _translatePost(post: Post): void {
+  _translatePost(post: Post): void {
 
-  //   //Create content HTML
-  //   //@ts-ignore
-  //   const qdc = new QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {
-  //   });
+    //Create content HTML
+    //@ts-ignore
+    const qdc = new QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {
+    });
 
-  //   //Render dividers into HTML
-  //   qdc.renderCustomWith(function(customOp, contextOp) {
-  //     if (customOp.insert.type === 'divider') {
-  //       return "<hr />"
-  //     }
+    //Render dividers into HTML
+    qdc.renderCustomWith(function(customOp, contextOp) {
+      if (customOp.insert.type === 'divider') {
+        return "<hr />"
+      }
 
-  //     if (customOp.insert.type === 'ipfsimage') {
-  //       return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
-  //     }
+      if (customOp.insert.type === 'ipfsimage') {
+        return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
+      }
 
-  //     if (customOp.insert.type === 'ipfsvideo') {
-  //       return `
-  //           <video width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}">
-  //             <source src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" type="video/mp4">
-  //           </video>
-  //         `
-  //     }
+      if (customOp.insert.type === 'ipfsvideo') {
+        return `
+            <video width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}">
+              <source src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" type="video/mp4">
+            </video>
+          `
+      }
 
-  //   })
-
-
-  //   post.contentTranslated = qdc.convert();
-
-  //   //Convert date
-  //   post.dateCreated = new Date(post.dateCreated).toDateString()
-
-  //   //TODO: Probably put max display lengths here somewhere. Since we can't really verify on the way in.
+    })
 
 
-  // }
+    post.contentTranslated = qdc.convert();
+
+    //Convert date
+    post.dateCreated = new Date(post.dateCreated).toDateString()
+
+    //TODO: Probably put max display lengths here somewhere. Since we can't really verify on the way in.
+
+
+  }
 
 }
 

@@ -4,9 +4,9 @@ interface Post {
   _id?: string
   
   owner?: string
-  title?: string
-  subtitle?: string
-  coverPhoto?: string
+  ownerDisplayName?: string 
+  ownerProfilePic?: string 
+
   dateCreated?: string
   author?: Profile
   content: any

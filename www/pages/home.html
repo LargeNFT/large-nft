@@ -25,8 +25,8 @@
       <div class="toolbar-inner">
 
         <a class="link toggle-sheet" href="#">
-          <i class="icon f7-icons if-not-md">camera_fill</i>
-          <i class="icon material-icons md-only">camera_alt</i>
+          <i class="icon f7-icons if-not-md">edit</i>
+          <i class="icon material-icons md-only">edit</i>
         </a>
 
 
@@ -34,28 +34,42 @@
 
           <div class="messagebar-attachments"></div>
 
-          <textarea class="resizable" placeholder="Message"></textarea>
+          <div id="create-post-textarea" class="editor"></div>
+
         </div>
         <a class="link send-link" href="#">Post</a>
       </div>
 
 
       <div class="messagebar-sheet">
-        <!-- selectable sheet image -->
-        <label class="checkbox messagebar-sheet-image" style="background-image:url(path/to/image1.png)">
-          <input type="checkbox">
-          <i class="icon icon-checkbox"></i>
-        </label>
-
-        <!-- another selectable sheet image -->
-        <label class="checkbox messagebar-sheet-image" style="background-image:url(path/to/image2.png)">
-          <input type="checkbox">
-          <i class="icon icon-checkbox"></i>
-        </label>
-
         <!-- some custom sheet item -->
         <div class="messagebar-sheet-item">
-          <!-- any custom content here -->
+
+          <button class="bold-button"><i class="fa fa-bold"></i></button>
+          <button class="italic-button"><i class="fa fa-italic"></i></button>
+          <button class="link-button"><i class="fa fa-link"></i></button>
+          <button class="blockquote-button"><i class="fa fa-quote-right"></i></button>
+          <button class="header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
+          <button class="header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>
+
+          <label for="create-image-button-input">
+            <button class="image-button">
+              <i class="fa fa-camera"></i>
+            </button>
+
+            <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+
+
+
+            <label for="create-video-button-input">
+              <button class="video-button">
+                <i class="fa fa-play"></i>
+              </button>
+
+              <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
+
+
+              <button class="divider-button"><i class="fa fa-minus"></i></button>
         </div>
       </div>
 
@@ -64,10 +78,13 @@
 
     </div>
 
-
     <div class="page-content">
       <div class="row">
-        <div class="messages col-100 tablet-50 center">
+        <div class="list media-list col-100 tablet-50 center">
+
+          <ul id="post-list" >
+
+          </ul>
 
         </div>
       </div>
@@ -88,8 +105,7 @@
   return {
     on: {
       pageInit: async function (e, page) {
-        window['homeController'].initMessages()
-
+        window['homeController'].initializeQuill()
         await window['homeController'].loadMorePosts()
       }
     }

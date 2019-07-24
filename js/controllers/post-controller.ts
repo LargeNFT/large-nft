@@ -1,343 +1,343 @@
-import { ModelView } from '../model-view'
-
-
-// import { Quill } from 'quill';
-import Quill = require('quill/dist/quill.js')
-
-import {PublicPostService} from "../services/public-post-service";
-import {ProfileService} from "../services/profile-service";
-import {QuillService} from "../services/quill-service";
-import {UploadService} from "../services/upload-service";
-
-import {Dom7, Template7} from "framework7";
-import {Global} from "../global";
-import {Post} from "../dto/post";
-import {PromiseView} from "../promise-view";
-import { QueueService } from '../services/queue_service';
-import { Profile } from '../dto/profile';
-var $$ = Dom7
-
-class PostController {
-
-    quill: any
-
-    constructor(
-      private queueService: QueueService,
-      private publicPostService:PublicPostService,
-      private profileService:ProfileService,
-      private quillService:QuillService,
-      private uploadService:UploadService) {
-        const self = this;
-
-
-        $$(document).on('submit', '#create-post-form', function(e) {
-          e.preventDefault()
-          self.postCreateSave(e)
-        });
+// import { ModelView } from '../model-view'
+
+
+// // import { Quill } from 'quill';
+// import Quill = require('quill/dist/quill.js')
+
+// import {PublicPostService} from "../services/public-post-service";
+// import {ProfileService} from "../services/profile-service";
+// import {QuillService} from "../services/quill-service";
+// import {UploadService} from "../services/upload-service";
+
+// import {Dom7, Template7} from "framework7";
+// import {Global} from "../global";
+// import {Post} from "../dto/post";
+// import {PromiseView} from "../promise-view";
+// import { QueueService } from '../services/queue_service';
+// import { Profile } from '../dto/profile';
+// var $$ = Dom7
+
+// class PostController {
+
+//     quill: any
+
+//     constructor(
+//       private queueService: QueueService,
+//       private publicPostService:PublicPostService,
+//       private profileService:ProfileService,
+//       private quillService:QuillService,
+//       private uploadService:UploadService) {
+//         const self = this;
+
+
+//         $$(document).on('submit', '#create-post-form', function(e) {
+//           e.preventDefault()
+//           self.postCreateSave(e)
+//         });
 
-        $$(document).on('click', '.bold-button', function(e) {
-          e.preventDefault()
-          self.boldClick(e)
-        })
+//         $$(document).on('click', '.bold-button', function(e) {
+//           e.preventDefault()
+//           self.boldClick(e)
+//         })
 
-        $$(document).on('click', '.italic-button', function(e) {
-          e.preventDefault()
-          self.italicClick(e)
-        })
+//         $$(document).on('click', '.italic-button', function(e) {
+//           e.preventDefault()
+//           self.italicClick(e)
+//         })
 
-        $$(document).on('click', '.link-button', function(e) {
-          e.preventDefault()
-          self.linkClick(e)
-        })
+//         $$(document).on('click', '.link-button', function(e) {
+//           e.preventDefault()
+//           self.linkClick(e)
+//         })
 
-        $$(document).on('click', '.blockquote-button', function(e) {
-          e.preventDefault()
-          self.blockquoteClick(e)
-        })
+//         $$(document).on('click', '.blockquote-button', function(e) {
+//           e.preventDefault()
+//           self.blockquoteClick(e)
+//         })
 
-        $$(document).on('click', '.header-1-button', function(e) {
-          e.preventDefault()
-          self.header1Click(e)
-        })
+//         $$(document).on('click', '.header-1-button', function(e) {
+//           e.preventDefault()
+//           self.header1Click(e)
+//         })
 
-        $$(document).on('click', '.header-2-button', function(e) {
-          e.preventDefault()
-          self.header2Click(e)
-        })
+//         $$(document).on('click', '.header-2-button', function(e) {
+//           e.preventDefault()
+//           self.header2Click(e)
+//         })
 
-        $$(document).on('click', '.divider-button', function(e) {
-          e.preventDefault()
-          self.dividerClick(e)
-        })
+//         $$(document).on('click', '.divider-button', function(e) {
+//           e.preventDefault()
+//           self.dividerClick(e)
+//         })
 
-        $$(document).on('click', '.image-button', function(e) {
-          e.preventDefault()
-          self.imageClick(e)
-        })
+//         $$(document).on('click', '.image-button', function(e) {
+//           e.preventDefault()
+//           self.imageClick(e)
+//         })
 
-        $$(document).on('change', '.image-button-input', async function(e) {
-          e.preventDefault()
-          await self.imageSelected(this)
-        })
+//         $$(document).on('change', '.image-button-input', async function(e) {
+//           e.preventDefault()
+//           await self.imageSelected(this)
+//         })
 
-        $$(document).on('click', '.video-button', function(e) {
-          e.preventDefault()
-          self.videoClick(e)
-        })
+//         $$(document).on('click', '.video-button', function(e) {
+//           e.preventDefault()
+//           self.videoClick(e)
+//         })
 
-        $$(document).on('change', '.video-button-input', async function(e) {
-          e.preventDefault()
-          await self.videoSelected(this)
-        })
+//         $$(document).on('change', '.video-button-input', async function(e) {
+//           e.preventDefault()
+//           await self.videoSelected(this)
+//         })
 
-        $$(document).on('click', '.cover-photo-img', function(e) {
-          e.preventDefault()
-          self.selectCoverPhoto(e)
-        })
-    }
+//         $$(document).on('click', '.cover-photo-img', function(e) {
+//           e.preventDefault()
+//           self.selectCoverPhoto(e)
+//         })
+//     }
 
-    initializeQuill(selector) {
-      this.quill = this.quillService.buildQuillPostEditor(selector)
-    }
+//     initializeQuill(selector) {
+//       this.quill = this.quillService.buildQuillPostEditor(selector)
+//     }
 
-    async showCreatePost() : Promise<ModelView> {
-      return new ModelView({},  'pages/post/create.html')
-    }
+//     async showCreatePost() : Promise<ModelView> {
+//       return new ModelView({},  'pages/post/create.html')
+//     }
 
-    async showPost(id:string) : Promise<ModelView> {
+//     async showPost(id:string) : Promise<ModelView> {
 
-        let post = await this.publicPostService.read(id)
+//         let post = await this.publicPostService.read(id)
 
-        //Show the edit button to the owner
-        let currentUser;
+//         //Show the edit button to the owner
+//         let currentUser;
 
-        try {
-          currentUser = await this.profileService.read(window['currentAccount'])
-        } catch(ex) {
-          console.log("Profile doesn't exist");
-        }
+//         try {
+//           currentUser = await this.profileService.read(window['currentAccount'])
+//         } catch(ex) {
+//           console.log("Profile doesn't exist");
+//         }
 
-        let model = {
-          post: post,
-          showEditLink: (currentUser && currentUser.id == post.owner)
-        }
+//         let model = {
+//           post: post,
+//           showEditLink: (currentUser && currentUser.id == post.owner)
+//         }
 
-        return new ModelView(model, 'pages/post/show.html')
+//         return new ModelView(model, 'pages/post/show.html')
 
-    }
+//     }
 
-    async showPostList() : Promise<ModelView> {
+//     async showPostList() : Promise<ModelView> {
 
-        let posts = await this.publicPostService.getRecentPosts({limit: 10})
+//         let posts = await this.publicPostService.getRecentPosts({limit: 10})
 
-        let model = {
-          posts: posts
-        }
+//         let model = {
+//           posts: posts
+//         }
 
-        return new ModelView(model, 'pages/post/list.html')
+//         return new ModelView(model, 'pages/post/list.html')
 
-    }
+//     }
 
-    async showPostEdit(cid:string) : Promise<ModelView> {
+//     async showPostEdit(cid:string) : Promise<ModelView> {
 
-        let post = await this.publicPostService.read(cid)
+//         let post = await this.publicPostService.read(cid)
 
-        let model = {
-          post: post
-        }
+//         let model = {
+//           post: post
+//         }
 
-        return new ModelView(model, 'pages/post/edit.html')
+//         return new ModelView(model, 'pages/post/edit.html')
 
-    }
+//     }
 
-    async postCreateSave(e): Promise<void> {
+//     async postCreateSave(e): Promise<void> {
 
-      try {
+//       try {
 
-        //Get data
-        const postData: Post = await this._getPostData('#create-post-form')
+//         //Get data
+//         const postData: Post = await this._getPostData('#create-post-form')
 
-        let cid:string = await this.publicPostService.create(postData)
+//         let cid:string = await this.publicPostService.create(postData)
 
-        //Redirect to home page
-        Global.navigate('/post/show/' + cid)
+//         //Redirect to home page
+//         Global.navigate('/post/show/' + cid)
 
-      } catch (ex) {
-        Global.showExceptionPopup(ex)
-      }
+//       } catch (ex) {
+//         Global.showExceptionPopup(ex)
+//       }
 
-    }
+//     }
 
-    async _getPostData(formId: string) : Promise<Post> {
+//     async _getPostData(formId: string) : Promise<Post> {
 
-      //Get data
-      let postData: Post = <Post> Global.app.form.convertToData(formId)
+//       //Get data
+//       let postData: Post = <Post> Global.app.form.convertToData(formId)
 
-      //Get date
-      // postData.dateCreated = new Date().toJSON().toString()
+//       //Get date
+//       // postData.dateCreated = new Date().toJSON().toString()
 
-      //Get author info
-      postData.owner = window['currentAccount']
+//       //Get author info
+//       postData.owner = window['currentAccount']
 
-      //Add main photo
+//       //Add main photo
 
-      //Get story contents. Quill delta
-      // postData.content = this.quill.getContents()
+//       //Get story contents. Quill delta
+//       postData.content = this.quill.getContents()
 
 
-      return postData
-    }
+//       return postData
+//     }
 
 
-    /***EDITOR ACTIONS**/
-    boldClick(e) {
-      const currentFormat = this.quill.getFormat()
-      this.quill.format('bold', !currentFormat.bold)
-    }
+//     /***EDITOR ACTIONS**/
+//     boldClick(e) {
+//       const currentFormat = this.quill.getFormat()
+//       this.quill.format('bold', !currentFormat.bold)
+//     }
 
-    italicClick(e) {
-      const currentFormat = this.quill.getFormat()
-      this.quill.format('italic', !currentFormat.italic)
-    }
+//     italicClick(e) {
+//       const currentFormat = this.quill.getFormat()
+//       this.quill.format('italic', !currentFormat.italic)
+//     }
 
-    linkClick(e) {
-      let value = prompt('Enter link URL');
-      this.quill.format('link', value)
-    }
+//     linkClick(e) {
+//       let value = prompt('Enter link URL');
+//       this.quill.format('link', value)
+//     }
 
-    blockquoteClick(e) {
-      const currentFormat = this.quill.getFormat()
-      this.quill.format('blockquote', !currentFormat.blockquote);
-    }
+//     blockquoteClick(e) {
+//       const currentFormat = this.quill.getFormat()
+//       this.quill.format('blockquote', !currentFormat.blockquote);
+//     }
 
-    header1Click(e) {
-      const currentFormat = this.quill.getFormat()
-      this.quill.format('header', currentFormat.header ? undefined : 1);
-    }
+//     header1Click(e) {
+//       const currentFormat = this.quill.getFormat()
+//       this.quill.format('header', currentFormat.header ? undefined : 1);
+//     }
 
-    header2Click(e) {
-      const currentFormat = this.quill.getFormat()
-      this.quill.format('header', currentFormat.header ? undefined : 2);
-    }
+//     header2Click(e) {
+//       const currentFormat = this.quill.getFormat()
+//       this.quill.format('header', currentFormat.header ? undefined : 2);
+//     }
 
-    dividerClick(e) {
+//     dividerClick(e) {
 
-      let range = this.quill.getSelection(true)
+//       let range = this.quill.getSelection(true)
 
-      this.quill.insertText(range.index, '\n', Quill.sources.USER)
+//       this.quill.insertText(range.index, '\n', Quill.sources.USER)
 
-      this.quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER)
+//       this.quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER)
 
-      this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+//       this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
 
-    }
+//     }
 
-    imageClick(e) {
+//     imageClick(e) {
 
-      const imageButtonInput = $$(".image-button-input");
-      imageButtonInput.click()
+//       const imageButtonInput = $$(".image-button-input");
+//       imageButtonInput.click()
 
-    }
+//     }
 
-    //TODO: move to service
-    async imageSelected(fileElement: Element): Promise<void> {
+//     //TODO: move to service
+//     async imageSelected(fileElement: Element): Promise<void> {
 
-      let imageCid = await this.uploadService.uploadFile(fileElement)
+//       let imageCid = await this.uploadService.uploadFile(fileElement)
 
 
-      let range = this.quill.getSelection(true)
+//       let range = this.quill.getSelection(true)
 
-      this.quill.insertText(range.index, '\n', Quill.sources.USER)
+//       this.quill.insertText(range.index, '\n', Quill.sources.USER)
 
-      this.quill.insertEmbed(range.index, 'ipfsimage', {ipfsCid: imageCid} , Quill.sources.USER)
+//       this.quill.insertEmbed(range.index, 'ipfsimage', {ipfsCid: imageCid} , Quill.sources.USER)
 
-      this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+//       this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
 
-      //Make it the cover photo
-      $$('input[name="coverPhoto"]').val(imageCid)
+//       //Make it the cover photo
+//       $$('input[name="coverPhoto"]').val(imageCid)
 
-      this.loadCoverPhotos()
+//       this.loadCoverPhotos()
 
-    }
+//     }
 
 
-    //TODO: load this from a template7 template somehow instead
-    loadCoverPhotos() : void {
+//     //TODO: load this from a template7 template somehow instead
+//     loadCoverPhotos() : void {
 
-      const images = this.publicPostService.getImagesFromPostContentOps(this.quill.getContents().ops)
+//       const images = this.publicPostService.getImagesFromPostContentOps(this.quill.getContents().ops)
 
-      $$('.cover-photo-img-wrapper').empty()
-      $$('.cover-photo-preview').hide()
+//       $$('.cover-photo-img-wrapper').empty()
+//       $$('.cover-photo-preview').hide()
 
 
-      if (images.length > 0) {
-        $$('.cover-photo-preview').show()
-      }
+//       if (images.length > 0) {
+//         $$('.cover-photo-preview').show()
+//       }
 
 
-      for (let imageCid of images) {
+//       for (let imageCid of images) {
 
-        const imgElement = $$('<img>')
-        imgElement.attr("src", Template7.global.ipfsGateway + '/' + imageCid)
-        imgElement.data("image-cid", imageCid)
-        imgElement.addClass("cover-photo-img")
+//         const imgElement = $$('<img>')
+//         imgElement.attr("src", Template7.global.ipfsGateway + '/' + imageCid)
+//         imgElement.data("image-cid", imageCid)
+//         imgElement.addClass("cover-photo-img")
 
-        $$('.cover-photo-img-wrapper').append(imgElement)
+//         $$('.cover-photo-img-wrapper').append(imgElement)
 
-      }
+//       }
 
-      this.setCoverPhoto($$('input[name="coverPhoto"]').val())
+//       this.setCoverPhoto($$('input[name="coverPhoto"]').val())
 
-    }
+//     }
 
-    selectCoverPhoto(e) : void {
-      this.setCoverPhoto($$(e.target).data("image-cid"))
-    }
+//     selectCoverPhoto(e) : void {
+//       this.setCoverPhoto($$(e.target).data("image-cid"))
+//     }
 
-    //TODO: can definitely be nicer.
-    setCoverPhoto(imageCid: string) : void {
+//     //TODO: can definitely be nicer.
+//     setCoverPhoto(imageCid: string) : void {
 
-      $$('input[name="coverPhoto"]').val(imageCid)
+//       $$('input[name="coverPhoto"]').val(imageCid)
 
-      $$('.cover-photo-img-wrapper img').removeClass('selected')
+//       $$('.cover-photo-img-wrapper img').removeClass('selected')
 
-      $$('.cover-photo-img-wrapper img').each(function(index, item) {
-        if ($$(item).data("image-cid") == imageCid) {
-          $$(item).addClass('selected')
-        }
-      })
+//       $$('.cover-photo-img-wrapper img').each(function(index, item) {
+//         if ($$(item).data("image-cid") == imageCid) {
+//           $$(item).addClass('selected')
+//         }
+//       })
 
-    }
+//     }
 
 
-    videoClick(e: Event) : void {
-      const videoButtonInput = $$(".video-button-input");
-      videoButtonInput.click()
-    }
+//     videoClick(e: Event) : void {
+//       const videoButtonInput = $$(".video-button-input");
+//       videoButtonInput.click()
+//     }
 
 
-    //TODO: move to service
-    async videoSelected(fileElement: Element) {
+//     //TODO: move to service
+//     async videoSelected(fileElement: Element) {
 
-      let videoCid = await this.uploadService.uploadFile(fileElement)
+//       let videoCid = await this.uploadService.uploadFile(fileElement)
 
-      let range = this.quill.getSelection(true)
+//       let range = this.quill.getSelection(true)
 
 
-      this.quill.insertText(range.index, '\n', Quill.sources.USER)
+//       this.quill.insertText(range.index, '\n', Quill.sources.USER)
 
 
-      this.quill.insertEmbed(range.index, 'ipfsvideo', {ipfsCid: videoCid} , Quill.sources.USER)
+//       this.quill.insertEmbed(range.index, 'ipfsvideo', {ipfsCid: videoCid} , Quill.sources.USER)
 
 
-      this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
+//       this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
 
-    }
+//     }
 
 
 
 
-}
+// }
 
 
-export {  PostController }
+// export {  PostController }

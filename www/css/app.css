@@ -189,7 +189,7 @@ hr:before {
   width: 100px;
   display: inline-block;
 }
-
+/* 
 .list .item-title {
   font-weight: normal;
   white-space: normal;
@@ -221,7 +221,7 @@ hr:before {
   font-weight: 400;
   line-height: 20px;
   opacity: 0.54;
-}
+} */
 
 
 .profile-thumbnail-tiny {
@@ -235,10 +235,29 @@ hr:before {
   vertical-align: middle;
 }
 
-.item-media {
+/* .item-media {
   width: 100px;
 
+} */
+
+.list .item-media img {
+  max-width: 49px;
+  max-height: 49px;
+  border-radius: 50%;
 }
+
+.list .post-owner {
+  color: var(--f7-list-item-text-text-color);
+  max-width: 60x;
+  font-size: 11px;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+
+.list .post-owner-display {
+  font-weight: bold;
+}
+
 
 .no-results {
   display: none;

@@ -31,6 +31,12 @@ class ProfileService {
   }
 
 
+  async getCurrentUser() : Promise<Profile> {
+
+    return this.read(window['currentAccount'])
+
+  }
+
 }
 
 

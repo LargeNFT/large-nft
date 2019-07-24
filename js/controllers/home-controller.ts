@@ -129,14 +129,15 @@ class HomeController {
     // return if empty message
     if (!content) return
 
-    let date: string = moment().format().toString()
+    let dateString: string = moment().format().toString()
+ 
 
     let profile: Profile = await this.profileService.getCurrentUser()
 
     let post: Post = {
       owner: window['currentAccount'],
       ownerDisplayName: (profile && profile.name) ? profile.name : window['currentAccount'],
-      dateCreated: date,
+      dateCreated: dateString,
       content: content
     }
 
@@ -145,7 +146,6 @@ class HomeController {
       post.ownerProfilePic = profile.profilePic
     }
 
-    console.log(post)
 
     await this.publicPostService.create(post)
 
@@ -170,7 +170,7 @@ class HomeController {
       content: post.contentTranslated
     }
 
-    if (post.ownerDisplayName) {
+    if (post.ownerDisplayName != post.owner) {
       message.ownerDisplayName = post.ownerDisplayName
       message.owner = post.owner
     } else {
@@ -181,23 +181,19 @@ class HomeController {
     if (post.ownerProfilePic) {
       message.profilePic = `${Global.ipfsGateway}/${post.ownerProfilePic}`
     }
-
-      
-    console.log(post.dateCreated)
-
-    let date = moment(post.dateCreated).fromNow()
     
-    message.dateCreated = date 
-
+    message.dateCreated = moment(post.dateCreated).fromNow() 
 
 
     let postTemplate = this._getPostTemplate()
 
+    
+
     let postHtml = postTemplate(message)
 
+    console.log(message)
+
     $$('#post-list').prepend(postHtml)
-
-
 
   }
 

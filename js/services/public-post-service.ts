@@ -32,13 +32,9 @@ class PublicPostService {
   }
 
 
-
-
   async delete(cid:string) : Promise<void> {
     return this.store.remove(cid)
   }
-
-
 
 
   async getRecentPosts(options) : Promise<Post[]> {
@@ -69,53 +65,6 @@ class PublicPostService {
 
   }
 
-
-
-
-
-
-  // async getDescending(limit: number, offset: Number) : Promise<Post[]> {
-  //   let posts : Post[] = await this.freedom.readListDescending(POST_REPO, limit, offset)
-  //   await this._lazyLoadPosts(posts)
-
-  //   return posts
-
-  // }
-
-  // async getByOwner(owner: string, limit: number, offset: number) : Promise<Post[]> {
-
-  //   let posts : Post[] = await this.freedom.readOwnedListDescending(POST_REPO, owner, limit, offset)
-
-  //   await this._lazyLoadPosts(posts)
-
-  //   return posts
-
-  // }
-
-
-  // async getCount() : Promise<number> {
-  //   return this.freedom.count(POST_REPO)
-  // }
-
-  // async getCountByOwner(owner: string) : Promise<number> {
-  //   return this.freedom.countOwned(POST_REPO, owner)
-  // }
-
-
-
-  // async _lazyLoadPosts(posts: Post[]) {
-  //   //Fetch authors
-  //   for (const post of posts) {
-  //     await this._postFetchAuthor(post)
-  //   }
-  // }
-
-
-  // async _postFetchAuthor(post: Post) : Promise<void> {
-  //   if (post.authorId) {
-  //     post.author = await this.profileService.getProfileById(post.authorId)
-  //   }
-  // }
 
 
   getImagesFromPostContentOps(ops : any) {
@@ -164,11 +113,6 @@ class PublicPostService {
 
 
     post.contentTranslated = qdc.convert();
-
-    //Convert date
-    post.dateCreated = new Date(post.dateCreated).toDateString()
-
-    //TODO: Probably put max display lengths here somewhere. Since we can't really verify on the way in.
 
 
   }

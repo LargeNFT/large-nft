@@ -59,8 +59,6 @@ class PublicPostService {
                           }
     )
 
-    // posts.reverse()
-
     return posts
 
   }

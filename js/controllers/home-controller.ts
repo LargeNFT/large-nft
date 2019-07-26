@@ -40,10 +40,11 @@ class HomeController {
       self.postMessage(e)
     })
 
-    $$(document).on('click', 'a.toggle-sheet', function (e) {
+    $$(document).on('click', '.delete-post', function (e) {
       e.preventDefault()
-      self.sheetToggle(e);
+      self.deletePost(e)
     })
+
 
     $$(document).on('click', '.bold-button', function (e) {
       e.preventDefault()
@@ -149,16 +150,13 @@ class HomeController {
 
     await this.publicPostService.create(post)
 
-    // // Clear area
-    // this._messagebar.clear()
-
-    // // Return focus to area
-    // this._messagebar.focus()
 
 
     // Add message to messages
     this._addPost(post)
 
+    this.quill.setText('')
+    this.quill.focus()
 
 
   }
@@ -167,6 +165,7 @@ class HomeController {
   _addPost(post: Post) {
 
     let message: any = {
+      _id: post._id,
       content: post.contentTranslated
     }
 
@@ -184,19 +183,31 @@ class HomeController {
     
     message.dateCreated = moment(post.dateCreated).fromNow() 
 
-
-    let postTemplate = this._getPostTemplate()
+    if (post.owner == window["currentAccount"]) {
+      message.showDelete = true
+    }
 
     
 
+    let postTemplate = this._getPostTemplate()
     let postHtml = postTemplate(message)
 
-    console.log(message)
 
     $$('#post-list').prepend(postHtml)
 
   }
 
+  async deletePost(e:Event) {
+
+    //Grab the id off the link
+    let deleteLink = $$(e.target).parent()
+    let id = deleteLink.data('id')
+
+    await this.publicPostService.delete(id)
+
+    $$('#post_' + id).remove()
+
+  }
 
   boldClick(e) {
     const currentFormat = this.quill.getFormat()
@@ -264,11 +275,6 @@ class HomeController {
 
   }
 
-  sheetToggle(e: Event): void {
-    // this._messagebar.sheetToggle()
-  }
-
-
 
   _getPostTemplate() {
 
@@ -277,14 +283,27 @@ class HomeController {
       this._postTemplate = Template7.compile(
         `
         <li>
-          <div class="item-content">
+          <div class="item-content" id="post_{{_id}}">
             <div class="item-media">
               <img src="{{profilePic}}">
             </div>
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span> <div class="post-owner">{{owner}}</div></div>
-                <div class="item-after">{{dateCreated}}</div>
+                <div class="item-after">
+      
+                  {{dateCreated}}
+
+                  {{#if showDelete}}
+                    <a class="link delete-post" href="#" data-id="{{_id}}" >
+                      <i class="icon f7-icons if-not-md">delete</i>
+                      <i class="icon material-icons md-only">delete</i>
+                    </a>
+                  {{/if}}
+
+
+                
+                </div>
               </div>
               <div class="item-subtitle">{{content}}</div>
             </div>

@@ -43,7 +43,7 @@ class IdentityService {
 
     getAccessController(orbitdb) {
         return {
-            write: [orbitdb.identity.id]
+            write: ['*']//[orbitdb.identity.id]
         }
     }
 

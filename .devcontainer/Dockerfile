@@ -58,9 +58,6 @@ EXPOSE 8081
 EXPOSE 8545
 
 
-COPY start.sh start.sh 
-
-ENTRYPOINT ./start.sh 
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog

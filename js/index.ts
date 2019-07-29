@@ -8,6 +8,7 @@ import { QueueService } from "./services/queue_service";
 import { TemplateService } from "./services/template-service";
 import { SettingsController } from "./controllers/settings-controller";
 import { IdentityService } from "./services/identity-service";
+import { SchemaService } from "./services/schema-service";
 
 
 const moment = require('moment')
@@ -30,8 +31,9 @@ module.exports = function() {
   Global.identityService = new IdentityService()
   Global.settingsService = new SettingsService()
   Global.templateService = new TemplateService()
+  Global.schemaService = new SchemaService()
   Global.queueService = new QueueService(Global.templateService)
-  Global.routeService = new RouteService(Global.settingsService, Global.identityService)
+  Global.routeService = new RouteService(Global.settingsService, Global.identityService, Global.schemaService)
   Global.settingsController = new SettingsController(Global.settingsService)
 
   //Template7 helpers

@@ -26,6 +26,8 @@ import { ProfileController } from "../controllers/profile-controller";
 import { SettingsController } from "../controllers/settings-controller";
 import { UploadService } from "./upload-service";
 import { IdentityService } from "./identity-service";
+import { Schema } from "../dto/schema";
+import { SchemaService } from "./schema-service";
 
 
 const promisify = (inner) =>
@@ -43,7 +45,8 @@ class RouteService {
 
   constructor(
     private settingsService: SettingsService,
-    private identityService: IdentityService
+    private identityService: IdentityService,
+    private schemaService: SchemaService
   ) {}
 
 
@@ -182,6 +185,8 @@ class RouteService {
 
   async initialize() {
 
+  
+
     if (Global.ipfs) return
 
     let settings:Settings = this.settingsService.getSettings()
@@ -238,48 +243,25 @@ class RouteService {
       identity: identity
     })
 
-    let ac = this.identityService.getAccessController(Global.orbitDb)
+    Global.orbitAccessControl = this.identityService.getAccessController(Global.orbitDb)
 
 
     if (!settings.dbAddress) {
-      await this.settingsService.generateDatabase(Global.orbitDb, ac)
+      await this.settingsService.generateDatabase(Global.orbitDb, Global.orbitAccessControl)
       settings = this.settingsService.getSettings()
     }
 
-    
-
+  
 
     //Look up main address
-    let address = OrbitDB.parseAddress(settings.dbAddress)
-
-    Global.mainDb = await Global.orbitDb.open(address.toString())
-    await Global.mainDb.load()
-
-
-    //Look up post feed address from mainDb
-    let postFeedAddress = await Global.mainDb.get('postFeed')
-    postFeedAddress = OrbitDB.parseAddress(postFeedAddress[0].path)
-
-    //Look up profile table address from mainDb
-    let profileTableAddress = await Global.mainDb.get('profileTable')
-    profileTableAddress = OrbitDB.parseAddress(profileTableAddress[0].path) 
-
-
-    //Open profile table
-    Global.profileTable = await Global.orbitDb.docstore(profileTableAddress.toString(), {
-      accessController: ac
-    })
+    await this.schemaService.loadMainStore(settings.dbAddress)
     
-    console.log('Loading profile table')
-    await Global.profileTable.load()
+    let schema:Schema = await this.schemaService.getSchema(Global.mainDb)
 
-    //Open post feed
-    Global.postFeed = await Global.orbitDb.feed(postFeedAddress.toString(), {
-      accessController: ac
-    })
-    
-    console.log('Loading post feed')
-    await Global.postFeed.load(100)
+
+    //Open profile store
+    await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
+    await this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
 
 
     console.log('Orbit loaded')
@@ -287,7 +269,7 @@ class RouteService {
       
     Global.publicPostService = new PublicPostService(Global.postFeed)
     Global.quillService = new QuillService()
-    Global.profileService = new ProfileService(Global.profileTable)
+    Global.profileService = new ProfileService(Global.profileStore)
     Global.uploadService = new UploadService()
 
     Global.homeController = new HomeController(Global.publicPostService, Global.profileService, Global.templateService, Global.quillService, Global.uploadService)

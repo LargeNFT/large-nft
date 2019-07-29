@@ -12,11 +12,13 @@ import { PublicPostService } from "./services/public-post-service";
 import { UploadService } from "./services/upload-service";
 import { inherits } from "util";
 import { IdentityService } from "./services/identity-service";
+import { SchemaService } from "./services/schema-service";
 
 
 export namespace Global {  
   
   /* These 4 are part of every app */
+  export var schemaService: SchemaService
   export var identityService: IdentityService
   export var templateService: TemplateService
   export var settingsService: SettingsService
@@ -39,11 +41,12 @@ export namespace Global {
 
   /** Orbit db api reference */
   export var orbitDb: any
+  export var orbitAccessControl: any 
 
 
   /** Orbit db tables */
   export var mainDb: any
-  export var profileTable:any 
+  export var profileStore:any 
   export var postFeed: any 
 
   /** IPFS api client */

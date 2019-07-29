@@ -126,9 +126,12 @@ class HomeController {
   async postMessage(e: Event): Promise<void> {
 
     let content = this.quill.getContents()
+    let length = this.quill.getLength()
 
-    // return if empty message
-    if (!content) return
+
+    // return if empty message. quill length is 1 if it's empty
+    if (length == 1) return
+
 
     let dateString: string = moment().format().toString()
  
@@ -149,7 +152,6 @@ class HomeController {
 
 
     await this.publicPostService.create(post)
-
 
 
     // Add message to messages

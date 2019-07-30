@@ -1,6 +1,6 @@
-var RecordService = artifacts.require("RecordService");
+var WhitePages = artifacts.require("Whitepages");
 
 
 module.exports = function(deployer) {
-  deployer.deploy(RecordService);
+  deployer.deploy(WhitePages);
 };

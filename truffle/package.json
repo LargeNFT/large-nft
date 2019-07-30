@@ -6,7 +6,7 @@
     "watch": "watchify --debug -s Tests -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./test/tests.ts -p [ tsify  ] -o ./test/tests-runnable.js -v"
   },
   "dependencies": {
-    "truffle": "5.0.5",
+    "truffle": "5.0.29",
     "truffle-hdwallet-provider": "1.0.3",
     "dotenv": "6.2.0",
     "loom-truffle-provider": "0.13.0",

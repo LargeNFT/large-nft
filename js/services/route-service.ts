@@ -263,7 +263,6 @@ class RouteService {
     await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
     await this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
 
-
     console.log('Orbit loaded')
 
       

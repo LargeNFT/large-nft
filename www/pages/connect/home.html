@@ -1,0 +1,86 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="home">
+
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+
+        </div>
+        <div class="right">
+          <a class="link" href="/settings">
+            <i class="f7-icons">gear_fill</i>
+          </a>
+
+          <a class="link" href="/profile/show">
+            <i class="f7-icons">person</i>
+          </a>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+
+    <div class="page-content">
+
+      <div class="row">
+        <div class="block col-100 tablet-50 center">
+          
+          <div class="block">
+            Current orbit address: {{registeredOrbitAddress}}
+          </div>
+
+          <div class="">
+            <a href="#" id="register-link">Register</a>
+            <a href="#" id="update-register-link">Update Registration</a>
+          </div>
+
+          <div class="list media-list">
+            Listings
+
+            {{#each listings}}
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">Address: {{owner}}</div>
+              </div>
+              <div class="item-subtitle">OrbitCid: {{orbitCid}}</div>
+            </div>
+            {{/each}}
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+
+
+  </div>
+
+</template>
+
+
+
+
+
+
+<script>
+  return {
+    on: {
+      pageInit: async function (e, page) {
+
+      }
+    }
+  }
+</script>

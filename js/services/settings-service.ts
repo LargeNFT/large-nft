@@ -25,9 +25,9 @@ class SettingsService {
 
     console.log('Generating database')
 
-    let nameSeed = this._uuidv4()
+    let nameSeed = window['currentAccount']
 
-    let mainStoreName = 'mainStore' //`mainStore-${nameSeed}`
+    let mainStoreName = `mainStore-${nameSeed}`
     let mainDb = await orbitdb.docstore(mainStoreName, {
       create: true,
       indexBy: 'name',
@@ -36,7 +36,7 @@ class SettingsService {
 
     console.log('Created main schema')
 
-    let profileStoreName = 'profile' //`profile-${nameSeed}`
+    let profileStoreName = `profile-${nameSeed}`
     let profileStore = await orbitdb.docstore(profileStoreName, {
       create: true,
       indexBy: 'name',
@@ -46,7 +46,7 @@ class SettingsService {
 
     console.log('Created profile store')
 
-    let postFeedName = 'post' //`post-${nameSeed}`
+    let postFeedName = `post-${nameSeed}`
     let postFeed = await orbitdb.feed(postFeedName, {
       create: true,
       accessController: accessController

@@ -9,6 +9,7 @@ import { TemplateService } from "./services/template-service";
 import { SettingsController } from "./controllers/settings-controller";
 import { IdentityService } from "./services/identity-service";
 import { SchemaService } from "./services/schema-service";
+import { WhitepagesService } from "./services/whitepages-service";
 
 
 const moment = require('moment')

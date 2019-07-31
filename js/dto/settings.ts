@@ -5,6 +5,8 @@ interface Settings {
   ipfsGatewayPort?: Number
 
   dbAddress?: string 
+  whitepagesContractAddress?: string 
+  whitepagesContractTxHash?: string 
 
 
 }

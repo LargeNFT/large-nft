@@ -29,6 +29,18 @@ contract('WhitePages', async (accounts) => {
 
     });
 
+
+    //@ts-ignore
+    it("Should read empty string when reading accounts that don't exist", async () => {
+
+        //Act
+        let cid = await whitePages.read(accounts[0])
+
+        assert.equal(cid, "")
+
+    });
+
+
     //@ts-ignore
     it("Should create a record and verify the info is stored in contract", async () => {
 
@@ -167,6 +179,7 @@ contract('WhitePages', async (accounts) => {
     //@ts-ignore    
     it("Should read all the records we've created so far by index", async () => {
 
+        let _0 = await whitePages.readByIndex(0)
         let _1 = await whitePages.readByIndex(1)
         let _2 = await whitePages.readByIndex(2)
         let _3 = await whitePages.readByIndex(3)
@@ -175,13 +188,29 @@ contract('WhitePages', async (accounts) => {
         let _6 = await whitePages.readByIndex(6)
         let _7 = await whitePages.readByIndex(7)
 
-        assert.equal(_1, "TdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78MQ")
-        assert.equal(_2, "MdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iF")
-        assert.equal(_3, "GdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iB")
-        assert.equal(_4, "AdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iA")
-        assert.equal(_5, "RdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iY")
-        assert.equal(_6, "VXLTM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78MQ")
-        assert.equal(_7, "CRLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b7ViB")
+        assert.equal(_0.orbitCid, "TdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iT")
+        assert.equal(_0.owner, accounts[0])
+
+        assert.equal(_1.orbitCid, "TdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78MQ")
+        assert.equal(_1.owner, accounts[1])
+
+        assert.equal(_2.orbitCid, "MdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iF")
+        assert.equal(_2.owner, accounts[2])
+        
+        assert.equal(_3.orbitCid, "GdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iB")
+        assert.equal(_3.owner, accounts[3])
+        
+        assert.equal(_4.orbitCid, "AdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iA")
+        assert.equal(_4.owner, accounts[4])
+        
+        assert.equal(_5.orbitCid, "RdLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78iY")
+        assert.equal(_5.owner, accounts[5])
+
+        assert.equal(_6.orbitCid, "VXLTM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b78MQ")
+        assert.equal(_6.owner, accounts[6])
+        
+        assert.equal(_7.orbitCid, "CRLuM31DmfwJYHi9FJPoSqLf9fepy6o2qcdk88t9w395b7ViB")
+        assert.equal(_7.owner, accounts[7])
 
     });
 

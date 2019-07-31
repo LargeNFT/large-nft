@@ -13,11 +13,14 @@ import { UploadService } from "./services/upload-service";
 import { inherits } from "util";
 import { IdentityService } from "./services/identity-service";
 import { SchemaService } from "./services/schema-service";
+import { WhitepagesService } from "./services/whitepages-service";
+import { ConnectController } from "./controllers/connect-controller";
 
 
 export namespace Global {  
   
   /* These 4 are part of every app */
+  export var whitepagesService: WhitepagesService
   export var schemaService: SchemaService
   export var identityService: IdentityService
   export var templateService: TemplateService
@@ -29,6 +32,7 @@ export namespace Global {
   export var homeController: HomeController
   export var profileController: ProfileController
   export var settingsController: SettingsController
+  export var connectController: ConnectController
 
   /** App specific services */
   export var publicPostService:PublicPostService
@@ -45,7 +49,7 @@ export namespace Global {
 
 
   /** Orbit db tables */
-  export var mainDb: any
+  export var mainStore: any
   export var profileStore:any 
   export var postFeed: any 
 

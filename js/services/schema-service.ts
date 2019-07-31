@@ -11,25 +11,31 @@ class SchemaService {
     async loadMainStore(storeAddress) {
 
         let address = OrbitDB.parseAddress(storeAddress)
-        Global.mainDb = await Global.orbitDb.open(address.toString())
+        let mainStore = await Global.orbitDb.open(address.toString())
 
-        await Global.mainDb.load()
+        await mainStore.load()
+
+        return mainStore
 
     }
 
     async loadProfileStore(storeAddress, accessController) {
 
-        Global.profileStore = await this.openDocstore(storeAddress, accessController)
+        let profileStore = await this.openDocstore(storeAddress, accessController)
 
-        await Global.profileStore.load()
+        await profileStore.load()
+
+        return profileStore
     }
 
 
     async loadPostFeed(storeAddress, accessController) {
 
-        Global.postFeed = await this.openFeed(storeAddress, accessController)
+        let postFeed = await this.openFeed(storeAddress, accessController)
 
-        await Global.postFeed.load(100)
+        await postFeed.load(100)
+
+        return postFeed
     }
 
 
@@ -40,6 +46,20 @@ class SchemaService {
         let schema:Schema = results[0].value
 
         return schema 
+    }
+
+    async getSchemaByAddress(mainStoreAddress:string) : Promise<Schema> {
+
+        let address = OrbitDB.parseAddress(mainStoreAddress)
+        let remoteMainStore = await Global.orbitDb.open(address.toString())
+
+        await remoteMainStore.load()
+
+        let results = await remoteMainStore.get('schema')
+        let schema:Schema = results[0].value
+
+        return schema
+
     }
 
 

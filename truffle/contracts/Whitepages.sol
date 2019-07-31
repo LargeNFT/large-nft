@@ -63,15 +63,15 @@ contract Whitepages {
         return addresses.length;
     }
 
-    function readByIndex(uint256 _index) external view returns (string memory orbitCid) {
+    function readByIndex(uint256 _index) external view returns (address owner, string memory orbitCid) {
 
-        require(_index != 0, "You must supply an index");
+        require(_index >= 0, "You must supply an index");
 
         address _address = addresses[_index];
 
         string storage _existing = listingMap[_address];
 
-        return _existing;
+        return (_address, _existing);
     }
 
 }

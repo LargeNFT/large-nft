@@ -17,7 +17,7 @@ const ethers = require('ethers')
 // const level = require('level-js')
 
 
-import * as RecordService from '../../truffle/build/contracts/RecordService.json'
+import * as Whitepages from '../../truffle/build/contracts/Whitepages.json'
 import { HomeController } from "../controllers/home-controller";
 import { PublicPostService } from "./public-post-service";
 import { QuillService } from "./quill-service";
@@ -28,6 +28,8 @@ import { UploadService } from "./upload-service";
 import { IdentityService } from "./identity-service";
 import { Schema } from "../dto/schema";
 import { SchemaService } from "./schema-service";
+import { WhitepagesService } from "./whitepages-service";
+import { ConnectController } from "../controllers/connect-controller";
 
 
 const promisify = (inner) =>
@@ -124,16 +126,16 @@ class RouteService {
 
 
 
-    // routes.push({
-    //   path: '/post/show/:id',
-    //   async async(routeTo, routeFrom, resolve, reject) {
+    routes.push({
+      path: '/connect',
+      async async(routeTo, routeFrom, resolve, reject) {
 
-    //     self.initAndResolve(resolve,function() {
-    //       return Global.postController.showPost(routeTo.params.id)
-    //     })
+        self.initAndResolve(resolve,function() {
+          return Global.connectController.showHome()
+        })
 
-    //   }
-    // })
+      }
+    })
 
     // routes.push({
     //   path: '/post/edit/:id',
@@ -227,6 +229,32 @@ class RouteService {
     window['currentAccount'] = account
 
 
+    //Ropsten
+    Whitepages.networks["3"] = {
+      "events": {},
+      "links": {},
+      "address": settings.whitepagesContractAddress,
+      "transactionHash": settings.whitepagesContractTxHash
+    }
+
+    const truffleContract = TruffleContract(Whitepages);
+
+    let contract
+
+    try {
+        //@ts-ignore
+        truffleContract.setProvider(window.web3Provider)
+        truffleContract.defaults({from: account})
+
+        contract = await truffleContract.deployed()
+        
+    } catch (ex) {
+        console.log(ex)
+    }
+
+    
+
+    
 
     /**
      * Orbit
@@ -254,14 +282,14 @@ class RouteService {
   
 
     //Look up main address
-    await this.schemaService.loadMainStore(settings.dbAddress)
+    Global.mainStore = await this.schemaService.loadMainStore(settings.dbAddress)
     
-    let schema:Schema = await this.schemaService.getSchema(Global.mainDb)
+    let schema:Schema = await this.schemaService.getSchema(Global.mainStore)
 
 
     //Open profile store
-    await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
-    await this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
+    Global.profileStore = await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
+    Global.postFeed = await this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
 
     console.log('Orbit loaded')
 
@@ -270,10 +298,12 @@ class RouteService {
     Global.quillService = new QuillService()
     Global.profileService = new ProfileService(Global.profileStore)
     Global.uploadService = new UploadService()
+    Global.whitepagesService = new WhitepagesService(contract)
 
     Global.homeController = new HomeController(Global.publicPostService, Global.profileService, Global.templateService, Global.quillService, Global.uploadService)
     Global.profileController = new ProfileController(Global.profileService, Global.uploadService, Global.publicPostService, Global.queueService)
     Global.settingsController = new SettingsController(Global.settingsService)
+    Global.connectController = new ConnectController(Global.whitepagesService, Global.schemaService, Global.settingsService, Global.queueService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController

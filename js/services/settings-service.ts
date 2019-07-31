@@ -25,7 +25,7 @@ class SettingsService {
 
     console.log('Generating database')
 
-    let nameSeed = window['currentAccount']
+    let nameSeed = window['currentAccount'].toLowerCase()
 
     let mainStoreName = `mainStore-${nameSeed}`
     let mainDb = await orbitdb.docstore(mainStoreName, {

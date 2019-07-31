@@ -45,13 +45,36 @@ class ConnectController {
 
         let listings:Listing[] = await this.whitepageService.readList(10, 0)
 
+
         //Remove myself
-        listings.forEach( (listing, index) => {
-    
-            if (window['currentAccount'].toLowerCase() == listing.owner.toLowerCase()) {
+        listings.forEach( async (listing, index) => {
+          if (window['currentAccount'].toLowerCase() == listing.owner.toLowerCase()) {
                 listings.splice(index,1);
             }
         });
+
+        for (var listing of listings) {
+            
+            //Rebuild orbit address
+            let orbitAddress = `/orbitdb/${listing.orbitCid}/mainStore-${listing.owner.toLowerCase()}`
+
+            //Try to load the database
+            let friendMainStore = await this.schemaService.loadMainStore(orbitAddress)
+
+            //Read the schema out of it. 
+            let friendSchema:Schema = await this.schemaService.getSchema(friendMainStore)
+
+            //Load post feed
+            let friendPostFeed = await this.schemaService.loadPostFeed(friendSchema.postFeed, Global.orbitAccessControl)
+
+            //Load profile
+            let friendProfileStore = await this.schemaService.loadProfileStore(friendSchema.profileStore, Global.orbitAccessControl)
+
+            console.log(friendPostFeed)
+            console.log(friendProfileStore)
+
+
+        }
 
 
         return new ModelView({

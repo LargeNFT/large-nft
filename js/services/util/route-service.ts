@@ -175,7 +175,7 @@ class RouteService {
     //Doing this because the thing above stopped working for some reason. 
     window['ipfsGateway'] = Template7.global.ipfsGateway
 
-    
+
     Global.ipfsGateway = Template7.global.ipfsGateway
 
 
@@ -249,20 +249,22 @@ class RouteService {
     Global.orbitAccessControl = this.identityService.getAccessController(Global.orbitDb)
 
 
-    if (!settings.dbAddress) {
-      await this.settingsService.generateDatabase(Global.orbitDb, Global.orbitAccessControl)
-      settings = this.settingsService.getSettings()
+    //Look up main address
+    let mainStore = await this.schemaService.getMainStoreByWalletAddress(window['currentAccount'])
+
+
+    //Detect whether or not we already have a schema 
+    let schema:Schema = await this.schemaService.getSchema(mainStore)
+
+    if (!schema) {
+      await this.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore)
+      schema = await this.schemaService.getSchema(mainStore)
     }
 
-  
-
-    //Look up main address
-    Global.mainStore = await this.schemaService.loadMainStore(settings.dbAddress)
     
-    let schema:Schema = await this.schemaService.getSchema(Global.mainStore)
-
-
+    
     //Open profile store
+    Global.mainStore = mainStore
     Global.profileStore = await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
     Global.postFeed = await this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
 
@@ -279,7 +281,7 @@ class RouteService {
     Global.homeController = new HomeController(Global.publicPostService, Global.profileService, Global.templateService, Global.quillService, Global.uploadService)
     Global.profileController = new ProfileController(Global.profileService, Global.uploadService, Global.publicPostService, Global.queueService)
     Global.settingsController = new SettingsController(Global.settingsService)
-    Global.connectController = new ConnectController(Global.whitepagesService, Global.schemaService, Global.settingsService, Global.queueService, Global.listingService)
+    Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController

@@ -93,7 +93,7 @@ class ListingService {
 
 
     private _getOrbitAddress(listing:Listing) : string {
-        return `/orbitdb/${listing.orbitCid}/mainStore-${listing.owner.toLowerCase()}`
+        return this.schemaService.getOrbitAddress(listing.orbitCid, listing.owner)
     }
 
 

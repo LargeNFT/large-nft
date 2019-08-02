@@ -20,8 +20,6 @@ class ConnectController {
 
     constructor(
         private whitepageService: WhitepagesService,
-        private schemaService: SchemaService,
-        private settingService: SettingsService,
         private queueService: QueueService,
         private listingService: ListingService
     ) {
@@ -57,11 +55,7 @@ class ConnectController {
 
     async registerClick(e:Event) {
 
-        let settings:Settings = this.settingService.getSettings()
-
-        let mainDbAddress = settings.dbAddress
-
-        let address = OrbitDB.parseAddress(mainDbAddress)
+        let address = Global.mainStore.address
 
         let viewModel = {
             address: window['currentAccount']
@@ -81,11 +75,7 @@ class ConnectController {
 
     async updateRegisterClick(e:Event) {
 
-        let settings:Settings = this.settingService.getSettings()
-
-        let mainDbAddress = settings.dbAddress
-
-        let address = OrbitDB.parseAddress(mainDbAddress)
+        let address = Global.mainStore.address
 
         let viewModel = {
             address: window['currentAccount']

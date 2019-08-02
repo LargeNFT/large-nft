@@ -28,7 +28,6 @@ class SchemaService {
         return profileStore
     }
 
-
     async loadPostFeed(storeAddress, accessController) {
 
         let postFeed = await this.openFeed(storeAddress, accessController)
@@ -42,8 +41,13 @@ class SchemaService {
 
     async getSchema(store) : Promise<Schema> {
 
+        let schema:Schema 
+
         let results = await store.get('schema')
-        let schema:Schema = results[0].value
+
+        if (results && results[0] && results[0].value) {
+            schema = results[0].value
+        }
 
         return schema 
     }
@@ -55,12 +59,34 @@ class SchemaService {
 
         await remoteMainStore.load()
 
-        let results = await remoteMainStore.get('schema')
-        let schema:Schema = results[0].value
+        return this.getSchema(remoteMainStore)
+    }
 
-        return schema
+    async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
+
+        let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
+
+        return this.getSchema(mainStore)
 
     }
+
+    async getMainStoreByWalletAddress(walletAddress:string) {
+
+        let mainStoreName = this._getMainStoreNameSeed(walletAddress)
+
+
+        let mainStore = await Global.orbitDb.docstore(mainStoreName, {
+          indexBy: 'name',
+          accessController: Global.orbitAccessControl
+        })
+
+        await mainStore.load()
+
+        return mainStore
+
+    }
+
+
 
 
     async openDocstore(address, accessController) {
@@ -80,6 +106,64 @@ class SchemaService {
         })
 
     }
+
+
+
+    getOrbitAddress(orbitCid:string, walletAddress:string) : string {
+        return `/orbitdb/${orbitCid}/mainStore-${walletAddress.toLowerCase()}`
+    }
+
+
+
+    private _getMainStoreNameSeed(walletAddress:string ) {
+        return `mainStore-${walletAddress.toLowerCase()}` 
+    }
+
+    private _getProfileStoreNameSeed(walletAddress:string ) {
+        return `profile-${walletAddress.toLowerCase()}` 
+    }
+    private _getPostFeedNameSeed(walletAddress:string ) {
+        return `post-${walletAddress.toLowerCase()}` 
+    }
+
+
+    async generateSchema(orbitdb, accessController, mainStore) {
+
+        console.log('Generating schema')
+
+        let profileStoreName = this._getProfileStoreNameSeed(window['currentAccount'])
+        let profileStore = await orbitdb.docstore(profileStoreName, {
+          create: true,
+          indexBy: 'name',
+          accessController: accessController
+        })
+    
+    
+        console.log('Created profile store')
+    
+        let postFeedName = this._getPostFeedNameSeed(window['currentAccount'])
+        let postFeed = await orbitdb.feed(postFeedName, {
+          create: true,
+          accessController: accessController
+        })
+    
+        console.log('Created post feed')
+    
+        let schema:Schema = {
+          profileStore: profileStore.address.toString(),
+          postFeed: postFeed.address.toString()
+        }
+    
+        await mainStore.put({
+          name: "schema",
+          value: schema
+        })
+    
+        console.log('Inserted schema into mainStore')
+
+    
+    }
+
 
 
 }

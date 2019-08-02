@@ -302,8 +302,6 @@ class HomeController {
                       <i class="icon material-icons md-only">delete</i>
                     </a>
                   {{/if}}
-
-
                 
                 </div>
               </div>

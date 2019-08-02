@@ -1,6 +1,6 @@
 import { ModelView } from '../model-view'
 import {Dom7} from "framework7";
-import {SettingsService} from "../services/settings-service";
+import {SettingsService} from "../services/util/settings-service";
 import {Global} from "../global";
 
 

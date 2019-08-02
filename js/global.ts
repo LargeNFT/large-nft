@@ -2,24 +2,26 @@ import {HomeController} from "./controllers/home-controller";
 import {SettingsController} from "./controllers/settings-controller";
 import {ProfileController} from "./controllers/profile-controller";
 import Framework7 from "framework7";
-import { RouteService } from "./services/route-service";
+import { RouteService } from "./services/util/route-service";
 import { TemplateService } from "./services/template-service";
-import { SettingsService } from "./services/settings-service";
-import { QuillService } from "./services/quill-service";
+import { SettingsService } from "./services/util/settings-service";
+import { QuillService } from "./services/util/quill-service";
 import { ProfileService } from "./services/profile-service";
-import { QueueService } from "./services/queue_service";
+import { QueueService } from "./services/util/queue_service";
 import { PublicPostService } from "./services/public-post-service";
-import { UploadService } from "./services/upload-service";
+import { UploadService } from "./services/util/upload-service";
 import { inherits } from "util";
-import { IdentityService } from "./services/identity-service";
-import { SchemaService } from "./services/schema-service";
+import { IdentityService } from "./services/util/identity-service";
+import { SchemaService } from "./services/util/schema-service";
 import { WhitepagesService } from "./services/whitepages-service";
 import { ConnectController } from "./controllers/connect-controller";
+import { ListingService } from "./services/listing-service";
 
 
 export namespace Global {  
   
   /* These 4 are part of every app */
+  export var listingService: ListingService
   export var whitepagesService: WhitepagesService
   export var schemaService: SchemaService
   export var identityService: IdentityService

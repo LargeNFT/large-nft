@@ -4,8 +4,8 @@ import { TemplateService } from "../services/template-service";
 import { Dom7, Template7 } from "framework7";
 import { Post } from '../dto/post';
 import { Global } from '../global';
-import { QuillService } from '../services/quill-service';
-import { UploadService } from '../services/upload-service';
+import { QuillService } from '../services/util/quill-service';
+import { UploadService } from '../services/util/upload-service';
 import Quill = require('quill/dist/quill.js')
 import { ProfileService } from '../services/profile-service';
 import { Profile } from '../dto/profile';

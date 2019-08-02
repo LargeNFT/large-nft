@@ -1,8 +1,8 @@
 import { Profile } from "../../js/dto/profile";
 import assert = require('assert');
 import { ProfileService } from "../../js/services/profile-service";
-import { IdentityService } from "../../js/services/identity-service";
-import { SchemaService } from "../../js/services/schema-service";
+import { IdentityService } from "../../js/services/util/identity-service";
+import { SchemaService } from "../../js/services/util/schema-service";
 
 const OrbitDB = require('orbit-db')
 

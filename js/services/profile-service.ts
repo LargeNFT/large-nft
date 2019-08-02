@@ -5,7 +5,7 @@ import { Profile } from "../dto/profile";
 class ProfileService {
   
   constructor(
-    private store: any
+    public store: any
   ) {}
 
   async read(address:string) : Promise<Profile> {

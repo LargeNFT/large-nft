@@ -2,13 +2,13 @@ import {Global} from "./global";
 
 const Framework7: any = require('framework7/js/framework7.bundle')
 import {Template7} from 'framework7/js/framework7.bundle'
-import { RouteService } from "./services/route-service";
-import { SettingsService } from "./services/settings-service";
-import { QueueService } from "./services/queue_service";
+import { RouteService } from "./services/util/route-service";
+import { SettingsService } from "./services/util/settings-service";
+import { QueueService } from "./services/util/queue_service";
 import { TemplateService } from "./services/template-service";
 import { SettingsController } from "./controllers/settings-controller";
-import { IdentityService } from "./services/identity-service";
-import { SchemaService } from "./services/schema-service";
+import { IdentityService } from "./services/util/identity-service";
+import { SchemaService } from "./services/util/schema-service";
 import { WhitepagesService } from "./services/whitepages-service";
 
 

@@ -1,13 +1,15 @@
 import { ModelView } from "../model-view";
 import { Dom7, Template7 } from "framework7";
 import { WhitepagesService } from "../services/whitepages-service";
-import { SchemaService } from "../services/schema-service";
+import { SchemaService } from "../services/util/schema-service";
 import { Global } from "../global";
 import { Schema } from "../dto/schema";
-import { SettingsService } from "../services/settings-service";
-import { QueueService } from "../services/queue_service";
+import { SettingsService } from "../services/util/settings-service";
+import { QueueService } from "../services/util/queue_service";
 import { PromiseView } from "../promise-view";
 import { Listing } from "../dto/listing";
+import { ListingService } from "../services/listing-service";
+import { Profile } from "../dto/profile";
 
 const OrbitDB = require('orbit-db')
 
@@ -20,7 +22,8 @@ class ConnectController {
         private whitepageService: WhitepagesService,
         private schemaService: SchemaService,
         private settingService: SettingsService,
-        private queueService: QueueService
+        private queueService: QueueService,
+        private listingService: ListingService
     ) {
 
         const self = this;
@@ -43,43 +46,11 @@ class ConnectController {
 
         let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
 
-        let listings:Listing[] = await this.whitepageService.readList(10, 0)
-
-
-        //Remove myself
-        listings.forEach( async (listing, index) => {
-          if (window['currentAccount'].toLowerCase() == listing.owner.toLowerCase()) {
-                listings.splice(index,1);
-            }
-        });
-
-        for (var listing of listings) {
-            
-            //Rebuild orbit address
-            let orbitAddress = `/orbitdb/${listing.orbitCid}/mainStore-${listing.owner.toLowerCase()}`
-
-            //Try to load the database
-            let friendMainStore = await this.schemaService.loadMainStore(orbitAddress)
-
-            //Read the schema out of it. 
-            let friendSchema:Schema = await this.schemaService.getSchema(friendMainStore)
-
-            //Load post feed
-            let friendPostFeed = await this.schemaService.loadPostFeed(friendSchema.postFeed, Global.orbitAccessControl)
-
-            //Load profile
-            let friendProfileStore = await this.schemaService.loadProfileStore(friendSchema.profileStore, Global.orbitAccessControl)
-
-            console.log(friendPostFeed)
-            console.log(friendProfileStore)
-
-
-        }
-
+        let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
 
         return new ModelView({
             registeredOrbitAddress: registeredOrbitAddress,
-            listings: listings
+            profiles: profiles
         }, 'pages/connect/home.html')
     }
 

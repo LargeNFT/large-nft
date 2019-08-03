@@ -74,12 +74,6 @@
 
     </div>
 
-
-
-
-
-
-
   </div>
 
 </template>
@@ -91,10 +85,10 @@
 
 <script>
   return {
-    on: {
-      pageInit: async function (e, page) {
 
-      }
+    created: async function() {
+        let model = await this.$route.context()
+        this.$setState(model)
     }
   }
 </script>

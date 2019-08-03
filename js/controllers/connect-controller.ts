@@ -42,14 +42,21 @@ class ConnectController {
 
     async showHome() : Promise<ModelView> {
 
-        let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
+        let modelFn = async () => {
+        
+            let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
 
-        let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
+            let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
 
-        return new ModelView({
-            registeredOrbitAddress: registeredOrbitAddress,
-            profiles: profiles
-        }, 'pages/connect/home.html')
+            return {
+                registeredOrbitAddress: registeredOrbitAddress,
+                profiles: profiles
+            }
+            
+        }
+
+        return new ModelView( modelFn, 'pages/connect/home.html')
+
     }
 
 

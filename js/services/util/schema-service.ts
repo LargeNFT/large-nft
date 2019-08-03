@@ -38,6 +38,24 @@ class SchemaService {
     }
 
 
+    async openDocstore(address, accessController) {
+
+        let docstoreAddress = OrbitDB.parseAddress(address)
+        return Global.orbitDb.docstore(docstoreAddress.toString(), {
+          accessController: accessController
+        })
+
+    }
+
+    async openFeed(address, accessController) {
+
+        let feedAddress = OrbitDB.parseAddress(address)
+        return Global.orbitDb.feed(feedAddress.toString(), {
+          accessController: accessController
+        })
+
+    }
+
 
     async getSchema(store) : Promise<Schema> {
 
@@ -52,23 +70,14 @@ class SchemaService {
         return schema 
     }
 
-    async getSchemaByAddress(mainStoreAddress:string) : Promise<Schema> {
 
-        let address = OrbitDB.parseAddress(mainStoreAddress)
-        let remoteMainStore = await Global.orbitDb.open(address.toString())
+    // async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
 
-        await remoteMainStore.load()
+    //     let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
 
-        return this.getSchema(remoteMainStore)
-    }
+    //     return this.getSchema(mainStore)
 
-    async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
-
-        let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
-
-        return this.getSchema(mainStore)
-
-    }
+    // }
 
     async getMainStoreByWalletAddress(walletAddress:string) {
 
@@ -88,24 +97,6 @@ class SchemaService {
 
 
 
-
-    async openDocstore(address, accessController) {
-
-        let docstoreAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.docstore(docstoreAddress.toString(), {
-          accessController: accessController
-        })
-
-    }
-
-    async openFeed(address, accessController) {
-
-        let feedAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.feed(feedAddress.toString(), {
-          accessController: accessController
-        })
-
-    }
 
 
 
@@ -160,7 +151,6 @@ class SchemaService {
         })
     
         console.log('Inserted schema into mainStore')
-
     
     }
 

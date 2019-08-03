@@ -89,9 +89,6 @@ class ListingService {
         return this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
     }
 
-
-
-
     private _getOrbitAddress(listing:Listing) : string {
         return this.schemaService.getOrbitAddress(listing.orbitCid, listing.owner)
     }

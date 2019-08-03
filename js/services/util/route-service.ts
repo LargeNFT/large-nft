@@ -212,6 +212,15 @@ class RouteService {
       "transactionHash": settings.whitepagesContractTxHash
     }
 
+    //Mainnet
+    Whitepages.networks["1"] = {
+      "events": {},
+      "links": {},
+      "address": settings.whitepagesContractAddress,
+      "transactionHash": settings.whitepagesContractTxHash
+    }
+
+
     const truffleContract = TruffleContract(Whitepages);
 
     let contract

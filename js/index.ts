@@ -66,4 +66,6 @@ module.exports = function() {
     pushState: true
   })
 
+  window['Global'] = Global;
+
 }

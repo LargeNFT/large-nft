@@ -26,7 +26,6 @@ class HomeController {
 
   constructor(
     private publicPostService: PublicPostService,
-    private profileService: ProfileService,
     private templateService: TemplateService,
     private quillService: QuillService,
     private uploadService: UploadService
@@ -100,7 +99,7 @@ class HomeController {
 
   async showHomePage(): Promise<ModelView> {
 
-    return new ModelView({}, 'pages/home.html')
+    return new ModelView( () => {}, 'pages/home.html')
 
   }
 
@@ -136,7 +135,7 @@ class HomeController {
     let dateString: string = moment().format().toString()
  
 
-    let profile: Profile = await this.profileService.getCurrentUser()
+    let profile: Profile = await ProfileService.getCurrentUser()
 
     let post: Post = {
       owner: window['currentAccount'],

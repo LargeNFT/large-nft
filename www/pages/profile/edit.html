@@ -30,8 +30,7 @@
 
         <div class="block">
           <form id="edit-profile-form">
-            <input type="hidden" name="id" value="{{id}}" />
-
+            <input type="hidden" name="_id" value="{{js "window['currentAccount']" }}" />
             <div class="list no-hairlines-md">
               <ul>
 
@@ -81,7 +80,6 @@
             <div class="row">
               <div class="col-66"></div>
               <div class="col-33">
-                  <input type="hidden" name="_id" value="{{_id}}" />
 
 
                 <button class="button button-fill" type="submit">Save</button>
@@ -96,3 +94,13 @@
     </div>
   </div>
 </template>
+
+
+
+<script>
+    return {
+      created: async function() {
+          window['Global'].loadComponentState(this)
+      }
+    }
+  </script>

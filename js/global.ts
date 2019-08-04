@@ -40,7 +40,7 @@ export namespace Global {
   export var publicPostService:PublicPostService
   export var uploadService: UploadService
   export var quillService: QuillService
-  export var profileService: ProfileService
+  // export var profileService: ProfileService
 
   /** The Framework7 app. Note: Try to make the rest of these typed some day. */
   export var app: any
@@ -73,5 +73,18 @@ export namespace Global {
       Global.app.dialog.alert(ex.message, "There was an error")
     }
   }
+
+  export async function loadComponentState(component) {
+    
+    Global.app.preloader.show()
+
+    //Get promise from component and await it. Then set the state to the result.
+    let model = await component.$route.context()
+
+    component.$setState(model)
+    
+    Global.app.preloader.hide()
+  }
+
 
 }

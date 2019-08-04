@@ -19,8 +19,8 @@
             <i class="f7-icons">gear_fill</i>
           </a>
 
-          <a class="link" href="/profile/show">
-            <i class="f7-icons">person</i>
+          <a class="link" href="/connect">
+            <i class="f7-icons">persons</i>
           </a>
         </div>
       </div>
@@ -32,8 +32,8 @@
           <div class="block">
 
             <div class="profile-pic-wrapper text-align-center">
-              {{#if profile.profilePic}}
-                <img src="http://localhost:8080/ipfs/{{profile.profilePic}}" class="profile-pic" />
+              {{#if profilePic}}
+                <img src="http://localhost:8080/ipfs/{{profilePic}}" class="profile-pic" />
               {{else}}
                 <i class="f7-icons profile-pic" id="profile-pic-not-found">person</i>
               {{/if}}
@@ -41,9 +41,9 @@
 
             <div class="profile-content">
 
-              <input type="hidden" id="static-profile-owner" value="{{profile.owner}}">
+              <input type="hidden" id="static-profile-owner" value="{{owner}}">
               <h1>
-                {{profile.name}}
+                {{name}}
 
                 {{#if showEditLink}}
                 <a href="/profile/edit" class="button button-outline edit-profile-button">Edit Profile</a>
@@ -51,7 +51,7 @@
               </h1>
 
               <div class="subtitle">
-                {{profile.aboutMe}}
+                {{aboutMe}}
               </div>
 
             </div>
@@ -75,12 +75,9 @@
 
 
 <script>
-  // script must return component object
-  return {
-    on: {
-      pageInit: async function (e, page) {
-        // await window['profileController'].loadStaticProfilePosts()
+    return {
+      created: async function() {
+          window['Global'].loadComponentState(this)
       }
     }
-  }
-</script>
+  </script>

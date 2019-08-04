@@ -1,6 +1,6 @@
 class ModelView {
 
-  constructor(public model: any, public view: string) {}
+  constructor(public model: Function, public view: string) {}
 
 }
 

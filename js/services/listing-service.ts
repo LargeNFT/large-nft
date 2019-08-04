@@ -17,6 +17,17 @@ class ListingService {
     }
 
 
+    async getListing(address:string) : Promise<Listing> {
+
+        let orbitCid = await this.whitepageService.read(address)
+
+        return {
+            orbitCid: orbitCid,
+            owner: address
+        }
+    }
+
+
     async getListings(limit:number, offset:number) {
 
         let listings:Listing[] = await this.whitepageService.readList(limit, offset)

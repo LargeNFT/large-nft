@@ -96,6 +96,16 @@ class SchemaService {
     }
 
 
+    async getProfileStoreByWalletAddress(walletAddress: string) {
+
+        let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
+
+        let schema:Schema = await this.getSchema(mainStore)
+
+        return this.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
+    }
+
+
 
 
 

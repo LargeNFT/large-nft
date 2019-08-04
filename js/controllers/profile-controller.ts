@@ -7,6 +7,8 @@ import {Dom7} from "framework7";
 import { QueueService } from '../services/util/queue_service';
 import {PromiseView} from "../promise-view";
 import { Profile } from '../dto/profile';
+import { pathToFileURL } from 'url';
+import { ListingService } from '../services/listing-service';
 
 
 var $$ = Dom7
@@ -15,10 +17,10 @@ var $$ = Dom7
 class ProfileController {
 
     constructor(
-      private profileService : ProfileService,
       private uploadService : UploadService,
       private publicPostService : PublicPostService,
-      private queueService: QueueService
+      private queueService: QueueService,
+      private listingService: ListingService
       ) {
         const self = this
 
@@ -32,23 +34,31 @@ class ProfileController {
 
     async showStaticProfile(address: string) : Promise<ModelView> {
 
-        let profile: Profile = await this.profileService.read(address)
 
-        //Show the edit button if this is their profile
-        let currentUser: Profile
+      return new ModelView(async () => {
 
-        try {
-          currentUser = await this.profileService.read(window['currentUser'])
-        } catch(ex) {
-          console.log("Profile doesn't exist");
-        }
+          let profileService:ProfileService = await ProfileService.getInstance(address)
 
-        let model = {
-          profile: profile,
-          showEditLink: (currentUser && currentUser._id == profile._id)
-        }
+          let profile: Profile = await profileService.read(address)
 
-        return new ModelView(model, 'pages/profile/static.html')
+          // //Show the edit button if this is their profile
+          // let currentUser: Profile
+  
+          // try {
+          //   currentUser = await profileService.read(window['currentUser'])
+          // } catch(ex) {
+          //   console.log("Profile doesn't exist");
+          // }
+  
+          let model = {
+            // showEditLink: (currentUser && currentUser._id == profile._id)
+          }
+
+          Object.assign(model, profile)
+
+          return model 
+
+        }, 'pages/profile/static.html')
 
     }
 
@@ -57,7 +67,11 @@ class ProfileController {
         let profile: Profile;
 
         try {
-          profile = await this.profileService.read(window['currentAccount'])
+
+          let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
+
+
+          profile = await profileService.read(window['currentAccount'])
         } catch(ex) {
           console.log("Profile doesn't exist")
         }
@@ -65,21 +79,25 @@ class ProfileController {
         if (profile) {
           Global.navigate(`/profile/static/${profile._id}`)
         } else {
-          return new ModelView({}, 'pages/profile/no_profile.html')
+          return new ModelView(async () => {}, 'pages/profile/no_profile.html')
         }
 
     }
 
     async showProfileEdit() : Promise<ModelView> {
 
-        let profile: Profile = await this.profileService.read(window['currentAccount'])
+        return new ModelView(async () => {
 
-        if (!profile) {
-          profile = new Profile()
-          profile._id = window['currentAccount']
-        }
+          let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
 
-        return new ModelView(profile, 'pages/profile/edit.html')
+          let profile: Profile = await profileService.read(window['currentAccount'])
+
+          if (!profile) {
+            profile = new Profile()
+            profile._id = window['currentAccount']
+          }
+
+        }, 'pages/profile/edit.html')
 
     }
 
@@ -87,13 +105,18 @@ class ProfileController {
       
       try {
 
+        let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
+
+
         //Collect info
         var profileData: Profile = Global.app.form.convertToData('#edit-profile-form');
+
+        console.log(profileData)
 
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
-        await this.profileService.put(profileData)
+        await profileService.put(profileData)
 
         //Redirect to profile
         Global.navigate('/profile/show')
@@ -105,25 +128,6 @@ class ProfileController {
 
     }
 
-
-
-
-    // async loadStaticProfilePosts(e: Event) : Promise<void> {
-
-    //   let owner = $$('#static-profile-owner').val()
-
-    //   let currentPosts = $$('#static-profile-post-list').children('li').length
-
-    //   this.publicPostService.loadMorePosts(
-    //     await this.publicPostService.getPostsByOwner(owner, 10, currentPosts),
-    //     await this.publicPostService.getPostByOwnerCount(owner),
-    //     '#static-profile-post-list'
-    //   )
-
-    // }
-
-
- 
 
 
 

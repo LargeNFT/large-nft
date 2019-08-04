@@ -42,7 +42,7 @@ class ConnectController {
 
     async showHome() : Promise<ModelView> {
 
-        let modelFn = async () => {
+        return new ModelView( async () => {
         
             let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
 
@@ -53,9 +53,7 @@ class ConnectController {
                 profiles: profiles
             }
             
-        }
-
-        return new ModelView( modelFn, 'pages/connect/home.html')
+        }, 'pages/connect/home.html')
 
     }
 

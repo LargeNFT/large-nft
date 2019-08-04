@@ -18,9 +18,9 @@ class SettingsController {
 
     async showSettingsForm(): Promise<ModelView> {
 
-        const settings: Settings = this.settingsService.getSettings()
-
-        return new ModelView(settings, 'pages/settings.html')
+        return new ModelView(async () => {
+            return this.settingsService.getSettings()
+        }, 'pages/settings.html')
 
     }
 

@@ -85,10 +85,8 @@
 
 <script>
   return {
-
     created: async function() {
-        let model = await this.$route.context()
-        this.$setState(model)
+        window['Global'].loadComponentState(this)
     }
   }
 </script>

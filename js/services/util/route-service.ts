@@ -274,7 +274,7 @@ class RouteService {
     
     //Open profile store
     Global.mainStore = mainStore
-    Global.profileStore = await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
+    // Global.profileStore = await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
     Global.postFeed = await this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
 
     console.log('Orbit loaded')
@@ -282,13 +282,12 @@ class RouteService {
       
     Global.publicPostService = new PublicPostService(Global.postFeed)
     Global.quillService = new QuillService()
-    Global.profileService = new ProfileService(Global.profileStore)
     Global.uploadService = new UploadService()
     Global.whitepagesService = new WhitepagesService(contract)
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService)
 
-    Global.homeController = new HomeController(Global.publicPostService, Global.profileService, Global.templateService, Global.quillService, Global.uploadService)
-    Global.profileController = new ProfileController(Global.profileService, Global.uploadService, Global.publicPostService, Global.queueService)
+    Global.homeController = new HomeController(Global.publicPostService, Global.templateService, Global.quillService, Global.uploadService)
+    Global.profileController = new ProfileController(Global.uploadService, Global.publicPostService, Global.queueService, Global.listingService)
     Global.settingsController = new SettingsController(Global.settingsService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService)
 

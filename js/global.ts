@@ -78,8 +78,10 @@ export namespace Global {
     
     Global.app.preloader.show()
 
+    let context = component.$route.context
+
     //Get promise from component and await it. Then set the state to the result.
-    let model = await component.$route.context()
+    let model = await context.fn() 
 
     component.$setState(model)
     

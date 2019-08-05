@@ -1,63 +1,85 @@
-import {Post} from "../dto/post";
-import {Template7} from "framework7";
-import {QuillDeltaToHtmlConverter} from "quill-delta-to-html";
-
+import { Post } from "../dto/post";
+import { Template7 } from "framework7";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+import { Global } from "../global";
+const moment = require('moment')
 
 
 class PublicPostService {
 
   constructor(
     private store: any
-  ) {}
+  ) { }
 
-  async create(post:Post) : Promise<string> {
+
+  static async getInstance(walletAddress: string): Promise<PublicPostService> {
+    let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
+    return new PublicPostService(postFeed)
+  }
+
+
+  async create(post: Post): Promise<string> {
 
     let cid = await this.store.add(post)
     post._id = cid
 
     this._translatePost(post)
 
-    return cid 
+    return cid
 
   }
 
-  async read(cid:string) : Promise<Post> {
+  async read(cid: string): Promise<Post> {
 
     let e = this.store.get(cid)
-    
-    let post:Post = e.payload.value
+
+    let post: Post = e.payload.value
     post._id = cid
 
     return post
   }
 
 
-  async delete(cid:string) : Promise<void> {
+  async delete(cid: string): Promise<void> {
     return this.store.remove(cid)
   }
 
 
-  async getRecentPosts(options) : Promise<Post[]> {
+  async getRecentPosts(limit:number, lt:string=undefined): Promise<Post[]> {
 
-    options.reverse = true
-    options.lt = options.before //just want to remember 'before'
+    let options: any = {}
+
+    if (limit) {
+      options.limit = limit
+    }
+
+    if (lt) {
+      options.lt = lt
+    }
+
+    options.reverse = false //doesn't do anything
+
+    console.log(options)
 
     let posts = this.store.iterator(options)
-                          .collect()
-                          .map((e) => {
+      .collect()
+      .map((e) => {
 
-                            let post = {
-                              _id: e.hash
-                            }
+        let post = {
+          _id: e.hash
+        }
 
-                            Object.assign(post, e.payload.value)
+        Object.assign(post, e.payload.value)
 
-                            //@ts-ignore
-                            this._translatePost(post)
+        //@ts-ignore
+        this._translatePost(post)
 
-                            return post
-                          }
-    )
+        return post
+      })
+
+    posts.reverse()
+
+
 
     return posts
 
@@ -65,9 +87,9 @@ class PublicPostService {
 
 
 
-  getImagesFromPostContentOps(ops : any) {
+  getImagesFromPostContentOps(ops: any) {
 
-    const images : string[] = []
+    const images: string[] = []
 
     for (let op of ops) {
       if (op.insert && op.insert.ipfsimage) {
@@ -90,7 +112,7 @@ class PublicPostService {
     });
 
     //Render dividers into HTML
-    qdc.renderCustomWith(function(customOp, contextOp) {
+    qdc.renderCustomWith(function (customOp, contextOp) {
       if (customOp.insert.type === 'divider') {
         return "<hr />"
       }
@@ -110,8 +132,9 @@ class PublicPostService {
     })
 
 
-    post.contentTranslated = qdc.convert();
+    post.contentTranslated = qdc.convert()
 
+    post.dateCreated = moment(post.dateCreated).fromNow()
 
   }
 

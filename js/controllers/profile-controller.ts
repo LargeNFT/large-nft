@@ -9,6 +9,7 @@ import {PromiseView} from "../promise-view";
 import { Profile } from '../dto/profile';
 import { pathToFileURL } from 'url';
 import { ListingService } from '../services/listing-service';
+import { Post } from '../dto/post';
 
 
 var $$ = Dom7
@@ -34,23 +35,16 @@ class ProfileController {
 
     async showStaticProfile(address: string) : Promise<ModelView> {
 
-
       return new ModelView(async () => {
 
           let profileService:ProfileService = await ProfileService.getInstance(address)
+          let publicPostService:PublicPostService = await PublicPostService.getInstance(address)
 
           let profile: Profile = await profileService.read(address)
+          let posts: Post[] = await publicPostService.getRecentPosts(10)
 
-          // //Show the edit button if this is their profile
-          // let currentUser: Profile
-  
-          // try {
-          //   currentUser = await profileService.read(window['currentUser'])
-          // } catch(ex) {
-          //   console.log("Profile doesn't exist");
-          // }
-  
           let model = {
+            posts: posts
             // showEditLink: (currentUser && currentUser._id == profile._id)
           }
 
@@ -59,28 +53,6 @@ class ProfileController {
           return model 
 
         }, 'pages/profile/static.html')
-
-    }
-
-    async showProfile() : Promise<ModelView> {
-
-        let profile: Profile;
-
-        try {
-
-          let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
-
-
-          profile = await profileService.read(window['currentAccount'])
-        } catch(ex) {
-          console.log("Profile doesn't exist")
-        }
-
-        if (profile) {
-          Global.navigate(`/profile/static/${profile._id}`)
-        } else {
-          return new ModelView(async () => {}, 'pages/profile/no_profile.html')
-        }
 
     }
 

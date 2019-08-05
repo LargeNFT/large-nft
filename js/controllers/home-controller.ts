@@ -99,26 +99,21 @@ class HomeController {
 
   async showHomePage(): Promise<ModelView> {
 
-    return new ModelView( () => {}, 'pages/home.html')
+    return new ModelView( async () => {
 
-  }
+      let limit: number = 3
 
-  async loadMorePosts(): Promise<void> {
+      let posts: Post[]
+      let lastPost = null
+  
+      posts = await this.publicPostService.getRecentPosts(limit, lastPost)
 
-    let limit: number = 100
+      return {
+        currentAccount: window['currentAccount'],
+        posts: posts
+      }
 
-    let posts: Post[]
-    let lastPost = null
-
-
-    posts = await this.publicPostService.getRecentPosts({
-      limit: limit,
-      before: lastPost
-    })
-
-    for (let post of posts) {
-      this._addPost(post)
-    }
+    }, 'pages/home.html')
 
   }
 
@@ -154,7 +149,7 @@ class HomeController {
 
 
     // Add message to messages
-    this._addPost(post)
+    // this._addPost(post)
 
     this.quill.setText('')
     this.quill.focus()
@@ -163,40 +158,40 @@ class HomeController {
   }
 
 
-  _addPost(post: Post) {
+  // _addPost(post: Post) {
 
-    let message: any = {
-      _id: post._id,
-      content: post.contentTranslated
-    }
+  //   let message: any = {
+  //     _id: post._id,
+  //     content: post.contentTranslated
+  //   }
 
-    if (post.ownerDisplayName != post.owner) {
-      message.ownerDisplayName = post.ownerDisplayName
-      message.owner = post.owner
-    } else {
-      message.ownerDisplayName = post.owner
-    }
+  //   if (post.ownerDisplayName != post.owner) {
+  //     message.ownerDisplayName = post.ownerDisplayName
+  //     message.owner = post.owner
+  //   } else {
+  //     message.ownerDisplayName = post.owner
+  //   }
 
 
-    if (post.ownerProfilePic) {
-      message.profilePic = `${Global.ipfsGateway}/${post.ownerProfilePic}`
-    }
+  //   if (post.ownerProfilePic) {
+  //     message.profilePic = `${Global.ipfsGateway}/${post.ownerProfilePic}`
+  //   }
     
-    message.dateCreated = moment(post.dateCreated).fromNow() 
+  //   message.dateCreated = moment(post.dateCreated).fromNow() 
 
-    if (post.owner == window["currentAccount"]) {
-      message.showDelete = true
-    }
+  //   if (post.owner == window["currentAccount"]) {
+  //     message.showDelete = true
+  //   }
 
     
 
-    let postTemplate = this._getPostTemplate()
-    let postHtml = postTemplate(message)
+  //   let postTemplate = this._getPostTemplate()
+  //   let postHtml = postTemplate(message)
 
 
-    $$('#post-list').prepend(postHtml)
+  //   $$('#post-list').prepend(postHtml)
 
-  }
+  // }
 
   async deletePost(e:Event) {
 

@@ -9,14 +9,9 @@ class ProfileService {
   ) {}
 
 
-  static async getInstance(walletAddress:string ) : Promise<ProfileService> {
-
-    // let listing = await Global.listingService.getListing(walletAddress)
-
-    // console.log(listing)
+  static async getInstance(walletAddress:string) : Promise<ProfileService> {
 
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
-
     return new ProfileService(profileStore)
 
   }
@@ -24,7 +19,6 @@ class ProfileService {
   static async getCurrentUser() : Promise<Profile> {
 
     let service:ProfileService = await ProfileService.getInstance(window['currentAccount'])
-
     return service.read(window['currentAccount'])
 
   }

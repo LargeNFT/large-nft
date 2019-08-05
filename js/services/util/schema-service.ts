@@ -71,13 +71,10 @@ class SchemaService {
     }
 
 
-    // async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
-
-    //     let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
-
-    //     return this.getSchema(mainStore)
-
-    // }
+    async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
+        let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
+        return this.getSchema(mainStore)
+    }
 
     async getMainStoreByWalletAddress(walletAddress:string) {
 
@@ -97,13 +94,15 @@ class SchemaService {
 
 
     async getProfileStoreByWalletAddress(walletAddress: string) {
-
-        let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
-
-        let schema:Schema = await this.getSchema(mainStore)
-
+        let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
         return this.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
     }
+
+    async getPostFeedByWalletAddress(walletAddress: string) {
+        let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
+        return this.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
+    }
+
 
 
 

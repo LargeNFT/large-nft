@@ -95,14 +95,14 @@ class RouteService {
     })
 
 
-    routes.push({
-      path: '/profile/show',
-      async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
-          return Global.profileController.showProfile()
-        })
-      }
-    })
+    // routes.push({
+    //   path: '/profile/show',
+    //   async async(routeTo, routeFrom, resolve, reject) {
+    //     self.initAndResolve(resolve,function() {
+    //       return Global.profileController.showProfile()
+    //     })
+    //   }
+    // })
 
 
     routes.push({
@@ -319,11 +319,13 @@ class RouteService {
 
       if (!modelView) return
 
+
+
       resolve({
           componentUrl: modelView.view
         },
         {
-          context: modelView.model
+          context: { fn: modelView.model}
         })
 
     } catch (ex) {

@@ -2,20 +2,132 @@ import { Post } from "../dto/post";
 import { Template7 } from "framework7";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { Global } from "../global";
+import { ProfileService } from "./profile-service";
+import { Profile } from "../dto/profile";
+import { SchemaService } from "./util/schema-service";
 const moment = require('moment')
 
 
 class PublicPostService {
 
+  static LOAD_PER_BATCH:number = 5
+
+
+  private recordsLoaded:number = 0
+
   constructor(
-    private store: any
+    private store: any,
+    private counterStore: any,
+    private schemaService: SchemaService,
+    private profileService: ProfileService
   ) { }
 
 
   static async getInstance(walletAddress: string): Promise<PublicPostService> {
+    
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
-    return new PublicPostService(postFeed)
+    let postFeedCounter = await Global.schemaService.getPostFeedCounterByWalletAddress(walletAddress)
+    let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
+
+    await postFeed.load(this.LOAD_PER_BATCH)
+    await profileStore.load()
+    await postFeedCounter.load()
+
+
+    let profileService = new ProfileService(profileStore)
+
+    return new PublicPostService(postFeed, postFeedCounter, Global.schemaService, profileService)
   }
+
+
+  async postMessage(content: any, walletAddress:string) {
+
+    let dateString: string = moment().format().toString()
+
+    let profile: Profile = await this.profileService.read(walletAddress)
+
+    let post: Post = {
+      owner: walletAddress,
+      ownerDisplayName: (profile && profile.name) ? profile.name : walletAddress,
+      dateCreated: dateString,
+      content: content
+    }
+
+    post.replies = await this.schemaService.getRepliesPostFeedAddress(post, this._translateContent(post))
+
+    //Set user avatar
+    if (profile && profile.profilePic) {
+      post.ownerProfilePic = profile.profilePic
+    }
+
+    await this.create(post)
+
+    this._translatePost(post)
+
+    return post
+
+  }
+
+
+  async getRecentPosts(limit:number, lt:string=undefined): Promise<Post[]> {
+
+    let count = await this.count()
+
+    if (this.recordsLoaded >= count) return []
+
+    let options: any = {}
+
+    if (limit) {
+      options.limit = limit
+    }
+
+    if (lt) {
+      options.lt = lt
+    }
+
+    options.reverse = false //doesn't do anything
+
+
+    let posts:Post[] = await this._iteratePosts(options)
+
+    posts.reverse()
+
+    this.recordsLoaded += posts.length
+
+    console.log(`recordsLoaded: ${this.recordsLoaded}`)
+
+    //Load the next page.
+    await this.store.load(PublicPostService.LOAD_PER_BATCH + this.recordsLoaded)
+    
+
+
+    return posts
+
+  }
+
+  async _iteratePosts(options) : Promise<Post[]> {
+
+    let posts:Post[] = this.store.iterator(options)
+      .collect()
+      .map((e) => {
+
+        let post = {
+          _id: e.hash
+        }
+
+        Object.assign(post, e.payload.value)
+
+        //@ts-ignore
+        this._translatePost(post)
+
+        return post
+      })
+
+    return posts
+
+
+  }
+
 
 
   async create(post: Post): Promise<string> {
@@ -23,7 +135,8 @@ class PublicPostService {
     let cid = await this.store.add(post)
     post._id = cid
 
-    this._translatePost(post)
+    //Increment counter
+    await this.counterStore.inc(1)
 
     return cid
 
@@ -41,49 +154,24 @@ class PublicPostService {
 
 
   async delete(cid: string): Promise<void> {
-    return this.store.remove(cid)
+
+    await this.store.remove(cid)
+
+    let count = await this.count()
+
+    //Decrement counter
+    if (count >= 0) {
+      await this.counterStore.inc(-1)
+    }
+    
+  }
+
+  async count() : Promise<number> {
+    return this.counterStore.value
   }
 
 
-  async getRecentPosts(limit:number, lt:string=undefined): Promise<Post[]> {
 
-    let options: any = {}
-
-    if (limit) {
-      options.limit = limit
-    }
-
-    if (lt) {
-      options.lt = lt
-    }
-
-    options.reverse = false //doesn't do anything
-
-    console.log(options)
-
-    let posts = this.store.iterator(options)
-      .collect()
-      .map((e) => {
-
-        let post = {
-          _id: e.hash
-        }
-
-        Object.assign(post, e.payload.value)
-
-        //@ts-ignore
-        this._translatePost(post)
-
-        return post
-      })
-
-    posts.reverse()
-
-
-
-    return posts
-
-  }
 
 
 
@@ -105,6 +193,13 @@ class PublicPostService {
 
 
   _translatePost(post: Post): void {
+
+    post.contentTranslated = this._translateContent(post)
+    post.dateCreated = moment(post.dateCreated).fromNow()
+
+  }
+
+  _translateContent(post: Post) : string {
 
     //Create content HTML
     //@ts-ignore
@@ -131,12 +226,11 @@ class PublicPostService {
 
     })
 
+    return qdc.convert()
 
-    post.contentTranslated = qdc.convert()
-
-    post.dateCreated = moment(post.dateCreated).fromNow()
 
   }
+
 
 }
 

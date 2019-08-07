@@ -1,8 +1,9 @@
 import { Global } from "../../global";
 import { Schema } from "../../dto/schema";
+import { Post } from "../../dto/post";
 
 const OrbitDB = require('orbit-db')
-
+const sha256 = require('js-sha256');
 
 class SchemaService {
 
@@ -19,23 +20,6 @@ class SchemaService {
 
     }
 
-    async loadProfileStore(storeAddress, accessController) {
-
-        let profileStore = await this.openDocstore(storeAddress, accessController)
-
-        await profileStore.load()
-
-        return profileStore
-    }
-
-    async loadPostFeed(storeAddress, accessController) {
-
-        let postFeed = await this.openFeed(storeAddress, accessController)
-
-        await postFeed.load(100)
-
-        return postFeed
-    }
 
 
     async openDocstore(address, accessController) {
@@ -54,6 +38,13 @@ class SchemaService {
           accessController: accessController
         })
 
+    }
+
+    async openCounter(address, accessController) {
+        let feedAddress = OrbitDB.parseAddress(address)
+        return Global.orbitDb.counter(feedAddress.toString(), {
+          accessController: accessController
+        })
     }
 
 
@@ -95,17 +86,40 @@ class SchemaService {
 
     async getProfileStoreByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
+        return this.openDocstore(schema.profileStore, Global.orbitAccessControl)
     }
+
+    async getPostFeedCounterByWalletAddress(walletAddress: string) {
+        let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
+        return this.openCounter(schema.postFeedCounter, Global.orbitAccessControl) 
+    }
+
 
     async getPostFeedByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
+        return this.openFeed(schema.postFeed, Global.orbitAccessControl)
     }
 
 
+    async getRepliesPostFeed(post:Post, translatedContent: string) {
 
+        let repliesFeedName = this._getRepliesFeedNameSeed(post, translatedContent)
 
+        let repliesFeed = await Global.orbitDb.feed(repliesFeedName, {
+            accessController: Global.orbitAccessControl
+          })
+
+        return repliesFeed
+
+    }
+
+    async getRepliesPostFeedAddress(post:Post, translatedContent: string) : Promise<string> {
+        let feed = await this.getRepliesPostFeed(post, translatedContent)
+
+        let address: string = feed.address.toString()
+
+        return address
+    }
 
 
 
@@ -115,43 +129,41 @@ class SchemaService {
 
 
 
-    private _getMainStoreNameSeed(walletAddress:string ) {
+    private _getMainStoreNameSeed(walletAddress:string ): string  {
         return `mainStore-${walletAddress.toLowerCase()}` 
     }
 
-    private _getProfileStoreNameSeed(walletAddress:string ) {
+    private _getProfileStoreNameSeed(walletAddress:string ): string  {
         return `profile-${walletAddress.toLowerCase()}` 
     }
-    private _getPostFeedNameSeed(walletAddress:string ) {
+
+    private _getPostFeedNameSeed(walletAddress:string ) : string {
         return `post-${walletAddress.toLowerCase()}` 
+    }
+
+    private _getPostFeedCounterNameSeed(walletAddress:string ) : string {
+        return `post-counter-${walletAddress.toLowerCase()}` 
+    }
+
+    private _getRepliesFeedNameSeed(post:Post, translatedContent: string) : string {
+        let hash = sha256(`${post.owner}-${post.dateCreated}-${translatedContent}`)
+
+        return `post-${hash}`
     }
 
 
     async generateSchema(orbitdb, accessController, mainStore) {
 
         console.log('Generating schema')
+    
+        let profileStore = await this.generateProfileStore(orbitdb, accessController)
+        let postFeed = await this.generatePostFeed(orbitdb, accessController)
+        let postFeedCounter = await this.generatePostFeedCounter(orbitdb, accessController)
 
-        let profileStoreName = this._getProfileStoreNameSeed(window['currentAccount'])
-        let profileStore = await orbitdb.docstore(profileStoreName, {
-          create: true,
-          indexBy: 'name',
-          accessController: accessController
-        })
-    
-    
-        console.log('Created profile store')
-    
-        let postFeedName = this._getPostFeedNameSeed(window['currentAccount'])
-        let postFeed = await orbitdb.feed(postFeedName, {
-          create: true,
-          accessController: accessController
-        })
-    
-        console.log('Created post feed')
-    
         let schema:Schema = {
           profileStore: profileStore.address.toString(),
-          postFeed: postFeed.address.toString()
+          postFeed: postFeed.address.toString(),
+          postFeedCounter: postFeedCounter.address.toString()
         }
     
         await mainStore.put({
@@ -163,6 +175,84 @@ class SchemaService {
     
     }
 
+
+    async updateSchema(mainStore, schema:Schema) {
+        
+        //Make sure schema has all fields
+        let schemaUpdated:boolean = false
+
+        if (!schema.profileStore) {
+            let profileStore = await this.generateProfileStore(Global.orbitDb, Global.orbitAccessControl)
+            schema.profileStore = profileStore.address.toString()
+            schemaUpdated = true
+        }
+
+        if (!schema.postFeed) {
+            let postFeed = await this.generatePostFeed(Global.orbitDb, Global.orbitAccessControl)
+            schema.postFeed = postFeed.address.toString()
+            schemaUpdated = true
+        }
+
+        if (!schema.postFeedCounter) {
+            let postFeedCounter = await this.generatePostFeedCounter(Global.orbitDb, Global.orbitAccessControl)
+            schema.postFeedCounter = postFeedCounter.address.toString()
+            schemaUpdated = true
+        }
+
+        if (schemaUpdated) {
+
+            console.log("Updating schema")
+
+            await mainStore.put({
+                name: "schema",
+                value: schema
+            })
+        }
+
+    }
+
+
+    async generateProfileStore(orbitdb, accessController) {
+        
+        console.log("Generating profile store")
+
+        //Create profile store
+        let profileStoreName = this._getProfileStoreNameSeed(window['currentAccount'])
+        
+        return orbitdb.docstore(profileStoreName, {
+          create: true,
+          indexBy: 'name',
+          accessController: accessController
+        })
+    
+    }
+
+
+    async generatePostFeed(orbitdb, accessController) {
+
+        console.log("Generating post feed")
+
+
+        let postFeedName = this._getPostFeedNameSeed(window['currentAccount'])
+
+        return orbitdb.feed(postFeedName, {
+          create: true,
+          accessController: accessController
+        })
+
+    }
+
+    async generatePostFeedCounter(orbitdb, accessController) {
+
+        console.log("Generating post feed counter")
+
+        let postFeedCounterName = this._getPostFeedCounterNameSeed(window['currentAccount'])
+
+        return orbitdb.counter(postFeedCounterName, {
+            create: true,
+            accessController: accessController
+        })
+    }
 
 
 }

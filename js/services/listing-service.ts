@@ -44,12 +44,24 @@ class ListingService {
     }
 
     async getPostFeed(listing:Listing) {
+
         let schema:Schema = await this._getSchema(listing)
-        return this._getPostFeed(schema)
+
+        let feed = await this._getPostFeed(schema)
+
+        await feed.load(10)
+
+        return feed
     }
 
     async getProfileStore(listing:Listing) {
+        
         let schema:Schema = await this._getSchema(listing)
+
+        let store = await this._getProfileStore(schema)
+
+        await store.load()
+
         return this._getProfileStore(schema)
     }
 
@@ -93,11 +105,11 @@ class ListingService {
     }
 
     private async _getPostFeed(schema:Schema) {
-        return this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
+        return this.schemaService.openFeed(schema.postFeed, Global.orbitAccessControl)
     }
 
-    private async _getProfileStore(schema:Schema) {
-        return this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
+    private async _getProfileStore(schema:Schema) {        
+        return this.schemaService.openDocstore(schema.profileStore, Global.orbitAccessControl)
     }
 
     private _getOrbitAddress(listing:Listing) : string {

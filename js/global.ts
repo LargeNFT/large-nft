@@ -37,7 +37,7 @@ export namespace Global {
   export var connectController: ConnectController
 
   /** App specific services */
-  export var publicPostService:PublicPostService
+  // export var publicPostService:PublicPostService
   export var uploadService: UploadService
   export var quillService: QuillService
   // export var profileService: ProfileService
@@ -52,8 +52,8 @@ export namespace Global {
 
   /** Orbit db tables */
   export var mainStore: any
-  export var profileStore:any 
-  export var postFeed: any 
+  // export var profileStore:any 
+  // export var postFeed: any 
 
   /** IPFS api client */
   export var ipfs: any  
@@ -74,9 +74,10 @@ export namespace Global {
     }
   }
 
-  export async function loadComponentState(component) {
+  export async function loadComponentState(component, showSpinner=true) {
     
-    Global.app.preloader.show()
+    if (showSpinner) Global.app.preloader.show() 
+    
 
     let context = component.$route.context
 
@@ -85,7 +86,7 @@ export namespace Global {
 
     component.$setState(model)
     
-    Global.app.preloader.hide()
+    if (showSpinner) Global.app.preloader.hide()
   }
 
 

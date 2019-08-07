@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="page-content">
+    <div class="page-content infinite-scroll-content infinite-scroll-top">
 
       <div class="row">
         <div class="toolbar messagebar col-100 tablet-50 center">
@@ -33,8 +33,8 @@
 
 
             <a href="#" data-popover=".editor-popover" class="popover-open">
-                <i class="icon f7-icons if-not-md">edit</i>
-                <i class="icon material-icons md-only">edit</i>
+              <i class="icon f7-icons if-not-md">edit</i>
+              <i class="icon material-icons md-only">edit</i>
             </a>
 
 
@@ -53,42 +53,41 @@
 
       <div class="row">
 
-        <div class="list media-list col-100 tablet-50 center">
+        <div class="col-100 tablet-50 center">
 
-          <ul id="post-list">
+          <div class="list media-list">
 
-              {{#each posts}}
-
-              <li>
-                  <div class="item-content" id="post_{{_id}}">
-                    <div class="item-media">
-                      <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span> <div class="post-owner">{{owner}}</div></div>
-                        <div class="item-after">
-              
-                          {{dateCreated}}
-        
-                          <!-- {{#if showDelete}}
-                            <a class="link delete-post" href="#" data-id="{{_id}}" >
-                              <i class="icon f7-icons if-not-md">delete</i>
-                              <i class="icon material-icons md-only">delete</i>
-                            </a>
-                          {{/if}} -->
-                        
+            <ul id="post-list">
+                {{#each posts}}
+                  <li>
+                      <div class="item-content" id="post_{{_id}}">
+                        <div class="item-media">
+                          <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+                              <div class="post-owner">{{owner}}</div>
+                            </div>
+                            <div class="item-after">
+                              {{dateCreated}}
+                            </div>
+                          </div>
+                          <div class="item-subtitle">{{contentTranslated}}</div>
                         </div>
                       </div>
-                      <div class="item-subtitle">{{contentTranslated}}</div>
-                    </div>
-                  </div>
-              </li>
+                    </li>
+                {{/each}}
+            </ul>
 
-              {{/each}}
-          </ul>
+
+
+          </div>
+
+          <div class="preloader infinite-scroll-preloader"></div>
 
         </div>
+
       </div>
 
     </div>
@@ -99,33 +98,32 @@
       <div class="popover-inner">
         <div class="block">
 
-            <button class="bold-button"><i class="fa fa-bold"></i></button>
-            <button class="italic-button"><i class="fa fa-italic"></i></button>
-            <button class="link-button"><i class="fa fa-link"></i></button>
-            <button class="blockquote-button"><i class="fa fa-quote-right"></i></button>
-            <button class="header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
-            <button class="header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>      
-            <label for="create-image-button-input">
-              <button class="image-button">
-                <i class="fa fa-camera"></i>
+          <button class="bold-button"><i class="fa fa-bold"></i></button>
+          <button class="italic-button"><i class="fa fa-italic"></i></button>
+          <button class="link-button"><i class="fa fa-link"></i></button>
+          <button class="blockquote-button"><i class="fa fa-quote-right"></i></button>
+          <button class="header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
+          <button class="header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>
+          <label for="create-image-button-input">
+            <button class="image-button">
+              <i class="fa fa-camera"></i>
+            </button>
+
+            <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+
+
+            <label for="create-video-button-input">
+              <button class="video-button">
+                <i class="fa fa-play"></i>
               </button>
-    
-              <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
-    
-    
-              <label for="create-video-button-input">
-                <button class="video-button">
-                  <i class="fa fa-play"></i>
-                </button>
-    
-                <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
-    
-    
-                <button class="divider-button"><i class="fa fa-minus"></i></button>
+
+              <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
+
+
+              <button class="divider-button"><i class="fa fa-minus"></i></button>
         </div>
       </div>
     </div>
-
 
   </div>
 
@@ -139,11 +137,108 @@
   return {
     on: {
       pageInit: async function (e, page) {
+
+        let controller = window['homeController']
+
+        const self = this
+
+        this.$$(document).on('click', '.send-link', function (e) {
+          e.preventDefault()
+          controller.postMessage(e, self)
+        })
+
+        this.$$(document).on('click', '.delete-post', function (e) {
+          e.preventDefault()
+          controller.deletePost(e)
+        })
+
+        this.$$(document).on('click', '.bold-button', function (e) {
+          e.preventDefault()
+          controller.boldClick(e)
+        })
+
+        this.$$(document).on('click', '.italic-button', function (e) {
+          e.preventDefault()
+          controller.italicClick(e)
+        })
+
+        this.$$(document).on('click', '.link-button', function (e) {
+          e.preventDefault()
+          controller.linkClick(e)
+        })
+
+        this.$$(document).on('click', '.blockquote-button', function (e) {
+          e.preventDefault()
+          controller.blockquoteClick(e)
+        })
+
+        this.$$(document).on('click', '.header-1-button', function (e) {
+          e.preventDefault()
+          controller.header1Click(e)
+        })
+
+        this.$$(document).on('click', '.header-2-button', function (e) {
+          e.preventDefault()
+          controller.header2Click(e)
+        })
+
+        this.$$(document).on('click', '.divider-button', function (e) {
+          e.preventDefault()
+          controller.dividerClick(e)
+        })
+
+        this.$$(document).on('click', '.image-button', function (e) {
+          e.preventDefault()
+          controller.imageClick(e)
+        })
+
+        this.$$(document).on('change', '.image-button-input', async function (e) {
+          e.preventDefault()
+          await self.imageSelected(this)
+        })
+
+
+        // Attach 'infinite' event handler
+        this.$$('.infinite-scroll-content').on('infinite', async function () {
+
+          // console.log(`Start event handler - loadingInProgress: ${controller.loadingInProgress}, hasMorePosts: ${controller.hasMorePosts}`)
+
+          // Exit, if loading in progress
+          if (controller.loadingInProgress || !controller.hasMorePosts) return;
+
+          // Set loading flag
+          controller.loadingInProgress = true;
+
+          let posts = await controller.getNextPage()
+
+          // console.log(`After getting view model - loadingInProgress: ${controller.loadingInProgress}, hasMorePosts: ${controller.hasMorePosts}`)
+
+          for (var post of posts) {
+            self.$$("#post-list").append(controller._postTemplate(post))
+          }
+
+          if (!controller.hasMorePosts) {
+            
+            console.log("Unloading infinite scroll")
+
+            // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+            window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
+
+            // Remove preloader
+            self.$$('.infinite-scroll-preloader').remove()
+
+          }
+
+          controller.loadingInProgress = false
+
+        });
+
+
         window['homeController'].initializeQuill()
       }
     },
-    created: async function() {
-      window['Global'].loadComponentState(this)
+    created: async function () {
+      window['Global'].loadComponentState(this, false)
     }
   }
 

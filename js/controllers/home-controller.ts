@@ -9,6 +9,7 @@ import { UploadService } from '../services/util/upload-service';
 import Quill = require('quill/dist/quill.js')
 import { ProfileService } from '../services/profile-service';
 import { Profile } from '../dto/profile';
+import { SchemaService } from '../services/util/schema-service';
 const moment = require('moment')
 
 
@@ -18,78 +19,26 @@ var $$ = Dom7;
 class HomeController {
 
   loadingInProgress: boolean = false
+  hasMorePosts: boolean = true
+  postsShown: number = 0
 
   _messages: any
+  
   _postTemplate: any
 
   quill: any
 
+  limit: number = 3
+  lastPost:string = null
+
+
+  private postService:PublicPostService
+
   constructor(
-    private publicPostService: PublicPostService,
-    private templateService: TemplateService,
     private quillService: QuillService,
     private uploadService: UploadService
   ) {
-
-    const self = this;
-
-
-    $$(document).on('click', '.send-link', function (e) {
-      e.preventDefault()
-      self.postMessage(e)
-    })
-
-    $$(document).on('click', '.delete-post', function (e) {
-      e.preventDefault()
-      self.deletePost(e)
-    })
-
-
-    $$(document).on('click', '.bold-button', function (e) {
-      e.preventDefault()
-      self.boldClick(e)
-    })
-
-    $$(document).on('click', '.italic-button', function (e) {
-      e.preventDefault()
-      self.italicClick(e)
-    })
-
-    $$(document).on('click', '.link-button', function (e) {
-      e.preventDefault()
-      self.linkClick(e)
-    })
-
-    $$(document).on('click', '.blockquote-button', function (e) {
-      e.preventDefault()
-      self.blockquoteClick(e)
-    })
-
-    $$(document).on('click', '.header-1-button', function (e) {
-      e.preventDefault()
-      self.header1Click(e)
-    })
-
-    $$(document).on('click', '.header-2-button', function (e) {
-      e.preventDefault()
-      self.header2Click(e)
-    })
-
-    $$(document).on('click', '.divider-button', function (e) {
-      e.preventDefault()
-      self.dividerClick(e)
-    })
-
-    $$(document).on('click', '.image-button', function (e) {
-      e.preventDefault()
-      self.imageClick(e)
-    })
-
-    $$(document).on('change', '.image-button-input', async function (e) {
-      e.preventDefault()
-      await self.imageSelected(this)
-    })
-
+    this._compilePostTemplate()
   }
 
   initializeQuill() {
@@ -101,12 +50,9 @@ class HomeController {
 
     return new ModelView( async () => {
 
-      let limit: number = 3
+      this.postService = await PublicPostService.getInstance(window['currentAccount'])
 
-      let posts: Post[]
-      let lastPost = null
-  
-      posts = await this.publicPostService.getRecentPosts(limit, lastPost)
+      let posts:Post[] = await this.getNextPage()
 
       return {
         currentAccount: window['currentAccount'],
@@ -115,91 +61,65 @@ class HomeController {
 
     }, 'pages/home.html')
 
+    
+
   }
 
-  async postMessage(e: Event): Promise<void> {
+  async getNextPage() : Promise<Post[]> {
+
+    console.log(`getNextPage: ${this.limit} - ${this.lastPost}`)
+
+    let posts:Post[] = await this.postService.getRecentPosts(this.limit, this.lastPost)
+
+    if (posts.length > 0) {
+      this.postsShown += posts.length
+      this.lastPost = posts[posts.length -1]._id
+    } else {
+      this.hasMorePosts = false
+    }
+
+    //Are there more after this one?
+    let count = await this.postService.count()
+    if (count <= this.postsShown) {
+      this.hasMorePosts = false
+    }
+
+    return posts
+
+  }
+
+
+
+  async postMessage(e: Event, component): Promise<void> {
 
     let content = this.quill.getContents()
     let length = this.quill.getLength()
 
-
     // return if empty message. quill length is 1 if it's empty
     if (length == 1) return
 
+    let post:Post = await this.postService.postMessage(content, window['currentAccount'])
 
-    let dateString: string = moment().format().toString()
- 
+    
 
-    let profile: Profile = await ProfileService.getCurrentUser()
+    $$("#post-list").prepend(this._postTemplate(post))
 
-    let post: Post = {
-      owner: window['currentAccount'],
-      ownerDisplayName: (profile && profile.name) ? profile.name : window['currentAccount'],
-      dateCreated: dateString,
-      content: content
-    }
-
-    //Set user avatar
-    if (profile && profile.profilePic) {
-      post.ownerProfilePic = profile.profilePic
-    }
-
-
-    await this.publicPostService.create(post)
-
-
-    // Add message to messages
-    // this._addPost(post)
 
     this.quill.setText('')
     this.quill.focus()
 
-
   }
 
 
-  // _addPost(post: Post) {
-
-  //   let message: any = {
-  //     _id: post._id,
-  //     content: post.contentTranslated
-  //   }
-
-  //   if (post.ownerDisplayName != post.owner) {
-  //     message.ownerDisplayName = post.ownerDisplayName
-  //     message.owner = post.owner
-  //   } else {
-  //     message.ownerDisplayName = post.owner
-  //   }
-
-
-  //   if (post.ownerProfilePic) {
-  //     message.profilePic = `${Global.ipfsGateway}/${post.ownerProfilePic}`
-  //   }
-    
-  //   message.dateCreated = moment(post.dateCreated).fromNow() 
-
-  //   if (post.owner == window["currentAccount"]) {
-  //     message.showDelete = true
-  //   }
-
-    
-
-  //   let postTemplate = this._getPostTemplate()
-  //   let postHtml = postTemplate(message)
-
-
-  //   $$('#post-list').prepend(postHtml)
-
-  // }
-
   async deletePost(e:Event) {
+
+    let postService = await PublicPostService.getInstance(window['currentAccount'])
 
     //Grab the id off the link
     let deleteLink = $$(e.target).parent()
     let id = deleteLink.data('id')
 
-    await this.publicPostService.delete(id)
+    await postService.delete(id)
 
     $$('#post_' + id).remove()
 
@@ -272,42 +192,31 @@ class HomeController {
   }
 
 
-  _getPostTemplate() {
+  _compilePostTemplate() {
 
-    if (!this._postTemplate) {
-
-      this._postTemplate = Template7.compile(
-        `
+    this._postTemplate = Template7.compile(
+      `
         <li>
           <div class="item-content" id="post_{{_id}}">
             <div class="item-media">
-              <img src="{{profilePic}}">
+              <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
             </div>
             <div class="item-inner">
               <div class="item-title-row">
-                <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span> <div class="post-owner">{{owner}}</div></div>
+                <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+                  <div class="post-owner">{{owner}}</div>
+                </div>
                 <div class="item-after">
-      
                   {{dateCreated}}
-
-                  {{#if showDelete}}
-                    <a class="link delete-post" href="#" data-id="{{_id}}" >
-                      <i class="icon f7-icons if-not-md">delete</i>
-                      <i class="icon material-icons md-only">delete</i>
-                    </a>
-                  {{/if}}
-                
                 </div>
               </div>
-              <div class="item-subtitle">{{content}}</div>
+              <div class="item-subtitle">{{contentTranslated}}</div>
             </div>
           </div>
         </li>
-        `
-      )
-    }
-
-    return this._postTemplate
+      `
+    )
+    
 
   }
 

@@ -1,7 +1,9 @@
 interface Schema {
-    postFeed: string 
-    profileStore: string 
-    // friends: string[]
+    
+    postFeed?: string 
+    postFeedCounter?: string 
+
+    profileStore?: string 
 }
 
 

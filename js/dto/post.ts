@@ -10,6 +10,9 @@ interface Post {
   dateCreated?: string
   content: any
   contentTranslated?: string
+
+  replies?: any //Store TODO://Figure out how make it a real type reference
+
 }
 
 export { Post }

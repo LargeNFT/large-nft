@@ -158,8 +158,6 @@ class RouteService {
 
   async initialize() {
 
-  
-
     if (Global.ipfs) return
 
     let settings:Settings = this.settingsService.getSettings()
@@ -274,20 +272,21 @@ class RouteService {
     
     //Open profile store
     Global.mainStore = mainStore
-    // Global.profileStore = await this.schemaService.loadProfileStore(schema.profileStore, Global.orbitAccessControl)
-    Global.postFeed = await this.schemaService.loadPostFeed(schema.postFeed, Global.orbitAccessControl)
 
-    console.log('Orbit loaded')
+    //Update the schema if it needs it.
+    await this.schemaService.updateSchema(mainStore, schema)
+
+
+    // console.log('Orbit loaded')
 
       
-    Global.publicPostService = new PublicPostService(Global.postFeed)
     Global.quillService = new QuillService()
     Global.uploadService = new UploadService()
     Global.whitepagesService = new WhitepagesService(contract)
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService)
 
-    Global.homeController = new HomeController(Global.publicPostService, Global.templateService, Global.quillService, Global.uploadService)
-    Global.profileController = new ProfileController(Global.uploadService, Global.publicPostService, Global.queueService, Global.listingService)
+    Global.homeController = new HomeController(Global.quillService, Global.uploadService)
+    Global.profileController = new ProfileController(Global.uploadService, Global.queueService, Global.listingService)
     Global.settingsController = new SettingsController(Global.settingsService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService)
 

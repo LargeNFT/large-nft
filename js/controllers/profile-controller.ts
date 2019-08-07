@@ -19,7 +19,6 @@ class ProfileController {
 
     constructor(
       private uploadService : UploadService,
-      private publicPostService : PublicPostService,
       private queueService: QueueService,
       private listingService: ListingService
       ) {

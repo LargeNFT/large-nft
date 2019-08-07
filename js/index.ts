@@ -17,6 +17,7 @@ const moment = require('moment')
 
 module.exports = function() {
 
+
   /** Shortcut methods for localStorage access */
   Storage.prototype.setObject = function (key, value) {
     this.setItem(key, JSON.stringify(value));

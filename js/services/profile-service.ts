@@ -10,8 +10,8 @@ class ProfileService {
 
 
   static async getInstance(walletAddress:string) : Promise<ProfileService> {
-
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
+    await profileStore.load()
     return new ProfileService(profileStore)
 
   }

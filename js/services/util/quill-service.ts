@@ -69,7 +69,7 @@ class QuillService {
   buildQuillPostEditor(selector: string): Quill {
 
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
-
+    Quill.debug(false)
 
     const quill = new Quill(selector, {
       modules: {

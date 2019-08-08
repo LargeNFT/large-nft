@@ -70,6 +70,8 @@ class ListingService {
         
         let profileStore = await this.getProfileStore(listing)
 
+        await profileStore.load()
+
         let listingProfileService = new ProfileService(profileStore)
 
         return listingProfileService.read(listing.owner)

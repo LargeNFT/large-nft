@@ -36,14 +36,12 @@
 
       <div class="row">
         <div class="block col-100 tablet-50 center">
-          
-          <div class="block">
-            Current orbit address: {{registeredOrbitAddress}}
-          </div>
 
-          <div class="">
-            <a href="#" id="register-link">Register</a>
-            <a href="#" id="update-register-link">Update Registration</a>
+
+          <div class="block">
+              {{#if showRegisterButton}}
+                <a href="#" id="register-link">Register</a> your account.
+              {{/if}}
           </div>
 
           <div class="list media-list">
@@ -88,6 +86,25 @@
 
 <script>
   return {
+    on: {
+      pageInit: async function (e, page) {
+
+        const self = this;
+
+        this.$$(document).on('click', '#register-link', function (e) {
+            e.preventDefault()
+            self.registerClick(e)
+        })
+
+
+        // this.$$(document).on('click', '#update-register-link', function (e) {
+        //     e.preventDefault()
+        //     self.updateRegisterClick(e)
+        // })
+
+      }
+    },
+
     created: async function() {
         window['Global'].loadComponentState(this)
     }

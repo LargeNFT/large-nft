@@ -11,10 +11,7 @@ import { Listing } from "../dto/listing";
 import { ListingService } from "../services/listing-service";
 import { Profile } from "../dto/profile";
 
-const OrbitDB = require('orbit-db')
 
-
-var $$ = Dom7;
 
 class ConnectController {
 
@@ -22,41 +19,29 @@ class ConnectController {
         private whitepageService: WhitepagesService,
         private queueService: QueueService,
         private listingService: ListingService
-    ) {
-
-        const self = this;
-
-        $$(document).on('click', '#register-link', function (e) {
-            e.preventDefault()
-            self.registerClick(e)
-        })
-
-
-        $$(document).on('click', '#update-register-link', function (e) {
-            e.preventDefault()
-            self.updateRegisterClick(e)
-        })
-
-    }
+    ) {}
 
 
     async showHome() : Promise<ModelView> {
 
         return new ModelView( async () => {
-        
-            console.log('here')
+
 
             let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
 
-            console.log(registeredOrbitAddress)
+
+            let showRegisterButton = (registeredOrbitAddress)
+            let showUpdateButton = !showRegisterButton
+
 
             let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
 
-            console.log(profiles)
 
             return {
                 registeredOrbitAddress: registeredOrbitAddress,
-                profiles: profiles
+                profiles: profiles,
+                showRegisterButton: showRegisterButton,
+                showUpdateButton: showUpdateButton
             }
             
         }, 'pages/connect/home.html')
@@ -84,24 +69,24 @@ class ConnectController {
     }
 
 
-    async updateRegisterClick(e:Event) {
+    // async updateRegisterClick(e:Event) {
 
-        let address = Global.mainStore.address
+    //     let address = Global.mainStore.address
 
-        let viewModel = {
-            address: window['currentAccount']
-        }
+    //     let viewModel = {
+    //         address: window['currentAccount']
+    //     }
 
-        await this.queueService.queuePromiseView(
-            new PromiseView(
-              this.whitepageService.update(address.root),
-              "Updating registration {{address}} in whitepages",
-              "document_text",
-              viewModel,
-              "/connect"
-            )
-          )
-    }
+    //     await this.queueService.queuePromiseView(
+    //         new PromiseView(
+    //           this.whitepageService.update(address.root),
+    //           "Updating registration {{address}} in whitepages",
+    //           "document_text",
+    //           viewModel,
+    //           "/connect"
+    //         )
+    //       )
+    // }
 
 
 

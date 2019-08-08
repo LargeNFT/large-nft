@@ -11,14 +11,17 @@
         <div class="right">
           <a class="link" href="/settings">
             <i class="f7-icons">gear_fill</i>
+            <span>Settings</span>
           </a>
 
           <a class="link" href="/profile/static/{{currentAccount}}">
             <i class="f7-icons">person</i>
+            <span>Profile</span>
           </a>
 
           <a class="link" href="/connect">
             <i class="f7-icons">persons</i>
+            <span>Connect</span>
           </a>
 
         </div>
@@ -58,26 +61,26 @@
           <div class="list media-list">
 
             <ul id="post-list">
-                {{#each posts}}
-                  <li>
-                      <div class="item-content" id="post_{{_id}}">
-                        <div class="item-media">
-                          <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
-                              <div class="post-owner">{{owner}}</div>
-                            </div>
-                            <div class="item-after">
-                              {{dateCreated}}
-                            </div>
-                          </div>
-                          <div class="item-subtitle">{{contentTranslated}}</div>
-                        </div>
+              {{#each posts}}
+              <li>
+                <div class="item-content" id="post_{{_id}}">
+                  <div class="item-media">
+                    <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+                        <div class="post-owner">{{owner}}</div>
                       </div>
-                    </li>
-                {{/each}}
+                      <div class="item-after">
+                        {{dateCreated}}
+                      </div>
+                    </div>
+                    <div class="item-subtitle">{{contentTranslated}}</div>
+                  </div>
+                </div>
+              </li>
+              {{/each}}
             </ul>
 
 
@@ -218,7 +221,7 @@
           }
 
           if (!controller.hasMorePosts) {
-            
+
             console.log("Unloading infinite scroll")
 
             // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings

@@ -8,19 +8,21 @@
             <i class="icon icon-back"></i>
           </a>
         </div>
-        <div class="title">Author Profile</div>
         <div class="right">
 
           <a href="/" class="link">
             <i class="f7-icons">home</i>
+            <span>Home</span>
           </a>
 
           <a class="link" href="/settings">
             <i class="f7-icons">gear_fill</i>
+            <span>Settings</span>
           </a>
 
           <a class="link" href="/connect">
             <i class="f7-icons">persons</i>
+            <span>Connect</span>
           </a>
         </div>
       </div>
@@ -29,59 +31,95 @@
 
         <div class="col-100 tablet-50 center">
 
-          <div class="block">
+          {{#if loaded}}
 
-            <div class="profile-pic-wrapper text-align-center">
-              {{#if profilePic}}
-                <img src="http://localhost:8080/ipfs/{{profilePic}}" class="profile-pic" />
+
+              {{#if profile}}
+
+                <div class="block">
+
+                    <div class="profile-pic-wrapper text-align-center">
+                      {{#if profile.profilePic}}
+                        <img src="http://localhost:8080/ipfs/{{profile.profilePic}}" class="profile-pic" />
+                      {{else}}
+                        <i class="f7-icons profile-pic" id="profile-pic-not-found">person</i>
+                      {{/if}}
+                    </div>
+        
+                    <div class="profile-content">
+        
+                      <input type="hidden" id="static-profile-owner" value="{{owner}}">
+                      <h1>
+                        {{profile.name}}
+        
+                        {{#if showEditLink}}
+                          <a href="/profile/edit" class="button button-outline edit-profile-button">Edit Profile</a>
+                        {{/if}}
+                      </h1>
+        
+                      <div class="subtitle">
+                        {{profile.aboutMe}}
+                      </div>
+        
+                    </div>
+        
+                </div>
+      
+                <div class="block-title">Posts</div>
+                <div class="list media-list">
+                  <ul id="static-profile-post-list">
+                    {{#each posts}}
+                    <li>
+                        <div class="item-content" id="post_{{_id}}">
+                          <div class="item-media">
+                            <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span> <div class="post-owner">{{owner}}</div></div>
+                              <div class="item-after">              
+                                {{dateCreated}}
+                              </div>
+                            </div>
+                            <div class="item-subtitle">{{contentTranslated}}</div>
+                          </div>
+                        </div>
+                      </li>
+                    {{/each}}
+      
+                  </ul>
+                </div>
+
+
               {{else}}
-                <i class="f7-icons profile-pic" id="profile-pic-not-found">person</i>
-              {{/if}}
-            </div>
-
-            <div class="profile-content">
-
-              <input type="hidden" id="static-profile-owner" value="{{owner}}">
-              <h1>
-                {{name}}
 
                 {{#if showEditLink}}
-                <a href="/profile/edit" class="button button-outline edit-profile-button">Edit Profile</a>
-                {{/if}}
-              </h1>
-
-              <div class="subtitle">
-                {{aboutMe}}
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="block-title">Posts</div>
-          <div class="list media-list">
-            <ul id="static-profile-post-list">
-              {{#each posts}}
-              <li>
-                  <div class="item-content" id="post_{{_id}}">
-                    <div class="item-media">
-                      <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span> <div class="post-owner">{{owner}}</div></div>
-                        <div class="item-after">              
-                          {{dateCreated}}
-                        </div>
-                      </div>
-                      <div class="item-subtitle">{{contentTranslated}}</div>
-                    </div>
+                  <div class="block-title">Create Profile</div>
+                  <div class="block">
+                    In order to publish stories on Large you must create your <a href="/profile/edit">public profile</a>
                   </div>
-                </li>
-              {{/each}}
+                {{else}}
 
-            </ul>
-          </div>
+                  <div class="block">
+                      User has not created a public profile
+                  </div>
+
+                {{/if}}
+
+              {{/if}}
+
+
+
+
+
+          {{/if}}
+
+
+
+
+
+
+
 
 
         </div>

@@ -44,9 +44,15 @@ class ConnectController {
 
         return new ModelView( async () => {
         
+            console.log('here')
+
             let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
 
+            console.log(registeredOrbitAddress)
+
             let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
+
+            console.log(profiles)
 
             return {
                 registeredOrbitAddress: registeredOrbitAddress,

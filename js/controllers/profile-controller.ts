@@ -36,22 +36,31 @@ class ProfileController {
 
       return new ModelView(async () => {
 
-          let profileService:ProfileService = await ProfileService.getInstance(address)
-          let publicPostService:PublicPostService = await PublicPostService.getInstance(address)
+        let profileService:ProfileService = await ProfileService.getInstance(address)
+        let publicPostService:PublicPostService = await PublicPostService.getInstance(address)
+  
+        let profile: Profile = await profileService.read(address)
+        let posts: Post[]
+        
 
-          let profile: Profile = await profileService.read(address)
-          let posts: Post[] = await publicPostService.getRecentPosts(10)
 
-          let model = {
-            posts: posts
-            // showEditLink: (currentUser && currentUser._id == profile._id)
-          }
+        if (profile) {
+          posts = await publicPostService.getRecentPosts(10)
+        }
 
-          Object.assign(model, profile)
+        let showEditLink:boolean = (address.toLowerCase() == window['currentAccount'].toLowerCase())
 
-          return model 
+        
+        let model = {
+          loaded: true,
+          posts: posts,
+          profile: profile,
+          showEditLink: showEditLink
+        }
 
-        }, 'pages/profile/static.html')
+        return model 
+
+      }, 'pages/profile/static.html')
 
     }
 
@@ -68,6 +77,8 @@ class ProfileController {
             profile._id = window['currentAccount']
           }
 
+          return profile
+
         }, 'pages/profile/edit.html')
 
     }
@@ -82,15 +93,15 @@ class ProfileController {
         //Collect info
         var profileData: Profile = Global.app.form.convertToData('#edit-profile-form');
 
-        console.log(profileData)
-
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
+
+        //TODO: //Make sure permissions are right for this. Don't want to be able to edit someone else's profile.
         await profileService.put(profileData)
 
         //Redirect to profile
-        Global.navigate('/profile/show')
+        Global.navigate(`/profile/static/${window['currentAccount']}`)
 
 
       } catch (ex) {

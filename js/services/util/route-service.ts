@@ -108,7 +108,6 @@ class RouteService {
     routes.push({
       path: '/profile/static/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-
         self.initAndResolve(resolve,function() {
           return Global.profileController.showStaticProfile(routeTo.params.id)
         })

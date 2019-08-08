@@ -22,10 +22,11 @@
     margin-right: 25%; */
   }
 
-
-
 }
 
+.navbar a span {
+  font-size: 9px;
+}
 
 
 body, .md body {

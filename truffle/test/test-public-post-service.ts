@@ -1,174 +1,218 @@
-// import { Post } from "../../js/dto/post"
-// import assert = require('assert')
-// import { PublicPostService } from "../../js/services/public-post-service"
-// import { IdentityService } from "../../js/services/identity-service";
-// const Keystore = require('orbit-db-keystore')
+import { Post } from "../../js/dto/post"
+import assert = require('assert')
+import { PublicPostService } from "../../js/services/public-post-service"
+import { Global } from "../../js/global";
+import { SchemaService } from "../../js/services/util/schema-service";
+const Keystore = require('orbit-db-keystore')
 
 
 
-// const OrbitDB = require('orbit-db')
+const OrbitDB = require('orbit-db')
 
-// const path = require('path')
-// const keypath = path.resolve('./keys')
-
-
-// const ipfsClient = require('ipfs-http-client')
-// const ipfs = ipfsClient({
-//     host: "localhost",
-//     port: 5001,
-//     protocol: 'http'
-//   })
+const path = require('path')
+const keypath = path.resolve('./keys')
 
 
-// //@ts-ignore
-// contract('PublicPostService', async (accounts) => {
+const ipfsClient = require('ipfs-http-client')
+const ipfs = ipfsClient({
+    host: "localhost",
+    port: 5001,
+    protocol: 'http'
+  })
 
-//     let service: PublicPostService
-//     let identityService: IdentityService
+
+//@ts-ignore
+contract('PublicPostService', async (accounts) => {
+
+    let service: PublicPostService
+    let mainStore
     
-//     //@ts-ignore
-//     before("", async () => {
-
-//         identityService = new IdentityService()
-
-//         let keystore = Keystore.create(keypath)
-
-//         let identity = await identityService.getIdentity(keystore)
+    //@ts-ignore
+    before("", async () => {
 
 
-//         const orbitdb = await OrbitDB.createInstance(ipfs, {
-//             directory: "./orbitdb",
-//             identity: identity
-//         })
+        const orbitdb = await OrbitDB.createInstance(ipfs, {
+            directory: "./orbitdb"
+        })
 
-//         // console.log(JSON.stringify(orbitdb.identity)) 
+        Global.orbitDb = orbitdb
+        Global.schemaService = new SchemaService()
+
+        mainStore = await Global.schemaService.getMainStoreByWalletAddress("123")
+        await mainStore.load()
+
+        await Global.schemaService.generateSchema(orbitdb, {}, mainStore, "123")
+
+        service = await PublicPostService.getInstance("123")
 
 
-//         let ac = identityService.getAccessController(orbitdb)
+    })
 
-//         let store = await orbitdb.feed("test-post", {
-//             accessController: ac
-//         })
+    //@ts-ignore
+    it("should create & get", async () => {
 
-//         service = new PublicPostService(store)
-//     })
+        //Arrange
+        let post: Post = {
+            content: "Actual content"
+        }
 
-//     //@ts-ignore
-//     it("should create & get", async () => {
-
-//         //Arrange
-//         let post: Post = {
-//             content: "Actual content"
-//         }
-
-//         //Act
-//         await service.create(post)
+        //Act
+        await service.create(post)
         
-//         //Assert
-//         assert.notEqual(post._id, undefined)
+        //Assert
+        assert.notEqual(post._id, undefined)
 
         
-//         let fetched: Post = await service.read(post._id)    
+        let fetched: Post = await service.read(post._id)    
 
 
-//         assert.equal(fetched.content, "Actual content")
-//         assert.equal(fetched._id, post._id)
-//     })
+        assert.equal(fetched.content, "Actual content")
+        assert.equal(fetched._id, post._id)
+    })
 
-//     //@ts-ignore
-//     it("should create multiple posts and read back in order", async () => {
+    //@ts-ignore
+    it("should create multiple posts and read back in order", async () => {
 
-//         //Arrange
-//         await service.create({
-//             content: "1"
-//         })
+        //Arrange
+        await service.create({
+            content: "1"
+        })
 
-//         await service.create({
-//             content: "2"
-//         })
+        await service.create({
+            content: "2"
+        })
 
-//         await service.create({
-//             content: "3"
-//         })
-
-
-//         //Act
-//         let it = await service.getRecentPosts({
-//             limit: 3
-//         })
-
-//         //assert
-//         assert.equal(it.length, 3)
-//         assert.equal(it[0].content, "3")
-//         assert.equal(it[1].content, "2")
-//         assert.equal(it[2].content, "1")
-//     })
+        await service.create({
+            content: "3"
+        })
 
 
-//     //@ts-ignore
-//     it("should create multiple posts and read back just the last part of the list", async () => {
+        //Act
+        let it = await service.getRecentPosts(0,3)
 
-//         //Arrange
-//         await service.create({
-//             content: "4"
-//         })
-
-//         await service.create({
-//             content: "5"
-//         })
-
-//         await service.create({
-//             content: "6"
-//         })
+        //assert
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "3")
+        assert.equal(it[1].content, "2")
+        assert.equal(it[2].content, "1")
+    })
 
 
-//         //Act
-//         let it = await service.getRecentPosts({
-//             limit: 3
-//         })
+    //@ts-ignore
+    it("should create multiple posts and read back just the last part of the list", async () => {
 
-//         //assert
-//         assert.equal(it.length, 3)
-//         assert.equal(it[0].content, "6")
-//         assert.equal(it[1].content, "5")
-//         assert.equal(it[2].content, "4")
-//     })
+        //Arrange
+        await service.create({
+            content: "4"
+        })
+
+        await service.create({
+            content: "5"
+        })
+
+        await service.create({
+            content: "6"
+        })
+
+
+        //Act
+        let it = await service.getRecentPosts(0,3)
+
+        //assert
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "6")
+        assert.equal(it[1].content, "5")
+        assert.equal(it[2].content, "4")
+    })
     
 
-//     //@ts-ignore
-//     it("should create multiple posts and skip a few of them", async () => {
+    //@ts-ignore
+    it("should create multiple posts and skip a few of them", async () => {
 
-//         //Arrange
-//         let hash = await service.create({
-//             content: "7"
-//         })
+        //Arrange
+        let hash = await service.create({
+            content: "7"
+        })
 
-//         await service.create({
-//             content: "8"
-//         })
+        await service.create({
+            content: "8"
+        })
 
-//         await service.create({
-//             content: "9"
-//         })
+        await service.create({
+            content: "9"
+        })
 
 
-//         //Act
-//         let it = await service.getRecentPosts({
-//             limit: 3,
-//             before: hash
-//         })
+        //Act
+        let it = await service.getRecentPosts(3, 3, hash)
 
-//         //assert
-//         assert.equal(it.length, 3)
-//         assert.equal(it[0].content, "6")
-//         assert.equal(it[1].content, "5")
-//         assert.equal(it[2].content, "4")
-//     })
+
+        //assert
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "6")
+        assert.equal(it[1].content, "5")
+        assert.equal(it[2].content, "4")
+    })
 
 
 
+    //@ts-ignore
+    it("should load a database with lots of records and page through them", async () => {
+
+        //Arrange
+        for (var i=0; i < 100; i++) {
+            await service.create({content: (i + 10).toString() })
+        }
+
+        await service.close()
+
+        service = await PublicPostService.getInstance("123")
 
 
-// })
+        //Get a page of 3
+        let it = await service.getRecentPosts(0, 3)
+
+
+        //assert
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "109")
+        assert.equal(it[1].content, "108")
+        assert.equal(it[2].content, "107")
+
+        it = await service.getRecentPosts(3, 3,  it[2]._id)
+
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "106")
+        assert.equal(it[1].content, "105")
+        assert.equal(it[2].content, "104")
+
+
+
+        it = await service.getRecentPosts(6, 3, it[2]._id)
+
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "103")
+        assert.equal(it[1].content, "102")
+        assert.equal(it[2].content, "101")
+
+
+
+        it = await service.getRecentPosts(9, 3, it[2]._id)
+
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "100")
+        assert.equal(it[1].content, "99")
+        assert.equal(it[2].content, "98")
+
+
+
+
+    })
+
+
+
+
+
+})
 
 

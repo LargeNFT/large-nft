@@ -20,7 +20,12 @@ class HomeController {
 
   loadingInProgress: boolean = false
   hasMorePosts: boolean = true
+
   postsShown: number = 0
+  
+  limit: number = 5
+  lastPost:string = null
+
 
   _messages: any
   
@@ -28,8 +33,7 @@ class HomeController {
 
   quill: any
 
-  limit: number = 3
-  lastPost:string = null
+
 
 
   private postService:PublicPostService
@@ -67,9 +71,12 @@ class HomeController {
 
   async getNextPage() : Promise<Post[]> {
 
-    console.log(`getNextPage: ${this.limit} - ${this.lastPost}`)
+    console.log(`START: getNextPage`)
 
-    let posts:Post[] = await this.postService.getRecentPosts(this.limit, this.lastPost)
+    let posts:Post[] = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
+    
+    console.log(`Loaded: ${await this.postService.countLoaded()}`)
+    console.log(posts)
 
     if (posts.length > 0) {
       this.postsShown += posts.length
@@ -78,11 +85,7 @@ class HomeController {
       this.hasMorePosts = false
     }
 
-    //Are there more after this one?
-    let count = await this.postService.count()
-    if (count <= this.postsShown) {
-      this.hasMorePosts = false
-    }
+    console.log(`postsShown: ${this.postsShown} - lastPost: ${this.lastPost} - hasMorePosts: ${this.hasMorePosts}`)
 
     return posts
 
@@ -199,7 +202,9 @@ class HomeController {
         <li>
           <div class="item-content" id="post_{{_id}}">
             <div class="item-media">
-              <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+              {{#if ownerProfilePic}}
+                <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+              {{/if}}
             </div>
             <div class="item-inner">
               <div class="item-title-row">

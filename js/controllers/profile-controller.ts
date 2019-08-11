@@ -45,7 +45,7 @@ class ProfileController {
 
 
         if (profile) {
-          posts = await publicPostService.getRecentPosts(10)
+          posts = await publicPostService.getRecentPosts(0, 10)
         }
 
         let showEditLink:boolean = (address.toLowerCase() == window['currentAccount'].toLowerCase())

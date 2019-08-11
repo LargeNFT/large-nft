@@ -10,14 +10,8 @@ const moment = require('moment')
 
 class PublicPostService {
 
-  static LOAD_PER_BATCH:number = 5
-
-
-  private recordsLoaded:number = 0
-
   constructor(
     private store: any,
-    private counterStore: any,
     private schemaService: SchemaService,
     private profileService: ProfileService
   ) { }
@@ -26,18 +20,17 @@ class PublicPostService {
   static async getInstance(walletAddress: string): Promise<PublicPostService> {
     
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
-    let postFeedCounter = await Global.schemaService.getPostFeedCounterByWalletAddress(walletAddress)
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
 
-    await postFeed.load(this.LOAD_PER_BATCH)
-    await profileStore.load()
-    await postFeedCounter.load()
-
-
     let profileService = new ProfileService(profileStore)
+    let postService:PublicPostService = new PublicPostService(postFeed, Global.schemaService, profileService)
 
-    return new PublicPostService(postFeed, postFeedCounter, Global.schemaService, profileService)
+    await profileStore.load()
+
+    return postService
   }
+
+
 
 
   async postMessage(content: any, walletAddress:string) {
@@ -69,45 +62,34 @@ class PublicPostService {
   }
 
 
-  async getRecentPosts(limit:number, lt:string=undefined): Promise<Post[]> {
 
-    let count = await this.count()
 
-    if (this.recordsLoaded >= count) return []
+  async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
+
+    console.log(`START: Get recent posts`)
+
+    let address = this.store.address.toString()
+
+    await this.store.close()
+
+    this.store = await this.schemaService.openFeed(address, Global.orbitAccessControl)
+
+    console.log(`Loading ${limit + offset} records`)
+
+    await this.store.load(limit + offset)
 
     let options: any = {}
 
     if (limit) {
       options.limit = limit
-    }
+    } 
 
     if (lt) {
       options.lt = lt
     }
 
-    options.reverse = false //doesn't do anything
 
-
-    let posts:Post[] = await this._iteratePosts(options)
-
-    posts.reverse()
-
-    this.recordsLoaded += posts.length
-
-    console.log(`recordsLoaded: ${this.recordsLoaded}`)
-
-    //Load the next page.
-    await this.store.load(PublicPostService.LOAD_PER_BATCH + this.recordsLoaded)
-    
-
-
-    return posts
-
-  }
-
-  async _iteratePosts(options) : Promise<Post[]> {
-
-    let posts:Post[] = this.store.iterator(options)
+    let posts:Post[] = await this.store.iterator(options)
       .collect()
       .map((e) => {
 
@@ -123,10 +105,15 @@ class PublicPostService {
         return post
       })
 
+    posts.reverse()
+    
+
+    console.log(`DONE: Get recent posts`)
+
     return posts
 
-
   }
+
 
 
 
@@ -134,9 +121,6 @@ class PublicPostService {
 
     let cid = await this.store.add(post)
     post._id = cid
-
-    //Increment counter
-    await this.counterStore.inc(1)
 
     return cid
 
@@ -156,20 +140,22 @@ class PublicPostService {
   async delete(cid: string): Promise<void> {
 
     await this.store.remove(cid)
-
-    let count = await this.count()
-
-    //Decrement counter
-    if (count >= 0) {
-      await this.counterStore.inc(-1)
-    }
     
   }
 
   async count() : Promise<number> {
-    return this.counterStore.value
+    return 0
   }
 
+  async countLoaded() : Promise<number> {
+    let count = Object.keys(this.store._index._index).length
+    return count
+  }
+
+
+  async close() {
+    return this.store.close()
+  }
 
 
 
@@ -203,8 +189,10 @@ class PublicPostService {
 
     //Create content HTML
     //@ts-ignore
-    const qdc = new QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {
-    });
+    // const qdc = new QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {
+    // });
+
+    const qdc = new QuillDeltaToHtmlConverter(post.content.ops, {});
 
     //Render dividers into HTML
     qdc.renderCustomWith(function (customOp, contextOp) {

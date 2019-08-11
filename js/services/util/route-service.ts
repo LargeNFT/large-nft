@@ -263,7 +263,7 @@ class RouteService {
     let schema:Schema = await this.schemaService.getSchema(mainStore)
 
     if (!schema) {
-      await this.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore)
+      await this.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, window['currentAccount'])
       schema = await this.schemaService.getSchema(mainStore)
     }
 
@@ -273,10 +273,8 @@ class RouteService {
     Global.mainStore = mainStore
 
     //Update the schema if it needs it.
-    await this.schemaService.updateSchema(mainStore, schema)
+    await this.schemaService.updateSchema(mainStore, schema, window['currentAccount'])
 
-
-    // console.log('Orbit loaded')
 
       
     Global.quillService = new QuillService()

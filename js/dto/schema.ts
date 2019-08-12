@@ -1,8 +1,5 @@
 interface Schema {
-    
     postFeed?: string 
-    postFeedCounter?: string 
-
     profileStore?: string 
 }
 

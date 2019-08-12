@@ -1,7 +1,8 @@
 import { Profile } from "./profile";
 
 interface Post {
-  _id?: string
+  cid?: string
+  feedCid?: string
   
   owner?: string
   ownerDisplayName?: string 

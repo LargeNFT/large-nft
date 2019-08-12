@@ -89,16 +89,22 @@ class SchemaService {
         return this.openDocstore(schema.profileStore, Global.orbitAccessControl)
     }
 
-    async getPostFeedCounterByWalletAddress(walletAddress: string) {
-        let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openCounter(schema.postFeedCounter, Global.orbitAccessControl) 
-    }
+    // async getPostFeedCounterByWalletAddress(walletAddress: string) {
+    //     let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
+    //     return this.openCounter(schema.postFeedCounter, Global.orbitAccessControl) 
+    // }
 
 
     async getPostFeedByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
         return this.openFeed(schema.postFeed, Global.orbitAccessControl)
     }
+
+
+    // async getPostKeyValueByWalletAddress(walletAddress: string) {
+    //     let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
+    //     return this.openFeed(schema.postKeyValue, Global.orbitAccessControl)
+    // }
 
 
     async getRepliesPostFeed(post:Post, translatedContent: string) {
@@ -158,12 +164,10 @@ class SchemaService {
     
         let profileStore = await this.generateProfileStore(orbitdb, accessController, walletAddress)
         let postFeed = await this.generatePostFeed(orbitdb, accessController, walletAddress)
-        let postFeedCounter = await this.generatePostFeedCounter(orbitdb, accessController, walletAddress)
 
         let schema:Schema = {
           profileStore: profileStore.address.toString(),
-          postFeed: postFeed.address.toString(),
-          postFeedCounter: postFeedCounter.address.toString()
+          postFeed: postFeed.address.toString()
         }
     
         await mainStore.put({
@@ -193,11 +197,6 @@ class SchemaService {
             schemaUpdated = true
         }
 
-        if (!schema.postFeedCounter) {
-            let postFeedCounter = await this.generatePostFeedCounter(Global.orbitDb, Global.orbitAccessControl, walletAddress)
-            schema.postFeedCounter = postFeedCounter.address.toString()
-            schemaUpdated = true
-        }
 
         if (schemaUpdated) {
 
@@ -228,10 +227,11 @@ class SchemaService {
     }
 
 
+
+
     async generatePostFeed(orbitdb, accessController, walletAddress:string) {
 
         console.log("Generating post feed")
-
 
         let postFeedName = this._getPostFeedNameSeed(walletAddress)
 
@@ -242,17 +242,17 @@ class SchemaService {
 
     }
 
-    async generatePostFeedCounter(orbitdb, accessController, walletAddress:string) {
+    // async generatePostFeedCounter(orbitdb, accessController, walletAddress:string) {
 
-        console.log("Generating post feed counter")
+    //     console.log("Generating post feed counter")
 
-        let postFeedCounterName = this._getPostFeedCounterNameSeed(walletAddress)
+    //     let postFeedCounterName = this._getPostFeedCounterNameSeed(walletAddress)
 
-        return orbitdb.counter(postFeedCounterName, {
-            create: true,
-            accessController: accessController
-        })
-    }
+    //     return orbitdb.counter(postFeedCounterName, {
+    //         create: true,
+    //         accessController: accessController
+    //     })
+    // }
 
 
 }

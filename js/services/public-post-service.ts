@@ -11,7 +11,7 @@ const moment = require('moment')
 class PublicPostService {
 
   constructor(
-    private store: any,
+    private feedStore: any,
     private schemaService: SchemaService,
     private profileService: ProfileService
   ) { }
@@ -66,17 +66,17 @@ class PublicPostService {
 
   async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
 
-    console.log(`START: Get recent posts`)
+    // console.log(`START: Get recent posts`)
 
-    let address = this.store.address.toString()
+    let address = this.feedStore.address.toString()
 
-    await this.store.close()
+    await this.feedStore.close()
 
-    this.store = await this.schemaService.openFeed(address, Global.orbitAccessControl)
+    this.feedStore = await this.schemaService.openFeed(address, Global.orbitAccessControl)
 
-    console.log(`Loading ${limit + offset} records`)
+    // console.log(`Loading ${limit + offset} records`)
 
-    await this.store.load(limit + offset)
+    await this.feedStore.load(limit + offset)
 
     let options: any = {}
 
@@ -89,26 +89,35 @@ class PublicPostService {
     }
 
 
-    let posts:Post[] = await this.store.iterator(options)
+    let results = await this.feedStore.iterator(options)
       .collect()
       .map((e) => {
 
-        let post = {
-          _id: e.hash
+        let model = { 
+          cid: e.payload.value,
+          feedCid: e.hash
         }
 
-        Object.assign(post, e.payload.value)
-
-        //@ts-ignore
-        this._translatePost(post)
-
-        return post
+        return model
       })
+
+    let posts:Post[] = []
+    for (var result of results) {
+
+      let post:Post = await this.read(result.cid)
+
+      this._translatePost(post)
+
+      post.feedCid = result.feedCid
+
+      posts.push(post)
+
+    }
 
     posts.reverse()
     
 
-    console.log(`DONE: Get recent posts`)
+    // console.log(`DONE: Get recent posts`)
 
     return posts
 
@@ -117,44 +126,51 @@ class PublicPostService {
 
 
 
-  async create(post: Post): Promise<string> {
+  async create(post: Post): Promise<Post> {
 
-    let cid = await this.store.add(post)
-    post._id = cid
+    //Save directly in IPFS
+    let buffer = Buffer.from(JSON.stringify(post))
+    let cid = await Global.ipfs.object.put(buffer)
 
-    return cid
+    let cidString = cid.toString()
+
+
+    //Store CID in feed
+    let feedCid = await this.feedStore.add(cidString)
+    
+    post.cid = cidString
+    post.feedCid = feedCid
+
+    return post
 
   }
 
   async read(cid: string): Promise<Post> {
 
-    let e = this.store.get(cid)
+    let loaded = await Global.ipfs.object.get(cid)
+    let t = loaded.Data.toString()
 
-    let post: Post = e.payload.value
-    post._id = cid
+    let post:Post = JSON.parse(t)
+
+    post.cid = cid.toString()
+    
 
     return post
   }
 
 
   async delete(cid: string): Promise<void> {
-
-    await this.store.remove(cid)
-    
-  }
-
-  async count() : Promise<number> {
-    return 0
+    await this.feedStore.remove(cid)
   }
 
   async countLoaded() : Promise<number> {
-    let count = Object.keys(this.store._index._index).length
+    let count = Object.keys(this.feedStore._index._index).length
     return count
   }
 
 
   async close() {
-    return this.store.close()
+    return this.feedStore.close()
   }
 
 
@@ -223,5 +239,7 @@ class PublicPostService {
 }
 
 
-export { PublicPostService }
+export { 
+  PublicPostService 
+}
 

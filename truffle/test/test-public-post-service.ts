@@ -21,29 +21,35 @@ const ipfs = ipfsClient({
   })
 
 
+
+
 //@ts-ignore
 contract('PublicPostService', async (accounts) => {
 
     let service: PublicPostService
     let mainStore
+    let address: number
     
     //@ts-ignore
     before("", async () => {
 
 
+        address = Math.random()
+
         const orbitdb = await OrbitDB.createInstance(ipfs, {
             directory: "./orbitdb"
         })
 
+        Global.ipfs = ipfs
         Global.orbitDb = orbitdb
         Global.schemaService = new SchemaService()
 
-        mainStore = await Global.schemaService.getMainStoreByWalletAddress("123")
+        mainStore = await Global.schemaService.getMainStoreByWalletAddress(address.toString())
         await mainStore.load()
 
-        await Global.schemaService.generateSchema(orbitdb, {}, mainStore, "123")
+        await Global.schemaService.generateSchema(orbitdb, {}, mainStore, address.toString())
 
-        service = await PublicPostService.getInstance("123")
+        service = await PublicPostService.getInstance(address.toString())
 
 
     })
@@ -60,14 +66,14 @@ contract('PublicPostService', async (accounts) => {
         await service.create(post)
         
         //Assert
-        assert.notEqual(post._id, undefined)
+        assert.notEqual(post.cid, undefined)
 
         
-        let fetched: Post = await service.read(post._id)    
+        let fetched: Post = await service.read(post.cid)    
 
 
         assert.equal(fetched.content, "Actual content")
-        assert.equal(fetched._id, post._id)
+        assert.equal(fetched.cid, post.cid)
     })
 
     //@ts-ignore
@@ -130,7 +136,7 @@ contract('PublicPostService', async (accounts) => {
     it("should create multiple posts and skip a few of them", async () => {
 
         //Arrange
-        let hash = await service.create({
+        let post = await service.create({
             content: "7"
         })
 
@@ -144,7 +150,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Act
-        let it = await service.getRecentPosts(3, 3, hash)
+        let it = await service.getRecentPosts(3, 3, post.feedCid)
 
 
         //assert
@@ -166,7 +172,7 @@ contract('PublicPostService', async (accounts) => {
 
         await service.close()
 
-        service = await PublicPostService.getInstance("123")
+        service = await PublicPostService.getInstance(address.toString())
 
 
         //Get a page of 3
@@ -179,7 +185,7 @@ contract('PublicPostService', async (accounts) => {
         assert.equal(it[1].content, "108")
         assert.equal(it[2].content, "107")
 
-        it = await service.getRecentPosts(3, 3,  it[2]._id)
+        it = await service.getRecentPosts(3, 3,  it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "106")
@@ -188,7 +194,7 @@ contract('PublicPostService', async (accounts) => {
 
 
 
-        it = await service.getRecentPosts(6, 3, it[2]._id)
+        it = await service.getRecentPosts(6, 3, it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "103")
@@ -197,7 +203,7 @@ contract('PublicPostService', async (accounts) => {
 
 
 
-        it = await service.getRecentPosts(9, 3, it[2]._id)
+        it = await service.getRecentPosts(9, 3, it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "100")

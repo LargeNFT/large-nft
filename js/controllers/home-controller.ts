@@ -1,5 +1,10 @@
 import { ModelView } from '../model-view'
-import { PublicPostService } from "../services/public-post-service";
+import { PublicPostService } from "../services/public-post-service"
+
+// console.log(PublicPostService)
+
+
+
 import { TemplateService } from "../services/template-service";
 import { Dom7, Template7 } from "framework7";
 import { Post } from '../dto/post';
@@ -10,6 +15,7 @@ import Quill = require('quill/dist/quill.js')
 import { ProfileService } from '../services/profile-service';
 import { Profile } from '../dto/profile';
 import { SchemaService } from '../services/util/schema-service';
+import ColorPickerComponent from 'framework7/components/color-picker/color-picker';
 const moment = require('moment')
 
 
@@ -71,21 +77,21 @@ class HomeController {
 
   async getNextPage() : Promise<Post[]> {
 
-    console.log(`START: getNextPage`)
+    // console.log(`START: getNextPage`)
 
     let posts:Post[] = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
     
-    console.log(`Loaded: ${await this.postService.countLoaded()}`)
+    // console.log(`Loaded: ${await this.postService.countLoaded()}`)
     console.log(posts)
 
     if (posts.length > 0) {
       this.postsShown += posts.length
-      this.lastPost = posts[posts.length -1]._id
+      this.lastPost = posts[posts.length -1].feedCid
     } else {
       this.hasMorePosts = false
     }
 
-    console.log(`postsShown: ${this.postsShown} - lastPost: ${this.lastPost} - hasMorePosts: ${this.hasMorePosts}`)
+    // console.log(`postsShown: ${this.postsShown} - lastPost: ${this.lastPost} - hasMorePosts: ${this.hasMorePosts}`)
 
     return posts
 

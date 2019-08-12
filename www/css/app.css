@@ -61,9 +61,11 @@ body, .md body {
 }
 
 .profile-pic, #profile-pic-not-found {
-  max-width: 100%;
+  max-width: 150px;
   border-radius: 50%;
   font-size: 100px;
+  float: left;
+
 }
 
 .profile-pic-thumb {
@@ -127,7 +129,7 @@ h1.story {
 }
 
 .author-profile-pic {
-  float: left;
+  max-width: 100px;
   margin-right: 10px;
 }
 

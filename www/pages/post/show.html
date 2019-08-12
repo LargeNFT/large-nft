@@ -1,5 +1,6 @@
+<!--suppress JSAnnotator -->
 <template>
-  <div class="page" data-name="post-static" data-page-title="{{post.title}}">
+  <div class="page" data-name="post-static">
     <div class="navbar">
       <div class="navbar-inner sliding">
         <div class="left">
@@ -25,45 +26,68 @@
 
       <div class="col-100 tablet-50 center">
 
-        <div class="block">
-          <h1 class="story">
-            {{post.title}}
+        {{#if post}}
 
-            {{#if showEditLink}}
-            <a href="/post/edit/{{post.id}}" class="button button-outline edit-post-button">Edit Post</a>
-            {{/if}}
+          <div class="card">
+              <div class="card-header">
 
-          </h1>
-          <div class="subtitle">{{post.subtitle}}</div>
 
-          <div class="author">
+                {{#if post.ownerProfilePic}}
+                  <img class="profile-pic" src="{{js "window.ipfsGateway"}}/{{post.ownerProfilePic}}">
+                {{else}}
+                  <i class="f7-icons" class="profile-pic">person</i>
+                {{/if}}
 
-            <div class="author-profile-pic">
-              {{#if post.author.profilePic}}
-              <img src="http://localhost:8080/ipfs/{{post.author.profilePic}}" class="profile-pic-thumb" />
-              {{else}}
-              <i class="f7-icons" class="profile-pic">person</i>
-              {{/if}}
-            </div>
+                <div class="post-author">
+                    By <a href="/profile/static/{{post.owner}}">{{post.ownerDisplayName}}</a>
+                </div>
+      
+                <div class="post-date">{{ post.dateCreated }}</div>
 
-            <div class="post-author">
-              By <a href="/profile/static/{{post.author.id}}">{{post.author.name}}</a>
-            </div>
 
-            <div class="post-date">{{ shortDate post.dateCreated }}</div>
-
+              </div>
+              <div class="card-content card-content-padding">
+                  {{post.contentTranslated}}  
+              </div>
           </div>
 
-          <div class="post-content">
 
-            {{post.contentTranslated}}
+          <div class="block-title">Replies</div>
+          <div class="list media-list">
 
-            <br />
-
-            <a href="/profile/tip/{{post.author.id}}" class="button button-fill col-30">Tip Author (ETH)</a>
-
+              <ul>
+                {{#each replies}}
+                <li>
+                  <a href="/post/show/{{cid}}" class="item-link">
+                    <div class="item-content" id="post_{{cid}}">
+                      <div class="item-media">
+                          {{#if ownerProfilePic}}
+                            <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                          {{/if}}
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+                            <div class="post-owner">{{owner}}</div>
+                          </div>
+                          <div class="item-after">
+                            {{dateCreated}}
+                          </div>
+                        </div>
+                        <div class="item-subtitle">{{contentTranslated}}</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                {{/each}}
+              </ul>
           </div>
-        </div>
+
+
+
+
+        {{/if}}
+
 
       </div>
 
@@ -72,3 +96,17 @@
 
   </div>
 </template>
+
+
+
+
+
+<script>
+
+    return {
+      created: async function () {
+        window['Global'].loadComponentState(this, false)
+      }
+    }
+  
+  </script>

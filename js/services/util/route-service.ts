@@ -31,6 +31,7 @@ import { SchemaService } from "./schema-service";
 import { WhitepagesService } from "../whitepages-service";
 import { ConnectController } from "../../controllers/connect-controller";
 import { ListingService } from "../listing-service";
+import { PostController } from "../../controllers/post-controller";
 
 
 const promisify = (inner) =>
@@ -124,6 +125,16 @@ class RouteService {
       }
     })
 
+
+    routes.push({
+      path: '/post/show/:id',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.initAndResolve(resolve,function() {
+          return Global.postController.showPost(routeTo.params.id)
+        })
+
+      }
+    })
 
 
     routes.push({
@@ -282,9 +293,11 @@ class RouteService {
     Global.whitepagesService = new WhitepagesService(contract)
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService)
 
+   
     Global.homeController = new HomeController(Global.quillService, Global.uploadService)
     Global.profileController = new ProfileController(Global.uploadService, Global.queueService, Global.listingService)
     Global.settingsController = new SettingsController(Global.settingsService)
+    Global.postController = new PostController(Global.schemaService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService)
 
     window['homeController'] = Global.homeController
@@ -314,8 +327,6 @@ class RouteService {
       let modelView: ModelView = await controller_promise;
 
       if (!modelView) return
-
-
 
       resolve({
           componentUrl: modelView.view

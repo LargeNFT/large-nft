@@ -82,7 +82,6 @@ class HomeController {
     let posts:Post[] = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
     
     // console.log(`Loaded: ${await this.postService.countLoaded()}`)
-    console.log(posts)
 
     if (posts.length > 0) {
       this.postsShown += posts.length
@@ -206,24 +205,26 @@ class HomeController {
     this._postTemplate = Template7.compile(
       `
         <li>
-          <div class="item-content" id="post_{{_id}}">
-            <div class="item-media">
-              {{#if ownerProfilePic}}
-                <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
-              {{/if}}
-            </div>
-            <div class="item-inner">
-              <div class="item-title-row">
-                <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
-                  <div class="post-owner">{{owner}}</div>
-                </div>
-                <div class="item-after">
-                  {{dateCreated}}
-                </div>
+          <a href="/post/show/{{cid}}" class="item-link">
+            <div class="item-content" id="post_{{cid}}">
+              <div class="item-media">
+                {{#if ownerProfilePic}}
+                  <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                {{/if}}
               </div>
-              <div class="item-subtitle">{{contentTranslated}}</div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+                    <div class="post-owner">{{owner}}</div>
+                  </div>
+                  <div class="item-after">
+                    {{dateCreated}}
+                  </div>
+                </div>
+                <div class="item-subtitle">{{contentTranslated}}</div>
+              </div>
             </div>
-          </div>
+          </a>
         </li>
       `
     )

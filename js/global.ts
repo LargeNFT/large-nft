@@ -16,6 +16,7 @@ import { SchemaService } from "./services/util/schema-service";
 import { WhitepagesService } from "./services/whitepages-service";
 import { ConnectController } from "./controllers/connect-controller";
 import { ListingService } from "./services/listing-service";
+import { PostController } from "./controllers/post-controller";
 
 
 export namespace Global {  
@@ -32,6 +33,7 @@ export namespace Global {
 
   /** Controllers */
   export var homeController: HomeController
+  export var postController:PostController
   export var profileController: ProfileController
   export var settingsController: SettingsController
   export var connectController: ConnectController

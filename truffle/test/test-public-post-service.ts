@@ -69,7 +69,7 @@ contract('PublicPostService', async (accounts) => {
         assert.notEqual(post.cid, undefined)
 
         
-        let fetched: Post = await service.read(post.cid)    
+        let fetched: Post = await PublicPostService.read(post.cid)    
 
 
         assert.equal(fetched.content, "Actual content")

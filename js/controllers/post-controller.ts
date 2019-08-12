@@ -1,3 +1,63 @@
+import { ModelView } from "../model-view";
+import { PublicPostService } from "../services/public-post-service";
+import { ProfileService } from "../services/profile-service";
+import { Profile } from "../dto/profile";
+import { Post } from "../dto/post";
+import { SchemaService } from "../services/util/schema-service";
+
+class PostController {
+
+
+    constructor(
+        private schemaService:SchemaService
+    ) {}
+
+    async showPost(cid:string) : Promise<ModelView> {
+
+        return new ModelView(async () => {
+
+            let post:Post = await PublicPostService.read(cid)
+
+            PublicPostService.translatePost(post)
+
+
+            let repliesFeed = await this.schemaService.getRepliesPostFeed(post, post.contentTranslated)
+            let repliesService:PublicPostService = new PublicPostService(repliesFeed, this.schemaService)
+
+            let replies:Post[] = await repliesService.getRecentPosts(0, 10)
+
+            
+            //Show the edit button to the owner
+            let currentUser:Profile = await ProfileService.getCurrentUser()
+        
+            let model = {
+              post: post,
+              replies: replies,
+              showEditLink: (currentUser && currentUser._id.toString() == post.owner.toString())
+            }
+
+            return model
+
+        }, 'pages/post/show.html')
+
+    }
+
+}
+
+export {
+    PostController
+}
+
+
+
+
+
+
+
+
+
+
+
 // import { ModelView } from '../model-view'
 
 

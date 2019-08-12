@@ -12,22 +12,29 @@ class PublicPostService {
 
   constructor(
     private feedStore: any,
-    private schemaService: SchemaService,
-    private profileService: ProfileService
+    private schemaService: SchemaService
   ) { }
 
 
   static async getInstance(walletAddress: string): Promise<PublicPostService> {
     
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
-    let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
 
-    let profileService = new ProfileService(profileStore)
-    let postService:PublicPostService = new PublicPostService(postFeed, Global.schemaService, profileService)
-
-    await profileStore.load()
+    let postService:PublicPostService = new PublicPostService(postFeed, Global.schemaService)
 
     return postService
+  }
+
+  static async read(cid: string): Promise<Post> {
+
+    let loaded = await Global.ipfs.object.get(cid)
+    let t = loaded.Data.toString()
+
+    let post:Post = JSON.parse(t)
+
+    post.cid = cid.toString()
+
+    return post
   }
 
 
@@ -37,7 +44,14 @@ class PublicPostService {
 
     let dateString: string = moment().format().toString()
 
-    let profile: Profile = await this.profileService.read(walletAddress)
+    //Get profile service of poster
+    let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
+    let profileService = new ProfileService(profileStore)
+    
+
+
+
+    let profile: Profile = await profileService.read(walletAddress)
 
     let post: Post = {
       owner: walletAddress,
@@ -46,7 +60,7 @@ class PublicPostService {
       content: content
     }
 
-    post.replies = await this.schemaService.getRepliesPostFeedAddress(post, this._translateContent(post))
+    post.replies = await this.schemaService.getRepliesPostFeedAddress(post, PublicPostService.translateContent(post))
 
     //Set user avatar
     if (profile && profile.profilePic) {
@@ -55,7 +69,7 @@ class PublicPostService {
 
     await this.create(post)
 
-    this._translatePost(post)
+    PublicPostService.translatePost(post)
 
     return post
 
@@ -66,15 +80,11 @@ class PublicPostService {
 
   async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
 
-    // console.log(`START: Get recent posts`)
-
     let address = this.feedStore.address.toString()
 
     await this.feedStore.close()
 
     this.feedStore = await this.schemaService.openFeed(address, Global.orbitAccessControl)
-
-    // console.log(`Loading ${limit + offset} records`)
 
     await this.feedStore.load(limit + offset)
 
@@ -104,9 +114,9 @@ class PublicPostService {
     let posts:Post[] = []
     for (var result of results) {
 
-      let post:Post = await this.read(result.cid)
+      let post:Post = await PublicPostService.read(result.cid)
 
-      this._translatePost(post)
+      PublicPostService.translatePost(post)
 
       post.feedCid = result.feedCid
 
@@ -115,9 +125,7 @@ class PublicPostService {
     }
 
     posts.reverse()
-    
 
-    // console.log(`DONE: Get recent posts`)
 
     return posts
 
@@ -145,22 +153,11 @@ class PublicPostService {
 
   }
 
-  async read(cid: string): Promise<Post> {
-
-    let loaded = await Global.ipfs.object.get(cid)
-    let t = loaded.Data.toString()
-
-    let post:Post = JSON.parse(t)
-
-    post.cid = cid.toString()
-    
-
-    return post
-  }
 
 
-  async delete(cid: string): Promise<void> {
-    await this.feedStore.remove(cid)
+  async delete(post: Post): Promise<void> {
+    await Global.ipfs.object.delete(post.cid)
+    await this.feedStore.remove(post.feedCid)
   }
 
   async countLoaded() : Promise<number> {
@@ -194,14 +191,14 @@ class PublicPostService {
 
 
 
-  _translatePost(post: Post): void {
+  static translatePost(post: Post): void {
 
-    post.contentTranslated = this._translateContent(post)
+    post.contentTranslated = this.translateContent(post)
     post.dateCreated = moment(post.dateCreated).fromNow()
 
   }
 
-  _translateContent(post: Post) : string {
+  static translateContent(post: Post) : string {
 
     //Create content HTML
     //@ts-ignore

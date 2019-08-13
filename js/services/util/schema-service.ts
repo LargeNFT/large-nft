@@ -89,22 +89,11 @@ class SchemaService {
         return this.openDocstore(schema.profileStore, Global.orbitAccessControl)
     }
 
-    // async getPostFeedCounterByWalletAddress(walletAddress: string) {
-    //     let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-    //     return this.openCounter(schema.postFeedCounter, Global.orbitAccessControl) 
-    // }
-
 
     async getPostFeedByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
         return this.openFeed(schema.postFeed, Global.orbitAccessControl)
     }
-
-
-    // async getPostKeyValueByWalletAddress(walletAddress: string) {
-    //     let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-    //     return this.openFeed(schema.postKeyValue, Global.orbitAccessControl)
-    // }
 
 
     async getRepliesPostFeed(post:Post, translatedContent: string) {
@@ -241,18 +230,6 @@ class SchemaService {
         })
 
     }
-
-    // async generatePostFeedCounter(orbitdb, accessController, walletAddress:string) {
-
-    //     console.log("Generating post feed counter")
-
-    //     let postFeedCounterName = this._getPostFeedCounterNameSeed(walletAddress)
-
-    //     return orbitdb.counter(postFeedCounterName, {
-    //         create: true,
-    //         accessController: accessController
-    //     })
-    // }
 
 
 }

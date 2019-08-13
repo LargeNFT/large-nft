@@ -9,19 +9,6 @@
   .navbar .right {
     margin-right: 25%;
   }
-
-
-  .messagebar {
-    background: var(--f7-navbar-bg-color,var(--f7-bars-bg-color,var(--f7-theme-color)));
-  }
-
-  .messagebar .toolbar-inner {
-    background: #ffffff;
-    /* width: 50%; */
-    /* margin-left: 25%;
-    margin-right: 25%; */
-  }
-
 }
 
 .navbar a span {
@@ -98,32 +85,6 @@ body, .md body {
   border: 1px solid #cccccc;
 }
 
-h1 {
-  margin-block-end: 0em;
-  margin-block-start: 0em;
-  padding-bottom: 0px;
-}
-
-h1.story {
-  margin-top: 15px;
-  font-size: 42px;
-  line-height: 45px;
-  font-weight: normal;
-  font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
-}
-
-.subtitle {
-  font-size: 25px;
-  line-height: 30px;
-  white-space: normal;
-  color: #000000;
-  opacity: 0.54;
-  font-weight: 400;
-  font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
-  margin-top: 5px;
-  margin-bottom: 20px;
-}
-
 .center {
   margin: 0 auto;
 }
@@ -133,8 +94,28 @@ h1.story {
   margin-right: 10px;
 }
 
+.post-area {
+  width: 100%;
+  padding: 10px;
+}
+
+.post-area .editor {
+  width: 100%;
+}
 
 
+/* .post-area-buttons .action-button {
+  font-size: 9px;
+  display: inline-block;
+} */
+
+.post-area-buttons label {
+  display: none;
+}
+
+
+
+/* 
 
 .editor-container .editor {
   display: block;
@@ -160,7 +141,7 @@ h1.story {
 
 .editor-container button:active, button:focus {
   outline: none;
-}
+} */
 
 blockquote {
   border-left: 4px solid #111;
@@ -302,7 +283,7 @@ hr:before {
   margin-left: 15px;
   display: inline;
 }
-
+/* 
 .author {
   width: 100%;
   float: left;
@@ -328,7 +309,7 @@ hr:before {
   font-size: 13px;
   font-weight: 400;
   opacity: 0.54;
-}
+} */
 
 
 .cover-photo-img {

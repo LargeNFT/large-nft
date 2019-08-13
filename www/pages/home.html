@@ -33,27 +33,32 @@
     <div class="page-content infinite-scroll-content">
 
       <div class="row">
-        <div class="toolbar messagebar col-100 tablet-50 center">
-          <div class="toolbar-inner">
+        <div class="col-100 tablet-50 center">
 
-
-            <a href="#" data-popover=".editor-popover" class="popover-open">
-              <i class="icon f7-icons if-not-md">edit</i>
-              <i class="icon material-icons md-only">edit</i>
-            </a>
-
-
-            <div class="messagebar-area">
-
-              <div class="messagebar-attachments"></div>
-
+            <div class="post-area">
               <div id="create-post-textarea" class="editor"></div>
-
             </div>
-            <a class="link send-link" href="#">Post</a>
-          </div>
+              
+            <div class="post-area-buttons row">
+
+                <button class="col-10 button button-small bold-button action-button"><i class="fa fa-bold"></i></button>
+                <button class="col-10 button button-small italic-button action-button"><i class="fa fa-italic"></i></button>
+                <button class="col-10 button button-small link-button action-button"><i class="fa fa-link"></i></button>
+                <button class="col-10 button button-small blockquote-button action-button"><i class="fa fa-quote-right"></i></button>
+                
+                <button class="col-10 button button-small image-button action-button"><i class="fa fa-camera"></i></button>
+                <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+        
+                <button class="col-10 button button-small video-button action-button"><i class="fa fa-play"></i></button>
+                <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
+
+                <span class="col-20"></span>
+                <button class="col-20 button button-fill button-round button-small send-link" href="#">Post</a>
+            </div>
+
 
         </div>
+
       </div>
 
       <div class="row">
@@ -103,36 +108,7 @@
 
 
 
-    <div class="popover editor-popover">
-      <div class="popover-inner">
-        <div class="block">
 
-          <button class="bold-button"><i class="fa fa-bold"></i></button>
-          <button class="italic-button"><i class="fa fa-italic"></i></button>
-          <button class="link-button"><i class="fa fa-link"></i></button>
-          <button class="blockquote-button"><i class="fa fa-quote-right"></i></button>
-          <button class="header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
-          <button class="header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>
-          <label for="create-image-button-input">
-            <button class="image-button">
-              <i class="fa fa-camera"></i>
-            </button>
-
-            <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
-
-
-            <label for="create-video-button-input">
-              <button class="video-button">
-                <i class="fa fa-play"></i>
-              </button>
-
-              <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
-
-
-              <button class="divider-button"><i class="fa fa-minus"></i></button>
-        </div>
-      </div>
-    </div>
 
   </div>
 
@@ -147,64 +123,17 @@
     on: {
       pageInit: async function (e, page) {
 
-        let controller = window['homeController']
-
         const self = this
 
+        let controller = window['homeController']
+
+        this.$$(document).off('click', '.send-link')
         this.$$(document).on('click', '.send-link', function (e) {
           e.preventDefault()
           controller.postMessage(e, self)
         })
 
-        this.$$(document).on('click', '.delete-post', function (e) {
-          e.preventDefault()
-          controller.deletePost(e)
-        })
 
-        this.$$(document).on('click', '.bold-button', function (e) {
-          e.preventDefault()
-          controller.boldClick(e)
-        })
-
-        this.$$(document).on('click', '.italic-button', function (e) {
-          e.preventDefault()
-          controller.italicClick(e)
-        })
-
-        this.$$(document).on('click', '.link-button', function (e) {
-          e.preventDefault()
-          controller.linkClick(e)
-        })
-
-        this.$$(document).on('click', '.blockquote-button', function (e) {
-          e.preventDefault()
-          controller.blockquoteClick(e)
-        })
-
-        this.$$(document).on('click', '.header-1-button', function (e) {
-          e.preventDefault()
-          controller.header1Click(e)
-        })
-
-        this.$$(document).on('click', '.header-2-button', function (e) {
-          e.preventDefault()
-          controller.header2Click(e)
-        })
-
-        this.$$(document).on('click', '.divider-button', function (e) {
-          e.preventDefault()
-          controller.dividerClick(e)
-        })
-
-        this.$$(document).on('click', '.image-button', function (e) {
-          e.preventDefault()
-          controller.imageClick(e)
-        })
-
-        this.$$(document).on('change', '.image-button-input', async function (e) {
-          e.preventDefault()
-          await self.imageSelected(this)
-        })
 
 
         // Attach 'infinite' event handler

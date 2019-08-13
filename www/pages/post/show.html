@@ -1,112 +1,159 @@
 <!--suppress JSAnnotator -->
 <template>
-  <div class="page" data-name="post-static">
-    <div class="navbar">
-      <div class="navbar-inner sliding">
-        <div class="left">
-          <a class="link back icon-only">
-            <i class="icon icon-back"></i>
-          </a>
-        </div>
-        <div class="right">
-          <a class="link" href="/">
-            <i class="f7-icons">home</i>
-          </a>
-          <a class="link" href="/settings">
-            <i class="f7-icons">gear_fill</i>
-          </a>
-
-          <a class="link" href="/profile/show">
-            <i class="f7-icons">person</i>
-          </a>
+    <div class="page" data-name="post-static">
+      <div class="navbar">
+        <div class="navbar-inner sliding">
+          <div class="left">
+            <a class="link back icon-only">
+              <i class="icon icon-back"></i>
+            </a>
+          </div>
+          <div class="right">
+            <a class="link" href="/">
+              <i class="f7-icons">home</i>
+            </a>
+            <a class="link" href="/settings">
+              <i class="f7-icons">gear_fill</i>
+            </a>
+  
+            <a class="link" href="/profile/show">
+              <i class="f7-icons">person</i>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="page-content row">
-
-      <div class="col-100 tablet-50 center">
+      <div class="page-content">
 
         {{#if post}}
-
-          <div class="card">
-              <div class="card-header">
-
-
-                {{#if post.ownerProfilePic}}
-                  <img class="profile-pic" src="{{js "window.ipfsGateway"}}/{{post.ownerProfilePic}}">
-                {{else}}
-                  <i class="f7-icons" class="profile-pic">person</i>
-                {{/if}}
-
-                <div class="post-author">
-                    By <a href="/profile/static/{{post.owner}}">{{post.ownerDisplayName}}</a>
-                </div>
-      
-                <div class="post-date">{{ post.dateCreated }}</div>
-
-
-              </div>
-              <div class="card-content card-content-padding">
-                  {{post.contentTranslated}}  
-              </div>
-          </div>
-
-
-          <div class="block-title">Replies</div>
-          <div class="list media-list">
-
-              <ul>
-                {{#each replies}}
-                <li>
-                  <a href="/post/show/{{cid}}" class="item-link">
-                    <div class="item-content" id="post_{{cid}}">
-                      <div class="item-media">
-                          {{#if ownerProfilePic}}
-                            <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
-                          {{/if}}
+          <div class="row">
+            <div class="col-100 tablet-50 center">
+                <div class="card">
+                    <div class="card-header">
+    
+    
+                      {{#if post.ownerProfilePic}}
+                        <img class="profile-pic" src="{{js "window.ipfsGateway"}}/{{post.ownerProfilePic}}">
+                      {{else}}
+                        <i class="f7-icons" class="profile-pic">person</i>
+                      {{/if}}
+    
+                      <div class="post-author">
+                          By <a href="/profile/static/{{post.owner}}">{{post.ownerDisplayName}}</a>
                       </div>
-                      <div class="item-inner">
-                        <div class="item-title-row">
-                          <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
-                            <div class="post-owner">{{owner}}</div>
-                          </div>
-                          <div class="item-after">
-                            {{dateCreated}}
-                          </div>
-                        </div>
-                        <div class="item-subtitle">{{contentTranslated}}</div>
-                      </div>
+            
+                      <div class="post-date">{{ post.dateCreated }}</div>
+    
+    
                     </div>
-                  </a>
-                </li>
-                {{/each}}
-              </ul>
+                    <div class="card-content card-content-padding">
+                        {{post.contentTranslated}}  
+                    </div>
+                </div>
+                
+                <div class="block-title">Replies</div>
+
+
+                <div class="col-100">
+                    
+                    <div class="post-area">
+                      <div id="create-reply-textarea-{{post.cid}}" class="editor"></div>
+                    </div>
+                      
+                    <div class="post-area-buttons row">
+        
+                        <button class="col-10 button button-small bold-button action-button"><i class="fa fa-bold"></i></button>
+                        <button class="col-10 button button-small italic-button action-button"><i class="fa fa-italic"></i></button>
+                        <button class="col-10 button button-small link-button action-button"><i class="fa fa-link"></i></button>
+                        <button class="col-10 button button-small blockquote-button action-button"><i class="fa fa-quote-right"></i></button>
+                        
+                        <button class="col-10 button button-small image-button action-button"><i class="fa fa-camera"></i></button>
+                        <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+                
+                        <button class="col-10 button button-small video-button action-button"><i class="fa fa-play"></i></button>
+                        <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
+                        <span class="col-20"></span>
+                        <button class="col-20 button button-fill button-round button-small send-reply" href="#">Reply</a>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="list media-list">
+
+                    <ul id="replies-list-{{post.cid}}">
+                      {{#each replies}}
+                      <li>
+                        <a href="/post/show/{{cid}}" class="item-link">
+                          <div class="item-content" id="post_{{cid}}">
+                            <div class="item-media">
+                                {{#if ownerProfilePic}}
+                                  <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                                {{/if}}
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+                                  <div class="post-owner">{{owner}}</div>
+                                </div>
+                                <div class="item-after">
+                                  {{dateCreated}}
+                                </div>
+                              </div>
+                              <div class="item-subtitle">{{contentTranslated}}</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      {{/each}}
+                    </ul>
+                </div>
+            </div>
           </div>
-
-
 
 
         {{/if}}
 
 
       </div>
-
-
-    </div>
-
-  </div>
-</template>
-
-
-
-
-
-<script>
-
-    return {
-      created: async function () {
-        window['Global'].loadComponentState(this, false)
-      }
-    }
   
-  </script>
+    </div>
+  </template>
+  
+  
+  
+  
+  
+  <script>
+  
+      return {
+  
+        on: {
+          pageInit: async function () {
+  
+            let controller = window['postController']
+            
+            this.$$(document).off('click', '.send-reply')
+            this.$$(document).on('click', '.send-reply', function (e) {
+              e.preventDefault()
+              controller.postReply(e, self)
+            })
+  
+            
+  
+          }
+        },
+  
+        created: async function () {
+          await window['Global'].loadComponentState(this, false)
+
+          if (this.post && this.post.cid) {
+            window['postController'].initializeQuill(this.post.cid)
+          }
+
+          
+        }
+      }
+    
+    </script>

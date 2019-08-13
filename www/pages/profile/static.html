@@ -72,7 +72,9 @@
                     <li>
                         <div class="item-content" id="post_{{_id}}">
                           <div class="item-media">
-                            <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                            {{#if ownerProfilePic}}
+                              <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                            {{/if}}
                           </div>
                           <div class="item-inner">
                             <div class="item-title-row">

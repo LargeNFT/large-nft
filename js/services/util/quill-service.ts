@@ -2,7 +2,10 @@ import Quill = require('quill/dist/quill.js')
 
 import BlotFormatter, { AlignAction, DeleteAction, ImageSpec } from 'quill-blot-formatter'
 import QuillBlotFormatter = require('quill-blot-formatter');
-import {Template7} from "framework7";
+import { Dom7, Template7 } from "framework7";
+import { UploadService } from './upload-service';
+
+var $$ = Dom7;
 
 /**
  * THESE CLASSES ARE HERE BECAUSE I NEEDED TO OVERRIDE THEM TO FIX A PROBLEM WITH DELETING
@@ -66,12 +69,75 @@ class CustomImageSpec extends QuillBlotFormatter.ImageSpec {
 
 class QuillService {
 
+  public activeEditor: any
+
+  initialized:boolean = false
+
+  constructor(
+    private uploadService:UploadService
+  ) {
+
+    const self = this
+
+    $$(document).on('click', '.bold-button', function (e) {
+      e.preventDefault()
+      self.boldClick()
+    })
+  
+    $$(document).on('click', '.italic-button', function (e) {
+      e.preventDefault()
+      self.italicClick()
+    })
+  
+    $$(document).on('click', '.link-button', function (e) {
+      e.preventDefault()
+      self.linkClick()
+    })
+  
+    $$(document).on('click', '.blockquote-button', function (e) {
+      e.preventDefault()
+      self.blockquoteClick()
+    })
+  
+    // $$(document).on('click', '.header-1-button', function (e) {
+    //   e.preventDefault()
+    //   self.header1Click()
+    // })
+  
+    // $$(document).on('click', '.header-2-button', function (e) {
+    //   e.preventDefault()
+    //   self.header2Click()
+    // })
+  
+    // $$(document).on('click', '.divider-button', function (e) {
+    //   e.preventDefault()
+    //   self.dividerClick()
+    // })
+  
+    $$(document).on('click', '.image-button', function (e) {
+      e.preventDefault()
+      self.imageClick()
+    })
+  
+    $$(document).on('change', '.image-button-input', async function (e) {
+      e.preventDefault()
+      await self.imageSelected(this)
+    })
+  
+
+
+
+
+  }
+
+
   buildQuillPostEditor(selector: string): Quill {
 
-    Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
-    Quill.debug(false)
+    this.initialize()
 
-    const quill = new Quill(selector, {
+    // this.activeEditor = undefined
+
+    this.activeEditor = new Quill(selector, {
       modules: {
         blotFormatter: {
           specs: [
@@ -93,7 +159,19 @@ class QuillService {
 
         }
       }
+
     })
+
+    return this.activeEditor
+  }
+
+  initialize() {
+
+    if (this.initialized) return 
+
+
+    Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
+    Quill.debug(false)
 
 
     let Inline = Quill.import('blots/inline');
@@ -255,16 +333,84 @@ class QuillService {
 
     Quill.register(IpfsVideoBlot)
     Quill.register(IpfsImageBlot)
-    Quill.register(DividerBlot)
-    Quill.register(HeaderBlot)
+    // Quill.register(DividerBlot)
+    // Quill.register(HeaderBlot)
     Quill.register(BlockquoteBlot)
     Quill.register(LinkBlot)
     Quill.register(BoldBlot)
     Quill.register(ItalicBlot)
 
 
-    return quill
+
+    this.initialized = true
+
   }
+
+
+  boldClick() {
+    const currentFormat = this.activeEditor.getFormat()
+    this.activeEditor.format('bold', !currentFormat.bold)
+  }
+
+  italicClick() {
+    const currentFormat = this.activeEditor.getFormat()
+    this.activeEditor.format('italic', !currentFormat.italic)
+  }
+
+  linkClick() {
+    let value = prompt('Enter link URL');
+    this.activeEditor.format('link', value)
+  }
+
+  blockquoteClick() {
+    const currentFormat = this.activeEditor.getFormat()
+    this.activeEditor.format('blockquote', !currentFormat.blockquote);
+  }
+
+  // header1Click() {
+  //   const currentFormat = this.activeEditor.getFormat()
+  //   this.activeEditor.format('header', currentFormat.header ? undefined : 1);
+  // }
+
+  // header2Click() {
+  //   const currentFormat = this.activeEditor.getFormat()
+  //   this.activeEditor.format('header', currentFormat.header ? undefined : 2);
+  // }
+
+
+  // dividerClick() {
+
+  //   let range = this.activeEditor.getSelection(true)
+
+  //   this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
+
+  //   this.activeEditor.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER)
+
+  //   this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
+
+  // }
+
+  imageClick() {
+    const imageButtonInput = $$(".image-button-input");
+    imageButtonInput.click()
+  }
+
+  //TODO: move to service
+  async imageSelected(fileElement: Element): Promise<void> {
+
+    let imageCid = await this.uploadService.uploadFile(fileElement)
+
+
+    let range = this.activeEditor.getSelection(true)
+
+    this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
+
+    this.activeEditor.insertEmbed(range.index, 'ipfsimage', { ipfsCid: imageCid }, Quill.sources.USER)
+
+    this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
+
+  }
+
 
 }
 

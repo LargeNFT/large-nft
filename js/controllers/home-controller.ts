@@ -37,10 +37,6 @@ class HomeController {
   
   _postTemplate: any
 
-  quill: any
-
-
-
 
   private postService:PublicPostService
 
@@ -52,7 +48,7 @@ class HomeController {
   }
 
   initializeQuill() {
-    this.quill = this.quillService.buildQuillPostEditor('#create-post-textarea')
+    this.quillService.buildQuillPostEditor('#create-post-textarea')
   }
 
 
@@ -61,6 +57,9 @@ class HomeController {
     return new ModelView( async () => {
 
       this.postService = await PublicPostService.getInstance(window['currentAccount'])
+
+      this.postsShown = 0
+      this.lastPost = null
 
       let posts:Post[] = await this.getNextPage()
 
@@ -98,10 +97,10 @@ class HomeController {
 
 
 
-  async postMessage(e: Event, component): Promise<void> {
+  async postMessage(e: Event): Promise<void> {
 
-    let content = this.quill.getContents()
-    let length = this.quill.getLength()
+    let content = this.quillService.activeEditor.getContents()
+    let length = this.quillService.activeEditor.getLength()
 
     // return if empty message. quill length is 1 if it's empty
     if (length == 1) return
@@ -113,8 +112,8 @@ class HomeController {
     $$("#post-list").prepend(this._postTemplate(post))
 
 
-    this.quill.setText('')
-    this.quill.focus()
+    this.quillService.activeEditor.setText('')
+    this.quillService.activeEditor.focus()
 
   }
 
@@ -133,71 +132,6 @@ class HomeController {
 
   }
 
-  boldClick(e) {
-    const currentFormat = this.quill.getFormat()
-    this.quill.format('bold', !currentFormat.bold)
-  }
-
-  italicClick(e) {
-    const currentFormat = this.quill.getFormat()
-    this.quill.format('italic', !currentFormat.italic)
-  }
-
-  linkClick(e) {
-    let value = prompt('Enter link URL');
-    this.quill.format('link', value)
-  }
-
-  blockquoteClick(e) {
-    const currentFormat = this.quill.getFormat()
-    this.quill.format('blockquote', !currentFormat.blockquote);
-  }
-
-  header1Click(e) {
-    const currentFormat = this.quill.getFormat()
-    this.quill.format('header', currentFormat.header ? undefined : 1);
-  }
-
-  header2Click(e) {
-    const currentFormat = this.quill.getFormat()
-    this.quill.format('header', currentFormat.header ? undefined : 2);
-  }
-
-  dividerClick(e) {
-
-    let range = this.quill.getSelection(true)
-
-    this.quill.insertText(range.index, '\n', Quill.sources.USER)
-
-    this.quill.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER)
-
-    this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
-
-  }
-
-  imageClick(e) {
-
-    const imageButtonInput = $$(".image-button-input");
-    imageButtonInput.click()
-
-  }
-
-  //TODO: move to service
-  async imageSelected(fileElement: Element): Promise<void> {
-
-    let imageCid = await this.uploadService.uploadFile(fileElement)
-
-
-    let range = this.quill.getSelection(true)
-
-    this.quill.insertText(range.index, '\n', Quill.sources.USER)
-
-    this.quill.insertEmbed(range.index, 'ipfsimage', { ipfsCid: imageCid }, Quill.sources.USER)
-
-    this.quill.setSelection(range.index + 2, Quill.sources.SILENT)
-
-
-  }
 
 
   _compilePostTemplate() {
@@ -231,8 +165,6 @@ class HomeController {
     
 
   }
-
-
 
 
 }

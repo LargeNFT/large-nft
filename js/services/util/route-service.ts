@@ -287,9 +287,8 @@ class RouteService {
     await this.schemaService.updateSchema(mainStore, schema, window['currentAccount'])
 
 
-      
-    Global.quillService = new QuillService()
     Global.uploadService = new UploadService()
+    Global.quillService = new QuillService(Global.uploadService)
     Global.whitepagesService = new WhitepagesService(contract)
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService)
 
@@ -297,11 +296,12 @@ class RouteService {
     Global.homeController = new HomeController(Global.quillService, Global.uploadService)
     Global.profileController = new ProfileController(Global.uploadService, Global.queueService, Global.listingService)
     Global.settingsController = new SettingsController(Global.settingsService)
-    Global.postController = new PostController(Global.schemaService)
+    Global.postController = new PostController(Global.schemaService, Global.quillService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController
+    window['postController'] = Global.postController
 
     console.log("Initialization complete")
 

@@ -46,6 +46,8 @@ class PublicPostService {
 
     //Get profile service of poster
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
+    await profileStore.load()
+
     let profileService = new ProfileService(profileStore)
     
 
@@ -81,11 +83,9 @@ class PublicPostService {
   async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
 
     let address = this.feedStore.address.toString()
-
     await this.feedStore.close()
 
     this.feedStore = await this.schemaService.openFeed(address, Global.orbitAccessControl)
-
     await this.feedStore.load(limit + offset)
 
     let options: any = {}
@@ -109,17 +109,14 @@ class PublicPostService {
         }
 
         return model
-      })
+    })
 
     let posts:Post[] = []
     for (var result of results) {
 
       let post:Post = await PublicPostService.read(result.cid)
-
       PublicPostService.translatePost(post)
-
       post.feedCid = result.feedCid
-
       posts.push(post)
 
     }

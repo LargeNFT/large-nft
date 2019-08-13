@@ -53,13 +53,20 @@
                 <div class="block-title">Replies</div>
 
 
-                <div class="col-100">
+                <div class="post-area">
                     
-                    <div class="post-area">
-                      <div id="create-reply-textarea-{{post.cid}}" class="editor"></div>
+                    <div class="top row">
+                      <div class="profile-pic">
+                          {{#if profilePic}}
+                            <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
+                          {{else}}
+                            <i class="f7-icons profile-pic-thumb">person</i>
+                          {{/if}}
+                      </div>                      
+                      <div class="editor" id="create-reply-textarea-{{post.cid}}" ></div>
                     </div>
                       
-                    <div class="post-area-buttons row">
+                    <div class="bottom row">
         
                         <button class="col-10 button button-small bold-button action-button"><i class="fa fa-bold"></i></button>
                         <button class="col-10 button button-small italic-button action-button"><i class="fa fa-italic"></i></button>
@@ -74,6 +81,7 @@
                         <span class="col-20"></span>
                         <button class="col-20 button button-fill button-round button-small send-reply" href="#">Reply</a>
                     </div>
+
                 </div>
 
 
@@ -89,7 +97,9 @@
                           <div class="item-content" id="post_{{cid}}">
                             <div class="item-media">
                                 {{#if ownerProfilePic}}
-                                  <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                                  <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                                {{else}}
+                                  <i class="f7-icons profile-pic-thumb">person</i>
                                 {{/if}}
                             </div>
                             <div class="item-inner">
@@ -111,8 +121,6 @@
                 </div>
             </div>
           </div>
-
-
         {{/if}}
 
 

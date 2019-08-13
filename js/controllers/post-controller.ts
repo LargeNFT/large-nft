@@ -40,8 +40,6 @@ class PostController {
             this.loadedPost = await PublicPostService.read(cid)
             PublicPostService.translatePost(this.loadedPost)
 
-            console.log(this.loadedPost)
-
             let repliesFeed = await this.schemaService.openFeed(this.loadedPost.replies, Global.orbitAccessControl)
             await repliesFeed.load(100)
 
@@ -56,7 +54,8 @@ class PostController {
             let model = {
               post: this.loadedPost,
               replies: replies,
-              showEditLink: (currentUser && currentUser._id.toString() == this.loadedPost.owner.toString())
+              showEditLink: (currentUser && currentUser._id.toString() == this.loadedPost.owner.toString()),
+              profilePic: currentUser ? currentUser.profilePic : undefined
             }
 
             return model
@@ -95,7 +94,9 @@ class PostController {
                 <div class="item-content" id="post_{{cid}}">
                   <div class="item-media">
                     {{#if ownerProfilePic}}
-                      <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                      <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                    {{else}}
+                      <i class="f7-icons profile-pic-thumb">person</i>
                     {{/if}}
                   </div>
                   <div class="item-inner">

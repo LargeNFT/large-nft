@@ -33,32 +33,37 @@
     <div class="page-content infinite-scroll-content">
 
       <div class="row">
-        <div class="col-100 tablet-50 center">
+          <div class="post-area col-100 tablet-50 center">
+                    
+              <div class="top row">
+                <div class="profile-pic">
+                  {{#if profilePic}}
+                    <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
+                  {{else}}
+                    <i class="f7-icons profile-pic-thumb">person</i>
+                  {{/if}}
 
-            <div class="post-area">
-              <div id="create-post-textarea" class="editor"></div>
-            </div>
-              
-            <div class="post-area-buttons row">
-
-                <button class="col-10 button button-small bold-button action-button"><i class="fa fa-bold"></i></button>
-                <button class="col-10 button button-small italic-button action-button"><i class="fa fa-italic"></i></button>
-                <button class="col-10 button button-small link-button action-button"><i class="fa fa-link"></i></button>
-                <button class="col-10 button button-small blockquote-button action-button"><i class="fa fa-quote-right"></i></button>
+                </div>                      
+                <div class="editor" id="create-post-textarea" ></div>
+              </div>
                 
-                <button class="col-10 button button-small image-button action-button"><i class="fa fa-camera"></i></button>
-                <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
-        
-                <button class="col-10 button button-small video-button action-button"><i class="fa fa-play"></i></button>
-                <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
+              <div class="bottom row">
+  
+                  <button class="col-10 button button-small bold-button action-button"><i class="fa fa-bold"></i></button>
+                  <button class="col-10 button button-small italic-button action-button"><i class="fa fa-italic"></i></button>
+                  <button class="col-10 button button-small link-button action-button"><i class="fa fa-link"></i></button>
+                  <button class="col-10 button button-small blockquote-button action-button"><i class="fa fa-quote-right"></i></button>
+                  
+                  <button class="col-10 button button-small image-button action-button"><i class="fa fa-camera"></i></button>
+                  <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+          
+                  <button class="col-10 button button-small video-button action-button"><i class="fa fa-play"></i></button>
+                  <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
+                  <span class="col-20"></span>
+                  <button class="col-20 button button-fill button-round button-small send-post" href="#">Post</a>
+              </div>
 
-                <span class="col-20"></span>
-                <button class="col-20 button button-fill button-round button-small send-link" href="#">Post</a>
-            </div>
-
-
-        </div>
-
+          </div>
       </div>
 
       <div class="row">
@@ -74,7 +79,9 @@
                   <div class="item-content" id="post_{{cid}}">
                     <div class="item-media">
                         {{#if ownerProfilePic}}
-                          <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                          <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                        {{else}}
+                          <i class="f7-icons profile-pic-thumb">person</i>
                         {{/if}}
                     </div>
                     <div class="item-inner">
@@ -127,8 +134,8 @@
 
         let controller = window['homeController']
 
-        this.$$(document).off('click', '.send-link')
-        this.$$(document).on('click', '.send-link', function (e) {
+        this.$$(document).off('click', '.send-post')
+        this.$$(document).on('click', '.send-post', function (e) {
           e.preventDefault()
           controller.postMessage(e, self)
         })
@@ -176,7 +183,26 @@
       }
     },
     created: async function () {
-      window['Global'].loadComponentState(this, false)
+      
+      const self = this
+
+      await window['Global'].loadComponentState(this, false)
+
+
+
+      if (!window['homeController'].hasMorePosts) {
+
+        console.log("Unloading infinite scroll")
+
+        // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+        window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
+
+        // Remove preloader
+        self.$$('.infinite-scroll-preloader').remove()
+
+      }
+
+
     }
   }
 

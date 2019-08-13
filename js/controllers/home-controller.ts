@@ -63,8 +63,12 @@ class HomeController {
 
       let posts:Post[] = await this.getNextPage()
 
+      
+      let currentUser:Profile = await ProfileService.getCurrentUser()
+
       return {
         currentAccount: window['currentAccount'],
+        profilePic: currentUser ? currentUser.profilePic : undefined,
         posts: posts
       }
 
@@ -82,7 +86,7 @@ class HomeController {
     
     // console.log(`Loaded: ${await this.postService.countLoaded()}`)
 
-    if (posts.length > 0) {
+    if (posts.length == this.limit) {
       this.postsShown += posts.length
       this.lastPost = posts[posts.length -1].feedCid
     } else {
@@ -98,6 +102,8 @@ class HomeController {
 
 
   async postMessage(e: Event): Promise<void> {
+
+    console.log('here')
 
     let content = this.quillService.activeEditor.getContents()
     let length = this.quillService.activeEditor.getLength()
@@ -143,7 +149,9 @@ class HomeController {
             <div class="item-content" id="post_{{cid}}">
               <div class="item-media">
                 {{#if ownerProfilePic}}
-                  <img src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                  <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                {{else}}
+                  <i class="f7-icons profile-pic-thumb">person</i>
                 {{/if}}
               </div>
               <div class="item-inner">

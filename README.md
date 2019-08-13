@@ -32,7 +32,7 @@ Users can post articles, comment on them, follow/unfollow each other. All data i
     * The controller function will return a "ModelView" object.
         * It contains a function that returns the data for that page.
         * Also a string that represents a Framework7 component to load.
-        * HTML goes in the component file. Sometimes some small amounts of javascrpt. Ideally.
+        * HTML goes in the component file. Sometimes with some small amounts of UI specific javascript.
 
 * Controller calls a service function. Preferrably a single one. A service function with unit tests. 
 

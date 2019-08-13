@@ -88,6 +88,20 @@ class PublicPostService {
     this.feedStore = await this.schemaService.openFeed(address, Global.orbitAccessControl)
     await this.feedStore.load(limit + offset)
 
+
+    let posts:Post[] = await this.getPosts(this.feedStore, limit, lt)
+
+
+    posts.reverse()
+
+
+    return posts
+
+  }
+
+
+  async getPosts(feedStore: any, limit:number, lt:string=undefined): Promise<Post[]> {
+    
     let options: any = {}
 
     if (limit) {
@@ -99,7 +113,7 @@ class PublicPostService {
     }
 
 
-    let results = await this.feedStore.iterator(options)
+    let results = await feedStore.iterator(options)
       .collect()
       .map((e) => {
 
@@ -121,11 +135,7 @@ class PublicPostService {
 
     }
 
-    posts.reverse()
-
-
     return posts
-
   }
 
 

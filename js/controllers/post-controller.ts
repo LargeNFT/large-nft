@@ -6,6 +6,7 @@ import { Post } from "../dto/post";
 import { SchemaService } from "../services/util/schema-service";
 import { QuillService } from "../services/util/quill-service";
 import { Dom7, Template7 } from "framework7";
+import { Global } from "../global";
 
 
 var $$ = Dom7;
@@ -39,13 +40,15 @@ class PostController {
             this.loadedPost = await PublicPostService.read(cid)
             PublicPostService.translatePost(this.loadedPost)
 
+            console.log(this.loadedPost)
 
-            let repliesFeed = await this.schemaService.getRepliesPostFeed(this.loadedPost, this.loadedPost.contentTranslated)
+            let repliesFeed = await this.schemaService.openFeed(this.loadedPost.replies, Global.orbitAccessControl)
+            await repliesFeed.load(100)
+
             this.repliesService = new PublicPostService(repliesFeed, this.schemaService)
 
-            let replies:Post[] = await this.repliesService.getRecentPosts(0, 100)
+            let replies:Post[] = await this.repliesService.getPosts(repliesFeed, 100)
 
-            console.log(replies)
 
             //Show the edit button to the owner
             let currentUser:Profile = await ProfileService.getCurrentUser()
@@ -73,7 +76,6 @@ class PostController {
         if (length == 1) return
     
         let post:Post = await this.repliesService.postMessage(content, window['currentAccount'])
-    
     
         $$(`#replies-list-${this.loadedPost.cid}`).prepend(this._postTemplate(post))
     

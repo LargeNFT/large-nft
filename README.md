@@ -1,21 +1,55 @@
 # Large
-If you are curious about blockchain, peer-to-peer technology, or how to build decentralized applications for the new Internet, clone this repo and join us at [Learn Blockchain in Akron](https://www.meetup.com/Akron-DApps/)!
+**Large** is a P2P blogging platform. It allows you to build an online community that's run and hosted by the community. 
 
-This repo contains the current state of our project, which we add to every week.
+* No servers needed. 
+* No hosting account needed. 
+* Just install the app and start publishing.*
 
-Can't make it to the meetup or want to learn more? [Join us on Discord.](https://discord.gg/kRydQeW)
+Users can post articles, comment on them, follow/unfollow each other. All data is hosted by you and your community. 
 
-# About the Project
-**Large** is the fully decentralized content publishing platform we're building together at Learn Blockchain in Akron. It's like [Medium](https://www.medium.com/), but bigger!
+* You just send messages to the people who want to see them. If those messages become more popular more people have copies. The more users the better it scales.
+* No infrastructure to manage = no ads
+* Completely free for you to take, customize, and build your own community.
+* Your community can be as public or private as you want it to be.* 
 
-Large uses a simple, reusable pattern to tie data in an Ethereum smart contract to data stored in IPFS. Transactional data is stored in Ethereum; everything else is stored in IPFS. We use [Orbit-Db](https://github.com/orbitdb/orbit-db) to share the data between the users.
 
-We'll demo and review the basics of the project at the beginning of each meetup, so don't worry if you are new - we'll catch you up.
+*Eventually. Right now there's a bunch of setup and everything is public.
+
+## How It Works 
+**Large** is built on top of [IPFS](https://github.com/ipfs/ipfs) and [Ethereum](https://github.com/ethereum/solidity). 
+
+* All the actual data is stored in IPFS.
+* Data services are provided by [OrbitDB](https://github.com/orbitdb/orbit-db).
+* Ethereum is used as a virtual whitepages and to authenticate all messages. It also allows other crypto-specific features to be added later. In theory you could could later connect this to any smart contract platform.
+* The front-end is built using [Framework7](https://github.com/framework7io/framework7). Everything is HTML/CSS/Javascript. 
+* The front-end is also the back-end. Dawg. 
+
+### Basic Architecture
+
+* Everything is [TypeScript](https://github.com/microsoft/TypeScript). Types are the best. 
+* MVC 
+* All user interactions are managed by a controller. 
+    * The controller function will return a "ModelView" object.
+        * It contains a function that returns the data for that page.
+        * Also a string that represents a Framework7 component to load.
+        * HTML goes in the component file. Sometimes some small amounts of javascrpt. Ideally.
+
+* Controller calls a service function. Preferrably a single one. A service function with unit tests. 
+
+* Data is stored using OrbitDB. There are typescript services to help manage it. There's a schema.
+
+* The "register" function calls an Ethereum smart contract. The address for this contract is configurable in the actual app. Eventually this is how you'll connect to different communities without needing a whole new app. 
+
+
 
 # Getting Started
-You need the tools listed below to run the project. If you want to code along with us, try to complete these steps before the meetup. We'll teach you how everything works as we go.
+You need the tools listed below to run the project. 
 
 Need help? [Just ask!](https://discord.gg/kRydQeW)
+
+NOTE: All the below steps are now automated with inside a docker container. Visual Studio Code handles most everything. Instruction are in the SETUP file in the repo. We'll write them out here soon. 
+
+
 
 ## What You'll Need
 1. **Node.js** - JavaScript runtime environment. **npm** (Node package manager) is required to install and run Large and its dependencies.
@@ -87,3 +121,6 @@ If you have installed the tools above, you can run Large with the following step
 ## Help Us Build the Rest!
 Find [our next meetup](https://www.meetup.com/Akron-DApps/) and come see us!
 
+If you are curious about blockchain, peer-to-peer technology, or how to build decentralized applications for the new Internet, clone this repo and join us at [Learn Blockchain in Akron](https://www.meetup.com/Akron-DApps/)!
+
+Can't make it to the meetup or want to learn more? [Join us on Discord.](https://discord.gg/kRydQeW)

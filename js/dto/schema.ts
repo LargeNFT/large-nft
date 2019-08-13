@@ -1,5 +1,6 @@
 interface Schema {
     postFeed?: string 
+    friendFeed?: string
     profileStore?: string 
 }
 

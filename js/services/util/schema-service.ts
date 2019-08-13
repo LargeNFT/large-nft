@@ -95,6 +95,11 @@ class SchemaService {
         return this.openFeed(schema.postFeed, Global.orbitAccessControl)
     }
 
+    async getFriendFeedByWalletAddress(walletAddress: string) {
+        let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
+        return this.openFeed(schema.friendFeed, Global.orbitAccessControl)
+    }
+
 
     async getRepliesPostFeed(post:Post, translatedContent: string) {
 
@@ -136,6 +141,10 @@ class SchemaService {
         return `post-${walletAddress.toLowerCase()}` 
     }
 
+    private _getFriendFeedNameSeed(walletAddress:string ) : string {
+        return `friend-${walletAddress.toLowerCase()}` 
+    }
+
     private _getPostFeedCounterNameSeed(walletAddress:string ) : string {
         return `post-counter-${walletAddress.toLowerCase()}` 
     }
@@ -153,10 +162,12 @@ class SchemaService {
     
         let profileStore = await this.generateProfileStore(orbitdb, accessController, walletAddress)
         let postFeed = await this.generatePostFeed(orbitdb, accessController, walletAddress)
+        let friendFeed = await this.generateFriendFeed(orbitdb, accessController, walletAddress)
 
         let schema:Schema = {
           profileStore: profileStore.address.toString(),
-          postFeed: postFeed.address.toString()
+          postFeed: postFeed.address.toString(),
+          friendFeed: friendFeed.address.toString()
         }
     
         await mainStore.put({
@@ -183,6 +194,12 @@ class SchemaService {
         if (!schema.postFeed) {
             let postFeed = await this.generatePostFeed(Global.orbitDb, Global.orbitAccessControl, walletAddress)
             schema.postFeed = postFeed.address.toString()
+            schemaUpdated = true
+        }
+
+        if (!schema.friendFeed) {
+            let friendFeed = await this.generateFriendFeed(Global.orbitDb, Global.orbitAccessControl, walletAddress)
+            schema.friendFeed = friendFeed.address.toString()
             schemaUpdated = true
         }
 
@@ -225,6 +242,21 @@ class SchemaService {
         let postFeedName = this._getPostFeedNameSeed(walletAddress)
 
         return orbitdb.feed(postFeedName, {
+          create: true,
+          accessController: accessController
+        })
+
+    }
+
+
+
+    async generateFriendFeed(orbitdb, accessController, walletAddress:string) {
+
+        console.log("Generating friend feed")
+
+        let friendFeedName = this._getFriendFeedNameSeed(walletAddress)
+
+        return orbitdb.feed(friendFeedName, {
           create: true,
           accessController: accessController
         })

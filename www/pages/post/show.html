@@ -68,15 +68,15 @@
                       
                     <div class="bottom row">
         
-                        <button class="col-10 button button-small bold-button action-button"><i class="fa fa-bold"></i></button>
-                        <button class="col-10 button button-small italic-button action-button"><i class="fa fa-italic"></i></button>
-                        <button class="col-10 button button-small link-button action-button"><i class="fa fa-link"></i></button>
-                        <button class="col-10 button button-small blockquote-button action-button"><i class="fa fa-quote-right"></i></button>
+                        <button class="col-10 button button-small bold-button"><i class="fa fa-bold"></i></button>
+                        <button class="col-10 button button-small italic-button"><i class="fa fa-italic"></i></button>
+                        <button class="col-10 button button-small link-button"><i class="fa fa-link"></i></button>
+                        <button class="col-10 button button-small blockquote-button"><i class="fa fa-quote-right"></i></button>
                         
-                        <button class="col-10 button button-small image-button action-button"><i class="fa fa-camera"></i></button>
+                        <button class="col-10 button button-small image-button"><i class="fa fa-camera"></i></button>
                         <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
                 
-                        <button class="col-10 button button-small video-button action-button"><i class="fa fa-play"></i></button>
+                        <button class="col-10 button button-small video-button"><i class="fa fa-play"></i></button>
                         <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
                         <span class="col-20"></span>
                         <button class="col-20 button button-fill button-round button-small send-reply" href="#">Reply</a>
@@ -136,30 +136,23 @@
   <script>
   
       return {
-  
-        on: {
-          pageInit: async function () {
-  
-            let controller = window['postController']
-            
-            this.$$(document).off('click', '.send-reply')
-            this.$$(document).on('click', '.send-reply', function (e) {
-              e.preventDefault()
-              controller.postReply(e, self)
-            })
-  
-            
-  
-          }
-        },
-  
+
         created: async function () {
+
+          let controller = window['postController']
+
           await window['Global'].loadComponentState(this, false)
 
+        
           if (this.post && this.post.cid) {
-            window['postController'].initializeQuill(this.post.cid)
+            controller.initializeQuill(this.post.cid)
           }
 
+          this.$$('.send-reply').on('click', function (e) {
+              e.preventDefault()
+              controller.postReply(e, self)
+          })
+  
           
         }
       }

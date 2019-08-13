@@ -91,7 +91,7 @@
 
         const self = this;
 
-        this.$$(document).on('click', '#register-link', function (e) {
+        this.$$('#register-link').on('click', function (e) {
             e.preventDefault()
             self.registerClick(e)
         })

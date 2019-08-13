@@ -103,8 +103,6 @@ class HomeController {
 
   async postMessage(e: Event): Promise<void> {
 
-    console.log('here')
-
     let content = this.quillService.activeEditor.getContents()
     let length = this.quillService.activeEditor.getLength()
 

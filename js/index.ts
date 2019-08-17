@@ -43,6 +43,7 @@ module.exports = function() {
   })
 
 
+
   //Detect page root
   // @ts-ignore
   const rootUrl = new URL(window.location)
@@ -69,4 +70,8 @@ module.exports = function() {
 
   window['Global'] = Global;
 
+  
+
+
+  
 }

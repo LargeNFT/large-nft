@@ -40,7 +40,7 @@ class PostController {
             this.loadedPost = await PublicPostService.read(cid)
             PublicPostService.translatePost(this.loadedPost)
 
-            let repliesFeed = await this.schemaService.openFeed(this.loadedPost.replies, Global.orbitAccessControl)
+            let repliesFeed = await this.schemaService.openFeed(this.loadedPost.replies)
             await repliesFeed.load(100)
 
             this.repliesService = new PublicPostService(repliesFeed, this.schemaService)

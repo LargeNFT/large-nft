@@ -5,6 +5,7 @@ import { Global } from "../global";
 import { ProfileService } from "./profile-service";
 import { Profile } from "../dto/profile";
 import { SchemaService } from "./util/schema-service";
+import { timeout } from "../timeout-promise";
 const moment = require('moment')
 
 
@@ -15,7 +16,8 @@ class PublicPostService {
     private schemaService: SchemaService
   ) { }
 
-
+  
+  @timeout(2000)
   static async getInstance(walletAddress: string): Promise<PublicPostService> {
     
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
@@ -45,15 +47,14 @@ class PublicPostService {
     let dateString: string = moment().format().toString()
 
     //Get profile service of poster
-    let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
-    await profileStore.load()
+    let profile: Profile
+    try {
+      profile = await ProfileService.getProfileByWallet(walletAddress)
+    } catch(ex) {
+      console.log(ex)
+    }
 
-    let profileService = new ProfileService(profileStore)
     
-
-
-
-    let profile: Profile = await profileService.read(walletAddress)
 
     let post: Post = {
       owner: walletAddress,
@@ -79,23 +80,24 @@ class PublicPostService {
 
 
 
-
+  @timeout(2000)
   async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
 
-    let address = this.feedStore.address.toString()
-    await this.feedStore.close()
+      //Reload store with more data.
+      let address = this.feedStore.address.toString()
+      await this.feedStore.close()
 
-    this.feedStore = await this.schemaService.openFeed(address, Global.orbitAccessControl)
-    await this.feedStore.load(limit + offset)
-
-
-    let posts:Post[] = await this.getPosts(this.feedStore, limit, lt)
+      this.feedStore = await this.schemaService.openFeed(address)
+      await this.feedStore.load(limit + offset)
 
 
-    posts.reverse()
+      let posts:Post[] = await this.getPosts(this.feedStore, limit, lt)
 
 
-    return posts
+      posts.reverse()
+
+
+      return posts
 
   }
 

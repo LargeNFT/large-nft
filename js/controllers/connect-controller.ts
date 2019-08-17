@@ -48,6 +48,12 @@ class ConnectController {
 
     }
 
+    async findClick(e:Event) {
+        
+
+
+    }
+
 
     async registerClick(e:Event) {
 
@@ -69,24 +75,6 @@ class ConnectController {
     }
 
 
-    // async updateRegisterClick(e:Event) {
-
-    //     let address = Global.mainStore.address
-
-    //     let viewModel = {
-    //         address: window['currentAccount']
-    //     }
-
-    //     await this.queueService.queuePromiseView(
-    //         new PromiseView(
-    //           this.whitepageService.update(address.root),
-    //           "Updating registration {{address}} in whitepages",
-    //           "document_text",
-    //           viewModel,
-    //           "/connect"
-    //         )
-    //       )
-    // }
 
 
 

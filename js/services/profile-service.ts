@@ -1,6 +1,6 @@
 import {Global} from "../global";
 import { Profile } from "../dto/profile";
-
+import { timeout } from '../timeout-promise'
 
 class ProfileService {
   
@@ -8,7 +8,7 @@ class ProfileService {
     public store: any
   ) {}
 
-
+  @timeout(2000)
   static async getInstance(walletAddress:string) : Promise<ProfileService> {
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
     await profileStore.load()
@@ -16,12 +16,18 @@ class ProfileService {
 
   }
 
+  @timeout(2000)
   static async getCurrentUser() : Promise<Profile> {
-
-    let service:ProfileService = await ProfileService.getInstance(window['currentAccount'])
-    return service.read(window['currentAccount'])
-
+    return ProfileService.getProfileByWallet(window['currentAccount'])
   }
+
+  @timeout(2000)
+  static async getProfileByWallet(walletAddress:string) : Promise<Profile> {
+    let service:ProfileService =  await ProfileService.getInstance(walletAddress)
+    return service.read(walletAddress)
+  }
+
+
 
 
 

@@ -7,10 +7,11 @@
     "url": "git+https://github.com/ptoner/large.git"
   },
   "scripts": {
+    "electron": "electron .",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
     "build": "./scripts/build.sh",
     "test": "cd truffle; truffle test",
-    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 ] -o ./www/js/large.js -v"
+    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v"
   },
   "keywords": [
     "framework7",
@@ -31,7 +32,8 @@
   "devDependencies": {
     "cpy-cli": "^1.0.1",
     "http-server": "^0.10.0",
-    "truffle": "5.0.29"
+    "truffle": "5.0.29",
+    "electron": "6.0.2"
   },
   "dependencies": {
     "@babel/core": "7.2.2",
@@ -57,7 +59,7 @@
     "watchify": "3.11.0",
     "ts-node": "8.3.0",
     "orbit-db": "0.21.4",
-    "orbit-db-tablestore": "0.0.13",
+    "orbit-db-tablestore": "0.0.15",
     "ipfs": "0.36.4",
     "orbit-db-identity-provider": "0.1.6",
     "ethers": "4.0.33",

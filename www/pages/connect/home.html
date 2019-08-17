@@ -35,19 +35,35 @@
     <div class="page-content">
 
       <div class="row">
-        <div class="block col-100 tablet-50 center">
+        <div class="col-100 tablet-50 center">
 
-
+          <div class="block-title">Follow</div>
           <div class="block">
-              {{#if showRegisterButton}}
-                <a href="#" id="register-link">Register</a> your account.
+              <div class="row">
+                  <input class="col-80" type="text" name="friendAddress" placeholder="Enter your friend's wallet address">
+                  <a class="button button-round button-outline col-20" >Find</a>
+              </div>
+
+              {{#if foundFriend}}
+                <div class="row">
+                  
+                </div>
               {{/if}}
+
           </div>
 
-          <div class="list media-list">
-            Listings
+          <hr />
 
-            <ul>
+          {{#if showRegisterButton}}
+            <div class="block">
+              <a href="#" class="button button-fill button-round" id="register-link">Register</a>
+            </div>
+          {{/if}}
+
+          <div class="block-title">People</div>
+          <div class="list media-list">
+    
+           <ul>
             {{#each profiles}}
               <li>
                 <div class="item-content" id="profile_{{owner}}">
@@ -95,12 +111,6 @@
             e.preventDefault()
             self.registerClick(e)
         })
-
-
-        // this.$$(document).on('click', '#update-register-link', function (e) {
-        //     e.preventDefault()
-        //     self.updateRegisterClick(e)
-        // })
 
       }
     },

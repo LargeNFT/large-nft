@@ -1,50 +1,47 @@
 import { Global } from "../../global";
 import { Schema } from "../../dto/schema";
 import { Post } from "../../dto/post";
+import { Friend } from "../../dto/friend";
 
 const OrbitDB = require('orbit-db')
-const sha256 = require('js-sha256');
+const sha256 = require('js-sha256')
+
+import { timeout } from '../../timeout-promise'
+import { TIMEOUT } from "dns";
 
 class SchemaService {
 
     constructor() {}
 
-    async loadMainStore(storeAddress) {
 
-        let address = OrbitDB.parseAddress(storeAddress)
-        let mainStore = await Global.orbitDb.open(address.toString())
-
-        await mainStore.load()
-
-        return mainStore
-
-    }
-
-
-
-    async openDocstore(address, accessController) {
+    async openDocstore(address:string) {
 
         let docstoreAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.docstore(docstoreAddress.toString(), {
-          accessController: accessController
+        return Global.orbitDb.docstore(docstoreAddress.toString())
+
+    }
+
+    async openFeed(address:string) {
+
+        let feedAddress = OrbitDB.parseAddress(address)
+        return Global.orbitDb.feed(feedAddress.toString())
+
+    }
+
+    async openTable(address:string) {
+
+        let feedAddress = OrbitDB.parseAddress(address)
+
+        return Global.orbitDb.open(feedAddress.toString(), {
+            type: "table",
         })
 
     }
 
-    async openFeed(address, accessController) {
 
+    async openCounter(address:string) {
         let feedAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.feed(feedAddress.toString(), {
-          accessController: accessController
-        })
-
-    }
-
-    async openCounter(address, accessController) {
-        let feedAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.counter(feedAddress.toString(), {
-          accessController: accessController
-        })
+        return Global.orbitDb.counter(feedAddress.toString())
     }
 
 
@@ -69,12 +66,16 @@ class SchemaService {
 
     async getMainStoreByWalletAddress(walletAddress:string) {
 
+        let mainStore
+
         let mainStoreName = this._getMainStoreNameSeed(walletAddress)
 
-
-        let mainStore = await Global.orbitDb.docstore(mainStoreName, {
-          indexBy: 'name',
-          accessController: Global.orbitAccessControl
+        //get name
+        let mainStoreAddress = await Global.orbitDb.determineAddress(mainStoreName, 'docstore')
+        
+        //Try to open it
+        mainStore = await Global.orbitDb.docstore(mainStoreAddress, {
+            indexBy: 'name'
         })
 
         await mainStore.load()
@@ -86,18 +87,18 @@ class SchemaService {
 
     async getProfileStoreByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openDocstore(schema.profileStore, Global.orbitAccessControl)
+        return this.openDocstore(schema.profileStore)
     }
 
 
     async getPostFeedByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openFeed(schema.postFeed, Global.orbitAccessControl)
+        return this.openFeed(schema.postFeed)
     }
 
     async getFriendFeedByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openFeed(schema.friendFeed, Global.orbitAccessControl)
+        return this.openFeed(schema.friendFeed)
     }
 
 
@@ -257,8 +258,8 @@ class SchemaService {
         let friendFeedName = this._getFriendFeedNameSeed(walletAddress)
 
         return orbitdb.feed(friendFeedName, {
-          create: true,
-          accessController: accessController
+            create: true,
+            accessController: accessController
         })
 
     }

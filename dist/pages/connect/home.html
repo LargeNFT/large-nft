@@ -1,0 +1,112 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="home">
+
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+
+        </div>
+        <div class="right">
+
+          <a class="link" href="/">
+            <i class="f7-icons">home</i>
+            <span>Home</span>
+          </a>
+
+          <a class="link" href="/settings">
+            <i class="f7-icons">gear_fill</i>
+            <span>Settings</span>
+          </a>
+
+          <a class="link" href="/profile/show">
+            <i class="f7-icons">person</i>
+            <span>Profile</span>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div class="page-content">
+
+      <div class="row">
+        <div class="block col-100 tablet-50 center">
+
+
+          <div class="block">
+              {{#if showRegisterButton}}
+                <a href="#" id="register-link">Register</a> your account.
+              {{/if}}
+          </div>
+
+          <div class="list media-list">
+            Listings
+
+            <ul>
+            {{#each profiles}}
+              <li>
+                <div class="item-content" id="profile_{{owner}}">
+                  <div class="item-media">
+                      <img src="{{js "window.ipfsGateway"}}/{{profilePic}}"/>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title"><span class="post-owner-display">{{name}}</span> <div class="post-owner">{{owner}}</div></div>
+                      <div class="item-after">
+                          <a class="button button-round" class="follow-link" data-id="{{owner}}" >Follow</a>
+                      </div>
+                    </div>
+                    <div class="item-subtitle">{{aboutMe}}</div>
+                  </div>
+                </div>
+              </li>
+            {{/each}}
+            </ul>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</template>
+
+
+
+
+
+
+<script>
+  return {
+    on: {
+      pageInit: async function (e, page) {
+
+        const self = this;
+
+        this.$$('#register-link').on('click', function (e) {
+            e.preventDefault()
+            self.registerClick(e)
+        })
+
+
+        // this.$$(document).on('click', '#update-register-link', function (e) {
+        //     e.preventDefault()
+        //     self.updateRegisterClick(e)
+        // })
+
+      }
+    },
+
+    created: async function() {
+        window['Global'].loadComponentState(this)
+    }
+  }
+</script>

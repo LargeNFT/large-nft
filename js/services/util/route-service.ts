@@ -32,6 +32,7 @@ import { WhitepagesService } from "../whitepages-service";
 import { ConnectController } from "../../controllers/connect-controller";
 import { ListingService } from "../listing-service";
 import { PostController } from "../../controllers/post-controller";
+import { FriendService } from "../friend-service";
 
 
 const promisify = (inner) =>
@@ -94,16 +95,6 @@ class RouteService {
         self.resolveController(resolve, Global.settingsController.showSettingsForm())
       }
     })
-
-
-    // routes.push({
-    //   path: '/profile/show',
-    //   async async(routeTo, routeFrom, resolve, reject) {
-    //     self.initAndResolve(resolve,function() {
-    //       return Global.profileController.showProfile()
-    //     })
-    //   }
-    // })
 
 
     routes.push({

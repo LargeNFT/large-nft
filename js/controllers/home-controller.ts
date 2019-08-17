@@ -17,6 +17,7 @@ import { Profile } from '../dto/profile';
 import { SchemaService } from '../services/util/schema-service';
 import ColorPickerComponent from 'framework7/components/color-picker/color-picker';
 const moment = require('moment')
+import { timeout } from '../timeout-promise'
 
 
 
@@ -60,16 +61,20 @@ class HomeController {
 
       this.postsShown = 0
       this.lastPost = null
+      this.hasMorePosts = true
 
-      let posts:Post[] = await this.getNextPage()
+      let currentUser:Profile
 
-      
-      let currentUser:Profile = await ProfileService.getCurrentUser()
+      try {
+        currentUser =  await ProfileService.getCurrentUser()
+      } catch(ex) {
+        console.log(ex)
+      }
+
 
       return {
         currentAccount: window['currentAccount'],
-        profilePic: currentUser ? currentUser.profilePic : undefined,
-        posts: posts
+        profilePic: currentUser ? currentUser.profilePic : undefined
       }
 
     }, 'pages/home.html')
@@ -80,20 +85,21 @@ class HomeController {
 
   async getNextPage() : Promise<Post[]> {
 
-    // console.log(`START: getNextPage`)
+    let posts:Post[] = []
 
-    let posts:Post[] = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
+    try {
+      posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
+    } catch(ex) {
+      console.log(ex)
+    }
+
     
-    // console.log(`Loaded: ${await this.postService.countLoaded()}`)
-
     if (posts.length == this.limit) {
       this.postsShown += posts.length
       this.lastPost = posts[posts.length -1].feedCid
     } else {
       this.hasMorePosts = false
     }
-
-    // console.log(`postsShown: ${this.postsShown} - lastPost: ${this.lastPost} - hasMorePosts: ${this.hasMorePosts}`)
 
     return posts
 

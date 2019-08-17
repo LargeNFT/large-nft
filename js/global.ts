@@ -17,6 +17,7 @@ import { WhitepagesService } from "./services/whitepages-service";
 import { ConnectController } from "./controllers/connect-controller";
 import { ListingService } from "./services/listing-service";
 import { PostController } from "./controllers/post-controller";
+import { FriendService } from "./services/friend-service";
 
 
 export namespace Global {  

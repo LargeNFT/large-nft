@@ -36,17 +36,26 @@ class ProfileController {
 
       return new ModelView(async () => {
 
-        let profileService:ProfileService = await ProfileService.getInstance(address)
-        let publicPostService:PublicPostService = await PublicPostService.getInstance(address)
-  
-        let profile: Profile = await profileService.read(address)
+        let profile: Profile 
         let posts: Post[]
         
 
+        try {
+          profile = await ProfileService.getProfileByWallet(address)
+        } catch(ex) {
+          console.log(ex)
+        }
 
         if (profile) {
-          posts = await publicPostService.getRecentPosts(0, 10)
+          try {
+            let publicPostService:PublicPostService = await PublicPostService.getInstance(address)
+            posts = await publicPostService.getRecentPosts(0, 10)
+          } catch(ex) {
+            console.log(ex)
+          }
         }
+
+
 
         let showEditLink:boolean = (address.toLowerCase() == window['currentAccount'].toLowerCase())
 
@@ -68,9 +77,13 @@ class ProfileController {
 
         return new ModelView(async () => {
 
-          let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
+          let profile: Profile
+          try {
+            profile = await ProfileService.getCurrentUser()
+          } catch(ex) {
+            console.log(ex)
+          }
 
-          let profile: Profile = await profileService.read(window['currentAccount'])
 
           if (!profile) {
             profile = new Profile()

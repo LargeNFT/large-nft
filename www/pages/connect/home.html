@@ -40,8 +40,8 @@
           <div class="block-title">Follow</div>
           <div class="block">
               <div class="row">
-                  <input class="col-80" type="text" name="friendAddress" placeholder="Enter your friend's wallet address">
-                  <a class="button button-round button-outline col-20" >Find</a>
+                  <input class="col-80" type="text" id="friendAddress" placeholder="Enter your friend's wallet address">
+                  <a class="button button-round button-outline col-20" id="findFriend" >Find</a>
               </div>
 
               {{#if foundFriend}}
@@ -107,9 +107,16 @@
 
         const self = this;
 
+        let controller = window['connectController']
+
         this.$$('#register-link').on('click', function (e) {
             e.preventDefault()
-            self.registerClick(e)
+            controller.registerClick(e)
+        })
+
+        this.$$('#findFriend').on('click', function (e) {
+            e.preventDefault()
+            controller.findFriendClick(e, self)
         })
 
       }

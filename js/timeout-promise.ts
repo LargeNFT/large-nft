@@ -5,7 +5,7 @@ function timeout(value:number) : any {
 
         descriptor.value = async function(...args: any[]) {
             let promise = args ? originalMethod.apply(this, args) : originalMethod.call()
-            const result = await to(value, promise)
+            const result = await timeout_fn(value, promise)
             return result
         }
 
@@ -14,7 +14,7 @@ function timeout(value:number) : any {
 }
 
 
-const to = function (ms:number, fn:Function) {
+const timeout_fn = function (ms:number, promise) {
     // Create a promise that rejects in <ms> milliseconds
     let timeout = new Promise((resolve, reject) => {
         let id = setTimeout(() => {
@@ -25,11 +25,12 @@ const to = function (ms:number, fn:Function) {
 
     // Returns a race between our timeout and the passed in promise
     return Promise.race([
-        fn,
+        promise,
         timeout
     ])
 }
 
 export {
-    timeout
+    timeout,
+    timeout_fn
 }

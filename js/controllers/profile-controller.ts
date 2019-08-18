@@ -102,8 +102,11 @@ class ProfileController {
 
         let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
 
-
-        await profileService.load() //load was failing for weird IPFS reasons. 
+        try {
+          await profileService.load() //load was failing for weird IPFS reasons. 
+        } catch(ex) {
+          console.log(ex)
+        }
         
 
 

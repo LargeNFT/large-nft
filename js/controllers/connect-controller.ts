@@ -10,8 +10,9 @@ import { PromiseView } from "../promise-view";
 import { Listing } from "../dto/listing";
 import { ListingService } from "../services/listing-service";
 import { Profile } from "../dto/profile";
+import { ProfileService } from "../services/profile-service";
 
-
+var $$ = Dom7;
 
 class ConnectController {
 
@@ -48,8 +49,22 @@ class ConnectController {
 
     }
 
-    async findClick(e:Event) {
+    async findFriendClick(e:Event, component) {
         
+        let profile:Profile 
+
+        try {
+            profile = await ProfileService.getProfileByWallet($$('#friendAddress').val())
+        } catch(ex) {
+            console.log(ex)
+        }
+
+        console.log(profile)
+        
+        component.$setState({
+            foundFriend: profile
+        })
+
 
 
     }

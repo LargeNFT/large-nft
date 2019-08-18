@@ -53,6 +53,7 @@ class ProfileService {
     return this.store.del(cid)
   }
 
+  @timeout(2000)
   async load() {
     return this.store.load()
   }

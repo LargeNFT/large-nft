@@ -50,7 +50,7 @@ export namespace Global {
 
   /** Orbit db api reference */
   export var orbitDb: any
-  export var orbitAccessControl: any 
+  export var orbitAccessControl: any  //this is temporary. This will need to be refactored. Remove it and actually create access control
 
 
   /** Orbit db tables */

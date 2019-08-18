@@ -258,7 +258,18 @@ class RouteService {
 
 
     //Look up main address
-    let mainStore = await this.schemaService.getMainStoreByWalletAddress(window['currentAccount'])
+    let mainStore 
+    try {
+      mainStore = await this.schemaService.getMainStoreByWalletAddress(window['currentAccount'])
+    } catch(ex) {
+      console.log(ex)
+    }
+
+    //If it doesn't exist create it
+    if (!mainStore) {
+      mainStore = await this.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, window['currentAccount'] )
+    }
+
 
 
     //Detect whether or not we already have a schema 
@@ -293,7 +304,7 @@ class RouteService {
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController
     window['postController'] = Global.postController
-
+    window['connectController'] = Global.connectController
     console.log("Initialization complete")
 
   }

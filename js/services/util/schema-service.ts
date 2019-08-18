@@ -7,7 +7,6 @@ const OrbitDB = require('orbit-db')
 const sha256 = require('js-sha256')
 
 import { timeout } from '../../timeout-promise'
-import { TIMEOUT } from "dns";
 
 class SchemaService {
 
@@ -61,9 +60,14 @@ class SchemaService {
 
     async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
         let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
-        return this.getSchema(mainStore)
+        let schema:Schema = await this.getSchema(mainStore)
+
+        if (!schema) throw new Error(`Schema for wallet ${walletAddress} could not be found`)
+
+        return schema
     }
 
+    @timeout(2000)
     async getMainStoreByWalletAddress(walletAddress:string) {
 
         let mainStore
@@ -71,13 +75,12 @@ class SchemaService {
         let mainStoreName = this._getMainStoreNameSeed(walletAddress)
 
         //get name
-        let mainStoreAddress = await Global.orbitDb.determineAddress(mainStoreName, 'docstore')
+        let mainStoreAddress = await Global.orbitDb.determineAddress(mainStoreName, 'docstore', {
+            accessController: Global.orbitAccessControl //This might cause issues in the future. Do we need to 
+        })
         
         //Try to open it
-        mainStore = await Global.orbitDb.docstore(mainStoreAddress, {
-            indexBy: 'name'
-        })
-
+        mainStore = await Global.orbitDb.open(mainStoreAddress)
         await mainStore.load()
 
         return mainStore
@@ -156,6 +159,17 @@ class SchemaService {
         return `post-${hash}`
     }
 
+
+
+    async generateMainStore(orbit, accessController, walletAddress:string) {
+
+        let mainStoreName = this._getMainStoreNameSeed(walletAddress)
+
+        return Global.orbitDb.docstore(mainStoreName, {
+            indexBy:"name",
+            accessController: accessController
+        })
+    }
 
     async generateSchema(orbitdb, accessController, mainStore, walletAddress:string) {
 

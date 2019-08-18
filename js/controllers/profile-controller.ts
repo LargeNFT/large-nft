@@ -103,6 +103,10 @@ class ProfileController {
         let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
 
 
+        await profileService.load() //load was failing for weird IPFS reasons. 
+        
+
+
         //Collect info
         var profileData: Profile = Global.app.form.convertToData('#edit-profile-form');
 

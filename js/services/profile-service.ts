@@ -11,7 +11,6 @@ class ProfileService {
   @timeout(2000)
   static async getInstance(walletAddress:string) : Promise<ProfileService> {
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
-    await profileStore.load()
     return new ProfileService(profileStore)
 
   }
@@ -24,6 +23,7 @@ class ProfileService {
   @timeout(2000)
   static async getProfileByWallet(walletAddress:string) : Promise<Profile> {
     let service:ProfileService =  await ProfileService.getInstance(walletAddress)
+    await service.load()
     return service.read(walletAddress)
   }
 
@@ -46,7 +46,6 @@ class ProfileService {
   }
 
   async put(profile:Profile) : Promise<void> {
-    
     return this.store.put(profile)
   }
 
@@ -54,6 +53,9 @@ class ProfileService {
     return this.store.del(cid)
   }
 
+  async load() {
+    return this.store.load()
+  }
 
 
 

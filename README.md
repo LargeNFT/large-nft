@@ -1,5 +1,5 @@
 # Large
-**Large** is a P2P blogging platform. It allows you to build an online community that's run and hosted by the community.
+**Large** is a P2P blogging platform. Build an online community that's run and hosted by the community.
 
 * No servers needed.
 * No hosting account needed.

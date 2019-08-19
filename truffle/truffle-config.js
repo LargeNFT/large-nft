@@ -47,6 +47,12 @@ module.exports = {
       port: 8545,
       network_id: "*", // Match any network id
       gas: 6109322
+    },
+    docker_ganache: {
+      host: 'ganache',
+      port: 8545,
+      network_id: "*", // Match any network id
+      gas: 6109322
     }
 
     // Useful for testing. The `development` name is special - truffle uses it by default

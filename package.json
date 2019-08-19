@@ -8,7 +8,8 @@
   },
   "scripts": {
     "electron": "electron .",
-    "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
+    "serve": "http-server ./www/ -o -c 1 -a 0.0.0.0 -p 8081",
+    "docker-serve": "http-server ./www/ -o -c 1 -a 0.0.0.0 -p 8081",
     "build": "./scripts/build.sh",
     "test": "cd truffle; truffle test",
     "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v"

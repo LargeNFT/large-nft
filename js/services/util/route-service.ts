@@ -273,11 +273,11 @@ class RouteService {
 
 
     //Detect whether or not we already have a schema
-    let schema:Schema = await this.schemaService.getSchema(mainStore)
+    let schema:Schema = await this.schemaService.getSchema(mainStore, window['currentAccount'])
 
     if (!schema) {
       await this.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, window['currentAccount'])
-      schema = await this.schemaService.getSchema(mainStore)
+      schema = await this.schemaService.getSchema(mainStore, window['currentAccount'])
     }
 
 

@@ -37,6 +37,20 @@
                 "${workspaceRoot}/test/**/*"
             ],
           },
+
+          {
+            "name": "Test FriendService (local)",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
+            "args": ["test", "test/test-friend-service.ts"],
+            "cwd": "${workspaceRoot}/truffle",
+            "outFiles": [
+                "${workspaceRoot}/test/**/*"
+            ],
+          },
+
+
           {
             "name": "Test Whitepages",
             "type": "node",

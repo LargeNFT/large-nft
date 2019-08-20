@@ -111,7 +111,7 @@ class ListingService {
 
     private async getSchema(listing: Listing) {
         let friendMainStore = await this.getLoadedMainStore(listing)
-        return this.schemaService.getSchema(friendMainStore)
+        return this.schemaService.getSchema(friendMainStore, listing.owner)
     }
 
 

@@ -62,3 +62,8 @@ www/framework7
 truffle/orbitdb/*
 truffle/keys/*
 !truffle/orbitdb/.keep
+
+dist/
+www/js/large.js
+yarn.lock
+package-lock.json

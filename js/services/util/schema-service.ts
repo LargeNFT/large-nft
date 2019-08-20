@@ -27,6 +27,14 @@ class SchemaService {
 
     }
 
+    async openKvStore(address:string) {
+
+        let feedAddress = OrbitDB.parseAddress(address)
+        return Global.orbitDb.kvstore(feedAddress.toString())
+
+    }
+
+
     async openTable(address:string) {
 
         let feedAddress = OrbitDB.parseAddress(address)
@@ -44,11 +52,11 @@ class SchemaService {
     }
 
 
-    async getSchema(store) : Promise<Schema> {
+    async getSchema(store, walletAddress:string) : Promise<Schema> {
 
         let schema:Schema
 
-        let results = await store.query((e) => e.name === "schema")
+        let results = await store.get(walletAddress)
 
         if (results && results[0] && results[0].value) {
             schema = results[0].value
@@ -60,7 +68,7 @@ class SchemaService {
 
     async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
         let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
-        let schema:Schema = await this.getSchema(mainStore)
+        let schema:Schema = await this.getSchema(mainStore, walletAddress)
 
         if (!schema) throw new Error(`Schema for wallet ${walletAddress} could not be found`)
 
@@ -99,9 +107,9 @@ class SchemaService {
         return this.openFeed(schema.postFeed)
     }
 
-    async getFriendFeedByWalletAddress(walletAddress: string) {
+    async getFriendStoreByWalletAddress(walletAddress: string) {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openFeed(schema.friendFeed)
+        return this.openKvStore(schema.friendStore)
     }
 
 
@@ -145,7 +153,7 @@ class SchemaService {
         return `post-${walletAddress.toLowerCase()}`
     }
 
-    private _getFriendFeedNameSeed(walletAddress:string ) : string {
+    private _getFriendStoreNameSeed(walletAddress:string ) : string {
         return `friend-${walletAddress.toLowerCase()}`
     }
 
@@ -166,7 +174,6 @@ class SchemaService {
         let mainStoreName = this._getMainStoreNameSeed(walletAddress)
 
         return Global.orbitDb.docstore(mainStoreName, {
-            indexBy: "_id",
             accessController: accessController
         })
     }
@@ -177,17 +184,16 @@ class SchemaService {
 
         let profileStore = await this.generateProfileStore(orbitdb, accessController, walletAddress)
         let postFeed = await this.generatePostFeed(orbitdb, accessController, walletAddress)
-        let friendFeed = await this.generateFriendFeed(orbitdb, accessController, walletAddress)
+        let friendStore = await this.generateFriendStore(orbitdb, accessController, walletAddress)
 
         let schema:Schema = {
           profileStore: profileStore.address.toString(),
           postFeed: postFeed.address.toString(),
-          friendFeed: friendFeed.address.toString()
+          friendStore: friendStore.address.toString()
         }
 
         await mainStore.put({
           _id: walletAddress,
-          name: "schema",
           value: schema
         })
 
@@ -213,9 +219,9 @@ class SchemaService {
             schemaUpdated = true
         }
 
-        if (!schema.friendFeed) {
-            let friendFeed = await this.generateFriendFeed(Global.orbitDb, Global.orbitAccessControl, walletAddress)
-            schema.friendFeed = friendFeed.address.toString()
+        if (!schema.friendStore) {
+            let friendStore = await this.generateFriendStore(Global.orbitDb, Global.orbitAccessControl, walletAddress)
+            schema.friendStore = friendStore.address.toString()
             schemaUpdated = true
         }
 
@@ -225,7 +231,7 @@ class SchemaService {
             console.log("Updating schema")
 
             await mainStore.put({
-                name: "schema",
+                _id: walletAddress,
                 value: schema
             })
         }
@@ -242,7 +248,6 @@ class SchemaService {
 
         return orbitdb.docstore(profileStoreName, {
           create: true,
-          indexBy: '_id',
           accessController: accessController
         })
 
@@ -266,13 +271,13 @@ class SchemaService {
 
 
 
-    async generateFriendFeed(orbitdb, accessController, walletAddress:string) {
+    async generateFriendStore(orbitdb, accessController, walletAddress:string) {
 
-        console.log("Generating friend feed")
+        console.log("Generating friend store")
 
-        let friendFeedName = this._getFriendFeedNameSeed(walletAddress)
+        let friendStoreName = this._getFriendStoreNameSeed(walletAddress)
 
-        return orbitdb.feed(friendFeedName, {
+        return orbitdb.kvstore(friendStoreName, {
             create: true,
             accessController: accessController
         })

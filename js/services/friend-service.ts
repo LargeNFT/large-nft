@@ -12,18 +12,18 @@ const moment = require('moment')
 class FriendService {
 
   constructor(
-    private friendFeed: any,
+    private friendStore: any,
     private schemaService: SchemaService
   ) { }
 
 
   static async getInstance(walletAddress: string): Promise<FriendService> {
     
-    let friendFeed = await Global.schemaService.getFriendFeedByWalletAddress(walletAddress)
+    let friendStore = await Global.schemaService.getFriendStoreByWalletAddress(walletAddress)
 
-    await friendFeed.load()
+    await friendStore.load()
 
-    let friendService:FriendService = new FriendService(friendFeed, Global.schemaService)
+    let friendService:FriendService = new FriendService(friendStore, Global.schemaService)
 
     return friendService
   }
@@ -36,15 +36,18 @@ class FriendService {
         address: friendAddress
     }
 
-    friend = await friendService.create(friend)
+    friend = await friendService.put(friend)
 
     return friend
 
   }
 
 
-  static async read(cid: string): Promise<Friend> {
+  async get(address: string): Promise<Friend> {
     
+    let cid = await this.friendStore.get(address)
+
+
     let loaded = await Global.ipfs.object.get(cid)
     let t = loaded.Data.toString()
 
@@ -55,58 +58,7 @@ class FriendService {
     return friend
   }
 
-
-  async getRecentFriends(limit:number, lt:string=undefined): Promise<Friend[]> {
-
-    let friends:Friend[] = await this.getFriends(this.friendFeed, limit, lt)
-
-    friends.reverse()
-
-    return friends
-
-  }
-
-
-  async getFriends(friendFeed: any, limit:number=undefined, lt:string=undefined): Promise<Friend[]> {
-    
-    let options: any = {}
-
-    if (limit) {
-      options.limit = limit
-    } 
-
-    if (lt) {
-      options.lt = lt
-    }
-
-
-    let results = await friendFeed.iterator(options)
-      .collect()
-      .map((e) => {
-
-        let model = { 
-          cid: e.payload.value,
-          feedCid: e.hash
-        }
-
-        return model
-    })
-
-    let friends:Friend[] = []
-    for (var result of results) {
-
-      let friend:Friend = await FriendService.read(result.cid)
-      friend.feedCid = result.feedCid
-      friends.push(friend)
-
-    }
-
-    return friends
-  }
-
-
-
-  async create(friend: Friend) {
+  async put(friend: Friend) {
 
     //Save directly in IPFS
     let buffer = Buffer.from(JSON.stringify(friend))
@@ -116,7 +68,7 @@ class FriendService {
 
 
     //Store CID in feed
-    let feedCid = await this.friendFeed.add(cidString)
+    let feedCid = await this.friendStore.put(friend.address, cidString)
     
     friend.cid = cidString
     friend.feedCid = feedCid
@@ -125,8 +77,38 @@ class FriendService {
   }
 
 
+
+  async list(offset:number, limit:number): Promise<Friend[]> {
+    return FriendService.list(this.friendStore, offset, limit)
+  }
+
+
+  static async list(friendStore: any, offset:number, limit:number): Promise<Friend[]> {
+    
+    let keys = friendStore.keys
+
+    
+    
+
+
+    let friends:Friend[] = []
+    // for (var result of results) {
+
+    //   let friend:Friend = await FriendService.read(result.cid)
+    //   friend.feedCid = result.feedCid
+    //   friends.push(friend)
+
+    // }
+
+    return friends
+  }
+
+
+
+
+
   async close() {
-    return this.friendFeed.close()
+    return this.friendStore.close()
   }
 
 

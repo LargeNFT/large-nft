@@ -59,3 +59,6 @@ typings/
 
 www/framework7
 
+truffle/orbitdb/*
+truffle/keys/*
+!truffle/orbitdb/.keep

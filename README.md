@@ -86,7 +86,11 @@ NOTE: All the below steps are now automated with inside a docker container. Visu
 1. **Discord** - Ask questions, discuss, get help, or just chat with us. Sometimes we share links here during the meetup.
     * [Click here to join!](https://discord.gg/kRydQeW)
 
-## Installing This Project
+## Installing This Projec
+You can run this project without installing a ton of dependencies using vscode dev containers or docker-compose: see EXPERIMENTAL_SETUP.md
+
+-- otherwise --
+
 If you have installed the tools above, you can run Large with the following steps. (We'll try to commit only working code to the master branch.)
 
 1. **Clone and Install Large**

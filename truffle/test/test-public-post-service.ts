@@ -15,7 +15,7 @@ const keypath = path.resolve('./keys')
 
 const ipfsClient = require('ipfs-http-client')
 const ipfs = ipfsClient({
-    host: "localhost",
+    host: "ipfs", // Switch to localhost if you're not using the docker/devcontainer setup.
     port: 5001,
     protocol: 'http'
   })
@@ -28,13 +28,13 @@ contract('PublicPostService', async (accounts) => {
 
     let service: PublicPostService
     let mainStore
-    let address: number
-    
+    let address: string
+
     //@ts-ignore
     before("", async () => {
 
 
-        address = Math.random()
+        address = Math.random().toString()
 
         const orbitdb = await OrbitDB.createInstance(ipfs, {
             directory: "./orbitdb"
@@ -44,12 +44,12 @@ contract('PublicPostService', async (accounts) => {
         Global.orbitDb = orbitdb
         Global.schemaService = new SchemaService()
 
-        mainStore = await Global.schemaService.getMainStoreByWalletAddress(address.toString())
+        mainStore = await Global.schemaService.getMainStoreByWalletAddress(address)
         await mainStore.load()
 
-        await Global.schemaService.generateSchema(orbitdb, {}, mainStore, address.toString())
+        await Global.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, address)
 
-        service = await PublicPostService.getInstance(address.toString())
+        service = await PublicPostService.getInstance(address)
 
 
     })
@@ -64,12 +64,12 @@ contract('PublicPostService', async (accounts) => {
 
         //Act
         await service.create(post)
-        
+
         //Assert
         assert.notEqual(post.cid, undefined)
 
-        
-        let fetched: Post = await PublicPostService.read(post.cid)    
+
+        let fetched: Post = await PublicPostService.read(post.cid)
 
 
         assert.equal(fetched.content, "Actual content")
@@ -130,7 +130,7 @@ contract('PublicPostService', async (accounts) => {
         assert.equal(it[1].content, "5")
         assert.equal(it[2].content, "4")
     })
-    
+
 
     //@ts-ignore
     it("should create multiple posts and skip a few of them", async () => {
@@ -172,7 +172,7 @@ contract('PublicPostService', async (accounts) => {
 
         await service.close()
 
-        service = await PublicPostService.getInstance(address.toString())
+        service = await PublicPostService.getInstance(address)
 
 
         //Get a page of 3
@@ -220,5 +220,3 @@ contract('PublicPostService', async (accounts) => {
 
 
 })
-
-

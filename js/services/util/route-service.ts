@@ -171,7 +171,7 @@ class RouteService {
       ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
     }
 
-    //Doing this because the thing above stopped working for some reason. 
+    //Doing this because the thing above stopped working for some reason.
     window['ipfsGateway'] = Template7.global.ipfsGateway
 
 
@@ -196,7 +196,7 @@ class RouteService {
     //@ts-ignore
     web3 = new Web3(window.web3Provider)
 
-    //@ts-ignore  
+    //@ts-ignore
     const accounts = await promisify(cb => web3.eth.getAccounts(cb))
 
     let account = accounts[0]
@@ -230,14 +230,14 @@ class RouteService {
         truffleContract.defaults({from: account})
 
         contract = await truffleContract.deployed()
-        
+
     } catch (ex) {
         console.log(ex)
     }
 
-    
 
-    
+
+
 
     /**
      * Orbit
@@ -246,7 +246,7 @@ class RouteService {
     let keystore = Keystore.create()
 
     let identity = await this.identityService.getIdentity(keystore)
-    
+
 
     OrbitDB.addDatabaseType(TableStore.type, TableStore)
 
@@ -258,7 +258,7 @@ class RouteService {
 
 
     //Look up main address
-    let mainStore 
+    let mainStore
     try {
       mainStore = await this.schemaService.getMainStoreByWalletAddress(window['currentAccount'])
     } catch(ex) {
@@ -272,7 +272,7 @@ class RouteService {
 
 
 
-    //Detect whether or not we already have a schema 
+    //Detect whether or not we already have a schema
     let schema:Schema = await this.schemaService.getSchema(mainStore)
 
     if (!schema) {
@@ -280,8 +280,8 @@ class RouteService {
       schema = await this.schemaService.getSchema(mainStore)
     }
 
-    
-    
+
+
     //Open profile store
     Global.mainStore = mainStore
 
@@ -294,7 +294,7 @@ class RouteService {
     Global.whitepagesService = new WhitepagesService(contract)
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService)
 
-   
+
     Global.homeController = new HomeController(Global.quillService, Global.uploadService)
     Global.profileController = new ProfileController(Global.uploadService, Global.queueService, Global.listingService)
     Global.settingsController = new SettingsController(Global.settingsService)

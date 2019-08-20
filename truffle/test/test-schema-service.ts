@@ -16,7 +16,7 @@ const keypath = path.resolve('./keys')
 const ipfsClient = require('ipfs-http-client')
 
 const ipfs = ipfsClient({
-    host: "localhost",
+    host: "ipfs",
     port: 5001,
     protocol: 'http'
   })
@@ -59,5 +59,3 @@ const ipfs = ipfsClient({
 
 
 // })
-
-

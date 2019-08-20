@@ -46,15 +46,15 @@ class SchemaService {
 
     async getSchema(store) : Promise<Schema> {
 
-        let schema:Schema 
+        let schema:Schema
 
-        let results = await store.get('schema')
+        let results = await store.query((e) => e.name === "schema")
 
         if (results && results[0] && results[0].value) {
             schema = results[0].value
         }
 
-        return schema 
+        return schema
     }
 
 
@@ -76,9 +76,9 @@ class SchemaService {
 
         //get name
         let mainStoreAddress = await Global.orbitDb.determineAddress(mainStoreName, 'docstore', {
-            accessController: Global.orbitAccessControl //This might cause issues in the future. Do we need to 
+            accessController: Global.orbitAccessControl //This might cause issues in the future. Do we need to
         })
-        
+
         //Try to open it
         mainStore = await Global.orbitDb.open(mainStoreAddress)
         await mainStore.load()
@@ -134,23 +134,23 @@ class SchemaService {
 
 
     private _getMainStoreNameSeed(walletAddress:string ): string  {
-        return `mainStore-${walletAddress.toLowerCase()}` 
+        return `mainStore-${walletAddress.toLowerCase()}`
     }
 
     private _getProfileStoreNameSeed(walletAddress:string ): string  {
-        return `profile-${walletAddress.toLowerCase()}` 
+        return `profile-${walletAddress.toLowerCase()}`
     }
 
     private _getPostFeedNameSeed(walletAddress:string ) : string {
-        return `post-${walletAddress.toLowerCase()}` 
+        return `post-${walletAddress.toLowerCase()}`
     }
 
     private _getFriendFeedNameSeed(walletAddress:string ) : string {
-        return `friend-${walletAddress.toLowerCase()}` 
+        return `friend-${walletAddress.toLowerCase()}`
     }
 
     private _getPostFeedCounterNameSeed(walletAddress:string ) : string {
-        return `post-counter-${walletAddress.toLowerCase()}` 
+        return `post-counter-${walletAddress.toLowerCase()}`
     }
 
     private _getRepliesFeedNameSeed(post:Post, translatedContent: string) : string {
@@ -166,7 +166,7 @@ class SchemaService {
         let mainStoreName = this._getMainStoreNameSeed(walletAddress)
 
         return Global.orbitDb.docstore(mainStoreName, {
-            indexBy:"name",
+            indexBy: "_id",
             accessController: accessController
         })
     }
@@ -174,7 +174,7 @@ class SchemaService {
     async generateSchema(orbitdb, accessController, mainStore, walletAddress:string) {
 
         console.log('Generating schema')
-    
+
         let profileStore = await this.generateProfileStore(orbitdb, accessController, walletAddress)
         let postFeed = await this.generatePostFeed(orbitdb, accessController, walletAddress)
         let friendFeed = await this.generateFriendFeed(orbitdb, accessController, walletAddress)
@@ -184,19 +184,20 @@ class SchemaService {
           postFeed: postFeed.address.toString(),
           friendFeed: friendFeed.address.toString()
         }
-    
+
         await mainStore.put({
+          _id: walletAddress,
           name: "schema",
           value: schema
         })
-    
+
         console.log('Inserted schema into mainStore')
-    
+
     }
 
 
     async updateSchema(mainStore, schema:Schema, walletAddress:string) {
-        
+
         //Make sure schema has all fields
         let schemaUpdated:boolean = false
 
@@ -233,18 +234,18 @@ class SchemaService {
 
 
     async generateProfileStore(orbitdb, accessController, walletAddress:string) {
-        
+
         console.log("Generating profile store")
 
         //Create profile store
         let profileStoreName = this._getProfileStoreNameSeed(walletAddress)
-        
+
         return orbitdb.docstore(profileStoreName, {
           create: true,
-          indexBy: 'name',
+          indexBy: '_id',
           accessController: accessController
         })
-    
+
     }
 
 

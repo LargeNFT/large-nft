@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Tested on mac, should work on unix-like systems
+# If on windows, just run this manually from your console.
+docker exec large_webapp_1 bash -c "cd truffle && ../node_modules/.bin/truffle migrate --network docker_ganache"

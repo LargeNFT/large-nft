@@ -1,24 +1,39 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
+// https://github.com/microsoft/vscode-dev-containers/tree/master/containers/docker-existing-docker-compose
 {
-    "name": "Large Docker",
-    "dockerFile": "Dockerfile",
-    "appPort": [],
-    "extensions": [
-        "dbaeumer.vscode-eslint"
-    ],
-    //You'll need to change the path below to your own local path. This is where
-    //the IPFS files will go. 
-    "runArgs": [
-        "-v","/home/ptoner/ipfs-docker:/ipfs", 
-        "-e", "IPFS_PATH=/ipfs",
-        // "-p", "127.0.0.1:8080:8080",
-        // "-p", "127.0.0.1:8081:8081",
-        // "-p", "127.0.0.1:8545:8545",
-        // "-p", "127.0.0.1:4001:4001",
-        // "-p", "127.0.0.1:5001:5001",
-    ],
-         
-    "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
-    },
-    "postCreateCommand": "yarn install"
+	// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+	"name": "Large All-in-one",
+
+	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
+	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+
+	// The 'service' property is the name of the service for the container that VS Code should
+	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+	"service": "webapp",
+
+	// The optional 'workspaceFolder' property is the path VS Code should open by default when
+	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
+	"workspaceFolder": "/usr/src/large",
+
+	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+	// "shutdownAction": "none",
+
+	// Uncomment the next line if you want to add in default container specific settings.json values
+	"settings": {
+    "remote.extensionKind": {
+        "ms-azuretools.vscode-docker": "workspace"
+    }
+	},
+
+	"runArgs": ["-v","/var/run/docker.sock:/var/run/docker.sock"],
+	// Uncomment the next line to run commands after the container is created - for example installing git.
+	"postCreateCommand": "script/migrate && script/enable_coors",
+
+	// Add the IDs of any extensions you want installed in the array below.
+	"extensions": [
+		"dbaeumer.vscode-eslint"
+	]
 }

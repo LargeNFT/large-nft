@@ -27,7 +27,8 @@ services:
       - .:/usr/src/large
       - app_node_modules:/usr/src/large/node_modules
     working_dir: /usr/src/large
-    command: bash -c "npm install && npm run docker-serve & npm run watch"
+    entrypoint: bash
+    command: script/start
     ports:
       - "8081:8081"
     depends_on:

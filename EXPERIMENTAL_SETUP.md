@@ -3,6 +3,8 @@
 3. Click on green button in bottom left corner
     -> Open folder in container
 4. It'll create the docker VM and launch it.
+5. FROM A LOCAL TERMINAL (unix-like)
+    -> `script/migrate & script/enable_cors`
 
 Alternatively without VS Code (Unix-like systems):
 1. Install docker

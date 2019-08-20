@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
-            "args": ["test", "test/test-public-post-service.ts"],
+            "args": ["test", "test/test-public-post-service.ts", "--network", "docker_ganache"],
             "cwd": "${workspaceRoot}/truffle",
             "outFiles": [
                 "${workspaceRoot}/test/**/*"
@@ -20,7 +20,7 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
-            "args": ["test", "test/test-profile-service.ts"],
+            "args": ["test", "test/test-profile-service.ts", "--network", "docker_ganache"],
             "cwd": "${workspaceRoot}/truffle",
             "outFiles": [
                 "${workspaceRoot}/test/**/*"
@@ -31,7 +31,7 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
-            "args": ["test", "test/test-friend-service.ts"],
+            "args": ["test", "test/test-friend-service.ts", "--network", "docker_ganache"],
             "cwd": "${workspaceRoot}/truffle",
             "outFiles": [
                 "${workspaceRoot}/test/**/*"
@@ -42,7 +42,7 @@
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
-            "args": ["test", "test/test-whitepages-contract.ts"],
+            "args": ["test", "test/test-whitepages-contract.ts", "--network", "docker_ganache"],
             "cwd": "${workspaceRoot}/truffle",
             "outFiles": [
                 "${workspaceRoot}/test/**/*"

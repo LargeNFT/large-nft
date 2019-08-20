@@ -16,10 +16,10 @@ class PublicPostService {
     private schemaService: SchemaService
   ) { }
 
-  
+
   @timeout(2000)
   static async getInstance(walletAddress: string): Promise<PublicPostService> {
-    
+
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
 
     let postService:PublicPostService = new PublicPostService(postFeed, Global.schemaService)
@@ -54,7 +54,7 @@ class PublicPostService {
       console.log(ex)
     }
 
-    
+
 
     let post: Post = {
       owner: walletAddress,
@@ -103,12 +103,12 @@ class PublicPostService {
 
 
   async getPosts(feedStore: any, limit:number, lt:string=undefined): Promise<Post[]> {
-    
+
     let options: any = {}
 
     if (limit) {
       options.limit = limit
-    } 
+    }
 
     if (lt) {
       options.lt = lt
@@ -119,7 +119,7 @@ class PublicPostService {
       .collect()
       .map((e) => {
 
-        let model = { 
+        let model = {
           cid: e.payload.value,
           feedCid: e.hash
         }
@@ -154,7 +154,7 @@ class PublicPostService {
 
     //Store CID in feed
     let feedCid = await this.feedStore.add(cidString)
-    
+
     post.cid = cidString
     post.feedCid = feedCid
 
@@ -245,7 +245,6 @@ class PublicPostService {
 }
 
 
-export { 
-  PublicPostService 
+export {
+  PublicPostService
 }
-

@@ -28,13 +28,13 @@ contract('PublicPostService', async (accounts) => {
 
     let service: PublicPostService
     let mainStore
-    let address: number
+    let address: string
 
     //@ts-ignore
     before("", async () => {
 
 
-        address = Math.random()
+        address = Math.random().toString()
 
         const orbitdb = await OrbitDB.createInstance(ipfs, {
             directory: "./orbitdb"
@@ -44,12 +44,12 @@ contract('PublicPostService', async (accounts) => {
         Global.orbitDb = orbitdb
         Global.schemaService = new SchemaService()
 
-        mainStore = await Global.schemaService.getMainStoreByWalletAddress(address.toString())
+        mainStore = await Global.schemaService.getMainStoreByWalletAddress(address)
         await mainStore.load()
 
-        await Global.schemaService.generateSchema(orbitdb, {}, mainStore, address.toString())
+        await Global.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, address)
 
-        service = await PublicPostService.getInstance(address.toString())
+        service = await PublicPostService.getInstance(address)
 
 
     })
@@ -172,7 +172,7 @@ contract('PublicPostService', async (accounts) => {
 
         await service.close()
 
-        service = await PublicPostService.getInstance(address.toString())
+        service = await PublicPostService.getInstance(address)
 
 
         //Get a page of 3

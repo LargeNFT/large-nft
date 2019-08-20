@@ -15,7 +15,7 @@ const keypath = path.resolve('./keys')
 
 const ipfsClient = require('ipfs-http-client')
 const ipfs = ipfsClient({
-    host: "localhost",
+    host: "ipfs", // Switch to localhost if you're not using the docker/devcontainer setup.
     port: 5001,
     protocol: 'http'
   })
@@ -29,7 +29,7 @@ contract('PublicPostService', async (accounts) => {
     let service: PublicPostService
     let mainStore
     let address: number
-    
+
     //@ts-ignore
     before("", async () => {
 
@@ -64,12 +64,12 @@ contract('PublicPostService', async (accounts) => {
 
         //Act
         await service.create(post)
-        
+
         //Assert
         assert.notEqual(post.cid, undefined)
 
-        
-        let fetched: Post = await PublicPostService.read(post.cid)    
+
+        let fetched: Post = await PublicPostService.read(post.cid)
 
 
         assert.equal(fetched.content, "Actual content")
@@ -130,7 +130,7 @@ contract('PublicPostService', async (accounts) => {
         assert.equal(it[1].content, "5")
         assert.equal(it[2].content, "4")
     })
-    
+
 
     //@ts-ignore
     it("should create multiple posts and skip a few of them", async () => {
@@ -220,5 +220,3 @@ contract('PublicPostService', async (accounts) => {
 
 
 })
-
-

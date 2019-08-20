@@ -15,7 +15,7 @@ const keypath = path.resolve('./keys')
 const ipfsClient = require('ipfs-http-client')
 
 const ipfs = ipfsClient({
-    host: "localhost",
+    host: "ipfs", // Switch to localhost if you're not using the docker/devcontainer setup.
     port: 5001,
     protocol: 'http'
   })
@@ -65,9 +65,9 @@ contract('ProfileService', async (accounts) => {
 
         //Act
         await service.put(profile)
-        
+
         //Assert
-        let fetched: Profile = await service.read(accounts[0])    
+        let fetched: Profile = await service.read(accounts[0])
 
         assert.equal(fetched.name, "Pat")
         assert.equal(fetched.aboutMe, "Blah")
@@ -85,7 +85,7 @@ contract('ProfileService', async (accounts) => {
         }
 
         await service.put(profile)
-        
+
 
         //Act
         await service.put({
@@ -94,7 +94,7 @@ contract('ProfileService', async (accounts) => {
             aboutMe: "new about me"
         })
 
-        //Assert 
+        //Assert
         let fetched: Profile = await service.read(accounts[1])
 
 
@@ -116,12 +116,12 @@ contract('ProfileService', async (accounts) => {
         }
 
         await service.put(profile)
-        
+
         //Act
         await service.delete(profile._id)
 
-        
-        //Assert 
+
+        //Assert
         let fetched: Profile = await service.read(accounts[2])
 
 
@@ -134,5 +134,3 @@ contract('ProfileService', async (accounts) => {
 
 
 })
-
-

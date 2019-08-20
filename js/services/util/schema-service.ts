@@ -48,7 +48,7 @@ class SchemaService {
 
         let schema:Schema
 
-        let results = await store.get('schema')
+        let results = await store.query((e) => e.name === "schema")
 
         if (results && results[0] && results[0].value) {
             schema = results[0].value
@@ -186,6 +186,7 @@ class SchemaService {
         }
 
         await mainStore.put({
+          _id: walletAddress,
           name: "schema",
           value: schema
         })

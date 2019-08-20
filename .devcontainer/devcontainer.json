@@ -22,10 +22,15 @@
 	// "shutdownAction": "none",
 
 	// Uncomment the next line if you want to add in default container specific settings.json values
-	// "settings":  { "workbench.colorTheme": "Quiet Light" },
+	"settings": {
+    "remote.extensionKind": {
+        "ms-azuretools.vscode-docker": "workspace"
+    }
+	},
 
+	"runArgs": ["-v","/var/run/docker.sock:/var/run/docker.sock"],
 	// Uncomment the next line to run commands after the container is created - for example installing git.
-	// "postCreateCommand": "apt-get update && apt-get install -y git",
+	"postCreateCommand": "script/migrate && script/enable_coors",
 
 	// Add the IDs of any extensions you want installed in the array below.
 	"extensions": [

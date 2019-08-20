@@ -46,8 +46,6 @@ contract('FriendService', async (accounts) => {
 
 
         let mainStore = await Global.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, address.toString())
-        console.log(mainStore.address.toString())
-
 
         await Global.schemaService.generateSchema(orbitdb, {}, mainStore, address.toString())
 
@@ -99,7 +97,7 @@ contract('FriendService', async (accounts) => {
         assert.equal(it[0].address, "1")
         assert.equal(it[1].address, "2")
         assert.equal(it[2].address, "3")
-        assert.equal(it[2].address, "4")
+        assert.equal(it[3].address, "4")
     })
 
 
@@ -121,24 +119,19 @@ contract('FriendService', async (accounts) => {
 
 
         //Act
-        let it = await service.list(0, 3)
-        let it2 = await service.list(3, 3)
+        let it2 = await service.list(4, 3)
 
-        //assert
-        assert.equal(it.length, 3)
-        assert.equal(it[0].address, "7")
-        assert.equal(it[1].address, "6")
-        assert.equal(it[2].address, "5")
 
         assert.equal(it2.length, 3)
-        assert.equal(it2[0].address, "4")
-        assert.equal(it2[1].address, "3")
-        assert.equal(it2[2].address, "2")
+        assert.equal(it2[0].address, "5")
+        assert.equal(it2[1].address, "6")
+        assert.equal(it2[2].address, "7")
 
 
     })
     
 
+    //This test has sort of morphed into a duplicate of the one above. Maybe remove.
     //@ts-ignore
     it("should create multiple friends and skip a few of them", async () => {
 
@@ -157,14 +150,14 @@ contract('FriendService', async (accounts) => {
 
 
         //Act
-        let it = await service.list(6, 3)
+        let it = await service.list(7, 3)
 
 
         //assert
         assert.equal(it.length, 3)
-        assert.equal(it[0].address, "10")
+        assert.equal(it[0].address, "8")
         assert.equal(it[1].address, "9")
-        assert.equal(it[2].address, "8")
+        assert.equal(it[2].address, "10") 
     })
 
 
@@ -190,37 +183,31 @@ contract('FriendService', async (accounts) => {
 
         //assert
         assert.equal(it.length, 3)
-        assert.equal(it[0].address, "109")
-        assert.equal(it[1].address, "108")
-        assert.equal(it[2].address, "107")
+        assert.equal(it[0].address, "1")
+        assert.equal(it[1].address, "2")
+        assert.equal(it[2].address, "3")
 
         it = await service.list(3, 3)
 
         assert.equal(it.length, 3)
-        assert.equal(it[0].address, "106")
-        assert.equal(it[1].address, "105")
-        assert.equal(it[2].address, "104")
-
-
+        assert.equal(it[0].address, "4")
+        assert.equal(it[1].address, "5")
+        assert.equal(it[2].address, "6")
 
         it = await service.list(6, 3)
 
         assert.equal(it.length, 3)
-        assert.equal(it[0].address, "103")
-        assert.equal(it[1].address, "102")
-        assert.equal(it[2].address, "101")
+        assert.equal(it[0].address, "7")
+        assert.equal(it[1].address, "8")
+        assert.equal(it[2].address, "9")
 
 
-
-        it = await service.list(9, 3)
+        it = await service.list(106, 3)
 
         assert.equal(it.length, 3)
-        assert.equal(it[0].address, "100")
-        assert.equal(it[1].address, "99")
-        assert.equal(it[2].address, "98")
-
-
-
+        assert.equal(it[0].address, "107")
+        assert.equal(it[1].address, "108")
+        assert.equal(it[2].address, "109")
 
     })
 

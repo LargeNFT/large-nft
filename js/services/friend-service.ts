@@ -78,27 +78,22 @@ class FriendService {
 
 
 
+
   async list(offset:number, limit:number): Promise<Friend[]> {
-    return FriendService.list(this.friendStore, offset, limit)
-  }
-
-
-  static async list(friendStore: any, offset:number, limit:number): Promise<Friend[]> {
     
-    let keys = friendStore.keys
+    let keys = Object.keys(this.friendStore.index) 
 
-    
-    
+    let page = keys.slice(offset).slice(0, limit)
+
 
 
     let friends:Friend[] = []
-    // for (var result of results) {
+    for (var key of page) {
 
-    //   let friend:Friend = await FriendService.read(result.cid)
-    //   friend.feedCid = result.feedCid
-    //   friends.push(friend)
+      let friend:Friend = await this.get(key)
+      friends.push(friend)
 
-    // }
+    }
 
     return friends
   }

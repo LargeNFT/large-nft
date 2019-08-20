@@ -22,7 +22,7 @@ services:
     volumes:
       - ipfs_volume:/data/ipfs
   webapp:
-    image: node:11
+    image: node:10
     volumes:
       - .:/usr/src/large
       - app_node_modules:/usr/src/large/node_modules

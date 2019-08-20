@@ -2,7 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/master/containers/docker-existing-docker-compose
 {
 	// See https://aka.ms/vscode-remote/devcontainer.json for format details.
-	"name": "Existing Docker Compose (Extend)",
+	"name": "Large All-in-one",
 
 	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
 	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.

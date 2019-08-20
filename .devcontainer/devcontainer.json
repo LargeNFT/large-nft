@@ -1,39 +1,21 @@
-// For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
-// https://github.com/microsoft/vscode-dev-containers/tree/master/containers/docker-existing-docker-compose
 {
-	// See https://aka.ms/vscode-remote/devcontainer.json for format details.
-	"name": "Large All-in-one",
+  "name": "Large All-in-one",
 
-	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
-	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
-	"dockerComposeFile": [
-		"../docker-compose.yml"
-	],
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
 
-	// The 'service' property is the name of the service for the container that VS Code should
-	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
-	"service": "webapp",
+  "service": "webapp",
 
-	// The optional 'workspaceFolder' property is the path VS Code should open by default when
-	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
-	"workspaceFolder": "/usr/src/large",
+  "workspaceFolder": "/usr/src/large",
 
-	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
-	// "shutdownAction": "none",
-
-	// Uncomment the next line if you want to add in default container specific settings.json values
-	"settings": {
+  "settings": {
     "remote.extensionKind": {
-        "ms-azuretools.vscode-docker": "workspace"
+      "ms-azuretools.vscode-docker": "workspace"
     }
-	},
+  },
 
-	"runArgs": ["-v","/var/run/docker.sock:/var/run/docker.sock"],
-	// Uncomment the next line to run commands after the container is created - for example installing git.
-	"postCreateCommand": "script/migrate && script/enable_coors",
-
-	// Add the IDs of any extensions you want installed in the array below.
-	"extensions": [
-		"dbaeumer.vscode-eslint"
-	]
+  "extensions": [
+    "dbaeumer.vscode-eslint"
+  ]
 }

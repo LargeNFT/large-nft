@@ -19,6 +19,8 @@ services:
     networks:
       - backend
     command: "daemon --migrate=true --enable-pubsub-experiment=true"
+    volumes:
+      - ipfs_volume:/data/ipfs
   webapp:
     image: node:11
     volumes:
@@ -39,3 +41,4 @@ networks:
   backend:
 volumes:
   app_node_modules:
+  ipfs_volume:

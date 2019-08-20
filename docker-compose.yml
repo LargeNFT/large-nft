@@ -6,7 +6,7 @@ services:
       - "8545:8545"
     restart: unless-stopped
     # Use a seed so that our eth priv keys stay the same every time.
-    command: ganache-cli --seed I_want_candy
+    command: ganache-cli --seed I_want_candy_2
     networks:
       - backend
   go-ipfs:

@@ -18,6 +18,7 @@ services:
     restart: unless-stopped
     networks:
       - backend
+    command: "daemon --migrate=true --enable-pubsub-experiment=true"
   webapp:
     image: node:11
     volumes:

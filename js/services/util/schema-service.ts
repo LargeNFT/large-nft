@@ -166,7 +166,7 @@ class SchemaService {
         let mainStoreName = this._getMainStoreNameSeed(walletAddress)
 
         return Global.orbitDb.docstore(mainStoreName, {
-            indexBy:"_id",
+            indexBy: "_id",
             accessController: accessController
         })
     }

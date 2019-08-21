@@ -27,7 +27,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">IPFS Hostname</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="ipfsHost" value="{{ipfsHost}}" placeholder="IPFS Hostname">
+                    <input type="text" name="ipfsHost" value="{{#if settings}}{{settings.ipfsHost}}{{/if}}" placeholder="IPFS Hostname">
                   </div>
                 </div>
               </div>
@@ -37,7 +37,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">IPFS API Port</div>
                   <div class="item-input-wrap">
-                    <input type="number" name="ipfsApiPort" value="{{ipfsApiPort}}" placeholder="IPFS API Port">
+                    <input type="number" name="ipfsApiPort" value="{{#if settings}}{{settings.ipfsApiPort}}{{/if}}" placeholder="IPFS API Port">
                   </div>
                 </div>
               </div>
@@ -47,7 +47,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">IPFS Gateway Port</div>
                   <div class="item-input-wrap">
-                    <input type="number" name="ipfsGatewayPort" value="{{ipfsGatewayPort}}" placeholder="IPFS Gateway Port">
+                    <input type="number" name="ipfsGatewayPort" value="{{#if settings}}{{settings.ipfsGatewayPort}}{{/if}}" placeholder="IPFS Gateway Port">
                   </div>
                 </div>
               </div>
@@ -57,7 +57,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">Whitepages Contract Address</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="whitepagesContractAddress" value="{{whitepagesContractAddress}}"  placeholder="Whitepages Contract Address">
+                    <input type="text" name="whitepagesContractAddress" value="{{#if settings}}{{settings.whitepagesContractAddress}}{{/if}}"  placeholder="Whitepages Contract Address">
                   </div>
                 </div>
               </div>
@@ -67,7 +67,7 @@
                 <div class="item-inner">
                   <div class="item-title item-label">Whitepages Contract Tx Hash</div>
                   <div class="item-input-wrap">
-                    <input type="text" name="whitepagesContractTxHash" value="{{whitepagesContractTxHash}}"  placeholder="Whitepages Contract Tx Hash">
+                    <input type="text" name="whitepagesContractTxHash" value="{{#if settings}}{{settings.whitepagesContractTxHash}}{{/if}}"  placeholder="Whitepages Contract Tx Hash">
                   </div>
                 </div>
               </div>
@@ -80,6 +80,37 @@
             </div>
           </ul>
         </form>
+
+
+
+
+        {{#if schema}}
+          <div class="block-title">Schema</div>
+          <div class="data-table card">
+              <table>
+                <tbody>
+                  {{#if mainStoreAddress}}
+                    <tr>
+                        <td class="label-cell">Main Store</td>
+                        <td>{{mainStoreAddress}}</td>
+                      </tr>
+                  {{/if}}
+
+                  {{#each schema}}
+                    <tr>
+                      <td class="label-cell">{{@key}}</td>
+                      <td>{{this}}</td>
+                    </tr>
+                  {{/each}}
+
+                </tbody>
+              </table>
+          </div>
+        {{else}}
+          <div class="block-title">Schema Not Loaded</div>
+        {{/if}}
+
+
       </div>
 
     </div>

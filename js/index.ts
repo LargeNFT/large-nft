@@ -37,7 +37,7 @@ module.exports = function() {
   Global.schemaService = new SchemaService()
   Global.queueService = new QueueService(Global.templateService)
   Global.routeService = new RouteService(Global.settingsService, Global.identityService, Global.schemaService)
-  Global.settingsController = new SettingsController(Global.settingsService)
+  Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
 
   //Template7 helpers
   

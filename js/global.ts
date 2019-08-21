@@ -25,6 +25,7 @@ export namespace Global {
   /* These 4 are part of every app */
   export var listingService: ListingService
   export var whitepagesService: WhitepagesService
+  export var friendService:FriendService
   export var schemaService: SchemaService
   export var identityService: IdentityService
   export var templateService: TemplateService

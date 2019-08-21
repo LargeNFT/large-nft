@@ -6,6 +6,8 @@ class Profile {
   aboutMe?: string
   profilePic?: string
 
+  //This is probably should go somewhere else. It's not saved. It's view specific.
+  following?:boolean 
 
   static get constraints() {
     return {

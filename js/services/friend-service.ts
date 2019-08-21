@@ -42,10 +42,22 @@ class FriendService {
 
   }
 
+  static async unfollow(friendAddress: string)  {
+
+    let friendService: FriendService = await FriendService.getInstance(window["currentAccount"])
+
+    await friendService.delete(friendAddress)
+
+  }
+
+
+
 
   async get(address: string): Promise<Friend> {
     
-    let cid = await this.friendStore.get(address)
+    let cid = this.friendStore.get(address.toLowerCase())
+
+    if (!cid) return
 
 
     let loaded = await Global.ipfs.object.get(cid)
@@ -68,7 +80,7 @@ class FriendService {
 
 
     //Store CID in feed
-    let feedCid = await this.friendStore.put(friend.address, cidString)
+    let feedCid = await this.friendStore.put(friend.address.toLowerCase(), cidString)
     
     friend.cid = cidString
     friend.feedCid = feedCid
@@ -76,6 +88,10 @@ class FriendService {
     return friend
   }
 
+
+  async delete(address:string) {
+    return this.friendStore.del(address)
+  }
 
 
 
@@ -107,6 +123,9 @@ class FriendService {
   }
 
 
+  async load() {
+    return this.friendStore.load()
+  }
 
 
 

@@ -6,6 +6,8 @@ import { Global } from "../global";
 import { Profile } from "../dto/profile";
 import { ProfileService } from "./profile-service";
 import { timeout } from '../timeout-promise'
+import { FriendService } from "./friend-service";
+import { Friend } from "../dto/friend";
 
 
 class ListingService {
@@ -15,7 +17,8 @@ class ListingService {
 
     constructor(
         private schemaService: SchemaService,
-        private whitepageService: WhitepagesService
+        private whitepageService: WhitepagesService,
+        private friendService:FriendService
     ) {
 
     }
@@ -87,6 +90,14 @@ class ListingService {
         for (var listing of listings) { 
             try {
                 let profile:Profile = await this.getProfile(listing)
+
+                //Check if we're friends    
+                let friend:Friend = await this.friendService.get(listing.owner)
+
+                if (friend) {
+                    profile.following = true
+                }
+
                 profiles.push(profile)
             } catch(ex){
                 console.log(ex)

@@ -9,7 +9,9 @@ import { SettingsController } from "./controllers/settings-controller";
 import { IdentityService } from "./services/util/identity-service";
 import { SchemaService } from "./services/util/schema-service";
 import { WhitepagesService } from "./services/whitepages-service";
-import { Dom7, Template7 } from "framework7";
+import { Dom7 } from "framework7";
+import { Template7 } from "framework7/js/framework7.bundle";
+import { ConnectController } from "./controllers/connect-controller";
 
 const moment = require('moment')
 var $$ = Dom7;
@@ -38,9 +40,46 @@ module.exports = function() {
   Global.settingsController = new SettingsController(Global.settingsService)
 
   //Template7 helpers
+  
   Template7.registerHelper('shortDate', function(date) {
     return moment(date).format('MMM D, YYYY')
   })
+
+
+  //Global templates. Figure out a better place to do this. Leaving here for now because it needs to happen
+  //before templates start getting rendered.
+
+
+  Template7.registerPartial("profileResult", `
+    <li>
+      <div class="item-content" id="profile_{{_id}}">
+        <div class="item-media">
+          {{#if profilePic}}
+            <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
+          {{else}}
+            <i class="f7-icons profile-pic-thumb">person</i>
+          {{/if}}
+        </div>
+        <div class="item-inner">
+          <div class="item-title-row">
+            <div class="item-title"><span class="post-owner-display">{{name}}</span> <div class="post-owner">{{_id}}</div></div>
+            <div class="item-after">
+                {{#if following}}
+                  <a class="button button-round button-fill button-small unfollow-link" data-id="{{_id}}" >Following</a>
+                {{else}}
+                  <a class="button button-round button-outline button-small follow-link" data-id="{{_id}}" >Follow</a>
+                {{/if}}
+            </div>
+          </div>
+          <div class="item-subtitle">{{aboutMe}}</div>
+        </div>
+      </div>
+    </li>
+  
+`)
+
+
+
 
 
 
@@ -70,8 +109,17 @@ module.exports = function() {
 
   window['Global'] = Global;
 
+
+  //Register global click listeners. Probably move somewhere else at some point.
+  $$(document).on('click', '.follow-link', async function(e) {
+    let controller:ConnectController = window['connectController']
+    await controller.followClick(e)
+  })
   
 
-
+  $$(document).on('click', '.unfollow-link', async function(e) {
+    let controller:ConnectController = window['connectController']
+    await controller.unfollowClick(e)
+  })
   
 }

@@ -289,17 +289,22 @@ class RouteService {
     await this.schemaService.updateSchema(mainStore, schema, window['currentAccount'])
 
 
+    //Load friends
+    let friendStore = await this.schemaService.getFriendStoreByWalletAddress(window['currentAccount'])
+    await friendStore.load()
+
+    Global.friendService = new FriendService(friendStore, this.schemaService)
     Global.uploadService = new UploadService()
     Global.quillService = new QuillService(Global.uploadService)
     Global.whitepagesService = new WhitepagesService(contract)
-    Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService)
+    Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService, Global.friendService)
 
 
     Global.homeController = new HomeController(Global.quillService, Global.uploadService)
     Global.profileController = new ProfileController(Global.uploadService, Global.queueService, Global.listingService)
     Global.settingsController = new SettingsController(Global.settingsService)
     Global.postController = new PostController(Global.schemaService, Global.quillService)
-    Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService)
+    Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController

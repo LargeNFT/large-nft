@@ -11,6 +11,8 @@ import { Listing } from "../dto/listing";
 import { ListingService } from "../services/listing-service";
 import { Profile } from "../dto/profile";
 import { ProfileService } from "../services/profile-service";
+import { FriendService } from "../services/friend-service";
+import { Friend } from "../dto/friend";
 
 var $$ = Dom7;
 
@@ -19,8 +21,14 @@ class ConnectController {
     constructor(
         private whitepageService: WhitepagesService,
         private queueService: QueueService,
-        private listingService: ListingService
-    ) {}
+        private listingService: ListingService,
+        private friendService: FriendService
+    ) {
+
+
+
+        
+    }
 
 
     async showHome() : Promise<ModelView> {
@@ -59,7 +67,6 @@ class ConnectController {
             console.log(ex)
         }
 
-        console.log(profile)
         
         component.$setState({
             foundFriend: profile
@@ -91,7 +98,41 @@ class ConnectController {
 
 
 
+    async followClick(e:Event) {
 
+        let friendAddress = $$(e.target).data('id')
+
+
+        let friend:Friend = {
+            address: friendAddress
+        }
+
+        await this.friendService.put(friend)
+
+        $$(e.target)
+            .removeClass("button-outline")
+            .removeClass("follow-link")
+            .addClass("button-fill")
+            .addClass("unfollow-link")
+            .html("Following")
+
+    }
+
+
+    async unfollowClick(e:Event) {
+
+        let friendAddress = $$(e.target).data('id')
+
+
+        await this.friendService.delete(friendAddress)
+
+        $$(e.target)
+            .removeClass("button-fill")
+            .removeClass("unfollow-link")
+            .addClass("button-outline")
+            .addClass("follow-link")
+            .html("Follow")
+    }
 
 
 }

@@ -10,46 +10,9 @@ import { timeout } from '../../timeout-promise'
 
 class SchemaService {
 
-    constructor() {}
-
-
-    async openDocstore(address:string) {
-
-        let docstoreAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.docstore(docstoreAddress.toString())
-
-    }
-
-    async openFeed(address:string) {
-
-        let feedAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.feed(feedAddress.toString())
-
-    }
-
-    async openKvStore(address:string) {
-
-        let feedAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.kvstore(feedAddress.toString())
-
-    }
-
-
-    async openTable(address:string) {
-
-        let feedAddress = OrbitDB.parseAddress(address)
-
-        return Global.orbitDb.open(feedAddress.toString(), {
-            type: "table",
-        })
-
-    }
-
-
-    async openCounter(address:string) {
-        let feedAddress = OrbitDB.parseAddress(address)
-        return Global.orbitDb.counter(feedAddress.toString())
-    }
+    constructor(
+        private connectionPool:ConnectionPool
+    ) {}
 
 
     async getSchema(store, walletAddress:string) : Promise<Schema> {
@@ -67,6 +30,7 @@ class SchemaService {
 
 
     async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
+
         let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
         let schema:Schema = await this.getSchema(mainStore, walletAddress)
 
@@ -77,9 +41,7 @@ class SchemaService {
 
     @timeout(2000)
     async getMainStoreByWalletAddress(walletAddress:string) {
-
         let mainStore
-
         let mainStoreName = this._getMainStoreNameSeed(walletAddress)
 
         //get name
@@ -87,9 +49,20 @@ class SchemaService {
             accessController: Global.orbitAccessControl //This might cause issues in the future. Do we need to
         })
 
+
+        //Check the pool
+        let existingStore = this.connectionPool.get(mainStoreAddress)
+        if (existingStore) return existingStore
+
+
+
         //Try to open it
         mainStore = await Global.orbitDb.open(mainStoreAddress)
         await mainStore.load()
+
+        //Cache it in the pool
+        this.connectionPool.put(mainStore.address.toString(), mainStore)
+
 
         return mainStore
 
@@ -97,20 +70,69 @@ class SchemaService {
 
 
     async getProfileStoreByWalletAddress(walletAddress: string) {
+
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openDocstore(schema.profileStore)
+
+        //Check the pool
+        let existingStore = this.connectionPool.get(schema.profileStore)
+        if (existingStore) return existingStore
+
+        let profileStore = await Global.orbitDb.open(schema.profileStore)
+
+
+        //Cache it in the pool
+        this.connectionPool.put(schema.profileStore, profileStore)
+
+        return profileStore
     }
 
 
     async getPostFeedByWalletAddress(walletAddress: string) {
+
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openFeed(schema.postFeed)
+
+        //Check the pool
+        let existingFeed = this.connectionPool.get(schema.postFeed)
+        if (existingFeed) return existingFeed
+
+        let postFeed = await Global.orbitDb.open(schema.postFeed)
+
+        //Cache it in the pool
+        this.connectionPool.put(schema.postFeed, postFeed)
+
+        return postFeed
     }
 
     async getFriendStoreByWalletAddress(walletAddress: string) {
+
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
-        return this.openKvStore(schema.friendStore)
+
+        //Check the pool
+        let existingStore = this.connectionPool.get(schema.friendStore)
+        if (existingStore) return existingStore
+
+        let friendStore = await Global.orbitDb.open(schema.friendStore)
+
+        //Cache it in the pool
+        this.connectionPool.put(schema.friendStore, friendStore)
+
+        return friendStore
     }
+
+    async reopenStore(orbitAddress: string) {
+
+        let store = this.connectionPool.get(orbitAddress)
+
+        let address = store.address.toString()
+        await store.close()
+
+        store = await Global.orbitDb.open(orbitAddress)
+
+        //Cache it in the pool
+        this.connectionPool.put(orbitAddress, store)
+
+    }
+
 
 
     async getRepliesPostFeed(post:Post, translatedContent: string) {
@@ -288,6 +310,23 @@ class SchemaService {
 }
 
 
+class ConnectionPool {
+
+    connectionPool = {}
+
+
+    get(orbitAddress:string) {
+        return this.connectionPool[orbitAddress]
+    }
+
+    put(orbitAddress:string, value: any) {
+        this.connectionPool[orbitAddress] = value
+    }
+
+}
+
+
 export {
-    SchemaService
+    SchemaService,
+    ConnectionPool
 }

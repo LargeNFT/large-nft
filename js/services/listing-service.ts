@@ -146,7 +146,7 @@ class ListingService {
     }
 
     private async loadPostFeed(schema:Schema) {
-        let postFeed = await this.schemaService.openFeed(schema.postFeed)
+        let postFeed = await Global.orbitDb.open(schema.postFeed)
         await postFeed.load(10)
         return postFeed
     }
@@ -159,7 +159,7 @@ class ListingService {
     }
 
     private async loadProfileStore(schema:Schema) {
-        let profileStore = await this.schemaService.openDocstore(schema.profileStore)
+        let profileStore = await Global.orbitDb.open(schema.profileStore)
         await profileStore.load()
         return profileStore
     }

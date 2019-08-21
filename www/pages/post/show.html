@@ -28,25 +28,30 @@
           <div class="row">
             <div class="col-100 tablet-50 center">
                 <div class="card">
-                    <div class="card-header">
-    
-    
-                      {{#if post.ownerProfilePic}}
-                        <img class="profile-pic" src="{{js "window.ipfsGateway"}}/{{post.ownerProfilePic}}">
-                      {{else}}
-                        <i class="f7-icons" class="profile-pic">person</i>
-                      {{/if}}
-    
-                      <div class="post-author">
-                          By <a href="/profile/static/{{post.owner}}">{{post.ownerDisplayName}}</a>
-                      </div>
-            
-                      <div class="post-date">{{ post.dateCreated }}</div>
-    
-    
-                    </div>
                     <div class="card-content card-content-padding">
+                        
+                      <div class="row">
+                        <div class="col-10">
+                            {{#if post.ownerProfilePic}}
+                              <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{post.ownerProfilePic}}">
+                            {{else}}
+                              <i class="f7-icons" class="profile-pic-thumb">person</i>
+                            {{/if}}
+                        </div>
+                        <div class="col-90">
+                            <div class="post-author">
+                                By <a href="/profile/static/{{post.owner}}">{{post.ownerDisplayName}}</a>
+                            </div>
+                  
+                            <div class="post-date">{{ post.dateCreated }}</div>
+                        </div>
+
+                      </div>
+    
+                      <div class="post-content">
                         {{post.contentTranslated}}  
+                      </div>
+                        
                     </div>
                 </div>
                 

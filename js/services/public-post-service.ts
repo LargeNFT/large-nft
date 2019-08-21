@@ -6,6 +6,7 @@ import { ProfileService } from "./profile-service";
 import { Profile } from "../dto/profile";
 import { SchemaService } from "./util/schema-service";
 import { timeout } from "../timeout-promise";
+import { Schema } from "../dto/schema";
 const moment = require('moment')
 
 
@@ -26,6 +27,78 @@ class PublicPostService {
 
     return postService
   }
+
+  @timeout(2000)
+  static async getRecentPosts(walletAddress:string, offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
+
+      let schema:Schema = await Global.schemaService.getSchemaByWalletAddress(walletAddress)
+
+      //Force it to close and reopen so we can reload the right number of records.
+      await Global.schemaService.reopenStore(schema.postFeed)
+
+      let feedStore = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
+
+      //Reload store with more data.
+      await feedStore.load(limit + offset)
+
+
+      let posts:Post[] = await this.getPosts(feedStore, limit, lt)
+
+
+      posts.reverse()
+
+
+      return posts
+
+  }
+
+
+  static async getPosts(feedStore: any, limit:number, lt:string=undefined): Promise<Post[]> {
+
+    console.log(feedStore)
+    console.log(limit)
+    console.log(lt)
+
+    let options: any = {}
+
+    if (limit) {
+      options.limit = limit
+    }
+
+    if (lt) {
+      options.lt = lt
+    }
+
+
+    let results = await feedStore.iterator(options)
+      .collect()
+      .map((e) => {
+
+        let model = {
+          cid: e.payload.value,
+          feedCid: e.hash
+        }
+
+        return model
+    })
+
+    let posts:Post[] = []
+    for (var result of results) {
+
+      let post:Post = await PublicPostService.read(result.cid)
+      PublicPostService.translatePost(post)
+      post.feedCid = result.feedCid
+      posts.push(post)
+
+    }
+
+    return posts
+  }
+
+
+
+
+
 
   static async read(cid: string): Promise<Post> {
 
@@ -80,65 +153,6 @@ class PublicPostService {
 
 
 
-  @timeout(2000)
-  async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
-
-      //Reload store with more data.
-      let address = this.feedStore.address.toString()
-      await this.feedStore.close()
-
-      this.feedStore = await this.schemaService.openFeed(address)
-      await this.feedStore.load(limit + offset)
-
-
-      let posts:Post[] = await this.getPosts(this.feedStore, limit, lt)
-
-
-      posts.reverse()
-
-
-      return posts
-
-  }
-
-
-  async getPosts(feedStore: any, limit:number, lt:string=undefined): Promise<Post[]> {
-
-    let options: any = {}
-
-    if (limit) {
-      options.limit = limit
-    }
-
-    if (lt) {
-      options.lt = lt
-    }
-
-
-    let results = await feedStore.iterator(options)
-      .collect()
-      .map((e) => {
-
-        let model = {
-          cid: e.payload.value,
-          feedCid: e.hash
-        }
-
-        return model
-    })
-
-    let posts:Post[] = []
-    for (var result of results) {
-
-      let post:Post = await PublicPostService.read(result.cid)
-      PublicPostService.translatePost(post)
-      post.feedCid = result.feedCid
-      posts.push(post)
-
-    }
-
-    return posts
-  }
 
 
 

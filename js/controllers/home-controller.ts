@@ -34,16 +34,9 @@ class HomeController {
   lastPost:string = null
 
 
-  _messages: any
-  
-  _postTemplate: any
-
-
-  private postService:PublicPostService
-
   constructor(
     private quillService: QuillService,
-    private uploadService: UploadService
+    private postService:PublicPostService
   ) {
   }
 
@@ -55,8 +48,6 @@ class HomeController {
   async showHomePage(): Promise<ModelView> {
 
     return new ModelView( async () => {
-
-      this.postService = await PublicPostService.getInstance(window['currentAccount'])
 
       this.postsShown = 0
       this.lastPost = null
@@ -87,7 +78,7 @@ class HomeController {
     let posts:Post[] = []
 
     try {
-      posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
+      posts = await PublicPostService.getRecentPosts(window['currentAccount'], this.postsShown, this.limit, this.lastPost)
     } catch(ex) {
       console.log(ex)
     }
@@ -128,13 +119,11 @@ class HomeController {
 
   async deletePost(e:Event) {
 
-    let postService = await PublicPostService.getInstance(window['currentAccount'])
-
     //Grab the id off the link
     let deleteLink = $$(e.target).parent()
     let id = deleteLink.data('id')
 
-    await postService.delete(id)
+    await this.postService.delete(id)
 
     $$('#post_' + id).remove()
 

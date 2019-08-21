@@ -40,12 +40,13 @@ class PostController {
             this.loadedPost = await PublicPostService.read(cid)
             PublicPostService.translatePost(this.loadedPost)
 
-            let repliesFeed = await this.schemaService.openFeed(this.loadedPost.replies)
+
+            let repliesFeed = await Global.orbitDb.open(this.loadedPost.replies)
             await repliesFeed.load(100)
 
             this.repliesService = new PublicPostService(repliesFeed, this.schemaService)
 
-            let replies:Post[] = await this.repliesService.getPosts(repliesFeed, 100)
+            let replies:Post[] = await PublicPostService.getPosts(repliesFeed, 100)
 
 
             //Show the edit button to the owner

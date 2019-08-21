@@ -12,7 +12,7 @@ import { PublicPostService } from "./services/public-post-service";
 import { UploadService } from "./services/util/upload-service";
 import { inherits } from "util";
 import { IdentityService } from "./services/util/identity-service";
-import { SchemaService } from "./services/util/schema-service";
+import { SchemaService, ConnectionPool } from "./services/util/schema-service";
 import { WhitepagesService } from "./services/whitepages-service";
 import { ConnectController } from "./controllers/connect-controller";
 import { ListingService } from "./services/listing-service";
@@ -22,17 +22,16 @@ import { FriendService } from "./services/friend-service";
 
 export namespace Global {  
   
-  /* These 4 are part of every app */
   export var listingService: ListingService
   export var whitepagesService: WhitepagesService
-  export var friendService:FriendService
-  export var profileService:ProfileService
   export var schemaService: SchemaService
   export var identityService: IdentityService
   export var templateService: TemplateService
   export var settingsService: SettingsService
   export var queueService: QueueService
   export var routeService: RouteService
+
+  export var connectionPool:ConnectionPool 
 
   /** Controllers */
   export var homeController: HomeController
@@ -42,10 +41,14 @@ export namespace Global {
   export var connectController: ConnectController
 
   /** App specific services */
-  // export var publicPostService:PublicPostService
   export var uploadService: UploadService
   export var quillService: QuillService
-  // export var profileService: ProfileService
+
+  /** user specific */
+  export var friendService:FriendService
+  export var profileService:ProfileService
+  export var postService:PublicPostService
+
 
   /** The Framework7 app. Note: Try to make the rest of these typed some day. */
   export var app: any

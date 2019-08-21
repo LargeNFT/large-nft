@@ -2,7 +2,7 @@ import { Post } from "../../js/dto/post"
 import assert = require('assert')
 import { PublicPostService } from "../../js/services/public-post-service"
 import { Global } from "../../js/global";
-import { SchemaService } from "../../js/services/util/schema-service";
+import { SchemaService, ConnectionPool } from "../../js/services/util/schema-service";
 const Keystore = require('orbit-db-keystore')
 
 
@@ -42,7 +42,7 @@ contract('PublicPostService', async (accounts) => {
 
         Global.ipfs = ipfs
         Global.orbitDb = orbitdb
-        Global.schemaService = new SchemaService()
+        Global.schemaService = new SchemaService(new ConnectionPool())
 
         mainStore = await Global.schemaService.getMainStoreByWalletAddress(address)
         await mainStore.load()
@@ -94,7 +94,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Act
-        let it = await service.getRecentPosts(0,3)
+        let it = await PublicPostService.getRecentPosts(address, 0,3)
 
         //assert
         assert.equal(it.length, 3)
@@ -122,7 +122,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Act
-        let it = await service.getRecentPosts(0,3)
+        let it = await PublicPostService.getRecentPosts(address, 0,3)
 
         //assert
         assert.equal(it.length, 3)
@@ -150,7 +150,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Act
-        let it = await service.getRecentPosts(3, 3, post.feedCid)
+        let it = await PublicPostService.getRecentPosts(address, 3, 3, post.feedCid)
 
 
         //assert
@@ -176,7 +176,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Get a page of 3
-        let it = await service.getRecentPosts(0, 3)
+        let it = await PublicPostService.getRecentPosts(address, 0, 3)
 
 
         //assert
@@ -185,7 +185,7 @@ contract('PublicPostService', async (accounts) => {
         assert.equal(it[1].content, "108")
         assert.equal(it[2].content, "107")
 
-        it = await service.getRecentPosts(3, 3,  it[2].feedCid)
+        it = await PublicPostService.getRecentPosts(address, 3, 3,  it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "106")
@@ -194,7 +194,7 @@ contract('PublicPostService', async (accounts) => {
 
 
 
-        it = await service.getRecentPosts(6, 3, it[2].feedCid)
+        it = await PublicPostService.getRecentPosts(address, 6, 3, it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "103")
@@ -203,7 +203,7 @@ contract('PublicPostService', async (accounts) => {
 
 
 
-        it = await service.getRecentPosts(9, 3, it[2].feedCid)
+        it = await PublicPostService.getRecentPosts(address, 9, 3, it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "100")

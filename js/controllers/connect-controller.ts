@@ -47,6 +47,7 @@ class ConnectController {
 
 
             return {
+                currentAccount: window['currentAccount'],
                 registeredOrbitAddress: registeredOrbitAddress,
                 profiles: profiles,
                 showRegisterButton: showRegisterButton,

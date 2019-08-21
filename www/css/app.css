@@ -48,15 +48,24 @@ body, .md body {
 }
 
 
-
-
 .profile-pic-main, #profile-pic-not-found {
-  max-width: 150px;
+  max-width: 100%;
   border-radius: 50%;
   font-size: 100px;
   float: left;
 
 }
+
+.profile-name {
+  color: var(--f7-block-title-medium-text-color);
+  font-weight: bold;
+}
+
+.profile-address {
+  color: var(--f7-list-item-text-text-color);
+  font-size: 13px;
+}
+
 
 
 
@@ -223,55 +232,3 @@ hr:before {
   padding-left: 10px;
 }
 
-.edit-profile-button, .edit-post-button {
-  width: 100px;
-  font-size: 14px;
-  margin-left: 15px;
-  display: inline;
-}
-/* 
-.author {
-  width: 100%;
-  float: left;
-}
-
-.post-content {
-  float: left;
-  margin-top: 10px;
-  margin-bottom: 30px;
-}
-
-.post-content img {
-  max-width: 100%;
-}
-
-.post-author {
-  font-size: 13px;
-  font-weight: 400;
-  opacity: 0.84;
-}
-
-.post-date {
-  font-size: 13px;
-  font-weight: 400;
-  opacity: 0.54;
-} */
-
-/* 
-.cover-photo-img {
-  width: 100px;
-  max-height: 100px;
-}
-
-.cover-photo-img.selected {
-  border: 3px solid #ff0000;
-}
-
-.cover-photo-preview {
-  display: none;
-} */
-
-
-/*.editor-container #tooltip-controls, #sidebar-controls {*/
-  /*text-align: center;*/
-/*}*/

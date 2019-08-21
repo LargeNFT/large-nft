@@ -116,7 +116,6 @@ class HomeController {
 
     let post:Post = await this.postService.postMessage(content, window['currentAccount'])
 
-    console.log(this._postTemplate(post))
 
     $$("#post-list").prepend(Global.postResultTemplate(post))
 

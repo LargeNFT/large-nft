@@ -65,3 +65,5 @@ truffle/keys/*
 
 dist/
 www/js/large.js
+yarn.lock
+package-lock.json

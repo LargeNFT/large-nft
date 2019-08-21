@@ -78,6 +78,35 @@ module.exports = function() {
   
 `)
 
+let postResult = `
+  <li>
+    <a href="/post/show/{{cid}}" class="item-link">
+      <div class="item-content" id="post_{{cid}}">
+        <div class="item-media">
+          {{#if ownerProfilePic}}
+            <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+          {{else}}
+            <i class="f7-icons profile-pic-thumb">person</i>
+          {{/if}}
+        </div>
+        <div class="item-inner">
+          <div class="item-title-row">
+            <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+              <div class="post-owner">{{owner}}</div>
+            </div>
+            <div class="item-after">
+              {{dateCreated}}
+            </div>
+          </div>
+          <div class="item-subtitle">{{contentTranslated}}</div>
+        </div>
+      </div>
+    </a>
+  </li>
+`
+
+Global.postResultTemplate = Template7.compile(postResult)
+Template7.registerPartial("postResult", postResult)
 
 
 

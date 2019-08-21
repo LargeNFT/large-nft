@@ -42,7 +42,6 @@
               {{else}}
               <i class="f7-icons profile-pic-thumb">person</i>
               {{/if}}
-
             </div>
             <div class="editor" id="create-post-textarea"></div>
           </div>
@@ -138,7 +137,7 @@
         // console.log(`After getting view model - loadingInProgress: ${controller.loadingInProgress}, hasMorePosts: ${controller.hasMorePosts}`)
 
         for (var post of posts) {
-          self.$$("#post-list").append(controller._postTemplate(post))
+          self.$$("#post-list").append(window['Global'].postResultTemplate(post))
         }
 
         if (!controller.hasMorePosts) {

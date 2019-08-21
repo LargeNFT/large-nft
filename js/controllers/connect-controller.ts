@@ -63,6 +63,16 @@ class ConnectController {
 
         try {
             profile = await ProfileService.getProfileByWallet($$('#friendAddress').val())
+
+
+            //Check if we're friends    
+            let friend:Friend = await this.friendService.get(profile._id)
+
+            if (friend) {
+                profile.following = true
+            }
+
+
         } catch(ex) {
             console.log(ex)
         }

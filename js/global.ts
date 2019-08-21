@@ -26,6 +26,7 @@ export namespace Global {
   export var listingService: ListingService
   export var whitepagesService: WhitepagesService
   export var friendService:FriendService
+  export var profileService:ProfileService
   export var schemaService: SchemaService
   export var identityService: IdentityService
   export var templateService: TemplateService
@@ -64,6 +65,9 @@ export namespace Global {
 
   /** IPFS gateway */
   export var ipfsGateway
+
+  /** Template7 Templates */
+  export var postResultTemplate
 
   export function navigate(url: string) {
     Global.app.view.main.router.navigate(url)

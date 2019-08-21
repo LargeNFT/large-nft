@@ -45,7 +45,6 @@ class HomeController {
     private quillService: QuillService,
     private uploadService: UploadService
   ) {
-    this._compilePostTemplate()
   }
 
   initializeQuill() {
@@ -117,9 +116,9 @@ class HomeController {
 
     let post:Post = await this.postService.postMessage(content, window['currentAccount'])
 
-    
+    console.log(this._postTemplate(post))
 
-    $$("#post-list").prepend(this._postTemplate(post))
+    $$("#post-list").prepend(Global.postResultTemplate(post))
 
 
     this.quillService.activeEditor.setText('')
@@ -143,40 +142,6 @@ class HomeController {
   }
 
 
-
-  _compilePostTemplate() {
-
-    this._postTemplate = Template7.compile(
-      `
-        <li>
-          <a href="/post/show/{{cid}}" class="item-link">
-            <div class="item-content" id="post_{{cid}}">
-              <div class="item-media">
-                {{#if ownerProfilePic}}
-                  <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
-                {{else}}
-                  <i class="f7-icons profile-pic-thumb">person</i>
-                {{/if}}
-              </div>
-              <div class="item-inner">
-                <div class="item-title-row">
-                  <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
-                    <div class="post-owner">{{owner}}</div>
-                  </div>
-                  <div class="item-after">
-                    {{dateCreated}}
-                  </div>
-                </div>
-                <div class="item-subtitle">{{contentTranslated}}</div>
-              </div>
-            </div>
-          </a>
-        </li>
-      `
-    )
-    
-
-  }
 
 
 }

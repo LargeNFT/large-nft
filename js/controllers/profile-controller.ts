@@ -19,8 +19,7 @@ class ProfileController {
 
     constructor(
       private uploadService : UploadService,
-      private queueService: QueueService,
-      private listingService: ListingService
+      private profileService: ProfileService
       ) {
         const self = this
 
@@ -100,10 +99,8 @@ class ProfileController {
       
       try {
 
-        let profileService:ProfileService = await ProfileService.getInstance(window['currentAccount'])
-
         try {
-          await profileService.load() //load was failing for weird IPFS reasons. 
+          await this.profileService.load() //load was failing for weird IPFS reasons. 
         } catch(ex) {
           console.log(ex)
         }
@@ -118,7 +115,7 @@ class ProfileController {
 
 
         //TODO: //Make sure permissions are right for this. Don't want to be able to edit someone else's profile.
-        await profileService.put(profileData)
+        await this.profileService.put(profileData)
 
         //Redirect to profile
         Global.navigate(`/profile/static/${window['currentAccount']}`)

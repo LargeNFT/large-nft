@@ -91,8 +91,9 @@ let postResult = `
         </div>
         <div class="item-inner">
           <div class="item-title-row">
-            <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
-              <div class="post-owner">{{owner}}</div>
+            <div class="item-title">
+              <span class="post-owner-display">{{ownerDisplayName}}</span>
+              <span class="post-owner">{{owner}}</span>
             </div>
             <div class="item-after">
               {{dateCreated}}

@@ -53,6 +53,7 @@ class PostController {
             let currentUser:Profile = await ProfileService.getCurrentUser()
         
             let model = {
+              currentAccount: window['currentAccount'],
               post: this.loadedPost,
               replies: replies,
               showEditLink: (currentUser && currentUser._id.toString() == this.loadedPost.owner.toString()),

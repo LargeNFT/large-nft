@@ -78,7 +78,7 @@ class HomeController {
     let posts:Post[] = []
 
     try {
-      posts = await PublicPostService.getRecentPosts(window['currentAccount'], this.postsShown, this.limit, this.lastPost)
+      posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
     } catch(ex) {
       console.log(ex)
     }

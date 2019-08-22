@@ -28,26 +28,6 @@ class PublicPostService {
     return postService
   }
 
-  @timeout(2000)
-  static async getRecentPosts(walletAddress:string, offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
-
-      let feedStore = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
-      
-      //Reload store with more data.
-      await feedStore.load(limit + offset)
-
-
-      let posts:Post[] = await this.getPosts(feedStore, limit, lt)
-
-
-      posts.reverse()
-
-
-      return posts
-
-  }
-
-
   static async getPosts(feedStore: any, limit:number, lt:string=undefined): Promise<Post[]> {
 
     let options: any = {}
@@ -86,11 +66,6 @@ class PublicPostService {
     return posts
   }
 
-
-
-
-
-
   static async read(cid: string): Promise<Post> {
 
     let loaded = await Global.ipfs.object.get(cid)
@@ -107,7 +82,28 @@ class PublicPostService {
   }
 
 
+  @timeout(2000)
+  async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
 
+      //Reload store with more data.
+      let address = this.feedStore.address.toString()
+      await this.feedStore.close()
+
+      this.feedStore = await Global.orbitDb.feed(address)
+
+      //Reload store with more data.
+      let loadQuantity = limit + offset
+      await this.feedStore.load(loadQuantity)
+
+      console.log(await this.countLoaded())
+
+      let posts:Post[] = await PublicPostService.getPosts(this.feedStore, limit, lt)
+      posts.reverse()
+
+
+      return posts
+
+  }
 
   async postMessage(content: any, walletAddress:string) {
 
@@ -145,12 +141,6 @@ class PublicPostService {
 
   }
 
-
-
-
-
-
-
   async create(post: Post): Promise<Post> {
 
     //Save directly in IPFS
@@ -170,8 +160,6 @@ class PublicPostService {
 
   }
 
-
-
   async delete(post: Post): Promise<void> {
     await Global.ipfs.object.delete(post.cid)
     await this.feedStore.remove(post.feedCid)
@@ -181,7 +169,6 @@ class PublicPostService {
     let count = Object.keys(this.feedStore._index._index).length
     return count
   }
-
 
   async close() {
     return this.feedStore.close()

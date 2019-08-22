@@ -48,8 +48,8 @@ class ProfileController {
         if (profile) {
           try {
             let publicPostService:PublicPostService = await PublicPostService.getInstance(address)
-            console.log(publicPostService)
-            posts = await PublicPostService.getRecentPosts(address, 0, 10)
+
+            posts = await publicPostService.getRecentPosts(0, 10)
           } catch(ex) {
             console.log(ex)
           }

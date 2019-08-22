@@ -49,7 +49,7 @@ class ProfileController {
         if (profile) {
           try {
 
-            await this.postService.loadFeedForWallet(address)
+            await this.postService.loadPostFeedForWallet(address)
             
             posts = await this.postService.getRecentPosts(0, 10)
           } catch(ex) {

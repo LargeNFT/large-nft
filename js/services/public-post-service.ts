@@ -27,9 +27,15 @@ class PublicPostService {
   
 
   @timeout(2000)
-  async loadFeedForWallet(walletAddress: string){
+  async loadPostFeedForWallet(walletAddress: string){
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
     this.setFeed(postFeed)
+  }
+
+  @timeout(2000)
+  async loadMainFeedForWallet(walletAddress: string){
+    let mainFeed = await Global.schemaService.getMainFeedByWalletAddress(walletAddress)
+    this.setFeed(mainFeed)
   }
 
 

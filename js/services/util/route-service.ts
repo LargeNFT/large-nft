@@ -289,16 +289,8 @@ class RouteService {
     await this.schemaService.updateSchema(mainStore, schema, window['currentAccount'])
 
 
-    //Load friends
-    let friendStore = await this.schemaService.getFriendStoreByWalletAddress(window['currentAccount'])
-    await friendStore.load()
 
-    //Load profile
-    let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(window['currentAccount'])
-    await profileStore.load()
-
-
-    Global.friendService = new FriendService(friendStore, this.schemaService)
+    Global.friendService = new FriendService()
     Global.profileService = new ProfileService()
     Global.postService = new PublicPostService(this.schemaService, Global.profileService)
 

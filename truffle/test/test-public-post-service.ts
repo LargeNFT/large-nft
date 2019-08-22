@@ -51,7 +51,7 @@ contract('PublicPostService', async (accounts) => {
         await Global.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, address)
 
         service = new PublicPostService(Global.schemaService, new ProfileService())
-        await service.loadFeedForWallet(address)
+        await service.loadPostFeedForWallet(address)
 
     })
 
@@ -173,7 +173,7 @@ contract('PublicPostService', async (accounts) => {
 
         await service.close()
 
-        await service.loadFeedForWallet(address)
+        await service.loadPostFeedForWallet(address)
 
 
         //Get a page of 3

@@ -6,48 +6,43 @@ import { ProfileService } from "./profile-service";
 import { Profile } from "../dto/profile";
 import { SchemaService } from "./util/schema-service";
 import { Friend } from "../dto/friend";
+import { timeout } from "../timeout-promise";
 const moment = require('moment')
 
 
 class FriendService {
 
+  setStore(store) {
+    this.store = store
+  }
+
+  store: any
+
   constructor(
-    private friendStore: any,
-    private schemaService: SchemaService
   ) { }
 
 
-  static async getInstance(walletAddress: string): Promise<FriendService> {
-    
+  @timeout(2000)
+  async loadStoreForWallet(walletAddress:string) {
     let friendStore = await Global.schemaService.getFriendStoreByWalletAddress(walletAddress)
-
-    await friendStore.load()
-
-    let friendService:FriendService = new FriendService(friendStore, Global.schemaService)
-
-    return friendService
+    this.setStore(friendStore)
   }
 
-  static async follow(friendAddress: string) : Promise<Friend> {
 
-    let friendService: FriendService = await FriendService.getInstance(window["currentAccount"])
+  async follow(friendAddress: string) : Promise<Friend> {
 
     let friend:Friend = {
         address: friendAddress
     }
 
-    friend = await friendService.put(friend)
+    friend = await this.put(friend)
 
     return friend
 
   }
 
-  static async unfollow(friendAddress: string)  {
-
-    let friendService: FriendService = await FriendService.getInstance(window["currentAccount"])
-
-    await friendService.delete(friendAddress)
-
+  async unfollow(friendAddress: string)  {
+    await this.delete(friendAddress)
   }
 
 
@@ -55,13 +50,13 @@ class FriendService {
 
   async get(address: string): Promise<Friend> {
     
-    let cid = this.friendStore.get(address.toLowerCase())
+    let cid = this.store.get(address.toLowerCase())
 
     if (!cid) return
 
 
     let loaded = await Global.ipfs.object.get(cid)
-    let t = loaded.Data.toString()
+    let t = loaded.Data ? loaded.Data.toString() : loaded.data.toString()
 
     let friend:Friend = JSON.parse(t)
 
@@ -80,7 +75,7 @@ class FriendService {
 
 
     //Store CID in feed
-    let feedCid = await this.friendStore.put(friend.address.toLowerCase(), cidString)
+    let feedCid = await this.store.put(friend.address.toLowerCase(), cidString)
     
     friend.cid = cidString
     friend.feedCid = feedCid
@@ -90,14 +85,14 @@ class FriendService {
 
 
   async delete(address:string) {
-    return this.friendStore.del(address)
+    return this.store.del(address)
   }
 
 
 
   async list(offset:number, limit:number): Promise<Friend[]> {
     
-    let keys = Object.keys(this.friendStore.index) 
+    let keys = Object.keys(this.store.index) 
 
     let page = keys.slice(offset).slice(0, limit)
 
@@ -119,12 +114,12 @@ class FriendService {
 
 
   async close() {
-    return this.friendStore.close()
+    return this.store.close()
   }
 
 
   async load() {
-    return this.friendStore.load()
+    return this.store.load()
   }
 
 

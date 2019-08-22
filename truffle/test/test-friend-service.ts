@@ -24,7 +24,7 @@ const ipfs = ipfsClient({
 //@ts-ignore
 contract('FriendService', async (accounts) => {
 
-    let service: FriendService
+    let service: FriendService = new FriendService()
     let mainStore
     let address: number
     
@@ -49,7 +49,8 @@ contract('FriendService', async (accounts) => {
 
         await Global.schemaService.generateSchema(orbitdb, {}, mainStore, address.toString())
 
-        service = await FriendService.getInstance(address.toString())
+        await service.loadStoreForWallet(address.toString())
+
 
 
     })
@@ -174,8 +175,8 @@ contract('FriendService', async (accounts) => {
 
         await service.close()
 
-        service = await FriendService.getInstance(address.toString())
-
+        await service.loadStoreForWallet(address.toString())
+        await service.load()
 
         //Get a page of 3
         let it = await service.list(0, 3)

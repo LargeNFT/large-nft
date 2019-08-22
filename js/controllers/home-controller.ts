@@ -50,7 +50,7 @@ class HomeController {
 
     return new ModelView( async () => {
 
-      await this.postService.loadFeedForWallet(window['currentAccount'])
+      await this.postService.loadMainFeedForWallet(window['currentAccount'])
 
 
       this.postsShown = 0
@@ -109,7 +109,14 @@ class HomeController {
     // return if empty message. quill length is 1 if it's empty
     if (length == 1) return
 
+
+    //Post to account's post feed
+    await this.postService.loadPostFeedForWallet(window['currentAccount'])
     let post:Post = await this.postService.postMessage(content, window['currentAccount'])
+
+    //Reload main feed
+    await this.postService.loadMainFeedForWallet(window['currentAccount'])
+
 
 
     $$("#post-list").prepend(Global.postResultTemplate(post))

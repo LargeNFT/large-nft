@@ -47,19 +47,8 @@
                     </div>
 
                     <div class="col-80">
-                      <div class="profile-name row">
-
-                          <div class="col-80">
-                              {{profile.name}}
-                          </div>
-
-                          <div class="col-20">
-                            {{#if showEditLink}}
-                                <a href="/profile/edit" class="button button-outline button-small button-round">Edit</a>
-                            {{/if}}
-                          </div>
-
-
+                      <div class="profile-name">
+                          {{profile.name}}
                       </div>
 
                       <div class="profile-address">
@@ -67,6 +56,13 @@
                       </div>
 
                       <p>{{profile.aboutMe}}</p>
+
+                      {{#if showEditLink}}
+                      <div class="row">
+                          <a href="/profile/edit" class="button button-outline button-small button-round col-20">Edit</a>
+                      </div>
+                      {{/if}}
+
 
                     </div>
                 </div>

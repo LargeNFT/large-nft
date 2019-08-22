@@ -4,32 +4,37 @@ import { timeout } from '../timeout-promise'
 
 class ProfileService {
   
+  setStore(store) {
+    this.store = store
+  }
+
+  store: any
+
   constructor(
-    public store: any
+    
   ) {}
 
+  
+  async getCurrentUser() : Promise<Profile> {
+    return this.getProfileByWallet(window['currentAccount'])
+  }
+
   @timeout(2000)
-  static async getInstance(walletAddress:string) : Promise<ProfileService> {
+  async getProfileByWallet(walletAddress:string) : Promise<Profile> {
+    await this.loadStoreForWallet(walletAddress)
+    await this.store.load()
+    return this.read(walletAddress)
+  }
+
+
+
+
+
+  @timeout(2000)
+  async loadStoreForWallet(walletAddress:string) {
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
-    return new ProfileService(profileStore)
-
+    this.setStore(profileStore)
   }
-
-  @timeout(2000)
-  static async getCurrentUser() : Promise<Profile> {
-    return ProfileService.getProfileByWallet(window['currentAccount'])
-  }
-
-  @timeout(2000)
-  static async getProfileByWallet(walletAddress:string) : Promise<Profile> {
-    let service:ProfileService =  await ProfileService.getInstance(walletAddress)
-    await service.load()
-    return service.read(walletAddress)
-  }
-
-
-
-
 
   async read(address:string) : Promise<Profile> {
 

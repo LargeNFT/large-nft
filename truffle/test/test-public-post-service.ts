@@ -3,6 +3,7 @@ import assert = require('assert')
 import { PublicPostService } from "../../js/services/public-post-service"
 import { Global } from "../../js/global";
 import { SchemaService } from "../../js/services/util/schema-service";
+import { ProfileService } from "../../js/services/profile-service";
 const Keystore = require('orbit-db-keystore')
 
 
@@ -49,8 +50,8 @@ contract('PublicPostService', async (accounts) => {
 
         await Global.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, address)
 
-        service = new PublicPostService(Global.schemaService)
-        await service.loadFeedFromWallet(address)
+        service = new PublicPostService(Global.schemaService, new ProfileService())
+        await service.loadFeedForWallet(address)
 
     })
 
@@ -172,7 +173,7 @@ contract('PublicPostService', async (accounts) => {
 
         await service.close()
 
-        await service.loadFeedFromWallet(address)
+        await service.loadFeedForWallet(address)
 
 
         //Get a page of 3

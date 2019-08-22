@@ -22,19 +22,14 @@ class ConnectController {
         private whitepageService: WhitepagesService,
         private queueService: QueueService,
         private listingService: ListingService,
-        private friendService: FriendService
-    ) {
-
-
-
-        
-    }
+        private friendService: FriendService,
+        private profileService: ProfileService
+    ) {}
 
 
     async showHome() : Promise<ModelView> {
 
         return new ModelView( async () => {
-
 
             let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
 
@@ -63,7 +58,7 @@ class ConnectController {
         let profile:Profile 
 
         try {
-            profile = await ProfileService.getProfileByWallet($$('#friendAddress').val())
+            profile = await this.profileService.getProfileByWallet($$('#friendAddress').val())
 
 
             //Check if we're friends    

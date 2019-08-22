@@ -2,6 +2,8 @@ import { Profile } from "../../js/dto/profile";
 import assert = require('assert');
 import { ProfileService } from "../../js/services/profile-service";
 import { IdentityService } from "../../js/services/util/identity-service";
+import { Global } from "../../js/global";
+import { SchemaService } from "../../js/services/util/schema-service";
 
 const OrbitDB = require('orbit-db')
 
@@ -24,31 +26,33 @@ const ipfs = ipfsClient({
 //@ts-ignore
 contract('ProfileService', async (accounts) => {
 
-    let service: ProfileService = new ProfileService(ipfs)
-    let identityService: IdentityService
+    let service: ProfileService = new ProfileService()
+    let mainStore
+    let address: string
 
     //@ts-ignore
     before("", async () => {
 
 
-        identityService = new IdentityService()
-
-        let keystore = Keystore.create(keypath)
-
-        let identity = await identityService.getIdentity(keystore)
+        address = Math.random().toString()
 
         const orbitdb = await OrbitDB.createInstance(ipfs, {
-            directory: "./orbitdb",
-            identity: identity
+            directory: "./orbitdb"
         })
 
-        let ac = identityService.getAccessController(orbitdb)
+        Global.ipfs = ipfs
+        Global.orbitDb = orbitdb
+        Global.schemaService = new SchemaService()
 
-        let store = await orbitdb.docstore("test-profile", {
-            accessController: ac
-        })
+        mainStore = await Global.schemaService.getMainStoreByWalletAddress(address)
+        await mainStore.load()
 
-        service = new ProfileService(store)
+        await Global.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, address)
+
+        await service.loadStoreForWallet(address)
+        await service.load()
+
+        
     })
 
 

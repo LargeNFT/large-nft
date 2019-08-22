@@ -36,7 +36,8 @@ class HomeController {
 
   constructor(
     private quillService: QuillService,
-    private postService:PublicPostService
+    private postService:PublicPostService,
+    private profileService: ProfileService
   ) {
   }
 
@@ -49,7 +50,7 @@ class HomeController {
 
     return new ModelView( async () => {
 
-      await this.postService.loadFeedFromWallet(window['currentAccount'])
+      await this.postService.loadFeedForWallet(window['currentAccount'])
 
 
       this.postsShown = 0
@@ -59,7 +60,7 @@ class HomeController {
       let currentUser:Profile
 
       try {
-        currentUser =  await ProfileService.getCurrentUser()
+        currentUser =  await this.profileService.getCurrentUser()
       } catch(ex) {
         console.log(ex)
       }

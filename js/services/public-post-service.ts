@@ -19,14 +19,15 @@ class PublicPostService {
   private feedStore: any
 
   constructor(
-    private schemaService: SchemaService
+    private schemaService: SchemaService,
+    private profileService: ProfileService
   ) { }
 
 
   
 
   @timeout(2000)
-  async loadFeedFromWallet(walletAddress: string){
+  async loadFeedForWallet(walletAddress: string){
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
     this.setFeed(postFeed)
   }
@@ -116,7 +117,7 @@ class PublicPostService {
     //Get profile service of poster
     let profile: Profile
     try {
-      profile = await ProfileService.getProfileByWallet(walletAddress)
+      profile = await this.profileService.getProfileByWallet(walletAddress)  
     } catch(ex) {
       console.log(ex)
     }

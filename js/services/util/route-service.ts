@@ -299,20 +299,20 @@ class RouteService {
 
 
     Global.friendService = new FriendService(friendStore, this.schemaService)
-    Global.profileService = new ProfileService(profileStore)
-    Global.postService = new PublicPostService(this.schemaService)
+    Global.profileService = new ProfileService()
+    Global.postService = new PublicPostService(this.schemaService, Global.profileService)
 
     Global.uploadService = new UploadService()
     Global.quillService = new QuillService(Global.uploadService)
     Global.whitepagesService = new WhitepagesService(contract)
-    Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService, Global.friendService)
+    Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService, Global.friendService, Global.profileService)
 
 
-    Global.homeController = new HomeController(Global.quillService, Global.postService)
+    Global.homeController = new HomeController(Global.quillService, Global.postService, Global.profileService)
     Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postService)
     Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
-    Global.postController = new PostController( Global.quillService, Global.postService)
-    Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService)
+    Global.postController = new PostController( Global.quillService, Global.postService, Global.profileService)
+    Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService, Global.profileService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController

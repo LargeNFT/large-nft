@@ -41,7 +41,7 @@ class ProfileController {
         
 
         try {
-          profile = await ProfileService.getProfileByWallet(address)
+          profile = await this.profileService.getProfileByWallet(address)
         } catch(ex) {
           console.log(ex)
         }
@@ -49,7 +49,7 @@ class ProfileController {
         if (profile) {
           try {
 
-            await this.postService.loadFeedFromWallet(address)
+            await this.postService.loadFeedForWallet(address)
             
             posts = await this.postService.getRecentPosts(0, 10)
           } catch(ex) {
@@ -81,7 +81,7 @@ class ProfileController {
 
           let profile: Profile
           try {
-            profile = await ProfileService.getCurrentUser()
+            profile = await this.profileService.getCurrentUser()
           } catch(ex) {
             console.log(ex)
           }

@@ -8,6 +8,7 @@ import { ProfileService } from "./profile-service";
 import { timeout } from '../timeout-promise'
 import { FriendService } from "./friend-service";
 import { Friend } from "../dto/friend";
+import { PublicPostService } from "./public-post-service";
 
 
 class ListingService {
@@ -18,7 +19,8 @@ class ListingService {
     constructor(
         private schemaService: SchemaService,
         private whitepageService: WhitepagesService,
-        private friendService:FriendService
+        private friendService:FriendService,
+        private profileService:ProfileService
     ) {
 
     }
@@ -59,29 +61,31 @@ class ListingService {
         return feed
     }
 
-    async getProfileStore(listing:Listing) {
+    // async getProfileStore(listing:Listing) {
 
-        let schema:Schema = await this.getLoadedSchema(listing)
-        if (!schema) {
-            throw Error("No schema found")
-        }
+    //     let schema:Schema = await this.getLoadedSchema(listing)
+    //     if (!schema) {
+    //         throw Error("No schema found")
+    //     }
 
-        return this.getLoadedProfileStore(schema)
-    }
+    //     return this.getLoadedProfileStore(schema)
+    // }
 
 
-    async getProfile(listing:Listing) : Promise<Profile> {
+    // async getProfile(listing:Listing) : Promise<Profile> {
 
-        let profileStore = await this.getProfileStore(listing)
-        if (!profileStore) {
-            throw Error("No profile store")    
-        }
+    //     let profileStore = await this.getProfileStore(listing)
+    //     if (!profileStore) {
+    //         throw Error("No profile store")    
+    //     }
 
-        let listingProfileService = new ProfileService(profileStore)
 
-        return listingProfileService.read(listing.owner)
 
-    }
+    //     let listingProfileService = new ProfileService(profileStore)
+
+    //     return listingProfileService.read(listing.owner)
+
+    // }
 
     async getProfiles(listings:Listing[]) : Promise<Profile[]> {
 
@@ -89,7 +93,8 @@ class ListingService {
 
         for (var listing of listings) { 
             try {
-                let profile:Profile = await this.getProfile(listing)
+
+                let profile:Profile = await this.profileService.getProfileByWallet(listing.owner)
 
                 //Check if we're friends    
                 let friend:Friend = await this.friendService.get(listing.owner)

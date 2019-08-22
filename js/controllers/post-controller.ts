@@ -18,7 +18,8 @@ class PostController {
 
     constructor(
         private quillService:QuillService,
-        private postService:PublicPostService
+        private postService:PublicPostService,
+        private profileService:ProfileService
     ) {
         this._compilePostTemplate()
     }
@@ -47,7 +48,7 @@ class PostController {
 
 
             //Show the edit button to the owner
-            let currentUser:Profile = await ProfileService.getCurrentUser()
+            let currentUser:Profile = await this.profileService.getCurrentUser()
         
             let model = {
               currentAccount: window['currentAccount'],

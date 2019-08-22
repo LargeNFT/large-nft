@@ -12,7 +12,7 @@ import { PublicPostService } from "./services/public-post-service";
 import { UploadService } from "./services/util/upload-service";
 import { inherits } from "util";
 import { IdentityService } from "./services/util/identity-service";
-import { SchemaService, ConnectionPool } from "./services/util/schema-service";
+import { SchemaService } from "./services/util/schema-service";
 import { WhitepagesService } from "./services/whitepages-service";
 import { ConnectController } from "./controllers/connect-controller";
 import { ListingService } from "./services/listing-service";
@@ -30,8 +30,6 @@ export namespace Global {
   export var settingsService: SettingsService
   export var queueService: QueueService
   export var routeService: RouteService
-
-  export var connectionPool:ConnectionPool 
 
   /** Controllers */
   export var homeController: HomeController

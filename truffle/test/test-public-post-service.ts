@@ -2,7 +2,7 @@ import { Post } from "../../js/dto/post"
 import assert = require('assert')
 import { PublicPostService } from "../../js/services/public-post-service"
 import { Global } from "../../js/global";
-import { SchemaService, ConnectionPool } from "../../js/services/util/schema-service";
+import { SchemaService } from "../../js/services/util/schema-service";
 const Keystore = require('orbit-db-keystore')
 
 
@@ -15,7 +15,7 @@ const keypath = path.resolve('./keys')
 
 const ipfsClient = require('ipfs-http-client')
 const ipfs = ipfsClient({
-    host: "ipfs", // Switch to localhost if you're not using the docker/devcontainer setup.
+    host: "localhost", // Switch to localhost if you're not using the docker/devcontainer setup.
     port: 5001,
     protocol: 'http'
   })
@@ -42,7 +42,7 @@ contract('PublicPostService', async (accounts) => {
 
         Global.ipfs = ipfs
         Global.orbitDb = orbitdb
-        Global.schemaService = new SchemaService(new ConnectionPool())
+        Global.schemaService = new SchemaService()
 
         mainStore = await Global.schemaService.getMainStoreByWalletAddress(address)
         await mainStore.load()

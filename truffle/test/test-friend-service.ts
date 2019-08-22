@@ -1,7 +1,7 @@
 
 import assert = require('assert')
 import { Global } from "../../js/global";
-import { SchemaService, ConnectionPool } from "../../js/services/util/schema-service";
+import { SchemaService } from "../../js/services/util/schema-service";
 import { FriendService } from '../../js/services/friend-service';
 import { Friend } from '../../js/dto/friend';
 import { IdentityService } from '../../js/services/util/identity-service';
@@ -41,7 +41,7 @@ contract('FriendService', async (accounts) => {
         Global.ipfs = ipfs
         Global.orbitDb = orbitdb
         Global.identityService = new IdentityService()
-        Global.schemaService = new SchemaService(new ConnectionPool())
+        Global.schemaService = new SchemaService()
         Global.orbitAccessControl = Global.identityService.getAccessController(orbitdb)
 
 

@@ -7,7 +7,7 @@ import { QueueService } from "./services/util/queue_service";
 import { TemplateService } from "./services/template-service";
 import { SettingsController } from "./controllers/settings-controller";
 import { IdentityService } from "./services/util/identity-service";
-import { SchemaService, ConnectionPool } from "./services/util/schema-service";
+import { SchemaService } from "./services/util/schema-service";
 import { WhitepagesService } from "./services/whitepages-service";
 import { Dom7 } from "framework7";
 import { Template7 } from "framework7/js/framework7.bundle";
@@ -31,11 +31,10 @@ module.exports = function() {
 
   
   /*********************************************/
-  Global.connectionPool = new ConnectionPool()
   Global.identityService = new IdentityService()
   Global.settingsService = new SettingsService()
   Global.templateService = new TemplateService()
-  Global.schemaService = new SchemaService(Global.connectionPool)
+  Global.schemaService = new SchemaService()
   Global.queueService = new QueueService(Global.templateService)
   Global.routeService = new RouteService(Global.settingsService, Global.identityService, Global.schemaService)
   Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)

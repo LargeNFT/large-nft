@@ -31,13 +31,8 @@ class PublicPostService {
   @timeout(2000)
   static async getRecentPosts(walletAddress:string, offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
 
-      let schema:Schema = await Global.schemaService.getSchemaByWalletAddress(walletAddress)
-
-      //Force it to close and reopen so we can reload the right number of records.
-      await Global.schemaService.reopenStore(schema.postFeed)
-
       let feedStore = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
-
+      
       //Reload store with more data.
       await feedStore.load(limit + offset)
 
@@ -54,10 +49,6 @@ class PublicPostService {
 
 
   static async getPosts(feedStore: any, limit:number, lt:string=undefined): Promise<Post[]> {
-
-    console.log(feedStore)
-    console.log(limit)
-    console.log(lt)
 
     let options: any = {}
 
@@ -103,6 +94,9 @@ class PublicPostService {
   static async read(cid: string): Promise<Post> {
 
     let loaded = await Global.ipfs.object.get(cid)
+
+    if (loaded.data) loaded.Data = loaded.data
+
     let t = loaded.Data.toString()
 
     let post:Post = JSON.parse(t)

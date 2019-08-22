@@ -49,8 +49,11 @@ class HomeController {
 
     return new ModelView( async () => {
 
+      await this.postService.loadFeedFromWallet(window['currentAccount'])
+
+
       this.postsShown = 0
-      this.lastPost = null
+      this.lastPost = undefined
       this.hasMorePosts = true
 
       let currentUser:Profile

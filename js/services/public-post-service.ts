@@ -12,23 +12,66 @@ const moment = require('moment')
 
 class PublicPostService {
 
+  setFeed(feed) {
+    this.feedStore = feed
+  }
+
+  private feedStore: any
+
   constructor(
-    private feedStore: any,
     private schemaService: SchemaService
   ) { }
 
 
+  
+
   @timeout(2000)
-  static async getInstance(walletAddress: string): Promise<PublicPostService> {
-
+  async loadFeedFromWallet(walletAddress: string){
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
-
-    let postService:PublicPostService = new PublicPostService(postFeed, Global.schemaService)
-
-    return postService
+    this.setFeed(postFeed)
   }
 
-  static async getPosts(feedStore: any, limit:number, lt:string=undefined): Promise<Post[]> {
+
+  static async read(cid: string): Promise<Post> {
+
+    let loaded = await Global.ipfs.object.get(cid)
+
+    if (loaded.data) loaded.Data = loaded.data
+
+    let t = loaded.Data.toString()
+
+    let post:Post = JSON.parse(t)
+
+    post.cid = cid.toString()
+
+    return post
+  }
+
+
+  @timeout(2000)
+  async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
+
+    // console.log(`offset: ${offset}, limit: ${limit}, lt: ${lt}`)
+
+    // Reload store with more data.
+    let address = this.feedStore.address.toString()
+    await this.feedStore.close()
+
+    this.feedStore = await Global.orbitDb.open(address)
+
+    //Reload store with more data.
+    let loadQuantity = limit + offset
+    await this.feedStore.load(loadQuantity)
+
+    let posts:Post[] = await this.getPosts(limit, lt)
+    posts.reverse()
+
+
+    return posts
+
+  }
+
+  async getPosts(limit:number, lt:string=undefined): Promise<Post[]> {
 
     let options: any = {}
 
@@ -41,7 +84,7 @@ class PublicPostService {
     }
 
 
-    let results = await feedStore.iterator(options)
+    let results = await this.feedStore.iterator(options)
       .collect()
       .map((e) => {
 
@@ -64,45 +107,6 @@ class PublicPostService {
     }
 
     return posts
-  }
-
-  static async read(cid: string): Promise<Post> {
-
-    let loaded = await Global.ipfs.object.get(cid)
-
-    if (loaded.data) loaded.Data = loaded.data
-
-    let t = loaded.Data.toString()
-
-    let post:Post = JSON.parse(t)
-
-    post.cid = cid.toString()
-
-    return post
-  }
-
-
-  @timeout(2000)
-  async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
-
-      //Reload store with more data.
-      let address = this.feedStore.address.toString()
-      await this.feedStore.close()
-
-      this.feedStore = await Global.orbitDb.feed(address)
-
-      //Reload store with more data.
-      let loadQuantity = limit + offset
-      await this.feedStore.load(loadQuantity)
-
-      console.log(await this.countLoaded())
-
-      let posts:Post[] = await PublicPostService.getPosts(this.feedStore, limit, lt)
-      posts.reverse()
-
-
-      return posts
-
   }
 
   async postMessage(content: any, walletAddress:string) {

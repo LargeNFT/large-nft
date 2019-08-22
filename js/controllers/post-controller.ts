@@ -16,12 +16,9 @@ class PostController {
     _postTemplate: any
     loadedPost:Post
 
-
-    private repliesService:PublicPostService
-
     constructor(
-        private schemaService:SchemaService,
-        private quillService:QuillService
+        private quillService:QuillService,
+        private postService:PublicPostService
     ) {
         this._compilePostTemplate()
     }
@@ -44,9 +41,9 @@ class PostController {
             let repliesFeed = await Global.orbitDb.open(this.loadedPost.replies)
             await repliesFeed.load(100)
 
-            this.repliesService = new PublicPostService(repliesFeed, this.schemaService)
+            this.postService.setFeed(repliesFeed)
 
-            let replies:Post[] = await PublicPostService.getPosts(repliesFeed, 100)
+            let replies:Post[] = await this.postService.getRecentPosts(0, 100)
 
 
             //Show the edit button to the owner
@@ -76,7 +73,7 @@ class PostController {
         // return if empty message. quill length is 1 if it's empty
         if (length == 1) return
     
-        let post:Post = await this.repliesService.postMessage(content, window['currentAccount'])
+        let post:Post = await this.postService.postMessage(content, window['currentAccount'])
     
         $$(`#replies-list-${this.loadedPost.cid}`).prepend(this._postTemplate(post))
     

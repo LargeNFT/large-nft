@@ -19,7 +19,8 @@ class ProfileController {
 
     constructor(
       private uploadService : UploadService,
-      private profileService: ProfileService
+      private profileService: ProfileService,
+      private postService:PublicPostService
       ) {
         const self = this
 
@@ -47,9 +48,10 @@ class ProfileController {
 
         if (profile) {
           try {
-            let publicPostService:PublicPostService = await PublicPostService.getInstance(address)
 
-            posts = await publicPostService.getRecentPosts(0, 10)
+            await this.postService.loadFeedFromWallet(address)
+            
+            posts = await this.postService.getRecentPosts(0, 10)
           } catch(ex) {
             console.log(ex)
           }

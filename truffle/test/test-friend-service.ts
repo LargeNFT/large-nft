@@ -5,6 +5,10 @@ import { SchemaService } from "../../js/services/util/schema-service";
 import { FriendService } from '../../js/services/friend-service';
 import { Friend } from '../../js/dto/friend';
 import { IdentityService } from '../../js/services/util/identity-service';
+import { PublicPostService } from '../../js/services/public-post-service';
+import { isMainThread } from 'worker_threads';
+import { Post } from '../../js/dto/post';
+import { ProfileService } from '../../js/services/profile-service';
 const TableStore = require('orbit-db-tablestore')
 
 
@@ -24,17 +28,20 @@ const ipfs = ipfsClient({
 //@ts-ignore
 contract('FriendService', async (accounts) => {
 
-    let service: FriendService = new FriendService()
+    let postService:PublicPostService
+    let service: FriendService
     let mainStore
     let address: number
-    
+    let orbitdb
+
+
     //@ts-ignore
     before("", async () => {
 
 
         address = Math.random()
 
-        const orbitdb = await OrbitDB.createInstance(ipfs, {
+        orbitdb = await OrbitDB.createInstance(ipfs, {
             directory: "./orbitdb"
         })
 
@@ -44,6 +51,8 @@ contract('FriendService', async (accounts) => {
         Global.schemaService = new SchemaService()
         Global.orbitAccessControl = Global.identityService.getAccessController(orbitdb)
 
+        postService = new PublicPostService(Global.schemaService, new ProfileService())
+        service = new FriendService(postService)
 
         let mainStore = await Global.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, address.toString())
 
@@ -164,7 +173,7 @@ contract('FriendService', async (accounts) => {
 
 
     //@ts-ignore
-    it("should load a database with lots of records and page through them", async () => {
+    it("should load a friend store with lots of friends and page through them", async () => {
 
         //Arrange
         for (var i=0; i < 100; i++) {
@@ -212,10 +221,51 @@ contract('FriendService', async (accounts) => {
 
     })
 
+    //@ts-ignore
+    it("should read a friend's feed and get the new posts", async () => {
 
+
+        //Make a friend
+        let friend = await service.put({
+            address: "MX0"
+        })
+
+        let friendStore = await Global.schemaService.generateMainStore(orbitdb, Global.orbitAccessControl, "MX0")
+        await Global.schemaService.generateSchema(orbitdb, Global.orbitAccessControl, friendStore, "MX0")
+        await friendStore.close()
+
+
+
+        //Make 10 posts for the friend
+        await postService.loadPostFeedForWallet("MX0")
+
+        await postService.postMessage("1", "MX0")
+        await postService.postMessage("2", "MX0")
+        await postService.postMessage("3", "MX0")
+        await postService.postMessage("4", "MX0")
+        await postService.postMessage("5", "MX0")
+        let post = await postService.postMessage("6", "MX0")
+        await postService.postMessage("7", "MX0")
+        await postService.postMessage("8", "MX0")
+        await postService.postMessage("9", "MX0")
+        await postService.postMessage("10", "MX0")
+
+
+        //Take the hash of the 6th one and get new posts. 
+        friend.lastPostFeedCid = post.feedCid
+        let posts:Post[] = await service.getNewPostsFromFriend(friend)
+        
+        assert.equal(posts.length, 4)        
+    
+        //The first time it's called should return 5 records. The second should return 0.
+        posts = await service.getNewPostsFromFriend(friend)
+
+        assert.equal(posts.length, 0)
+
+
+
+    })
 
 
 
 })
-
-

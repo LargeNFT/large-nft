@@ -56,7 +56,7 @@ class PublicPostService {
 
 
   @timeout(2000)
-  async getRecentPosts(offset:number, limit:number, lt:string=undefined): Promise<Post[]> {
+  async getRecentPosts(offset:number, limit:number, lt:string=undefined, gt:string=undefined): Promise<Post[]> {
 
     // console.log(`offset: ${offset}, limit: ${limit}, lt: ${lt}`)
 
@@ -70,7 +70,8 @@ class PublicPostService {
     let loadQuantity = limit + offset
     await this.feedStore.load(loadQuantity)
 
-    let posts:Post[] = await this.getPosts(limit, lt)
+
+    let posts:Post[] = await this.getPosts(limit, lt, gt)
     posts.reverse()
 
 
@@ -78,7 +79,7 @@ class PublicPostService {
 
   }
 
-  async getPosts(limit:number, lt:string=undefined): Promise<Post[]> {
+  async getPosts(limit:number, lt:string=undefined, gt:string=undefined): Promise<Post[]> {
 
     let options: any = {}
 
@@ -88,6 +89,10 @@ class PublicPostService {
 
     if (lt) {
       options.lt = lt
+    }
+
+    if (gt) {
+      options.gt = gt
     }
 
 

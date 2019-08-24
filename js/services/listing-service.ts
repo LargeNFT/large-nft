@@ -22,7 +22,6 @@ class ListingService {
         private friendService:FriendService,
         private profileService:ProfileService
     ) {
-
     }
 
 
@@ -61,35 +60,13 @@ class ListingService {
         return feed
     }
 
-    // async getProfileStore(listing:Listing) {
 
-    //     let schema:Schema = await this.getLoadedSchema(listing)
-    //     if (!schema) {
-    //         throw Error("No schema found")
-    //     }
-
-    //     return this.getLoadedProfileStore(schema)
-    // }
-
-
-    // async getProfile(listing:Listing) : Promise<Profile> {
-
-    //     let profileStore = await this.getProfileStore(listing)
-    //     if (!profileStore) {
-    //         throw Error("No profile store")    
-    //     }
-
-
-
-    //     let listingProfileService = new ProfileService(profileStore)
-
-    //     return listingProfileService.read(listing.owner)
-
-    // }
 
     async getProfiles(listings:Listing[]) : Promise<Profile[]> {
 
         let profiles:Profile[] = []
+
+
 
         for (var listing of listings) { 
             try {
@@ -114,6 +91,7 @@ class ListingService {
 
     
     async getListingProfiles(limit, offset) : Promise<Profile[]> {
+
         let listings:Listing[] = await this.getListings(limit, offset)
         return this.getProfiles(listings)
     }

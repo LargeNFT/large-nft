@@ -33,6 +33,7 @@ import { ConnectController } from "../../controllers/connect-controller";
 import { ListingService } from "../listing-service";
 import { PostController } from "../../controllers/post-controller";
 import { FriendService } from "../friend-service";
+import { ProcessFeedService } from "../process-feed-service";
 
 
 const promisify = (inner) =>
@@ -289,16 +290,17 @@ class RouteService {
     await this.schemaService.updateSchema(mainStore, schema, window['currentAccount'])
 
 
-
-    Global.friendService = new FriendService()
+    
+    
     Global.profileService = new ProfileService()
     Global.postService = new PublicPostService(this.schemaService, Global.profileService)
+    Global.friendService = new FriendService(Global.postService)
+    Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService)
 
     Global.uploadService = new UploadService()
     Global.quillService = new QuillService(Global.uploadService)
     Global.whitepagesService = new WhitepagesService(contract)
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService, Global.friendService, Global.profileService)
-
 
     Global.homeController = new HomeController(Global.quillService, Global.postService, Global.profileService)
     Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postService)
@@ -310,6 +312,8 @@ class RouteService {
     window['profileController'] = Global.profileController
     window['postController'] = Global.postController
     window['connectController'] = Global.connectController
+    window['settingsController'] = Global.settingsController
+
     console.log("Initialization complete")
 
   }

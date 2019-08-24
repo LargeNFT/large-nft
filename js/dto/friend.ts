@@ -1,9 +1,9 @@
 class Friend {
 
   cid?: string
-  feedCid?: string 
 
   address?: string
+  lastPostFeedCid?: string 
 
 }
 

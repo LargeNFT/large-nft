@@ -7,18 +7,20 @@ import { Profile } from "../dto/profile";
 import { SchemaService } from "./util/schema-service";
 import { Friend } from "../dto/friend";
 import { timeout } from "../timeout-promise";
+import { PublicPostService } from "./public-post-service";
 const moment = require('moment')
 
 
 class FriendService {
 
   setStore(store) {
-    this.store = store
+    this.kvStore = store
   }
 
-  store: any
+  kvStore: any
 
   constructor(
+    private postService:PublicPostService
   ) { }
 
 
@@ -29,29 +31,10 @@ class FriendService {
   }
 
 
-  async follow(friendAddress: string) : Promise<Friend> {
-
-    let friend:Friend = {
-        address: friendAddress
-    }
-
-    friend = await this.put(friend)
-
-    return friend
-
-  }
-
-  async unfollow(friendAddress: string)  {
-    await this.delete(friendAddress)
-  }
-
-
-
 
   async get(address: string): Promise<Friend> {
     
-    let cid = this.store.get(address.toLowerCase())
-
+    let cid = this.kvStore.get(address.toLowerCase())
     if (!cid) return
 
 
@@ -65,37 +48,35 @@ class FriendService {
     return friend
   }
 
-  async put(friend: Friend) {
+  async put(friend: Friend) : Promise<Friend> {
 
-    //Save directly in IPFS
+    //Save directly in IPFS. We do this so that when "load" is called it'll only pull in the cid's instead of all the data
     let buffer = Buffer.from(JSON.stringify(friend))
     let cid = await Global.ipfs.object.put(buffer)
 
     let cidString = cid.toString()
 
 
-    //Store CID in feed
-    let feedCid = await this.store.put(friend.address.toLowerCase(), cidString)
+    //Store CID in kvstore
+    await this.kvStore.put(friend.address.toLowerCase(), cidString)
     
     friend.cid = cidString
-    friend.feedCid = feedCid
 
     return friend
   }
 
 
   async delete(address:string) {
-    return this.store.del(address)
+    return this.kvStore.del(address)
   }
 
 
 
   async list(offset:number, limit:number): Promise<Friend[]> {
     
-    let keys = Object.keys(this.store.index) 
+    let keys = Object.keys(this.kvStore.index) 
 
     let page = keys.slice(offset).slice(0, limit)
-
 
 
     let friends:Friend[] = []
@@ -110,18 +91,40 @@ class FriendService {
   }
 
 
-
-
-
   async close() {
-    return this.store.close()
+    return this.kvStore.close()
   }
 
 
   async load() {
-    return this.store.load()
+    return this.kvStore.load()
   }
 
+
+
+  async getNewPostsFromFriend(friend:Friend) : Promise<Post[]> {
+
+    let posts:Post[] = []
+
+    await this.postService.loadPostFeedForWallet(friend.address)
+
+    let lastPostFeedCid = friend.lastPostFeedCid
+    let foundPosts:Post[] = []
+
+    do {
+      let foundPosts = await this.postService.getRecentPosts(0, 10, undefined, lastPostFeedCid)
+      posts = posts.concat(foundPosts)
+
+    } while(foundPosts.length == 10)
+
+    //Update last post hash
+    friend.lastPostFeedCid = posts[0].cid
+
+    await this.put(friend)
+
+    return posts
+
+  }
 
 
 

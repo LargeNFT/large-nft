@@ -52,10 +52,7 @@ class HomeController {
 
       await this.postService.loadMainFeedForWallet(window['currentAccount'])
 
-
-      this.postsShown = 0
-      this.lastPost = undefined
-      this.hasMorePosts = true
+      this.reset()
 
       let currentUser:Profile
 
@@ -119,11 +116,23 @@ class HomeController {
 
 
 
-    $$("#post-list").prepend(Global.postResultTemplate(post))
+    this.reset()
+    $$('.infinite-scroll-content').trigger('infinite', {})
 
 
     this.quillService.activeEditor.setText('')
     this.quillService.activeEditor.focus()
+
+  }
+
+
+  async reset() {
+    
+    this.postsShown = 0
+    this.lastPost = undefined
+    this.hasMorePosts = true
+    
+    $$("#post-list").empty()
 
   }
 

@@ -98,6 +98,11 @@ class SchemaService {
 
     }
 
+    async dropStore(address:string) {
+        let store = await Global.orbitDb.open(address)
+        await store.drop()
+    }
+
 
 
     async getRepliesPostFeed(post:Post, translatedContent: string) {

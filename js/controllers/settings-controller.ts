@@ -16,9 +16,7 @@ class SettingsController {
     ) {
         const self = this;
 
-        $$(document).on('click', '#settings-save', function(e) {
-            self.saveButtonClicked(e)
-        });
+
     }
 
     async showSettingsForm(): Promise<ModelView> {
@@ -52,6 +50,22 @@ class SettingsController {
         this.settingsService.saveSettings(settingsData)
 
         Global.navigate("/?reinit=true")
+
+    }
+
+
+    async dropStoreClicked(e:Event) {
+
+        let id = $$(e.target).data('id')
+
+        await this.schemaService.dropStore(id)
+
+        // Create bottom toast
+        var toastBottom = Global.app.toast.create({
+            text: 'Store dropped'
+        })
+
+        toastBottom.open()
 
     }
 

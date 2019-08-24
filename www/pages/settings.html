@@ -85,25 +85,39 @@
 
         {{#if schema}}
           <div class="block-title">Schema</div>
-          <div class="data-table card">
-              <table>
-                <tbody>
-                  {{#if mainStoreAddress}}
-                    <tr>
-                        <td class="label-cell">Main Store</td>
-                        <td>{{mainStoreAddress}}</td>
-                      </tr>
-                  {{/if}}
+          <div class="list">
+            <ul>
+              {{#if mainStoreAddress}}
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title">
+                      <!-- Item header, must be first child of item-title -->
+                      <div class="item-header">Main store</div>
+                      <span class="wrap">{{mainStoreAddress}}</span>
+                      <button class="button drop-store" data-id="{{mainStoreAddress}}">Drop</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {{/if}}
 
-                  {{#each schema}}
-                    <tr>
-                      <td class="label-cell">{{@key}}</td>
-                      <td>{{this}}</td>
-                    </tr>
-                  {{/each}}
+              {{#each schema}}
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title">
+                      <!-- Item header, must be first child of item-title -->
+                      <div class="item-header">{{@key}}</div>
+                      <span class="wrap">{{this}}</span>
+                      <button class="button drop-store" data-id="{{this}}">Drop</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {{/each}}    
 
-                </tbody>
-              </table>
+            </ul>
           </div>
         {{else}}
           <div class="block-title">Schema Not Loaded</div>
@@ -121,8 +135,22 @@
 
 <script>
     return {
+      
       created: async function() {
-          window['Global'].loadComponentState(this)
+
+          await window['Global'].loadComponentState(this)
+
+          let controller = window['settingsController']
+          
+          this.$$('#settings-save').on('click', function(e) {
+            controller.saveButtonClicked(e)
+          })
+
+
+          this.$$('.drop-store').on('click', function(e) {
+            controller.dropStoreClicked(e)
+          })
+
       }
     }
   </script>

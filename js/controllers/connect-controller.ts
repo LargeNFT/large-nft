@@ -31,6 +31,9 @@ class ConnectController {
 
         return new ModelView( async () => {
 
+            await this.friendService.loadStoreForWallet(window['currentAccount'])
+            await this.friendService.load()
+
             let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
 
 

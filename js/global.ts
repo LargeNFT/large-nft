@@ -18,6 +18,7 @@ import { ConnectController } from "./controllers/connect-controller";
 import { ListingService } from "./services/listing-service";
 import { PostController } from "./controllers/post-controller";
 import { FriendService } from "./services/friend-service";
+import { ProcessFeedService } from "./services/process-feed-service";
 
 
 export namespace Global {  
@@ -46,7 +47,7 @@ export namespace Global {
   export var friendService:FriendService
   export var profileService:ProfileService
   export var postService:PublicPostService
-
+  export var processFeedService:ProcessFeedService
 
   /** The Framework7 app. Note: Try to make the rest of these typed some day. */
   export var app: any

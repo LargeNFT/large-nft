@@ -34,6 +34,7 @@ import { ListingService } from "../listing-service";
 import { PostController } from "../../controllers/post-controller";
 import { FriendService } from "../friend-service";
 import { ProcessFeedService } from "../process-feed-service";
+import { FollowController } from "../../controllers/follow-controller";
 
 
 const promisify = (inner) =>
@@ -132,13 +133,21 @@ class RouteService {
     routes.push({
       path: '/connect',
       async async(routeTo, routeFrom, resolve, reject) {
-
         self.initAndResolve(resolve,function() {
           return Global.connectController.showHome()
         })
-
       }
     })
+
+    routes.push({
+      path: '/following',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.initAndResolve(resolve,function() {
+          return Global.followController.showFollowing()
+        })
+      }
+    })
+
 
 
 
@@ -307,12 +316,14 @@ class RouteService {
     Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
     Global.postController = new PostController( Global.quillService, Global.postService, Global.profileService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService, Global.profileService)
+    Global.followController = new FollowController(Global.friendService, Global.profileService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController
     window['postController'] = Global.postController
     window['connectController'] = Global.connectController
     window['settingsController'] = Global.settingsController
+    window['followController'] = Global.followController
 
     console.log("Initialization complete")
 

@@ -19,6 +19,7 @@ import { ListingService } from "./services/listing-service";
 import { PostController } from "./controllers/post-controller";
 import { FriendService } from "./services/friend-service";
 import { ProcessFeedService } from "./services/process-feed-service";
+import { FollowController } from "./controllers/follow-controller";
 
 
 export namespace Global {  
@@ -38,6 +39,7 @@ export namespace Global {
   export var profileController: ProfileController
   export var settingsController: SettingsController
   export var connectController: ConnectController
+  export var followController: FollowController
 
   /** App specific services */
   export var uploadService: UploadService
@@ -70,6 +72,7 @@ export namespace Global {
 
   /** Template7 Templates */
   export var postResultTemplate
+  export var profileResultTemplate
 
   export function navigate(url: string) {
     Global.app.view.main.router.navigate(url)

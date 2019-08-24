@@ -18,13 +18,16 @@ var $$ = Dom7;
 
 class ConnectController {
 
+
     constructor(
         private whitepageService: WhitepagesService,
         private queueService: QueueService,
         private listingService: ListingService,
         private friendService: FriendService,
         private profileService: ProfileService
-    ) {}
+    ) {
+        
+    }
 
 
     async showHome() : Promise<ModelView> {
@@ -40,10 +43,9 @@ class ConnectController {
             let showRegisterButton = (registeredOrbitAddress)
             let showUpdateButton = !showRegisterButton
 
-
             let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
 
-
+    
             return {
                 currentAccount: window['currentAccount'],
                 registeredOrbitAddress: registeredOrbitAddress,
@@ -55,6 +57,9 @@ class ConnectController {
         }, 'pages/connect/home.html')
 
     }
+
+
+
 
     async findFriendClick(e:Event, component) {
         
@@ -142,6 +147,9 @@ class ConnectController {
             .addClass("follow-link")
             .html("Follow")
     }
+
+
+
 
 
 }

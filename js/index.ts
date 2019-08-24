@@ -49,8 +49,7 @@ module.exports = function() {
   //Global templates. Figure out a better place to do this. Leaving here for now because it needs to happen
   //before templates start getting rendered.
 
-
-  Template7.registerPartial("profileResult", `
+  let profileResult = `
     <li>
       <div class="item-content" id="profile_{{_id}}">
         <div class="item-media">
@@ -75,40 +74,43 @@ module.exports = function() {
         </div>
       </div>
     </li>
-  
-`)
 
-let postResult = `
-  <li>
-    <a href="/post/show/{{cid}}" class="item-link">
-      <div class="item-content" id="post_{{cid}}">
-        <div class="item-media">
-          {{#if ownerProfilePic}}
-            <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
-          {{else}}
-            <i class="f7-icons profile-pic-thumb">person</i>
-          {{/if}}
-        </div>
-        <div class="item-inner">
-          <div class="item-title-row">
-            <div class="item-title">
-              <span class="post-owner-display">{{ownerDisplayName}}</span>
-              <span class="post-owner">{{owner}}</span>
-            </div>
-            <div class="item-after">
-              {{dateCreated}}
-            </div>
+  `
+
+
+  let postResult = `
+    <li>
+      <a href="/post/show/{{cid}}" class="item-link">
+        <div class="item-content" id="post_{{cid}}">
+          <div class="item-media">
+            {{#if ownerProfilePic}}
+              <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+            {{else}}
+              <i class="f7-icons profile-pic-thumb">person</i>
+            {{/if}}
           </div>
-          <div class="item-subtitle post-content">{{contentTranslated}}</div>
+          <div class="item-inner">
+            <div class="item-title-row">
+              <div class="item-title">
+                <span class="post-owner-display">{{ownerDisplayName}}</span>
+                <span class="post-owner">{{owner}}</span>
+              </div>
+              <div class="item-after">
+                {{dateCreated}}
+              </div>
+            </div>
+            <div class="item-subtitle post-content">{{contentTranslated}}</div>
+          </div>
         </div>
-      </div>
-    </a>
-  </li>
-`
+      </a>
+    </li>
+  `
 
-Global.postResultTemplate = Template7.compile(postResult)
-Template7.registerPartial("postResult", postResult)
+  Global.profileResultTemplate = Template7.compile(profileResult)
+  Global.postResultTemplate = Template7.compile(postResult)
 
+  Template7.registerPartial("postResult", postResult)
+  Template7.registerPartial("profileResult", profileResult)
 
 
 

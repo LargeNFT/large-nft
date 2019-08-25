@@ -109,6 +109,8 @@ class HomeController {
 
     //Post to account's post feed
     await this.postService.loadPostFeedForWallet(window['currentAccount'])
+    await this.postService.load() //TODO: It would be good to put a limit on this. Acts weird if you don't load the whole thing (or most of it??)
+
     let post:Post = await this.postService.postMessage(content, window['currentAccount'])
 
     //Reload main feed

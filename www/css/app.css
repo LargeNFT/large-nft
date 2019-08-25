@@ -164,7 +164,9 @@ body, .md body {
   font-size: 40px;
 }
 
-
+.item-inner {
+  padding-left: 10px;
+}
 
 blockquote {
   border-left: 4px solid #111;

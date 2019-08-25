@@ -70,6 +70,7 @@ class PublicPostService {
     let loadQuantity = limit + offset
     await this.feedStore.load(loadQuantity)
 
+    console.log(this.feedStore)
 
     let posts:Post[] = await this.getPosts(limit, lt, gt)
     posts.reverse()
@@ -172,6 +173,8 @@ class PublicPostService {
     post.cid = cidString
     post.feedCid = feedCid
 
+    console.log(feedCid)
+
     return post
 
   }
@@ -184,6 +187,11 @@ class PublicPostService {
   async countLoaded() : Promise<number> {
     let count = Object.keys(this.feedStore._index._index).length
     return count
+  }
+
+
+  async load(amount:number=undefined) {
+    return this.feedStore.load(amount)
   }
 
   async close() {

@@ -32,6 +32,10 @@ class FollowController {
 
             this.reset()
 
+            return {
+              currentAccount: window['currentAccount']
+            }
+
           }, 'pages/follow/following.html')
     }
 

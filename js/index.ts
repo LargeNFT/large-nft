@@ -53,15 +53,22 @@ module.exports = function() {
     <li>
       <div class="item-content" id="profile_{{_id}}">
         <div class="item-media">
-          {{#if profilePic}}
-            <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
-          {{else}}
-            <i class="f7-icons profile-pic-thumb">person</i>
-          {{/if}}
+          <a href="/profile/static/{{_id}}">
+            {{#if profilePic}}
+              <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
+            {{else}}
+              <i class="f7-icons profile-pic-thumb">person</i>
+            {{/if}}
+          </a>
         </div>
         <div class="item-inner">
           <div class="item-title-row">
-            <div class="item-title"><span class="post-owner-display">{{name}}</span> <div class="post-owner">{{_id}}</div></div>
+            <div class="item-title">
+              <a href="/profile/static/{{_id}}">
+                <span class="post-owner-display">{{name}}</span> 
+                <div class="post-owner">{{_id}}</div>
+              </a>
+            </div>
             <div class="item-after">
                 {{#if following}}
                   <a class="button button-round button-fill button-small unfollow-link" data-id="{{_id}}" >Following</a>
@@ -92,8 +99,10 @@ module.exports = function() {
           <div class="item-inner">
             <div class="item-title-row">
               <div class="item-title">
-                <span class="post-owner-display">{{ownerDisplayName}}</span>
-                <span class="post-owner">{{owner}}</span>
+                <a href="/profile/static/{{_id}}">
+                  <span class="post-owner-display">{{ownerDisplayName}}</span>
+                  <span class="post-owner">{{owner}}</span>
+                </a>
               </div>
               <div class="item-after">
                 {{dateCreated}}

@@ -1,7 +1,5 @@
 ![image](https://raw.githubusercontent.com/ptoner/Large/master/www/images/logo_white.png)
 
-# Large
-
 **Large** is a P2P blogging platform. Build an online community that's run and hosted by the community.
 
 * No servers needed.

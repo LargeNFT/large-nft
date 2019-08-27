@@ -12,11 +12,20 @@ const moment = require('moment')
 
 class PublicPostService {
 
+  MAX_POSTS_PER_FEED: number = 10
+
   setFeed(feed) {
     this.feedStore = feed
   }
 
+  setChildFeed(childFeed) {
+    this.childFeedStore = childFeed
+  }
+
   private feedStore: any
+  private childFeedStore: any
+
+  private childFeedStoreCid
 
   constructor(
     private schemaService: SchemaService,
@@ -26,17 +35,51 @@ class PublicPostService {
 
   
 
-  @timeout(2000)
+  // @timeout(2000)
   async loadPostFeedForWallet(walletAddress: string){
     let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
-    this.setFeed(postFeed)
+    return this.loadPostFeed(postFeed, walletAddress, "post")
   }
 
-  @timeout(2000)
+  // @timeout(2000)
   async loadMainFeedForWallet(walletAddress: string){
     let mainFeed = await Global.schemaService.getMainFeedByWalletAddress(walletAddress)
-    this.setFeed(mainFeed)
+    this.loadPostFeed(mainFeed, walletAddress, "main")
   }
+
+  private async loadPostFeed(postFeed, walletAddress:string, type:string) {
+
+    //Reset the feeds
+    this.setFeed(postFeed)
+    this.setChildFeed(undefined)
+
+    //Load the list of feeds
+    await this.feedStore.load()
+
+    //Load the first one. If it doesn't exist or it's full create a new one and load it. 
+    await this.loadChildFeed()
+
+    //Load posts into child feed
+    let loadedPostCount = 0
+
+    if (this.childFeedStore) {
+      await this.childFeedStore.load()
+      loadedPostCount = this.countChildFeedStore()
+    }
+    
+    
+    if (!this.childFeedStore || loadedPostCount >= this.MAX_POSTS_PER_FEED) {
+
+      await this.createAndLoadNewChildFeed(walletAddress, type)
+      await this.childFeedStore.load()
+
+    }  
+
+
+  }
+
+
+
 
 
   static async read(cid: string): Promise<Post> {
@@ -55,26 +98,35 @@ class PublicPostService {
   }
 
 
+
+
+
   @timeout(2000)
-  async getRecentPosts(offset:number, limit:number, lt:string=undefined, gt:string=undefined): Promise<Post[]> {
+  async getRecentPosts(limit:number, lt:string=undefined, gt:string=undefined): Promise<Post[]> {
 
-    // console.log(`offset: ${offset}, limit: ${limit}, lt: ${lt}`)
 
-    // Reload store with more data.
-    let address = this.feedStore.address.toString()
-    await this.feedStore.close()
+    let posts:Post[] = []
 
-    this.feedStore = await Global.orbitDb.open(address)
+    //Load first feed
+    await this.loadChildFeed()
 
-    //Reload store with more data.
-    let loadQuantity = limit + offset
-    await this.feedStore.load(loadQuantity)
+    let feedsRead = 0
+    let totalFeeds = this.countChildFeedStore()
 
-    console.log(this.feedStore)
+    do {
 
-    let posts:Post[] = await this.getPosts(limit, lt, gt)
+      let feedPosts:Post[] = await this.getPosts(limit - posts.length, lt, gt)
+      posts.push(...feedPosts)
+
+      feedsRead++
+
+      //Load next feed
+      await this.loadChildFeed(this.childFeedStoreCid)
+
+    } while(posts.length < limit && feedsRead < totalFeeds)
+
+
     posts.reverse()
-
 
     return posts
 
@@ -97,7 +149,7 @@ class PublicPostService {
     }
 
 
-    let results = await this.feedStore.iterator(options)
+    let results = await this.childFeedStore.iterator(options)
       .collect()
       .map((e) => {
 
@@ -121,6 +173,41 @@ class PublicPostService {
 
     return posts
   }
+
+  async getFeedInfo(lt:string=undefined, gt:string=undefined) {
+
+    let options: any = {
+      limit: 1
+    }
+
+    if (lt) {
+      options.lt = lt
+    }
+
+    if (gt) {
+      options.gt = gt
+    }
+
+
+    let results = await this.feedStore.iterator(options)
+      .collect()
+      .map((e) => {
+
+        let model = {
+          feedAddress: e.payload.value,
+          feedCid: e.hash
+        }
+
+        return model
+    })
+
+    if (results && results.length > 0) {
+      return results[0]
+    }
+
+
+  }
+
 
   async postMessage(content: any, walletAddress:string) {
 
@@ -160,6 +247,13 @@ class PublicPostService {
 
   async create(post: Post): Promise<Post> {
 
+    //Load the right post feed.
+    await this.loadChildFeed()
+
+    if (this.countChildFeedStore() >= this.MAX_POSTS_PER_FEED) {
+      await this.createAndLoadNewChildFeed(post.owner, "post")
+    }
+
     //Save directly in IPFS
     let buffer = Buffer.from(JSON.stringify(post))
     let cid = await Global.ipfs.object.put(buffer)
@@ -168,12 +262,10 @@ class PublicPostService {
 
 
     //Store CID in feed
-    let feedCid = await this.feedStore.add(cidString)
+    let feedCid = await this.childFeedStore.add(cidString)
 
     post.cid = cidString
     post.feedCid = feedCid
-
-    console.log(feedCid)
 
     return post
 
@@ -184,10 +276,19 @@ class PublicPostService {
     await this.feedStore.remove(post.feedCid)
   }
 
-  async countLoaded() : Promise<number> {
-    let count = Object.keys(this.feedStore._index._index).length
-    return count
+  countFeedStore() : number {
+    return this.countLoaded(this.feedStore)  
   }
+
+  countChildFeedStore() : number {
+    return this.countLoaded(this.childFeedStore)
+  }
+
+  countLoaded(store) {
+    return Object.keys(store._index._index).length
+  }
+
+
 
 
   async load(amount:number=undefined) {
@@ -258,6 +359,44 @@ class PublicPostService {
     return qdc.convert()
 
 
+  }
+
+
+
+
+
+
+  
+  private async createAndLoadNewChildFeed(walletAddress:string, type:string) {
+
+    //Name the next feed
+    let countExistingFeeds = this.countFeedStore()
+
+    let feedName = `${type}-feed-list-${walletAddress}-${countExistingFeeds}`
+
+    //Create it.
+    this.childFeedStore = await Global.orbitDb.feed(feedName, {
+      create: true,
+      accessController: this.feedStore.accessController
+    })
+
+    await this.childFeedStore.load()
+
+    //Add it to the feedStore
+    this.childFeedStoreCid = await this.feedStore.add(this.childFeedStore.address)
+
+  }
+
+  async loadChildFeed(lt:string=undefined) {
+
+      let feedInfo = await this.getFeedInfo(lt)
+  
+      if (feedInfo) {
+        this.childFeedStore = await Global.orbitDb.open(feedInfo.feedAddress)
+        await this.childFeedStore.load()
+
+        this.childFeedStoreCid = feedInfo.feedCid
+      }
   }
 
 

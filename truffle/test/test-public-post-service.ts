@@ -95,7 +95,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Act
-        let it = await service.getRecentPosts( 0,3)
+        let it = await service.getRecentPosts(3)
 
         //assert
         assert.equal(it.length, 3)
@@ -123,7 +123,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Act
-        let it = await service.getRecentPosts(0,3)
+        let it = await service.getRecentPosts(3)
 
         //assert
         assert.equal(it.length, 3)
@@ -151,7 +151,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Act
-        let it = await service.getRecentPosts(3, 3, post.feedCid)
+        let it = await service.getRecentPosts(3, post.feedCid)
 
 
         //assert
@@ -177,7 +177,7 @@ contract('PublicPostService', async (accounts) => {
 
 
         //Get a page of 3
-        let it = await service.getRecentPosts(0, 3)
+        let it = await service.getRecentPosts(3)
 
 
         //assert
@@ -186,7 +186,7 @@ contract('PublicPostService', async (accounts) => {
         assert.equal(it[1].content, "108")
         assert.equal(it[2].content, "107")
 
-        it = await service.getRecentPosts(3, 3,  it[2].feedCid)
+        it = await service.getRecentPosts(3,  it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "106")
@@ -195,7 +195,7 @@ contract('PublicPostService', async (accounts) => {
 
 
 
-        it = await service.getRecentPosts(6, 3, it[2].feedCid)
+        it = await service.getRecentPosts(3, it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "103")
@@ -204,7 +204,7 @@ contract('PublicPostService', async (accounts) => {
 
 
 
-        it = await service.getRecentPosts(9, 3, it[2].feedCid)
+        it = await service.getRecentPosts(3, it[2].feedCid)
 
         assert.equal(it.length, 3)
         assert.equal(it[0].content, "100")

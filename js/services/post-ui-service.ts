@@ -4,6 +4,8 @@ import { Profile } from "../dto/profile";
 import { ProfileService } from "./profile-service";
 import { SchemaService } from "./util/schema-service";
 import { Template7 } from "framework7";
+import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+
 const moment = require('moment')
 
 
@@ -71,7 +73,14 @@ class PostUIService {
     }
 
     async getRecentPosts(limit:number, lt:string=undefined, gt:string=undefined): Promise<Post[]> {
-        return this.postService.getRecentPosts(limit, lt, gt)
+        let posts:Post[] = await this.postService.getRecentPosts(limit, lt, gt)
+
+        for (let post of posts) {
+            this.translatePost(post)
+        }
+
+        return posts
+
     }
 
 

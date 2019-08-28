@@ -314,7 +314,7 @@ class RouteService {
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService, Global.friendService, Global.profileService)
 
     Global.homeController = new HomeController(Global.quillService, Global.postUiService, Global.profileService)
-    Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postService)
+    Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postUiService)
     Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
     Global.postController = new PostController( Global.quillService, Global.postUiService, Global.profileService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService, Global.profileService)

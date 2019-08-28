@@ -1,6 +1,5 @@
 import { Post } from "../dto/post";
 import { Template7 } from "framework7";
-import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { Global } from "../global";
 import { ProfileService } from "./profile-service";
 import { Profile } from "../dto/profile";
@@ -64,23 +63,6 @@ class PublicPostService {
     //Load the first one.
     await this.loadChildFeed()
 
-    //Load posts into child feed
-    // let loadedPostCount = 0
-
-    // if (this.childFeedStore) {
-    //   await this.childFeedStore.load()
-    //   loadedPostCount = this.countChildFeedStore()
-    // }
-    
-    
-    // if (!this.childFeedStore || loadedPostCount >= this.maxPostsPerFeed) {
-
-    //   await this.createAndLoadNewChildFeed(walletAddress, type)
-    //   await this.childFeedStore.load()
-
-    // }  
-
-
   }
 
 
@@ -125,67 +107,71 @@ class PublicPostService {
   // @timeout(2000)
   async getRecentPosts(limit:number, olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
 
-    let posts:Post[] = []
+    let results = []
 
     //Load first feed
     await this.loadChildFeed()
 
     let feedsRead = 0
-    let totalFeeds = this.countChildFeedStore()
+    let totalFeeds = this.countFeedStore()
 
     let locatedExisting = false
 
-    do {
+    while(totalFeeds > 0 && results.length < limit && feedsRead < totalFeeds) {
 
-      let leftToAdd = limit - posts.length
+      let leftToAdd = limit - results.length
 
-      let feedPosts:Post[] = []
-
-      //See if older/newer than params exist in the feed. Don't pass them as parameters if they don't. 
-      let existsInFeed = await this.existsInFeed(olderThan, newerThan)
+      let feedResults = []
 
       if (olderThan || newerThan) {
 
+        //See if older/newer than params exist in the feed. Don't pass them as parameters if they don't. 
+        let existsInFeed = await this.existsInFeed(olderThan, newerThan)
+
         if (existsInFeed) {
-          feedPosts = await this.getPosts(olderThan, newerThan)
+          feedResults = await this.getPosts(olderThan, newerThan)
           locatedExisting = true
         } else {
           if ( olderThan && locatedExisting ) {
-            feedPosts = await this.getPosts()
+            feedResults = await this.getPosts()
           }
           
         }
   
       } else {
-        feedPosts = await this.getPosts()
+        feedResults = await this.getPosts()
       }
 
+      feedResults.reverse()
 
-
-
-      feedPosts.reverse()
-
-      if (leftToAdd < feedPosts.length) {
-        feedPosts = feedPosts.slice(0, leftToAdd)
+      if (leftToAdd < feedResults.length) {
+        feedResults = feedResults.slice(0, leftToAdd)
       }
       
-      posts.push(...feedPosts)
+      results.push(...feedResults)
 
       feedsRead++
 
       //Load next feed
       await this.loadChildFeed(this.childFeedStoreCid)
+    } 
 
-    } while(posts.length < limit && feedsRead < totalFeeds)
+    let posts:Post[] = []
+    for (var result of results) {
 
+      let post:Post = await PublicPostService.read(result.cid)
+      post.feedCid = result.feedCid
+      posts.push(post)
 
-    
+    }
 
     return posts
 
   }
 
-  async getPosts(olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
+  async getPosts(olderThan:string=undefined, newerThan:string=undefined): Promise<any> {
+
+    if (!this.childFeedStore) return []
 
     let options: any = {
       limit: -1,
@@ -213,17 +199,9 @@ class PublicPostService {
         return model
     })
 
-    let posts:Post[] = []
-    for (var result of results) {
 
-      let post:Post = await PublicPostService.read(result.cid)
-      // PublicPostService.translatePost(post)
-      post.feedCid = result.feedCid
-      posts.push(post)
 
-    }
-
-    return posts
+    return results
   }
 
   async getFeedInfo(lt:string=undefined, gt:string=undefined) {

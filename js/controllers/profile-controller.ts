@@ -10,6 +10,7 @@ import { Profile } from '../dto/profile';
 import { pathToFileURL } from 'url';
 import { ListingService } from '../services/listing-service';
 import { Post } from '../dto/post';
+import { PostUIService } from '../services/post-ui-service';
 
 
 var $$ = Dom7
@@ -20,7 +21,7 @@ class ProfileController {
     constructor(
       private uploadService : UploadService,
       private profileService: ProfileService,
-      private postService:PublicPostService
+      private postUiService:PostUIService
       ) {
         const self = this
 
@@ -49,9 +50,9 @@ class ProfileController {
         if (profile) {
           try {
 
-            await this.postService.loadPostFeedForWallet(address)
+            await this.postUiService.loadPostFeedForWallet(address)
             
-            posts = await this.postService.getRecentPosts(100)
+            posts = await this.postUiService.getRecentPosts(100)
           } catch(ex) {
             console.log(ex)
           }

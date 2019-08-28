@@ -118,7 +118,10 @@ class FriendService {
     } while(foundPosts.length == 10)
 
     //Update last post hash
-    friend.lastPostFeedCid = posts[0].cid
+    if (posts.length > 0) {
+      friend.lastPostFeedCid = posts[0].cid
+    }
+    
 
     await this.put(friend)
 

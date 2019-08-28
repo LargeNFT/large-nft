@@ -237,7 +237,8 @@ contract('FriendService', async (accounts) => {
         await Global.schemaService.generateSchema(orbitdb, Global.orbitAccessControl, friendStore, "MX0")
         await friendStore.close()
 
-
+        let postFeed = await Global.schemaService.getPostFeedByWalletAddress("MX0")
+        await postFeed.drop()
 
         //Make 10 posts for the friend
         await postUiService.loadPostFeedForWallet("MX0")

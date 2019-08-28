@@ -25,7 +25,7 @@ class PublicPostService {
     this.maxPostsPerFeed = max
   }
 
-
+  private feedType:string
   private feedStore: any
 
   private childFeedStore: any
@@ -42,16 +42,18 @@ class PublicPostService {
   // @timeout(2000)
   async loadPostFeedForWallet(walletAddress: string){
     let postFeed = await this.schemaService.getPostFeedByWalletAddress(walletAddress)
-    return this.loadPostFeed(postFeed, walletAddress, "post")
+    return this.loadPostFeed(postFeed, "post")
   }
 
   // @timeout(2000)
   async loadMainFeedForWallet(walletAddress: string){
     let mainFeed = await this.schemaService.getMainFeedByWalletAddress(walletAddress)
-    this.loadPostFeed(mainFeed, walletAddress, "main")
+    this.loadPostFeed(mainFeed, "main")
   }
 
-  private async loadPostFeed(postFeed, walletAddress:string, type:string) {
+  private async loadPostFeed(postFeed, type:string) {
+
+    this.feedType = type
 
     //Reset the feeds
     this.setFeed(postFeed)
@@ -270,7 +272,7 @@ class PublicPostService {
     let countPosts = this.countChildFeedStore()
 
     if (!this.childFeedStore || countPosts >= this.maxPostsPerFeed) {
-      await this.createAndLoadNewChildFeed(post.owner, "post")
+      await this.createAndLoadNewChildFeed(post.owner, this.feedType)
     }
 
     //Save directly in IPFS

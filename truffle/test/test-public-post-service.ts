@@ -50,8 +50,10 @@ contract('PublicPostService', async (accounts) => {
 
         await Global.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, address)
 
-        service = new PublicPostService(Global.schemaService, new ProfileService())
+        service = new PublicPostService(Global.schemaService)
+        service.setMaxPostsPerFeed(5)
         await service.loadPostFeedForWallet(address)
+        
 
     })
 
@@ -60,7 +62,8 @@ contract('PublicPostService', async (accounts) => {
 
         //Arrange
         let post: Post = {
-            content: "Actual content"
+            content: "Actual content",
+            owner: address.toString()
         }
 
         //Act
@@ -82,15 +85,18 @@ contract('PublicPostService', async (accounts) => {
 
         //Arrange
         await service.create({
-            content: "1"
+            content: "1",
+            owner: address.toString()
         })
 
         await service.create({
-            content: "2"
+            content: "2",
+            owner: address.toString()
         })
 
         await service.create({
-            content: "3"
+            content: "3",
+            owner: address.toString()
         })
 
 
@@ -110,20 +116,25 @@ contract('PublicPostService', async (accounts) => {
 
         //Arrange
         await service.create({
-            content: "4"
+            content: "4",
+            owner: address.toString()
         })
 
         await service.create({
-            content: "5"
+            content: "5",
+            owner: address.toString()
         })
 
+
         await service.create({
-            content: "6"
+            content: "6",
+            owner: address.toString()
         })
 
 
         //Act
         let it = await service.getRecentPosts(3)
+
 
         //assert
         assert.equal(it.length, 3)
@@ -138,20 +149,24 @@ contract('PublicPostService', async (accounts) => {
 
         //Arrange
         let post = await service.create({
-            content: "7"
+            content: "7",
+            owner: address.toString()
+        })
+
+
+        await service.create({
+            content: "8",
+            owner: address.toString()
         })
 
         await service.create({
-            content: "8"
-        })
-
-        await service.create({
-            content: "9"
+            content: "9",
+            owner: address.toString()
         })
 
 
         //Act
-        let it = await service.getRecentPosts(3, post.feedCid)
+        let it = await service.getRecentPosts(3,post.feedCid )
 
 
         //assert
@@ -168,13 +183,16 @@ contract('PublicPostService', async (accounts) => {
 
         //Arrange
         for (var i=0; i < 100; i++) {
-            await service.create({content: (i + 10).toString() })
+            await service.create({
+                content: (i + 10).toString(),
+                owner: address.toString() 
+            })
         }
 
         await service.close()
 
+        service.setMaxPostsPerFeed(5)
         await service.loadPostFeedForWallet(address)
-
 
         //Get a page of 3
         let it = await service.getRecentPosts(3)
@@ -210,6 +228,14 @@ contract('PublicPostService', async (accounts) => {
         assert.equal(it[0].content, "100")
         assert.equal(it[1].content, "99")
         assert.equal(it[2].content, "98")
+
+
+        it = await service.getRecentPosts(3, it[2].feedCid)
+
+        assert.equal(it.length, 3)
+        assert.equal(it[0].content, "97")
+        assert.equal(it[1].content, "96")
+        assert.equal(it[2].content, "95")
 
 
 

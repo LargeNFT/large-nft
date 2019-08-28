@@ -51,7 +51,7 @@ class ProfileController {
 
             await this.postService.loadPostFeedForWallet(address)
             
-            posts = await this.postService.getRecentPosts(0, 100)
+            posts = await this.postService.getRecentPosts(100)
           } catch(ex) {
             console.log(ex)
           }

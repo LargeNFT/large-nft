@@ -112,7 +112,7 @@ class FriendService {
     let foundPosts:Post[] = []
 
     do {
-      let foundPosts = await this.postService.getRecentPosts(0, 10, undefined, lastPostFeedCid)
+      let foundPosts = await this.postService.getRecentPosts(10, undefined, lastPostFeedCid)
       posts = posts.concat(foundPosts)
 
     } while(foundPosts.length == 10)

@@ -7,88 +7,93 @@ import { SchemaService } from "../services/util/schema-service";
 import { QuillService } from "../services/util/quill-service";
 import { Dom7, Template7 } from "framework7";
 import { Global } from "../global";
+import { PostUIService } from "../services/post-ui-service";
 
 
 var $$ = Dom7;
 
 class PostController {
 
-    _postTemplate: any
-    loadedPost:Post
+  _postTemplate: any
+  loadedPost: Post
 
-    constructor(
-        private quillService:QuillService,
-        private postService:PublicPostService,
-        private profileService:ProfileService
-    ) {
-        this._compilePostTemplate()
-    }
-
-
-    initializeQuill(cid:string) {
-        let selector = `#create-reply-textarea-${cid}`
-        this.quillService.buildQuillPostEditor(selector)
-      }
-    
-
-    async showPost(cid:string) : Promise<ModelView> {
-
-        return new ModelView(async () => {
-
-            this.loadedPost = await PublicPostService.read(cid)
-            PublicPostService.translatePost(this.loadedPost)
+  constructor(
+    private quillService: QuillService,
+    private postUiService: PostUIService,
+    private profileService: ProfileService
+  ) {
+    this._compilePostTemplate()
+  }
 
 
-            let repliesFeed = await Global.orbitDb.open(this.loadedPost.replies)
-            await repliesFeed.load(100)
-
-            this.postService.setFeed(repliesFeed)
-
-            let replies:Post[] = await this.postService.getRecentPosts(0, 100)
+  initializeQuill(cid: string) {
+    let selector = `#create-reply-textarea-${cid}`
+    this.quillService.buildQuillPostEditor(selector)
+  }
 
 
-            //Show the edit button to the owner
-            let currentUser:Profile = await this.profileService.getCurrentUser()
-        
-            let model = {
-              currentAccount: window['currentAccount'],
-              post: this.loadedPost,
-              replies: replies,
-              showEditLink: (currentUser && currentUser._id.toString() == this.loadedPost.owner.toString()),
-              profilePic: currentUser ? currentUser.profilePic : undefined
-            }
+  async showPost(cid: string): Promise<ModelView> {
 
-            return model
+    return new ModelView(async () => {
 
-        }, 'pages/post/show.html')
+      this.loadedPost = await PublicPostService.read(cid)
+      this.postUiService.translatePost(this.loadedPost)
 
-        
 
-    }
+      let repliesFeed = await Global.orbitDb.open(this.loadedPost.replies)
+      await repliesFeed.load(100)
 
-    async postReply(e: Event): Promise<void> {
+      this.postUiService.setFeed(repliesFeed)
 
-        let content = this.quillService.activeEditor.getContents()
-        let length = this.quillService.activeEditor.getLength()
-    
-        // return if empty message. quill length is 1 if it's empty
-        if (length == 1) return
-    
-        let post:Post = await this.postService.postMessage(content, window['currentAccount'])
-    
-        $$(`#replies-list-${this.loadedPost.cid}`).prepend(this._postTemplate(post))
-    
-    
-        this.quillService.activeEditor.setText('')
-        this.quillService.activeEditor.focus()
-    
+      let replies: Post[] = await this.postUiService.getRecentPosts(100)
+
+
+      //Show the edit button to the owner
+      let currentUser: Profile = await this.profileService.getCurrentUser()
+
+      let model = {
+        currentAccount: window['currentAccount'],
+        post: this.loadedPost,
+        replies: replies,
+        showEditLink: (currentUser && currentUser._id.toString() == this.loadedPost.owner.toString()),
+        profilePic: currentUser ? currentUser.profilePic : undefined
       }
 
+      return model
 
-      _compilePostTemplate() {
+    }, 'pages/post/show.html')
 
-        this._postTemplate = Template7.compile(
-          `
+
+
+  }
+
+
+  
+  async postReply(e: Event): Promise<void> {
+
+    let content = this.quillService.activeEditor.getContents()
+    let length = this.quillService.activeEditor.getLength()
+
+    // return if empty message. quill length is 1 if it's empty
+    if (length == 1) return
+
+    let post: Post = await this.postUiService.postMessage(content, window['currentAccount'])
+
+    $$(`#replies-list-${this.loadedPost.cid}`).prepend(this._postTemplate(post))
+
+
+    this.quillService.activeEditor.setText('')
+    this.quillService.activeEditor.focus()
+
+  }
+
+
+
+
+  _compilePostTemplate() {
+
+    this._postTemplate = Template7.compile(
+      `
             <li>
               <a href="/post/show/{{cid}}" class="item-link">
                 <div class="item-content" id="post_{{cid}}">
@@ -114,16 +119,16 @@ class PostController {
               </a>
             </li>
           `
-        )
-        
-    
-      }
-    
-    
+    )
+
+
+  }
+
+
 
 
 }
 
 export {
-    PostController
+  PostController
 }

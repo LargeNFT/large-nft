@@ -20,6 +20,7 @@ import { PostController } from "./controllers/post-controller";
 import { FriendService } from "./services/friend-service";
 import { ProcessFeedService } from "./services/process-feed-service";
 import { FollowController } from "./controllers/follow-controller";
+import { PostUIService } from "./services/post-ui-service";
 
 
 export namespace Global {  
@@ -49,6 +50,7 @@ export namespace Global {
   export var friendService:FriendService
   export var profileService:ProfileService
   export var postService:PublicPostService
+  export var postUiService:PostUIService
   export var processFeedService:ProcessFeedService
 
   /** The Framework7 app. Note: Try to make the rest of these typed some day. */

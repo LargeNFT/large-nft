@@ -18,6 +18,7 @@ import { SchemaService } from '../services/util/schema-service';
 import ColorPickerComponent from 'framework7/components/color-picker/color-picker';
 const moment = require('moment')
 import { timeout } from '../timeout-promise'
+import { PostUIService } from '../services/post-ui-service';
 
 
 
@@ -36,7 +37,7 @@ class HomeController {
 
   constructor(
     private quillService: QuillService,
-    private postService:PublicPostService,
+    private postUiService:PostUIService,
     private profileService: ProfileService
   ) {
   }
@@ -50,7 +51,7 @@ class HomeController {
 
     return new ModelView( async () => {
 
-      await this.postService.loadMainFeedForWallet(window['currentAccount'])
+      await this.postUiService.loadMainFeedForWallet(window['currentAccount'])
 
       this.reset()
 
@@ -79,7 +80,7 @@ class HomeController {
     let posts:Post[] = []
 
     try {
-      posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
+      posts = await this.postUiService.getRecentPosts(this.limit, this.lastPost)
     } catch(ex) {
       console.log(ex)
     }
@@ -108,13 +109,12 @@ class HomeController {
 
 
     //Post to account's post feed
-    await this.postService.loadPostFeedForWallet(window['currentAccount'])
-    await this.postService.load() //TODO: It would be good to put a limit on this. Acts weird if you don't load the whole thing (or most of it??)
+    await this.postUiService.loadPostFeedForWallet(window['currentAccount'])
 
-    let post:Post = await this.postService.postMessage(content, window['currentAccount'])
+    let post:Post = await this.postUiService.postMessage(content, window['currentAccount'])
 
     //Reload main feed
-    await this.postService.loadMainFeedForWallet(window['currentAccount'])
+    await this.postUiService.loadMainFeedForWallet(window['currentAccount'])
 
 
 
@@ -145,7 +145,7 @@ class HomeController {
     let deleteLink = $$(e.target).parent()
     let id = deleteLink.data('id')
 
-    await this.postService.delete(id)
+    await this.postUiService.delete(id)
 
     $$('#post_' + id).remove()
 

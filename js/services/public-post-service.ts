@@ -12,7 +12,7 @@ const moment = require('moment')
 
 class PublicPostService {
 
-  MAX_POSTS_PER_FEED: number = 10
+  maxPostsPerFeed: number = 1000
 
   setFeed(feed) {
     this.feedStore = feed
@@ -22,14 +22,19 @@ class PublicPostService {
     this.childFeedStore = childFeed
   }
 
-  private feedStore: any
-  private childFeedStore: any
+  setMaxPostsPerFeed(max:number) {
+    this.maxPostsPerFeed = max
+  }
 
-  private childFeedStoreCid
+
+  private feedStore: any
+
+  private childFeedStore: any
+  private childFeedStoreCid: string 
+  private childFeedLoadedIndex: number
 
   constructor(
-    private schemaService: SchemaService,
-    private profileService: ProfileService
+    private schemaService: SchemaService
   ) { }
 
 
@@ -37,13 +42,13 @@ class PublicPostService {
 
   // @timeout(2000)
   async loadPostFeedForWallet(walletAddress: string){
-    let postFeed = await Global.schemaService.getPostFeedByWalletAddress(walletAddress)
+    let postFeed = await this.schemaService.getPostFeedByWalletAddress(walletAddress)
     return this.loadPostFeed(postFeed, walletAddress, "post")
   }
 
   // @timeout(2000)
   async loadMainFeedForWallet(walletAddress: string){
-    let mainFeed = await Global.schemaService.getMainFeedByWalletAddress(walletAddress)
+    let mainFeed = await this.schemaService.getMainFeedByWalletAddress(walletAddress)
     this.loadPostFeed(mainFeed, walletAddress, "main")
   }
 
@@ -56,54 +61,69 @@ class PublicPostService {
     //Load the list of feeds
     await this.feedStore.load()
 
-    //Load the first one. If it doesn't exist or it's full create a new one and load it. 
+    //Load the first one.
     await this.loadChildFeed()
 
     //Load posts into child feed
-    let loadedPostCount = 0
+    // let loadedPostCount = 0
 
-    if (this.childFeedStore) {
-      await this.childFeedStore.load()
-      loadedPostCount = this.countChildFeedStore()
-    }
+    // if (this.childFeedStore) {
+    //   await this.childFeedStore.load()
+    //   loadedPostCount = this.countChildFeedStore()
+    // }
     
     
-    if (!this.childFeedStore || loadedPostCount >= this.MAX_POSTS_PER_FEED) {
+    // if (!this.childFeedStore || loadedPostCount >= this.maxPostsPerFeed) {
 
-      await this.createAndLoadNewChildFeed(walletAddress, type)
-      await this.childFeedStore.load()
+    //   await this.createAndLoadNewChildFeed(walletAddress, type)
+    //   await this.childFeedStore.load()
 
-    }  
+    // }  
 
 
   }
 
 
+  private async createAndLoadNewChildFeed(walletAddress:string, type:string) {
 
+    //Name the next feed
+    let countExistingFeeds = this.countFeedStore()
 
+    let feedName = `${type}-feed-list-${walletAddress}-${countExistingFeeds}`
 
-  static async read(cid: string): Promise<Post> {
+    //Create it.
+    this.childFeedStore = await Global.orbitDb.feed(feedName, {
+      create: true,
+      accessController: this.feedStore.accessController
+    })
 
-    let loaded = await Global.ipfs.object.get(cid)
+    await this.childFeedStore.load()
 
-    if (loaded.data) loaded.Data = loaded.data
+    //Add it to the feedStore
+    this.childFeedStoreCid = await this.feedStore.add(this.childFeedStore.address)
+    this.childFeedLoadedIndex = countExistingFeeds
 
-    let t = loaded.Data.toString()
+  }
 
-    let post:Post = JSON.parse(t)
+  async loadChildFeed(otherThan:string=undefined) {
 
-    post.cid = cid.toString()
+      let feedInfo = await this.getFeedInfo(otherThan)
+  
+      if (feedInfo) {
 
-    return post
+        this.childFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
+        await this.childFeedStore.load()
+
+        this.childFeedStoreCid = feedInfo.feedCid
+        this.childFeedLoadedIndex = feedInfo.index
+      }
   }
 
 
 
 
-
-  @timeout(2000)
-  async getRecentPosts(limit:number, lt:string=undefined, gt:string=undefined): Promise<Post[]> {
-
+  // @timeout(2000)
+  async getRecentPosts(limit:number, olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
 
     let posts:Post[] = []
 
@@ -113,9 +133,42 @@ class PublicPostService {
     let feedsRead = 0
     let totalFeeds = this.countChildFeedStore()
 
+    let locatedExisting = false
+
     do {
 
-      let feedPosts:Post[] = await this.getPosts(limit - posts.length, lt, gt)
+      let leftToAdd = limit - posts.length
+
+      let feedPosts:Post[] = []
+
+      //See if older/newer than params exist in the feed. Don't pass them as parameters if they don't. 
+      let existsInFeed = await this.existsInFeed(olderThan, newerThan)
+
+      if (olderThan || newerThan) {
+
+        if (existsInFeed) {
+          feedPosts = await this.getPosts(olderThan, newerThan)
+          locatedExisting = true
+        } else {
+          if ( olderThan && locatedExisting ) {
+            feedPosts = await this.getPosts()
+          }
+          
+        }
+  
+      } else {
+        feedPosts = await this.getPosts()
+      }
+
+
+
+
+      feedPosts.reverse()
+
+      if (leftToAdd < feedPosts.length) {
+        feedPosts = feedPosts.slice(0, leftToAdd)
+      }
+      
       posts.push(...feedPosts)
 
       feedsRead++
@@ -126,26 +179,25 @@ class PublicPostService {
     } while(posts.length < limit && feedsRead < totalFeeds)
 
 
-    posts.reverse()
+    
 
     return posts
 
   }
 
-  async getPosts(limit:number, lt:string=undefined, gt:string=undefined): Promise<Post[]> {
+  async getPosts(olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
 
-    let options: any = {}
-
-    if (limit) {
-      options.limit = limit
+    let options: any = {
+      limit: -1,
+      reverse: true
     }
 
-    if (lt) {
-      options.lt = lt
+    if (olderThan) {
+      options.lt = olderThan
     }
 
-    if (gt) {
-      options.gt = gt
+    if (newerThan) {
+      options.gt = newerThan
     }
 
 
@@ -165,7 +217,7 @@ class PublicPostService {
     for (var result of results) {
 
       let post:Post = await PublicPostService.read(result.cid)
-      PublicPostService.translatePost(post)
+      // PublicPostService.translatePost(post)
       post.feedCid = result.feedCid
       posts.push(post)
 
@@ -175,6 +227,8 @@ class PublicPostService {
   }
 
   async getFeedInfo(lt:string=undefined, gt:string=undefined) {
+
+    let index=0
 
     let options: any = {
       limit: 1
@@ -195,8 +249,11 @@ class PublicPostService {
 
         let model = {
           feedAddress: e.payload.value,
-          feedCid: e.hash
+          feedCid: e.hash,
+          index: index
         }
+
+        index++
 
         return model
     })
@@ -208,49 +265,33 @@ class PublicPostService {
 
   }
 
+  async existsInFeed(olderThan:string, newerThan:string) {
 
-  async postMessage(content: any, walletAddress:string) {
+    let exists:boolean = false
 
-    let dateString: string = moment().format().toString()
+    let results = await this.childFeedStore.iterator({limit:-1})
+      .collect()
+      .map((e) => {
 
-    //Get profile service of poster
-    let profile: Profile
-    try {
-      profile = await this.profileService.getProfileByWallet(walletAddress)  
-    } catch(ex) {
-      console.log(ex)
-    }
+        if (e.hash == olderThan || e.hash == newerThan) {
+          exists = true
+        }
+    })
 
-
-
-    let post: Post = {
-      owner: walletAddress,
-      ownerDisplayName: (profile && profile.name) ? profile.name : walletAddress,
-      dateCreated: dateString,
-      content: content
-    }
-
-    post.replies = await this.schemaService.getRepliesPostFeedAddress(post, PublicPostService.translateContent(post))
-
-    //Set user avatar
-    if (profile && profile.profilePic) {
-      post.ownerProfilePic = profile.profilePic
-    }
-
-    await this.create(post)
-
-    PublicPostService.translatePost(post)
-
-    return post
+    return exists 
 
   }
+
+
 
   async create(post: Post): Promise<Post> {
 
     //Load the right post feed.
     await this.loadChildFeed()
 
-    if (this.countChildFeedStore() >= this.MAX_POSTS_PER_FEED) {
+    let countPosts = this.countChildFeedStore()
+
+    if (!this.childFeedStore || countPosts >= this.maxPostsPerFeed) {
       await this.createAndLoadNewChildFeed(post.owner, "post")
     }
 
@@ -271,10 +312,39 @@ class PublicPostService {
 
   }
 
+
+
+
+  static async read(cid: string): Promise<Post> {
+
+    let loaded = await Global.ipfs.object.get(cid)
+
+    if (loaded.data) loaded.Data = loaded.data
+
+    let t = loaded.Data.toString()
+
+    let post:Post = JSON.parse(t)
+
+    post.cid = cid.toString()
+
+    return post
+  }
+
+
   async delete(post: Post): Promise<void> {
     await Global.ipfs.object.delete(post.cid)
     await this.feedStore.remove(post.feedCid)
   }
+
+
+
+
+
+  
+
+
+
+
 
   countFeedStore() : number {
     return this.countLoaded(this.feedStore)  
@@ -285,6 +355,7 @@ class PublicPostService {
   }
 
   countLoaded(store) {
+    if (!store || !store._index) return 0
     return Object.keys(store._index._index).length
   }
 
@@ -301,103 +372,6 @@ class PublicPostService {
 
 
 
-
-
-  getImagesFromPostContentOps(ops: any) {
-
-    const images: string[] = []
-
-    for (let op of ops) {
-      if (op.insert && op.insert.ipfsimage) {
-        images.push(op.insert.ipfsimage.ipfsCid)
-      }
-    }
-
-    return images
-
-  }
-
-
-
-
-  static translatePost(post: Post): void {
-
-    post.contentTranslated = this.translateContent(post)
-    post.dateCreated = moment(post.dateCreated).fromNow()
-
-  }
-
-  static translateContent(post: Post) : string {
-
-    //Create content HTML
-    //@ts-ignore
-    // const qdc = new QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {
-    // });
-
-    const qdc = new QuillDeltaToHtmlConverter(post.content.ops, {});
-
-    //Render dividers into HTML
-    qdc.renderCustomWith(function (customOp, contextOp) {
-      if (customOp.insert.type === 'divider') {
-        return "<hr />"
-      }
-
-      if (customOp.insert.type === 'ipfsimage') {
-        return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
-      }
-
-      if (customOp.insert.type === 'ipfsvideo') {
-        return `
-            <video width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}">
-              <source src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" type="video/mp4">
-            </video>
-          `
-      }
-
-    })
-
-    return qdc.convert()
-
-
-  }
-
-
-
-
-
-
-  
-  private async createAndLoadNewChildFeed(walletAddress:string, type:string) {
-
-    //Name the next feed
-    let countExistingFeeds = this.countFeedStore()
-
-    let feedName = `${type}-feed-list-${walletAddress}-${countExistingFeeds}`
-
-    //Create it.
-    this.childFeedStore = await Global.orbitDb.feed(feedName, {
-      create: true,
-      accessController: this.feedStore.accessController
-    })
-
-    await this.childFeedStore.load()
-
-    //Add it to the feedStore
-    this.childFeedStoreCid = await this.feedStore.add(this.childFeedStore.address)
-
-  }
-
-  async loadChildFeed(lt:string=undefined) {
-
-      let feedInfo = await this.getFeedInfo(lt)
-  
-      if (feedInfo) {
-        this.childFeedStore = await Global.orbitDb.open(feedInfo.feedAddress)
-        await this.childFeedStore.load()
-
-        this.childFeedStoreCid = feedInfo.feedCid
-      }
-  }
 
 
 }

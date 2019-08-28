@@ -4,6 +4,8 @@ import { Post } from "../../dto/post";
 import { Friend } from "../../dto/friend";
 
 const OrbitDB = require('orbit-db')
+const OrbitDBAddress = require('orbit-db/src/orbit-db-address.js')
+
 const sha256 = require('js-sha256')
 
 import { timeout } from '../../timeout-promise'
@@ -301,6 +303,16 @@ class SchemaService {
             accessController: accessController
         })
 
+    }
+
+
+    async openAddress(address:any) {
+
+        let orbitAddress = new OrbitDBAddress(address.root, address.path)
+
+
+        let parsedAddress = orbitAddress.toString()
+        return Global.orbitDb.open(parsedAddress)
     }
 
 

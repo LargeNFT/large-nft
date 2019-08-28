@@ -9,6 +9,7 @@ import { PublicPostService } from '../../js/services/public-post-service';
 import { isMainThread } from 'worker_threads';
 import { Post } from '../../js/dto/post';
 import { ProfileService } from '../../js/services/profile-service';
+import { PostUIService } from '../../js/services/post-ui-service';
 const TableStore = require('orbit-db-tablestore')
 
 
@@ -29,6 +30,7 @@ const ipfs = ipfsClient({
 contract('FriendService', async (accounts) => {
 
     let postService:PublicPostService
+    let postUiService:PostUIService
     let service: FriendService
     let mainStore
     let address: number
@@ -51,7 +53,8 @@ contract('FriendService', async (accounts) => {
         Global.schemaService = new SchemaService()
         Global.orbitAccessControl = Global.identityService.getAccessController(orbitdb)
 
-        postService = new PublicPostService(Global.schemaService, new ProfileService())
+        postService = new PublicPostService(Global.schemaService)
+        postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService)
         service = new FriendService(postService)
 
         let mainStore = await Global.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, address.toString())
@@ -237,18 +240,18 @@ contract('FriendService', async (accounts) => {
 
 
         //Make 10 posts for the friend
-        await postService.loadPostFeedForWallet("MX0")
+        await postUiService.loadPostFeedForWallet("MX0")
 
-        await postService.postMessage("1", "MX0")
-        await postService.postMessage("2", "MX0")
-        await postService.postMessage("3", "MX0")
-        await postService.postMessage("4", "MX0")
-        await postService.postMessage("5", "MX0")
-        let post = await postService.postMessage("6", "MX0")
-        await postService.postMessage("7", "MX0")
-        await postService.postMessage("8", "MX0")
-        await postService.postMessage("9", "MX0")
-        await postService.postMessage("10", "MX0")
+        await postUiService.postMessage("1", "MX0")
+        await postUiService.postMessage("2", "MX0")
+        await postUiService.postMessage("3", "MX0")
+        await postUiService.postMessage("4", "MX0")
+        await postUiService.postMessage("5", "MX0")
+        let post = await postUiService.postMessage("6", "MX0")
+        await postUiService.postMessage("7", "MX0")
+        await postUiService.postMessage("8", "MX0")
+        await postUiService.postMessage("9", "MX0")
+        await postUiService.postMessage("10", "MX0")
 
 
         //Take the hash of the 6th one and get new posts. 

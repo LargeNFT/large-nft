@@ -267,7 +267,12 @@ class PublicPostService {
   async create(post: Post): Promise<Post> {
 
     //Load the right post feed.
-    await this.loadChildFeed()
+    let childFeedInfo = await this.getFeedInfo()
+
+    if (!this.childFeedStoreCid || childFeedInfo.feedCid != this.childFeedStoreCid) {
+      await this.loadChildFeed()
+    }
+    
 
     let countPosts = this.countChildFeedStore()
 

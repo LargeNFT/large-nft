@@ -6,7 +6,7 @@ import { Friend } from "../dto/friend";
 class ProcessFeedService {
 
     processing: boolean = false
-    queuedPosts:Post[]
+    queuedPosts:Post[] = []
     
     constructor(
         private postService:PublicPostService,
@@ -15,21 +15,24 @@ class ProcessFeedService {
 
     sortQueue() {
         this.queuedPosts = this.queuedPosts.sort( (obj1, obj2) => {
-            if (obj1.dateCreated > obj2.dateCreated) return 1
-            if (obj1.dateCreated < obj2.dateCreated) return -1
+            if (obj1.dateCreated < obj2.dateCreated) return 1
+            if (obj1.dateCreated > obj2.dateCreated) return -1
             return 0
         } )
     }
 
-    async processQueue() {
+    async processQueue(walletAddress:string) {
 
-        await this.postService.loadMainFeedForWallet(window['currentAccount'])
+        await this.postService.loadMainFeedForWallet(walletAddress)
 
         this.sortQueue()
 
         for (let post of this.queuedPosts) {
             console.log(`Processing post: ${post.cid} from ${post.owner} into main feed`)
             await this.postService.create(post)
+
+            //TODO: Update last processed hash for friend here instead of in getNewPostsFromFriend.
+            //Could get lost if app crashes before this runs. 
         }
 
         //Clear queue
@@ -38,13 +41,13 @@ class ProcessFeedService {
     }
 
 
-    async checkForNewPosts() {
+    async checkForNewPosts(walletAddress:string) {
         
         if (this.processing) return
 
         this.processing = true
 
-        await this.friendService.loadStoreForWallet(window['currentAccount'])
+        await this.friendService.loadStoreForWallet(walletAddress)
 
         let friends:Friend[] = []
         let offset:number=0

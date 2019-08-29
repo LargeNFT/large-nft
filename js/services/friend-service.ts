@@ -27,6 +27,7 @@ class FriendService {
   @timeout(2000)
   async loadStoreForWallet(walletAddress:string) {
     let friendStore = await Global.schemaService.getFriendStoreByWalletAddress(walletAddress)
+    await friendStore.load()
     this.setStore(friendStore)
   }
 

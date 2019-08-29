@@ -76,6 +76,30 @@
             ],
           },
 
+          {
+            "name": "Test ProcessFeedService",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
+            "args": ["test", "test/test-process-feed-service.ts", "--network", "docker_ganache"],
+            "cwd": "${workspaceRoot}/truffle",
+            "outFiles": [
+                "${workspaceRoot}/test/**/*"
+            ],
+          },
+
+          {
+            "name": "Test ProcessFeedService (local)",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/truffle/node_modules/truffle/build/cli.bundled.js",
+            "args": ["test", "test/test-process-feed-service.ts"],
+            "cwd": "${workspaceRoot}/truffle",
+            "outFiles": [
+                "${workspaceRoot}/test/**/*"
+            ],
+          },
+
 
           {
             "name": "Test Whitepages",

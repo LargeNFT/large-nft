@@ -16,19 +16,21 @@ class ProcessFeedService {
 
         const self = this
 
-        var processFn = async function () {
-            try {
-                console.log('here')
-                await self.checkForNewPosts(window['currentAccount'])
-                await self.processQueue(window['currentAccount'])
-            } catch(ex) {
-                console.log(ex)
-            }
+        this.process()
+    }
+
+    async process() {
+        try {
+            await this.checkForNewPosts(window['currentAccount'])
+            await this.processQueue(window['currentAccount'])
+        } catch(ex) {
+            console.log(ex)
         }
 
-        setInterval(processFn, 60000)
+        setTimeout(this.process, 60000)
 
     }
+
 
     sortQueue() {
         this.queuedPosts = this.queuedPosts.sort((obj1, obj2) => {

@@ -113,13 +113,14 @@ class HomeController {
 
     let post:Post = await this.postUiService.postMessage(content, window['currentAccount'])
 
-    //Reload main feed
-    await this.postUiService.loadMainFeedForWallet(window['currentAccount'])
-
-
 
     this.reset()
-    $$('.infinite-scroll-content').trigger('infinite', {})
+
+    
+    $$('#post-list').empty()
+    //@ts-ignore
+    $$('.infinite-scroll-content').trigger('infinite')
+
 
 
     this.quillService.activeEditor.setText('')

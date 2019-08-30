@@ -61,6 +61,8 @@ class RouteService {
   getRoutes(baseurl) {
 
     const self = this
+  
+    
 
 
     const homeRoute = async function(routeTo, routeFrom, resolve, reject) {
@@ -68,6 +70,7 @@ class RouteService {
       let settings: Settings = self.settingsService.getSettings()
 
       if (!settings) {
+        window['settingsController'] = Global.settingsController
         self.resolveController(resolve, Global.settingsController.showSettingsForm())
         return
       }

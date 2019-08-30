@@ -7,7 +7,7 @@
     "url": "git+https://github.com/ptoner/large.git"
   },
   "scripts": {
-    "electron": "electron .",
+    "electron": "electron electron.js",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
     "docker-serve": "http-server ./www/ -o -c 1 -a 0.0.0.0 -p 8081",
     "build": "./scripts/build.sh",

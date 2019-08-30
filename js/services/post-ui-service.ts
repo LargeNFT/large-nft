@@ -50,6 +50,12 @@ class PostUIService {
             post.ownerProfilePic = profile.profilePic
         }
 
+        //Load user's post feed
+        await this.postService.loadPostFeedForWallet(walletAddress)
+        await this.postService.create(post)
+
+        //Put in user's main feed too
+        await this.postService.loadMainFeedForWallet(walletAddress)
         await this.postService.create(post)
 
         this.translatePost(post)

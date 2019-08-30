@@ -114,7 +114,7 @@ class PublicPostService {
 
   // @timeout(2000)
   async getRecentPosts(limit:number, olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
-    console.log(this.feedStore)
+
     let results = []
 
     //Load first feed

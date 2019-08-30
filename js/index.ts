@@ -99,10 +99,8 @@ module.exports = function() {
           <div class="item-inner">
             <div class="item-title-row">
               <div class="item-title">
-                <a href="/profile/static/{{_id}}">
-                  <span class="post-owner-display">{{ownerDisplayName}}</span>
-                  <span class="post-owner">{{owner}}</span>
-                </a>
+                <span class="post-owner-display">{{ownerDisplayName}}</span>
+                <span class="post-owner">{{owner}}</span>
               </div>
               <div class="item-after">
                 {{dateCreated}}

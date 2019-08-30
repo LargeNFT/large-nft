@@ -224,51 +224,6 @@ contract('FriendService', async (accounts) => {
 
     })
 
-    //@ts-ignore
-    it("should read a friend's feed and get the new posts", async () => {
-
-
-        //Make a friend
-        let friend = await service.put({
-            address: "MX0"
-        })
-
-        let friendStore = await Global.schemaService.generateMainStore(orbitdb, Global.orbitAccessControl, "MX0")
-        await Global.schemaService.generateSchema(orbitdb, Global.orbitAccessControl, friendStore, "MX0")
-        await friendStore.close()
-
-        let postFeed = await Global.schemaService.getPostFeedByWalletAddress("MX0")
-        await postFeed.drop()
-
-        //Make 10 posts for the friend
-        await postUiService.loadPostFeedForWallet("MX0")
-
-        await postUiService.postMessage("1", "MX0")
-        await postUiService.postMessage("2", "MX0")
-        await postUiService.postMessage("3", "MX0")
-        await postUiService.postMessage("4", "MX0")
-        await postUiService.postMessage("5", "MX0")
-        let post = await postUiService.postMessage("6", "MX0")
-        await postUiService.postMessage("7", "MX0")
-        await postUiService.postMessage("8", "MX0")
-        await postUiService.postMessage("9", "MX0")
-        await postUiService.postMessage("10", "MX0")
-
-
-        //Take the hash of the 6th one and get new posts. 
-        friend.lastPostFeedCid = post.feedCid
-        let posts:Post[] = await service.getNewPostsFromFriend(friend)
-        
-        assert.equal(posts.length, 4)        
-    
-        //The first time it's called should return 5 records. The second should return 0.
-        posts = await service.getNewPostsFromFriend(friend)
-
-        assert.equal(posts.length, 0)
-
-
-
-    })
 
 
 

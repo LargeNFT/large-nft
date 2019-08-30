@@ -24,7 +24,7 @@ class FriendService {
   ) { }
 
 
-  @timeout(2000)
+  // @timeout(2000)
   async loadStoreForWallet(walletAddress:string) {
     let friendStore = await Global.schemaService.getFriendStoreByWalletAddress(walletAddress)
     await friendStore.load()
@@ -99,35 +99,6 @@ class FriendService {
 
   async load() {
     return this.kvStore.load()
-  }
-
-
-
-  async getNewPostsFromFriend(friend:Friend) : Promise<Post[]> {
-
-    let posts:Post[] = []
-
-    await this.postService.loadPostFeedForWallet(friend.address)
-
-    let lastPostFeedCid = friend.lastPostFeedCid
-    let foundPosts:Post[] = []
-
-    do {
-      let foundPosts = await this.postService.getRecentPosts(10, undefined, lastPostFeedCid)
-      posts = posts.concat(foundPosts)
-
-    } while(foundPosts.length == 10)
-
-    //Update last post hash
-    if (posts.length > 0) {
-      friend.lastPostFeedCid = posts[0].cid
-    }
-    
-
-    await this.put(friend)
-
-    return posts
-
   }
 
 

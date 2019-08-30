@@ -6,6 +6,7 @@ import { Profile } from "../dto/profile";
 import { SchemaService } from "./util/schema-service";
 import { timeout } from "../timeout-promise";
 import { Schema } from "../dto/schema";
+import { exists } from "fs";
 const moment = require('moment')
 
 
@@ -95,11 +96,16 @@ class PublicPostService {
   
       if (feedInfo) {
 
-        this.childFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
-        await this.childFeedStore.load()
+        try {
+          this.childFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
+          await this.childFeedStore.load()
+  
+          this.childFeedStoreCid = feedInfo.feedCid
+          this.childFeedLoadedIndex = feedInfo.index
+        } catch(ex) {
+          console.log(ex)
+        }
 
-        this.childFeedStoreCid = feedInfo.feedCid
-        this.childFeedLoadedIndex = feedInfo.index
       }
   }
 
@@ -108,7 +114,7 @@ class PublicPostService {
 
   // @timeout(2000)
   async getRecentPosts(limit:number, olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
-
+    console.log(this.feedStore)
     let results = []
 
     //Load first feed
@@ -120,7 +126,7 @@ class PublicPostService {
     let locatedExisting = false
 
     while(totalFeeds > 0 && results.length < limit && feedsRead < totalFeeds) {
-
+      
       let leftToAdd = limit - results.length
 
       let feedResults = []
@@ -134,7 +140,7 @@ class PublicPostService {
           feedResults = await this.getPosts(olderThan, newerThan)
           locatedExisting = true
         } else {
-          if ( olderThan && locatedExisting ) {
+          if ( (newerThan && !locatedExisting) || olderThan && locatedExisting ) {
             feedResults = await this.getPosts()
           }
           
@@ -269,7 +275,7 @@ class PublicPostService {
     //Load the right post feed.
     let childFeedInfo = await this.getFeedInfo()
 
-    if (!this.childFeedStoreCid || childFeedInfo.feedCid != this.childFeedStoreCid) {
+    if (!this.childFeedStoreCid || !childFeedInfo || childFeedInfo.feedCid != this.childFeedStoreCid) {
       await this.loadChildFeed()
     }
     

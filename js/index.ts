@@ -12,6 +12,9 @@ import { WhitepagesService } from "./services/whitepages-service";
 import { Dom7 } from "framework7";
 import { Template7 } from "framework7/js/framework7.bundle";
 import { ConnectController } from "./controllers/connect-controller";
+const { utils, providers, ethers } = require('ethers')
+
+
 
 const moment = require('moment')
 var $$ = Dom7;
@@ -31,7 +34,11 @@ module.exports = function() {
 
   
   /*********************************************/
-  Global.identityService = new IdentityService()
+
+  //@ts-ignore
+  Global.provider = new providers.Web3Provider(web3.currentProvider)
+
+  Global.identityService = new IdentityService(Global.provider)
   Global.settingsService = new SettingsService()
   Global.templateService = new TemplateService()
   Global.schemaService = new SchemaService()

@@ -11,6 +11,12 @@ class IdentityService {
 
     private identity
 
+    constructor(
+        private provider: any 
+    ) {
+
+    }
+
     
     async getIdentity(keystore) {
 
@@ -19,8 +25,7 @@ class IdentityService {
         Identities.addIdentityProvider(EthIdentityProvider)
 
         //@ts-ignore
-        let provider = new providers.Web3Provider(web3.currentProvider)
-        let signer = provider.getSigner()
+        let signer = this.provider.getSigner()
 
         signer.address = await signer.getAddress()
 

@@ -4,16 +4,14 @@ import {Template7} from "framework7";
 import {ModelView} from "../../model-view";
 
 const ipfsClient = require('ipfs-http-client')
-const TruffleContract = require('truffle-contract')
 
 const OrbitDB = require('orbit-db')
 const TableStore = require('orbit-db-tablestore')
 const Keystore = require('orbit-db-keystore/index-browser')
-const EthIdentityProvider = require('orbit-db-identity-provider/src/ethereum-identity-provider')
-const Identities = require('orbit-db-identity-provider')
 
 
-const ethers = require('ethers')
+
+const { ethers } = require('ethers')
 // const level = require('level-js')
 
 
@@ -230,21 +228,10 @@ class RouteService {
       "transactionHash": settings.whitepagesContractTxHash
     }
 
+    //@ts-ignore
 
-    const truffleContract = TruffleContract(Whitepages);
 
-    let contract
-
-    try {
-        //@ts-ignore
-        truffleContract.setProvider(window.web3Provider)
-        truffleContract.defaults({from: account})
-
-        contract = await truffleContract.deployed()
-
-    } catch (ex) {
-        console.log(ex)
-    }
+    let contract = new ethers.Contract(settings.whitepagesContractAddress, Whitepages.abi, Global.provider);
 
 
 

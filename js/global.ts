@@ -53,6 +53,9 @@ export namespace Global {
   export var postUiService:PostUIService
   export var processFeedService:ProcessFeedService
 
+  /** Etherjs */
+  export var provider: any
+
   /** The Framework7 app. Note: Try to make the rest of these typed some day. */
   export var app: any
 

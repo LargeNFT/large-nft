@@ -49,8 +49,6 @@ const promisify = (inner) =>
 
 class RouteService {
 
-  public freedom: any
-
   constructor(
     private settingsService: SettingsService,
     private identityService: IdentityService,
@@ -62,7 +60,7 @@ class RouteService {
 
     const self = this
   
-    
+    window['settingsController'] = Global.settingsController
 
 
     const homeRoute = async function(routeTo, routeFrom, resolve, reject) {
@@ -70,7 +68,6 @@ class RouteService {
       let settings: Settings = self.settingsService.getSettings()
 
       if (!settings) {
-        window['settingsController'] = Global.settingsController
         self.resolveController(resolve, Global.settingsController.showSettingsForm())
         return
       }

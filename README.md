@@ -3,21 +3,28 @@
 
 ![image](https://raw.githubusercontent.com/ptoner/Large/master/www/images/logo_white.png)
 
-**Large** is a P2P blogging platform. Build an online community that's run and hosted by the community.
+**Large** is an open source peer-to-peer blogging platform that helps you build apps and websites that are hosted by the people that use them. 
 
-* No servers needed.
-* No hosting account needed.
-* Just install the app and start publishing.*
+New peer-to-peer tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
 
-Users can post articles, comment on them, follow/unfollow each other. All data is hosted by you and your community.
+* **You just send your messages to the people who want to see them.** No one sits in the middle collecting every message from every person to later blast them with ads about the contents until the end of time.
 
-* You just send messages to the people who want to see them. If those messages become more popular more people have copies. The more users the better it scales.
-* No infrastructure to manage = no ads
-* Completely free for you to take, customize, and build your own community.
-* Your community can be as public or private as you want it to be.*
+* **It’s serverless.** Not in the fancy cloud marketing way. You don’t have a server. You have an app on your phone and it stores all the things you read and post. If you have more than one device your data is available on both. The more users a P2P network gets the more reliable it becomes. Anyone who’s used bittorrent knows that it’s way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
 
+* **No implicit need to monetize. So no ads.** Without servers to maintain there aren’t bills to pay. You can create a professional website or app, create content, and share it with your audience without a hosting bill. 
 
-*Eventually. Right now there's a bunch of setup and everything is public.
+* **Offline mode is barely different from online mode.** You just can’t get new stuff.
+
+The data lives on the devices of the people who use it. You send messages directly to the other users. If those messages become popular more people have copies. They make it available to everyone else. The more popular it gets the more available it becomes. We use public-key cryptography to make sure messages come from who we think they’re from. 
+
+We can make multi-user apps that are ad-free and also actually free that let us do all the same things we already do. There’s no infrastructure to support. It’s just an app that runs on your own phone and computer.
+
+There are some caveats of course. It might be slower at the beginning. Users can download the content from any other user. When you don’t have a lot of users this is possibly slower. If you’ve ever been one of the first people to download and seed a bittorrent file this will be familiar. P2P apps are slower when there are fewer users.
+
+Traditional server-based apps have the opposite problem. Those get slower as you add users. You start by paying for servers and as your app gets more users the servers become bigger and more expensive. 
+
+With Large you can (optionally) pay to host your data at the beginning to help bootstrap the network, but once you actually have an app with actual users that expense mostly disappears. Arguably it’s not all that important in the beginning either since you don’t actually have users yet.
+
 
 ## How It Works
 **Large** is built on top of [IPFS](https://github.com/ipfs/ipfs) and [Ethereum](https://github.com/ethereum/solidity).

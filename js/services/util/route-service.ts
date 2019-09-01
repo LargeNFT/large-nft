@@ -166,6 +166,33 @@ class RouteService {
   }
 
 
+  async configureWeb3() {
+      
+    // Request account access
+    await window['ethereum'].enable()
+
+    //@ts-ignore
+    window.web3Provider = window.ethereum
+
+    //@ts-ignore
+    web3 = new Web3(window.web3Provider)
+
+    await this.setCurrentAccount()
+
+  }
+
+  async setCurrentAccount() {
+    
+    //@ts-ignore
+    const accounts = await promisify(cb => web3.eth.getAccounts(cb))
+
+    let account = accounts[0]
+    window['currentAccount'] = account
+
+  }
+
+
+
   async initialize() {
 
     if (Global.ipfs) return
@@ -196,20 +223,11 @@ class RouteService {
     //Temp until ipfs-http-client properly supports it
     Global.ipfs.pubsub = null
 
-    // Request account access
-    await window['ethereum'].enable()
 
-    //@ts-ignore
-    window.web3Provider = window.ethereum
 
-    //@ts-ignore
-    web3 = new Web3(window.web3Provider)
+    await this.configureWeb3()
 
-    //@ts-ignore
-    const accounts = await promisify(cb => web3.eth.getAccounts(cb))
 
-    let account = accounts[0]
-    window['currentAccount'] = account
 
 
     //Ropsten

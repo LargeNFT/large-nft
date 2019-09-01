@@ -24,31 +24,7 @@ class PostUIService {
 
     async postMessage(content: any, walletAddress: string) {
 
-        let dateString: string = moment().format().toString()
-
-        //Get profile service of poster
-        let profile: Profile
-        try {
-            profile = await this.profileService.getProfileByWallet(walletAddress)
-        } catch (ex) {
-            console.log(ex)
-        }
-
-
-
-        let post: Post = {
-            owner: walletAddress,
-            ownerDisplayName: (profile && profile.name) ? profile.name : walletAddress,
-            dateCreated: dateString,
-            content: content
-        }
-
-        post.replies = await this.schemaService.getRepliesPostFeedAddress(post, this.translateContent(post))
-
-        //Set user avatar
-        if (profile && profile.profilePic) {
-            post.ownerProfilePic = profile.profilePic
-        }
+        let post: Post = await this.buildPost(walletAddress, content);
 
         //Load user's post feed
         await this.postService.loadPostFeedForWallet(walletAddress)
@@ -62,6 +38,48 @@ class PostUIService {
 
         return post
 
+    }
+
+
+    async postReply(parent:Post, content: any, walletAddress: string) {
+
+        let post: Post = await this.buildPost(walletAddress, content);
+
+        //Load replies feed
+        await this.postService.loadRepliesFeed(parent.replies)
+        await this.postService.create(post)
+
+        this.translatePost(post)
+
+        return post
+
+    }
+
+
+
+    private async buildPost(walletAddress: string, content: any) {
+
+        let dateString: string = moment().format().toString();
+        //Get profile service of poster
+        let profile: Profile;
+        try {
+            profile = await this.profileService.getProfileByWallet(walletAddress);
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+        let post: Post = {
+            owner: walletAddress,
+            ownerDisplayName: (profile && profile.name) ? profile.name : walletAddress,
+            dateCreated: dateString,
+            content: content
+        };
+        post.replies = await this.schemaService.getRepliesPostFeedAddress(post, this.translateContent(post));
+        //Set user avatar
+        if (profile && profile.profilePic) {
+            post.ownerProfilePic = profile.profilePic;
+        }
+        return post;
     }
 
     getImagesFromPostContentOps(ops: any) {
@@ -138,6 +156,12 @@ class PostUIService {
     async loadMainFeedForWallet(walletAddress: string){
         return this.postService.loadMainFeedForWallet(walletAddress)
     }
+
+    async loadRepliesFeed(feedAddress:string) {
+        return this.postService.loadRepliesFeed(feedAddress)
+    }
+  
+
 
     async delete(post: Post): Promise<void> {
         this.postService.delete(post)

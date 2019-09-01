@@ -25,6 +25,7 @@ class ProcessFeedService {
             await this.processQueue(window['currentAccount'])
         } catch(ex) {
             console.log(ex)
+            console.log(this)
         }
 
         setTimeout(this.process, 60000)

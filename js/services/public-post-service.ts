@@ -40,17 +40,25 @@ class PublicPostService {
 
   
 
-  // @timeout(2000)
+  @timeout(10000)
   async loadPostFeedForWallet(walletAddress: string){
     let postFeed = await this.schemaService.getPostFeedByWalletAddress(walletAddress)
     return this.loadPostFeed(postFeed, "post")
   }
 
-  // @timeout(2000)
+  @timeout(10000)
   async loadMainFeedForWallet(walletAddress: string){
     let mainFeed = await this.schemaService.getMainFeedByWalletAddress(walletAddress)
-    this.loadPostFeed(mainFeed, "main")
+    return this.loadPostFeed(mainFeed, "main")
   }
+
+  @timeout(10000)
+  async loadRepliesFeed(feedAddress:string) {
+    let repliesFeed = await Global.orbitDb.open(feedAddress)
+    return this.loadPostFeed(repliesFeed, "reply")
+  }
+
+
 
   private async loadPostFeed(postFeed, type:string) {
 
@@ -278,13 +286,15 @@ class PublicPostService {
     if (!this.childFeedStoreCid || !childFeedInfo || childFeedInfo.feedCid != this.childFeedStoreCid) {
       await this.loadChildFeed()
     }
-    
+
 
     let countPosts = this.countChildFeedStore()
 
     if (!this.childFeedStore || countPosts >= this.maxPostsPerFeed) {
       await this.createAndLoadNewChildFeed(post.owner, this.feedType)
     }
+
+
 
     //Save directly in IPFS
     let buffer = Buffer.from(JSON.stringify(post))

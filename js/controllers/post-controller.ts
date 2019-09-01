@@ -40,10 +40,10 @@ class PostController {
       this.postUiService.translatePost(this.loadedPost)
 
 
-      let repliesFeed = await Global.orbitDb.open(this.loadedPost.replies)
-      await repliesFeed.load(100)
+      await this.postUiService.loadRepliesFeed(this.loadedPost.replies)
 
-      this.postUiService.setFeed(repliesFeed)
+      
+
 
       let replies: Post[] = await this.postUiService.getRecentPosts(100)
 
@@ -77,7 +77,7 @@ class PostController {
     // return if empty message. quill length is 1 if it's empty
     if (length == 1) return
 
-    let post: Post = await this.postUiService.postMessage(content, window['currentAccount'])
+    let post: Post = await this.postUiService.postReply(this.loadedPost,content, window['currentAccount'])
 
     $$(`#replies-list-${this.loadedPost.cid}`).prepend(this._postTemplate(post))
 

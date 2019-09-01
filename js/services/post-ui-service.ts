@@ -43,7 +43,7 @@ class PostUIService {
 
     async postReply(parent:Post, content: any, walletAddress: string) {
 
-        let post: Post = await this.buildPost(walletAddress, content);
+        let post: Post = await this.buildPost(walletAddress, content, parent);
 
         //Load replies feed
         await this.postService.loadRepliesFeed(parent.replies)
@@ -57,7 +57,7 @@ class PostUIService {
 
 
 
-    private async buildPost(walletAddress: string, content: any) {
+    private async buildPost(walletAddress: string, content: any, parent:Post=undefined) {
 
         let dateString: string = moment().format().toString();
         //Get profile service of poster
@@ -68,13 +68,20 @@ class PostUIService {
         catch (ex) {
             console.log(ex);
         }
+
         let post: Post = {
             owner: walletAddress,
             ownerDisplayName: (profile && profile.name) ? profile.name : walletAddress,
             dateCreated: dateString,
             content: content
-        };
+        }
+
+        if (parent) {
+            post.parentCid = parent.cid
+        }
+
         post.replies = await this.schemaService.getRepliesPostFeedAddress(post, this.translateContent(post));
+        
         //Set user avatar
         if (profile && profile.profilePic) {
             post.ownerProfilePic = profile.profilePic;

@@ -42,8 +42,6 @@ class PostController {
 
       await this.postUiService.loadRepliesFeed(this.loadedPost.replies)
 
-      
-
 
       let replies: Post[] = await this.postUiService.getRecentPosts(100)
 

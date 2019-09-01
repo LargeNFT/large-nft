@@ -77,12 +77,12 @@ class PublicPostService {
   }
 
 
-  private async createAndLoadNewChildFeed(walletAddress:string, type:string) {
+  private async createAndLoadNewChildFeed(identifier:string, type:string) {
 
     //Name the next feed
     let countExistingFeeds = this.countFeedStore()
 
-    let feedName = `${type}-feed-list-${walletAddress}-${countExistingFeeds}`
+    let feedName = `${type}-feed-list-${identifier}-${countExistingFeeds}`
 
     //Create it.
     this.childFeedStore = await Global.orbitDb.feed(feedName, {
@@ -127,6 +127,7 @@ class PublicPostService {
 
     //Load first feed
     await this.loadChildFeed()
+
 
     let feedsRead = 0
     let totalFeeds = this.countFeedStore()
@@ -291,7 +292,14 @@ class PublicPostService {
     let countPosts = this.countChildFeedStore()
 
     if (!this.childFeedStore || countPosts >= this.maxPostsPerFeed) {
-      await this.createAndLoadNewChildFeed(post.owner, this.feedType)
+
+      if (this.feedType == "post" || this.feedType == "main") {
+        await this.createAndLoadNewChildFeed(post.owner, this.feedType)
+      } else if (this.feedType == "reply") {
+        await this.createAndLoadNewChildFeed(post.parentCid, this.feedType)
+      }
+
+      
     }
 
 

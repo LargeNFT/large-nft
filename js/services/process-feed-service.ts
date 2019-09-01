@@ -28,7 +28,9 @@ class ProcessFeedService {
             console.log(this)
         }
 
-        setTimeout(this.process, 60000)
+        
+
+        setTimeout(function(){ this.process() }.bind(this), 60000)
 
     }
 

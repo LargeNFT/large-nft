@@ -40,7 +40,7 @@ class SchemaService {
         return schema
     }
 
-    @timeout(5000)
+    // @timeout(5000)
     async getMainStoreByWalletAddress(walletAddress:string) {
 
         let mainStore

@@ -14,14 +14,8 @@ const path = require('path')
 const keypath = path.resolve('./keys')
 
 
-const ipfsClient = require('ipfs-http-client')
-const ipfs = ipfsClient({
-    host: "localhost", // Switch to localhost if you're not using the docker/devcontainer setup.
-    port: 5001,
-    protocol: 'http'
-  })
-
-
+const IPFS = require('ipfs')
+  
 
 
 //@ts-ignore
@@ -34,6 +28,12 @@ contract('PublicPostService', async (accounts) => {
     //@ts-ignore
     before("", async () => {
 
+
+        const ipfs = await IPFS.create({
+            EXPERIMENTAL: {
+                pubsub:true
+            }
+        })
 
         address = Math.random().toString()
 

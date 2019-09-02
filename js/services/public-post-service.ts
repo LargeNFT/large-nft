@@ -40,19 +40,19 @@ class PublicPostService {
 
   
 
-  @timeout(10000)
+  // @timeout(10000)
   async loadPostFeedForWallet(walletAddress: string){
     let postFeed = await this.schemaService.getPostFeedByWalletAddress(walletAddress)
     return this.loadPostFeed(postFeed, "post")
   }
 
-  @timeout(10000)
+  // @timeout(10000)
   async loadMainFeedForWallet(walletAddress: string){
     let mainFeed = await this.schemaService.getMainFeedByWalletAddress(walletAddress)
     return this.loadPostFeed(mainFeed, "main")
   }
 
-  @timeout(10000)
+  // @timeout(10000)
   async loadRepliesFeed(feedAddress:string) {
     let repliesFeed = await Global.orbitDb.open(feedAddress)
     return this.loadPostFeed(repliesFeed, "reply")

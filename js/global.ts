@@ -51,7 +51,7 @@ export namespace Global {
   export var profileService:ProfileService
   export var postService:PublicPostService
   export var postUiService:PostUIService
-  export var processFeedService:ProcessFeedService
+  // export var processFeedService:ProcessFeedService
 
   /** Etherjs */
   export var provider: any

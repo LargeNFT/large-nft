@@ -19,10 +19,15 @@ class ProfileService {
     return this.getProfileByWallet(window['currentAccount'])
   }
 
-  @timeout(2000)
+  // @timeout(2000)
   async getProfileByWallet(walletAddress:string) : Promise<Profile> {
     await this.loadStoreForWallet(walletAddress)
     await this.store.load()
+
+    this.store.events.on("replicated", () => {
+      console.log("REPLICATORS ACTIVATE!!!!")
+    })
+
     return this.read(walletAddress)
   }
 
@@ -30,7 +35,7 @@ class ProfileService {
 
 
 
-  @timeout(2000)
+  // @timeout(2000)
   async loadStoreForWallet(walletAddress:string) {
     let profileStore = await Global.schemaService.getProfileStoreByWalletAddress(walletAddress)
     this.setStore(profileStore)

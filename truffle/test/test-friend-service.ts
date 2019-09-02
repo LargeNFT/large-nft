@@ -16,14 +16,7 @@ const TableStore = require('orbit-db-tablestore')
 const OrbitDB = require('orbit-db')
 
 
-const ipfsClient = require('ipfs-http-client')
-const ipfs = ipfsClient({
-    host: "localhost",
-    port: 5001,
-    protocol: 'http'
-  })
-
-
+const IPFS = require('ipfs')
 
 
 //@ts-ignore
@@ -40,6 +33,11 @@ contract('FriendService', async (accounts) => {
     //@ts-ignore
     before("", async () => {
 
+        const ipfs = await IPFS.create({
+            EXPERIMENTAL: {
+                pubsub:true
+            }
+        })
 
         address = Math.random()
 
@@ -50,6 +48,7 @@ contract('FriendService', async (accounts) => {
         Global.ipfs = ipfs
         Global.orbitDb = orbitdb
         Global.schemaService = new SchemaService()
+        Global.identityService = new IdentityService({})
         Global.orbitAccessControl = Global.identityService.getAccessController(orbitdb)
 
         postService = new PublicPostService(Global.schemaService)

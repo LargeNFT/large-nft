@@ -242,14 +242,14 @@ class RouteService {
     Whitepages.networks["1"] = {
       "events": {},
       "links": {},
-      "address": settings.whitepagesContractAddress,
-      "transactionHash": settings.whitepagesContractTxHash
+      "address": "0x363d26d0c8E47C10Bec3502078170b392BCF17D5",
+      "transactionHash": "0x857070e75551860ec22c9643e41a6bf2713da0b3e30635a491b89e7767a21ddf"
     }
 
     //@ts-ignore
 
-
-    let contract = new ethers.Contract(settings.whitepagesContractAddress, Whitepages.abi, Global.provider);
+    //hard coding to mainnet for now
+    let contract = new ethers.Contract("0x363d26d0c8E47C10Bec3502078170b392BCF17D5", Whitepages.abi, Global.provider);
 
 
 
@@ -311,7 +311,7 @@ class RouteService {
     Global.postService = new PublicPostService(this.schemaService)
     Global.postUiService = new PostUIService(Global.postService, Global.profileService, this.schemaService)
     Global.friendService = new FriendService(Global.postService)
-    Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService)
+    // Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService)
 
     Global.uploadService = new UploadService()
     Global.quillService = new QuillService(Global.uploadService)

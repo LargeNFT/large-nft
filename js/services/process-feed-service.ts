@@ -16,7 +16,7 @@ class ProcessFeedService {
 
         const self = this
 
-        this.process()
+        // this.process()
     }
 
     async process() {
@@ -25,12 +25,9 @@ class ProcessFeedService {
             await this.processQueue(window['currentAccount'])
         } catch(ex) {
             console.log(ex)
-            console.log(this)
         }
 
-        
-
-        setTimeout(function(){ this.process() }.bind(this), 60000)
+        setTimeout( () => {  this.process()  }, 60000)
 
     }
 

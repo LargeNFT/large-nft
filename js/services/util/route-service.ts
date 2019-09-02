@@ -3,7 +3,7 @@ import {Global} from "../../global";
 import {Template7} from "framework7";
 import {ModelView} from "../../model-view";
 
-const ipfsClient = require('ipfs-http-client')
+const IPFS = require('ipfs')
 
 const OrbitDB = require('orbit-db')
 const TableStore = require('orbit-db-tablestore')
@@ -214,21 +214,23 @@ class RouteService {
     Global.ipfsGateway = Template7.global.ipfsGateway
 
 
-    Global.ipfs = ipfsClient({
-      host: settings.ipfsHost,
-      port: settings.ipfsApiPort,
-      protocol: 'http'
+    // Global.ipfs = ipfsClient({
+    //   host: settings.ipfsHost,
+    //   port: settings.ipfsApiPort,
+    //   protocol: 'http'
+    // })
+
+    // //Temp until ipfs-http-client properly supports it
+    // Global.ipfs.pubsub = null
+
+
+    Global.ipfs = await IPFS.create({
+      EXPERIMENTAL: {
+          pubsub:true
+      }
     })
-
-    //Temp until ipfs-http-client properly supports it
-    Global.ipfs.pubsub = null
-
-
-
+    
     await this.configureWeb3()
-
-
-
 
     //Ropsten
     Whitepages.networks["3"] = {
@@ -263,7 +265,6 @@ class RouteService {
 
     let identity = await this.identityService.getIdentity(keystore)
 
-
     OrbitDB.addDatabaseType(TableStore.type, TableStore)
 
     Global.orbitDb = await OrbitDB.createInstance(Global.ipfs, {
@@ -272,6 +273,7 @@ class RouteService {
 
     Global.orbitAccessControl = this.identityService.getAccessController(Global.orbitDb)
 
+    
 
     //Look up main address
     let mainStore
@@ -281,12 +283,14 @@ class RouteService {
       console.log(ex)
     }
 
+
+
     //If it doesn't exist create it
     if (!mainStore) {
       mainStore = await this.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, window['currentAccount'] )
     }
 
-
+    
 
     //Detect whether or not we already have a schema
     let schema:Schema = await this.schemaService.getSchema(mainStore, window['currentAccount'])

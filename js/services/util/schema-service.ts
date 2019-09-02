@@ -53,7 +53,10 @@ class SchemaService {
 
         //Try to open it
         mainStore = await Global.orbitDb.open(mainStoreAddress)
+
         await mainStore.load()
+
+        console.log(mainStore)
 
         return mainStore
 

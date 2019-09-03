@@ -37,8 +37,8 @@
 
           <div class="top row">
             <div class="profile-pic">
-              {{#if profilePic}}
-              <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
+              {{#if profilePicSrc}}
+              <img class="profile-pic-thumb" src="{{profilePicSrc}}">
               {{else}}
               <i class="f7-icons profile-pic-thumb">person</i>
               {{/if}}

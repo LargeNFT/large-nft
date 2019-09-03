@@ -11,6 +11,7 @@ import { pathToFileURL } from 'url';
 import { ListingService } from '../services/listing-service';
 import { Post } from '../dto/post';
 import { PostUIService } from '../services/post-ui-service';
+import { ImageService } from '../services/util/image-service';
 
 
 var $$ = Dom7
@@ -21,7 +22,8 @@ class ProfileController {
     constructor(
       private uploadService : UploadService,
       private profileService: ProfileService,
-      private postUiService:PostUIService
+      private postUiService:PostUIService,
+      private imageService:ImageService
       ) {
         const self = this
 
@@ -43,6 +45,10 @@ class ProfileController {
 
         try {
           profile = await this.profileService.getProfileByWallet(address)
+
+          //Convert profile pic to Blob
+          profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
+
         } catch(ex) {
           console.log(ex)
         }

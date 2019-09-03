@@ -62,7 +62,7 @@ module.exports = function() {
         <div class="item-media">
           <a href="/profile/static/{{_id}}">
             {{#if profilePic}}
-              <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
+              <img class="profile-pic-thumb" src="{{profilePicSrc}}">
             {{else}}
               <i class="f7-icons profile-pic-thumb">person</i>
             {{/if}}
@@ -98,7 +98,7 @@ module.exports = function() {
         <div class="item-content" id="post_{{cid}}">
           <div class="item-media">
             {{#if ownerProfilePic}}
-              <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+              <img class="profile-pic-thumb" src="{{ownerProfilePicSrc}}">
             {{else}}
               <i class="f7-icons profile-pic-thumb">person</i>
             {{/if}}

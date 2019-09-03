@@ -13,6 +13,7 @@ import { Profile } from "../dto/profile";
 import { ProfileService } from "../services/profile-service";
 import { FriendService } from "../services/friend-service";
 import { Friend } from "../dto/friend";
+import { ImageService } from "../services/util/image-service";
 
 var $$ = Dom7;
 
@@ -24,7 +25,8 @@ class ConnectController {
         private queueService: QueueService,
         private listingService: ListingService,
         private friendService: FriendService,
-        private profileService: ProfileService
+        private profileService: ProfileService,
+        private imageService:ImageService
     ) {
         
     }
@@ -68,13 +70,19 @@ class ConnectController {
         try {
             profile = await this.profileService.getProfileByWallet($$('#friendAddress').val())
 
+            //Convert profile pic to Blob
+            profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
 
-            //Check if we're friends    
-            let friend:Friend = await this.friendService.get(profile._id)
+            if (profile) {
+                //Check if we're friends    
+                let friend:Friend = await this.friendService.get(profile._id)
 
-            if (friend) {
-                profile.following = true
+                if (friend) {
+                    profile.following = true
+                }
             }
+
+
 
 
         } catch(ex) {

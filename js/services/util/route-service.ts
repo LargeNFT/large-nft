@@ -34,6 +34,7 @@ import { FriendService } from "../friend-service";
 import { ProcessFeedService } from "../process-feed-service";
 import { FollowController } from "../../controllers/follow-controller";
 import { PostUIService } from "../post-ui-service";
+import { ImageService } from "./image-service";
 
 
 const promisify = (inner) =>
@@ -227,8 +228,20 @@ class RouteService {
     Global.ipfs = await IPFS.create({
       EXPERIMENTAL: {
           pubsub:true
+      },
+      relay: {
+        enabled: true, // enable circuit relay dialer and listener
+        hop: {
+          enabled: true // enable circuit relay HOP (make this node a relay)
+        }
       }
     })
+
+    let addrs = await Global.ipfs.swarm.addrs()
+
+    addrs.forEach(element => {
+      console.log(element)
+    });
     
     await this.configureWeb3()
 
@@ -310,23 +323,24 @@ class RouteService {
 
 
     
-    
+    Global.imageService = new ImageService()
     Global.profileService = new ProfileService()
     Global.postService = new PublicPostService(this.schemaService)
-    Global.postUiService = new PostUIService(Global.postService, Global.profileService, this.schemaService)
+    Global.postUiService = new PostUIService(Global.postService, Global.profileService, this.schemaService, Global.imageService)
     Global.friendService = new FriendService(Global.postService)
     // Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService)
 
+    
     Global.uploadService = new UploadService()
     Global.quillService = new QuillService(Global.uploadService)
     Global.whitepagesService = new WhitepagesService(contract)
     Global.listingService = new ListingService(Global.schemaService, Global.whitepagesService, Global.friendService, Global.profileService)
 
-    Global.homeController = new HomeController(Global.quillService, Global.postUiService, Global.profileService)
-    Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postUiService)
+    Global.homeController = new HomeController(Global.quillService, Global.postUiService, Global.profileService, Global.imageService)
+    Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postUiService, Global.imageService)
     Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
-    Global.postController = new PostController( Global.quillService, Global.postUiService, Global.profileService)
-    Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService, Global.profileService)
+    Global.postController = new PostController( Global.quillService, Global.postUiService, Global.profileService, Global.imageService)
+    Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService, Global.profileService, Global.imageService)
     Global.followController = new FollowController(Global.friendService, Global.profileService)
 
     window['homeController'] = Global.homeController

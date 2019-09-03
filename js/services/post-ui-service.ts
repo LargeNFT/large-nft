@@ -5,6 +5,7 @@ import { ProfileService } from "./profile-service";
 import { SchemaService } from "./util/schema-service";
 import { Template7 } from "framework7";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
+import { ImageService } from "./util/image-service";
 
 const moment = require('moment')
 
@@ -19,7 +20,8 @@ class PostUIService {
     constructor(
         private postService: PublicPostService,
         private profileService: ProfileService,
-        private schemaService: SchemaService
+        private schemaService: SchemaService,
+        private imageService: ImageService
     ) { }
 
     async postMessage(content: any, walletAddress: string) {
@@ -60,8 +62,10 @@ class PostUIService {
     private async buildPost(walletAddress: string, content: any, parent:Post=undefined) {
 
         let dateString: string = moment().format().toString();
+        
         //Get profile service of poster
         let profile: Profile;
+        
         try {
             profile = await this.profileService.getProfileByWallet(walletAddress);
         }
@@ -84,7 +88,7 @@ class PostUIService {
         
         //Set user avatar
         if (profile && profile.profilePic) {
-            post.ownerProfilePic = profile.profilePic;
+            post.ownerProfilePic = profile.profilePic
         }
         return post;
     }
@@ -107,7 +111,8 @@ class PostUIService {
         let posts:Post[] = await this.postService.getRecentPosts(limit, lt, gt)
 
         for (let post of posts) {
-            this.translatePost(post)
+            await this.translatePost(post)
+            
         }
 
         return posts
@@ -115,10 +120,11 @@ class PostUIService {
     }
 
 
-    translatePost(post: Post): void {
+    async translatePost(post: Post): Promise<void> {
 
         post.contentTranslated = this.translateContent(post)
         post.dateCreated = moment(post.dateCreated).fromNow()
+        post.ownerProfilePicSrc = await this.imageService.cidToUrl(post.ownerProfilePic)
 
     }
 

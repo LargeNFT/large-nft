@@ -21,6 +21,7 @@ import { FriendService } from "./services/friend-service";
 import { ProcessFeedService } from "./services/process-feed-service";
 import { FollowController } from "./controllers/follow-controller";
 import { PostUIService } from "./services/post-ui-service";
+import { ImageService } from "./services/util/image-service";
 
 
 export namespace Global {  
@@ -43,6 +44,7 @@ export namespace Global {
   export var followController: FollowController
 
   /** App specific services */
+  export var imageService:ImageService
   export var uploadService: UploadService
   export var quillService: QuillService
 

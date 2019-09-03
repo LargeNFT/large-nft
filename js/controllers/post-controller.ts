@@ -8,6 +8,7 @@ import { QuillService } from "../services/util/quill-service";
 import { Dom7, Template7 } from "framework7";
 import { Global } from "../global";
 import { PostUIService } from "../services/post-ui-service";
+import { ImageService } from "../services/util/image-service";
 
 
 var $$ = Dom7;
@@ -20,7 +21,8 @@ class PostController {
   constructor(
     private quillService: QuillService,
     private postUiService: PostUIService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private imageService:ImageService
   ) {
     this._compilePostTemplate()
   }
@@ -37,8 +39,8 @@ class PostController {
     return new ModelView(async () => {
 
       this.loadedPost = await PublicPostService.read(cid)
-      this.postUiService.translatePost(this.loadedPost)
 
+      this.postUiService.translatePost(this.loadedPost)
 
       await this.postUiService.loadRepliesFeed(this.loadedPost.replies)
 
@@ -54,7 +56,7 @@ class PostController {
         post: this.loadedPost,
         replies: replies,
         showEditLink: (currentUser && currentUser._id.toString() == this.loadedPost.owner.toString()),
-        profilePic: currentUser ? currentUser.profilePic : undefined
+        profilePicSrc: currentUser && currentUser.profilePic ? await this.imageService.cidToUrl(currentUser.profilePic) : undefined
       }
 
       return model

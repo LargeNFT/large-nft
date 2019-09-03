@@ -36,8 +36,8 @@
                         
                       <div class="row">
                         <div class="col-10">
-                            {{#if post.ownerProfilePic}}
-                              <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{post.ownerProfilePic}}">
+                            {{#if post.ownerProfilePicSrc}}
+                              <img class="profile-pic-thumb" src="{{post.ownerProfilePicSrc}}">
                             {{else}}
                               <i class="f7-icons" class="profile-pic-thumb">person</i>
                             {{/if}}
@@ -66,8 +66,8 @@
                     
                     <div class="top row">
                       <div class="profile-pic">
-                          {{#if profilePic}}
-                            <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{profilePic}}">
+                          {{#if profilePicSrc}}
+                            <img class="profile-pic-thumb" src="{{profilePicSrc}}">
                           {{else}}
                             <i class="f7-icons profile-pic-thumb">person</i>
                           {{/if}}
@@ -106,7 +106,7 @@
                           <div class="item-content" id="post_{{cid}}">
                             <div class="item-media">
                                 {{#if ownerProfilePic}}
-                                  <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                                  <img class="profile-pic-thumb" src="{{ownerProfilePicSrc}}">
                                 {{else}}
                                   <i class="f7-icons profile-pic-thumb">person</i>
                                 {{/if}}

@@ -8,6 +8,7 @@ interface Post {
   owner?: string
   ownerDisplayName?: string 
   ownerProfilePic?: string 
+  ownerProfilePicSrc?: string 
 
   dateCreated?: string
   content: any

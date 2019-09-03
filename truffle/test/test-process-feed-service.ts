@@ -11,6 +11,7 @@ import { Post } from '../../js/dto/post';
 import { ProfileService } from '../../js/services/profile-service';
 import { PostUIService } from '../../js/services/post-ui-service';
 import { ProcessFeedService } from '../../js/services/process-feed-service';
+import { ImageService } from '../../js/services/util/image-service';
 const TableStore = require('orbit-db-tablestore')
 
 
@@ -57,7 +58,7 @@ contract('FriendService', async (accounts) => {
 
         postService = new PublicPostService(Global.schemaService)
         friendService = new FriendService(postService)
-        postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService)
+        postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService, new ImageService())
         processFeedService = new ProcessFeedService(postService, friendService)
 
 

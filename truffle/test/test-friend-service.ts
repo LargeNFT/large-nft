@@ -10,6 +10,7 @@ import { isMainThread } from 'worker_threads';
 import { Post } from '../../js/dto/post';
 import { ProfileService } from '../../js/services/profile-service';
 import { PostUIService } from '../../js/services/post-ui-service';
+import { ImageService } from '../../js/services/util/image-service';
 const TableStore = require('orbit-db-tablestore')
 
 
@@ -52,7 +53,7 @@ contract('FriendService', async (accounts) => {
         Global.orbitAccessControl = Global.identityService.getAccessController(orbitdb)
 
         postService = new PublicPostService(Global.schemaService)
-        postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService)
+        postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService, new ImageService())
         service = new FriendService(postService)
 
         let mainStore = await Global.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, address.toString())

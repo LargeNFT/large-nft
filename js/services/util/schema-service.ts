@@ -56,7 +56,9 @@ class SchemaService {
 
         await mainStore.load()
 
-        console.log(mainStore)
+        mainStore.events.on('replicated', () => {
+            console.log('replicated')
+        })
 
         return mainStore
 
@@ -76,6 +78,10 @@ class SchemaService {
 
         let profileStore = await Global.orbitDb.open(schema.profileStore)
 
+        profileStore.events.on('replicated', () => {
+            console.log('replicated')
+        })
+
         return profileStore
     }
 
@@ -84,14 +90,27 @@ class SchemaService {
 
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
 
-        return Global.orbitDb.open(schema.postFeed)
+        let postFeed = await Global.orbitDb.open(schema.postFeed)
+
+        postFeed.events.on('replicated', () => {
+            console.log('replicated')
+        })
+
+        return postFeed
     }
 
     async getFriendStoreByWalletAddress(walletAddress: string) {
 
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
 
-        return Global.orbitDb.open(schema.friendStore)
+        let friendStore =  await Global.orbitDb.open(schema.friendStore)
+
+        friendStore.events.on('replicated', () => {
+            console.log('replicated')
+        })
+
+
+        return friendStore
     }
 
     async reopenStore(store: any) {

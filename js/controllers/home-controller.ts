@@ -19,6 +19,7 @@ import ColorPickerComponent from 'framework7/components/color-picker/color-picke
 const moment = require('moment')
 import { timeout } from '../timeout-promise'
 import { PostUIService } from '../services/post-ui-service';
+import { ImageService } from '../services/util/image-service';
 
 
 
@@ -38,7 +39,8 @@ class HomeController {
   constructor(
     private quillService: QuillService,
     private postUiService:PostUIService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private imageService:ImageService
   ) {
   }
 
@@ -66,7 +68,7 @@ class HomeController {
 
       return {
         currentAccount: window['currentAccount'],
-        profilePic: currentUser ? currentUser.profilePic : undefined
+        profilePicSrc: currentUser && currentUser.profilePic ? await this.imageService.cidToUrl(currentUser.profilePic) : undefined
       }
 
     }, 'pages/home.html')

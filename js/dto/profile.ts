@@ -5,6 +5,7 @@ class Profile {
   name?: string
   aboutMe?: string
   profilePic?: string
+  profilePicSrc?: string
 
   //This is probably should go somewhere else. It's not saved. It's view specific.
   following?:boolean 

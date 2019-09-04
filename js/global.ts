@@ -74,8 +74,6 @@ export namespace Global {
   /** IPFS api client */
   export var ipfs: any  
 
-  /** IPFS gateway */
-  export var ipfsGateway
 
   /** Template7 Templates */
   export var postResultTemplate

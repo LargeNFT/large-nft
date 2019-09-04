@@ -64,12 +64,12 @@ class RouteService {
 
     const homeRoute = async function(routeTo, routeFrom, resolve, reject) {
 
-      let settings: Settings = self.settingsService.getSettings()
+      // let settings: Settings = self.settingsService.getSettings()
 
-      if (!settings) {
-        self.resolveController(resolve, Global.settingsController.showSettingsForm())
-        return
-      }
+      // if (!settings) {
+      //   self.resolveController(resolve, Global.settingsController.showSettingsForm())
+      //   return
+      // }
 
       self.initAndResolve(resolve,function() {
         return Global.homeController.showHomePage()
@@ -169,6 +169,8 @@ class RouteService {
 
   async configureWeb3() {
       
+    if (!window['ethereum']) return
+
     // Request account access
     await window['ethereum'].enable()
 
@@ -205,24 +207,8 @@ class RouteService {
 
     Template7.global = {
       settings: settings,
-      ipfsGateway: `http://${settings.ipfsHost}:${settings.ipfsGatewayPort}/ipfs`
     }
 
-    //Doing this because the thing above stopped working for some reason.
-    window['ipfsGateway'] = Template7.global.ipfsGateway
-
-
-    Global.ipfsGateway = Template7.global.ipfsGateway
-
-
-    // Global.ipfs = ipfsClient({
-    //   host: settings.ipfsHost,
-    //   port: settings.ipfsApiPort,
-    //   protocol: 'http'
-    // })
-
-    // //Temp until ipfs-http-client properly supports it
-    // Global.ipfs.pubsub = null
 
 
     Global.ipfs = await IPFS.create({
@@ -237,12 +223,12 @@ class RouteService {
       }
     })
 
-    let addrs = await Global.ipfs.swarm.addrs()
 
-    addrs.forEach(element => {
-      console.log(element)
-    });
-    
+    console.log(await Global.ipfs.id())
+
+    // await Global.ipfs.swarm.connect("/p2p-circuit/ipfs/QmTSMgu1U3gMrdKtHncJutseJJ94wZSRaV8GfNDRDomtKo")
+
+
     await this.configureWeb3()
 
     //Ropsten
@@ -361,7 +347,7 @@ class RouteService {
     } catch(ex) {
       console.log(ex)
       Global.showExceptionPopup(ex)
-      Global.navigate("/settings")
+      // Global.navigate("/settings")
     }
   }
 

@@ -27,9 +27,6 @@ class IdentityService {
         //@ts-ignore
         let signer = this.provider.getSigner()
 
-        signer.address = await signer.getAddress()
-
-
 
         const type = EthIdentityProvider.type
 

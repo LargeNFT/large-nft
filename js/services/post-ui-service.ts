@@ -3,12 +3,13 @@ import { Post } from "../dto/post";
 import { Profile } from "../dto/profile";
 import { ProfileService } from "./profile-service";
 import { SchemaService } from "./util/schema-service";
-import { Template7 } from "framework7";
+import { Template7, Dom7 } from "framework7";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html";
 import { ImageService } from "./util/image-service";
 
 const moment = require('moment')
 
+var $$ = Dom7
 
 class PostUIService {
 
@@ -36,7 +37,7 @@ class PostUIService {
         await this.postService.loadMainFeedForWallet(walletAddress)
         await this.postService.create(post)
 
-        this.translatePost(post)
+        await this.translatePost(post)
 
         return post
 
@@ -51,7 +52,7 @@ class PostUIService {
         await this.postService.loadRepliesFeed(parent.replies)
         await this.postService.create(post)
 
-        this.translatePost(post)
+        await this.translatePost(post)
 
         return post
 
@@ -112,10 +113,27 @@ class PostUIService {
 
         for (let post of posts) {
             await this.translatePost(post)
-            
         }
 
         return posts
+
+    }
+
+    async loadPostImages() {
+
+        const self = this
+
+        $$(".blob-image").each(async function(index, element) {
+
+            let src = $$(element).prop('src')
+            if (src) return
+
+            let cid = $$(element).data('cid')
+
+            let imgUrl = await self.imageService.cidToUrl(cid)
+
+            $$(element).prop('src', imgUrl)
+        })
 
     }
 
@@ -130,11 +148,6 @@ class PostUIService {
 
     translateContent(post: Post): string {
 
-        //Create content HTML
-        //@ts-ignore
-        // const qdc = new QuillDeltaToHtmlConverter(post.content.ops, window.opts_ || {
-        // });
-
         const qdc = new QuillDeltaToHtmlConverter(post.content.ops, {});
 
         //Render dividers into HTML
@@ -144,7 +157,7 @@ class PostUIService {
             }
 
             if (customOp.insert.type === 'ipfsimage') {
-                return `<img src="${Template7.global.ipfsGateway}/${customOp.insert.value.ipfsCid}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
+                return `<img class="blob-image" data-cid="${customOp.insert.value.ipfsCid}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
             }
 
             if (customOp.insert.type === 'ipfsvideo') {
@@ -158,8 +171,6 @@ class PostUIService {
         })
 
         return qdc.convert()
-
-
     }
 
     async loadPostFeedForWallet(walletAddress: string){

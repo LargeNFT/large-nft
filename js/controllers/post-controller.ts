@@ -79,15 +79,21 @@ class PostController {
 
     let post: Post = await this.postUiService.postReply(this.loadedPost,content, window['currentAccount'])
 
+
     $$(`#replies-list-${this.loadedPost.cid}`).prepend(this._postTemplate(post))
 
 
     this.quillService.activeEditor.setText('')
     this.quillService.activeEditor.focus()
 
+    await this.loadPostImages()
+
   }
 
 
+  async loadPostImages() {
+    return this.postUiService.loadPostImages()
+  }
 
 
   _compilePostTemplate() {
@@ -98,8 +104,8 @@ class PostController {
               <a href="/post/show/{{cid}}" class="item-link">
                 <div class="item-content" id="post_{{cid}}">
                   <div class="item-media">
-                    {{#if ownerProfilePic}}
-                      <img class="profile-pic-thumb" src="{{js "window.ipfsGateway"}}/{{ownerProfilePic}}">
+                    {{#if ownerProfilePicSrc}}
+                      <img class="profile-pic-thumb" src="{{ownerProfilePicSrc}}">
                     {{else}}
                       <i class="f7-icons profile-pic-thumb">person</i>
                     {{/if}}

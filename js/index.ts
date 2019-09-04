@@ -19,6 +19,7 @@ const { utils, providers, ethers } = require('ethers')
 const moment = require('moment')
 var $$ = Dom7;
 
+
 module.exports = function() {
 
 
@@ -36,7 +37,18 @@ module.exports = function() {
   /*********************************************/
 
   //@ts-ignore
-  Global.provider = new providers.Web3Provider(web3.currentProvider)
+  if (window['web3']) {
+    //@ts-ignore
+    Global.provider = new providers.Web3Provider(web3.currentProvider)
+  } else {
+
+    let defaultProviders =  ethers.getDefaultProvider("homestead")
+
+    Global.provider = defaultProviders.providers[0]
+
+    console.log(Global.provider)
+  }
+  
 
   Global.identityService = new IdentityService(Global.provider)
   Global.settingsService = new SettingsService()

@@ -4,6 +4,8 @@ import BlotFormatter, { AlignAction, DeleteAction, ImageSpec } from 'quill-blot-
 import QuillBlotFormatter = require('quill-blot-formatter');
 import { Dom7, Template7 } from "framework7";
 import { UploadService } from './upload-service';
+import { ImageService } from './image-service';
+import { Global } from '../../global';
 
 var $$ = Dom7;
 
@@ -264,8 +266,12 @@ class QuillService {
 
       static create(value) {
 
+        Global.imageService.cidToUrl(value.ipfsCid).then(function(imgUrl) {
+          $$(`#${value.ipfsCid}`).prop('src', imgUrl)
+        })
+
         let node = super.create();
-        node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
+        node.setAttribute('id', value.ipfsCid);
         node.setAttribute('ipfsCid', value.ipfsCid);
         node.setAttribute('width', value.width)
         node.setAttribute('height', value.height)

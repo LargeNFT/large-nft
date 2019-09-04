@@ -153,9 +153,9 @@
 
           await window['Global'].loadComponentState(this, false)
 
-        
           if (this.post && this.post.cid) {
             controller.initializeQuill(this.post.cid)
+            controller.loadPostImages()
           }
 
           this.$$('.send-reply').on('click', function (e) {

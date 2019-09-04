@@ -144,6 +144,8 @@
           self.$$("#post-list").append(window['Global'].postResultTemplate(post))
         }
 
+        await controller.loadPostImages()
+
         if (!controller.hasMorePosts) {
 
           console.log("Unloading infinite scroll")

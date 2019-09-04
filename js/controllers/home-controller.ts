@@ -83,6 +83,8 @@ class HomeController {
 
     try {
       posts = await this.postUiService.getRecentPosts(this.limit, this.lastPost)
+
+      
     } catch(ex) {
       console.log(ex)
     }
@@ -99,6 +101,10 @@ class HomeController {
 
   }
 
+
+  async loadPostImages() {
+    return this.postUiService.loadPostImages()
+  }
 
 
   async postMessage(e: Event): Promise<void> {

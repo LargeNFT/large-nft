@@ -49,7 +49,7 @@ contract('FriendService', async (accounts) => {
         Global.ipfs = ipfs
         Global.orbitDb = orbitdb
         Global.schemaService = new SchemaService()
-        Global.identityService = new IdentityService({})
+        Global.identityService = new IdentityService()
         Global.orbitAccessControl = Global.identityService.getAccessController(orbitdb)
 
         postService = new PublicPostService(Global.schemaService)

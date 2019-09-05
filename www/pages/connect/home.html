@@ -15,11 +15,6 @@
             <span>Home</span>
           </a>
 
-          <a class="link" href="/settings">
-            <i class="f7-icons">gear_fill</i>
-            <span>Settings</span>
-          </a>
-
           <a class="link" href="/profile/static/{{currentAccount}}">
             <i class="f7-icons">person</i>
             <span>Profile</span>
@@ -55,6 +50,31 @@
               {{/if}}
 
           </div>
+
+
+          <div class="block-title">Peers</div>
+          <div class="block">
+                
+                  <div class="list media-list">
+                    <ul>
+                        {{#each peers}}
+                        <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title">
+                                  <!-- Item header, must be first child of item-title -->
+                                  <div class="item-header">{{this}}</div>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        {{/each}}
+                    </ul>
+                  </div>
+                
+
+          </div>
+
 
 
           <div class="block">

@@ -47,7 +47,10 @@ class ProfileController {
           profile = await this.profileService.getProfileByWallet(address)
 
           //Convert profile pic to Blob
-          profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
+          if (profile && profile.profilePic) {
+            profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
+          }
+          
 
         } catch(ex) {
           console.log(ex)

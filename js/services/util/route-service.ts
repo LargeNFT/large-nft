@@ -4,6 +4,7 @@ import {Template7} from "framework7";
 import {ModelView} from "../../model-view";
 
 const IPFS = require('ipfs')
+const ipfsClient = require('ipfs-http-client')
 
 const OrbitDB = require('orbit-db')
 const TableStore = require('orbit-db-tablestore')
@@ -12,6 +13,7 @@ const Keystore = require('orbit-db-keystore/index-browser')
 
 
 const { ethers } = require('ethers')
+
 // const level = require('level-js')
 
 
@@ -211,25 +213,62 @@ class RouteService {
 
 
 
-    Global.ipfs = await IPFS.create({
-      EXPERIMENTAL: {
-          pubsub:true
-      },
-      relay: {
-        enabled: true, // enable circuit relay dialer and listener
-        hop: {
-          enabled: true // enable circuit relay HOP (make this node a relay)
+
+
+
+
+
+    if (window['web3']) {
+      //browser
+
+      Global.ipfs = await IPFS.create({
+        EXPERIMENTAL: {
+            pubsub:true
+        },
+        relay: {
+          enabled: true, // enable circuit relay dialer and listener
+          hop: {
+            enabled: true // enable circuit relay HOP (make this node a relay)
+          }
         }
+      })
+
+
+      await this.configureWeb3()
+
+    } else {
+
+      //electron
+      //@ts-ignore
+      const remote = window.require('electron').remote
+      
+      //@ts-ignore
+      Global.ipfsHost = remote.getGlobal('ipfsHost')
+
+      Global.ipfs = await IPFS.create({
+        EXPERIMENTAL: {
+            pubsub:true
+        },
+        relay: {
+          enabled: true, // enable circuit relay dialer and listener
+          hop: {
+            enabled: true // enable circuit relay HOP (make this node a relay)
+          }
+        }
+      })
+
+      //@ts-ignore
+      for (let host of Global.ipfsHost) {
+        console.log(host)
+        Global.ipfs.bootstrap.add(host)
       }
-    })
+      
+
+    }
 
 
-    console.log(await Global.ipfs.id())
 
-    // await Global.ipfs.swarm.connect("/p2p-circuit/ipfs/QmTSMgu1U3gMrdKtHncJutseJJ94wZSRaV8GfNDRDomtKo")
-
-
-    await this.configureWeb3()
+    
 
     //Ropsten
     Whitepages.networks["3"] = {

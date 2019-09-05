@@ -77,7 +77,7 @@ class SchemaService {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
 
         let profileStore = await Global.orbitDb.open(schema.profileStore)
-
+        console.log('here')
         profileStore.events.on('replicated', () => {
             console.log('replicated')
         })

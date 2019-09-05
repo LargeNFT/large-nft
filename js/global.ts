@@ -57,6 +57,7 @@ export namespace Global {
 
   /** Etherjs */
   export var provider: any
+  export var wallet: any 
 
   /** The Framework7 app. Note: Try to make the rest of these typed some day. */
   export var app: any

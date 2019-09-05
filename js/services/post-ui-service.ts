@@ -142,7 +142,11 @@ class PostUIService {
 
         post.contentTranslated = this.translateContent(post)
         post.dateCreated = moment(post.dateCreated).fromNow()
-        post.ownerProfilePicSrc = await this.imageService.cidToUrl(post.ownerProfilePic)
+
+        if (post.ownerProfilePic) {
+            post.ownerProfilePicSrc = await this.imageService.cidToUrl(post.ownerProfilePic)
+        }
+        
 
     }
 

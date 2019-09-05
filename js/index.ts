@@ -12,8 +12,8 @@ import { WhitepagesService } from "./services/whitepages-service";
 import { Dom7 } from "framework7";
 import { Template7 } from "framework7/js/framework7.bundle";
 import { ConnectController } from "./controllers/connect-controller";
-const { utils, providers, ethers } = require('ethers')
-
+const { utils, providers, ethers, Wallet } = require('ethers')
+const IPFS = require('ipfs')
 
 
 const moment = require('moment')
@@ -38,19 +38,25 @@ module.exports = function() {
 
   //@ts-ignore
   if (window['web3']) {
+    
     //@ts-ignore
     Global.provider = new providers.Web3Provider(web3.currentProvider)
+    Global.wallet = Global.provider.getSigner()
+
   } else {
 
     let defaultProviders =  ethers.getDefaultProvider("homestead")
 
     Global.provider = defaultProviders.providers[0]
 
-    console.log(Global.provider)
+    Global.wallet = Wallet.createRandom()
+    Global.wallet = Global.wallet.connect(Global.provider)
+
+    window['currentAccount'] = Global.wallet.address
   }
   
 
-  Global.identityService = new IdentityService(Global.provider)
+  Global.identityService = new IdentityService()
   Global.settingsService = new SettingsService()
   Global.templateService = new TemplateService()
   Global.schemaService = new SchemaService()
@@ -151,7 +157,7 @@ module.exports = function() {
     root: '#app', // App root element
     id: 'io.framework7.testapp', // App bundle ID
     name: 'freedom-for-data Demo', // App name
-    theme: 'auto', // Automatic theme detection
+    theme: 'aurora', // Automatic theme detection
 
     // App routes
     routes: Global.routeService.getRoutes(rootUrl.pathname)

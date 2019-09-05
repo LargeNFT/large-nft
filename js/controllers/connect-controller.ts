@@ -48,8 +48,8 @@ class ConnectController {
             let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
 
             let peers = await Global.ipfs.swarm.peers()
-    
-            peers = peers.map(e => e.peer._idB58String)
+            
+            peers = peers.map(e => e.addr.toString())
 
             return {
                 peers: peers,

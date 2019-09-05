@@ -65,8 +65,26 @@ app.on('ready', async () => {
       hop: {
         enabled: true // enable circuit relay HOP (make this node a relay)
       }
+    },
+    config: {
+      Addresses: {
+        Swarm: [
+          "/ip4/0.0.0.0/tcp/4002",
+          "/ip4/127.0.0.1/tcp/4003/ws",
+          '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+
+        ],
+        API: '/ip4/127.0.0.1/tcp/5002',
+        Gateway: '/ip4/127.0.0.1/tcp/9090'
+      }
     }
   })
+
+  //Start the API gateway
+  // const Gateway = require('ipfs/src/http')
+  // const gateway = new Gateway(node)
+  // await gateway.start()
+
 
 
   //@ts-ignore

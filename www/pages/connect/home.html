@@ -52,27 +52,25 @@
           </div>
 
 
-          <div class="block-title">Peers</div>
+          <div class="block-title">IPFS Peers</div>
           <div class="block">
                 
-                  <div class="list media-list">
-                    <ul>
-                        {{#each peers}}
-                        <li>
-                            <div class="item-content">
-                              <div class="item-inner">
-                                <div class="item-title">
-                                  <!-- Item header, must be first child of item-title -->
-                                  <div class="item-header">{{this}}</div>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        {{/each}}
-                    </ul>
-                  </div>
-                
-
+            <div class="list media-list">
+              <ul>
+                  {{#each peers}}
+                  <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-subtitle no-wrap">
+                            {{this}}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  {{/each}}
+              </ul>
+            </div>
+              
           </div>
 
 
@@ -82,7 +80,7 @@
           </div>
 
           <hr />
-
+<!-- 
           {{#if showRegisterButton}}
             <div class="block">
               <a href="#" class="button button-fill button-round" id="register-link">Register</a>
@@ -96,7 +94,7 @@
 
             </ul>
 
-          </div>
+          </div> -->
 
         </div>
       </div>

@@ -230,6 +230,12 @@ class RouteService {
           hop: {
             enabled: true // enable circuit relay HOP (make this node a relay)
           }
+        },
+        config: {
+          Addresses: {
+            //@ts-ignore
+            Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']
+          }
         }
       })
 
@@ -254,15 +260,16 @@ class RouteService {
           hop: {
             enabled: true // enable circuit relay HOP (make this node a relay)
           }
+        },
+        config: {
+          Addresses: {
+            //@ts-ignore
+            Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star', Global.ipfsHost[7]]
+          }
         }
       })
 
-      //@ts-ignore
-      for (let host of Global.ipfsHost) {
-        console.log(host)
-        Global.ipfs.bootstrap.add(host)
-      }
-      
+
 
     }
 

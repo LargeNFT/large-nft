@@ -32,7 +32,7 @@ class HomeController {
 
   postsShown: number = 0
   
-  limit: number = 5
+  limit: number = 10
   lastPost:string = null
 
 

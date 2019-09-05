@@ -253,3 +253,7 @@ hr:before {
   padding-left: 10px;
 }
 
+.list .item-subtitle.no-wrap {
+  white-space: normal;
+  overflow: inherit;
+}

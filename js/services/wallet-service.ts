@@ -9,10 +9,17 @@ class WalletService {
     private walletDao 
 
     constructor() {
+        
+    }
+
+    init() {
+        if (this.walletDao) return
         this.walletDao = window['remote'].getGlobal('walletDao')
     }
 
     async createWallet(password) {
+
+        this.init()
 
         let wallet =  Wallet.createRandom()
 
@@ -35,6 +42,8 @@ class WalletService {
 
     async unlockWallet(password:string) {
 
+        this.init()
+
         let savedWallet = this.walletDao.loadWallet()
 
         if (!savedWallet) throw new Error("No wallet to unlock")
@@ -46,6 +55,8 @@ class WalletService {
     }
 
     async restoreWallet(recoverySeed:string, password: string) {
+
+        this.init()
 
         let wallet =  Wallet.fromMnemonic(recoverySeed)
 
@@ -61,6 +72,7 @@ class WalletService {
     }
 
     getWallet() {
+        this.init()
         return this.walletDao.loadWallet()
     }
 

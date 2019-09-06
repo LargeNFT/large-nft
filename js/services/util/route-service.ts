@@ -414,7 +414,7 @@ class RouteService {
       config: {
         Addresses: {
           //@ts-ignore
-          Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star', '/ip4/127.0.0.1/tcp/4003/ws/ipfs/QmcMJ3VrvhTN1AESDEq4A45GeKiK69mBbSN4KKzjynbgTF']
+          Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']
         }
       }
     });

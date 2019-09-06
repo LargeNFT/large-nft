@@ -38,8 +38,7 @@ module.exports = function() {
   
   /*********************************************/
 
-  //@ts-ignore
-  window['remote'] = window.require('electron').remote
+
 
   //@ts-ignore
   if (window['web3']) {
@@ -51,6 +50,9 @@ module.exports = function() {
     Global.isElectron = false
 
   } else {
+
+    //@ts-ignore
+    window['remote'] = window.require('electron').remote
 
     let defaultProviders =  ethers.getDefaultProvider("homestead")
 

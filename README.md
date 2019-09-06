@@ -53,7 +53,13 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 
 
 
-# Getting Started
+# Running the desktop client
+1. Clone this repo.
+2. npm run electron 
+
+
+
+# Development Tools
 You need the tools listed below to run the project.
 
 Need help? [Just ask!](https://discord.gg/kRydQeW)
@@ -84,9 +90,6 @@ NOTE: All the below steps are now automated with inside a docker container. Visu
 1. **Ganache** - A mock Ethereum blockchain for local development and testing that runs entirely on your machine.
     * [Download the desktop Ganache client here.](https://truffleframework.com/ganache)
 
-1. **IPFS** - The InterPlanetary File System, where all our blog data will be stored. You'll need to run an ipfs node on your machine to create and view blog posts.
-    * [View instructions for downloading and running IPFS here.](https://docs.ipfs.io/guides/guides/install/) We're using the go-ipfs implementation.
-
 1. **MetaMask** - Plugin for Chrome or Brave enables your browser to connect to the blockchain.
     * [Download MetaMask here.](https://metamask.io/)
 
@@ -100,7 +103,6 @@ NOTE: All the below steps are now automated with inside a docker container. Visu
 ## Installing This Project
 You can run this project without installing a ton of dependencies using vscode dev containers or docker-compose: see EXPERIMENTAL_SETUP.md
 
--- otherwise --
 
 If you have installed the tools above, you can run Large with the following steps. (We'll try to commit only working code to the master branch.)
 
@@ -120,11 +122,6 @@ If you have installed the tools above, you can run Large with the following step
 1. **Start Ganache** (your private blockchain!)
     * Just open the Ganache desktop client and leave it running.
 
-1. **Run IPFS Daemon** (your data store!)
-    * If you have installed IPFS per above, you can start the daemon with this command in your Terminal:
-    ```console
-    ipfs daemon
-    ```
 
 1. **Run Tests**
     * Inside the large project root directory:
@@ -134,8 +131,5 @@ If you have installed the tools above, you can run Large with the following step
     * If your tests pass, you are all set up!
 
 ## Help Us Build the Rest!
-Find [our next meetup](https://www.meetup.com/Akron-DApps/) and come see us!
 
-If you are curious about blockchain, peer-to-peer technology, or how to build decentralized applications for the new Internet, clone this repo and join us at [Learn Blockchain in Akron](https://www.meetup.com/Akron-DApps/)!
-
-Can't make it to the meetup or want to learn more? [Join us on Discord.](https://discord.gg/kRydQeW)
+[Join us on Discord.](https://discord.gg/kRydQeW)

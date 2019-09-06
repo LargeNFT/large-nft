@@ -75,7 +75,10 @@ class ConnectController {
             profile = await this.profileService.getProfileByWallet($$('#friendAddress').val())
 
             //Convert profile pic to Blob
-            profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
+            if (profile && profile.profilePic) {
+                profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
+            }
+            
 
             if (profile) {
                 //Check if we're friends    

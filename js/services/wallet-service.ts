@@ -45,6 +45,21 @@ class WalletService {
 
     }
 
+    async restoreWallet(recoverySeed:string, password: string) {
+
+        let wallet =  Wallet.fromMnemonic(recoverySeed)
+
+        if (!wallet) throw new Error("Error restoring wallet")
+
+
+        //Encrypt with entered password
+        let encryptedJsonWallet = await wallet.encrypt(password)        
+        this.walletDao.saveWallet(encryptedJsonWallet)
+
+        this.connectWallet(wallet)
+
+    }
+
     getWallet() {
         return this.walletDao.loadWallet()
     }

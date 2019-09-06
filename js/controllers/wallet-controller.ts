@@ -61,8 +61,6 @@ class WalletController {
 
     async unlockButtonClick(e:Event, component) {
 
-        console.log('Unlock button clicked')
-
         component.$setState({})
 
         var formData = Global.app.form.convertToData('#unlock-wallet-form');
@@ -86,6 +84,41 @@ class WalletController {
         return new ModelView(async () => {
             return {}
         }, 'pages/wallet/enter-recovery.html')    
+ 
+    }
+
+
+    async restoreButtonClick(e:Event, component) {
+
+        component.$setState({})
+
+        var formData = Global.app.form.convertToData('#restore-account-form')
+
+        //Validate
+        if (formData.password != formData.confirmPassword) {
+
+            component.$setState({
+                errorMessage: "Passwords must match"
+            })
+        
+            return
+        }
+
+
+
+        try {
+            await this.walletService.restoreWallet(formData.recoverySeed, formData.password)
+            console.log('Navigating to')
+            Global.navigate("/")
+        } catch(ex) {
+            console.log(ex)
+            component.$setState({
+                errorMessage: ex.message
+            })
+        }
+
+
+
     }
 
 }

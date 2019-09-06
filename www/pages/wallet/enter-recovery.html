@@ -26,15 +26,15 @@
           <div class="block">
             <p>Enter your secret twelve word phrase to restore your account.</p>
 
-            <form>
+            <form id="restore-account-form">
               <div class="list no-hairlines-md">
                 <ul>
                   <li>
                     <div class="item-content item-input">
                       <div class="item-inner">
-                        <div class="item-title item-label">Wallet Seed</div>
+                        <div class="item-title item-label">Recovery Seed (12 words)</div>
                         <div class="item-input-wrap">
-                          <textarea name="walletSeed"></textarea>
+                          <textarea name="recoverySeed"></textarea>
                         </div>
                       </div>
                     </div>
@@ -44,7 +44,7 @@
                       <div class="item-inner">
                         <div class="item-title item-label">New Password (min 8 chars)</div>
                         <div class="item-input-wrap">
-                          <input type="text" name="password" placeholder="Enter new password" />
+                          <input type="password" name="password" placeholder="Enter new password" required />
                         </div>
                       </div>
                     </div>
@@ -54,7 +54,7 @@
                       <div class="item-inner">
                         <div class="item-title item-label">Confirm Password</div>
                         <div class="item-input-wrap">
-                          <input type="text" name="confirmPassword" placeholder="Confirm Password" />
+                          <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
                         </div>
                       </div>
                     </div>
@@ -64,9 +64,13 @@
               </div>
 
               <div class="row">
-                <div class="col-66"></div>
+                <div class="col-66">
+                    {{#if errorMessage}}
+                      {{errorMessage}}
+                    {{/if}}
+                </div>
                 <div class="col-33">
-                  <button class="button button-fill" type="submit">Restore</button>
+                  <button id="restore-button" class="button button-fill" type="submit">Restore</button>
                 </div>
               </div>
 
@@ -90,11 +94,26 @@
 
 
 
-
+  
 <script>
 
-  return {
+    return {
+        on: {
+            pageInit: async function (e, page) {
 
-  }
+                const self = this
+
+                let controller = window['walletController']
+
+                await window['Global'].loadComponentState(this, false)
+
+                this.$$('#restore-account-form').on('submit', function (e) {
+                  e.preventDefault()
+                  controller.restoreButtonClick(e, self)
+              })
+
+            }
+        }
+    }
 
 </script>

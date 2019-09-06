@@ -77,10 +77,6 @@ class SchemaService {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
 
         let profileStore = await Global.orbitDb.open(schema.profileStore)
-        console.log('here')
-        profileStore.events.on('replicated', () => {
-            console.log('replicated')
-        })
 
         return profileStore
     }
@@ -92,10 +88,6 @@ class SchemaService {
 
         let postFeed = await Global.orbitDb.open(schema.postFeed)
 
-        postFeed.events.on('replicated', () => {
-            console.log('replicated')
-        })
-
         return postFeed
     }
 
@@ -104,11 +96,6 @@ class SchemaService {
         let schema:Schema = await this.getSchemaByWalletAddress(walletAddress)
 
         let friendStore =  await Global.orbitDb.open(schema.friendStore)
-
-        friendStore.events.on('replicated', () => {
-            console.log('replicated')
-        })
-
 
         return friendStore
     }

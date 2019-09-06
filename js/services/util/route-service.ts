@@ -37,6 +37,8 @@ import { ProcessFeedService } from "../process-feed-service";
 import { FollowController } from "../../controllers/follow-controller";
 import { PostUIService } from "../post-ui-service";
 import { ImageService } from "./image-service";
+import { WalletController } from "../../controllers/wallet-controller";
+import { WalletService } from "../wallet-service";
 
 
 const promisify = (inner) =>
@@ -66,15 +68,9 @@ class RouteService {
 
     const homeRoute = async function(routeTo, routeFrom, resolve, reject) {
 
-      // let settings: Settings = self.settingsService.getSettings()
-
-      // if (!settings) {
-      //   self.resolveController(resolve, Global.settingsController.showSettingsForm())
-      //   return
-      // }
-
       self.initAndResolve(resolve,function() {
-        return Global.homeController.showHomePage()
+        return Global.walletController.showLanding()
+        // return Global.homeController.showHomePage()
       })
 
     }
@@ -88,10 +84,38 @@ class RouteService {
       })
     }
 
-    routes.push(      {
+    routes.push({
       path: '/',
       async: homeRoute
     })
+
+
+    routes.push({
+      path: '/landing',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.resolveController(resolve, Global.walletController.showLanding())
+      }
+    })
+    
+
+    routes.push({
+      path: '/createWallet',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.resolveController(resolve, Global.walletController.showCreateWallet())
+      }
+    })
+
+    routes.push({
+      path: '/enterRecovery',
+      async async(routeTo, routeFrom, resolve, reject) {
+        self.resolveController(resolve, Global.walletController.showEnterRecovery())
+      }
+    })
+
+
+
+
+
 
     routes.push({
       path: '/settings',
@@ -212,65 +236,12 @@ class RouteService {
     }
 
 
-
-
-
-
-
-
-    if (window['web3']) {
-      //browser
-
-      Global.ipfs = await IPFS.create({
-        EXPERIMENTAL: {
-            pubsub:true
-        },
-        relay: {
-          enabled: true, // enable circuit relay dialer and listener
-          hop: {
-            enabled: true // enable circuit relay HOP (make this node a relay)
-          }
-        },
-        config: {
-          Addresses: {
-            //@ts-ignore
-            Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']
-          }
-        }
-      })
-
-
-      await this.configureWeb3()
-
-    } else {
-
+    if (Global.isElectron) {
       //electron
-      //@ts-ignore
-      const remote = window.require('electron').remote
-      
-      //@ts-ignore
-      Global.ipfsHost = remote.getGlobal('ipfsHost')
-
-      Global.ipfs = await IPFS.create({
-        EXPERIMENTAL: {
-            pubsub:true
-        },
-        relay: {
-          enabled: true, // enable circuit relay dialer and listener
-          hop: {
-            enabled: true // enable circuit relay HOP (make this node a relay)
-          }
-        },
-        config: {
-          Addresses: {
-            //@ts-ignore
-            Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star', Global.ipfsHost[7]]
-          }
-        }
-      })
-
-
-
+      await this.configureElectron();
+    } else {
+      //browser
+      await this.configureBrowser();
     }
 
 
@@ -354,7 +325,7 @@ class RouteService {
     await this.schemaService.updateSchema(mainStore, schema, window['currentAccount'])
 
 
-    
+    Global.walletService = new WalletService()
     Global.imageService = new ImageService()
     Global.profileService = new ProfileService()
     Global.postService = new PublicPostService(this.schemaService)
@@ -374,6 +345,7 @@ class RouteService {
     Global.postController = new PostController( Global.quillService, Global.postUiService, Global.profileService, Global.imageService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService, Global.profileService, Global.imageService)
     Global.followController = new FollowController(Global.friendService, Global.profileService)
+    Global.walletController = new WalletController(Global.walletService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController
@@ -381,8 +353,62 @@ class RouteService {
     window['connectController'] = Global.connectController
     window['settingsController'] = Global.settingsController
     window['followController'] = Global.followController
+    window['walletController'] = Global.walletController
 
     console.log("Initialization complete")
+
+  }
+
+
+  private async configureElectron() {
+  
+    //@ts-ignore
+    const remote = window.require('electron').remote;
+
+    //@ts-ignore
+    Global.ipfsHost = remote.getGlobal('ipfsHost');
+    
+    Global.ipfs = await IPFS.create({
+      EXPERIMENTAL: {
+        pubsub: true
+      },
+      relay: {
+        enabled: true,
+        hop: {
+          enabled: true // enable circuit relay HOP (make this node a relay)
+        }
+      },
+      config: {
+        Addresses: {
+          //@ts-ignore
+          Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star', Global.ipfsHost]
+        }
+      }
+    })
+
+  }
+
+  private async configureBrowser() {
+    
+    Global.ipfs = await IPFS.create({
+      EXPERIMENTAL: {
+        pubsub: true
+      },
+      relay: {
+        enabled: true,
+        hop: {
+          enabled: true // enable circuit relay HOP (make this node a relay)
+        }
+      },
+      config: {
+        Addresses: {
+          //@ts-ignore
+          Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star', '/ip4/127.0.0.1/tcp/4003/ws/ipfs/QmcMJ3VrvhTN1AESDEq4A45GeKiK69mBbSN4KKzjynbgTF']
+        }
+      }
+    });
+
+    await this.configureWeb3();
 
   }
 

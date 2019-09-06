@@ -22,6 +22,8 @@ import { ProcessFeedService } from "./services/process-feed-service";
 import { FollowController } from "./controllers/follow-controller";
 import { PostUIService } from "./services/post-ui-service";
 import { ImageService } from "./services/util/image-service";
+import { WalletController } from "./controllers/wallet-controller";
+import { WalletService } from "./services/wallet-service";
 
 
 export namespace Global {  
@@ -42,8 +44,10 @@ export namespace Global {
   export var settingsController: SettingsController
   export var connectController: ConnectController
   export var followController: FollowController
+  export var walletController: WalletController
 
   /** App specific services */
+  export var walletService:WalletService
   export var imageService:ImageService
   export var uploadService: UploadService
   export var quillService: QuillService
@@ -74,6 +78,8 @@ export namespace Global {
 
   /** IPFS api client */
   export var ipfs: any  
+
+  export var isElectron:boolean 
 
 
   /** Template7 Templates */

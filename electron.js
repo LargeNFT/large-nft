@@ -91,7 +91,12 @@ app.on('ready', async () => {
   let id = await node.id()
 
   //@ts-ignore
-  global.ipfsHost = id.addresses
+  let addresses = id.addresses
+
+  let result = addresses.filter(e => e.includes('p2p-circuit/ip4/127.0.0.1/tcp/4003/ws'))
+
+
+  global.ipfsHost = result[0]
 
 
   // and load the index.html of the app.

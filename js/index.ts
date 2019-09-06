@@ -43,16 +43,24 @@ module.exports = function() {
     Global.provider = new providers.Web3Provider(web3.currentProvider)
     Global.wallet = Global.provider.getSigner()
 
+    Global.isElectron = false
+
   } else {
 
     let defaultProviders =  ethers.getDefaultProvider("homestead")
 
     Global.provider = defaultProviders.providers[0]
 
-    Global.wallet = Wallet.createRandom()
-    Global.wallet = Global.wallet.connect(Global.provider)
+    if (!Global.wallet) {
+      Global.wallet = Wallet.createRandom() //redirect to force the user to create a new one, probably
+      Global.wallet = Global.wallet.connect(Global.provider)
+    }
+    
 
     window['currentAccount'] = Global.wallet.address
+
+    Global.isElectron = true
+
   }
   
 

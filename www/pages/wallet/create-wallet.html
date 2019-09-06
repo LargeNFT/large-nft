@@ -1,0 +1,41 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="page" data-name="home">
+
+        <div class="page-content">
+
+            <div class="row">
+
+                <div class="col-100 tablet-50 center">
+                    
+                    <h1>Wallet Created!</h1>
+
+                    <h2>Write these words down:</h2>
+
+                    {{mnemonic}}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</template>
+
+
+
+
+<script>
+
+    return {
+        on: {
+            pageInit: async function (e, page) {
+                await window['Global'].loadComponentState(this, false)
+            }
+        }
+    }
+
+</script>

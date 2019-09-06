@@ -3,17 +3,70 @@
 
     <div class="page" data-name="home">
 
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a class="link back icon-only">
+                        <i class="icon icon-back"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <div class="page-content">
 
             <div class="row">
 
                 <div class="col-100 tablet-50 center">
-                    
-                    <h1>Wallet Created!</h1>
 
-                    <h2>Write these words down:</h2>
+                    {{#if mnemonic}}
+                        <div class="block-title">Success!</div>
+                        <div class="block">
+                            {{mnemonic}}
+                        </div>
 
-                    {{mnemonic}}
+                    {{else}}
+                        <div class="block-title">Create Password</div>
+                        <div class="block">
+                            <form id="create-wallet-form">
+                                <div class="list no-hairlines-md">
+                                    <ul>
+                                        <li>
+                                            <div class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">New Password (min 8 chars)</div>
+                                                    <div class="item-input-wrap">
+                                                        <input type="text" name="password"
+                                                            placeholder="Enter new password" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">Confirm Password</div>
+                                                    <div class="item-input-wrap">
+                                                        <input type="text" id="confirm-password" name="confirmPassword"
+                                                            placeholder="Confirm Password" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-66"></div>
+                                    <div class="col-33">
+                                        <button id="create-wallet" class="button button-fill" type="submit">Create</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    {{/if}}
 
                 </div>
 
@@ -33,7 +86,18 @@
     return {
         on: {
             pageInit: async function (e, page) {
+
+                const self = this
+
+                let controller = window['walletController']
+
                 await window['Global'].loadComponentState(this, false)
+
+                this.$$('#create-wallet-form').on('submit', function (e) {
+                    e.preventDefault()
+                    controller.createWalletClick(e, self)
+                })
+
             }
         }
     }

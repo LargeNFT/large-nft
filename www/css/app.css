@@ -1,9 +1,10 @@
 /* Your app styles here */
 :root {
-  --f7-list-item-title-font-size: 11px; 
-  --f7-list-item-subtitle-font-size: 10px;
+  --f7-list-item-title-font-size: 14px; 
+  --f7-list-item-subtitle-font-size: 12px;
   --f7-list-item-subtitle-line-height: 14px;
   --f7-list-item-after-font-size: 8px;
+  --f7-list-item-text-font-size: 12px;
 
   --f7-card-font-size: 10px;
   --f7-block-font-size: 10px;
@@ -259,9 +260,9 @@ hr:before {
 }
 
 .landing-button {
-  height: 175px;
+  /* height: 175px;
   font-size: 30px;
   margin-top: 60px;
   margin-bottom: 30px;
-  padding-top: 70px;
+  padding-top: 70px; */
 }

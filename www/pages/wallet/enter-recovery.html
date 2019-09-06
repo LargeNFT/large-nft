@@ -1,33 +1,100 @@
 <!--suppress JSAnnotator -->
 <template>
 
-        <div class="page" data-name="home">
-    
-          <div class="page-content">
-    
-            <div class="row">
-      
-              <div class="col-100 tablet-50 center">
-    
-                Enter Recovery
-    
-              </div>
-      
-            </div>
-      
-          </div>
-    
+  <div class="page" data-name="home">
+
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a class="link back icon-only">
+            <i class="icon icon-back"></i>
+          </a>
         </div>
-      
-      </template>
-      
-      
-      
-      
-      <script>
-      
-        return {
-          
-        }
-      
-      </script>
+      </div>
+
+    </div>
+
+
+
+    <div class="page-content">
+
+      <div class="row">
+
+        <div class="col-100 tablet-50 center">
+
+          <div class="block-title">Restore Your Account</div>
+          <div class="block">
+            <p>Enter your secret twelve word phrase to restore your account.</p>
+
+            <form>
+              <div class="list no-hairlines-md">
+                <ul>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Wallet Seed</div>
+                        <div class="item-input-wrap">
+                          <textarea name="walletSeed"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">New Password (min 8 chars)</div>
+                        <div class="item-input-wrap">
+                          <input type="text" name="password" placeholder="Enter new password" />
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Confirm Password</div>
+                        <div class="item-input-wrap">
+                          <input type="text" name="confirmPassword" placeholder="Confirm Password" />
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+
+              <div class="row">
+                <div class="col-66"></div>
+                <div class="col-33">
+                  <button class="button button-fill" type="submit">Restore</button>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+
+
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</template>
+
+
+
+
+<script>
+
+  return {
+
+  }
+
+</script>

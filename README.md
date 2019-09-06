@@ -54,9 +54,12 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 
 
 # Running the desktop client
-1. Clone this repo.
-2. npm run electron 
 
+```console
+git clone https://github.com/ptoner/Large.git
+cd Large
+npm run electron
+```
 
 
 # Development Tools

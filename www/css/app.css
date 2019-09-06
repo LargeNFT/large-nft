@@ -266,3 +266,7 @@ hr:before {
   margin-bottom: 30px;
   padding-top: 70px; */
 }
+
+.mnemonic {
+  font-size: 30px;
+}

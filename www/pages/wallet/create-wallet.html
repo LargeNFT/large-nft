@@ -20,52 +20,77 @@
                 <div class="col-100 tablet-50 center">
 
                     {{#if mnemonic}}
-                        <div class="block-title">Success!</div>
-                        <div class="block">
-                            {{mnemonic}}
+                    <div class="block-title">Secret Backup Phrase</div>
+                    <div class="block">
+                        <p>This 12 word secret phrase is how your account is accessed. It's important to keep this
+                            phrase secret.</p>
+
+                        <p><strong>Write this phrase on a piece of paper</strong> and keep it in a secure location.</p>
+
+                        <p><strong>WARNING:</strong> Don't ever tell anyone your secret phrase. Anyone with this phrase
+                            can use it to access your account and make permanent changes.</p>
+
+                        <p class="mnemonic">{{mnemonic}}</p>
+
+
+
+
+                        <div class="row">
+                            <div class="col-66">
+                            </div>
+                            <div class="col-33">
+                                <a class="button button-fill" href="/">Got it</a>
+                            </div>
                         </div>
+
+
+                    </div>
 
                     {{else}}
-                        <div class="block-title">Create Password</div>
-                        <div class="block">
-                            <form id="create-wallet-form">
-                                <div class="list no-hairlines-md">
-                                    <ul>
-                                        <li>
-                                            <div class="item-content item-input">
-                                                <div class="item-inner">
-                                                    <div class="item-title item-label">New Password (min 8 chars)</div>
-                                                    <div class="item-input-wrap">
-                                                        <input type="text" name="password"
-                                                            placeholder="Enter new password" required/>
-                                                    </div>
+                    <div class="block-title">Create Password</div>
+                    <div class="block">
+                        <form id="create-wallet-form">
+                            <div class="list no-hairlines-md">
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">New Password (min 8 chars)</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="password" id="password" name="password"
+                                                        placeholder="Enter new password" required />
                                                 </div>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="item-content item-input">
-                                                <div class="item-inner">
-                                                    <div class="item-title item-label">Confirm Password</div>
-                                                    <div class="item-input-wrap">
-                                                        <input type="text" id="confirm-password" name="confirmPassword"
-                                                            placeholder="Confirm Password" required />
-                                                    </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Confirm Password</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="password" id="confirm-password" name="confirmPassword"
+                                                        placeholder="Confirm Password" required />
                                                 </div>
                                             </div>
-                                        </li>
+                                        </div>
+                                    </li>
 
-                                    </ul>
+                                </ul>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-66">
+                                    {{#if errorMessage}}
+                                    {{errorMessage}}
+                                    {{/if}}
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-66"></div>
-                                    <div class="col-33">
-                                        <button id="create-wallet" class="button button-fill" type="submit">Create</button>
-                                    </div>
+                                <div class="col-33">
+                                    <button id="create-wallet" class="button button-fill" type="submit">Create</button>
                                 </div>
+                            </div>
 
-                            </form>
-                        </div>
+                        </form>
+                    </div>
                     {{/if}}
 
                 </div>
@@ -92,6 +117,7 @@
                 let controller = window['walletController']
 
                 await window['Global'].loadComponentState(this, false)
+
 
                 this.$$('#create-wallet-form').on('submit', function (e) {
                     e.preventDefault()

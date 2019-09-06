@@ -1,6 +1,8 @@
 const { app, BrowserWindow } = require('electron')
 const IPFS = require('ipfs')
-
+const { ipcMain } = require('electron')
+const path = require('path')
+const fs = require('fs')
 
 let ipfs 
 
@@ -15,8 +17,6 @@ const stopIpfs = async () => {
   }
 }
 
-
-
 // Handle shutdown gracefully
 const shutdown = () => {
   console.log("Closing...")
@@ -28,12 +28,6 @@ const shutdown = () => {
     process.exit(0)
   }, 1000)
 }
-
-
-
-
-
-
 
 app.on('window-all-closed', shutdown)
 
@@ -96,10 +90,48 @@ app.on('ready', async () => {
   let result = addresses.filter(e => e.includes('p2p-circuit/ip4/127.0.0.1/tcp/4003/ws'))
 
 
+  // @ts-ignore
   global.ipfsHost = result[0]
 
+  // @ts-ignore
+  global.appData = app.getPath("appData")
+  // @ts-ignore
+  global.walletDao  = new WalletDao()
 
   // and load the index.html of the app.
   await mainWindow.loadFile('www/index.html')
 
 })
+
+ipcMain.on('click', () => console.log('do something'));
+
+
+class WalletDao {
+
+  constructor() {
+    let appData = app.getPath("appData")
+    this.walletPath = path.join(appData, 'large-wallet.json')
+  }
+  
+  saveWallet(wallet) {
+
+    try {
+      fs.writeFileSync(this.walletPath, JSON.stringify(wallet))
+    } catch (ex) {
+      console.log(ex)
+    }
+
+  }
+
+  loadWallet() {
+
+    try {
+      let json = fs.readFileSync(this.walletPath).toString()
+    
+      return JSON.parse(json)
+    } catch(ex) {
+      console.log(ex)
+    }
+
+  }
+}

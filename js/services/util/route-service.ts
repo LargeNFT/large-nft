@@ -1,7 +1,7 @@
-import {SettingsService} from "./settings-service";
-import {Global} from "../../global";
-import {Template7} from "framework7";
-import {ModelView} from "../../model-view";
+import { SettingsService } from "./settings-service";
+import { Global } from "../../global";
+import { Template7 } from "framework7";
+import { ModelView } from "../../model-view";
 
 const IPFS = require('ipfs')
 const ipfsClient = require('ipfs-http-client')
@@ -56,21 +56,31 @@ class RouteService {
     private settingsService: SettingsService,
     private identityService: IdentityService,
     private schemaService: SchemaService
-  ) {}
+  ) { }
 
 
   getRoutes(baseurl) {
 
     const self = this
-  
+
     window['settingsController'] = Global.settingsController
 
+    const homeRoute = async function (routeTo, routeFrom, resolve, reject) {
 
-    const homeRoute = async function(routeTo, routeFrom, resolve, reject) {
+      self.initAndResolve(resolve, function () {
 
-      self.initAndResolve(resolve,function() {
-        return Global.walletController.showLanding()
-        // return Global.homeController.showHomePage()
+        if (Global.isElectron) {
+          
+          if (window['currentAccount']) {
+            return Global.homeController.showHomePage()
+          } else {
+            return Global.walletController.showLanding()
+          }
+
+        } else {
+          return Global.homeController.showHomePage()
+        }
+
       })
 
     }
@@ -78,7 +88,7 @@ class RouteService {
     let routes = []
 
     if (baseurl != '/') {
-      routes.push(      {
+      routes.push({
         path: baseurl,
         async: homeRoute
       })
@@ -90,13 +100,14 @@ class RouteService {
     })
 
 
-    routes.push({
-      path: '/landing',
-      async async(routeTo, routeFrom, resolve, reject) {
-        self.resolveController(resolve, Global.walletController.showLanding())
-      }
-    })
-    
+
+    // routes.push({
+    //   path: '/landing',
+    //   async async(routeTo, routeFrom, resolve, reject) {
+    //     self.resolveController(resolve, Global.walletController.showLanding())
+    //   }
+    // })
+
 
     routes.push({
       path: '/createWallet',
@@ -128,7 +139,7 @@ class RouteService {
     routes.push({
       path: '/profile/static/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
+        self.initAndResolve(resolve, function () {
           return Global.profileController.showStaticProfile(routeTo.params.id)
         })
 
@@ -138,7 +149,7 @@ class RouteService {
     routes.push({
       path: '/profile/edit',
       async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
+        self.initAndResolve(resolve, function () {
           return Global.profileController.showProfileEdit()
         })
       }
@@ -148,7 +159,7 @@ class RouteService {
     routes.push({
       path: '/post/show/:id',
       async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
+        self.initAndResolve(resolve, function () {
           return Global.postController.showPost(routeTo.params.id)
         })
 
@@ -159,7 +170,7 @@ class RouteService {
     routes.push({
       path: '/connect',
       async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
+        self.initAndResolve(resolve, function () {
           return Global.connectController.showHome()
         })
       }
@@ -168,12 +179,19 @@ class RouteService {
     routes.push({
       path: '/following',
       async async(routeTo, routeFrom, resolve, reject) {
-        self.initAndResolve(resolve,function() {
+        self.initAndResolve(resolve, function () {
           return Global.followController.showFollowing()
         })
       }
     })
 
+    // routes.push({
+    //   path: '/logout',
+    //   async async(routeTo, routeFrom, resolve, reject) {
+    //     Global.walletService.logout()
+    //     Global.navigate("/")
+    //   }
+    // })
 
 
 
@@ -194,7 +212,7 @@ class RouteService {
 
 
   async configureWeb3() {
-      
+
     if (!window['ethereum']) return
 
     // Request account access
@@ -206,27 +224,26 @@ class RouteService {
     //@ts-ignore
     web3 = new Web3(window.web3Provider)
 
-    await this.setCurrentAccount()
-
-  }
-
-  async setCurrentAccount() {
-    
     //@ts-ignore
     const accounts = await promisify(cb => web3.eth.getAccounts(cb))
 
     let account = accounts[0]
     window['currentAccount'] = account
 
+
   }
+
 
 
 
   async initialize() {
 
     if (Global.ipfs) return
+    if (!Global.wallet) return
 
-    let settings:Settings = this.settingsService.getSettings()
+    console.log(`Initializing with wallet ${Global.wallet.address}`)
+
+    let settings: Settings = this.settingsService.getSettings()
     if (!settings) {
       throw 'No settings found'
     }
@@ -238,15 +255,15 @@ class RouteService {
 
     if (Global.isElectron) {
       //electron
-      await this.configureElectron();
+      await this.configureElectron()
     } else {
       //browser
-      await this.configureBrowser();
+      await this.configureBrowser()
     }
 
 
 
-    
+
 
     //Ropsten
     Whitepages.networks["3"] = {
@@ -289,13 +306,13 @@ class RouteService {
 
     Global.orbitAccessControl = this.identityService.getAccessController(Global.orbitDb)
 
-    
+
 
     //Look up main address
     let mainStore
     try {
       mainStore = await this.schemaService.getMainStoreByWalletAddress(window['currentAccount'])
-    } catch(ex) {
+    } catch (ex) {
       console.log(ex)
     }
 
@@ -303,13 +320,13 @@ class RouteService {
 
     //If it doesn't exist create it
     if (!mainStore) {
-      mainStore = await this.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, window['currentAccount'] )
+      mainStore = await this.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, window['currentAccount'])
     }
 
-    
+
 
     //Detect whether or not we already have a schema
-    let schema:Schema = await this.schemaService.getSchema(mainStore, window['currentAccount'])
+    let schema: Schema = await this.schemaService.getSchema(mainStore, window['currentAccount'])
 
     if (!schema) {
       await this.schemaService.generateSchema(Global.orbitDb, Global.orbitAccessControl, mainStore, window['currentAccount'])
@@ -325,7 +342,6 @@ class RouteService {
     await this.schemaService.updateSchema(mainStore, schema, window['currentAccount'])
 
 
-    Global.walletService = new WalletService()
     Global.imageService = new ImageService()
     Global.profileService = new ProfileService()
     Global.postService = new PublicPostService(this.schemaService)
@@ -333,7 +349,7 @@ class RouteService {
     Global.friendService = new FriendService(Global.postService)
     // Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService)
 
-    
+
     Global.uploadService = new UploadService()
     Global.quillService = new QuillService(Global.uploadService)
     Global.whitepagesService = new WhitepagesService(contract)
@@ -342,18 +358,16 @@ class RouteService {
     Global.homeController = new HomeController(Global.quillService, Global.postUiService, Global.profileService, Global.imageService)
     Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postUiService, Global.imageService)
     Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
-    Global.postController = new PostController( Global.quillService, Global.postUiService, Global.profileService, Global.imageService)
+    Global.postController = new PostController(Global.quillService, Global.postUiService, Global.profileService, Global.imageService)
     Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.listingService, Global.friendService, Global.profileService, Global.imageService)
     Global.followController = new FollowController(Global.friendService, Global.profileService)
-    Global.walletController = new WalletController(Global.walletService)
 
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController
     window['postController'] = Global.postController
     window['connectController'] = Global.connectController
-    window['settingsController'] = Global.settingsController
     window['followController'] = Global.followController
-    window['walletController'] = Global.walletController
+
 
     console.log("Initialization complete")
 
@@ -361,13 +375,10 @@ class RouteService {
 
 
   private async configureElectron() {
-  
-    //@ts-ignore
-    const remote = window.require('electron').remote;
 
     //@ts-ignore
-    Global.ipfsHost = remote.getGlobal('ipfsHost');
-    
+    Global.ipfsHost = remote.getGlobal('ipfsHost')
+
     Global.ipfs = await IPFS.create({
       EXPERIMENTAL: {
         pubsub: true
@@ -389,7 +400,7 @@ class RouteService {
   }
 
   private async configureBrowser() {
-    
+
     Global.ipfs = await IPFS.create({
       EXPERIMENTAL: {
         pubsub: true
@@ -416,7 +427,7 @@ class RouteService {
     try {
       await this.initialize()
       this.resolveController(resolve, successFunction())
-    } catch(ex) {
+    } catch (ex) {
       console.log(ex)
       Global.showExceptionPopup(ex)
       // Global.navigate("/settings")
@@ -434,10 +445,10 @@ class RouteService {
       if (!modelView) return
 
       resolve({
-          componentUrl: modelView.view
-        },
+        componentUrl: modelView.view
+      },
         {
-          context: { fn: modelView.model}
+          context: { fn: modelView.model }
         })
 
     } catch (ex) {

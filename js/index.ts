@@ -12,6 +12,8 @@ import { WhitepagesService } from "./services/whitepages-service";
 import { Dom7 } from "framework7";
 import { Template7 } from "framework7/js/framework7.bundle";
 import { ConnectController } from "./controllers/connect-controller";
+import { WalletService } from "./services/wallet-service";
+import { WalletController } from "./controllers/wallet-controller";
 const { utils, providers, ethers, Wallet } = require('ethers')
 const IPFS = require('ipfs')
 
@@ -37,6 +39,9 @@ module.exports = function() {
   /*********************************************/
 
   //@ts-ignore
+  window['remote'] = window.require('electron').remote
+
+  //@ts-ignore
   if (window['web3']) {
     
     //@ts-ignore
@@ -50,27 +55,29 @@ module.exports = function() {
     let defaultProviders =  ethers.getDefaultProvider("homestead")
 
     Global.provider = defaultProviders.providers[0]
-
-    if (!Global.wallet) {
-      Global.wallet = Wallet.createRandom() //redirect to force the user to create a new one, probably
-      Global.wallet = Global.wallet.connect(Global.provider)
-    }
-    
-
-    window['currentAccount'] = Global.wallet.address
-
+        
     Global.isElectron = true
 
   }
   
+  
 
+  Global.walletService = new WalletService()
   Global.identityService = new IdentityService()
   Global.settingsService = new SettingsService()
   Global.templateService = new TemplateService()
   Global.schemaService = new SchemaService()
   Global.queueService = new QueueService(Global.templateService)
   Global.routeService = new RouteService(Global.settingsService, Global.identityService, Global.schemaService)
+
+  
   Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
+  Global.walletController = new WalletController(Global.walletService)
+
+
+  window['settingsController'] = Global.settingsController
+  window['walletController'] = Global.walletController
+
 
   //Template7 helpers
   

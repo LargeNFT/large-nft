@@ -2,6 +2,7 @@ import { ModelView } from "../model-view";
 import { WalletService } from "../services/wallet-service";
 import { Global } from "../global";
 import { Dom7 } from "framework7";
+import { globalAgent } from "https";
 
 var $$ = Dom7
 
@@ -14,7 +15,13 @@ class WalletController {
 
     async showLanding(): Promise<ModelView> {
         return new ModelView(async () => {
-            return {}
+
+            let existingWallet = await this.walletService.getWallet()
+
+            return {
+                showUnlock: (existingWallet)
+            }
+
         }, 'pages/wallet/landing.html')
     }
 
@@ -25,35 +32,61 @@ class WalletController {
 
     async createWalletClick(e:Event, component) {
 
-        //@ts-ignore
-        document.getElementById("confirm-password").setCustomValidity("")
+        component.$setState({})
 
         var formData = Global.app.form.convertToData('#create-wallet-form');
 
-        console.log(formData)
-
+        //Validate
         if (formData.password != formData.confirmPassword) {
-            console.log('here')
-            //@ts-ignore
-            document.getElementById("confirm-password").setCustomValidity("Passwords don't match")
-        } else {
-            Global.wallet = await this.walletService.createWallet()
-            Global.wallet = Global.wallet.connect(Global.provider)
-    
+
             component.$setState({
-                mnemonic: Global.wallet.mnemonic
+                errorMessage: "Passwords must match"
             })
+        
+            return
         }
+
+        //Create new wallet
+        await this.walletService.createWallet(formData.password)
+
+
+        component.$setState({
+            mnemonic: Global.wallet.mnemonic
+        })
 
 
 
     }
 
 
+    async unlockButtonClick(e:Event, component) {
+
+        console.log('Unlock button clicked')
+
+        component.$setState({})
+
+        var formData = Global.app.form.convertToData('#unlock-wallet-form');
+
+        try {
+            await this.walletService.unlockWallet(formData.password)
+            console.log('Navigating to')
+            Global.navigate("/")
+        } catch(ex) {
+            console.log(ex)
+            component.$setState({
+                errorMessage: "Error unlocking wallet"
+            })
+        }
+
+    }
+
+
+
     async showEnterRecovery(): Promise<ModelView> {
         return new ModelView(async () => {
             return {}
-        }, 'pages/wallet/enter-recovery.html')    }
+        }, 'pages/wallet/enter-recovery.html')    
+    }
 
 }
 

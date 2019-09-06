@@ -87,7 +87,10 @@ export namespace Global {
   export var profileResultTemplate
 
   export function navigate(url: string) {
-    Global.app.view.main.router.navigate(url)
+    Global.app.view.main.router.navigate(url, {
+      reloadCurrent: true,
+      ignoreCache: true
+    })
   }
 
   export function showExceptionPopup(ex) {

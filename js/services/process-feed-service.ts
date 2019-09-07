@@ -9,6 +9,10 @@ class ProcessFeedService {
     processing: boolean = false
     queuedPosts: Post[] = []
 
+    
+    //My friend's feed stores
+    friendStores: any[]
+
     constructor(
         private postService: PublicPostService,
         private friendService: FriendService

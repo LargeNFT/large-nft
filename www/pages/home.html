@@ -3,28 +3,16 @@
 
   <div class="page" data-name="home">
 
-    <div class="navbar">
-      <div class="navbar-inner sliding">
-        <div class="left">
-          <a class="link" href="/">
-            <i class="f7-icons">home</i>
-          </a>
+
+    <div class="toolbar tabbar toolbar-top main-tabs">
+        <div class="toolbar-inner">
+          <a href="/" class="tab-link tab-link-active"><i class="f7-icons">home</i> Home</a>
+          <a href="/profile/static/{{currentAccount}}" class="tab-link"><i class="f7-icons">person</i> Profile</a>
+          <a href="/following" class="tab-link"><i class="f7-icons">persons</i> Friends</a>
+          <a href="/connect" class="tab-link"><i class="f7-icons">world</i> Connect</a>
         </div>
-        <div class="right">
+    </div>  
 
-          <a class="link" href="/profile/static/{{currentAccount}}">
-            <i class="f7-icons">person</i>
-            <span>Profile</span>
-          </a>
-
-          <a class="link" href="/connect">
-            <i class="f7-icons">persons</i>
-            <span>Connect</span>
-          </a>
-
-        </div>
-      </div>
-    </div>
 
     <div class="page-content infinite-scroll-content">
 
@@ -66,11 +54,8 @@
         <div class="col-100 tablet-50 center">
 
           <div class="list media-list">
-
             <ul id="post-list">
-
             </ul>
-
           </div>
 
           <div class="preloader infinite-scroll-preloader"></div>

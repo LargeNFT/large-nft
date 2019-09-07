@@ -3,27 +3,16 @@
 
   <div class="page" data-name="home">
 
-    <div class="navbar">
-      <div class="navbar-inner sliding">
-        <div class="left">
 
+    <div class="toolbar tabbar toolbar-top main-tabs">
+        <div class="toolbar-inner">
+          <a href="/" class="tab-link"><i class="f7-icons">home</i> Home</a>
+          <a href="/profile/static/{{currentAccount}}" class="tab-link"><i class="f7-icons">person</i> Profile</a>
+          <a href="/following" class="tab-link"><i class="f7-icons">persons</i> Friends</a>
+          <a href="/connect" class="tab-link tab-link-active"><i class="f7-icons">world</i> Connect</a>
         </div>
-        <div class="right">
-
-          <a class="link" href="/">
-            <i class="f7-icons">home</i>
-            <span>Home</span>
-          </a>
-
-          <a class="link" href="/profile/static/{{currentAccount}}">
-            <i class="f7-icons">person</i>
-            <span>Profile</span>
-          </a>
-
-        </div>
-      </div>
-
-    </div>
+    </div>  
+  
 
 
 
@@ -32,30 +21,10 @@
       <div class="row">
         <div class="col-100 tablet-50 center">
 
-          <div class="block-title">Follow</div>
-          <div class="block">
-              <div class="row">
-                  <input class="col-80" type="text" id="friendAddress" placeholder="Enter your friend's wallet address">
-                  <a class="button button-round button-outline col-20" id="findFriend" >Find</a>
-              </div>
-
-              {{#if foundFriend}}
-                {{#with foundFriend}}
-                  <div class="list media-list">
-                    <ul>
-                      {{> "profileResult"}}
-                    </ul>
-                  </div>
-                {{/with}}
-              {{/if}}
-
-          </div>
-
-
           <div class="block-title">IPFS Peers</div>
           <div class="block">
                 
-            <div class="list media-list">
+            <div class="list media-list peer-list">
               <ul>
                   {{#each peers}}
                   <li>
@@ -73,27 +42,6 @@
               
           </div>
 
-          <div class="block">
-              <a href="/following">Following</a>
-          </div>
-
-
-          <hr />
-<!-- 
-          {{#if showRegisterButton}}
-            <div class="block">
-              <a href="#" class="button button-fill button-round" id="register-link">Register</a>
-            </div>
-          {{/if}}
-
-          <div class="block-title">People</div>
-          <div class="list media-list">
-    
-           <ul>
-
-            </ul>
-
-          </div> -->
 
         </div>
       </div>
@@ -123,10 +71,7 @@
             controller.registerClick(e)
         })
 
-        this.$$('#findFriend').on('click', function (e) {
-            e.preventDefault()
-            controller.findFriendClick(e, self)
-        })
+
 
       }
     },

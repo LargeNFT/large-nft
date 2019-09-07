@@ -76,7 +76,8 @@ class ProfileController {
           loaded: true,
           posts: posts,
           profile: profile,
-          showEditLink: showEditLink
+          showEditLink: showEditLink,
+          currentAccount: window['currentAccount']
         }
 
         return model 

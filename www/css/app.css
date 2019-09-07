@@ -21,13 +21,13 @@
 
 
 @media screen and (min-width:1024px) {
-  .navbar .left {
-    margin-left: 25%;
+
+  .main-tabs {
+    width: 50%;
+    margin: 0 25%;
   }
-  
-  .navbar .right {
-    margin-right: 25%;
-  }
+
+
 }
 
 .navbar a span {
@@ -269,4 +269,17 @@ hr:before {
 
 .mnemonic {
   font-size: 30px;
+}
+
+
+.toolbar .f7-icons {
+  font-size: 13px;
+}
+
+.toolbar .tab-link {
+  font-size: 8px;
+}
+
+.peer-list .item-subtitle {
+  font-size: 9px;
 }

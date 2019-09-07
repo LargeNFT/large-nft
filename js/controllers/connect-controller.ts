@@ -23,10 +23,7 @@ class ConnectController {
     constructor(
         private whitepageService: WhitepagesService,
         private queueService: QueueService,
-        private listingService: ListingService,
-        private friendService: FriendService,
-        private profileService: ProfileService,
-        private imageService:ImageService
+        private friendService: FriendService
     ) {
         
     }
@@ -36,16 +33,6 @@ class ConnectController {
 
         return new ModelView( async () => {
 
-            await this.friendService.loadStoreForWallet(window['currentAccount'])
-            await this.friendService.load()
-
-            let registeredOrbitAddress = await this.whitepageService.read(window['currentAccount'])
-
-
-            let showRegisterButton = (registeredOrbitAddress)
-            let showUpdateButton = !showRegisterButton
-
-            // let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
 
             let peers = await Global.ipfs.swarm.peers()
             
@@ -53,10 +40,7 @@ class ConnectController {
 
             return {
                 peers: peers,
-                currentAccount: window['currentAccount'],
-                registeredOrbitAddress: registeredOrbitAddress,
-                showRegisterButton: showRegisterButton,
-                showUpdateButton: showUpdateButton
+                currentAccount: window['currentAccount']
             }
             
         }, 'pages/connect/home.html')
@@ -66,45 +50,6 @@ class ConnectController {
 
 
 
-    async findFriendClick(e:Event, component) {
-        
-        Global.showSpinner()
-
-        let profile:Profile 
-
-        try {
-            profile = await this.profileService.getProfileByWallet($$('#friendAddress').val())
-
-            //Convert profile pic to Blob
-            if (profile && profile.profilePic) {
-                profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
-            }
-            
-
-            if (profile) {
-                //Check if we're friends    
-                let friend:Friend = await this.friendService.get(profile._id)
-
-                if (friend) {
-                    profile.following = true
-                }
-            }
-
-
-
-
-        } catch(ex) {
-            console.log(ex)
-        }
-
-        
-        component.$setState({
-            foundFriend: profile
-        })
-
-
-        Global.hideSpinner()
-    }
 
 
     async registerClick(e:Event) {
@@ -126,43 +71,6 @@ class ConnectController {
           )
     }
 
-
-
-    async followClick(e:Event) {
-
-        let friendAddress = $$(e.target).data('id')
-
-
-        let friend:Friend = {
-            address: friendAddress
-        }
-
-        await this.friendService.put(friend)
-
-        $$(e.target)
-            .removeClass("button-outline")
-            .removeClass("follow-link")
-            .addClass("button-fill")
-            .addClass("unfollow-link")
-            .html("Following")
-
-    }
-
-
-    async unfollowClick(e:Event) {
-
-        let friendAddress = $$(e.target).data('id')
-
-
-        await this.friendService.delete(friendAddress)
-
-        $$(e.target)
-            .removeClass("button-fill")
-            .removeClass("unfollow-link")
-            .addClass("button-outline")
-            .addClass("follow-link")
-            .html("Follow")
-    }
 
 
 

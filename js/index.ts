@@ -15,6 +15,7 @@ import { ConnectController } from "./controllers/connect-controller";
 import { WalletService } from "./services/wallet-service";
 import { WalletController } from "./controllers/wallet-controller";
 import { InitService } from "./services/util/init-service";
+import { FollowController } from "./controllers/follow-controller";
 const { utils, providers, ethers, Wallet } = require('ethers')
 const IPFS = require('ipfs')
 
@@ -195,13 +196,13 @@ module.exports = function() {
 
   //Register global click listeners. Probably move somewhere else at some point.
   $$(document).on('click', '.follow-link', async function(e) {
-    let controller:ConnectController = window['connectController']
+    let controller:FollowController = window['followController']
     await controller.followClick(e)
   })
   
 
   $$(document).on('click', '.unfollow-link', async function(e) {
-    let controller:ConnectController = window['connectController']
+    let controller:FollowController = window['followController']
     await controller.unfollowClick(e)
   })
   

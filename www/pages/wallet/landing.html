@@ -3,109 +3,111 @@
 
     <div class="page" data-name="home">
 
-      <div class="page-content">
+        <div class="page-content">
 
-        <div class="row">
-          <div class="col-100 tablet-50 center margin-top">
-              <div class="block-title">New to Large?</div>
-              <div class="list media-list">
-                  <ul>
-                      <li>
-                          <a href="/createWallet">
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title-row">
-                                      <div class="item-title">I'm new, let's get set up!</div>
-                                    </div>
-                                    <div class="item-text">Create a new wallet with a new seed phrase.</div>
-                                  </div>
-                            </div>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="/enterRecovery">
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title-row">
-                                      <div class="item-title">I have a recovery seed phrase.</div>
-                                    </div>
-                                    <div class="item-text">Import your existing wallet using the 12 word recovery seed phrase.</div>
-                                  </div>
-                            </div>
-                          </a>
-                      </li>
-                  </ul>
-              </div>
-
-              {{#if showUnlock}}
-                <div class="block-title">Unlock Wallet</div>
-                <div class="block">
-                    <form id="unlock-wallet-form">
-                        <div class="list no-hairlines-md">
-                            <ul>
-                                <li>
-                                    <div class="item-content item-input">
+            <div class="row">
+                <div class="col-100 tablet-50 center margin-top">
+                    <div class="block-title">New to Large?</div>
+                    <div class="list media-list">
+                        <ul>
+                            <li>
+                                <a href="/createWallet">
+                                    <div class="item-content">
                                         <div class="item-inner">
-                                            <div class="item-title item-label">Password</div>
-                                            <div class="item-input-wrap">
-                                                <input type="password" id="password" name="password"
-                                                    placeholder="Enter new password" required/>
+                                            <div class="item-title-row">
+                                                <div class="item-title">I'm new, let's get set up!</div>
                                             </div>
+                                            <div class="item-text">Create a new wallet with a new seed phrase.</div>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
-                        </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/enterRecovery">
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">I have a recovery seed phrase.</div>
+                                            </div>
+                                            <div class="item-text">Import your existing wallet using the 12 word
+                                                recovery seed phrase.</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-66">
-                                {{#if errorMessage}}
+                    {{#if showUnlock}}
+                    <div class="block-title">Unlock Wallet</div>
+                    <div class="block">
+                        <form id="unlock-wallet-form">
+                            <div class="list no-hairlines-md">
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Password</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="password" id="password" name="password"
+                                                        placeholder="Enter new password" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-66">
+                                    {{#if errorMessage}}
                                     {{errorMessage}}
-                                {{/if}}
+                                    {{/if}}
+                                </div>
+                                <div class="col-33">
+                                    <button id="unlock-wallet" class="button button-fill" type="submit">Unlock</button>
+                                </div>
                             </div>
-                            <div class="col-33">
-                                <button id="unlock-wallet" class="button button-fill" type="submit">Unlock</button>
-                            </div>
-                        </div>
 
-                    </form>
+                        </form>
+                    </div>
+                    {{/if}}
+
+
+
                 </div>
-              {{/if}}
 
+            </div>
 
-
-          </div>
-  
         </div>
-  
-      </div>
 
     </div>
-  
-  </template>
-  
-  
-  
-  
-  <script>
 
-      return {
-          on: {
-              pageInit: async function (e, page) {
-  
-                  const self = this
-  
-                  let controller = window['walletController']
-  
-                  await window['Global'].loadComponentState(this, false)
+</template>
 
-                  this.$$('#unlock-wallet').on('click', function (e) {
+
+
+
+
+<script>
+
+    return {
+        on: {
+            pageInit: async function (e, page) {
+
+                const self = this
+
+                let controller = window['walletController']
+
+                await window['Global'].loadComponentState(this, false)
+
+                this.$$('#unlock-wallet').on('click', function (e) {
                     e.preventDefault()
                     controller.unlockButtonClick(e, self)
                 })
-  
-              }
-          }
-      }
-  
-  </script>
+
+            }
+        }
+    }
+
+</script>

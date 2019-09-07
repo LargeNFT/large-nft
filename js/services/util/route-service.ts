@@ -241,7 +241,7 @@ class RouteService {
     if (Global.ipfs) return
     if (!Global.wallet) return
 
-    console.log(`Initializing with wallet ${Global.wallet.address}`)
+    console.log(`Initializing with wallet ${await Global.wallet.getAddress()}`)
 
     let settings: Settings = this.settingsService.getSettings()
     if (!settings) {

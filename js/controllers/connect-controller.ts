@@ -45,7 +45,7 @@ class ConnectController {
             let showRegisterButton = (registeredOrbitAddress)
             let showUpdateButton = !showRegisterButton
 
-            let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
+            // let profiles:Profile[] = await this.listingService.getListingProfiles(10, 0)
 
             let peers = await Global.ipfs.swarm.peers()
             
@@ -55,7 +55,6 @@ class ConnectController {
                 peers: peers,
                 currentAccount: window['currentAccount'],
                 registeredOrbitAddress: registeredOrbitAddress,
-                profiles: profiles,
                 showRegisterButton: showRegisterButton,
                 showUpdateButton: showUpdateButton
             }

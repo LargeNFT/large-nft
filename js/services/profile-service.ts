@@ -25,7 +25,20 @@ class ProfileService {
     await this.loadStoreForWallet(walletAddress)
     await this.store.load()
 
-    return this.read(walletAddress)
+    let profile:Profile = await this.read(walletAddress)
+    
+    if (profile) return profile
+
+    if (walletAddress == window['currentAccount']) return //probably not the best way to handle this
+
+
+    return new Promise((resolve, reject) => {
+      this.store.events.on('replicated', async () => {
+        console.log(`Replicated profile for ${walletAddress}`)
+        let profile:Profile = await this.read(walletAddress)
+        resolve(profile)
+      })
+    })
   }
 
 

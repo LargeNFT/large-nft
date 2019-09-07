@@ -35,7 +35,17 @@ class SchemaService {
         let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
         let schema:Schema = await this.getSchema(mainStore, walletAddress)
 
-        if (!schema) throw new Error(`Schema for wallet ${walletAddress} could not be found`)
+        if (schema) return schema
+        
+        return new Promise((resolve, reject) => {
+            mainStore.events.on('replicated', async () => {
+                console.log(`Replicated main store for ${walletAddress}`)
+                let schema:Schema = await this.getSchema(mainStore, walletAddress)
+                resolve(schema)
+            })
+        })
+        
+        // throw new Error(`Schema for wallet ${walletAddress} could not be found`)
 
         return schema
     }
@@ -53,12 +63,7 @@ class SchemaService {
 
         //Try to open it
         mainStore = await Global.orbitDb.open(mainStoreAddress)
-
         await mainStore.load()
-
-        mainStore.events.on('replicated', () => {
-            console.log('replicated')
-        })
 
         return mainStore
 

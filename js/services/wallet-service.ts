@@ -27,15 +27,15 @@ class WalletService {
         let encryptedJsonWallet = await wallet.encrypt(password)        
         this.walletDao.saveWallet(encryptedJsonWallet)
         
-        this.connectWallet(wallet)
+        return this.connectWallet(wallet)
 
     }
 
-    connectWallet(wallet) {
+    async connectWallet(wallet) {
         Global.wallet = wallet
         Global.wallet = Global.wallet.connect(Global.provider)
 
-        window['currentAccount'] = Global.wallet.address
+        window['currentAccount'] = await Global.wallet.getAddress()
     }
 
 
@@ -50,7 +50,7 @@ class WalletService {
 
         let wallet = await Wallet.fromEncryptedJson(savedWallet, password)
 
-        this.connectWallet(wallet)
+        return this.connectWallet(wallet)
 
     }
 
@@ -67,7 +67,7 @@ class WalletService {
         let encryptedJsonWallet = await wallet.encrypt(password)        
         this.walletDao.saveWallet(encryptedJsonWallet)
 
-        this.connectWallet(wallet)
+        return this.connectWallet(wallet)
 
     }
 

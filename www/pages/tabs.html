@@ -1,0 +1,25 @@
+<!--suppress JSAnnotator -->
+<template>
+    <div class="page">
+        <div class="toolbar tabbar toolbar-bottom">
+            <div class="toolbar-inner">
+                <a href="./" class="tab-link" data-route-tab-id="home">
+                    <i class="f7-icons">home</i>
+                </a>
+                <a href="profile/{{currentAccount}}" class="tab-link" data-route-tab-id="profile">
+                    <i class="f7-icons">person</i>
+                    <span>Profile</span>
+                </a>
+                <a href="connect/" class="tab-link" data-route-tab-id="connect">
+                    <i class="f7-icons">persons</i>
+                    <span>Connect</span>
+                </a>
+            </div>
+        </div>
+        <div class="tabs tabs-routable">
+            <div class="page-content tab" id="home"></div>
+            <div class="page-content tab" id="profile"></div>
+            <div class="page-content tab" id="connect"></div>
+        </div>
+    </div>
+</template>

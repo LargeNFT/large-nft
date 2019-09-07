@@ -31,7 +31,6 @@ class ProfileService {
 
     if (walletAddress == window['currentAccount']) return //probably not the best way to handle this
 
-
     return new Promise((resolve, reject) => {
       this.store.events.on('replicated', async () => {
         console.log(`Replicated profile for ${walletAddress}`)

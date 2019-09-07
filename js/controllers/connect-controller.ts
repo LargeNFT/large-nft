@@ -68,6 +68,8 @@ class ConnectController {
 
     async findFriendClick(e:Event, component) {
         
+        Global.showSpinner()
+
         let profile:Profile 
 
         try {
@@ -101,7 +103,7 @@ class ConnectController {
         })
 
 
-
+        Global.hideSpinner()
     }
 
 

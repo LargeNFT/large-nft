@@ -12,7 +12,7 @@ const moment = require('moment')
 
 class PublicPostService {
 
-  maxPostsPerFeed: number = 1000
+  maxPostsPerFeed: number = 3
 
   setFeed(feed) {
     this.feedStore = feed
@@ -71,8 +71,24 @@ class PublicPostService {
     //Load the list of feeds
     await this.feedStore.load()
 
-    //Load the first one.
-    await this.loadChildFeed()
+    this.feedStore.events.on("replicated", async () => {
+
+      console.log('Finished replicating primary post feed')
+
+      //Force open the new secondary 
+      let feedInfo = await this.getFeedInfo()
+
+      let newChildFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
+      await newChildFeedStore.load()
+
+
+      newChildFeedStore.events.on("replicated", () => {
+        console.log(newChildFeedStore._replicationStatus)
+        console.log('Finished replicating secondary post feed (loadPostFeed)')
+      })
+
+    })
+
 
   }
 
@@ -98,7 +114,7 @@ class PublicPostService {
 
   }
 
-  async loadChildFeed(otherThan:string=undefined) {
+  async loadChildFeed(otherThan:string=undefined) : Promise<void> {
 
       let feedInfo = await this.getFeedInfo(otherThan)
   
@@ -110,15 +126,13 @@ class PublicPostService {
   
           this.childFeedStoreCid = feedInfo.feedCid
           this.childFeedLoadedIndex = feedInfo.index
+
         } catch(ex) {
           console.log(ex)
         }
 
       }
   }
-
-
-
 
   // @timeout(2000)
   async getRecentPosts(limit:number, olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
@@ -127,7 +141,6 @@ class PublicPostService {
 
     //Load first feed
     await this.loadChildFeed()
-
 
     let feedsRead = 0
     let totalFeeds = this.countFeedStore()
@@ -168,6 +181,9 @@ class PublicPostService {
       results.push(...feedResults)
 
       feedsRead++
+
+      //Close connection to child
+      // await this.childFeedStore.close()
 
       //Load next feed
       await this.loadChildFeed(this.childFeedStoreCid)
@@ -223,6 +239,8 @@ class PublicPostService {
 
   async getFeedInfo(lt:string=undefined, gt:string=undefined) {
 
+    if (!this.feedStore) return
+
     let index=0
 
     let options: any = {
@@ -277,8 +295,6 @@ class PublicPostService {
 
   }
 
-
-
   async create(post: Post): Promise<Post> {
 
     //Load the right post feed.
@@ -321,9 +337,6 @@ class PublicPostService {
 
   }
 
-
-
-
   static async read(cid: string): Promise<Post> {
 
     let loaded = await Global.ipfs.object.get(cid)
@@ -339,21 +352,10 @@ class PublicPostService {
     return post
   }
 
-
   async delete(post: Post): Promise<void> {
     await Global.ipfs.object.delete(post.cid)
     await this.feedStore.remove(post.feedCid)
   }
-
-
-
-
-
-  
-
-
-
-
 
   countFeedStore() : number {
     return this.countLoaded(this.feedStore)  

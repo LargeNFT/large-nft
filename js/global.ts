@@ -24,6 +24,7 @@ import { PostUIService } from "./services/post-ui-service";
 import { ImageService } from "./services/util/image-service";
 import { WalletController } from "./controllers/wallet-controller";
 import { WalletService } from "./services/wallet-service";
+import { InitService } from "./services/util/init-service";
 
 
 export namespace Global {  
@@ -35,6 +36,7 @@ export namespace Global {
   export var templateService: TemplateService
   export var settingsService: SettingsService
   export var queueService: QueueService
+  export var initService:InitService
   export var routeService: RouteService
 
   /** Controllers */
@@ -115,6 +117,15 @@ export namespace Global {
     component.$setState(model)
     
     if (showSpinner) Global.app.preloader.hide()
+  }
+
+
+  export function showSpinner() {
+    Global.app.preloader.show() 
+  }
+
+  export function hideSpinner() {
+    Global.app.preloader.hide()
   }
 
 

@@ -14,6 +14,7 @@ import { Template7 } from "framework7/js/framework7.bundle";
 import { ConnectController } from "./controllers/connect-controller";
 import { WalletService } from "./services/wallet-service";
 import { WalletController } from "./controllers/wallet-controller";
+import { InitService } from "./services/util/init-service";
 const { utils, providers, ethers, Wallet } = require('ethers')
 const IPFS = require('ipfs')
 
@@ -70,7 +71,8 @@ module.exports = function() {
   Global.templateService = new TemplateService()
   Global.schemaService = new SchemaService()
   Global.queueService = new QueueService(Global.templateService)
-  Global.routeService = new RouteService(Global.settingsService, Global.identityService, Global.schemaService)
+  Global.initService = new InitService(Global.settingsService, Global.identityService, Global.schemaService)
+  Global.routeService = new RouteService(Global.initService)
 
   
   Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)

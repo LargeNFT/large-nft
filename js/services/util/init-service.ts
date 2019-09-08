@@ -29,6 +29,9 @@ import { UploadService } from "./upload-service";
 import { IdentityService } from "./identity-service";
 import { SchemaService } from "./schema-service";
 import { Schema } from "../../dto/schema";
+import { ProcessFeedService } from "../process-feed-service";
+const EventEmitter = require('events').EventEmitter
+
 
 class InitService {
 
@@ -136,7 +139,8 @@ class InitService {
         }
     
     
-    
+        Global.eventEmitter = new EventEmitter()
+
         //Open profile store
         Global.mainStore = mainStore
     
@@ -149,7 +153,7 @@ class InitService {
         Global.postService = new PublicPostService(this.schemaService)
         Global.postUiService = new PostUIService(Global.postService, Global.profileService, this.schemaService, Global.imageService)
         Global.friendService = new FriendService(Global.postService)
-        // Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService)
+        Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService)
     
     
         Global.uploadService = new UploadService()

@@ -1,14 +1,7 @@
 import { Post } from "../dto/post";
-import { Template7 } from "framework7";
 import { Global } from "../global";
-import { ProfileService } from "./profile-service";
-import { Profile } from "../dto/profile";
 import { SchemaService } from "./util/schema-service";
-import { timeout } from "../timeout-promise";
-import { Schema } from "../dto/schema";
-import { exists } from "fs";
-const moment = require('moment')
-
+import { ProcessFeedService } from "./process-feed-service";
 
 class PublicPostService {
 
@@ -18,19 +11,27 @@ class PublicPostService {
     this.feedStore = feed
   }
 
+  getFeed() {
+    return this.feedStore
+  }
+
   setChildFeed(childFeed) {
     this.childFeedStore = childFeed
   }
 
-  setMaxPostsPerFeed(max:number) {
+  getChildFeed() {
+    return this.childFeedStore
+  }
+
+  setMaxPostsPerFeed(max: number) {
     this.maxPostsPerFeed = max
   }
 
-  private feedType:string
+  private feedType: string
   private feedStore: any
 
   private childFeedStore: any
-  private childFeedStoreCid: string 
+  private childFeedStoreCid: string
   private childFeedLoadedIndex: number
 
   constructor(
@@ -38,29 +39,29 @@ class PublicPostService {
   ) { }
 
 
-  
+
 
   // @timeout(10000)
-  async loadPostFeedForWallet(walletAddress: string){
+  async loadPostFeedForWallet(walletAddress: string) {
     let postFeed = await this.schemaService.getPostFeedByWalletAddress(walletAddress)
     return this.loadPostFeed(postFeed, "post")
   }
 
   // @timeout(10000)
-  async loadMainFeedForWallet(walletAddress: string){
+  async loadMainFeedForWallet(walletAddress: string) {
     let mainFeed = await this.schemaService.getMainFeedByWalletAddress(walletAddress)
     return this.loadPostFeed(mainFeed, "main")
   }
 
   // @timeout(10000)
-  async loadRepliesFeed(feedAddress:string) {
+  async loadRepliesFeed(feedAddress: string) {
     let repliesFeed = await Global.orbitDb.open(feedAddress)
     return this.loadPostFeed(repliesFeed, "reply")
   }
 
 
 
-  private async loadPostFeed(postFeed, type:string) {
+  private async loadPostFeed(postFeed, type: string) {
 
     this.feedType = type
 
@@ -71,29 +72,36 @@ class PublicPostService {
     //Load the list of feeds
     await this.feedStore.load()
 
-    this.feedStore.events.on("replicated", async () => {
-
-      console.log('Finished replicating primary post feed')
-
-      //Force open the new secondary 
-      let feedInfo = await this.getFeedInfo()
-
-      let newChildFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
-      await newChildFeedStore.load()
-
-
-      newChildFeedStore.events.on("replicated", () => {
-        console.log(newChildFeedStore._replicationStatus)
-        console.log('Finished replicating secondary post feed (loadPostFeed)')
-      })
-
-    })
+    this.monitorPostFeed(this.feedStore)
 
 
   }
 
 
-  private async createAndLoadNewChildFeed(identifier:string, type:string) {
+  async monitorPostFeed(postFeed) {
+
+    postFeed.events.on("replicated", async () => {
+
+      // console.log('Finished replicating primary post feed')
+
+      //Force open the new secondary 
+      let feedInfo = await this.getFeedInfo(postFeed)
+      let newChildFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
+
+      newChildFeedStore.events.on("replicate.progress", (address, hash, entry, progress, max) => {
+        // console.log('Finished replicating secondary post feed (loadPostFeed)')
+        Global.eventEmitter.emit("post-added", address, hash, entry)
+      })
+
+      await newChildFeedStore.load()
+
+    })
+  }
+
+
+
+
+  private async createAndLoadNewChildFeed(identifier: string, type: string) {
 
     //Name the next feed
     let countExistingFeeds = this.countFeedStore()
@@ -114,28 +122,28 @@ class PublicPostService {
 
   }
 
-  async loadChildFeed(otherThan:string=undefined) : Promise<void> {
+  async loadChildFeed(otherThan: string = undefined): Promise<void> {
 
-      let feedInfo = await this.getFeedInfo(otherThan)
-  
-      if (feedInfo) {
+    let feedInfo = await this.getFeedInfo(this.feedStore, otherThan)
 
-        try {
-          this.childFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
-          await this.childFeedStore.load()
-  
-          this.childFeedStoreCid = feedInfo.feedCid
-          this.childFeedLoadedIndex = feedInfo.index
+    if (feedInfo) {
 
-        } catch(ex) {
-          console.log(ex)
-        }
+      try {
+        this.childFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
+        await this.childFeedStore.load()
 
+        this.childFeedStoreCid = feedInfo.feedCid
+        this.childFeedLoadedIndex = feedInfo.index
+
+      } catch (ex) {
+        console.log(ex)
       }
+
+    }
   }
 
   // @timeout(2000)
-  async getRecentPosts(limit:number, olderThan:string=undefined, newerThan:string=undefined): Promise<Post[]> {
+  async getRecentPosts(limit: number, olderThan: string = undefined, newerThan: string = undefined): Promise<Post[]> {
 
     let results = []
 
@@ -147,8 +155,8 @@ class PublicPostService {
 
     let locatedExisting = false
 
-    while(totalFeeds > 0 && results.length < limit && feedsRead < totalFeeds) {
-      
+    while (totalFeeds > 0 && results.length < limit && feedsRead < totalFeeds) {
+
       let leftToAdd = limit - results.length
 
       let feedResults = []
@@ -162,12 +170,12 @@ class PublicPostService {
           feedResults = await this.getPosts(olderThan, newerThan)
           locatedExisting = true
         } else {
-          if ( (newerThan && !locatedExisting) || olderThan && locatedExisting ) {
+          if ((newerThan && !locatedExisting) || olderThan && locatedExisting) {
             feedResults = await this.getPosts()
           }
-          
+
         }
-  
+
       } else {
         feedResults = await this.getPosts()
       }
@@ -177,7 +185,7 @@ class PublicPostService {
       if (leftToAdd < feedResults.length) {
         feedResults = feedResults.slice(0, leftToAdd)
       }
-      
+
       results.push(...feedResults)
 
       feedsRead++
@@ -187,12 +195,12 @@ class PublicPostService {
 
       //Load next feed
       await this.loadChildFeed(this.childFeedStoreCid)
-    } 
+    }
 
-    let posts:Post[] = []
+    let posts: Post[] = []
     for (var result of results) {
 
-      let post:Post = await PublicPostService.read(result.cid)
+      let post: Post = await PublicPostService.read(result.cid)
       post.feedCid = result.feedCid
       posts.push(post)
 
@@ -202,7 +210,7 @@ class PublicPostService {
 
   }
 
-  async getPosts(olderThan:string=undefined, newerThan:string=undefined): Promise<any> {
+  async getPosts(olderThan: string = undefined, newerThan: string = undefined): Promise<any> {
 
     if (!this.childFeedStore) return []
 
@@ -230,18 +238,18 @@ class PublicPostService {
         }
 
         return model
-    })
+      })
 
 
 
     return results
   }
 
-  async getFeedInfo(lt:string=undefined, gt:string=undefined) {
+  async getFeedInfo(feedStore, lt: string = undefined, gt: string = undefined) {
 
     if (!this.feedStore) return
 
-    let index=0
+    let index = 0
 
     let options: any = {
       limit: 1
@@ -256,7 +264,7 @@ class PublicPostService {
     }
 
 
-    let results = await this.feedStore.iterator(options)
+    let results = await feedStore.iterator(options)
       .collect()
       .map((e) => {
 
@@ -269,7 +277,7 @@ class PublicPostService {
         index++
 
         return model
-    })
+      })
 
     if (results && results.length > 0) {
       return results[0]
@@ -278,27 +286,27 @@ class PublicPostService {
 
   }
 
-  async existsInFeed(olderThan:string, newerThan:string) {
+  async existsInFeed(olderThan: string, newerThan: string) {
 
-    let exists:boolean = false
+    let exists: boolean = false
 
-    let results = await this.childFeedStore.iterator({limit:-1})
+    let results = await this.childFeedStore.iterator({ limit: -1 })
       .collect()
       .map((e) => {
 
         if (e.hash == olderThan || e.hash == newerThan) {
           exists = true
         }
-    })
+      })
 
-    return exists 
+    return exists
 
   }
 
   async create(post: Post): Promise<Post> {
 
     //Load the right post feed.
-    let childFeedInfo = await this.getFeedInfo()
+    let childFeedInfo = await this.getFeedInfo(this.feedStore)
 
     if (!this.childFeedStoreCid || !childFeedInfo || childFeedInfo.feedCid != this.childFeedStoreCid) {
       await this.loadChildFeed()
@@ -315,7 +323,7 @@ class PublicPostService {
         await this.createAndLoadNewChildFeed(post.parentCid, this.feedType)
       }
 
-      
+
     }
 
 
@@ -345,7 +353,7 @@ class PublicPostService {
 
     let t = loaded.Data.toString()
 
-    let post:Post = JSON.parse(t)
+    let post: Post = JSON.parse(t)
 
     post.cid = cid.toString()
 
@@ -357,11 +365,11 @@ class PublicPostService {
     await this.feedStore.remove(post.feedCid)
   }
 
-  countFeedStore() : number {
-    return this.countLoaded(this.feedStore)  
+  countFeedStore(): number {
+    return this.countLoaded(this.feedStore)
   }
 
-  countChildFeedStore() : number {
+  countChildFeedStore(): number {
     return this.countLoaded(this.childFeedStore)
   }
 
@@ -373,7 +381,7 @@ class PublicPostService {
 
 
 
-  async load(amount:number=undefined) {
+  async load(amount: number = undefined) {
     return this.feedStore.load(amount)
   }
 

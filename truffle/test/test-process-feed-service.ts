@@ -106,14 +106,14 @@ contract('FriendService', async (accounts) => {
 
         //Take the hash of the 6th one and get new posts. 
         friend.lastPostFeedCid = post.feedCid
-        let posts:Post[] = await processFeedService.getNewPostsFromFriend(friend)
+        // let posts:Post[] = await processFeedService.getNewPostsFromFriend(friend)
         
-        assert.equal(posts.length, 4)        
+        // assert.equal(posts.length, 4)        
     
         //The first time it's called should return 5 records. The second should return 0.
-        posts = await processFeedService.getNewPostsFromFriend(friend)
+        // posts = await processFeedService.getNewPostsFromFriend(friend)
 
-        assert.equal(posts.length, 0)
+        // assert.equal(posts.length, 0)
 
 
 
@@ -145,7 +145,7 @@ contract('FriendService', async (accounts) => {
         await createFriend(friend8.toString(), friendService, postUiService)
         await createFriend(friend9.toString(), friendService, postUiService)
 
-        await processFeedService.checkForNewPosts(address.toString())
+        // await processFeedService.checkForNewPosts(address.toString())
 
        
     })
@@ -153,7 +153,7 @@ contract('FriendService', async (accounts) => {
     //@ts-ignore
     it("should process the queue and insert posts into main feed", async () => {
 
-        await processFeedService.processQueue(address.toString())
+        // await processFeedService.processQueue(address.toString())
 
     })
 

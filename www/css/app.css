@@ -23,8 +23,7 @@
 @media screen and (min-width:1024px) {
 
   .main-tabs {
-    width: 50%;
-    margin: 0 25%;
+    float: left;
   }
 
 
@@ -271,13 +270,17 @@ hr:before {
   font-size: 30px;
 }
 
+.toolbar-inner {
+  /* border: none; */
+}
 
 .toolbar .f7-icons {
-  font-size: 13px;
+  margin-top: 3px;
+  font-size: 17px;
 }
 
 .toolbar .tab-link {
-  font-size: 8px;
+  font-size: 13px;
 }
 
 .peer-list .item-subtitle {

@@ -49,6 +49,8 @@ app.on('ready', async () => {
       nodeIntegration: true
     }
   })
+
+  mainWindow.maximize()
   
   let node = await IPFS.create({
     EXPERIMENTAL: {

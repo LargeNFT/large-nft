@@ -55,6 +55,7 @@ export namespace Global {
   export var quillService: QuillService
 
   /** user specific */
+  export var processFeedService:ProcessFeedService
   export var friendService:FriendService
   export var profileService:ProfileService
   export var postService:PublicPostService
@@ -83,6 +84,8 @@ export namespace Global {
 
   export var isElectron:boolean 
 
+
+  export var eventEmitter
 
   /** Template7 Templates */
   export var postResultTemplate

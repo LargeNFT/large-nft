@@ -82,14 +82,16 @@ class PublicPostService {
 
     postFeed.events.on("replicated", async () => {
 
-      // console.log('Finished replicating primary post feed')
+      console.log('Finished replicating primary post feed')
 
       //Force open the new secondary 
       let feedInfo = await this.getFeedInfo(postFeed)
       let newChildFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
 
+      // console.log(newChildFeedStore.events.replicated)
+
       newChildFeedStore.events.on("replicate.progress", (address, hash, entry, progress, max) => {
-        // console.log('Finished replicating secondary post feed (loadPostFeed)')
+        console.log('Finished replicating secondary post feed (loadPostFeed)')
         Global.eventEmitter.emit("post-added", address, hash, entry)
       })
 
@@ -125,7 +127,6 @@ class PublicPostService {
   async loadChildFeed(otherThan: string = undefined): Promise<void> {
 
     let feedInfo = await this.getFeedInfo(this.feedStore, otherThan)
-
     if (feedInfo) {
 
       try {
@@ -247,7 +248,7 @@ class PublicPostService {
 
   async getFeedInfo(feedStore, lt: string = undefined, gt: string = undefined) {
 
-    if (!this.feedStore) return
+    if (!feedStore) return
 
     let index = 0
 
@@ -278,6 +279,7 @@ class PublicPostService {
 
         return model
       })
+
 
     if (results && results.length > 0) {
       return results[0]

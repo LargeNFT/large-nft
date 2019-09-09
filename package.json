@@ -59,7 +59,7 @@
     "uglifyify": "5.0.1",
     "watchify": "3.11.1",
     "ts-node": "8.3.0",
-    "orbit-db": "0.21.4",
+    "orbit-db": "0.22.0-rc4",
     "orbit-db-tablestore": "0.0.15",
     "ipfs": "0.37.1",
     "ipfsd-ctl": "0.44.1",

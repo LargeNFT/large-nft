@@ -10,6 +10,8 @@ import { SchemaService } from "./util/schema-service";
 
 class ProcessFeedService {
 
+    started: boolean = false
+
     //My friend's feed stores
     friendStores: any[]
 
@@ -20,21 +22,36 @@ class ProcessFeedService {
         private friendService: FriendService
     ) {
 
+        // setTimeout(() => { this.start() }, 5000)
+
+        this.start()
+    }
+
+
+    async start() {
+
+        if (this.started) return
+
+        this.started = true
+
         const self = this
 
         Global.eventEmitter.on("post-added", async function (address, hash, entry) {
-            let postCid = entry.payload.value
 
-            let post:Post = await PublicPostService.read(postCid)
+            let postCid = entry.payload.value
+            console.log(`Post added: ${postCid}`)
+
+            let post: Post = await PublicPostService.read(postCid)
 
             await self.postService.loadMainFeedForWallet(window['currentAccount'])
-
             await self.postService.create(post)
 
         })
 
 
-        this.loadFriendFeeds(window['currentAccount'])
+        // this.loadFriendFeeds(window['currentAccount'])
+
+    
     }
 
 
@@ -66,45 +83,9 @@ class ProcessFeedService {
 
         await this.postService.loadPostFeedForWallet(friend.address)
 
-        this.postService.monitorPostFeed(this.postService.getFeed())
+        await this.postService.monitorPostFeed(this.postService.getFeed())
 
     }
-
-
-
-
-
-
-
-
-    // // @timeout(2000)
-    // async getNewPostsFromFriend(friend: Friend): Promise<Post[]> {
-
-    //     let posts: Post[] = []
-
-    //     await this.postService.loadPostFeedForWallet(friend.address)
-
-    //     let lastPostFeedCid = friend.lastPostFeedCid
-    //     let foundPosts: Post[] = []
-
-    //     do {
-    //         let foundPosts = await this.postService.getRecentPosts(10, undefined, lastPostFeedCid)
-    //         posts = posts.concat(foundPosts)
-
-    //     } while (foundPosts.length == 10)
-
-    //     //Update last post hash
-    //     if (posts.length > 0) {
-    //         friend.lastPostFeedCid = posts[0].feedCid
-    //     }
-
-
-    //     await this.friendService.put(friend)
-
-    //     return posts
-
-    // }
-
 
 
 }

@@ -65,10 +65,7 @@ class InitService {
           //browser
           await this.configureBrowser()
         }
-    
-    
-    
-    
+
     
         //Ropsten
         Whitepages.networks["3"] = {

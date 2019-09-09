@@ -72,7 +72,7 @@ class PublicPostService {
     //Load the list of feeds
     await this.feedStore.load()
 
-    this.monitorPostFeed(this.feedStore)
+    await this.monitorPostFeed(this.feedStore)
 
 
   }
@@ -88,7 +88,6 @@ class PublicPostService {
       let feedInfo = await this.getFeedInfo(postFeed)
       let newChildFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
 
-      // console.log(newChildFeedStore.events.replicated)
 
       newChildFeedStore.events.on("replicate.progress", (address, hash, entry, progress, max) => {
         console.log('Finished replicating secondary post feed (loadPostFeed)')
@@ -98,6 +97,7 @@ class PublicPostService {
       await newChildFeedStore.load()
 
     })
+
   }
 
 
@@ -153,7 +153,6 @@ class PublicPostService {
 
     let feedsRead = 0
     let totalFeeds = this.countFeedStore()
-
     let locatedExisting = false
 
     while (totalFeeds > 0 && results.length < limit && feedsRead < totalFeeds) {

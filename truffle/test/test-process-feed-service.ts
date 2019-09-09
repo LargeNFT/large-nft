@@ -59,7 +59,7 @@ contract('FriendService', async (accounts) => {
         postService = new PublicPostService(Global.schemaService)
         friendService = new FriendService(postService)
         postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService, new ImageService())
-        processFeedService = new ProcessFeedService(postService, friendService)
+        processFeedService = new ProcessFeedService(postService, friendService, Global.schemaService)
 
 
         let mainStore = await Global.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, address.toString())

@@ -92,9 +92,8 @@ class HomeController {
     let posts:Post[] = []
 
     try {
+      console.log(`Getting main feed posts`)
       posts = await this.postUiService.getRecentPosts(this.limit, this.lastPost)
-
-      
     } catch(ex) {
       console.log(ex)
     }

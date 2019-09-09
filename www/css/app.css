@@ -276,7 +276,7 @@ hr:before {
 
 .toolbar .f7-icons {
   margin-top: 3px;
-  font-size: 17px;
+  font-size: 21px;
 }
 
 .toolbar .tab-link {
@@ -284,5 +284,5 @@ hr:before {
 }
 
 .peer-list .item-subtitle {
-  font-size: 9px;
+  font-size: 8px;
 }

@@ -53,6 +53,7 @@ app.on('ready', async () => {
   mainWindow.maximize()
   
   let node = await IPFS.create({
+    repo: path.join(app.getPath("appData"), '.ipfs/'),
     EXPERIMENTAL: {
         pubsub:true
     },

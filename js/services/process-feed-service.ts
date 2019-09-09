@@ -6,9 +6,15 @@ import { timeout } from "../timeout-promise"
 import { Global } from "../global";
 import { EventEmitter } from "events";
 import { SchemaService } from "./util/schema-service";
+import { Dom7 } from "framework7";
 
+var $$ = Dom7
 
 class ProcessFeedService {
+
+    //This probably shouldn't go here.
+    unreadMessages: number = 0
+
 
     started: boolean = false
 
@@ -19,14 +25,14 @@ class ProcessFeedService {
 
     constructor(
         private postService: PublicPostService,
-        private friendService: FriendService
+        private friendService: FriendService,
+        private schemaService:SchemaService
     ) {
 
         // setTimeout(() => { this.start() }, 5000)
 
-        this.start()
+        // this.start()
     }
-
 
     async start() {
 
@@ -46,14 +52,18 @@ class ProcessFeedService {
             await self.postService.loadMainFeedForWallet(window['currentAccount'])
             await self.postService.create(post)
 
+            this.unreadMessages++
+
+            $$('.new-message-badge').val(this.unreadMessages)
+            $$('.new-message-badge').show()
+
         })
 
 
-        // this.loadFriendFeeds(window['currentAccount'])
+        this.loadFriendFeeds(window['currentAccount'])
 
     
     }
-
 
     async loadFriendFeeds(walletAddress: string) {
 
@@ -81,11 +91,15 @@ class ProcessFeedService {
     async monitorFriendFeed(friend: Friend) {
         console.log(`Open friend feed: ${friend.address}`)
 
-        await this.postService.loadPostFeedForWallet(friend.address)
+        let postFeed = await this.schemaService.getPostFeedByWalletAddress(friend.address)
 
-        await this.postService.monitorPostFeed(this.postService.getFeed())
+        await this.postService.monitorPostFeed(postFeed)
+
+        console.log(`Opening friend feed complete`)
 
     }
+
+
 
 
 }

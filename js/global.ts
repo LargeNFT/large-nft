@@ -84,12 +84,15 @@ export namespace Global {
 
   export var isElectron:boolean 
 
-
   export var eventEmitter
 
   /** Template7 Templates */
   export var postResultTemplate
   export var profileResultTemplate
+
+
+
+
 
   export function navigate(url: string) {
     Global.app.view.main.router.navigate(url, {

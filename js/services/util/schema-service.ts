@@ -29,12 +29,10 @@ class SchemaService {
         return schema
     }
 
-
     async getSchemaByWalletAddress(walletAddress:string) : Promise<Schema> {
 
         let mainStore = await this.getMainStoreByWalletAddress(walletAddress)
         let schema:Schema = await this.getSchema(mainStore, walletAddress)
-
         if (schema) return schema
         
         return new Promise((resolve, reject) => {

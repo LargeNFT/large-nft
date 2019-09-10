@@ -146,7 +146,7 @@ class InitService {
     
     
         Global.imageService = new ImageService()
-        Global.profileService = new ProfileService()
+        Global.profileService = new ProfileService(Global.imageService)
         Global.postService = new PublicPostService(this.schemaService)
         Global.postUiService = new PostUIService(Global.postService, Global.profileService, this.schemaService, Global.imageService)
         Global.friendService = new FriendService(Global.postService)
@@ -162,7 +162,7 @@ class InitService {
         Global.profileController = new ProfileController(Global.uploadService, Global.profileService, Global.postUiService, Global.imageService)
         Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
         Global.postController = new PostController(Global.quillService, Global.postUiService, Global.profileService, Global.imageService)
-        Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.friendService)
+        Global.connectController = new ConnectController(Global.whitepagesService, Global.queueService, Global.friendService, Global.processFeedService)
         Global.followController = new FollowController(Global.friendService, Global.profileService, Global.imageService)
     
         window['homeController'] = Global.homeController

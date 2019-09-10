@@ -2,6 +2,7 @@ import { Post } from "../dto/post";
 import { Global } from "../global";
 import { SchemaService } from "./util/schema-service";
 import { ProcessFeedService } from "./process-feed-service";
+import { timeout } from "../timeout-promise";
 
 class PublicPostService {
 
@@ -71,32 +72,7 @@ class PublicPostService {
 
     //Load the list of feeds
     await this.feedStore.load()
-
-    await this.monitorPostFeed(this.feedStore)
-
-
-  }
-
-
-  async monitorPostFeed(postFeed) {
-
-    postFeed.events.on("replicated", async () => {
-
-      console.log('Finished replicating primary post feed')
-
-      //Force open the new secondary 
-      let feedInfo = await this.getFeedInfo(postFeed)
-      let newChildFeedStore = await this.schemaService.openAddress(feedInfo.feedAddress)
-
-
-      newChildFeedStore.events.on("replicate.progress", (address, hash, entry, progress, max) => {
-        console.log('Finished replicating secondary post feed (loadPostFeed)')
-        Global.eventEmitter.emit("post-added", address, hash, entry)
-      })
-
-      await newChildFeedStore.load()
-
-    })
+    
 
   }
 
@@ -135,7 +111,6 @@ class PublicPostService {
 
         this.childFeedStoreCid = feedInfo.feedCid
         this.childFeedLoadedIndex = feedInfo.index
-
       } catch (ex) {
         console.log(ex)
       }
@@ -150,6 +125,8 @@ class PublicPostService {
 
     //Load first feed
     await this.loadChildFeed()
+
+    //TODO: Check replication state here. 
 
     let feedsRead = 0
     let totalFeeds = this.countFeedStore()
@@ -200,8 +177,7 @@ class PublicPostService {
     let posts: Post[] = []
     for (var result of results) {
 
-      let post: Post = await PublicPostService.read(result.cid)
-      post.feedCid = result.feedCid
+      let post:Post = await this.readPost(result)
       posts.push(post)
 
     }
@@ -209,6 +185,15 @@ class PublicPostService {
     return posts
 
   }
+
+  @timeout(5000)
+  async readPost(result) : Promise<Post> {
+    let post:Post = await PublicPostService.read(result.cid)
+    post.feedCid = result.feedCid
+    return post
+  }
+
+
 
   async getPosts(olderThan: string = undefined, newerThan: string = undefined): Promise<any> {
 
@@ -345,6 +330,7 @@ class PublicPostService {
     return post
 
   }
+
 
   static async read(cid: string): Promise<Post> {
 

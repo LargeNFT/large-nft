@@ -14,6 +14,7 @@ import { ProfileService } from "../services/profile-service";
 import { FriendService } from "../services/friend-service";
 import { Friend } from "../dto/friend";
 import { ImageService } from "../services/util/image-service";
+import { ProcessFeedService } from "../services/process-feed-service";
 
 var $$ = Dom7;
 
@@ -23,7 +24,8 @@ class ConnectController {
     constructor(
         private whitepageService: WhitepagesService,
         private queueService: QueueService,
-        private friendService: FriendService
+        private friendService: FriendService,
+        private processFeedService:ProcessFeedService
     ) {
         
     }
@@ -38,8 +40,11 @@ class ConnectController {
             
             peers = peers.map(e => e.addr.toString())
 
+            let monitoredFeeds = this.processFeedService.monitoredFeeds
+
             return {
                 peers: peers,
+                monitoredFeeds: monitoredFeeds,
                 currentAccount: window['currentAccount']
             }
             

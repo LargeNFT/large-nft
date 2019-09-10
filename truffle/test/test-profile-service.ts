@@ -19,7 +19,7 @@ const IPFS = require('ipfs')
 //@ts-ignore
 contract('ProfileService', async (accounts) => {
 
-    let service: ProfileService = new ProfileService()
+    let service: ProfileService = new ProfileService(Global.imageService)
     let mainStore
     let address: string
 

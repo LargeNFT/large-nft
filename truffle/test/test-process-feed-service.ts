@@ -58,7 +58,7 @@ contract('FriendService', async (accounts) => {
 
         postService = new PublicPostService(Global.schemaService)
         friendService = new FriendService(postService)
-        postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService, new ImageService())
+        postUiService = new PostUIService(postService, new ProfileService(Global.imageService), Global.schemaService, new ImageService())
         processFeedService = new ProcessFeedService(postService, friendService, Global.schemaService)
 
 

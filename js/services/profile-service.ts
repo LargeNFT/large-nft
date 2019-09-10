@@ -1,6 +1,7 @@
 import {Global} from "../global";
 import { Profile } from "../dto/profile";
 import { timeout } from '../timeout-promise'
+import { ImageService } from "./util/image-service";
 
 class ProfileService {
   
@@ -11,7 +12,7 @@ class ProfileService {
   store: any
 
   constructor(
-    
+    private imageService:ImageService
   ) {}
 
   
@@ -26,10 +27,15 @@ class ProfileService {
     await this.store.load()
 
     let profile:Profile = await this.read(walletAddress)
-    
+
+    //Convert profile pic to Blob
+    if (profile && profile.profilePic) {
+      profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
+    }
+          
     if (profile) return profile
 
-    if (walletAddress == window['currentAccount']) return //probably not the best way to handle this
+    if (this.store.replicationStatus.progress == this.store.replicationStatus.max) return
 
     return new Promise((resolve, reject) => {
       this.store.events.on('replicated', async () => {

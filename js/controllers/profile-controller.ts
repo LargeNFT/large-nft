@@ -45,13 +45,6 @@ class ProfileController {
 
         try {
           profile = await this.profileService.getProfileByWallet(address)
-
-          //Convert profile pic to Blob
-          if (profile && profile.profilePic) {
-            profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
-          }
-          
-
         } catch(ex) {
           console.log(ex)
         }
@@ -60,7 +53,7 @@ class ProfileController {
           try {
 
             await this.postUiService.loadPostFeedForWallet(address)
-            
+
             posts = await this.postUiService.getRecentPosts(100)
           } catch(ex) {
             console.log(ex)

@@ -53,7 +53,7 @@ contract('FriendService', async (accounts) => {
         Global.orbitAccessControl = Global.identityService.getAccessController(orbitdb)
 
         postService = new PublicPostService(Global.schemaService)
-        postUiService = new PostUIService(postService, new ProfileService(), Global.schemaService, new ImageService())
+        postUiService = new PostUIService(postService, new ProfileService(Global.imageService), Global.schemaService, new ImageService())
         service = new FriendService(postService)
 
         let mainStore = await Global.schemaService.generateMainStore(Global.orbitDb, Global.orbitAccessControl, address.toString())

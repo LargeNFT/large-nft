@@ -40,11 +40,11 @@ class ConnectController {
             
             peers = peers.map(e => e.addr.toString())
 
-            let monitoredFeeds = this.processFeedService.monitoredFeeds
+            let subscribed = await Global.ipfs.pubsub.ls()
 
             return {
                 peers: peers,
-                monitoredFeeds: monitoredFeeds,
+                subscribed: subscribed,
                 currentAccount: window['currentAccount']
             }
             

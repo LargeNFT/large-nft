@@ -150,7 +150,7 @@ class InitService {
         Global.postService = new PublicPostService(this.schemaService)
         Global.postUiService = new PostUIService(Global.postService, Global.profileService, this.schemaService, Global.imageService)
         Global.friendService = new FriendService(Global.postService)
-        Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService, Global.schemaService)
+        Global.processFeedService = new ProcessFeedService(Global.postService, Global.friendService, Global.schemaService, Global.profileService)
     
     
         Global.uploadService = new UploadService()
@@ -172,6 +172,8 @@ class InitService {
         window['followController'] = Global.followController
     
     
+        await Global.processFeedService.updateLastKnownAddress()
+
         console.log("Initialization complete")
     
       }
@@ -205,7 +207,8 @@ class InitService {
     
         Global.ipfs = await IPFS.create({
           EXPERIMENTAL: {
-            pubsub: true
+            pubsub: true,
+            ipnsPubsub: true
           },
           relay: {
             enabled: true,
@@ -227,7 +230,8 @@ class InitService {
     
         Global.ipfs = await IPFS.create({
           EXPERIMENTAL: {
-            pubsub: true
+            pubsub: true,
+            ipnsPubsub: true
           },
           relay: {
             enabled: true,

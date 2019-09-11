@@ -21,7 +21,7 @@ class ProfileService {
   }
 
   // @timeout(2000)
-  async getProfileByWallet(walletAddress:string) : Promise<Profile> {
+  async getProfileByWallet(walletAddress:string, waitForUpdate:boolean=true) : Promise<Profile> {
 
     await this.loadStoreForWallet(walletAddress)
     await this.store.load()
@@ -32,11 +32,11 @@ class ProfileService {
     if (profile && profile.profilePic) {
       profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
     }
-          
+
     if (profile) return profile
 
     if (this.store.replicationStatus.progress == this.store.replicationStatus.max) return
-
+    
     return new Promise((resolve, reject) => {
       this.store.events.on('replicated', async () => {
         console.log(`Replicated profile for ${walletAddress}`)

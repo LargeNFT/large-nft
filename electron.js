@@ -4,7 +4,7 @@ const { ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
-let ipfs 
+let ipfs
 
 
 let mainWindow
@@ -51,11 +51,21 @@ app.on('ready', async () => {
   })
 
   mainWindow.maximize()
-  
-  let node = await IPFS.create({
+
+
+  // @ts-ignore
+  global.appData = app.getPath("appData")
+  // @ts-ignore
+  global.walletDao = new WalletDao()
+  //@ts-ignore
+  global.peersDao = new PeersDao()
+
+
+
+  ipfs = await IPFS.create({
     repo: path.join(app.getPath("appData"), '.ipfs/'),
     EXPERIMENTAL: {
-        pubsub:true
+      pubsub: true
     },
     relay: {
       enabled: true, // enable circuit relay dialer and listener
@@ -69,13 +79,13 @@ app.on('ready', async () => {
           "/ip4/0.0.0.0/tcp/4002",
           "/ip4/127.0.0.1/tcp/4003/ws",
           '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
-
         ],
         API: '/ip4/127.0.0.1/tcp/5002',
         Gateway: '/ip4/127.0.0.1/tcp/9090'
       }
     }
   })
+
 
   //Start the API gateway
   // const Gateway = require('ipfs/src/http')
@@ -85,7 +95,7 @@ app.on('ready', async () => {
 
 
   //@ts-ignore
-  let id = await node.id()
+  let id = await ipfs.id()
 
   //@ts-ignore
   let addresses = id.addresses
@@ -96,10 +106,7 @@ app.on('ready', async () => {
   // @ts-ignore
   global.ipfsHost = result[0]
 
-  // @ts-ignore
-  global.appData = app.getPath("appData")
-  // @ts-ignore
-  global.walletDao  = new WalletDao()
+
 
   // and load the index.html of the app.
   await mainWindow.loadFile('www/index.html')
@@ -115,7 +122,7 @@ class WalletDao {
     let appData = app.getPath("appData")
     this.walletPath = path.join(appData, 'large-wallet.json')
   }
-  
+
   saveWallet(wallet) {
 
     try {
@@ -130,11 +137,50 @@ class WalletDao {
 
     try {
       let json = fs.readFileSync(this.walletPath).toString()
-    
+
       return JSON.parse(json)
-    } catch(ex) {
+    } catch (ex) {
       console.log(ex)
     }
 
   }
+}
+
+class PeersDao {
+
+  constructor() {
+    let appData = app.getPath("appData")
+    this.peersPath = path.join(appData, 'large-peers.json')
+  }
+
+
+  savePeers(peers) {
+
+    try {
+      fs.writeFileSync(this.peersPath, JSON.stringify(peers))
+
+    } catch (ex) {
+      console.log(ex)
+    }
+
+  }
+
+
+  async getPeers() {
+
+    try {
+      let json = fs.readFileSync(this.peersPath).toString()
+      let result =  JSON.parse(json)
+
+
+      var merged = [].concat.apply([], result)
+
+      return merged
+    } catch (ex) {
+      // console.log(ex)
+    }
+
+  }
+
+
 }

@@ -4,7 +4,7 @@ import {UploadService} from "../services/util/upload-service";
 import {PublicPostService} from "../services/public-post-service";
 import {Global} from "../global";
 import {Dom7} from "framework7";
-import { QueueService } from '../services/util/queue_service';
+import { QueueService } from '../services/util/queue_service'
 import {PromiseView} from "../promise-view";
 import { Profile } from '../dto/profile';
 import { pathToFileURL } from 'url';

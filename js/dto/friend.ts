@@ -5,6 +5,8 @@ class Friend {
   address?: string
   lastPostFeedCid?: string 
 
+  lastKnownAddress?: string[]
+
 }
 
 

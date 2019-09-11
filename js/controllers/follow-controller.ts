@@ -51,6 +51,14 @@ class FollowController {
 
       for (let friend of friends) {
         let profile: Profile = await this.profileService.getProfileByWallet(friend.address)
+        
+        if (!profile) {
+          profile = new Profile()
+          profile.owner = friend.address
+          profile.name = friend.address
+          profile.lastKnownAddress = friend.lastKnownAddress
+        }
+
         profile.following = true
         profiles.push(profile)
       }

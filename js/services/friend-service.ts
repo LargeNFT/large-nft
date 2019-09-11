@@ -92,6 +92,35 @@ class FriendService {
   }
 
 
+  async getAll() : Promise<Friend[]> {
+
+    let friends: Friend[] = []
+
+    let friendPage: Friend[] = []
+    let offset: number = 0
+
+    do {
+      friendPage = await this.list(offset, 10)
+        offset += 10
+
+        for (let friend of friendPage) {
+
+            try {
+                friends.push(friend)
+            } catch (ex) {
+                console.log(ex)
+            }
+
+
+        }
+    } while (friendPage.length == 10)
+
+
+    return friends
+
+  }
+
+
   async close() {
     return this.kvStore.close()
   }

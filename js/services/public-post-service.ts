@@ -178,6 +178,12 @@ class PublicPostService {
     for (var result of results) {
 
       let post:Post = await this.readPost(result)
+      
+      if (!post) {
+        post.cid = result.cid 
+        post.contentTranslated = "Unable to load content"
+      }
+      
       posts.push(post)
 
     }

@@ -20,9 +20,7 @@ class ProfileController {
       private imageService:ImageService
       ) {
 
-        const self = this
-
-    }
+      }
 
 
     async showStaticProfile(address: string) : Promise<ModelView> {
@@ -50,10 +48,7 @@ class ProfileController {
           }
         }
 
-
-
         let showEditLink:boolean = (address.toLowerCase() == window['currentAccount'].toLowerCase())
-
         
         let model = {
           loaded: true,
@@ -77,7 +72,11 @@ class ProfileController {
           try {
 
             profile = await this.profileService.getCurrentUser()
-            profile.profilePicSrc = profile && profile.profilePic ? await this.imageService.cidToUrl(profile.profilePic) : undefined
+
+            if (profile) {
+              profile.profilePicSrc = profile && profile.profilePic ? await this.imageService.cidToUrl(profile.profilePic) : undefined
+            }
+            
 
           } catch(ex) {
             console.log(ex)

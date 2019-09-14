@@ -1,13 +1,9 @@
 import { Global } from "./global"
-import { WalletController } from "./controllers/wallet-controller"
 import { FollowController } from "./controllers/follow-controller"
 
 import Core from 'large-core'
 import Web, { Template7, Framework7, Dom7, ModelViewService } from 'large-web'
-import { HomeController } from "./controllers/home-controller"
-import { ProfileController } from "./controllers/profile-controller"
-import { ConnectController } from "./controllers/connect-controller"
-import { PostController } from "./controllers/post-controller"
+
 import { UiService } from "./services/ui-service"
 
 const moment = require('moment')

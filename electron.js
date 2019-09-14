@@ -4,6 +4,7 @@ const { ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
+
 let ipfs
 
 
@@ -59,7 +60,6 @@ app.on('ready', async () => {
   global.walletDao = new WalletDao()
   //@ts-ignore
   global.peersDao = new PeersDao()
-
 
 
   ipfs = await IPFS.create({

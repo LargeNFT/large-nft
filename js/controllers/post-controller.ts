@@ -1,14 +1,6 @@
-import { ModelView } from "../model-view";
-import { PublicPostService } from "../services/public-post-service";
-import { ProfileService } from "../services/profile-service";
-import { Profile } from "../dto/profile";
-import { Post } from "../dto/post";
-import { SchemaService } from "../services/util/schema-service";
-import { QuillService } from "../services/util/quill-service";
-import { Dom7, Template7 } from "framework7";
+import { Dom7, Template7, QuillService, ModelView, PostUIService } from "large-web";
 import { Global } from "../global";
-import { PostUIService } from "../services/post-ui-service";
-import { ImageService } from "../services/util/image-service";
+import { Post, ProfileService, ImageService, PostService, Profile } from "large-core";
 
 
 var $$ = Dom7;
@@ -38,7 +30,7 @@ class PostController {
 
     return new ModelView(async () => {
 
-      this.loadedPost = await PublicPostService.read(cid)
+      this.loadedPost = await PostService.read(cid)
 
       this.postUiService.translatePost(this.loadedPost)
 

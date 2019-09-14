@@ -1,17 +1,10 @@
-import { ModelView } from '../model-view'
-import {ProfileService} from "../services/profile-service";
-import {UploadService} from "../services/util/upload-service";
-import {PublicPostService} from "../services/public-post-service";
 import {Global} from "../global";
-import {Dom7} from "framework7";
-import { QueueService } from '../services/util/queue_service'
-import {PromiseView} from "../promise-view";
-import { Profile } from '../dto/profile';
+import { Dom7, ModelView, UploadService, PostUIService } from "large-web"
+
 import { pathToFileURL } from 'url';
-import { ListingService } from '../services/listing-service';
-import { Post } from '../dto/post';
-import { PostUIService } from '../services/post-ui-service';
-import { ImageService } from '../services/util/image-service';
+import { ProfileService, ImageService, Profile, Post } from "large-core"
+import { UiService } from "../services/ui-service";
+
 
 
 var $$ = Dom7
@@ -23,14 +16,11 @@ class ProfileController {
       private uploadService : UploadService,
       private profileService: ProfileService,
       private postUiService:PostUIService,
+      private uiService:UiService,
       private imageService:ImageService
       ) {
-        const self = this
 
-        $$(document).on('submit', '#edit-profile-form', function(e) {
-            e.preventDefault();
-            self.profileEditSave(e)
-        })
+        const self = this
 
     }
 
@@ -85,7 +75,10 @@ class ProfileController {
 
           let profile: Profile
           try {
+
             profile = await this.profileService.getCurrentUser()
+            profile.profilePicSrc = profile && profile.profilePic ? await this.imageService.cidToUrl(profile.profilePic) : undefined
+
           } catch(ex) {
             console.log(ex)
           }
@@ -106,30 +99,23 @@ class ProfileController {
       
       try {
 
-        try {
-          await this.profileService.load() //load was failing for weird IPFS reasons. 
-        } catch(ex) {
-          console.log(ex)
-        }
-        
-
-
         //Collect info
-        var profileData: Profile = Global.app.form.convertToData('#edit-profile-form');
+        var profileData: Profile = Global.app.form.convertToData('#edit-profile-form')
 
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
 
-        //TODO: //Make sure permissions are right for this. Don't want to be able to edit someone else's profile.
+        //TODO: //Make sure permissions are right for this. Don't want to edit someone else's profile.
         await this.profileService.put(profileData)
 
         //Redirect to profile
-        Global.navigate(`/profile/static/${window['currentAccount']}`)
+        this.uiService.navigate(`/profile/static/${window['currentAccount']}`)
 
 
       } catch (ex) {
-        Global.showExceptionPopup(ex)
+        console.log(ex)
+        this.uiService.showExceptionPopup(ex)
       }
 
     }

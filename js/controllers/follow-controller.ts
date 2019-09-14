@@ -1,11 +1,8 @@
-import { ModelView } from "../model-view";
-import { Dom7 } from "framework7";
-import { FriendService } from "../services/friend-service";
-import { ProfileService } from "../services/profile-service";
-import { Profile } from "../dto/profile";
-import { Friend } from "../dto/friend";
+import { ModelView, Dom7 } from "large-web"
+
+import { Profile, Friend, FriendService, ProfileService, ImageService } from "large-core";
 import { Global } from "../global";
-import { ImageService } from "../services/util/image-service";
+import { UiService } from "../services/ui-service";
 
 var $$ = Dom7;
 
@@ -22,7 +19,8 @@ class FollowController {
   constructor(
     private friendService: FriendService,
     private profileService: ProfileService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private uiService: UiService
   ) { }
 
 
@@ -80,7 +78,7 @@ class FollowController {
 
   async findFriendClick(e: Event, component) {
 
-    Global.showSpinner()
+    this.uiService.showSpinner()
 
     let profile: Profile
 
@@ -112,7 +110,7 @@ class FollowController {
     })
 
 
-    Global.hideSpinner()
+    this.uiService.hideSpinner()
   }
 
 

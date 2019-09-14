@@ -65,13 +65,19 @@ body, .md body {
   font-size: 15px;
 }
 
+.profile-pic-edit, #profile-pic--edit-not-found {
+  max-width: 100%;
+  border-radius: 50%;
+  font-size: 100px;
+  float: left;
+}
+
 
 .profile-pic-main, #profile-pic-not-found {
   max-width: 100%;
   border-radius: 50%;
   font-size: 100px;
   float: left;
-
 }
 
 .profile-name {

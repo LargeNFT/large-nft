@@ -1,26 +1,6 @@
-import { ModelView } from '../model-view'
-import { PublicPostService } from "../services/public-post-service"
-
-// console.log(PublicPostService)
-
-
-
-import { TemplateService } from "../services/template-service";
-import { Dom7, Template7 } from "framework7";
-import { Post } from '../dto/post';
+import { Dom7, Template7, ModelView, QuillService, PostUIService } from "large-web";
+import { Post, ProfileService, ImageService, Profile } from 'large-core';
 import { Global } from '../global';
-import { QuillService } from '../services/util/quill-service';
-import { UploadService } from '../services/util/upload-service';
-import Quill = require('quill/dist/quill.js')
-import { ProfileService } from '../services/profile-service';
-import { Profile } from '../dto/profile';
-import { SchemaService } from '../services/util/schema-service';
-import ColorPickerComponent from 'framework7/components/color-picker/color-picker';
-const moment = require('moment')
-import { timeout } from '../timeout-promise'
-import { PostUIService } from '../services/post-ui-service';
-import { ImageService } from '../services/util/image-service';
-
 
 
 var $$ = Dom7;
@@ -41,8 +21,7 @@ class HomeController {
     private postUiService:PostUIService,
     private profileService: ProfileService,
     private imageService:ImageService
-  ) {
-  }
+  ) {}
 
   initializeQuill() {
     this.quillService.buildQuillPostEditor('#create-post-textarea')

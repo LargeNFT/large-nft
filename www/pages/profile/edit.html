@@ -45,8 +45,10 @@
                       <div class="item-input-wrap">
 
                         {{#if profilePic}}
-                        <img src="http://localhost:8080/ipfs/{{profilePic}}" class="profile-pic edit"/>
-                        <input type="hidden" name="profilePic" value="{{profilePic}}" />
+                          <img src="{{profilePicSrc}}" class="profile-pic-edit"/>
+                          <input type="hidden" name="profilePic" value="{{profilePic}}" />
+                        {{else}}
+                          <i class="f7-icons profile-pic-thumb">person</i>
                         {{/if}}
 
                         <input type="file" id="profilePic" placeholder="Select a photo to upload" />
@@ -103,6 +105,21 @@
 
 <script>
     return {
+      on: {
+        pageInit() {
+
+          const self = this
+
+          let controller = window['profileController']
+
+          this.$$('#edit-profile-form').on('submit', function(e) {
+            e.preventDefault();
+            controller.profileEditSave(e)
+          })
+
+
+        }
+      },
       created: async function() {
           window['Global'].loadComponentState(this)
       }

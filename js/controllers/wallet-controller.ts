@@ -1,16 +1,25 @@
-import { ModelView } from "../model-view";
-import { WalletService } from "../services/wallet-service";
 import { Global } from "../global";
-import { Dom7 } from "framework7";
 import { globalAgent } from "https";
+import Core, { WalletService } from "large-core";
+import Web, { ModelView, Dom7 } from "large-web";
+import { UiService } from "../services/ui-service";
 
 var $$ = Dom7
 
 class WalletController {
 
     constructor(
-        private walletService:WalletService
+        private walletService:WalletService,
+        private uiService:UiService
     ) {
+    }
+
+    async initApp() {
+        await Global.init()
+        Global.initializeControllers()
+
+        console.log('Wallet unlocked. Initializing and redirecting to home screen')
+        this.uiService.navigate("/")
     }
 
     async showLanding(): Promise<ModelView> {
@@ -51,7 +60,7 @@ class WalletController {
 
 
         component.$setState({
-            mnemonic: Global.wallet.mnemonic
+            mnemonic: Core.wallet.mnemonic
         })
 
 
@@ -67,8 +76,10 @@ class WalletController {
 
         try {
             await this.walletService.unlockWallet(formData.password)
-            console.log('Navigating to')
-            Global.navigate("/")
+
+            await this.initApp()
+            
+
         } catch(ex) {
             console.log(ex)
             component.$setState({
@@ -108,8 +119,8 @@ class WalletController {
 
         try {
             await this.walletService.restoreWallet(formData.recoverySeed, formData.password)
-            console.log('Navigating to')
-            Global.navigate("/")
+
+            await this.initApp()
         } catch(ex) {
             console.log(ex)
             component.$setState({

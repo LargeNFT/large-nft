@@ -1,137 +1,58 @@
-import {HomeController} from "./controllers/home-controller";
-import {SettingsController} from "./controllers/settings-controller";
-import {ProfileController} from "./controllers/profile-controller";
-import Framework7 from "framework7";
-import { RouteService } from "./services/util/route-service";
-import { TemplateService } from "./services/template-service";
-import { SettingsService } from "./services/util/settings-service";
-import { QuillService } from "./services/util/quill-service";
-import { ProfileService } from "./services/profile-service";
-import { QueueService } from "./services/util/queue_service";
-import { PublicPostService } from "./services/public-post-service";
-import { UploadService } from "./services/util/upload-service";
-import { inherits } from "util";
-import { IdentityService } from "./services/util/identity-service";
-import { SchemaService } from "./services/util/schema-service";
-import { WhitepagesService } from "./services/whitepages-service";
+import { HomeController } from "./controllers/home-controller";
+import { ProfileController } from "./controllers/profile-controller";
+
+
 import { ConnectController } from "./controllers/connect-controller";
-import { ListingService } from "./services/listing-service";
 import { PostController } from "./controllers/post-controller";
-import { FriendService } from "./services/friend-service";
-import { ProcessFeedService } from "./services/process-feed-service";
 import { FollowController } from "./controllers/follow-controller";
-import { PostUIService } from "./services/post-ui-service";
-import { ImageService } from "./services/util/image-service";
 import { WalletController } from "./controllers/wallet-controller";
-import { WalletService } from "./services/wallet-service";
-import { InitService } from "./services/util/init-service";
+import Web from "large-web";
+import { UiService } from "./services/ui-service";
+import Core from "large-core";
 
 
-export namespace Global {  
-  
-  export var listingService: ListingService
-  export var whitepagesService: WhitepagesService
-  export var schemaService: SchemaService
-  export var identityService: IdentityService
-  export var templateService: TemplateService
-  export var settingsService: SettingsService
-  export var queueService: QueueService
-  export var initService:InitService
-  export var routeService: RouteService
+export namespace Global {
 
   /** Controllers */
   export var homeController: HomeController
-  export var postController:PostController
+  export var postController: PostController
   export var profileController: ProfileController
-  export var settingsController: SettingsController
   export var connectController: ConnectController
   export var followController: FollowController
   export var walletController: WalletController
 
-  /** App specific services */
-  export var walletService:WalletService
-  export var imageService:ImageService
-  export var uploadService: UploadService
-  export var quillService: QuillService
-
-  /** user specific */
-  export var processFeedService:ProcessFeedService
-  export var friendService:FriendService
-  export var profileService:ProfileService
-  export var postService:PublicPostService
-  export var postUiService:PostUIService
-  // export var processFeedService:ProcessFeedService
-
-  /** Etherjs */
-  export var provider: any
-  export var wallet: any 
-
-  /** The Framework7 app. Note: Try to make the rest of these typed some day. */
-  export var app: any
-
-  /** Orbit db api reference */
-  export var orbitDb: any
-  export var orbitAccessControl: any  //this is temporary. This will need to be refactored. Remove it and actually create access control
-
-
-  /** Orbit db tables */
-  export var mainStore: any
-  // export var profileStore:any 
-  // export var postFeed: any 
-
-  /** IPFS api client */
-  export var ipfs: any  
-
-  export var isElectron:boolean 
-
-  export var eventEmitter
+  export var uiService: UiService
 
   /** Template7 Templates */
   export var postResultTemplate
   export var profileResultTemplate
 
+  export var app
 
-
-
-
-  export function navigate(url: string) {
-    Global.app.view.main.router.navigate(url, {
-      reloadCurrent: true,
-      ignoreCache: true
-    })
+  export async function loadComponentState(component, showSpinner = true) {
+    return Global.uiService.loadComponentState(component, showSpinner)
   }
 
-  export function showExceptionPopup(ex) {
+  export function initializeControllers() {
 
-    if (ex.name == "IpfsException") {
-      Global.app.dialog.alert(ex.message, "Problem connecting to IPFS")
-    } else {
-      Global.app.dialog.alert(ex.message, "There was an error")
-    }
+    Global.walletController = new WalletController(Core.walletService, Global.uiService)
+    Global.homeController = new HomeController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService)
+    Global.profileController = new ProfileController(Web.uploadService, Core.profileService, Web.postUiService, Global.uiService, Core.imageService)
+    Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Global.uiService)
+    Global.connectController = new ConnectController(Core.ipfs)
+    Global.postController = new PostController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService)
+
+    window['walletController'] = Global.walletController
+    window['homeController'] = Global.homeController
+    window['profileController'] = Global.profileController
+    window['followController'] = Global.followController
+    window['connectController'] = Global.connectController
+    window['postController'] = Global.postController
   }
 
-  export async function loadComponentState(component, showSpinner=true) {
-    
-    if (showSpinner) Global.app.preloader.show() 
-    
-
-    let context = component.$route.context
-
-    //Get promise from component and await it. Then set the state to the result.
-    let model = await context.fn() 
-
-    component.$setState(model)
-    
-    if (showSpinner) Global.app.preloader.hide()
-  }
-
-
-  export function showSpinner() {
-    Global.app.preloader.show() 
-  }
-
-  export function hideSpinner() {
-    Global.app.preloader.hide()
+  export async function init() {
+    await Core.initialize()
+    await Web.initialize()
   }
 
 

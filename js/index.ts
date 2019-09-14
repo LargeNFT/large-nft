@@ -1,31 +1,172 @@
-import {Global} from "./global";
+import { Global } from "./global"
+import { WalletController } from "./controllers/wallet-controller"
+import { FollowController } from "./controllers/follow-controller"
 
-const Framework7: any = require('framework7/js/framework7.bundle')
-import { RouteService } from "./services/util/route-service";
-import { SettingsService } from "./services/util/settings-service";
-import { QueueService } from "./services/util/queue_service";
-import { TemplateService } from "./services/template-service";
-import { SettingsController } from "./controllers/settings-controller";
-import { IdentityService } from "./services/util/identity-service";
-import { SchemaService } from "./services/util/schema-service";
-import { WhitepagesService } from "./services/whitepages-service";
-import { Dom7 } from "framework7";
-import { Template7 } from "framework7/js/framework7.bundle";
-import { ConnectController } from "./controllers/connect-controller";
-import { WalletService } from "./services/wallet-service";
-import { WalletController } from "./controllers/wallet-controller";
-import { InitService } from "./services/util/init-service";
-import { FollowController } from "./controllers/follow-controller";
-const { utils, providers, ethers, Wallet } = require('ethers')
-const IPFS = require('ipfs')
-
+import Core from 'large-core'
+import Web, { Template7, Framework7, Dom7, ModelViewService } from 'large-web'
+import { HomeController } from "./controllers/home-controller"
+import { ProfileController } from "./controllers/profile-controller"
+import { ConnectController } from "./controllers/connect-controller"
+import { PostController } from "./controllers/post-controller"
+import { UiService } from "./services/ui-service"
 
 const moment = require('moment')
 var $$ = Dom7;
 
 
-module.exports = function() {
 
+
+const routes = function (baseurl) {
+
+  const homeRoute = async function (routeTo, routeFrom, resolve, reject) {
+
+    let promise
+
+    if (Core.isElectron) {
+
+      if (Core.wallet) {
+        promise = Global.homeController.showHomePage()
+      } else {
+        promise = Global.walletController.showLanding()
+      }
+
+    } else {
+      promise = Global.homeController.showHomePage()
+    }
+
+
+    try {
+      Web.modelViewService.resolve(resolve, promise)
+    } catch(ex) {
+      Global.uiService.showExceptionPopup(ex)
+    }
+    
+  }
+
+  let routes = []
+
+  if (baseurl != '/') {
+    routes.push({
+      path: baseurl,
+      async: homeRoute
+    })
+  }
+
+  routes.push({
+    path: '/',
+    async: homeRoute
+  })
+
+
+  routes.push({
+    path: '/createWallet',
+    async async(routeTo, routeFrom, resolve, reject) {
+      
+      try {
+        Web.modelViewService.resolve(resolve, Global.walletController.showCreateWallet())
+      } catch(ex) {
+        Global.uiService.showExceptionPopup(ex)
+      }
+
+    }
+  })
+
+  routes.push({
+    path: '/enterRecovery',
+    async async(routeTo, routeFrom, resolve, reject) {
+
+      try {
+        Web.modelViewService.resolve(resolve, Global.walletController.showEnterRecovery())
+      } catch(ex) {
+        Global.uiService.showExceptionPopup(ex)
+      }
+
+    }
+  })
+
+
+  routes.push({
+    path: '/profile/static/:id',
+    async async(routeTo, routeFrom, resolve, reject) {
+
+      try {
+        Web.modelViewService.resolve(resolve, Global.profileController.showStaticProfile(routeTo.params.id))
+      } catch(ex) {
+        Global.uiService.showExceptionPopup(ex)
+      }
+
+    }
+  })
+
+  routes.push({
+    path: '/profile/edit',
+    async async(routeTo, routeFrom, resolve, reject) {
+
+      try {
+        Web.modelViewService.resolve(resolve, Global.profileController.showProfileEdit())
+      } catch(ex) {
+        Global.uiService.showExceptionPopup(ex)
+      }
+      
+    }
+  })
+
+
+  routes.push({
+    path: '/post/show/:id',
+    async async(routeTo, routeFrom, resolve, reject) {
+
+      try {
+        Web.modelViewService.resolve(resolve, Global.postController.showPost(routeTo.params.id))
+      } catch(ex) {
+        Global.uiService.showExceptionPopup(ex)
+      }
+    
+    }
+  })
+
+
+  routes.push({
+    path: '/connect',
+    async async(routeTo, routeFrom, resolve, reject) {
+
+      try {
+        Web.modelViewService.resolve(resolve, Global.connectController.showHome())
+      } catch(ex) {
+        Global.uiService.showExceptionPopup(ex)
+      }
+      
+    }
+  })
+
+  routes.push({
+    path: '/following',
+    async async(routeTo, routeFrom, resolve, reject) {
+
+      try {
+        Web.modelViewService.resolve(resolve, Global.followController.showFollowing())
+      } catch(ex) {
+        Global.uiService.showExceptionPopup(ex)
+      }
+
+    }
+  })
+
+  //Needs to be last
+  routes.push({
+    path: '(.*)',
+    // url: 'pages/404.html',
+    async async(routeTo, routeFrom, resolve, reject) {
+      console.log(routeTo)
+    }
+  })
+
+  return routes
+}
+
+
+
+module.exports = async function () {
 
   /** Shortcut methods for localStorage access */
   Storage.prototype.setObject = function (key, value) {
@@ -37,56 +178,10 @@ module.exports = function() {
     return value && JSON.parse(value);
   }
 
-  
-  /*********************************************/
-
-
-
-  //@ts-ignore
-  if (window['web3']) {
-    
-    //@ts-ignore
-    Global.provider = new providers.Web3Provider(web3.currentProvider)
-    Global.wallet = Global.provider.getSigner()
-
-    Global.isElectron = false
-
-  } else {
-
-    //@ts-ignore
-    window['remote'] = window.require('electron').remote
-
-    let defaultProviders =  ethers.getDefaultProvider("homestead")
-
-    Global.provider = defaultProviders.providers[0]
-        
-    Global.isElectron = true
-
-  }
-  
-  
-
-  Global.walletService = new WalletService()
-  Global.identityService = new IdentityService()
-  Global.settingsService = new SettingsService()
-  Global.templateService = new TemplateService()
-  Global.schemaService = new SchemaService()
-  Global.queueService = new QueueService(Global.templateService)
-  Global.initService = new InitService(Global.settingsService, Global.identityService, Global.schemaService)
-  Global.routeService = new RouteService(Global.initService)
-
-  
-  Global.settingsController = new SettingsController(Global.settingsService, Global.schemaService)
-  Global.walletController = new WalletController(Global.walletService)
-
-
-  window['settingsController'] = Global.settingsController
-  window['walletController'] = Global.walletController
-
 
   //Template7 helpers
-  
-  Template7.registerHelper('shortDate', function(date) {
+
+  Template7.registerHelper('shortDate', function (date) {
     return moment(date).format('MMM D, YYYY')
   })
 
@@ -175,17 +270,29 @@ module.exports = function() {
   // Framework7 App main instance
   Global.app = new Framework7({
     root: '#app', // App root element
-    id: 'io.framework7.testapp', // App bundle ID
-    name: 'freedom-for-data Demo', // App name
+    id: 'large', // App bundle ID
+    name: 'Large', // App name
     theme: 'aurora', // Automatic theme detection
 
     // App routes
-    routes: Global.routeService.getRoutes(rootUrl.pathname)
+    routes: routes(rootUrl.pathname)
 
-  });
+  })
+
+  try {
+    await Global.init()
+  } catch(ex) {
+    console.log(ex)
+  }
+  
+  Global.uiService = new UiService(Global.app)
+  Global.initializeControllers()
+ 
 
 
-// Init/Create main view
+
+
+  // Init/Create main view
   const mainView = Global.app.views.create('.view-main', {
     pushState: true
   })
@@ -195,15 +302,15 @@ module.exports = function() {
 
 
   //Register global click listeners. Probably move somewhere else at some point.
-  $$(document).on('click', '.follow-link', async function(e) {
-    let controller:FollowController = window['followController']
+  $$(document).on('click', '.follow-link', async function (e) {
+    let controller: FollowController = window['followController']
     await controller.followClick(e)
   })
-  
 
-  $$(document).on('click', '.unfollow-link', async function(e) {
-    let controller:FollowController = window['followController']
+
+  $$(document).on('click', '.unfollow-link', async function (e) {
+    let controller: FollowController = window['followController']
     await controller.unfollowClick(e)
   })
-  
+
 }

@@ -7,15 +7,15 @@
 
 New peer-to-peer tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
 
-* **You just send your messages to the people who want to see them.** No one sits in the middle collecting every message from every person to later blast them with ads about the contents until the end of time.
+* **You just send your messages to the people who want to see them.** There's no big database that contains everyone's data. Users have the data that's important to them and mechanisms to get shared data from any other user. 
 
-* **It’s serverless.** Not in the fancy cloud marketing way. You don’t have a server. You have an app on your phone and it stores all the things you read and post. If you have more than one device your data is available on both. The more users a P2P network gets the more reliable it becomes. Anyone who’s used bittorrent knows that it’s way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
+* **It’s serverless.** Not in the fancy cloud marketing way. You don’t have a server. You have an app on your phone/computer and it stores the data that you read and post. It's (eventually) syncronized to all your devices. The more users a P2P network gets the more reliable it becomes. A bittorrent is way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
 
-* **No implicit need to monetize. So no ads.** Without servers to maintain there aren’t bills to pay. You can create a professional website or app, create content, and share it with your audience without a hosting bill. 
+* **No implicit need to monetize.** Without servers to maintain there aren’t bills to pay. You can create a professional website or app, create content, and share it with your audience without a hosting bill. 
 
-* **Offline mode is barely different from online mode.** You just can’t get new stuff.
+* **Offline mode** You just can’t get new stuff. 
 
-The data lives on the devices of the people who use it. You send messages directly to the other users. If those messages become popular more people have copies. They make it available to everyone else. The more popular it gets the more available it becomes. We use public-key cryptography to make sure messages come from who we think they’re from. 
+An app built with Large stores its data directly on the user's device. Users send messages directly to the other users. If those messages become popular more people have copies to share. They make it available to everyone else. The more popular it gets the more available it becomes. We use public-key cryptography to make sure messages come from who we think they’re from. 
 
 We can make multi-user apps that are ad-free and also actually free that let us do all the same things we already do. There’s no infrastructure to support. It’s just an app that runs on your own phone and computer.
 
@@ -27,31 +27,26 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 
 
 ## How It Works
+
 **Large** is built on top of [IPFS](https://github.com/ipfs/ipfs) and [Ethereum](https://github.com/ethereum/solidity).
 
 * All the actual data is stored in IPFS.
 * Data services are provided by [OrbitDB](https://github.com/orbitdb/orbit-db).
-* Ethereum is used as a virtual whitepages and to authenticate all messages. It also allows other crypto-specific features to be added later. In theory you could could later connect this to any smart contract platform.
+* It provides an [ethers.js](https://github.com/ethers-io/ethers.js/) Ethereum wallet.
 * The front-end is built using [Framework7](https://github.com/framework7io/framework7). Everything is HTML/CSS/Javascript.
 * The front-end is also the back-end. Dawg.
 
 ### Basic Architecture
 
-* Everything is [TypeScript](https://github.com/microsoft/TypeScript). Types are the best.
-* MVC
-* All user interactions are managed by a controller.
-    * The controller function will return a "ModelView" object.
-        * It contains a function that returns the data for that page.
-        * Also a string that represents a Framework7 component to load.
-        * HTML goes in the component file. Sometimes with some small amounts of UI specific javascript.
+* All of the code is [TypeScript](https://github.com/microsoft/TypeScript). Types are the best.
 
-* Controller calls a service function. Preferrably a single one. A service function with unit tests.
+* [Large Core](https://github.com/ptoner/large-core) - Basic P2P data services that are authenticated by an Ethereum wallet. Provides services that let you create a profile, follow other users, and users can post messages that are aggreggated to everyone who follows them.
 
-* Data is stored using OrbitDB. There are typescript services to help manage it. There's a schema.
+    * Data is stored using OrbitDB. There are typescript services to help manage it. There's a schema.
 
-* The "register" function calls an Ethereum smart contract. The address for this contract is configurable in the actual app. Eventually this is how you'll connect to different communities without needing a whole new app.
+* [Large Web](https://github.com/ptoner/large-web) - Common web components. Depends on Framework7. Goal is to make it as quick as possible to build a full, working UI on Desktop/Android/iOS without needing to manage the difference between the environments. It looks like a desktop app on a desktop, like an iOS app on iOS, and like Android on an Android. 
 
-
+* This repo contains an app that's built to showcase all of these features. It's mostly like Twitter right now. But it's really just a prototype to make sure there's a full toolkit to quickly build cross platform P2P apps/websites. There are many things that are broken and or missing. Please file issues when you find them. There are a lot of issues at this point.
 
 # Running the desktop client
 
@@ -72,6 +67,7 @@ NOTE: All the below steps are now automated with inside a docker container. Visu
 
 
 ## What You'll Need
+
 1. **Node.js** - JavaScript runtime environment. **npm** (Node package manager) is required to install and run Large and its dependencies.
     * [Get Node.js (includes npm) here.](https://nodejs.org/en/download/)
     * Run this command in your Terminal to make sure you're done. It will show the version of Node you installed:
@@ -79,19 +75,6 @@ NOTE: All the below steps are now automated with inside a docker container. Visu
     node -v
     ```
     * If you get permission errors when using npm commands, try adding "sudo" before the command, i.e. 'npm install' becomes 'sudo npm install.' This may or may not be necessary depending on your Node.js installation.
-
-1. **Truffle** - A deployment and testing framework for Ethereum smart contracts.
-    * You can install [Truffle](https://truffleframework.com/truffle) with the following command:
-    ```console
-    npm install -g truffle
-    ```
-    * Run this command in your Terminal to make sure you're done. It will show your versions of Truffle, Solidity, Node, and Web3.js:
-    ```console
-    truffle version
-    ```
-
-1. **Ganache** - A mock Ethereum blockchain for local development and testing that runs entirely on your machine.
-    * [Download the desktop Ganache client here.](https://truffleframework.com/ganache)
 
 1. **MetaMask** - Plugin for Chrome or Brave enables your browser to connect to the blockchain.
     * [Download MetaMask here.](https://metamask.io/)
@@ -112,18 +95,14 @@ If you have installed the tools above, you can run Large with the following step
 1. **Clone and Install Large**
     * Using your Terminal or command line, copy this repository to your computer, navigate to the project folder, and install the program, using the following commands:
     ```console
-    git clone https://github.com/ptoner/large.git
+    git clone https://github.com/ptoner/Large.git
 
-    cd large
+    cd Large
 
     npm install
     ```
 
     Note: We've found that on some machines you'll need to run this command as "sudo npm install --allow-root --unsafe-perm
-
-
-1. **Start Ganache** (your private blockchain!)
-    * Just open the Ganache desktop client and leave it running.
 
 
 1. **Run Tests**

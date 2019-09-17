@@ -67,6 +67,15 @@ class WalletController {
 
     }
 
+    async createWalletFinishedClick(e:Event, component) {
+
+        await this.initApp()
+
+        this.uiService.navigate("/")
+
+
+    }
+
 
     async unlockButtonClick(e:Event, component) {
 

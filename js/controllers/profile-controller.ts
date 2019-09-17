@@ -30,18 +30,16 @@ class ProfileController {
         let profile: Profile 
         let posts: Post[]
         
-
         try {
           profile = await this.profileService.getProfileByWallet(address)
         } catch(ex) {
           console.log(ex)
         }
 
+
         if (profile) {
           try {
-
             await this.postUiService.loadPostFeedForWallet(address)
-
             posts = await this.postUiService.getRecentPosts(100)
           } catch(ex) {
             console.log(ex)
@@ -54,6 +52,7 @@ class ProfileController {
           loaded: true,
           posts: posts,
           profile: profile,
+          profilePicSrc: (profile && profile.profilePic) ? await this.imageService.cidToUrl(profile.profilePic) : undefined,
           showEditLink: showEditLink,
           currentAccount: window['currentAccount']
         }
@@ -65,7 +64,7 @@ class ProfileController {
     }
 
     async showProfileEdit() : Promise<ModelView> {
-
+        
         return new ModelView(async () => {
 
           let profile: Profile
@@ -73,22 +72,25 @@ class ProfileController {
 
             profile = await this.profileService.getCurrentUser()
 
-            if (profile) {
-              profile.profilePicSrc = profile && profile.profilePic ? await this.imageService.cidToUrl(profile.profilePic) : undefined
-            }
-            
-
           } catch(ex) {
             console.log(ex)
           }
-
 
           if (!profile) {
             profile = new Profile()
             profile._id = window['currentAccount']
           }
 
-          return profile
+          
+          //Create a view model and copy properties over. 
+          let model:any = {}
+          Object.assign(model, profile)
+          
+          if (profile && profile.profilePic) {
+            model.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
+          }
+          
+          return model
 
         }, 'pages/profile/edit.html')
 
@@ -104,13 +106,11 @@ class ProfileController {
         //Add photo (if selected)
         profileData = await this.addProfilePic(profileData)
 
-
         //TODO: //Make sure permissions are right for this. Don't want to edit someone else's profile.
         await this.profileService.put(profileData)
-
+        
         //Redirect to profile
         this.uiService.navigate(`/profile/static/${window['currentAccount']}`)
-
 
       } catch (ex) {
         console.log(ex)
@@ -131,7 +131,7 @@ class ProfileController {
     async addProfilePic(profileData: Profile) : Promise<Profile> {
 
         //Upload photo if we have it
-        const profilePic: HTMLElement = document.getElementById("profilePic");
+        const profilePic: HTMLElement = document.getElementById("profilePic")
 
         //@ts-ignore
         if ((profilePic).files.length > 0) {

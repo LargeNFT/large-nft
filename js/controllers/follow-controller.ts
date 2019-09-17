@@ -48,8 +48,9 @@ class FollowController {
       let friends: Friend[] = await this.friendService.list(this.profilesShown, this.limit)
 
       for (let friend of friends) {
+
         let profile: Profile = await this.profileService.getProfileByWallet(friend.address)
-        
+      
         if (!profile) {
           profile = new Profile()
           profile.owner = friend.address
@@ -58,7 +59,15 @@ class FollowController {
         }
 
         profile.following = true
-        profiles.push(profile)
+
+        //Create a view model and copy properties over. 
+        let model = {
+          profilePicSrc: (profile && profile.profilePic) ? await this.imageService.cidToUrl(profile.profilePic) : undefined
+        }
+        Object.assign(model, profile)
+
+        //@ts-ignore
+        profiles.push(model)
       }
 
     } catch (ex) {
@@ -85,12 +94,6 @@ class FollowController {
     try {
       profile = await this.profileService.getProfileByWallet($$('#friendAddress').val())
 
-      //Convert profile pic to Blob
-      if (profile && profile.profilePic) {
-        profile.profilePicSrc = await this.imageService.cidToUrl(profile.profilePic)
-      }
-
-
       if (profile) {
         //Check if we're friends    
         let friend: Friend = await this.friendService.get(profile._id)
@@ -105,8 +108,14 @@ class FollowController {
     }
 
 
+    let profileViewModel = {
+      profilePicSrc: (profile && profile.profilePic) ? await this.imageService.cidToUrl(profile.profilePic) : undefined
+    }
+    Object.assign(profileViewModel, profile)
+
+
     component.$setState({
-      foundFriend: profile
+      foundFriend: profileViewModel
     })
 
 

@@ -5,14 +5,14 @@
 
 
     <div class="toolbar tabbar toolbar-top main-tabs">
-        <div class="toolbar-inner">
-          <a href="/" class="tab-link"><i class="f7-icons">home</i> Home</a>
-          <a href="/profile/static/{{currentAccount}}" class="tab-link"><i class="f7-icons">person</i> Profile</a>
-          <a href="/following" class="tab-link"><i class="f7-icons">persons</i> Friends</a>
-          <a href="/connect" class="tab-link tab-link-active"><i class="f7-icons">world</i> Connect</a>
-        </div>
-    </div>  
-  
+      <div class="toolbar-inner">
+        <a href="/" class="tab-link"><i class="f7-icons">home</i> Home</a>
+        <a href="/profile/static/{{currentAccount}}" class="tab-link"><i class="f7-icons">person</i> Profile</a>
+        <a href="/following" class="tab-link"><i class="f7-icons">persons</i> Friends</a>
+        <a href="/connect" class="tab-link tab-link-active"><i class="f7-icons">world</i> Connect</a>
+      </div>
+    </div>
+
 
 
 
@@ -23,45 +23,77 @@
 
           <div class="block-title">IPFS Peers</div>
           <div class="block">
-                
+
             <div class="list media-list peer-list">
               <ul>
-                  {{#each peers}}
-                  <li>
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-subtitle no-wrap">
-                            {{this}}
-                          </div>
-                        </div>
+                {{#each peers}}
+                <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-subtitle no-wrap">
+                        {{this}}
                       </div>
-                    </li>
-                  {{/each}}
+                    </div>
+                  </div>
+                </li>
+                {{/each}}
               </ul>
             </div>
-              
+
           </div>
 
           <div class="block-title">Monitored Feeds</div>
           <div class="block">
-                
+
             <div class="list media-list peer-list">
               <ul>
-                  {{#each subscribed}}
-                  <li>
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-subtitle no-wrap">
-                            {{this}}
-                          </div>
-                        </div>
+                {{#each subscribed}}
+                <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-subtitle no-wrap">
+                        {{this}}
                       </div>
-                    </li>
-                  {{/each}}
+                    </div>
+                  </div>
+                </li>
+                {{/each}}
               </ul>
             </div>
-              
+
           </div>
+
+
+
+
+          {{#if schema}}
+            <div class="block-title">Schema</div>
+            <div class="list">
+              <ul>
+                {{#each stores}}
+                <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">
+                        <!-- Item header, must be first child of item-title -->
+                        <div class="item-header">{{name}}</div>
+
+                        <div class="row">
+                          <span class="wrap col-90">{{address}}</span>
+                          <button class="col-10 button button-fill button-round {{type}}" data-id="{{address}}">Drop</button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {{/each}}
+
+              </ul>
+            </div>
+          {{else}}
+            <div class="block-title">Schema Not Loaded</div>
+          {{/if}}
 
 
 
@@ -87,20 +119,25 @@
 
         const self = this;
 
-        let controller = window['connectController']
-
-        this.$$('#register-link').on('click', function (e) {
-            e.preventDefault()
-            controller.registerClick(e)
-        })
-
-
-
       }
     },
 
-    created: async function() {
-        window['Global'].loadComponentState(this)
+    created: async function () {
+
+      await window['Global'].loadComponentState(this)
+
+      let controller = window['connectController']
+
+      this.$$('.drop-store').on('click', function(e) {
+         controller.dropStoreClicked(e)
+      })
+
+
+      this.$$('.drop-post-store').on('click', function(e) {
+         controller.dropPostStoreClicked(e)
+      })
+
+
     }
   }
 </script>

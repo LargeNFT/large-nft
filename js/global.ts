@@ -29,6 +29,10 @@ export namespace Global {
 
   export var app
 
+  export function getCore() {
+    return Core
+  }
+
   export async function loadComponentState(component, showSpinner = true) {
     return Global.uiService.loadComponentState(component, showSpinner)
   }
@@ -39,7 +43,7 @@ export namespace Global {
     Global.homeController = new HomeController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService)
     Global.profileController = new ProfileController(Web.uploadService, Core.profileService, Web.postUiService, Global.uiService, Core.imageService)
     Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Global.uiService)
-    Global.connectController = new ConnectController(Core.ipfs)
+    Global.connectController = new ConnectController(Core.ipfs, Core.schemaService)
     Global.postController = new PostController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService)
 
     window['walletController'] = Global.walletController

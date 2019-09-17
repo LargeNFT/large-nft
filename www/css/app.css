@@ -6,6 +6,9 @@
   --f7-list-item-after-font-size: 8px;
   --f7-list-item-text-font-size: 12px;
 
+  --f7-list-item-header-font-size: 13px;
+  --f7-list-item-header-font-weight: bold;
+
   --f7-card-font-size: 10px;
   --f7-block-font-size: 10px;
 
@@ -292,3 +295,4 @@ hr:before {
 .peer-list .item-subtitle {
   font-size: 11px;
 }
+

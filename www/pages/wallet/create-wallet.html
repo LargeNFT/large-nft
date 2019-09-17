@@ -39,7 +39,7 @@
                             <div class="col-66">
                             </div>
                             <div class="col-33">
-                                <a class="button button-fill" href="/">Got it</a>
+                                <a class="button button-fill create-wallet-finished" href="#">Got it</a>
                             </div>
                         </div>
 
@@ -122,6 +122,11 @@
                 this.$$('#create-wallet-form').on('submit', function (e) {
                     e.preventDefault()
                     controller.createWalletClick(e, self)
+                })
+
+                this.$$(document).on('click', '.create-wallet-finished', function (e) {
+                    e.preventDefault()
+                    controller.createWalletFinishedClick(e, self)
                 })
 
             }

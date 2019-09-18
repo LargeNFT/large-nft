@@ -46,8 +46,7 @@ class ConnectController {
                 stores.push(store)
             }
 
-
-
+            
             let peers = await self.ipfs.swarm.peers()
             
             peers = peers.map(e => e.addr.toString())

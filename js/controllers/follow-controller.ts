@@ -113,7 +113,7 @@ class FollowController {
     }
     Object.assign(profileViewModel, profile)
 
-
+    
     component.$setState({
       foundFriend: profileViewModel
     })

@@ -1,6 +1,6 @@
 import { ModelView, Dom7 } from "large-web"
 
-import { Profile, Friend, FriendService, ProfileService, ImageService } from "large-core";
+import Core, { Profile, Friend, FriendService, ProfileService, ImageService } from "large-core";
 import { Global } from "../global";
 import { UiService } from "../services/ui-service";
 
@@ -134,6 +134,8 @@ class FollowController {
     }
 
     await this.friendService.put(friend)
+
+    await Core.processFeedService.peer(friend)
 
     $$(e.target)
       .removeClass("button-outline")

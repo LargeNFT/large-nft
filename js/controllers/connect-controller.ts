@@ -9,7 +9,6 @@ var $$ = Dom7;
 
 class ConnectController {
 
-
     constructor(
         private ipfs,
         private schemaService:SchemaService

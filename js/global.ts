@@ -59,5 +59,4 @@ export namespace Global {
     await Web.initialize()
   }
 
-
 }

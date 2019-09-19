@@ -104,11 +104,24 @@ module.exports = async function () {
     </li>
   `
 
+  let homeTab = `
+    <a href="/" class="tab-link tab-link-active">
+      <i class="icon f7-icons if-not-md">home 
+          <span class='badge color-red new-message-badge {{js_if "this.unreadPosts == 0"}}hide{{/if}}'>
+            {{unreadPosts}}
+          </span>
+      </i>
+      <span>Home</span>
+    </a>
+  `
+
+
   Global.profileResultTemplate = Template7.compile(profileResult)
   Global.postResultTemplate = Template7.compile(postResult)
 
   Template7.registerPartial("postResult", postResult)
   Template7.registerPartial("profileResult", profileResult)
+  Template7.registerPartial("homeTab", homeTab)
 
 
 
@@ -129,6 +142,7 @@ module.exports = async function () {
     routes: routes(rootUrl.pathname)
 
   })
+  
 
   try {
     await Global.init()
@@ -139,6 +153,8 @@ module.exports = async function () {
   Global.uiService = new UiService(Global.app)
   Global.initializeControllers()
  
+
+
 
 
 

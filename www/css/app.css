@@ -296,3 +296,6 @@ hr:before {
   font-size: 11px;
 }
 
+.hide {
+  display: none;
+}

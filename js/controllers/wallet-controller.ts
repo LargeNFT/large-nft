@@ -15,10 +15,15 @@ class WalletController {
     }
 
     async initApp() {
+        this.uiService.showSpinner()
+
         await Global.init()
         Global.initializeControllers()
 
         console.log('Wallet unlocked. Initializing and redirecting to home screen')
+
+        this.uiService.hideSpinner()
+
         this.uiService.navigate("/")
     }
 
@@ -68,12 +73,7 @@ class WalletController {
     }
 
     async createWalletFinishedClick(e:Event, component) {
-
         await this.initApp()
-
-        this.uiService.navigate("/")
-
-
     }
 
 
@@ -84,11 +84,9 @@ class WalletController {
         var formData = Global.app.form.convertToData('#unlock-wallet-form');
 
         try {
+            this.uiService.showSpinner()
             await this.walletService.unlockWallet(formData.password)
-
             await this.initApp()
-            
-
         } catch(ex) {
             console.log(ex)
             component.$setState({

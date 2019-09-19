@@ -1,7 +1,6 @@
 import { Dom7, Template7, ModelView, QuillService, PostUIService } from "large-web";
-import { Post, ProfileService, ImageService, Profile } from 'large-core';
+import Core, { Post, ProfileService, ImageService, Profile, ProcessFeedService } from 'large-core';
 import { Global } from '../global';
-
 
 var $$ = Dom7;
 
@@ -12,7 +11,7 @@ class HomeController {
 
   postsShown: number = 0
   
-  limit: number = 10
+  limit: number = 50
   lastPost:string = null
 
 
@@ -20,7 +19,8 @@ class HomeController {
     private quillService: QuillService,
     private postUiService:PostUIService,
     private profileService: ProfileService,
-    private imageService:ImageService
+    private imageService:ImageService,
+    private processFeedService:ProcessFeedService
   ) {}
 
   initializeQuill() {
@@ -45,6 +45,8 @@ class HomeController {
       await this.postUiService.loadMainFeedForWallet(window['currentAccount'])
 
       this.reset()
+      this.processFeedService.markAllPostsRead()
+
 
       let currentUser:Profile
 
@@ -71,7 +73,6 @@ class HomeController {
     let posts:Post[] = []
 
     try {
-      console.log(`Getting main feed posts`)
       posts = await this.postUiService.getRecentPosts(this.limit, this.lastPost)
     } catch(ex) {
       console.log(ex)
@@ -84,6 +85,7 @@ class HomeController {
     } else {
       this.hasMorePosts = false
     }
+
 
     return posts
 

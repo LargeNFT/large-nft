@@ -1,15 +1,17 @@
-import { HomeController } from "./controllers/home-controller";
-import { ProfileController } from "./controllers/profile-controller";
+import { HomeController } from "./controllers/home-controller"
+import { ProfileController } from "./controllers/profile-controller"
 
 
-import { ConnectController } from "./controllers/connect-controller";
-import { PostController } from "./controllers/post-controller";
-import { FollowController } from "./controllers/follow-controller";
-import { WalletController } from "./controllers/wallet-controller";
-import Web from "large-web";
-import { UiService } from "./services/ui-service";
-import Core from "large-core";
+import { ConnectController } from "./controllers/connect-controller"
+import { PostController } from "./controllers/post-controller"
+import { FollowController } from "./controllers/follow-controller"
+import { WalletController } from "./controllers/wallet-controller"
+import Web, { Dom7 } from "large-web"
+import { UiService } from "./services/ui-service"
+import Core from "large-core"
 
+
+var $$ = Dom7
 
 export namespace Global {
 
@@ -40,7 +42,7 @@ export namespace Global {
   export function initializeControllers() {
 
     Global.walletController = new WalletController(Core.walletService, Global.uiService)
-    Global.homeController = new HomeController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService)
+    Global.homeController = new HomeController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService, Core.processFeedService)
     Global.profileController = new ProfileController(Web.uploadService, Core.profileService, Web.postUiService, Global.uiService, Core.imageService)
     Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Global.uiService)
     Global.connectController = new ConnectController(Core.ipfs, Core.schemaService)
@@ -57,6 +59,13 @@ export namespace Global {
   export async function init() {
     await Core.initialize()
     await Web.initialize()
+
+
+    Core.eventEmitter.on("updated-unread-posts", function (unreadPosts) {
+      console.log($$('.new-message-badge'))
+      $$('.new-message-badge').html(unreadPosts)
+      $$('.new-message-badge').removeClass('hide')
+    })
   }
 
 }

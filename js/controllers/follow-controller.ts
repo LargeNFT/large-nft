@@ -135,7 +135,7 @@ class FollowController {
 
     await this.friendService.put(friend)
 
-    await Core.processFeedService.peer(friend)
+    await this.friendService.peer(friend)
 
     $$(e.target)
       .removeClass("button-outline")

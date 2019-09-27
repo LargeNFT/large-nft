@@ -42,7 +42,7 @@ export namespace Global {
   export function initializeControllers() {
 
     Global.walletController = new WalletController(Core.walletService, Global.uiService)
-    Global.homeController = new HomeController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService, Core.processFeedService)
+    Global.homeController = new HomeController(Web.quillService, Web.postUiService, Core.profileService, Core.imageService, Core.feedMonitorService)
     Global.profileController = new ProfileController(Web.uploadService, Core.profileService, Web.postUiService, Global.uiService, Core.imageService)
     Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Global.uiService)
     Global.connectController = new ConnectController(Core.ipfs, Core.schemaService)
@@ -62,7 +62,6 @@ export namespace Global {
 
 
     Core.eventEmitter.on("updated-unread-posts", function (unreadPosts) {
-      console.log($$('.new-message-badge'))
       $$('.new-message-badge').html(unreadPosts)
       $$('.new-message-badge').removeClass('hide')
     })

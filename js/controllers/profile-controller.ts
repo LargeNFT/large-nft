@@ -18,9 +18,7 @@ class ProfileController {
       private postUiService:PostUIService,
       private uiService:UiService,
       private imageService:ImageService
-      ) {
-
-      }
+      ) {}
 
 
     async showStaticProfile(address: string) : Promise<ModelView> {
@@ -40,7 +38,7 @@ class ProfileController {
         if (profile) {
           try {
             await this.postUiService.loadPostFeedForWallet(address)
-            posts = await this.postUiService.getRecentPosts(100)
+            posts = await this.postUiService.getRecentPosts(0, 100)
           } catch(ex) {
             console.log(ex)
           }

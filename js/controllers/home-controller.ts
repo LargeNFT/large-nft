@@ -1,5 +1,5 @@
 import { Dom7, Template7, ModelView, QuillService, PostUIService } from "large-web";
-import Core, { Post, ProfileService, ImageService, Profile, ProcessFeedService } from 'large-core';
+import Core, { Post, ProfileService, ImageService, Profile, FeedMonitorService } from 'large-core';
 import { Global } from '../global';
 
 var $$ = Dom7;
@@ -11,7 +11,7 @@ class HomeController {
 
   postsShown: number = 0
   
-  limit: number = 50
+  limit: number = 20
   lastPost:string = null
 
 
@@ -20,7 +20,7 @@ class HomeController {
     private postUiService:PostUIService,
     private profileService: ProfileService,
     private imageService:ImageService,
-    private processFeedService:ProcessFeedService
+    private feedMonitorService:FeedMonitorService
   ) {}
 
   initializeQuill() {
@@ -42,10 +42,8 @@ class HomeController {
 
     return new ModelView( async () => {
 
-      await this.postUiService.loadMainFeedForWallet(window['currentAccount'])
-
       this.reset()
-      this.processFeedService.markAllPostsRead()
+      this.feedMonitorService.markAllPostsRead()
 
 
       let currentUser:Profile
@@ -73,7 +71,8 @@ class HomeController {
     let posts:Post[] = []
 
     try {
-      posts = await this.postUiService.getRecentPosts(this.limit, this.lastPost)
+      await this.postUiService.loadMainFeedForWallet(window['currentAccount'])
+      posts = await this.postUiService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
     } catch(ex) {
       console.log(ex)
     }
@@ -85,7 +84,6 @@ class HomeController {
     } else {
       this.hasMorePosts = false
     }
-
 
     return posts
 
@@ -116,10 +114,9 @@ class HomeController {
 
     
     $$('#post-list').empty()
+
     //@ts-ignore
     $$('.infinite-scroll-content').trigger('infinite')
-
-
 
     this.quillService.activeEditor.setText('')
     this.quillService.activeEditor.focus()

@@ -37,7 +37,7 @@ class PostController {
       await this.postUiService.loadRepliesFeed(this.loadedPost.replies)
 
 
-      let replies: Post[] = await this.postUiService.getRecentPosts(100)
+      let replies: Post[] = await this.postUiService.getRecentPosts(0, 100)
 
 
       //Show the edit button to the owner

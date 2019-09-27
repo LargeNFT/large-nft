@@ -77,7 +77,7 @@ module.exports = async function () {
 
 
   let postResult = `
-    <li>
+    <li class="post">
       <a href="/post/show/{{cid}}" class="item-link">
         <div class="item-content" id="post_{{cid}}">
           <div class="item-media">

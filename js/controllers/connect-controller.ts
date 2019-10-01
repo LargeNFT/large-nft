@@ -39,7 +39,7 @@ class ConnectController {
                 let store = {
                     name: field,
                     address: schema[field],
-                    type: (field == "mainFeed" || field == "postFeed" ) ? "drop-post-store" : "drop-store"
+                    type: "drop-store"
                 }
 
                 stores.push(store)
@@ -73,21 +73,6 @@ class ConnectController {
         // Create bottom toast
         var toastBottom = Global.app.toast.create({
             text: 'Store dropped'
-        })
-
-        toastBottom.open()
-
-    }
-
-    async dropPostStoreClicked(e:Event) {
-
-        let id = $$(e.target).data('id')
-
-        await this.schemaService.dropPostStore(id)
-
-        // Create bottom toast
-        var toastBottom = Global.app.toast.create({
-            text: 'Post store dropped'
         })
 
         toastBottom.open()

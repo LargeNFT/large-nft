@@ -106,6 +106,8 @@ app.on('ready', async () => {
   // @ts-ignore
   global.ipfsHost = result[0]
 
+  //@ts-ignore
+  global.ipfs = ipfs
 
 
   // and load the index.html of the app.

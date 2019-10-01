@@ -80,7 +80,7 @@ class HomeController {
     
     if (posts.length == this.limit) {
       this.postsShown += posts.length
-      this.lastPost = posts[posts.length -1].feedCid
+      this.lastPost = posts[posts.length -1].cid
     } else {
       this.hasMorePosts = false
     }

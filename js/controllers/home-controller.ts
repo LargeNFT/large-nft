@@ -1,6 +1,7 @@
-import { Dom7, Template7, ModelView, QuillService, PostUIService } from "large-web";
+import Web, { Dom7, Template7, ModelView, QuillService, PostUIService } from "large-web";
 import Core, { Post, ProfileService, ImageService, Profile, FeedMonitorService } from 'large-core';
 import { Global } from '../global';
+import { UiService } from "../services/ui-service";
 
 var $$ = Dom7;
 
@@ -20,7 +21,8 @@ class HomeController {
     private postUiService:PostUIService,
     private profileService: ProfileService,
     private imageService:ImageService,
-    private feedMonitorService:FeedMonitorService
+    private feedMonitorService:FeedMonitorService,
+    private uiService:UiService
   ) {}
 
   initializeQuill() {
@@ -97,6 +99,8 @@ class HomeController {
 
   async postMessage(e: Event): Promise<void> {
 
+    this.uiService.showSpinner()
+
     let content = this.quillService.activeEditor.getContents()
     let length = this.quillService.activeEditor.getLength()
 
@@ -109,17 +113,15 @@ class HomeController {
 
     let post:Post = await this.postUiService.postMessage(content, window['currentAccount'])
 
-
     this.reset()
-
-    
-    $$('#post-list').empty()
 
     //@ts-ignore
     $$('.infinite-scroll-content').trigger('infinite')
 
     this.quillService.activeEditor.setText('')
     this.quillService.activeEditor.focus()
+
+    this.uiService.hideSpinner()
 
   }
 
@@ -129,8 +131,11 @@ class HomeController {
     this.postsShown = 0
     this.lastPost = undefined
     this.hasMorePosts = true
-    
+    this.loadingInProgress = false
+
     $$("#post-list").empty()
+
+    $$('.infinite-scroll-preloader').show()
 
   }
 
@@ -145,6 +150,38 @@ class HomeController {
 
     $$('#post_' + id).remove()
 
+  }
+
+
+  async infiniteScrollListener() {
+
+    // Exit, if loading in progress
+    if (this.loadingInProgress || !this.hasMorePosts) return
+
+    // Set loading flag
+    this.loadingInProgress = true;
+
+    let posts = await this.getNextPage()
+
+    for (var post of posts) {
+      $$("#post-list").append(window['Global'].postResultTemplate(post))
+    }
+
+    await this.loadPostImages()
+
+    if (!this.hasMorePosts) {
+
+      console.log("Unloading infinite scroll")
+
+      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+      // window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
+
+      // Remove preloader
+      $$('.infinite-scroll-preloader').hide()
+
+    }
+
+    this.loadingInProgress = false
   }
 
 

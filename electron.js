@@ -64,9 +64,6 @@ app.on('ready', async () => {
 
   ipfs = await IPFS.create({
     repo: path.join(app.getPath("appData"), '.ipfs/'),
-    EXPERIMENTAL: {
-      pubsub: true
-    },
     relay: {
       enabled: true, // enable circuit relay dialer and listener
       hop: {

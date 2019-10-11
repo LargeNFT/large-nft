@@ -38,20 +38,20 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 
 ### Basic Architecture
 
-* All of the code is [TypeScript](https://github.com/microsoft/TypeScript). Types are the best.
+* All of the code is [TypeScript](https://gitlab.com/microsoft/TypeScript). Types are the best.
 
-* [Large Core](https://github.com/ptoner/large-core) - Basic P2P data services that are authenticated by an Ethereum wallet. Provides services that let you create a profile, follow other users, and users can post messages that are aggreggated to everyone who follows them.
+* [Large Core](https://gitlab.com/ptoner/large-core) - Basic P2P data services that are authenticated by an Ethereum wallet. Provides services that let you create a profile, follow other users, and users can post messages that are aggreggated to everyone who follows them.
 
     * Data is stored using OrbitDB. There are typescript services to help manage it. There's a schema.
 
-* [Large Web](https://github.com/ptoner/large-web) - Common web components. Depends on Framework7. Goal is to make it as quick as possible to build a full, working UI on Desktop/Android/iOS without needing to manage the difference between the environments. It looks like a desktop app on a desktop, like an iOS app on iOS, and like Android on an Android. 
+* [Large Web](https://gitlab.com/ptoner/large-web) - Common web components. Depends on Framework7. Goal is to make it as quick as possible to build a full, working UI on Desktop/Android/iOS without needing to manage the difference between the environments. It looks like a desktop app on a desktop, like an iOS app on iOS, and like Android on an Android. 
 
 * This repo contains an app that's built to showcase all of these features. It's mostly like Twitter right now. But it's really just a prototype to make sure there's a full toolkit to quickly build cross platform P2P apps/websites. There are many things that are broken and or missing. Please file issues when you find them. There are a lot of issues at this point.
 
 # Running the desktop client
 
 ```console
-git clone https://github.com/ptoner/Large.git
+git clone https://gitlab.com/ptoner/Large.git
 cd Large
 npm run electron
 ```
@@ -95,7 +95,7 @@ If you have installed the tools above, you can run Large with the following step
 1. **Clone and Install Large**
     * Using your Terminal or command line, copy this repository to your computer, navigate to the project folder, and install the program, using the following commands:
     ```console
-    git clone https://github.com/ptoner/Large.git
+    git clone https://gitlab.com/ptoner/Large.git
 
     cd Large
 

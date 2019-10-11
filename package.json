@@ -4,7 +4,7 @@
   "description": "Large P2P Blogging",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ptoner/large.git"
+    "url": "git+https://gitlab.com/ptoner/large.git"
   },
   "scripts": {
     "electron": "electron electron.js",
@@ -26,9 +26,9 @@
   "author": "Patrick Toner",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ptoner/large/issues"
+    "url": "https://gitlab.com/ptoner/large/issues"
   },
-  "homepage": "https://github.com/ptoner/large#readme",
+  "homepage": "https://gitlab.com/ptoner/large#readme",
   "devDependencies": {
     "cpy-cli": "^1.0.1",
     "http-server": "^0.10.0",

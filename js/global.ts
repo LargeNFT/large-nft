@@ -61,7 +61,7 @@ export namespace Global {
     await Web.initialize()
 
 
-    Core.eventEmitter.on("updated-unread-posts", function (unreadPosts) {
+    Core.eventEmitter.on("unread-posts-updated", function (unreadPosts) {
       $$('.new-message-badge').html(unreadPosts)
       $$('.new-message-badge').removeClass('hide')
     })

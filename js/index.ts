@@ -94,7 +94,7 @@ module.exports = async function () {
                 <span class="post-owner">{{owner}}</span>
               </div>
               <div class="item-after">
-                {{dateCreated}}
+                {{dateCreatedDisplay}}
               </div>
             </div>
             <div class="item-subtitle post-content">{{contentTranslated}}</div>

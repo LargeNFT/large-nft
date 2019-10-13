@@ -157,8 +157,6 @@ module.exports = async function () {
 
 
 
-
-
   // Init/Create main view
   const mainView = Global.app.views.create('.view-main', {
     pushState: true

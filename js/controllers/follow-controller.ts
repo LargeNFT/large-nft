@@ -133,7 +133,7 @@ class FollowController {
       address: friendAddress
     }
 
-    await this.friendService.put(friend)
+    await this.friendService.put(friendAddress, friend)
 
     await this.friendService.connect(friend)
 

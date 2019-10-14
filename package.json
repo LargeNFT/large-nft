@@ -9,8 +9,7 @@
   "scripts": {
     "electron": "electron electron.js",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
-    "docker-serve": "http-server ./www/ -o -c 1 -a 0.0.0.0 -p 8081",
-    "build": "./scripts/build.sh",
+    "build": "./build.sh",
     "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v"
   },
   "keywords": [
@@ -44,7 +43,8 @@
     "tsify": "4.0.1",
     "typescript": "3.5.3",
     "ts-node": "8.3.0",
-    "electron": "6.0.10"
+    "electron": "6.0.10",
+    "electron-builder": "21.2.0"
   },
   "dependencies": {
     "moment": "2.24.0",

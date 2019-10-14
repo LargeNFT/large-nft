@@ -78,6 +78,13 @@ Then in a different terminal
 npm run serve
 ```
 
+# Latest Build Hash
+```console
+QmccRnV2hdLsLT5C73VU6WZwDrfPdGFa8ohHq5sCdCnEj4
+```
+
+
+
 
 # Development Tools
 You need the tools listed below to run the project.

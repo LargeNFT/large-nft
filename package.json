@@ -9,7 +9,7 @@
   "scripts": {
     "electron": "electron electron.js",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
-    "build": "./build.sh",
+    "build": "./scripts/build.sh",
     "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v"
   },
   "keywords": [
@@ -47,9 +47,9 @@
     "electron-builder": "21.2.0"
   },
   "dependencies": {
-    "moment": "2.24.0",
     "ipfs": "0.38.0",
+    "large-core": "0.0.9",
     "large-web": "0.0.8",
-    "large-core": "0.0.7"
+    "moment": "2.24.0"
   }
 }

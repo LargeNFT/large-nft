@@ -48,12 +48,34 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 
 * This repo contains an app that's built to showcase all of these features. It's mostly like Twitter right now. But it's really just a prototype to make sure there's a full toolkit to quickly build cross platform P2P apps/websites. There are many things that are broken and or missing. Please file issues when you find them. There are a lot of issues at this point.
 
+
+
+# Install
+```console
+
+git clone https://gitlab.com/ptoner/large.git
+cd large
+
+npm run install
+```
+
 # Running the desktop client
 
 ```console
-git clone https://gitlab.com/ptoner/Large.git
-cd Large
 npm run electron
+```
+
+
+# Running the web client
+
+```console
+npm run watch
+```
+
+Then in a different terminal
+
+```console
+npm run serve
 ```
 
 
@@ -86,31 +108,8 @@ NOTE: All the below steps are now automated with inside a docker container. Visu
 1. **Discord** - Ask questions, discuss, get help, or just chat with us. Sometimes we share links here during the meetup.
     * [Click here to join!](https://discord.gg/kRydQeW)
 
-## Installing This Project
-You can run this project without installing a ton of dependencies using vscode dev containers or docker-compose: see EXPERIMENTAL_SETUP.md
 
 
-If you have installed the tools above, you can run Large with the following steps. (We'll try to commit only working code to the master branch.)
-
-1. **Clone and Install Large**
-    * Using your Terminal or command line, copy this repository to your computer, navigate to the project folder, and install the program, using the following commands:
-    ```console
-    git clone https://gitlab.com/ptoner/Large.git
-
-    cd Large
-
-    npm install
-    ```
-
-    Note: We've found that on some machines you'll need to run this command as "sudo npm install --allow-root --unsafe-perm
-
-
-1. **Run Tests**
-    * Inside the large project root directory:
-    ```console
-    npm run test
-    ```
-    * If your tests pass, you are all set up!
 
 ## Help Us Build the Rest!
 

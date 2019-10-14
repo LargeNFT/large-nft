@@ -49,7 +49,7 @@
   "dependencies": {
     "moment": "2.24.0",
     "ipfs": "0.38.0",
-    "large-web": "file:../large-web",
-    "large-core": "file:../large-core"
+    "large-web": "0.0.8",
+    "large-core": "0.0.7"
   }
 }

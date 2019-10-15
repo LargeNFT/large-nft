@@ -7,9 +7,10 @@
     "url": "git+https://gitlab.com/ptoner/large.git"
   },
   "scripts": {
-    "electron": "electron electron.js",
+    "electron": "electron index.js",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
     "build": "./scripts/build.sh",
+    "dist": "electron-builder",
     "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v"
   },
   "keywords": [
@@ -22,6 +23,12 @@
     "cordova",
     "phonegap"
   ],
+  "build": {
+    "appId": "large",
+    "mac": {
+      "category": "large"
+    }
+  },
   "author": "Patrick Toner",
   "license": "MIT",
   "bugs": {

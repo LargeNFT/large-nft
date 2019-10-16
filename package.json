@@ -10,8 +10,8 @@
     "electron": "electron index.js",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
     "build": "./scripts/build.sh",
-    "dist": "electron-builder",
-    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v"
+    "dist": "browserify -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v; electron-builder",
+    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./js/index.ts -p [ tsify --target es2017 --experimentalDecorators ]  -o ./www/js/large.js -v"
   },
   "keywords": [
     "framework7",
@@ -27,7 +27,23 @@
     "appId": "large",
     "mac": {
       "category": "large"
-    }
+    },
+    "files": [
+      "www/*",
+      "index.js",
+      "!**/js/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ]
   },
   "author": "Patrick Toner",
   "license": "MIT",
@@ -51,12 +67,12 @@
     "typescript": "3.5.3",
     "ts-node": "8.3.0",
     "electron": "6.0.10",
-    "electron-builder": "21.2.0"
+    "electron-builder": "21.2.0",
+    "large-core": "file:../large-core",
+    "large-web": "file:../large-web",
+    "moment": "2.24.0"
   },
   "dependencies": {
-    "ipfs": "0.38.0",
-    "large-core": "0.0.9",
-    "large-web": "0.0.8",
-    "moment": "2.24.0"
+    "ipfs": "0.38.0"
   }
 }

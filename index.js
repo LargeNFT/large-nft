@@ -43,6 +43,8 @@ process.on('SIGTERM', () => shutdown())
 
 app.on('ready', async () => {
 
+  console.log('Ready')
+
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 728,
@@ -53,6 +55,7 @@ app.on('ready', async () => {
 
   mainWindow.maximize()
 
+  console.log('Main window created')
 
   // @ts-ignore
   global.appData = app.getPath("appData")
@@ -60,6 +63,7 @@ app.on('ready', async () => {
   global.walletDao = new WalletDao()
   //@ts-ignore
   global.peersDao = new PeersDao()
+
 
 
   ipfs = await IPFS.create({
@@ -83,6 +87,8 @@ app.on('ready', async () => {
     }
   })
 
+
+  console.log('IPFS initialized')
 
   //Start the API gateway
   // const Gateway = require('ipfs/src/http')

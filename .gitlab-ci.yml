@@ -10,16 +10,9 @@
     install_dependencies:
       stage: build
       script:
-        - yarn global add node-gyp; yarn global add browserify; yarn global add electron-builder; yarn install
+        - yarn global add node-gyp; yarn global add browserify; yarn global add electron-builder; yarn install; yarn run dist
       artifacts:
         paths:
           - node_modules/
-
-    build_electron:
-      stage: build
-      script:
-        - yarn run dist
-      artifacts:
-        paths:
           - dist/
 

@@ -1,4 +1,4 @@
-    image: stefanscherer/node-windows
+    image: electronuserland/builder:wine
 
     stages:
       - build

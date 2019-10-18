@@ -1,4 +1,4 @@
-    image: appsvc/node:latest
+    image: stefanscherer/node-windows:latest
 
     stages:
       - build

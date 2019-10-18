@@ -1,4 +1,4 @@
-    image: stefanscherer/node-windows:latest
+    image: stefanscherer/node-windows
 
     stages:
       - build

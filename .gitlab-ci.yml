@@ -10,7 +10,7 @@
     install_dependencies:
       stage: build
       script:
-        - yarn global add node-gyp; yarn install
+        - yarn global add node-gyp; yard global add browserify; yard global add electron-builder; yarn install
       artifacts:
         paths:
           - node_modules/

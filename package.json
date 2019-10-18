@@ -26,7 +26,7 @@
   "build": {
     "appId": "large",
     "mac": {
-      "category": "large"
+      "category": "public.app-category.social-networking"
     },
     "files": [
       "www/**",
@@ -51,8 +51,6 @@
   },
   "homepage": "https://gitlab.com/ptoner/large#readme",
   "devDependencies": {
-    "cpy-cli": "^1.0.1",
-    "http-server": "^0.10.0",
     "@babel/core": "7.2.2",
     "@babel/plugin-proposal-class-properties": "7.2.3",
     "@babel/polyfill": "7.2.3",
@@ -62,14 +60,16 @@
     "babelify": "10.0.0",
     "browser-resolve": "1.11.3",
     "browserify": "16.2.3",
-    "tsify": "4.0.1",
-    "typescript": "3.5.3",
-    "ts-node": "8.3.0",
+    "cpy-cli": "^1.0.1",
     "electron": "6.0.10",
     "electron-builder": "21.2.0",
-    "large-core": "file:../large-core",
-    "large-web": "file:../large-web",
-    "moment": "2.24.0"
+    "http-server": "^0.10.0",
+    "large-core": "git+https://gitlab.com/ptoner/large-core.git",
+    "large-web": "git+https://gitlab.com/ptoner/large-web.git",
+    "moment": "2.24.0",
+    "ts-node": "8.3.0",
+    "tsify": "4.0.1",
+    "typescript": "3.5.3"
   },
   "dependencies": {
     "ipfs": "0.38.0"

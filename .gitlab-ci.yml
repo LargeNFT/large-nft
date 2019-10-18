@@ -1,0 +1,25 @@
+    image: node:11.12.0
+
+    stages:
+      - build
+
+    cache:
+      paths:
+        - node_modules/
+
+    install_dependencies:
+      stage: build
+      script:
+        - npm install
+      artifacts:
+        paths:
+          - node_modules/
+
+    build_electron:
+      stage: build
+      script:
+        - npm run dist
+      artifacts:
+        paths:
+          - dist/
+

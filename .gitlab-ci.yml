@@ -1,4 +1,4 @@
-    image: node:11.12.0
+    image: node:latest
 
     stages:
       - build
@@ -10,7 +10,7 @@
     install_dependencies:
       stage: build
       script:
-        - npm install
+        - yarnd global add node-gyp; yarn install
       artifacts:
         paths:
           - node_modules/
@@ -18,7 +18,7 @@
     build_electron:
       stage: build
       script:
-        - npm run dist
+        - yarn run dist
       artifacts:
         paths:
           - dist/

@@ -10,7 +10,7 @@
     install_dependencies:
       stage: build
       script:
-        - yarnd global add node-gyp; yarn install
+        - yarn global add node-gyp; yarn install
       artifacts:
         paths:
           - node_modules/

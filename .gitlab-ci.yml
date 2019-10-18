@@ -13,6 +13,7 @@
         - yarn global add node-gyp; yarn global add browserify; yarn global add electron-builder; yarn install; yarn run dist
       artifacts:
         paths:
-          - dist/*.AppImage
-          - dist/*.snap
+          # - dist/*.AppImage
+          # - dist/*.snap
+          - dist/
 

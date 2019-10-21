@@ -2,7 +2,9 @@ import { Global } from "./global"
 import { FollowController } from "./controllers/follow-controller"
 
 import Core from 'large-core'
-import Web, { Template7, Framework7, Dom7, ModelViewService } from 'large-web'
+import { Dom7, Template7 } from "framework7/js/framework7.bundle"
+const Framework7: any = require('framework7/js/framework7.bundle')
+
 
 import { UiService } from "./services/ui-service"
 

@@ -1,8 +1,9 @@
 import { Global } from "../global";
 import { globalAgent } from "https";
 import Core, { WalletService } from "large-core";
-import Web, { ModelView, Dom7 } from "large-web";
+import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 import { UiService } from "../services/ui-service";
+import { ModelView } from "large-web";
 
 var $$ = Dom7
 

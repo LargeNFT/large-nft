@@ -64,14 +64,19 @@
     "electron": "6.0.10",
     "electron-builder": "21.2.0",
     "http-server": "^0.10.0",
-    "large-core": "0.0.11",
-    "large-web": "0.0.9",
+    "large-core": "file:../large-core",
+    "large-web": "file:../large-web",
     "moment": "2.24.0",
     "ts-node": "8.3.0",
     "tsify": "4.0.1",
     "typescript": "3.5.3"
   },
   "dependencies": {
-    "ipfs": "0.38.0"
+    "ipfs": "0.38.0",
+    "quill-delta-to-html": "0.10.13",
+    "quill": "1.3.6",
+    "quill-blot-formatter": "1.0.5",
+    "framework7": "5.0.5",
+    "framework7-icons": "^2.3.1"
   }
 }

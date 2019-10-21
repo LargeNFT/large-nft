@@ -1,7 +1,8 @@
 
-import { ModelView, Dom7, Template7 } from "large-web"
+import { ModelView} from "large-web"
 import { SchemaService } from "large-core";
 import { Global } from "../global";
+import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 
 
 

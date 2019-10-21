@@ -1,6 +1,9 @@
-import { Dom7, Template7, QuillService, ModelView, PostUIService } from "large-web";
 import { Global } from "../global";
 import { Post, ProfileService, ImageService, PostService, Profile } from "large-core";
+import { Dom7, Template7 } from "framework7/js/framework7.bundle"
+import { QuillService } from "../services/quill-service";
+import { PostUIService } from "../services/post-ui-service";
+import { ModelView } from "large-web";
 
 
 var $$ = Dom7;

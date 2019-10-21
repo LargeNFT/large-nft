@@ -1,9 +1,12 @@
 import {Global} from "../global";
-import { Dom7, ModelView, UploadService, PostUIService } from "large-web"
 
 import { pathToFileURL } from 'url';
 import { ProfileService, ImageService, Profile, Post } from "large-core"
 import { UiService } from "../services/ui-service";
+import { Dom7, Template7 } from "framework7/js/framework7.bundle"
+import { UploadService } from "../services/upload-service";
+import { PostUIService } from "../services/post-ui-service";
+import { ModelView } from "large-web";
 
 
 

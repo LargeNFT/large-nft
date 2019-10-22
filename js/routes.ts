@@ -12,13 +12,13 @@ const routes = function (baseurl) {
         if (Core.isElectron) {
 
             if (Core.wallet) {
-                promise = Global.homeController.showHomePage()
+                promise = Global.dashboardController.showIndex()
             } else {
                 promise = Global.walletController.showLanding()
             }
 
         } else {
-            promise = Global.homeController.showHomePage()
+            promise = Global.dashboardController.showIndex()
         }
 
 
@@ -91,6 +91,33 @@ const routes = function (baseurl) {
 
             try {
                 Web.modelViewService.resolve(resolve, Global.profileController.showProfileEdit())
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
+
+    routes.push({
+        path: '/posts',
+        async async(routeTo, routeFrom, resolve, reject) {
+
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPostController.showIndex())
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
+    routes.push({
+        path: '/pages',
+        async async(routeTo, routeFrom, resolve, reject) {
+
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPageController.showIndex())
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)
             }

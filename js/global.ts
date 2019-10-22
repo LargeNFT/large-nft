@@ -14,6 +14,9 @@ import { PostUIService } from "./services/post-ui-service"
 import { QuillService } from "./services/quill-service"
 
 import Core from "large-core"
+import { DashboardController } from "./controllers/admin/dashboard-controller"
+import { AdminPostController } from "./controllers/admin/admin-post-controller"
+import { AdminPageController } from "./controllers/admin/admin-page-controller"
 
 
 var $$ = Dom7
@@ -22,11 +25,17 @@ export namespace Global {
 
   /** Controllers */
   export var homeController: HomeController
+
   export var postController: PostController
   export var profileController: ProfileController
   export var connectController: ConnectController
   export var followController: FollowController
   export var walletController: WalletController
+
+  /** Admin */
+  export var dashboardController: DashboardController 
+  export var adminPostController: AdminPostController
+  export var adminPageController: AdminPageController
 
   export var uiService: UiService
   export var quillService:QuillService
@@ -56,12 +65,22 @@ export namespace Global {
     Global.connectController = new ConnectController(Core.ipfs, Core.schemaService)
     Global.postController = new PostController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService)
 
+
+    Global.dashboardController = new DashboardController()
+    Global.adminPostController = new AdminPostController()
+    Global.adminPageController = new AdminPageController()
+
     window['walletController'] = Global.walletController
     window['homeController'] = Global.homeController
     window['profileController'] = Global.profileController
     window['followController'] = Global.followController
     window['connectController'] = Global.connectController
     window['postController'] = Global.postController
+
+    window['dashboardController'] = Global.dashboardController
+    window['adminPostController'] = Global.adminPostController
+    window['adminPageController'] = Global.adminPageController
+
   }
 
   export async function init() {

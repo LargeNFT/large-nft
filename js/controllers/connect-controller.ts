@@ -67,6 +67,8 @@ class ConnectController {
 
     async dropStoreClicked(e:Event) {
 
+        console.log('Drop store clicked!')
+
         let id = $$(e.target).data('id')
 
         await this.schemaService.dropStore(id)

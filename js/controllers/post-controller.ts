@@ -28,7 +28,6 @@ class PostController {
     this.quillService.buildQuillPostEditor(selector)
   }
 
-
   async showPost(cid: string): Promise<ModelView> {
 
     return new ModelView(async () => {

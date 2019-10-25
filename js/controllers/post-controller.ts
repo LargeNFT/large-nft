@@ -1,5 +1,5 @@
 import { Global } from "../global";
-import { Post, ProfileService, ImageService, PostService, Profile } from "large-core";
+import { Post, ProfileService, ImageService, ReadOnlyPostService, Profile } from "large-core";
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 import { QuillService } from "../services/quill-service";
 import { PostUIService } from "../services/post-ui-service";
@@ -32,7 +32,7 @@ class PostController {
 
     return new ModelView(async () => {
 
-      this.loadedPost = await PostService.read(cid)
+      this.loadedPost = await ReadOnlyPostService.read(cid)
 
       this.postUiService.translatePost(this.loadedPost)
 

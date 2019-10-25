@@ -1,4 +1,4 @@
-import { PostService, ProfileService, SchemaService, ImageService, Post, Profile } from "large-core";
+import {  ReadOnlyPostService , ProfileService, SchemaService, ImageService, Post, Profile } from "large-core";
 import { Dom7, Template7 } from "framework7";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html"
 
@@ -14,7 +14,7 @@ class PostUIService {
 
 
     constructor(
-        public postService: PostService,
+        public postService: ReadOnlyPostService,
         public profileService: ProfileService,
         public schemaService: SchemaService,
         public imageService: ImageService

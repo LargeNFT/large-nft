@@ -1,0 +1,121 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="posts">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="block-title">Create Post</div>
+
+
+      <form class="block list" id="create-post-form">
+        <ul>
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Title</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="title" placeholder="Post title">
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Subtitle</div>
+                <div class="item-input-wrap">
+                  <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)" />
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content item-input">
+              <div class="item-inner post-area">
+                <div class="item-title item-label">Content</div>
+
+                <div class="bottom row">
+                    <div class="col-0 large-35"></div>  
+                  <button class="col-10 large-5 button button-small bold-button"><i class="fa fa-bold"></i></button>
+                  <button class="col-10 large-5 button button-small italic-button"><i class="fa fa-italic"></i></button>
+                  <button class="col-10 large-5 button button-small link-button"><i class="fa fa-link"></i></button>
+                  <button class="col-10 large-5 button button-small blockquote-button"><i class="fa fa-quote-right"></i></button>
+                  <button class="col-10 large-5 button button-small header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
+                  <button class="col-10 large-5 button button-small header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>
+                  <button class="col-10 large-5 button button-small image-button"><i class="fa fa-camera"></i></button>
+                  <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+                  <!-- <button class="col-10 large-5 button button-small divider-button"><i class="fa fa-minus"></i></button>      -->
+                  <div class="col-0 large-35"></div>             
+                </div>
+
+                <div class="item-input-wrap ">
+                  <div class="editor" id="create-post-textarea"></div>
+                </div>
+
+
+
+              </div>
+            </div>
+          </li>
+          <li class="cover-photo-preview">
+
+            <input type="hidden" name="coverPhoto">
+
+            <div class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Cover Photo</div>
+                <div class="item-input-wrap cover-photo-img-wrapper">
+                </div>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+
+      </form>
+
+      <div class="block block-strong inset row">
+          <div class="col-66"></div>
+          <div class="col-33">
+            <button class="button button-fill create-post-submit">Create Post</button>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+</template>
+
+
+
+
+<script>
+
+  return {
+    on: {
+      pageInit: async function (e, page) {
+        const self = this
+        await window['Global'].loadComponentState(this, false)
+
+        window['adminPostController'].initializeQuill()
+
+        this.$$(document).on('click', '.create-post-submit', function(e) {
+          e.preventDefault()
+          window['adminPostController'].postCreateSave(e)
+        });
+
+
+      }
+    }
+  }
+
+</script>

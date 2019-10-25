@@ -17,6 +17,7 @@ import Core from "large-core"
 import { DashboardController } from "./controllers/admin/dashboard-controller"
 import { AdminPostController } from "./controllers/admin/admin-post-controller"
 import { AdminPageController } from "./controllers/admin/admin-page-controller"
+import { AdminUserController } from "./controllers/admin/admin-user-controller"
 
 
 var $$ = Dom7
@@ -36,6 +37,7 @@ export namespace Global {
   export var dashboardController: DashboardController 
   export var adminPostController: AdminPostController
   export var adminPageController: AdminPageController
+  export var adminUserController: AdminUserController
 
   export var uiService: UiService
   export var quillService:QuillService
@@ -67,8 +69,9 @@ export namespace Global {
 
 
     Global.dashboardController = new DashboardController()
-    Global.adminPostController = new AdminPostController()
+    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService)
     Global.adminPageController = new AdminPageController()
+    Global.adminUserController = new AdminUserController()
 
     window['walletController'] = Global.walletController
     window['homeController'] = Global.homeController
@@ -87,7 +90,7 @@ export namespace Global {
     
     await Core.initialize()
 
-    Global.postUiService = new PostUIService(Core.postService, Core.profileService, Core.schemaService, Core.imageService)
+    Global.postUiService = new PostUIService(Core.readOnlyPostService, Core.profileService, Core.schemaService, Core.imageService)
     Global.quillService = new QuillService(Global.uploadService, Core.imageService)
 
     Core.eventEmitter.on("unread-posts-updated", function (unreadPosts) {

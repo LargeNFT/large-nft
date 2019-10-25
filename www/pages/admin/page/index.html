@@ -1,29 +1,30 @@
 <!--suppress JSAnnotator -->
 <template>
 
-    <div class="page" data-name="home">
-  
-      <div class="page-content"> 
-        <div class="block-title">Pages</div>
-        <div class="block"></div>
-  
-      </div>
+  <div class="page" data-name="pages">
+
+    <div class="page-content">
+
+      <div class="block-title">Pages</div>
+      <div class="block"></div>
+
     </div>
-  
-  </template>
-  
-  
-  
-  
-  <script>
-  
-    return {
-      on: {
-        pageInit: async function (e, page) {
-            const self = this  
-            await window['Global'].loadComponentState(this, false)
-        }
+  </div>
+
+</template>
+
+
+
+
+<script>
+
+  return {
+    on: {
+      pageInit: async function (e, page) {
+        const self = this
+        await window['Global'].loadComponentState(this, false)
       }
     }
-  
-  </script>
+  }
+
+</script>

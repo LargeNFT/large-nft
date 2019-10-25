@@ -21,7 +21,7 @@ class CustomDeleteAction extends DeleteAction {
 
     const self = this
 
-    this.keyUpListener = function(e: KeyboardEvent) {
+    this.keyUpListener = function (e: KeyboardEvent) {
       self.onKeyUp(e)
     }
 
@@ -72,11 +72,11 @@ class QuillService {
 
   public activeEditor: any
 
-  initialized:boolean = false
+  initialized: boolean = false
 
   constructor(
-    private uploadService:UploadService,
-    private imageService:ImageService
+    private uploadService: UploadService,
+    private imageService: ImageService
   ) {
 
     const self = this
@@ -85,47 +85,51 @@ class QuillService {
       e.preventDefault()
       self.boldClick()
     })
-  
+
     $$(document).on('click', '.italic-button', function (e) {
       e.preventDefault()
       self.italicClick()
     })
-  
+
     $$(document).on('click', '.link-button', function (e) {
       e.preventDefault()
       self.linkClick()
     })
-  
+
     $$(document).on('click', '.blockquote-button', function (e) {
       e.preventDefault()
       self.blockquoteClick()
     })
-  
-    // $$(document).on('click', '.header-1-button', function (e) {
-    //   e.preventDefault()
-    //   self.header1Click()
-    // })
-  
-    // $$(document).on('click', '.header-2-button', function (e) {
-    //   e.preventDefault()
-    //   self.header2Click()
-    // })
-  
+
+    $$(document).on('click', '.header-1-button', function (e) {
+      e.preventDefault()
+      self.header1Click()
+    })
+
+    $$(document).on('click', '.header-2-button', function (e) {
+      e.preventDefault()
+      self.header2Click()
+    })
+
     // $$(document).on('click', '.divider-button', function (e) {
     //   e.preventDefault()
     //   self.dividerClick()
     // })
-  
+
     $$(document).on('click', '.image-button', function (e) {
       e.preventDefault()
       self.imageClick()
     })
-  
+
     $$(document).on('change', '.image-button-input', async function (e) {
       e.preventDefault()
       await self.imageSelected(this)
     })
-  
+
+    $$(document).on('click', '.cover-photo-img', function(e) {
+      e.preventDefault()
+      self.selectCoverPhoto(e)
+    })
 
 
 
@@ -172,7 +176,7 @@ class QuillService {
     const self = this
 
 
-    if (this.initialized) return 
+    if (this.initialized) return
 
 
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
@@ -194,7 +198,7 @@ class QuillService {
 
 
 
-    class ItalicBlot  extends Inline {
+    class ItalicBlot extends Inline {
       static blotName?: string
       static tagName?: string
     }
@@ -269,7 +273,7 @@ class QuillService {
 
       static create(value) {
 
-        self.imageService.cidToUrl(value.ipfsCid).then(function(imgUrl) {
+        self.imageService.cidToUrl(value.ipfsCid).then(function (imgUrl) {
           $$(`#${value.ipfsCid}`).prop('src', imgUrl)
         })
 
@@ -376,15 +380,15 @@ class QuillService {
     this.activeEditor.format('blockquote', !currentFormat.blockquote);
   }
 
-  // header1Click() {
-  //   const currentFormat = this.activeEditor.getFormat()
-  //   this.activeEditor.format('header', currentFormat.header ? undefined : 1);
-  // }
+  header1Click() {
+    const currentFormat = this.activeEditor.getFormat()
+    this.activeEditor.format('header', currentFormat.header ? undefined : 1);
+  }
 
-  // header2Click() {
-  //   const currentFormat = this.activeEditor.getFormat()
-  //   this.activeEditor.format('header', currentFormat.header ? undefined : 2);
-  // }
+  header2Click() {
+    const currentFormat = this.activeEditor.getFormat()
+    this.activeEditor.format('header', currentFormat.header ? undefined : 2);
+  }
 
 
   // dividerClick() {
@@ -392,9 +396,7 @@ class QuillService {
   //   let range = this.activeEditor.getSelection(true)
 
   //   this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
-
   //   this.activeEditor.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER)
-
   //   this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
 
   // }
@@ -409,22 +411,93 @@ class QuillService {
 
     let imageCid = await this.uploadService.uploadFile(fileElement)
 
-
     let range = this.activeEditor.getSelection(true)
 
     this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
-
     this.activeEditor.insertEmbed(range.index, 'ipfsimage', { ipfsCid: imageCid }, Quill.sources.USER)
-
     this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
 
+
+    //Make it the cover photo
+    $$('input[name="coverPhoto"]').val(imageCid)
+
+    await this.loadCoverPhotos()
+
   }
+
+    //TODO: load this from a template7 template somehow instead
+    async loadCoverPhotos() {
+
+      const images = this.getImagesFromPostContentOps(this.activeEditor.getContents().ops)
+
+      $$('.cover-photo-img-wrapper').empty()
+      $$('.cover-photo-preview').hide()
+
+      if (images.length > 0) {
+        $$('.cover-photo-preview').show()
+      }
+
+
+      for (let imageCid of images) {
+
+        const imgElement = $$('<img>')
+        //@ts-ignore
+        $$(imgElement).attr("src", await this.imageService.cidToUrl(imageCid))
+        //@ts-ignore
+        $$(imgElement).data("image-cid", imageCid)
+        //@ts-ignore
+        $$(imgElement).addClass("cover-photo-img")
+
+        $$('.cover-photo-img-wrapper').append(imgElement)
+
+      }
+
+      this.setCoverPhoto($$('input[name="coverPhoto"]').val())
+
+    }
+
+
+    //TODO: can definitely be nicer.
+    setCoverPhoto(imageCid) {
+
+      $$('input[name="coverPhoto"]').val(imageCid)
+
+      $$('.cover-photo-img-wrapper img').removeClass('selected')
+
+      $$('.cover-photo-img-wrapper img').each(function(index, item) {
+        if ($$(item).data("image-cid") == imageCid) {
+          $$(item).addClass('selected')
+        }
+      })
+
+    }
+
+    selectCoverPhoto(e) {
+      this.setCoverPhoto($$(e.target).data("image-cid"))
+    }
+
+
+
+    getImagesFromPostContentOps(ops: any) : string[] {
+
+      const images: string[] = []
+  
+      for (let op of ops) {
+        if (op.insert && op.insert.ipfsimage) {
+          images.push(op.insert.ipfsimage.ipfsCid)
+        }
+      }
+  
+      return images
+  
+    }
+  
 
 
 }
 
 
 
-export {  QuillService }
+export { QuillService }
 
 

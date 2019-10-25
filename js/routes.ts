@@ -100,24 +100,45 @@ const routes = function (baseurl) {
 
 
     routes.push({
-        path: '/posts',
+        path: '/admin/post',
         async async(routeTo, routeFrom, resolve, reject) {
-
             try {
                 Web.modelViewService.resolve(resolve, Global.adminPostController.showIndex())
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)
             }
-
         }
     })
 
     routes.push({
-        path: '/pages',
+        path: '/admin/post/create',
+        async async(routeTo, routeFrom, resolve, reject) {
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPostController.showCreate())
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+        }
+    })
+
+
+    routes.push({
+        path: '/admin/page',
+        async async(routeTo, routeFrom, resolve, reject) {
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPageController.showIndex())
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+        }
+    })
+
+    routes.push({
+        path: '/admin/user',
         async async(routeTo, routeFrom, resolve, reject) {
 
             try {
-                Web.modelViewService.resolve(resolve, Global.adminPageController.showIndex())
+                Web.modelViewService.resolve(resolve, Global.adminUserController.showIndex())
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)
             }

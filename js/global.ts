@@ -18,6 +18,7 @@ import { DashboardController } from "./controllers/admin/dashboard-controller"
 import { AdminPostController } from "./controllers/admin/admin-post-controller"
 import { AdminPageController } from "./controllers/admin/admin-page-controller"
 import { AdminUserController } from "./controllers/admin/admin-user-controller"
+import { PagingService } from "./services/page-service"
 
 
 var $$ = Dom7
@@ -69,7 +70,7 @@ export namespace Global {
 
 
     Global.dashboardController = new DashboardController()
-    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService)
+    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService, Core.imageService, new PagingService())
     Global.adminPageController = new AdminPageController()
     Global.adminUserController = new AdminUserController()
 

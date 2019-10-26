@@ -419,7 +419,7 @@ class QuillService {
 
 
     //Make it the cover photo
-    $$('input[name="coverPhoto"]').val(imageCid)
+    $$('input[name="coverPhotoCid"]').val(imageCid)
 
     await this.loadCoverPhotos()
 
@@ -452,7 +452,7 @@ class QuillService {
 
       }
 
-      this.setCoverPhoto($$('input[name="coverPhoto"]').val())
+      this.setCoverPhoto($$('input[name="coverPhotoCid"]').val())
 
     }
 
@@ -460,7 +460,7 @@ class QuillService {
     //TODO: can definitely be nicer.
     setCoverPhoto(imageCid) {
 
-      $$('input[name="coverPhoto"]').val(imageCid)
+      $$('input[name="coverPhotoCid"]').val(imageCid)
 
       $$('.cover-photo-img-wrapper img').removeClass('selected')
 

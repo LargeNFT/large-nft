@@ -103,7 +103,7 @@ const routes = function (baseurl) {
         path: '/admin/post',
         async async(routeTo, routeFrom, resolve, reject) {
             try {
-                Web.modelViewService.resolve(resolve, Global.adminPostController.showIndex())
+                Web.modelViewService.resolve(resolve, Global.adminPostController.showIndex(routeTo.params.offset, routeTo.params.olderThan))
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)
             }

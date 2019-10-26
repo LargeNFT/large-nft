@@ -1,0 +1,135 @@
+Large
+
+    * Electron\iOS\Android download.  
+    * Can be accessed in IPFS gateway via hash. 
+    * Can be whitelabeled. 
+
+    * Main menu
+
+        - Login to existing wallet.
+        - Create a wallet
+    
+        ------------------
+    
+        After verifying a wallet 
+
+        - Load a site 
+            - Enter a wallet address for a Large-built site
+            - The wallet address can be resolved via DNS-like service that maps a readable address to a wallet.
+                - ENS/UD etc.
+
+        - Admin Dashboard
+
+
+    * Admin Dashboard. Options to: 
+
+        - Manage pages. 
+
+            - Create/read/update/delete
+
+            - A page will show up in the navigation menu. 
+                - Configure the order
+                - Define which page is the home page. 
+                - Define which page shows the blog feed. 
+                - Gets a generated permalink. Can be replaced with a unique name. 
+
+        - Manage posts.  
+            
+            - Create/read/update/delete
+            
+            - A post does not show up in the navigation menu.
+            - A list of posts are displayed in a chronological feed on a chosen page.
+            - Gets a generated permalink. Can be replaced with a unique name. 
+            
+
+        For both pages/posts: 
+
+            - Create/read/update/delete
+                - Read includes a link to live version
+                - During create/edit update cached copies of the pages. 
+                - Cached pages will include all templating applied. Intended for end user.
+            - Gets a generated permalink. Can be replaced with a unique name.  
+            - By default only the site owner can manipulate posts.      
+
+
+        - Manage users
+
+            - Add community leaders. Give them write permission to the posts/page feed. 
+            - Delete users. Not sure if we can remove permissions. 
+
+        - Connect
+            
+            - Display IPFS peers
+            - List feeds that are being monitored via pubsub.
+            - Schema
+                - View orbit databases
+                - Drop local copies 
+
+        - Appearance
+            
+            - Themes
+
+                - Will need to create a basic, base theme. Will use Framework7 styling to look native on the platform.
+                - Define the sections a template needs to implement. 
+                    - Header
+                    - Footer
+
+                - A section will be a Template7 template. 
+                - Likely just one theme at launch. 
+
+            - Menus 
+
+                - Create/edit/delete 
+                
+                    - Give menu a name.
+                
+                    - Add posts/pages.
+                        - Enter link text
+                        - Remove from menu
+                        - Delete from menu  
+
+                    - Add custom link    
+                        - Enter URL
+                        - Enter link text
+
+                    - Choose location.
+                        - Available locations are defined by theme
+
+            - Site Settings
+
+                - Site title
+                - Tagline 
+                - Public email address (optional)
+                - Timezone
+                    - Used to display times on the static pages. 
+                    - Defaults to UTC 
+
+                - Date/time format
+                - IPNS adddress. 
+
+
+User Facing Site
+
+    * Can be accessed via 
+        - Traditional domain pointed at IPFS. 
+        - An IPFS gateway.
+        - Hopefully other ways of resolving it. ENS etc.     
+        - Large app through "Load a site" 
+        - Any whitelabeled app through "Load a site" 
+
+    - Accessed via a single published IPFS CID. It will contain a JSON object with:
+    
+        * Wallet address
+        * Large version number: This is the IPFS hash of the published release. 
+        * IPNS address where the site author will update when they publish new content.
+
+    - Loads the static, published version of the content.
+
+        - If the user has a wallet load the web3 functionality.
+            * Without a wallet the user is in read-only mode. 
+
+        - Loads orbit. Connect to pubsub. Begins to replicate underlying data.
+
+            - Page will be able to display new data when it arrives.
+            - Updated posts
+            - New comments

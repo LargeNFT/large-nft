@@ -215,13 +215,10 @@ hr:before {
   vertical-align: middle;
 }
 
-/* .item-media {
-  width: 100px;
 
-} */
 
 .list .item-media img {
-  max-width: 49px;
+  width: 49px;
   max-height: 49px;
   border-radius: 50%;
 }

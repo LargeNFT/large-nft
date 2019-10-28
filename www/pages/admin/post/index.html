@@ -49,11 +49,15 @@
           </ul>
         </div>
 
-        <p class="">
+        <div class="block row">
           {{#each pages}}
-            <button class="button button-outline button-small {{#if active}}button-active{{/if}}">{{num}}</button>
+            <button class="col-10 button button-outline {{#if active}}button-active{{/if}}">{{num}}</button>
           {{/each}}
-        </p>
+
+          <div class="col-{{js "(10 - this.numberPages) * 10" }}"></div>
+
+
+        </div>
 
       </div>
 

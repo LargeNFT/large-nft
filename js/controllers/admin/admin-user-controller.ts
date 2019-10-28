@@ -5,7 +5,6 @@ import { ModelView } from 'large-web'
 class AdminUserController {
 
   constructor(
-
   ) {}
 
   async showIndex(): Promise<ModelView> {

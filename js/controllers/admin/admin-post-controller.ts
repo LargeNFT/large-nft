@@ -27,6 +27,7 @@ class AdminPostController {
 
     return new ModelView( async () => {
 
+      console.log('here')
       await this.postService.loadStoresForWallet(window['currentAccount'])
 
       let posts:BlogPost[] = await this.postService.getRecentPosts(offset, this.PAGE_LIMIT, olderThan)
@@ -35,10 +36,13 @@ class AdminPostController {
 
       let pages:Page[] = this.pagingService.getPages(this.postService.count(), offset, this.PAGE_LIMIT)
 
-      return {
+      let model = {
         posts: translated,
-        pages: pages
+        pages: pages,
+        numberPages: pages.length
       }
+
+      return model
 
     }, 'pages/admin/post/index.html')
 

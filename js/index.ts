@@ -110,6 +110,36 @@ module.exports = async function () {
     </li>
   `
 
+  let adminPostResult = `
+    <li class="post">
+      <a href="/post/show/{{permalinkKey}}" class="item-link">
+        <div class="item-content" id="post_{{permalinkKey}}">
+          <div class="item-media">
+            {{#if coverPhotoSrc}}
+              <img class="profile-pic-thumb" src="{{coverPhotoSrc}}">
+            {{else}}
+              <i class="f7-icons profile-pic-thumb">person</i>
+            {{/if}}
+          </div>
+          <div class="item-inner">
+            <div class="item-title-row">
+              <div class="item-title">
+                {{title}}
+              </div>
+              <div class="item-after">
+                {{dateCreatedDisplay}}
+              </div>
+            </div>
+            <div class="item-subtitle">{{subtitle}}</div>
+            <div class="item-text">{{contentTranslated}}</div>
+          </div>
+        </div>
+      </a>
+    </li>
+  `
+
+
+
   let homeTab = `
     <a href="/" class="tab-link tab-link-active">
       <i class="icon f7-icons if-not-md">home 
@@ -124,8 +154,10 @@ module.exports = async function () {
 
   Global.profileResultTemplate = Template7.compile(profileResult)
   Global.postResultTemplate = Template7.compile(postResult)
+  Global.adminPostResultTemplate = Template7.compile(adminPostResult)
 
   Template7.registerPartial("postResult", postResult)
+  Template7.registerPartial("adminPostResult", adminPostResult)
   Template7.registerPartial("profileResult", profileResult)
   Template7.registerPartial("homeTab", homeTab)
 
@@ -148,18 +180,18 @@ module.exports = async function () {
     routes: routes(rootUrl.pathname)
 
   })
-  
-  
+
+
 
   try {
     await Global.init()
-  } catch(ex) {
+  } catch (ex) {
     console.log(ex)
   }
-  
+
   Global.uiService = new UiService(Global.app)
   Global.initializeControllers()
- 
+
 
   // Init/Create main view
   const mainView = Global.app.views.create('.view-main', {

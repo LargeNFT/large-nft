@@ -47,6 +47,7 @@ export namespace Global {
 
   /** Template7 Templates */
   export var postResultTemplate
+  export var adminPostResultTemplate
   export var profileResultTemplate
 
   export var app
@@ -70,7 +71,7 @@ export namespace Global {
 
 
     Global.dashboardController = new DashboardController()
-    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService, Core.imageService, new PagingService())
+    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService, Core.imageService)
     Global.adminPageController = new AdminPageController()
     Global.adminUserController = new AdminUserController()
 

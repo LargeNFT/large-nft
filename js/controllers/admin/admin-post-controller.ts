@@ -7,48 +7,58 @@ import { BlogPost } from "large-core/dist/dto/blog-post"
 import { UiService } from "../../services/ui-service"
 import { PagingService, Page } from "../../services/page-service"
 const moment = require('moment')
+var $$ = Dom7
 
 
 class AdminPostController {
 
-  PAGE_LIMIT = 5
+  loadingInProgress: boolean = false
+  hasMorePosts: boolean = true
+
+  postsShown: number = 0
+  
+  limit: number = 5
+  lastPost:string = null
 
   constructor(
     private quillService: QuillService,
     private postService: BlogPostService,
     private uiService: UiService,
-    private imageService: ImageService,
-    private pagingService: PagingService
+    private imageService: ImageService
   ) {}
 
 
 
-  async showIndex(offset:number=0, olderThan:string=undefined): Promise<ModelView> {
+  async showIndex(pageNum:number=1, olderThan:string=undefined): Promise<ModelView> {
 
     return new ModelView( async () => {
-
-      console.log('here')
-      await this.postService.loadStoresForWallet(window['currentAccount'])
-
-      let posts:BlogPost[] = await this.postService.getRecentPosts(offset, this.PAGE_LIMIT, olderThan)
-
-      let translated = await this.translatePosts(posts)
-
-      let pages:Page[] = this.pagingService.getPages(this.postService.count(), offset, this.PAGE_LIMIT)
-
-      let model = {
-        posts: translated,
-        pages: pages,
-        numberPages: pages.length
-      }
-
-      return model
-
     }, 'pages/admin/post/index.html')
 
   }
 
+  async getNextPage() : Promise<BlogPost[]> {
 
+    let posts:BlogPost[] = []
+
+    try {
+      await this.postService.loadStoresForWallet(window['currentAccount'])
+      posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
+    } catch(ex) {
+      console.log(ex)
+    }
+
+    let translated: BlogPost[] = await this.translatePosts(posts)
+    
+    if (translated.length == this.limit) {
+      this.postsShown += translated.length
+      this.lastPost = translated[translated.length -1].feedCid
+    } else {
+      this.hasMorePosts = false
+    }
+
+    return translated
+
+  }
 
 
   async showCreate(): Promise<ModelView> {
@@ -108,6 +118,38 @@ class AdminPostController {
   initializeQuill() {
     this.quillService.buildQuillPostEditor('#create-post-textarea')
   }
+
+  async infiniteScrollListener() {
+
+    // Exit, if loading in progress
+    if (this.loadingInProgress || !this.hasMorePosts) return
+
+    // Set loading flag
+    this.loadingInProgress = true;
+
+    let posts = await this.getNextPage()
+
+    console.log(posts)
+
+    for (var post of posts) {
+      $$("#post-list").append(window['Global'].adminPostResultTemplate(post))
+    }
+
+    if (!this.hasMorePosts) {
+
+      console.log("Unloading infinite scroll")
+
+      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+      // window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
+
+      // Remove preloader
+      $$('.infinite-scroll-preloader').hide()
+
+    }
+
+    this.loadingInProgress = false
+  }
+
 
   /**
    * Add image srcs for cover photo

@@ -1,7 +1,7 @@
 <!--suppress JSAnnotator -->
 <template>
 
-  <div class="page" data-name="posts">
+  <div class="page" data-name="admin-posts">
 
     <div class="fab fab-extended fab-right-bottom">
       <a href="/admin/post/create">
@@ -15,14 +15,11 @@
       <div class="block-title">Blog Posts</div>
       <div class="block">
 
-      <div class="list media-list">
-          <ul id="post-list">
-          </ul>
-        <div class="preloader infinite-scroll-preloader"></div>
-      </div>
+        <div class="list media-list virtual-list" id="blog-post-list">
+        </div>
 
+      </div>
     </div>
-  </div>
 
 </template>
 
@@ -31,40 +28,41 @@
 
 
 <script>
-
-    return {
-      on: {
-        pageInit: async function (e, page) {
-  
-        },
-  
-        pageAfterOut: function (e, page) {
-  
-          // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-          window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
-  
-          // Remove preloader
-          this.$$('.infinite-scroll-preloader').remove()
-  
-        },
-      },
-      created: async function () {
-  
+  return {
+    on: {
+      pageInit: function(e, page) {
         const self = this
-  
-        await window['Global'].loadComponentState(this, false)
-    
+      },
+      pageAfterOut: function (e, page) {
         let controller = window['adminPostController']
-  
-        // Attach 'infinite' event handler
-        this.$$('.infinite-scroll-content').on('infinite', async function () {
-          await controller.infiniteScrollListener()
-        });
-  
-        //Get the page
-        this.$$('.infinite-scroll-content').trigger('infinite')
-  
+        controller.unloadInfiniteScroll()
       }
+    },
+
+    created: async function(e, page) {
+
+      const self = this
+      
+      await window['Global'].loadComponentState(this, false)
+      
+      let controller = window['adminPostController']
+
+      // Attach 'infinite' event handler
+      this.$$('.infinite-scroll-content').on('infinite', async function () {
+        await controller.infiniteScrollListener(self)
+      })
+
+      Global.app.virtualList.create({
+        el: '#blog-post-list',
+        itemTemplate: Global.adminPostResultTemplate,
+        emptyTemplate: "<li>No posts</li>"
+      })
+
+      console.log(controller.virtualList.get("#blog-post-list"))
+
+      //Get the page
+      this.$$('.infinite-scroll-content').trigger('infinite')
+
     }
-  
-  </script>
+  }
+</script>

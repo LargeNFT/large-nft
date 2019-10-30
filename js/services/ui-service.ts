@@ -1,11 +1,11 @@
 class UiService {
 
-    constructor(private app) {}
+    constructor(public app) {}
 
-    navigate(url: string) {
+    navigate(url: string, reloadCurrent=true, ignoreCache=false) {
         this.app.view.main.router.navigate(url, {
-            reloadCurrent: true,
-            ignoreCache: true
+            reloadCurrent: reloadCurrent,
+            ignoreCache: ignoreCache
         })
     }
 

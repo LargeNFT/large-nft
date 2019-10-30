@@ -15,10 +15,11 @@ class AdminPostController {
   loadingInProgress: boolean = false
   hasMorePosts: boolean = true
 
-  postsShown: number = 0
+  limit: number = 10
+  postsShown: number 
+  lastPost: string 
   
-  limit: number = 5
-  lastPost:string = null
+  virtualList: any 
 
   constructor(
     private quillService: QuillService,
@@ -28,10 +29,14 @@ class AdminPostController {
   ) {}
 
 
-
   async showIndex(pageNum:number=1, olderThan:string=undefined): Promise<ModelView> {
 
     return new ModelView( async () => {
+
+      await this.reset()
+    
+      console.log("show index")
+
     }, 'pages/admin/post/index.html')
 
   }
@@ -42,17 +47,19 @@ class AdminPostController {
 
     try {
       await this.postService.loadStoresForWallet(window['currentAccount'])
-      posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost)
+      posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost )
     } catch(ex) {
       console.log(ex)
     }
 
     let translated: BlogPost[] = await this.translatePosts(posts)
-    
-    if (translated.length == this.limit) {
+
+    if (translated && translated.length > 0) {
       this.postsShown += translated.length
       this.lastPost = translated[translated.length -1].feedCid
-    } else {
+    }
+
+    if (translated.length < this.limit) {
       this.hasMorePosts = false
     }
 
@@ -64,10 +71,6 @@ class AdminPostController {
   async showCreate(): Promise<ModelView> {
 
     return new ModelView( async () => {
-
-      await this.postService.loadStoresForWallet(window['currentAccount'])
-      await this.postService.load(1) //gotta load at least 1
-
     }, 'pages/admin/post/create.html')
 
   }
@@ -80,11 +83,12 @@ class AdminPostController {
       var postData = await this._getPostData('#create-post-form')
 
       //Save
+      await this.postService.loadStoresForWallet(window['currentAccount'])
+      await this.postService.load(1) //gotta load at least 1
       await this.postService.create(postData)
-
       
       //Redirect
-      this.uiService.navigate("/admin/post/")
+      this.uiService.navigate("/admin/post/", false, false)
 
     } catch (ex) {
       this.uiService.showExceptionPopup(ex)
@@ -119,37 +123,47 @@ class AdminPostController {
     this.quillService.buildQuillPostEditor('#create-post-textarea')
   }
 
-  async infiniteScrollListener() {
+
+  async reset() {
+    this.postsShown = 0
+    this.lastPost = undefined
+    this.hasMorePosts = true
+    this.loadingInProgress = false
+  }
+
+
+  async infiniteScrollListener(component) {
 
     // Exit, if loading in progress
     if (this.loadingInProgress || !this.hasMorePosts) return
 
     // Set loading flag
-    this.loadingInProgress = true;
+    this.loadingInProgress = true
 
     let posts = await this.getNextPage()
 
     console.log(posts)
+    console.log(this.virtualList)
+    this.virtualList.appendItems(posts)
+    console.log(this.virtualList)
 
-    for (var post of posts) {
-      $$("#post-list").append(window['Global'].adminPostResultTemplate(post))
-    }
 
     if (!this.hasMorePosts) {
-
-      console.log("Unloading infinite scroll")
-
-      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-      // window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
-
-      // Remove preloader
-      $$('.infinite-scroll-preloader').hide()
-
+      this.unloadInfiniteScroll()
     }
 
     this.loadingInProgress = false
   }
 
+
+  unloadInfiniteScroll() {
+
+    // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+    window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
+
+    // Remove preloader
+    $$('.infinite-scroll-preloader').hide()
+  }
 
   /**
    * Add image srcs for cover photo

@@ -103,7 +103,7 @@ const routes = function (baseurl) {
         path: '/admin/post',
         async async(routeTo, routeFrom, resolve, reject) {
             try {
-                Web.modelViewService.resolve(resolve, Global.adminPostController.showIndex(routeTo.query.pageNum, routeTo.params.olderThan))
+                Web.modelViewService.resolve(resolve, Global.adminPostController.showIndex())
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)
             }
@@ -120,6 +120,20 @@ const routes = function (baseurl) {
             }
         }
     })
+
+
+    routes.push({
+        path: '/admin/post/show/:id',
+        async async(routeTo, routeFrom, resolve, reject) {
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPostController.showPost(routeTo.params.id))
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
 
 
     routes.push({

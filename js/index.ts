@@ -111,30 +111,18 @@ module.exports = async function () {
   `
 
   let adminPostResult = `
-    <li class="post">
-      <a href="/post/show/{{permalinkKey}}" class="item-link">
-        <div class="item-content" id="post_{{permalinkKey}}">
-          <div class="item-media">
-            {{#if coverPhotoSrc}}
-              <img class="profile-pic-thumb" src="{{coverPhotoSrc}}">
-            {{else}}
-              <i class="f7-icons profile-pic-thumb">person</i>
-            {{/if}}
-          </div>
-          <div class="item-inner">
-            <div class="item-title-row">
-              <div class="item-title">
-                {{title}}
-              </div>
-              <div class="item-after">
-                {{dateCreatedDisplay}}
-              </div>
+    <li>
+        <a href="/admin/post/show/{{permalinkKey}}" class="item-link item-content">
+            <div class="item-inner">
+                <div class="item-title">
+                  {{title}}
+                  <div class="item-footer">{{subtitle}}</div>
+                </div>
+                <div class="item-after">
+                  {{dateCreatedDisplay}}
+                </div>
             </div>
-            <div class="item-subtitle">{{subtitle}}</div>
-            <div class="item-text">{{contentTranslated}}</div>
-          </div>
-        </div>
-      </a>
+        </a>
     </li>
   `
 

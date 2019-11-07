@@ -14,12 +14,12 @@
     <div class="page-content infinite-scroll-content">
       <div class="block-title">Blog Posts</div>
       <div class="block">
-
-        <div class="list media-list virtual-list" id="blog-post-list">
+        <div class="list virtual-list" id="blog-post-list">
         </div>
-
       </div>
     </div>
+  
+  </div>
 
 </template>
 
@@ -52,13 +52,12 @@
         await controller.infiniteScrollListener(self)
       })
 
-      Global.app.virtualList.create({
+      controller.virtualList = window['Global'].app.virtualList.create({
         el: '#blog-post-list',
-        itemTemplate: Global.adminPostResultTemplate,
+        itemTemplate: window['Global'].adminPostResultTemplate,
+        items: [],
         emptyTemplate: "<li>No posts</li>"
       })
-
-      console.log(controller.virtualList.get("#blog-post-list"))
 
       //Get the page
       this.$$('.infinite-scroll-content').trigger('infinite')

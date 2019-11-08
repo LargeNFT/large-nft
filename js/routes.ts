@@ -135,6 +135,19 @@ const routes = function (baseurl) {
     })
 
 
+    routes.push({
+        path: '/admin/post/edit/:id',
+        async async(routeTo, routeFrom, resolve, reject) {
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPostController.showEdit(routeTo.params.id))
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
+
 
     routes.push({
         path: '/admin/page',

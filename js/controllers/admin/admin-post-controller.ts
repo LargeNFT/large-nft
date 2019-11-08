@@ -6,6 +6,7 @@ import { BlogPostService, ProfileService, ImageService, Profile } from "large-co
 import { BlogPost } from "large-core/dist/dto/blog-post"
 import { UiService } from "../../services/ui-service"
 import { PagingService, Page } from "../../services/page-service"
+import { PostUIService } from "../../services/post-ui-service"
 const moment = require('moment')
 var $$ = Dom7
 
@@ -26,7 +27,8 @@ class AdminPostController {
     private postService: BlogPostService,
     private uiService: UiService,
     private imageService: ImageService,
-    private profileService:ProfileService
+    private profileService:ProfileService,
+    private postUiService:PostUIService
   ) {}
 
 
@@ -96,6 +98,33 @@ class AdminPostController {
 
   }
 
+
+
+  async showEdit(permalinkKey:string) : Promise<ModelView> {
+    
+    return new ModelView( async () => {
+
+      await this.postService.loadStoresForWallet(window['currentAccount'])
+
+      //Get post
+      let post:BlogPost = await this.postService.readPermalink(permalinkKey)
+      post = await this.postService.translatePost(post)
+
+      //Fill out form
+      Global.app.form.fillFromData('#edit-post-form', post)
+
+      //Initialize contents
+      this.initializeQuill("#edit-post-textarea")
+      this.quillService.activeEditor.setContents(post.content)
+
+      await this.quillService.loadCoverPhotos()
+
+    }, 'pages/admin/post/edit.html')
+
+  }
+
+
+
   async postCreateSave(e) {
     try {
 
@@ -116,6 +145,31 @@ class AdminPostController {
 
   }
 
+
+  async postEditSave(e) {
+    try {
+
+      //Get data
+      let postData = await this._getPostData('#edit-post-form')
+
+      console.log(postData)
+
+      //Save
+      await this.postService.loadStoresForWallet(window['currentAccount'])
+      await this.postService.load(1) //gotta load at least 1
+      await this.postService.update(postData)
+      
+      //Redirect
+      this.uiService.navigate(`/admin/post/show/${postData.permalinkKey}`, false, false)
+
+    } catch (ex) {
+      this.uiService.showExceptionPopup(ex)
+    }
+
+  }
+
+
+
   async _getPostData(formId) {
 
     //Get data
@@ -134,9 +188,11 @@ class AdminPostController {
     return postData
   }
 
-  initializeQuill() {
-    this.quillService.buildQuillPostEditor('#create-post-textarea')
+  initializeQuill(selector) {
+    this.quillService.buildQuillPostEditor(selector)
   }
+
+
 
   async reset() {
     this.postsShown = 0

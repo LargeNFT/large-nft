@@ -7,7 +7,7 @@
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
         <div class="left">
-          <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+          <a href="/admin/post" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@
         const self = this
         await window['Global'].loadComponentState(this, false)
 
-        window['adminPostController'].initializeQuill()
+        window['adminPostController'].initializeQuill('#create-post-textarea')
 
         this.$$(document).on('click', '.create-post-submit', function(e) {
           e.preventDefault()

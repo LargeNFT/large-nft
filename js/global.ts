@@ -71,7 +71,7 @@ export namespace Global {
 
 
     Global.dashboardController = new DashboardController()
-    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService, Core.imageService, Core.profileService)
+    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService, Core.imageService, Core.profileService, Global.postUiService)
     Global.adminPageController = new AdminPageController()
     Global.adminUserController = new AdminUserController()
 

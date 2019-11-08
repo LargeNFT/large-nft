@@ -126,7 +126,7 @@ class QuillService {
       await self.imageSelected(this)
     })
 
-    $$(document).on('click', '.cover-photo-img', function(e) {
+    $$(document).on('click', '.cover-photo-img', function (e) {
       e.preventDefault()
       self.selectCoverPhoto(e)
     })
@@ -175,16 +175,12 @@ class QuillService {
 
     const self = this
 
-
     if (this.initialized) return
-
 
     Quill.register('modules/blotFormatter', QuillBlotFormatter.default)
     Quill.debug(false)
 
-
     let Inline = Quill.import('blots/inline');
-
 
 
     class BoldBlot extends Inline {
@@ -307,44 +303,44 @@ class QuillService {
     IpfsImageBlot.tagName = 'img';
 
 
-    class IpfsVideoBlot extends BlockEmbed {
+    // class IpfsVideoBlot extends BlockEmbed {
 
-      static blotName?: string
-      static tagName?: string
+    //   static blotName?: string
+    //   static tagName?: string
 
-      static create(value) {
-        let node = super.create();
-        node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
-        node.setAttribute('ipfsCid', value.ipfsCid);
-        node.setAttribute('width', value.width)
-        node.setAttribute('height', value.height)
-        node.setAttribute('style', value.style)
+    //   static create(value) {
+    //     let node = super.create();
+    //     node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
+    //     node.setAttribute('ipfsCid', value.ipfsCid);
+    //     node.setAttribute('width', value.width)
+    //     node.setAttribute('height', value.height)
+    //     node.setAttribute('style', value.style)
 
-        return node;
-      }
+    //     return node;
+    //   }
 
-      static value(node) {
+    //   static value(node) {
 
-        let ipfsCid = node.getAttribute('ipfsCid')
-        let width = node.getAttribute('width')
-        let height = node.getAttribute('height')
-        let style = node.getAttribute('style')
+    //     let ipfsCid = node.getAttribute('ipfsCid')
+    //     let width = node.getAttribute('width')
+    //     let height = node.getAttribute('height')
+    //     let style = node.getAttribute('style')
 
-        return {
-          ipfsCid: ipfsCid,
-          width: width,
-          height: height,
-          style: style
-        };
-      }
-    }
-
-
-    IpfsVideoBlot.blotName = 'ipfsvideo';
-    IpfsVideoBlot.tagName = 'video';
+    //     return {
+    //       ipfsCid: ipfsCid,
+    //       width: width,
+    //       height: height,
+    //       style: style
+    //     };
+    //   }
+    // }
 
 
-    Quill.register(IpfsVideoBlot)
+    // IpfsVideoBlot.blotName = 'ipfsvideo';
+    // IpfsVideoBlot.tagName = 'video';
+
+
+    // Quill.register(IpfsVideoBlot)
     Quill.register(IpfsImageBlot)
     // Quill.register(DividerBlot)
     // Quill.register(HeaderBlot)
@@ -425,73 +421,73 @@ class QuillService {
 
   }
 
-    //TODO: load this from a template7 template somehow instead
-    async loadCoverPhotos() {
+  //TODO: load this from a template7 template somehow instead
+  async loadCoverPhotos() {
 
-      const images = this.getImagesFromPostContentOps(this.activeEditor.getContents().ops)
+    const images = this.getImagesFromPostContentOps(this.activeEditor.getContents().ops)
 
-      $$('.cover-photo-img-wrapper').empty()
-      $$('.cover-photo-preview').hide()
+    $$('.cover-photo-img-wrapper').empty()
+    $$('.cover-photo-preview').hide()
 
-      if (images.length > 0) {
-        $$('.cover-photo-preview').show()
+    if (images.length > 0) {
+      $$('.cover-photo-preview').show()
+    }
+
+
+    for (let imageCid of images) {
+
+      const imgElement = $$('<img>')
+      //@ts-ignore
+      $$(imgElement).attr("src", await this.imageService.cidToUrl(imageCid))
+      //@ts-ignore
+      $$(imgElement).data("image-cid", imageCid)
+      //@ts-ignore
+      $$(imgElement).addClass("cover-photo-img")
+
+      $$('.cover-photo-img-wrapper').append(imgElement)
+
+    }
+
+    this.setCoverPhoto($$('input[name="coverPhotoCid"]').val())
+
+  }
+
+
+  //TODO: can definitely be nicer.
+  setCoverPhoto(imageCid) {
+
+    $$('input[name="coverPhotoCid"]').val(imageCid)
+
+    $$('.cover-photo-img-wrapper img').removeClass('selected')
+
+    $$('.cover-photo-img-wrapper img').each(function (index, item) {
+      if ($$(item).data("image-cid") == imageCid) {
+        $$(item).addClass('selected')
       }
+    })
+
+  }
+
+  selectCoverPhoto(e) {
+    this.setCoverPhoto($$(e.target).data("image-cid"))
+  }
 
 
-      for (let imageCid of images) {
 
-        const imgElement = $$('<img>')
-        //@ts-ignore
-        $$(imgElement).attr("src", await this.imageService.cidToUrl(imageCid))
-        //@ts-ignore
-        $$(imgElement).data("image-cid", imageCid)
-        //@ts-ignore
-        $$(imgElement).addClass("cover-photo-img")
+  getImagesFromPostContentOps(ops: any): string[] {
 
-        $$('.cover-photo-img-wrapper').append(imgElement)
+    const images: string[] = []
 
+    for (let op of ops) {
+      if (op.insert && op.insert.ipfsimage) {
+        images.push(op.insert.ipfsimage.ipfsCid)
       }
-
-      this.setCoverPhoto($$('input[name="coverPhotoCid"]').val())
-
     }
 
+    return images
 
-    //TODO: can definitely be nicer.
-    setCoverPhoto(imageCid) {
+  }
 
-      $$('input[name="coverPhotoCid"]').val(imageCid)
-
-      $$('.cover-photo-img-wrapper img').removeClass('selected')
-
-      $$('.cover-photo-img-wrapper img').each(function(index, item) {
-        if ($$(item).data("image-cid") == imageCid) {
-          $$(item).addClass('selected')
-        }
-      })
-
-    }
-
-    selectCoverPhoto(e) {
-      this.setCoverPhoto($$(e.target).data("image-cid"))
-    }
-
-
-
-    getImagesFromPostContentOps(ops: any) : string[] {
-
-      const images: string[] = []
-  
-      for (let op of ops) {
-        if (op.insert && op.insert.ipfsimage) {
-          images.push(op.insert.ipfsimage.ipfsCid)
-        }
-      }
-  
-      return images
-  
-    }
-  
 
 
 }

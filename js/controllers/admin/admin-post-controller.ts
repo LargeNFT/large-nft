@@ -152,8 +152,6 @@ class AdminPostController {
       //Get data
       let postData = await this._getPostData('#edit-post-form')
 
-      console.log(postData)
-
       //Save
       await this.postService.loadStoresForWallet(window['currentAccount'])
       await this.postService.load(1) //gotta load at least 1

@@ -113,7 +113,16 @@ module.exports = async function () {
   let adminPostResult = `
     <li>
         <a href="/admin/post/show/{{permalinkKey}}" class="item-link item-content">
-            <div class="item-inner">
+
+          <div class="item-media">
+            {{#if coverPhotoSrc}}
+              <img class="cover-photo-thumb" src="{{coverPhotoSrc}}">
+            {{else}}
+              <i class="f7-icons cover-photo-thumb">document</i>
+            {{/if}}
+          </div>    
+        
+          <div class="item-inner">
                 <div class="item-title">
                   {{title}}
                   <div class="item-footer">{{subtitle}}</div>

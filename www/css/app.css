@@ -18,6 +18,17 @@
   --f7-navbar-font-size: 7px; */
 }
 
+.navbar a.link.small-only {
+  display: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .navbar a.link.small-only  {
+    display: flex;
+  }
+}
+
+
 .wrap {
   white-space: normal;
 }

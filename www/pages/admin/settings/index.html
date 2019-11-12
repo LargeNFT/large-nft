@@ -1,0 +1,110 @@
+<template>
+
+    <div class="page" data-name="admin-settings">
+
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="page-content">
+            <div class="block-title">Site Settings</div>
+
+            <form class="block list" id="edit-settings-form">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Site Title</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="title" placeholder="Site title">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Tagline</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="tagline" placeholder="Enter a tagline (optional)" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Public Email Address (optional)</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="publicEmail"
+                                        placeholder="Enter an option public email address" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Timezone</div>
+                                <div class="item-input-wrap">
+                                    <select name="timezone">
+                                        <option value="UTC">UTC</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </form>
+
+            <div class="block block-strong inset row">
+                <div class="col-66"></div>
+                <div class="col-33">
+                    <button class="button button-fill save-settings-submit">Save Settings</button>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</template>
+
+
+
+
+<script>
+
+    return {
+        on: {
+            pageInit: async function (e, page) {
+            }
+        },
+
+        created: async function (e, page) {
+
+            const self = this
+            await window['Global'].loadComponentState(this, false)
+
+            this.$$('.save-settings-submit').on('click', function (e) {
+                e.preventDefault()
+                window['adminSettingsController'].settingsSave(e)
+            })
+
+
+        }
+
+
+    }
+
+</script>

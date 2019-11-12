@@ -1,0 +1,58 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="admin-show-age">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="/admin/page" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
+        </div>
+        <div class="title">View Page</div>
+        <div class="right">
+            {{> "mobileBars"}}
+        </div>
+      </div>
+    </div>
+
+    {{#if page}}
+      <div class="fab fab-extended fab-right-bottom">
+        <a href="/admin/page/edit/{{page.permalinkKey}}">
+          <i class="icon f7-icons">edit</i>
+          <div class="fab-text">Edit Page</div>
+        </a>
+      </div>
+
+      <div class="page-content">
+        <div class="row">
+            <div class="large-20"></div>
+          <div class="block block-strong post large-60 col-100">
+            <h1>{{page.title}}</h1>
+
+
+            {{page.contentTranslated}}
+          </div>
+          <div class="large-20"></div>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+
+</template>
+
+
+
+
+<script>
+
+  return {
+    on: {
+      pageInit: async function (e, page) {
+        const self = this
+        await window['Global'].loadComponentState(this, false)
+      }
+    }
+  }
+
+</script>

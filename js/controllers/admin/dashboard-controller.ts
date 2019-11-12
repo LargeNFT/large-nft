@@ -11,6 +11,8 @@ class DashboardController {
   async showIndex(): Promise<ModelView> {
 
     return new ModelView( async () => {
+
+
     }, 'pages/admin/dashboard/index.html')
 
   }

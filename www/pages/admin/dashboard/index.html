@@ -1,30 +1,38 @@
 <!--suppress JSAnnotator -->
 <template>
 
-    <div class="page" data-name="home">
-  
-      <div class="page-content"> 
-        <div class="block-title">Dashboard</div>
-        <div class="block"></div>
+  <div class="page" data-name="home">
 
-  
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="title">Dashboard</div>
+        <div class="right">
+            {{> "mobileBars"}}
+        </div>
       </div>
     </div>
-  
-  </template>
-  
-  
-  
-  
-  <script>
-  
-    return {
-      on: {
-        pageInit: async function (e, page) {
-            const self = this  
-            await window['Global'].loadComponentState(this, false)
-        }
+
+    <div class="page-content">
+      <div class="block"></div>
+
+    </div>
+  </div>
+
+</template>
+
+
+
+
+<script>
+
+  return {
+    on: {
+      pageInit: async function (e, page) {
+        const self = this
+        await window['Global'].loadComponentState(this, false)
       }
     }
-  
-  </script>
+  }
+
+</script>

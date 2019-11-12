@@ -9,13 +9,14 @@
         <div class="left">
           <a href="/admin/post" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
         </div>
+        <div class="title">Create Post</div>
+        <div class="right">
+            {{> "mobileBars"}}
+        </div>
       </div>
     </div>
 
     <div class="page-content">
-      <div class="block-title">Create Post</div>
-
-
       <form class="block list" id="create-post-form">
         <ul>
           <li>
@@ -44,17 +45,19 @@
                 <div class="item-title item-label">Content</div>
 
                 <div class="bottom row">
-                    <div class="col-0 large-35"></div>  
+                  <div class="col-0 large-70"></div>
                   <button class="col-10 large-5 button button-small bold-button"><i class="fa fa-bold"></i></button>
                   <button class="col-10 large-5 button button-small italic-button"><i class="fa fa-italic"></i></button>
                   <button class="col-10 large-5 button button-small link-button"><i class="fa fa-link"></i></button>
-                  <button class="col-10 large-5 button button-small blockquote-button"><i class="fa fa-quote-right"></i></button>
-                  <button class="col-10 large-5 button button-small header-1-button"><i class="fa fa-heading"><sub>1</sub></i></button>
-                  <button class="col-10 large-5 button button-small header-2-button"><i class="fa fa-heading"><sub>2</sub></i></button>
+                  <button class="col-10 large-5 button button-small blockquote-button"><i
+                      class="fa fa-quote-right"></i></button>
+                  <button class="col-10 large-5 button button-small header-1-button"><i
+                      class="fa fa-heading"><sub>1</sub></i></button>
+                  <button class="col-10 large-5 button button-small header-2-button"><i
+                      class="fa fa-heading"><sub>2</sub></i></button>
                   <button class="col-10 large-5 button button-small image-button"><i class="fa fa-camera"></i></button>
                   <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
                   <!-- <button class="col-10 large-5 button button-small divider-button"><i class="fa fa-minus"></i></button>      -->
-                  <div class="col-0 large-35"></div>             
                 </div>
 
                 <div class="item-input-wrap ">
@@ -84,10 +87,10 @@
       </form>
 
       <div class="block block-strong inset row">
-          <div class="col-66"></div>
-          <div class="col-33">
-            <button class="button button-fill create-post-submit">Create Post</button>
-          </div>
+        <div class="col-66"></div>
+        <div class="col-33">
+          <button class="button button-fill create-post-submit">Create Post</button>
+        </div>
       </div>
 
     </div>
@@ -108,7 +111,7 @@
 
         window['adminPostController'].initializeQuill('#create-post-textarea')
 
-        this.$$(document).on('click', '.create-post-submit', function(e) {
+        this.$$('.create-post-submit').on('click', function (e) {
           e.preventDefault()
           window['adminPostController'].postCreateSave(e)
         });

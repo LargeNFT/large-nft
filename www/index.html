@@ -34,31 +34,45 @@
 
   <div id="app">
 
+    
     <div class="panel panel-left panel-reveal panel-init" data-visible-breakpoint="1024">
       <div class="list">
         <ul>
           <li>
-            <a href="/" class="item-link item-content">
+            <a href="/" class="item-link item-content panel-close">
               <div class="item-inner">Dashboard</div>
             </a>
           </li>
           <li>
-            <a href="/admin/user" class="item-link item-content">
-              <div class="item-inner">Users</div>
+            <a href="/admin/post" class="item-link item-content panel-close">
+              <div class="item-inner">Blog Posts</div>
             </a>
           </li>
           <li>
-            <a href="/admin/post" class="item-link item-content">
-              <div class="item-inner">Posts</div>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/page" class="item-link item-content">
+            <a href="/admin/page" class="item-link item-content panel-close">
               <div class="item-inner">Pages</div>
             </a>
           </li>
           <li>
-            <a href="/connect" class="item-link item-content">
+            <a href="/admin/user" class="item-link item-content panel-close">
+              <div class="item-inner">Users</div>
+            </a>
+          </li>
+
+          <li>
+            <a href="/admin/profile" class="item-link item-content panel-close">
+              <div class="item-inner">Profile</div>
+            </a>
+          </li>
+
+          <li>
+              <a href="/admin/settings" class="item-link item-content panel-close">
+                <div class="item-inner">Site Settings</div>
+              </a>
+            </li>
+
+          <li>
+            <a href="/connect" class="item-link item-content panel-close">
               <div class="item-inner">Connect</div>
             </a>
           </li>
@@ -71,12 +85,11 @@
 
     <!-- Your main view, should have "view-main" class -->
     <div class="view view-main ios-edges">
-
     </div>
 
   </div>
 
-
+  
 
   <script src="js/large.js"></script>
   <script>

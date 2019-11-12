@@ -1,7 +1,6 @@
 import { Global } from "./global"
 import { FollowController } from "./controllers/follow-controller"
 import { HomeController } from "./controllers/home-controller"
-import { ProfileController } from "./controllers/profile-controller"
 import { ConnectController } from "./controllers/connect-controller"
 import { PostController } from "./controllers/post-controller"
 import { WalletController } from "./controllers/wallet-controller"
@@ -135,6 +134,21 @@ module.exports = async function () {
     </li>
   `
 
+  let adminPageResult = `
+    <li>
+    <a href="/admin/page/show/{{permalinkKey}}" class="item-link item-content">
+      <div class="item-inner">
+            <div class="item-title">
+              {{title}}
+            </div>
+            <div class="item-after">
+              {{dateCreatedDisplay}}
+            </div>
+        </div>
+    </a>
+  </li>
+`
+
 
 
   let homeTab = `
@@ -152,11 +166,17 @@ module.exports = async function () {
   Global.profileResultTemplate = Template7.compile(profileResult)
   Global.postResultTemplate = Template7.compile(postResult)
   Global.adminPostResultTemplate = Template7.compile(adminPostResult)
+  Global.adminPageResultTemplate = Template7.compile(adminPageResult)
 
   Template7.registerPartial("postResult", postResult)
   Template7.registerPartial("adminPostResult", adminPostResult)
+  Template7.registerPartial("adminPageResult", adminPageResult)
   Template7.registerPartial("profileResult", profileResult)
   Template7.registerPartial("homeTab", homeTab)
+
+  Template7.registerPartial("mobileBars", `
+    <a href="#" class="link icon-only panel-open small-only" data-panel=".panel-left"><i class="icon f7-icons">bars</i></a>
+  `)
 
 
 

@@ -3,17 +3,31 @@
 
   <div class="page" data-name="pages">
 
-    <div class="page-content">
-
-      <div class="block-title">Pages</div>
-      <div class="block">
-
-
-
-
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="title">Pages</div>
+        <div class="right">
+            {{> "mobileBars"}}
+        </div>
       </div>
-
     </div>
+
+    <div class="fab fab-extended fab-right-bottom">
+      <a href="/admin/page/create">
+        <i class="icon f7-icons">add</i>
+        <div class="fab-text">Create Page</div>
+      </a>
+    </div>
+
+
+
+    <div class="page-content">
+      <div class="block list virtual-list" id="page-list">
+      </div>
+    </div>
+
+
   </div>
 
 </template>
@@ -21,15 +35,22 @@
 
 
 
-<script>
 
+
+<script>
   return {
     on: {
-      pageInit: async function (e, page) {
+      pageInit: function (e, page) {
         const self = this
-        await window['Global'].loadComponentState(this, false)
       }
+    },
+
+    created: async function (e, page) {
+
+      const self = this
+
+      await window['Global'].loadComponentState(this, false)
+
     }
   }
-
 </script>

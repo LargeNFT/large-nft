@@ -73,11 +73,11 @@ const routes = function (baseurl) {
 
 
     routes.push({
-        path: '/profile/static/:id',
+        path: '/admin/profile/static/:id',
         async async(routeTo, routeFrom, resolve, reject) {
 
             try {
-                Web.modelViewService.resolve(resolve, Global.profileController.showStaticProfile(routeTo.params.id))
+                Web.modelViewService.resolve(resolve, Global.adminProfileController.showStaticProfile(routeTo.params.id))
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)
             }
@@ -86,11 +86,11 @@ const routes = function (baseurl) {
     })
 
     routes.push({
-        path: '/profile/edit',
+        path: '/admin/profile',
         async async(routeTo, routeFrom, resolve, reject) {
 
             try {
-                Web.modelViewService.resolve(resolve, Global.profileController.showProfileEdit())
+                Web.modelViewService.resolve(resolve, Global.adminProfileController.showProfileEdit())
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)
             }
@@ -159,6 +159,68 @@ const routes = function (baseurl) {
             }
         }
     })
+
+
+
+    routes.push({
+        path: '/admin/page/create',
+        async async(routeTo, routeFrom, resolve, reject) {
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPageController.showCreate())
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+        }
+    })
+
+
+    routes.push({
+        path: '/admin/page/show/:id',
+        async async(routeTo, routeFrom, resolve, reject) {
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPageController.showPage(routeTo.params.id))
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
+
+    routes.push({
+        path: '/admin/page/edit/:id',
+        async async(routeTo, routeFrom, resolve, reject) {
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminPageController.showEdit(routeTo.params.id))
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
+
+
+    routes.push({
+        path: '/admin/settings',
+        async async(routeTo, routeFrom, resolve, reject) {
+
+            try {
+                Web.modelViewService.resolve(resolve, Global.adminSettingsController.showIndex())
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
+
+
+
+
+
+
+
 
     routes.push({
         path: '/admin/user',

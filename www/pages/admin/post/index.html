@@ -3,6 +3,16 @@
 
   <div class="page" data-name="admin-posts">
 
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="title">Blog Posts</div>
+        <div class="right">
+            {{> "mobileBars"}}
+        </div>
+      </div>
+    </div>
+
     <div class="fab fab-extended fab-right-bottom">
       <a href="/admin/post/create">
         <i class="icon f7-icons">add</i>
@@ -11,14 +21,13 @@
     </div>
 
 
+
+
     <div class="page-content infinite-scroll-content">
-      <div class="block-title">Blog Posts</div>
-      <div class="block">
-        <div class="list virtual-list" id="blog-post-list">
-        </div>
+      <div class="block list virtual-list" id="blog-post-list">
       </div>
     </div>
-  
+
   </div>
 
 </template>
@@ -30,7 +39,7 @@
 <script>
   return {
     on: {
-      pageInit: function(e, page) {
+      pageInit: function (e, page) {
         const self = this
       },
       pageAfterOut: function (e, page) {
@@ -39,12 +48,12 @@
       }
     },
 
-    created: async function(e, page) {
+    created: async function (e, page) {
 
       const self = this
-      
+
       await window['Global'].loadComponentState(this, false)
-      
+
       let controller = window['adminPostController']
 
       // Attach 'infinite' event handler

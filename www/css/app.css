@@ -13,9 +13,9 @@
   --f7-block-font-size: 10px;
 
   --f7-block-title-font-size: 13px; */
-
+/* 
   /* --f7-navbar-height: 40px;
-  --f7-navbar-font-size: 7px; */
+  --f7-navbar-font-size: 7px; */ */
 }
 
 .navbar a.link.small-only {
@@ -68,7 +68,7 @@ body, .md body {
 }
 
 .profile-pic-edit, #profile-pic--edit-not-found {
-  max-width: 100%;
+  max-width: 300px;
   border-radius: 50%;
   font-size: 100px;
   float: left;

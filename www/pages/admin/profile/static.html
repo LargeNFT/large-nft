@@ -1,91 +1,100 @@
 <!--suppress JSAnnotator -->
 <template>
-  <div class="page" data-name="profile-static">
+  <div class="page" data-name="admin-profile-static">
+
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="title">Your Profile</div>
+        <div class="right">
+          {{> "mobileBars"}}
+        </div>
+      </div>
+    </div>
+
 
     <div id="static-profile-infinite-scroll" class="page-content infinite-scroll-content row">
 
-        <div class="col-100 tablet-50 center">
+      <div class="col-100 tablet-50 center">
 
-          {{#if loaded}}
-
-
-              {{#if profile}}
+        {{#if loaded}}
 
 
-                <div class="block row">
-                    <div class="col-20">
-                        {{#if profilePicSrc}}
-                          <img src="{{profilePicSrc}}" class="profile-pic-main" />
-                        {{else}}
-                          <i class="f7-icons profile-pic" id="profile-pic-not-found">person</i>
-                        {{/if}}
-                    </div>
-
-                    <div class="col-80">
-                      <div class="profile-name">
-                          {{profile.name}}
-                      </div>
-
-                      <div class="profile-address">
-                          {{profile._id}}
-                      </div>
-
-                      <p>{{profile.aboutMe}}</p>
-
-                      {{#if showEditLink}}
-                      <div class="row">
-                          <a href="/profile/edit" class="button button-outline button-small button-round col-20">Edit</a>
-                      </div>
-                      {{/if}}
-
-
-                    </div>
-                </div>
-
+        {{#if profile}}
+          <div class="block row">
+            <div class="col-20">
+              {{#if profilePicSrc}}
+              <img src="{{profilePicSrc}}" class="profile-pic-main" />
               {{else}}
+              <i class="f7-icons profile-pic" id="profile-pic-not-found">person</i>
+              {{/if}}
+            </div>
 
-                {{#if showEditLink}}
-                  <div class="block-title">Create Profile</div>
-                  <div class="block">
-                    Create your <a href="/profile/edit">public profile</a>
-                  </div>
-                {{else}}
+            <div class="col-80">
+              <div class="profile-name">
+                {{profile.name}}
+              </div>
 
-                  <div class="block">
-                      User has not created a public profile
-                  </div>
+              <div class="profile-address">
+                {{profile._id}}
+              </div>
 
-                {{/if}}
+              <p>{{profile.aboutMe}}</p>
 
+              {{#if showEditLink}}
+                <div class="row">
+                  <a href="/admin/profile/edit" class="button button-outline button-small button-round col-20">Edit</a>
+                </div>
               {{/if}}
 
 
+            </div>
+          </div>
 
+        {{else}}
 
+        {{#if showEditLink}}
+          <div class="block">
+            Create your <a href="/admin/profile/edit">public profile</a>
+          </div>
+        {{else}}
 
-          {{/if}}
-
-
-
-
-
-
-
-
-
+        <div class="block">
+          User has not created a public profile
         </div>
+
+        {{/if}}
+
+        {{/if}}
+
+
+
+
+
+        {{/if}}
+
+
+
+
+
+
+
+
+
+      </div>
 
     </div>
 
-</div>
+  </div>
 </template>
 
 
 
 <script>
-    return {
-      created: async function() {
-          window['Global'].loadComponentState(this)
-      }
+  return {
+    created: async function () {
+      window['Global'].loadComponentState(this)
     }
-  </script>
+  }
+</script>

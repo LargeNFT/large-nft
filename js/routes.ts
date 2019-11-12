@@ -90,6 +90,20 @@ const routes = function (baseurl) {
         async async(routeTo, routeFrom, resolve, reject) {
 
             try {
+                Web.modelViewService.resolve(resolve, Global.adminProfileController.showStaticProfile(window['currentAccount']))
+            } catch (ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+
+        }
+    })
+
+
+    routes.push({
+        path: '/admin/profile/edit',
+        async async(routeTo, routeFrom, resolve, reject) {
+
+            try {
                 Web.modelViewService.resolve(resolve, Global.adminProfileController.showProfileEdit())
             } catch (ex) {
                 Global.uiService.showExceptionPopup(ex)

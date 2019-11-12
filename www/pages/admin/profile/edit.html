@@ -1,15 +1,25 @@
 <template>
 
-  <div class="page" data-name="profile-edit">
+  <div class="page" data-name="admin-profile-edit">
 
-    
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="title">Edit Profile</div>
+        <div class="right">
+          {{> "mobileBars"}}
+        </div>
+      </div>
+    </div>
+
+
     <div class="page-content row">
 
       <div class="col-100 tablet-50 center">
 
         <div class="block">
           <form id="edit-profile-form">
-            <input type="hidden" name="_id" value="{{js "window['currentAccount']" }}" />
+            <input type="hidden" name="_id" value="{{_id}}" />
             <div class="list no-hairlines-md">
               <ul>
 
@@ -20,7 +30,7 @@
                       <div class="item-input-wrap">
 
                         {{#if profilePic}}
-                          <img src="{{profilePicSrc}}" class="profile-pic-edit"/>
+                          <img src="{{profilePicSrc}}" class="profile-pic-edit" />
                           <input type="hidden" name="profilePic" value="{{profilePic}}" />
                         {{else}}
                           <i class="f7-icons profile-pic-thumb">person</i>
@@ -54,7 +64,7 @@
                     </div>
                   </div>
                 </li>
-                
+
               </ul>
             </div>
 
@@ -79,24 +89,24 @@
 
 
 <script>
-    return {
-      on: {
-        pageInit() {
+  return {
+    on: {
+      pageInit() {
 
-          const self = this
+        const self = this
 
-          let controller = window['profileController']
+        let controller = window['adminProfileController']
 
-          this.$$('#edit-profile-form').on('submit', function(e) {
-            e.preventDefault();
-            controller.profileEditSave(e)
-          })
+        this.$$('#edit-profile-form').on('submit', function (e) {
+          e.preventDefault();
+          controller.profileEditSave(e)
+        })
 
 
-        }
-      },
-      created: async function() {
-          window['Global'].loadComponentState(this)
       }
+    },
+    created: async function () {
+      window['Global'].loadComponentState(this)
     }
-  </script>
+  }
+</script>

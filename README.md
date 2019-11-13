@@ -3,7 +3,21 @@
 
 ![image](https://raw.githubusercontent.com/ptoner/Large/master/www/images/logo_white.png)
 
-**Large** is an open source peer-to-peer blogging platform that helps you build apps and websites that are hosted by the people that use them. 
+Build a website or app that's hosted by your users with [IPFS](http://ipfs.io).
+
+* P2P. No servers.
+* Data is hosted by users directly.
+* The more users your app gets the more available your site becomes.
+* Browser-based. It's accessed like any other website.
+
+## Features
+* Create blog posts with embedded media. Images (video soon).
+* Create pages with static content. 
+* Build custom navigation menus (soon).
+* Existing users are instantly notified when new content is posted. Real time updates.
+* Users with wallets can interact with the app. Make comments, post media, etc. 
+* Create complex, data-driven plugins. (later)  
+
 
 New peer-to-peer tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
 

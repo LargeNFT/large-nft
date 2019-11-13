@@ -3,19 +3,26 @@
 
 ![image](https://raw.githubusercontent.com/ptoner/Large/master/www/images/logo_white.png)
 
-## Build a website or app that's hosted by your users with [IPFS](http://ipfs.io).
-* P2P. No servers.
-* Data is hosted by users directly.
-* The more users your app gets the more available your site becomes.
-* Browser-based. It's accessed like any other website.
+Large is a serverless and peer-to-peer blogging platform. Build a website that's hosted by your users with [IPFS](http://ipfs.io).
 
 ## Features
+* Browser-based. It's accessed like any other website.
 * Create blog posts with embedded media. Images (video soon).
 * Create pages with static content. 
 * Build custom navigation menus (soon).
-* Existing users are instantly notified when new content is posted. Real time updates.
+* Users are instantly notified when new content is posted. Real time updates.
 * Users with wallets can interact with the app. Make comments, post media, etc. 
 * Create complex, data-driven plugins. (later)  
+
+## Benefits of P2P apps
+* No infrastructure to manage or servers to maintain.
+* No devops.
+* Data is hosted by users directly.
+* Easy to customize.
+* No central database with everyone's data that can be stolen. Users secure their own data. 
+* If you like javascript this is perfect because it's all javascript. 
+* The more users your app gets the more available your site becomes.
+
 
 ## Peer-to-peer 
 New P2P tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.

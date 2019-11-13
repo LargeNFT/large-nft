@@ -14,26 +14,20 @@ Large is a serverless and peer-to-peer blogging platform. Build a website that's
 * Users with wallets can interact with the app. Make comments, post media, etc. 
 * Create complex, data-driven plugins. (later)  
 
-## Benefits of P2P apps
-* No infrastructure to manage or servers to maintain.
-* No devops.
-* Data is hosted by users directly.
-* Easy to customize.
-* No central database with everyone's data that can be stolen. Users secure their own data. 
-* If you like javascript this is perfect because it's all javascript. 
-* The more users your app gets the more available your site becomes.
-
-
-## Peer-to-peer 
+## Benefits of Peer-to-Peer Apps
 New P2P tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
 
-* **You just send your messages to the people who want to see them.** There's no big database that contains everyone's data. Users have the data that's important to them and mechanisms to get shared data from any other user. 
+* No infrastructure to manage or servers to maintain.
+* Data is hosted by users directly.
+* Easy to customize.
+* No central database with everyone's data that can be stolen. Users are in charge of their own data. 
+* If you like javascript this is perfect because it's all javascript. 
+* The more users your app gets the more available your site becomes. 
 
-* **It’s serverless.** Not in the fancy cloud marketing way. You don’t have a server. You have an app on your phone/computer and it stores the data that you read and post. It's (eventually) syncronized to all your devices. The more users a P2P network gets the more reliable it becomes. A bittorrent is way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
+**Serverless** 
+Not in the fancy cloud marketing way. You don’t have a server. You have an app on your phone/computer and it stores the data that you read and post. It's (eventually) syncronized to all your devices. The more users a P2P network gets the more reliable it becomes. A bittorrent is way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
 
-* **No implicit need to monetize.** Without servers to maintain there aren’t bills to pay. You can create a professional website or app, create content, and share it with your audience without a hosting bill. 
-
-* **Offline mode** You just can’t get new stuff. 
+Without servers to maintain there aren’t bills to pay. You can create a professional website or app, create content, and share it with your audience without a hosting bill. 
 
 An app built with Large stores its data directly on the user's device. Users send messages directly to the other users. If those messages become popular more people have copies to share. They make it available to everyone else. The more popular it gets the more available it becomes. We use public-key cryptography to make sure messages come from who we think they’re from. 
 

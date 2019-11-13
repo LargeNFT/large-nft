@@ -24,7 +24,7 @@ New P2P tech lets us make apps that work in familiar ways and gives us a bunch o
 * If you like javascript this is perfect because it's all javascript. 
 * The more users your app gets the more available your site becomes. 
 
-**Serverless** 
+## Serverless 
 Not in the fancy cloud marketing way. You don’t have a server. You have an app on your phone/computer and it stores the data that you read and post. It's (eventually) syncronized to all your devices. The more users a P2P network gets the more reliable it becomes. A bittorrent is way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
 
 Without servers to maintain there aren’t bills to pay. You can create a professional website or app, create content, and share it with your audience without a hosting bill. 

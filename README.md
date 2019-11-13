@@ -17,8 +17,8 @@
 * Users with wallets can interact with the app. Make comments, post media, etc. 
 * Create complex, data-driven plugins. (later)  
 
-## P2P w/ IPFS and OrbitDB
-New peer-to-peer tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
+## Peer-to-peer 
+New P2P tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
 
 * **You just send your messages to the people who want to see them.** There's no big database that contains everyone's data. Users have the data that's important to them and mechanisms to get shared data from any other user. 
 

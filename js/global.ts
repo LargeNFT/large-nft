@@ -79,7 +79,7 @@ export namespace Global {
     Global.adminPageController = new AdminPageController(Global.quillService, Global.uiService, Core.imageService, Core.profileService, Core.pageService)
     Global.adminUserController = new AdminUserController()
     Global.adminProfileController = new AdminProfileController(Global.uploadService, Core.profileService, Global.postUiService, Global.uiService, Core.imageService)
-    Global.adminSettingsController = new AdminSettingsController()
+    Global.adminSettingsController = new AdminSettingsController(Core.siteSettingsService, Global.uiService)
 
     window['walletController'] = Global.walletController
     window['homeController'] = Global.homeController

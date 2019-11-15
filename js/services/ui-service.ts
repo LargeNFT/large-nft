@@ -18,6 +18,11 @@ class UiService {
         }
     }
 
+    showPopup(message) {
+        this.app.dialog.alert(message)
+    }
+
+
 
     async loadComponentState(component, showSpinner = true) {
 

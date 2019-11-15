@@ -1,6 +1,6 @@
 
 import { ModelView} from "large-web"
-import { SchemaService } from "large-core";
+import Core, { SchemaService } from "large-core";
 import { Global } from "../global";
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 
@@ -82,6 +82,32 @@ class ConnectController {
 
     }
 
+
+    async addPeerSubmit(e:Event) {
+
+        console.log('Add peer submit')
+        
+        let pageData = Global.app.form.convertToData('#add-peer-form')
+
+        //@ts-ignore
+        document.getElementById('peerAddressInput').setCustomValidity("")
+
+        if (pageData.peerAddress) {
+            try {
+                await Core.ipfs.swarm.connect(pageData.peerAddress)
+
+                Global.uiService.showPopup(`Successfully connected to peer ${pageData.peerAddress}`)
+                
+                console.log('Connected to peer')
+            } catch(ex) {
+                Global.uiService.showExceptionPopup(ex)
+            }
+        }
+
+
+
+
+    }
 
 }
 

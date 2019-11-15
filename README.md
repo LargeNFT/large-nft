@@ -10,13 +10,11 @@ Large is a serverless and peer-to-peer blogging platform. Build a website that's
 * Create blog posts with embedded media. Images (video soon).
 * Create pages with static content. 
 * Build custom navigation menus (soon).
-* Users are instantly notified when new content is posted. Real time updates.
+* Users are notified when new content is posted. Real time updates.
 * Users with wallets can interact with the app. Make comments, post media, etc. 
 * Create complex, data-driven plugins. (later)  
 
 ## Peer-to-Peer
-New P2P tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
-
 * No infrastructure to manage or servers to maintain.
 * Data is hosted by users directly.
 * Easy to customize.

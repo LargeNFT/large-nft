@@ -14,7 +14,7 @@ Large is a serverless and peer-to-peer blogging platform. Build a website that's
 * Users with wallets can interact with the app. Make comments, post media, etc. 
 * Create complex, data-driven plugins. (later)  
 
-## Benefits of Peer-to-Peer Apps
+## Peer-to-Peer
 New P2P tech lets us make apps that work in familiar ways and gives us a bunch of new benefits.
 
 * No infrastructure to manage or servers to maintain.

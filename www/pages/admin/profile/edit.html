@@ -5,6 +5,9 @@
     <div class="navbar">
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+        </div>
         <div class="title">Edit Profile</div>
         <div class="right">
           {{> "mobileBars"}}
@@ -30,10 +33,10 @@
                       <div class="item-input-wrap">
 
                         {{#if profilePic}}
-                          <img src="{{profilePicSrc}}" class="profile-pic-edit" />
-                          <input type="hidden" name="profilePic" value="{{profilePic}}" />
+                        <img src="{{profilePicSrc}}" class="profile-pic-edit" />
+                        <input type="hidden" name="profilePic" value="{{profilePic}}" />
                         {{else}}
-                          <i class="f7-icons profile-pic-thumb">person</i>
+                        <i class="f7-icons profile-pic-thumb">person</i>
                         {{/if}}
 
                         <input type="file" id="profilePic" placeholder="Select a photo to upload" />

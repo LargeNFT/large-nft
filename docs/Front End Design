@@ -1,0 +1,48 @@
+Distributable
+
+    xyz123hash/ <-- changes every time we change content
+
+        css/
+            - Framework7 + app.css
+            - Custom css. Provided by user.
+
+        js/
+            - large-front.js
+            - has router + framework7
+            - opens IPFS - needs site's wallet address to pubsub 
+            
+        pages/
+            - <page-key>.json 	
+
+        posts/
+            - <post-key>.json 
+            
+        site-settings.json
+            - includes wallet address 
+
+Publish
+
+    Publishing a post 
+
+        Put post in posts/ folder
+        Parent folder gets new hash.
+        Write files to that folder 
+        Write new hash to “version” feed.
+
+
+    Publishing a page
+
+        Put page in pages/ folder 
+        Parent folder gets new hash
+        Write all the files
+	
+	
+		
+		
+		
+		     
+
+
+
+
+

@@ -90,9 +90,9 @@ Then in a different terminal
 npm run serve
 ```
 
-# Latest Build Hash
+# Latest Build
 ```console
-QmccRnV2hdLsLT5C73VU6WZwDrfPdGFa8ohHq5sCdCnEj4
+[ipfs.io](https://ipfs.io/ipfs/QmfJnixrYwCc65peNbLYUYhxRZsUtULx1fvmv153Uqam7t)
 ```
 
 

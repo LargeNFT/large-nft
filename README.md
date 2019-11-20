@@ -91,9 +91,7 @@ npm run serve
 ```
 
 # Latest Build
-```console
 [ipfs.io](https://ipfs.io/ipfs/QmfJnixrYwCc65peNbLYUYhxRZsUtULx1fvmv153Uqam7t)
-```
 
 
 

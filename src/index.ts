@@ -180,6 +180,10 @@ module.exports = async function () {
 
 
 
+
+
+
+
   //Detect page root
   // @ts-ignore
   const rootUrl = new URL(window.location)
@@ -198,7 +202,7 @@ module.exports = async function () {
   })
 
 
-
+  Global.uiService = new UiService(Global.app)
 
   try {
     await Global.init()
@@ -206,8 +210,9 @@ module.exports = async function () {
     console.log(ex)
   }
 
-  Global.uiService = new UiService(Global.app)
   Global.initializeControllers()
+
+
 
 
   // Init/Create main view

@@ -94,7 +94,6 @@ export namespace Global {
     window['adminProfileController'] = Global.adminProfileController
     window['adminSettingsController'] = Global.adminSettingsController
 
-
   }
 
   export async function init() {
@@ -104,10 +103,6 @@ export namespace Global {
     Global.postUiService = new PostUIService(Core.readOnlyPostService, Core.profileService, Core.schemaService, Core.imageService)
     Global.quillService = new QuillService(Global.uploadService, Core.imageService)
 
-    Core.eventEmitter.on("unread-posts-updated", function (unreadPosts) {
-      $$('.new-message-badge').html(unreadPosts)
-      $$('.new-message-badge').removeClass('hide')
-    })
   }
 
 }

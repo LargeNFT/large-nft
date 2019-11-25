@@ -1,9 +1,109 @@
 import { Global } from "./global"
-import Web from 'large-web'
+import Web, { ModelView } from 'large-web'
 import Core from 'large-core'
+import { resolve } from "dns"
 
 
 const routes = function (baseurl) {
+
+
+
+    let routes = [
+        {
+            path: '/createWallet',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.walletController.showCreateWallet())
+        },
+
+        {
+            path: '/enterRecovery',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.walletController.showEnterRecovery())
+        },
+
+        {
+            path: '/admin/profile/static/:id',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminProfileController.showStaticProfile(routeTo.params.id))
+        },
+
+        {
+            path: '/admin/profile',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminProfileController.showStaticProfile(window['currentAccount']))
+        },
+
+        {
+            path: '/admin/profile/edit',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminProfileController.showProfileEdit())
+        },
+
+        {
+            path: '/admin/post',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showIndex())
+        },
+
+        {
+            path: '/admin/post/create',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showCreate())
+        },
+
+        {
+            path: '/admin/post/show/:id',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showPost(routeTo.params.id))
+        },
+
+        {
+            path: '/admin/post/edit/:id',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showEdit(routeTo.params.id))
+        },
+
+        {
+            path: '/admin/page',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPageController.showIndex())
+        },
+
+        {
+            path: '/admin/page/create',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,   Global.adminPageController.showCreate())
+        },
+
+        {
+            path: '/admin/page/show/:id',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPageController.showPage(routeTo.params.id))
+        },
+
+        {
+            path: '/admin/page/edit/:id',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPageController.showEdit(routeTo.params.id))
+        },
+
+        {
+            path: '/admin/settings',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminSettingsController.showIndex())
+        },
+
+        {
+            path: '/admin/user',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminUserController.showIndex())
+        },
+
+        {
+            path: '/post/show/:id',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.postController.showPost(routeTo.params.id))
+        },
+
+        {
+            path: '/connect',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.connectController.showHome())
+        },
+
+        {
+            path: '/following',
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.followController.showFollowing())
+
+        }
+
+
+    ]
+
+
 
     const homeRoute = async function (routeTo, routeFrom, resolve, reject) {
         let promise
@@ -29,8 +129,6 @@ const routes = function (baseurl) {
 
     }
 
-    let routes = []
-
     if (baseurl != '/') {
         routes.push({
             path: baseurl,
@@ -44,250 +142,8 @@ const routes = function (baseurl) {
     })
 
 
-    routes.push({
-        path: '/createWallet',
-        async async(routeTo, routeFrom, resolve, reject) {
 
-            try {
-                Web.modelViewService.resolve(resolve, Global.walletController.showCreateWallet())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
 
-        }
-    })
-
-    routes.push({
-        path: '/enterRecovery',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.walletController.showEnterRecovery())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-    routes.push({
-        path: '/admin/profile/static/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminProfileController.showStaticProfile(routeTo.params.id))
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-    routes.push({
-        path: '/admin/profile',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminProfileController.showStaticProfile(window['currentAccount']))
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-    routes.push({
-        path: '/admin/profile/edit',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminProfileController.showProfileEdit())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-    routes.push({
-        path: '/admin/post',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPostController.showIndex())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-        }
-    })
-
-    routes.push({
-        path: '/admin/post/create',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPostController.showCreate())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-        }
-    })
-
-
-    routes.push({
-        path: '/admin/post/show/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPostController.showPost(routeTo.params.id))
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-    routes.push({
-        path: '/admin/post/edit/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPostController.showEdit(routeTo.params.id))
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-
-    routes.push({
-        path: '/admin/page',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPageController.showIndex())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-        }
-    })
-
-
-
-    routes.push({
-        path: '/admin/page/create',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPageController.showCreate())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-        }
-    })
-
-
-    routes.push({
-        path: '/admin/page/show/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPageController.showPage(routeTo.params.id))
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-    routes.push({
-        path: '/admin/page/edit/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminPageController.showEdit(routeTo.params.id))
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-
-    routes.push({
-        path: '/admin/settings',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminSettingsController.showIndex())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-
-
-
-
-
-
-
-    routes.push({
-        path: '/admin/user',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.adminUserController.showIndex())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-    routes.push({
-        path: '/post/show/:id',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.postController.showPost(routeTo.params.id))
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-
-    routes.push({
-        path: '/connect',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.connectController.showHome())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
-
-    routes.push({
-        path: '/following',
-        async async(routeTo, routeFrom, resolve, reject) {
-
-            try {
-                Web.modelViewService.resolve(resolve, Global.followController.showFollowing())
-            } catch (ex) {
-                Global.uiService.showExceptionPopup(ex)
-            }
-
-        }
-    })
 
     //Needs to be last
     routes.push({
@@ -300,5 +156,16 @@ const routes = function (baseurl) {
 
     return routes
 }
+
+function defaultResolve(resolve, promise: Promise<ModelView>) {
+    try {
+        Web.modelViewService.resolve(resolve, promise)
+    } catch (ex) {
+        Global.uiService.showExceptionPopup(ex)
+    }
+}
+
+
+
 
 export default routes 

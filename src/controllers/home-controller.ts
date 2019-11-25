@@ -34,16 +34,6 @@ class HomeController {
     this.quillService.buildQuillPostEditor('#create-post-textarea')
   }
 
-  async showTabs() : Promise<ModelView> {
-    return new ModelView( async () => {
-
-      return {
-        currentAccount: window['currentAccount']
-      }
-
-    }, 'pages/tabs.html')
-  }
-
 
   async showHomePage(): Promise<ModelView> {
 

@@ -2,7 +2,7 @@ import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 
 import Core, { Profile, Friend, FriendService, ProfileService, ImageService } from "large-core";
 import { Global } from "../global";
-import { UiService } from "../services/ui-service";
+import { UiService } from "large-web"
 import { ModelView } from "large-web";
 
 var $$ = Dom7;

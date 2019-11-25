@@ -1,5 +1,6 @@
 import Core, { Post, ProfileService, ImageService, Profile, FeedMonitorService } from 'large-core';
-import { UiService } from "../services/ui-service";
+import { UiService } from "large-web"
+
 import { QuillService } from '../services/quill-service';
 import { PostUIService } from '../services/post-ui-service';
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"

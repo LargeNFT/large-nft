@@ -2,7 +2,7 @@ import { ModelView } from "large-web"
 import { SiteSettingsService } from "large-core/dist/services/site-settings-service"
 import { SiteSettings } from "large-core/dist/dto/site-settings"
 import { Global } from "../../global"
-import { UiService } from "../../services/ui-service"
+import { UiService } from "large-web"
 
 class AdminSettingsController {
 

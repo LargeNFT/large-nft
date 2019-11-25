@@ -6,7 +6,6 @@ import Core from 'large-core'
 const routes = function (baseurl) {
 
     const homeRoute = async function (routeTo, routeFrom, resolve, reject) {
-
         let promise
 
         if (Core.isElectron) {

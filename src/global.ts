@@ -8,7 +8,7 @@ import { WalletController } from "./controllers/wallet-controller"
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 
 
-import { UiService } from "./services/ui-service"
+import { UiService } from "large-web"
 import { UploadService } from "./services/upload-service"
 import { PostUIService } from "./services/post-ui-service"
 import { QuillService } from "./services/quill-service"

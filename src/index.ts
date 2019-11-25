@@ -9,7 +9,7 @@ import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 const Framework7: any = require('framework7/js/framework7.bundle')
 
 
-import { UiService } from "./services/ui-service"
+import { UiService } from "large-web"
 
 import routes from "./routes"
 
@@ -180,7 +180,6 @@ module.exports = async function () {
 
 
 
-
   //Detect page root
   // @ts-ignore
   const rootUrl = new URL(window.location)
@@ -191,12 +190,13 @@ module.exports = async function () {
     root: '#app', // App root element
     id: 'large', // App bundle ID
     name: 'Large', // App name
-    theme: 'aurora', // Automatic theme detection
+    theme: 'auto', // Automatic theme detection
 
     // App routes
     routes: routes(rootUrl.pathname)
 
   })
+
 
 
 
@@ -214,7 +214,6 @@ module.exports = async function () {
   const mainView = Global.app.views.create('.view-main', {
     pushState: true
   })
-
 
 
   window['Global'] = Global;

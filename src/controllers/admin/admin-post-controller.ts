@@ -4,7 +4,7 @@ import { QuillService } from "../../services/quill-service"
 import { Global } from "../../global"
 import { BlogPostService, ProfileService, ImageService, Profile } from "large-core"
 import { BlogPost } from "large-core/dist/dto/blog-post"
-import { UiService } from "../../services/ui-service"
+import { UiService } from "large-web"
 import { PagingService, Page } from "../../services/page-service"
 import { PostUIService } from "../../services/post-ui-service"
 const moment = require('moment')
@@ -69,7 +69,6 @@ class AdminPostController {
   }
 
   async showCreate(): Promise<ModelView> {
-
     return new ModelView( async () => {
     }, 'pages/admin/post/create.html')
 

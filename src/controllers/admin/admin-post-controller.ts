@@ -49,6 +49,8 @@ class AdminPostController {
 
     let posts:BlogPost[] = []
 
+    if (!this.postService.feedStore) return posts
+
     try {
       posts = await this.postService.getRecentPosts(this.postsShown, this.limit, this.lastPost )
     } catch(ex) {

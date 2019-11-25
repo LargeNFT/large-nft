@@ -1,21 +1,6 @@
 /* Your app styles here */
 :root {
-  /* --f7-list-item-title-font-size: 14px; 
-  --f7-list-item-subtitle-font-size: 12px;
-  --f7-list-item-subtitle-line-height: 14px;
-  --f7-list-item-after-font-size: 8px;
-  --f7-list-item-text-font-size: 12px;
-
-  --f7-list-item-header-font-size: 13px;
-  --f7-list-item-header-font-weight: bold;
-
-  --f7-card-font-size: 10px;
-  --f7-block-font-size: 10px;
-
-  --f7-block-title-font-size: 13px; */
-/* 
-  /* --f7-navbar-height: 40px;
-  --f7-navbar-font-size: 7px; */ */
+  --f7-panel-bg-color: #1c1c1d;
 }
 
 .navbar a.link.small-only {

@@ -3,6 +3,20 @@
 
   <div class="page" data-name="connect">
 
+    <div class="navbar theme-dark">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+        </div>
+        <div class="title">Connect</div>
+        <div class="right">
+          {{> "mobileBars"}}
+        </div>
+      </div>
+    </div>
+
+
     <div class="page-content">
 
       <div class="row">
@@ -38,7 +52,8 @@
                     <div class="item-inner">
                       <div class="item-title item-label">Peer Address</div>
                       <div class="item-input-wrap">
-                        <input id="peerAddressInput" type="text" name="peerAddress" placeholder="Enter peer address" required validate>
+                        <input id="peerAddressInput" type="text" name="peerAddress" placeholder="Enter peer address"
+                          required validate>
                       </div>
                       <div class="item-after">
                         <button type="submit" class="button button-fill" value="Add Peer">Add Peer</button>
@@ -76,36 +91,36 @@
 
 
           {{#if schema}}
-            <div class="block-title">Schema</div>
-            <div class="block">
-              <div class="list">
-                <ul>
-                  {{#each stores}}
-                  <li>
-                    <div class="item-content">
-                      <div class="item-inner">
-                        <div class="item-title">
-                          <!-- Item header, must be first child of item-title -->
-                          <div class="item-header">{{name}}</div>
+          <div class="block-title">Schema</div>
+          <div class="block">
+            <div class="list">
+              <ul>
+                {{#each stores}}
+                <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">
+                        <!-- Item header, must be first child of item-title -->
+                        <div class="item-header">{{name}}</div>
 
-                          <div class="row">
-                            <span class="wrap col-90">{{address}}</span>
-                            <button class="col-10 button button-fill button-round {{type}}"
-                              data-id="{{address}}">Drop</button>
-                          </div>
-
+                        <div class="row">
+                          <span class="wrap col-90">{{address}}</span>
+                          <button class="col-10 button button-fill button-round {{type}}"
+                            data-id="{{address}}">Drop</button>
                         </div>
+
                       </div>
                     </div>
-                  </li>
-                  {{/each}}
+                  </div>
+                </li>
+                {{/each}}
 
-                </ul>
-              </div>
+              </ul>
             </div>
+          </div>
 
           {{else}}
-            <div class="block-title">Schema Not Loaded</div>
+          <div class="block-title">Schema Not Loaded</div>
           {{/if}}
 
 

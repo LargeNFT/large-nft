@@ -3,55 +3,56 @@
 
   <div class="page" data-name="admin-show-post">
 
-    <div class="navbar theme-dark">
+    <div class="navbar">
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
         <div class="left">
           <a href="/admin/post" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
         </div>
-        <div class="title">View Post</div>
         <div class="right">
-            {{> "mobileBars"}}
+          {{> "mobileBars"}}
         </div>
       </div>
     </div>
 
+    <div class="toolbar tabbar toolbar-top">
+      <div class="toolbar-inner">
+        <a class="tab-link tab-link-active">Preview</a>
+        <a class="tab-link" href="/admin/post/edit/{{#if post}}{{post.permalinkKey}}{{/if}}"> Edit</a>
+        <a class="tab-link">Delete</a>
+      </div>
+    </div>
+
+
     {{#if post}}
-      <div class="fab fab-extended fab-right-bottom">
-        <a href="/admin/post/edit/{{post.permalinkKey}}">
-          <i class="icon f7-icons">edit</i>
-          <div class="fab-text">Edit Post</div>
-        </a>
-      </div>
-
-      <div class="page-content">
-        <div class="row">
-            <div class="large-20"></div>
-          <div class="block block-strong post large-60 col-100">
-            <h1>{{post.title}}</h1>
-
-            {{#if post.subtitle}}
-            <h2>{{post.subtitle}}</h2>
-            {{/if}}
-
-            <div class="author">
-              {{#if profilePicSrc}}
-              <img class="profile-pic-thumb" src="{{profilePicSrc}}">
-              {{else}}
-              <i class="f7-icons profile-pic-thumb">person</i>
-              {{/if}}
-
-              <span class="owner">{{authorName}}</span> <br />
-              <span class="date">{{post.dateCreatedDisplay}}</span>
-
-            </div>
 
 
-            {{post.contentTranslated}}
-          </div>
-          <div class="large-20"></div>
+    <div class="page-content">
+
+      <div class="block block-strong inset post text-color-black bg-color-white">
+        <h1>{{post.title}}</h1>
+
+        {{#if post.subtitle}}
+        <h2>{{post.subtitle}}</h2>
+        {{/if}}
+
+        <div class="author">
+          {{#if profilePicSrc}}
+          <img class="profile-pic-thumb" src="{{profilePicSrc}}">
+          {{else}}
+          <i class="f7-icons profile-pic-thumb">person</i>
+          {{/if}}
+
+          <span class="owner">{{authorName}}</span> <br />
+          <span class="date">{{post.dateCreatedDisplay}}</span>
+
         </div>
+
+
+        {{post.contentTranslated}}
       </div>
+
+    </div>
     {{/if}}
   </div>
 

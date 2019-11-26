@@ -70,6 +70,9 @@ class AdminPostController {
 
   }
 
+  
+  
+
   async showCreate(): Promise<ModelView> {
     return new ModelView( async () => {
     }, 'pages/admin/post/create.html')

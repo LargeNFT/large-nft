@@ -2,7 +2,7 @@ import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 import Web, { ModelView, ModelViewService } from 'large-web'
 import { QuillService } from "../../services/quill-service"
 import { Global } from "../../global"
-import { BlogPostService, ProfileService, ImageService, Profile } from "large-core"
+import { BlogPostService, ProfileService, ImageService, Profile, Post } from "large-core"
 import { BlogPost } from "large-core/dist/dto/blog-post"
 import { UiService } from "large-web"
 import { PagingService, Page } from "../../services/page-service"
@@ -46,7 +46,6 @@ class AdminPostController {
   }
 
   async getNextPage() : Promise<BlogPost[]> {
-
     let posts:BlogPost[] = []
 
     if (!this.postService.feedStore) return posts
@@ -170,6 +169,40 @@ class AdminPostController {
 
   }
 
+
+  async postDeleteClick(e:Event) {
+
+    try {
+
+      let self = this
+
+      let postId = $$(e.target).data('id')
+      if (!postId) return 
+  
+      Global.app.dialog.confirm(
+        "Do you want to delete this post? Note: This does not guarantee deletion from other peers. This data may still exist on the internet somewhere.",
+        async function() {
+
+          let post:Post = await self.postService.readPermalink(postId)
+  
+          await self.postService.delete(post)
+      
+          //Redirect
+          self.uiService.navigate(`/admin/post`, false, false)
+
+        }
+      
+      )
+
+
+
+
+    } catch(ex) {
+      this.uiService.showExceptionPopup(ex)
+    }
+
+
+  }
 
 
   async _getPostData(formId) {

@@ -64,7 +64,7 @@
     "electron": "6.0.10",
     "electron-builder": "21.2.0",
     "http-server": "^0.10.0",
-    "large-core": "file:../large-core",
+    "large-core": "0.0.14",
     "large-web": "0.0.13",
     "moment": "2.24.0",
     "ts-node": "8.3.0",

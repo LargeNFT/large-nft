@@ -194,14 +194,9 @@ class AdminPostController {
       
       )
 
-
-
-
     } catch(ex) {
       this.uiService.showExceptionPopup(ex)
     }
-
-
   }
 
 

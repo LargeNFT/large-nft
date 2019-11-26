@@ -19,7 +19,7 @@
       <div class="toolbar-inner">
         <a class="tab-link tab-link-active">Preview</a>
         <a class="tab-link" href="/admin/page/edit/{{#if page}}{{page.permalinkKey}}{{/if}}"> Edit</a>
-        <a class="tab-link">Delete</a>
+        <a class="tab-link delete-link " {{#if page}}data-id="{{page.permalinkKey}}" {{/if}}>Delete</a>
       </div>
     </div>
 
@@ -53,6 +53,12 @@
       pageInit: async function (e, page) {
         const self = this
         await window['Global'].loadComponentState(this, false)
+
+        this.$$('.delete-link').on('click', function (e) {
+          e.preventDefault()
+          window['adminPageController'].pageDeleteClick(e)
+        })
+
       }
     }
   }

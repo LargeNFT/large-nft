@@ -136,6 +136,36 @@ class AdminPageController {
   }
 
 
+  async pageDeleteClick(e:Event) {
+
+    try {
+
+      let self = this
+
+      let pageId = $$(e.target).data('id')
+      if (!pageId) return 
+  
+      Global.app.dialog.confirm(
+        "Do you want to delete this page? Note: This does not guarantee deletion from other peers. This data may still exist on the internet somewhere.",
+        async function() {
+
+          let page:Page = await self.pageService.readPermalink(pageId)
+  
+          await self.pageService.delete(page)
+      
+          //Redirect
+          self.uiService.navigate(`/admin/page`, false, false)
+
+        }
+      
+      )
+
+    } catch(ex) {
+      this.uiService.showExceptionPopup(ex)
+    }
+
+  }
+
 
   async _getPageData(formId) {
 

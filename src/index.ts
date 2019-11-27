@@ -1,10 +1,4 @@
 import { Global } from "./global"
-import { FollowController } from "./controllers/follow-controller"
-import { HomeController } from "./controllers/home-controller"
-import { ConnectController } from "./controllers/admin/connect-controller"
-import { PostController } from "./controllers/post-controller"
-import { WalletController } from "./controllers/wallet-controller"
-import Core from 'large-core'
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 const Framework7: any = require('framework7/js/framework7.bundle')
 
@@ -14,25 +8,19 @@ import { UiService } from "large-web"
 import routes from "./routes"
 
 const moment = require('moment')
-var $$ = Dom7;
-
-
-
-
-
 
 
 module.exports = async function () {
 
   /** Shortcut methods for localStorage access */
-  Storage.prototype.setObject = function (key, value) {
-    this.setItem(key, JSON.stringify(value));
-  }
+  // Storage.prototype.setObject = function (key, value) {
+  //   this.setItem(key, JSON.stringify(value));
+  // }
 
-  Storage.prototype.getObject = function (key) {
-    var value = this.getItem(key);
-    return value && JSON.parse(value);
-  }
+  // Storage.prototype.getObject = function (key) {
+  //   var value = this.getItem(key);
+  //   return value && JSON.parse(value);
+  // }
 
 
   //Template7 helpers
@@ -180,10 +168,6 @@ module.exports = async function () {
 
 
 
-
-
-
-
   //Detect page root
   // @ts-ignore
   const rootUrl = new URL(window.location)
@@ -223,17 +207,5 @@ module.exports = async function () {
 
   window['Global'] = Global;
 
-
-  //Register global click listeners. Probably move somewhere else at some point.
-  $$(document).on('click', '.follow-link', async function (e) {
-    let controller: FollowController = window['followController']
-    await controller.followClick(e)
-  })
-
-
-  $$(document).on('click', '.unfollow-link', async function (e) {
-    let controller: FollowController = window['followController']
-    await controller.unfollowClick(e)
-  })
 
 }

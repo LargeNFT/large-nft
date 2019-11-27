@@ -1,12 +1,21 @@
 /* Your app styles here */
 :root {
-  --f7-panel-bg-color: #1c1c1d;
+   --f7-panel-bg-color: #1c1c1d;
   --f7-page-bg-color: #aaa9af; 
 
-  --f7-theme-color: "#FCB827";
+  /* --f7-theme-color: "#FCB827";
   --f7-theme-color-rgb: "252, 184, 39";
   --f7-theme-color-shade: "#f7a903";
-  --f7-theme-color-tint: "#fdc54f";
+  --f7-theme-color-tint: "#fdc54f";  */
+
+  --f7-input-font-size: 23px;
+  --f7-label-font-size: 18px;
+  --f7-block-font-size: 23px;
+  --f7-block-title-font-size: 25px;
+  --f7-block-title-line-height: 25px;
+  --f7-block-title-font-weight: bold;
+  /* --f7-input-bg-color: #ffffff; */
+  /* --f7-input-text-color: #000000; */
 
 }
 
@@ -317,3 +326,8 @@ hr:before {
 }
 
 
+
+
+.ql-container {
+  font-size: 23px;
+}

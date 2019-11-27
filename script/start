@@ -1,5 +1,0 @@
-#!/bin/bash
-
-rm -rf /usr/src/large/node_modules/*/.git/
-npm install
-npm run docker-serve & npm run watch

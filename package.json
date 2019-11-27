@@ -9,9 +9,9 @@
   "scripts": {
     "electron": "electron index.js",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
-    "build": "./scripts/build.sh",
-    "dist": "browserify -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./src/index.ts -p [ tsify --target es2017 --experimentalDecorators ] -o ./www/js/large.js -v; electron-builder -wl",
-    "watch": "watchify --debug -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @babel/plugin-proposal-class-properties ] ] ./src/index.ts -p [ tsify --target es2017 --experimentalDecorators ]  -o ./www/js/large.js -v"
+    "build": "./script/build.sh",
+    "dist": "./script/dist.sh",
+    "watch": "./script/watch.sh"
   },
   "keywords": [
     "framework7",

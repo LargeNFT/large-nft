@@ -1,8 +1,0 @@
-#!/bin/bash
-
-docker exec large_go-ipfs_1 sh -c "\
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '[\"*\"]' \
-&& ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '[\"GET\", \"POST\"]' \
-&& ipfs shutdown"
-# Restart is handled by docker-compose setting
-echo "CORS enabled in large_go-ipfs_1"

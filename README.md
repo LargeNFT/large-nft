@@ -6,24 +6,24 @@
 Large is a serverless and peer-to-peer blogging platform. Build a website that's hosted by your users with [IPFS](http://ipfs.io).
 
 ## Features
-* Browser-based. It's accessed like any other website.
+* Available on web, desktop, and (future) Android/iOS.
 * Create blog posts with embedded media. Images (video soon).
 * Create pages with static content. 
 * Build custom navigation menus (soon).
 * Users are notified when new content is posted. Real time updates.
 * Users with wallets can interact with the app. Make comments, post media, etc. 
-* Create complex, data-driven plugins. (later)  
+* Create complex, data-driven plugins. (future)  
 
 ## Peer-to-Peer
-* No infrastructure to manage or servers to maintain.
+* Basic functionality requires no infrastructure to manage or servers to maintain.
 * Data is hosted by users directly.
 * Easy to customize.
-* No central database with everyone's data that can be stolen. Users are in charge of their own data. 
+* No central database with everyone's data. Users host their own data. 
 * If you like javascript this is perfect because it's all javascript. 
 * The more users your app gets the more available your site becomes. 
 
 ## Serverless 
-Not in the fancy cloud marketing way. You don’t have a server. You have an app on your phone/computer and it stores the data that you read and post. It's (eventually) syncronized to all your devices. The more users a P2P network gets the more reliable it becomes. A bittorrent is way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
+Not in the fancy cloud marketing way. By default, you don’t have a server. You have an app on your phone/computer and it stores the data that you read and post. It's (eventually) syncronized to all your devices. The more users a P2P network gets the more reliable it becomes. A bittorrent is way faster when you have more peers. Same idea here. You can have servers, but it’s not a requirement.
 
 Without servers to maintain there aren’t bills to pay. You can create a professional website or app, create content, and share it with your audience without a hosting bill. 
 
@@ -35,8 +35,7 @@ There are some caveats of course. It might be slower at the beginning. Users can
 
 Traditional server-based apps have the opposite problem. Those get slower as you add users. You start by paying for servers and as your app gets more users the servers become bigger and more expensive. 
 
-With Large you can (optionally) pay to host your data at the beginning to help bootstrap the network, but once you actually have an app with actual users that expense mostly disappears. Arguably it’s not all that important in the beginning either since you don’t actually have users yet.
-
+With Large you can (optionally) pay to host your data at the beginning to help bootstrap the network, but once you actually have an app with actual users that expense mostly disappears. 
 
 ## How It Works
 
@@ -95,14 +94,54 @@ npm run serve
 
 
 
+## Accessing Your Large Website
+
+To start, the end-user will need a copy of the Large distribution. There are a bunch of different ways for them to get it. 
+
+    * Desktop app
+    * Android (future)
+    * iOS (future)
+
+    * A third-party hosted copy.
+    
+    * Through an IPFS public gateway (hopefully) 
+
+    * You can host it yourself. The user can access it through you. 
+
+        * With IPFS
+        * With regular web host. It's just a directory of HTML/javascript files that need served up. 
+    
+        * Clone this repo and run the commands above to start the web client. 
+            
+    * You can also fork this git repo and make a competely custom version of Large. All of the above options are still available. 
+    
+
+* Open via wallet address/ENS name (future). This will open the database and try to get the data via pubsub.
+
+    * If peers have data you'll display the page. 
+    * If no peers have the data, the site will be blank.
+
+
+### How to use Large with a domain
+
+- With a web server. 
+    * Host the Large distribution. This doesn't include your content.  
+
+    Optional
+    * Install daemon to be a peer that distributes the actual website data. Uses pubsub. (future)
+        * Will also provide a hosted download with actual website data. Won't require pubsub connection.  
+        * This will probably act as a fallback if no peers are found. 
+
+
+- Without a web server:
+    - Redirect to public gateway and pass wallet address. In theory. Not exactly sure how the redirect will work. 
+
+
 
 # Development Tools
 You need the tools listed below to run the project.
 
 Need help? [Just ask!](https://discord.gg/kRydQeW)
-
-NOTE: All the below steps are now automated with inside a docker container. Visual Studio Code handles most everything. Instruction are in the SETUP file in the repo. We'll write them out here soon.
-
 
 
 ## What You'll Need

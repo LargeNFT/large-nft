@@ -94,22 +94,22 @@ npm run serve
 
 To start, the end-user will need a copy of the Large distribution. There are a bunch of different ways for them to get it. 
 
-    * Desktop app
-    * Android (future)
-    * iOS (future)
+* Desktop app
+* Android (future)
+* iOS (future)
 
-    * A third-party hosted copy.
-    
-    * Through an IPFS public gateway (hopefully) 
+* A third-party hosted copy.
 
-    * You can host it yourself. The user can access it through you. 
+* Through an IPFS public gateway (hopefully) 
 
-        * With IPFS
-        * With regular web host. It's just a directory of HTML/javascript files that need served up. 
-    
-        * Clone this repo and run the commands above to start the web client. 
-            
-    * You can also fork this git repo and make a competely custom version of Large. All of the above options are still available. 
+* You can host it yourself. The user can access it through you. 
+
+    * With IPFS
+    * With regular web host. It's just a directory of HTML/javascript files that need served up. 
+
+    * Clone this repo and run the commands above to start the web client. 
+        
+* You can also fork this git repo and make a competely custom version of Large. All of the above options are still available. 
     
 
 * Open via wallet address/ENS name (future). This will open the database and try to get the data via pubsub.

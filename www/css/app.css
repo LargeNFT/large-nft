@@ -19,6 +19,17 @@
 
 }
 
+.wallet-address {
+  font-size: 12px;
+
+  white-space: nowrap;                   
+  overflow: hidden;
+  text-overflow: ellipsis;  
+  direction: rtl;
+  text-align: left; /* https://davidwalsh.name/css-ellipsis-left */
+  border: 1px solid #aaa9af;
+}
+
 .navbar a.link.small-only {
   display: none;
 }

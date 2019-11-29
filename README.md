@@ -60,7 +60,6 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 * This repo contains an app that's built to showcase all of these features. It's mostly like Twitter right now. But it's really just a prototype to make sure there's a full toolkit to quickly build cross platform P2P apps/websites. There are many things that are broken and or missing. Please file issues when you find them. There are a lot of issues at this point.
 
 
-
 # Install
 ```console
 
@@ -71,14 +70,11 @@ npm run install
 ```
 
 # Running the desktop client
-
 ```console
 npm run electron
 ```
 
-
 # Running the web client
-
 ```console
 npm run watch
 ```

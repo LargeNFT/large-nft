@@ -38,7 +38,7 @@ class AdminPostController {
 
       await this.reset()    
 
-      await this.postService.loadStoresForWallet(window['currentAccount'])
+      // await this.postService.loadStoresForWallet(window['currentAccount'])
 
       let posts:Post[] = await this.getNextPage()
 
@@ -89,7 +89,7 @@ class AdminPostController {
     
     return new ModelView( async () => {
 
-      await this.postService.loadStoresForWallet(window['currentAccount'])
+      // await this.postService.loadStoresForWallet(window['currentAccount'])
 
       let post:BlogPost = await this.postService.readPermalink(permalinkKey)
 
@@ -114,7 +114,7 @@ class AdminPostController {
     
     return new ModelView( async () => {
 
-      await this.postService.loadStoresForWallet(window['currentAccount'])
+      // await this.postService.loadStoresForWallet(window['currentAccount'])
 
       //Get post
       let post:BlogPost = await this.postService.readPermalink(permalinkKey)
@@ -137,7 +137,7 @@ class AdminPostController {
       let postData = await this._getPostData('#create-post-form')
 
       //Save
-      await this.postService.loadStoresForWallet(window['currentAccount'])
+      // await this.postService.loadStoresForWallet(window['currentAccount'])
       await this.postService.load(1) //gotta load at least 1
       await this.postService.create(postData)
       
@@ -158,7 +158,7 @@ class AdminPostController {
       let postData = await this._getPostData('#edit-post-form')
 
       //Save
-      await this.postService.loadStoresForWallet(window['currentAccount'])
+      // await this.postService.loadStoresForWallet(window['currentAccount'])
       await this.postService.load(1) //gotta load at least 1
       await this.postService.update(postData)
       

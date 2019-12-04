@@ -25,8 +25,6 @@ class AdminSettingsController {
 
             let siteSettings:SiteSettings = await SiteSettingsService.getForWallet(window['currentAccount'])
 
-
-
             let mainStore = await this.schemaService.getMainStoreByWalletAddress(window['currentAccount'])
             let schema = await this.schemaService.getSchema(mainStore, window['currentAccount'])
             let mainStoreAddress = mainStore.address.toString()

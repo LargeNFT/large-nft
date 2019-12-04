@@ -25,7 +25,7 @@ class AdminPageController {
 
     return new ModelView( async () => {
 
-      await this.pageService.loadStoresForWallet(window['currentAccount'])
+      // await this.pageService.loadStoresForWallet(window['currentAccount'])
 
       let pages:Page[] = await this.pageService.getPages()
 
@@ -48,7 +48,7 @@ class AdminPageController {
     
     return new ModelView( async () => {
 
-      await this.pageService.loadStoresForWallet(window['currentAccount'])
+      // await this.pageService.loadStoresForWallet(window['currentAccount'])
 
       let page:Page = await this.pageService.readPermalink(permalinkKey)
 
@@ -68,7 +68,7 @@ class AdminPageController {
     
     return new ModelView( async () => {
 
-      await this.pageService.loadStoresForWallet(window['currentAccount'])
+      // await this.pageService.loadStoresForWallet(window['currentAccount'])
 
       //Get page
       let page:Page = await this.pageService.readPermalink(permalinkKey)
@@ -90,7 +90,7 @@ class AdminPageController {
       let pageData = await this._getPageData('#create-page-form')
 
       //Save
-      await this.pageService.loadStoresForWallet(window['currentAccount'])
+      // await this.pageService.loadStoresForWallet(window['currentAccount'])
       await this.pageService.create(pageData)
       
       //Redirect
@@ -113,7 +113,7 @@ class AdminPageController {
 
 
       //Save
-      await this.pageService.loadStoresForWallet(window['currentAccount'])
+      // await this.pageService.loadStoresForWallet(window['currentAccount'])
       await this.pageService.update(postData)
       
       //Redirect

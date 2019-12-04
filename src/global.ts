@@ -101,6 +101,11 @@ export namespace Global {
     Global.postUiService = new PostUIService(Core.readOnlyPostService, Core.profileService, Core.schemaService, Core.imageService)
     Global.quillService = new QuillService(Global.uploadService, Core.imageService)
 
+    Web.uiService.showSpinner()
+
+    await Core.loadStoresForWallet(window['currentAccount'])
+
+    Web.uiService.hideSpinner()
 
   }
 

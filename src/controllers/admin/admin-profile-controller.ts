@@ -38,14 +38,14 @@ class AdminProfileController {
         }
 
 
-        if (profile) {
-          try {
-            await this.postUiService.loadPostFeedForWallet(address)
-            posts = await this.postUiService.getRecentPosts(0, 100)
-          } catch(ex) {
-            console.log(ex)
-          }
-        }
+        // if (profile) {
+        //   try {
+        //     await this.postUiService.loadPostFeedForWallet(address)
+        //     posts = await this.postUiService.getRecentPosts(0, 100)
+        //   } catch(ex) {
+        //     console.log(ex)
+        //   }
+        // }
 
         let showEditLink:boolean = (address.toLowerCase() == window['currentAccount'].toLowerCase())
         

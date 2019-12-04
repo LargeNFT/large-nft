@@ -6,7 +6,7 @@
             <div class="navbar-bg"></div>
             <div class="navbar-inner">
                 <div class="left">
-                    <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+                    <a href="#" class="link back"><i class="icon icon-back"></i></a>
                 </div>
                 <div class="title">Site Settings</div>
                 <div class="right">
@@ -24,7 +24,7 @@
                             <div class="item-inner">
                                 <div class="item-title item-label">Site Title</div>
                                 <div class="item-input-wrap">
-                                    <input type="text" name="title" placeholder="Site title" value="{{title}}">
+                                    <input type="text" name="title" placeholder="Site title" value="{{settings.title}}">
                                 </div>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                 <div class="item-title item-label">Tagline</div>
                                 <div class="item-input-wrap">
                                     <input type="text" name="tagline" placeholder="Enter a tagline (optional)"
-                                        value="{{tagline}}" />
+                                        value="{{settings.tagline}}" />
                                 </div>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                                 <div class="item-input-wrap">
                                     <input type="text" name="publicEmailAddress"
                                         placeholder="Enter an option public email address"
-                                        value="{{publicEmailAddress}}" />
+                                        value="{{settings.publicEmailAddress}}" />
                                 </div>
                             </div>
                         </div>
@@ -93,7 +93,8 @@
 
                                         <div class="row">
                                             <span class="wrap col-90">{{address}}</span>
-                                            <button class="col-10 button button-fill button-round {{type}} text-color-black"
+                                            <button
+                                                class="col-10 button button-fill button-round {{type}} text-color-black"
                                                 data-id="{{address}}">Drop</button>
                                         </div>
 
@@ -129,28 +130,18 @@
     return {
         on: {
             pageInit: async function (e, page) {
+                const self = this
 
+                this.$$(document).on('click', '.drop-store', function (e) {
+                    window['adminSettingsController'].dropStoreClicked(e)
+                })
+
+                this.$$('.save-settings-submit').on('click', function (e) {
+                    e.preventDefault()
+                    window['adminSettingsController'].settingsSave(e)
+                })
             }
-        },
-
-        created: async function (e, page) {
-
-            const self = this
-            await window['Global'].loadComponentState(this, false)
-
-            this.$$(document).on('click', '.drop-store', function (e) {
-                window['adminSettingsController'].dropStoreClicked(e)
-            })
-
-            this.$$('.save-settings-submit').on('click', function (e) {
-                e.preventDefault()
-                window['adminSettingsController'].settingsSave(e)
-            })
-
-
         }
-
-
     }
 
 </script>

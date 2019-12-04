@@ -16,7 +16,7 @@ class AdminPostController {
   loadingInProgress: boolean = false
   hasMorePosts: boolean = true
 
-  limit: number = 30
+  limit: number = 10
   postsShown: number 
   lastPost: string 
   
@@ -40,12 +40,19 @@ class AdminPostController {
 
       await this.postService.loadStoresForWallet(window['currentAccount'])
 
+      let posts:Post[] = await this.getNextPage()
+
+      return{
+        posts:posts
+      }
+
       
     }, 'pages/admin/post/index.html')
 
   }
 
   async getNextPage() : Promise<BlogPost[]> {
+
     let posts:BlogPost[] = []
 
     if (!this.postService.feedStore) return posts
@@ -113,14 +120,9 @@ class AdminPostController {
       let post:BlogPost = await this.postService.readPermalink(permalinkKey)
       post = await this.postService.translatePost(post)
 
-      //Fill out form
-      Global.app.form.fillFromData('#edit-post-form', post)
-
-      //Initialize contents
-      this.initializeQuill("#edit-post-textarea")
-      this.quillService.activeEditor.setContents(post.content)
-
-      await this.quillService.loadCoverPhotos()
+      return{ 
+        post: post
+      }
 
     }, 'pages/admin/post/edit.html')
 

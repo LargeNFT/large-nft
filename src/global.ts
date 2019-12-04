@@ -8,7 +8,7 @@ import { WalletController } from "./controllers/wallet-controller"
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 
 
-import { UiService } from "large-web"
+import Web, { UiService } from "large-web"
 import { UploadService } from "./services/upload-service"
 import { PostUIService } from "./services/post-ui-service"
 import { QuillService } from "./services/quill-service"
@@ -43,7 +43,7 @@ export namespace Global {
   export var adminProfileController: AdminProfileController
   export var adminSettingsController: AdminSettingsController
 
-  export var uiService: UiService
+  // export var uiService: UiService
   export var quillService:QuillService
   export var uploadService:UploadService = new UploadService()
   export var postUiService:PostUIService
@@ -60,26 +60,23 @@ export namespace Global {
     return Core
   }
 
-  export async function loadComponentState(component, showSpinner = true) {
-    return Global.uiService.loadComponentState(component, showSpinner)
-  }
 
   export function initializeControllers() {
 
-    Global.walletController = new WalletController(Core.walletService, Global.uiService)
-    Global.homeController = new HomeController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService, Core.feedMonitorService, Global.uiService)
+    Global.walletController = new WalletController(Core.walletService, Web.uiService)
+    Global.homeController = new HomeController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService, Core.feedMonitorService, Web.uiService)
     // Global.profileController = new ProfileController(Global.uploadService, Core.profileService, Global.postUiService, Global.uiService, Core.imageService)
-    Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Global.uiService)
+    Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Web.uiService)
     Global.connectController = new ConnectController(Core.ipfs, Core.schemaService)
     Global.postController = new PostController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService)
 
 
     Global.dashboardController = new DashboardController()
-    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Global.uiService, Core.imageService, Core.profileService, Global.postUiService)
-    Global.adminPageController = new AdminPageController(Global.quillService, Global.uiService, Core.imageService, Core.profileService, Core.pageService)
+    Global.adminPostController = new AdminPostController(Global.quillService, Core.blogPostService, Web.uiService, Core.imageService, Core.profileService, Global.postUiService)
+    Global.adminPageController = new AdminPageController(Global.quillService, Web.uiService, Core.imageService, Core.profileService, Core.pageService)
     Global.adminUserController = new AdminUserController()
-    Global.adminProfileController = new AdminProfileController(Global.uploadService, Core.profileService, Global.postUiService, Global.uiService, Core.imageService)
-    Global.adminSettingsController = new AdminSettingsController(Core.siteSettingsService, Global.uiService, Core.schemaService)
+    Global.adminProfileController = new AdminProfileController(Global.uploadService, Core.profileService, Global.postUiService, Web.uiService, Core.imageService)
+    Global.adminSettingsController = new AdminSettingsController(Core.siteSettingsService, Web.uiService, Core.schemaService)
 
     window['walletController'] = Global.walletController
     window['homeController'] = Global.homeController
@@ -98,10 +95,12 @@ export namespace Global {
 
   export async function init() {
     
-    await Core.initialize()
+    await Core.init()
+    await Web.init(Global.app)
 
     Global.postUiService = new PostUIService(Core.readOnlyPostService, Core.profileService, Core.schemaService, Core.imageService)
     Global.quillService = new QuillService(Global.uploadService, Core.imageService)
+
 
   }
 

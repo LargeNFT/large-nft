@@ -48,7 +48,6 @@
     on: {
       pageInit: async function (e, page) {
         const self = this
-        await window['Global'].loadComponentState(this, false)
 
         this.$$('.delete-link').on('click', function (e) {
           e.preventDefault()

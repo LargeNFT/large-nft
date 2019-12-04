@@ -101,7 +101,6 @@
     on: {
       pageInit: async function (e, page) {
         const self = this
-        await window['Global'].loadComponentState(this, false)
 
         window['adminPostController'].initializeQuill('#create-post-textarea')
 

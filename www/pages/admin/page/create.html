@@ -92,7 +92,6 @@
     on: {
       pageInit: async function (e, page) {
         const self = this
-        await window['Global'].loadComponentState(this, false)
 
         window['adminPageController'].initializeQuill('#create-page-textarea')
 

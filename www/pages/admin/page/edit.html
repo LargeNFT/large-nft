@@ -80,21 +80,21 @@
     return {
       on: {
         pageInit: async function (e, page) {  
-        }
-      },
 
-      created: async function (e, page) {
-          
-          const self = this
-          await window['Global'].loadComponentState(this, false)
-    
+          //Fill out form
+          Global.app.form.fillFromData('#edit-page-form', this.page)
+
+          //Initialize contents
+          window['adminPageController'].initializeQuill("#edit-page-textarea")
+          window['adminPageController'].quillService.activeEditor.setContents(this.page.content)
+
           this.$$('.edit-page-submit').on('click', function(e) {
             e.preventDefault()
             window['adminPageController'].pageEditSave(e)
           })
 
+        }
       }
-
     }
   
   </script>

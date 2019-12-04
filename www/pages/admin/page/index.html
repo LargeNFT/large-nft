@@ -8,7 +8,7 @@
       <div class="navbar-inner">
         <div class="title">Pages</div>
         <div class="right">
-            {{> "mobileBars"}}
+          {{> "mobileBars"}}
         </div>
       </div>
     </div>
@@ -42,15 +42,21 @@
     on: {
       pageInit: function (e, page) {
         const self = this
+
+        this.virtualList = Global.app.virtualList.create({
+          el: '#page-list',
+          itemTemplate: window['Global'].adminPageResultTemplate,
+          items: this.pages,
+          height: 59,
+          emptyTemplate: "<li>No pages</li>"
+        })
+
       }
     },
 
     created: async function (e, page) {
 
       const self = this
-
-      await window['Global'].loadComponentState(this, false)
-
     }
   }
 </script>

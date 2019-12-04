@@ -1,5 +1,5 @@
 
-import { ModelView} from "large-web"
+import Web, { ModelView} from "large-web"
 import Core, { SchemaService } from "large-core";
 import { Global } from "../../global";
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
@@ -53,11 +53,11 @@ class ConnectController {
             try {
                 await Core.ipfs.swarm.connect(pageData.peerAddress)
 
-                Global.uiService.showPopup(`Successfully connected to peer ${pageData.peerAddress}`)
+                Web.uiService.showPopup(`Successfully connected to peer ${pageData.peerAddress}`)
                 
                 console.log('Connected to peer')
             } catch(ex) {
-                Global.uiService.showExceptionPopup(ex)
+                Web.uiService.showExceptionPopup(ex)
             }
         }
 

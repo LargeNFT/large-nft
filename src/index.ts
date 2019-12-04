@@ -185,9 +185,6 @@ module.exports = async function () {
 
   })
 
-
-  Global.uiService = new UiService(Global.app)
-
   try {
     await Global.init()
   } catch (ex) {

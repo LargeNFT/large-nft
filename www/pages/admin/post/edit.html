@@ -102,22 +102,24 @@
     return {
       on: {
         pageInit: async function (e, page) {  
-        }
-      },
 
-      created: async function (e, page) {
-          
-          const self = this
-          await window['Global'].loadComponentState(this, false)
-    
+          //Fill out form
+          Global.app.form.fillFromData('#edit-post-form', this.post)
+
+          //Initialize contents
+          window['adminPostController'].initializeQuill("#edit-post-textarea")
+          window['adminPostController'].quillService.activeEditor.setContents(this.post.content)
+
+          await window['adminPostController'].quillService.loadCoverPhotos()
+
+
           this.$$('.edit-post-submit').on('click', function(e) {
             e.preventDefault()
             window['adminPostController'].postEditSave(e)
           })
-  
-  
-        }
 
+        }
+      }
 
     }
   

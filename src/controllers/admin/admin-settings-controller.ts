@@ -69,6 +69,8 @@ class AdminSettingsController {
 
         await this.siteSettingsService.put(window['currentAccount'], siteSettings)
 
+        console.log(siteSettings)
+
         this.uiService.navigate("/", false, false)
 
 

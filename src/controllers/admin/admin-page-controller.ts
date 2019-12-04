@@ -2,11 +2,8 @@ import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 import Web, { ModelView, ModelViewService } from 'large-web'
 import { QuillService } from "../../services/quill-service"
 import { Global } from "../../global"
-import { BlogPostService, ProfileService, ImageService, Profile, PageService, Page } from "large-core"
-import { BlogPost } from "large-core/dist/dto/blog-post"
+import { ProfileService, ImageService, Profile, PageService, Page } from "large-core"
 import { UiService } from "large-web"
-import { PagingService } from "../../services/page-service"
-import { PostUIService } from "../../services/post-ui-service"
 const moment = require('moment')
 var $$ = Dom7
 
@@ -32,13 +29,9 @@ class AdminPageController {
 
       let pages:Page[] = await this.pageService.getPages()
 
-      this.virtualList = Global.app.virtualList.create({
-        el: '#page-list',
-        itemTemplate: Global.adminPageResultTemplate,
-        items: pages,
-        height: 59,
-        emptyTemplate: "<li>No pages</li>"
-      })
+      return {
+        pages: pages
+      }
       
     }, 'pages/admin/page/index.html')
 
@@ -80,12 +73,9 @@ class AdminPageController {
       //Get page
       let page:Page = await this.pageService.readPermalink(permalinkKey)
 
-      //Fill out form
-      Global.app.form.fillFromData('#edit-page-form', page)
-
-      //Initialize contents
-      this.initializeQuill("#edit-page-textarea")
-      this.quillService.activeEditor.setContents(page.content)
+      return {
+        page: page
+      }
 
     }, 'pages/admin/page/edit.html')
 

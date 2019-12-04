@@ -124,7 +124,7 @@ const routes = function (baseurl) {
         try {
             Web.modelViewService.resolve(resolve, promise)
         } catch (ex) {
-            Global.uiService.showExceptionPopup(ex)
+            Web.uiService.showExceptionPopup(ex)
         }
 
     }
@@ -161,7 +161,7 @@ function defaultResolve(resolve, promise: Promise<ModelView>) {
     try {
         Web.modelViewService.resolve(resolve, promise)
     } catch (ex) {
-        Global.uiService.showExceptionPopup(ex)
+        Web.uiService.showExceptionPopup(ex)
     }
 }
 

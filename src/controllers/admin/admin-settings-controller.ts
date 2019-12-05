@@ -49,13 +49,15 @@ class AdminSettingsController {
 
                 stores.push(store)
             }
-
-
-            return {
+            
+            let model = {
                 schema: schema,
                 stores: stores,
                 settings: siteSettings
             }
+
+
+            return model
 
         }, 'pages/admin/settings/index.html')
     

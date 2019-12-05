@@ -95,8 +95,9 @@ export namespace Global {
 
   export async function init() {
     
-    await Core.init()
     await Web.init(Global.app)
+    await Core.init()
+
 
     Global.postUiService = new PostUIService(Core.readOnlyPostService, Core.profileService, Core.schemaService, Core.imageService)
     Global.quillService = new QuillService(Global.uploadService, Core.imageService)

@@ -39,6 +39,12 @@
   return {
     on: {
       pageInit: async function (e, page) {
+
+        let panel = window['Global'].app.panel.get('.panel-left')
+
+        panel.open(true)
+        panel.enableVisibleBreakpoint()	
+
       }
     }
   }

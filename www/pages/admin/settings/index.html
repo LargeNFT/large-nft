@@ -15,6 +15,7 @@
             </div>
         </div>
 
+        
 
         <div class="page-content">
             <form class="block list" id="edit-settings-form">
@@ -24,7 +25,7 @@
                             <div class="item-inner">
                                 <div class="item-title item-label">Site Title</div>
                                 <div class="item-input-wrap">
-                                    <input type="text" name="title" placeholder="Site title" value="{{settings.title}}">
+                                    <input type="text" name="title" placeholder="Site title" value="{{#if settings}}{{settings.title}}{{/if}}">
                                 </div>
                             </div>
                         </div>
@@ -35,7 +36,7 @@
                                 <div class="item-title item-label">Tagline</div>
                                 <div class="item-input-wrap">
                                     <input type="text" name="tagline" placeholder="Enter a tagline (optional)"
-                                        value="{{settings.tagline}}" />
+                                        value="{{#if settings}}{{settings.tagline}}{{/if}}" />
                                 </div>
                             </div>
                         </div>
@@ -47,7 +48,7 @@
                                 <div class="item-input-wrap">
                                     <input type="text" name="publicEmailAddress"
                                         placeholder="Enter an option public email address"
-                                        value="{{settings.publicEmailAddress}}" />
+                                        value="{{#if settings}}{{settings.publicEmailAddress}}{{/if}}" />
                                 </div>
                             </div>
                         </div>
@@ -79,37 +80,37 @@
 
 
             {{#if schema}}
-            <div class="block-title">Schema</div>
-            <div class="block">
-                <div class="list">
-                    <ul>
-                        {{#each stores}}
-                        <li>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">
-                                        <!-- Item header, must be first child of item-title -->
-                                        <div class="item-header">{{name}}</div>
+                <div class="block-title">Schema</div>
+                <div class="block">
+                    <div class="list">
+                        <ul>
+                            {{#each stores}}
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            <!-- Item header, must be first child of item-title -->
+                                            <div class="item-header">{{name}}</div>
 
-                                        <div class="row">
-                                            <span class="wrap col-90">{{address}}</span>
-                                            <button
-                                                class="col-10 button button-fill button-round {{type}} text-color-black"
-                                                data-id="{{address}}">Drop</button>
+                                            <div class="row">
+                                                <span class="wrap col-90">{{address}}</span>
+                                                <button
+                                                    class="col-10 button button-fill button-round {{type}} text-color-black"
+                                                    data-id="{{address}}">Drop</button>
+                                            </div>
+
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                        {{/each}}
+                            </li>
+                            {{/each}}
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
             {{else}}
-            <div class="block-title">Schema Not Loaded</div>
+                <div class="block-title">Schema Not Loaded</div>
             {{/if}}
 
 

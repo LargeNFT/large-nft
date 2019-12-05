@@ -6,7 +6,7 @@
         <div class="page-content">
 
             <div class="row">
-                <div class="col-100 tablet-50 center margin-top">
+                <div class="col-100 large-50 center margin-top">
                     <div class="block-title">New to Large?</div>
                     <div class="list media-list">
                         <ul>
@@ -50,7 +50,7 @@
                                                 <div class="item-title item-label">Password</div>
                                                 <div class="item-input-wrap">
                                                     <input type="password" id="password" name="password"
-                                                        placeholder="Enter new password" required />
+                                                        placeholder="Enter password for stored wallet" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -65,7 +65,7 @@
                                     {{/if}}
                                 </div>
                                 <div class="col-33">
-                                    <button id="unlock-wallet" class="button button-fill" type="submit">Unlock</button>
+                                    <button id="unlock-wallet" class="button button-fill text-color-black" type="submit">Unlock</button>
                                 </div>
                             </div>
 
@@ -97,9 +97,12 @@
 
                 const self = this
 
-                let controller = window['walletController']
+                let panel = window['Global'].app.panel.get('.panel-left')
 
-                await window['Global'].loadComponentState(this, false)
+                panel.disableVisibleBreakpoint()	
+                panel.close(false)
+
+                let controller = window['walletController']
 
                 this.$$('#unlock-wallet').on('click', function (e) {
                     e.preventDefault()

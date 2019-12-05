@@ -114,11 +114,11 @@ app.on('ready', async () => {
 
 
   // and load the index.html of the app.
-  await mainWindow.loadFile('www/index.html')
+  await mainWindow.loadFile('www/admin.html')
 
 })
 
-ipcMain.on('click', () => console.log('do something'));
+// ipcMain.on('click', () => console.log('do something'));
 
 
 class WalletDao {

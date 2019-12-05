@@ -20,7 +20,7 @@
 
       <div class="row">
 
-        <div class="col-100 tablet-50 center">
+        <div class="col-100 large-50 center">
 
           <div class="block-title">Restore Your Account</div>
           <div class="block">
@@ -70,7 +70,7 @@
                     {{/if}}
                 </div>
                 <div class="col-33">
-                  <button id="restore-button" class="button button-fill" type="submit">Restore</button>
+                  <button id="restore-button" class="button button-fill text-color-black" type="submit">Restore</button>
                 </div>
               </div>
 
@@ -104,8 +104,6 @@
                 const self = this
 
                 let controller = window['walletController']
-
-                await window['Global'].loadComponentState(this, false)
 
                 this.$$('#restore-account-form').on('submit', function (e) {
                   e.preventDefault()

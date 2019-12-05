@@ -17,7 +17,7 @@
 
             <div class="row">
 
-                <div class="col-100 tablet-50 center">
+                <div class="col-100 large-50 center">
 
                     {{#if mnemonic}}
                     <div class="block-title">Secret Backup Phrase</div>
@@ -39,7 +39,7 @@
                             <div class="col-66">
                             </div>
                             <div class="col-33">
-                                <a class="button button-fill create-wallet-finished" href="#">Got it</a>
+                                <a class="button button-fill create-wallet-finished text-color-black" href="#">Got it</a>
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@
                                     {{/if}}
                                 </div>
                                 <div class="col-33">
-                                    <button id="create-wallet" class="button button-fill" type="submit">Create</button>
+                                    <button id="create-wallet" class="button button-fill text-color-black" type="submit">Create</button>
                                 </div>
                             </div>
 
@@ -115,9 +115,6 @@
                 const self = this
 
                 let controller = window['walletController']
-
-                await window['Global'].loadComponentState(this, false)
-
 
                 this.$$('#create-wallet-form').on('submit', function (e) {
                     e.preventDefault()

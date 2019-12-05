@@ -30,31 +30,38 @@
     <div class="page-content bg-color-white">
 
       <div class="row">
+        
         <div class="block block-strong post text-color-black bg-color-white col-100 large-66 center margin-top">
+          
           <h1>{{post.title}}</h1>
 
           {{#if post.subtitle}}
-          <h2>{{post.subtitle}}</h2>
+            <h2>{{post.subtitle}}</h2>
           {{/if}}
+
 
           <div class="author">
 
-            {{#if profilePicSrc}}
-            <img class="profile-pic-thumb float-left" src="{{profilePicSrc}}">
-            {{else}}
-            <i class="f7-icons profile-pic-thumb float-left">person</i>
-            {{/if}}
-
-            <div class="float-left">
-              <div class="owner">{{authorName}}</div>
-              <div class="date">{{post.dateCreatedDisplay}}</div>
+            <div class="pic">
+                {{#if profilePicSrc}}
+                <img class="profile-pic-thumb" src="{{profilePicSrc}}">
+              {{else}}
+                <i class="f7-icons profile-pic-thumb">person</i>
+              {{/if}}
             </div>
 
+            <div class="info">
+                <div class="owner">{{authorName}}</div>
+                <div class="date">{{post.dateCreatedDisplay}}</div>
+            </div>
 
           </div>
 
+          <div class="content">
+              {{post.contentTranslated}}
+          </div>
 
-          {{post.contentTranslated}}
+          
         </div>
       </div>
 

@@ -29,6 +29,7 @@ class WalletController {
     }
 
     async showLanding(): Promise<ModelView> {
+        
         return new ModelView(async () => {
 
             let existingWallet = await this.walletService.getWallet()

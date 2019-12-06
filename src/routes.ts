@@ -106,26 +106,16 @@ const routes = function (baseurl) {
 
 
     const homeRoute = async function (routeTo, routeFrom, resolve, reject) {
+
         let promise
 
-        if (Core.isElectron) {
-
-            if (Core.wallet) {
-                promise = Global.dashboardController.showIndex()
-            } else {
-                promise = Global.walletController.showLanding()
-            }
-
-        } else {
+        if (Core.wallet) {
             promise = Global.dashboardController.showIndex()
+        } else {
+            promise = Global.walletController.showLanding()
         }
 
-
-        try {
-            Web.modelViewService.resolve(resolve, promise)
-        } catch (ex) {
-            Web.uiService.showExceptionPopup(ex)
-        }
+        defaultResolve(resolve,  promise)
 
     }
 

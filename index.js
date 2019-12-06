@@ -128,7 +128,7 @@ class WalletDao {
     this.walletPath = path.join(appData, 'large-wallet.json')
   }
 
-  saveWallet(wallet) {
+  async saveWallet(wallet) {
 
     try {
       fs.writeFileSync(this.walletPath, JSON.stringify(wallet))
@@ -138,7 +138,7 @@ class WalletDao {
 
   }
 
-  loadWallet() {
+  async loadWallet() {
 
     try {
       let json = fs.readFileSync(this.walletPath).toString()

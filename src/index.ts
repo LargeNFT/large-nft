@@ -12,17 +12,6 @@ const moment = require('moment')
 
 module.exports = async function () {
 
-  /** Shortcut methods for localStorage access */
-  // Storage.prototype.setObject = function (key, value) {
-  //   this.setItem(key, JSON.stringify(value));
-  // }
-
-  // Storage.prototype.getObject = function (key) {
-  //   var value = this.getItem(key);
-  //   return value && JSON.parse(value);
-  // }
-
-
   //Template7 helpers
 
   Template7.registerHelper('shortDate', function (date) {

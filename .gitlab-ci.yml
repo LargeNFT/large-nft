@@ -1,20 +1,31 @@
-    image: electronuserland/builder:wine
+image: electronuserland/builder:wine
 
-    stages:
-      - build
+stages:
+  - build
 
-    cache:
-      paths:
-        - node_modules/
+cache:
+  paths:
+    - node_modules/
 
-    install_dependencies:
-      stage: build
-      script:
-        - yarn global add node-gyp; yarn global add browserify; yarn global add electron-builder; yarn install; yarn run dist
-      artifacts:
-        paths:
-          # - dist/*.AppImage
-          # - dist/*.snap
-          - dist/
-          - public/
+install_dependencies:
+  stage: build
+  script:
+    - yarn global add node-gyp; yarn global add browserify; yarn global add electron-builder; yarn install; yarn run dist
+  artifacts:
+    paths:
+      # - dist/*.AppImage
+      # - dist/*.snap
+      - dist/
+
+# the 'pages' job will deploy and build your site to the 'public' path
+pages:
+  stage: deploy
+  script:
+    - ./build # build to public path
+  artifacts:
+    paths:
+      - public
+  only:
+    - master # this job will affect only the 'master' branch
+
 

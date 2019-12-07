@@ -9,6 +9,7 @@
   "scripts": {
     "electron": "electron index.js",
     "serve": "http-server ./www/ -o -c 1 -a localhost -p 8081",
+    "build": "./build",
     "dist": "./dist.sh",
     "watch": "./watch.sh"
   },

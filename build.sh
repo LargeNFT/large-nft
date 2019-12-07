@@ -3,4 +3,4 @@ browserify -s Large -t [ babelify --presets [ @babel/preset-env ] --plugins [ @b
 rm -R -f public
 cp -R www public
 
-ipfs add public/ -r
+# ipfs add public/ -r

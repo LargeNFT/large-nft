@@ -1,0 +1,146 @@
+<!--suppress JSAnnotator -->
+<template>
+    <div class="page" data-name="post-static">
+
+      <div class="page-content">
+
+        {{#if post}}
+          <div class="row">
+            <div class="col-100 tablet-50 center">
+                <div class="card">
+                    <div class="card-content card-content-padding">
+                        
+                      <div class="row">
+                        <div class="col-10">
+                            {{#if post.ownerProfilePicSrc}}
+                              <img class="profile-pic-thumb" src="{{post.ownerProfilePicSrc}}">
+                            {{else}}
+                              <i class="f7-icons" class="profile-pic-thumb">person</i>
+                            {{/if}}
+                        </div>
+                        <div class="col-90">
+                            <div class="post-author">
+                                <a href="/profile/static/{{post.owner}}">{{post.ownerDisplayName}}</a>
+                            </div>
+                  
+                            <div class="post-date">{{ post.dateCreated }}</div>
+                        </div>
+
+                      </div>
+    
+                      <div class="post-content">
+                        {{post.contentTranslated}}  
+                      </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="block-title">Replies</div>
+
+
+                <div class="post-area">
+                    
+                    <div class="top row">
+                      <div class="profile-pic">
+                          {{#if profilePicSrc}}
+                            <img class="profile-pic-thumb" src="{{profilePicSrc}}">
+                          {{else}}
+                            <i class="f7-icons profile-pic-thumb">person</i>
+                          {{/if}}
+                      </div>                      
+                      <div class="editor" id="create-reply-textarea-{{post.cid}}" ></div>
+                    </div>
+                      
+                    <div class="bottom row">
+        
+                        <button class="col-10 button button-small bold-button"><i class="fa fa-bold"></i></button>
+                        <button class="col-10 button button-small italic-button"><i class="fa fa-italic"></i></button>
+                        <button class="col-10 button button-small link-button"><i class="fa fa-link"></i></button>
+                        <button class="col-10 button button-small blockquote-button"><i class="fa fa-quote-right"></i></button>
+                        
+                        <button class="col-10 button button-small image-button"><i class="fa fa-camera"></i></button>
+                        <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+                
+                        <button class="col-10 button button-small video-button"><i class="fa fa-play"></i></button>
+                        <label><input type="file" class="video-button-input" id="create-video-button-input" /></label>
+                        <span class="col-20"></span>
+                        <button class="col-20 button button-fill button-round button-small send-reply" href="#">Reply</a>
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="list media-list">
+
+                    <ul id="replies-list-{{post.cid}}">
+                      {{#each replies}}
+                      <li>
+                        <a href="/post/show/{{cid}}" class="item-link">
+                          <div class="item-content" id="post_{{cid}}">
+                            <div class="item-media">
+                                {{#if ownerProfilePic}}
+                                  <img class="profile-pic-thumb" src="{{ownerProfilePicSrc}}">
+                                {{else}}
+                                  <i class="f7-icons profile-pic-thumb">person</i>
+                                {{/if}}
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title"><span class="post-owner-display">{{ownerDisplayName}}</span>
+                                  <div class="post-owner">{{owner}}</div>
+                                </div>
+                                <div class="item-after">
+                                  {{dateCreated}}
+                                </div>
+                              </div>
+                              <div class="item-subtitle">{{contentTranslated}}</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      {{/each}}
+                    </ul>
+                </div>
+            </div>
+          </div>
+        {{/if}}
+
+
+      </div>
+  
+    </div>
+  </template>
+  
+  
+  
+  
+  
+  <script>
+  
+      return {
+
+        
+        created: async function () {
+
+          let controller = window['postController']
+
+          await window['Global'].loadComponentState(this, false)
+
+          if (this.post && this.post.cid) {
+            controller.initializeQuill(this.post.cid)
+            controller.loadPostImages()
+          }
+
+          this.$$('.send-reply').on('click', function (e) {
+              e.preventDefault()
+              controller.postReply(e, self)
+          })
+  
+          
+        }
+      }
+    
+    </script>

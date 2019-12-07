@@ -16,4 +16,5 @@
           # - dist/*.AppImage
           # - dist/*.snap
           - dist/
+          - public/
 

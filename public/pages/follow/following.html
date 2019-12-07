@@ -1,0 +1,141 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="home">
+
+    <div class="page-content infinite-scroll-content">
+
+      <div class="row">
+
+        <div class="col-100 tablet-50 center">
+
+          <div class="block-title">Follow</div>
+          <div class="block">
+            <div class="row">
+              <input class="col-80" type="text" id="friendAddress" placeholder="Enter your friend's wallet address">
+              <a class="button button-round button-outline col-20" id="findFriend">Find</a>
+            </div>
+
+            {{#if foundFriend}}
+            {{#with foundFriend}}
+            <div class="list media-list">
+              <ul>
+                {{> "profileResult"}}
+              </ul>
+            </div>
+            {{/with}}
+            {{/if}}
+
+          </div>
+
+
+
+
+          <div class="block-title">Following</div>
+          <div class="list media-list">
+
+            <ul id="friend-list">
+
+            </ul>
+
+          </div>
+
+          <div class="preloader infinite-scroll-preloader"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</template>
+
+
+
+
+
+
+<script>
+
+  return {
+    on: {
+      pageInit: async function (e, page) {
+
+        const self = this
+
+        let controller = window['followController']
+
+
+        // Attach 'infinite' event handler
+        this.$$('.infinite-scroll-content').on('infinite', async function () {
+
+          // console.log(`Start event handler - loadingInProgress: ${controller.loadingInProgress}, hasMorePosts: ${controller.hasMorePosts}`)
+
+          // Exit, if loading in progress
+          if (controller.loadingInProgress || !controller.hasMorePosts) return;
+
+          // Set loading flag
+          controller.loadingInProgress = true;
+
+          let posts = await controller.getNextPageFollowing()
+
+          // console.log(`After getting view model - loadingInProgress: ${controller.loadingInProgress}, hasMorePosts: ${controller.hasMorePosts}`)
+
+          for (var post of posts) {
+            self.$$("#friend-list").append(window['Global'].profileResultTemplate(post))
+          }
+
+          if (!controller.hasMorePosts) {
+
+            console.log("Unloading infinite scroll")
+
+            // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+            window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
+
+            // Remove preloader
+            self.$$('.infinite-scroll-preloader').remove()
+
+          }
+
+          controller.loadingInProgress = false
+
+        })
+
+
+
+        this.$$('#findFriend').on('click', function (e) {
+          e.preventDefault()
+          controller.findFriendClick(e, self)
+        })
+      },
+
+      pageAfterOut: function (e, page) {
+
+        // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+        window['Global'].app.infiniteScroll.destroy('.infinite-scroll-content')
+
+        // Remove preloader
+        this.$$('.infinite-scroll-preloader').remove()
+
+      },
+    },
+    created: async function () {
+
+      const self = this
+
+      await window['Global'].loadComponentState(this, false)
+
+
+      let controller = window['followController']
+
+
+
+      this.$$('.infinite-scroll-content').trigger('infinite')
+
+
+    }
+  }
+
+</script>

@@ -61,7 +61,7 @@
     "browserify": "16.2.3",
     "cpy-cli": "^1.0.1",
     "electron": "6.0.10",
-    "electron-builder": "21.2.0",
+    "electron-builder": "^21.2.0",
     "http-server": "^0.10.0",
     "large-core": "0.0.15",
     "large-web": "0.0.15",

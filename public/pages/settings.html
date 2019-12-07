@@ -1,0 +1,162 @@
+<template>
+  <div class="page" data-name="settings">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="right">
+          <a class="link" href="/">
+            <i class="f7-icons">home</i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="page-content row">
+
+      <div class="col-100 tablet-50 center">
+        <div class="block-title block-title-large">Settings</div>
+        <form class="list" id="settings-form">
+          <ul>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">IPFS Hostname</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="ipfsHost" value="{{#if settings}}{{settings.ipfsHost}}{{/if}}" placeholder="IPFS Hostname">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">IPFS API Port</div>
+                  <div class="item-input-wrap">
+                    <input type="number" name="ipfsApiPort" value="{{#if settings}}{{settings.ipfsApiPort}}{{/if}}" placeholder="IPFS API Port">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">IPFS Gateway Port</div>
+                  <div class="item-input-wrap">
+                    <input type="number" name="ipfsGatewayPort" value="{{#if settings}}{{settings.ipfsGatewayPort}}{{/if}}" placeholder="IPFS Gateway Port">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Whitepages Contract Address</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="whitepagesContractAddress" value="{{#if settings}}{{settings.whitepagesContractAddress}}{{/if}}"  placeholder="Whitepages Contract Address">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Whitepages Contract Tx Hash</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="whitepagesContractTxHash" value="{{#if settings}}{{settings.whitepagesContractTxHash}}{{/if}}"  placeholder="Whitepages Contract Tx Hash">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <div class="block block-strong row">
+              <div class="col-66"></div>
+              <div class="col-33">
+                <a class="button button-fill" id="settings-save">Save</a>
+              </div>
+            </div>
+          </ul>
+        </form>
+
+
+
+
+        {{#if schema}}
+          <div class="block-title">Schema</div>
+          <div class="list">
+            <ul>
+              {{#if mainStoreAddress}}
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title">
+                      <!-- Item header, must be first child of item-title -->
+                      <div class="item-header">Main store</div>
+                      <span class="wrap">{{mainStoreAddress}}</span>
+                      <button class="button drop-store text-color-black" data-id="{{mainStoreAddress}}">Drop</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {{/if}}
+
+              {{#each schema}}
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title">
+                      <!-- Item header, must be first child of item-title -->
+                      <div class="item-header">{{@key}}</div>
+                      <span class="wrap">{{this}}</span>
+                      <button class="button drop-store text-color-black" data-id="{{this}}">Drop</button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {{/each}}    
+
+            </ul>
+          </div>
+        {{else}}
+          <div class="block-title">Schema Not Loaded</div>
+        {{/if}}
+
+
+      </div>
+
+    </div>
+  </div>
+</template>
+
+
+
+
+<script>
+    return {
+      
+      created: async function() {
+
+          await window['Global'].loadComponentState(this)
+
+          let controller = window['settingsController']
+          
+          this.$$('#settings-save').on('click', function(e) {
+            controller.saveButtonClicked(e)
+          })
+
+
+          this.$$('.drop-store').on('click', function(e) {
+            controller.dropStoreClicked(e)
+          })
+
+      }
+    }
+  </script>
+
+
+
+
+
+

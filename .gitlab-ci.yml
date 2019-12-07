@@ -25,7 +25,7 @@ install_dependencies:
 pages:
   stage: build
   script:
-    - yarn run build; ./build # build to public path
+    - yarn run build;  # build to public path
   artifacts:
     paths:
       - public

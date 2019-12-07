@@ -2,7 +2,6 @@ image: electronuserland/builder:wine
 
 stages:
   - build
-  - deploy 
 
 cache:
   paths:
@@ -20,7 +19,7 @@ install_dependencies:
 
 # the 'pages' job will deploy and build your site to the 'public' path
 pages:
-  stage: deploy
+  stage: build
   script:
     - ./build # build to public path
   artifacts:

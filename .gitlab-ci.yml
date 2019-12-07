@@ -2,6 +2,7 @@ image: electronuserland/builder:wine
 
 stages:
   - build
+  - deploy 
 
 cache:
   paths:

@@ -2,7 +2,7 @@ import { Global } from "../global";
 import { globalAgent } from "https";
 import Core, { WalletService } from "large-core";
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
-import { UiService } from "large-web"
+import Web, { UiService } from "large-web"
 import { ModelView } from "large-web";
 
 var $$ = Dom7
@@ -31,7 +31,7 @@ class WalletController {
     async showLanding(): Promise<ModelView> {
         
         return new ModelView(async () => {
-
+            console.log(1)
             let existingWallet = await this.walletService.getWallet()
 
             return {
@@ -47,6 +47,8 @@ class WalletController {
     }
 
     async createWalletClick(e:Event, component) {
+
+        this.uiService.showSpinner()
 
         component.$setState({})
 
@@ -70,7 +72,7 @@ class WalletController {
             mnemonic: Core.wallet.mnemonic
         })
 
-
+        this.uiService.hideSpinner()
 
     }
 
@@ -80,6 +82,8 @@ class WalletController {
 
 
     async unlockButtonClick(e:Event, component) {
+
+        this.uiService.showSpinner()
 
         component.$setState({})
 
@@ -96,6 +100,9 @@ class WalletController {
             })
         }
 
+        this.uiService.hideSpinner()
+
+
     }
 
 
@@ -109,6 +116,8 @@ class WalletController {
 
 
     async restoreButtonClick(e:Event, component) {
+
+        this.uiService.showSpinner()
 
         component.$setState({})
 
@@ -125,7 +134,6 @@ class WalletController {
         }
 
 
-
         try {
             await this.walletService.restoreWallet(formData.recoverySeed, formData.password)
 
@@ -137,6 +145,7 @@ class WalletController {
             })
         }
 
+        this.uiService.hideSpinner()
 
 
     }

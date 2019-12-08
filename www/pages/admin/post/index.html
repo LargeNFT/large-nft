@@ -54,7 +54,13 @@
           itemTemplate: window['Global'].adminPostResultTemplate,
           items: this.posts,
           height: 59,
-          emptyTemplate: "<li>No posts</li>"
+          emptyTemplate: `
+          <li class="item-content">
+                <div class="item-inner">
+                      There are no blog posts yet. <br /><br />Click the 'Create Post' button to create your first blog post.
+                </div>
+          </li>
+          `
         })
 
         //Get the page

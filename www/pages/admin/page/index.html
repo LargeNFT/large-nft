@@ -48,7 +48,13 @@
           itemTemplate: window['Global'].adminPageResultTemplate,
           items: this.pages,
           height: 59,
-          emptyTemplate: "<li>No pages</li>"
+          emptyTemplate: `
+            <li class="item-content">
+                  <div class="item-inner">
+                    There are no pages yet.<br /><br /> Click the 'Create Page' button to create your first page.
+                  </div>
+            </li>
+          `
         })
 
       }

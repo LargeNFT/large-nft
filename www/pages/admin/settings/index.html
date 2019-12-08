@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        
+
 
         <div class="page-content">
             <form class="block list" id="edit-settings-form">
@@ -25,7 +25,8 @@
                             <div class="item-inner">
                                 <div class="item-title item-label">Site Title</div>
                                 <div class="item-input-wrap">
-                                    <input type="text" name="title" placeholder="Site title" value="{{#if settings}}{{settings.title}}{{/if}}">
+                                    <input type="text" name="title" placeholder="Site title"
+                                        value="{{#if settings}}{{settings.title}}{{/if}}">
                                 </div>
                             </div>
                         </div>
@@ -71,7 +72,6 @@
             </form>
 
             <div class="block block-strong inset row">
-                <div class="col-66"></div>
                 <div class="col-33">
                     <button class="button button-fill save-settings-submit text-color-black">Save Settings</button>
                 </div>
@@ -80,37 +80,37 @@
 
 
             {{#if schema}}
-                <div class="block-title">Schema</div>
-                <div class="block">
-                    <div class="list">
-                        <ul>
-                            {{#each stores}}
-                            <li>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title">
-                                            <!-- Item header, must be first child of item-title -->
-                                            <div class="item-header">{{name}}</div>
+            <div class="block-title">Schema</div>
+            <div class="block">
+                <div class="list">
+                    <ul>
+                        {{#each stores}}
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                        <!-- Item header, must be first child of item-title -->
+                                        <div class="item-header">{{name}}</div>
 
-                                            <div class="row">
-                                                <span class="wrap col-90">{{address}}</span>
-                                                <button
-                                                    class="col-10 button button-fill button-round {{type}} text-color-black"
-                                                    data-id="{{address}}">Drop</button>
-                                            </div>
-
+                                        <div class="row">
+                                            <span class="wrap col-90">{{address}}</span>
+                                            <button
+                                                class="col-10 button button-fill button-round {{type}} text-color-black"
+                                                data-id="{{address}}">Drop</button>
                                         </div>
+
                                     </div>
                                 </div>
-                            </li>
-                            {{/each}}
+                            </div>
+                        </li>
+                        {{/each}}
 
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
+            </div>
 
             {{else}}
-                <div class="block-title">Schema Not Loaded</div>
+            <div class="block-title">Schema Not Loaded</div>
             {{/if}}
 
 

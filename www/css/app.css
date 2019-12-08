@@ -11,6 +11,14 @@
   /* --f7-font-size: 16px; */
   --f7-font-family: 'Quicksand', sans-serif;
 
+  --f7-fab-extended-text-font-weight: 700;
+  --f7-label-font-size: 14px;
+  --f7-label-line-height: 16px;
+
+  --f7-button-font-weight: 700;
+  --f7-button-text-color: #000000; 
+  
+  --f7-input-height: 32px;
 
 
   --f7-panel-bg-color: #1c1c1d;
@@ -21,8 +29,7 @@
   --f7-theme-color-shade: "#f7a903";
   --f7-theme-color-tint: "#fdc54f";  */
 
-  --f7-input-font-size: 23px;
-  --f7-label-font-size: 18px;
+  --f7-input-font-size: 20px;
   --f7-block-font-size: 23px;
   --f7-block-title-font-size: 25px;
   --f7-block-title-line-height: 25px;

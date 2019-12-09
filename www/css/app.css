@@ -59,7 +59,8 @@
   --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);
 
 
-
+  --f7-list-item-title-text-color: #00338e;
+  --f7-list-item-title-font-weight:700;
 
   /* --f7-input-bg-color: #ffffff; */
   /* --f7-input-text-color: #000000; */
@@ -418,7 +419,8 @@ hr:before {
 
 
 .mnemonic {
-  font-size: 30px;
+  font-size: 45px;
+  font-weight: 700;
 }
 
 .peer-list .item-subtitle {

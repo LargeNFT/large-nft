@@ -8,12 +8,12 @@
 
 
 :root {
+
   /* --f7-font-size: 16px; */
   --f7-font-family: 'Quicksand', sans-serif;
 
   --f7-fab-extended-text-font-weight: 700;
-  --f7-label-font-size: 14px;
-  --f7-label-line-height: 16px;
+
 
   --f7-button-font-weight: 700;
   --f7-button-text-color: #000000; 
@@ -22,21 +22,69 @@
 
 
   --f7-panel-bg-color: #1c1c1d;
-  --f7-page-bg-color: #aaa9af; 
+  /* --f7-page-bg-color: #aaa9af;  */
 
-  /* --f7-theme-color: "#FCB827";
-  --f7-theme-color-rgb: "252, 184, 39";
-  --f7-theme-color-shade: "#f7a903";
-  --f7-theme-color-tint: "#fdc54f";  */
+  --f7-theme-color: #FCB827;
+  --f7-theme-color-rgb: 252, 184, 39;
+  --f7-theme-color-shade: #f7a903;
+  --f7-theme-color-tint: #fdc54f; 
 
-  --f7-input-font-size: 20px;
+  --f7-input-font-size: 18px;
+  --f7-input-outline-focused-border-color: #000000;
+  --f7-input-focused-border-color: #00338e;
+
+  --f7-label-focused-text-color: #00338e;
+  --f7-label-text-color:#000000;
+  --f7-label-font-weight: 700;
+  --f7-label-font-size: 14px;
+  --f7-label-line-height: 20px;
+  --f7-label-text-decoration: underline;
+
+
   --f7-block-font-size: 23px;
+  
   --f7-block-title-font-size: 25px;
   --f7-block-title-line-height: 25px;
   --f7-block-title-font-weight: bold;
+  --f7-block-title-text-color: rgba(0,0,0, 0.84);
+  
+  
+  --f7-navbar-title-font-weight: 700;
+  --f7-navbar-bg-color: var(--f7-panel-bg-color);
+  --f7-navbar-text-color: #ffffff;
+
+
+  --f7-tabbar-link-active-color: var(--f7-theme-color);
+  --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);
+
+
+
+
   /* --f7-input-bg-color: #ffffff; */
   /* --f7-input-text-color: #000000; */
 
+}
+
+.toolbar {
+  background-color: rgb(32, 32, 32);
+}
+
+/* .page-content {
+  background-color: rgb(238, 240, 243)
+} */
+
+.panel {
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.panel .list ul {
+  background-color: var(--f7-panel-bg-color) ;
+  color: rgba(255, 255, 255, 0.87);
+
+}
+
+.panel .list ul li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .wallet-address {
@@ -47,22 +95,34 @@
   text-overflow: ellipsis;  
   direction: rtl;
   text-align: left; /* https://davidwalsh.name/css-ellipsis-left */
-  border: 1px solid #aaa9af;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .navbar a.link.small-only {
   display: none;
 }
 
+
 @media only screen and (max-width: 1024px) {
   .navbar a.link.small-only  {
     display: flex;
   }
 }
-
+/* 
 .logo {
-  max-width: 100%;
+  height: var(--f7-navbar-height);
+} */
+
+.logo a {
+  width: 100%;
 }
+
+.logo img {
+  max-width: 100%;
+  margin-top:10px; 
+}
+
+
 
 .wrap {
   white-space: normal;
@@ -203,7 +263,6 @@ body, .md body {
 
 
 .post-area {
-  padding: 10px;
   width: 100%;
 }
 

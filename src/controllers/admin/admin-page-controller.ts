@@ -25,12 +25,16 @@ class AdminPageController {
 
     return new ModelView( async () => {
 
-      // await this.pageService.loadStoresForWallet(window['currentAccount'])
-
       let pages:Page[] = await this.pageService.getPages()
 
+
+      let translated:Page[] = []
+      for (let page of pages) {
+        translated.push(await this.pageService.translatePage(page))
+      }
+
       return {
-        pages: pages
+        pages: translated
       }
       
     }, 'pages/admin/page/index.html')
@@ -48,14 +52,12 @@ class AdminPageController {
     
     return new ModelView( async () => {
 
-      // await this.pageService.loadStoresForWallet(window['currentAccount'])
-
       let page:Page = await this.pageService.readPermalink(permalinkKey)
 
-      await this.pageService.translatePage(page)
+      let translated:Page = await this.pageService.translatePage(page)
 
       return {
-        page: page
+        page: translated
       }
 
     }, 'pages/admin/page/show.html')
@@ -67,8 +69,6 @@ class AdminPageController {
   async showEdit(permalinkKey:string) : Promise<ModelView> {
     
     return new ModelView( async () => {
-
-      // await this.pageService.loadStoresForWallet(window['currentAccount'])
 
       //Get page
       let page:Page = await this.pageService.readPermalink(permalinkKey)
@@ -90,7 +90,6 @@ class AdminPageController {
       let pageData = await this._getPageData('#create-page-form')
 
       //Save
-      // await this.pageService.loadStoresForWallet(window['currentAccount'])
       await this.pageService.create(pageData)
       
       //Redirect
@@ -113,7 +112,6 @@ class AdminPageController {
 
 
       //Save
-      // await this.pageService.loadStoresForWallet(window['currentAccount'])
       await this.pageService.update(postData)
       
       //Redirect

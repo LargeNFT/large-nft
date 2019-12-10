@@ -110,6 +110,8 @@ class AdminProfileController {
         //TODO: //Make sure permissions are right for this. Don't want to edit someone else's profile.
         await this.profileService.put(profileData)
         
+        await Global.setWalletInfo()
+
         //Redirect to profile
         this.uiService.navigate(`/admin/profile/static/${window['currentAccount']}`)
 

@@ -100,14 +100,20 @@
 
 .wallet-address {
   font-size: 12px;
-
   white-space: nowrap;                   
   overflow: hidden;
   text-overflow: ellipsis;  
   direction: rtl;
   text-align: left; /* https://davidwalsh.name/css-ellipsis-left */
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  /* border: 1px solid rgba(255, 255, 255, 0.15); */
 }
+
+#wallet-image {
+  display: none;
+  max-width: 24px;
+  border-radius: 50%;
+}
+
 
 .navbar a.link.small-only {
   display: none;

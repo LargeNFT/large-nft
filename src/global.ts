@@ -13,7 +13,7 @@ import { UploadService } from "./services/upload-service"
 import { PostUIService } from "./services/post-ui-service"
 import { QuillService } from "./services/quill-service"
 
-import Core from "large-core"
+import Core, { Profile } from "large-core"
 import { DashboardController } from "./controllers/admin/dashboard-controller"
 import { AdminPostController } from "./controllers/admin/admin-post-controller"
 import { AdminPageController } from "./controllers/admin/admin-page-controller"
@@ -106,8 +106,41 @@ export namespace Global {
 
     await Core.loadStoresForWallet(window['currentAccount'])
 
+    await Global.setWalletInfo()
+
     Web.uiService.hideSpinner()
 
   }
+
+
+  export async function setWalletInfo() {
+
+    let profile:Profile = await Core.profileService.getProfileByWallet(window['currentAccount'])
+
+    let displayName:string 
+    let imageUrl: string 
+
+    if (profile && profile.name) {
+      displayName = profile.name
+    } else {
+      displayName = window['currentAccount']
+    }
+
+    if (profile && profile.profilePic) {
+      imageUrl = await Core.imageService.cidToUrl(profile.profilePic)
+    }
+
+
+    $$('#wallet-address').text(displayName)
+
+    if (imageUrl) {
+      $$('#wallet-image').attr("src", imageUrl)
+      $$('#wallet-image').show()
+      $$('#wallet-icon').hide()
+    }
+
+
+  }
+
 
 }

@@ -60,9 +60,40 @@
 
         controller.virtualList = window['Global'].app.virtualList.create({
           el: '#blog-post-list',
-          itemTemplate: window['Global'].adminPostResultTemplate,
+          itemTemplate: `
+            <li>
+                <a href="/admin/post/show/{{permalinkKey}}" class="item-link item-content">
+
+                  <div class="item-media">
+                    {{#if coverPhotoSrc}}
+                      <img class="cover-photo-thumb" src="{{coverPhotoSrc}}">
+                    {{else}}
+                      <i class="f7-icons cover-photo-thumb">document</i>
+                    {{/if}}
+                  </div>    
+                
+                  <div class="item-inner">
+                        <div class="item-title">
+                          {{title}}
+                          <div class="item-footer">{{dateCreatedDisplay}}</div>
+                        </div>
+                  </div>
+                </a>
+            </li>
+          `,
           items: this.posts,
-          height: 59,
+          setListHeight: true,
+          updatableScroll: true,
+          height: function() {
+
+            if (window['Global'].app.theme === 'md') {
+              return 56
+            } else if (window['Global'].app.theme === 'ios') {
+              return 44
+            } else if (window['Global'].app.theme === 'aurora') {
+              return 38
+            }
+          },
           emptyTemplate: `
           <li class="item-content">
                 <div class="item-inner">
@@ -71,6 +102,7 @@
           </li>
           `
         })
+
 
         //Get the page
         this.$$('.infinite-scroll-content').trigger('infinite')

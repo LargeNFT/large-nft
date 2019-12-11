@@ -108,6 +108,10 @@
   /* border: 1px solid rgba(255, 255, 255, 0.15); */
 }
 
+#wallet-list-item {
+  display: none;
+}
+
 #wallet-image {
   display: none;
   max-width: 24px;

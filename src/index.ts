@@ -58,58 +58,30 @@ module.exports = async function () {
   `
 
 
-  let postResult = `
-    <li class="post">
-      <a href="/post/show/{{cid}}" class="item-link">
-        <div class="item-content" id="post_{{cid}}">
-          <div class="item-media">
-            {{#if ownerProfilePic}}
-              <img class="profile-pic-thumb" src="{{ownerProfilePicSrc}}">
-            {{else}}
-              <i class="f7-icons profile-pic-thumb">person</i>
-            {{/if}}
-          </div>
-          <div class="item-inner">
-            <div class="item-title-row">
-              <div class="item-title">
-                <span class="post-owner-display">{{ownerDisplayName}}</span>
-                <span class="post-owner">{{owner}}</span>
-              </div>
-              <div class="item-after">
-                {{dateCreatedDisplay}}
-              </div>
-            </div>
-            <div class="item-subtitle post-content">{{contentTranslated}}</div>
-          </div>
-        </div>
-      </a>
-    </li>
-  `
+  // let adminPostResult = `
+  //   <li>
+  //       <a href="/admin/post/show/{{permalinkKey}}" class="item-link item-content">
 
-  let adminPostResult = `
-    <li>
-        <a href="/admin/post/show/{{permalinkKey}}" class="item-link item-content">
-
-          <div class="item-media">
-            {{#if coverPhotoSrc}}
-              <img class="cover-photo-thumb" src="{{coverPhotoSrc}}">
-            {{else}}
-              <i class="f7-icons cover-photo-thumb">document</i>
-            {{/if}}
-          </div>    
+  //         <div class="item-media">
+  //           {{#if coverPhotoSrc}}
+  //             <img class="cover-photo-thumb" src="{{coverPhotoSrc}}">
+  //           {{else}}
+  //             <i class="f7-icons cover-photo-thumb">document</i>
+  //           {{/if}}
+  //         </div>    
         
-          <div class="item-inner">
-                <div class="item-title">
-                  {{title}}
-                  <div class="item-footer">{{subtitle}}</div>
-                </div>
-                <div class="item-after">
-                  {{dateCreatedDisplay}}
-                </div>
-            </div>
-        </a>
-    </li>
-  `
+  //         <div class="item-inner">
+  //               <div class="item-title">
+  //                 {{title}}
+  //                 <div class="item-footer">{{subtitle}}</div>
+  //               </div>
+  //               <div class="item-after">
+  //                 {{dateCreatedDisplay}}
+  //               </div>
+  //           </div>
+  //       </a>
+  //   </li>
+  // `
 
   let adminPageResult = `
     <li>
@@ -141,12 +113,10 @@ module.exports = async function () {
 
 
   Global.profileResultTemplate = Template7.compile(profileResult)
-  Global.postResultTemplate = Template7.compile(postResult)
-  Global.adminPostResultTemplate = Template7.compile(adminPostResult)
+  // Global.adminPostResultTemplate = Template7.compile(adminPostResult)
   Global.adminPageResultTemplate = Template7.compile(adminPageResult)
 
-  Template7.registerPartial("postResult", postResult)
-  Template7.registerPartial("adminPostResult", adminPostResult)
+  // Template7.registerPartial("adminPostResult", adminPostResult)
   Template7.registerPartial("adminPageResult", adminPageResult)
   Template7.registerPartial("profileResult", profileResult)
   Template7.registerPartial("homeTab", homeTab)

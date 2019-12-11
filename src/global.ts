@@ -49,8 +49,8 @@ export namespace Global {
   export var postUiService:PostUIService
 
   /** Template7 Templates */
-  export var postResultTemplate
-  export var adminPostResultTemplate
+  // export var postResultTemplate
+  // export var adminPostResultTemplate
   export var profileResultTemplate
   export var adminPageResultTemplate
 
@@ -130,7 +130,6 @@ export namespace Global {
       imageUrl = await Core.imageService.cidToUrl(profile.profilePic)
     }
 
-
     $$('#wallet-address').text(displayName)
 
     if (imageUrl) {
@@ -139,6 +138,7 @@ export namespace Global {
       $$('#wallet-icon').hide()
     }
 
+    $$('#wallet-list-item').show()
 
   }
 

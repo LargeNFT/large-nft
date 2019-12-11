@@ -52,7 +52,7 @@ export namespace Global {
   // export var postResultTemplate
   // export var adminPostResultTemplate
   export var profileResultTemplate
-  export var adminPageResultTemplate
+  // export var adminPageResultTemplate
 
   export var app
 

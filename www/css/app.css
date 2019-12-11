@@ -324,13 +324,21 @@ body, .md body {
 
 
 
-.profile-pic-thumb, .cover-photo-thumb {
+.profile-pic-thumb {
   max-width: 48px;
   border-radius: 50%;
 }
 
+.cover-photo-thumb {
+  max-width: 32px;
+  border-radius: 50%;
+}
 
-.item-media .profile-pic-thumb.f7-icons, .item-media .cover-photo-thumb.f7-icons {
+.item-media .cover-photo-thumb.f7-icons {
+  font-size: 32px;
+}
+
+.item-media .profile-pic-thumb.f7-icons {
   font-size: 40px;
 }
 

@@ -58,48 +58,6 @@ module.exports = async function () {
   `
 
 
-  // let adminPostResult = `
-  //   <li>
-  //       <a href="/admin/post/show/{{permalinkKey}}" class="item-link item-content">
-
-  //         <div class="item-media">
-  //           {{#if coverPhotoSrc}}
-  //             <img class="cover-photo-thumb" src="{{coverPhotoSrc}}">
-  //           {{else}}
-  //             <i class="f7-icons cover-photo-thumb">document</i>
-  //           {{/if}}
-  //         </div>    
-        
-  //         <div class="item-inner">
-  //               <div class="item-title">
-  //                 {{title}}
-  //                 <div class="item-footer">{{subtitle}}</div>
-  //               </div>
-  //               <div class="item-after">
-  //                 {{dateCreatedDisplay}}
-  //               </div>
-  //           </div>
-  //       </a>
-  //   </li>
-  // `
-
-  let adminPageResult = `
-    <li>
-    <a href="/admin/page/show/{{permalinkKey}}" class="item-link item-content">
-      <div class="item-inner">
-            <div class="item-title">
-              {{title}}
-            </div>
-            <div class="item-after">
-              {{dateCreatedDisplay}}
-            </div>
-        </div>
-    </a>
-  </li>
-`
-
-
-
   let homeTab = `
     <a href="/" class="tab-link tab-link-active">
       <i class="icon f7-icons if-not-md">home 
@@ -114,10 +72,10 @@ module.exports = async function () {
 
   Global.profileResultTemplate = Template7.compile(profileResult)
   // Global.adminPostResultTemplate = Template7.compile(adminPostResult)
-  Global.adminPageResultTemplate = Template7.compile(adminPageResult)
+  // Global.adminPageResultTemplate = Template7.compile(adminPageResult)
 
   // Template7.registerPartial("adminPostResult", adminPostResult)
-  Template7.registerPartial("adminPageResult", adminPageResult)
+  // Template7.registerPartial("adminPageResult", adminPageResult)
   Template7.registerPartial("profileResult", profileResult)
   Template7.registerPartial("homeTab", homeTab)
 

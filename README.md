@@ -86,7 +86,7 @@ npm run serve
 ```
 
 # Latest Build
-[ipfs.io](https://ipfs.io/ipfs/QmfJnixrYwCc65peNbLYUYhxRZsUtULx1fvmv153Uqam7t)
+[https://ptoner.gitlab.io/large](https://ptoner.gitlab.io/large)
 
 
 
@@ -94,26 +94,17 @@ npm run serve
 
 To start, the end-user will need a copy of the Large distribution. There are a bunch of different ways for them to get it. 
 
-* Desktop app
-* Android (future)
-* iOS (future)
-
+* Desktop app. In future also Android / iOS.
 * A third-party hosted copy.
-
-* Through an IPFS public gateway (hopefully) 
-
-* You can host it yourself. The user can access it through you. 
-
+* Through an IPFS public gateway.
+* Fork this repo. It'll automatically deploy a copy of it in GitLab pages for you. 
+* Use [this one](https://ptoner.gitlab.io/large)
+* Host it yourself. It's just a directory of HTML/javascript files. 
     * With IPFS
-    * With regular web host. It's just a directory of HTML/javascript files that need served up. 
-
+    * With regular web host.
     * Clone this repo and run the commands above to start the web client. 
-        
 * You can also fork this git repo and make a competely custom version of Large. All of the above options are still available. 
-    
-
 * Open via wallet address/ENS name (future). This will open the database and try to get the data via pubsub.
-
     * If peers have data you'll display the page. 
     * If no peers have the data, the site will be blank.
 
@@ -142,25 +133,14 @@ Need help? [Just ask!](https://discord.gg/kRydQeW)
 
 ## What You'll Need
 
-1. **Node.js** - JavaScript runtime environment. **npm** (Node package manager) is required to install and run Large and its dependencies.
-    * [Get Node.js (includes npm) here.](https://nodejs.org/en/download/)
+1. **[Node.js](https://nodejs.org/en/download/)** - JavaScript runtime environment. **npm** (Node package manager) is required to install and run Large and its dependencies.
     * Run this command in your Terminal to make sure you're done. It will show the version of Node you installed:
     ```console
     node -v
     ```
-    * If you get permission errors when using npm commands, try adding "sudo" before the command, i.e. 'npm install' becomes 'sudo npm install.' This may or may not be necessary depending on your Node.js installation.
+1. **[MetaMask](https://metamask.io/)** - Plugin for Chrome or Brave enables your browser to connect to the blockchain.
 
-1. **MetaMask** - Plugin for Chrome or Brave enables your browser to connect to the blockchain.
-    * [Download MetaMask here.](https://metamask.io/)
-
-1. **Visual Studio Code** - The lightweight text editor/IDE we will use at the meetup.
-    * [Download VS Code here.](https://code.visualstudio.com/)
-    * Once you have VS Code installed, you can add an Extension that helps you code in Solidity, the language we use to write Ethereum smart contracts. [Download the Solidity extension here.](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity)
-
-1. **Discord** - Ask questions, discuss, get help, or just chat with us. Sometimes we share links here during the meetup.
-    * [Click here to join!](https://discord.gg/kRydQeW)
-
-
+1. **[Discord](https://discord.gg/kRydQeW)** - Ask questions, discuss, get help, or just chat with us. Sometimes we share links here during the meetup.
 
 
 ## Help Us Build the Rest!

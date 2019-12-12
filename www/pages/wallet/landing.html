@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-100 large-50 center margin-top">
                     <div class="block-title">New to Large?</div>
-                    <div class="list media-list">
+                    <div class="block list media-list">
                         <ul>
                             <li>
                                 <a href="/createWallet">
@@ -39,38 +39,38 @@
                     </div>
 
                     {{#if showUnlock}}
-                    <div class="block-title">Unlock Wallet</div>
-                    <div class="block">
-                        <form id="unlock-wallet-form">
-                            <div class="list no-hairlines-md">
-                                <ul>
-                                    <li>
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Password</div>
-                                                <div class="item-input-wrap">
-                                                    <input type="password" id="password" name="password"
-                                                        placeholder="Enter password for stored wallet" required />
-                                                </div>
+                   
+                    <form id="unlock-wallet-form">
+                            <div class="block-title">Unlock Wallet</div>
+                        <div class="block list no-hairlines-md">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Password</div>
+                                            <div class="item-input-wrap">
+                                                <input type="password" id="password" name="password"
+                                                    placeholder="Enter password for stored wallet" required />
                                             </div>
                                         </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
 
-                            <div class="row">
-                                <div class="col-66">
-                                    {{#if errorMessage}}
-                                    {{errorMessage}}
-                                    {{/if}}
-                                </div>
-                                <div class="col-33">
-                                    <button id="unlock-wallet" class="button button-fill text-color-black" type="submit">Unlock</button>
-                                </div>
+                        <div class="row">
+                            <div class="col-66">
+                                {{#if errorMessage}}
+                                {{errorMessage}}
+                                {{/if}}
                             </div>
+                            <div class="col-33">
+                                <button id="unlock-wallet" class="button button-fill text-color-black"
+                                    type="submit">Unlock</button>
+                            </div>
+                        </div>
 
-                        </form>
-                    </div>
+                    </form>
                     {{/if}}
 
 
@@ -99,7 +99,7 @@
 
                 let panel = window['Global'].app.panel.get('.panel-left')
 
-                panel.disableVisibleBreakpoint()	
+                panel.disableVisibleBreakpoint()
                 panel.close(false)
 
                 let controller = window['walletController']

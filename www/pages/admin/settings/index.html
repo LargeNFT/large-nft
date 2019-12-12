@@ -18,6 +18,7 @@
 
 
         <div class="page-content">
+            <div class="block-title">Site Settings</div>
             <form class="block list" id="edit-settings-form">
                 <ul>
                     <li>
@@ -85,9 +86,8 @@
 
 
             {{#if schema}}
-            <div class="block-title">Schema</div>
-            <div class="block">
-                <div class="list">
+            <div class="block-title">Local</div>
+                <div class="block list">
                     <ul>
                         {{#each stores}}
                         <li>
@@ -109,11 +109,8 @@
                             </div>
                         </li>
                         {{/each}}
-
                     </ul>
                 </div>
-            </div>
-
             {{else}}
             <div class="block-title">Schema Not Loaded</div>
             {{/if}}

@@ -110,6 +110,13 @@ export namespace Global {
 
     Web.uiService.hideSpinner()
 
+
+    Core.ipfs.libp2p.on('peer:discovery', async (peer) => {
+      let peers = await Core.ipfs.swarm.peers()
+      $$('.peers-badge').text(peers.length)
+  })
+
+
   }
 
 

@@ -20,7 +20,6 @@ class ConnectController {
 
         return new ModelView( async () => {
 
-            
             let peers = await self.ipfs.swarm.peers()
             
             peers = peers.map(e => e.addr.toString())
@@ -29,6 +28,7 @@ class ConnectController {
 
             return {
                 peers: peers,
+                peerCount: peers.length,
                 subscribed: subscribed,
                 currentAccount: window['currentAccount']
             }

@@ -1,4 +1,3 @@
-import { HomeController } from "./controllers/home-controller"
 import { AdminProfileController } from "./controllers/admin/admin-profile-controller"
 import { ConnectController } from "./controllers/admin/connect-controller"
 import { PostController } from "./controllers/post-controller"
@@ -27,8 +26,6 @@ var $$ = Dom7
 export namespace Global {
 
   /** Controllers */
-  export var homeController: HomeController
-
   export var postController: PostController
   // export var profileController: ProfileController
   export var connectController: ConnectController
@@ -36,7 +33,7 @@ export namespace Global {
   export var walletController: WalletController
 
   /** Admin */
-  export var dashboardController: DashboardController 
+  export var dashboardController: DashboardController
   export var adminPostController: AdminPostController
   export var adminPageController: AdminPageController
   export var adminUserController: AdminUserController
@@ -44,9 +41,9 @@ export namespace Global {
   export var adminSettingsController: AdminSettingsController
 
   // export var uiService: UiService
-  export var quillService:QuillService
-  export var uploadService:UploadService = new UploadService()
-  export var postUiService:PostUIService
+  export var quillService: QuillService
+  export var uploadService: UploadService = new UploadService()
+  export var postUiService: PostUIService
 
   /** Template7 Templates */
   // export var postResultTemplate
@@ -64,7 +61,7 @@ export namespace Global {
   export function initializeControllers() {
 
     Global.walletController = new WalletController(Core.walletService, Web.uiService)
-    Global.homeController = new HomeController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService, Core.feedMonitorService, Web.uiService)
+    // Global.homeController = new HomeController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService, Core.feedMonitorService, Web.uiService)
     // Global.profileController = new ProfileController(Global.uploadService, Core.profileService, Global.postUiService, Global.uiService, Core.imageService)
     Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Web.uiService)
     Global.connectController = new ConnectController(Core.ipfs, Core.schemaService)
@@ -79,7 +76,7 @@ export namespace Global {
     Global.adminSettingsController = new AdminSettingsController(Core.siteSettingsService, Web.uiService, Core.schemaService)
 
     window['walletController'] = Global.walletController
-    window['homeController'] = Global.homeController
+    // window['homeController'] = Global.homeController
     // window['profileController'] = Global.profileController
     window['followController'] = Global.followController
     window['connectController'] = Global.connectController
@@ -94,10 +91,9 @@ export namespace Global {
   }
 
   export async function init() {
-    
+
     await Web.init(Global.app)
     await Core.init()
-
 
     Global.postUiService = new PostUIService(Core.readOnlyPostService, Core.profileService, Core.schemaService, Core.imageService)
     Global.quillService = new QuillService(Global.uploadService, Core.imageService)
@@ -105,27 +101,24 @@ export namespace Global {
     Web.uiService.showSpinner()
 
     await Core.loadStoresForWallet(window['currentAccount'])
-
     await Global.setWalletInfo()
 
     Web.uiService.hideSpinner()
 
-
     Core.ipfs.libp2p.on('peer:discovery', async (peer) => {
       let peers = await Core.ipfs.swarm.peers()
       $$('.peers-badge').text(peers.length)
-  })
-
+    })
 
   }
 
 
   export async function setWalletInfo() {
 
-    let profile:Profile = await Core.profileService.getProfileByWallet(window['currentAccount'])
+    let profile: Profile = await Core.profileService.getProfileByWallet(window['currentAccount'])
 
-    let displayName:string 
-    let imageUrl: string 
+    let displayName: string
+    let imageUrl: string
 
     if (profile && profile.name) {
       displayName = profile.name

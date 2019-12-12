@@ -58,26 +58,12 @@ module.exports = async function () {
   `
 
 
-  let homeTab = `
-    <a href="/" class="tab-link tab-link-active">
-      <i class="icon f7-icons if-not-md">home 
-          <span class='badge color-red new-message-badge {{js_if "this.unreadPosts == 0"}}hide{{/if}}'>
-            {{unreadPosts}}
-          </span>
-      </i>
-      <span>Home</span>
-    </a>
-  `
 
 
   Global.profileResultTemplate = Template7.compile(profileResult)
-  // Global.adminPostResultTemplate = Template7.compile(adminPostResult)
-  // Global.adminPageResultTemplate = Template7.compile(adminPageResult)
 
-  // Template7.registerPartial("adminPostResult", adminPostResult)
-  // Template7.registerPartial("adminPageResult", adminPageResult)
+
   Template7.registerPartial("profileResult", profileResult)
-  Template7.registerPartial("homeTab", homeTab)
 
   Template7.registerPartial("mobileBars", `
     <a href="#" class="link icon-only panel-open small-only" data-panel=".panel-left"><i class="icon f7-icons">bars</i></a>

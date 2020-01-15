@@ -7,13 +7,15 @@ import { UploadService } from "./services/upload-service"
 import { PostUIService } from "./services/post-ui-service"
 import { QuillService } from "./services/quill-service"
 
-import Core, { Profile } from "large-core"
+import Core, { Profile, timeout } from "large-core"
 
 
 
 var $$ = Dom7
 
 export namespace ReaderGlobal {
+
+  export var loadedWallet:string 
 
   /** Controllers */
   export var homeController: HomeController
@@ -32,7 +34,7 @@ export namespace ReaderGlobal {
 
 
   export function initializeControllers() {
-        ReaderGlobal.homeController = new HomeController()
+        ReaderGlobal.homeController = new HomeController(Core.pageService, Core.siteSettingsService)
         window['homeController'] = ReaderGlobal.homeController
   }
 
@@ -46,8 +48,27 @@ export namespace ReaderGlobal {
     ReaderGlobal.quillService = new QuillService(ReaderGlobal.uploadService, Core.imageService)
   }
 
+  
+  export async function loadSiteForWallet(walletAddress:string) {
 
+    class TimeoutLoader {  
+      @timeout(5000)
+      async load(walletAddress:string) {
+        await Core.loadSiteForWallet(walletAddress)
+        ReaderGlobal.loadedWallet = walletAddress
+      }
+    }
+
+    let loader = new TimeoutLoader()
+
+    return loader.load(walletAddress)
+
+  }
 
 
 
 }
+
+
+
+

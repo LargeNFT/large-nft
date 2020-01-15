@@ -33,7 +33,7 @@ class ConnectController {
                 currentAccount: window['currentAccount']
             }
             
-        }, 'pages/connect/home.html')
+        }, 'pages/admin/connect/home.html')
 
     }
 

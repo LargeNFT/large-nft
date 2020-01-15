@@ -32,7 +32,7 @@ module.exports = async function () {
   // Framework7 App main instance
   ReaderGlobal.app = new Framework7({
     root: '#app', // App root element
-    id: 'large-reaer', // App bundle ID
+    id: 'large-reader', // App bundle ID
     name: 'Large Reader', // App name
     theme: 'auto', // Automatic theme detection
 

@@ -38,11 +38,9 @@ class AdminPostController {
 
       await this.reset()    
 
-      // await this.postService.loadStoresForWallet(window['currentAccount'])
-
       let posts:Post[] = await this.getNextPage()
 
-      return{
+      return {
         posts:posts
       }
 

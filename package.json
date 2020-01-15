@@ -51,10 +51,10 @@
   },
   "homepage": "https://gitlab.com/ptoner/large#readme",
   "devDependencies": {
-    "@babel/core": "7.2.2",
-    "@babel/plugin-proposal-class-properties": "7.2.3",
-    "@babel/polyfill": "7.2.3",
-    "@babel/preset-env": "7.2.3",
+    "@babel/core": "7.8.3",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/polyfill": "7.8.3",
+    "@babel/preset-env": "7.8.3",
     "@types/node": "12.12.17",
     "babel-plugin-add-module-exports": "1.0.0",
     "babelify": "10.0.0",
@@ -64,7 +64,7 @@
     "electron": "6.0.10",
     "electron-builder": "^21.2.0",
     "http-server": "^0.10.0",
-    "large-core": "0.0.24",
+    "large-core": "file:../large-core",
     "large-web": "0.0.17",
     "moment": "2.24.0",
     "ts-node": "8.5.4",
@@ -72,7 +72,7 @@
     "typescript": "3.7.3"
   },
   "dependencies": {
-    "ipfs": "0.38.0",
+    "ipfs": "0.40.0",
     "quill-delta-to-html": "0.10.13",
     "quill": "1.3.6",
     "quill-blot-formatter": "1.0.5",

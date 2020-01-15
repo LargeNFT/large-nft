@@ -76,8 +76,6 @@ export namespace Global {
     Global.adminSettingsController = new AdminSettingsController(Core.siteSettingsService, Web.uiService, Core.schemaService)
 
     window['walletController'] = Global.walletController
-    // window['homeController'] = Global.homeController
-    // window['profileController'] = Global.profileController
     window['followController'] = Global.followController
     window['connectController'] = Global.connectController
     window['postController'] = Global.postController
@@ -100,7 +98,7 @@ export namespace Global {
 
     Web.uiService.showSpinner()
 
-    await Core.loadStoresForWallet(window['currentAccount'])
+    await Core.loadSiteForWallet(window['currentAccount'])
     await Global.setWalletInfo()
 
     Web.uiService.hideSpinner()

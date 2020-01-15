@@ -26,10 +26,6 @@ const routes = function (baseurl) {
         async: homeRoute
     })
 
-
-
-
-
     //Needs to be last
     routes.push({
         path: '(.*)',

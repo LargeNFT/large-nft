@@ -6,98 +6,78 @@ import { resolve } from "dns"
 
 const routes = function (baseurl) {
 
-
-
     let routes = [
         {
             path: '/createWallet',
             async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.walletController.showCreateWallet())
         },
-
         {
             path: '/enterRecovery',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.walletController.showEnterRecovery())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.walletController.showEnterRecovery())
         },
-
         {
             path: '/admin/profile/static/:id',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminProfileController.showStaticProfile(routeTo.params.id))
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminProfileController.showStaticProfile(routeTo.params.id))
         },
-
         {
             path: '/admin/profile',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminProfileController.showStaticProfile(window['currentAccount']))
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminProfileController.showStaticProfile(window['currentAccount']))
         },
-
         {
             path: '/admin/profile/edit',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminProfileController.showProfileEdit())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminProfileController.showProfileEdit())
         },
-
         {
             path: '/admin/post',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showIndex())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPostController.showIndex())
         },
-
         {
             path: '/admin/post/create',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showCreate())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPostController.showCreate())
         },
-
         {
             path: '/admin/post/show/:id',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showPost(routeTo.params.id))
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPostController.showPost(routeTo.params.id))
         },
-
         {
             path: '/admin/post/edit/:id',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPostController.showEdit(routeTo.params.id))
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPostController.showEdit(routeTo.params.id))
         },
-
         {
             path: '/admin/page',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPageController.showIndex())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPageController.showIndex())
         },
-
         {
             path: '/admin/page/create',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,   Global.adminPageController.showCreate())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPageController.showCreate())
         },
-
         {
             path: '/admin/page/show/:id',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPageController.showPage(routeTo.params.id))
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPageController.showPage(routeTo.params.id))
         },
-
         {
             path: '/admin/page/edit/:id',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminPageController.showEdit(routeTo.params.id))
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminPageController.showEdit(routeTo.params.id))
         },
-
         {
             path: '/admin/settings',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminSettingsController.showIndex())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminSettingsController.showIndex())
         },
-
         {
             path: '/admin/user',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.adminUserController.showIndex())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.adminUserController.showIndex())
         },
-
         {
             path: '/post/show/:id',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.postController.showPost(routeTo.params.id))
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.postController.showPost(routeTo.params.id))
         },
-
         {
             path: '/connect',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.connectController.showHome())
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.connectController.showHome())
         },
-
         {
             path: '/following',
-            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve,  Global.followController.showFollowing())
-
+            async: (routeTo, routeFrom, resolve, reject) => defaultResolve(resolve, Global.followController.showFollowing())
         }
 
 
@@ -115,7 +95,7 @@ const routes = function (baseurl) {
             promise = Global.walletController.showLanding()
         }
 
-        defaultResolve(resolve,  promise)
+        defaultResolve(resolve, promise)
 
     }
 

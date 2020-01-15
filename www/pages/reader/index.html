@@ -6,18 +6,47 @@
         <div class="navbar">
             <div class="navbar-bg"></div>
             <div class="navbar-inner">
-                <div class="title">Reader</div>
+                <div class="title">Large</div>
+                <div class="right">
+                    <a class="button button-round button-fill text-color-black external" href="admin.html" rel="noopener noreferrer" target="_blank">Create A Blog</a>
+                </div>
             </div>
         </div>
 
         <div class="page-content">
 
-            <div class="block-title">Welcome to Large</div>
-            <div class="block">
+            <div class="row">
+                <div class="col-100 large-50 center">
+                    <div class="block-title">Search For Wallet Address</div>
+                    <form class="list" id="loadWallet">
+                        <ul>
+                            <li class="item-content item-input">
+                                <div class="item-inner">
 
-                <p>Large is a serverless and peer-to-peer blogging platform. Build a website that's hosted by your users
-                    with IPFS.</p>
+                                    <div class="row" style="width: 100%" > <!--inline syle...couldn't figure out how to override in CSS properly-->
 
+                                        <div class="col-80">
+                                            <div class="item-input-wrap">
+                                                <input type="text" id="walletAddress" placeholder="Enter wallet address" required validate >
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-20">
+                                            <button class="button button-round button-outline" id="walletAddressSearch" type="submit">Search</button>
+                                        </div>
+    
+                                    </div>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
+
+                    <div class="block block-strong" id="not-found">
+                        No results found. It may not exist or it could be offline. Try again.
+                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -34,6 +63,12 @@
         on: {
             pageInit: async function (e, page) {
 
+                let controller = window['homeController']
+
+                this.$$('#loadWallet').on('submit', function (e) {
+                    e.preventDefault()
+                    controller.loadWalletSubmit(e, self)
+                })
             }
         }
     }

@@ -50,7 +50,6 @@ class AdminProfileController {
         let showEditLink:boolean = (address.toLowerCase() == window['currentAccount'].toLowerCase())
         
         let model = {
-          loaded: true,
           posts: posts,
           profile: profile,
           profilePicSrc: (profile && profile.profilePic) ? await this.imageService.cidToUrl(profile.profilePic) : undefined,

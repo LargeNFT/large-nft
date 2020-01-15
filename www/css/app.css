@@ -62,8 +62,8 @@
   --f7-list-item-title-text-color: #00338e;
   --f7-list-item-title-font-weight:700;
 
-  /* --f7-input-bg-color: #ffffff; */
-  /* --f7-input-text-color: #000000; */
+  --f7-input-invalid-border-color: #ff0000;
+  --f7-input-error-text-color: #ff0000;
 
 }
 

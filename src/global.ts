@@ -61,8 +61,6 @@ export namespace Global {
   export function initializeControllers() {
 
     Global.walletController = new WalletController(Core.walletService, Web.uiService)
-    // Global.homeController = new HomeController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService, Core.feedMonitorService, Web.uiService)
-    // Global.profileController = new ProfileController(Global.uploadService, Core.profileService, Global.postUiService, Global.uiService, Core.imageService)
     Global.followController = new FollowController(Core.friendService, Core.profileService, Core.imageService, Web.uiService)
     Global.connectController = new ConnectController(Core.ipfs, Core.schemaService)
     Global.postController = new PostController(Global.quillService, Global.postUiService, Core.profileService, Core.imageService)
@@ -92,13 +90,15 @@ export namespace Global {
 
     await Web.init(Global.app)
     await Core.init()
-
+    
     Global.postUiService = new PostUIService(Core.readOnlyPostService, Core.profileService, Core.schemaService, Core.imageService)
     Global.quillService = new QuillService(Global.uploadService, Core.imageService)
 
     Web.uiService.showSpinner()
 
     await Core.loadSiteForWallet(window['currentAccount'])
+    await Core.loadPersonalForWallet(window['currentAccount'])
+
     await Global.setWalletInfo()
 
     Web.uiService.hideSpinner()
@@ -113,7 +113,7 @@ export namespace Global {
 
   export async function setWalletInfo() {
 
-    let profile: Profile = await Core.profileService.getProfileByWallet(window['currentAccount'])
+    let profile: Profile = await Core.profileService.getCurrentUser()
 
     let displayName: string
     let imageUrl: string

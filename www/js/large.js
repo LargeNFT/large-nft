@@ -1,1 +1,1 @@
-console.error("\n/home/ptoner/repos/large-core/node_modules/ipfs/node_modules/ky-universal/browser.js:1\nexport {default} from 'ky';\n^\nParseError: 'import' and 'export' may appear only with 'sourceType: module'");
+console.error("\n/home/ptoner/repos/large-core/dist/index.js:1\nimport { WalletService } from \"./services/wallet-service\";\n^\nParseError: 'import' and 'export' may appear only with 'sourceType: module'");

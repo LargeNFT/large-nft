@@ -67,6 +67,31 @@
 
 }
 
+.main h1 {
+  margin-bottom:0px;
+  font-size: 24px;
+  color: rgba(0,0,0,0.84);
+}
+
+.main h2 {
+  margin-bottom: 0px;
+  margin-top: 0px; 
+  font-size: 19px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.main ul {
+  padding-left: 20px;
+  list-style-type: square;
+}
+
+.main li {
+  font-size: 17px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+}
+
+
 .toolbar {
   background-color: rgb(32, 32, 32);
 }

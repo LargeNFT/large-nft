@@ -1,3 +1,7 @@
+import "core-js/stable"
+import "regenerator-runtime/runtime"
+
+
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 const Framework7: any = require('framework7/js/framework7.bundle')
 

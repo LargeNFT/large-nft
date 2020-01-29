@@ -8,26 +8,37 @@
       <div class="navbar-inner">
         <div class="title">Admin Dashboard</div>
         <div class="right">
-            {{> "mobileBars"}}
+          {{> "mobileBars"}}
         </div>
       </div>
     </div>
 
     <div class="page-content">
-      
-      <div class="block-title">Welcome to Large</div>
-      <div class="block">
 
-        <p>Large is a serverless and peer-to-peer blogging platform. Build a website that's hosted by your users with IPFS.</p>
+      <div class="row">
+        <div class="card main col-100 large-75 center margin-top">
+          <div class="card-content card-content-padding">
+            <h1>Welcome to Large</h1>
+            <h2>A Self-Hosted And P2P Blogging App</h2>
+    
+            <ul>
+              <li>Post instantly.</li>
+              <li>Begin seeding the content yourself. All data is initially stored on your own computer.</li>
+              <li>There is no hosting service. It's just your own computer to start.</li>
+              <li>When others open the page they become peers. They also begin seeding and sharing your data.</li>
+              <li>The content you publish is signed by your Ethereum wallet. This is why your wallet may ask you to sign a message when you log in.</li>
+              <li>Once the data is sent to another peer you can't get it back.</li>
+              <li>Peer to peer with <a href="https://ipfs.io/">IPFS.</a></li>
+              <li>Very early alpha software. Things may be untested and may not work. Please <a href="https://gitlab.com/ptoner/large">report bugs </a> when you find them. Pull requests appreciated. Everything is open source.</li>
+              <li>You should have zero expectation of privacy. Assume everything you save is public. This may change in various ways in the future.</li>
+            </ul>
 
-        <ul>
-          <li>Post instantly.</li>
-          <li>Begin seeding the content yourself.</li> 
-          <li>When others open the page they become peers.</li>
-          <li>Data is tied to your Ethereum wallet address.</li>
-          <li>Peer to peer with <a href="https://ipfs.io/">IPFS.</a></li>
-        </ul>
+          </div>
+        </div>
       </div>
+
+
+
 
     </div>
   </div>
@@ -46,7 +57,7 @@
         let panel = window['Global'].app.panel.get('.panel-left')
 
         panel.open(true)
-        panel.enableVisibleBreakpoint()	
+        panel.enableVisibleBreakpoint()
 
       }
     }

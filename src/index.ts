@@ -1,9 +1,11 @@
+import "core-js/stable"
+import "regenerator-runtime/runtime"
+
+
 import { Global } from "./global"
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 const Framework7: any = require('framework7/js/framework7.bundle')
 
-
-import { UiService } from "large-web"
 
 import routes from "./routes"
 

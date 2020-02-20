@@ -29,7 +29,7 @@ class HomeController {
 
             if (ReaderGlobal.loadedWallet) {
                 homePage = await this.pageService.readPermalink("home")
-                console.log(homePage)
+                homePage = await this.pageService.translatePage(homePage)
             } 
 
             return {

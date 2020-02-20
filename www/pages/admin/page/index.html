@@ -55,15 +55,22 @@
           el: '#page-list',
           itemTemplate: `
               <li>
-              <a href="/admin/page/show/{{permalinkKey}}" class="item-link item-content">
-                <div class="item-inner">
-                      <div class="item-title">
-                        {{title}}
-                        <div class="item-footer">{{dateCreatedDisplay}}</div>
-                      </div>
+                <a href="/admin/page/show/{{permalinkKey}}" class="item-link item-content">
+                  <div class="item-inner">
+                        <div class="item-title">
+                          {{title}}
+                          <div class="item-footer">{{dateCreatedDisplay}}</div>
+                        </div>
+                        
+                        {{#if homePage}}
+                        <div class="item-after">
+                          Home
+                        </div>
+                        {{/if}}
+
                   </div>
-              </a>
-            </li>
+                </a>
+              </li>
           `,
           items: this.pages,
           height: function () {

@@ -19,22 +19,23 @@ b.plugin(tsify)
 b.transform(babelify, {
     presets: ["@babel/preset-env"],
     plugins: ["@babel/plugin-proposal-class-properties"]
+
+})
+
+b.on('log', function(msg) {
+    console.log(msg)
 })
 
 b.on('update', bundle)
 bundle()
 
 function bundle() {
+    // console.log("Bundling large.js")
     b.bundle()
         .on('error', console.error)
         .pipe(fs.createWriteStream('./www/js/large.js'))
 
 }
-
-
-
-
-
 
 
 let b2 = browserify({
@@ -52,11 +53,16 @@ b2.transform(babelify, {
     plugins: ["@babel/plugin-proposal-class-properties"]
 })
 
+b2.on('log', function(msg) {
+    console.log(msg)
+})
+
 b2.on('update', bundleReader)
 bundleReader()
 
 
 function bundleReader() {
+    // console.log("Bundling large-reader.js")
     b2.bundle()
         .on('error', console.error)
         .pipe(fs.createWriteStream('./www/js/large-reader.js'))

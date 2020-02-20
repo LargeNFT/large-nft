@@ -89,6 +89,11 @@ class AdminPageController {
       //Get data
       let pageData = await this._getPageData('#create-page-form')
 
+      if (pageData.homePage) {
+        await this.pageService.resetHomePage()
+        await this.pageService.setHomePage(pageData)
+      }
+
       //Save
       await this.pageService.create(pageData)
       
@@ -108,14 +113,19 @@ class AdminPageController {
     try {
 
       //Get data
-      let postData = await this._getPageData('#edit-page-form')
+      let pageData = await this._getPageData('#edit-page-form')
 
+      if (pageData.homePage) {
+        await this.pageService.resetHomePage()
+        await this.pageService.setHomePage(pageData)
+      }
 
       //Save
-      await this.pageService.update(postData)
+      await this.pageService.update(pageData)
       
+
       //Redirect
-      this.uiService.navigate(`/admin/page/show/${postData.permalinkKey}`, false, false)
+      this.uiService.navigate(`/admin/page/show/${pageData.permalinkKey}`, false, false)
 
     } catch (ex) {
       this.uiService.showExceptionPopup(ex)
@@ -168,6 +178,9 @@ class AdminPageController {
 
     //Get story contents. Quill delta
     pageData.content = this.quillService.activeEditor.getContents()
+
+    //Home page toggle
+    pageData.homePage  = (pageData.homePage[0] == "on")
 
 
     return pageData

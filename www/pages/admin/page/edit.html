@@ -18,14 +18,14 @@
 
     <div class="page-content">
       <form class="block list no-hairlines" id="edit-page-form">
-        <input type="hidden" name="permalinkKey">
+        <input type="hidden" name="permalinkKey" value="{{page.permalinkKey}}">
         <ul>
           <li>
             <div class="item-content item-input">
               <div class="item-inner">
                 <div class="item-title item-label">Title</div>
                 <div class="item-input-wrap">
-                  <input type="text" name="title" placeholder="Page title">
+                  <input type="text" name="title" placeholder="Page title" value="{{page.title}}">
                 </div>
               </div>
             </div>
@@ -52,6 +52,18 @@
               </div>
             </div>
           </li>
+
+          <li>
+            <label class="item-checkbox item-content">
+              <input type="checkbox" name="homePage" {{#if page.homePage}}checked{{/if}} />
+              <i class="icon icon-checkbox"></i>
+              <div class="item-inner">
+                <div class="item-title">Home Page</div>
+              </div>
+            </label>
+          </li>
+
+
         </ul>
 
       </form>
@@ -81,7 +93,7 @@
       pageInit: async function (e, page) {
 
         //Fill out form
-        Global.app.form.fillFromData('#edit-page-form', this.page)
+        // Global.app.form.fillFromData('#edit-page-form', this.page)
 
         //Initialize contents
         window['adminPageController'].initializeQuill("#edit-page-textarea")

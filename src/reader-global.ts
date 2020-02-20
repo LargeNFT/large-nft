@@ -54,8 +54,8 @@ export namespace ReaderGlobal {
     class TimeoutLoader {  
       @timeout(5000)
       async load(walletAddress:string) {
-        await Core.loadSiteForWallet(walletAddress)
         ReaderGlobal.loadedWallet = walletAddress
+        return Core.loadSiteForWallet(walletAddress)
       }
     }
 

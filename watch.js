@@ -18,7 +18,8 @@ b.add('./src/index.ts')
 b.plugin(tsify)
 b.transform(babelify, {
     presets: ["@babel/preset-env"],
-    plugins: ["@babel/plugin-proposal-class-properties"]
+    plugins: ["@babel/plugin-proposal-class-properties"],
+    global: true
 
 })
 
@@ -30,7 +31,7 @@ b.on('update', bundle)
 bundle()
 
 function bundle() {
-    // console.log("Bundling large.js")
+    console.log("Bundling large.js")
     b.bundle()
         .on('error', console.error)
         .pipe(fs.createWriteStream('./www/js/large.js'))
@@ -50,7 +51,8 @@ b2.add('./src/reader.ts')
 b2.plugin(tsify)
 b2.transform(babelify, {
     presets: ["@babel/preset-env"],
-    plugins: ["@babel/plugin-proposal-class-properties"]
+    plugins: ["@babel/plugin-proposal-class-properties"],
+    global: true
 })
 
 b2.on('log', function(msg) {
@@ -62,7 +64,7 @@ bundleReader()
 
 
 function bundleReader() {
-    // console.log("Bundling large-reader.js")
+    console.log("Bundling large-reader.js")
     b2.bundle()
         .on('error', console.error)
         .pipe(fs.createWriteStream('./www/js/large-reader.js'))

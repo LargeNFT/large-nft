@@ -20,7 +20,6 @@ b.transform(babelify, {
     presets: ["@babel/preset-env"],
     plugins: ["@babel/plugin-proposal-class-properties"],
     global: true
-
 })
 
 b.on('log', function(msg) {
@@ -39,34 +38,34 @@ function bundle() {
 }
 
 
-let b2 = browserify({
-    cache: {},
-    packageCache: {},
-    standalone: "LargeReader"
-})
+// let b2 = browserify({
+//     cache: {},
+//     packageCache: {},
+//     standalone: "LargeReader"
+// })
 
-b2.plugin(watchify)
-b2.plugin(realpathify)
-b2.add('./src/reader.ts')
-b2.plugin(tsify)
-b2.transform(babelify, {
-    presets: ["@babel/preset-env"],
-    plugins: ["@babel/plugin-proposal-class-properties"],
-    global: true
-})
+// b2.plugin(watchify)
+// b2.plugin(realpathify)
+// b2.add('./src/reader.ts')
+// b2.plugin(tsify)
+// b2.transform(babelify, {
+//     presets: ["@babel/preset-env"],
+//     plugins: ["@babel/plugin-proposal-class-properties"],
+//     global: true
+// })
 
-b2.on('log', function(msg) {
-    console.log(msg)
-})
+// b2.on('log', function(msg) {
+//     console.log(msg)
+// })
 
-b2.on('update', bundleReader)
-bundleReader()
+// b2.on('update', bundleReader)
+// bundleReader()
 
 
-function bundleReader() {
-    console.log("Bundling large-reader.js")
-    b2.bundle()
-        .on('error', console.error)
-        .pipe(fs.createWriteStream('./www/js/large-reader.js'))
+// function bundleReader() {
+//     console.log("Bundling large-reader.js")
+//     b2.bundle()
+//         .on('error', console.error)
+//         .pipe(fs.createWriteStream('./www/js/large-reader.js'))
 
-}
+// }

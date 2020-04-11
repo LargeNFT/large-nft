@@ -1,9 +1,7 @@
 import { ModelView } from "large-web"
-import { SiteSettingsService } from "large-core/dist/services/site-settings-service"
-import { SiteSettings } from "large-core/dist/dto/site-settings"
 import { Global } from "../../global"
 import { UiService } from "large-web"
-import { SchemaService } from "large-core"
+import { SchemaService, SiteSettingsService, SiteSettings } from "large-core"
 import { Dom7, Template7 } from "framework7/js/framework7.bundle"
 
 

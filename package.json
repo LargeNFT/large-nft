@@ -76,7 +76,7 @@
     "regenerator-runtime": "0.13.3"
   },
   "dependencies": {
-    "ipfs": "0.42.0",
+    "large-core": "file:../large-core",
     "quill-delta-to-html": "0.10.13",
     "quill": "1.3.6",
     "quill-blot-formatter": "1.0.5",

@@ -57,8 +57,7 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 
 * [Large Web](https://gitlab.com/ptoner/large-web) - Common web components. Depends on Framework7. Goal is to make it as quick as possible to build a full, working UI on Desktop/Android/iOS without needing to manage the difference between the environments. It looks like a desktop app on a desktop, like an iOS app on iOS, and like Android on an Android. 
 
-* This repo contains an app that's built to showcase all of these features. It's mostly like Twitter right now. But it's really just a prototype to make sure there's a full toolkit to quickly build cross platform P2P apps/websites. There are many things that are broken and or missing. Please file issues when you find them. There are a lot of issues at this point.
-
+* [Large Contracts](https://gitlab.com/ptoner/large-contracts) - Ethereum contracts.
 
 # Install
 ```console
@@ -66,7 +65,7 @@ With Large you can (optionally) pay to host your data at the beginning to help b
 git clone https://gitlab.com/ptoner/large.git
 cd large
 
-npm run install
+npm install
 ```
 
 # Running the desktop client

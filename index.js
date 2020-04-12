@@ -103,11 +103,11 @@ app.on('ready', async () => {
   //@ts-ignore
   let addresses = id.addresses
 
-  let result = addresses.filter(e => e.includes('p2p-circuit/ip4/127.0.0.1/tcp/4003/ws'))
+  // let result = addresses.filter(e => e.includes('p2p-circuit/ip4/127.0.0.1/tcp/4003/ws'))
 
 
   // @ts-ignore
-  global.ipfsHost = result[0]
+  // global.ipfsHost = result[0]
 
   //@ts-ignore
   global.ipfs = ipfs

@@ -1,35 +1,18 @@
-image: electronuserland/builder:wine
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Pages/HTML.gitlab-ci.yml
 
-stages:
-  - build
-  - deploy 
-
-cache:
-  paths:
-    - node_modules/
-
-before_script:
-  - yarn global add node-gyp; yarn global add browserify; yarn global add electron-builder; yarn install;
-
-install_dependencies:
-  stage: build
-  script:
-    - yarn run dist
-  artifacts:
-    paths:
-      # - dist/*.AppImage
-      # - dist/*.snap
-      - dist/
-
-# the 'pages' job will deploy and build your site to the 'public' path
+# Full project: https://gitlab.com/pages/plain-html
 pages:
-  stage: build
+  stage: deploy
   script:
-    - yarn run build;  # build to public path
+    - mkdir .public2
+    - cp -r * .public2
+    - mv .public2 public2
   artifacts:
     paths:
       - public
-  only:
-    - master # this job will affect only the 'master' branch
-
-
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

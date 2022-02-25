@@ -2,8 +2,17 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "lib": [ "es2017", "dom" ],
-    "target": "es2017",
+    "target": "ES2017",
+    "types": ["reflect-metadata", "node", "mocha"],
     "skipLibCheck": true,
-    "declaration": true
-  }
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "sourceMap": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

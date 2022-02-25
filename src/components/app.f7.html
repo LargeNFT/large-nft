@@ -1,0 +1,231 @@
+<template>
+  <div id="app">
+
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar"></div>
+
+
+
+    <div class="panel panel-left panel-cover panel-init" data-visible-breakpoint="1024">
+      <div class="list no-margin">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner logo">
+                <a href="/"><img src="${LogoGrey}" /></a>
+              </div>
+            </div>
+          </li>
+          <li id="wallet-list-item">
+            <a href="/admin/profile" class="item-link item-content panel-close">
+              <div class="item-media">
+                <i class="material-icons" id="wallet-icon">person</i>
+                <img id="wallet-image" />
+              </div>
+              <div class="item-inner">
+                <span class="wallet-address" id="wallet-address"></span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="/" class="item-link item-content panel-close">
+              <div class="item-media">
+                <i class="material-icons">home</i>
+              </div>
+              <div class="item-inner"> Admin Dashboard</div>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/post" class="item-link item-content panel-close">
+              <div class="item-media">
+                <i class="material-icons">create</i>
+              </div>
+              <div class="item-inner">Blog Posts</div>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/page" class="item-link item-content panel-close">
+              <div class="item-media">
+                <i class="material-icons">pages</i>
+              </div>
+              <div class="item-inner">Pages</div>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/user" class="item-link item-content panel-close">
+              <div class="item-media">
+                <i class="material-icons">people</i>
+              </div>
+              <div class="item-inner">Users</div>
+            </a>
+          </li>
+
+
+          <li>
+            <a href="/admin/settings" class="item-link item-content panel-close">
+              <div class="item-media">
+                <i class="material-icons">settings_applications</i>
+              </div>
+              <div class="item-inner">Site Settings</div>
+            </a>
+          </li>
+
+          <li>
+            <a href="/connect" class="item-link item-content panel-close">
+              <div class="item-media">
+                <i class="material-icons">pages</i>
+              </div>
+              <div class="item-inner">
+                Connect
+
+                <div class="item-after">
+                    <span class="badge peers-badge color-blue">0</span>
+                </div>
+              </div>
+            </a>
+          </li>
+
+
+          <li>
+            <a href="/index.html" class="item-link item-content external" rel="noopener noreferrer" target="_blank">
+              <div class="item-media">
+                <i class="material-icons">web</i>
+              </div>
+              <div class="item-inner">View Live Site</div>
+            </a>
+          </li>
+
+
+        </ul>
+      </div>
+    </div>
+
+    <div class="view view-init view-main" data-browser-history="true">
+
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner">
+          <div class="title">
+            <a href="/">Large</a>
+          </div>
+          <div class="right">
+  
+            ${walletAddress != undefined ? $h`
+              <a href="/profile/${walletAddress}/0" class="button button-outline button-fill">...${walletAbbrev}</a>
+            ` : $h`
+              <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
+            `}
+  
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+</template>
+
+
+
+<script>
+
+  import { ContainerService } from "../service/container-service"
+  import { RoutingService } from "../service/routing-service"
+
+  import { UiService } from "../service/ui-service"
+  import { OrbitService, SchemaService, BlogPostService, WalletService, PageService, ProfileService } from "large-core"
+  import LogoGrey from "../html/images/logo_grey.png"
+
+
+  export default (props, { $on, $f7ready, $f7, $f7router, $update }) => {
+    
+    let walletAddress
+    let walletAbbrev
+
+    let walletService 
+
+
+    const displayAddress = async (e) => {
+
+      walletAddress = undefined
+
+      if (walletService.wallet) {
+
+        walletAddress = await walletService.getAddress()
+
+        if (walletAddress) {
+          walletAbbrev = walletAddress.slice(walletAddress.length - 10)
+        }
+
+      }
+
+      $update()
+    }
+
+    const connectWallet = async (e) => {
+      //Connect to metamask
+      await walletService.connect()
+      displayAddress()
+    }
+
+
+    $f7ready(async () => {
+
+      //Init routes      
+      walletService = ContainerService.getInstance(WalletService)
+      
+      let orbitService = ContainerService.getInstance(OrbitService)
+      let schemaService = ContainerService.getInstance(SchemaService)
+      let blogPostService = ContainerService.getInstance(BlogPostService)
+      let profileService = ContainerService.getInstance(ProfileService)
+      let pageService = ContainerService.getInstance(PageService)
+
+      let uiService = ContainerService.getInstance(UiService)
+
+
+      
+      //Listen for changes
+      if (typeof window !== "undefined" && window['ethereum']) {
+
+        uiService.showSpinner("Loading...")
+
+
+        window['ethereum'].on('accountsChanged', async (accounts) => {
+          
+          if (accounts?.length > 0) {
+            await walletService.connect()
+            displayAddress()
+            $f7.views.main.router.refreshPage()
+          }
+
+        })
+
+        await walletService.initWallet()
+        await orbitService.init(false)
+
+        walletAddress = await walletService.getAddress()
+        
+        await schemaService.initSchema(walletAddress) 
+
+        await blogPostService.loadStoreForWallet(walletAddress)
+        await profileService.loadStoreForWallet(walletAddress)
+        await pageService.loadStoreForWallet(walletAddress)
+
+
+
+        displayAddress()
+        uiService.hideSpinner()
+  
+
+      } else {
+        uiService.showSpinner("Must be connected to Ethereum mainnet. Please install <a href='http://metamask.io' class='external'>Metamask</a> or <a href='https://trustwallet.com/' class='external'>Trust Wallet</a>")        
+      }
+      
+    })
+
+
+    return $render
+  }
+
+</script>

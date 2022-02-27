@@ -12,7 +12,7 @@ let mainConfig = merge(common, {
         static: {
             directory: path.join(__dirname, 'public'),
         },
-        compress: true,
+        compress: false,
         port: 8081,
     }
 })

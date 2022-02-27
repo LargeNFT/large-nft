@@ -14,6 +14,15 @@
           </div>
         </div>
       </div>
+
+      <div class="fab fab-extended fab-right-bottom">
+        <a @click="${savePostClick}" class="text-color-black">
+          <i class="material-icons">save</i>
+          <div class="fab-text">Save & Publish</div>
+        </a>
+      </div>
+  
+
   
       <div class="page-content">
         <form class="block list no-hairlines" id="create-post-form">
@@ -43,17 +52,17 @@
                 <div class="item-inner post-area">
                   <div class="item-title item-label">Content</div>
   
-                  <div class="text-editor-toolbar">
-                    <button class="text-editor-button bold-button"><i class="material-icons">format_bold</i></button>
+                  <div class="text-editor-toolbar" id="create-post-textarea-toolbar">
+                    <!-- <button class="text-editor-button bold-button"><i class="material-icons">format_bold</i></button>
                     <button class="text-editor-button italic-button"><i class="material-icons">format_italic</i></button>
                     <button class="text-editor-button link-button"><i class="material-icons">link</i></button>
                     <button class="text-editor-button blockquote-button"><i class="material-icons">format_quote</i></button>
                     <button class="text-editor-button header-1-button"><i class="icon">H<sub>1</sub></i></button>
                     <button class="text-editor-button header-2-button"><i class="icon">H<sub>2</sub></i></button>
                     <button class="text-editor-button image-button"><i class="material-icons">image</i></button>
-                    <label><input type="file" class="image-button-input" id="create-image-button-input" /></label>
+                    <label><input type="file" class="image-button-input" id="create-image-button-input" /></label> -->
                   </div>
-  
+                  
                   <div class="editor bg-color-white text-color-black" id="create-post-textarea"></div>
   
   
@@ -77,19 +86,24 @@
   
         </form>
   
-        <div class="block block-strong inset row">
-          <div class="col-66"></div>
-          <div class="col-33">
-            <button class="button button-fill text-color-black" @click="${savePostClick}">Create</button>
-          </div>
-        </div>
+
   
       </div>
     </div>
   
   </template>
   
-  
+  <style>
+    #create-post-textarea {
+      min-height: 600px;
+      height: 100%;
+      /* added these styles */
+      flex: 1;
+      display: flex; 
+      flex-direction: column;
+    }
+
+  </style>
   
   
   <script>
@@ -104,7 +118,7 @@
 
       $on('pageInit', async (e, page) => {
         let quillService = ContainerService.getInstance(QuillService)
-        quillService.buildQuillPostEditor('#create-post-textarea')
+        quillService.buildQuillPostEditor('#create-post-textarea', '#create-post-textarea-toolbar')
       })
 
       return $render

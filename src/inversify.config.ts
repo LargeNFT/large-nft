@@ -83,9 +83,7 @@ function getMainContainer() {
             return new providers.Web3Provider(window.ethereum)  
 
             
-        } else {
-            return providers.getDefaultProvider()
-        }   
+        } 
     }
     
     // container.bind('sketch').toConstantValue(sketch())

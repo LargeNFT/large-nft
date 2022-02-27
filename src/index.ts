@@ -18,16 +18,15 @@ import './html/images/logo.png'
 
 
 import { RoutingService } from "./service/routing-service"
-import { BlogPostService, OrbitService, SchemaService, WalletService } from "large-core"
+import { BlogPostService, OrbitService, PageService, ProfileService, SchemaService, WalletService } from "large-core"
 
 
 
 
 
-export default () => {
+export default async() => {
                 
     let container = getMainContainer()
-
 
     // let app = container.get("framework7")
 

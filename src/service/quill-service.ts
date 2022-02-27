@@ -134,7 +134,7 @@ class QuillService {
 
     $$(document).on('click', '.cover-photo-img', function (e) {
       e.preventDefault()
-    //   self.selectCoverPhoto(e)
+      self.selectCoverPhoto(e)
     })
 
 
@@ -252,16 +252,16 @@ class QuillService {
         node.setAttribute('width', value.width)
         node.setAttribute('height', value.height)
         node.setAttribute('style', value.style)
-
         return node;
       }
 
       static value(node) {
+        
         let ipfsCid = node.getAttribute('ipfsCid')
         let width = node.getAttribute('width')
         let height = node.getAttribute('height')
         let style = node.getAttribute('style')
-
+        
         return {
           ipfsCid: ipfsCid,
           width: width,
@@ -326,34 +326,19 @@ class QuillService {
   }
 
 
-  buildQuillPostEditor(selector: string): Quill {
+  buildQuillPostEditor(selector: string, toolbarSelector:string): Quill {
 
     this.init()
 
     // this.activeEditor = undefined
     this.activeEditor = new Quill(selector, {
       modules: {
-        blotFormatter: {
-          specs: [
-            CustomImageSpec,
-          ],
-          align: {
-            icons: {
-              left: "<i class='material-icons'>align_horizontal_left</i>",
-              center: "<i class='material-icons'>align_horizontal_center</i>",
-              right: "<i class='material-icons'>align_horizontal_right</i>"
-            },
-
-            toolbar: {
-              svgStyle: {
-                fontSize: '21px',
-              },
-            }
-          },
-
+        toolbar: {
+          container: toolbarSelector,  // Selector for toolbar container
+          handlers: {
+          }
         }
       }
-
     })
 
     return this.activeEditor
@@ -403,23 +388,25 @@ class QuillService {
   imageClick() {
     const imageButtonInput = $$(".image-button-input");
     imageButtonInput.click()
+    
   }
 
   //TODO: move to service
   async imageSelected(fileElement: Element): Promise<void> {
-
+    
     let imageCid = await this.uploadService.uploadFile(fileElement)
-    console.log(imageCid)
+  
     let range = this.activeEditor.getSelection(true)
 
     this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
     this.activeEditor.insertEmbed(range.index, 'ipfsimage', { ipfsCid: imageCid }, Quill.sources.USER)
     this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
 
-    //Make it the cover photo
-    // $$('input[name="coverPhotoCid"]').val(imageCid)
 
-    // await this.loadCoverPhotos()
+    //Make it the cover photo
+    $$('input[name="coverPhotoCid"]').val(imageCid)
+
+    await this.loadCoverPhotos()
 
   }
 
@@ -462,17 +449,20 @@ class QuillService {
 
     $$('.cover-photo-img-wrapper img').removeClass('selected')
 
-    $$('.cover-photo-img-wrapper img').each(function (index, item) {
-      if ($$(item).data("image-cid") == imageCid) {
+    $$('.cover-photo-img-wrapper img').each(function (item, index) {
+
+      let dataImageCid = $$(item).data("image-cid")
+
+      if (dataImageCid == imageCid) {
         $$(item).addClass('selected')
       }
     })
 
   }
 
-//   selectCoverPhoto(e) {
-//     this.setCoverPhoto($$(e.target).data("image-cid"))
-//   }
+  selectCoverPhoto(e) {
+    this.setCoverPhoto($$(e.target).data("image-cid"))
+  }
 
 
 

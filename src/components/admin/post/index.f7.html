@@ -8,6 +8,7 @@
         <div class="navbar-inner">
           <div class="title">Blog Posts</div>
           <div class="right">
+            <${HeaderRight} />
           </div>
         </div>
       </div>
@@ -47,6 +48,9 @@
     import { ContainerService } from "../../../service/container-service"
     // import { QuillService } from "../../../service/quill-service"
     import { BlogPostService } from "large-core"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+
 
     export default (props, { $, $on, $f7, $update }) => {
   

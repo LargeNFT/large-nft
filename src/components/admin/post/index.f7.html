@@ -98,7 +98,7 @@
       try {
         posts = await blogPostService.getPosts(LIMIT, postsShown, lastPost)
 
-        if (posts && posts.length > 0) {
+        if (posts && posts.length == LIMIT) {
           postsShown += posts.length
           lastPost = posts[posts.length - 1]._id
         } else {

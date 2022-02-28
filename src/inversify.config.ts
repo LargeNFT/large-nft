@@ -8,6 +8,12 @@ import AdminPostCreateComponent from './components/admin/post/create.f7.html'
 import AdminPostShowComponent from './components/admin/post/show.f7.html'
 import AdminPostEditComponent from './components/admin/post/edit.f7.html'
 
+import AdminPageIndexComponent from './components/admin/page/index.f7.html'
+import AdminPageCreateComponent from './components/admin/page/create.f7.html'
+import AdminPageShowComponent from './components/admin/page/show.f7.html'
+import AdminPageEditComponent from './components/admin/page/edit.f7.html'
+
+
 import { RoutingService } from './service/routing-service';
 import { UiService } from './service/ui-service';
 
@@ -38,13 +44,17 @@ function getMainContainer() {
             el: '#app', // App root element
             id: 'large', // App bundle ID
             name: 'Large', // App name
-            theme: 'auto', // Automatic theme detection
+            theme: 'ios', // Automatic theme detection
             component: AppComponent,
             routes: [
                 {
                     path: "/",
                     component: HomeComponent
                 },
+
+                /**
+                 * Posts
+                 */
                 {
                     path: "/admin/post",
                     component: AdminPostIndexComponent
@@ -60,6 +70,26 @@ function getMainContainer() {
                 {
                   path: "/admin/post/edit/:id",
                   component: AdminPostEditComponent
+                },
+
+                /**
+                 * Pages
+                 */
+                 {
+                  path: "/admin/page",
+                  component: AdminPageIndexComponent
+                },
+                {
+                    path: "/admin/page/create",
+                    component: AdminPageCreateComponent
+                },
+                {
+                  path: "/admin/page/show/:id",
+                  component: AdminPageShowComponent
+                },
+                {
+                  path: "/admin/page/edit/:id",
+                  component: AdminPageEditComponent
                 },
             ]
         })

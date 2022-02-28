@@ -17,8 +17,8 @@ import 'material-icons/iconfont/material-icons.css';
 import './html/images/logo.png'
 
 
-import { RoutingService } from "./service/routing-service"
-import { BlogPostService, OrbitService, PageService, ProfileService, SchemaService, WalletService } from "large-core"
+// import { RoutingService } from "./service/routing-service"
+// import { BlogPostService, OrbitService, PageService, ProfileService, SchemaService, WalletService } from "large-core"
 
 
 

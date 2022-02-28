@@ -6,7 +6,7 @@ import { UploadService } from './upload-service'
 import { ImageService } from "large-core"
 
 // import QuillBlotFormatter, {  AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter';
-import BlotFormatter, {  AlignAction, DeleteAction, ResizeAction, ImageSpec }  from 'quill-blot-formatter'
+import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter'
 
 
 
@@ -87,41 +87,6 @@ class QuillService {
 
     const self = this
 
-    $$(document).on('click', '.bold-button', function (e) {
-      e.preventDefault()
-      self.boldClick()
-    })
-
-    $$(document).on('click', '.italic-button', function (e) {
-      e.preventDefault()
-      self.italicClick()
-    })
-
-    $$(document).on('click', '.link-button', function (e) {
-      e.preventDefault()
-      self.linkClick()
-    })
-
-    $$(document).on('click', '.blockquote-button', function (e) {
-      e.preventDefault()
-      self.blockquoteClick()
-    })
-
-    $$(document).on('click', '.header-1-button', function (e) {
-      e.preventDefault()
-      self.header1Click()
-    })
-
-    $$(document).on('click', '.header-2-button', function (e) {
-      e.preventDefault()
-      self.header2Click()
-    })
-
-    // $$(document).on('click', '.divider-button', function (e) {
-    //   e.preventDefault()
-    //   self.dividerClick()
-    // })
-
     $$(document).on('click', '.image-button', function (e) {
       e.preventDefault()
       self.imageClick()
@@ -136,9 +101,6 @@ class QuillService {
       e.preventDefault()
       self.selectCoverPhoto(e)
     })
-
-
-    
 
     // console.log("Quill service init")
 
@@ -256,12 +218,12 @@ class QuillService {
       }
 
       static value(node) {
-        
+
         let ipfsCid = node.getAttribute('ipfsCid')
         let width = node.getAttribute('width')
         let height = node.getAttribute('height')
         let style = node.getAttribute('style')
-        
+
         return {
           ipfsCid: ipfsCid,
           width: width,
@@ -275,44 +237,8 @@ class QuillService {
     IpfsImageBlot.tagName = 'img';
 
 
-    // class IpfsVideoBlot extends BlockEmbed {
-
-    //   static blotName?: string
-    //   static tagName?: string
-
-    //   static create(value) {
-    //     let node = super.create();
-    //     node.setAttribute('src', `${Template7.global.ipfsGateway}/${value.ipfsCid}`)
-    //     node.setAttribute('ipfsCid', value.ipfsCid);
-    //     node.setAttribute('width', value.width)
-    //     node.setAttribute('height', value.height)
-    //     node.setAttribute('style', value.style)
-
-    //     return node;
-    //   }
-
-    //   static value(node) {
-
-    //     let ipfsCid = node.getAttribute('ipfsCid')
-    //     let width = node.getAttribute('width')
-    //     let height = node.getAttribute('height')
-    //     let style = node.getAttribute('style')
-
-    //     return {
-    //       ipfsCid: ipfsCid,
-    //       width: width,
-    //       height: height,
-    //       style: style
-    //     };
-    //   }
-    // }
 
 
-    // IpfsVideoBlot.blotName = 'ipfsvideo';
-    // IpfsVideoBlot.tagName = 'video';
-
-
-    // Quill.register(IpfsVideoBlot)
     Quill.register(IpfsImageBlot)
     // Quill.register(DividerBlot)
     // Quill.register(HeaderBlot)
@@ -326,76 +252,64 @@ class QuillService {
   }
 
 
-  buildQuillPostEditor(selector: string, toolbarSelector:string): Quill {
+  buildQuillPostEditor(selector: string, toolbarSelector: string): Quill {
 
     this.init()
 
     // this.activeEditor = undefined
     this.activeEditor = new Quill(selector, {
+      bounds: ".page-content",
       modules: {
-        toolbar: {
-          container: toolbarSelector,  // Selector for toolbar container
-          handlers: {
+        toolbar: toolbarSelector,
+
+        blotFormatter: {
+          specs: [
+            CustomImageSpec,
+          ],
+          align: {
+            icons: {
+              left: "<i class='material-icons'>align_horizontal_left</i>",
+              center: "<i class='material-icons'>align_horizontal_center</i>",
+              right: "<i class='material-icons'>align_horizontal_right</i>"
+            },
+  
+            toolbar: {
+              svgStyle: {
+                fontSize: '21px',
+              },
+            }
+          }
+        },
+
+      },
+      handlers: {
+        'link': (value) => {
+          if (value) {
+            var href = prompt('Enter the URL');
+            this.quill.format('link', href);
+          } else {
+            this.quill.format('link', false);
           }
         }
-      }
+      },
+
+      theme: "snow"
     })
 
     return this.activeEditor
   }
 
-  boldClick() {
-    const currentFormat = this.activeEditor.getFormat()
-    this.activeEditor.format('bold', !currentFormat.bold)
-  }
-
-  italicClick() {
-    const currentFormat = this.activeEditor.getFormat()
-    this.activeEditor.format('italic', !currentFormat.italic)
-  }
-
-  linkClick() {
-    let value = prompt('Enter link URL');
-    this.activeEditor.format('link', value)
-  }
-
-  blockquoteClick() {
-    const currentFormat = this.activeEditor.getFormat()
-    this.activeEditor.format('blockquote', !currentFormat.blockquote);
-  }
-
-  header1Click() {
-    const currentFormat = this.activeEditor.getFormat()
-    this.activeEditor.format('header', currentFormat.header ? undefined : 1);
-  }
-
-  header2Click() {
-    const currentFormat = this.activeEditor.getFormat()
-    this.activeEditor.format('header', currentFormat.header ? undefined : 2);
-  }
-
-
-  // dividerClick() {
-
-  //   let range = this.activeEditor.getSelection(true)
-
-  //   this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
-  //   this.activeEditor.insertEmbed(range.index + 1, 'divider', true, Quill.sources.USER)
-  //   this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
-
-  // }
-
   imageClick() {
     const imageButtonInput = $$(".image-button-input");
     imageButtonInput.click()
-    
+
   }
 
   //TODO: move to service
   async imageSelected(fileElement: Element): Promise<void> {
-    
+
     let imageCid = await this.uploadService.uploadFile(fileElement)
-  
+
     let range = this.activeEditor.getSelection(true)
 
     this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)

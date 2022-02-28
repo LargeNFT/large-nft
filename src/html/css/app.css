@@ -17,7 +17,8 @@
   
     --f7-button-font-weight: 700;
     --f7-button-text-color: #000000; 
-    
+    --f7-button-fill-text-color: #000000;
+
     --f7-input-height: 32px;
   
   
@@ -64,6 +65,8 @@
   
     --f7-input-invalid-border-color: #ff0000;
     --f7-input-error-text-color: #ff0000;
+    
+    
   
   }
   
@@ -181,6 +184,10 @@
     font-family: Helvetica;
     font-size: 19px;
   } */
+
+  .toast-button {
+    background-color: rgb(252, 184, 39);
+  }
   
   .toast-content {
     float: left;
@@ -262,6 +269,7 @@
   }
   
   .post .author {
+    margin-top: 5px;
     height: 50px;
     display: flex;
     box-sizing: border-box; /* used so the padding will be inline and not extend the 100% width */

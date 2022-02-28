@@ -1,32 +1,33 @@
-<!--suppress JSAnnotator -->
 <template>
 
-    <div class="page" data-name="admin-create-post">
+    <div class="page" data-name="admin-edit-post">
   
       <div class="navbar">
         <div class="navbar-bg"></div>
         <div class="navbar-inner">
           <div class="left">
-            <a href="/admin/post" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
+            <a href="#" class="link back"><i class="icon icon-back"></i></a>
           </div>
-          <div class="title">Create Blog Post</div>
+          <div class="title">Edit Post</div>
           <div class="right">
             <${HeaderRight} />
           </div>
         </div>
       </div>
-
+  
       <div class="fab fab-extended fab-right-bottom">
         <a @click="${savePostClick}" class="text-color-black">
           <i class="material-icons">save</i>
-          <div class="fab-text">Save & Publish</div>
+          <div class="fab-text">Save Changes & Publish</div>
         </a>
       </div>
-  
+      
 
-  
       <div class="page-content">
-        <form class="block list no-hairlines" id="create-post-form">
+        <form class="block list no-hairlines" id="edit-post-form">
+          <input type="hidden" name="_id" />
+          <input type="hidden" name="_rev" />
+
           <ul>
             <li>
               <div class="item-content item-input">
@@ -52,11 +53,10 @@
               <div class="item-content item-input">
                 <div class="item-inner post-area">
                   <div class="item-title item-label">Content</div>
-
-                    <${QuillToolbar} id="create-post-textarea-toolbar" />
-                
-                    <div class="editor bg-color-white text-color-black" id="create-post-textarea"></div>
   
+                  <${QuillToolbar} id="edit-post-textarea-toolbar" />
+                    
+                  <div class="editor bg-color-white text-color-black" id="edit-post-textarea"></div>
   
                 </div>
               </div>
@@ -73,57 +73,43 @@
                 </div>
               </div>
             </li>
-  
           </ul>
   
         </form>
   
-
-  
       </div>
+  
+  
+  
     </div>
   
   </template>
   
-  <style>
-    #create-post-textarea {
-      min-height: 600px;
-      height: 100%;
-      /* added these styles */
-      flex: 1;
-      display: flex; 
-      flex-direction: column;
-    }
-
-  </style>
   
   
   <script>
   
     import { ContainerService } from "../../../service/container-service"
     import { QuillService } from "../../../service/quill-service"
-    import { UiService } from "../../../service/ui-service"
 
-    import { BlogPostService, WalletService, PostService } from "large-core"
+    import { BlogPostService, PostService, WalletService } from "large-core"
+
     import HeaderRight from "../../admin/header-right.f7.html"
     import QuillToolbar from "../../admin/quill-toolbar.f7.html"
 
-    import moment from "moment"
 
     export default (props, { $, $on, $f7, $update }) => {
       
-      let quillService = ContainerService.getInstance(QuillService)
       let blogPostService = ContainerService.getInstance(BlogPostService)
-      let walletService = ContainerService.getInstance(WalletService)
-      let uiService = ContainerService.getInstance(UiService)
       let postService = ContainerService.getInstance(PostService)
+      let walletService = ContainerService.getInstance(WalletService)
 
-      let toast
+      let quillService = ContainerService.getInstance(QuillService)
 
       const savePostClick = async (e) => {
 
         //Get data
-        let postData = await getPostData('#create-post-form')
+        let postData = await getPostData('#edit-post-form')
 
         //Save
         let post = await blogPostService.put(postData)
@@ -137,34 +123,37 @@
 
         //Redirect
         $f7.views.main.router.navigate(`/admin/post/show/${post._id}`)
-
       }
 
       $on('pageInit', async (e, page) => {
-        quillService.buildQuillPostEditor('#create-post-textarea', '#create-post-textarea-toolbar')
-      })
 
-      $on('pageBeforeRemove', () => {
-        // Destroy toasts when page removed
-        // if (toast) toast.destroy()
-      })
+        //Get existing post
+        let post = await blogPostService.get(props.id)
 
+        //Fill out form
+        $f7.form.fillFromData('#edit-post-form', post)
+
+        //Initialize quill and fill contents
+        quillService.buildQuillPostEditor('#edit-post-textarea', '#edit-post-textarea-toolbar')
+        quillService.activeEditor.setContents(post.content)
+        await quillService.loadCoverPhotos()
+
+      })
 
       async function getPostData(formId) {
 
         let postData = $f7.form.convertToData(formId)
-      
+        
         //Get data
         let builtPost = await postService.buildPost(
-          await walletService.getAddress(), 
-          quillService.activeEditor.getContents()
+            await walletService.getAddress(), 
+            quillService.activeEditor.getContents()
         )
 
         Object.assign(postData, builtPost)
 
         return postData
       }
-
 
       
       return $render

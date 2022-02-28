@@ -89,6 +89,7 @@
     "process": "0.11.10",
     "large-core":"file:../large-core",
     "quill": "1.3.7",
-    "quill-blot-formatter": "1.0.5"
+    "quill-blot-formatter": "1.0.5",
+    "moment": "2.29.1"
   }
 }

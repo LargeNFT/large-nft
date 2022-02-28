@@ -5,6 +5,8 @@ import HomeComponent from './components/home/home.f7.html'
 
 import AdminPostIndexComponent from './components/admin/post/index.f7.html'
 import AdminPostCreateComponent from './components/admin/post/create.f7.html'
+import AdminPostShowComponent from './components/admin/post/show.f7.html'
+import AdminPostEditComponent from './components/admin/post/edit.f7.html'
 
 import { RoutingService } from './service/routing-service';
 import { UiService } from './service/ui-service';
@@ -50,7 +52,15 @@ function getMainContainer() {
                 {
                     path: "/admin/post/create",
                     component: AdminPostCreateComponent
-                }
+                },
+                {
+                  path: "/admin/post/show/:id",
+                  component: AdminPostShowComponent
+                },
+                {
+                  path: "/admin/post/edit/:id",
+                  component: AdminPostEditComponent
+                },
             ]
         })
     }
@@ -83,7 +93,7 @@ function getMainContainer() {
             return new providers.Web3Provider(window.ethereum)  
 
             
-        } 
+        }   
     }
     
     // container.bind('sketch').toConstantValue(sketch())

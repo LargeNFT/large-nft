@@ -1,0 +1,128 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="admin-posts">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="title">Pages</div>
+        <div class="right">
+          <${HeaderRight} />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="toolbar tabbar toolbar-top">
+      <div class="toolbar-inner">
+        <a class="tab-link tab-link-active">Published</a>
+        <a class="tab-link" href="#"> Drafts</a>
+      </div>
+    </div> -->
+
+
+
+    <div class="fab fab-extended fab-right-bottom">
+      <a href="/admin/page/create" class="text-color-black">
+        <i class="material-icons">create</i>
+        <div class="fab-text">Create Page</div>
+      </a>
+    </div>
+
+
+
+
+    <div class="page-content">
+      <div class="list media-list virtual-list no-margin" id="page-list">
+      </div>
+    </div>
+
+  </div>
+
+</template>
+
+<style>
+  .home {
+    font-weight: bold;
+  }
+</style>
+
+<script>
+
+  import { ContainerService } from "../../../service/container-service"
+
+  import { WalletService } from "../../../service/core/wallet-service"
+  import { BlogPostService } from "../../../service/core/blog-post-service"
+  import { PageService } from "../../../service/core/page-service"
+
+
+  import HeaderRight from "../../admin/header-right.f7.html"
+
+
+  export default (props, { $, $h, $on, $f7, $update }) => {
+
+    let pageService = ContainerService.getInstance(PageService)
+    let walletService = ContainerService.getInstance(WalletService)
+
+    let virtualList
+
+    $on('pageInit', async (e, page) => {
+
+      let pages = await pageService.getPages()
+
+      //Get first page
+      virtualList = $f7.virtualList.create({
+          el: '#page-list',
+
+          renderItem(item) {
+
+            return `
+                <li>
+                    <a href="/admin/page/show/${item._id}" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">${item.title} ${item.homePage ? ` | <span class='home'>Home Page</span>` : ``}</div>
+                          
+                          
+                        </div>
+
+                        <div class="item-subtitle">${item.dateCreatedDisplay}</div>
+
+                      </div>
+
+
+                    </a>
+                  </li>
+
+                  `;
+          },
+
+          items: pages,
+          setListHeight: true,
+          updatableScroll: true,
+          height: function () {
+
+            if ($f7.theme === 'md') {
+              return 77
+            } else if ($f7.theme === 'ios') {
+              return 73
+            } else if ($f7.theme === 'aurora') {
+              return 77
+            }
+          },
+          emptyTemplate: `
+            <li class="item-content">
+                  <div class="item-inner">
+                    There are no pages yet.<br /><br /> Click the 'Create Page' button to create your first page.
+                  </div>
+            </li>
+          `
+
+        })
+
+    })
+
+
+    return $render
+  }
+</script>

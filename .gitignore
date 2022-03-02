@@ -1,3 +1,5 @@
+notes
+
 # Logs
 logs
 *.log
@@ -64,7 +66,6 @@ truffle/keys/*
 !truffle/orbitdb/.keep
 
 dist/*
-www/js/large.js
 yarn.lock
 package-lock.json
-public/
+data/

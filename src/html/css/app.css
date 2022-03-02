@@ -1,0 +1,517 @@
+/* Your app styles here */
+
+@font-face {
+    font-family: 'Quicksand';
+    src: url('../fonts/Quicksand-VariableFont-wght.ttf') format('truetype')
+  }
+  
+  
+  
+  :root {
+  
+    /* --f7-font-size: 16px; */
+    --f7-font-family: 'Quicksand', sans-serif;
+  
+    --f7-fab-extended-text-font-weight: 700;
+  
+  
+    --f7-button-font-weight: 700;
+    --f7-button-text-color: #000000; 
+    --f7-button-fill-text-color: #000000;
+
+    --f7-input-height: 32px;
+  
+  
+    --f7-panel-bg-color: #1c1c1d;
+    /* --f7-page-bg-color: #aaa9af;  */
+  
+    --f7-theme-color: #FCB827;
+    --f7-theme-color-rgb: 252, 184, 39;
+    --f7-theme-color-shade: #f7a903;
+    --f7-theme-color-tint: #fdc54f; 
+  
+    --f7-input-font-size: 18px;
+    --f7-input-outline-focused-border-color: #000000;
+    --f7-input-focused-border-color: #00338e;
+  
+    --f7-label-focused-text-color: #00338e;
+    --f7-label-text-color:#000000;
+    --f7-label-font-weight: 700;
+    --f7-label-font-size: 14px;
+    --f7-label-line-height: 20px;
+    --f7-label-text-decoration: underline;
+  
+  
+    --f7-block-font-size: 23px;
+    
+    --f7-block-title-font-size: 19px;
+    --f7-block-title-line-height: 23px;
+    --f7-block-title-font-weight: bold;
+    --f7-block-title-text-color: rgba(0,0,0, 0.84);
+    --f7-block-strong-bg-color: #ffffff;
+    --f7-list-bg-color: #ffffff;
+    
+    --f7-navbar-title-font-weight: 700;
+    --f7-navbar-bg-color: var(--f7-panel-bg-color);
+    --f7-navbar-text-color: #ffffff;
+  
+  
+    --f7-tabbar-link-active-color: var(--f7-theme-color);
+    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);
+  
+  
+    --f7-list-item-title-text-color: #00338e;
+    --f7-list-item-title-font-weight:700;
+  
+    --f7-input-invalid-border-color: #ff0000;
+    --f7-input-error-text-color: #ff0000;
+    
+    
+  
+  }
+  
+  .main h1 {
+    margin-bottom:0px;
+    font-size: 24px;
+    color: rgba(0,0,0,0.84);
+  }
+  
+  .main h2 {
+    margin-bottom: 0px;
+    margin-top: 0px; 
+    font-size: 19px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+  
+  .main ul {
+    padding-left: 20px;
+    list-style-type: square;
+  }
+  
+  .main li {
+    font-size: 17px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+  }
+  
+  
+  .toolbar {
+    background-color: rgb(32, 32, 32);
+  }
+  
+  .page-content {
+    background-color: rgb(238, 240, 243)
+  }
+  
+  .panel {
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .panel .list ul {
+    background-color: var(--f7-panel-bg-color) ;
+    color: rgba(255, 255, 255, 0.87);
+  
+  }
+  
+  .panel .list ul li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .text-editor-toolbar {
+    width: 100%;
+    border-top: 1px solid rgb(204, 204, 204);
+    border-right: 1px solid rgb(204, 204, 204);
+    border-left: 1px solid rgb(204, 204, 204);
+    background-color: #CCCCCC;
+  
+  }
+  
+  .wallet-address {
+    font-size: 12px;
+    white-space: nowrap;                   
+    overflow: hidden;
+    text-overflow: ellipsis;  
+    direction: rtl;
+    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */
+    /* border: 1px solid rgba(255, 255, 255, 0.15); */
+  }
+  
+  #wallet-list-item {
+    display: none;
+  }
+  
+  #wallet-image {
+    display: none;
+    max-width: 24px;
+    border-radius: 50%;
+  }
+  
+  
+  .navbar a.link.small-only {
+    display: none;
+  }
+  
+  
+  @media only screen and (max-width: 1024px) {
+    .navbar a.link.small-only  {
+      display: flex;
+    }
+  }
+  /* 
+  .logo {
+    height: var(--f7-navbar-height);
+  } */
+  
+  .logo a {
+    width: 100%;
+  }
+  
+  .logo img {
+    max-width: 100%;
+    margin-top:10px; 
+  }
+  
+  
+  
+  .wrap {
+    white-space: normal;
+  }
+  
+  
+  
+  /* 
+  body, .md body {
+    font-family: Helvetica;
+    font-size: 19px;
+  } */
+
+  .toast-button {
+    background-color: rgb(252, 184, 39);
+  }
+  
+  .toast-content {
+    float: left;
+  }
+  .toast-icon {
+    max-width: 25px;
+    float: left;
+  }
+  
+  .toast.toast-with-icon .toast-text {
+    text-align: left;
+    margin-left: 30px;
+    float: left;
+  }
+  
+  
+  .title-name {
+    display: block;
+    font-weight: bold;
+    font-size: 25px;
+  }
+  
+  .title-sub {
+    display: block;
+    font-size: 15px;
+  }
+  
+  .profile-pic-edit, #profile-pic--edit-not-found {
+    max-width: 300px;
+    border-radius: 50%;
+    font-size: 100px;
+    float: left;
+  }
+  
+  
+  .profile-pic-main, #profile-pic-not-found {
+    max-width: 100%;
+    border-radius: 50%;
+    font-size: 100px;
+    float: left;
+  }
+  
+  .profile-name {
+    color: var(--f7-block-title-medium-text-color);
+    font-weight: bold;
+  }
+  
+  .profile-address {
+    color: var(--f7-list-item-text-text-color);
+    font-size: 13px;
+  }
+  
+  
+  .profile-pic-wrapper {
+    width: 115px;
+    float: left;
+    padding-right: 20px;
+  }
+  
+  
+  .post h1 {
+    color: rgba(0,0,0, 0.84);
+    font-size: 40px;
+    font-weight: 700;
+    font-style: normal;
+    margin-block-end: 0px;
+    margin-block-start: 0em;
+    line-height: 45px;
+  }
+  
+  
+  .post h2 {
+    font-size: 24px;
+    font-weight: 400;
+    font-style: normal;
+    color: rgba(0, 0, 0, 0.54);
+    margin-block-start: 0.33em;
+    margin-block-end: 0.5em;
+  }
+  
+  .post .author {
+    margin-top: 5px;
+    height: 50px;
+    display: flex;
+    box-sizing: border-box; /* used so the padding will be inline and not extend the 100% width */
+  }
+  
+  .post .author .pic {
+    max-width: 50px;
+    margin-right: 10px; 
+  }
+  
+  .post author .info {
+    flex: 1; /* my goal is that the width always fills up independent of browser width */
+  }
+  
+  
+  .post .author .owner {
+    color: rgba(0,0,0,0.84);
+    font-size: 16px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 20px;
+  }
+  
+  .post .author .date {
+    color: rgba(0,0,0,0.54);
+    font-size: 16px;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .post .content {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 21px;
+    color: rgba(0, 0, 0, 0.84);
+  }
+  
+  
+  .ql-editor {
+    border: 1px solid #cccccc;
+  }
+  
+  .center {
+    margin: 0 auto;
+  }
+  
+  
+  .post-area {
+    width: 100%;
+  }
+  
+  
+  .post-area .editor {
+    width: 100%;
+    height: 125px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  .post-area .profile-pic {
+    width: 60px;
+  }
+  
+  .post-area .profile-pic-thumb {
+    margin: 5px;
+  }
+  
+  .post-area .bottom {
+    width: 100%;
+  }
+  
+  .post-area .bottom button {
+    text-overflow: unset;
+  }
+  
+  .post-area .bottom label {
+    display: none;
+  }
+  
+  
+  .post-content img {
+    max-width: 100%;
+  }
+  
+  
+  
+  
+  .profile-pic-thumb {
+    max-width: 48px;
+    border-radius: 50%;
+  }
+  
+  .cover-photo-thumb {
+    max-width: 32px;
+    border-radius: 50%;
+  }
+  
+  .item-media .cover-photo-thumb.f7-icons {
+    font-size: 32px;
+  }
+  
+  .item-media .profile-pic-thumb.f7-icons {
+    font-size: 40px;
+  }
+  
+  /* .item-inner {
+    padding-left: 10px;
+  } */
+  
+  blockquote {
+    border-left: 4px solid #111;
+    padding-left: 1em;
+  }
+  
+  hr {
+    border: none;
+    color: #111;
+    letter-spacing: 1em;
+    text-align: center;
+  }
+  hr:before {
+    content: '...';
+  }
+  
+  .image-button-input, .video-button-input {
+    opacity:0;
+    width: 0px;
+  }
+  
+  
+  /* 
+  
+  .profile-thumbnail-tiny {
+    display: inline;
+  }
+  
+  .profile-thumbnail-tiny .profile-pic {
+    display: inline;
+    max-width: 24px;
+    width: 24px;
+    vertical-align: middle;
+  } */
+  
+  
+  /* 
+  .list .item-media img {
+    width: 49px;
+    max-height: 49px;
+    border-radius: 50%;
+  } */
+  /* 
+  .list .post-owner {
+    color: var(--f7-list-item-text-text-color);
+    font-size: 8px;
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
+  
+  .list .post-owner-display {
+    font-weight: bold;
+  }
+  
+  .list .item-subtitle {
+    white-space: normal;
+  }
+  
+  .list .item-subtitle p {
+    margin-top: 2px;
+  } */
+  
+  
+  .no-results {
+    display: none;
+  }
+  
+  .queue-item .item-subtitle {
+    width: 90%;
+  }
+  
+  
+  
+  /* .block-title {
+    color: rgb(0,0,0);
+    font-weight: bold;
+  }
+  
+  .item-media .f7-icons {
+    font-size: 100px;
+    padding-left: 10px;
+  }
+  
+  .list .item-subtitle.no-wrap {
+    white-space: normal;
+    overflow: inherit;
+  } */
+  
+  
+  
+  
+  .mnemonic {
+    font-size: 45px;
+    font-weight: 700;
+  }
+  
+  .peer-list .item-subtitle {
+    font-size: 11px;
+  }
+  
+  .hide {
+    display: none;
+  }
+  
+  .center {
+      margin: 0 auto;
+  }
+  
+  
+  .cover-photo-thumbnail {
+    max-width: 100px;
+  }
+  
+  .cover-photo {
+    width: 100px;
+    display: inline-block;
+  }
+  
+  .cover-photo-img {
+    width: 100px;
+  }
+  
+  .cover-photo-img.selected {
+    border: 3px solid #ff0000;
+  }
+  
+  .cover-photo-preview {
+    display: none;
+  }
+  
+  
+  
+  
+  .ql-container {
+    font-size: 23px;
+  }
+  

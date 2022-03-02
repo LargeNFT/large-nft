@@ -1,0 +1,168 @@
+<template>
+
+    <div class="page" data-name="admin-edit-page">
+
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back"><i class="icon icon-back"></i></a>
+                </div>
+                <div class="title">Edit Page</div>
+                <div class="right">
+                    <${HeaderRight} />
+                </div>
+            </div>
+        </div>
+
+        <div class="fab fab-extended fab-right-bottom">
+            <a @click="${savePageClick}" class="text-color-black">
+                <i class="material-icons">save</i>
+                <div class="fab-text">Save Changes & Publish</div>
+            </a>
+        </div>
+
+
+        <div class="page-content">
+            <form class="block list no-hairlines" id="edit-page-form">
+                <input type="hidden" name="_id" />
+                <input type="hidden" name="_rev" />
+
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Title</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="title" placeholder="Page title" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner post-area">
+                                <div class="item-title item-label">Content</div>
+
+                                <${QuillToolbar} id="edit-page-textarea-toolbar" />
+
+                                <div class="editor bg-color-white text-color-black" id="edit-page-textarea"></div>
+
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <label class="item-checkbox item-content">
+                            <input type="checkbox" name="homePage" />
+                            <i class="icon icon-checkbox"></i>
+                            <div class="item-inner">
+                                <div class="item-title">Home Page</div>
+                            </div>
+                        </label>
+                    </li>
+
+                </ul>
+
+            </form>
+
+        </div>
+
+
+
+    </div>
+
+</template>
+
+<style>
+    #edit-page-textarea {
+      min-height: 600px;
+      height: 100%;
+      /* added these styles */
+      flex: 1;
+      display: flex; 
+      flex-direction: column;
+    }
+
+  </style>
+  
+
+<script>
+
+    import { ContainerService } from "../../../service/container-service"
+    import { QuillService } from "../../../service/quill-service"
+
+    import { WalletService } from "../../../service/core/wallet-service"
+    import { PageService } from "../../../service/core/page-service"
+
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+    import QuillToolbar from "../../admin/quill-toolbar.f7.html"
+
+    import moment from "moment"
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let pageService = ContainerService.getInstance(PageService)
+        let walletService = ContainerService.getInstance(WalletService)
+        let quillService = ContainerService.getInstance(QuillService)
+
+        const savePageClick = async (e) => {
+
+            //Get data
+            let pageData = await getPageData('#edit-page-form')
+
+            //Set home page
+            if (pageData.homePage) {
+                await pageService.resetHomePage()
+            }
+
+            //Save
+            let page = await pageService.put(pageData)
+
+            //Redirect
+            $f7.views.main.router.navigate(`/admin/page/show/${page._id}`)
+        }
+
+        $on('pageInit', async (e) => {
+
+            //Get existing post
+            let page = await pageService.get(props.id)
+
+            //Fill out form
+            $f7.form.fillFromData('#edit-page-form', page)
+
+            //Initialize quill and fill contents
+            quillService.buildQuillPostEditor('#edit-page-textarea', '#edit-page-textarea-toolbar')
+            quillService.activeEditor.setContents(page.content)
+
+        })
+
+        async function getPageData(formId) {
+
+            //Get data
+            var pageData = $f7.form.convertToData(formId)
+
+            //Get date
+            pageData.dateCreatedMilli = moment().utc().valueOf()
+
+            //Get author info
+            pageData.owner = await walletService.getAddress()
+
+            //Get story contents. Quill delta
+            pageData.content = quillService.activeEditor.getContents()
+
+            //Home page toggle
+            pageData.homePage = (pageData.homePage[0] == "on" ? "on" : "")
+
+
+            return pageData
+
+        }
+
+
+
+        return $render
+    }
+
+</script>

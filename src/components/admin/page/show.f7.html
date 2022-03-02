@@ -1,0 +1,109 @@
+<template>
+
+    <div class="page" data-name="admin-show-page">
+  
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner">
+          <div class="left">
+            <a href="/admin/page" class="link"><i class="icon icon-back"></i></a>
+          </div>
+          <div class="title">${page.title}</div>
+          <div class="right">
+            <${HeaderRight} />
+          </div>
+        </div>
+      </div>
+  
+      <div class="toolbar tabbar toolbar-top">
+        <div class="toolbar-inner">
+          <a class="tab-link tab-link-active">Preview</a>
+          <a class="tab-link" href="/admin/page/edit/${page._id}"> Edit</a>
+          <a class="tab-link" @click=${deletePageClick}>Delete</a>
+        </div>
+      </div>
+  
+  
+  
+      ${page ? $h`
+        <div class="page-content">
+          <div class="row">
+    
+            <div class="card post col-100 large-66 margin-top center no-hairlines">
+    
+              <div class="card-content card-content-padding">
+                <div class="content">
+                </div>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+    
+        `:``}
+
+    </div>
+  
+  </template>
+  
+  
+  <style>
+      .content img {
+          max-width: 100%;
+      }
+  </style>
+  
+  <script>
+  
+    import { ContainerService } from "../../../service/container-service"
+    import { UiService } from "../../../service/ui-service"
+
+    import { PageService } from "../../../service/core/page-service"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+      
+      let pageService = ContainerService.getInstance(PageService)
+      let uiService = ContainerService.getInstance(UiService)
+
+      let page = {}
+
+      $on('pageInit', async (e) => {
+
+        page = await pageService.get(props.id)
+
+        $('.content').html(page.contentTranslated)
+
+        $update()
+
+      })
+
+      const deletePageClick = async (e) => {
+
+        try {
+
+            $f7.dialog.confirm(
+                "Do you want to delete this page? Note: The history is still in the database but the page will not show up in the page list after peers receive your updates.",
+                async function() {
+
+                    await pageService.delete(page._id)
+
+                    //Redirect
+                    $f7.views.main.router.navigate(`/admin/page`)
+                }
+            )
+
+            } catch(ex) {
+                uiService.showExceptionPopup(ex)
+            }
+
+      }
+
+      
+      return $render
+    }
+
+  </script>
+  

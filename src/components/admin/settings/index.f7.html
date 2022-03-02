@@ -1,0 +1,229 @@
+<template>
+
+    <div class="page" data-name="admin-settings">
+
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner">
+                <div class="title">Site Settings</div>
+                <div class="right">
+                    <${HeaderRight} />
+                </div>
+            </div>
+        </div>
+
+        <div class="fab fab-extended fab-right-bottom">
+            <a @click="${saveSettingsClick}" class="text-color-black">
+              <i class="material-icons">save</i>
+              <div class="fab-text">Save</div>
+            </a>
+          </div>
+
+
+
+        <div class="page-content">
+            <div class="block-title">Site Settings</div>
+            <form class="block list" id="edit-settings-form">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Site Title</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="title" placeholder="Site title" value="${settings.title}" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Tagline</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="tagline" placeholder="Enter a tagline (optional)"
+                                        value="${settings.tagline}" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Public Email Address (optional)</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="publicEmailAddress"
+                                        placeholder="Enter an option public email address"
+                                        value="${settings.publicEmailAddress}" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Timezone</div>
+                                <div class="item-input-wrap">
+                                    <select name="timezone">
+                                        <option value="UTC">UTC</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </form>
+
+            ${schema ? $h`
+                <div class="block-title">Local</div>
+                <div class="block list">
+                    <ul>
+
+                        ${stores.map( (store) => $h`
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            <!-- Item header, must be first child of item-title -->
+                                            <div class="item-header">${store.name}</div>
+    
+                                            <div class="row">
+                                                <span class="wrap col-90">${store.address}</span>
+                                                <button
+                                                    class="col-10 button button-fill button-round ${store.type} text-color-black"
+                                                    data-id="${store.address}" @click=${dropStoreClicked}>Drop</button>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        `)}
+
+                    </ul>
+                </div>
+            ` : $h`
+                <div class="block-title">Schema Not Loaded</div>
+            `}
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+
+</template>
+
+
+
+
+<script>
+    import { ContainerService } from "../../../service/container-service"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+
+    import { WalletService } from "../../../service/core/wallet-service"
+    import { SchemaService } from "../../../service/core/schema-service"
+    import { SiteSettingsService } from "../../../service/core/site-settings-service"
+
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+      
+      let siteSettingsService = ContainerService.getInstance(SiteSettingsService)
+      let schemaService = ContainerService.getInstance(SchemaService)
+      let walletService = ContainerService.getInstance(WalletService)
+    //   let uiService = ContainerService.getInstance(UiService)
+
+      let stores = []
+      let schema
+      let settings = {}
+
+      $on('pageInit', async (e, page) => {
+
+        let walletAddress = await walletService.getAddress()
+
+        try {
+            settings = await siteSettingsService.get(walletAddress)
+        } catch(ex) {}
+        
+
+        let mainStore = await schemaService.getMainStoreByWalletAddress(walletAddress)
+        schema = await schemaService.getSchema(mainStore, walletAddress)
+
+        let mainStoreAddress = mainStore.address.toString()
+
+    
+        //Add main store
+        stores.push({
+            name: "Main Store",
+            address: mainStoreAddress,
+            type: "drop-store"
+        })
+
+        //Collect info about the stores. Should probably move to a service.
+        for (let field in schema) {
+
+            let store = {
+                name: field,
+                address: schema[field],
+                type: "drop-store"
+            }
+
+            stores.push(store)
+        }
+
+        $update()
+
+      })
+
+        
+      const saveSettingsClick = async (e) => {
+
+        //Get data
+        let pageData = await getPageData('#edit-settings-form')
+
+        //Set home page
+        if (pageData.homePage) {
+        await pageService.resetHomePage()
+        }
+
+        //Save
+        let page = await pageService.put(pageData)
+
+
+
+
+        //Redirect
+        $f7.views.main.router.navigate(`/admin/page/show/${page._id}`)
+
+    }
+
+    const dropStoreClicked = async (e) => {
+
+        console.log('Drop store clicked!')
+
+        let id = $(e.target).data('id')
+
+        await schemaService.dropStore(id)
+
+        // Create bottom toast
+        var toastBottom = $f7.toast.create({
+            text: 'Store dropped'
+        })
+
+        toastBottom.open()
+
+    }
+
+
+
+      return $render
+    }
+
+</script>

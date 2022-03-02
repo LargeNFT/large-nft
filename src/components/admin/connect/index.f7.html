@@ -1,0 +1,155 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="page" data-name="connect">
+
+        <div class="navbar theme-dark">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner">
+                <div class="title">Connect</div>
+                <div class="right">
+                    <${HeaderRight} />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="page-content">
+
+            <div class="row">
+                <div class="col-100 tablet-50 center">
+
+                    <div class="block-title">IPFS Peers <span class="badge peers-badge color-blue">${peerCount}</span>
+                    </div>
+                    <div class="block list media-list peer-list">
+                        <ul>
+                            ${peers?.map( (peer) => $h`
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-subtitle no-wrap">
+                                            ${peer}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            `)}
+                        </ul>
+                    </div>
+
+
+                    <div class="block-title">Add IPFS Peer</div>
+                    <div class="block list">
+                        <ul>
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Peer Address</div>
+                                        <div class="item-input-wrap">
+                                            <input id="peerAddressInput" type="text" name="peerAddress" placeholder="Enter peer address" required validate />
+                                        </div>
+                                        <div class="item-after">
+                                            <button class="button button-fill text-color-black" value="Add Peer" @click=${addPeerClick}>Add Peer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div class="block-title">Monitored Feeds</div>
+                    <div class="block list media-list peer-list">
+                        <ul>
+                            ${subscribed?.map( (sub) => $h`
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-subtitle no-wrap">
+                                                ${sub}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            `)}
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</template>
+
+
+
+
+
+<script>
+
+    import { ContainerService } from "../../../service/container-service"
+    import { UiService } from "../../../service/ui-service"
+
+
+    import { OrbitService } from "../../../service/core/orbit-service"
+    import { BlogPostService } from "../../../service/core/blog-post-service"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let blogPostService = ContainerService.getInstance(BlogPostService)
+        let uiService = ContainerService.getInstance(UiService)
+        let orbitService = ContainerService.getInstance(OrbitService)
+
+        let peers 
+        let peerCount
+
+        let subscribed
+
+        $on('pageInit', async (e, page) => {
+            
+            peers = await orbitService.ipfs.swarm.peers()
+            
+            peers = peers.map(e => e.addr.toString())
+
+            peerCount = peers.length
+
+            subscribed = await orbitService.ipfs.pubsub.ls()
+
+        })
+
+        const addPeerClick = async(e) => {
+
+            console.log('Add peer submit')
+        
+            //@ts-ignore
+            document.getElementById('peerAddressInput').setCustomValidity("")
+
+
+            let peerValue = document.getElementById('peerAddressInput').value
+
+            if (peerValue) {
+                try {
+                    await orbitService.ipfs.swarm.connect(peerValue)
+
+                    uiService.showPopup(`Successfully connected to peer ${peerValue}`)
+                    
+                    console.log('Connected to peer')
+                } catch(ex) {
+                    uiService.showExceptionPopup(ex)
+                }
+            }
+
+
+        }
+
+        return $render
+    }
+
+</script>

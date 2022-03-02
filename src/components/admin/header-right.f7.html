@@ -1,0 +1,68 @@
+<template>
+
+    <div class="right">
+  
+        ${walletAddress != undefined ? $h`
+          <a href="/profile/${walletAddress}/0" class="button button-fill">...${walletAbbrev}</a>
+        ` : $h`
+          <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
+        `}
+
+    </div>
+
+</template>
+ 
+<style>
+
+
+</style>
+
+
+<script>
+    import { ContainerService } from "../../service/container-service"
+    import { WalletService } from "../../service/core/wallet-service"
+
+
+    import { UiService } from "../../service/ui-service"
+
+    export default (props, { $on, $f7, $update }) => {
+        
+        let walletService = ContainerService.getInstance(WalletService)
+        let uiService = ContainerService.getInstance(UiService)
+
+        let walletAddress = walletService.wallet?.address
+        let walletAbbrev
+
+        const displayAddress = async (e) => {
+
+            walletAddress = undefined
+
+            if (!walletService.wallet && walletService.provider) {
+                await walletService.connect()
+            }
+
+
+            if (walletService.wallet) {
+
+                walletAddress = await walletService.getAddress()
+
+                if (walletAddress) {
+                    walletAbbrev = walletAddress.slice(walletAddress.length - 10)
+                }
+
+            }
+
+            $update()
+        }
+
+        const connectWallet = async (e) => {
+            //Connect to metamask
+            await walletService.connect()
+            displayAddress()
+        }
+
+        displayAddress()
+
+        return $render
+    }
+</script>

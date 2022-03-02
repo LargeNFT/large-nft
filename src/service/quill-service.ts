@@ -3,7 +3,7 @@ import Quill from 'quill';
 
 import { Dom7 } from "framework7"
 import { UploadService } from './upload-service'
-import { ImageService } from "large-core"
+import { ImageService } from './core/image-service'
 
 // import QuillBlotFormatter, {  AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter';
 import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter'

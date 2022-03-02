@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const nodeExternals = require('webpack-node-externals')
 
 const exec = require('child_process').exec;
 
@@ -24,7 +25,10 @@ const fileLoader = {
 
 
 let mainConfig = {
-  entry: './src/index.ts',
+  entry: './src/admin.ts',
+  // externals: [nodeExternals({
+  //   importType: 'umd'
+  // })],
   module: {
     rules: [
       {
@@ -50,20 +54,6 @@ let mainConfig = {
           }
         },
       },
-
-
-      {
-        test:/.*$/,
-        include: [
-          path.resolve(__dirname, "src/html/ipfs")
-        ],
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[folder]/[name]'
-          }
-        }],
-      },
       {
         test: /\.f7.html$/,
         use: [babelLoader, 'framework7-loader'],
@@ -73,7 +63,8 @@ let mainConfig = {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
     alias: {
-      buffer: 'buffer'
+      buffer: 'buffer',
+      process: 'process/browser',
     },
     fallback: { 
       "path": require.resolve("path-browserify"),
@@ -83,33 +74,31 @@ let mainConfig = {
     }
   },
   output: {
-    filename: 'large.js',
-    library: "large",
+    filename: 'admin.js',
+    library: "admin",
     path: path.resolve(__dirname, 'public')
   },
   plugins: [
 
-
-
     new CleanWebpackPlugin({
-      dangerouslyAllowCleanPatternsOutsideProject: true
+      // dangerouslyAllowCleanPatternsOutsideProject: true
     }),
 
-    new webpack.DefinePlugin({
-      process: {env: {}}
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
     }),
 
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
     }),
 
-    //Index page for website
+    //Admin index page
     new HtmlWebpackPlugin({
       inject: false,
       title: 'Large',
       // favicon: 'src/html/favicon.ico',
-      template: 'src/html/index.html',
-      filename: 'index.html'
+      template: 'src/html/admin/index.html',
+      filename: 'admin/index.html'
     }),
 
     {

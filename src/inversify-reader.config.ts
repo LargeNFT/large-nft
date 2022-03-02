@@ -1,0 +1,234 @@
+import AppComponent from './components/app.f7.html'
+
+import AdminPostIndexComponent from './components/admin/post/index.f7.html'
+import AdminPostCreateComponent from './components/admin/post/create.f7.html'
+import AdminPostShowComponent from './components/admin/post/show.f7.html'
+import AdminPostEditComponent from './components/admin/post/edit.f7.html'
+
+import AdminPageIndexComponent from './components/admin/page/index.f7.html'
+import AdminPageCreateComponent from './components/admin/page/create.f7.html'
+import AdminPageShowComponent from './components/admin/page/show.f7.html'
+import AdminPageEditComponent from './components/admin/page/edit.f7.html'
+
+import AdminSettingsComponent from './components/admin/settings/index.f7.html'
+import AdminConnectComponent from './components/admin/connect/index.f7.html'
+
+
+import { RoutingService } from './service/routing-service';
+import { UiService } from './service/ui-service';
+
+import { providers } from "ethers"
+import { QueueService } from './service/queue_service';
+import { PagingService } from './service/paging-service';
+import { DeployService } from './service/deploy-service';
+import { QuillService } from "./service/quill-service";
+import { UploadService } from "./service/upload-service";
+
+import EventEmitter from "events";
+import { SchemaService } from "./service/core/schema-service"
+import { WalletService } from "./service/core/wallet-service"
+import { ImageService } from "./service/core/image-service"
+import { ProfileService } from "./service/core/profile-service"
+import { PostService } from "./service/core/post-service"
+import { BlogPostService } from "./service/core/blog-post-service"
+import { ReadOnlyPostService } from "./service/core/readonly-post-service"
+import { PageService } from "./service/core/page-service"
+import { FriendService } from "./service/core/friend-service"
+import { FeedMonitorService } from "./service/core/feed-monitor-service"
+import { OrbitService } from "./service/core/orbit-service"
+import { SiteSettingsService } from "./service/core/site-settings-service"
+import { Container } from "inversify";
+
+
+let container
+
+function getMainContainer() {
+
+  if (container) return container
+
+  container = new Container()
+
+
+  function framework7() {
+
+    //Init framework7
+    const Framework7 = require('framework7/bundle').default
+
+    let app = new Framework7({
+      el: '#app', // App root element
+      id: 'large', // App bundle ID
+      name: 'Large', // App name
+      theme: 'aurora', // Automatic theme detection
+      component: AppComponent,
+      routes: [
+        /**
+         * Posts
+         */
+        {
+          path: "/",
+          component: AdminPostIndexComponent
+        },
+        {
+          path: "/admin/post/create",
+          component: AdminPostCreateComponent
+        },
+        {
+          path: "/admin/post/show/:id",
+          component: AdminPostShowComponent
+        },
+        {
+          path: "/admin/post/edit/:id",
+          component: AdminPostEditComponent
+        },
+
+        /**
+         * Pages
+         */
+        {
+          path: "/admin/page",
+          component: AdminPageIndexComponent
+        },
+        {
+          path: "/admin/page/create",
+          component: AdminPageCreateComponent
+        },
+        {
+          path: "/admin/page/show/:id",
+          component: AdminPageShowComponent
+        },
+        {
+          path: "/admin/page/edit/:id",
+          component: AdminPageEditComponent
+        },
+
+        /**
+         * Site Settings
+         */
+
+        {
+          path: "/admin/settings",
+          component: AdminSettingsComponent
+        },
+
+        /**Connect */
+        {
+          path: "/admin/connect",
+          component: AdminConnectComponent
+        },
+      ]
+    })
+
+
+    return app
+
+  }
+
+  function contracts() {
+
+    const c = require('../contracts.json')
+
+    const overrides = require('../contracts-override.json')
+
+
+    //Override addresses
+    //   c['MLBC'].address = overrides['MLBC']
+    //   c['Words'].address = overrides['Words']
+    //   c['Baseballs'].address = overrides['Baseballs']
+    //   c['BaseballWords'].address = overrides['BaseballWords']
+
+
+    return c
+  }
+
+  function provider() {
+
+    if (typeof window !== "undefined" && window['ethereum']) {
+
+      //@ts-ignore
+      window.web3Provider = window.ethereum
+
+      //@ts-ignore
+      return new providers.Web3Provider(window.ethereum)
+
+
+    }
+  }
+
+
+
+  function ipfsOptions() {
+    return {
+      repo: "large",
+      relay: {
+        enabled: true,
+        hop: {
+          enabled: true // enable circuit relay HOP (make this node a relay)
+        }
+      },
+      config: {
+        Addresses: {
+          //@ts-ignore
+          Swarm: []
+        }
+      }
+
+    }
+
+  }
+
+  function orbitOptions() {
+    return {
+    }
+  }
+
+  function eventEmitter() {
+    return new EventEmitter()
+  }
+
+
+  // container.bind('sketch').toConstantValue(sketch())
+  container.bind("contracts").toConstantValue(contracts())
+  container.bind("provider").toConstantValue(provider())
+  container.bind("name").toConstantValue("Large")
+  container.bind("framework7").toConstantValue(framework7())
+
+  container.bind("eventEmitter").toConstantValue(eventEmitter())
+
+  container.bind("ipfsOptions").toConstantValue(ipfsOptions())
+  container.bind("orbitOptions").toConstantValue(orbitOptions())
+
+
+
+  container.bind(RoutingService).toSelf().inSingletonScope()
+  container.bind(UiService).toSelf().inSingletonScope()
+  container.bind(QueueService).toSelf().inSingletonScope()
+  container.bind(PagingService).toSelf().inSingletonScope()
+  container.bind(DeployService).toSelf().inSingletonScope()
+  container.bind(QuillService).toSelf().inSingletonScope()
+  container.bind(UploadService).toSelf().inSingletonScope()
+
+
+
+
+  container.bind(SchemaService).toSelf().inSingletonScope()
+  container.bind(WalletService).toSelf().inSingletonScope()
+  container.bind(ImageService).toSelf().inSingletonScope()
+  container.bind(ProfileService).toSelf().inSingletonScope()
+  container.bind(PostService).toSelf().inSingletonScope()
+  container.bind(BlogPostService).toSelf().inSingletonScope()
+  container.bind(ReadOnlyPostService).toSelf().inSingletonScope()
+  container.bind(PageService).toSelf().inSingletonScope()
+  container.bind(FriendService).toSelf().inSingletonScope()
+  container.bind(FeedMonitorService).toSelf().inSingletonScope()
+  container.bind(OrbitService).toSelf().inSingletonScope()
+  container.bind(SiteSettingsService).toSelf().inSingletonScope()
+
+
+  return container
+}
+
+
+
+export {
+  getMainContainer, container
+}

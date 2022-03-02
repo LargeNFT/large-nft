@@ -1,7 +1,7 @@
 import { Contract, ethers } from "ethers";
 import { inject, injectable } from "inversify";
-import { WalletService } from "large-core";
 import { PromiseView } from "../util/promise-view";
+import { WalletService } from "./core/wallet-service";
 import { QueueService } from "./queue_service";
 
 @injectable()

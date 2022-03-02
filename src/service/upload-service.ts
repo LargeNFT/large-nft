@@ -1,6 +1,6 @@
 import {Buffer} from 'buffer'
 import { injectable } from 'inversify';
-import { OrbitService } from 'large-core';
+import { OrbitService } from './core/orbit-service';
 
 @injectable()
 class UploadService {

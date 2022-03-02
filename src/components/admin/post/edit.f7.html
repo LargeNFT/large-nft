@@ -85,15 +85,29 @@
   
   </template>
   
-  
+  <style>
+    #edit-post-textarea {
+      min-height: 600px;
+      height: 100%;
+      /* added these styles */
+      flex: 1;
+      display: flex; 
+      flex-direction: column;
+    }
+
+  </style>
   
   <script>
   
     import { ContainerService } from "../../../service/container-service"
     import { QuillService } from "../../../service/quill-service"
 
-    import { BlogPostService, PostService, WalletService } from "large-core"
+    import { WalletService } from "../../../service/core/wallet-service"
+    import { BlogPostService } from "../../../service/core/blog-post-service"
+    import { PostService } from "../../../service/core/post-service"
 
+
+    
     import HeaderRight from "../../admin/header-right.f7.html"
     import QuillToolbar from "../../admin/quill-toolbar.f7.html"
 

@@ -1,5 +1,5 @@
 
-const { getMainContainer } = require("../inversify.config")
+import { getMainContainer } from "../inversify-admin.config"
 
 class ContainerService {
 

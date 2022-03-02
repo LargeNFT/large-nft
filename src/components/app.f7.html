@@ -32,15 +32,7 @@
               <div class="item-media">
                 <i class="material-icons">home</i>
               </div>
-              <div class="item-inner"> Admin Dashboard</div>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/post" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">create</i>
-              </div>
-              <div class="item-inner">Blog Posts</div>
+              <div class="item-inner">Home</div>
             </a>
           </li>
           <li>
@@ -51,14 +43,14 @@
               <div class="item-inner">Pages</div>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="/admin/user" class="item-link item-content panel-close">
               <div class="item-media">
                 <i class="material-icons">people</i>
               </div>
               <div class="item-inner">Users</div>
             </a>
-          </li>
+          </li> -->
 
 
           <li>
@@ -71,7 +63,7 @@
           </li>
 
           <li>
-            <a href="/connect" class="item-link item-content panel-close">
+            <a href="/admin/connect" class="item-link item-content panel-close">
               <div class="item-media">
                 <i class="material-icons">pages</i>
               </div>
@@ -100,7 +92,7 @@
       </div>
     </div>
 
-    <div class="view view-init view-main" data-browser-history="true">
+    <div class="view view-main" >
     </div>
 
   </div>
@@ -114,13 +106,18 @@
   import { RoutingService } from "../service/routing-service"
 
   import { UiService } from "../service/ui-service"
-  import { WalletService, OrbitService, SchemaService, BlogPostService, ProfileService, PageService } from "large-core"
 
+  import { WalletService } from "../service/core/wallet-service"
+  import { OrbitService } from "../service/core/orbit-service"
+  import { SchemaService } from "../service/core/schema-service"
+  import { BlogPostService } from "../service/core/blog-post-service"
+  import { ProfileService } from "../service/core/profile-service"
+  import { PageService } from "../service/core/page-service"
+  import { SiteSettingsService } from "../service/core/site-settings-service"
+
+  
   import LogoGrey from "../html/images/logo_grey.png"
 
-  import HomeComponent from './home/home.f7.html'
-  import AdminPostIndexComponent from './admin/post/index.f7.html'
-  import AdminPostCreateComponent from './admin/post/create.f7.html'
 
   export default (props, { $on, $f7ready, $f7, $f7router, $update }) => {
 
@@ -134,6 +131,7 @@
       let blogPostService = ContainerService.getInstance(BlogPostService)
       let profileService = ContainerService.getInstance(ProfileService)
       let pageService = ContainerService.getInstance(PageService)
+      let siteSettingsService = ContainerService.getInstance(SiteSettingsService)
 
       
 
@@ -165,8 +163,15 @@
         await blogPostService.loadStoreForWallet(walletAddress)
         await profileService.loadStoreForWallet(walletAddress)
         await pageService.loadStoreForWallet(walletAddress)
+        await siteSettingsService.loadStoreForWallet(walletAddress)
 
-        $f7.views.main.router.refreshPage() //Not sure how much I like this but seems to fix a sequencing problem when routed pages do not wait for this to fire
+
+        $f7.views.create('.view-main', {
+          url: '/',
+          browserHistory: true
+        })
+
+        $f7.views.main.router.navigate("/")
 
         uiService.hideSpinner()
 

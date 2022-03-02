@@ -1,8 +1,7 @@
-import { ModelView } from "../util/model-view";
 import { injectable, inject, Container } from "inversify";
 import { Router } from "framework7/modules/router/router";
 import { UiService } from "./ui-service";
-import { container } from "../inversify.config"
+import { container } from "../inversify-admin.config"
 
 
 @injectable()
@@ -117,13 +116,13 @@ class RoutingService {
     }
 
 
-    static async resolveRoute(routeTo, resolve, controller_promise: Promise<ModelView>, showSpinner=true, uiService:UiService) {
+    static async resolveRoute(routeTo, resolve, controller_promise: Promise<any>, showSpinner=true, uiService:UiService) {
 
         if (showSpinner) {
             uiService.showSpinner()
         }
 
-        let modelView: ModelView = await controller_promise;
+        let modelView = await controller_promise;
         if (!modelView) return
 
         let model:Function = await modelView.model

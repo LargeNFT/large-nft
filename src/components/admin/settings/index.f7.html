@@ -75,40 +75,6 @@
 
             </form>
 
-            ${schema ? $h`
-                <div class="block-title">Local</div>
-                <div class="block list">
-                    <ul>
-
-                        ${stores.map( (store) => $h`
-                            <li>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title">
-                                            <!-- Item header, must be first child of item-title -->
-                                            <div class="item-header">${store.name}</div>
-    
-                                            <div class="row">
-                                                <span class="wrap col-90">${store.address}</span>
-                                                <button
-                                                    class="col-10 button button-fill button-round ${store.type} text-color-black"
-                                                    data-id="${store.address}" @click=${dropStoreClicked}>Drop</button>
-                                            </div>
-    
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        `)}
-
-                    </ul>
-                </div>
-            ` : $h`
-                <div class="block-title">Schema Not Loaded</div>
-            `}
-
-
-
 
 
         </div>
@@ -128,7 +94,6 @@
     import HeaderRight from "../../admin/header-right.f7.html"
 
     import { WalletService } from "../../../service/core/wallet-service"
-    import { SchemaService } from "../../../service/core/schema-service"
     import { SiteSettingsService } from "../../../service/core/site-settings-service"
 
 
@@ -136,7 +101,6 @@
     export default (props, { $, $on, $f7, $update }) => {
       
       let siteSettingsService = ContainerService.getInstance(SiteSettingsService)
-      let schemaService = ContainerService.getInstance(SchemaService)
       let walletService = ContainerService.getInstance(WalletService)
     //   let uiService = ContainerService.getInstance(UiService)
 
@@ -152,31 +116,6 @@
             settings = await siteSettingsService.get(walletAddress)
         } catch(ex) {}
         
-
-        let mainStore = await schemaService.getMainStoreByWalletAddress(walletAddress)
-        schema = await schemaService.getSchema(mainStore, walletAddress)
-
-        let mainStoreAddress = mainStore.address.toString()
-
-    
-        //Add main store
-        stores.push({
-            name: "Main Store",
-            address: mainStoreAddress,
-            type: "drop-store"
-        })
-
-        //Collect info about the stores. Should probably move to a service.
-        for (let field in schema) {
-
-            let store = {
-                name: field,
-                address: schema[field],
-                type: "drop-store"
-            }
-
-            stores.push(store)
-        }
 
         $update()
 
@@ -201,23 +140,6 @@
 
         //Redirect
         $f7.views.main.router.navigate(`/admin/page/show/${page._id}`)
-
-    }
-
-    const dropStoreClicked = async (e) => {
-
-        console.log('Drop store clicked!')
-
-        let id = $(e.target).data('id')
-
-        await schemaService.dropStore(id)
-
-        // Create bottom toast
-        var toastBottom = $f7.toast.create({
-            text: 'Store dropped'
-        })
-
-        toastBottom.open()
 
     }
 

@@ -81,7 +81,7 @@ let mainConfig = {
   plugins: [
 
     new CleanWebpackPlugin({
-      // dangerouslyAllowCleanPatternsOutsideProject: true
+      dangerouslyAllowCleanPatternsOutsideProject: true
     }),
 
     new webpack.ProvidePlugin({

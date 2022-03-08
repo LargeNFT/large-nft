@@ -1,12 +1,12 @@
 import {Buffer} from 'buffer'
 import { injectable } from 'inversify';
-import { OrbitService } from './core/orbit-service';
+import { IpfsService } from './core/ipfs-service';
 
 @injectable()
 class UploadService {
 
   constructor(
-      private orbitService:OrbitService
+      private ipfsService:IpfsService
   ) {}
 
   async uploadFile(fileElement) {
@@ -25,7 +25,7 @@ class UploadService {
         if (buf) {
 
           try {
-            ipfsCid = await self.orbitService.ipfs.add( buf)
+            ipfsCid = await self.ipfsService.ipfs.add( buf)
           } catch (ex) {
             reject(ex)
           }

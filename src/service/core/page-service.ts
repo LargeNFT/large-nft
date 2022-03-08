@@ -1,4 +1,3 @@
-import { SchemaService } from "./schema-service"
 import { Page } from "../../dto/page"
 import { PostService } from "./post-service"
 import { inject, injectable } from "inversify"
@@ -12,20 +11,9 @@ class PageService {
     public pageStore: any
 
     constructor(
-        private schemaService: SchemaService,
         private postService: PostService,
     ) { }
 
-    async loadStoreForWallet(walletAddress: string) {
-
-        if (walletAddress == this.loadedWalletAddress) return
-
-        this.pageStore = await this.schemaService.getPageStoreByWalletAddress(walletAddress)
-        await this.pageStore.load()
-    
-        this.loadedWalletAddress = walletAddress
-
-    }
 
     async getPages(): Promise<Page[]> {
         let response = await this.pageStore.db.allDocs( {

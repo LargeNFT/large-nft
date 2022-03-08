@@ -1,4 +1,3 @@
-import { SchemaService } from "./schema-service"
 
 import { SiteSettings } from "../../dto/site-settings"
 import { injectable } from "inversify"
@@ -11,21 +10,7 @@ class SiteSettingsService {
 
 
   constructor(
-    private schemaService: SchemaService
   ) { }
-
-
-  async loadStoreForWallet(walletAddress: string) {
-
-    if (walletAddress == this.loadedWalletAddress) return
-
-    this.siteSettingsStore = await this.schemaService.getSiteSettingsStoreByWalletAddress(walletAddress)
-
-    await this.siteSettingsStore.load()
-
-    this.loadedWalletAddress = walletAddress
-
-  }
 
 
   async put(walletAddress: string, settings: SiteSettings): Promise<SiteSettings> {
@@ -43,13 +28,6 @@ class SiteSettingsService {
   async delete(walletAddress: string): Promise<void> {
     await this.siteSettingsStore.del(walletAddress)
   }
-
-  async close() {
-    await this.siteSettingsStore.close()
-  }
-
-
-
 
 
 }

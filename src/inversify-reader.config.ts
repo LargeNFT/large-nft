@@ -28,7 +28,6 @@ import { ImageService } from "./service/core/image-service"
 import { ProfileService } from "./service/core/profile-service"
 import { PostService } from "./service/core/post-service"
 import { BlogPostService } from "./service/core/blog-post-service"
-import { PageService } from "./service/core/page-service"
 import { IpfsService } from "./service/core/ipfs-service"
 import { SiteSettingsService } from "./service/core/site-settings-service"
 import { Container } from "inversify";
@@ -207,7 +206,6 @@ function getMainContainer() {
   container.bind(ProfileService).toSelf().inSingletonScope()
   container.bind(PostService).toSelf().inSingletonScope()
   container.bind(BlogPostService).toSelf().inSingletonScope()
-  container.bind(PageService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(SiteSettingsService).toSelf().inSingletonScope()
 

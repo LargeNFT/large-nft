@@ -207,7 +207,6 @@ function getMainContainer() {
   container.bind(ProfileService).toSelf().inSingletonScope()
   container.bind(PostService).toSelf().inSingletonScope()
   container.bind(BlogPostService).toSelf().inSingletonScope()
-  container.bind(PageService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(SiteSettingsService).toSelf().inSingletonScope()
 

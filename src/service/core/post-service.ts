@@ -3,7 +3,6 @@ import { ImageService } from "./image-service";
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html"
 // const QuillDeltaToHtmlConverter = require('quill-delta-to-html').QuillDeltaToHtmlConverter
 import { Profile } from "../../dto/profile";
-import { SchemaService } from "./schema-service";
 import { ProfileService } from "./profile-service";
 import { injectable } from "inversify";
 import moment from 'moment';
@@ -12,7 +11,6 @@ import moment from 'moment';
 class PostService {
 
   constructor(
-    private schemaService: SchemaService,
     private imageService: ImageService,
     private profileService: ProfileService
   ) { }
@@ -23,7 +21,7 @@ class PostService {
     let profile: Profile
 
     try {
-      profile = await this.profileService.getProfileByWallet(walletAddress)
+      profile = await this.profileService.get(walletAddress)
     }
     catch (ex) {
       // console.log(ex)
@@ -39,8 +37,6 @@ class PostService {
     if (parent) {
       post.parentId = parent._id
     }
-
-    post.replies = await this.schemaService.getRepliesPostFeedAddress(post, await this.translateContent(post))
 
     //Set user avatar
     if (profile && profile.profilePic) {

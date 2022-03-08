@@ -4,13 +4,8 @@ import { getContainer } from "./inversify.config"
 import assert from 'assert'
 import moment from 'moment'
 
-import { SchemaService } from "../src/service/core/schema-service"
-import { OrbitService } from "../src/service/core/orbit-service"
-
 import { BlogPostService } from "../src/service/core/blog-post-service"
 import { BlogPost } from "../src/dto/blog-post"
-
-
 
 const Whitepages = artifacts.require("Whitepages")
 
@@ -31,11 +26,6 @@ let editor
 contract('BlogPostService', async (accounts) => {
 
     let service: BlogPostService
-    let schemaService:SchemaService
-    let orbitService:OrbitService
-
-    let mainStore
-
 
     //@ts-ignore
     before("", async () => {
@@ -49,15 +39,6 @@ contract('BlogPostService', async (accounts) => {
         let container = await getContainer()
         
         service = container.get(BlogPostService)
-        schemaService = container.get(SchemaService)
-        orbitService = container.get(OrbitService)
-
-        mainStore = await schemaService.generateMainStore(orbitService.getPrivateAccessController(user0.toString()), user0.toString())
-        await mainStore.load()
-
-        await schemaService.generateSchema(orbitService.getPrivateAccessController(user0.toString()), mainStore, user0)
-        await service.loadStoreForWallet(user0)
-
 
     })
 

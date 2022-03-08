@@ -103,13 +103,11 @@
 <script>
 
   import { ContainerService } from "../service/container-service"
-  import { RoutingService } from "../service/routing-service"
 
   import { UiService } from "../service/ui-service"
 
   import { WalletService } from "../service/core/wallet-service"
-  import { OrbitService } from "../service/core/orbit-service"
-  import { SchemaService } from "../service/core/schema-service"
+  import { IpfsService } from "../service/core/ipfs-service"
   import { BlogPostService } from "../service/core/blog-post-service"
   import { ProfileService } from "../service/core/profile-service"
   import { PageService } from "../service/core/page-service"
@@ -126,8 +124,7 @@
       let uiService = ContainerService.getInstance(UiService)
 
       let walletService = ContainerService.getInstance(WalletService)
-      let orbitService = ContainerService.getInstance(OrbitService)
-      let schemaService = ContainerService.getInstance(SchemaService)
+      let ipfsService = ContainerService.getInstance(IpfsService)
       let blogPostService = ContainerService.getInstance(BlogPostService)
       let profileService = ContainerService.getInstance(ProfileService)
       let pageService = ContainerService.getInstance(PageService)
@@ -154,17 +151,10 @@
         uiService.showSpinner("Loading...")
 
         await walletService.initWallet()
-        await orbitService.init(false)
+        await ipfsService.init(false)
 
         let walletAddress = await walletService.getAddress()
         
-        await schemaService.initSchema(walletAddress) 
-
-        await blogPostService.loadStoreForWallet(walletAddress)
-        await profileService.loadStoreForWallet(walletAddress)
-        await pageService.loadStoreForWallet(walletAddress)
-        await siteSettingsService.loadStoreForWallet(walletAddress)
-
 
         $f7.views.create('.view-main', {
           url: '/',

@@ -95,7 +95,7 @@
     import { UiService } from "../../../service/ui-service"
 
 
-    import { OrbitService } from "../../../service/core/orbit-service"
+    import { IpfsService } from "../../../service/core/ipfs-service"
     import { BlogPostService } from "../../../service/core/blog-post-service"
 
     import HeaderRight from "../../admin/header-right.f7.html"
@@ -105,7 +105,7 @@
 
         let blogPostService = ContainerService.getInstance(BlogPostService)
         let uiService = ContainerService.getInstance(UiService)
-        let orbitService = ContainerService.getInstance(OrbitService)
+        let ipfsService = ContainerService.getInstance(IpfsService)
 
         let peers 
         let peerCount
@@ -114,13 +114,13 @@
 
         $on('pageInit', async (e, page) => {
             
-            peers = await orbitService.ipfs.swarm.peers()
+            peers = await ipfsService.ipfs.swarm.peers()
             
             peers = peers.map(e => e.addr.toString())
 
             peerCount = peers.length
 
-            subscribed = await orbitService.ipfs.pubsub.ls()
+            subscribed = await ipfsService.ipfs.pubsub.ls()
 
         })
 
@@ -136,7 +136,7 @@
 
             if (peerValue) {
                 try {
-                    await orbitService.ipfs.swarm.connect(peerValue)
+                    await ipfsService.ipfs.swarm.connect(peerValue)
 
                     uiService.showPopup(`Successfully connected to peer ${peerValue}`)
                     

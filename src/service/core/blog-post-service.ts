@@ -1,4 +1,3 @@
-import { SchemaService } from "./schema-service"
 import { PostService } from "./post-service"
 import { BlogPost } from "../../dto/blog-post"
 import { inject, injectable } from "inversify"
@@ -13,21 +12,8 @@ class BlogPostService {
   public pagingOptions: any
 
   constructor(
-    private schemaService: SchemaService,
     private postService:PostService,
   ) { }
-
-
-  async loadStoreForWallet(walletAddress: string) {
-
-    if (walletAddress == this.loadedWalletAddress) return
-
-    this.blogPostStore = await this.schemaService.getBlogPostStoreByWalletAddress(walletAddress)
-    await this.blogPostStore.load()
-
-    this.loadedWalletAddress = walletAddress
-
-  }
 
 
   async getPosts(limit: number, offset:number, startKey:string=undefined, endKey:string=undefined): Promise<BlogPost[]> {
@@ -71,7 +57,6 @@ class BlogPostService {
 
     await this.blogPostStore.put(key, post)
 
-
     return this.get(key)
 
   }
@@ -83,14 +68,6 @@ class BlogPostService {
 
   async delete(key:string): Promise<void> {
     await this.blogPostStore.del(key)
-  }
-
-  async load(amount) {
-    await this.blogPostStore.load(amount)
-  }
-
-  async close() {
-    await this.blogPostStore.close()
   }
 
 }

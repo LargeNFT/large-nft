@@ -14,23 +14,22 @@ import AdminSettingsComponent from './components/admin/settings/index.f7.html'
 import AdminConnectComponent from './components/admin/connect/index.f7.html'
 
 
-import { UiService } from './service/ui-service';
+import { UiService } from './service/core/ui-service';
 
 import { providers } from "ethers"
-import { QueueService } from './service/queue_service';
-import { DeployService } from './service/deploy-service';
+import { QueueService } from './service/core/queue_service';
+import { DeployService } from './service/core/deploy-service';
 import { QuillService } from "./service/quill-service";
-import { UploadService } from "./service/upload-service";
+import { UploadService } from "./service/core/upload-service";
 
 import EventEmitter from "events";
 import { WalletService } from "./service/core/wallet-service"
-import { ImageService } from "./service/core/image-service"
-import { ProfileService } from "./service/core/profile-service"
-import { PostService } from "./service/core/post-service"
-import { BlogPostService } from "./service/core/blog-post-service"
+import { ImageService } from "./service/image-service"
+import { AuthorService } from "./service/author-service"
+import { ChannelService } from "./service/channel-service"
 import { IpfsService } from "./service/core/ipfs-service"
-import { SiteSettingsService } from "./service/core/site-settings-service"
 import { Container } from "inversify";
+import { DatabaseService } from './service/core/database-service'
 
 
 let container
@@ -197,17 +196,14 @@ function getMainContainer() {
   container.bind(DeployService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(UploadService).toSelf().inSingletonScope()
-
-
-
-
-  container.bind(WalletService).toSelf().inSingletonScope()
-  container.bind(ImageService).toSelf().inSingletonScope()
-  container.bind(ProfileService).toSelf().inSingletonScope()
-  container.bind(PostService).toSelf().inSingletonScope()
-  container.bind(BlogPostService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()
-  container.bind(SiteSettingsService).toSelf().inSingletonScope()
+  container.bind(DatabaseService).toSelf().inSingletonScope()
+  container.bind(WalletService).toSelf().inSingletonScope()
+
+
+  container.bind(AuthorService).toSelf().inSingletonScope()
+  container.bind(ChannelService).toSelf().inSingletonScope()
+  container.bind(ImageService).toSelf().inSingletonScope()
 
 
   return container

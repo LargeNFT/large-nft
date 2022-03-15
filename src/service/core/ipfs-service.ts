@@ -7,10 +7,7 @@ import IPFS from 'ipfs'
 @injectable()
 class IpfsService {
 
-  public orbitDb
   public ipfs
-
-  private identity
 
   constructor(
     @inject('ipfsOptions') private ipfsOptions

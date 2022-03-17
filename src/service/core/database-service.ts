@@ -4,7 +4,6 @@ import PouchDB from 'pouchdb';
 import PouchFind from 'pouchdb-find'
 
 
-
 @injectable()
 class DatabaseService {
 
@@ -34,7 +33,7 @@ class DatabaseService {
             //Create indexes
             if (buildIndexes) {
                 console.log(`Creating indexes for ${fullName}`)
-                buildIndexes(this.dbCache[fullName])
+                await buildIndexes(this.dbCache[fullName])
             }
         }
 

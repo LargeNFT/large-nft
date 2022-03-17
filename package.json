@@ -82,7 +82,9 @@
     "truffle-contract-size": "2.0.1",
 
     "@nomiclabs/hardhat-etherscan": "^3.0.0",
-    "@openzeppelin/contracts": "4.5.0"
+    "@openzeppelin/contracts": "4.5.0",
+
+    "uint8arrays": "3.0.0"
   },
 
   "dependencies": {
@@ -97,9 +99,10 @@
 
     "inversify": "6.0.1",
 
-    "ipfs": "0.62.1",
+    "ipfs-core": "0.14.1",
     "ethers": "5.5.4",
     "pouchdb": "7.2.2",
+    "pouchdb-find": "7.2.2",
 
     "it-to-buffer": "2.0.2",
     "level-js": "6.1.0",

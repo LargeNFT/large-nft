@@ -3,7 +3,9 @@ import toBuffer from "it-to-buffer"
 import { Image } from "../dto/image"
 import { DatabaseService } from "./core/database-service"
 import { IpfsService } from "./core/ipfs-service"
-import { UploadService } from "./core/upload-service"
+import { ValidationException } from "../util/validation-exception";
+import { validate, ValidationError } from 'class-validator';
+import { Blob } from 'buffer';
 
 
 @injectable()
@@ -17,7 +19,7 @@ class ImageService {
     ) {}
 
     async load(walletAddress:string) {
-      this.db = this.databaseService.getDatabase(walletAddress, "image")
+      this.db = await this.databaseService.getDatabase(walletAddress, "image")
     }
 
     async get(_id:string) : Promise<Image> {
@@ -26,19 +28,39 @@ class ImageService {
 
     async put(image:Image) {
         
-        let key:string
-
-        if (image._id) {
-          key = image._id
+        if (!image._id) {
+          image._id = image.cid
+          image.dateCreated = new Date().toJSON()
         } else {
-          key = image.cid
+          image.lastUpdated = new Date().toJSON()
         }
 
-        image.url = await this.cidToUrl(key)
 
-        await this.db.put(key, image)
+        //Validate
+        let errors:ValidationError[] = await validate(image, {
+          forbidUnknownValues: true,
+          whitelist: true
+        })
+    
+        if (errors.length > 0) {
+          throw new ValidationException(errors)
+        }
+          
+
+        await this.db.put(image)
     }
 
+
+    async newFromCid(cid:string) : Promise<Image> {
+
+      const image:Image = new Image()
+
+      image.url = await this.cidToUrl(cid)
+      image.cid = cid
+
+      return image
+
+    }
 
     public async cidToUrl(cid:string) : Promise<string> {
         
@@ -47,7 +69,8 @@ class ImageService {
         // const bufferedContents = await toBuffer(ipfs.cat('QmWCscor6qWPdx53zEQmZvQvuWQYxx1ARRCXwYVE4s9wzJ')) // returns a Buffer
         var blob = new Blob([bufferedContents], {type:"image/jpg"})
 
-        return window.URL.createObjectURL(blob)
+        //@ts-ignore
+        return URL.createObjectURL(blob)
 
     }
 

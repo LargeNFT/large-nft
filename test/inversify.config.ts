@@ -13,6 +13,7 @@ import { AuthorService } from "../src/service/author-service";
 import { ChannelService } from "../src/service/channel-service";
 import { ImageService } from "../src/service/image-service";
 import { ItemService } from "../src/service/item-service";
+import { QuillService } from "../src/service/quill-service";
 
 
 import { IpfsService } from "../src/service/core/ipfs-service";
@@ -68,10 +69,16 @@ async function getContainer() {
     container.bind(ChannelService).toSelf().inSingletonScope()
     container.bind(IpfsService).toSelf().inSingletonScope()
     container.bind(ItemService).toSelf().inSingletonScope()
+    container.bind(QuillService).toSelf().inSingletonScope()
 
 
     fs.rmSync('./pouch', { recursive: true, force: true })
     fs.rmSync('./test-repo', { recursive: true, force: true })
+
+    let ipfsService:IpfsService = container.get(IpfsService)
+
+    await ipfsService.init()
+
 
 
     return container

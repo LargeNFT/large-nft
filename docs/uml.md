@@ -14,6 +14,8 @@ class Channel
 Channel : +string _id 
 Channel : +string _rev 
 
+Channel : +string authorId
+
 Channel : +string title
 Channel : +string link
 Channel : +string description
@@ -22,7 +24,7 @@ Channel : +string[] category
 Channel : +string copyright
 Channel : +string language
 
-Channel : +Image image
+Item : +string coverImageId
 
 Channel : +number mintPrice
 Channel : +boolean locked
@@ -30,6 +32,9 @@ Channel : +boolean locked
 Channel : +AttributeOption[] attributeOptions
 
 Channel : +string pubDate
+
+Channel : +number sellerFeeBasisPoints
+Channel : +string feeRecipient
 
 Channel : +string dateCreated
 Channel : +string lastUpdated
@@ -39,15 +44,15 @@ class Item
 Item : +string _id 
 Item : +string _rev 
 
-Item : +Channel channel
+Item : +string channelId
 Item : +number tokenId
 
 Item : +string title
 Item : +string link
 Item : +string description
-Item : +Author author
+Item : +string authorId
 Item : +string[] category
-Item : +Image coverPhoto
+Item : +string coverImageId
 Item : +string datePublished
 
 Item : +AttributeSelection[] attributeSelections
@@ -86,11 +91,13 @@ class ChannelService
 ChannelService : +void load(string walletAddress)
 ChannelService : +Channel get(string id)
 ChannelService : +void put(Channel channel)
-ChannelService : +void delete(string id)
+ChannelService : +void delete(Channel channel)
 
 ChannelService : +Channel[] list(number limit, string startKey)
 
-ChannelService : +void exportNFTMetadata(string id)
+ChannelService : +string exportNFTMetadata(Channel channel) 
+ChannelService : +ContractMetadata exportContractMetadata(Channel channel)
+ChannelService : +void importNFTMetadata(string cid)
 
 ChannelService : +JSONFeed getJSONFeed(string id)
 ChannelService : +string getRSSFeed(string id)
@@ -107,8 +114,9 @@ class ItemService
 ItemService : +void load(string walletAddress)
 ItemService : +Item get(string _id)
 ItemService : +void put(Item item)
+ItemService : +void delete(Item item)
 ItemService : +Item[] listByChannel(string channelId, number limit, string startKey)
 ItemService : +void mint(string _id)
 
-ItemService : +void exportNFTMetadata(string _id)
+ItemService : +NFTMetadata exportNFTMetadata(Item item)
 ```

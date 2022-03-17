@@ -5,7 +5,12 @@ import assert from 'assert'
 
 import { ItemService } from "../src/service/item-service"
 import { Item } from "../src/dto/item"
+
+import { Channel } from "../src/dto/channel"
 import { ChannelService } from "../src/service/channel-service"
+
+import { ImageService } from "../src/service/image-service"
+import { IpfsService } from "../src/service/core/ipfs-service"
 
 const Whitepages = artifacts.require("Whitepages")
 
@@ -24,6 +29,11 @@ contract('ItemService', async (accounts) => {
 
     let service: ItemService
     let channelService:ChannelService
+    let imageService:ImageService
+    let ipfsService:IpfsService
+
+    let channel1:Channel
+    let channel2:Channel
 
     before("", async () => {
 
@@ -37,12 +47,32 @@ contract('ItemService', async (accounts) => {
         
         service = container.get(ItemService)
         channelService = container.get(ChannelService)
+        imageService = container.get(ImageService)
+        ipfsService = container.get(IpfsService)
 
         await service.load(user0)
+        await channelService.load(user0)
+        await imageService.load(user0)
 
         //Create a couple of test channels
-
-
+        channel1 = Object.assign(new Channel(), {
+            title: "The Sound of Music",
+            link: "google.com",
+            description: "Singing in the mountains",
+            authorId:3,
+            category: ['Gazebos']
+        })
+        
+        channel2 = Object.assign(new Channel(), {
+            title: "Titanic",
+            link: "alexa.com",
+            description: "A boat that is not good at boating",
+            authorId:3,
+            category: ['Sunk']
+        })
+        
+        await channelService.put(channel1)
+        await channelService.put(channel2)
 
     })
 
@@ -55,32 +85,52 @@ contract('ItemService', async (accounts) => {
             await service.put(new Item())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 5)
+            assert.strictEqual(ex.errors.length, 4)
         }
 
     })
 
+    it("should fail to create valid object if it's not the right class", async () => {
+        
+        try {
+            await service.put({
+                channel: channel1,
+                title: "The Sound of Music",
+                link: "google.com",
+                description: "Singing in the mountains",
+                authorId: 3,
+                category: ['Gazebos']
+            })
+            assert.fail("Did not throw exception")
+        } catch(ex) {
+            assert.strictEqual(ex.errors.length, 1)
+        }
+
+    })
+
+
+
     it("should get an empty list of items", async () => {
-        let items:Item[] = await service.listByChannel(10)
+        let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
         assert.strictEqual(items.length, 0 )
     })
 
-    it("should create & get", async () => {
+    it("should create & get an item", async () => {
 
         //Arrange
-        let item:Item = {
+        let item:Item = Object.assign(new Item(), {
+            channelId: channel1._id,
             title: "The Sound of Music",
             link: "google.com",
             description: "Singing in the mountains",
-            author: {},
+            authorId: 3,
             category: ['Gazebos']
-        }
+        })
 
         //Act
-        await service.put(channel)
+        await service.put(item)
 
-        
-        id1 = channel._id
+        id1 = item._id
 
         //Read via permalinkKey
         let fetched = await service.get(id1)
@@ -91,14 +141,14 @@ contract('ItemService', async (accounts) => {
 
     })
 
-    it("should update a post", async () => {
+    it("should update an item", async () => {
 
         //Arrange
-        let channel:Channel = await service.get(id1)
-        channel.title = "Updated title"
+        let item:Item = await service.get(id1)
+        item.title = "Updated title"
 
         //Act
-        await service.put(channel)
+        await service.put(item)
 
         //Assert
         let fetched = await service.get(id1)
@@ -113,67 +163,117 @@ contract('ItemService', async (accounts) => {
     it("should read posts back in order", async () => {
 
         //Arrange - Add a few more channels
-        await service.put({
+        await service.put(Object.assign(new Item(), {
+            channelId: channel1._id,
             title: "Titanic",
-            link: "alexa.com",
-            description: "A boat that is not good at boating",
-            author: {},
-            category: ['Sunk']
-        })
+            link: "google.com",
+            description: "Singing in the mountains",
+            authorId: 3,
+            category: ['Gazebos']
+        }))
 
-        await service.put({
+        await service.put(Object.assign(new Item(), {
+            channelId: channel1._id,
             title: "Batman",
             link: "pontoon.com",
             description: "Another boat and a man in a bat suit",
-            author: {},
-            category: ['Not Sunk']
-        })
+            authorId: 3,
+            category: ['Gazebos', 'Ants']
+        }))
 
 
+        let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
 
-        let channels:Channel[] = await service.list(10, 0)
-
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].title, "Batman")
-        assert.equal(channels[1].title, "Titanic")
-        assert.equal(channels[2].title, "Updated title")
+        assert.equal(items.length, 3)
+        assert.equal(items[0].title, "Batman")
+        assert.equal(items[1].title, "Titanic")
+        assert.equal(items[2].title, "Updated title")
 
         //Set these for the next test
-        id2 = channels[1]._id
-        id3 = channels[0]._id
+        id2 = items[1]._id
+        id3 = items[0]._id
 
     })
 
 
-    it("should update those posts and still read them back in order", async () => {
+    it("should update those items and still read them back in order", async () => {
 
         //Arrange
-        let channel1: Channel = await service.get(id1)
-        channel1.description = "Wow1"
+        let item1: Item = await service.get(id1)
+        item1.description = "Wow1"
 
-        let channel2: Channel = await service.get(id2)
-        channel2.description = "Wow2"
+        let item2: Item = await service.get(id2)
+        item2.description = "Wow2"
 
-        let channel3: Channel = await service.get(id3)
-        channel3.description = "Wow3"
-
-        //Act
-        await service.put(channel1)
-        await service.put(channel2)
-        await service.put(channel3)
+        let item3: Item = await service.get(id3)
+        item3.description = "Wow3"
 
         //Act
-        let channels:Channel[] = await service.list(10, 0)
+        await service.put(item1)
+        await service.put(item2)
+        await service.put(item3)
+
+        //Act
+        let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
 
         //assert
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].description, "Wow3")
-        assert.equal(channels[1].description, "Wow2")
-        assert.equal(channels[2].description, "Wow1")
-
+        assert.equal(items.length, 3)
+        assert.equal(items[0].description, "Wow3")
+        assert.equal(items[1].description, "Wow2")
+        assert.equal(items[2].description, "Wow1")
 
     })
 
+    it("should add items to a second channel and query both", async () => {
+
+        //Arrange - Add a few more channels
+        await service.put(Object.assign(new Item(), {
+            channelId: channel2._id,
+            title: "Titanic2",
+            link: "google.com",
+            description: "Singing in the mountains",
+            authorId: 3,
+            category: ['Gazebos']
+        }))
+
+        await service.put(Object.assign(new Item(), {
+            channelId: channel2._id,
+            title: "Batman2",
+            link: "pontoon.com",
+            description: "Another boat and a man in a bat suit",
+            authorId: 3,
+            category: ['Gazebos', 'Ants']
+        }))
+
+        await service.put(Object.assign(new Item(), {
+            channelId: channel2._id,
+            title: "Another one2",
+            link: "pontoon.com",
+            description: "Another boat and a man in a bat suit",
+            authorId: 3,
+            category: ['Gazebos', 'Ants']
+        }))
+
+
+        //Act
+        let items1:Item[] = await service.listByChannel(channel1._id, 10, 0)
+
+        assert.equal(items1.length, 3)
+        assert.equal(items1[0].title, "Batman")
+        assert.equal(items1[1].title, "Titanic")
+        assert.equal(items1[2].title, "Updated title")
+
+
+        let items2:Item[] = await service.listByChannel(channel2._id, 10, 0)
+
+        assert.equal(items2.length, 3)
+        assert.equal(items2[0].title, "Another one2")
+        assert.equal(items2[1].title, "Batman2")
+        assert.equal(items2[2].title, "Titanic2")
+
+
+
+    })
 
     it("should load a database with lots of records and page through them", async () => {
 
@@ -181,56 +281,98 @@ contract('ItemService', async (accounts) => {
         const sleep = ms => new Promise(r => setTimeout(r, ms));
 
         for (var i = 0; i < 100; i++) {
-            await service.put({
-                title: (i).toString(),
-                link: "alexa.com",
-                description: "A boat that is not good at boating",
-                author: {},
-                category: ['Sunk']
-            })
+            
+            await service.put(Object.assign(new Item(), {
+                channelId: 17,
+                title: (i).toString() + " has to be longer",
+                link: "pontoon.com",
+                description: "Another boat and a man in a bat suit",
+                authorId: 3,
+                category: ['Gazebos', 'Ants']
+            }))
+    
             await sleep(50) //just need different timestamp
         }
 
         //Get a page of 3
-        let channels:Channel[] = await service.list(3, 0)
+        let items:Item[] = await service.listByChannel(17, 3, 0)
 
         //assert
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].title, "99")
-        assert.equal(channels[1].title, "98")
-        assert.equal(channels[2].title, "97")
+        assert.equal(items.length, 3)
+        assert.equal(items[0].title, "99 has to be longer")
+        assert.equal(items[1].title, "98 has to be longer")
+        assert.equal(items[2].title, "97 has to be longer")
 
-        channels = await service.list(3, 3)
+        items = await service.listByChannel(17, 3, 3)
 
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].title, "96")
-        assert.equal(channels[1].title, "95")
-        assert.equal(channels[2].title, "94")
+        assert.equal(items.length, 3)
+        assert.equal(items[0].title, "96 has to be longer")
+        assert.equal(items[1].title, "95 has to be longer")
+        assert.equal(items[2].title, "94 has to be longer")
 
-        channels = await service.list(3, 6)
+        items = await service.listByChannel(17, 3, 6)
 
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].title, "93")
-        assert.equal(channels[1].title, "92")
-        assert.equal(channels[2].title, "91")
-
-    })
-
-    it("should remove attributes from items when category is removed from the channel", async () => {
+        assert.equal(items.length, 3)
+        assert.equal(items[0].title, "93 has to be longer")
+        assert.equal(items[1].title, "92 has to be longer")
+        assert.equal(items[2].title, "91 has to be longer")
 
     })
 
-    it("should export NFT metadata for a channel to IPFS", async () => {
+
+    it("should export NFT metadata for an item", async () => {
+        
+        //Test with and without cover photo
+        const metadata = await service.exportNFTMetadata(id1)
 
     })
 
-    it("should should get the JSON Feed for a channel", async () => {
+
+    it("should add and export item with cover photo and attributes", async () => {
+
+        //Arrange
+        //Upload pretend image data
+        let result = await ipfsService.ipfs.add({
+            content: "pretend that this is image data"
+        })
+
+        let image:Image = await imageService.newFromCid(result.cid.toString())
+        await imageService.put(image)
+
+        let item:Item = Object.assign(new Item(), {
+            channelId: 18,
+            title: "An image!",
+            link: "pontoon.com",
+            description: "Another boat and a man in a bat suit",
+            authorId: 3,
+            category: ['Gazebos', 'Ants'],
+            coverImageId: image._id,
+            attributeSelections: [{
+                traitType: "Type",
+                value: "Skelton"
+            },
+            {
+                traitType: "Hair",
+                value: "Fuzzy"
+            }]
+        })
+
+        await service.put(item)
+
+
+        const metadata = await service.exportNFTMetadata(item)
+
+        assert.strictEqual(metadata.image, 'ipfs://QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr')
+
+        assert.strictEqual(metadata.attributes[0].traitType, "Type")
+        assert.strictEqual(metadata.attributes[0].value, "Skelton")
+
+        assert.strictEqual(metadata.attributes[1].traitType, "Hair")
+        assert.strictEqual(metadata.attributes[1].value, "Fuzzy")
 
     })
 
-    it("should should get the RSS Feed for a channel", async () => {
 
-    })
 
 })
 

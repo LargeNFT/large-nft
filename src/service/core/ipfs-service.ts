@@ -1,8 +1,7 @@
 import { inject, injectable } from "inversify"
 
-import { WalletService } from "./wallet-service"
-
-import IPFS from 'ipfs'
+// const IPFS = require('ipfs')
+import * as IPFS from 'ipfs-core'
 
 @injectable()
 class IpfsService {

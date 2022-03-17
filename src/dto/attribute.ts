@@ -9,5 +9,5 @@ interface AttributeSelection {
 }
 
 export {
-    AttributeOptions
+    AttributeOptions, AttributeSelection
 }

@@ -19,7 +19,10 @@ import { UiService } from './service/core/ui-service';
 import { providers } from "ethers"
 import { QueueService } from './service/core/queue_service';
 import { DeployService } from './service/core/deploy-service';
+
 import { QuillService } from "./service/quill-service";
+import { QuillEditorService } from "./service/quill-editor-service";
+
 import { UploadService } from "./service/core/upload-service";
 
 import EventEmitter from "events";
@@ -195,6 +198,8 @@ function getMainContainer() {
   container.bind(QueueService).toSelf().inSingletonScope()
   container.bind(DeployService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
+  container.bind(QuillEditorService).toSelf().inSingletonScope()
+
   container.bind(UploadService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()

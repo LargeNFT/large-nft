@@ -20,11 +20,14 @@ Channel : +string title
 Channel : +string link
 Channel : +string description
 
+Channel : +any content
+Channel : +string contentHTML
+
 Channel : +string[] category
 Channel : +string copyright
 Channel : +string language
 
-Item : +string coverImageId
+Channel : +string coverImageId
 
 Channel : +number mintPrice
 Channel : +boolean locked
@@ -50,12 +53,18 @@ Item : +number tokenId
 Item : +string title
 Item : +string link
 Item : +string description
+
+Item : +any content
+Item : +string contentHTML
+
 Item : +string authorId
 Item : +string[] category
 Item : +string coverImageId
 Item : +string datePublished
 
 Item : +AttributeSelection[] attributeSelections
+
+Item : +void buildAnimationPage(Item item)
 
 Item : +string dateCreated
 Item : +string lastUpdated

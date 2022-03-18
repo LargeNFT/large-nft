@@ -22,12 +22,19 @@ class Item {
     @Allow()
     link?:string 
 
-    @Allow()
-    description:string
 
     @Allow()
-    descriptionHTML:string
+    description?:string
+
+
+    @Allow()
+    content?:any
+
+    @Allow()
+    contentHTML?:string
     
+
+
     @IsNotEmpty()
     authorId:string
 

@@ -23,10 +23,15 @@ class Channel {
     link?:string
 
     @Allow()
-    description
+    description?:string
+
 
     @Allow()
-    descriptionHTML:string
+    content?:any
+
+    @Allow()
+    contentHTML?:string
+    
 
     @ArrayNotEmpty()
     @ArrayMinSize(1)

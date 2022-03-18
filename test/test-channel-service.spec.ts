@@ -13,7 +13,13 @@ import { ImageService } from "../src/service/image-service"
 import { IpfsService } from "../src/service/core/ipfs-service"
 const toBuffer = require('it-to-buffer')
 
-// import { concat } from 'uint8arrays/concat'
+
+//Need a simulated quill js
+initEditor()
+import Quill from "quill"
+
+let editor
+
 
 
 const Whitepages = artifacts.require("Whitepages")
@@ -218,7 +224,7 @@ contract('ChannelService', async (accounts) => {
     it("should load a database with lots of records and page through them", async () => {
 
         //Arrange
-        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        // const sleep = ms => new Promise(r => setTimeout(r, ms));
 
         for (var i = 0; i < 100; i++) {
 
@@ -258,25 +264,6 @@ contract('ChannelService', async (accounts) => {
 
     })
 
-    // it("should remove attributes from items when category is removed from the channel", async () => {
-
-    
-
-    //     //Remove attribute from category
-
-
-    //     //Validate they've all been deleted
-
-
-    //     //Act
-
-    //     //Assert
-
-
-
-
-    // })
-
     it("should export contract metadata with and without image", async () => {
         
     })
@@ -285,12 +272,28 @@ contract('ChannelService', async (accounts) => {
 
 
         //Arrange
+
+        editor = new Quill("#editor")
+        editor.setText("Singing in the mountains")
+
+        let image1 = await ipfsService.ipfs.add({
+            content: "pretend that this is image data"
+        })
+
+        let image2 = await ipfsService.ipfs.add({
+            content: "pretend that this is image data2"
+        })
         
+
+        await imageService.put(await imageService.newFromCid(image1.cid.toString()))
+        await imageService.put(await imageService.newFromCid(image2.cid.toString()))
+
         //Create category with attributes
         let channel:Channel = Object.assign(new Channel(), {
             title: "The Sound of Music",
             link: "google.com",
             description: "Singing in the mountains",
+            content: editor.getContents(),
             authorId: 3,
             category: ['Gazebos'],
             attributeOptions:[
@@ -302,17 +305,19 @@ contract('ChannelService', async (accounts) => {
                     traitType:'Teeth',
                     values:['Have them', 'None', 'Nice']
                 },
-            ]
+            ],
+            coverImageId: image1.cid.toString()
         }) 
 
         await service.put(channel)
+ 
 
-        
         //Add items with those attributes
         let item1:Item = Object.assign(new Item(), {
             channelId: channel._id,
             title: "An image!",
             link: "pontoon.com",
+            content: editor.getContents(),
             description: "Another boat and a man in a bat suit",
             authorId: 3,
             category: ['Gazebos', 'Ants'],
@@ -323,7 +328,9 @@ contract('ChannelService', async (accounts) => {
             {
                 traitType: "Teeth",
                 value: "Nice"
-            }]
+            }],
+            coverImageId: image2.cid.toString()
+
         })
 
         let item2:Item = Object.assign(new Item(), {
@@ -360,26 +367,63 @@ contract('ChannelService', async (accounts) => {
             }]
         })
 
+        //Save all these
         await itemService.put(item1)
+        await sleep(100) //just need different timestamp
         await itemService.put(item2)
+        await sleep(100) //just need different timestamp
         await itemService.put(item3)
 
-
+        //And the channel
         await service.put(channel)
 
-    
+        //Now export metadata to IPFS
         let cid:string = await service.exportNFTMetadata(channel)
+        
+
+
+
+        //Assert
 
         //Write to tmp
         await ipfsService.ipfs.files.cp(`/ipfs/${cid}`, "/tmp/" )
 
-        // let contents = await readFile("/tmp/contractMetadata.json")
+        // for await (const file of ipfsService.ipfs.files.ls("/tmp/")) {
+        //     console.log(file.name)
+        // }
+
         let contractMetadata:ContractMetadata = await getFileContent(`/tmp/contractMetadata.json`)
+        
+        let item1File:Item = await getFileContent(`/tmp/1.json`)
+        let item2File:Item = await getFileContent(`/tmp/2.json`)
+        let item3File:Item = await getFileContent(`/tmp/3.json`)
 
-        console.log(contractMetadata)
 
 
-        // assert.strictEqual(updatedItems.length, existingItemsLength)
+        // console.log(contractMetadata)
+        // console.log(item1File)
+        // console.log(item2File)
+        // console.log(item3File)
+
+        assert.strictEqual(contractMetadata.name, "The Sound of Music")
+        assert.strictEqual(contractMetadata.description, 'Singing in the mountains')
+        assert.strictEqual(contractMetadata.external_link, 'google.com')
+        assert.strictEqual(contractMetadata.image, 'ipfs://QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr')
+
+
+        assert.strictEqual(item1File.tokenId, '1')
+        assert.strictEqual(item1File.name, 'An image!')
+        assert.strictEqual(item1File.description, 'Another boat and a man in a bat suit')
+        assert.strictEqual(item1File.animation_url, 'ipfs://QmYuYBgM7257tYayRRhT4BDJaqG4JBPrtHsxvT9EwuQm86')
+        assert.strictEqual(item1File.image, 'ipfs://QmX5VLosmfG3mitW5hyaGCWpg1AN6TbjW5Z3dtJPQmvEnq')
+        assert.deepEqual(item1File.attributes, [
+            { traitType: "Hair", value: "Curly" },
+            { traitType: "Teeth", value: "Nice" }
+        ])
+
+        assert.strictEqual(item2File.tokenId, '2')
+        assert.strictEqual(item3File.tokenId, '3')
+
 
     })
 
@@ -406,23 +450,26 @@ async function getFileContent(filename) {
 
 
 
-// function initEditor() {
+function initEditor() {
 
-//     const jsdom = require('jsdom')
-//     const { JSDOM } = jsdom;
+    const jsdom = require('jsdom')
+    const { JSDOM } = jsdom;
 
-//     const dom = new JSDOM('<div id="editor"></div>')
+    const dom = new JSDOM('<div id="editor"></div>')
 
-//     dom.window.document.getSelection = function() { return { getRangeAt: function() { } }; }
-//     dom.window.document.execCommand = function (command, showUI, value) { try { return document.execCommand(command, showUI, value); } catch(e) {} return false; }
+    dom.window.document.getSelection = function() { return { getRangeAt: function() { } }; }
+    dom.window.document.execCommand = function (command, showUI, value) { try { return document.execCommand(command, showUI, value); } catch(e) {} return false; }
 
-//     global.window = dom.window;
-//     global.document = dom.window.document;
-//     global.Node = dom.window.Node;
-//     global.navigator = global.window.navigator;
-//     global.Text = dom.window.Text;
-//     global.HTMLElement = window.HTMLElement;
-//     global.MutationObserver = dom.window.MutationObserver;
+    global.window = dom.window;
+    global.document = dom.window.document;
+    global.Node = dom.window.Node;
+    global.navigator = global.window.navigator;
+    global.Text = dom.window.Text;
+    global.HTMLElement = window.HTMLElement;
+    global.MutationObserver = dom.window.MutationObserver;
 
 
-// }
+}
+
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));

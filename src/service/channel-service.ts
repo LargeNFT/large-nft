@@ -52,8 +52,8 @@ class ChannelService {
       channel.lastUpdated = new Date().toJSON()
     }
 
-    //Translate description content
-    channel.descriptionHTML = await this.quillService.translateContent(channel.description)
+    //Translate content to HTML
+    channel.contentHTML = await this.quillService.translateContent(channel.content)
     
     //Validate
     let errors:ValidationError[] = await validate(channel, {
@@ -88,14 +88,21 @@ class ChannelService {
 
   async exportNFTMetadata(channel:Channel) : Promise<string> {
 
-    //Write contract metadata
-    let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel)
-    
-
     //Assign  
     let nftMetadata:NFTMetadata[] = []
+    let coverImages:string[] = []
+    let animationCids:string[] = []
 
+    //Get contract metadata
+    let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel)
+
+
+    //Add cover image
+    coverImages.push(channel.coverImageId)
+
+    //Look up items
     let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+
 
     //Generate token IDs starting at 1. Save all the records
     let tokenId = 1
@@ -110,14 +117,28 @@ class ChannelService {
       //Save it
       await this.itemService.put(item)
 
+      //Build animation URL if we have content
+      let animationCid 
+      if (item.contentHTML) {
+        animationCid = await this.itemService.buildAnimationPage(item)
+        animationCids.push(animationCid)
+      }
+    
+      //Add cover image
+      if (item.coverImageId) {
+        coverImages.push(item.coverImageId)
+      }
+
       //Generate metadata and add to list
-      nftMetadata.push(await this.itemService.exportNFTMetadata(item))
+      nftMetadata.push(await this.itemService.exportNFTMetadata(item, animationCid, item.coverImageId))
 
       tokenId++
     }
 
+    let directory = `/blogs/${channel._id}`
+
     //Save contract metadata
-    let contractMetadataPath = `/blogs/${channel._id}/contractMetadata.json`
+    let contractMetadataPath = `${directory}/contractMetadata.json`
     
     console.log(`Saving contract metadata to ${contractMetadataPath}`)
 
@@ -125,11 +146,24 @@ class ChannelService {
 
     //Save metadata for each NFT
     for (let nft of nftMetadata) {
-      let nftMetadataPath = `/blogs/${channel._id}/${nft.tokenId}.json`
+      let nftMetadataPath = `${directory}/${nft.tokenId}.json`
 
       console.log(`Saving #${nft.tokenId} to ${nftMetadataPath}`)
       await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true})
 
+    }
+
+    //Save cover images 
+    for (let image of coverImages) {
+      // if (!image) continue
+      await this.ipfsService.ipfs.files.cp(`/ipfs/${image}`, `${directory}/images/${image}`, { parents: true })
+
+    }
+
+    //Save animation cids
+    for (let animationCid of animationCids) {
+      // if (!animationCid) continue
+      await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
     }
 
     let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
@@ -146,7 +180,7 @@ class ChannelService {
 
     let result:ContractMetadata = {
       name: channel.title,
-      description: channel.descriptionHTML,
+      description: channel.description,
       external_link: channel.link,
       seller_fee_basis_points: channel.sellerFeeBasisPoints,
       fee_recipient: channel.feeRecipient

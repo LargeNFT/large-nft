@@ -69,3 +69,6 @@ dist/*
 yarn.lock
 package-lock.json
 data/
+
+test/pouch/*
+test/test-repo/*

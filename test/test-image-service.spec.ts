@@ -78,7 +78,7 @@ contract('ImageService', async (accounts) => {
 
         //Upload pretend image data
         let result = await ipfsService.ipfs.add({
-            content: "pretend that this is image data"
+            content: "pretend that this is image data1111111"
         })
 
         let image:Image = await service.newFromCid(result.cid.toString())
@@ -92,7 +92,7 @@ contract('ImageService', async (accounts) => {
         let fetched = await service.get(id1)
 
         assert.notEqual(fetched.url, undefined)
-        assert.equal(fetched.cid, "QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr")
+        assert.equal(fetched.cid, "QmdrWMNVuy8nMCSkhauoaZ4bP4Sy5zxzFDWBn8L6DeeLgF")
         assert.equal(fetched._id, id1)
 
     })

@@ -6,6 +6,8 @@ import { IpfsService } from "./core/ipfs-service"
 import { ValidationException } from "../util/validation-exception";
 import { validate, ValidationError } from 'class-validator';
 import { Blob } from 'buffer';
+import { ImageRepository } from "../repository/image-repository"
+import { channel } from "diagnostics_channel"
 
 
 @injectable()
@@ -14,16 +16,12 @@ class ImageService {
     db:any
 
     constructor(
-        private databaseService:DatabaseService,
+        private imageRepository:ImageRepository,
         private ipfsService:IpfsService
     ) {}
 
-    async load(walletAddress:string) {
-      this.db = await this.databaseService.getDatabase(walletAddress, "image")
-    }
-
     async get(_id:string) : Promise<Image> {
-        return this.db.get(_id)
+        return this.imageRepository.get(_id)
     }
 
     async put(image:Image) {
@@ -47,7 +45,7 @@ class ImageService {
         }
           
 
-        await this.db.put(image)
+        await this.imageRepository.put(image)
     }
 
 

@@ -11,12 +11,18 @@ import { Item } from "../src/dto/item"
 
 import { ImageService } from "../src/service/image-service"
 import { IpfsService } from "../src/service/core/ipfs-service"
+
+import { SchemaService } from "../src/service/core/schema-service"
+
+
 const toBuffer = require('it-to-buffer')
 
 
 //Need a simulated quill js
 initEditor()
 import Quill from "quill"
+import { AuthorService } from "../src/service/author-service"
+import { Author } from "../src/dto/author"
 
 let editor
 
@@ -38,7 +44,9 @@ let id3
 let service: ChannelService
 let itemService:ItemService
 let imageService:ImageService
+let authorService:AuthorService
 let ipfsService:IpfsService
+let schemaService:SchemaService
 
 contract('ChannelService', async (accounts) => {
 
@@ -56,12 +64,15 @@ contract('ChannelService', async (accounts) => {
 
         service = container.get(ChannelService)
         itemService = container.get(ItemService)
+        authorService = container.get(AuthorService)
         imageService = container.get(ImageService)
         ipfsService = container.get(IpfsService)
+        schemaService = container.get(SchemaService)
 
-        await service.load(user0)
-        await itemService.load(user0)
-        await imageService.load(user0)
+
+        await schemaService.loadWallet(user0)
+
+
     })
 
     after("After", async () => {
@@ -264,14 +275,18 @@ contract('ChannelService', async (accounts) => {
 
     })
 
-    it("should export contract metadata with and without image", async () => {
-        
-    })
-
     it("should export NFT metadata for a channel to IPFS", async () => {
 
-
         //Arrange
+        //Add author
+        let author:Author = Object.assign(new Author(), {
+            name: "Bob",
+            walletAddress: user0
+        })
+
+        await authorService.put(author)
+
+
 
         editor = new Quill("#editor")
         editor.setText("Singing in the mountains")
@@ -294,7 +309,7 @@ contract('ChannelService', async (accounts) => {
             link: "google.com",
             description: "Singing in the mountains",
             content: editor.getContents(),
-            authorId: 3,
+            authorId: author._id,
             category: ['Gazebos'],
             attributeOptions:[
                 {
@@ -319,7 +334,7 @@ contract('ChannelService', async (accounts) => {
             link: "pontoon.com",
             content: editor.getContents(),
             description: "Another boat and a man in a bat suit",
-            authorId: 3,
+            authorId: author._id,
             category: ['Gazebos', 'Ants'],
             attributeSelections: [{
                 traitType: "Hair",
@@ -338,7 +353,7 @@ contract('ChannelService', async (accounts) => {
             title: "2An image!",
             link: "2pontoon.com",
             description: "2Another boat and a man in a bat suit",
-            authorId: 3,
+            authorId: author._id,
             category: ['Gazebos', 'Ants'],
             attributeSelections: [{
                 traitType: "Hair",
@@ -355,7 +370,7 @@ contract('ChannelService', async (accounts) => {
             title: "2An image!",
             link: "2pontoon.com",
             description: "2Another boat and a man in a bat suit",
-            authorId: 3,
+            authorId: author._id,
             category: ['Gazebos', 'Ants'],
             attributeSelections: [{
                 traitType: "Hair",
@@ -385,12 +400,25 @@ contract('ChannelService', async (accounts) => {
 
         //Assert
 
-        //Write to tmp
+        //Copy to tmp directory so we're not just reading the underlying folder directly.
         await ipfsService.ipfs.files.cp(`/ipfs/${cid}`, "/tmp/" )
 
         // for await (const file of ipfsService.ipfs.files.ls("/tmp/")) {
         //     console.log(file.name)
         // }
+        
+        // console.log('Listing images')
+        // for await (const file of ipfsService.ipfs.files.ls("/tmp/images")) {
+        //     console.log(file.name)
+        // }
+
+        // console.log('Listing animations')
+        // for await (const file of ipfsService.ipfs.files.ls("/tmp/animations")) {
+        //     console.log(file.name)
+        // }
+
+        let backup = await getFileContent(`/tmp/backup.json`)
+        console.log(backup)
 
         let contractMetadata:ContractMetadata = await getFileContent(`/tmp/contractMetadata.json`)
         
@@ -398,18 +426,10 @@ contract('ChannelService', async (accounts) => {
         let item2File:Item = await getFileContent(`/tmp/2.json`)
         let item3File:Item = await getFileContent(`/tmp/3.json`)
 
-
-
-        // console.log(contractMetadata)
-        // console.log(item1File)
-        // console.log(item2File)
-        // console.log(item3File)
-
         assert.strictEqual(contractMetadata.name, "The Sound of Music")
         assert.strictEqual(contractMetadata.description, 'Singing in the mountains')
         assert.strictEqual(contractMetadata.external_link, 'google.com')
         assert.strictEqual(contractMetadata.image, 'ipfs://QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr')
-
 
         assert.strictEqual(item1File.tokenId, '1')
         assert.strictEqual(item1File.name, 'An image!')
@@ -427,13 +447,13 @@ contract('ChannelService', async (accounts) => {
 
     })
 
-    it("should should get the JSON Feed for a channel", async () => {
+    // it("should should get the JSON Feed for a channel", async () => {
 
-    })
+    // })
 
-    it("should should get the RSS Feed for a channel", async () => {
+    // it("should should get the RSS Feed for a channel", async () => {
 
-    })
+    // })
 
     it("should publish a channel", async () => {
 

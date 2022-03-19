@@ -3,7 +3,6 @@ import { validate, ValidationError } from 'class-validator';
 import { Channel } from "../dto/channel"
 import { Item } from "../dto/item"
 
-import { DatabaseService } from "./core/database-service"
 import { ValidationException } from "../util/validation-exception";
 import { v4 as uuidv4 } from 'uuid';
 import { QuillService } from "./quill-service";
@@ -14,33 +13,23 @@ import { NFTMetadata } from "../dto/nft-metadata";
 import { ItemService } from "./item-service";
 import { IpfsService } from "./core/ipfs-service";
 
+import { ChannelRepository } from "../repository/channel-repository";
+import { SchemaService } from "./core/schema-service";
+
 @injectable()
 class ChannelService {
 
-  db:any
-
   constructor(
-    private databaseService:DatabaseService,
+    private channelRepository:ChannelRepository,
     private imageService:ImageService,
     private itemService:ItemService,
     private ipfsService:IpfsService,
-    private quillService:QuillService
+    private quillService:QuillService,
+    private schemaService:SchemaService
   ) { }
 
-  async load(walletAddress:string) {
-
-    this.db = await this.databaseService.getDatabase(walletAddress, "channel", async (db) => {
-
-      //Create indexes
-      await db.createIndex({index: { fields: ['dateCreated']}})
-      await db.createIndex({index: { fields: ['lastUpdated']}})
-
-    })
-
-  }
-
   async get(_id:string): Promise<Channel> {
-    return Object.assign(new Channel(), await this.db.get(_id))
+    return this.channelRepository.get(_id)
   }
 
   async put(channel: Channel) {
@@ -65,44 +54,33 @@ class ChannelService {
       throw new ValidationException(errors)
     }
     
-    await this.db.put(channel)
+    await this.channelRepository.put(channel)
 
   }
 
   async list(limit: number, skip:number): Promise<Channel[]> {
-
-    let response = await this.db.find({
-      selector: { "dateCreated": { $exists: true } },
-      sort: [{ 'dateCreated': 'desc'}],
-      limit: limit,
-      skip: skip
-    })
-
-    return response.docs
-
+    return this.channelRepository.list(limit, skip)
   }
 
   async delete(channel:Channel): Promise<void> {
-    await this.db.remove(channel)
+    await this.channelRepository.delete(channel)
   }
 
   async exportNFTMetadata(channel:Channel) : Promise<string> {
 
     //Assign  
     let nftMetadata:NFTMetadata[] = []
-    let coverImages:string[] = []
+    let images:string[] = []
     let animationCids:string[] = []
 
     //Get contract metadata
     let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel)
 
-
     //Add cover image
-    coverImages.push(channel.coverImageId)
+    images.push(channel.coverImageId)
 
     //Look up items
     let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
-
 
     //Generate token IDs starting at 1. Save all the records
     let tokenId = 1
@@ -126,14 +104,26 @@ class ChannelService {
     
       //Add cover image
       if (item.coverImageId) {
-        coverImages.push(item.coverImageId)
+        images.push(item.coverImageId)
       }
+
+      //Get images in post content
+      if (item.content?.ops) {
+        for (let op of item.content.ops) {
+          if (op.insert && op.insert.ipfsimage) {
+            images.push(op.insert.ipfsimage.ipfsCid)
+          }
+        }
+      }
+
 
       //Generate metadata and add to list
       nftMetadata.push(await this.itemService.exportNFTMetadata(item, animationCid, item.coverImageId))
 
       tokenId++
     }
+
+
 
     let directory = `/blogs/${channel._id}`
 
@@ -153,18 +143,21 @@ class ChannelService {
 
     }
 
-    //Save cover images 
-    for (let image of coverImages) {
-      // if (!image) continue
+    //Save images 
+    for (let image of images) {
       await this.ipfsService.ipfs.files.cp(`/ipfs/${image}`, `${directory}/images/${image}`, { parents: true })
-
     }
 
     //Save animation cids
     for (let animationCid of animationCids) {
-      // if (!animationCid) continue
       await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
     }
+
+    //Save pouch dbs
+    let backupPath = `${directory}/backup.json`
+    let backup = await this.schemaService.backup(channel._id)
+    await this.ipfsService.ipfs.files.write(backupPath, new TextEncoder().encode(JSON.stringify(backup)), { create: true, parents: true})
+
 
     let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
       hash: true
@@ -202,12 +195,11 @@ class ChannelService {
   async getRSSFeed(_id:string) : Promise<string> {return}
   async publish(_id:string) { 
 
-    //Generate token IDs starting at 1. 
+    //Export contract metadata to IPFS
 
-    //Set published date for all items
+    //Save to Pinata
 
-    //Save them.
-
+    //Deploy contract
 
 
   }

@@ -1,7 +1,6 @@
 import { Author } from "../dto/author";
 import {  injectable } from "inversify";
-import { IpfsService } from "./core/ipfs-service";
-import { DatabaseService } from "./core/database-service";
+import { AuthorRepository } from "../repository/author-repository";
 
 @injectable()
 class AuthorService {
@@ -9,29 +8,22 @@ class AuthorService {
   db:any
 
   constructor(
-    private databaseService:DatabaseService
+    private authorRepository:AuthorRepository
   ) {}
 
-  async load(walletAddress:string) {
-    this.db = this.databaseService.getDatabase(walletAddress, "author")
-  }
-
-
   async get(_id: string): Promise<Author> {
-    return this.db.get(_id)
+    return this.authorRepository.get(_id)
   }
 
-  async put(profile: Author) {
+  async put(author: Author) {
 
     let key:string
 
-    if (profile._id) {
-      key = profile._id
-    } else {
-      key = profile.walletAddress
-    }
+    if (!author._id) {
+      author._id = author.walletAddress
+    } 
 
-    await this.db.put(key, profile)
+    await this.authorRepository.put(author)
   }
 
 

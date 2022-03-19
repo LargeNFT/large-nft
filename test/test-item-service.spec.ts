@@ -11,6 +11,7 @@ import { ChannelService } from "../src/service/channel-service"
 
 import { ImageService } from "../src/service/image-service"
 import { IpfsService } from "../src/service/core/ipfs-service"
+import { SchemaService } from "../src/service/core/schema-service"
 
 const Whitepages = artifacts.require("Whitepages")
 
@@ -31,6 +32,7 @@ contract('ItemService', async (accounts) => {
     let channelService:ChannelService
     let imageService:ImageService
     let ipfsService:IpfsService
+    let schemaService:SchemaService
 
     let channel1:Channel
     let channel2:Channel
@@ -49,10 +51,9 @@ contract('ItemService', async (accounts) => {
         channelService = container.get(ChannelService)
         imageService = container.get(ImageService)
         ipfsService = container.get(IpfsService)
+        schemaService = container.get(SchemaService)
 
-        await service.load(user0)
-        await channelService.load(user0)
-        await imageService.load(user0)
+        await schemaService.loadWallet(user0)
 
         //Create a couple of test channels
         channel1 = Object.assign(new Channel(), {
@@ -185,13 +186,13 @@ contract('ItemService', async (accounts) => {
         let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
 
         assert.equal(items.length, 3)
-        assert.equal(items[0].title, "Batman")
+        assert.equal(items[0].title, "Updated title")
         assert.equal(items[1].title, "Titanic")
-        assert.equal(items[2].title, "Updated title")
+        assert.equal(items[2].title, "Batman")
 
         //Set these for the next test
         id2 = items[1]._id
-        id3 = items[0]._id
+        id3 = items[2]._id
 
     })
 
@@ -218,9 +219,9 @@ contract('ItemService', async (accounts) => {
 
         //assert
         assert.equal(items.length, 3)
-        assert.equal(items[0].description, "Wow3")
+        assert.equal(items[0].description, "Wow1")
         assert.equal(items[1].description, "Wow2")
-        assert.equal(items[2].description, "Wow1")
+        assert.equal(items[2].description, "Wow3")
 
     })
 
@@ -259,17 +260,17 @@ contract('ItemService', async (accounts) => {
         let items1:Item[] = await service.listByChannel(channel1._id, 10, 0)
 
         assert.equal(items1.length, 3)
-        assert.equal(items1[0].title, "Batman")
+        assert.equal(items1[0].title, "Updated title")
         assert.equal(items1[1].title, "Titanic")
-        assert.equal(items1[2].title, "Updated title")
+        assert.equal(items1[2].title, "Batman")
 
 
         let items2:Item[] = await service.listByChannel(channel2._id, 10, 0)
 
         assert.equal(items2.length, 3)
-        assert.equal(items2[0].title, "Another one2")
+        assert.equal(items2[0].title, "Titanic2")
         assert.equal(items2[1].title, "Batman2")
-        assert.equal(items2[2].title, "Titanic2")
+        assert.equal(items2[2].title, "Another one2")
 
 
 
@@ -299,23 +300,23 @@ contract('ItemService', async (accounts) => {
 
         //assert
         assert.equal(items.length, 3)
-        assert.equal(items[0].title, "99 has to be longer")
-        assert.equal(items[1].title, "98 has to be longer")
-        assert.equal(items[2].title, "97 has to be longer")
+        assert.equal(items[0].title, "0 has to be longer")
+        assert.equal(items[1].title, "1 has to be longer")
+        assert.equal(items[2].title, "2 has to be longer")
 
         items = await service.listByChannel(17, 3, 3)
 
         assert.equal(items.length, 3)
-        assert.equal(items[0].title, "96 has to be longer")
-        assert.equal(items[1].title, "95 has to be longer")
-        assert.equal(items[2].title, "94 has to be longer")
+        assert.equal(items[0].title, "3 has to be longer")
+        assert.equal(items[1].title, "4 has to be longer")
+        assert.equal(items[2].title, "5 has to be longer")
 
         items = await service.listByChannel(17, 3, 6)
 
         assert.equal(items.length, 3)
-        assert.equal(items[0].title, "93 has to be longer")
-        assert.equal(items[1].title, "92 has to be longer")
-        assert.equal(items[2].title, "91 has to be longer")
+        assert.equal(items[0].title, "6 has to be longer")
+        assert.equal(items[1].title, "7 has to be longer")
+        assert.equal(items[2].title, "8 has to be longer")
 
     })
 
@@ -333,7 +334,7 @@ contract('ItemService', async (accounts) => {
         //Arrange
         //Upload pretend image data
         let result = await ipfsService.ipfs.add({
-            content: "pretend that this is image data"
+            content: "pretend that this is image data4343243"
         })
 
         let image:Image = await imageService.newFromCid(result.cid.toString())
@@ -360,9 +361,9 @@ contract('ItemService', async (accounts) => {
         await service.put(item)
 
 
-        const metadata = await service.exportNFTMetadata(item)
+        const metadata = await service.exportNFTMetadata(item, undefined, image._id)
 
-        assert.strictEqual(metadata.image, 'ipfs://QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr')
+        assert.strictEqual(metadata.image, 'ipfs://QmZyhR8TGNhD3s2HrykyFr9NFS9wCs4X4M66uaKq78Sd3p')
 
         assert.strictEqual(metadata.attributes[0].traitType, "Type")
         assert.strictEqual(metadata.attributes[0].value, "Skelton")

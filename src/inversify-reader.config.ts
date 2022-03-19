@@ -33,6 +33,11 @@ import { ChannelService } from "./service/channel-service"
 import { IpfsService } from "./service/core/ipfs-service"
 import { Container } from "inversify";
 import { DatabaseService } from './service/core/database-service'
+import { ChannelRepository } from './repository/channel-repository'
+import { ItemRepository } from './repository/item-repository'
+import { ImageRepository } from './repository/image-repository'
+import { AuthorRepository } from './repository/author-repository'
+import { SchemaService } from './service/core/schema-service'
 
 
 let container
@@ -203,12 +208,20 @@ function getMainContainer() {
   container.bind(UploadService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()
+  container.bind(SchemaService).toSelf().inSingletonScope()
+
   container.bind(WalletService).toSelf().inSingletonScope()
 
 
   container.bind(AuthorService).toSelf().inSingletonScope()
   container.bind(ChannelService).toSelf().inSingletonScope()
   container.bind(ImageService).toSelf().inSingletonScope()
+
+  container.bind(ChannelRepository).toSelf().inSingletonScope()
+  container.bind(ItemRepository).toSelf().inSingletonScope()
+  container.bind(ImageRepository).toSelf().inSingletonScope()
+  container.bind(AuthorRepository).toSelf().inSingletonScope()
+
 
 
   return container

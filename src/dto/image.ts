@@ -11,7 +11,7 @@ class Image {
 
     @IsNotEmpty()
     url?:string
-    
+
     @Allow()
     title?:string
     

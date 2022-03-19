@@ -2,6 +2,8 @@ import { injectable } from 'inversify';
 
 import PouchDB from 'pouchdb';
 import PouchFind from 'pouchdb-find'
+import { ChannelRepository } from '../../repository/channel-repository';
+import { ItemRepository } from '../../repository/item-repository';
 
 
 @injectable()
@@ -13,6 +15,7 @@ class DatabaseService {
         //Enable find plugin
         PouchDB.plugin(PouchFind)
     }
+
 
 
     async getDatabase(walletAddress:string, name:string, buildIndexes?:Function) {
@@ -42,6 +45,10 @@ class DatabaseService {
         return this.dbCache[fullName]
 
     }
+
+
+
+
 
 }
 

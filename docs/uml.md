@@ -128,4 +128,8 @@ ItemService : +Item[] listByChannel(string channelId, number limit, string start
 ItemService : +void mint(string _id)
 
 ItemService : +NFTMetadata exportNFTMetadata(Item item)
+
+class SchemaService
+SchemaService : +void loadWallet(string walletAddress)
+SchemaService : backup(string channelId) {
 ```

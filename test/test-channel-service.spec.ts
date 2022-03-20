@@ -418,7 +418,12 @@ contract('ChannelService', async (accounts) => {
         // }
 
         let backup = await getFileContent(`/tmp/backup.json`)
-        console.log(backup)
+        // console.log(backup)
+
+        assert.strictEqual(backup.channels.length, 1)
+        assert.strictEqual(backup.items.length, 3)
+        assert.strictEqual(backup.authors.length, 1)
+
 
         let contractMetadata:ContractMetadata = await getFileContent(`/tmp/contractMetadata.json`)
         

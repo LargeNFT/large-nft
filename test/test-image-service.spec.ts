@@ -7,6 +7,7 @@ import { Image } from "../src/dto/image"
 import { ImageService } from "../src/service/image-service"
 
 import { IpfsService } from "../src/service/core/ipfs-service"
+import { SchemaService } from "../src/service/core/schema-service"
 
 
 let user0
@@ -23,6 +24,7 @@ contract('ImageService', async (accounts) => {
 
     let service: ImageService
     let ipfsService: IpfsService
+    let schemaService:SchemaService
 
 
     before("", async () => {
@@ -37,8 +39,11 @@ contract('ImageService', async (accounts) => {
         
         service = container.get(ImageService)
         ipfsService = container.get(IpfsService)
+        schemaService = container.get(SchemaService)
 
-        await service.load(user0)
+
+        await schemaService.loadWallet(user0)
+
 
     })
 

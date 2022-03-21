@@ -27,9 +27,6 @@ import { Author } from "../src/dto/author"
 let editor
 
 
-
-const Whitepages = artifacts.require("Whitepages")
-
 let user0
 let user1
 let user2

@@ -13,7 +13,6 @@ import { ImageService } from "../src/service/image-service"
 import { IpfsService } from "../src/service/core/ipfs-service"
 import { SchemaService } from "../src/service/core/schema-service"
 
-const Whitepages = artifacts.require("Whitepages")
 
 let user0
 let user1

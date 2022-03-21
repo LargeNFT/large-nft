@@ -3,28 +3,20 @@
 pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-
 import "@openzeppelin/contracts/access/Ownable.sol";
 // import "./util/console.sol";
-
 
 contract Channel is ERC721Enumerable, Ownable {
 
     string private _ipfsCid;
 
     uint256 private _mintFee;
-    address private _feeRecipient;
 
     uint256 private _maxTokenId;
 
-    constructor(string memory name, string memory symbol, uint256 mintFee, address feeRecipient, uint256 maxTokenId) ERC721(name, symbol) {
+    constructor(string memory name, string memory symbol, uint256 mintFee, uint256 maxTokenId) ERC721(name, symbol) {
         _mintFee = mintFee;
-        _feeRecipient = feeRecipient;
         _maxTokenId = maxTokenId;
-    }
-
-    function changeFeeRecipient(address newRecipient) external onlyOwner {
-        _feeRecipient = newRecipient;
     }
 
     function activate(string calldata ipfsCid) external onlyOwner {
@@ -49,12 +41,7 @@ contract Channel is ERC721Enumerable, Ownable {
 
         //Validate we have enough ETH. 
         require(msg.value == _mintFee, "Send exact ETH");
- 
-        //Transfer ETH to _feeRecipient
-        if (msg.value > 0) {
-            payable(_feeRecipient).transfer(msg.value);
-        }
-        
+
         //Mint
         _safeMint(_msgSender(), tokenId, "");
 
@@ -65,16 +52,43 @@ contract Channel is ERC721Enumerable, Ownable {
         
         require(bytes(_ipfsCid).length > 0, "Not active");
 
-        //Validate token exists
-        require(_exists(tokenId), "Does not exist");
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-
-        return string(abi.encodePacked("ipfs://", _ipfsCid, "/", tokenId, ".json"));
+        return string(abi.encodePacked("ipfs://", _ipfsCid, "/", uint2str(tokenId), ".json"));
     
     }
 
 
+    function withdraw() public payable onlyOwner {
 
+        (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
+        require(success);
+
+    }
+
+
+
+    function uint2str(uint _i) public pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
+    }
 
 
 

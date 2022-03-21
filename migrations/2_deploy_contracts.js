@@ -1,6 +1,6 @@
-var ChannelFactory = artifacts.require("ChannelFactory");
+var Channel = artifacts.require("Channel");
 
 
 module.exports = function(deployer) {
-  deployer.deploy(ChannelFactory);
+  // deployer.deploy(Channel);
 };

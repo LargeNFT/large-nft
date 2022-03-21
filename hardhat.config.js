@@ -11,7 +11,7 @@ require("@nomiclabs/hardhat-etherscan");
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1337
+        runs: 100000
       }
     },
   }

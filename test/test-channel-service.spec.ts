@@ -84,202 +84,212 @@ contract('ChannelService', async (accounts) => {
     after("After", async () => {
     })
 
-    // it("should fail to create invalid channel", async () => {
+    it("should fail to create invalid channel", async () => {
         
-    //     try {
-    //         await service.put(new Channel())
-    //         assert.fail("Did not throw exception")
-    //     } catch(ex) {
-    //         assert.strictEqual(ex.errors.length, 3)
-    //     }
+        try {
+            await service.put(new Channel())
+            assert.fail("Did not throw exception")
+        } catch(ex) {
+            assert.strictEqual(ex.errors.length, 4)
+        }
 
-    // })
+    })
 
 
-    // it("should fail to create valid object if it's not the right class", async () => {
+    it("should fail to create valid object if it's not the right class", async () => {
         
-    //     try {
-    //         await service.put({
-    //             title: "The Sound of Music",
-    //             link: "google.com",
-    //             description: "Singing in the mountains",
-    //             authorId: 3,
-    //             category: ['Gazebos']
-    //         })
-    //         assert.fail("Did not throw exception")
-    //     } catch(ex) {
-    //         assert.strictEqual(ex.errors.length, 1)
-    //     }
+        try {
+            await service.put({
+                title: "The Sound of Music",
+                link: "google.com",
+                symbol: "SOM",
+                mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+                description: "Singing in the mountains",
+                authorId: 3,
+                category: ['Gazebos']
+            })
+            assert.fail("Did not throw exception")
+        } catch(ex) {
+            assert.strictEqual(ex.errors.length, 1)
+        }
 
-    // })
-
-
-    // it("should get an empty list of channels", async () => {
-    //     let channels:Channel[] = await service.list(10)
-    //     assert.strictEqual(channels.length, 0 )
-    // })
+    })
 
 
-
-
-    // it("should create & get", async () => {
-
-    //     //Arrange
-    //     let channel:Channel = Object.assign(new Channel(), {
-    //         title: "The Sound of Music",
-    //         link: "google.com",
-    //         description: "Singing in the mountains",
-    //         authorId: 3,
-    //         category: ['Gazebos'],
-    //         sellerFeeBasisPoints: 100,
-    //         feeRecipient: user0
-    //     }) 
-
-    //     //Act
-    //     await service.put(channel)
-
-    //     id1 = channel._id
-
-    //     //Read via permalinkKey
-    //     let fetched = await service.get(id1)
-
-    //     assert.equal(fetched.title, "The Sound of Music")
-    //     assert.equal(fetched.link, "google.com")
-    //     assert.equal(fetched._id, id1)
-    //     assert.equal(fetched.sellerFeeBasisPoints, 100)
-    //     assert.equal(fetched.feeRecipient, user0)
-
-
-    // })
-
-    // it("should update a channel", async () => {
-
-    //     //Arrange
-    //     let channel:Channel = await service.get(id1)
-    //     channel.title = "Updated title"
-
-    //     //Act
-    //     await service.put(channel)
-
-    //     //Assert
-    //     let fetched = await service.get(id1)
-
-    //     assert.equal(fetched.title, "Updated title")
-    //     assert.equal(fetched.link, "google.com")
-    //     assert.equal(fetched._id, id1)
-
-
-    // })
-
-    // it("should read channels back in order", async () => {
-
-    //     //Arrange - Add a few more channels
-    //     await service.put(Object.assign(new Channel(), {
-    //         title: "Titanic",
-    //         link: "alexa.com",
-    //         description: "A boat that is not good at boating",
-    //         authorId: 3,
-    //         category: ['Sunk']
-    //     }))
-
-
-    //     await service.put(Object.assign(new Channel(), {
-    //         title: "Batman",
-    //         link: "pontoon.com",
-    //         description: "Another boat and a man in a bat suit",
-    //         authorId: 3,
-    //         category: ['Not Sunk']
-    //     }))
+    it("should get an empty list of channels", async () => {
+        let channels:Channel[] = await service.list(10)
+        assert.strictEqual(channels.length, 0 )
+    })
 
 
 
 
-    //     let channels:Channel[] = await service.list(10, 0)
+    it("should create & get", async () => {
 
-    //     assert.equal(channels.length, 3)
-    //     assert.equal(channels[0].title, "Batman")
-    //     assert.equal(channels[1].title, "Titanic")
-    //     assert.equal(channels[2].title, "Updated title")
+        //Arrange
+        let channel:Channel = Object.assign(new Channel(), {
+            title: "The Sound of Music",
+            link: "google.com",
+            symbol: "SOM",
+            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            description: "Singing in the mountains",
+            authorId: 3,
+            category: ['Gazebos'],
+            sellerFeeBasisPoints: 100,
+            feeRecipient: user0
+        }) 
 
-    //     //Set these for the next test
-    //     id2 = channels[1]._id
-    //     id3 = channels[0]._id
+        //Act
+        await service.put(channel)
 
-    // })
+        id1 = channel._id
 
+        //Read via permalinkKey
+        let fetched = await service.get(id1)
 
-    // it("should update those channels and still read them back in order", async () => {
-
-    //     //Arrange
-    //     let channel1: Channel = await service.get(id1)
-    //     channel1.description = "Wow1"
-
-    //     let channel2: Channel = await service.get(id2)
-    //     channel2.description = "Wow2"
-
-    //     let channel3: Channel = await service.get(id3)
-    //     channel3.description = "Wow3"
-
-    //     //Act
-    //     await service.put(channel1)
-    //     await service.put(channel2)
-    //     await service.put(channel3)
-
-    //     //Act
-    //     let channels:Channel[] = await service.list(10, 0)
-
-    //     //assert
-    //     assert.equal(channels.length, 3)
-    //     assert.equal(channels[0].description, "Wow3")
-    //     assert.equal(channels[1].description, "Wow2")
-    //     assert.equal(channels[2].description, "Wow1")
+        assert.equal(fetched.title, "The Sound of Music")
+        assert.equal(fetched.link, "google.com")
+        assert.equal(fetched._id, id1)
+        assert.equal(fetched.sellerFeeBasisPoints, 100)
+        assert.equal(fetched.feeRecipient, user0)
 
 
-    // })
+    })
+
+    it("should update a channel", async () => {
+
+        //Arrange
+        let channel:Channel = await service.get(id1)
+        channel.title = "Updated title"
+
+        //Act
+        await service.put(channel)
+
+        //Assert
+        let fetched = await service.get(id1)
+
+        assert.equal(fetched.title, "Updated title")
+        assert.equal(fetched.link, "google.com")
+        assert.equal(fetched._id, id1)
 
 
-    // it("should load a database with lots of records and page through them", async () => {
+    })
 
-    //     //Arrange
-    //     // const sleep = ms => new Promise(r => setTimeout(r, ms));
+    it("should read channels back in order", async () => {
 
-    //     for (var i = 0; i < 100; i++) {
+        //Arrange - Add a few more channels
+        await service.put(Object.assign(new Channel(), {
+            title: "Titanic",
+            link: "alexa.com",
+            symbol: "SOM",
+            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            description: "A boat that is not good at boating",
+            authorId: 3,
+            category: ['Sunk']
+        }))
 
-    //         await service.put(Object.assign(new Channel(), {
-    //             title: (i).toString() + " it has to be longer ",
-    //             link: "alexa.com",
-    //             description: "A boat that is not good at boating",
-    //             authorId: 3,
-    //             category: ['Sunk']
-    //         }))
+
+        await service.put(Object.assign(new Channel(), {
+            title: "Batman",
+            link: "pontoon.com",
+            symbol: "SOM",
+            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            description: "Another boat and a man in a bat suit",
+            authorId: 3,
+            category: ['Not Sunk']
+        }))
+
+
+
+
+        let channels:Channel[] = await service.list(10, 0)
+
+        assert.equal(channels.length, 3)
+        assert.equal(channels[0].title, "Batman")
+        assert.equal(channels[1].title, "Titanic")
+        assert.equal(channels[2].title, "Updated title")
+
+        //Set these for the next test
+        id2 = channels[1]._id
+        id3 = channels[0]._id
+
+    })
+
+
+    it("should update those channels and still read them back in order", async () => {
+
+        //Arrange
+        let channel1: Channel = await service.get(id1)
+        channel1.description = "Wow1"
+
+        let channel2: Channel = await service.get(id2)
+        channel2.description = "Wow2"
+
+        let channel3: Channel = await service.get(id3)
+        channel3.description = "Wow3"
+
+        //Act
+        await service.put(channel1)
+        await service.put(channel2)
+        await service.put(channel3)
+
+        //Act
+        let channels:Channel[] = await service.list(10, 0)
+
+        //assert
+        assert.equal(channels.length, 3)
+        assert.equal(channels[0].description, "Wow3")
+        assert.equal(channels[1].description, "Wow2")
+        assert.equal(channels[2].description, "Wow1")
+
+
+    })
+
+
+    it("should load a database with lots of records and page through them", async () => {
+
+        //Arrange
+        // const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        for (var i = 0; i < 100; i++) {
+
+            await service.put(Object.assign(new Channel(), {
+                title: (i).toString() + " it has to be longer ",
+                symbol: "SOM",
+                mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+                link: "alexa.com",
+                description: "A boat that is not good at boating",
+                authorId: 3,
+                category: ['Sunk']
+            }))
     
-    //         await sleep(50) //just need different timestamp
-    //     }
+            await sleep(50) //just need different timestamp
+        }
 
-    //     //Get a page of 3
-    //     let channels:Channel[] = await service.list(3, 0)
+        //Get a page of 3
+        let channels:Channel[] = await service.list(3, 0)
 
-    //     //assert
-    //     assert.equal(channels.length, 3)
-    //     assert.equal(channels[0].title, "99 it has to be longer ")
-    //     assert.equal(channels[1].title, "98 it has to be longer ")
-    //     assert.equal(channels[2].title, "97 it has to be longer ")
+        //assert
+        assert.equal(channels.length, 3)
+        assert.equal(channels[0].title, "99 it has to be longer ")
+        assert.equal(channels[1].title, "98 it has to be longer ")
+        assert.equal(channels[2].title, "97 it has to be longer ")
 
-    //     channels = await service.list(3, 3)
+        channels = await service.list(3, 3)
 
-    //     assert.equal(channels.length, 3)
-    //     assert.equal(channels[0].title, "96 it has to be longer ")
-    //     assert.equal(channels[1].title, "95 it has to be longer ")
-    //     assert.equal(channels[2].title, "94 it has to be longer ")
+        assert.equal(channels.length, 3)
+        assert.equal(channels[0].title, "96 it has to be longer ")
+        assert.equal(channels[1].title, "95 it has to be longer ")
+        assert.equal(channels[2].title, "94 it has to be longer ")
 
-    //     channels = await service.list(3, 6)
+        channels = await service.list(3, 6)
 
-    //     assert.equal(channels.length, 3)
-    //     assert.equal(channels[0].title, "93 it has to be longer ")
-    //     assert.equal(channels[1].title, "92 it has to be longer ")
-    //     assert.equal(channels[2].title, "91 it has to be longer ")
+        assert.equal(channels.length, 3)
+        assert.equal(channels[0].title, "93 it has to be longer ")
+        assert.equal(channels[1].title, "92 it has to be longer ")
+        assert.equal(channels[2].title, "91 it has to be longer ")
 
-    // })
+    })
 
     let channel:Channel
     let items:Item[]

@@ -141,7 +141,7 @@ contract('PinningService', async (accounts) => {
         let pinningApi:PinningApi = await service.get(id1)
 
         //Act
-        let result = await service.pinByHash(pinningApi, file1.cid.toString())
+        let result = await service.pinByHash(pinningApi, file1.cid.toString(), "Sweet title")
         assert.equal(result.ipfsHash, 'QmXf5U9ZjZ5H8qvGKeSv2N3tU2nn21V1jmRPhAppkN2Wvt')
 
     })

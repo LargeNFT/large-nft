@@ -216,7 +216,7 @@ class ChannelService {
 
     //Save to Pinata
     if (pinningApi) {
-      let result = await this.pinningService.pinByHash(pinningApi, cid)
+      let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
       if (!result.ipfsHash) throw new Error("Problem publishing")
     }
 

@@ -4,9 +4,7 @@ import { PinningApi } from "../../dto/pinning-api";
 import { PinningApiRepository } from "../../repository/pinning-api-repository";
 import { ValidationException } from "../../util/validation-exception";
 import { v4 as uuidv4 } from 'uuid';
-
-const pinataSDK = require('@pinata/sdk');
-
+import axios from 'axios'
 
 @injectable()
 class PinningService {
@@ -41,9 +39,41 @@ class PinningService {
         await this.pinningApiRepository.put(pinningApi)    
     }
 
-    async pinByHash(pinningApi:PinningApi, cid:string) {
-        const pinata = pinataSDK(pinningApi.apiKey, pinningApi.secretApiKey);
-        return pinata.pinByHash(cid)
+    async pinByHash(pinningApi:PinningApi, cid:string, name:string) {
+
+        let url = `${pinningApi.url}/pinning/pinByHash`
+
+        // let response = await fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         pinata_api_key: pinningApi.apiKey,
+        //         pinata_secret_api_key: pinningApi.secretApiKey
+        //     },
+        //     body: JSON.stringify({
+        //         hashToPin: cid,
+        //         pinataMetadata: {
+        //             name: name
+        //         }
+        //     })
+        // })
+
+        let body = {
+            hashToPin: cid,
+            pinataMetadata: {
+                name: name
+            }
+        }
+
+
+        let response = await axios.post(url, body, {
+            headers: {
+                pinata_api_key: pinningApi.apiKey,
+                pinata_secret_api_key: pinningApi.secretApiKey
+            }
+        })
+
+        return response.data
+
     }
 
 

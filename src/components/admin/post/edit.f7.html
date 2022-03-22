@@ -104,9 +104,6 @@
     import { UiService } from "../../../service/core/ui-service"
 
     import { WalletService } from "../../../service/core/wallet-service"
-    import { BlogPostService } from "../../../service/core/blog-post-service"
-    import { PostService } from "../../../service/core/post-service"
-
 
     
     import HeaderRight from "../../admin/header-right.f7.html"
@@ -117,7 +114,7 @@
       
       let blogPostService = ContainerService.getInstance(BlogPostService)
       let postService = ContainerService.getInstance(PostService)
-      let walletService = ContainerService.getInstance(WalletService)
+      let walletService = ContainerService.getWalletService();
 
       let quillService = ContainerService.getInstance(QuillService)
 

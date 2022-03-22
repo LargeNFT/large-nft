@@ -14,13 +14,9 @@ contract Channel is ERC721Enumerable, Ownable {
 
     uint256 private _maxTokenId;
 
-    constructor(string memory name, string memory symbol, uint256 mintFee, uint256 maxTokenId) ERC721(name, symbol) {
+    constructor(string memory name, string memory symbol, string memory ipfsCid, uint256 mintFee, uint256 maxTokenId) ERC721(name, symbol) {
         _mintFee = mintFee;
         _maxTokenId = maxTokenId;
-    }
-
-    function activate(string calldata ipfsCid) external onlyOwner {
-        require(bytes(_ipfsCid).length == 0, "Already active");
         _ipfsCid = ipfsCid;
     }
 
@@ -29,9 +25,6 @@ contract Channel is ERC721Enumerable, Ownable {
         /**
         Checks
          */
-
-        //Make sure we are active
-        require(bytes(_ipfsCid).length > 0, "Inactive");
 
         //Validate tokenId is in range
         require(tokenId > 0 && tokenId <= _maxTokenId, "Invalid token");
@@ -47,11 +40,8 @@ contract Channel is ERC721Enumerable, Ownable {
 
     }
 
-
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         
-        require(bytes(_ipfsCid).length > 0, "Not active");
-
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
         return string(abi.encodePacked("ipfs://", _ipfsCid, "/", uint2str(tokenId), ".json"));

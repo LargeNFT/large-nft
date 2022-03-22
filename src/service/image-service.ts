@@ -1,13 +1,11 @@
 import { injectable } from "inversify"
 import toBuffer from "it-to-buffer"
 import { Image } from "../dto/image"
-import { DatabaseService } from "./core/database-service"
 import { IpfsService } from "./core/ipfs-service"
 import { ValidationException } from "../util/validation-exception";
 import { validate, ValidationError } from 'class-validator';
 import { Blob } from 'buffer';
 import { ImageRepository } from "../repository/image-repository"
-import { channel } from "diagnostics_channel"
 
 
 @injectable()

@@ -53,7 +53,6 @@
   import { UiService } from "../../../service/core/ui-service"
 
   import { WalletService } from "../../../service/core/wallet-service"
-  import { BlogPostService } from "../../../service/core/blog-post-service"
 
 
   import HeaderRight from "../../admin/header-right.f7.html"
@@ -61,8 +60,7 @@
 
   export default (props, { $, $h, $on, $f7, $update }) => {
 
-    let blogPostService = ContainerService.getInstance(BlogPostService)
-    let walletService = ContainerService.getInstance(WalletService)
+    let walletService = ContainerService.getWalletService();
 
     const LIMIT = 20
 

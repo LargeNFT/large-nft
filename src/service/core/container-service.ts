@@ -1,5 +1,7 @@
 
 import { getMainContainer } from "../../inversify-admin.config"
+import TYPES from "./types"
+import { WalletService } from "./wallet-service"
 
 class ContainerService {
 
@@ -13,6 +15,12 @@ class ContainerService {
     static getContainer() {
         return getMainContainer()
     }
+
+    static getWalletService() {
+        getMainContainer().get<WalletService>(TYPES.WalletService)
+
+    }
+
 
 }
 

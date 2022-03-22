@@ -91,19 +91,17 @@
 
 <script>
 
-    import { ContainerService } from "../../../service/container-service"
-    import { UiService } from "../../../service/ui-service"
+    import { ContainerService } from "../../../service/core/container-service"
+    import { UiService } from "../../../service/core/ui-service"
 
 
     import { IpfsService } from "../../../service/core/ipfs-service"
-    import { BlogPostService } from "../../../service/core/blog-post-service"
 
     import HeaderRight from "../../admin/header-right.f7.html"
 
 
     export default (props, { $, $on, $f7, $update }) => {
 
-        let blogPostService = ContainerService.getInstance(BlogPostService)
         let uiService = ContainerService.getInstance(UiService)
         let ipfsService = ContainerService.getInstance(IpfsService)
 

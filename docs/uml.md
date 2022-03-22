@@ -19,6 +19,7 @@ Channel : +string authorId
 Channel : +string title
 Channel : +string link
 Channel : +string description
+Channel : +string symbol
 
 Channel : +any content
 Channel : +string contentHTML

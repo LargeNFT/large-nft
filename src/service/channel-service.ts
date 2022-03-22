@@ -1,4 +1,4 @@
-import { injectable } from "inversify"
+import { inject, injectable } from "inversify"
 import { validate, ValidationError } from 'class-validator';
 import { Channel } from "../dto/channel"
 import { Item } from "../dto/item"
@@ -15,6 +15,13 @@ import { IpfsService } from "./core/ipfs-service";
 
 import { ChannelRepository } from "../repository/channel-repository";
 import { SchemaService } from "./core/schema-service";
+import { WalletService } from "./core/wallet-service";
+
+import { ethers, BigNumber } from "ethers";
+
+
+import TYPES from "./core/types";
+
 
 @injectable()
 class ChannelService {
@@ -25,7 +32,11 @@ class ChannelService {
     private itemService:ItemService,
     private ipfsService:IpfsService,
     private quillService:QuillService,
-    private schemaService:SchemaService
+    private schemaService:SchemaService,
+    @inject(TYPES.WalletService) private walletService:WalletService,
+
+    @inject("contracts") private contracts,
+
   ) { }
 
   async get(_id:string): Promise<Channel> {
@@ -66,7 +77,7 @@ class ChannelService {
     await this.channelRepository.delete(channel)
   }
 
-  async exportNFTMetadata(channel:Channel) : Promise<string> {
+  async exportNFTMetadata(channel:Channel, items:Item[]) : Promise<string> {
 
     //Assign  
     let nftMetadata:NFTMetadata[] = []
@@ -78,9 +89,6 @@ class ChannelService {
 
     //Add cover image
     images.push(channel.coverImageId)
-
-    //Look up items
-    let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
 
     //Generate token IDs starting at 1. Save all the records
     let tokenId = 1
@@ -126,6 +134,12 @@ class ChannelService {
 
 
     let directory = `/blogs/${channel._id}`
+
+    //Clear 
+    try {
+      await this.ipfsService.ipfs.files.read(directory)
+      await this.ipfsService.ipfs.files.rm(directory, { recursive: true})  
+    } catch (ex) {}
 
     //Save contract metadata
     let contractMetadataPath = `${directory}/contractMetadata.json`
@@ -193,17 +207,40 @@ class ChannelService {
 
   async getJSONFeed(_id:string) {}
   async getRSSFeed(_id:string) : Promise<string> {return}
-  async publish(_id:string) { 
 
-    //Export contract metadata to IPFS
+
+  async publish(channel:Channel, items:Item[], cid:string) { 
 
     //Save to Pinata
 
     //Deploy contract
+    let receipt = await this.deploy(channel.title, channel.symbol, cid, channel.mintPrice, items.length)
 
+    return receipt.contractAddress
 
   }
+
+
   async importFromIPFS(cid:string) {}
+
+
+  private async deploy(name:string, symbol:string, ipfsCid:string, mintFee:number, maxTokenId:number) {
+
+    if (!name || !symbol || !mintFee || !maxTokenId || !ipfsCid) throw new Error("Missing inputs to deploy")
+
+    let wallet = this.walletService.wallet
+    if (!wallet) throw new Error("No wallet!")
+
+    const c = this.contracts['Channel']
+
+    const factory = new ethers.ContractFactory(c.abi, c.bytecode, wallet)
+    
+    let contract = await factory.deploy( name, symbol, ipfsCid, BigNumber.from(mintFee), BigNumber.from(maxTokenId)  )
+    
+    return contract.deployTransaction.wait()
+
+  }
+
 
 }
 

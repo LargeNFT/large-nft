@@ -1,3 +1,5 @@
+<!--suppress JSAnnotator -->
+
 <template>
   <div id="app">
 
@@ -102,16 +104,12 @@
 
 <script>
 
-  import { ContainerService } from "../service/container-service"
+  import { ContainerService } from "../service/core/container-service"
 
-  import { UiService } from "../service/ui-service"
+  import { UiService } from "../service/core/ui-service"
 
   import { WalletService } from "../service/core/wallet-service"
   import { IpfsService } from "../service/core/ipfs-service"
-  import { BlogPostService } from "../service/core/blog-post-service"
-  import { ProfileService } from "../service/core/profile-service"
-  import { PageService } from "../service/core/page-service"
-  import { SiteSettingsService } from "../service/core/site-settings-service"
 
   
   import LogoGrey from "../html/images/logo_grey.png"
@@ -123,12 +121,8 @@
 
       let uiService = ContainerService.getInstance(UiService)
 
-      let walletService = ContainerService.getInstance(WalletService)
+      let walletService = ContainerService.getWalletService()
       let ipfsService = ContainerService.getInstance(IpfsService)
-      let blogPostService = ContainerService.getInstance(BlogPostService)
-      let profileService = ContainerService.getInstance(ProfileService)
-      let pageService = ContainerService.getInstance(PageService)
-      let siteSettingsService = ContainerService.getInstance(SiteSettingsService)
 
       
 

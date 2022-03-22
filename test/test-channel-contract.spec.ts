@@ -27,67 +27,12 @@ contract('Channel Contract', async (accounts) => {
         user3 = accounts[3]
         user4 = accounts[4]
 
-        mainContract = await Channel.new( "Test", "TST", web3.utils.toWei('0.08', 'ether'), 10, { from: user0 })
+        mainContract = await Channel.new( "Test", "TST", "xyz", web3.utils.toWei('0.08', 'ether'), 10, { from: user0 })
 
     })
 
     after("After", async () => {
     })
-
-    it("should fail to activate for non-owner", async () => {
-
-        //Act
-        await truffleAssert.fails(
-            mainContract.activate( "xyz", { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "Ownable: caller is not the owner"
-        )
-  
-    })
-
-    it("should fail to mint if project inactive", async () => {
-
-        //Act
-        await truffleAssert.fails(
-            mainContract.mint( 1, { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "Inactive"
-        )
-  
-    })
-
-    it("should fail to get tokenURI if project inactive", async () => {
-        //Act
-        await truffleAssert.fails(
-            mainContract.tokenURI( 1, { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "Not active"
-        )
-    })
-    
-    it("should activate", async () => {
-
-        //Act
-        await mainContract.activate( "xyz", { from: user0 })
-  
-        //Assert - If mint gets past the activate check we've activated
-        await truffleAssert.fails(
-            mainContract.mint( 1000, { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "Invalid token"
-        )
-
-    })
-
-
-    it("should fail to activate if already active", async () => {
-        await truffleAssert.fails(
-            mainContract.activate( "xyz", { from: user0 }),
-            truffleAssert.ErrorType.REVERT,
-            "Already active"
-        )
-    })
-
 
 
     it("should fail to get tokenURI if token doesn't exist", async () => {
@@ -201,8 +146,7 @@ contract('Channel Contract', async (accounts) => {
 
     it("should mint token ID with mintFee set to zero", async () => {
 
-        let freeContract = await Channel.new( "Test", "TST", 0, 10, { from: user0 })
-        await freeContract.activate( "xyz", { from: user0 })
+        let freeContract = await Channel.new( "Test", "TST", "zyx", 0, 10, { from: user0 })
 
         
 
@@ -222,7 +166,7 @@ contract('Channel Contract', async (accounts) => {
             let uri = await freeContract.tokenURI( i, { from: user4 })
 
             assert.strictEqual(owner, user4)
-            assert.strictEqual(uri, `ipfs://xyz/${i}.json`)
+            assert.strictEqual(uri, `ipfs://zyx/${i}.json`)
         }
 
         //Fail after range

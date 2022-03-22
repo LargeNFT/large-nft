@@ -5,11 +5,6 @@ import AdminPostCreateComponent from './components/admin/post/create.f7.html'
 import AdminPostShowComponent from './components/admin/post/show.f7.html'
 import AdminPostEditComponent from './components/admin/post/edit.f7.html'
 
-import AdminPageIndexComponent from './components/admin/page/index.f7.html'
-import AdminPageCreateComponent from './components/admin/page/create.f7.html'
-import AdminPageShowComponent from './components/admin/page/show.f7.html'
-import AdminPageEditComponent from './components/admin/page/edit.f7.html'
-
 import AdminSettingsComponent from './components/admin/settings/index.f7.html'
 import AdminConnectComponent from './components/admin/connect/index.f7.html'
 
@@ -25,7 +20,6 @@ import { QuillEditorService } from "./service/quill-editor-service";
 
 import { UploadService } from "./service/core/upload-service";
 
-import EventEmitter from "events";
 import { WalletService } from "./service/core/wallet-service"
 import { ImageService } from "./service/image-service"
 import { AuthorService } from "./service/author-service"
@@ -38,9 +32,12 @@ import { ItemRepository } from './repository/item-repository'
 import { ImageRepository } from './repository/image-repository'
 import { AuthorRepository } from './repository/author-repository'
 import { SchemaService } from './service/core/schema-service'
+import { WalletServiceImpl } from './service/core/wallet-service-impl'
+import { ContainerService } from './service/core/container-service'
+import TYPES from './service/core/types'
 
 
-let container
+let container:Container
 
 function getMainContainer() {
 
@@ -81,25 +78,6 @@ function getMainContainer() {
           component: AdminPostEditComponent
         },
 
-        /**
-         * Pages
-         */
-        {
-          path: "/admin/page",
-          component: AdminPageIndexComponent
-        },
-        {
-          path: "/admin/page/create",
-          component: AdminPageCreateComponent
-        },
-        {
-          path: "/admin/page/show/:id",
-          component: AdminPageShowComponent
-        },
-        {
-          path: "/admin/page/edit/:id",
-          component: AdminPageEditComponent
-        },
 
         /**
          * Site Settings
@@ -181,9 +159,6 @@ function getMainContainer() {
     }
   }
 
-  function eventEmitter() {
-    return new EventEmitter()
-  }
 
 
   // container.bind('sketch').toConstantValue(sketch())
@@ -191,8 +166,6 @@ function getMainContainer() {
   container.bind("provider").toConstantValue(provider())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
-
-  container.bind("eventEmitter").toConstantValue(eventEmitter())
 
   container.bind("ipfsOptions").toConstantValue(ipfsOptions())
   container.bind("orbitOptions").toConstantValue(orbitOptions())
@@ -210,7 +183,7 @@ function getMainContainer() {
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(SchemaService).toSelf().inSingletonScope()
 
-  container.bind(WalletService).toSelf().inSingletonScope()
+  container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()
 
 
   container.bind(AuthorService).toSelf().inSingletonScope()

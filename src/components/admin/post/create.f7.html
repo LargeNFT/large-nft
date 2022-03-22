@@ -105,9 +105,6 @@
     import { UiService } from "../../../service/core/ui-service"
 
     import { WalletService } from "../../../service/core/wallet-service"
-    import { BlogPostService } from "../../../service/core/blog-post-service"
-    import { PostService } from "../../../service/core/post-service"
-
 
 
     import HeaderRight from "../../admin/header-right.f7.html"
@@ -118,10 +115,8 @@
     export default (props, { $, $on, $f7, $update }) => {
       
       let quillService = ContainerService.getInstance(QuillService)
-      let blogPostService = ContainerService.getInstance(BlogPostService)
-      let walletService = ContainerService.getInstance(WalletService)
+      let walletService = ContainerService.getWalletService();
       let uiService = ContainerService.getInstance(UiService)
-      let postService = ContainerService.getInstance(PostService)
 
       let toast
 

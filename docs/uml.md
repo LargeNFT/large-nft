@@ -86,6 +86,11 @@ Image : +string _rev
 Image : +string url
 Image : +string title
 
+class PinningApi
+PinningApi : +string apiKey
+PinningApi : +string secretApiKey
+PinningApi : +string url
+
 ```
 
 ```mermaid
@@ -132,5 +137,9 @@ ItemService : +NFTMetadata exportNFTMetadata(Item item)
 
 class SchemaService
 SchemaService : +void loadWallet(string walletAddress)
-SchemaService : backup(string channelId) {
+SchemaService : backup(string channelId)
+
+class PinningService
+PinningService : +void pin(string cid)
+
 ```

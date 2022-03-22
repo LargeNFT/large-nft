@@ -72,3 +72,6 @@ data/
 
 test/pouch/*
 test/test-repo/*
+
+.env
+test/.env

@@ -33,8 +33,9 @@ import { ImageRepository } from './repository/image-repository'
 import { AuthorRepository } from './repository/author-repository'
 import { SchemaService } from './service/core/schema-service'
 import { WalletServiceImpl } from './service/core/wallet-service-impl'
-import { ContainerService } from './service/core/container-service'
 import TYPES from './service/core/types'
+import { PinningService } from './service/core/pinning-service'
+import { PinningApiRepository } from './repository/pinning-api-repository'
 
 
 let container:Container
@@ -182,6 +183,7 @@ function getMainContainer() {
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(SchemaService).toSelf().inSingletonScope()
+  container.bind(PinningService).toSelf().inSingletonScope()
 
   container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()
 
@@ -194,6 +196,7 @@ function getMainContainer() {
   container.bind(ItemRepository).toSelf().inSingletonScope()
   container.bind(ImageRepository).toSelf().inSingletonScope()
   container.bind(AuthorRepository).toSelf().inSingletonScope()
+  container.bind(PinningApiRepository).toSelf().inSingletonScope()
 
 
 

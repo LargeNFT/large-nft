@@ -1,4 +1,6 @@
 //@ts-nocheck
+require("dotenv").config();
+
 import { getContainer } from "./inversify.config"
 
 import assert from 'assert'
@@ -13,6 +15,7 @@ import { ImageService } from "../src/service/image-service"
 import { IpfsService } from "../src/service/core/ipfs-service"
 
 import { SchemaService } from "../src/service/core/schema-service"
+import { PinningService } from "../src/service/core/pinning-service"
 
 const ChannelContract = artifacts.require("Channel")
 const truffleAssert = require('truffle-assertions')
@@ -46,6 +49,10 @@ let imageService:ImageService
 let authorService:AuthorService
 let ipfsService:IpfsService
 let schemaService:SchemaService
+let pinningService:PinningService
+
+let apiKey = process.env.PINATA_API_KEY
+let secretApiKey = process.env.PINATA_SECRET_API_KEY
 
 contract('ChannelService', async (accounts) => {
 
@@ -67,7 +74,7 @@ contract('ChannelService', async (accounts) => {
         imageService = container.get(ImageService)
         ipfsService = container.get(IpfsService)
         schemaService = container.get(SchemaService)
-
+        pinningService = container.get(PinningService)
 
         await schemaService.loadWallet(user0)
 
@@ -467,7 +474,14 @@ contract('ChannelService', async (accounts) => {
 
     it("should publish a channel", async () => {
 
-        let contractAddress = await service.publish(channel, items, cid)
+        //Arrange
+
+        //Set up Pinata
+        let contractAddress = await service.publish(channel, items, {
+            apiKey: apiKey,
+            secretApiKey: secretApiKey,
+            url: "https://api.pinata.cloud"
+        }, cid)
 
         assert.notEqual(contractAddress, undefined)
 
@@ -492,7 +506,12 @@ contract('ChannelService', async (accounts) => {
 
         //Get the metadata and make sure it's right
         let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${cid}/1.json`))
-        console.log(new TextDecoder("utf-8").decode(bufferedContents))
+        
+        let tokenMetadata = JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
+
+        assert.strictEqual(tokenMetadata.tokenId, "1")
+        assert.strictEqual(tokenMetadata.name, "An image!")
+
 
     })
 

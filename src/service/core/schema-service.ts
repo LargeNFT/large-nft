@@ -3,6 +3,7 @@ import { AuthorRepository } from "../../repository/author-repository";
 import { ChannelRepository } from "../../repository/channel-repository";
 import { ImageRepository } from "../../repository/image-repository";
 import { ItemRepository } from "../../repository/item-repository";
+import { PinningApiRepository } from "../../repository/pinning-api-repository";
 
 @injectable()
 class SchemaService {
@@ -11,7 +12,8 @@ class SchemaService {
         private authorRepository:AuthorRepository,
         private channelRepository:ChannelRepository,
         private imageRepository:ImageRepository,
-        private itemRepository:ItemRepository
+        private itemRepository:ItemRepository,
+        private pinningApiRepository:PinningApiRepository
     ) {}
 
     async loadWallet(walletAddress:string) {
@@ -21,6 +23,8 @@ class SchemaService {
         await this.channelRepository.load(walletAddress)
         await this.imageRepository.load(walletAddress)
         await this.itemRepository.load(walletAddress)
+        await this.pinningApiRepository.load(walletAddress)
+
 
     }
 

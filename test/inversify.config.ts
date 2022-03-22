@@ -20,11 +20,14 @@ import { IpfsService } from "../src/service/core/ipfs-service";
 import fs from 'fs';
 import { DatabaseService } from "../src/service/core/database-service";
 import { ChannelRepository } from "../src/repository/channel-repository";
+import { PinningApiRepository } from "../src/repository/pinning-api-repository";
+
 import { ItemRepository } from "../src/repository/item-repository";
 import { ImageRepository } from "../src/repository/image-repository";
 import { AuthorRepository } from "../src/repository/author-repository";
 import { SchemaService } from "../src/service/core/schema-service";
 import { WalletService } from "../src/service/core/wallet-service";
+import { PinningService } from "../src/service/core/pinning-service";
 
 import TYPES from "../src/service/core/types";
 
@@ -74,11 +77,15 @@ async function getContainer() {
     container.bind(IpfsService).toSelf().inSingletonScope()
     container.bind(ItemService).toSelf().inSingletonScope()
     container.bind(QuillService).toSelf().inSingletonScope()
+    container.bind(PinningService).toSelf().inSingletonScope()
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
     container.bind(ItemRepository).toSelf().inSingletonScope()
     container.bind(ImageRepository).toSelf().inSingletonScope()
     container.bind(AuthorRepository).toSelf().inSingletonScope()
+    container.bind(PinningApiRepository).toSelf().inSingletonScope()
+
+
 
     fs.rmSync('./pouch', { recursive: true, force: true })
     fs.rmSync('./test-repo', { recursive: true, force: true })

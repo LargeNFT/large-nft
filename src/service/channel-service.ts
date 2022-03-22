@@ -21,6 +21,8 @@ import { ethers, BigNumber } from "ethers";
 
 
 import TYPES from "./core/types";
+import { PinningService } from "./core/pinning-service";
+import { PinningApi } from "../dto/pinning-api";
 
 
 @injectable()
@@ -33,6 +35,7 @@ class ChannelService {
     private ipfsService:IpfsService,
     private quillService:QuillService,
     private schemaService:SchemaService,
+    private pinningService:PinningService,
     @inject(TYPES.WalletService) private walletService:WalletService,
 
     @inject("contracts") private contracts,
@@ -209,9 +212,13 @@ class ChannelService {
   async getRSSFeed(_id:string) : Promise<string> {return}
 
 
-  async publish(channel:Channel, items:Item[], cid:string) { 
+  async publish(channel:Channel, items:Item[], pinningApi:PinningApi, cid:string) { 
 
     //Save to Pinata
+    if (pinningApi) {
+      let result = await this.pinningService.pinByHash(pinningApi, cid)
+      if (!result.ipfsHash) throw new Error("Problem publishing")
+    }
 
     //Deploy contract
     let receipt = await this.deploy(channel.title, channel.symbol, cid, channel.mintPrice, items.length)

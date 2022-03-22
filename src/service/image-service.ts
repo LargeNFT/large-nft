@@ -4,8 +4,8 @@ import { Image } from "../dto/image"
 import { IpfsService } from "./core/ipfs-service"
 import { ValidationException } from "../util/validation-exception";
 import { validate, ValidationError } from 'class-validator';
-import { Blob } from 'buffer';
 import { ImageRepository } from "../repository/image-repository"
+import { Blob } from 'blob-polyfill';
 
 
 @injectable()
@@ -62,11 +62,12 @@ class ImageService {
         
         const bufferedContents = await toBuffer(await this.ipfsService.ipfs.cat(cid))
 
-        // const bufferedContents = await toBuffer(ipfs.cat('QmWCscor6qWPdx53zEQmZvQvuWQYxx1ARRCXwYVE4s9wzJ')) // returns a Buffer
-        var blob = new Blob([bufferedContents], {type:"image/jpg"})
+        if (Blob != undefined) {
+          var blob = new Blob([bufferedContents], {type:"image/jpg"})
 
-        //@ts-ignore
-        return URL.createObjectURL(blob)
+          //@ts-ignore
+          return URL.createObjectURL(blob)
+        }
 
     }
 

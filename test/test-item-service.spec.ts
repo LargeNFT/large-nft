@@ -58,6 +58,8 @@ contract('ItemService', async (accounts) => {
         channel1 = Object.assign(new Channel(), {
             title: "The Sound of Music",
             link: "google.com",
+            symbol: "SOM",
+            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
             description: "Singing in the mountains",
             authorId:3,
             category: ['Gazebos']
@@ -66,6 +68,8 @@ contract('ItemService', async (accounts) => {
         channel2 = Object.assign(new Channel(), {
             title: "Titanic",
             link: "alexa.com",
+            symbol: "SOM",
+            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
             description: "A boat that is not good at boating",
             authorId:3,
             category: ['Sunk']

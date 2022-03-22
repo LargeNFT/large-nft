@@ -126,6 +126,8 @@
     
     "class-validator": "0.13.2",
     "uuid": "8.3.2",
-    "axios": "0.26.1"
+    "axios": "0.26.1",
+
+    "blob-polyfill": "6.0.20211015"
   }
 }

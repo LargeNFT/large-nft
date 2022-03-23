@@ -38,29 +38,11 @@
             </a>
           </li>
           <li>
-            <a href="/admin/page" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">pages</i>
-              </div>
-              <div class="item-inner">Pages</div>
-            </a>
-          </li>
-          <!-- <li>
-            <a href="/admin/user" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">people</i>
-              </div>
-              <div class="item-inner">Users</div>
-            </a>
-          </li> -->
-
-
-          <li>
             <a href="/admin/settings" class="item-link item-content panel-close">
               <div class="item-media">
                 <i class="material-icons">settings_applications</i>
               </div>
-              <div class="item-inner">Site Settings</div>
+              <div class="item-inner">Settings</div>
             </a>
           </li>
 
@@ -110,6 +92,7 @@
 
   import { WalletService } from "../service/core/wallet-service"
   import { IpfsService } from "../service/core/ipfs-service"
+  import { SchemaService } from "../service/core/schema-service"
 
   
   import LogoGrey from "../html/images/logo_grey.png"
@@ -120,11 +103,9 @@
     $f7ready(async () => {
 
       let uiService = ContainerService.getInstance(UiService)
-
       let walletService = ContainerService.getWalletService()
       let ipfsService = ContainerService.getInstance(IpfsService)
-
-      
+      let schemaService = ContainerService.getInstance(SchemaService)
 
       if (typeof window !== "undefined" && window['ethereum']) {
         await init()
@@ -147,8 +128,10 @@
         await walletService.initWallet()
         await ipfsService.init()
 
+
         let walletAddress = await walletService.getAddress()
         
+        await schemaService.loadWallet(walletAddress)
 
         $f7.views.create('.view-main', {
           url: '/',

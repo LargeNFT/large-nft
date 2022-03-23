@@ -17,7 +17,7 @@ class ContainerService {
     }
 
     static getWalletService() {
-        getMainContainer().get<WalletService>(TYPES.WalletService)
+        return getMainContainer().get<WalletService>(TYPES.WalletService)
 
     }
 

@@ -10,9 +10,6 @@ class Channel {
     @Allow()
     _rev?:string 
 
-    @Allow()
-    contractAddress?:string
-
     @IsNotEmpty()
     authorId:string
 
@@ -28,14 +25,12 @@ class Channel {
     @Allow()
     description?:string
 
-
     @Allow()
     content?:any
 
     @Allow()
     contentHTML?:string
     
-
     @ArrayNotEmpty()
     @ArrayMinSize(1)
     @MinLength(3, { each: true, message: 'Category is too short. Minimum length is $value characters' })
@@ -52,9 +47,6 @@ class Channel {
 
     @Allow()
     mintPrice?:number
-
-    @Allow()
-    locked?:boolean
 
     @Allow()
     attributeOptions:AttributeOptions[]

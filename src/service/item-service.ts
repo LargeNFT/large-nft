@@ -13,7 +13,6 @@ import { ItemRepository } from "../repository/item-repository";
 @injectable()
 class ItemService {
 
-
     constructor(
         private itemRepository: ItemRepository,
         private quillService:QuillService,

@@ -1,0 +1,171 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="page" data-name="admin-create-channel">
+  
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner">
+          <div class="left">
+            <a href="/" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
+          </div>
+          <div class="title">Create Collection</div>
+          <div class="right">
+            <${HeaderRight} />
+          </div>
+        </div>
+      </div>
+
+      <div class="fab fab-extended fab-right-bottom">
+        <a @click="${saveCollectionClick}" class="text-color-black">
+          <i class="material-icons">save</i>
+          <div class="fab-text">Save</div>
+        </a>
+      </div>
+  
+
+  
+      <div class="page-content">
+        <form class="block list" id="create-collection-form">
+          <ul>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Title</div>
+                  <div class="item-input-wrap">
+                    <input type="text" name="title" placeholder="Collection title" />
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-inner post-area">
+                  <div class="item-title item-label">Description</div>
+                    <textarea name="description" id="description-textarea"></textarea>  
+                </div>
+              </div>
+            </li>
+            <li>  
+              <div class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Cover Image</div>
+                  <div class="item-input-wrap">
+
+                    <input type="button" class="button button-fill" value="Browse" @click="${handleBrowseClick}" id="browseButton"/>
+                    <input type="hidden" name="coverImageId" />
+                    <input type="file" id="browse" style="display: none" @change="${handleChange}"/>
+
+                    ${coverImageSrc ? $h`
+                      <img class="cover-image-preview" src="${coverImageSrc}"/>
+
+                    ` : $h`
+                      <i class="material-icons cover-image-preview" id="preview">image</i>
+                    `}
+                    
+                  </div>
+                </div>
+              </div>
+            </li>
+  
+          </ul>
+  
+        </form>
+  
+
+  
+      </div>
+    </div>
+  
+  </template>
+  
+  <style>
+    #description-textarea {
+      min-height: 200px;
+    }
+
+    .cover-image-preview {
+      max-width: 300px;
+      max-height: 300px;
+      border: 1px solid #cccccc;
+      padding: 5px;
+      margin-top: 10px;
+    }
+
+    #preview {
+      font-size: 75px;
+    }
+
+    #browseButton {
+      margin-bottom: 10px;
+      width: 250px;
+    }
+
+  </style>
+  
+  
+  <script>
+  
+    import { ContainerService } from "../../../service/core/container-service"
+    import { QuillService } from "../../../service/quill-service"
+    import { UiService } from "../../../service/core/ui-service"
+    import { UploadService } from "../../../service/core/upload-service"
+    import { ImageService } from "../../../service/image-service"
+
+    import { WalletService } from "../../../service/core/wallet-service"
+
+    import { ChannelService } from "../../../service/channel-service"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+
+    import moment from "moment"
+
+    export default (props, { $, $on, $f7, $update }) => {
+      
+      let walletService = ContainerService.getWalletService();
+      let uiService = ContainerService.getInstance(UiService)
+      let channelService = ContainerService.getInstance(ChannelService)
+      let uploadService = ContainerService.getInstance(UploadService)
+      let imageService = ContainerService.getInstance(ImageService)
+
+      let coverImageSrc
+
+      const saveCollectionClick = async (e) => {
+
+        //Get data
+        let formData = $f7.form.convertToData('#create-collection-form')
+
+        //Save
+        let channel = await channelService.put(formData)
+
+        //Redirect
+        $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)
+
+      }
+
+      const handleBrowseClick = async (e) => {
+        $("#browse").click()
+      }
+
+      const handleChange = async (e) => {
+
+        let imageCid = await uploadService.uploadFile(document.getElementById('browse'))
+        let image = await imageService.newFromCid(imageCid)
+
+        try {
+          //Could be a duplicate. Which means it's fine.
+          await imageService.put(image)
+        } catch(ex) { }
+
+        $('#coverImageId').val(image._id)
+
+        coverImageSrc = image.url
+
+        $update()
+      }
+
+      return $render
+    }
+
+  </script>
+  

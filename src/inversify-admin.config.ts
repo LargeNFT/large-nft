@@ -1,5 +1,8 @@
 import AppComponent from './components/app.f7.html'
 
+import AdminChannelIndexComponent from './components/admin/channel/index.f7.html'
+import AdminChannelCreateComponent from './components/admin/channel/create.f7.html'
+
 import AdminPostIndexComponent from './components/admin/post/index.f7.html'
 import AdminPostCreateComponent from './components/admin/post/create.f7.html'
 import AdminPostShowComponent from './components/admin/post/show.f7.html'
@@ -36,6 +39,7 @@ import { WalletServiceImpl } from './service/core/wallet-service-impl'
 import TYPES from './service/core/types'
 import { PinningService } from './service/core/pinning-service'
 import { PinningApiRepository } from './repository/pinning-api-repository'
+import { ItemService } from './service/item-service'
 
 
 let container:Container
@@ -59,11 +63,22 @@ function getMainContainer() {
       theme: 'aurora', // Automatic theme detection
       component: AppComponent,
       routes: [
+
+        {
+          path: "/",
+          component: AdminChannelIndexComponent
+        },
+
+        {
+          path: "/admin/channel/create",
+          component: AdminChannelCreateComponent
+        },
+
         /**
          * Posts
          */
         {
-          path: "/",
+          path: "/admin/post/index",
           component: AdminPostIndexComponent
         },
         {
@@ -191,6 +206,7 @@ function getMainContainer() {
   container.bind(AuthorService).toSelf().inSingletonScope()
   container.bind(ChannelService).toSelf().inSingletonScope()
   container.bind(ImageService).toSelf().inSingletonScope()
+  container.bind(ItemService).toSelf().inSingletonScope()
 
   container.bind(ChannelRepository).toSelf().inSingletonScope()
   container.bind(ItemRepository).toSelf().inSingletonScope()

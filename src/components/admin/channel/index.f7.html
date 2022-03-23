@@ -1,0 +1,188 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="page" data-name="admin-posts">
+  
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner">
+          <div class="title">Collections</div>
+          <div class="right">
+            <${HeaderRight} />
+          </div>
+        </div>
+      </div>
+  
+      <!-- <div class="toolbar tabbar toolbar-top">
+        <div class="toolbar-inner">
+          <a class="tab-link tab-link-active">Published</a>
+          <a class="tab-link" href="#"> Drafts</a>
+        </div>
+      </div> -->
+  
+  
+  
+      <div class="fab fab-extended fab-right-bottom">
+        <a href="/admin/channel/create" class="text-color-black">
+          <i class="material-icons">create</i>
+          <div class="fab-text">Create Collection</div>
+        </a>
+      </div>
+  
+    
+      <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
+        <div class="list media-list virtual-list no-margin" id="channel-list">
+        </div>
+  
+        <div class="preloader infinite-scroll-preloader"></div>
+  
+
+      </div>
+  
+    </div>
+  
+  </template>
+  
+  
+  
+  <script>
+  
+    import { ContainerService } from "../../../service/core/container-service"
+    import { UiService } from "../../../service/core/ui-service"
+    import { ChannelService } from "../../../service/channel-service"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+  
+  
+    export default (props, { $, $h, $on, $f7, $update }) => {
+    
+      let channelService = ContainerService.getInstance(ChannelService)
+  
+      const LIMIT = 20
+  
+      let channelsShown = 0
+      let hasMoreChannels = true
+      let loadingInProgress = false
+  
+      let channels = []
+      let virtualList
+      let pageCounter = 0
+  
+      function unloadInfiniteScroll() {
+        console.log("Unload infinite scroll")
+  
+        // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+        $f7.infiniteScroll.destroy('.infinite-scroll-content')
+  
+        // Remove preloader
+        $('.infinite-scroll-preloader').hide()
+      }
+  
+      async function infiniteScroll() {
+        
+        // Exit, if loading in progress
+        if (loadingInProgress || !hasMoreChannels) return
+  
+        // Set loading flag
+        loadingInProgress = true
+  
+        if (pageCounter == 0) {
+          //Remove the fake one
+          virtualList.deleteAllItems()
+        }
+  
+        try {
+            channels = await channelService.list(LIMIT, channelsShown)
+  
+          if (channels && channels.length == LIMIT) {
+            channelsShown += channels.length
+          } else {
+            hasMoreChannels = false
+          }
+  
+          virtualList.appendItems(channels)
+  
+        } catch (ex) {
+          console.log(ex)
+        }
+  
+  
+        if (!hasMoreChannels) {
+          unloadInfiniteScroll()
+        }
+  
+        pageCounter++
+        loadingInProgress = false
+      }
+  
+  
+      $on('pageAfterOut', (e, page) => {
+        unloadInfiniteScroll()
+      })
+  
+      $on('pageInit', (e, page) => {
+  
+        //Get first page
+        virtualList = $f7.virtualList.create({
+            el: '#channel-list',
+  
+            renderItem(item) {
+  
+              return `
+                    <li>
+                      <a href="/admin/channel/show/${item._id}" class="item-link item-content">
+                        <div class="item-media">
+                            ${item.coverPhotoSrc ? ` 
+                                <img class="cover-photo-thumb" src="${item.coverPhotoSrc}">
+                            ` : `
+                                <i class="f7-icons cover-photo-thumb">document</i>
+                            `}
+                        </div>    
+                        
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">${item.title}</div>
+                            <div class="item-after">${item.dateCreated}</div>
+                          </div>
+  
+                          <div class="item-subtitle">${item.description}</div>
+  
+                        </div>
+                      </a>
+                    </li>
+                    `;
+            },
+  
+            items: [{
+              title: 'Loading...'
+            }],
+            setListHeight: true,
+            updatableScroll: true,
+            height: function () {
+  
+              if ($f7.theme === 'md') {
+                return 73
+              } else if ($f7.theme === 'ios') {
+                return 64.8
+              } else if ($f7.theme === 'aurora') {
+                return 77
+              }
+            },
+            emptyTemplate: `
+              <li class="item-content">
+                <div class="item-inner">
+                    There are no collections yet. <br /><br />Click the 'Create Collection' button to create your first collection.
+                </div>
+              </li>
+            `
+          })
+  
+        //Get the page
+        $('.infinite-scroll-content').trigger('infinite')
+  
+      })
+  
+  
+      return $render
+    }
+  </script>

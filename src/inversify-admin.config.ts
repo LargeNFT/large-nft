@@ -152,19 +152,7 @@ function getMainContainer() {
 
   function ipfsOptions() {
     return {
-      repo: "large",
-      relay: {
-        enabled: true,
-        hop: {
-          enabled: true // enable circuit relay HOP (make this node a relay)
-        }
-      },
-      config: {
-        Addresses: {
-          //@ts-ignore
-          Swarm: []
-        }
-      }
+      repo: "large-repo",
 
     }
 

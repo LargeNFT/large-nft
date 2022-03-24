@@ -1,4 +1,5 @@
 interface AttributeOptions {
+    id:string
     traitType:string
     values:string[]
 }

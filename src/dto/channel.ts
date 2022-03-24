@@ -24,16 +24,8 @@ class Channel {
 
     @Allow()
     description?:string
-
-    @Allow()
-    content?:any
-
-    @Allow()
-    contentHTML?:string
     
-    @ArrayNotEmpty()
-    @ArrayMinSize(1)
-    @MinLength(3, { each: true, message: 'Category is too short. Minimum length is $value characters' })
+    @Allow()
     category?:string[]
 
     @Allow()
@@ -46,7 +38,7 @@ class Channel {
     coverImageId?:string
 
     @Allow()
-    mintPrice?:number
+    mintPrice?:string
 
     @Allow()
     attributeOptions:AttributeOptions[]
@@ -55,10 +47,7 @@ class Channel {
     pubDate?:string 
 
     @Allow()
-    sellerFeeBasisPoints:number
-
-    @Allow()
-    feeRecipient:string
+    sellerFeeBasisPoints:string
 
     @Allow()
     dateCreated?:string

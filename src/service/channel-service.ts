@@ -54,9 +54,6 @@ class ChannelService {
     } else {
       channel.lastUpdated = new Date().toJSON()
     }
-
-    //Translate content to HTML
-    channel.contentHTML = await this.quillService.translateContent(channel.content)
     
     //Validate
     let errors:ValidationError[] = await validate(channel, {
@@ -80,7 +77,7 @@ class ChannelService {
     await this.channelRepository.delete(channel)
   }
 
-  async exportNFTMetadata(channel:Channel, items:Item[]) : Promise<string> {
+  async exportNFTMetadata(channel:Channel, items:Item[], ownerAddress:string) : Promise<string> {
 
     //Assign  
     let nftMetadata:NFTMetadata[] = []
@@ -88,7 +85,7 @@ class ChannelService {
     let animationCids:string[] = []
 
     //Get contract metadata
-    let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel)
+    let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel, ownerAddress)
 
     //Add cover image
     images.push(channel.coverImageId)
@@ -185,7 +182,7 @@ class ChannelService {
   }
 
 
-  async exportContractMetadata(channel:Channel) : Promise<ContractMetadata> {
+  async exportContractMetadata(channel:Channel, ownerAddress:string) : Promise<ContractMetadata> {
 
 
     let result:ContractMetadata = {
@@ -193,7 +190,7 @@ class ChannelService {
       description: channel.description,
       external_link: channel.link,
       seller_fee_basis_points: channel.sellerFeeBasisPoints,
-      fee_recipient: channel.feeRecipient
+      fee_recipient: ownerAddress
     }
 
     if (channel.coverImageId) {
@@ -231,7 +228,7 @@ class ChannelService {
   async importFromIPFS(cid:string) {}
 
 
-  private async deploy(name:string, symbol:string, ipfsCid:string, mintFee:number, maxTokenId:number) {
+  private async deploy(name:string, symbol:string, ipfsCid:string, mintFee:string, maxTokenId:number) {
 
     if (!name || !symbol || !mintFee || !maxTokenId || !ipfsCid) throw new Error("Missing inputs to deploy")
 

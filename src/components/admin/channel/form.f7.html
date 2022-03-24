@@ -1,0 +1,407 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <ul>
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Symbol</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="symbol" placeholder="Symbol (eg BAYC)" tabindex="1" required />
+                    </div>
+                </div>
+            </div>
+        </li>
+
+
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Title</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="title" placeholder="Collection title" required tabindex="2" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Description</div>
+                    <div class="item-input-wrap">
+                        <textarea name="description" class="resizable" tabindex="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Cover Image</div>
+                    <div class="item-input-wrap">
+
+                        ${coverImageSrc ? $h`
+                        <img class="cover-image-preview" src="${coverImageSrc}" />
+
+                        ` : $h`
+                        <i class="material-icons cover-image-preview" id="preview">image</i>
+                        `}
+
+                        <input type="button" class="button button-fill" value="Browse" @click="${handleBrowseClick}" tabindex="4" id="browseButton" />
+                        <input type="hidden" name="coverImageId" />
+                        <input type="file" id="browse" style="display: none" @change="${handleChange}" />
+
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Category</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="category" placeholder="Category" id="category" tabindex="5" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Copyright</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="copyright" placeholder="Copyright" tabindex="6" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">External Link</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="link" placeholder="External Link" tabindex="7" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+                <div class="item-title item-label">Language</div>
+                <!-- additional "input-dropdown-wrap" class -->
+                <div class="item-input-wrap input-dropdown-wrap">
+                    <select name="language" tabindex="8">
+                        ${languages.map( language => $h`
+                        <option value="${language}">${language}</option>
+                        `)}
+                    </select>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Attribute Categories (eg Shirt, Size, Hat)</div>
+                    <div>
+
+                        <p>Add attributes to give specific items special properties. Items can be sorted and filtered by
+                            attribute.</p>
+
+                        <div>
+                            <div class="category-name-label">Category Name</div>
+                            <div class="options-label">Option Values</div>
+                        </div>
+
+
+                        ${attributeOptions?.map( (ao) => $h`
+
+                        <div id="category-${ao.id}">
+
+                            <div class="category-name-input">
+                                <input type="text" placeholder="Category Name" @change="${categoryNameChange}" data-id="${ao.id}" />
+                            </div>
+
+                            <div class="options-input">
+                                <input type="text" placeholder="Enter options" @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" />
+                            </div>
+
+                            <a @click="${deleteOptionClick}" data-id="${ao.id}"><i class="material-icons">delete</i></a>
+
+                        </div>
+                        `)}
+
+                        <input type="hidden" name="attributeOptions" value="${JSON.stringify(attributeOptions)}" />
+
+                        <div class="row">
+                            <div class="col-30">
+                                <a class="button button-outline" @click="${addCategoryClick}" tabindex="9">Add Category</a>
+                            </div>
+                            <div class="col-70"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Mint Price in ETH</div>
+                    <div class="item-input-wrap">
+                        <input type="number" placeholder="Enter price for one piece (eg 0.08)"
+                            @change="${mintPriceChange}" step="any" tabindex="10" />
+                        <input type="hidden" name="mintPrice" value="${mintPrice}" />
+                    </div>
+                </div>
+            </div>
+        </li>
+
+        ${mintPrice ? $h`
+        <li tabindex="-1">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-text"> You will receive <strong>${mintPrice}</strong> ETH (${mintPriceWei} wei) for
+                        each mint.</div>
+                </div>
+            </div>
+        </li>
+        ` : $h``}
+
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Royalty %</div>
+                    <div class="item-input-wrap">
+                        <input type="number" placeholder="Royalty %" @change="${royaltyChange}" step="any" tabindex="10" />
+                        <input type="hidden" name="sellerFeeBasisPoints" value="${sellerFeeBasisPoints}" />
+
+                    </div>
+                </div>
+            </div>
+        </li>
+
+
+        ${royalty ? $h`
+        <li tabindex="-1">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-text">
+                        You will receive a <strong>${royalty}%</strong> for each sale on OpenSea, etc. Confirm this
+                        value when you set up your
+                        collection on the marketplace. This just presets it for you.
+                    </div>
+                </div>
+            </div>
+        </li>
+        ` : $h``}
+
+
+    </ul>
+
+</template>
+
+<style>
+    .cover-image-preview {
+        max-width: 300px;
+        max-height: 300px;
+        border: 1px solid #cccccc;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    #preview {
+        font-size: 75px;
+    }
+
+    #browseButton {
+        width: 250px;
+    }
+
+
+    .tagify--empty {
+        height: 41px;
+    }
+
+    .category-name-label {
+        font-weight: bold;
+        width: 210px;
+        display: inline-block;
+    }
+
+    .options-label {
+        font-weight: bold;
+        width: 400px;
+        display: inline-block;
+    }
+
+    .category-name-input {
+        border: 1px solid #cccccc;
+        margin: 2px;
+        width: 200px;
+        display: inline-block;
+    }
+
+    .options-input {
+        margin: 2px;
+        width: 400px;
+        display: inline-block;
+    }
+</style>
+
+
+<script>
+
+    import { ContainerService } from "../../../service/core/container-service"
+    import { QuillService } from "../../../service/quill-service"
+    import { UiService } from "../../../service/core/ui-service"
+    import { UploadService } from "../../../service/core/upload-service"
+    import { ImageService } from "../../../service/image-service"
+
+    import { WalletService } from "../../../service/core/wallet-service"
+
+    import { ChannelService } from "../../../service/channel-service"
+    import languages from "../../../util/languages"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+    import ChannelForm from "../../admin/channel/form.f7.html"
+
+
+    import moment from "moment"
+    import Tagify from '@yaireo/tagify'
+    import { v4 as uuidv4 } from 'uuid';
+
+    import { ethers } from "ethers"
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let walletService = ContainerService.getWalletService();
+        let uiService = ContainerService.getInstance(UiService)
+        let channelService = ContainerService.getInstance(ChannelService)
+        let uploadService = ContainerService.getInstance(UploadService)
+        let imageService = ContainerService.getInstance(ImageService)
+
+        let coverImageSrc
+
+        let attributeOptions = []
+
+        let mintPrice
+        let mintPriceWei
+
+        let royalty
+        let sellerFeeBasisPoints
+
+
+
+
+        const addCategoryClick = async (e) => {
+
+            let ao = {
+                id: uuidv4()
+            }
+
+            attributeOptions.push(ao)
+
+            await $update()
+
+            let optionsInputElement = document.getElementById(`options-input-${ao.id}`)
+
+            new Tagify(optionsInputElement)
+
+        }
+
+        const categoryNameChange = async (e) => {
+
+            let id = $(e.currentTarget).data('id')
+
+            attributeOptions.filter(ao => ao.id == id)[0].traitType = $(e.currentTarget).val()
+
+            await $update()
+
+
+        }
+
+        const optionsChange = async (e) => {
+
+            let id = $(e.currentTarget).data('id')
+
+            attributeOptions.filter(ao => ao.id == id)[0].values = JSON.parse(e.currentTarget.value).map(v => v["value"])
+
+            await $update()
+
+        }
+
+        const mintPriceChange = async (e) => {
+
+            //Reset
+            mintPrice = undefined
+            mintPriceWei = undefined
+
+            if (e.currentTarget.value) {
+                let wei = ethers.utils.parseUnits(e.currentTarget.value, 'ether')
+
+                try {
+                    mintPrice = ethers.utils.formatUnits(wei)
+                    mintPriceWei = wei.toString()
+                } catch (ex) {
+                    console.log(ex)
+                }
+
+            }
+
+            await $update()
+
+        }
+
+        const royaltyChange = async (e) => {
+
+            royalty = e.currentTarget.value
+            sellerFeeBasisPoints = parseInt(royalty * 100)
+
+            await $update()
+        }
+
+        const deleteOptionClick = async (e) => {
+
+            let id = $(e.currentTarget).data('id')
+
+            attributeOptions = attributeOptions.filter(ao => ao.id != id)
+
+            await $update()
+
+            // $(`#category-${index}`).remove() 
+
+        }
+
+        const handleBrowseClick = async (e) => {
+            $("#browse").click()
+        }
+
+        const handleChange = async (e) => {
+
+            let imageCid = await uploadService.uploadFile(document.getElementById('browse'))
+            let image = await imageService.newFromCid(imageCid)
+
+            try {
+                //Could be a duplicate. Which means it's fine.
+                await imageService.put(image)
+            } catch (ex) { }
+
+            $('#coverImageId').val(image._id)
+
+            coverImageSrc = image.url
+
+            $update()
+        }
+
+        const safeCSSId = (text) => {
+            return encodeURIComponent(text)
+                .toLowerCase()
+                .replace(/\.|%[0-9a-z]{2}/gi, '');
+        }
+
+
+
+        return $render
+    }
+
+</script>

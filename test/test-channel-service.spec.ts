@@ -90,7 +90,7 @@ contract('ChannelService', async (accounts) => {
             await service.put(new Channel())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 4)
+            assert.strictEqual(ex.errors.length, 3)
         }
 
     })
@@ -330,7 +330,6 @@ contract('ChannelService', async (accounts) => {
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
             link: "google.com",
             description: "Singing in the mountains",
-            content: editor.getContents(),
             authorId: author._id,
             category: ['Gazebos'],
             attributeOptions:[
@@ -354,7 +353,6 @@ contract('ChannelService', async (accounts) => {
             channelId: channel._id,
             title: "An image!",
             link: "pontoon.com",
-            content: editor.getContents(),
             description: "Another boat and a man in a bat suit",
             authorId: author._id,
             category: ['Gazebos', 'Ants'],
@@ -415,7 +413,7 @@ contract('ChannelService', async (accounts) => {
         await service.put(channel)
 
         //Now export metadata to IPFS
-        cid = await service.exportNFTMetadata(channel,items)
+        cid = await service.exportNFTMetadata(channel,items, user0)
         
 
 

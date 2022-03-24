@@ -20,177 +20,21 @@
 
       <div class="row">
         <div class="col-100 large-50 center">
-          <form class="block list no-hairlines" id="create-collection-form">
-            <ul>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Title</div>
-                    <div class="item-input-wrap">
-                      <input type="text" name="title" placeholder="Collection title" />
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Description</div>
-                    <div class="item-input-wrap">
-                      <textarea name="description" class="resizable"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Cover Image</div>
-                    <div class="item-input-wrap">
-    
-                      ${coverImageSrc ? $h`
-                      <img class="cover-image-preview" src="${coverImageSrc}" />
-    
-                      ` : $h`
-                      <i class="material-icons cover-image-preview" id="preview">image</i>
-                      `}
-    
-                      <input type="button" class="button button-fill" value="Browse" @click="${handleBrowseClick}"
-                        id="browseButton" />
-                      <input type="hidden" name="coverImageId" />
-                      <input type="file" id="browse" style="display: none" @change="${handleChange}" />
-    
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Category</div>
-                    <div class="item-input-wrap">
-                      <input type="text" name="category" placeholder="Category" id="category" />
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Copyright</div>
-                    <div class="item-input-wrap">
-                      <input type="text" name="copyright" placeholder="Copyright" />
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">External Link</div>
-                    <div class="item-input-wrap">
-                      <input type="text" name="link" placeholder="External Link" />
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                  <div class="item-title item-label">Language</div>
-                  <!-- additional "input-dropdown-wrap" class -->
-                  <div class="item-input-wrap input-dropdown-wrap">
-                    <select>
-                      ${languages.map( language => $h`
-                      <option value="${language}">${language}</option>
-                      `)}
-                    </select>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Attribute Categories (eg Shirt, Size, Hat)</div>
-                    <div>
-    
-                      <p>Add attributes to give specific items special properties. Items can be sorted and filtered by
-                        attribute.</p>
-    
-                      <div>
-                        <div class="category-name-label">Category Name</div>
-                        <div class="options-label">Option Values</div>
-                      </div>
-    
-    
-                      ${attributeOptions?.map( (ao) => $h`
+          <form class="block list" id="create-collection-form" @submit="${formSubmit}">
 
-                        <div id="category-${ao.id}">
+            <${ChannelForm} />
 
-                          <div class="category-name-input">
-                            <input type="text" placeholder="Category Name" name="traitType" @change="${categoryNameChange}" data-id="${ao.id}" />
-                          </div>
 
-                          <div class="options-input">
-                            <input type="text" placeholder="Enter options" name="value"  @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" />
-                          </div>
-
-                          <a @click="${deleteOptionClick}" data-id="${ao.id}"><i class="material-icons">delete</i></a>
-
-                        </div>
-                      `)}
-    
-                      <div class="row">
-                        <div class="col-30"><a class="button button-outline" @click="${addCategoryClick}">Add Category</a>
-                        </div>
-                        <div class="col-70"></div>
-                      </div>
-    
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Mint Price</div>
-                    <div class="item-input-wrap">
-                      <input type="number" name="mintPrice" placeholder="Mint Price" maxlength="10" />
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Royalty %</div>
-                    <div class="item-input-wrap">
-                      <input type="number" name="sellerFeeBasisPoints" placeholder="Royalty %" maxlength="10" />
-                    </div>
-                  </div>
-                </div>
-              </li>
-              <li>
-                <div class="item-content item-input item-input-outline">
-                  <div class="item-inner">
-                    <div class="item-title item-label">Symbol</div>
-                    <div class="item-input-wrap">
-                      <input type="number" name="symbol" placeholder="Symbol (eg BAYC)" />
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-    
             <div class="row block">
-    
+
               <div class="col-70"></div>
-    
-              <button type="submit" class="button button-fill col-30">
+
+              <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
                 <i class="material-icons">save</i> Save
               </button>
-    
+
             </div>
-    
+
           </form>
         </div>
       </div>
@@ -203,87 +47,63 @@
 </template>
 
 <style>
-
-
-  .cover-image-preview {
-    max-width: 300px;
-    max-height: 300px;
-    border: 1px solid #cccccc;
-    padding: 5px;
-    margin-bottom: 10px;
-  }
-
-  #preview {
-    font-size: 75px;
-  }
-
-  #browseButton {
-    width: 250px;
-  }
-
-  .tagify {
-    --tags-focus-border-color: #D39494;
-  }
-
-  .category-name-label {
-    font-weight: bold;
-    width: 210px;
-    display: inline-block;
-  }
-
-  .options-label {
-    font-weight: bold;
-    width: 200px;
-    display: inline-block;
-  }
-
-  .category-name-input {
-    border: 1px solid #cccccc;
-    margin: 2px;
-    width: 200px;
-    display: inline-block;
-  }
-
-  .options-input {
-    border: 1px solid #cccccc;
-    margin: 2px;
-    width: 250px;
-    display: inline-block;
-  }
 </style>
 
 
 <script>
 
   import { ContainerService } from "../../../service/core/container-service"
-  import { QuillService } from "../../../service/quill-service"
-  import { UiService } from "../../../service/core/ui-service"
-  import { UploadService } from "../../../service/core/upload-service"
-  import { ImageService } from "../../../service/image-service"
-
-  import { WalletService } from "../../../service/core/wallet-service"
-
   import { ChannelService } from "../../../service/channel-service"
-  import languages from "../../../util/languages"
 
   import HeaderRight from "../../admin/header-right.f7.html"
+  import ChannelForm from "../../admin/channel/form.f7.html"
 
-  import moment from "moment"
+
+  import { ethers } from "ethers"
   import Tagify from '@yaireo/tagify'
-  import { v4 as uuidv4 } from 'uuid';
-
 
   export default (props, { $, $on, $f7, $update }) => {
 
-    let walletService = ContainerService.getWalletService();
-    let uiService = ContainerService.getInstance(UiService)
     let channelService = ContainerService.getInstance(ChannelService)
-    let uploadService = ContainerService.getInstance(UploadService)
-    let imageService = ContainerService.getInstance(ImageService)
 
-    let coverImageSrc
+    const formSubmit = async (e) => {
 
-    let attributeOptions = []
+      e.preventDefault()
+
+      //Get data
+      let formData = $f7.form.convertToData('#create-collection-form')
+
+
+      //Parse attributeOptions and category
+      if (formData.attributeOptions) {
+        formData.attributeOptions = JSON.parse(formData.attributeOptions)
+      } else {
+        formData.attributeOptions = []
+
+      }
+      
+      if (formData.category) {
+        formData.category = JSON.parse(formData.category).map( item => item.value)
+      } else {
+        formData.category = []
+      }
+
+      //Save
+      try {
+
+        console.log(formData)
+        let channel = await channelService.put(formData)
+
+        //Redirect
+        $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)
+
+      } catch (ex) {
+        console.log(ex.errors)
+        $f7.dialog.alert(ex.errors, "There was an error")
+      }
+
+    }
+
 
     $on('pageInit', async (e, page) => {
 
@@ -291,115 +111,6 @@
       let categoryTagify = new Tagify(document.getElementById('category'))
 
     })
-
-    const saveCollectionClick = async (e) => {
-
-      //Get data
-      let formData = $f7.form.convertToData('#create-collection-form')
-
-      //Save
-      let channel = await channelService.put(formData)
-
-      //Redirect
-      $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)
-
-    }
-
-    const addCategoryClick = async (e) => {
-
-      let ao = {
-        id: uuidv4()
-      }
-
-      attributeOptions.push(ao)
-
-      await $update()
-
-      let optionsInputElement = document.getElementById(`options-input-${ao.id}`)
-
-      new Tagify(optionsInputElement)
-
-    }
-
-    const categoryNameChange = async (e) => {
-
-      let id = $(e.currentTarget).data('id')
-
-      attributeOptions.filter(ao => ao.id == id)[0].traitType = $(e.currentTarget).val()
-
-    }
-
-    const optionsChange = async (e) => {
-
-      let id = $(e.currentTarget).data('id')
-
-      attributeOptions.filter(ao => ao.id == id)[0].values = JSON.parse(e.target.value).map( v => v["value"])
-
-    }
-
-
-    const deleteOptionClick = async (e) => {
-
-      let id = $(e.currentTarget).data('id')
-
-      attributeOptions = attributeOptions.filter(ao => ao.id != id)
-
-      await $update()
-
-      // $(`#category-${index}`).remove() 
-
-    }
-
-    const handleBrowseClick = async (e) => {
-      $("#browse").click()
-    }
-
-    const handleChange = async (e) => {
-
-      let imageCid = await uploadService.uploadFile(document.getElementById('browse'))
-      let image = await imageService.newFromCid(imageCid)
-
-      try {
-        //Could be a duplicate. Which means it's fine.
-        await imageService.put(image)
-      } catch (ex) { }
-
-      $('#coverImageId').val(image._id)
-
-      coverImageSrc = image.url
-
-      $update()
-    }
-
-    const safeCSSId = (text) => {
-      return encodeURIComponent(text)
-        .toLowerCase()
-        .replace(/\.|%[0-9a-z]{2}/gi, '');
-    }
-
-
-
-    // const attributeCategoriesChange = async (e) => {
-
-    //   attributeCategories = JSON.parse(e.target.value).map( v => v["value"])
-
-    //   for (let category of attributeCategories) {
-
-    //     //Get the values
-    //   }
-
-    //   $update()
-    // }
-
-    // const attributeOptionsChange = async (e) => {
-
-    //   let id = $(e.target).data('id')
-
-    //   // attributeCategories = JSON.parse(e.target.value).map( v => v["value"])
-    //   // $update()
-    // }
-
-
 
     return $render
   }

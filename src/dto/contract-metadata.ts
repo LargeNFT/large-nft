@@ -9,7 +9,7 @@ interface ContractMetadata {
 
     external_link?:string 
     
-    seller_fee_basis_points?:number
+    seller_fee_basis_points?:string
     fee_recipient?:string
 } 
 

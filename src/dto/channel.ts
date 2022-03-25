@@ -38,6 +38,9 @@ class Channel {
     coverImageId?:string
 
     @Allow()
+    coverBannerId?:string
+
+    @Allow()
     mintPrice?:string
 
     @Allow()

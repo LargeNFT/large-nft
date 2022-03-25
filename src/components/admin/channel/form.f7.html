@@ -36,19 +36,39 @@
         <li>
             <div class="item-content item-input">
                 <div class="item-inner">
-                    <div class="item-title item-label">Cover Image</div>
+                    <div class="item-title item-label">Collection Avatar</div>
                     <div class="item-input-wrap">
 
                         ${coverImageSrc ? $h`
                         <img class="cover-image-preview" src="${coverImageSrc}" />
 
                         ` : $h`
-                        <i class="material-icons cover-image-preview" id="preview">image</i>
+                        <i class="material-icons cover-image-preview">image</i>
                         `}
 
-                        <input type="button" class="button button-fill" value="Browse" @click="${handleBrowseClick}" tabindex="4" id="browseButton" />
+                        <input type="button" class="button button-fill" value="Browse" @click="${handleCoverImageBrowseClick}" tabindex="4"  />
                         <input type="hidden" name="coverImageId" value="${coverImageId}" />
-                        <input type="file" id="browse" style="display: none" @change="${handleChange}" />
+                        <input type="file" id="cover-image-browse" style="display: none" @change="${handleCoverImageChange}" />
+
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Collection Banner</div>
+                    <div class="item-input-wrap">
+
+                        ${coverBannerSrc ? $h`
+                        <img class="cover-banner-preview" src="${coverBannerSrc}" />
+                        ` : $h`
+                        <i class="material-icons cover-banner-preview">image</i>
+                        `}
+
+                        <input type="button" class="button button-fill" value="Browse" @click="${handleBannerBrowseClick}" tabindex="5" />
+                        <input type="hidden" name="coverBannerId" value="${coverBannerId}" />
+                        <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />
 
                     </div>
                 </div>
@@ -59,7 +79,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Category</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="category" placeholder="Category" id="category" tabindex="5" />
+                        <input type="text" name="category" placeholder="Category" id="category" tabindex="6" />
                     </div>
                 </div>
             </div>
@@ -69,7 +89,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Copyright</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="copyright" placeholder="Copyright" tabindex="6" />
+                        <input type="text" name="copyright" placeholder="Copyright" tabindex="7" />
                     </div>
                 </div>
             </div>
@@ -79,7 +99,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">External Link</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="link" placeholder="External Link" tabindex="7" />
+                        <input type="text" name="link" placeholder="External Link" tabindex="8" />
                     </div>
                 </div>
             </div>
@@ -89,7 +109,7 @@
                 <div class="item-title item-label">Language</div>
                 <!-- additional "input-dropdown-wrap" class -->
                 <div class="item-input-wrap input-dropdown-wrap">
-                    <select name="language" tabindex="8">
+                    <select name="language" tabindex="9">
                         ${languages.map( language => $h`
                         <option value="${language}">${language}</option>
                         `)}
@@ -133,7 +153,7 @@
 
                         <div class="row">
                             <div class="col-30">
-                                <a class="button button-outline" @click="${addCategoryClick}" tabindex="9">Add Category</a>
+                                <a class="button button-outline" @click="${addCategoryClick}" tabindex="10">Add Category</a>
                             </div>
                             <div class="col-70"></div>
                         </div>
@@ -148,7 +168,7 @@
                     <div class="item-title item-label">Mint Price in ETH</div>
                     <div class="item-input-wrap">
                         <input type="number" placeholder="Enter price for one piece (eg 0.08)"
-                            @change="${mintPriceChange}" step="any" tabindex="10" />
+                            @change="${mintPriceChange}" step="any" tabindex="11" />
                         <input type="hidden" name="mintPrice" value="${mintPrice}" />
                     </div>
                 </div>
@@ -171,7 +191,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Royalty %</div>
                     <div class="item-input-wrap">
-                        <input type="number" placeholder="Royalty %" @change="${royaltyChange}" step="any" tabindex="10" />
+                        <input type="number" placeholder="Royalty %" @change="${royaltyChange}" step="any" tabindex="12" />
                         <input type="hidden" name="sellerFeeBasisPoints" value="${sellerFeeBasisPoints}" />
 
                     </div>
@@ -205,10 +225,15 @@
         border: 1px solid #cccccc;
         padding: 5px;
         margin-bottom: 10px;
+        border-radius: 50%;
     }
 
-    #preview {
-        font-size: 75px;
+    .cover-banner-preview {
+        max-width: 100%;
+        max-height: 200px;
+        border: 1px solid #cccccc;
+        padding: 5px;
+        margin-bottom: 10px;
     }
 
     #browseButton {
@@ -280,6 +305,9 @@
 
         let coverImageSrc
         let coverImageId
+
+        let coverBannerSrc
+        let coverBannerId
 
         let attributeOptions = []
 
@@ -370,13 +398,13 @@
 
         }
 
-        const handleBrowseClick = async (e) => {
-            $("#browse").click()
+        const handleCoverImageBrowseClick = async (e) => {
+            $("#cover-image-browse").click()
         }
 
-        const handleChange = async (e) => {
+        const handleCoverImageChange = async (e) => {
 
-            let imageCid = await uploadService.uploadFile(document.getElementById('browse'))
+            let imageCid = await uploadService.uploadFile(document.getElementById('cover-image-browse'))
             let image = await imageService.newFromCid(imageCid)
 
             try {
@@ -389,6 +417,28 @@
 
             $update()
         }
+
+        const handleBannerBrowseClick = async (e) => {
+            $("#banner-browse").click()
+        }
+
+        const handleBannerChange = async (e) => {
+
+            let imageCid = await uploadService.uploadFile(document.getElementById('banner-browse'))
+            let image = await imageService.newFromCid(imageCid)
+
+            try {
+                //Could be a duplicate. Which means it's fine.
+                await imageService.put(image)
+            } catch (ex) { }
+
+            coverBannerId = image._id
+            coverBannerSrc = await imageService.getUrl(image)
+
+            $update()
+        }
+
+
 
         const safeCSSId = (text) => {
             return encodeURIComponent(text)

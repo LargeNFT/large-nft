@@ -1,8 +1,10 @@
 import { injectable } from "inversify";
+import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Image } from "../../dto/image";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
+import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 
@@ -11,21 +13,34 @@ class ChannelWebService {
 
     constructor(
         private channelService:ChannelService,
-        private imageService:ImageService
+        private imageService:ImageService,
+        private authorService:AuthorService
     ) {}
 
-    async getViewModel(_id:string) : Promise<ChannelViewModel> {
+    async getViewModel(channel:Channel) : Promise<ChannelViewModel> {
 
-        let channel:Channel = await this.channelService.get(_id)
         let coverImage:Image
+        let coverBanner:Image 
+
+        let author:Author
 
         if (channel.coverImageId) {
             coverImage = await this.imageService.get(channel.coverImageId)
         }
 
+        if (channel.coverBannerId) {
+            coverBanner = await this.imageService.get(channel.coverBannerId)
+        }
+
+        if (channel.authorId) {
+            author = await this.authorService.get(channel.authorId)
+        }
+
         return {
             channel: channel,
-            coverImage: coverImage
+            coverImage: coverImage,
+            coverBanner:coverBanner,
+            author: author
         }
 
     }
@@ -37,17 +52,7 @@ class ChannelWebService {
         let channels:Channel[] = await this.channelService.list(limit, skip)
 
         for (let channel of channels) {
-
-            let coverImage:Image
-
-            if (channel.coverImageId) {
-                coverImage = await this.imageService.get(channel.coverImageId)
-            }
-            
-            result.push({
-                channel: channel,
-                coverImage: coverImage
-            })
+            result.push(await this.getViewModel(channel))
         }
 
         return result

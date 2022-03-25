@@ -363,12 +363,12 @@
   }
   
   .cover-photo-thumb {
-    max-width: 32px;
+    max-width: 50px;
     border-radius: 50%;
   }
   
   .item-media .cover-photo-thumb.f7-icons {
-    font-size: 32px;
+    font-size: 50px;
   }
   
   .item-media .profile-pic-thumb.f7-icons {

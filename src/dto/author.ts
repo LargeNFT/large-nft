@@ -16,7 +16,7 @@ class Author {
 
   url?:string 
 
-  coverPhoto?: Image
+  coverPhotoId?: string
 
 }
 

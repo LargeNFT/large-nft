@@ -40,6 +40,7 @@ import TYPES from './service/core/types'
 import { PinningService } from './service/core/pinning-service'
 import { PinningApiRepository } from './repository/pinning-api-repository'
 import { ItemService } from './service/item-service'
+import { ChannelWebService } from './service/web/channel-web-service'
 
 
 let container:Container
@@ -187,6 +188,8 @@ function getMainContainer() {
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(SchemaService).toSelf().inSingletonScope()
   container.bind(PinningService).toSelf().inSingletonScope()
+  
+  container.bind(ChannelWebService).toSelf().inSingletonScope()
 
   container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()
 

@@ -90,7 +90,7 @@ contract('ChannelService', async (accounts) => {
             await service.put(new Channel())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 3)
+            assert.strictEqual(ex.errors.length, 2)
         }
 
     })
@@ -151,9 +151,7 @@ contract('ChannelService', async (accounts) => {
         assert.equal(fetched.link, "google.com")
         assert.equal(fetched._id, id1)
         assert.equal(fetched.sellerFeeBasisPoints, 100)
-        assert.equal(fetched.feeRecipient, user0)
-
-
+        
     })
 
     it("should update a channel", async () => {
@@ -356,6 +354,7 @@ contract('ChannelService', async (accounts) => {
             description: "Another boat and a man in a bat suit",
             authorId: author._id,
             category: ['Gazebos', 'Ants'],
+            content: editor.getContents(),
             attributeSelections: [{
                 traitType: "Hair",
                 value: "Curly"
@@ -414,7 +413,6 @@ contract('ChannelService', async (accounts) => {
 
         //Now export metadata to IPFS
         cid = await service.exportNFTMetadata(channel,items, user0)
-        
 
 
         //Assert
@@ -422,22 +420,8 @@ contract('ChannelService', async (accounts) => {
         //Copy to tmp directory so we're not just reading the underlying folder directly.
         await ipfsService.ipfs.files.cp(`/ipfs/${cid}`, "/tmp/" )
 
-        // for await (const file of ipfsService.ipfs.files.ls("/tmp/")) {
-        //     console.log(file.name)
-        // }
-        
-        // console.log('Listing images')
-        // for await (const file of ipfsService.ipfs.files.ls("/tmp/images")) {
-        //     console.log(file.name)
-        // }
-
-        // console.log('Listing animations')
-        // for await (const file of ipfsService.ipfs.files.ls("/tmp/animations")) {
-        //     console.log(file.name)
-        // }
 
         let backup = await getFileContent(`/tmp/backup.json`)
-        // console.log(backup)
 
         assert.strictEqual(backup.channels.length, 1)
         assert.strictEqual(backup.items.length, 3)
@@ -454,7 +438,6 @@ contract('ChannelService', async (accounts) => {
         assert.strictEqual(contractMetadata.description, 'Singing in the mountains')
         assert.strictEqual(contractMetadata.external_link, 'google.com')
         assert.strictEqual(contractMetadata.image, 'ipfs://QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr')
-
 
         assert.strictEqual(item1File.tokenId, '1')
         assert.strictEqual(item1File.name, 'An image!')

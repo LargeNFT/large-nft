@@ -51,25 +51,39 @@ class ImageService {
 
       const image:Image = new Image()
 
-      image.url = await this.cidToUrl(cid)
+      image.blob = await this.cidToBlob(cid)
       image.cid = cid
 
       return image
 
     }
 
+
+    getUrl(image:Image) {
+      if (!image.blob) return ""
+      return URL.createObjectURL(image.blob)
+    }
+
+
     public async cidToUrl(cid:string) : Promise<string> {
-        
-        const bufferedContents = await toBuffer(await this.ipfsService.ipfs.cat(cid))
 
-        if (Blob != undefined) {
-          var blob = new Blob([bufferedContents], {type:"image/jpg"})
+      var blob = await this.cidToBlob(cid)
 
-          //@ts-ignore
-          return URL.createObjectURL(blob)
-        }
+      if (blob) {
+        return URL.createObjectURL(blob)
+      }
 
     }
+
+    public async cidToBlob(cid:string) : Promise<Blob> {
+        
+      const bufferedContents = await toBuffer(await this.ipfsService.ipfs.cat(cid))
+
+      if (Blob != undefined) {
+        return new Blob([bufferedContents], {type:"image/jpg"})
+      }
+
+  }
 
 }
 

@@ -10,7 +10,7 @@ class Channel {
     @Allow()
     _rev?:string 
 
-    @IsNotEmpty()
+    @Allow()
     authorId:string
 
     @MinLength(3, { message: "Title must be more than 3 characters." })
@@ -42,9 +42,6 @@ class Channel {
 
     @Allow()
     attributeOptions:AttributeOptions[]
-
-    @Allow()
-    pubDate?:string 
 
     @Allow()
     sellerFeeBasisPoints:string

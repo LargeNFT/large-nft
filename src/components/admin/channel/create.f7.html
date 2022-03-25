@@ -20,10 +20,10 @@
 
       <div class="row">
         <div class="col-100 large-50 center">
-          <form class="block list" id="create-collection-form" @submit="${formSubmit}">
+
+          <form class="block list" id="create-channel-form" @submit="${formSubmit}">
 
             <${ChannelForm} />
-
 
             <div class="row block">
 
@@ -54,6 +54,7 @@
 
   import { ContainerService } from "../../../service/core/container-service"
   import { ChannelService } from "../../../service/channel-service"
+  import { Channel } from "../../../dto/channel"
 
   import HeaderRight from "../../admin/header-right.f7.html"
   import ChannelForm from "../../admin/channel/form.f7.html"
@@ -71,39 +72,35 @@
       e.preventDefault()
 
       //Get data
-      let formData = $f7.form.convertToData('#create-collection-form')
-
+      let channel = Object.assign(new Channel(), $f7.form.convertToData('#create-channel-form'))
 
       //Parse attributeOptions and category
-      if (formData.attributeOptions) {
-        formData.attributeOptions = JSON.parse(formData.attributeOptions)
+      if (channel.attributeOptions) {
+        channel.attributeOptions = JSON.parse(channel.attributeOptions)
       } else {
-        formData.attributeOptions = []
+        channel.attributeOptions = []
 
       }
       
-      if (formData.category) {
-        formData.category = JSON.parse(formData.category).map( item => item.value)
+      if (channel.category) {
+        channel.category = JSON.parse(channel.category).map( item => item.value)
       } else {
-        formData.category = []
+        channel.category = []
       }
 
       //Save
       try {
 
-        console.log(formData)
-        let channel = await channelService.put(formData)
+        await channelService.put(channel)
 
         //Redirect
         $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)
 
       } catch (ex) {
-        console.log(ex.errors)
         $f7.dialog.alert(ex.errors, "There was an error")
       }
 
     }
-
 
     $on('pageInit', async (e, page) => {
 

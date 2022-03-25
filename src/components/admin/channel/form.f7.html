@@ -1,6 +1,5 @@
 <!--suppress JSAnnotator -->
 <template>
-
     <ul>
         <li>
             <div class="item-content item-input item-input-outline">
@@ -48,7 +47,7 @@
                         `}
 
                         <input type="button" class="button button-fill" value="Browse" @click="${handleBrowseClick}" tabindex="4" id="browseButton" />
-                        <input type="hidden" name="coverImageId" />
+                        <input type="hidden" name="coverImageId" value="${coverImageId}" />
                         <input type="file" id="browse" style="display: none" @change="${handleChange}" />
 
                     </div>
@@ -197,7 +196,6 @@
 
 
     </ul>
-
 </template>
 
 <style>
@@ -281,6 +279,7 @@
         let imageService = ContainerService.getInstance(ImageService)
 
         let coverImageSrc
+        let coverImageId
 
         let attributeOptions = []
 
@@ -289,7 +288,6 @@
 
         let royalty
         let sellerFeeBasisPoints
-
 
 
 
@@ -386,9 +384,8 @@
                 await imageService.put(image)
             } catch (ex) { }
 
-            $('#coverImageId').val(image._id)
-
-            coverImageSrc = image.url
+            coverImageId = image._id
+            coverImageSrc = await imageService.getUrl(image)
 
             $update()
         }
@@ -398,8 +395,6 @@
                 .toLowerCase()
                 .replace(/\.|%[0-9a-z]{2}/gi, '');
         }
-
-
 
         return $render
     }

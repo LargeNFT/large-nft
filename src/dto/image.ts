@@ -10,7 +10,7 @@ class Image {
     _rev?:string 
 
     @IsNotEmpty()
-    url?:string
+    blob?:any
 
     @Allow()
     title?:string

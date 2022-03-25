@@ -49,15 +49,18 @@
   
     import { ContainerService } from "../../../service/core/container-service"
     import { UiService } from "../../../service/core/ui-service"
-    import { ChannelService } from "../../../service/channel-service"
+    import { ImageService } from "../../../service/image-service"
+
+    import { ChannelWebService } from "../../../service/web/channel-web-service"
 
     import HeaderRight from "../../admin/header-right.f7.html"
   
   
     export default (props, { $, $h, $on, $f7, $update }) => {
     
-      let channelService = ContainerService.getInstance(ChannelService)
-  
+      let channelWebService = ContainerService.getInstance(ChannelWebService)
+      let imageService = ContainerService.getInstance(ImageService)
+
       const LIMIT = 20
   
       let channelsShown = 0
@@ -92,7 +95,7 @@
         }
   
         try {
-            channels = await channelService.list(LIMIT, channelsShown)
+            channels = await channelWebService.list(LIMIT, channelsShown)
   
           if (channels && channels.length == LIMIT) {
             channelsShown += channels.length
@@ -126,14 +129,16 @@
         virtualList = $f7.virtualList.create({
             el: '#channel-list',
   
-            renderItem(item) {
-  
+            renderItem(channelViewModel) {
+
+              if (!channelViewModel.channel) return '<li>Loading</li>'
+
               return `
                     <li>
-                      <a href="/admin/channel/show/${item._id}" class="item-link item-content">
+                      <a href="/admin/channel/show/${channelViewModel.channel._id}" class="item-link item-content">
                         <div class="item-media">
-                            ${item.coverPhotoSrc ? ` 
-                                <img class="cover-photo-thumb" src="${item.coverPhotoSrc}">
+                            ${channelViewModel.coverImage ? ` 
+                                <img class="cover-photo-thumb" src="${imageService.getUrl(channelViewModel.coverImage)}">
                             ` : `
                                 <i class="f7-icons cover-photo-thumb">document</i>
                             `}
@@ -141,12 +146,15 @@
                         
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">${item.title}</div>
-                            <div class="item-after">${item.dateCreated}</div>
+                            <div class="item-title">${channelViewModel.channel.title}</div>
+                            <div class="item-after">${channelViewModel.channel.dateCreated}</div>
                           </div>
   
-                          <div class="item-subtitle">${item.description}</div>
-  
+                          <div class="item-subtitle">${channelViewModel.channel.description}</div>
+                          <div class="item-text">
+
+                          
+                          </div>
                         </div>
                       </a>
                     </li>

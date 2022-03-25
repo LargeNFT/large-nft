@@ -5,7 +5,6 @@ import { Item } from "../dto/item"
 
 import { ValidationException } from "../util/validation-exception";
 import { v4 as uuidv4 } from 'uuid';
-import { QuillService } from "./quill-service";
 import { ContractMetadata } from "../dto/contract-metadata";
 import { ImageService } from "./image-service";
 import { Image } from "../dto/image";
@@ -23,6 +22,7 @@ import { ethers, BigNumber } from "ethers";
 import TYPES from "./core/types";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
+import { ImageRepository } from "../repository/image-repository";
 
 
 @injectable()
@@ -33,7 +33,6 @@ class ChannelService {
     private imageService:ImageService,
     private itemService:ItemService,
     private ipfsService:IpfsService,
-    private quillService:QuillService,
     private schemaService:SchemaService,
     private pinningService:PinningService,
     @inject(TYPES.WalletService) private walletService:WalletService,
@@ -70,7 +69,9 @@ class ChannelService {
   }
 
   async list(limit: number, skip:number): Promise<Channel[]> {
+    
     return this.channelRepository.list(limit, skip)
+
   }
 
   async delete(channel:Channel): Promise<void> {

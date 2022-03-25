@@ -1,0 +1,189 @@
+<template>
+
+  <div class="page" data-name="admin-show-collection">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="/" class="link"><i class="icon icon-back"></i></a>
+        </div>
+        <div class="title">View Collection</div>
+        <div class="right">
+          <${HeaderRight} />
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+        <div class="row ">
+  
+          <div class="col-100 large-50 center ">
+            
+            ${channelViewModel ? $h`
+              <div class="card channel-card">
+
+                <div class="card-header banner" id="banner">
+        
+                    ${coverImageSrc ? $h`
+                      <img src="${coverImageSrc}" class="avatar" />
+                    ` : $h`
+                      <i class="material-icons avatar">image</i>
+                    `}
+                </div>
+        
+                <div class="card-content">
+                    <div class="card-content card-content-padding">
+
+                        <a href="/admin/channel/clone/${channelViewModel?.channel?._id}" class="button button-fill float-right">Clone</a>
+
+                        <div class="title">${channelViewModel?.channel?.title}</div>
+        
+                        ${channelViewModel?.author ? `
+                        <div class="name">${channelViewModel?.author?.name}</div>
+                        ` : ``}
+        
+                        <p>${channelViewModel?.channel?.description}</p>
+        
+                    </div>
+                </div>
+
+                <div class="card-footer">
+
+
+          
+                  ${showEdit ? $h`
+                    <a class="tab-link" href="/admin/channel/edit/${channelViewModel.channel._id}">
+                      <i class="material-icons">edit</i> Edit
+                    </a>  
+          
+                    <a class="tab-link" @click="${deleteCollectionClick}">
+                      <i class="material-icons">delete</i> Delete
+                    </a>
+          
+                  ` : $h``}
+                </div>
+        
+              </div>
+              ` : $h``}
+              
+          </div>
+        </div>
+  
+    </div>
+
+  </div>
+
+</template>
+
+
+
+<style>
+  .channel-card .card-header {
+      display: block;
+      padding: 10px;
+  }
+
+  .channel-card .avatar {
+      float: left;
+  }
+
+  .channel-card .name {
+      margin-left: 44px;
+      font-size: 14px;
+      font-weight: 500;
+  }
+
+  .channel-card .date {
+      font-size: 13px;
+      color: #8e8e93;
+  }
+
+  .channel-card .title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 50px;
+      text-align: center;
+  }
+
+  .channel-card .card-content img {
+      display: block;
+      max-width: 100%;
+  }
+
+  .channel-card .banner {
+      height: 200px;
+      width: 100%;
+      background-position: center;
+      background-size: cover;
+      background-color: #f1f1f1;
+  }
+
+  .channel-card .avatar {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      left: calc(50% - 50px);
+      bottom: 0;
+      margin-bottom: -50px;
+      z-index: 10000;
+      border: 3px solid #ffffff;
+      font-size: 100px;
+      background: #ffffff;
+  }
+
+  .channel-card a {
+      color: var(--f7-text-color);
+  }
+
+
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { ChannelWebService } from "../../../service/web/channel-web-service"
+  import { ImageService } from "../../../service/image-service"
+
+  import { UiService } from "../../../service/core/ui-service"
+
+  import HeaderRight from "../../admin/header-right.f7.html"
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let channelWebService = ContainerService.getInstance(ChannelWebService)
+    let imageService = ContainerService.getInstance(ImageService)
+
+    let channelViewModel
+    let showEdit = false
+
+    let coverBannerSrc 
+    let coverImageSrc 
+
+    $on('pageInit', async (e, page) => {
+      channelViewModel = await channelWebService.get(props.id)
+
+      showEdit = channelViewModel.channel.pubDate == undefined
+
+      coverBannerSrc = await imageService.getUrl(channelViewModel.coverBanner)
+      coverImageSrc = await imageService.getUrl(channelViewModel.coverImage)
+
+      await $update()
+
+      document.getElementById('banner').style.backgroundImage = `url(${coverBannerSrc})`
+    })
+
+
+    const deleteCollectionClick = async (e) => {
+      
+    }
+
+
+    
+    return $render
+  }
+
+</script>

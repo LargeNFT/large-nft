@@ -18,6 +18,8 @@ class SchemaService {
 
     async loadWallet(walletAddress:string) {
 
+        console.log(`Loading wallet: ${walletAddress}`)
+
         //Open and cache databases
         await this.authorRepository.load(walletAddress)
         await this.channelRepository.load(walletAddress)

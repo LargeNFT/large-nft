@@ -50,6 +50,9 @@ class Channel {
     sellerFeeBasisPoints:string
 
     @Allow()
+    pubDate?:string
+
+    @Allow()
     dateCreated?:string
 
     @Allow()

@@ -2,6 +2,7 @@ import AppComponent from './components/app.f7.html'
 
 import AdminChannelIndexComponent from './components/admin/channel/index.f7.html'
 import AdminChannelCreateComponent from './components/admin/channel/create.f7.html'
+import AdminChannelShowComponent from './components/admin/channel/show.f7.html'
 
 import AdminPostIndexComponent from './components/admin/post/index.f7.html'
 import AdminPostCreateComponent from './components/admin/post/create.f7.html'
@@ -74,6 +75,12 @@ function getMainContainer() {
           path: "/admin/channel/create",
           component: AdminChannelCreateComponent
         },
+
+        {
+          path: "/admin/channel/show/:id",
+          component: AdminChannelShowComponent
+        },
+
 
         /**
          * Posts

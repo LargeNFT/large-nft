@@ -17,6 +17,10 @@ class ChannelWebService {
         private authorService:AuthorService
     ) {}
 
+    async get(_id:string) : Promise<ChannelViewModel> {
+        return this.getViewModel(await this.channelService.get(_id))
+    }
+
     async getViewModel(channel:Channel) : Promise<ChannelViewModel> {
 
         let coverImage:Image

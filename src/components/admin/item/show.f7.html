@@ -1,0 +1,124 @@
+<template>
+
+    <div class="page" data-name="admin-show-post">
+  
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner">
+          <div class="left">
+            <a href="/" class="link"><i class="icon icon-back"></i></a>
+          </div>
+          <div class="title">View Blog NFT</div>
+          <div class="right">
+            <${HeaderRight} />
+          </div>
+        </div>
+      </div>
+  
+      <div class="toolbar tabbar toolbar-top">
+        <div class="toolbar-inner">
+          <a class="tab-link tab-link-active">View</a>
+          <a class="tab-link" href="/admin/item/edit/${itemViewModel.item?._id}"> Edit</a>
+          <a class="tab-link" @click="${deleteClick}">Delete</a>
+        </div>
+      </div>
+  
+  
+      <div class="page-content">
+  
+        <div class="row">
+  
+          <div class="card post col-100 large-66 margin-top center no-hairlines">
+  
+            <div class="card-content card-content-padding">
+  
+              <h1>${itemViewModel.item.title}</h1>
+  
+              ${itemViewModel.item.subtitle ? $h`
+                <h2>${itemViewModel.item.subtitle}</h2>
+              `:``}
+            
+              <!-- <div class="author">
+  
+                <div class="pic">
+
+                  ${post.profilePicSrc ? $h`
+                    <img class="profile-pic-thumb" src="${post.profilePicSrc}">
+                  ` : $h`
+                    <i class="f7-icons profile-pic-thumb">person</i>
+                  `}
+
+                </div>
+  
+                <div class="info">
+                  <div class="owner">${post.ownerDisplayName}</div>
+                  <div class="date">${post.dateCreatedDisplay}</div>
+                </div>
+  
+              </div> -->
+  
+              <div class="content">
+                ${itemViewModel.item.contentHTML}
+              </div>
+            </div>
+  
+          </div>
+        </div>
+  
+      </div>
+
+    </div>
+  
+  </template>
+  
+  
+  <style>
+      .content img {
+          max-width: 100%;
+      }
+  </style>
+  
+  <script>
+  
+    import { ContainerService } from "../../../service/core/container-service"
+    import { UiService } from "../../../service/core/ui-service"
+    import { ItemService } from "../../../service/item-service"
+
+    import HeaderRight from "../../admin/header-right.f7.html"
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+      
+      let itemService = ContainerService.getInstance(ItemService)
+      let uiService = ContainerService.getInstance(UiService)
+
+      let itemViewModel = props.itemViewModel
+
+
+      const deleteClick = async (e) => {
+
+        try {
+
+            $f7.dialog.confirm(
+                "Do you want to delete this item? Note: This only deletes from your device. ",
+                async function() {
+
+                    await itemService.delete(post._id)
+
+                    //Redirect
+                    $f7.views.main.router.navigate(`/admin/post`)
+                }
+            )
+
+            } catch(ex) {
+                uiService.showExceptionPopup(ex)
+            }
+
+      }
+
+      
+      return $render
+    }
+
+  </script>
+  

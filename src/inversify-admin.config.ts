@@ -3,11 +3,12 @@ import AppComponent from './components/app.f7.html'
 import AdminChannelIndexComponent from './components/admin/channel/index.f7.html'
 import AdminChannelCreateComponent from './components/admin/channel/create.f7.html'
 import AdminChannelShowComponent from './components/admin/channel/show.f7.html'
+import AdminChannelEditComponent from './components/admin/channel/edit.f7.html'
 
-import AdminPostIndexComponent from './components/admin/post/index.f7.html'
-import AdminPostCreateComponent from './components/admin/post/create.f7.html'
-import AdminPostShowComponent from './components/admin/post/show.f7.html'
-import AdminPostEditComponent from './components/admin/post/edit.f7.html'
+import AdminItemIndexComponent from './components/admin/item/index.f7.html'
+import AdminItemCreateComponent from './components/admin/item/create.f7.html'
+import AdminItemShowComponent from './components/admin/item/show.f7.html'
+import AdminItemEditComponent from './components/admin/item/edit.f7.html'
 
 import AdminSettingsComponent from './components/admin/settings/index.f7.html'
 import AdminConnectComponent from './components/admin/connect/index.f7.html'
@@ -42,15 +43,19 @@ import { PinningService } from './service/core/pinning-service'
 import { PinningApiRepository } from './repository/pinning-api-repository'
 import { ItemService } from './service/item-service'
 import { ChannelWebService } from './service/web/channel-web-service'
+import { ItemWebService } from './service/web/item-web-service'
 
 
 let container:Container
+let channelWebService:ChannelWebService
+let itemWebService:ItemWebService
 
 function getMainContainer() {
 
   if (container) return container
 
   container = new Container()
+
 
 
   function framework7() {
@@ -78,29 +83,79 @@ function getMainContainer() {
 
         {
           path: "/admin/channel/show/:id",
-          component: AdminChannelShowComponent
-        },
+          async async({ resolve, reject, to}) {
 
+            let channelViewModel = await channelWebService.get(to.params.id)
+
+            resolve({ 
+              component: AdminChannelShowComponent
+            }, {
+              props: {
+                channelViewModel: channelViewModel
+              } 
+            })
+          }
+        },
+        {
+          path: "/admin/channel/edit/:id",
+          async async({ resolve, reject, to }) {
+
+              let channelViewModel = await channelWebService.get(to.params.id)
+
+              resolve({ 
+                component: AdminChannelEditComponent
+              }, {
+                props: {
+                  channelViewModel: channelViewModel
+                } 
+              })
+          }
+          
+        },
 
         /**
-         * Posts
+         * Items
          */
         {
-          path: "/admin/post/index",
-          component: AdminPostIndexComponent
+          path: "/admin/item/index",
+          component: AdminItemIndexComponent
         },
         {
-          path: "/admin/post/create",
-          component: AdminPostCreateComponent
+          path: "/admin/item/create/:channelId",
+          component: AdminItemCreateComponent
         },
         {
-          path: "/admin/post/show/:id",
-          component: AdminPostShowComponent
+          path: "/admin/item/show/:id",
+          async async({ resolve, reject, to }) {
+
+            let itemViewModel = await itemWebService.get(to.params.id)
+
+            resolve({ 
+              component: AdminItemShowComponent
+            }, {
+              props: {
+                itemViewModel: itemViewModel
+              } 
+            })
+          }
+          
         },
         {
-          path: "/admin/post/edit/:id",
-          component: AdminPostEditComponent
+          path: "/admin/item/edit/:id",
+          async async({ resolve, reject, to }) {
+
+            let itemViewModel = await itemWebService.get(to.params.id)
+
+            resolve({ 
+              component: AdminItemEditComponent
+            }, {
+              props: {
+                itemViewModel: itemViewModel
+              } 
+            })
+          }
         },
+
 
 
         /**
@@ -197,6 +252,7 @@ function getMainContainer() {
   container.bind(PinningService).toSelf().inSingletonScope()
   
   container.bind(ChannelWebService).toSelf().inSingletonScope()
+  container.bind(ItemWebService).toSelf().inSingletonScope()
 
   container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()
 
@@ -212,7 +268,8 @@ function getMainContainer() {
   container.bind(AuthorRepository).toSelf().inSingletonScope()
   container.bind(PinningApiRepository).toSelf().inSingletonScope()
 
-
+  channelWebService = container.get(ChannelWebService)
+  itemWebService = container.get(ItemWebService)
 
   return container
 }

@@ -1,34 +1,41 @@
 <!--suppress JSAnnotator -->
 <template>
     <ul>
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Symbol</div>
-                    <div class="item-input-wrap">
-                        <input type="text" name="symbol" placeholder="Symbol (eg BAYC)" tabindex="1" required />
-                    </div>
-                </div>
-            </div>
-        </li>
-
+        <input type="hidden" name="_id"  value="${channelViewModel?.channel?._id}" />
+        <input type="hidden" name="_rev" value="${channelViewModel?.channel?._rev}" />
+        <input type="hidden" name="dateCreated" value="${channelViewModel?.channel?.dateCreated}" />
 
         <li>
             <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
                     <div class="item-title item-label">Title</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="title" placeholder="Collection title" required tabindex="2" />
+                        <input type="text" name="title" placeholder="Collection title"
+                            value="${channelViewModel?.channel?.title}" required tabindex="1" />
                     </div>
                 </div>
             </div>
         </li>
+
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Symbol</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
+                            value="${channelViewModel?.channel?.symbol}" tabindex="2" required />
+                    </div>
+                </div>
+            </div>
+        </li>
+
         <li>
             <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
                     <div class="item-title item-label">Description</div>
                     <div class="item-input-wrap">
-                        <textarea name="description" class="resizable" tabindex="3"></textarea>
+                        <textarea name="description" class="resizable" value="${channelViewModel?.channel?.description}"
+                            tabindex="3"></textarea>
                     </div>
                 </div>
             </div>
@@ -39,16 +46,18 @@
                     <div class="item-title item-label">Collection Avatar</div>
                     <div class="item-input-wrap">
 
-                        ${coverImageSrc ? $h`
-                        <img class="cover-image-preview" src="${coverImageSrc}" />
+                        ${channelViewModel.coverImage ? $h`
+                        <img class="cover-image-preview" src="${imageService.getUrl(channelViewModel?.coverImage)}" />
 
                         ` : $h`
                         <i class="material-icons cover-image-preview">image</i>
                         `}
 
-                        <input type="button" class="button button-fill" value="Browse" @click="${handleCoverImageBrowseClick}" tabindex="4"  />
-                        <input type="hidden" name="coverImageId" value="${coverImageId}" />
-                        <input type="file" id="cover-image-browse" style="display: none" @change="${handleCoverImageChange}" />
+                        <input type="button" class="button button-fill" value="Browse"
+                            @click="${handleCoverImageBrowseClick}" tabindex="4" />
+                        <input type="hidden" name="coverImageId" value="${channelViewModel?.coverImage?._id}" />
+                        <input type="file" id="cover-image-browse" style="display: none"
+                            @change="${handleCoverImageChange}" />
 
                     </div>
                 </div>
@@ -60,14 +69,15 @@
                     <div class="item-title item-label">Collection Banner</div>
                     <div class="item-input-wrap">
 
-                        ${coverBannerSrc ? $h`
-                        <img class="cover-banner-preview" src="${coverBannerSrc}" />
+                        ${channelViewModel?.coverBanner ? $h`
+                        <img class="cover-banner-preview" src="${imageService.getUrl(channelViewModel?.coverBanner)}" />
                         ` : $h`
                         <i class="material-icons cover-banner-preview">image</i>
                         `}
 
-                        <input type="button" class="button button-fill" value="Browse" @click="${handleBannerBrowseClick}" tabindex="5" />
-                        <input type="hidden" name="coverBannerId" value="${coverBannerId}" />
+                        <input type="button" class="button button-fill" value="Browse"
+                            @click="${handleBannerBrowseClick}" tabindex="5" />
+                        <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?._id}" />
                         <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />
 
                     </div>
@@ -79,7 +89,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Category</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="category" placeholder="Category" id="category" tabindex="6" />
+                        <input type="text" name="category" placeholder="Category" id="category" tabindex="6" value="${channelViewModel?.channel?.category}" />
                     </div>
                 </div>
             </div>
@@ -89,7 +99,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Copyright</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="copyright" placeholder="Copyright" tabindex="7" />
+                        <input type="text" name="copyright" placeholder="Copyright" tabindex="7" value="${channelViewModel?.channel?.copyright}" />
                     </div>
                 </div>
             </div>
@@ -99,7 +109,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">External Link</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="link" placeholder="External Link" tabindex="8" />
+                        <input type="text" name="link" placeholder="External Link" tabindex="8" value="${channelViewModel?.channel?.link}" />
                     </div>
                 </div>
             </div>
@@ -111,7 +121,11 @@
                 <div class="item-input-wrap input-dropdown-wrap">
                     <select name="language" tabindex="9">
                         ${languages.map( language => $h`
-                        <option value="${language}">${language}</option>
+                            ${channelViewModel?.channel?.language == language ? $h`
+                                <option value="${language}" selected >${language}</option>
+                            ` : $h`
+                                <option value="${language}">${language}</option>
+                            `}
                         `)}
                     </select>
                 </div>
@@ -137,11 +151,11 @@
                         <div id="category-${ao.id}">
 
                             <div class="category-name-input">
-                                <input type="text" placeholder="Category Name" @change="${categoryNameChange}" data-id="${ao.id}" />
+                                <input type="text" placeholder="Category Name" @change="${categoryNameChange}" data-id="${ao.id}" value="${ao.traitType}" />
                             </div>
 
                             <div class="options-input">
-                                <input type="text" placeholder="Enter options" @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" />
+                                <input type="text" placeholder="Enter options" @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" value="${ao.values}" />
                             </div>
 
                             <a @click="${deleteOptionClick}" data-id="${ao.id}"><i class="material-icons">delete</i></a>
@@ -153,7 +167,8 @@
 
                         <div class="row">
                             <div class="col-30">
-                                <a class="button button-outline" @click="${addCategoryClick}" tabindex="10">Add Category</a>
+                                <a class="button button-outline" @click="${addCategoryClick}" tabindex="10">Add
+                                    Category</a>
                             </div>
                             <div class="col-70"></div>
                         </div>
@@ -167,8 +182,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Mint Price in ETH</div>
                     <div class="item-input-wrap">
-                        <input type="number" placeholder="Enter price for one piece (eg 0.08)"
-                            @change="${mintPriceChange}" step="any" tabindex="11" />
+                        <input type="number" placeholder="Enter price for one piece (eg 0.08)" @change="${mintPriceChange}" step="any" tabindex="11" value="${channelViewModel?.channel?.mintPrice}" />
                         <input type="hidden" name="mintPrice" value="${mintPrice}" />
                     </div>
                 </div>
@@ -191,8 +205,8 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Royalty %</div>
                     <div class="item-input-wrap">
-                        <input type="number" placeholder="Royalty %" @change="${royaltyChange}" step="any" tabindex="12" />
-                        <input type="hidden" name="sellerFeeBasisPoints" value="${sellerFeeBasisPoints}" />
+                        <input type="number" name="royaltyPercent" placeholder="Royalty %" @change="${royaltyChange}" step="any"  tabindex="12" value="${channelViewModel?.channel?.royaltyPercent}" />
+                        <input type="hidden" name="sellerFeeBasisPoints" value="${channelViewModel?.channel?.sellerFeeBasisPoints}" />
 
                     </div>
                 </div>
@@ -200,12 +214,12 @@
         </li>
 
 
-        ${royalty ? $h`
+        ${channelViewModel?.channel?.royaltyPercent ? $h`
         <li tabindex="-1">
             <div class="item-content">
                 <div class="item-inner">
                     <div class="item-text">
-                        You will receive a <strong>${royalty}%</strong> for each sale on OpenSea, etc. Confirm this
+                        You will receive a <strong>${channelViewModel?.channel?.royaltyPercent}%</strong> for each sale on OpenSea, etc. Confirm this
                         value when you set up your
                         collection on the marketplace. This just presets it for you.
                     </div>
@@ -247,26 +261,26 @@
 
     .category-name-label {
         font-weight: bold;
-        width: 210px;
+        width: 185px;
         display: inline-block;
     }
 
     .options-label {
         font-weight: bold;
-        width: 400px;
+        width: 300px;
         display: inline-block;
     }
 
     .category-name-input {
         border: 1px solid #cccccc;
         margin: 2px;
-        width: 200px;
+        width: 175px;
         display: inline-block;
     }
 
     .options-input {
         margin: 2px;
-        width: 400px;
+        width: 300px;
         display: inline-block;
     }
 </style>
@@ -297,25 +311,43 @@
 
     export default (props, { $, $on, $f7, $update }) => {
 
-        let walletService = ContainerService.getWalletService();
+        let walletService = ContainerService.getWalletService()
         let uiService = ContainerService.getInstance(UiService)
         let channelService = ContainerService.getInstance(ChannelService)
         let uploadService = ContainerService.getInstance(UploadService)
         let imageService = ContainerService.getInstance(ImageService)
 
-        let coverImageSrc
-        let coverImageId
 
-        let coverBannerSrc
-        let coverBannerId
+        const setMintPrice = (value) => {
 
-        let attributeOptions = []
+            //Reset
+            mintPrice = undefined
+            mintPriceWei = undefined
 
-        let mintPrice
-        let mintPriceWei
+            if (!value) return
 
-        let royalty
-        let sellerFeeBasisPoints
+            let wei = ethers.utils.parseUnits(value, 'ether')
+
+            try {
+                mintPrice = ethers.utils.formatUnits(wei)
+                mintPriceWei = wei.toString()
+            } catch (ex) {
+                console.log(ex)
+            }
+
+        }
+
+        const setRoyalty = (value) => {
+
+            channelViewModel.channel.sellerFeeBasisPoints = undefined
+            channelViewModel.channel.royaltyPercent = undefined
+
+            if (value) {
+                channelViewModel.channel.royaltyPercent = value 
+                channelViewModel.channel.sellerFeeBasisPoints = Math.round(value / 100)
+            }
+
+        }
 
 
 
@@ -358,31 +390,14 @@
 
         const mintPriceChange = async (e) => {
 
-            //Reset
-            mintPrice = undefined
-            mintPriceWei = undefined
-
-            if (e.currentTarget.value) {
-                let wei = ethers.utils.parseUnits(e.currentTarget.value, 'ether')
-
-                try {
-                    mintPrice = ethers.utils.formatUnits(wei)
-                    mintPriceWei = wei.toString()
-                } catch (ex) {
-                    console.log(ex)
-                }
-
-            }
-
+            setMintPrice(e.currentTarget.value)
+ 
             await $update()
 
         }
 
         const royaltyChange = async (e) => {
-
-            royalty = e.currentTarget.value
-            sellerFeeBasisPoints = parseInt(royalty * 100)
-
+            setRoyalty(e.currentTarget.value)
             await $update()
         }
 
@@ -412,8 +427,7 @@
                 await imageService.put(image)
             } catch (ex) { }
 
-            coverImageId = image._id
-            coverImageSrc = await imageService.getUrl(image)
+            channelViewModel.coverImage = image
 
             $update()
         }
@@ -432,19 +446,36 @@
                 await imageService.put(image)
             } catch (ex) { }
 
-            coverBannerId = image._id
-            coverBannerSrc = await imageService.getUrl(image)
+            channelViewModel.coverBanner = image
 
             $update()
         }
-
-
 
         const safeCSSId = (text) => {
             return encodeURIComponent(text)
                 .toLowerCase()
                 .replace(/\.|%[0-9a-z]{2}/gi, '');
         }
+
+
+        let channelViewModel = props.channel
+
+        let attributeOptions = []
+
+        let mintPrice
+        let mintPriceWei
+
+        //Set values if passed in
+        if (channelViewModel) {
+            setMintPrice(channelViewModel.channel.mintPrice)
+            setRoyalty(channelViewModel.channel.royaltyPercent)
+
+            if (channelViewModel?.channel?.attributeOptions?.length > 0) {
+                attributeOptions = channelViewModel.channel.attributeOptions
+            }
+
+        }
+
 
         return $render
     }

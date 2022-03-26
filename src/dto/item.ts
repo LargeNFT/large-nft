@@ -22,25 +22,19 @@ class Item {
     @Allow()
     link?:string 
 
-
     @Allow()
     description?:string
-
 
     @Allow()
     content?:any
 
     @Allow()
     contentHTML?:string
-    
 
-
-    @IsNotEmpty()
+    @Allow()
     authorId:string
 
-    @ArrayNotEmpty()
-    @ArrayMinSize(1)
-    @MinLength(3, { each: true, message: 'Category is too short. Minimum length is $value characters' })
+    @Allow()
     category:string[]
 
     @Allow()

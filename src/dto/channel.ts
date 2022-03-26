@@ -50,6 +50,9 @@ class Channel {
     sellerFeeBasisPoints:string
 
     @Allow()
+    royaltyPercent:string
+
+    @Allow()
     pubDate?:string
 
     @Allow()

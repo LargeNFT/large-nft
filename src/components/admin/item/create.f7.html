@@ -1,0 +1,131 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="admin-create-item">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+        </div>
+        <div class="title">Create Blog NFT</div>
+        <div class="right">
+          <${HeaderRight} />
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <form class="block list no-hairlines" id="create-item-form" @submit="${formSubmit}">
+
+        <${ItemForm} item=${itemViewModel} editor="create-item-editor" toolbar="create-item-toolbar" />
+
+        <div class="row block">
+
+          <div class="col-70"></div>
+
+          <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+            <i class="material-icons">save</i> Save
+          </button>
+
+        </div>
+
+
+      </form>
+
+    </div>
+  </div>
+
+</template>
+
+<style>
+  #create-item-editor {
+    min-height: 600px;
+    height: 100%;
+    /* added these styles */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { QuillEditorService } from "../../../service/quill-editor-service"
+  import { ItemService } from "../../../service/item-service"
+
+  import { WalletService } from "../../../service/core/wallet-service"
+
+  import { Item } from "../../../dto/item"
+
+
+  import HeaderRight from "../../admin/header-right.f7.html"
+  import ItemForm from "../../admin/item/form.f7.html"
+
+  import moment from "moment"
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let quillEditorService = ContainerService.getInstance(QuillEditorService)
+    let itemService = ContainerService.getInstance(ItemService)
+    
+    let walletService = ContainerService.getWalletService()
+
+    
+
+    let itemViewModel = {
+      item: {
+      },
+      channel: {
+        _id: props.channelId
+      }
+    }
+
+
+    let toast
+
+    const formSubmit = async (e) => {
+
+      e.preventDefault()
+
+      //Get data
+      let item = Object.assign(new Item(), $f7.form.convertToData('#create-item-form'))
+
+      //Get content from quill
+      item.content = quillEditorService.activeEditor.getContents()
+
+      //Save
+      try {
+
+        await itemService.put(item)
+
+        //Redirect
+        $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
+
+      } catch (ex) {
+        console.log(ex)
+        $f7.dialog.alert(ex.errors, "There was an error")
+      }
+
+    }
+
+    $on('pageInit', async (e, page) => {
+      quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar")
+    })
+
+    $on('pageBeforeRemove', () => {
+      // Destroy toasts when page removed
+      // if (toast) toast.destroy()
+    })
+
+
+
+
+    return $render
+  }
+
+</script>

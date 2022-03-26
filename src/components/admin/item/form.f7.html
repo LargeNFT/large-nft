@@ -1,0 +1,107 @@
+<!--suppress JSAnnotator -->
+<template>
+    <ul>
+        <input type="hidden" name="_id" value="${itemViewModel?.item?._id}" />
+        <input type="hidden" name="_rev" value="${itemViewModel?.item?._rev}" />
+        <input type="hidden" name="dateCreated" value="${itemViewModel?.item?.dateCreated}" />
+        <input type="hidden" name="channelId" value="${itemViewModel?.channel?._id}" />
+
+
+        <li>
+            <div class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Title</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="title" placeholder="Title"
+                            value="${itemViewModel?.item?.title}" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Subtitle</div>
+                    <div class="item-input-wrap">
+                        <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)"
+                            value="${itemViewModel?.item?.subtitle}" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content item-input">
+                <div class="item-inner post-area">
+                    <div class="item-title item-label">Content</div>
+
+                    <div id="${toolbarId}">
+
+                        <select class="ql-header">
+                            <option selected></option>
+                            <option value="1">Heading</option>
+                            <option value="2">Subheading</option>
+                            <option value="3">Normal</option>
+                        </select>
+
+
+                        <!-- Add a bold button -->
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-strike"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-link"></button>
+
+
+
+                        <!-- Add subscript and superscript buttons -->
+                        <button class="ql-script" value="sub"></button>
+                        <button class="ql-script" value="super"></button>
+
+                        <button class="text-editor-button image-button"><i class="material-icons">image</i></button>
+                        <label><input type="file" class="image-button-input" /></label>
+                    </div>
+
+                    <div class="editor bg-color-white text-color-black" id="${editorId}"></div>
+                </div>
+            </div>
+        </li>
+        <li class="cover-photo-preview">
+
+            <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?._id}" />
+
+            <div class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Cover Image</div>
+                    <div class="item-input-wrap cover-photo-img-wrapper">
+                    </div>
+                </div>
+            </div>
+
+        </li>
+
+    </ul>
+
+
+
+
+</template>
+
+<style>
+
+</style>
+
+
+<script>
+
+    import QuillToolbar from "../../admin/quill-toolbar.f7.html"
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let itemViewModel = props.item
+        let editorId = props.editor
+        let toolbarId = props.toolbar
+
+        return $render
+    }
+
+</script>

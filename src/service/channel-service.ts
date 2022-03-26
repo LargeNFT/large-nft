@@ -75,7 +75,20 @@ class ChannelService {
   }
 
   async delete(channel:Channel): Promise<void> {
+
+    console.log(channel)
+
     await this.channelRepository.delete(channel)
+
+    //Get all the items
+    let items:Item[] =await this.itemService.listByChannel(channel._id, 100000, 0)
+
+    for (let item of items) {
+      console.log(item)
+      await this.itemService.delete(item)
+    }
+
+
   }
 
   async exportNFTMetadata(channel:Channel, items:Item[], ownerAddress:string) : Promise<string> {

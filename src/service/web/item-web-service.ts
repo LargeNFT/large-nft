@@ -50,7 +50,6 @@ class ItemWebService {
         let result:ItemViewModel[] = []
 
         let items:Item[] = await this.itemService.listByChannel(channelId, limit, skip)
-        console.log(channelId)
 
         for (let item of items) {
             result.push(await this.getViewModel(item))

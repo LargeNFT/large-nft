@@ -7,6 +7,7 @@ import { WalletService } from "./wallet-service"
 class WalletServiceImpl implements WalletService {
 
   public wallet: any
+  public address: any
   // public ethersContracts:any = {}
 
   
@@ -39,6 +40,7 @@ class WalletServiceImpl implements WalletService {
     await this.provider.send("eth_requestAccounts", []);
 
     this.wallet = await this.provider.getSigner()
+    this.address = await this.getAddress()
     
     console.log("Wallet connected") 
 

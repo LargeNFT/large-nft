@@ -23,6 +23,7 @@ import TYPES from "./core/types";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { ImageRepository } from "../repository/image-repository";
+import { QuillService } from "./quill-service";
 
 
 @injectable()
@@ -35,6 +36,7 @@ class ChannelService {
     private ipfsService:IpfsService,
     private schemaService:SchemaService,
     private pinningService:PinningService,
+    private quillService:QuillService,
     @inject(TYPES.WalletService) private walletService:WalletService,
 
     @inject("contracts") private contracts,
@@ -54,6 +56,15 @@ class ChannelService {
       channel.lastUpdated = new Date().toJSON()
     }
     
+    if (channel.description) {
+      //Translate description content
+      channel.descriptionHTML = await this.quillService.translateContent(channel.description)
+
+      //Generate markdown
+      channel.descriptionMarkdown = await this.quillService.generateMarkdown(channel.description)
+    }
+
+
     //Validate
     let errors:ValidationError[] = await validate(channel, {
       forbidUnknownValues: true,
@@ -75,8 +86,6 @@ class ChannelService {
   }
 
   async delete(channel:Channel): Promise<void> {
-
-    console.log(channel)
 
     await this.channelRepository.delete(channel)
 
@@ -201,7 +210,7 @@ class ChannelService {
 
     let result:ContractMetadata = {
       name: channel.title,
-      description: channel.description,
+      description: channel.descriptionMarkdown,
       external_link: channel.link,
       seller_fee_basis_points: channel.sellerFeeBasisPoints,
       fee_recipient: ownerAddress

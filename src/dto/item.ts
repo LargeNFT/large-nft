@@ -32,6 +32,9 @@ class Item {
     contentHTML?:string
 
     @Allow()
+    excerpt?:string
+
+    @Allow()
     authorId:string
 
     @Allow()

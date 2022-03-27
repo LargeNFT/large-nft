@@ -23,7 +23,7 @@
 
           <form class="block list" id="edit-channel-form" @submit="${formSubmit}">
 
-            <${ChannelForm} channel=${channelViewModel} />
+            <${ChannelForm} channel=${channelViewModel} editor="edit-channel-description-editor" toolbar="edit-channel-description-toolbar" />
 
             <div class="row block">
 
@@ -47,6 +47,10 @@
 </template>
 
 <style>
+  #edit-channel-description-editor {
+    min-height: 300px;
+    width: 100%;
+  }
 </style>
 
 
@@ -55,6 +59,7 @@
   import { ContainerService } from "../../../service/core/container-service"
   import { ChannelService } from "../../../service/channel-service"
   import { ImageService } from "../../../service/image-service"
+  import { QuillEditorService } from "../../../service/quill-editor-service"
 
   import { Channel } from "../../../dto/channel"
 
@@ -69,6 +74,7 @@
 
     let channelService = ContainerService.getInstance(ChannelService)
     let imageService = ContainerService.getInstance(ImageService)
+    let quillEditorService = ContainerService.getInstance(QuillEditorService)
 
     let channelViewModel = props.channelViewModel
 
@@ -78,6 +84,9 @@
 
       //Get data
       let channel = Object.assign(new Channel(), $f7.form.convertToData('#edit-channel-form'))
+
+      //Get content from quill
+      channel.description = quillEditorService.activeEditor.getContents()
 
       //Parse attributeOptions and category
       if (channel.attributeOptions) {
@@ -111,6 +120,9 @@
 
       //Categories
       let categoryTagify = new Tagify(document.getElementById('category'))
+
+      //Description
+      quillEditorService.buildQuillPostEditor("#edit-channel-description-editor", "#edit-channel-description-toolbar")
 
       //Open attribute options too
       if (channelViewModel.channel?.attributeOptions?.length > 0) {

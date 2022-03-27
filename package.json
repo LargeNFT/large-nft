@@ -123,6 +123,7 @@
     "quill": "1.3.7",
     "quill-blot-formatter": "1.0.5",
     "quill-delta-to-html": "0.11.0",
+    "quill-delta-to-markdown": "0.6.0",
 
     "@yaireo/tagify": "4.9.8",
     
@@ -130,6 +131,8 @@
     "uuid": "8.3.2",
     "axios": "0.26.1",
 
-    "blob-polyfill": "6.0.20211015"
+    "blob-polyfill": "6.0.20211015",
+
+    "excerpt-html": "1.2.2"
   }
 }

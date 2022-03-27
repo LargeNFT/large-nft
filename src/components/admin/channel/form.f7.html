@@ -4,6 +4,8 @@
         <input type="hidden" name="_id"  value="${channelViewModel?.channel?._id}" />
         <input type="hidden" name="_rev" value="${channelViewModel?.channel?._rev}" />
         <input type="hidden" name="dateCreated" value="${channelViewModel?.channel?.dateCreated}" />
+        <input type="hidden" name="authorId" value="${channelViewModel?.channel?.authorId}" />
+
 
         <li>
             <div class="item-content item-input item-input-outline">
@@ -11,7 +13,7 @@
                     <div class="item-title item-label">Title</div>
                     <div class="item-input-wrap">
                         <input type="text" name="title" placeholder="Collection title"
-                            value="${channelViewModel?.channel?.title}" required tabindex="1" />
+                            value="${channelViewModel?.channel?.title}" required  minlength="3" tabindex="1" />
                     </div>
                 </div>
             </div>
@@ -33,10 +35,28 @@
             <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
                     <div class="item-title item-label">Description</div>
-                    <div class="item-input-wrap">
-                        <textarea name="description" class="resizable" value="${channelViewModel?.channel?.description}"
-                            tabindex="3"></textarea>
+
+                    <div id="${toolbarId}">
+
+                        <select class="ql-header">
+                            <option selected></option>
+                            <option value="1">Heading</option>
+                            <option value="2">Subheading</option>
+                            <option value="3">Normal</option>
+                        </select>
+
+
+                        <!-- Add a bold button -->
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-strike"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-link"></button>
+
                     </div>
+
+                    <div class="editor bg-color-white text-color-black" id="${editorId}" tabindex="3"></div>
+
                 </div>
             </div>
         </li>
@@ -459,6 +479,8 @@
 
 
         let channelViewModel = props.channel
+        let toolbarId = props.toolbar
+        let editorId = props.editor
 
         let attributeOptions = []
 

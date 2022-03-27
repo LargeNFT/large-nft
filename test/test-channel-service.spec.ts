@@ -104,7 +104,6 @@ contract('ChannelService', async (accounts) => {
                 link: "google.com",
                 symbol: "SOM",
                 mintPrice: web3.utils.toWei( "0.08" , 'ether'),
-                description: "Singing in the mountains",
                 authorId: 3,
                 category: ['Gazebos']
             })
@@ -132,7 +131,6 @@ contract('ChannelService', async (accounts) => {
             link: "google.com",
             symbol: "SOM",
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
-            description: "Singing in the mountains",
             authorId: 3,
             category: ['Gazebos'],
             sellerFeeBasisPoints: 100,
@@ -181,7 +179,6 @@ contract('ChannelService', async (accounts) => {
             link: "alexa.com",
             symbol: "SOM",
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
-            description: "A boat that is not good at boating",
             authorId: 3,
             category: ['Sunk']
         }))
@@ -192,7 +189,6 @@ contract('ChannelService', async (accounts) => {
             link: "pontoon.com",
             symbol: "SOM",
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
-            description: "Another boat and a man in a bat suit",
             authorId: 3,
             category: ['Not Sunk']
         }))
@@ -218,13 +214,13 @@ contract('ChannelService', async (accounts) => {
 
         //Arrange
         let channel1: Channel = await service.get(id1)
-        channel1.description = "Wow1"
+        channel1.title = "Wow1"
 
         let channel2: Channel = await service.get(id2)
-        channel2.description = "Wow2"
+        channel2.title = "Wow2"
 
         let channel3: Channel = await service.get(id3)
-        channel3.description = "Wow3"
+        channel3.title = "Wow3"
 
         //Act
         await service.put(channel1)
@@ -236,9 +232,9 @@ contract('ChannelService', async (accounts) => {
 
         //assert
         assert.equal(channels.length, 3)
-        assert.equal(channels[0].description, "Wow3")
-        assert.equal(channels[1].description, "Wow2")
-        assert.equal(channels[2].description, "Wow1")
+        assert.equal(channels[0].title, "Wow3")
+        assert.equal(channels[1].title, "Wow2")
+        assert.equal(channels[2].title, "Wow1")
 
 
     })
@@ -256,7 +252,6 @@ contract('ChannelService', async (accounts) => {
                 symbol: "SOM",
                 mintPrice: web3.utils.toWei( "0.08" , 'ether'),
                 link: "alexa.com",
-                description: "A boat that is not good at boating",
                 authorId: 3,
                 category: ['Sunk']
             }))
@@ -327,7 +322,6 @@ contract('ChannelService', async (accounts) => {
             symbol: "SOM",
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
             link: "google.com",
-            description: "Singing in the mountains",
             authorId: author._id,
             category: ['Gazebos'],
             attributeOptions:[
@@ -351,7 +345,6 @@ contract('ChannelService', async (accounts) => {
             channelId: channel._id,
             title: "An image!",
             link: "pontoon.com",
-            description: "Another boat and a man in a bat suit",
             authorId: author._id,
             category: ['Gazebos', 'Ants'],
             content: editor.getContents(),
@@ -371,7 +364,6 @@ contract('ChannelService', async (accounts) => {
             channelId: channel._id,
             title: "2An image!",
             link: "2pontoon.com",
-            description: "2Another boat and a man in a bat suit",
             authorId: author._id,
             category: ['Gazebos', 'Ants'],
             attributeSelections: [{
@@ -388,7 +380,6 @@ contract('ChannelService', async (accounts) => {
             channelId: channel._id,
             title: "2An image!",
             link: "2pontoon.com",
-            description: "2Another boat and a man in a bat suit",
             authorId: author._id,
             category: ['Gazebos', 'Ants'],
             attributeSelections: [{
@@ -435,13 +426,11 @@ contract('ChannelService', async (accounts) => {
         let item3File:Item = await getFileContent(`/tmp/3.json`)
 
         assert.strictEqual(contractMetadata.name, "The Sound of Music")
-        assert.strictEqual(contractMetadata.description, 'Singing in the mountains')
         assert.strictEqual(contractMetadata.external_link, 'google.com')
         assert.strictEqual(contractMetadata.image, 'ipfs://QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr')
 
         assert.strictEqual(item1File.tokenId, '1')
         assert.strictEqual(item1File.name, 'An image!')
-        assert.strictEqual(item1File.description, 'Another boat and a man in a bat suit')
         assert.strictEqual(item1File.animation_url, 'ipfs://QmYuYBgM7257tYayRRhT4BDJaqG4JBPrtHsxvT9EwuQm86')
         assert.strictEqual(item1File.image, 'ipfs://QmX5VLosmfG3mitW5hyaGCWpg1AN6TbjW5Z3dtJPQmvEnq')
         assert.deepEqual(item1File.attributes, [

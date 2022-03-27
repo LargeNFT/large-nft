@@ -23,7 +23,7 @@
 
           <form class="block list" id="create-channel-form" @submit="${formSubmit}">
 
-            <${ChannelForm} channel=${channelViewModel} />
+            <${ChannelForm} channel=${channelViewModel} editor="create-channel-description-editor" toolbar="create-channel-description-toolbar" />
 
             <div class="row block">
 
@@ -47,14 +47,26 @@
 </template>
 
 <style>
+  #create-channel-description-editor {
+    min-height: 300px;
+    width: 100%;
+  }
+
 </style>
 
 
 <script>
 
   import { ContainerService } from "../../../service/core/container-service"
+  import { WalletService } from "../../../service/core/wallet-service"
+  import { QuillEditorService } from "../../../service/quill-editor-service"
+
+  import { AuthorService } from "../../../service/author-service"
+
+
   import { ChannelService } from "../../../service/channel-service"
   import { Channel } from "../../../dto/channel"
+  import { Author } from "../../../dto/author"
 
   import HeaderRight from "../../admin/header-right.f7.html"
   import ChannelForm from "../../admin/channel/form.f7.html"
@@ -66,11 +78,18 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let channelService = ContainerService.getInstance(ChannelService)
+    let authorService = ContainerService.getInstance(AuthorService)
+    let quillEditorService = ContainerService.getInstance(QuillEditorService)
+
+    let walletService = ContainerService.getWalletService()
+
+
 
     let channelViewModel = {
       channel: {
         mintPrice: "0.00",
-        royaltyPercent: "0"
+        royaltyPercent: "0",
+        authorId: walletService.address
       }
     }
 
@@ -80,6 +99,9 @@
 
       //Get data
       let channel = Object.assign(new Channel(), $f7.form.convertToData('#create-channel-form'))
+
+      //Get content from quill
+      channel.description = quillEditorService.activeEditor.getContents()
 
       //Parse attributeOptions and category
       if (channel.attributeOptions) {
@@ -93,6 +115,11 @@
         channel.category = JSON.parse(channel.category).map( item => item.value)
       } else {
         channel.category = []
+      }
+
+      //If the author doesn't exist insert a 
+      if (channel.authorId) {
+        await authorService.insertIfNew(channel.authorId)
       }
 
       //Save
@@ -113,6 +140,10 @@
 
       //Categories
       let categoryTagify = new Tagify(document.getElementById('category'))
+
+      //Description
+      quillEditorService.buildQuillPostEditor("#create-channel-description-editor", "#create-channel-description-toolbar")
+
 
     })
 

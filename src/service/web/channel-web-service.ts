@@ -44,7 +44,8 @@ class ChannelWebService {
             channel: channel,
             coverImage: coverImage,
             coverBanner:coverBanner,
-            author: author
+            author: author,
+            authorDisplayName: this.authorService.getDisplayName(author)
         }
 
     }

@@ -287,6 +287,7 @@ class QuillEditorService {
       },
       handlers: {
         'link': (value) => {
+
           if (value) {
             var href = prompt('Enter the URL');
             this.quill.format('link', href);

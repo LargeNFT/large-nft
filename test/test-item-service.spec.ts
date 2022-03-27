@@ -60,7 +60,6 @@ contract('ItemService', async (accounts) => {
             link: "google.com",
             symbol: "SOM",
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
-            description: "Singing in the mountains",
             authorId:3,
             category: ['Gazebos']
         })
@@ -70,7 +69,6 @@ contract('ItemService', async (accounts) => {
             link: "alexa.com",
             symbol: "SOM",
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
-            description: "A boat that is not good at boating",
             authorId:3,
             category: ['Sunk']
         })
@@ -89,7 +87,7 @@ contract('ItemService', async (accounts) => {
             await service.put(new Item())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 4)
+            assert.strictEqual(ex.errors.length, 2)
         }
 
     })

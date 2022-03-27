@@ -1,4 +1,4 @@
-import { MinLength } from 'class-validator'
+import { Allow, MinLength } from 'class-validator'
 
 import { Image } from "./image"
 
@@ -9,7 +9,7 @@ class Author {
 
   walletAddress?: string
 
-  @MinLength(3, { message: "Name must be more than 3 characters." })
+  @Allow()
   name?: string
 
   description?: string

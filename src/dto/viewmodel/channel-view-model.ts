@@ -10,6 +10,7 @@ interface ChannelViewModel {
 
 
     author:Author
+    authorDisplayName:string 
 
 }
 

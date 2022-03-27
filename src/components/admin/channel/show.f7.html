@@ -8,7 +8,7 @@
         <div class="left">
           <a class="link back"><i class="icon icon-back"></i></a>
         </div>
-        <div class="title">View Collection</div>
+        <div class="title">View Blog Collection</div>
         <div class="right">
           <${HeaderRight} />
         </div>
@@ -25,63 +25,61 @@
 
     <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
 
-        <div class="row ">
-  
-          <div class="col-100 large-50 center ">
+      <div class="card channel-card-show">
+
+        <div class="card-header banner" id="banner">
+
+            ${coverImageSrc ? $h`
+              <img src="${coverImageSrc}" class="avatar" />
+            ` : $h`
+              <i class="material-icons avatar">image</i>
+            `}
             
-            <div class="card channel-card">
-
-              <div class="card-header banner" id="banner">
-      
-                  ${coverImageSrc ? $h`
-                    <img src="${coverImageSrc}" class="avatar" />
-                  ` : $h`
-                    <i class="material-icons avatar">image</i>
-                  `}
-              </div>
-      
-              <div class="card-content">
-                  <div class="card-content card-content-padding">
-
-                      <!-- <a href="/admin/channel/clone/${channelViewModel?.channel?._id}" class="button button-fill float-right">Clone</a> -->
-
-                      <div class="title">${channelViewModel?.channel?.title}</div>
-      
-                      ${channelViewModel?.author ? `
-                      <div class="name">${channelViewModel?.author?.name}</div>
-                      ` : ``}
-      
-                      <p>${channelViewModel?.channel?.description}</p>
-      
-                  </div>
-              </div>
-
-              <div class="card-footer">
-
-                ${showEdit ? $h`
-                  <a href="/admin/channel/edit/${channelViewModel.channel._id}">
-                    <i class="material-icons">edit</i> Edit
-                  </a>  
-        
-                  <a @click="${deleteCollectionClick}">
-                    <i class="material-icons">delete</i> Delete
-                  </a>
-        
-                ` : $h``}
-              </div>
-      
-            </div>
-              
-
-            <div class="block-title">Blog NFTs</div>
-  
-            <div class="list cards-list virtual-list" id="item-list">
-            </div>
-  
-            <div class="preloader infinite-scroll-preloader"></div>
-
-          </div>
         </div>
+
+        <div class="card-content">
+
+            <div class="card-content card-content-padding">
+
+                <a href="/admin/channel/clone/${channelViewModel?.channel?._id}" class="button button-fill float-right">Clone</a>
+
+                <div class="title">${channelViewModel?.channel?.title}</div>
+
+                ${channelViewModel?.authorDisplayName ? $h`
+                  <div class="name">
+                    By <a href="/admin/author/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                  </div>
+                ` : ``}
+
+                <div class="description" id="channel-show-description-${channelViewModel.channel._id}"></div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+
+          ${showEdit ? $h`
+            <a href="/admin/channel/edit/${channelViewModel.channel._id}">
+              Edit
+            </a>  
+  
+            <a @click="${deleteCollectionClick}">
+              Delete
+            </a>
+  
+          ` : $h``}
+        </div>
+
+      </div>
+        
+
+      <div class="block-title">Blog NFTs</div>
+
+      <div class="list cards-list virtual-list" id="item-list">
+      </div>
+
+      <div class="preloader infinite-scroll-preloader"></div>
   
     </div>
 
@@ -92,39 +90,41 @@
 
 
 <style>
-  .channel-card .card-header {
+  .channel-card-show .card-header {
       display: block;
       padding: 10px;
   }
 
-  .channel-card .avatar {
+  .channel-card-show .avatar {
       float: left;
   }
 
-  .channel-card .name {
-      margin-left: 44px;
-      font-size: 14px;
-      font-weight: 500;
-  }
-
-  .channel-card .date {
-      font-size: 13px;
-      color: #8e8e93;
-  }
-
-  .channel-card .title {
-      font-size: 22px;
+  .channel-card-show .title {
+      font-size: 30px;
       font-weight: bold;
       margin-top: 50px;
       text-align: center;
   }
 
-  .channel-card .card-content img {
+  .channel-card-show .name {
+      text-align: center;
+  }
+
+  .channel-card-show .name a {
+    color: var(--f7-theme-color);
+    font-weight: bold;
+  }
+
+  .channel-card-show .excerpt {
+    font-size: 17px;
+  }
+
+  .channel-card-show .card-content img {
       display: block;
       max-width: 100%;
   }
 
-  .channel-card .banner {
+  .channel-card-show .banner {
       height: 200px;
       width: 100%;
       background-position: center;
@@ -132,7 +132,7 @@
       background-color: #f1f1f1;
   }
 
-  .channel-card .avatar {
+  .channel-card-show .avatar {
       position: absolute;
       width: 100px;
       height: 100px;
@@ -146,8 +146,17 @@
       background: #ffffff;
   }
 
-  .channel-card a {
+  .channel-card-show a {
       color: var(--f7-text-color);
+  }
+
+  .item-card .title {
+    color: #000000;
+    font-size: 25px;
+  }
+
+  .item-card .description {
+    font-size: 17px;
   }
 
 
@@ -211,7 +220,7 @@
         coverImageSrc = await imageService.getUrl(channelViewModel.coverImage)
       }
       
-
+      
 
       //Get first page
       virtualList = $f7.virtualList.create({
@@ -224,19 +233,19 @@
           return `
               <li class="card item-card">
 
-                <a href="/admin/item/show/${itemViewModel.item._id}">
-                    <div class="card-header" ${itemViewModel.coverImage ?
-                              `style="background-image: url(${imageService.getUrl(itemViewModel.coverImage)});" ` : ``}>
-                    </div>
-
                     <div class="card-content">
                         <div class="card-content card-content-padding">
-                            <div class="title">${itemViewModel.item.title}</div>
+
+                          <a class="title" href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>                          
+
+                          ${itemViewModel.coverImage ? `
+                            <img src="${imageService.getUrl(itemViewModel.coverImage)}" />
+                          ` : ``}
+
+                          ${itemViewModel.item.excerpt ? `<p class="excerpt">${itemViewModel.item.excerpt}</p>` : ``}
+
                         </div>
                     </div>
-
-                </a>
-
               </li>
           `;
         },
@@ -271,6 +280,10 @@
 
       //Load cover banner into CSS
       document.getElementById('banner').style.backgroundImage = `url(${coverBannerSrc})`
+
+      document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).innerHTML = channelViewModel.channel.descriptionHTML
+
+      console.log(document.getElementById(`channel-show-description-${channelViewModel.channel._id}`))
 
       //Get the page
       $('.infinite-scroll-content').trigger('infinite')

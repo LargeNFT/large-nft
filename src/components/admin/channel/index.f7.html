@@ -6,7 +6,7 @@
     <div class="navbar">
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
-        <div class="title">Collections</div>
+        <div class="title">Blog Collections</div>
         <div class="right">
           <${HeaderRight} />
         </div>
@@ -24,16 +24,10 @@
 
     <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
 
-      <div class="row">
-        <div class="col-100 large-50 center">
-
-          <div class="list cards-list virtual-list" id="channel-list">
-          </div>
-
-          <div class="preloader infinite-scroll-preloader"></div>
-
-        </div>
+      <div class="list cards-list virtual-list" id="channel-list">
       </div>
+
+      <div class="preloader infinite-scroll-preloader"></div>
 
     </div>
 
@@ -42,6 +36,10 @@
 </template>
 
 <style>
+  .channel-card  {
+    height: 450px;
+  }
+  
   .channel-card .card-header {
     display: block;
     padding: 10px;
@@ -52,10 +50,16 @@
   }
 
   .channel-card .name {
-    margin-left: 44px;
-    font-size: 14px;
-    font-weight: 500;
+      text-align: center;
+      color: var(--f7-text-color);
+
   }
+
+  .channel-card .name a {
+    color: var(--f7-theme-color);
+    font-weight: bold;
+  }
+
 
   .channel-card .date {
     font-size: 13px;
@@ -67,6 +71,13 @@
     font-weight: bold;
     margin-top: 50px;
     text-align: center;
+  }
+
+  
+  .channel-card .description {
+    font-size: 22px;
+    text-align: center;
+    width: 500px;
   }
 
   .channel-card .card-content img {
@@ -99,6 +110,8 @@
   .channel-card a {
     color: var(--f7-text-color);
   }
+
+  
 </style>
 
 <script>
@@ -136,6 +149,7 @@
 
       // Remove preloader
       $('.infinite-scroll-preloader').hide()
+
     }
 
     async function infiniteScroll() {
@@ -166,7 +180,6 @@
         console.log(ex)
       }
 
-
       if (!hasMoreChannels) {
         unloadInfiniteScroll()
       }
@@ -193,50 +206,47 @@
           return `
               <li class="card channel-card">
 
-                <a href="/admin/channel/show/${channelViewModel.channel._id}">
-                    <div class="card-header banner" ${channelViewModel.coverBanner ?
-                              `style="background-image: url(${imageService.getUrl(channelViewModel.coverBanner)});" ` : ``}>
+                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                      <div class="card-header banner" ${channelViewModel.coverBanner ?
+                                `style="background-image: url(${imageService.getUrl(channelViewModel.coverBanner)});" ` : ``}>
 
-                        ${channelViewModel.coverImage ? `
-                        <img src="${imageService.getUrl(channelViewModel.coverImage)}" class="avatar" />
-                        ` : `
-                        <i class="material-icons avatar">image</i>
-                        `}
-                    </div>
+                            ${channelViewModel.coverImage ? `
+                            <img src="${imageService.getUrl(channelViewModel.coverImage)}" class="avatar" />
+                          ` : `
+                            <i class="material-icons avatar">image</i>
+                          `}
+
+                      </div>
+                    </a>
 
                     <div class="card-content">
                         <div class="card-content card-content-padding">
-                            <div class="title">${channelViewModel.channel.title}</div>
+                            <div class="title">
+                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                                ${channelViewModel.channel.title}
+                              </a>
+                            </div>
 
-                            ${channelViewModel.author ? `
-                            <div class="name">${channelViewModel.author.name}</div>
+                            ${channelViewModel.authorDisplayName ? `
+                              <div class="name">
+                                By <a href="/admin/author/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                              </div>
                             ` : ``}
 
-                            <p>${channelViewModel.channel.description}</p>
-
+                            <div class="description empty" id="channel-description-${channelViewModel.channel._id}" data-id="${channelViewModel.channel._id}"></div>
+                           
                         </div>
                     </div>
-
-                </a>
-
               </li>
           `;
         },
-
         items: [{
           title: 'Loading...'
         }],
         setListHeight: true,
         updatableScroll: true,
         height: function () {
-
-          if ($f7.theme === 'md') {
-            return 73
-          } else if ($f7.theme === 'ios') {
-            return 64.8
-          } else if ($f7.theme === 'aurora') {
-            return 77
-          }
+          return 450
         },
         emptyTemplate: `
               <li class="item-content">
@@ -250,7 +260,25 @@
       //Get the page
       $('.infinite-scroll-content').trigger('infinite')
 
+
+      virtualList.on('itemsAfterInsert', (virtualList, fragment) => {
+
+        //Find empty description divs and set their innerHTML
+        $('.empty').each( (element) => {
+
+          const id = $(element).data('id')
+
+          const c = channels.filter( channelViewModel => channelViewModel.channel._id == id)[0]
+
+          element.innerHTML = c.channel.descriptionHTML
+
+          $(element).removeClass('empty')
+        })
+
+      })
+
     })
+
 
 
     return $render

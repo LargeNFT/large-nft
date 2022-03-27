@@ -116,7 +116,7 @@
       //Listen for changes
       window['ethereum'].on('accountsChanged', async (accounts) => {
         if (accounts?.length > 0) {
-          init()
+          await init()
         }
       })
 

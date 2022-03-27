@@ -24,6 +24,12 @@ class Channel {
 
     @Allow()
     description?:string
+
+    @Allow()
+    descriptionHTML?:string
+
+    @Allow()
+    descriptionMarkdown?:string
     
     @Allow()
     category?:string[]

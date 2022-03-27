@@ -6,6 +6,7 @@ import { WalletService } from "../../src/service/core/wallet-service"
 class HardhatWalletServiceImpl implements WalletService {
 
   public wallet: any
+  public address
 
   constructor(
     @inject("provider") private provider

@@ -26,6 +26,34 @@ class AuthorService {
     await this.authorRepository.put(author)
   }
 
+  async insertIfNew(walletAddress:string) {
+
+    let existing
+
+    try {
+      existing = await this.get(walletAddress)
+    } catch(ex) {}
+
+    if (!existing) {
+
+      await this.put(Object.assign(new Author(), {
+        _id: walletAddress,
+        walletAddress: walletAddress
+      }))
+
+    }
+
+
+  }
+
+  getDisplayName(author:Author) : string {
+    if (!author) return 
+    if (author.name) return author.name
+    return author._id
+
+  }
+
+
 
 }
 

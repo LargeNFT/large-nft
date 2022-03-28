@@ -6,14 +6,15 @@
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
         <div class="left">
-          <a class="link back"><i class="icon icon-back"></i></a>
+          <a class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
         </div>
-        <div class="title">View Blog Collection</div>
+        <div class="title">View Collection</div>
         <div class="right">
           <${HeaderRight} />
         </div>
       </div>
     </div>
+
 
     <div class="fab fab-extended fab-right-bottom">
       <a href="/admin/item/create/${channelViewModel.channel._id}" class="text-color-black">
@@ -41,7 +42,19 @@
 
             <div class="card-content card-content-padding">
 
-                <a href="/admin/channel/clone/${channelViewModel?.channel?._id}" class="button button-fill float-right">Clone</a>
+                <div class="segmented float-right">
+
+                  <a href="/admin/channel/clone/${channelViewModel?.channel?._id}" class="button button-small">Clone</a> 
+
+                  ${showEdit ? $h`
+                    <a href="/admin/channel/edit/${channelViewModel.channel._id}" class="button button-small">Edit</a>
+                    <a @click="${deleteCollectionClick}" class="button button-small">Delete</a>
+                  ` : $h``} 
+
+
+                </div>
+
+                
 
                 <div class="title">${channelViewModel?.channel?.title}</div>
 
@@ -51,25 +64,12 @@
                   </div>
                 ` : ``}
 
-                <div class="description" id="channel-show-description-${channelViewModel.channel._id}"></div>
+                <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
 
             </div>
 
         </div>
 
-        <div class="card-footer">
-
-          ${showEdit ? $h`
-            <a href="/admin/channel/edit/${channelViewModel.channel._id}">
-              Edit
-            </a>  
-  
-            <a @click="${deleteCollectionClick}">
-              Delete
-            </a>
-  
-          ` : $h``}
-        </div>
 
       </div>
         
@@ -90,6 +90,7 @@
 
 
 <style>
+
   .channel-card-show .card-header {
       display: block;
       padding: 10px;
@@ -148,6 +149,15 @@
 
   .channel-card-show a {
       color: var(--f7-text-color);
+  }
+
+  .channel-card-show .description {
+    font-size: 22px;
+    text-align: center;
+    width: 750px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .item-card .title {
@@ -220,7 +230,7 @@
         coverImageSrc = await imageService.getUrl(channelViewModel.coverImage)
       }
       
-      
+
 
       //Get first page
       virtualList = $f7.virtualList.create({
@@ -242,7 +252,6 @@
                             <img src="${imageService.getUrl(itemViewModel.coverImage)}" />
                           ` : ``}
 
-                          ${itemViewModel.item.excerpt ? `<p class="excerpt">${itemViewModel.item.excerpt}</p>` : ``}
 
                         </div>
                     </div>
@@ -269,7 +278,7 @@
           <li class="card item-card">
             <div class="card-content">
               <div class="card-content card-content-padding">
-                There are no NFTs in this collection yet. <br /><br />Click the 'Create NFT' button to create the first item.
+                There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
               </div>
             </div>
           </li>
@@ -281,9 +290,8 @@
       //Load cover banner into CSS
       document.getElementById('banner').style.backgroundImage = `url(${coverBannerSrc})`
 
-      document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).innerHTML = channelViewModel.channel.descriptionHTML
-
-      console.log(document.getElementById(`channel-show-description-${channelViewModel.channel._id}`))
+      //Load description
+      // document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).innerHTML = channelViewModel.channel.descriptionHTML
 
       //Get the page
       $('.infinite-scroll-content').trigger('infinite')

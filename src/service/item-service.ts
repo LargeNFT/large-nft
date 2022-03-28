@@ -10,6 +10,8 @@ import { IpfsService } from "./core/ipfs-service";
 import { ItemRepository } from "../repository/item-repository";
 
 import excerptHtml from 'excerpt-html'
+
+
 @injectable()
 class ItemService {
 

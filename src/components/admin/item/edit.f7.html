@@ -6,74 +6,30 @@
         <div class="navbar-bg"></div>
         <div class="navbar-inner">
           <div class="left">
-            <a href="#" class="link back"><i class="icon icon-back"></i></a>
+            <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
           </div>
-          <div class="title">Edit Post</div>
+          <div class="title">Edit Blog NFT</div>
           <div class="right">
             <${HeaderRight} />
           </div>
         </div>
       </div>
-  
-      <div class="fab fab-extended fab-right-bottom">
-        <a @click="${savePostClick}" class="text-color-black">
-          <i class="material-icons">save</i>
-          <div class="fab-text">Save Changes & Publish</div>
-        </a>
-      </div>
-      
+
 
       <div class="page-content">
-        <form class="block list no-hairlines" id="edit-post-form">
-          <input type="hidden" name="_id" />
-          <input type="hidden" name="_rev" />
+        <form class="block list no-hairlines" id="edit-item-form"  @submit="${formSubmit}">
 
-          <ul>
-            <li>
-              <div class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Title</div>
-                  <div class="item-input-wrap">
-                    <input type="text" name="title" placeholder="Post title" />
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Subtitle</div>
-                  <div class="item-input-wrap">
-                    <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)" />
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="item-content item-input">
-                <div class="item-inner post-area">
-                  <div class="item-title item-label">Content</div>
+          <${ItemForm} item=${itemViewModel} editor="edit-item-editor" toolbar="edit-item-toolbar" />
+
+          <div class="row block">
   
-                  <${QuillToolbar} id="edit-post-textarea-toolbar" />
-                    
-                  <div class="editor bg-color-white text-color-black" id="edit-post-textarea"></div>
+            <div class="col-70"></div>
   
-                </div>
-              </div>
-            </li>
-            <li class="cover-photo-preview">
+            <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+              <i class="material-icons">save</i> Save
+            </button>
   
-              <input type="hidden" name="coverPhotoCid" />
-  
-              <div class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Cover Photo</div>
-                  <div class="item-input-wrap cover-photo-img-wrapper">
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul>
+          </div>
   
         </form>
   
@@ -86,12 +42,12 @@
   </template>
   
   <style>
-    #edit-post-textarea {
+    #edit-item-editor {
       min-height: 600px;
       height: 100%;
       /* added these styles */
       flex: 1;
-      display: flex; 
+      display: flex;
       flex-direction: column;
     }
 
@@ -99,73 +55,65 @@
   
   <script>
   
-  import { ContainerService } from "../../../service/core/container-service"
-    import { QuillService } from "../../../service/quill-service"
+    import { ContainerService } from "../../../service/core/container-service"
+    import { QuillEditorService } from "../../../service/quill-editor-service"
+    import { ItemService } from "../../../service/item-service"
+
     import { UiService } from "../../../service/core/ui-service"
 
     import { WalletService } from "../../../service/core/wallet-service"
+    import { Item } from "../../../dto/item"
 
     
     import HeaderRight from "../../admin/header-right.f7.html"
-    import QuillToolbar from "../../admin/quill-toolbar.f7.html"
+    import ItemForm from "../../admin/item/form.f7.html"
 
 
     export default (props, { $, $on, $f7, $update }) => {
       
-      let blogPostService = ContainerService.getInstance(BlogPostService)
-      let postService = ContainerService.getInstance(PostService)
-      let walletService = ContainerService.getWalletService();
+      let quillEditorService = ContainerService.getInstance(QuillEditorService)
 
-      let quillService = ContainerService.getInstance(QuillService)
+      let itemService = ContainerService.getInstance(ItemService)
+      let walletService = ContainerService.getWalletService()
 
-      const savePostClick = async (e) => {
+      let itemViewModel = props.itemViewModel
+
+
+      const formSubmit = async (e) => {
+
+        e.preventDefault()
 
         //Get data
-        let postData = await getPostData('#edit-post-form')
+        let item = Object.assign(new Item(), $f7.form.convertToData('#edit-item-form'))
+
+        //Get content from quill
+        item.content = quillEditorService.activeEditor.getContents()
 
         //Save
-        let post = await blogPostService.put(postData)
+        try {
 
-        // toast = $f7.toast.create({
-        //   text: `Published post '${post.title}'`,
-        //   closeButton: "Ok"
-        // })
+          await itemService.put(item)
 
-        // toast.open()
+          //Redirect
+          $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
 
-        //Redirect
-        $f7.views.main.router.navigate(`/admin/post/show/${post._id}`)
+        } catch (ex) {
+          console.log(ex)
+          $f7.dialog.alert(ex.errors, "There was an error")
+        }
+
       }
 
       $on('pageInit', async (e, page) => {
 
-        //Get existing post
-        let post = await blogPostService.get(props.id)
-
-        //Fill out form
-        $f7.form.fillFromData('#edit-post-form', post)
-
         //Initialize quill and fill contents
-        quillService.buildQuillPostEditor('#edit-post-textarea', '#edit-post-textarea-toolbar')
-        quillService.activeEditor.setContents(post.content)
-        await quillService.loadCoverPhotos()
+        quillEditorService.buildQuillPostEditor('#edit-item-editor', '#edit-item-toolbar')
+
+        quillEditorService.activeEditor.setContents(itemViewModel.item.content)
+        
+        await quillEditorService.loadCoverPhotos()
 
       })
-
-      async function getPostData(formId) {
-
-        let postData = $f7.form.convertToData(formId)
-        
-        //Get data
-        let builtPost = await postService.buildPost(
-            await walletService.getAddress(), 
-            quillService.activeEditor.getContents()
-        )
-
-        Object.assign(postData, builtPost)
-
-        return postData
-      }
 
       
       return $render

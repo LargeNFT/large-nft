@@ -22,9 +22,9 @@ import { ethers, BigNumber } from "ethers";
 import TYPES from "./core/types";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
-import { ImageRepository } from "../repository/image-repository";
 import { QuillService } from "./quill-service";
 
+import excerptHtml from 'excerpt-html'
 
 @injectable()
 class ChannelService {
@@ -62,6 +62,7 @@ class ChannelService {
 
       //Generate markdown
       channel.descriptionMarkdown = await this.quillService.generateMarkdown(channel.description)
+          
     }
 
 
@@ -93,7 +94,6 @@ class ChannelService {
     let items:Item[] =await this.itemService.listByChannel(channel._id, 100000, 0)
 
     for (let item of items) {
-      console.log(item)
       await this.itemService.delete(item)
     }
 

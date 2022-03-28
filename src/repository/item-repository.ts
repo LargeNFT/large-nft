@@ -42,7 +42,7 @@ class ItemRepository {
     }
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
-
+        
         let response = await this.db.find({
             selector: {
                 channelId: { $eq: channelId },
@@ -52,7 +52,7 @@ class ItemRepository {
             limit: limit,
             skip: skip
         })
-
+        
 
         return response.docs
 

@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 
-const IPFS = require('ipfs')
-// import * as IPFS from 'ipfs-core'
+// const IPFS = require('ipfs')
+import * as IPFS from 'ipfs-core'
 
 @injectable()
 class IpfsService {

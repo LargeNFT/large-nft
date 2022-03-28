@@ -124,6 +124,11 @@
       //Description
       quillEditorService.buildQuillPostEditor("#edit-channel-description-editor", "#edit-channel-description-toolbar")
 
+      if (channelViewModel.channel.description) {
+        quillEditorService.activeEditor.setContents(channelViewModel.channel.description)
+      }
+      
+
       //Open attribute options too
       if (channelViewModel.channel?.attributeOptions?.length > 0) {
 

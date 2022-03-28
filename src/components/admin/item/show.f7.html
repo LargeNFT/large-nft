@@ -6,7 +6,7 @@
         <div class="navbar-bg"></div>
         <div class="navbar-inner">
           <div class="left">
-            <a href="/" class="link"><i class="icon icon-back"></i></a>
+            <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
           </div>
           <div class="title">View Blog NFT</div>
           <div class="right">
@@ -18,7 +18,7 @@
       <div class="toolbar tabbar toolbar-top">
         <div class="toolbar-inner">
           <a class="tab-link tab-link-active">View</a>
-          <a class="tab-link" href="/admin/item/edit/${itemViewModel.item?._id}"> Edit</a>
+          <a class="tab-link" href="/admin/item/edit/${itemViewModel.item?._id}">Edit</a>
           <a class="tab-link" @click="${deleteClick}">Delete</a>
         </div>
       </div>
@@ -37,28 +37,9 @@
               ${itemViewModel.item.subtitle ? $h`
                 <h2>${itemViewModel.item.subtitle}</h2>
               `:``}
-            
-              <!-- <div class="author">
   
-                <div class="pic">
-
-                  ${post.profilePicSrc ? $h`
-                    <img class="profile-pic-thumb" src="${post.profilePicSrc}">
-                  ` : $h`
-                    <i class="f7-icons profile-pic-thumb">person</i>
-                  `}
-
-                </div>
-  
-                <div class="info">
-                  <div class="owner">${post.ownerDisplayName}</div>
-                  <div class="date">${post.dateCreatedDisplay}</div>
-                </div>
-  
-              </div> -->
-  
-              <div class="content">
-                ${itemViewModel.item.contentHTML}
+              <div class="content" innerHTML="${itemViewModel.item.contentHTML}">
+                
               </div>
             </div>
   
@@ -100,13 +81,13 @@
         try {
 
             $f7.dialog.confirm(
-                "Do you want to delete this item? Note: This only deletes from your device. ",
+                "Do you want to delete this item? Note: This only deletes from your device.",
                 async function() {
 
-                    await itemService.delete(post._id)
+                    await itemService.delete(itemViewModel.item._id)
 
                     //Redirect
-                    $f7.views.main.router.navigate(`/admin/post`)
+                    $f7.views.main.router.navigate(`/admin/channel/${itemViewModel.channel._id}`)
                 }
             )
 

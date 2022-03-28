@@ -96,7 +96,7 @@ contract('ImageService', async (accounts) => {
         //Assert
         let fetched = await service.get(id1)
 
-        assert.notEqual(fetched.url, undefined)
+        assert.notEqual(fetched.blob, undefined)
         assert.equal(fetched.cid, "QmdrWMNVuy8nMCSkhauoaZ4bP4Sy5zxzFDWBn8L6DeeLgF")
         assert.equal(fetched._id, id1)
 

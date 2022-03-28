@@ -33,7 +33,6 @@ class ItemWebService {
         if (item.coverImageId) {
             coverImage = await this.imageService.get(item.coverImageId)
         }
-
         
 
         return {
@@ -48,9 +47,9 @@ class ItemWebService {
     async listByChannel(channelId:string, limit: number, skip:number): Promise<ItemViewModel[]> {
 
         let result:ItemViewModel[] = []
-
+        
         let items:Item[] = await this.itemService.listByChannel(channelId, limit, skip)
-
+        
         for (let item of items) {
             result.push(await this.getViewModel(item))
         }

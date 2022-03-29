@@ -439,8 +439,9 @@
 
         const handleCoverImageChange = async (e) => {
 
-            let imageCid = await uploadService.uploadFile(document.getElementById('cover-image-browse'))
-            let image = await imageService.newFromCid(imageCid)
+            let imageBuffer = await uploadService.uploadFile(document.getElementById('cover-image-browse'))
+
+            let image = await imageService.newFromBuffer(imageBuffer)
 
             try {
                 //Could be a duplicate. Which means it's fine.
@@ -458,8 +459,8 @@
 
         const handleBannerChange = async (e) => {
 
-            let imageCid = await uploadService.uploadFile(document.getElementById('banner-browse'))
-            let image = await imageService.newFromCid(imageCid)
+            let imageBuffer = await uploadService.uploadFile(document.getElementById('banner-browse'))
+            let image = await imageService.newFromBuffer(imageBuffer)
 
             try {
                 //Could be a duplicate. Which means it's fine.

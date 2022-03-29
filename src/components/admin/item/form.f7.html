@@ -12,8 +12,8 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Title</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="title" placeholder="Title"
-                            value="${itemViewModel?.item?.title}" minlength="3" required />
+                        <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
+                            minlength="3" required />
                     </div>
                 </div>
             </div>
@@ -65,19 +65,30 @@
                 </div>
             </div>
         </li>
-        <li class="cover-photo-preview">
 
-            <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?._id}" />
+        ${itemViewModel.images?.length > 0 ? $h`
+        
+            <li class="cover-photo-preview">
 
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Cover Image</div>
-                    <div class="item-input-wrap cover-photo-img-wrapper">
+                <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?._id}" />
+    
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Cover Image</div>
+                        <div class="item-input-wrap">
+                            
+                            ${itemViewModel.images.map( (image) => $h`
+                                <img class="cover-image-thumbnail ${image.cid == itemViewModel.coverImage._id ? 'selected' : ''}  " src="${image.url}" data-id="${image.cid}" @click=${coverImageClick}  />
+                            `)}
+    
+    
+                        </div>
                     </div>
                 </div>
-            </div>
-
-        </li>
+    
+            </li>
+    
+        ` : $h``}
 
     </ul>
 
@@ -88,20 +99,67 @@
 
 <style>
 
+.cover-image-thumbnail {
+    max-width: 100px;
+}
+.cover-image-thumbnail.selected {
+    border: 3px solid #ff0000;
+}
+
+
 </style>
 
 
 <script>
 
-    import QuillToolbar from "../../admin/quill-toolbar.f7.html"
+    import { ContainerService } from "../../../service/core/container-service"
+    import { QuillEditorService } from "../../../service/quill-editor-service"
+    import { QuillService } from "../../../service/quill-service"
+
+    import { ImageService } from "../../../service/image-service"
+    import { ItemWebService } from "../../../service/web/item-web-service"
 
     export default (props, { $, $on, $f7, $update }) => {
+
+        let quillEditorService = ContainerService.getInstance(QuillEditorService)
+        let quillService = ContainerService.getInstance(QuillService)
+        let itemWebService = ContainerService.getInstance(ItemWebService)
+
+        let imageService = ContainerService.getInstance(ImageService)
 
         let itemViewModel = props.item
         let editorId = props.editor
         let toolbarId = props.toolbar
 
+    
+        const loadCoverImages = async () => {
+            itemViewModel.images = itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
+            console.log(itemViewModel.images)
+            await $update()
+        }
+
+        const coverImageClick = async (e) => {
+
+            let id = $(e.currentTarget).data('id')
+            
+            itemViewModel.coverImage = await imageService.get(id)
+
+            await $update()
+        }
+
+        $(document).on('image-selected', async (e) => {
+
+            //Make it the cover photo
+            itemViewModel.coverImage = await imageService.get(e.detail._id)
+
+            await loadCoverImages()
+
+        })
+
+
+
         return $render
     }
+
 
 </script>

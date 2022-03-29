@@ -133,6 +133,7 @@
 
     "blob-polyfill": "6.0.20211015",
 
-    "excerpt-html": "1.2.2"
+    "excerpt-html": "1.2.2",
+    "ipfs-only-hash": "4.0.0"
   }
 }

@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 
 // const IPFS = require('ipfs')
-import * as IPFS from 'ipfs-core'
+// import * as IPFS from 'ipfs-core'
 
 @injectable()
 class IpfsService {
@@ -15,13 +15,13 @@ class IpfsService {
 
   async init() {
 
-    console.log('Init IPFS')
+    // console.log('Init IPFS')
     
-    if (!this.ipfs) {
-      this.ipfs = await IPFS.create(this.ipfsOptions)
-    }
+    // if (!this.ipfs) {
+    //   this.ipfs = await IPFS.create(this.ipfsOptions)
+    // }
 
-    console.log('Init IPFS complete')
+    // console.log('Init IPFS complete')
 
   }
   

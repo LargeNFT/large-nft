@@ -249,7 +249,7 @@
                           <a class="title" href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>                          
 
                           ${itemViewModel.coverImage ? `
-                            <img src="${imageService.getUrl(itemViewModel.coverImage)}" />
+                            <img src="${itemViewModel.coverImage.url}" />
                           ` : ``}
 
 

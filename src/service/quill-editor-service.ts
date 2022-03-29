@@ -9,67 +9,10 @@ import { ImageService } from './image-service'
 
 // import QuillBlotFormatter, {  AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter';
 import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter'
-
-
-
 import { injectable } from 'inversify';
 
 var $$ = Dom7;
 
-/**
- * THESE CLASSES ARE HERE BECAUSE I NEEDED TO OVERRIDE THEM TO FIX A PROBLEM WITH DELETING
- * IMAGES BUT I DONT KNOW WHERE THEY SHOULD GO. SO THEY'RE HERE FOR NOW
- */
-
-class CustomDeleteAction extends DeleteAction {
-
-  keyUpListener
-
-  onCreate() {
-
-    const self = this
-
-    this.keyUpListener = function (e: KeyboardEvent) {
-      self.onKeyUp(e)
-    }
-
-    document.addEventListener('keyup', self.keyUpListener, true);
-    this.formatter.quill.root.addEventListener('input', self.keyUpListener, true);
-  }
-
-  onDestroy() {
-    const self = this
-
-    document.removeEventListener('keyup', self.keyUpListener);
-    this.formatter.quill.root.removeEventListener('input', self.keyUpListener);
-  }
-
-  //@ts-ignore
-  onKeyUp(e: KeyboardEvent) {
-
-    if (!this.formatter.currentSpec) {
-      return;
-    }
-
-    // delete or backspace
-    if (e.keyCode === 46 || e.keyCode === 8) {
-
-      const blot = Quill.find(this.formatter.currentSpec.getTargetElement());
-      if (blot) {
-        blot.deleteAt(0);
-      }
-      this.formatter.hide();
-    }
-  }
-
-}
-
-
-class CustomImageSpec extends ImageSpec {
-  getActions() {
-    return [AlignAction, ResizeAction, CustomDeleteAction]
-  }
-}
 
 /**
  * END UTIL
@@ -97,11 +40,6 @@ class QuillEditorService {
     $$(document).on('change', '.image-button-input', async function (e) {
       e.preventDefault()
       await self.imageSelected(this)
-    })
-
-    $$(document).on('click', '.cover-photo-img', function (e) {
-      e.preventDefault()
-      self.selectCoverPhoto(e)
     })
 
     // console.log("Quill service init")
@@ -206,32 +144,24 @@ class QuillEditorService {
       static tagName?: string
 
       static create(value) {
-        self.imageService.cidToUrl(value.ipfsCid).then(function (imgUrl) {
-          $$(`#${value.ipfsCid}`).prop('src', imgUrl)
-        })
+        
+        let node = super.create()
 
-        let node = super.create();
-        node.setAttribute('id', value.ipfsCid);
-        node.setAttribute('ipfsCid', value.ipfsCid);
-        node.setAttribute('width', value.width)
-        node.setAttribute('height', value.height)
-        node.setAttribute('style', value.style)
-        return node;
+        node.setAttribute('src', value.src)
+        node.setAttribute('data-cid', value.cid)
+
+        return node
       }
 
       static value(node) {
 
-        let ipfsCid = node.getAttribute('ipfsCid')
-        let width = node.getAttribute('width')
-        let height = node.getAttribute('height')
-        let style = node.getAttribute('style')
+        let src = node.getAttribute('src')
+        let cid = node.getAttribute('data-cid')
 
         return {
-          ipfsCid: ipfsCid,
-          width: width,
-          height: height,
-          style: style
-        };
+          src: src,
+          cid: cid
+        }
       }
     }
 
@@ -312,131 +242,94 @@ class QuillEditorService {
   //TODO: move to service
   async imageSelected(fileElement: Element): Promise<void> {
 
-    let imageCid = await this.uploadService.uploadFile(fileElement)
+    let imageBuffer:Buffer = await this.uploadService.uploadFile(fileElement)
+
+    let image:Image = await this.imageService.newFromBuffer(imageBuffer)
+    
+    try {
+      await this.imageService.put(image)
+    } catch(ex) { console.log(ex)} //Might already exist. That's fine.  
 
     let range = this.activeEditor.getSelection(true)
 
     this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
-    this.activeEditor.insertEmbed(range.index, 'ipfsimage', { ipfsCid: imageCid }, Quill.sources.USER)
+
+    this.activeEditor.insertEmbed(range.index, 'ipfsimage', { 
+      cid: image.cid,
+      src: await this.imageService.getUrl(image)
+    }, Quill.sources.USER)
+
     this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
 
-
-    //Make it the cover photo
-    $$('input[name="coverPhotoCid"]').val(imageCid)
-
-    await this.loadCoverPhotos()
-
-  }
-
-  //TODO: load this from a template7 template somehow instead
-  async loadCoverPhotos() {
-
-    const images = this.getImagesFromPostContentOps(this.activeEditor.getContents().ops)
-
-    $$('.cover-photo-img-wrapper').empty()
-    $$('.cover-photo-preview').hide()
-
-    if (images.length > 0) {
-      $$('.cover-photo-preview').show()
-    }
-
-
-    for (let imageCid of images) {
-
-      const imgElement = $$('<img>')
-      //@ts-ignore
-      $$(imgElement).attr("src", await this.imageService.cidToUrl(imageCid))
-      //@ts-ignore
-      $$(imgElement).data("image-cid", imageCid)
-      //@ts-ignore
-      $$(imgElement).addClass("cover-photo-img")
-
-      $$('.cover-photo-img-wrapper').append(imgElement)
-
-    }
-
-    this.setCoverPhoto($$('input[name="coverPhotoCid"]').val())
-
-  }
-
-
-  //TODO: can definitely be nicer.
-  setCoverPhoto(imageCid) {
-
-    $$('input[name="coverPhotoCid"]').val(imageCid)
-
-    $$('.cover-photo-img-wrapper img').removeClass('selected')
-
-    $$('.cover-photo-img-wrapper img').each(function (item, index) {
-
-      let dataImageCid = $$(item).data("image-cid")
-
-      if (dataImageCid == imageCid) {
-        $$(item).addClass('selected')
-      }
+ 
+    const imageSelectedEvent = new CustomEvent('image-selected', {
+      detail: { _id: image._id }
     })
 
-  }
-
-  selectCoverPhoto(e) {
-    this.setCoverPhoto($$(e.target).data("image-cid"))
-  }
+    document.dispatchEvent(imageSelectedEvent)
 
 
 
-  getImagesFromPostContentOps(ops: any): string[] {
-
-    const images: string[] = []
-
-    for (let op of ops) {
-      if (op.insert && op.insert.ipfsimage) {
-        images.push(op.insert.ipfsimage.ipfsCid)
-      }
-    }
-
-    return images
-
-  }
-
-
-
-  async translateContent(content: any): Promise<string> {
-
-    if (!content.ops) return
-
-    let imageUrls = {}
-
-    for (let op of content.ops) {
-      if (op.insert.ipfsimage) {
-
-        let cid = op.insert.ipfsimage.ipfsCid
-
-        imageUrls[cid] = await this.imageService.cidToUrl(cid)
-      }
-    }
-
-    const qdc = new QuillDeltaToHtmlConverter(content.ops, {})
-
-    //Render dividers into HTML
-    qdc.renderCustomWith(function (customOp, contextOp) {
-      if (customOp.insert.type === 'divider') {
-        return "<hr />"
-      }
-
-      if (customOp.insert.type === 'ipfsimage') {
-        return `<img class="blob-image" src="${imageUrls[customOp.insert.value.ipfsCid]}" width="${customOp.insert.value.width}" height="${customOp.insert.value.height}" style="${customOp.insert.value.style}"  />`
-      }
-
-
-    })
-
-    return qdc.convert()
   }
 
 
 
 }
 
+/**
+ * THESE CLASSES ARE HERE BECAUSE I NEEDED TO OVERRIDE THEM TO FIX A PROBLEM WITH DELETING
+ * IMAGES BUT I DONT KNOW WHERE THEY SHOULD GO. SO THEY'RE HERE FOR NOW
+ */
+
+ class CustomDeleteAction extends DeleteAction {
+
+  keyUpListener
+
+  onCreate() {
+
+    const self = this
+
+    this.keyUpListener = function (e: KeyboardEvent) {
+      self.onKeyUp(e)
+    }
+
+    document.addEventListener('keyup', self.keyUpListener, true);
+    this.formatter.quill.root.addEventListener('input', self.keyUpListener, true);
+  }
+
+  onDestroy() {
+    const self = this
+
+    document.removeEventListener('keyup', self.keyUpListener);
+    this.formatter.quill.root.removeEventListener('input', self.keyUpListener);
+  }
+
+  //@ts-ignore
+  onKeyUp(e: KeyboardEvent) {
+
+    if (!this.formatter.currentSpec) {
+      return;
+    }
+
+    // delete or backspace
+    if (e.keyCode === 46 || e.keyCode === 8) {
+
+      const blot = Quill.find(this.formatter.currentSpec.getTargetElement());
+      if (blot) {
+        blot.deleteAt(0);
+      }
+      this.formatter.hide();
+    }
+  }
+
+}
+
+
+class CustomImageSpec extends ImageSpec {
+  getActions() {
+    return [AlignAction, ResizeAction, CustomDeleteAction]
+  }
+}
 
 
 export { QuillEditorService }

@@ -1,4 +1,4 @@
-import {Buffer} from 'buffer'
+import { Buffer } from 'buffer'
 import { injectable } from 'inversify';
 import { IpfsService } from './ipfs-service';
 
@@ -6,40 +6,32 @@ import { IpfsService } from './ipfs-service';
 class UploadService {
 
   constructor(
-      private ipfsService:IpfsService
   ) {}
 
-  async uploadFile(fileElement) {
+  async uploadFile(fileElement) : Promise<Buffer> {
 
     const self = this;
 
-    let ipfsCid = '';
+    let buf
 
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+
+      const reader = new FileReader()
 
       reader.onload = async function () {
         // @ts-ignore
-        const buf = new Buffer(reader.result)
+        buf = new Buffer(reader.result)
 
         if (buf) {
-
-          try {
-            ipfsCid = await self.ipfsService.ipfs.add( buf)
-          } catch (ex) {
-            reject(ex)
-          }
-
+          resolve(buf)
         }
 
-        //@ts-ignore
-        resolve(ipfsCid.path);
       };
 
       if (fileElement.files.length > 0) {
-        reader.readAsArrayBuffer(fileElement.files[0]);
+        reader.readAsArrayBuffer(fileElement.files[0])
       } else {
-        resolve(ipfsCid);
+        resolve(buf)
       }
 
     });

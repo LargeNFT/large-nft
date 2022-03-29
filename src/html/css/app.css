@@ -487,27 +487,6 @@
   }
   
   
-  .cover-photo-thumbnail {
-    max-width: 100px;
-  }
-  
-  .cover-photo {
-    width: 100px;
-    display: inline-block;
-  }
-  
-  .cover-photo-img {
-    width: 100px;
-  }
-  
-  .cover-photo-img.selected {
-    border: 3px solid #ff0000;
-  }
-  
-  .cover-photo-preview {
-    display: none;
-  }
-  
   
   
   

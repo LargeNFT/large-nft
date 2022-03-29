@@ -2,24 +2,37 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 import "reflect-metadata"
 
-import EventEmitter from "events";
 import { Container } from "inversify";
 import { providers } from "ethers"
 
 
-import { WalletService } from "../src/service/core/wallet-service";
-import { ImageService } from "../src/service/core/image-service";
-import { ProfileService } from "../src/service/core/profile-service";
-import { PostService } from "../src/service/core/post-service";
-import { BlogPostService } from "../src/service/core/blog-post-service";
+import { HardhatWalletServiceImpl } from "../test/util/hardhat-wallet-service";
+
+import { AuthorService } from "../src/service/author-service";
+import { ChannelService } from "../src/service/channel-service";
+import { ImageService } from "../src/service/image-service";
+import { ItemService } from "../src/service/item-service";
+import { QuillService } from "../src/service/quill-service";
+
+
 import { IpfsService } from "../src/service/core/ipfs-service";
-import { SiteSettingsService } from "../src/service/core/site-settings-service";
 
 import fs from 'fs';
+import { DatabaseService } from "../src/service/core/database-service";
+import { ChannelRepository } from "../src/repository/channel-repository";
+import { PinningApiRepository } from "../src/repository/pinning-api-repository";
+
+import { ItemRepository } from "../src/repository/item-repository";
+import { ImageRepository } from "../src/repository/image-repository";
+import { AuthorRepository } from "../src/repository/author-repository";
+import { SchemaService } from "../src/service/core/schema-service";
+import { WalletService } from "../src/service/core/wallet-service";
+import { PinningService } from "../src/service/core/pinning-service";
+
+import TYPES from "../src/service/core/types";
 
 
-
-let container
+let container:Container
 
 async function getContainer() {
 
@@ -29,22 +42,8 @@ async function getContainer() {
 
     function provider() {
 
-        if (typeof window !== "undefined" && window['ethereum']) {
-    
-            //@ts-ignore
-            window.web3Provider = window.ethereum
-      
-            //@ts-ignore
-            return new providers.Web3Provider(web3.currentProvider)  
-      
-        } else {
-            return providers.getDefaultProvider()
-        }   
-    }
-
-
-    function eventEmitter() {
-        return new EventEmitter()
+        //@ts-ignore
+        return new providers.Web3Provider(web3.currentProvider)  
     }
 
     function ipfsOptions() {
@@ -53,35 +52,51 @@ async function getContainer() {
         }
     }
 
-    function orbitOptions() {
-        return {
-            directory: "../test/orbitdb/"
-        }
-    }
+
+    function contracts() {
+
+        const c = require('../contracts.json')
+    
+        return c
+      }
 
     container.bind("provider").toConstantValue(provider())
-    container.bind("eventEmitter").toConstantValue(eventEmitter())
     container.bind("ipfsOptions").toConstantValue(ipfsOptions())
-    container.bind("orbitOptions").toConstantValue(orbitOptions())
+    container.bind("contracts").toConstantValue(contracts())
 
-    container.bind(WalletService).toSelf().inSingletonScope()
+    container.bind(DatabaseService).toSelf().inSingletonScope()
+    container.bind(SchemaService).toSelf().inSingletonScope()
+
+    container.bind<WalletService>(TYPES.WalletService).to(HardhatWalletServiceImpl).inSingletonScope();
+
+
+
     container.bind(ImageService).toSelf().inSingletonScope()
-    container.bind(ProfileService).toSelf().inSingletonScope()
-    container.bind(PostService).toSelf().inSingletonScope()
-    container.bind(BlogPostService).toSelf().inSingletonScope()
+    container.bind(AuthorService).toSelf().inSingletonScope()
+    container.bind(ChannelService).toSelf().inSingletonScope()
     container.bind(IpfsService).toSelf().inSingletonScope()
-    container.bind(SiteSettingsService).toSelf().inSingletonScope()
+    container.bind(ItemService).toSelf().inSingletonScope()
+    container.bind(QuillService).toSelf().inSingletonScope()
+    container.bind(PinningService).toSelf().inSingletonScope()
+
+    container.bind(ChannelRepository).toSelf().inSingletonScope()
+    container.bind(ItemRepository).toSelf().inSingletonScope()
+    container.bind(ImageRepository).toSelf().inSingletonScope()
+    container.bind(AuthorRepository).toSelf().inSingletonScope()
+    container.bind(PinningApiRepository).toSelf().inSingletonScope()
 
 
-    fs.rmSync('./keystore', { recursive: true, force: true })
-    fs.rmSync('./orbitdb', { recursive: true, force: true })
+
     fs.rmSync('./pouch', { recursive: true, force: true })
     fs.rmSync('./test-repo', { recursive: true, force: true })
 
 
 
-    let orbitService = container.get(OrbitService) 
-    await orbitService.init()
+    let ipfsService:IpfsService = container.get(IpfsService)
+    let walletService:WalletService = container.get<WalletService>(TYPES.WalletService);   
+
+    await ipfsService.init()
+    await walletService.initWallet()
 
 
     return container

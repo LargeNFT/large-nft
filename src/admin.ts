@@ -13,23 +13,14 @@ import './html/css/framework7-icons.css'
 import './html/css/app.css'
 import './html/css/quill.snow.css'
 import 'material-icons/iconfont/material-icons.css';
+import '@yaireo/tagify/dist/tagify.css'
+
 
 import './html/images/logo.png'
-
-
-// import { RoutingService } from "./service/routing-service"
-// import { BlogPostService, OrbitService, PageService, ProfileService, SchemaService, WalletService } from "large-core"
-
-
-
 
 
 export default async() => {
                 
     let container = getMainContainer()
-
-    // let app = container.get("framework7")
-
-    // console.log(app)
 
 }

@@ -363,12 +363,12 @@
   }
   
   .cover-photo-thumb {
-    max-width: 32px;
+    max-width: 50px;
     border-radius: 50%;
   }
   
   .item-media .cover-photo-thumb.f7-icons {
-    font-size: 32px;
+    font-size: 50px;
   }
   
   .item-media .profile-pic-thumb.f7-icons {
@@ -486,27 +486,6 @@
       margin: 0 auto;
   }
   
-  
-  .cover-photo-thumbnail {
-    max-width: 100px;
-  }
-  
-  .cover-photo {
-    width: 100px;
-    display: inline-block;
-  }
-  
-  .cover-photo-img {
-    width: 100px;
-  }
-  
-  .cover-photo-img.selected {
-    border: 3px solid #ff0000;
-  }
-  
-  .cover-photo-preview {
-    display: none;
-  }
   
   
   

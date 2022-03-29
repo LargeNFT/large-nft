@@ -1,3 +1,5 @@
+<!--suppress JSAnnotator -->
+
 <template>
   <div id="app">
 
@@ -36,29 +38,11 @@
             </a>
           </li>
           <li>
-            <a href="/admin/page" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">pages</i>
-              </div>
-              <div class="item-inner">Pages</div>
-            </a>
-          </li>
-          <!-- <li>
-            <a href="/admin/user" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">people</i>
-              </div>
-              <div class="item-inner">Users</div>
-            </a>
-          </li> -->
-
-
-          <li>
             <a href="/admin/settings" class="item-link item-content panel-close">
               <div class="item-media">
                 <i class="material-icons">settings_applications</i>
               </div>
-              <div class="item-inner">Site Settings</div>
+              <div class="item-inner">Settings</div>
             </a>
           </li>
 
@@ -102,16 +86,13 @@
 
 <script>
 
-  import { ContainerService } from "../service/container-service"
+  import { ContainerService } from "../service/core/container-service"
 
-  import { UiService } from "../service/ui-service"
+  import { UiService } from "../service/core/ui-service"
 
   import { WalletService } from "../service/core/wallet-service"
   import { IpfsService } from "../service/core/ipfs-service"
-  import { BlogPostService } from "../service/core/blog-post-service"
-  import { ProfileService } from "../service/core/profile-service"
-  import { PageService } from "../service/core/page-service"
-  import { SiteSettingsService } from "../service/core/site-settings-service"
+  import { SchemaService } from "../service/core/schema-service"
 
   
   import LogoGrey from "../html/images/logo_grey.png"
@@ -122,15 +103,9 @@
     $f7ready(async () => {
 
       let uiService = ContainerService.getInstance(UiService)
-
-      let walletService = ContainerService.getInstance(WalletService)
+      let walletService = ContainerService.getWalletService()
       let ipfsService = ContainerService.getInstance(IpfsService)
-      let blogPostService = ContainerService.getInstance(BlogPostService)
-      let profileService = ContainerService.getInstance(ProfileService)
-      let pageService = ContainerService.getInstance(PageService)
-      let siteSettingsService = ContainerService.getInstance(SiteSettingsService)
-
-      
+      let schemaService = ContainerService.getInstance(SchemaService)
 
       if (typeof window !== "undefined" && window['ethereum']) {
         await init()
@@ -141,7 +116,7 @@
       //Listen for changes
       window['ethereum'].on('accountsChanged', async (accounts) => {
         if (accounts?.length > 0) {
-          init()
+          await init()
         }
       })
 
@@ -151,10 +126,12 @@
         uiService.showSpinner("Loading...")
 
         await walletService.initWallet()
-        await ipfsService.init(false)
+        await ipfsService.init()
+
 
         let walletAddress = await walletService.getAddress()
         
+        await schemaService.loadWallet(walletAddress)
 
         $f7.views.create('.view-main', {
           url: '/',

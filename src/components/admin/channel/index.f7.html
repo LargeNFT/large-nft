@@ -1,0 +1,291 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="admin-posts">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="title">Blog Collections</div>
+        <div class="right">
+          <${HeaderRight} />
+        </div>
+      </div>
+    </div>
+
+
+    <div class="fab fab-extended fab-right-bottom">
+      <a href="/admin/channel/create" class="text-color-black">
+        <i class="material-icons">create</i>
+        <div class="fab-text">Create Collection</div>
+      </a>
+    </div>
+
+
+    <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
+
+      <div class="list cards-list virtual-list" id="channel-list">
+      </div>
+
+      <div class="preloader infinite-scroll-preloader"></div>
+
+    </div>
+
+  </div>
+
+</template>
+
+<style>
+  .channel-card  {
+    height: 415px;
+  }
+  
+  .channel-card .card-header {
+    display: block;
+    padding: 10px;
+  }
+
+  .channel-card .avatar {
+    float: left;
+  }
+
+  .channel-card .name {
+      text-align: center;
+      color: var(--f7-text-color);
+
+  }
+
+  .channel-card .name a {
+    color: var(--f7-theme-color);
+    font-weight: bold;
+  }
+
+
+  .channel-card .date {
+    font-size: 13px;
+    color: #8e8e93;
+  }
+
+  .channel-card .title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  
+  .channel-card .description {
+    font-size: 22px;
+    text-align: center;
+    width: 750px;
+    max-width: 100%;
+    height: 80px;
+    margin-right: auto;
+    margin-left: auto;
+    overflow: hidden;
+  }
+
+  .channel-card .card-content img {
+    display: block;
+    max-width: 100%;
+  }
+
+  .channel-card .banner {
+    height: 200px;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    background-color: #f1f1f1;
+  }
+
+  .channel-card .avatar {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    left: calc(50% - 50px);
+    bottom: 0;
+    margin-bottom: -50px;
+    z-index: 10000;
+    border: 3px solid #ffffff;
+    font-size: 100px;
+    background: #ffffff;
+  }
+
+  .channel-card a {
+    color: var(--f7-text-color);
+  }
+
+  
+</style>
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { UiService } from "../../../service/core/ui-service"
+  import { ImageService } from "../../../service/image-service"
+
+  import { ChannelWebService } from "../../../service/web/channel-web-service"
+
+
+  import HeaderRight from "../../admin/header-right.f7.html"
+  import moment from "moment"
+
+  export default (props, { $, $h, $on, $f7, $update }) => {
+
+    let channelWebService = ContainerService.getInstance(ChannelWebService)
+    let imageService = ContainerService.getInstance(ImageService)
+
+    const LIMIT = 20
+
+    let channelsShown = 0
+    let hasMoreChannels = true
+    let loadingInProgress = false
+
+    let channels = []
+    let virtualList
+    let pageCounter = 0
+
+    function unloadInfiniteScroll() {
+      console.log("Unload infinite scroll")
+
+      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+      $f7.infiniteScroll.destroy('.infinite-scroll-content')
+
+      // Remove preloader
+      $('.infinite-scroll-preloader').hide()
+
+    }
+
+    async function infiniteScroll() {
+
+      // Exit, if loading in progress
+      if (loadingInProgress || !hasMoreChannels) return
+
+      // Set loading flag
+      loadingInProgress = true
+
+      if (pageCounter == 0) {
+        //Remove the fake one
+        virtualList.deleteAllItems()
+      }
+
+      try {
+        channels = await channelWebService.list(LIMIT, channelsShown)
+
+        if (channels && channels.length == LIMIT) {
+          channelsShown += channels.length
+        } else {
+          hasMoreChannels = false
+        }
+
+        virtualList.appendItems(channels)
+
+      } catch (ex) {
+        console.log(ex)
+      }
+
+      if (!hasMoreChannels) {
+        unloadInfiniteScroll()
+      }
+
+      pageCounter++
+      loadingInProgress = false
+    }
+
+
+    $on('pageAfterOut', (e, page) => {
+      unloadInfiniteScroll()
+    })
+
+    $on('pageInit', (e, page) => {
+
+      //Get first page
+      virtualList = $f7.virtualList.create({
+        el: '#channel-list',
+
+        renderItem(channelViewModel) {
+
+          if (!channelViewModel.channel) return '<li>Loading</li>'
+
+          return `
+              <li class="card channel-card">
+
+                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                      <div class="card-header banner" ${channelViewModel.coverBanner ?
+                                `style="background-image: url(${imageService.getUrl(channelViewModel.coverBanner)});" ` : ``}>
+
+                            ${channelViewModel.coverImage ? `
+                            <img src="${imageService.getUrl(channelViewModel.coverImage)}" class="avatar" />
+                          ` : `
+                            <i class="material-icons avatar">image</i>
+                          `}
+
+                      </div>
+                    </a>
+
+                    <div class="card-content">
+                        <div class="card-content card-content-padding">
+                            <div class="title">
+                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                                ${channelViewModel.channel.title}
+                              </a>
+                            </div>
+
+                            ${channelViewModel.authorDisplayName ? `
+                              <div class="name">
+                                By <a href="/admin/author/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                              </div>
+                            ` : ``}
+
+                            <div class="description empty" id="channel-description-${channelViewModel.channel._id}" data-id="${channelViewModel.channel._id}"></div>
+                           
+                        </div>
+                    </div>
+              </li>
+          `;
+        },
+        items: [{
+          title: 'Loading...'
+        }],
+        setListHeight: true,
+        updatableScroll: true,
+        height: function () {
+          return 450
+        },
+        emptyTemplate: `
+              <li class="item-content">
+                <div class="item-inner">
+                    There are no collections yet. <br /><br />Click the 'Create Collection' button to create your first collection.
+                </div>
+              </li>
+            `
+      })
+
+      //Get the page
+      $('.infinite-scroll-content').trigger('infinite')
+
+
+      virtualList.on('itemsAfterInsert', (virtualList, fragment) => {
+
+        //Find empty description divs and set their innerHTML
+        $('.empty').each( (element) => {
+
+          const id = $(element).data('id')
+
+          const c = channels.filter( channelViewModel => channelViewModel.channel._id == id)[0]
+
+          element.innerHTML = c.channel.descriptionHTML
+
+          $(element).removeClass('empty')
+        })
+
+      })
+
+    })
+
+
+
+    return $render
+  }
+</script>

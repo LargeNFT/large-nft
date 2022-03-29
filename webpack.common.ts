@@ -109,7 +109,7 @@ let mainConfig = {
 
           }
 
-          let contracts = []
+          let contracts = ['Channel']
 
           for (let contract of contracts) {
 
@@ -139,7 +139,7 @@ let mainConfig = {
 function createContractFromTruffle(truffleJson)  {
 
   return {
-      address: truffleJson.networks["31337"].address,
+      // address: truffleJson.networks["31337"].address,
       abi: truffleJson.abi,
       name: truffleJson.contractName,
       bytecode: truffleJson.bytecode,

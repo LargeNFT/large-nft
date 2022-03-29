@@ -1,0 +1,381 @@
+<template>
+
+  <div class="page" data-name="admin-show-collection">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="left">
+          <a class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
+        </div>
+        <div class="title">View Collection</div>
+        <div class="right">
+          <${HeaderRight} />
+        </div>
+      </div>
+    </div>
+
+
+    <div class="fab fab-extended fab-right-bottom">
+      <a href="/admin/item/create/${channelViewModel.channel._id}" class="text-color-black">
+        <i class="material-icons">create</i>
+        <div class="fab-text">Create Blog NFT</div>
+      </a>
+    </div>
+
+
+    <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
+
+      <div class="card channel-card-show">
+
+        <div class="card-header banner" id="banner">
+
+            ${coverImageSrc ? $h`
+              <img src="${coverImageSrc}" class="avatar" />
+            ` : $h`
+              <i class="material-icons avatar">image</i>
+            `}
+            
+        </div>
+
+        <div class="card-content">
+
+            <div class="card-content card-content-padding">
+
+                <div class="segmented float-right">
+
+                  <a href="/admin/channel/clone/${channelViewModel?.channel?._id}" class="button button-small">Clone</a> 
+
+                  ${showEdit ? $h`
+                    <a href="/admin/channel/edit/${channelViewModel.channel._id}" class="button button-small">Edit</a>
+                    <a @click="${deleteCollectionClick}" class="button button-small">Delete</a>
+                  ` : $h``} 
+
+
+                </div>
+
+                
+
+                <div class="title">${channelViewModel?.channel?.title}</div>
+
+                ${channelViewModel?.authorDisplayName ? $h`
+                  <div class="name">
+                    By <a href="/admin/author/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                  </div>
+                ` : ``}
+
+                <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
+
+            </div>
+
+        </div>
+
+
+      </div>
+        
+
+      <div class="block-title">Blog NFTs</div>
+
+      <div class="list cards-list virtual-list" id="item-list">
+      </div>
+
+      <div class="preloader infinite-scroll-preloader"></div>
+  
+    </div>
+
+  </div>
+
+</template>
+
+
+
+<style>
+
+  .channel-card-show .card-header {
+      display: block;
+      padding: 10px;
+  }
+
+  .channel-card-show .avatar {
+      float: left;
+  }
+
+  .channel-card-show .title {
+      font-size: 30px;
+      font-weight: bold;
+      margin-top: 50px;
+      text-align: center;
+  }
+
+  .channel-card-show .name {
+      text-align: center;
+  }
+
+  .channel-card-show .name a {
+    color: var(--f7-theme-color);
+    font-weight: bold;
+  }
+
+  .channel-card-show .excerpt {
+    font-size: 17px;
+  }
+
+  .channel-card-show .card-content img {
+      display: block;
+      max-width: 100%;
+  }
+
+  .channel-card-show .banner {
+      height: 200px;
+      width: 100%;
+      background-position: center;
+      background-size: cover;
+      background-color: #f1f1f1;
+  }
+
+  .channel-card-show .avatar {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      left: calc(50% - 50px);
+      bottom: 0;
+      margin-bottom: -50px;
+      z-index: 10000;
+      border: 3px solid #ffffff;
+      font-size: 100px;
+      background: #ffffff;
+  }
+
+  .channel-card-show a {
+      color: var(--f7-text-color);
+  }
+
+  .channel-card-show .description {
+    font-size: 22px;
+    text-align: center;
+    width: 750px;
+    max-width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .item-card .title {
+    color: #000000;
+    font-size: 25px;
+  }
+
+  .item-card .description {
+    font-size: 17px;
+  }
+
+
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { ChannelWebService } from "../../../service/web/channel-web-service"
+  import { ItemWebService } from "../../../service/web/item-web-service"
+
+
+  import { ChannelService } from "../../../service/channel-service"
+
+  import { ImageService } from "../../../service/image-service"
+
+  import { UiService } from "../../../service/core/ui-service"
+
+  import HeaderRight from "../../admin/header-right.f7.html"
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let channelWebService = ContainerService.getInstance(ChannelWebService)
+    let itemWebService = ContainerService.getInstance(ItemWebService)
+
+    let imageService = ContainerService.getInstance(ImageService)
+    let channelService = ContainerService.getInstance(ChannelService)
+
+    let channelViewModel = props.channelViewModel
+
+    let showEdit = false
+
+    let coverBannerSrc 
+    let coverImageSrc 
+
+
+
+    //Pagination
+    const LIMIT = 20
+
+    let itemsShown = 0
+    let hasMoreItems = true
+    let loadingInProgress = false
+
+    let items = []
+    let virtualList
+    let pageCounter = 0
+
+
+
+    $on('pageInit', async (e, page) => {
+
+      showEdit = channelViewModel.channel.pubDate == undefined
+
+      if (channelViewModel.coverBanner) {
+        coverBannerSrc = await imageService.getUrl(channelViewModel.coverBanner)
+      }
+
+      if (channelViewModel.coverImage) {
+        coverImageSrc = await imageService.getUrl(channelViewModel.coverImage)
+      }
+      
+
+
+      //Get first page
+      virtualList = $f7.virtualList.create({
+        el: '#item-list',
+
+        renderItem(itemViewModel) {
+
+          if (!itemViewModel.item) return '<li>Loading</li>'
+
+          return `
+              <li class="card item-card">
+
+                    <div class="card-content">
+                        <div class="card-content card-content-padding">
+
+                          <a class="title" href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>                          
+
+                          ${itemViewModel.coverImage ? `
+                            <img src="${itemViewModel.coverImage.url}" />
+                          ` : ``}
+
+
+                        </div>
+                    </div>
+              </li>
+          `;
+        },
+
+        items: [{
+          title: 'Loading...'
+        }],
+        setListHeight: true,
+        updatableScroll: true,
+        height: function () {
+
+          if ($f7.theme === 'md') {
+            return 73
+          } else if ($f7.theme === 'ios') {
+            return 64.8
+          } else if ($f7.theme === 'aurora') {
+            return 77
+          }
+        },
+        emptyTemplate: `
+          <li class="card item-card">
+            <div class="card-content">
+              <div class="card-content card-content-padding">
+                There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
+              </div>
+            </div>
+          </li>
+        `
+      })
+
+      await $update()
+
+      //Load cover banner into CSS
+      document.getElementById('banner').style.backgroundImage = `url(${coverBannerSrc})`
+
+      //Load description
+      // document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).innerHTML = channelViewModel.channel.descriptionHTML
+
+      //Get the page
+      $('.infinite-scroll-content').trigger('infinite')
+
+
+    })
+
+    $on('pageAfterOut', (e, page) => {
+      unloadInfiniteScroll()
+    })
+
+
+    function unloadInfiniteScroll() {
+      console.log("Unload infinite scroll")
+
+      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+      $f7.infiniteScroll.destroy('.infinite-scroll-content')
+
+      // Remove preloader
+      $('.infinite-scroll-preloader').hide()
+    }
+
+
+    async function infiniteScroll() {
+
+      // Exit, if loading in progress
+      if (loadingInProgress || !hasMoreItems) return
+
+      // Set loading flag
+      loadingInProgress = true
+
+      if (pageCounter == 0) {
+        //Remove the fake one
+        virtualList.deleteAllItems()
+      }
+
+      try {
+        items = await itemWebService.listByChannel(props.id, LIMIT, itemsShown)
+
+        if (items && items.length == LIMIT) {
+          itemsShown += items.length
+        } else {
+          hasMoreItems = false
+        }
+
+        virtualList.appendItems(items)
+
+      } catch (ex) {
+        console.log(ex)
+      }
+
+
+      if (!hasMoreItems) {
+        unloadInfiniteScroll()
+      }
+
+      pageCounter++
+      loadingInProgress = false
+
+    }
+
+
+
+
+    const deleteCollectionClick = async (e) => {
+      
+      $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {
+        await channelService.delete(channelViewModel.channel)
+
+        $f7.views.main.router.navigate(`/`)
+
+        const toast = $f7.toast.create({
+          text: 'Collection deleted',
+          closeTimeout: 2000,
+          closeButton: true
+        })
+
+      })
+    
+    }
+
+
+    
+    return $render
+  }
+
+</script>

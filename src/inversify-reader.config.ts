@@ -1,39 +1,47 @@
 import AppComponent from './components/app.f7.html'
 
+import AdminChannelIndexComponent from './components/admin/channel/index.f7.html'
+
 import AdminPostIndexComponent from './components/admin/post/index.f7.html'
 import AdminPostCreateComponent from './components/admin/post/create.f7.html'
 import AdminPostShowComponent from './components/admin/post/show.f7.html'
 import AdminPostEditComponent from './components/admin/post/edit.f7.html'
 
-import AdminPageIndexComponent from './components/admin/page/index.f7.html'
-import AdminPageCreateComponent from './components/admin/page/create.f7.html'
-import AdminPageShowComponent from './components/admin/page/show.f7.html'
-import AdminPageEditComponent from './components/admin/page/edit.f7.html'
-
 import AdminSettingsComponent from './components/admin/settings/index.f7.html'
 import AdminConnectComponent from './components/admin/connect/index.f7.html'
 
 
-import { UiService } from './service/ui-service';
+import { UiService } from './service/core/ui-service';
 
 import { providers } from "ethers"
-import { QueueService } from './service/queue_service';
-import { DeployService } from './service/deploy-service';
+import { QueueService } from './service/core/queue_service';
+import { DeployService } from './service/core/deploy-service';
+
 import { QuillService } from "./service/quill-service";
-import { UploadService } from "./service/upload-service";
+import { QuillEditorService } from "./service/quill-editor-service";
 
-import EventEmitter from "events";
+import { UploadService } from "./service/core/upload-service";
+
 import { WalletService } from "./service/core/wallet-service"
-import { ImageService } from "./service/core/image-service"
-import { ProfileService } from "./service/core/profile-service"
-import { PostService } from "./service/core/post-service"
-import { BlogPostService } from "./service/core/blog-post-service"
+import { ImageService } from "./service/image-service"
+import { AuthorService } from "./service/author-service"
+import { ChannelService } from "./service/channel-service"
 import { IpfsService } from "./service/core/ipfs-service"
-import { SiteSettingsService } from "./service/core/site-settings-service"
 import { Container } from "inversify";
+import { DatabaseService } from './service/core/database-service'
+import { ChannelRepository } from './repository/channel-repository'
+import { ItemRepository } from './repository/item-repository'
+import { ImageRepository } from './repository/image-repository'
+import { AuthorRepository } from './repository/author-repository'
+import { SchemaService } from './service/core/schema-service'
+import { WalletServiceImpl } from './service/core/wallet-service-impl'
+import TYPES from './service/core/types'
+import { PinningService } from './service/core/pinning-service'
+import { PinningApiRepository } from './repository/pinning-api-repository'
+import { ItemService } from './service/item-service'
 
 
-let container
+let container:Container
 
 function getMainContainer() {
 
@@ -54,11 +62,17 @@ function getMainContainer() {
       theme: 'aurora', // Automatic theme detection
       component: AppComponent,
       routes: [
+
+        {
+          path: "/",
+          component: AdminChannelIndexComponent
+        },
+
         /**
          * Posts
          */
         {
-          path: "/",
+          path: "/admin/post/index",
           component: AdminPostIndexComponent
         },
         {
@@ -74,25 +88,6 @@ function getMainContainer() {
           component: AdminPostEditComponent
         },
 
-        /**
-         * Pages
-         */
-        {
-          path: "/admin/page",
-          component: AdminPageIndexComponent
-        },
-        {
-          path: "/admin/page/create",
-          component: AdminPageCreateComponent
-        },
-        {
-          path: "/admin/page/show/:id",
-          component: AdminPageShowComponent
-        },
-        {
-          path: "/admin/page/edit/:id",
-          component: AdminPageEditComponent
-        },
 
         /**
          * Site Settings
@@ -174,9 +169,6 @@ function getMainContainer() {
     }
   }
 
-  function eventEmitter() {
-    return new EventEmitter()
-  }
 
 
   // container.bind('sketch').toConstantValue(sketch())
@@ -184,8 +176,6 @@ function getMainContainer() {
   container.bind("provider").toConstantValue(provider())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
-
-  container.bind("eventEmitter").toConstantValue(eventEmitter())
 
   container.bind("ipfsOptions").toConstantValue(ipfsOptions())
   container.bind("orbitOptions").toConstantValue(orbitOptions())
@@ -196,18 +186,28 @@ function getMainContainer() {
   container.bind(QueueService).toSelf().inSingletonScope()
   container.bind(DeployService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
+  container.bind(QuillEditorService).toSelf().inSingletonScope()
+
   container.bind(UploadService).toSelf().inSingletonScope()
-
-
-
-
-  container.bind(WalletService).toSelf().inSingletonScope()
-  container.bind(ImageService).toSelf().inSingletonScope()
-  container.bind(ProfileService).toSelf().inSingletonScope()
-  container.bind(PostService).toSelf().inSingletonScope()
-  container.bind(BlogPostService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()
-  container.bind(SiteSettingsService).toSelf().inSingletonScope()
+  container.bind(DatabaseService).toSelf().inSingletonScope()
+  container.bind(SchemaService).toSelf().inSingletonScope()
+  container.bind(PinningService).toSelf().inSingletonScope()
+
+  container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()
+
+
+  container.bind(AuthorService).toSelf().inSingletonScope()
+  container.bind(ChannelService).toSelf().inSingletonScope()
+  container.bind(ImageService).toSelf().inSingletonScope()
+  container.bind(ItemService).toSelf().inSingletonScope()
+
+  container.bind(ChannelRepository).toSelf().inSingletonScope()
+  container.bind(ItemRepository).toSelf().inSingletonScope()
+  container.bind(ImageRepository).toSelf().inSingletonScope()
+  container.bind(AuthorRepository).toSelf().inSingletonScope()
+  container.bind(PinningApiRepository).toSelf().inSingletonScope()
+
 
 
   return container

@@ -1,16 +1,12 @@
 import { inject, injectable } from "inversify"
 
-import { WalletService } from "./wallet-service"
-
-import IPFS from 'ipfs'
+// const IPFS = require('ipfs')
+// import * as IPFS from 'ipfs-core'
 
 @injectable()
 class IpfsService {
 
-  public orbitDb
   public ipfs
-
-  private identity
 
   constructor(
     @inject('ipfsOptions') private ipfsOptions
@@ -19,13 +15,13 @@ class IpfsService {
 
   async init() {
 
-    console.log('Init IPFS')
+    // console.log('Init IPFS')
     
-    if (!this.ipfs) {
-      this.ipfs = await IPFS.create(this.ipfsOptions)
-    }
+    // if (!this.ipfs) {
+    //   this.ipfs = await IPFS.create(this.ipfsOptions)
+    // }
 
-    console.log('Init IPFS complete')
+    // console.log('Init IPFS complete')
 
   }
   

@@ -89,19 +89,17 @@
 
 
 <script>
-    import { ContainerService } from "../../../service/container-service"
+    import { ContainerService } from "../../../service/core/container-service"
 
     import HeaderRight from "../../admin/header-right.f7.html"
 
     import { WalletService } from "../../../service/core/wallet-service"
-    import { SiteSettingsService } from "../../../service/core/site-settings-service"
 
 
 
     export default (props, { $, $on, $f7, $update }) => {
       
-      let siteSettingsService = ContainerService.getInstance(SiteSettingsService)
-      let walletService = ContainerService.getInstance(WalletService)
+      let walletService = ContainerService.getWalletService()
     //   let uiService = ContainerService.getInstance(UiService)
 
       let stores = []

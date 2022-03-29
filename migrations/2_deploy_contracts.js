@@ -1,6 +1,6 @@
-var WhitePages = artifacts.require("Whitepages");
+var Channel = artifacts.require("Channel");
 
 
 module.exports = function(deployer) {
-  deployer.deploy(WhitePages);
+  // deployer.deploy(Channel);
 };

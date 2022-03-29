@@ -1,0 +1,153 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="admin-create-channel">
+
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner">
+        <div class="left">
+          <a href="/" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
+        </div>
+        <div class="title">Create Collection</div>
+        <div class="right">
+          <${HeaderRight} />
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <div class="row">
+        <div class="col-100 large-50 center">
+
+          <form class="block list" id="create-channel-form" @submit="${formSubmit}">
+
+            <${ChannelForm} channel=${channelViewModel} editor="create-channel-description-editor" toolbar="create-channel-description-toolbar" />
+
+            <div class="row block">
+
+              <div class="col-70"></div>
+
+              <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                <i class="material-icons">save</i> Save
+              </button>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+</template>
+
+<style>
+  #create-channel-description-editor {
+    min-height: 300px;
+    width: 100%;
+  }
+
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { WalletService } from "../../../service/core/wallet-service"
+  import { QuillEditorService } from "../../../service/quill-editor-service"
+
+  import { AuthorService } from "../../../service/author-service"
+
+
+  import { ChannelService } from "../../../service/channel-service"
+  import { Channel } from "../../../dto/channel"
+  import { Author } from "../../../dto/author"
+
+  import HeaderRight from "../../admin/header-right.f7.html"
+  import ChannelForm from "../../admin/channel/form.f7.html"
+
+
+  import { ethers } from "ethers"
+  import Tagify from '@yaireo/tagify'
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let channelService = ContainerService.getInstance(ChannelService)
+    let authorService = ContainerService.getInstance(AuthorService)
+    let quillEditorService = ContainerService.getInstance(QuillEditorService)
+
+    let walletService = ContainerService.getWalletService()
+
+
+
+    let channelViewModel = {
+      channel: {
+        mintPrice: "0.00",
+        royaltyPercent: "0",
+        authorId: walletService.address
+      }
+    }
+
+    const formSubmit = async (e) => {
+
+      e.preventDefault()
+
+      //Get data
+      let channel = Object.assign(new Channel(), $f7.form.convertToData('#create-channel-form'))
+
+      //Get content from quill
+      channel.description = quillEditorService.activeEditor.getContents()
+
+      //Parse attributeOptions and category
+      if (channel.attributeOptions) {
+        channel.attributeOptions = JSON.parse(channel.attributeOptions)
+      } else {
+        channel.attributeOptions = []
+
+      }
+      
+      if (channel.category) {
+        channel.category = JSON.parse(channel.category).map( item => item.value)
+      } else {
+        channel.category = []
+      }
+
+      //If the author doesn't exist insert a 
+      if (channel.authorId) {
+        await authorService.insertIfNew(channel.authorId)
+      }
+
+      //Save
+      try {
+
+        await channelService.put(channel)
+
+        //Redirect
+        $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)
+
+      } catch (ex) {
+        $f7.dialog.alert(ex.errors, "There was an error")
+      }
+
+    }
+
+    $on('pageInit', async (e, page) => {
+
+      //Categories
+      let categoryTagify = new Tagify(document.getElementById('category'))
+
+      //Description
+      quillEditorService.buildQuillPostEditor("#create-channel-description-editor", "#create-channel-description-toolbar")
+
+
+    })
+
+    return $render
+  }
+
+</script>

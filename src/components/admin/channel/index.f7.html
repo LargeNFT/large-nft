@@ -213,10 +213,10 @@
 
                     <a href="/admin/channel/show/${channelViewModel.channel._id}">
                       <div class="card-header banner" ${channelViewModel.coverBanner ?
-                                `style="background-image: url(${imageService.getUrl(channelViewModel.coverBanner)});" ` : ``}>
+                                `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
 
                             ${channelViewModel.coverImage ? `
-                            <img src="${imageService.getUrl(channelViewModel.coverImage)}" class="avatar" />
+                            <img src="${channelViewModel.coverImage.url}" class="avatar" />
                           ` : `
                             <i class="material-icons avatar">image</i>
                           `}

@@ -304,17 +304,11 @@ contract('ChannelService', async (accounts) => {
         editor = new Quill("#editor")
         editor.setText("Singing in the mountains")
 
-        let image1 = await ipfsService.ipfs.add({
-            content: "pretend that this is image data"
-        })
+        let image1 = await imageService.newFromBuffer(Buffer.from("image1!"))
+        let image2 = await imageService.newFromBuffer(Buffer.from("image2!"))
 
-        let image2 = await ipfsService.ipfs.add({
-            content: "pretend that this is image data2"
-        })
-        
-
-        await imageService.put(await imageService.newFromCid(image1.cid.toString()))
-        await imageService.put(await imageService.newFromCid(image2.cid.toString()))
+        await imageService.put(image1)
+        await imageService.put(image2)
 
         //Create category with attributes
         channel = Object.assign(new Channel(), {
@@ -427,12 +421,12 @@ contract('ChannelService', async (accounts) => {
 
         assert.strictEqual(contractMetadata.name, "The Sound of Music")
         assert.strictEqual(contractMetadata.external_link, 'google.com')
-        assert.strictEqual(contractMetadata.image, 'ipfs://QmRhTS79kzt4rP72T6zaMBPWpJs1cwZmvpex5918QD3VKr')
+        assert.strictEqual(contractMetadata.image, 'ipfs://QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
 
         assert.strictEqual(item1File.tokenId, '1')
         assert.strictEqual(item1File.name, 'An image!')
         assert.strictEqual(item1File.animation_url, 'ipfs://QmYuYBgM7257tYayRRhT4BDJaqG4JBPrtHsxvT9EwuQm86')
-        assert.strictEqual(item1File.image, 'ipfs://QmX5VLosmfG3mitW5hyaGCWpg1AN6TbjW5Z3dtJPQmvEnq')
+        assert.strictEqual(item1File.image, 'ipfs://QmdiZ38cTbpsGzLYmzne4qfnCa8qLmjf9UGyaeEFoTuqSd')
         assert.deepEqual(item1File.attributes, [
             { traitType: "Hair", value: "Curly" },
             { traitType: "Teeth", value: "Nice" }

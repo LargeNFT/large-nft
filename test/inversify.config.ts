@@ -18,6 +18,8 @@ import { QuillService } from "../src/service/quill-service";
 import { IpfsService } from "../src/service/core/ipfs-service";
 
 import fs from 'fs';
+import * as IPFS from 'ipfs-core'
+
 import { DatabaseService } from "../src/service/core/database-service";
 import { ChannelRepository } from "../src/repository/channel-repository";
 import { PinningApiRepository } from "../src/repository/pinning-api-repository";
@@ -95,7 +97,7 @@ async function getContainer() {
     let ipfsService:IpfsService = container.get(IpfsService)
     let walletService:WalletService = container.get<WalletService>(TYPES.WalletService);   
 
-    await ipfsService.init()
+    ipfsService.ipfs = await IPFS.create(container.get("ipfsOptions"))
     await walletService.initWallet()
 
 

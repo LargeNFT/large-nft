@@ -67,7 +67,7 @@
                     <div class="item-input-wrap">
 
                         ${channelViewModel.coverImage ? $h`
-                        <img class="cover-image-preview" src="${imageService.getUrl(channelViewModel?.coverImage)}" />
+                        <img class="cover-image-preview" src="${channelViewModel?.coverImage.url}" />
 
                         ` : $h`
                         <i class="material-icons cover-image-preview">image</i>
@@ -75,7 +75,7 @@
 
                         <input type="button" class="button button-fill" value="Browse"
                             @click="${handleCoverImageBrowseClick}" tabindex="4" />
-                        <input type="hidden" name="coverImageId" value="${channelViewModel?.coverImage?._id}" />
+                        <input type="hidden" name="coverImageId" value="${channelViewModel?.coverImage?.cid}" />
                         <input type="file" id="cover-image-browse" style="display: none"
                             @change="${handleCoverImageChange}" />
 
@@ -90,14 +90,14 @@
                     <div class="item-input-wrap">
 
                         ${channelViewModel?.coverBanner ? $h`
-                        <img class="cover-banner-preview" src="${imageService.getUrl(channelViewModel?.coverBanner)}" />
+                        <img class="cover-banner-preview" src="${channelViewModel?.coverBanner.url}" />
                         ` : $h`
                         <i class="material-icons cover-banner-preview">image</i>
                         `}
 
                         <input type="button" class="button button-fill" value="Browse"
                             @click="${handleBannerBrowseClick}" tabindex="5" />
-                        <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?._id}" />
+                        <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?.cid}" />
                         <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />
 
                     </div>
@@ -448,7 +448,10 @@
                 await imageService.put(image)
             } catch (ex) { }
 
-            channelViewModel.coverImage = image
+            channelViewModel.coverImage = {
+                cid: image.cid,
+                url: await imageService.getUrl(image)
+            }
 
             $update()
         }
@@ -467,7 +470,10 @@
                 await imageService.put(image)
             } catch (ex) { }
 
-            channelViewModel.coverBanner = image
+            channelViewModel.coverBanner = {
+                cid: image.cid,
+                url: await imageService.getUrl(image)
+            }
 
             $update()
         }
@@ -499,6 +505,7 @@
 
         }
 
+        console.log(channelViewModel)
 
         return $render
     }

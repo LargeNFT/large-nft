@@ -30,8 +30,8 @@
 
         <div class="card-header banner" id="banner">
 
-            ${coverImageSrc ? $h`
-              <img src="${coverImageSrc}" class="avatar" />
+            ${channelViewModel?.coverImage ? $h`
+              <img src="${channelViewModel.coverImage.url}" class="avatar" />
             ` : $h`
               <i class="material-icons avatar">image</i>
             `}
@@ -200,8 +200,8 @@
 
     let showEdit = false
 
-    let coverBannerSrc 
-    let coverImageSrc 
+    // let coverBannerSrc 
+    // let coverImageSrc 
 
 
 
@@ -222,13 +222,13 @@
 
       showEdit = channelViewModel.channel.pubDate == undefined
 
-      if (channelViewModel.coverBanner) {
-        coverBannerSrc = await imageService.getUrl(channelViewModel.coverBanner)
-      }
+      // if (channelViewModel.coverBanner) {
+      //   coverBannerSrc = await imageService.getUrl(channelViewModel.coverBanner)
+      // }
 
-      if (channelViewModel.coverImage) {
-        coverImageSrc = await imageService.getUrl(channelViewModel.coverImage)
-      }
+      // if (channelViewModel.coverImage) {
+      //   coverImageSrc = await imageService.getUrl(channelViewModel.coverImage)
+      // }
       
 
 
@@ -288,10 +288,9 @@
       await $update()
 
       //Load cover banner into CSS
-      document.getElementById('banner').style.backgroundImage = `url(${coverBannerSrc})`
-
-      //Load description
-      // document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).innerHTML = channelViewModel.channel.descriptionHTML
+      if (channelViewModel?.coverBanner?.url) {
+        document.getElementById('banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
+      }
 
       //Get the page
       $('.infinite-scroll-content').trigger('infinite')

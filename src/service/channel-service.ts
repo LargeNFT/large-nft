@@ -25,6 +25,7 @@ import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
 
 import excerptHtml from 'excerpt-html'
+import { assert } from "console";
 
 @injectable()
 class ChannelService {
@@ -142,7 +143,7 @@ class ChannelService {
       if (item.content?.ops) {
         for (let op of item.content.ops) {
           if (op.insert && op.insert.ipfsimage) {
-            images.push(op.insert.ipfsimage.ipfsCid)
+            images.push(op.insert.ipfsimage.cid)
           }
         }
       }
@@ -154,6 +155,22 @@ class ChannelService {
       tokenId++
     }
 
+
+    //Add all images to IPFS
+    for (let image of images) {
+
+      //Add to IPFS
+      let i = await this.imageService.get(image)
+
+      let result = await this.ipfsService.ipfs.add({
+        content: i.buffer.data
+      })
+
+      if (result.cid.toString() != i.cid) {
+        throw new Error("Incorrect cid when saving image. ")
+      }
+
+    }
 
 
     let directory = `/blogs/${channel._id}`
@@ -182,11 +199,13 @@ class ChannelService {
 
     //Save images 
     for (let image of images) {
+      console.log(`Saving image #${image} to ${directory}/images/${image}`)
       await this.ipfsService.ipfs.files.cp(`/ipfs/${image}`, `${directory}/images/${image}`, { parents: true })
     }
 
     //Save animation cids
     for (let animationCid of animationCids) {
+      console.log(`Saving animation #${animationCid} to ${directory}/images/${animationCid}`)
       await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
     }
 

@@ -4,6 +4,7 @@ import { Channel } from "../../dto/channel";
 import { Image } from "../../dto/image";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
+import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
@@ -23,17 +24,30 @@ class ChannelWebService {
 
     async getViewModel(channel:Channel) : Promise<ChannelViewModel> {
 
-        let coverImage:Image
-        let coverBanner:Image 
+        let coverImage:ImageViewModel
+        let coverBanner:ImageViewModel 
 
         let author:Author
 
         if (channel.coverImageId) {
-            coverImage = await this.imageService.get(channel.coverImageId)
+
+            let cImage = await this.imageService.get(channel.coverImageId)
+
+            coverImage = {
+                cid: cImage.cid,
+                url: await this.imageService.getUrl(cImage)
+            }
+
         }
 
         if (channel.coverBannerId) {
-            coverBanner = await this.imageService.get(channel.coverBannerId)
+
+            let cBanner = await this.imageService.get(channel.coverBannerId)
+
+            coverBanner = {
+                cid: cBanner.cid,
+                url: await this.imageService.getUrl(cBanner)
+            }
         }
 
         if (channel.authorId) {

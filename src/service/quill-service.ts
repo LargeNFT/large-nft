@@ -34,8 +34,8 @@ class QuillService {
                 style="${customOp.insert.value.style}" />`
       }
 
-
     })
+
 
     return qdc.convert()
   }

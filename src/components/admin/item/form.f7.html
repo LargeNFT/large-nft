@@ -12,19 +12,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Title</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
-                            minlength="3" required />
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Subtitle</div>
-                    <div class="item-input-wrap">
-                        <input type="text" name="subtitle" placeholder="Enter a subtitle (optional)"
-                            value="${itemViewModel?.item?.subtitle}" />
+                        <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}" minlength="3" id="header-input" required />
                     </div>
                 </div>
             </div>
@@ -70,7 +58,7 @@
         
             <li class="cover-photo-preview">
 
-                <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?._id}" />
+                <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
     
                 <div class="item-content item-input">
                     <div class="item-inner">
@@ -78,7 +66,7 @@
                         <div class="item-input-wrap">
                             
                             ${itemViewModel.images.map( (image) => $h`
-                                <img class="cover-image-thumbnail ${image.cid == itemViewModel.coverImage._id ? 'selected' : ''}  " src="${image.url}" data-id="${image.cid}" @click=${coverImageClick}  />
+                                <img class="cover-image-thumbnail ${image.cid == itemViewModel.coverImage?.cid ? 'selected' : ''}  " src="${image.url}" data-id="${image.cid}" @click=${coverImageClick}  />
                             `)}
     
     
@@ -104,6 +92,11 @@
 }
 .cover-image-thumbnail.selected {
     border: 3px solid #ff0000;
+}
+
+#header-input {
+    font-size: 40px;
+    font-weight: 700;
 }
 
 
@@ -134,7 +127,6 @@
     
         const loadCoverImages = async () => {
             itemViewModel.images = itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
-            console.log(itemViewModel.images)
             await $update()
         }
 

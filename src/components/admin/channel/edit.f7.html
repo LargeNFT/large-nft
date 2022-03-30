@@ -30,7 +30,7 @@
               <div class="col-70"></div>
 
               <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-                <i class="material-icons">save</i> Save Changes
+                <i class="material-icons">save</i> Save
               </button>
 
             </div>
@@ -106,6 +106,14 @@
       try {
         
         await channelService.put(channel)
+
+        const toast = $f7.toast.show({
+          text: 'Collection saved',
+          closeTimeout: 2000,
+          closeButton: true,
+          position: 'bottom',
+          horizontalPosition: 'right'
+        })
 
         //Redirect
         $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)

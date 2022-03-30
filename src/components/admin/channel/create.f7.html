@@ -127,6 +127,14 @@
 
         await channelService.put(channel)
 
+        const toast = $f7.toast.show({
+          text: 'Collection saved',
+          closeTimeout: 2000,
+          closeButton: true,
+          position: 'bottom',
+          horizontalPosition: 'right'
+        })
+
         //Redirect
         $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)
 

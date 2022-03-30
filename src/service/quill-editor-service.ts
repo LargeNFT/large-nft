@@ -149,6 +149,10 @@ class QuillEditorService {
 
         node.setAttribute('src', value.src)
         node.setAttribute('data-cid', value.cid)
+        node.setAttribute('width', value.width)
+        node.setAttribute('height', value.height)
+        node.setAttribute('style', value.style)
+
 
         return node
       }
@@ -158,9 +162,16 @@ class QuillEditorService {
         let src = node.getAttribute('src')
         let cid = node.getAttribute('data-cid')
 
+        let width = node.getAttribute('width')
+        let height = node.getAttribute('height')
+        let style = node.getAttribute('style')
+
         return {
           src: src,
-          cid: cid
+          cid: cid,
+          width: width,
+          height: height,
+          style: style
         }
       }
     }

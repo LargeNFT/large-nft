@@ -1,7 +1,6 @@
 import { injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
-import { Image } from "../../dto/image";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";

@@ -103,6 +103,15 @@
 
         await itemService.put(item)
 
+
+        const toast = $f7.toast.show({
+          text: 'Blog NFT saved',
+          closeTimeout: 2000,
+          closeButton: true,
+          position: 'bottom',
+          horizontalPosition: 'right'
+        })
+
         //Redirect
         $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
 

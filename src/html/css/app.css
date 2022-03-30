@@ -327,6 +327,7 @@
     height: 125px;
     display: inline-block;
     margin-bottom: 10px;
+    font-size: 21px;
   }
   
   .post-area .profile-pic {
@@ -488,7 +489,9 @@
   
   
   
-  
+  .ql-toolbar {
+    width: 100%;
+  }
   
   .ql-container {
     font-size: 23px;

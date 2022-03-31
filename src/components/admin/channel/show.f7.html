@@ -66,7 +66,8 @@
           </div>
     
           <div class="preloader infinite-scroll-preloader"></div>
-      
+
+
         </div>
       </div>
 
@@ -151,26 +152,38 @@
     margin-left: auto;
   }
 
-
+/* 
   .item-card {
     height: 250px;
-  }
-
-  .item-card .title {
-    color: #000000;
-    font-size: 40px;
-    font-weight: 700;
-  }
-
-  .item-card .description {
-    font-size: 17px;
-  }
+  } */
 
   .cover-image-preview {
     max-width: 100%;
-    max-height: 215px;
-    font-size: 100px;
   }
+
+  .item-preview {
+    display: flex;
+  }
+
+  .item-preview p {
+    margin-top: 5px;
+  }
+
+  .item-preview .title {
+    color: #000000;
+    font-size: 23px;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
+  .item-preview .right {
+    flex: 0 0 150px; /* do not grow, do not shrink, start at 250px */
+  }
+  .item-preview .left {
+    flex: 1;  /* grow */
+  }
+
+}
 
 
 
@@ -231,30 +244,8 @@
         el: '#item-list',
 
         renderItem(itemViewModel) {
-
           if (!itemViewModel.item) return '<li>Loading</li>'
-
-          return `
-              <li class="card item-card">
-
-                    <div class="card-header">
-                      <a class="title" href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>  
-                    </div>
-
-                    <div class="card-content">
-                        <div class="card-content card-content-padding">
-
-                        ${itemViewModel.coverImage ? `
-                          <img class="cover-image-preview" src="${itemViewModel.coverImage.url}" />
-                        ` : ``}
-
-                        ${itemViewModel.item.excerpt ? `
-                          <p>${itemViewModel.item.excerpt}</p>
-                        ` : ``}
-                        </div>
-                    </div>
-              </li>
-          `;
+          return getTemplate(itemViewModel)
         },
 
         items: [{
@@ -262,8 +253,26 @@
         }],
         setListHeight: true,
         updatableScroll: true,
-        height: function () {
-          return 250
+        height: function (itemViewModel) {
+
+          if (!itemViewModel.item) return 50
+
+          //Called 'horrible solution but it works' by author.  https://jsfiddle.net/mnahara/1cn6xqLg/
+          
+          //Create a div, add the template to it, calculate height, destroy div
+          const measuringDiv = document.createElement('div')
+    
+          measuringDiv.classList.add('list', 'cards-list')
+          measuringDiv.innerHTML = `<ul id='find-me'>${getTemplate(itemViewModel)}</ul>`
+
+          $('body').append(measuringDiv)
+
+          let height = $('#find-me li').height()
+
+          //Remove
+          measuringDiv.parentNode.removeChild(measuringDiv)
+
+          return height
         },
         emptyTemplate: `
           <li class="card item-card">
@@ -304,7 +313,6 @@
       $('.infinite-scroll-preloader').hide()
     }
 
-
     async function infiniteScroll() {
 
       // Exit, if loading in progress
@@ -343,9 +351,6 @@
 
     }
 
-
-
-
     const deleteCollectionClick = async (e) => {
       
       $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {
@@ -365,9 +370,42 @@
       })
     
     }
-
-
     
+    const getTemplate = (itemViewModel) => {
+
+      return `
+              <li class="card item-card">
+
+                    <div class="card-content">
+                        <div class="card-content card-content-padding">
+
+                          <div class="item-preview">
+                            <div class="left">
+
+                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>  
+                              
+                              ${itemViewModel.item.excerpt ? `
+                                <p>${itemViewModel.item.excerpt}</p>
+                              ` : ``}
+                            </div>
+                            
+                            ${itemViewModel.coverImage ? `
+                              <div class="right">
+                                <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
+                                  <img class="cover-image-preview" src="${itemViewModel.coverImage.url}" />
+                                </a>
+                              </div>
+                            ` : ``}
+                            
+                          </div>  
+                        </div>
+                    </div>
+              </li>
+          `
+
+    }
+
+
     return $render
   }
 

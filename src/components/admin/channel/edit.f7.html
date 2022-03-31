@@ -8,9 +8,13 @@
     <div class="page-content">
 
       <div class="row">
-        <div class="col-100 large-50 center">
+        <div class="col-100 large-66 center">
 
-          <div class="block-title">Edit Collection</div>
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
+            <li>Edit Collection</li>
+          </ul>
+
           <form class="block list" id="edit-channel-form" @submit="${formSubmit}">
 
             <${ChannelForm} channel=${channelViewModel} editor="edit-channel-description-editor" toolbar="edit-channel-description-toolbar" />

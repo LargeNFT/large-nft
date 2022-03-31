@@ -6,25 +6,37 @@
 
       <div class="page-content">
 
-        <form class="block list" id="edit-item-form"  @submit="${formSubmit}">
+        <div class="row">
 
-          <${ItemForm} item=${itemViewModel} editor="edit-item-editor" toolbar="edit-item-toolbar" />
+          <div class="col-100 large-66 center">
 
-          <div class="row block">
-  
-            <div class="col-70"></div>
-  
-            <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-              <i class="material-icons">save</i> Save
-            </button>
-  
+            <ul class="breadcrumb">
+              <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
+              <li><a href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a></li>
+              <li>Edit Blog NFT</li>
+            </ul>
+    
+            <form class="block list" id="edit-item-form"  @submit="${formSubmit}">
+    
+              <${ItemForm} item=${itemViewModel} editor="edit-item-editor" toolbar="edit-item-toolbar" />
+    
+              <div class="row block">
+      
+                <div class="col-70"></div>
+      
+                <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                  <i class="material-icons">save</i> Save
+                </button>
+      
+              </div>
+      
+            </form>
+
           </div>
-  
-        </form>
+
+        </div>
   
       </div>
-  
-  
   
     </div>
   

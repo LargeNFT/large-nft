@@ -7,26 +7,34 @@
 
     <div class="page-content">
 
-      <div class="block-title">
-        <a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a> > Create Blog NFT
-      </div>
+      <div class="row">
+        <div class="col-100 large-66 center">
 
-      <form class="block list" id="create-item-form" @submit="${formSubmit}">
-
-        <${ItemForm} item=${itemViewModel} editor="create-item-editor" toolbar="create-item-toolbar" />
-
-        <div class="row block">
-
-          <div class="col-70"></div>
-
-          <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-            <i class="material-icons">save</i> Save
-          </button>
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
+            <li>Create Blog NFT</li>
+          </ul>
+    
+          <form class="block list" id="create-item-form" @submit="${formSubmit}">
+    
+            <${ItemForm} item=${itemViewModel} editor="create-item-editor" toolbar="create-item-toolbar" />
+    
+            <div class="row block">
+    
+              <div class="col-70"></div>
+    
+              <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                <i class="material-icons">save</i> Save
+              </button>
+    
+            </div>
+    
+    
+          </form>
 
         </div>
+      </div>
 
-
-      </form>
 
     </div>
   </div>

@@ -25,6 +25,7 @@ class ChannelWebService {
 
         let coverImage:ImageViewModel
         let coverBanner:ImageViewModel 
+        let authorPhoto:ImageViewModel
 
         let author:Author
 
@@ -50,7 +51,19 @@ class ChannelWebService {
         }
 
         if (channel.authorId) {
+            
             author = await this.authorService.get(channel.authorId)
+
+            //Load cover photo if there is one.
+            if (author.coverPhotoId) {
+                let aImage = await this.imageService.get(author.coverPhotoId)
+
+                authorPhoto = {
+                    cid: aImage.cid,
+                    url: await this.imageService.getUrl(aImage)
+                }
+            }
+
         }
 
         return {
@@ -58,7 +71,8 @@ class ChannelWebService {
             coverImage: coverImage,
             coverBanner:coverBanner,
             author: author,
-            authorDisplayName: this.authorService.getDisplayName(author)
+            authorDisplayName: this.authorService.getDisplayName(author),
+            authorPhoto: authorPhoto
         }
 
     }

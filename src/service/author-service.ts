@@ -47,9 +47,11 @@ class AuthorService {
   }
 
   getDisplayName(author:Author) : string {
+
     if (!author) return 
     if (author.name) return author.name
-    return author._id
+
+    return "..." + author._id.slice(author._id.length - 10) //shorten
 
   }
 

@@ -27,6 +27,7 @@ class ItemWebService {
     async getViewModel(item: Item): Promise<ItemViewModel> {
 
         let coverImage: ImageViewModel
+        let authorPhoto:ImageViewModel
 
         let author: Author
 
@@ -40,12 +41,33 @@ class ItemWebService {
             }
         }
 
+        //Get channel
+        const channel = await this.channelService.get(item.channelId)
+
+        //Get author
+        if (channel.authorId) {
+            
+            author = await this.authorService.get(channel.authorId)
+
+            //Load cover photo if there is one.
+            if (author.coverPhotoId) {
+                let aImage = await this.imageService.get(author.coverPhotoId)
+
+                authorPhoto = {
+                    cid: aImage.cid,
+                    url: await this.imageService.getUrl(aImage)
+                }
+            }
+
+        }
 
         return {
             item: item,
-            channel: await this.channelService.get(item.channelId),
+            channel: channel,
             coverImage: coverImage,
             author: author,
+            authorPhoto: authorPhoto,
+            authorDisplayName: this.authorService.getDisplayName(author),
             images: this.getImagesFromPostContentOps(item.content?.ops)
         }
 

@@ -10,7 +10,10 @@ interface ItemViewModel {
     
     item?:Item 
     coverImage?:ImageViewModel
+
     author?:Author
+    authorDisplayName?:string 
+    authorPhoto?:ImageViewModel
 
     images?:ImageViewModel[]
 

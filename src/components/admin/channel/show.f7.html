@@ -88,9 +88,6 @@
       padding: 10px;
   }
 
-  .channel-card-show .avatar {
-      float: left;
-  }
 
   .channel-card-show .title {
       font-size: 30px;
@@ -138,6 +135,26 @@
       font-size: 100px;
       background: #ffffff;
   }
+  
+  .author-header{
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .author-avatar {
+    margin-top: -4px;
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+    float: left;
+    vertical-align: middle;
+    border-radius: 50%;    
+  }
+
+  .author .avatar i {
+    float: left;
+  }
 
   .channel-card-show a {
       color: var(--f7-text-color);
@@ -162,6 +179,7 @@
   }
 
   .item-preview {
+    width: 100%;
     display: flex;
   }
 
@@ -377,7 +395,23 @@
               <li class="card item-card">
 
                     <div class="card-content">
+
                         <div class="card-content card-content-padding">
+
+                          <div class="author-header">
+
+                            <div class="author-avatar">
+                              ${itemViewModel.authorPhoto ? `
+                                <img src="${itemViewModel.authorPhoto.url}" />
+                              ` : `
+                                <i class="material-icons">person</i>
+                              `}
+                            </div>
+
+                            <a href="/admin/author/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a>
+
+                          </div>
+
 
                           <div class="item-preview">
                             <div class="left">

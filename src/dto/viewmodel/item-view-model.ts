@@ -6,13 +6,13 @@ import { ImageViewModel } from "./image-view-model";
 
 interface ItemViewModel {
 
-    channel:Channel
+    channel?:Channel
     
-    item:Item 
-    coverImage:ImageViewModel
-    author:Author
+    item?:Item 
+    coverImage?:ImageViewModel
+    author?:Author
 
-    images:ImageViewModel[]
+    images?:ImageViewModel[]
 
 }
 

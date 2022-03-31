@@ -85,6 +85,20 @@ class ItemWebService {
         return images
     }
 
+    async getNewViewModel(channelId:string) : Promise<ItemViewModel> {
+        
+        let channel = await this.channelService.get(channelId)
+
+        let itemViewModel:ItemViewModel = {
+            item: {
+            },
+            channel: channel
+        }
+
+        return itemViewModel
+
+    }
+
 
 }
 

@@ -1,0 +1,46 @@
+<template>
+
+    <div class="navbar">
+        <div class="navbar-bg"></div>
+
+        <div class="navbar-inner sliding">
+        
+          <div class="left">
+            <a href="/" class="logo">Large</a>
+          </div>
+        
+          <div class="title"></div>
+
+          <${HeaderRight} />
+
+        </div>
+      </div>
+
+</template>
+ 
+<style>
+
+ .logo {
+   font-size: 35px;
+   font-weight: 700;
+   margin-right: 10px;
+ }
+
+ .searchbar {
+   max-width: 100%;
+ }
+
+</style>
+
+
+<script>
+
+    import LogoGrey from "../../html/images/logo_grey.png"
+
+    import HeaderRight from "./header-right.f7.html"
+
+    export default (props, { $on, $f7, $update }) => {
+    
+        return $render
+    }
+</script>

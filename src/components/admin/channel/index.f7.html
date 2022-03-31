@@ -3,16 +3,7 @@
 
   <div class="page" data-name="admin-posts">
 
-    <div class="navbar">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner">
-        <div class="title">Blog Collections</div>
-        <div class="right">
-          <${HeaderRight} />
-        </div>
-      </div>
-    </div>
-
+    <${Navbar} />
 
     <div class="fab fab-extended fab-right-bottom">
       <a href="/admin/channel/create" class="text-color-black">
@@ -21,13 +12,21 @@
       </a>
     </div>
 
-
     <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
 
-      <div class="list cards-list virtual-list" id="channel-list">
+      <div class="row">
+
+        <div class="col-100 large-50 center">
+
+          <div class="list cards-list virtual-list" id="channel-list">
+          </div>
+
+          <div class="preloader infinite-scroll-preloader"></div>
+
+        </div>
+
       </div>
 
-      <div class="preloader infinite-scroll-preloader"></div>
 
     </div>
 
@@ -36,10 +35,10 @@
 </template>
 
 <style>
-  .channel-card  {
+  .channel-card {
     height: 415px;
   }
-  
+
   .channel-card .card-header {
     display: block;
     padding: 10px;
@@ -50,8 +49,8 @@
   }
 
   .channel-card .name {
-      text-align: center;
-      color: var(--f7-text-color);
+    text-align: center;
+    color: var(--f7-text-color);
 
   }
 
@@ -73,7 +72,7 @@
     text-align: center;
   }
 
-  
+
   .channel-card .description {
     font-size: 22px;
     text-align: center;
@@ -115,11 +114,11 @@
   .channel-card a {
     color: var(--f7-text-color);
   }
-
-  
 </style>
 
 <script>
+
+  import moment from "moment"
 
   import { ContainerService } from "../../../service/core/container-service"
   import { UiService } from "../../../service/core/ui-service"
@@ -127,9 +126,9 @@
 
   import { ChannelWebService } from "../../../service/web/channel-web-service"
 
+  import Navbar from "../../admin/navbar.f7.html"
+  
 
-  import HeaderRight from "../../admin/header-right.f7.html"
-  import moment from "moment"
 
   export default (props, { $, $h, $on, $f7, $update }) => {
 
@@ -213,7 +212,7 @@
 
                     <a href="/admin/channel/show/${channelViewModel.channel._id}">
                       <div class="card-header banner" ${channelViewModel.coverBanner ?
-                                `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
+              `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
 
                             ${channelViewModel.coverImage ? `
                             <img src="${channelViewModel.coverImage.url}" class="avatar" />
@@ -269,11 +268,11 @@
       virtualList.on('itemsAfterInsert', (virtualList, fragment) => {
 
         //Find empty description divs and set their innerHTML
-        $('.empty').each( (element) => {
+        $('.empty').each((element) => {
 
           const id = $(element).data('id')
 
-          const c = channels.filter( channelViewModel => channelViewModel.channel._id == id)[0]
+          const c = channels.filter(channelViewModel => channelViewModel.channel._id == id)[0]
 
           element.innerHTML = c.channel.descriptionHTML
 

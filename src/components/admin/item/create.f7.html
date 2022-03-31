@@ -3,22 +3,15 @@
 
   <div class="page" data-name="admin-create-item">
 
-    <div class="navbar">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner">
-        <div class="left">
-          <a href="#" class="link back"><i class="icon icon-back"></i> <span>Back</span></a>
-        </div>
-        <div class="title">Create Blog NFT</div>
-        <div class="right">
-          <${HeaderRight} />
-        </div>
-      </div>
-    </div>
+    <${Navbar} />
 
     <div class="page-content">
 
-      <form class="block list no-hairlines" id="create-item-form" @submit="${formSubmit}">
+      <div class="block-title">
+        <a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a> > Create Blog NFT
+      </div>
+
+      <form class="block list" id="create-item-form" @submit="${formSubmit}">
 
         <${ItemForm} item=${itemViewModel} editor="create-item-editor" toolbar="create-item-toolbar" />
 
@@ -63,7 +56,7 @@
   import { Item } from "../../../dto/item"
 
 
-  import HeaderRight from "../../admin/header-right.f7.html"
+  import Navbar from "../../admin/navbar.f7.html"
   import ItemForm from "../../admin/item/form.f7.html"
 
   import moment from "moment"
@@ -75,16 +68,8 @@
     
     let walletService = ContainerService.getWalletService()
 
-    
 
-    let itemViewModel = {
-      item: {
-      },
-      channel: {
-        _id: props.channelId
-      }
-    }
-
+    let itemViewModel = props.itemViewModel
 
     let toast
 
@@ -123,6 +108,7 @@
     }
 
     $on('pageInit', async (e, page) => {
+
       quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar")
     })
 

@@ -122,7 +122,18 @@ function getMainContainer() {
         },
         {
           path: "/admin/item/create/:channelId",
-          component: AdminItemCreateComponent
+          async async({ resolve, reject, to }) {
+
+            let itemViewModel = await itemWebService.getNewViewModel(to.params.channelId)
+        
+            resolve({ 
+              component: AdminItemCreateComponent
+            }, {
+              props: {
+                itemViewModel: itemViewModel
+              } 
+            })
+          }
         },
         {
           path: "/admin/item/show/:id",

@@ -35,19 +35,19 @@ class Item {
     excerpt?:string
 
     @Allow()
-    authorId:string
+    authorId?:string
 
     @Allow()
-    category:string[]
+    category?:string[]
 
     @Allow()
-    attributeSelections: AttributeSelection[] 
+    attributeSelections?: AttributeSelection[] 
 
     @Allow()
-    coverImageId:string
+    coverImageId?:string
 
     @Allow()
-    datePublished:string
+    datePublished?:string
 
     @Allow()
     dateCreated?:string

@@ -2,18 +2,7 @@
 
   <div class="page" data-name="admin-show-collection">
 
-    <div class="navbar">
-      <div class="navbar-bg"></div>
-      <div class="navbar-inner">
-        <div class="left">
-          <a href="/" class="link"><i class="icon icon-back"></i> <span>Back</span></a>
-        </div>
-        <div class="title">View Collection</div>
-        <div class="right">
-          <${HeaderRight} />
-        </div>
-      </div>
-    </div>
+    <${Navbar} />
 
 
     <div class="fab fab-extended fab-right-bottom">
@@ -201,7 +190,7 @@
 
   import { UiService } from "../../../service/core/ui-service"
 
-  import HeaderRight from "../../admin/header-right.f7.html"
+  import Navbar from "../../admin/navbar.f7.html"
 
   export default (props, { $, $on, $f7, $update }) => {
 

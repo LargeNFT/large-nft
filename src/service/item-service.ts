@@ -39,7 +39,9 @@ class ItemService {
 
         //Generate excerpt
         if (item.contentHTML?.length > 0) {
-            item.excerpt = excerptHtml(item.contentHTML)
+            item.excerpt = excerptHtml(item.contentHTML, {
+                pruneLength: 500
+            })
         }
         
 

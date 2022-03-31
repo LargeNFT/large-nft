@@ -6,83 +6,17 @@
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar"></div>
 
-
-
-    <div class="panel panel-left panel-cover panel-init" data-visible-breakpoint="1024">
-      <div class="list no-margin">
-        <ul>
-          <li>
-            <div class="item-content">
-              <div class="item-inner logo">
-                <a href="/"><img src="${LogoGrey}" /></a>
-              </div>
-            </div>
-          </li>
-          <li id="wallet-list-item">
-            <a href="/admin/profile" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons" id="wallet-icon">person</i>
-                <img id="wallet-image" />
-              </div>
-              <div class="item-inner">
-                <span class="wallet-address" id="wallet-address"></span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="/" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">home</i>
-              </div>
-              <div class="item-inner">Home</div>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/settings" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">settings_applications</i>
-              </div>
-              <div class="item-inner">Settings</div>
-            </a>
-          </li>
-
-          <li>
-            <a href="/admin/connect" class="item-link item-content panel-close">
-              <div class="item-media">
-                <i class="material-icons">pages</i>
-              </div>
-              <div class="item-inner">
-                Connect
-
-                <div class="item-after">
-                  <span class="badge peers-badge color-blue">0</span>
-                </div>
-              </div>
-            </a>
-          </li>
-
-
-          <li>
-            <a href="/index.html" class="item-link item-content external" rel="noopener noreferrer" target="_blank">
-              <div class="item-media">
-                <i class="material-icons">web</i>
-              </div>
-              <div class="item-inner">View Live Site</div>
-            </a>
-          </li>
-
-
-        </ul>
-      </div>
-    </div>
-
     <div class="view view-main" >
     </div>
 
   </div>
 </template>
 
+<style>
 
+
+
+</style>
 
 <script>
 
@@ -93,10 +27,6 @@
   import { WalletService } from "../service/core/wallet-service"
   import { IpfsService } from "../service/core/ipfs-service"
   import { SchemaService } from "../service/core/schema-service"
-
-  
-  import LogoGrey from "../html/images/logo_grey.png"
-
 
   export default (props, { $on, $f7ready, $f7, $f7router, $update }) => {
 

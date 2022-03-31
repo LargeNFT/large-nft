@@ -1,19 +1,22 @@
 <template>
 
     <div class="right">
-  
+
         ${walletAddress != undefined ? $h`
           <a href="/profile/${walletAddress}/0" class="button button-fill">...${walletAbbrev}</a>
         ` : $h`
           <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
         `}
 
+        <a href="/settings" class="button button-fill" >
+            <i class="material-icons">settings</i>
+        </a>
+
     </div>
 
 </template>
  
 <style>
-
 
 </style>
 

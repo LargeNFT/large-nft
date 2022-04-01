@@ -334,11 +334,8 @@ contract('ItemService', async (accounts) => {
 
         //Arrange
         //Upload pretend image data
-        let result = await ipfsService.ipfs.add({
-            content: "pretend that this is image data4343243"
-        })
+        let image:Image = await imageService.newFromBuffer(Buffer.from("pretend that this is image data4343243"))
 
-        let image:Image = await imageService.newFromCid(result.cid.toString())
         await imageService.put(image)
 
         let item:Item = Object.assign(new Item(), {

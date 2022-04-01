@@ -500,3 +500,7 @@ ul.breadcrumb li a:hover {
   text-decoration: underline;
 }
 
+.browse-file {
+  width: 200px;
+  max-width: 200px;
+}

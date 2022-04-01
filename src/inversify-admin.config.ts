@@ -182,7 +182,21 @@ function getMainContainer() {
           path: "/admin/author/show/:id",
           async async({ resolve, reject, to}) {
 
-            let authorViewModel = await authorWebService.get(to.params.id)
+            let authorViewModel
+
+            try {
+              authorViewModel = await authorWebService.get(to.params.id)
+            } catch(ex) {} //might be missing
+
+
+            //If it doesn't exist create an empty one
+            if (!authorViewModel) {
+              authorViewModel = {
+                author: {
+                  walletAddress: to.params.id
+                }
+              }
+            }
 
             resolve({ 
               component: AdminAuthorShowComponent
@@ -196,10 +210,25 @@ function getMainContainer() {
 
 
         {
-          path: "/admin/author/edit",
+          path: "/admin/author/edit/:id",
           async async({ resolve, reject, to }) {
 
-              let authorViewModel = await authorWebService.get(walletService.address)
+              let authorViewModel
+
+              try {
+                authorViewModel = await authorWebService.get(to.params.id)
+              } catch(ex) {}
+              
+              //If it doesn't exist create an empty one
+              if (!authorViewModel) {
+                authorViewModel = {
+                  author: {
+                    walletAddress: to.params.id
+                  }
+                }
+              }
+
+              console.log(authorViewModel)
 
               resolve({ 
                 component: AdminAuthorEditComponent

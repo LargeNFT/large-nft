@@ -73,7 +73,7 @@
                         <i class="material-icons cover-image-preview">image</i>
                         `}
 
-                        <input type="button" class="button button-fill" value="Browse"
+                        <input type="button" class="button button-fill browse-file" value="Browse"
                             @click="${handleCoverImageBrowseClick}" tabindex="4" />
                         <input type="hidden" name="coverImageId" value="${channelViewModel?.coverImage?.cid}" />
                         <input type="file" id="cover-image-browse" style="display: none"
@@ -95,7 +95,7 @@
                         <i class="material-icons cover-banner-preview">image</i>
                         `}
 
-                        <input type="button" class="button button-fill" value="Browse"
+                        <input type="button" class="button button-fill browse-file" value="Browse"
                             @click="${handleBannerBrowseClick}" tabindex="5" />
                         <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?.cid}" />
                         <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />

@@ -33,6 +33,29 @@
             <div class="card-content">
     
                 <div class="card-content card-content-padding">
+
+                    <div class="float-right">
+                      <div class="menu-item menu-item-dropdown">
+                        <div class="menu-item-content icon-only">
+                          <div class="menu-item-content">
+                            <i class="material-icons">more_vert</i>
+                          </div>
+                        </div>
+                        <div class="menu-dropdown menu-dropdown-right">
+                          <div class="menu-dropdown-content">
+                              <a class="menu-dropdown-link menu-close" href="/admin/channel/clone/${channelViewModel?.channel?._id}">Clone</a> 
+    
+                            ${showEdit ? $h`
+                              <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                              <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
+                              <a class="menu-dropdown-link menu-close" href="/admin/channel/publish/${channelViewModel.channel._id}">Publish</a>
+                            ` : $h``} 
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
                     <div class="title">${channelViewModel?.channel?.title}</div>
     
                     ${channelViewModel?.authorDisplayName ? $h`
@@ -49,16 +72,7 @@
     
             </div>
     
-            <div class="card-footer">
-    
-              <a href="/admin/channel/clone/${channelViewModel?.channel?._id}">Clone</a> 
-    
-              ${showEdit ? $h`
-                <a href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
-                <a @click="${deleteCollectionClick}">Delete</a>
-              ` : $h``} 
-    
-            </div>
+
     
           </div>
     
@@ -208,7 +222,9 @@
     flex: 1;  /* grow */
   }
 
-
+  .menu-dropdown-link.menu-close {
+    color: #ffffff;
+  }
 
 }
 

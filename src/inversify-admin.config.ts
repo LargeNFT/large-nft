@@ -13,6 +13,8 @@ import AdminItemEditComponent from './components/admin/item/edit.f7.html'
 import AdminAuthorShowComponent from './components/admin/author/show.f7.html'
 import AdminAuthorEditComponent from './components/admin/author/edit.f7.html'
 
+import AdminPublishIndexComponent from './components/admin/publish/index.f7.html'
+
 
 import AdminSettingsComponent from './components/admin/settings/index.f7.html'
 import AdminConnectComponent from './components/admin/connect/index.f7.html'
@@ -83,6 +85,22 @@ function getMainContainer() {
         {
           path: "/",
           component: AdminChannelIndexComponent
+        },
+
+        {
+          path: "/admin/channel/publish/:id",
+          async async({ resolve, reject, to}) {
+
+            let channelViewModel = await channelWebService.get(to.params.id)
+
+            resolve({ 
+              component: AdminPublishIndexComponent
+            }, {
+              props: {
+                channelViewModel: channelViewModel
+              } 
+            })
+          }
         },
 
         {

@@ -1,6 +1,4 @@
-import { Allow, MinLength } from 'class-validator'
-
-import { Image } from "./image"
+import { Allow, IsNotEmpty } from 'class-validator'
 
 class Author {
 
@@ -10,7 +8,7 @@ class Author {
   @Allow()
   _rev?:string
 
-  @Allow()
+  @IsNotEmpty()
   walletAddress?: string
 
   @Allow()
@@ -24,6 +22,12 @@ class Author {
 
   @Allow()
   coverPhotoId?: string
+
+  @Allow()
+  dateCreated?:string
+  
+  @Allow()
+  lastUpdated?:string
 
 }
 

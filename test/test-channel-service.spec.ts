@@ -95,7 +95,6 @@ contract('ChannelService', async (accounts) => {
 
     })
 
-
     it("should fail to create valid object if it's not the right class", async () => {
         
         try {
@@ -114,14 +113,10 @@ contract('ChannelService', async (accounts) => {
 
     })
 
-
     it("should get an empty list of channels", async () => {
         let channels:Channel[] = await service.list(10)
         assert.strictEqual(channels.length, 0 )
     })
-
-
-
 
     it("should create & get", async () => {
 
@@ -209,7 +204,6 @@ contract('ChannelService', async (accounts) => {
 
     })
 
-
     it("should update those channels and still read them back in order", async () => {
 
         //Arrange
@@ -238,7 +232,6 @@ contract('ChannelService', async (accounts) => {
 
 
     })
-
 
     it("should load a database with lots of records and page through them", async () => {
 
@@ -488,6 +481,8 @@ contract('ChannelService', async (accounts) => {
 
 
     })
+
+
 
 
 

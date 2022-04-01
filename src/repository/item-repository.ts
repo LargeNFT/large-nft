@@ -20,6 +20,19 @@ class ItemRepository {
             }
         })
 
+        await db.put({
+            _id: '_design/item_index',
+            views: {
+              by_channel_id: {
+                map: function (doc) { 
+                    //@ts-ignore
+                    emit(doc.channelId)
+                }.toString(),
+                reduce: '_count'
+              }
+            }
+        })
+
     }
 
     db: any
@@ -52,12 +65,25 @@ class ItemRepository {
             limit: limit,
             skip: skip
         })
-        
 
         return response.docs
 
     }
 
+    async countByChannel(channelId:string) : Promise<number> {
+
+        let result = await this.db.query('item_index/by_channel_id', {
+            reduce: true,
+            key: channelId,
+            include_docs: false
+        })
+
+        if (result.rows[0]) {
+            return result.rows[0].value
+        } else {
+            return 0
+        }
+    }
 
     async delete(item: Item): Promise<void> {
         await this.db.remove(item)

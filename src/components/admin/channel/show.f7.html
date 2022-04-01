@@ -40,6 +40,8 @@
                         By <a href="/admin/author/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
                       </div>
                     ` : ``}
+
+                    <${InfoRow} count="${channelViewModel.itemCount}" price="${channelViewModel.channel.mintPrice}" royalty="${channelViewModel.channel.royaltyPercent}" />
     
                     <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
     
@@ -147,7 +149,8 @@
     font-size: 20px;
     float: left;
     vertical-align: middle;
-    border-radius: 50%;    
+    border-radius: 50%;
+    margin-right: 3px;    
   }
 
   .author-avatar img {
@@ -228,6 +231,7 @@
   import { UiService } from "../../../service/core/ui-service"
 
   import Navbar from "../../admin/navbar.f7.html"
+  import InfoRow from "../../admin/channel/info-row.f7.html"
 
   export default (props, { $, $on, $f7, $update }) => {
 

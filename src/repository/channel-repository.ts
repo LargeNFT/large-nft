@@ -11,7 +11,7 @@ class ChannelRepository {
         //Create indexes
         await db.createIndex({ index: { fields: ['dateCreated'] } })
         await db.createIndex({ index: { fields: ['lastUpdated'] } })
-
+        
     }
 
     db: any
@@ -45,6 +45,8 @@ class ChannelRepository {
         return response.docs
 
     }
+
+
 
 
     async delete(channel: Channel): Promise<void> {

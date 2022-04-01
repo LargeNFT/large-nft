@@ -30,8 +30,8 @@ contract('ItemService', async (accounts) => {
     let service: ItemService
     let channelService:ChannelService
     let imageService:ImageService
-    let ipfsService:IpfsService
     let schemaService:SchemaService
+    let ipfsService:IpfsService
 
     let channel1:Channel
     let channel2:Channel
@@ -109,8 +109,6 @@ contract('ItemService', async (accounts) => {
         }
 
     })
-
-
 
     it("should get an empty list of items", async () => {
         let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
@@ -197,7 +195,6 @@ contract('ItemService', async (accounts) => {
 
     })
 
-
     it("should update those items and still read them back in order", async () => {
 
         //Arrange
@@ -273,9 +270,15 @@ contract('ItemService', async (accounts) => {
         assert.equal(items2[1].title, "Batman2")
         assert.equal(items2[2].title, "Another one2")
 
-
-
     })
+
+
+    it("should count items by channel", async () => {
+
+        let count = await service.countByChannel(channel1._id)
+        assert.equal(count, 3)
+    })
+
 
     it("should load a database with lots of records and page through them", async () => {
 
@@ -321,14 +324,12 @@ contract('ItemService', async (accounts) => {
 
     })
 
-
     it("should export NFT metadata for an item", async () => {
         
         //Test with and without cover photo
         const metadata = await service.exportNFTMetadata(id1)
 
     })
-
 
     it("should add and export item with cover photo and attributes", async () => {
 
@@ -374,25 +375,3 @@ contract('ItemService', async (accounts) => {
 
 
 })
-
-
-// function initEditor() {
-
-//     const jsdom = require('jsdom')
-//     const { JSDOM } = jsdom;
-
-//     const dom = new JSDOM('<div id="editor"></div>')
-
-//     dom.window.document.getSelection = function() { return { getRangeAt: function() { } }; }
-//     dom.window.document.execCommand = function (command, showUI, value) { try { return document.execCommand(command, showUI, value); } catch(e) {} return false; }
-
-//     global.window = dom.window;
-//     global.document = dom.window.document;
-//     global.Node = dom.window.Node;
-//     global.navigator = global.window.navigator;
-//     global.Text = dom.window.Text;
-//     global.HTMLElement = window.HTMLElement;
-//     global.MutationObserver = dom.window.MutationObserver;
-
-
-// }

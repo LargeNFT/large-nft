@@ -202,7 +202,8 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Mint Price in ETH</div>
                     <div class="item-input-wrap">
-                        <input type="number" placeholder="Enter price for one piece (eg 0.08)" @change="${mintPriceChange}" step="any" tabindex="11" value="${channelViewModel?.channel?.mintPrice}" />
+                        <input type="number" placeholder="Enter price for one piece (eg 0.08)" @change="${mintPriceChange}" 
+                               step="any" tabindex="11" value="${channelViewModel?.channel?.mintPrice}" />
                         <input type="hidden" name="mintPrice" value="${mintPrice}" />
                     </div>
                 </div>

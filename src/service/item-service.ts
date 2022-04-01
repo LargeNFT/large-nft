@@ -62,6 +62,10 @@ class ItemService {
         await this.itemRepository.delete(item)
     }
 
+    async countByChannel(channelId:string) : Promise<number> {
+        return this.itemRepository.countByChannel(channelId)
+    }
+
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
         return this.itemRepository.listByChannel(channelId, limit, skip)
     }

@@ -24,8 +24,6 @@ import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
 
-import excerptHtml from 'excerpt-html'
-import { assert } from "console";
 
 @injectable()
 class ChannelService {
@@ -99,6 +97,10 @@ class ChannelService {
     }
 
 
+  }
+
+  async countItemsByChannel(channelId:string) : Promise<number> {
+    return this.itemService.countByChannel(channelId)
   }
 
   async exportNFTMetadata(channel:Channel, items:Item[], ownerAddress:string) : Promise<string> {
@@ -223,7 +225,6 @@ class ChannelService {
 
   }
 
-
   async exportContractMetadata(channel:Channel, ownerAddress:string) : Promise<ContractMetadata> {
 
 
@@ -244,12 +245,8 @@ class ChannelService {
 
   }
 
-
-
-
   async getJSONFeed(_id:string) {}
   async getRSSFeed(_id:string) : Promise<string> {return}
-
 
   async publish(channel:Channel, items:Item[], pinningApi:PinningApi, cid:string) { 
 
@@ -266,9 +263,7 @@ class ChannelService {
 
   }
 
-
   async importFromIPFS(cid:string) {}
-
 
   private async deploy(name:string, symbol:string, ipfsCid:string, mintFee:string, maxTokenId:number) {
 

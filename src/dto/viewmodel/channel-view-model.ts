@@ -14,6 +14,8 @@ interface ChannelViewModel {
     authorDisplayName:string 
     authorPhoto:ImageViewModel
 
+    itemCount:number
+
 }
 
 export {

@@ -215,37 +215,6 @@
     font-size: 15px;
   }
   
-  .profile-pic-edit, #profile-pic--edit-not-found {
-    max-width: 300px;
-    border-radius: 50%;
-    font-size: 100px;
-    float: left;
-  }
-  
-  
-  .profile-pic-main, #profile-pic-not-found {
-    max-width: 100%;
-    border-radius: 50%;
-    font-size: 100px;
-    float: left;
-  }
-  
-  .profile-name {
-    color: var(--f7-block-title-medium-text-color);
-    font-weight: bold;
-  }
-  
-  .profile-address {
-    color: var(--f7-list-item-text-text-color);
-    font-size: 13px;
-  }
-  
-  
-  .profile-pic-wrapper {
-    width: 115px;
-    float: left;
-    padding-right: 20px;
-  }
   
   
   .post h1 {

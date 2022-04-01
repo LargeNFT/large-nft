@@ -56,8 +56,6 @@
         uiService.showSpinner("Loading...")
 
         await walletService.initWallet()
-        await ipfsService.init()
-
 
         let walletAddress = await walletService.getAddress()
         

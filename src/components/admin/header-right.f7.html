@@ -3,7 +3,7 @@
     <div class="right">
 
         ${walletAddress != undefined ? $h`
-          <a href="/profile/${walletAddress}/0" class="button button-fill">...${walletAbbrev}</a>
+          <a href="/admin/author/show/${walletAddress}" class="button button-fill">...${walletAbbrev}</a>
         ` : $h`
           <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
         `}
@@ -30,7 +30,7 @@
 
     export default (props, { $on, $f7, $update }) => {
         
-        let walletService = ContainerService.getWalletService();
+        let walletService = ContainerService.getWalletService()
         let uiService = ContainerService.getInstance(UiService)
 
         let walletAddress = walletService.wallet?.address

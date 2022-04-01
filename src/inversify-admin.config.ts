@@ -10,6 +10,10 @@ import AdminItemCreateComponent from './components/admin/item/create.f7.html'
 import AdminItemShowComponent from './components/admin/item/show.f7.html'
 import AdminItemEditComponent from './components/admin/item/edit.f7.html'
 
+import AdminAuthorShowComponent from './components/admin/author/show.f7.html'
+import AdminAuthorEditComponent from './components/admin/author/edit.f7.html'
+
+
 import AdminSettingsComponent from './components/admin/settings/index.f7.html'
 import AdminConnectComponent from './components/admin/connect/index.f7.html'
 
@@ -38,17 +42,22 @@ import { ImageRepository } from './repository/image-repository'
 import { AuthorRepository } from './repository/author-repository'
 import { SchemaService } from './service/core/schema-service'
 import { WalletServiceImpl } from './service/core/wallet-service-impl'
+
 import TYPES from './service/core/types'
+
 import { PinningService } from './service/core/pinning-service'
 import { PinningApiRepository } from './repository/pinning-api-repository'
 import { ItemService } from './service/item-service'
 import { ChannelWebService } from './service/web/channel-web-service'
 import { ItemWebService } from './service/web/item-web-service'
+import { AuthorWebService } from './service/web/author-web-service'
 
 
 let container:Container
 let channelWebService:ChannelWebService
 let itemWebService:ItemWebService
+let authorWebService:AuthorWebService
+let walletService:WalletService
 
 function getMainContainer() {
 
@@ -167,6 +176,42 @@ function getMainContainer() {
           }
         },
 
+        /** Author */
+
+        {
+          path: "/admin/author/show/:id",
+          async async({ resolve, reject, to}) {
+
+            let authorViewModel = await authorWebService.get(to.params.id)
+
+            resolve({ 
+              component: AdminAuthorShowComponent
+            }, {
+              props: {
+                authorViewModel: authorViewModel
+              } 
+            })
+          }
+        },
+
+
+        {
+          path: "/admin/author/edit",
+          async async({ resolve, reject, to }) {
+
+              let authorViewModel = await authorWebService.get(walletService.address)
+
+              resolve({ 
+                component: AdminAuthorEditComponent
+              }, {
+                props: {
+                  authorViewModel: authorViewModel
+                } 
+              })
+          }
+          
+        },
+
 
 
         /**
@@ -264,6 +309,7 @@ function getMainContainer() {
   
   container.bind(ChannelWebService).toSelf().inSingletonScope()
   container.bind(ItemWebService).toSelf().inSingletonScope()
+  container.bind(AuthorWebService).toSelf().inSingletonScope()
 
   container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()
 
@@ -281,6 +327,8 @@ function getMainContainer() {
 
   channelWebService = container.get(ChannelWebService)
   itemWebService = container.get(ItemWebService)
+  authorWebService = container.get(AuthorWebService)
+  walletService = container.get<WalletService>(TYPES.WalletService)
 
   return container
 }

@@ -18,6 +18,20 @@
 
             <div class="card-content card-content-padding">
 
+              <div class="author-header">
+
+                <div class="author-avatar">
+                  ${itemViewModel.authorPhoto ? $h`
+                    <img src="${itemViewModel.authorPhoto.url}" />
+                  ` : $h`
+                    <i class="material-icons">person</i>
+                  `}
+                </div>
+
+                <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> - <span class="date">${itemViewModel.dateDisplay}</span>
+
+              </div>
+
               <h1>${itemViewModel.item.title}</h1>
 
               <div class="content" innerHTML="${itemViewModel.item.contentHTML}"

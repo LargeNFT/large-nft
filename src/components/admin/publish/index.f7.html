@@ -10,7 +10,28 @@
   
           <div class="col-100 large-50 center">
 
-            <div class="block-title">Publish</div>
+            <ul class="breadcrumb">
+                <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
+                <li>Publish</li>
+              </ul>
+
+            <div class="block-title">Verify Collection Details</div>
+            <div class="block"></div>
+
+            <div class="block-title">Verify NFT Details</div>
+            <div class="block"></div>
+
+            <div class="block-title">Verify Mint Info</div>
+            <div class="block"></div>
+
+            <div class="block-title">Deploy To IPFS</div>
+            <div class="block"></div>
+
+            <div class="block-title">Deploy To Pinata</div>
+            <div class="block"></div>
+
+            <div class="block-title">Deploy Contract</div>
+            <div class="block"></div>
 
           </div>
   
@@ -38,8 +59,18 @@
   
         let channelViewModel = props.channelViewModel
 
-        console.log(channelViewModel)
-  
+        //Preview channel info
+
+        //Preview item info
+
+        //Preview mint info
+
+        //Generate bundle and deploy to Pinata
+
+        //Deploy contract
+
+        //Update database with deployment info
+
         return $render
     }
   </script>

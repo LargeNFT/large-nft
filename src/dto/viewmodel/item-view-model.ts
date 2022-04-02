@@ -9,6 +9,7 @@ interface ItemViewModel {
     channel?:Channel
     
     item?:Item 
+    dateDisplay?:string
     coverImage?:ImageViewModel
 
     author?:Author

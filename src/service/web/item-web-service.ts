@@ -1,5 +1,7 @@
 import { injectable } from "inversify";
+import moment from "moment";
 import { Author } from "../../dto/author";
+import { Channel } from "../../dto/channel";
 import { Image } from "../../dto/image";
 import { Item } from "../../dto/item";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
@@ -21,10 +23,16 @@ class ItemWebService {
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
-        return this.getViewModel(await this.itemService.get(_id))
+
+        let item:Item = await this.itemService.get(_id)
+
+        //Get channel
+        const channel:Channel = await this.channelService.get(item.channelId)
+
+        return this.getViewModel(item, channel)
     }
 
-    async getViewModel(item: Item): Promise<ItemViewModel> {
+    async getViewModel(item: Item, channel:Channel): Promise<ItemViewModel> {
 
         let coverImage: ImageViewModel
         let authorPhoto:ImageViewModel
@@ -40,9 +48,6 @@ class ItemWebService {
                 url: await this.imageService.getUrl(image)
             }
         }
-
-        //Get channel
-        const channel = await this.channelService.get(item.channelId)
 
         //Get author
         if (channel.authorId) {
@@ -63,6 +68,7 @@ class ItemWebService {
 
         return {
             item: item,
+            dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
             channel: channel,
             coverImage: coverImage,
             author: author,
@@ -79,8 +85,11 @@ class ItemWebService {
 
         let items: Item[] = await this.itemService.listByChannel(channelId, limit, skip)
 
+        //Get channel
+        const channel:Channel = await this.channelService.get(channelId)
+
         for (let item of items) {
-            result.push(await this.getViewModel(item))
+            result.push(await this.getViewModel(item, channel))
         }
 
         return result

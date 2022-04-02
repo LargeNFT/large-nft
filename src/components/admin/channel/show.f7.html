@@ -60,7 +60,7 @@
     
                     ${channelViewModel?.authorDisplayName ? $h`
                       <div class="name">
-                        By <a href="/admin/author/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                        By <a href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
                       </div>
                     ` : ``}
 
@@ -407,7 +407,7 @@
                               `}
                             </div>
 
-                            <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> -
+                            <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> ·
 
                             <span class="date">${itemViewModel.dateDisplay}</span>
 

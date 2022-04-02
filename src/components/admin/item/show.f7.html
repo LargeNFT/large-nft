@@ -18,6 +18,24 @@
 
             <div class="card-content card-content-padding">
 
+              ${showEdit ? $h`
+                <div class="float-right">
+                  <div class="menu-item menu-item-dropdown">
+                    <div class="menu-item-content icon-only">
+                      <div class="menu-item-content">
+                        <i class="material-icons">more_vert</i>
+                      </div>
+                    </div>
+                    <div class="menu-dropdown menu-dropdown-right">
+                      <div class="menu-dropdown-content">                        
+                          <a class="menu-dropdown-link menu-close" href="/admin/item/edit/${itemViewModel.item._id}">Edit</a>
+                          <a class="menu-dropdown-link menu-close" @click="${deleteClick}">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ` : $h``} 
+
               <div class="author-header">
 
                 <div class="author-avatar">
@@ -28,7 +46,7 @@
                   `}
                 </div>
 
-                <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> - <span class="date">${itemViewModel.dateDisplay}</span>
+                <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> · <span class="date">${itemViewModel.dateDisplay}</span>
 
               </div>
 
@@ -40,12 +58,6 @@
               </div>
             </div>
 
-            ${showEdit ? $h`
-            <div class="card-footer">
-              <a href="/admin/item/edit/${itemViewModel.item?._id}">Edit</a>
-              <a @click="${deleteClick}">Delete</a>
-            </div>
-            ` : $h``}
 
           </div>
 

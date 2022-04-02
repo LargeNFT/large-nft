@@ -1,7 +1,7 @@
 import { Author } from "../author";
 import { Channel } from "../channel";
-import { Image } from "../image";
 import { Item } from "../item";
+import { AttributeSelectionViewModel } from "./attribute-selection-view-model";
 import { ImageViewModel } from "./image-view-model";
 
 interface ItemViewModel {
@@ -17,6 +17,8 @@ interface ItemViewModel {
     authorPhoto?:ImageViewModel
 
     images?:ImageViewModel[]
+
+    attributeSelections:AttributeSelectionViewModel[]
 
 }
 

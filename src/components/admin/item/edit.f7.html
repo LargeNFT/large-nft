@@ -1,101 +1,115 @@
 <template>
 
-    <div class="page" data-name="admin-edit-post">
-  
-      <${Navbar} />
+  <div class="page" data-name="admin-edit-post">
 
-      <div class="page-content">
+    <${Navbar} />
 
-        <div class="row">
+    <div class="page-content">
 
-          <div class="col-100 large-66 center">
+      <div class="row">
 
-            <ul class="breadcrumb">
-              <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
-              <li><a href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a></li>
-              <li>Edit Blog NFT</li>
-            </ul>
-    
-            <form class="block list" id="edit-item-form"  @submit="${formSubmit}">
-    
-              <${ItemForm} item=${itemViewModel} editor="edit-item-editor" toolbar="edit-item-toolbar" />
-    
-              <div class="row block">
-      
-                <div class="col-70"></div>
-      
-                <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-                  <i class="material-icons">save</i> Save
-                </button>
-      
-              </div>
-      
-            </form>
+        <div class="col-100 large-66 center">
 
-          </div>
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
+            <li><a href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a></li>
+            <li>Edit Blog NFT</li>
+          </ul>
+
+          <form class="block list" id="edit-item-form" @submit="${formSubmit}">
+
+            <${ItemForm} item=${itemViewModel} editor="edit-item-editor" toolbar="edit-item-toolbar" />
+
+            <div class="row block">
+
+              <div class="col-70"></div>
+
+              <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                <i class="material-icons">save</i> Save
+              </button>
+
+            </div>
+
+          </form>
 
         </div>
-  
+
       </div>
-  
+
     </div>
-  
-  </template>
-  
-  <style>
-    #edit-item-editor {
-      min-height: 600px;
-      height: 100%;
-      /* added these styles */
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
 
-  </style>
-  
-  <script>
-  
-    import { ContainerService } from "../../../service/core/container-service"
-    import { QuillEditorService } from "../../../service/quill-editor-service"
-    import { ItemService } from "../../../service/item-service"
+  </div>
 
-    import { UiService } from "../../../service/core/ui-service"
+</template>
 
-    import { WalletService } from "../../../service/core/wallet-service"
-    import { Item } from "../../../dto/item"
+<style>
+  #edit-item-editor {
+    min-height: 600px;
+    height: 100%;
+    /* added these styles */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+</style>
 
-    
-    import Navbar from "../../admin/navbar.f7.html"
-    import ItemForm from "../../admin/item/form.f7.html"
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { QuillEditorService } from "../../../service/quill-editor-service"
+  import { ItemService } from "../../../service/item-service"
+
+  import { UiService } from "../../../service/core/ui-service"
+
+  import { WalletService } from "../../../service/core/wallet-service"
+  import { Item } from "../../../dto/item"
 
 
-    export default (props, { $, $on, $f7, $update }) => {
-      
-      let quillEditorService = ContainerService.getInstance(QuillEditorService)
-
-      let itemService = ContainerService.getInstance(ItemService)
-      let walletService = ContainerService.getWalletService()
-
-      let itemViewModel = props.itemViewModel
+  import Navbar from "../../admin/navbar.f7.html"
+  import ItemForm from "../../admin/item/form.f7.html"
 
 
-      const formSubmit = async (e) => {
+  export default (props, { $, $on, $f7, $update }) => {
 
-        e.preventDefault()
+    let quillEditorService = ContainerService.getInstance(QuillEditorService)
 
-        //Get data
-        let item = Object.assign(new Item(), $f7.form.convertToData('#edit-item-form'))
+    let itemService = ContainerService.getInstance(ItemService)
+    let walletService = ContainerService.getWalletService()
 
-        //Get content from quill
-        item.content = quillEditorService.activeEditor.getContents()
+    let itemViewModel = props.itemViewModel
 
-        //Save
-        try {
 
-          await itemService.put(item)
+    const formSubmit = async (e) => {
 
-          const toast = $f7.toast.show({
+      e.preventDefault()
+
+      //Get data
+      let item = Object.assign(new Item(), $f7.form.convertToData('#edit-item-form'))
+
+      //Get content from quill
+      item.content = quillEditorService.activeEditor.getContents()
+
+      //Parse attributeOptions and category
+      if (item.attributeSelections) {
+
+        item.attributeSelections = JSON.parse(item.attributeSelections).map(as => {
+          return {
+            id: as.id,
+            traitType: as.traitType,
+            value: as.value
+          }
+        })
+
+      } else {
+        item.attributeSelections = []
+      }
+      console.log(item.attributeSelections)
+      //Save
+      try {
+
+        await itemService.put(item)
+
+        const toast = $f7.toast.show({
           text: 'Blog NFT saved',
           closeTimeout: 2000,
           closeButton: true,
@@ -103,30 +117,29 @@
           horizontalPosition: 'right'
         })
 
-          //Redirect
-          $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
+        //Redirect
+        $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
 
-        } catch (ex) {
-          console.log(ex)
-          $f7.dialog.alert(ex.errors, "There was an error")
-        }
-
+      } catch (ex) {
+        console.log(ex)
+        $f7.dialog.alert(ex.errors, "There was an error")
       }
 
-      $on('pageInit', async (e, page) => {
-
-        //Initialize quill and fill contents
-        quillEditorService.buildQuillPostEditor('#edit-item-editor', '#edit-item-toolbar')
-
-        quillEditorService.activeEditor.setContents(itemViewModel.item.content)
-        
-        // await quillEditorService.loadCoverPhotos()
-
-      })
-
-      
-      return $render
     }
 
-  </script>
-  
+    $on('pageInit', async (e, page) => {
+
+      //Initialize quill and fill contents
+      quillEditorService.buildQuillPostEditor('#edit-item-editor', '#edit-item-toolbar')
+
+      quillEditorService.activeEditor.setContents(itemViewModel.item.content)
+
+      // await quillEditorService.loadCoverPhotos()
+
+    })
+
+
+    return $render
+  }
+
+</script>

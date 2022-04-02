@@ -12,7 +12,8 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Title</div>
                     <div class="item-input-wrap">
-                        <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}" minlength="3" id="header-input" required />
+                        <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
+                            minlength="3" id="header-input" required />
                     </div>
                 </div>
             </div>
@@ -55,28 +56,67 @@
         </li>
 
         ${itemViewModel.images?.length > 0 ? $h`
-        
-            <li class="cover-photo-preview">
 
-                <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
-    
-                <div class="item-content item-input">
-                    <div class="item-inner">
-                        <div class="item-title item-label">Cover Image</div>
-                        <div class="item-input-wrap">
-                            
-                            ${itemViewModel.images.map( (image) => $h`
-                                <img class="cover-image-thumbnail ${image.cid == itemViewModel.coverImage?.cid ? 'selected' : ''}  " src="${image.url}" data-id="${image.cid}" @click=${coverImageClick}  />
-                            `)}
-    
-    
-                        </div>
+        <li class="cover-photo-preview">
+
+            <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
+
+            <div class="item-content item-input">
+                <div class="item-inner">
+                    <div class="item-title item-label">Cover Image</div>
+                    <div class="item-input-wrap">
+
+                        ${itemViewModel.images.map( (image) => $h`
+                        <img class="cover-image-thumbnail ${image.cid == itemViewModel.coverImage?.cid ? 'selected' : ''}  "
+                            src="${image.url}" data-id="${image.cid}" @click=${coverImageClick} />
+                        `)}
+
+
                     </div>
                 </div>
-    
-            </li>
-    
+            </div>
+
+        </li>
+
         ` : $h``}
+
+        ${itemViewModel.attributeSelections?.length > 0 ? $h`
+
+            <div class="block-title">Attributes</div>
+
+            ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
+                <li>
+                    <div class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-title item-label">${attributeSelectionViewModel?.traitType}</div>
+                            <div class="item-input-wrap">
+
+                                <select @change="${valueNameChange}" class="value-input"
+                                    data-id="${attributeSelectionViewModel?.id}">
+
+                                    ${attributeSelectionViewModel?.values?.map( v => $h`
+
+                                    ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
+                                    <option value="${v}" selected>${v}</option>
+                                    ` : $h`
+                                    <option value="${v}">${v}</option>
+                                    `}
+
+                                    `)}
+
+                                </select>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            `)}
+        ` : $h``}
+
+        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
+
+
 
     </ul>
 
@@ -86,22 +126,20 @@
 </template>
 
 <style>
+    .cover-image-thumbnail {
+        max-width: 100px;
+    }
 
-.cover-image-thumbnail {
-    max-width: 100px;
-}
-.cover-image-thumbnail.selected {
-    border: 3px solid #ff0000;
-}
+    .cover-image-thumbnail.selected {
+        border: 3px solid #ff0000;
+    }
 
-#header-input {
-    line-height: 40px;
-    font-size: 40px;
-    font-weight: 700;
-    height: 50px;
-}
-
-
+    #header-input {
+        line-height: 40px;
+        font-size: 40px;
+        font-weight: 700;
+        height: 50px;
+    }
 </style>
 
 
@@ -114,6 +152,9 @@
     import { ImageService } from "../../../service/image-service"
     import { ItemWebService } from "../../../service/web/item-web-service"
 
+    import { v4 as uuidv4 } from 'uuid';
+
+
     export default (props, { $, $on, $f7, $update }) => {
 
         let quillEditorService = ContainerService.getInstance(QuillEditorService)
@@ -122,11 +163,9 @@
 
         let imageService = ContainerService.getInstance(ImageService)
 
-        let itemViewModel = props.item
-        let editorId = props.editor
-        let toolbarId = props.toolbar
 
-    
+
+
         const loadCoverImages = async () => {
             itemViewModel.images = itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
             await $update()
@@ -135,7 +174,7 @@
         const coverImageClick = async (e) => {
 
             let id = $(e.currentTarget).data('id')
-            
+
             itemViewModel.coverImage = await imageService.get(id)
 
             await $update()
@@ -150,7 +189,21 @@
 
         })
 
+        let itemViewModel = props.item
+        let editorId = props.editor
+        let toolbarId = props.toolbar
 
+        let attributeSelections = itemViewModel.attributeSelections
+
+        const valueNameChange = async (e) => {
+
+            let id = $(e.currentTarget).data('id')
+
+            attributeSelections.filter(as => as.id == id)[0].value = $(e.currentTarget).val()
+
+            await $update()
+
+        }
 
         return $render
     }

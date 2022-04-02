@@ -78,7 +78,6 @@
 
 
     let itemViewModel = props.itemViewModel
-
     let toast
 
     const formSubmit = async (e) => {
@@ -90,7 +89,19 @@
 
       //Get content from quill
       item.content = quillEditorService.activeEditor.getContents()
-  
+
+      //Parse attributes
+      item.attributeSelections = JSON.parse(item.attributeSelections).map(as => {
+          return {
+            id: as.id,
+            traitType: as.traitType,
+            value: as.value
+          }
+        })
+
+      console.log(item.attributeSelections)
+
+
       //Save
       try {
 

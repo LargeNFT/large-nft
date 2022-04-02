@@ -4,6 +4,7 @@ import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Image } from "../../dto/image";
 import { Item } from "../../dto/item";
+import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selection-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
 
 import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
@@ -37,6 +38,8 @@ class ItemWebService {
         let coverImage: ImageViewModel
         let authorPhoto:ImageViewModel
 
+        let attributeSelections:AttributeSelectionViewModel[] = []
+
         let author: Author
 
         if (item.coverImageId) {
@@ -66,6 +69,25 @@ class ItemWebService {
 
         }
 
+        //Only show attributes that are valid at the category level. 
+        if (channel.attributeOptions.length > 0) {
+
+            for (let ao of channel.attributeOptions) {
+
+                //find the one selected by this item
+                let selections = item.attributeSelections.filter( as => ao.traitType == as.traitType)
+
+                attributeSelections.push({
+                    id: ao.id,
+                    traitType: ao.traitType,
+                    values: ao.values,
+                    value: selections?.length > 0 ? selections[0].value : '' 
+                })
+
+            }
+
+        }
+
         return {
             item: item,
             dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
@@ -74,7 +96,8 @@ class ItemWebService {
             author: author,
             authorPhoto: authorPhoto,
             authorDisplayName: this.authorService.getDisplayName(author),
-            images: this.getImagesFromPostContentOps(item.content?.ops)
+            images: this.getImagesFromPostContentOps(item.content?.ops),
+            attributeSelections: attributeSelections
         }
 
     }
@@ -120,10 +143,28 @@ class ItemWebService {
         
         let channel = await this.channelService.get(channelId)
 
+
+        //Get default attribute options
+        let attributeSelections:AttributeSelectionViewModel[] = []
+
+        for (let ao of channel.attributeOptions) {
+
+            attributeSelections.push({
+                id: ao.id,
+                traitType: ao.traitType,
+                values: ao.values,
+                value: ''
+            })
+        }
+
+
+
         let itemViewModel:ItemViewModel = {
             item: {
+                attributeSelections: []
             },
-            channel: channel
+            channel: channel,
+            attributeSelections: attributeSelections
         }
 
         return itemViewModel

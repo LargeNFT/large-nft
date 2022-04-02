@@ -5,6 +5,7 @@ interface AttributeOptions {
 }
 
 interface AttributeSelection {
+    id:string
     traitType:string
     value:string 
 }

@@ -88,10 +88,15 @@ class ItemService {
         }
 
         if (item.attributeSelections?.length > 0) {
+
+            //TODO: Remove attributes that are not listed as part of the category any more.
+
+            
             result.attributes = item.attributeSelections?.map(as => {
                 return {
                     traitType: as.traitType,
-                    value: as.value
+                    value: as.value,
+                    id: as.id
                 }
             })
         }

@@ -54,8 +54,21 @@
 
               <div class="content" innerHTML="${itemViewModel.item.contentHTML}"
                 id="item-content-${itemViewModel.item._id}">
-
               </div>
+
+
+              ${itemViewModel.attributeSelections?.length > 0 ? $h`
+
+                <h3 style="margin-bottom: 0px;">Attributes</h3>
+                ${itemViewModel.attributeSelections?.map(as => $h`
+                  <div class="attribute-row">
+                    <strong>${as.traitType}:</strong> ${as.value}
+                  </div>
+              `)}
+
+              ` : $h``}
+
+
             </div>
 
 

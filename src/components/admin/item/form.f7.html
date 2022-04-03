@@ -116,8 +116,6 @@
 
         <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
 
-
-
     </ul>
 
 
@@ -189,11 +187,7 @@
 
         })
 
-        let itemViewModel = props.item
-        let editorId = props.editor
-        let toolbarId = props.toolbar
 
-        let attributeSelections = itemViewModel.attributeSelections
 
         const valueNameChange = async (e) => {
 
@@ -204,6 +198,32 @@
             await $update()
 
         }
+
+        const setAttributeSelections = (as) => {
+
+            attributeSelections = as
+
+            //Set defaults for any that are not set.
+            for (let attributeSelection of attributeSelections) {
+                if (!attributeSelection.value) {
+                    attributeSelection.value = attributeSelection.values[0]
+                }
+            }
+
+
+        }
+
+
+        let itemViewModel = props.item
+        let editorId = props.editor
+        let toolbarId = props.toolbar
+
+        let attributeSelections
+
+        if (itemViewModel) {
+            setAttributeSelections(itemViewModel.attributeSelections)
+        }
+
 
         return $render
     }

@@ -2,35 +2,35 @@
 
     <div class="page" data-name="admin-settings">
 
-        <div class="navbar">
-            <div class="navbar-bg"></div>
-            <div class="navbar-inner">
-                <div class="title">Site Settings</div>
-                <div class="right">
-                    <${HeaderRight} />
-                </div>
-            </div>
-        </div>
-
-        <div class="fab fab-extended fab-right-bottom">
-            <a @click="${saveSettingsClick}" class="text-color-black">
-              <i class="material-icons">save</i>
-              <div class="fab-text">Save</div>
-            </a>
-          </div>
-
+        <${Navbar} />
 
 
         <div class="page-content">
-            <div class="block-title">Site Settings</div>
-            <form class="block list" id="edit-settings-form">
+
+            <div class="block-title">Pinata Settings</div>
+
+
+
+            <form class="block list" id="edit-settings-form" @submit="${formSubmit}">
+
+                <input type="hidden" name="_id" value="${pinningApi._id}" />
+                <input type="hidden" name="_rev" value="${pinningApi._rev}" />
+                <input type="hidden" name="url" value="${pinningApi.url}" />
+                <input type="hidden" name="dateCreated" value="${pinningApi.dateCreated}" />
+
+                <p>
+                    Commercial IPFS hosting is available through <a href="https://www.pinata.cloud/">Pinata</a>. Create a free
+                    account and set up your API key and Secret API Key below. 
+                </p>
+
                 <ul>
                     <li>
                         <div class="item-content item-input">
                             <div class="item-inner">
-                                <div class="item-title item-label">Site Title</div>
+                                <div class="item-title item-label">API Key</div>
                                 <div class="item-input-wrap">
-                                    <input type="text" name="title" placeholder="Site title" value="${settings.title}" />
+                                    <input type="text" name="apiKey" placeholder="API Key"
+                                        value="${pinningApi.apiKey}" />
                                 </div>
                             </div>
                         </div>
@@ -38,40 +38,26 @@
                     <li>
                         <div class="item-content item-input">
                             <div class="item-inner">
-                                <div class="item-title item-label">Tagline</div>
+                                <div class="item-title item-label">Secret API Key</div>
                                 <div class="item-input-wrap">
-                                    <input type="text" name="tagline" placeholder="Enter a tagline (optional)"
-                                        value="${settings.tagline}" />
+                                    <input type="password" name="secretApiKey" placeholder="Secret API Key"
+                                        value="${pinningApi.secretApiKey}" />
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Public Email Address (optional)</div>
-                                <div class="item-input-wrap">
-                                    <input type="text" name="publicEmailAddress"
-                                        placeholder="Enter an option public email address"
-                                        value="${settings.publicEmailAddress}" />
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Timezone</div>
-                                <div class="item-input-wrap">
-                                    <select name="timezone">
-                                        <option value="UTC">UTC</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
                 </ul>
+
+                <div class="row block">
+
+                    <div class="col-70"></div>
+
+                    <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                        <i class="material-icons">save</i> Save
+                    </button>
+
+                </div>
+
 
             </form>
 
@@ -90,60 +76,50 @@
 
 <script>
     import { ContainerService } from "../../../service/core/container-service"
+    import { PinningService } from "../../../service/core/pinning-service"
+    import { PinningApi } from "../../../dto/pinning-api"
 
-    import HeaderRight from "../../admin/header-right.f7.html"
-
-    import { WalletService } from "../../../service/core/wallet-service"
-
-
+    import Navbar from "../../admin/navbar.f7.html"
 
     export default (props, { $, $on, $f7, $update }) => {
-      
-      let walletService = ContainerService.getWalletService()
-    //   let uiService = ContainerService.getInstance(UiService)
 
-      let stores = []
-      let schema
-      let settings = {}
+        let pinningService = ContainerService.getInstance(PinningService)
 
-      $on('pageInit', async (e, page) => {
+        let pinningApi = props.pinningApi
 
-        let walletAddress = await walletService.getAddress()
+        const formSubmit = async (e) => {
 
-        try {
-            settings = await siteSettingsService.get(walletAddress)
-        } catch(ex) {}
-        
+            e.preventDefault()
 
-        $update()
+            //Get data
+            let pinningApi = Object.assign(new PinningApi(), $f7.form.convertToData('#edit-settings-form'))
 
-      })
+            //Save
+            try {
 
-        
-      const saveSettingsClick = async (e) => {
+                await pinningService.put(pinningApi)
 
-        //Get data
-        let pageData = await getPageData('#edit-settings-form')
+                const toast = $f7.toast.show({
+                    text: 'Pinata Settings Saved',
+                    closeTimeout: 2000,
+                    closeButton: true,
+                    position: 'bottom',
+                    horizontalPosition: 'right'
+                })
 
-        //Set home page
-        if (pageData.homePage) {
-        await pageService.resetHomePage()
+                //Redirect
+                $f7.views.main.router.navigate(`/`)
+
+            } catch (ex) {
+                console.log(ex)
+                $f7.dialog.alert(ex.errors, "There was an error")
+            }
+
         }
 
-        //Save
-        let page = await pageService.put(pageData)
 
 
-
-
-        //Redirect
-        $f7.views.main.router.navigate(`/admin/page/show/${page._id}`)
-
-    }
-
-
-
-      return $render
+        return $render
     }
 
 </script>

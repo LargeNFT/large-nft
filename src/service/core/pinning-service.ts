@@ -17,6 +17,15 @@ class PinningService {
         return this.pinningApiRepository.get(_id)
     }
 
+    async getPinata() : Promise<PinningApi> {
+        let result = await this.pinningApiRepository.list(1, 0)
+
+        if (result?.length > 0) {
+            return result[0]
+        }
+        
+    }
+
     async put(pinningApi: PinningApi) {
 
         if (!pinningApi._id) {
@@ -43,27 +52,12 @@ class PinningService {
 
         let url = `${pinningApi.url}/pinning/pinByHash`
 
-        // let response = await fetch(url, {
-        //     method: 'POST',
-        //     headers: {
-        //         pinata_api_key: pinningApi.apiKey,
-        //         pinata_secret_api_key: pinningApi.secretApiKey
-        //     },
-        //     body: JSON.stringify({
-        //         hashToPin: cid,
-        //         pinataMetadata: {
-        //             name: name
-        //         }
-        //     })
-        // })
-
         let body = {
             hashToPin: cid,
             pinataMetadata: {
                 name: name
             }
         }
-
 
         let response = await axios.post(url, body, {
             headers: {

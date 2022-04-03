@@ -53,6 +53,7 @@ import { ItemService } from './service/item-service'
 import { ChannelWebService } from './service/web/channel-web-service'
 import { ItemWebService } from './service/web/item-web-service'
 import { AuthorWebService } from './service/web/author-web-service'
+import { PinningApi } from './dto/pinning-api'
 
 
 let container:Container
@@ -60,6 +61,7 @@ let channelWebService:ChannelWebService
 let itemWebService:ItemWebService
 let authorWebService:AuthorWebService
 let walletService:WalletService
+let pinningService:PinningService
 
 function getMainContainer() {
 
@@ -265,7 +267,34 @@ function getMainContainer() {
 
         {
           path: "/admin/settings",
-          component: AdminSettingsComponent
+          async async({ resolve, reject, to }) {
+
+            let pinningApi:PinningApi
+
+            try {
+              pinningApi = await pinningService.getPinata()
+            } catch(ex) {}
+            
+            //If it doesn't exist create an empty one
+           
+            if (!pinningApi) {
+              
+              pinningApi = {
+                apiKey: '',
+                secretApiKey: '',
+                url: "https://api.pinata.cloud"
+              }
+            }
+
+            resolve({ 
+              component: AdminSettingsComponent
+            }, {
+              props: {
+                pinningApi: pinningApi
+              } 
+            })
+
+          }
         },
 
         /**Connect */
@@ -374,6 +403,8 @@ function getMainContainer() {
   itemWebService = container.get(ItemWebService)
   authorWebService = container.get(AuthorWebService)
   walletService = container.get<WalletService>(TYPES.WalletService)
+  pinningService = container.get(PinningService)
+
 
   return container
 }

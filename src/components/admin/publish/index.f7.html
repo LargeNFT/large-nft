@@ -51,16 +51,37 @@
             </div>
 
             <div class="block-title">Verify NFT Details</div>
-            <div class="block"></div>
+            <div class="card">
+
+              <div class="card-content">
+                <div class="card-content card-content-padding">
+                  Creating ${channelViewModel.itemCount} total blog NFTs. Token IDs will be generated starting at 1 in the order they are listed on the collection detail page.
+                </div>
+              </div>
+
+            </div>
 
             <div class="block-title">Verify Mint Info</div>
-            <div class="block"></div>
+            <div class="card">
+              <div class="card-content">
+                <div class="card-content card-content-padding">
 
-            <div class="block-title">Deploy To IPFS</div>
-            <div class="block"></div>
+                  <p>
+                    <strong>Mint Price:</strong> ${channelViewModel.channel.mintPrice} ETH each
+                  </p>
+
+                  <p>
+                    <strong>Royalty:</strong> ${channelViewModel.channel.royaltyPercent}% 
+                  </p>
+
+                </div>
+              </div>
+            </div>
 
             <div class="block-title">Deploy To Pinata</div>
-            <div class="block"></div>
+            <div class="block">
+              
+            </div>
 
             <div class="block-title">Deploy Contract</div>
             <div class="block"></div>
@@ -99,8 +120,6 @@
           }
 
         })
-
-        //Preview channel info
 
         //Preview item info
 

@@ -16,7 +16,39 @@
               </ul>
 
             <div class="block-title">Verify Collection Details</div>
-            <div class="block"></div>
+            <div class="card channel-card">
+
+              <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                <div class="card-header banner" id="publish-preview-banner">
+
+                      ${channelViewModel.coverImage ? $h`
+                      <img src="${channelViewModel.coverImage.url}" class="avatar" />
+                    ` : $h`
+                      <i class="material-icons avatar">image</i>
+                    `}
+
+                </div>
+              </a>
+
+              <div class="card-content">
+                  <div class="card-content card-content-padding">
+                      <div class="title">
+                        <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                          ${channelViewModel.channel.title}
+                        </a>
+                      </div>
+
+                      ${channelViewModel.authorDisplayName ? $h`
+                        <div class="name">
+                          By <a href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                        </div>
+                      ` : $h``}
+
+                      <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
+                     
+                  </div>
+              </div>
+            </div>
 
             <div class="block-title">Verify NFT Details</div>
             <div class="block"></div>
@@ -58,6 +90,15 @@
     export default (props, { $, $h, $on, $f7, $update }) => {
   
         let channelViewModel = props.channelViewModel
+
+        $on('pageInit', async () => {
+
+          //Set banner
+          if (channelViewModel.coverBanner) {
+            document.getElementById("publish-preview-banner").style = `background-image: url(${channelViewModel.coverBanner.url});`
+          }
+
+        })
 
         //Preview channel info
 

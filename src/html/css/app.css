@@ -532,3 +532,89 @@ ul.breadcrumb li a:hover {
 .author .avatar i {
   float: left;
 }
+
+
+
+
+
+
+
+
+
+.channel-card {
+  /* height: 415px; */
+}
+
+.channel-card .card-header {
+  display: block;
+  padding: 10px;
+}
+
+.channel-card .avatar {
+  float: left;
+}
+
+.channel-card .name {
+  text-align: center;
+  color: var(--f7-text-color);
+
+}
+
+.channel-card .name a {
+  color: var(--f7-theme-color);
+  font-weight: bold;
+}
+
+
+.channel-card .date {
+  font-size: 13px;
+  color: #8e8e93;
+}
+
+.channel-card .title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 50px;
+  text-align: center;
+}
+
+
+.channel-card .description {
+  font-size: 22px;
+  text-align: center;
+  width: 750px;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.channel-card .card-content img {
+  display: block;
+  max-width: 100%;
+}
+
+.channel-card .banner {
+  height: 200px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  background-color: #f1f1f1;
+}
+
+.channel-card .avatar {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  left: calc(50% - 50px);
+  bottom: 0;
+  margin-bottom: -50px;
+  z-index: 10000;
+  border: 3px solid #ffffff;
+  font-size: 100px;
+  background: #ffffff;
+}
+
+.channel-card a {
+  color: var(--f7-text-color);
+}

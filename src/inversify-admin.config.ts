@@ -246,8 +246,6 @@ function getMainContainer() {
                 }
               }
 
-              console.log(authorViewModel)
-
               resolve({ 
                 component: AdminAuthorEditComponent
               }, {

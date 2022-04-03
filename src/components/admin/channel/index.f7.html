@@ -35,85 +35,7 @@
 </template>
 
 <style>
-  .channel-card {
-    height: 415px;
-  }
 
-  .channel-card .card-header {
-    display: block;
-    padding: 10px;
-  }
-
-  .channel-card .avatar {
-    float: left;
-  }
-
-  .channel-card .name {
-    text-align: center;
-    color: var(--f7-text-color);
-
-  }
-
-  .channel-card .name a {
-    color: var(--f7-theme-color);
-    font-weight: bold;
-  }
-
-
-  .channel-card .date {
-    font-size: 13px;
-    color: #8e8e93;
-  }
-
-  .channel-card .title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 50px;
-    text-align: center;
-  }
-
-
-  .channel-card .description {
-    font-size: 22px;
-    text-align: center;
-    width: 750px;
-    max-width: 100%;
-    height: 80px;
-    margin-right: auto;
-    margin-left: auto;
-    overflow: hidden;
-  }
-
-  .channel-card .card-content img {
-    display: block;
-    max-width: 100%;
-  }
-
-  .channel-card .banner {
-    height: 200px;
-    width: 100%;
-    background-position: center;
-    background-size: cover;
-    background-color: #f1f1f1;
-  }
-
-  .channel-card .avatar {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    left: calc(50% - 50px);
-    bottom: 0;
-    margin-bottom: -50px;
-    z-index: 10000;
-    border: 3px solid #ffffff;
-    font-size: 100px;
-    background: #ffffff;
-  }
-
-  .channel-card a {
-    color: var(--f7-text-color);
-  }
 </style>
 
 <script>
@@ -127,7 +49,7 @@
   import { ChannelWebService } from "../../../service/web/channel-web-service"
 
   import Navbar from "../../admin/navbar.f7.html"
-  
+
 
 
   export default (props, { $, $h, $on, $f7, $update }) => {
@@ -204,53 +126,35 @@
         el: '#channel-list',
 
         renderItem(channelViewModel) {
-
           if (!channelViewModel.channel) return '<li>Loading</li>'
-
-          return `
-              <li class="card channel-card">
-
-                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
-                      <div class="card-header banner" ${channelViewModel.coverBanner ?
-              `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
-
-                            ${channelViewModel.coverImage ? `
-                            <img src="${channelViewModel.coverImage.url}" class="avatar" />
-                          ` : `
-                            <i class="material-icons avatar">image</i>
-                          `}
-
-                      </div>
-                    </a>
-
-                    <div class="card-content">
-                        <div class="card-content card-content-padding">
-                            <div class="title">
-                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
-                                ${channelViewModel.channel.title}
-                              </a>
-                            </div>
-
-                            ${channelViewModel.authorDisplayName ? `
-                              <div class="name">
-                                By <a href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
-                              </div>
-                            ` : ``}
-
-                            <div class="description empty" id="channel-description-${channelViewModel.channel._id}" data-id="${channelViewModel.channel._id}"></div>
-                           
-                        </div>
-                    </div>
-              </li>
-          `;
+          return getTemplate(channelViewModel);
         },
         items: [{
           title: 'Loading...'
         }],
         setListHeight: true,
         updatableScroll: true,
-        height: function () {
-          return 450
+        height: function (channelViewModel) {
+
+          if (!channelViewModel.channel) return 50
+
+          //Called 'horrible solution but it works' by author.  https://jsfiddle.net/mnahara/1cn6xqLg/
+          
+          //Create a div, add the template to it, calculate height, destroy div
+          const measuringDiv = document.createElement('div')
+    
+          measuringDiv.classList.add('list', 'cards-list')
+          measuringDiv.innerHTML = `<ul id='find-me'>${getTemplate(channelViewModel)}</ul>`
+
+          $('body').append(measuringDiv)
+
+          let height = $('#find-me li').height()
+
+          //Remove
+          measuringDiv.parentNode.removeChild(measuringDiv)
+
+          return height
+
         },
         emptyTemplate: `
               <li class="item-content">
@@ -283,6 +187,45 @@
 
     })
 
+
+    const getTemplate = (channelViewModel) => {
+      return `
+              <li class="card channel-card">
+
+                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                      <div class="card-header banner" ${channelViewModel.coverBanner ?
+                          `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
+
+                            ${channelViewModel.coverImage ? `
+                            <img src="${channelViewModel.coverImage.url}" class="avatar" />
+                          ` : `
+                            <i class="material-icons avatar">image</i>
+                          `}
+
+                      </div>
+                    </a>
+
+                    <div class="card-content">
+                        <div class="card-content card-content-padding">
+                            <div class="title">
+                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                                ${channelViewModel.channel.title}
+                              </a>
+                            </div>
+
+                            ${channelViewModel.authorDisplayName ? `
+                              <div class="name">
+                                By <a href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                              </div>
+                            ` : ``}
+
+                            <div class="description empty" id="channel-description-${channelViewModel.channel._id}" data-id="${channelViewModel.channel._id}"></div>
+                           
+                        </div>
+                    </div>
+              </li>
+          `
+    }
 
 
     return $render

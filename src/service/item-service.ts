@@ -10,6 +10,7 @@ import { IpfsService } from "./core/ipfs-service";
 import { ItemRepository } from "../repository/item-repository";
 
 import excerptHtml from 'excerpt-html'
+import { Channel } from "../dto/channel";
 
 
 @injectable()
@@ -70,7 +71,7 @@ class ItemService {
         return this.itemRepository.listByChannel(channelId, limit, skip)
     }
 
-    async exportNFTMetadata(item:Item, animationCid:string, coverImageCid:string): Promise<NFTMetadata> {
+    async exportNFTMetadata(channel:Channel, item:Item, animationCid:string, coverImageCid:string): Promise<NFTMetadata> {
 
         let result: NFTMetadata = {
             tokenId: item.tokenId,
@@ -87,19 +88,33 @@ class ItemService {
             result.image = `ipfs://${coverImageCid}`
         }
 
-        if (item.attributeSelections?.length > 0) {
+        //Only show attributes that are valid at the category level. 
+        if (channel.attributeOptions.length > 0) {
 
-            //TODO: Remove attributes that are not listed as part of the category any more.
+            result.attributes = channel.attributeOptions.map( ao => {
 
-            
-            result.attributes = item.attributeSelections?.map(as => {
+                //find the one selected by this item
+                let selections = item?.attributeSelections?.filter( as => ao.traitType == as.traitType)
+
                 return {
-                    traitType: as.traitType,
-                    value: as.value,
-                    id: as.id
+                    traitType: ao.traitType,
+                    value: selections?.length > 0 ? selections[0].value : '' 
                 }
+
             })
         }
+
+        // if (item.attributeSelections?.length > 0) {
+
+        //     //TODO: Remove attributes that are not listed as part of the category any more.
+        //     result.attributes = item.attributeSelections?.map(as => {
+        //         return {
+        //             traitType: as.traitType,
+        //             value: as.value,
+        //             id: as.id
+        //         }
+        //     })
+        // }
 
         return result
 

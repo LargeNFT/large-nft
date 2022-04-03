@@ -5,6 +5,7 @@ import assert from 'assert'
 
 import { ItemService } from "../src/service/item-service"
 import { Item } from "../src/dto/item"
+import { Author } from "../src/dto/author"
 
 import { Channel } from "../src/dto/channel"
 import { ChannelService } from "../src/service/channel-service"
@@ -12,6 +13,7 @@ import { ChannelService } from "../src/service/channel-service"
 import { ImageService } from "../src/service/image-service"
 import { IpfsService } from "../src/service/core/ipfs-service"
 import { SchemaService } from "../src/service/core/schema-service"
+import { AuthorService } from "../src/service/author-service"
 
 
 let user0
@@ -31,7 +33,7 @@ contract('ItemService', async (accounts) => {
     let channelService:ChannelService
     let imageService:ImageService
     let schemaService:SchemaService
-    let ipfsService:IpfsService
+    let authorService:AuthorService
 
     let channel1:Channel
     let channel2:Channel
@@ -49,7 +51,7 @@ contract('ItemService', async (accounts) => {
         service = container.get(ItemService)
         channelService = container.get(ChannelService)
         imageService = container.get(ImageService)
-        ipfsService = container.get(IpfsService)
+        authorService = container.get(AuthorService)
         schemaService = container.get(SchemaService)
 
         await schemaService.loadWallet(user0)
@@ -272,13 +274,11 @@ contract('ItemService', async (accounts) => {
 
     })
 
-
     it("should count items by channel", async () => {
 
         let count = await service.countByChannel(channel1._id)
         assert.equal(count, 3)
     })
-
 
     it("should load a database with lots of records and page through them", async () => {
 
@@ -324,12 +324,12 @@ contract('ItemService', async (accounts) => {
 
     })
 
-    it("should export NFT metadata for an item", async () => {
+    // it("should export NFT metadata for an item", async () => {
         
-        //Test with and without cover photo
-        const metadata = await service.exportNFTMetadata(id1)
+    //     //Test with and without cover photo
+    //     const metadata = await service.exportNFTMetadata(id1)
 
-    })
+    // })
 
     it("should add and export item with cover photo and attributes", async () => {
 
@@ -339,8 +339,45 @@ contract('ItemService', async (accounts) => {
 
         await imageService.put(image)
 
+
+        //Add author
+        let author:Author = Object.assign(new Author(), {
+            name: "Bob",
+            walletAddress: user0
+        })
+
+        await authorService.put(author)
+
+
+        //Create category with attributes
+        let channel = Object.assign(new Channel(), {
+            title: "The Sound of Music",
+            symbol: "SOM",
+            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            link: "google.com",
+            authorId: author._id,
+            category: ['Gazebos'],
+            attributeOptions:[
+                {
+                    id: "6",
+                    traitType:'Hair',
+                    values:['Straight', 'Curly', 'Long']
+                },
+                {
+                    id: "7",
+                    traitType:'Teeth',
+                    values:['Have them', 'None', 'Nice']
+                },
+            ],
+            coverImageId: image.cid.toString()
+        }) 
+
+        await service.put(channel)
+
+
+
         let item:Item = Object.assign(new Item(), {
-            channelId: 18,
+            channelId: channel._id,
             title: "An image!",
             link: "pontoon.com",
             description: "Another boat and a man in a bat suit",
@@ -348,27 +385,28 @@ contract('ItemService', async (accounts) => {
             category: ['Gazebos', 'Ants'],
             coverImageId: image._id,
             attributeSelections: [{
-                traitType: "Type",
-                value: "Skelton"
+                id: "6",
+                traitType: "Hair",
+                value: "Curly"
             },
             {
-                traitType: "Hair",
-                value: "Fuzzy"
+                id: "7",
+                traitType: "Teeth",
+                value: "Nice"
             }]
         })
 
         await service.put(item)
 
 
-        const metadata = await service.exportNFTMetadata(item, undefined, image._id)
-
+        const metadata = await service.exportNFTMetadata(channel, item, undefined, image._id)
         assert.strictEqual(metadata.image, 'ipfs://QmZyhR8TGNhD3s2HrykyFr9NFS9wCs4X4M66uaKq78Sd3p')
 
-        assert.strictEqual(metadata.attributes[0].traitType, "Type")
-        assert.strictEqual(metadata.attributes[0].value, "Skelton")
+        assert.strictEqual(metadata.attributes[0].traitType, "Hair")
+        assert.strictEqual(metadata.attributes[0].value, "Curly")
 
-        assert.strictEqual(metadata.attributes[1].traitType, "Hair")
-        assert.strictEqual(metadata.attributes[1].value, "Fuzzy")
+        assert.strictEqual(metadata.attributes[1].traitType, "Teeth")
+        assert.strictEqual(metadata.attributes[1].value, "Nice")
 
     })
 

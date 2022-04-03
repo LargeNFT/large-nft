@@ -152,7 +152,7 @@ class ChannelService {
 
 
       //Generate metadata and add to list
-      nftMetadata.push(await this.itemService.exportNFTMetadata(item, animationCid, item.coverImageId))
+      nftMetadata.push(await this.itemService.exportNFTMetadata(channel, item, animationCid, item.coverImageId))
 
       tokenId++
     }

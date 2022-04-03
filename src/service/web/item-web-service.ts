@@ -75,7 +75,7 @@ class ItemWebService {
             for (let ao of channel.attributeOptions) {
 
                 //find the one selected by this item
-                let selections = item.attributeSelections.filter( as => ao.traitType == as.traitType)
+                let selections = item?.attributeSelections?.filter( as => ao.traitType == as.traitType)
 
                 attributeSelections.push({
                     id: ao.id,

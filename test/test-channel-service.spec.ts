@@ -313,10 +313,12 @@ contract('ChannelService', async (accounts) => {
             category: ['Gazebos'],
             attributeOptions:[
                 {
+                    id: "6",
                     traitType:'Hair',
                     values:['Straight', 'Curly', 'Long']
                 },
                 {
+                    id: "7",
                     traitType:'Teeth',
                     values:['Have them', 'None', 'Nice']
                 },
@@ -336,10 +338,12 @@ contract('ChannelService', async (accounts) => {
             category: ['Gazebos', 'Ants'],
             content: editor.getContents(),
             attributeSelections: [{
+                id: "6",
                 traitType: "Hair",
                 value: "Curly"
             },
             {
+                id: "7",
                 traitType: "Teeth",
                 value: "Nice"
             }],
@@ -354,10 +358,12 @@ contract('ChannelService', async (accounts) => {
             authorId: author._id,
             category: ['Gazebos', 'Ants'],
             attributeSelections: [{
+                id: "6",
                 traitType: "Hair",
                 value: "Curly"
             },
             {
+                id: "7",
                 traitType: "Teeth",
                 value: "None"
             }]
@@ -370,10 +376,12 @@ contract('ChannelService', async (accounts) => {
             authorId: author._id,
             category: ['Gazebos', 'Ants'],
             attributeSelections: [{
+                id: "6",
                 traitType: "Hair",
                 value: "Straight"
             },
             {
+                id: "7",
                 traitType: "Teeth",
                 value: "Have them"
             }]

@@ -83,8 +83,48 @@
 
               <div class="card-content">
                 <div class="card-content card-content-padding">
-                  ${showPinata ? $h`
-                    <button class="button button-fill button-small">Deploy to Pinata</button>
+
+                  The JSON metadata for the collection as well as a backup of the source database 
+                  will be copied to IPFS and uploaded to your Pinata account. 
+
+                  ${pinningApi ? $h`
+
+                    ${!ipfsReady ? $h`
+                      <div class="ipfs-label">IPFS Initializing...</div>
+                    ` : $h`
+                      <div class="ipfs-label">IPFS Ready</div>
+                    `}
+
+                    ${publishing ? $h`
+                      <div class="publish-label">Publishing...</div>
+                    ` : ''}
+
+                    ${showPinStatus ? $h`
+
+                      <div class="pin-status">
+                        <p><strong>Pin Job ID:</strong> ${channelViewModel.channel.pinJobId}</p>
+                        <p><strong>Pin Job Status:</strong> ${channelViewModel.channel.pinJobStatus}</p>
+                        <p><strong>Published CID:</strong> ${channelViewModel.channel.publishedCid}</p>
+
+                        ${channelViewModel.channel.pinJobStatus != "complete" ? $h`
+                          <div class="preloader" id="pin-preloader"></div>
+                        ` : $h``}
+                        
+                        ${ipfsReady ? $h`
+                          <button class="button button-fill button-small deploy-button" @click="${deployPinataClick}">Start Over</button>
+                        ` : $h``}
+                        
+                      </div>
+
+                    ` : $h`
+
+                      ${ipfsReady ? $h`
+                        <button class="button button-fill button-small" @click="${deployPinataClick}">Deploy to Pinata</button>
+                      ` : $h``}
+                      
+                    `}
+
+
                   ` : $h`
                     Configure <a href="/admin/settings">Pinata</a> to deploy to IPFS.
                   `}
@@ -94,7 +134,17 @@
             </div>
 
             <div class="block-title">Deploy Contract</div>
-            <div class="block"></div>
+            <div class="card">
+              
+              <div class="card-content">
+                <div class="card-content card-content-padding">
+
+
+
+                </div>
+              </div>
+
+            </div>
 
           </div>
   
@@ -106,7 +156,15 @@
   </template>
   
   <style>
-    
+    .deploy-button {
+      margin-top: 10px;
+      width: 200px;
+    }
+
+    .publish-label, .ipfs-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
   </style>
   
   <script>
@@ -114,26 +172,89 @@
     import moment from "moment"
   
     import { ContainerService } from "../../../service/core/container-service"
+    import { ChannelService } from "../../../service/channel-service"
+    import { PinningService } from "../../../service/core/pinning-service"
+    import { IpfsService } from "../../../service/core/ipfs-service"
+
 
     import Navbar from "../../admin/navbar.f7.html"
     
   
     export default (props, { $, $h, $on, $f7, $update }) => {
   
+        let channelService = ContainerService.getInstance(ChannelService)
+        let pinningService = ContainerService.getInstance(PinningService)
+        let ipfsService = ContainerService.getInstance(IpfsService)
+
         let channelViewModel = props.channelViewModel
         let pinningApi = props.pinningApi
 
-        let showPinata = (pinningApi != undefined)
-        // let showDeployContract = channelViewModel.channel. 
+        let publishing = false
+        let ipfsReady = ipfsService.ipfs != undefined 
+
+        let showPinStatus = channelViewModel.channel.pinJobId != undefined
 
         $on('pageInit', async () => {
+
+          //Initialize IPFS
+          await ipfsService.init()
+
+          ipfsReady = true
+          await $update()
 
           //Set banner
           if (channelViewModel.coverBanner) {
             document.getElementById("publish-preview-banner").style = `background-image: url(${channelViewModel.coverBanner.url});`
           }
 
+          await checkPinJob()
+
         })
+
+        const deployPinataClick = async (e) => {
+
+          showPinStatus = true
+          await $update()
+
+          publishing = true
+          await $update()
+
+          await channelService.publishToIPFS(channelViewModel.channel, pinningApi)
+
+          publishing = false
+          await $update()
+
+        }
+
+        const checkPinJob = async () => {
+
+          if (channelViewModel.channel.pinJobStatus == "complete") return 
+          if (publishing) return
+
+          let id = channelViewModel.channel.pinJobId
+          let status = channelViewModel.channel.pinJobStatus
+
+          let pinJobStatus = await pinningService.getJobStatus(pinningApi, channelViewModel.channel.publishedCid, id)
+          
+          if (pinJobStatus.status != status) {
+
+            //Update status if different
+            channelViewModel.channel.pinJobStatus = pinJobStatus.status
+            
+            await channelService.put(channelViewModel.channel)
+
+            await $update()
+          }
+
+
+          if (channelViewModel.channel.pinJobStatus != "complete") {
+            setTimeout(checkPinJob, 5000)
+          }
+
+        }
+
+        
+
 
         //Preview item info
 

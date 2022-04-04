@@ -85,6 +85,32 @@ class PinningService {
 
     }
 
+    async getJobStatus(pinningApi:PinningApi, cid:string, jobId:string) {
+     
+        let url = `${pinningApi.url}/pinning/pinJobs?ipfs_pin_hash=${cid}`
+
+        let response = await axios.get(url, {
+            headers: {
+                pinata_api_key: pinningApi.apiKey,
+                pinata_secret_api_key: pinningApi.secretApiKey
+            }
+        })
+
+        let pinJob = response.data.rows.filter( row => row.id == jobId)
+
+        if (pinJob?.length > 0) {
+            return pinJob[0]
+        } else {
+            return {
+                status: "complete"
+            }
+        }
+
+
+
+    }
+
+
     async validateAccount(pinningApi:PinningApi) {
         await this.userPinnedDataTotal(pinningApi)
     }

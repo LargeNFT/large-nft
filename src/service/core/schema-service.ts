@@ -35,14 +35,43 @@ class SchemaService {
         const channel = await this.channelRepository.get(channelId)
         const items = await this.itemRepository.listByChannel(channelId, 100000, 0)
         // const images = await this.imageRepository.listByChannel(channelId, 100000, 0)
-        const authors = await this.authorRepository.db.allDocs({include_docs: true, attachments: true})
+        const authorResults = await this.authorRepository.db.allDocs({include_docs: true, attachments: true})
+        const authors = authorResults.rows.map(row => row.doc)
+
+        //Remove publishing related field from channel
+        delete channel.pinJobId
+        delete channel.pinJobStatus
+        delete channel.publishedCid
+        delete channel.pubDate
+        delete channel.lastUpdated
+        delete channel._rev
+
+        //And items
+        if (items?.length > 0) {
+
+            for (let item of items) {
+                delete item._rev
+                delete item.lastUpdated
+            }
+
+        }
+
+        //And authors
+        if (authors?.length > 0) {
+
+            for (let author of authors) {
+                delete author._rev
+                delete author.lastUpdated
+            }
+
+        }
 
         //Save pouch dbs
         return {
             channels: [channel],
             items: items,
             // images: images,
-            authors: authors.rows.map(row => row.doc)
+            authors: authors
         }
       
     }

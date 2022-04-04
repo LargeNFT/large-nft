@@ -62,6 +62,15 @@ class Channel {
     contractAddress:string
 
     @Allow()
+    pinJobId:string
+
+    @Allow()
+    pinJobStatus:string
+
+    @Allow()
+    publishedCid:string
+
+    @Allow()
     pubDate?:string
 
     @Allow()

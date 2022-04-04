@@ -349,6 +349,18 @@ function getMainContainer() {
   function ipfsOptions() {
     return {
       repo: "large-repo",
+      config: {
+
+        Peering: {
+          Peers: [
+            {
+              ID: "QmWaik1eJcGHq1ybTWe7sezRfqKNcDRNkeBaLnGwQJz1Cj",
+              Addrs: ["/dnsaddr/fra1-1.hostnodes.pinata.cloud"]
+            }
+          ]
+        }
+
+      }
 
     }
 

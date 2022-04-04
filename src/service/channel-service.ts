@@ -23,6 +23,7 @@ import TYPES from "./core/types";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
+import { resourceLimits } from "worker_threads";
 
 
 @injectable()
@@ -114,7 +115,9 @@ class ChannelService {
     let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel, ownerAddress)
 
     //Add cover image
-    images.push(channel.coverImageId)
+    if (channel.coverImageId?.length > 0) {
+      images.push(channel.coverImageId)
+    }
 
     //Generate token IDs starting at 1. Save all the records
     let tokenId = 1
@@ -135,16 +138,16 @@ class ChannelService {
         animationCid = await this.itemService.buildAnimationPage(item)
         animationCids.push(animationCid)
       }
-    
+
       //Add cover image
-      if (item.coverImageId) {
+      if (item.coverImageId?.length > 0) {
         images.push(item.coverImageId)
       }
 
       //Get images in post content
       if (item.content?.ops) {
         for (let op of item.content.ops) {
-          if (op.insert && op.insert.ipfsimage) {
+          if (op.insert && op.insert.ipfsimage && op.insert.ipfsimage?.cid?.length > 0) {
             images.push(op.insert.ipfsimage.cid)
           }
         }
@@ -165,7 +168,7 @@ class ChannelService {
       let i = await this.imageService.get(image)
 
       let result = await this.ipfsService.ipfs.add({
-        content: i.buffer.data
+        content: i.buffer
       })
 
       if (result.cid.toString() != i.cid) {
@@ -262,6 +265,32 @@ class ChannelService {
     return receipt.contractAddress
 
   }
+
+  async publishToIPFS(channel:Channel, pinningApi:PinningApi) {
+
+    //Get all the items
+    let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+
+    //Export metadata
+    let cid:string = await this.exportNFTMetadata(channel, items, this.walletService.address)
+
+    //Save to Pinata
+    if (pinningApi) {
+      let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
+      if (!result.ipfsHash) throw new Error("Problem publishing")
+
+      //Get the ID of the Pinata deploy job and update the channel
+      channel.pinJobId = result.id 
+      channel.pinJobStatus = result.status 
+      channel.publishedCid = result.ipfsHash
+
+      await this.channelRepository.put(channel)
+
+    }
+
+  }
+
+
 
   async importFromIPFS(cid:string) {}
 

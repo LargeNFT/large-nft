@@ -129,6 +129,28 @@ contract('PinningService', async (accounts) => {
     })
 
     
+    it("should validate account", async () => {
+
+        //Arrange
+        let pinningApi:PinningApi = await service.get(id1)
+
+        await service.validateAccount(pinningApi)
+
+        //Just make sure we got here
+        assert.notEqual(pinningApi, undefined)
+
+        //Change credentials and catch exception
+        try {
+            pinningApi.secretApiKey = "blah"
+            await service.validateAccount(pinningApi)
+            assert.fail('Did not throw error')
+        } catch(ex) {
+            assert.strictEqual(ex.response.status, 401)
+        }
+
+
+
+    })
     
 
     it("should pin by hash", async () => {

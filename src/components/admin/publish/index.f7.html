@@ -79,8 +79,18 @@
             </div>
 
             <div class="block-title">Deploy To Pinata</div>
-            <div class="block">
-              
+            <div class="card">
+
+              <div class="card-content">
+                <div class="card-content card-content-padding">
+                  ${showPinata ? $h`
+                    <button class="button button-fill button-small">Deploy to Pinata</button>
+                  ` : $h`
+                    Configure <a href="/admin/settings">Pinata</a> to deploy to IPFS.
+                  `}
+                </div>
+              </div>
+
             </div>
 
             <div class="block-title">Deploy Contract</div>
@@ -111,6 +121,10 @@
     export default (props, { $, $h, $on, $f7, $update }) => {
   
         let channelViewModel = props.channelViewModel
+        let pinningApi = props.pinningApi
+
+        let showPinata = (pinningApi != undefined)
+        // let showDeployContract = channelViewModel.channel. 
 
         $on('pageInit', async () => {
 

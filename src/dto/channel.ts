@@ -59,6 +59,9 @@ class Channel {
     royaltyPercent:string
 
     @Allow()
+    contractAddress:string
+
+    @Allow()
     pubDate?:string
 
     @Allow()

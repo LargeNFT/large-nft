@@ -70,6 +70,25 @@ class PinningService {
 
     }
 
+    async userPinnedDataTotal(pinningApi:PinningApi) {
+     
+        let url = `${pinningApi.url}/data/userPinnedDataTotal`
+
+        let response = await axios.get(url, {
+            headers: {
+                pinata_api_key: pinningApi.apiKey,
+                pinata_secret_api_key: pinningApi.secretApiKey
+            }
+        })
+
+        return response.data
+
+    }
+
+    async validateAccount(pinningApi:PinningApi) {
+        await this.userPinnedDataTotal(pinningApi)
+    }
+
 
 }
 

@@ -95,11 +95,14 @@ function getMainContainer() {
 
             let channelViewModel = await channelWebService.get(to.params.id)
 
+            let pinningApi = await pinningService.getPinata()
+
             resolve({ 
               component: AdminPublishIndexComponent
             }, {
               props: {
-                channelViewModel: channelViewModel
+                channelViewModel: channelViewModel,
+                pinningApi: pinningApi
               } 
             })
           }

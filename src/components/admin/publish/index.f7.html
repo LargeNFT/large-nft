@@ -13,138 +13,165 @@
             <ul class="breadcrumb">
                 <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
                 <li>Publish</li>
-              </ul>
+            </ul>
 
-            <div class="block-title">Verify Collection Details</div>
-            <div class="card channel-card">
-
-              <a href="/admin/channel/show/${channelViewModel.channel._id}">
-                <div class="card-header banner" id="publish-preview-banner">
-
-                      ${channelViewModel.coverImage ? $h`
-                      <img src="${channelViewModel.coverImage.url}" class="avatar" />
-                    ` : $h`
-                      <i class="material-icons avatar">image</i>
-                    `}
-
-                </div>
-              </a>
-
-              <div class="card-content">
-                  <div class="card-content card-content-padding">
-                      <div class="title">
-                        <a href="/admin/channel/show/${channelViewModel.channel._id}">
-                          ${channelViewModel.channel.title}
-                        </a>
-                      </div>
-
-                      ${channelViewModel.authorDisplayName ? $h`
-                        <div class="name">
-                          By <a href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
-                        </div>
-                      ` : $h``}
-
-                      <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
-                     
-                  </div>
-              </div>
-            </div>
-
-            <div class="block-title">Verify NFT Details</div>
-            <div class="card">
-
-              <div class="card-content">
-                <div class="card-content card-content-padding">
-                  Creating ${channelViewModel.itemCount} total blog NFTs. Token IDs will be generated starting at 1 in the order they are listed on the collection detail page.
-                </div>
-              </div>
-
-            </div>
-
-            <div class="block-title">Verify Mint Info</div>
-            <div class="card">
-              <div class="card-content">
-                <div class="card-content card-content-padding">
-
-                  <p>
-                    <strong>Mint Price:</strong> ${channelViewModel.channel.mintPrice} ETH each
-                  </p>
-
-                  <p>
-                    <strong>Royalty:</strong> ${channelViewModel.channel.royaltyPercent}% 
-                  </p>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="block-title">Deploy To Pinata</div>
-            <div class="card">
-
-              <div class="card-content">
-                <div class="card-content card-content-padding">
-
-                  The JSON metadata for the collection as well as a backup of the source database 
-                  will be copied to IPFS and uploaded to your Pinata account. 
-
-                  ${pinningApi ? $h`
-
-                    ${!ipfsReady ? $h`
-                      <div class="ipfs-label">IPFS Initializing...</div>
-                    ` : $h`
-                      <div class="ipfs-label">IPFS Ready</div>
-                    `}
-
-                    ${publishing ? $h`
-                      <div class="publish-label">Publishing...</div>
-                    ` : ''}
-
-                    ${showPinStatus ? $h`
-
-                      <div class="pin-status">
-                        <p><strong>Pin Job ID:</strong> ${channelViewModel.channel.pinJobId}</p>
-                        <p><strong>Pin Job Status:</strong> ${channelViewModel.channel.pinJobStatus}</p>
-                        <p><strong>Published CID:</strong> ${channelViewModel.channel.publishedCid}</p>
-
-                        ${channelViewModel.channel.pinJobStatus != "complete" ? $h`
-                          <div class="preloader" id="pin-preloader"></div>
-                        ` : $h``}
-                        
-                        ${ipfsReady ? $h`
-                          <button class="button button-fill button-small deploy-button" @click="${deployPinataClick}">Start Over</button>
-                        ` : $h``}
-                        
-                      </div>
-
-                    ` : $h`
-
-                      ${ipfsReady ? $h`
-                        <button class="button button-fill button-small" @click="${deployPinataClick}">Deploy to Pinata</button>
-                      ` : $h``}
-                      
-                    `}
-
-
-                  ` : $h`
-                    Configure <a href="/admin/settings">Pinata</a> to deploy to IPFS.
-                  `}
-                </div>
-              </div>
-
-            </div>
-
-            <div class="block-title">Deploy Contract</div>
-            <div class="card">
+            ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="card-content">
-                <div class="card-content card-content-padding">
+              <div class="block-title">Verify Collection Details</div>
+              <div class="card channel-card">
 
+                <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                  <div class="card-header banner" id="publish-preview-banner">
 
+                        ${channelViewModel.coverImage ? $h`
+                        <img src="${channelViewModel.coverImage.url}" class="avatar" />
+                      ` : $h`
+                        <i class="material-icons avatar">image</i>
+                      `}
 
+                  </div>
+                </a>
+
+                <div class="card-content">
+                    <div class="card-content card-content-padding">
+                        <div class="title">
+                          <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                            ${channelViewModel.channel.title}
+                          </a>
+                        </div>
+
+                        ${channelViewModel.authorDisplayName ? $h`
+                          <div class="name">
+                            By <a href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                          </div>
+                        ` : $h``}
+
+                        <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
+                      
+                    </div>
                 </div>
               </div>
 
-            </div>
+              <div class="block-title">Verify NFT Details</div>
+              <div class="card">
+
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+                    Creating ${channelViewModel.itemCount} total blog NFTs. Token IDs will be generated starting at 1 in the order they are listed on the collection detail page.
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="block-title">Verify Mint Info</div>
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+
+                    <p>
+                      <strong>Mint Price:</strong> ${channelViewModel.channel.mintPrice} ETH each
+                    </p>
+
+                    <p>
+                      <strong>Royalty:</strong> ${channelViewModel.channel.royaltyPercent}% 
+                    </p>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="block-title">Deploy To Pinata</div>
+              <div class="card">
+
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+
+                    ${pinningApi ? $h`
+
+                      <p>The JSON metadata for the collection as well as a backup of the source database 
+                      will be copied to IPFS and uploaded to your Pinata account.</p>
+
+
+                      ${!ipfsReady ? $h`
+                        <div class="ipfs-label">IPFS Initializing...</div>
+                      ` : $h`
+                        <div class="ipfs-label">IPFS Ready</div>
+                      `}
+
+                      ${publishing ? $h`
+                        <div class="publish-label">Publishing...</div>
+                      ` : ''}
+
+                      ${showPinStatus ? $h`
+
+                        <div class="pin-status">
+                          <p><strong>Pin Job ID:</strong> ${channelViewModel.channel.pinJobId}</p>
+                          <p><strong>Pin Job Status:</strong> ${channelViewModel.channel.pinJobStatus}</p>
+                          <p><strong>Published CID:</strong> ${channelViewModel.channel.publishedCid}</p>
+
+                          ${channelViewModel.channel.pinJobStatus != "complete" ? $h`
+                            <div class="preloader" id="pin-preloader"></div>
+                          ` : $h``}
+                          
+                          ${ipfsReady ? $h`
+                            <button class="button button-fill button-small deploy-button" @click="${deployPinataClick}">Start Over</button>
+                          ` : $h``}
+                          
+                        </div>
+
+                      ` : $h`
+
+                        ${ipfsReady ? $h`
+                          <button class="button button-fill button-small deploy-button" @click="${deployPinataClick}">Deploy to Pinata</button>
+                        ` : $h``}
+                        
+                      `}
+
+
+                    ` : $h`
+                      <p>Configure <a href="/admin/settings">Pinata</a> to deploy to IPFS.</p>
+                    `}
+                  </div>
+                </div>
+
+              </div>
+              
+              <div class="block-title">Deploy Contract</div>
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+                    ${showDeploy ? $h`
+                      <p><strong>Contract Address:</strong> ${channelViewModel.channel.contractAddress}</p>
+
+                      ${deploying ? $h`
+                        <p>Deploying...</p>
+                      ` : $h`
+
+                        ${!channelViewModel.channel.contractAddress ? $h`
+                          <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
+                        ` : $h`
+                          <p>Success!</p>
+                        `}
+
+                        
+                      `}
+
+                      
+                    ` : $h`
+                      <p>Collection must be deployed to Pinata</p>
+                    `}
+                  </div>
+                </div>
+              </div>
+
+            ` : $h`
+              <div class="card">
+                <div class="card-content card-content-padding">
+                  <p>Add NFTs to the collection before publishing.</p>
+                </div>
+              </div>
+              
+            `}
 
           </div>
   
@@ -174,6 +201,9 @@
     import { ContainerService } from "../../../service/core/container-service"
     import { ChannelService } from "../../../service/channel-service"
     import { PinningService } from "../../../service/core/pinning-service"
+
+    import { QueueService } from   "../../../service/core/queue-service"
+
     import { IpfsService } from "../../../service/core/ipfs-service"
 
 
@@ -185,14 +215,19 @@
         let channelService = ContainerService.getInstance(ChannelService)
         let pinningService = ContainerService.getInstance(PinningService)
         let ipfsService = ContainerService.getInstance(IpfsService)
+        let queueService = ContainerService.getInstance(QueueService)
 
         let channelViewModel = props.channelViewModel
         let pinningApi = props.pinningApi
 
         let publishing = false
+        let deploying = false 
         let ipfsReady = ipfsService.ipfs != undefined 
 
-        let showPinStatus = channelViewModel.channel.pinJobId != undefined
+        let showPinStatus = channelViewModel.channel.pinJobId?.length > 0
+        let showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
+
+
 
         $on('pageInit', async () => {
 
@@ -213,22 +248,41 @@
 
         const deployPinataClick = async (e) => {
 
-          showPinStatus = true
-          await $update()
-
           publishing = true
+
           await $update()
 
           await channelService.publishToIPFS(channelViewModel.channel, pinningApi)
 
+          showPinStatus = true
           publishing = false
+
           await $update()
 
+          await checkPinJob()
+
+        }
+
+        const deployContractClick = async (e) => {
+
+          deploying = true
+          await $update()
+          
+          let promiseView = {
+            title: `Deploying contract ${name}. Waiting for transaction to be mined.`,
+            promise: channelService.deployContract(channelViewModel.channel)
+          }
+
+          //Wait for it to be mined
+          await queueService.queuePromiseView(promiseView)
+          
+          deploying = false
+          await $update()
         }
 
         const checkPinJob = async () => {
 
-          if (channelViewModel.channel.pinJobStatus == "complete") return 
+          if (channelViewModel.channel.pinJobStatus == "complete" && channelViewModel.channel.publishedCid) return 
           if (publishing) return
 
           let id = channelViewModel.channel.pinJobId
@@ -242,10 +296,12 @@
             channelViewModel.channel.pinJobStatus = pinJobStatus.status
             
             await channelService.put(channelViewModel.channel)
-
-            await $update()
           }
 
+          //Update deploy button 
+          showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
+
+          await $update()
 
           if (channelViewModel.channel.pinJobStatus != "complete") {
             setTimeout(checkPinJob, 5000)

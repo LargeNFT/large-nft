@@ -23,7 +23,8 @@ import TYPES from "./core/types";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
-import { resourceLimits } from "worker_threads";
+import { PromiseView } from "../util/promise-view";
+import { QueueService } from "./core/queue-service";
 
 
 @injectable()
@@ -62,7 +63,6 @@ class ChannelService {
 
       //Generate markdown
       channel.descriptionMarkdown = await this.quillService.generateMarkdown(channel.description)
-          
     }
 
 
@@ -248,9 +248,6 @@ class ChannelService {
 
   }
 
-  async getJSONFeed(_id:string) {}
-  async getRSSFeed(_id:string) : Promise<string> {return}
-
   async publish(channel:Channel, items:Item[], pinningApi:PinningApi, cid:string) { 
 
     //Save to Pinata
@@ -290,7 +287,27 @@ class ChannelService {
 
   }
 
+  async deployContract(channel:Channel) {
 
+    if (!channel.publishedCid) {
+      throw new Error("Not published to Pinata")
+    }
+
+    let count = await this.countItemsByChannel(channel._id)
+
+    if (count <= 0) {
+      throw new Error("No NFTs")
+    }
+
+    //Deploy contract
+    let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')
+    let receipt = await this.deploy(channel.title, channel.symbol, channel.publishedCid, mintPriceWei.toString(), count)
+
+    //Update address locally
+    channel.contractAddress = receipt.contractAddress
+    await this.put(channel)
+
+  }
 
   async importFromIPFS(cid:string) {}
 
@@ -306,9 +323,8 @@ class ChannelService {
     const factory = new ethers.ContractFactory(c.abi, c.bytecode, wallet)
     
     let contract = await factory.deploy( name, symbol, ipfsCid, BigNumber.from(mintFee), BigNumber.from(maxTokenId)  )
-    
+  
     return contract.deployTransaction.wait()
-
   }
 
 

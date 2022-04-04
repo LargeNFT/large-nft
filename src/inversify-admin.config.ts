@@ -23,7 +23,7 @@ import AdminConnectComponent from './components/admin/connect/index.f7.html'
 import { UiService } from './service/core/ui-service';
 
 import { providers } from "ethers"
-import { QueueService } from './service/core/queue_service';
+import { QueueService } from './service/core/queue-service';
 import { DeployService } from './service/core/deploy-service';
 
 import { QuillService } from "./service/quill-service";

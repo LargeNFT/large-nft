@@ -23,8 +23,6 @@ import TYPES from "./core/types";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
-import { PromiseView } from "../util/promise-view";
-import { QueueService } from "./core/queue-service";
 
 
 @injectable()
@@ -168,7 +166,7 @@ class ChannelService {
       let i = await this.imageService.get(image)
 
       let result = await this.ipfsService.ipfs.add({
-        content: i.buffer
+        content: i.buffer?.data ? i.buffer?.data : i.buffer //difference between browser and node buffer?
       })
 
       if (result.cid.toString() != i.cid) {

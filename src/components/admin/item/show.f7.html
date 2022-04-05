@@ -117,12 +117,10 @@
 
     let itemViewModel = props.itemViewModel
 
-    let showEdit = false
+    let showEdit = itemViewModel.editable
 
 
     $on('pageInit', async (e, page) => {
-
-      showEdit = itemViewModel.channel.pubDate == undefined
 
       //Add external to any links in the doc
       $(`#item-content-${itemViewModel.item._id} a`).addClass('external')

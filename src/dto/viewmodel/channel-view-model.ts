@@ -16,6 +16,8 @@ interface ChannelViewModel {
 
     itemCount:number
 
+    editable:boolean
+
 }
 
 export {

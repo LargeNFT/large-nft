@@ -42,6 +42,9 @@ class ItemWebService {
 
         let author: Author
 
+        let editable = !channel.contractAddress
+
+
         if (item.coverImageId) {
 
             let image:Image = await this.imageService.get(item.coverImageId)
@@ -97,7 +100,8 @@ class ItemWebService {
             authorPhoto: authorPhoto,
             authorDisplayName: this.authorService.getDisplayName(author),
             images: this.getImagesFromPostContentOps(item.content?.ops),
-            attributeSelections: attributeSelections
+            attributeSelections: attributeSelections,
+            editable: editable
         }
 
     }
@@ -164,7 +168,8 @@ class ItemWebService {
                 attributeSelections: []
             },
             channel: channel,
-            attributeSelections: attributeSelections
+            attributeSelections: attributeSelections,
+            editable: true
         }
 
         return itemViewModel

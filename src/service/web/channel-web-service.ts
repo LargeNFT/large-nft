@@ -29,6 +29,8 @@ class ChannelWebService {
 
         let author:Author
 
+        let editable = !channel.contractAddress
+
         if (channel.coverImageId) {
 
             let cImage = await this.imageService.get(channel.coverImageId)
@@ -75,7 +77,8 @@ class ChannelWebService {
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
             authorPhoto: authorPhoto,
-            itemCount: itemCount
+            itemCount: itemCount,
+            editable: editable
         }
 
     }

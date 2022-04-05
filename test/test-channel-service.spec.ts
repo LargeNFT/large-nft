@@ -396,7 +396,7 @@ contract('ChannelService', async (accounts) => {
 
         //And the channel
         await service.put(channel)
-
+   
         //Now export metadata to IPFS
         cid = await service.exportNFTMetadata(channel,items, user0)
 

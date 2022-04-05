@@ -20,6 +20,8 @@ interface ItemViewModel {
 
     attributeSelections:AttributeSelectionViewModel[]
 
+    editable:boolean
+
 }
 
 export {

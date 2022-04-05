@@ -5,12 +5,14 @@
     <${Navbar} />
 
 
-    <div class="fab fab-extended fab-right-bottom">
-      <a href="/admin/item/create/${channelViewModel.channel._id}" class="text-color-black">
-        <i class="material-icons">create</i>
-        <div class="fab-text">Create Blog NFT</div>
-      </a>
-    </div>
+    ${showEdit ? $h`
+      <div class="fab fab-extended fab-right-bottom">
+        <a href="/admin/item/create/${channelViewModel.channel._id}" class="text-color-black">
+          <i class="material-icons">create</i>
+          <div class="fab-text">Create Blog NFT</div>
+        </a>
+      </div>
+    ` : $h``} 
 
 
     <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
@@ -67,7 +69,15 @@
                     <${InfoRow} count="${channelViewModel.itemCount}" price="${channelViewModel.channel.mintPrice}" royalty="${channelViewModel.channel.royaltyPercent}" />
     
                     <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
-    
+
+                    ${channelViewModel.channel.contractAddress ? $h`
+                      <div class="contract-address">
+                        <strong>Contract Address:</strong> ${channelViewModel?.channel.contractAddress}
+                      </div>
+                    ` : $h``}
+                    
+
+
                 </div>
     
             </div>
@@ -110,7 +120,7 @@
       text-align: center;
   }
 
-  .channel-card-show .name {
+  .channel-card-show .name, .channel-card-show .contract-address {
       text-align: center;
   }
 
@@ -232,7 +242,7 @@
 
     let channelViewModel = props.channelViewModel
 
-    let showEdit = false
+    let showEdit = channelViewModel.editable
 
     // let coverBannerSrc 
     // let coverImageSrc 
@@ -253,8 +263,6 @@
 
 
     $on('pageInit', async (e, page) => {
-
-      showEdit = channelViewModel.channel.pubDate == undefined
 
       //Get first page
       virtualList = $f7.virtualList.create({

@@ -205,7 +205,7 @@
 
             //Set defaults for any that are not set.
             for (let attributeSelection of attributeSelections) {
-                if (!attributeSelection.value) {
+                if (!attributeSelection.value && attributeSelection.values?.length > 0) {
                     attributeSelection.value = attributeSelection.values[0]
                 }
             }

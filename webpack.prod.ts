@@ -1,12 +1,18 @@
 import { merge } from 'webpack-merge'
-import common from './webpack.common'
+import configs from './webpack.common'
 
-let mainConfig = merge(common, {
+let mainConfigs = []
+
+for (let config of configs) {
     //@ts-ignore
-    mode: 'production'
-})
+    mainConfigs.push(merge(config, {
+        //@ts-ignore
+        mode: 'production'
+    }))
+}
 
 
-export default [mainConfig]
 
+
+export default mainConfigs
 

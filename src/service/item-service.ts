@@ -127,15 +127,7 @@ class ItemService {
             </head>
 
             <body style="margin: 0px;">
-                <script type="module">
-                    document.body.innerHTML = '
-                        <main>
-                            <div>
-                                ${item.contentHTML}
-                            </div>
-                        </main>
-                    '
-                </script>
+                ${item.contentHTML}
             </body>
             </html>
         `

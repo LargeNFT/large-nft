@@ -1,4 +1,4 @@
-import AppComponent from './components/app.f7.html'
+import AppComponent from './components/admin/app.f7.html'
 
 import AdminChannelIndexComponent from './components/admin/channel/index.f7.html'
 import AdminChannelCreateComponent from './components/admin/channel/create.f7.html'
@@ -80,7 +80,7 @@ function getMainContainer() {
       el: '#app', // App root element
       id: 'large', // App bundle ID
       name: 'Large', // App name
-      theme: 'aurora', // Automatic theme detection
+      theme: 'auto', // Automatic theme detection
       component: AppComponent,
       routes: [
 

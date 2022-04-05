@@ -218,9 +218,15 @@ class ChannelService {
     await this.ipfsService.ipfs.files.write(backupPath, new TextEncoder().encode(JSON.stringify(backup)), { create: true, parents: true})
 
 
+    //Create reader
+    
+
     let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
       hash: true
     })
+
+    //
+
 
     return result.cid.toString()
 

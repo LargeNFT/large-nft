@@ -10,6 +10,7 @@
     "start:dev": "webpack serve --config=webpack.dev.ts",
     "test": "cd test && truffle test",
     "build": "node node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",
+    "build:dev": "node node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",
     "build:reader": "node node_modules/webpack/bin/webpack.js --config=webpack.reader.ts"
   },
   "keywords": [

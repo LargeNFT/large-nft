@@ -219,7 +219,11 @@ class ChannelService {
 
 
     //Create reader
-    
+    // let readerPath = `${directory}/reader`
+
+    // //Read all the files in the generated folder
+    // let reder = require('./generated/reader')
+    // console.log(reder)
 
     let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
       hash: true

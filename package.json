@@ -48,9 +48,6 @@
     "html-webpack-plugin": "5.5.0",
     "mocha": "9.2.0",
 
-    "framework7": "6.3.16",
-    "framework7-loader": "3.0.2",
-
     "ts-loader": "9.2.7",
     "css-loader": "5.2.7",
     "file-loader": "6.2.0",

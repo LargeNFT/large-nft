@@ -426,7 +426,7 @@ contract('ChannelService', async (accounts) => {
 
         assert.strictEqual(item1File.tokenId, '1')
         assert.strictEqual(item1File.name, 'An image!')
-        assert.strictEqual(item1File.animation_url, 'ipfs://QmYuYBgM7257tYayRRhT4BDJaqG4JBPrtHsxvT9EwuQm86')
+        assert.strictEqual(item1File.animation_url, 'ipfs://QmTTczWjxoGJW8wmo4DCyy25n2KVHWtb3jBRHdHxUVeYkj')
         assert.strictEqual(item1File.image, 'ipfs://QmdiZ38cTbpsGzLYmzne4qfnCa8qLmjf9UGyaeEFoTuqSd')
         assert.deepEqual(item1File.attributes, [
             { traitType: "Hair", value: "Curly" },

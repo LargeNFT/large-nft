@@ -1,5 +1,5 @@
 
-import { getMainContainer } from "../../inversify-admin.config"
+import { getMainContainer } from "../../inversify.config"
 import TYPES from "./types"
 import { WalletService } from "./wallet-service"
 

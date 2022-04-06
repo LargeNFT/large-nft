@@ -44,6 +44,9 @@
   
     "eth-gas-reporter": "0.2.24",
   
+    "framework7": "6.3.16",
+    "framework7-loader": "3.0.2",
+
     "html-inline-script-webpack-plugin": "2.0.3",
     "html-webpack-plugin": "5.5.0",
     "mocha": "9.2.0",

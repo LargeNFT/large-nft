@@ -114,18 +114,8 @@ class ChannelService {
     //Get contract metadata
     let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel, ownerAddress)
 
-    //Generate token IDs starting at 1. Save all the records
-    let tokenId = 1
+    //Gather NFT data
     for (let item of items) {
-
-      //Look up by ID - Needs to have full document
-      Object.assign(item, await this.itemService.get(item._id))
-
-      //Set the tokenID
-      item.tokenId = tokenId.toString()
-
-      //Save it
-      await this.itemService.put(item)
 
       //Build animation URL if we have content
       let animationCid 
@@ -137,7 +127,6 @@ class ChannelService {
       //Generate metadata and add to list
       nftMetadata.push(await this.itemService.exportNFTMetadata(channel, item, animationCid, item.coverImageId))
 
-      tokenId++
     }
 
 
@@ -148,6 +137,9 @@ class ChannelService {
       let result = await this.ipfsService.ipfs.add({
         content: image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
       })
+
+      console.log(result.cid.toString())
+      console.log(image.cid)
 
       if (result.cid.toString() != image.cid) {
         throw new Error("Incorrect cid when saving image. ")
@@ -271,6 +263,19 @@ class ChannelService {
 
     //Get all the items
     let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+
+    let tokenId = 1
+    for (let item of items) {
+
+      //Set the tokenID
+      item.tokenId = tokenId.toString()
+
+      //Save it
+      await this.itemService.put(Object.assign(new Item(), item))
+
+      tokenId++
+    }
+
 
     //Export metadata
     let cid:string = await this.exportNFTMetadata(channel, items, this.walletService.address)

@@ -6,8 +6,10 @@ import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } fro
 
 import { Dom7 } from "framework7"
 
-import { UploadService } from './core/upload-service'
+// import { UploadService } from './core/upload-service'
 import { ImageService } from './image-service'
+import { readAndCompressImage } from 'browser-image-resizer';
+import { UiService } from './core/ui-service';
 
 
 var $$ = Dom7;
@@ -25,8 +27,8 @@ class QuillEditorService {
   initialized: boolean = false
 
   constructor(
-    private uploadService: UploadService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private uiService:UiService
   ) {
 
     const self = this
@@ -148,9 +150,11 @@ class QuillEditorService {
 
         node.setAttribute('src', value.src)
         node.setAttribute('data-cid', value.cid)
-        node.setAttribute('width', value.width)
-        node.setAttribute('height', value.height)
-        node.setAttribute('style', value.style)
+
+        if (value.width) node.setAttribute('width', value.width)
+        if (value.height) node.setAttribute('height', value.height)
+        if (value.style) node.setAttribute('style', value.style)
+        
 
 
         return node
@@ -254,9 +258,13 @@ class QuillEditorService {
   //TODO: move to service
   async imageSelected(fileElement: Element): Promise<void> {
 
-    let imageBuffer:Buffer = await this.uploadService.uploadFile(fileElement)
+    this.uiService.showSpinner("Processing image...")
 
-    let image:Image = await this.imageService.newFromBuffer(imageBuffer, 1024)
+    let resizedImageBlob = await readAndCompressImage(fileElement.files[0])
+
+    let imageArrayBuffer:ArrayBuffer = await resizedImageBlob.arrayBuffer()
+
+    let image:Image = await this.imageService.newFromBuffer(new Uint8Array(imageArrayBuffer))
     
     image.channelId = this.channelId
 
@@ -282,7 +290,7 @@ class QuillEditorService {
 
     document.dispatchEvent(imageSelectedEvent)
 
-
+    this.uiService.hideSpinner()
 
   }
 

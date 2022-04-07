@@ -6,10 +6,6 @@ import { ImageRepository } from "../repository/image-repository"
 import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
 
-import toBuffer from 'blob-to-buffer'
-
-const reduce = require('image-blob-reduce')();
-
 
 @injectable()
 class ImageService {
@@ -51,20 +47,12 @@ class ImageService {
     return this.imageRepository.listByChannel(channelId, limit, skip)
   }
 
-  async newFromBuffer(buffer: Uint8Array, maxWidth:number): Promise<Image> {
+  async newFromBuffer(buffer: Uint8Array): Promise<Image> {
 
     const image: Image = new Image()
 
     image.buffer = buffer
     image.cid = await Hash.of(buffer)
-
-    if (Blob && maxWidth) {
-      let blob = await this.bufferToBlob(image.buffer)
-      let resizedBlob = await reduce.toBlob(blob, { max: maxWidth})
-      image.buffer = toBuffer(resizedBlob)
-    }
-
-
     return image
 
   }

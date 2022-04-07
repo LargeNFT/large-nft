@@ -25,10 +25,7 @@ class ImageService {
     if (!image._id) {
       image._id = image.cid
       image.dateCreated = new Date().toJSON()
-    } else {
-      image.lastUpdated = new Date().toJSON()
-    }
-
+    } 
 
     //Validate
     let errors: ValidationError[] = await validate(image, {
@@ -41,10 +38,6 @@ class ImageService {
     }
 
     await this.imageRepository.put(image)
-  }
-
-  async listByChannel(channelId: string, limit: number, skip: number): Promise<Image[]> {
-    return this.imageRepository.listByChannel(channelId, limit, skip)
   }
 
   async newFromBuffer(buffer: Uint8Array): Promise<Image> {

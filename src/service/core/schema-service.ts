@@ -1,4 +1,7 @@
 import { injectable } from "inversify";
+import { Author } from "../../dto/author";
+import { Channel } from "../../dto/channel";
+import { Item } from "../../dto/item";
 import { AuthorRepository } from "../../repository/author-repository";
 import { ChannelRepository } from "../../repository/channel-repository";
 import { ImageRepository } from "../../repository/image-repository";
@@ -30,36 +33,9 @@ class SchemaService {
 
     }
 
-    async backup(channelId:string) {
+    async backup(channel:Channel, items:Item[], author:Author) {
         
-        const channel = await this.channelRepository.get(channelId)
-        const author = await this.authorRepository.get(channel.authorId)
-
-        //Get the items and create an array to hold the paged chunks for the reader
-        const items = await this.itemRepository.listByChannel(channelId, 100000, 0)
         const chunkedItems = []
-
-        //Remove publishing related field from channel
-        delete channel.pinJobId
-        delete channel.pinJobStatus
-        delete channel.publishedCid
-        delete channel.pubDate
-        delete channel.lastUpdated
-        delete channel._rev
-
-        //And items
-        if (items?.length > 0) {
-            for (let item of items) {
-                delete item._rev
-                delete item.lastUpdated
-            }
-        }
-
-        //And authors
-        if (author) {
-            delete author._rev
-            delete author.lastUpdated
-        }
 
         //Split items into chunks
         const chunkSize = 20

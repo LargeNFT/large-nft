@@ -10,12 +10,6 @@ class ImageRepository {
 
         await db.createIndex({
             index: {
-                fields: ['channelId']
-            }
-        })
-
-        await db.createIndex({
-            index: {
                 fields: ['dateCreated']
             }
         })
@@ -40,22 +34,6 @@ class ImageRepository {
 
     async put(image: Image) {
         await this.db.put(image)
-    }
-
-    async listByChannel(channelId: string, limit: number, skip: number): Promise<Image[]> {
-
-        let response = await this.db.find({
-            selector: {
-                channelId: { $eq: channelId },
-                dateCreated: { $exists: true }
-            },
-            sort: [{ 'dateCreated': 'asc' }],
-            limit: limit,
-            skip: skip
-        })
-  
-        return response.docs
-  
     }
 
 }

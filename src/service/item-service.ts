@@ -115,9 +115,9 @@ class ItemService {
     }
 
 
-    public async buildAnimationPage(item:Item) : Promise<string> {
+    public buildAnimationPage(item:Item) :string {
 
-        let html = `
+        return `
             <!DOCTYPE html>
             <html>
             
@@ -131,12 +131,6 @@ class ItemService {
             </body>
             </html>
         `
-
-        let result = await this.ipfsService.ipfs.add({
-            content: html
-        })
-
-        return result.cid.toString()
     }
 
 }

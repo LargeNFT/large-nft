@@ -10,9 +10,6 @@ class Image {
     _rev?:string 
 
     @IsNotEmpty()
-    channelId:string
-
-    @IsNotEmpty()
     buffer?:any
 
     @Allow()
@@ -24,8 +21,6 @@ class Image {
     @Allow()
     dateCreated?:string
     
-    @Allow()
-    lastUpdated?:string
     
 }
 

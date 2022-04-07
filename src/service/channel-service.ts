@@ -23,6 +23,8 @@ import TYPES from "./core/types";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
+import { AuthorService } from "./author-service";
+import { Author } from "../dto/author";
 
 
 @injectable()
@@ -36,6 +38,7 @@ class ChannelService {
     private schemaService:SchemaService,
     private pinningService:PinningService,
     private quillService:QuillService,
+    private authorService:AuthorService,
     @inject(TYPES.WalletService) private walletService:WalletService,
 
     @inject("contracts") private contracts,
@@ -102,17 +105,38 @@ class ChannelService {
     return this.itemService.countByChannel(channelId)
   }
 
-  async exportNFTMetadata(channel:Channel, items:Item[], ownerAddress:string) : Promise<string> {
+  async exportNFTMetadata(channel:Channel, items:Item[], author:Author, ownerAddress:string) : Promise<string> {
+
+    //Remove publishing related field from channel
+    delete channel.pinJobId
+    delete channel.pinJobStatus
+    delete channel.publishedCid
+    delete channel.pubDate
+    delete channel.lastUpdated
+    delete channel._rev
+    delete channel["_rev_tree"]
+
+    //Remove publishing related fields from author
+    if (author) {
+      delete author._rev
+      delete author.lastUpdated
+      delete author["_rev_tree"]
+    }
 
     //Assign  
     let nftMetadata:NFTMetadata[] = []
-    let animationCids:string[] = []
 
-    let images:Image[] = await this.imageService.listByChannel(channel._id, 100000, 0)
+    let animations:string[] = []
 
+    let imageCids:string[] = []
 
     //Get contract metadata
     let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel, ownerAddress)
+
+    //Add cover image
+    if (channel.coverImageId?.length > 0) {
+      imageCids.push(channel.coverImageId)
+    }
 
     //Gather NFT data
     for (let item of items) {
@@ -120,13 +144,40 @@ class ChannelService {
       //Build animation URL if we have content
       let animationCid 
       if (item.contentHTML) {
-        animationCid = await this.itemService.buildAnimationPage(item)
-        animationCids.push(animationCid)
+        animations.push(this.itemService.buildAnimationPage(item))
       }
+
+      //Add cover image
+      if (item.coverImageId?.length > 0) {
+        imageCids.push(item.coverImageId)
+      }
+
+      //Get images in post content
+      if (item.content?.ops) {
+        for (let op of item.content.ops) {
+          if (op.insert && op.insert.ipfsimage && op.insert.ipfsimage?.cid?.length > 0) {
+            imageCids.push(op.insert.ipfsimage.cid)
+          }
+        }
+      }
+
+      //Delete publishing related fields
+      delete item._rev
+      delete item.lastUpdated
+      delete item["_rev_tree"]
 
       //Generate metadata and add to list
       nftMetadata.push(await this.itemService.exportNFTMetadata(channel, item, animationCid, item.coverImageId))
 
+    }
+
+    //Look up all the images
+    imageCids = [...new Set(imageCids)] //deduplicate
+
+    let images= []
+
+    for (let imageCid of imageCids) {
+      images.push(await this.imageService.get(imageCid))
     }
 
 
@@ -138,13 +189,14 @@ class ChannelService {
         content: image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
       })
 
-      console.log(result.cid.toString())
-      console.log(image.cid)
-
       if (result.cid.toString() != image.cid) {
         throw new Error("Incorrect cid when saving image. ")
       }
 
+      //Remove publishing related field from image
+      delete image._rev
+      delete image.lastUpdated
+      delete image["_rev_tree"]
     }
 
 
@@ -159,30 +211,40 @@ class ChannelService {
     //Save contract metadata
     let contractMetadataPath = `${directory}/contractMetadata.json`
     
-    console.log(`Saving contract metadata to ${contractMetadataPath}`)
+    this.logPublishProgress(`Saving contract metadata to ${contractMetadataPath}`)
 
     await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true})
 
     //Save metadata for each NFT
     for (let nft of nftMetadata) {
+
       let nftMetadataPath = `${directory}/${nft.tokenId}.json`
 
-      console.log(`Saving #${nft.tokenId} to ${nftMetadataPath}`)
+      this.logPublishProgress(`Saving #${nft.tokenId} to ${nftMetadataPath}`)
       await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true})
 
     }
 
     //Save images 
     for (let image of images) {
-      console.log(`Saving image #${image._id} to ${directory}/images/${image._id}`)
-      await this.ipfsService.ipfs.files.cp(`/ipfs/${image._id}`, `${directory}/images/${image._id}`, { parents: true })
+      this.logPublishProgress(`Saving image #${image.cid} to ${directory}/images/${image.cid}`)
+      await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { parents: true })
     }
 
     //Save animation cids
-    for (let animationCid of animationCids) {
-      console.log(`Saving animation #${animationCid} to ${directory}/images/${animationCid}`)
+    for (let animation of animations) {
+
+      let result = await this.ipfsService.ipfs.add({
+          content: animation
+      })
+
+      let animationCid = result.cid.toString()
+      
+      this.logPublishProgress(`Saving animation #${animationCid} to ${directory}/images/${animationCid}`)
       await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
     }
+
+        
 
 
     /**
@@ -190,9 +252,11 @@ class ChannelService {
      */
 
     //Save pouch dbs
-    console.log(`Starting backup`)
+    this.logPublishProgress(`Starting backup`)
     let backupPath = `${directory}/backup`
-    let backup = await this.schemaService.backup(channel._id)
+    let backup = await this.schemaService.backup(channel, items, author)
+
+
 
     //Write initial page to file. Then iterage through rest of chunks.
     await this.ipfsService.ipfs.files.write(`${backupPath}/initial.json`, new TextEncoder().encode(JSON.stringify(backup.initial)), { create: true, parents: true})
@@ -202,23 +266,26 @@ class ChannelService {
       await this.ipfsService.ipfs.files.write(`${backupPath}/itemChunks/${counter++}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true})
     }
 
-    console.log(`Saving items to backup`)
+    this.logPublishProgress(`Saving items to backup`)
     //Also write each row as a file so the reader can open it quickly 
     for (let item of items) {
-      console.log(`Saving #${item.tokenId} to ${backupPath}/items/${item.tokenId}.json`)
-      await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item.tokenId}.json`, new TextEncoder().encode(JSON.stringify(item)), { create: true, parents: true})
+      this.logPublishProgress(`Saving #${item.tokenId} to ${backupPath}/items/${item.tokenId}.json`)
+      await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item.tokenId}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true})
     }
 
-    console.log(`Saving images to backup`)
+    this.logPublishProgress(`Saving images to backup`)
     //Write image backups.
     for (let image of images) {
-      console.log(`Saving #${image._id} to ${backupPath}/images/${image._id}.json`)
-      await this.ipfsService.ipfs.files.write(`${backupPath}/images/${image._id}.json`, new TextEncoder().encode(JSON.stringify(image)), { create: true, parents: true})
+      this.logPublishProgress(`Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
+      await this.ipfsService.ipfs.files.write(`${backupPath}/images/${image.cid}.json`, new TextEncoder().encode(JSON.stringify(image, Object.keys(image).sort())), { create: true, parents: true})
     }
+
 
     let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
       hash: true
     })
+
+    this.logPublishProgress(`Published to local IPFS at ${result.cid.toString()}`)
 
     return result.cid.toString()
 
@@ -262,7 +329,10 @@ class ChannelService {
   async publishToIPFS(channel:Channel, pinningApi:PinningApi) {
 
     //Get all the items
-    let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+    const items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+
+    //Get author
+    const author = await this.authorService.get(channel.authorId)
 
     let tokenId = 1
     for (let item of items) {
@@ -278,7 +348,7 @@ class ChannelService {
 
 
     //Export metadata
-    let cid:string = await this.exportNFTMetadata(channel, items, this.walletService.address)
+    let cid:string = await this.exportNFTMetadata(channel, items, author, this.walletService.address)
 
     //Save to Pinata
     if (pinningApi) {
@@ -286,11 +356,12 @@ class ChannelService {
       if (!result.ipfsHash) throw new Error("Problem publishing")
 
       //Get the ID of the Pinata deploy job and update the channel
+      channel = await this.get(channel._id)
       channel.pinJobId = result.id 
       channel.pinJobStatus = result.status 
       channel.publishedCid = result.ipfsHash
 
-      await this.channelRepository.put(channel)
+      await this.put(channel)
 
     }
 
@@ -334,6 +405,25 @@ class ChannelService {
     let contract = await factory.deploy( name, symbol, ipfsCid, BigNumber.from(mintFee), BigNumber.from(maxTokenId)  )
   
     return contract.deployTransaction.wait()
+  }
+
+
+  private logPublishProgress(message:string) {
+    
+    console.log(message)
+
+    if (typeof window !== "undefined" && typeof window.document !== "undefined") {
+      // browser
+      const imageSelectedEvent = new CustomEvent('publish-progress', {
+        detail: { message: message }
+      })
+  
+      document.dispatchEvent(imageSelectedEvent)
+
+    }
+
+
+
   }
 
 

@@ -22,7 +22,6 @@ var $$ = Dom7;
 class QuillEditorService {
 
   public activeEditor: any
-  public channelId:string
 
   initialized: boolean = false
 
@@ -198,7 +197,7 @@ class QuillEditorService {
   }
 
 
-  buildQuillPostEditor(selector: string, toolbarSelector: string, channelId:string): Quill {
+  buildQuillPostEditor(selector: string, toolbarSelector: string): Quill {
 
     this.init()
 
@@ -244,8 +243,6 @@ class QuillEditorService {
       theme: "snow"
     })
 
-    this.channelId = channelId
-
     return this.activeEditor
   }
 
@@ -260,14 +257,14 @@ class QuillEditorService {
 
     this.uiService.showSpinner("Processing image...")
 
-    let resizedImageBlob = await readAndCompressImage(fileElement.files[0])
+    let resizedImageBlob = await readAndCompressImage(fileElement.files[0], {
+      maxWidth: 1024
+    })
 
     let imageArrayBuffer:ArrayBuffer = await resizedImageBlob.arrayBuffer()
 
     let image:Image = await this.imageService.newFromBuffer(new Uint8Array(imageArrayBuffer))
     
-    image.channelId = this.channelId
-
     try {
       await this.imageService.put(image)
     } catch(ex) { console.log(ex)} //Might already exist. That's fine.  

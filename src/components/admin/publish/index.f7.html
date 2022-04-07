@@ -99,8 +99,19 @@
                       `}
 
                       ${publishing ? $h`
-                        <div class="publish-label">Publishing...</div>
-                      ` : ''}
+                        <div class="publish-label">
+                          Publishing...
+                        </div>
+                      ` : $h`
+                        <div class="publish-label" style="display:none;"></div>
+                      `}
+
+                      ${publishOutput ? $h`
+                        <div class="publish-output" innerHTML="${publishOutput}"></div>
+                      ` : $h`
+                        <div class="publish-output" style="display:none;"></div>
+                      `}
+
 
                       ${showPinStatus ? $h`
 
@@ -196,6 +207,12 @@
       font-weight: bold;
       font-size: 18px;
     }
+
+    .publish-output {
+      border: 1px solid #cccccc;
+      font-size: 13px;
+      padding: 15px;
+    }
   </style>
   
   <script>
@@ -225,13 +242,12 @@
         let pinningApi = props.pinningApi
 
         let publishing = false
+        let publishOutput = ""
         let deploying = false 
         let ipfsReady = ipfsService.ipfs != undefined 
 
         let showPinStatus = channelViewModel.channel.pinJobId?.length > 0
         let showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
-
-
 
         $on('pageInit', async () => {
 
@@ -255,7 +271,17 @@
           publishing = true
 
           await $update()
+          
+          channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
+          //Clear publishing status
+          delete channelViewModel.channel.pinJobId
+          delete channelViewModel.channel.pinJobStatus
+          delete channelViewModel.channel.publishedCid
+
+          await channelService.put(channelViewModel.channel)
+
+          //Now publish
           await channelService.publishToIPFS(channelViewModel.channel, pinningApi)
 
           showPinStatus = true
@@ -289,16 +315,15 @@
           if (channelViewModel.channel.pinJobStatus == "complete" && channelViewModel.channel.publishedCid) return 
           if (publishing) return
 
+          channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+
           let id = channelViewModel.channel.pinJobId
           let status = channelViewModel.channel.pinJobStatus
 
           let pinJobStatus = await pinningService.getJobStatus(pinningApi, channelViewModel.channel.publishedCid, id)
           
           if (pinJobStatus.status != status) {
-
-            //Update status if different
             channelViewModel.channel.pinJobStatus = pinJobStatus.status
-            
             await channelService.put(channelViewModel.channel)
           }
 
@@ -314,17 +339,11 @@
         }
 
         
+        $(document).on('publish-progress', async (e) => {
+          publishOutput += `<p>${e.detail.message}</p>`
+          $update()
+        })
 
-
-        //Preview item info
-
-        //Preview mint info
-
-        //Generate bundle and deploy to Pinata
-
-        //Deploy contract
-
-        //Update database with deployment info
 
         return $render
     }

@@ -1,18 +1,16 @@
 //@ts-nocheck
-import Quill from 'quill';
-import { QuillDeltaToHtmlConverter } from "quill-delta-to-html"
+import { injectable } from 'inversify';
 
+import Quill from 'quill';
+import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter'
 
 import { Dom7 } from "framework7"
+
 import { UploadService } from './core/upload-service'
 import { ImageService } from './image-service'
 
-// import QuillBlotFormatter, {  AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter';
-import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter'
-import { injectable } from 'inversify';
 
 var $$ = Dom7;
-
 
 /**
  * END UTIL
@@ -22,6 +20,7 @@ var $$ = Dom7;
 class QuillEditorService {
 
   public activeEditor: any
+  public channelId:string
 
   initialized: boolean = false
 
@@ -195,7 +194,7 @@ class QuillEditorService {
   }
 
 
-  buildQuillPostEditor(selector: string, toolbarSelector: string): Quill {
+  buildQuillPostEditor(selector: string, toolbarSelector: string, channelId:string): Quill {
 
     this.init()
 
@@ -241,6 +240,8 @@ class QuillEditorService {
       theme: "snow"
     })
 
+    this.channelId = channelId
+
     return this.activeEditor
   }
 
@@ -255,8 +256,10 @@ class QuillEditorService {
 
     let imageBuffer:Buffer = await this.uploadService.uploadFile(fileElement)
 
-    let image:Image = await this.imageService.newFromBuffer(imageBuffer)
+    let image:Image = await this.imageService.newFromBuffer(imageBuffer, 1024)
     
+    image.channelId = this.channelId
+
     try {
       await this.imageService.put(image)
     } catch(ex) { console.log(ex)} //Might already exist. That's fine.  

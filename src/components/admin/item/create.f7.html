@@ -125,7 +125,7 @@
 
     $on('pageInit', async (e, page) => {
 
-      quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar")
+      quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar", itemViewModel.channel._id)
     })
 
     $on('pageBeforeRemove', () => {

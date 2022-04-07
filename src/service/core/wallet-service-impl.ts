@@ -38,7 +38,7 @@ class WalletServiceImpl implements WalletService {
     console.log("Connect wallet")
 
     await this.provider.send("eth_requestAccounts", []);
-
+    
     this.wallet = await this.provider.getSigner()
     this.address = await this.getAddress()
     
@@ -62,8 +62,8 @@ class WalletServiceImpl implements WalletService {
   // }
 
   async getAddress() {
-    
-      let accounts = await this.provider.send("eth_accounts", []);
+
+    let accounts = await this.provider.send("eth_accounts", []);
       
       if (accounts?.length > 0) {
         return accounts[0]

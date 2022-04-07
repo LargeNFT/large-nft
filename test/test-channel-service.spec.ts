@@ -300,9 +300,6 @@ contract('ChannelService', async (accounts) => {
         let image1 = await imageService.newFromBuffer(Buffer.from("image1!"))
         let image2 = await imageService.newFromBuffer(Buffer.from("image2!"))
 
-        await imageService.put(image1)
-        await imageService.put(image2)
-
         //Create category with attributes
         channel = Object.assign(new Channel(), {
             title: "The Sound of Music",
@@ -328,6 +325,14 @@ contract('ChannelService', async (accounts) => {
 
         await service.put(channel)
  
+
+        //Save images
+        image1.channelId = channel._id
+        image2.channelId = channel._id
+
+        await imageService.put(image1)
+        await imageService.put(image2)
+
 
         //Add items with those attributes
         let item1:Item = Object.assign(new Item(), {
@@ -407,7 +412,7 @@ contract('ChannelService', async (accounts) => {
         await ipfsService.ipfs.files.cp(`/ipfs/${cid}`, "/tmp/" )
 
 
-        let backup = await getFileContent(`/tmp/backup.json`)
+        let backup = await getFileContent(`/tmp/initial.json`)
 
         assert.strictEqual(backup.channels.length, 1)
         assert.strictEqual(backup.items.length, 3)

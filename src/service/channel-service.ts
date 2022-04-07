@@ -106,23 +106,20 @@ class ChannelService {
 
     //Assign  
     let nftMetadata:NFTMetadata[] = []
-    let images:string[] = []
     let animationCids:string[] = []
+
+    let images:Image[] = await this.imageService.listByChannel(channel._id, 100000, 0)
+
 
     //Get contract metadata
     let contractMetadata:ContractMetadata = await this.exportContractMetadata(channel, ownerAddress)
-
-    //Add cover image
-    if (channel.coverImageId?.length > 0) {
-      images.push(channel.coverImageId)
-    }
 
     //Generate token IDs starting at 1. Save all the records
     let tokenId = 1
     for (let item of items) {
 
       //Look up by ID - Needs to have full document
-      item = await this.itemService.get(item._id)
+      Object.assign(item, await this.itemService.get(item._id))
 
       //Set the tokenID
       item.tokenId = tokenId.toString()
@@ -137,21 +134,6 @@ class ChannelService {
         animationCids.push(animationCid)
       }
 
-      //Add cover image
-      if (item.coverImageId?.length > 0) {
-        images.push(item.coverImageId)
-      }
-
-      //Get images in post content
-      if (item.content?.ops) {
-        for (let op of item.content.ops) {
-          if (op.insert && op.insert.ipfsimage && op.insert.ipfsimage?.cid?.length > 0) {
-            images.push(op.insert.ipfsimage.cid)
-          }
-        }
-      }
-
-
       //Generate metadata and add to list
       nftMetadata.push(await this.itemService.exportNFTMetadata(channel, item, animationCid, item.coverImageId))
 
@@ -163,13 +145,11 @@ class ChannelService {
     for (let image of images) {
 
       //Add to IPFS
-      let i = await this.imageService.get(image)
-
       let result = await this.ipfsService.ipfs.add({
-        content: i.buffer?.data ? i.buffer?.data : i.buffer //difference between browser and node buffer?
+        content: image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
       })
 
-      if (result.cid.toString() != i.cid) {
+      if (result.cid.toString() != image.cid) {
         throw new Error("Incorrect cid when saving image. ")
       }
 
@@ -202,8 +182,8 @@ class ChannelService {
 
     //Save images 
     for (let image of images) {
-      console.log(`Saving image #${image} to ${directory}/images/${image}`)
-      await this.ipfsService.ipfs.files.cp(`/ipfs/${image}`, `${directory}/images/${image}`, { parents: true })
+      console.log(`Saving image #${image._id} to ${directory}/images/${image._id}`)
+      await this.ipfsService.ipfs.files.cp(`/ipfs/${image._id}`, `${directory}/images/${image._id}`, { parents: true })
     }
 
     //Save animation cids
@@ -212,25 +192,41 @@ class ChannelService {
       await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
     }
 
+
+    /**
+     * BACKUP FOR READER
+     */
+
     //Save pouch dbs
-    let backupPath = `${directory}/backup.json`
+    console.log(`Starting backup`)
+    let backupPath = `${directory}/backup`
     let backup = await this.schemaService.backup(channel._id)
-    await this.ipfsService.ipfs.files.write(backupPath, new TextEncoder().encode(JSON.stringify(backup)), { create: true, parents: true})
 
+    //Write initial page to file. Then iterage through rest of chunks.
+    await this.ipfsService.ipfs.files.write(`${backupPath}/initial.json`, new TextEncoder().encode(JSON.stringify(backup.initial)), { create: true, parents: true})
 
-    //Create reader
-    // let readerPath = `${directory}/reader`
+    let counter=0
+    for (let itemChunk of backup.itemChunks) {
+      await this.ipfsService.ipfs.files.write(`${backupPath}/itemChunks/${counter++}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true})
+    }
 
-    // //Read all the files in the generated folder
-    // let reder = require('./generated/reader')
-    // console.log(reder)
+    console.log(`Saving items to backup`)
+    //Also write each row as a file so the reader can open it quickly 
+    for (let item of items) {
+      console.log(`Saving #${item.tokenId} to ${backupPath}/items/${item.tokenId}.json`)
+      await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item.tokenId}.json`, new TextEncoder().encode(JSON.stringify(item)), { create: true, parents: true})
+    }
+
+    console.log(`Saving images to backup`)
+    //Write image backups.
+    for (let image of images) {
+      console.log(`Saving #${image._id} to ${backupPath}/images/${image._id}.json`)
+      await this.ipfsService.ipfs.files.write(`${backupPath}/images/${image._id}.json`, new TextEncoder().encode(JSON.stringify(image)), { create: true, parents: true})
+    }
 
     let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
       hash: true
     })
-
-    //
-
 
     return result.cid.toString()
 

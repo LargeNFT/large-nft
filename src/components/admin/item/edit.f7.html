@@ -130,7 +130,7 @@
     $on('pageInit', async (e, page) => {
 
       //Initialize quill and fill contents
-      quillEditorService.buildQuillPostEditor('#edit-item-editor', '#edit-item-toolbar')
+      quillEditorService.buildQuillPostEditor('#edit-item-editor', '#edit-item-toolbar', itemViewModel.channel._id)
 
       quillEditorService.activeEditor.setContents(itemViewModel.item.content)
 

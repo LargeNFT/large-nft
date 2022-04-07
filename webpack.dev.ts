@@ -21,7 +21,7 @@ mainConfigs[0].devServer = {
         directory: path.join(__dirname, 'public'),
     },
     compress: false,
-    port: 8081,
+    port: 9081,
 
 }
 

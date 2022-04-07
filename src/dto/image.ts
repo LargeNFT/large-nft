@@ -10,6 +10,9 @@ class Image {
     _rev?:string 
 
     @IsNotEmpty()
+    channelId:string
+
+    @IsNotEmpty()
     buffer?:any
 
     @Allow()

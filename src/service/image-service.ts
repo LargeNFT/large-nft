@@ -1,12 +1,14 @@
 import { injectable } from "inversify"
-import toBuffer from "it-to-buffer"
 import { Image } from "../dto/image"
-import { IpfsService } from "./core/ipfs-service"
 import { ValidationException } from "../util/validation-exception"
 import { validate, ValidationError } from 'class-validator'
 import { ImageRepository } from "../repository/image-repository"
 import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
+
+import toBuffer from 'blob-to-buffer'
+
+const reduce = require('image-blob-reduce')();
 
 
 @injectable()
@@ -45,18 +47,27 @@ class ImageService {
     await this.imageRepository.put(image)
   }
 
+  async listByChannel(channelId: string, limit: number, skip: number): Promise<Image[]> {
+    return this.imageRepository.listByChannel(channelId, limit, skip)
+  }
 
-  async newFromBuffer(buffer: Uint8Array): Promise<Image> {
+  async newFromBuffer(buffer: Uint8Array, maxWidth:number): Promise<Image> {
 
     const image: Image = new Image()
 
     image.buffer = buffer
     image.cid = await Hash.of(buffer)
 
+    if (Blob && maxWidth) {
+      let blob = await this.bufferToBlob(image.buffer)
+      let resizedBlob = await reduce.toBlob(blob, { max: maxWidth})
+      image.buffer = toBuffer(resizedBlob)
+    }
+
+
     return image
 
   }
-
 
   async getUrl(image: Image) {
 
@@ -76,9 +87,8 @@ class ImageService {
 
   }
 
+  public blobToDataURL(blob): Promise<string> {
 
-  public blobToDataURL(blob) : Promise<string> {
-    
     let dataUrl
 
     return new Promise((resolve, reject) => {

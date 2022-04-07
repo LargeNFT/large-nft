@@ -67,7 +67,8 @@ contract('ImageService', async (accounts) => {
             await service.put({
                 url: "xyz",
                 cid: "xyz",
-                title: "xyz"
+                title: "xyz",
+                channelId: 3
             })
             assert.fail("Did not throw exception")
         } catch(ex) {

@@ -33,10 +33,11 @@ class SchemaService {
     async backup(channelId:string) {
         
         const channel = await this.channelRepository.get(channelId)
+        const author = await this.authorRepository.get(channel.authorId)
+
+        //Get the items and create an array to hold the paged chunks for the reader
         const items = await this.itemRepository.listByChannel(channelId, 100000, 0)
-        // const images = await this.imageRepository.listByChannel(channelId, 100000, 0)
-        const authorResults = await this.authorRepository.db.allDocs({include_docs: true, attachments: true})
-        const authors = authorResults.rows.map(row => row.doc)
+        const chunkedItems = []
 
         //Remove publishing related field from channel
         delete channel.pinJobId
@@ -48,37 +49,37 @@ class SchemaService {
 
         //And items
         if (items?.length > 0) {
-
             for (let item of items) {
                 delete item._rev
                 delete item.lastUpdated
             }
-
         }
 
         //And authors
-        if (authors?.length > 0) {
+        if (author) {
+            delete author._rev
+            delete author.lastUpdated
+        }
 
-            for (let author of authors) {
-                delete author._rev
-                delete author.lastUpdated
-            }
-
+        //Split items into chunks
+        const chunkSize = 20
+        for (let i = 0; i < items.length; i += chunkSize) {
+            chunkedItems.push(items.slice(i, i + chunkSize))
         }
 
         //Save pouch dbs
         return {
-            channels: [channel],
-            items: items,
-            // images: images,
-            authors: authors
+            initial: {
+                channels: [channel],
+                authors: [author],
+                items: chunkedItems[0] //first page in initial load
+            },
+
+            itemChunks: chunkedItems.slice(1) //rest of items            
         }
       
     }
 
-    async import(cid:string) {
-
-    }
 
 
 }

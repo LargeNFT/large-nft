@@ -17,10 +17,18 @@ import '@yaireo/tagify/dist/tagify.css'
 
 
 import './html/images/logo.png'
+import { RoutingService } from "./service/core/routing-service"
 
 
 export default async() => {
                 
     let container = getMainContainer()
+
+    let app:any = container.get("framework7")
+    let routingService:RoutingService = container.get(RoutingService)
+
+    //Initialize routing
+    app.routes.push(...routingService.buildRoutesForContainer(container))
+
 
 }

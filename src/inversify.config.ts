@@ -1,23 +1,9 @@
 import AppComponent from './components/admin/app.f7.html'
 
-import AdminChannelIndexComponent from './components/admin/channel/index.f7.html'
-import AdminChannelCreateComponent from './components/admin/channel/create.f7.html'
-import AdminChannelShowComponent from './components/admin/channel/show.f7.html'
-import AdminChannelEditComponent from './components/admin/channel/edit.f7.html'
-
-import AdminItemIndexComponent from './components/admin/item/index.f7.html'
-import AdminItemCreateComponent from './components/admin/item/create.f7.html'
-import AdminItemShowComponent from './components/admin/item/show.f7.html'
-import AdminItemEditComponent from './components/admin/item/edit.f7.html'
-
-import AdminAuthorShowComponent from './components/admin/author/show.f7.html'
-import AdminAuthorEditComponent from './components/admin/author/edit.f7.html'
-
-import AdminPublishIndexComponent from './components/admin/publish/index.f7.html'
 
 
-import AdminSettingsComponent from './components/admin/settings/index.f7.html'
-import AdminConnectComponent from './components/admin/connect/index.f7.html'
+
+
 
 
 import { UiService } from './service/core/ui-service';
@@ -53,19 +39,17 @@ import { ItemService } from './service/item-service'
 import { ChannelWebService } from './service/web/channel-web-service'
 import { ItemWebService } from './service/web/item-web-service'
 import { AuthorWebService } from './service/web/author-web-service'
-import { PinningApi } from './dto/pinning-api'
 import { GitlabService } from './service/core/gitlab-service'
-import { Gitlab } from './dto/gitlab'
 import { GitlabRepository } from './repository/gitlab-repository'
+import { RoutingService } from './service/core/routing-service'
+import { ChannelController } from './controller/channel-controller'
+import { ItemController } from './controller/item-controller'
+import { AuthorController } from './controller/author-controller';
+import { SettingsController } from './controller/settings-controller';
 
 
 let container:Container
-let channelWebService:ChannelWebService
-let itemWebService:ItemWebService
-let authorWebService:AuthorWebService
-let pinningService:PinningService
-let gitlabService:GitlabService
-let walletService:WalletService
+
 
 function getMainContainer() {
 
@@ -85,249 +69,7 @@ function getMainContainer() {
       id: 'large', // App bundle ID
       name: 'Large', // App name
       theme: 'auto', // Automatic theme detection
-      component: AppComponent,
-      routes: [
-
-        {
-          path: "/",
-          component: AdminChannelIndexComponent
-        },
-
-        {
-          path: "/admin/channel/publish/:id",
-          async async({ resolve, reject, to}) {
-
-            let channelViewModel = await channelWebService.get(to.params.id)
-
-            let pinningApi = await pinningService.getPinata()
-
-            resolve({ 
-              component: AdminPublishIndexComponent
-            }, {
-              props: {
-                channelViewModel: channelViewModel,
-                pinningApi: pinningApi
-              } 
-            })
-          }
-        },
-
-        {
-          path: "/admin/channel/create",
-          component: AdminChannelCreateComponent
-        },
-
-        {
-          path: "/admin/channel/show/:id",
-          async async({ resolve, reject, to}) {
-
-            let channelViewModel = await channelWebService.get(to.params.id)
-
-            resolve({ 
-              component: AdminChannelShowComponent
-            }, {
-              props: {
-                channelViewModel: channelViewModel
-              } 
-            })
-          }
-        },
-        {
-          path: "/admin/channel/edit/:id",
-          async async({ resolve, reject, to }) {
-
-              let channelViewModel = await channelWebService.get(to.params.id)
-
-              resolve({ 
-                component: AdminChannelEditComponent
-              }, {
-                props: {
-                  channelViewModel: channelViewModel
-                } 
-              })
-          }
-          
-        },
-
-        /**
-         * Items
-         */
-        {
-          path: "/admin/item/index",
-          component: AdminItemIndexComponent
-        },
-        {
-          path: "/admin/item/create/:channelId",
-          async async({ resolve, reject, to }) {
-
-            let itemViewModel = await itemWebService.getNewViewModel(to.params.channelId)
-        
-            resolve({ 
-              component: AdminItemCreateComponent
-            }, {
-              props: {
-                itemViewModel: itemViewModel
-              } 
-            })
-          }
-        },
-        {
-          path: "/admin/item/show/:id",
-          async async({ resolve, reject, to }) {
-
-            let itemViewModel = await itemWebService.get(to.params.id)
-
-            resolve({ 
-              component: AdminItemShowComponent
-            }, {
-              props: {
-                itemViewModel: itemViewModel
-              } 
-            })
-          }
-          
-        },
-        {
-          path: "/admin/item/edit/:id",
-          async async({ resolve, reject, to }) {
-
-            let itemViewModel = await itemWebService.get(to.params.id)
-
-            resolve({ 
-              component: AdminItemEditComponent
-            }, {
-              props: {
-                itemViewModel: itemViewModel
-              } 
-            })
-          }
-        },
-
-        /** Author */
-
-        {
-          path: "/admin/author/show/:id",
-          async async({ resolve, reject, to}) {
-
-            let authorViewModel
-
-            try {
-              authorViewModel = await authorWebService.get(to.params.id)
-            } catch(ex) {} //might be missing
-
-
-            //If it doesn't exist create an empty one
-            if (!authorViewModel) {
-              authorViewModel = {
-                author: {
-                  walletAddress: to.params.id
-                }
-              }
-            }
-
-            resolve({ 
-              component: AdminAuthorShowComponent
-            }, {
-              props: {
-                authorViewModel: authorViewModel
-              } 
-            })
-          }
-        },
-
-
-        {
-          path: "/admin/author/edit/:id",
-          async async({ resolve, reject, to }) {
-
-              let authorViewModel
-
-              try {
-                authorViewModel = await authorWebService.get(to.params.id)
-              } catch(ex) {}
-              
-              //If it doesn't exist create an empty one
-              if (!authorViewModel) {
-                authorViewModel = {
-                  author: {
-                    walletAddress: to.params.id
-                  }
-                }
-              }
-
-              resolve({ 
-                component: AdminAuthorEditComponent
-              }, {
-                props: {
-                  authorViewModel: authorViewModel
-                } 
-              })
-          }
-          
-        },
-
-
-
-        /**
-         * Site Settings
-         */
-
-        {
-          path: "/admin/settings",
-          async async({ resolve, reject, to }) {
-
-            let pinningApi:PinningApi
-
-            try {
-              pinningApi = await pinningService.getPinata()
-            } catch(ex) {}
-            
-            //If it doesn't exist create an empty one
-            if (!pinningApi) {
-              
-              pinningApi = Object.assign(new PinningApi(), {
-                apiKey: '',
-                secretApiKey: '',
-                url: "https://api.pinata.cloud"
-              })
-
-            }
-
-
-            let gitlab:Gitlab
-
-            try {
-              gitlab = await gitlabService.get()
-            } catch(ex) {}
-
-            //If it doesn't exist create an empty one
-            if (!gitlab) {
-              
-              gitlab = Object.assign(new Gitlab(), {
-                personalAccessToken: ''
-              })
-
-            }
-
-
-            resolve({ 
-              component: AdminSettingsComponent
-            }, {
-              props: {
-                pinningApi: pinningApi,
-                gitlab: gitlab
-              } 
-            })
-
-          }
-        },
-
-        /**Connect */
-        {
-          path: "/admin/connect",
-          component: AdminConnectComponent
-        },
-      ]
+      component: AppComponent
     })
 
 
@@ -392,6 +134,10 @@ function getMainContainer() {
   container.bind("ipfsOptions").toConstantValue(ipfsOptions())
   container.bind("orbitOptions").toConstantValue(orbitOptions())
 
+  container.bind(ChannelController).toSelf().inSingletonScope()
+  container.bind(ItemController).toSelf().inSingletonScope()
+  container.bind(AuthorController).toSelf().inSingletonScope()
+  container.bind(SettingsController).toSelf().inSingletonScope()
 
 
   container.bind(UiService).toSelf().inSingletonScope()
@@ -406,6 +152,7 @@ function getMainContainer() {
   container.bind(SchemaService).toSelf().inSingletonScope()
   container.bind(PinningService).toSelf().inSingletonScope()
   container.bind(GitlabService).toSelf().inSingletonScope()
+  container.bind(RoutingService).toSelf().inSingletonScope()
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()
   container.bind(ItemWebService).toSelf().inSingletonScope()
@@ -425,14 +172,6 @@ function getMainContainer() {
   container.bind(AuthorRepository).toSelf().inSingletonScope()
   container.bind(PinningApiRepository).toSelf().inSingletonScope()
   container.bind(GitlabRepository).toSelf().inSingletonScope()
-
-  channelWebService = container.get(ChannelWebService)
-  itemWebService = container.get(ItemWebService)
-  authorWebService = container.get(AuthorWebService)
-  walletService = container.get<WalletService>(TYPES.WalletService)
-  pinningService = container.get(PinningService)
-  gitlabService = container.get(GitlabService)
-
 
   return container
 }

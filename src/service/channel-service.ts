@@ -112,6 +112,8 @@ class ChannelService {
     delete channel.pinJobStatus
     delete channel.publishedCid
     delete channel.pubDate
+    delete channel.publishReaderRepoId
+    delete channel.publishReaderRepoPath
     delete channel.lastUpdated
     delete channel._rev
     delete channel["_rev_tree"]

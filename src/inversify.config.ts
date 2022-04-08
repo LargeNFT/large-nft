@@ -102,27 +102,13 @@ function getMainContainer() {
     return {
       repo: "large-repo",
       config: {
-
-        Peering: {
-          Peers: [
-            {
-              ID: "QmWaik1eJcGHq1ybTWe7sezRfqKNcDRNkeBaLnGwQJz1Cj",
-              Addrs: ["/dnsaddr/fra1-1.hostnodes.pinata.cloud"]
-            }
-          ]
+        Addresses: {
+          Swarm: []
         }
-
       }
-
     }
 
   }
-
-  function orbitOptions() {
-    return {
-    }
-  }
-
 
 
   // container.bind('sketch').toConstantValue(sketch())
@@ -132,7 +118,6 @@ function getMainContainer() {
   container.bind("framework7").toConstantValue(framework7())
 
   container.bind("ipfsOptions").toConstantValue(ipfsOptions())
-  container.bind("orbitOptions").toConstantValue(orbitOptions())
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()

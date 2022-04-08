@@ -12,6 +12,7 @@ import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
 
 import { ChannelWebService } from "../service/web/channel-web-service";
 import { PinningService } from "../service/core/pinning-service";
+import { GitlabService } from "../service/core/gitlab-service";
 
 
 @injectable()
@@ -19,7 +20,8 @@ class ChannelController {
 
     constructor(
         private channelWebService:ChannelWebService,
-        private pinningService:PinningService
+        private pinningService:PinningService,
+        private gitlabService:GitlabService
     ) {}
 
     @routeMap("/")
@@ -38,9 +40,12 @@ class ChannelController {
 
             let pinningApi = await this.pinningService.getPinata()
 
+            let gitlab = await this.gitlabService.get()
+
             return {
                 channelViewModel: channelViewModel,
-                pinningApi: pinningApi
+                pinningApi: pinningApi,
+                gitlab: gitlab
             }
 
 

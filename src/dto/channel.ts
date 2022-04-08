@@ -71,6 +71,15 @@ class Channel {
     publishedCid:string
 
     @Allow()
+    publishReaderRepoId:string
+
+    @Allow()
+    publishReaderRepoPath:string
+
+    @Allow()
+    publishReaderRepoStatus:string
+
+    @Allow()
     pubDate?:string
 
     @Allow()

@@ -148,25 +148,24 @@
                 </div>
 
               </div>
+
               
               <div class="block-title">Deploy Contract</div>
               <div class="card">
                 <div class="card-content">
                   <div class="card-content card-content-padding">
                     ${showDeploy ? $h`
+
                       <p><strong>Contract Address:</strong> ${channelViewModel.channel.contractAddress}</p>
 
                       ${deploying ? $h`
                         <p>Deploying...</p>
                       ` : $h`
-
                         ${!channelViewModel.channel.contractAddress ? $h`
                           <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
                         ` : $h`
                           <p>Success!</p>
-                        `}
-
-                        
+                        `}                        
                       `}
 
                       
@@ -175,6 +174,79 @@
                     `}
                   </div>
                 </div>
+              </div>
+
+
+              <div class="block-title">Publish Reader</div>
+              <div class="card">
+
+                <div class="card-content card-content-padding">
+
+                  ${gitlab?.personalAccessToken?.length > 0 ? $h`
+
+                    ${showPublishReader ? $h`
+                      
+                      <form class="list" id="publish-reader" @submit="${publishReaderSubmit}">
+                        <ul>
+                          <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+
+                                    ${forking ? $h`
+                                      <div class="forking-label">
+                                        Forking...
+                                      </div>
+
+                                      <div class="preloader" id="pin-preloader"></div>
+
+                                    ` : $h`
+                                      <a href="#" @click="${deployForkClick}" class="button button-fill button-small deploy-button">Create New Fork</a>
+                                      <div class="forking-label" style="display:none;"></div>
+                                    `}
+
+                                    ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
+                                      <div class="repo-status">
+                                        <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                                        <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>  
+                                        <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                              
+                                      </div>
+
+                                      ${showPublishReaderStatus ? $h`
+
+                                        ${channelViewModel.channel.contractAddress ? $h`
+                                          <p>Reader will be configured to connect to: ${channelViewModel.channel.contractAddress}</p>  
+                                        ` : $h`
+                                          <p>Note: Contract is not deployed. The reader will not attempt to connect to Ethereum.</p>  
+                                        `}
+    
+                                        <button class="button button-fill button-small deploy-button" type="submit">Publish Reader</button>
+                                        
+                                      ` : $h`
+                                        <p style="display:none;"></p>
+                                      `}
+
+                                    ` : $h``}
+
+
+
+                                </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </form>
+
+                    
+                    ` : $h`
+                      <p>Collection must be deployed to Pinata</p>  
+                    `}
+                    
+                  ` : $h`
+                    <p>Configure <a href="/admin/settings">Gitlab</a> to deploy the collection reader.</p>
+                  `}
+
+
+                </div>
+
               </div>
 
             ` : $h`
@@ -201,7 +273,7 @@
       width: 200px;
     }
 
-    .publish-label, .ipfs-label {
+    .publish-label, .ipfs-label, .forking-label {
       margin-top: 10px;
       margin-bottom: 10px;
       font-weight: bold;
@@ -222,6 +294,7 @@
     import { ContainerService } from "../../../service/core/container-service"
     import { ChannelService } from "../../../service/channel-service"
     import { PinningService } from "../../../service/core/pinning-service"
+    import { GitlabService } from "../../../service/core/gitlab-service"
 
     import { QueueService } from   "../../../service/core/queue-service"
 
@@ -237,17 +310,25 @@
         let pinningService = ContainerService.getInstance(PinningService)
         let ipfsService = ContainerService.getInstance(IpfsService)
         let queueService = ContainerService.getInstance(QueueService)
+        let gitlabService = ContainerService.getInstance(GitlabService)
 
         let channelViewModel = props.channelViewModel
         let pinningApi = props.pinningApi
+        let gitlab = props.gitlab
 
         let publishing = false
         let publishOutput = ""
+
         let deploying = false 
         let ipfsReady = ipfsService.ipfs != undefined 
 
+        let forking = false
+
         let showPinStatus = channelViewModel.channel.pinJobId?.length > 0
+        let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
+
         let showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
+        let showPublishReader = showDeploy
 
         $on('pageInit', async () => {
 
@@ -263,6 +344,7 @@
           }
 
           await checkPinJob()
+          await checkPublishRepoStatus()
 
         })
 
@@ -315,6 +397,8 @@
           if (channelViewModel.channel.pinJobStatus == "complete" && channelViewModel.channel.publishedCid) return 
           if (publishing) return
 
+          console.log('Checking pin job...')
+
           channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
           let id = channelViewModel.channel.pinJobId
@@ -329,6 +413,7 @@
 
           //Update deploy button 
           showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
+          showPublishReader = showDeploy
 
           await $update()
 
@@ -338,12 +423,87 @@
 
         }
 
-        
+        const publishReaderSubmit = async (e) => {
+
+          e.preventDefault()
+
+          try {
+
+            
+          } catch(ex) {
+            $f7.dialog.alert(ex, "There was an error")
+          }
+
+          await $update()
+          
+        }
+
+        const deployForkClick = async (e) => {
+          
+          e.preventDefault()
+
+          forking = true
+          $update()
+
+          try {
+
+            let response = await gitlabService.createReaderFork(channelViewModel.channel)
+
+            channelViewModel.channel.publishReaderRepoId = response.id
+            channelViewModel.channel.publishReaderRepoPath = response.path
+            channelViewModel.channel.publishReaderRepoStatus = "pending"
+
+
+            await channelService.put(channelViewModel.channel)
+
+            showPublishReaderStatus = true
+
+          } catch(ex) {
+            $f7.dialog.alert(ex, "There was an error")
+          }
+
+          forking = false
+
+          await $update()
+
+        }
+
+        const checkPublishRepoStatus = async (e) => {
+
+          if (channelViewModel.channel.publishReaderRepoStatus == "complete" && channelViewModel.channel.publishReaderRepoId > 0) return 
+          if (forking) return
+
+          console.log('Checking repo fork status...')
+
+          channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+
+          let id = channelViewModel.channel.publishReaderRepoId
+          let status = channelViewModel.channel.publishReaderRepoStatus
+
+          let forkRepoStatus = await gitlabService.getForkRepoStatus(channelViewModel.channel)
+          
+          if (forkRepoStatus == "finished") { //TODO
+            channelViewModel.channel.publishReaderRepoStatus = "complete"
+            await channelService.put(channelViewModel.channel)
+          }
+
+          showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
+          console.log(channelViewModel.channel.publishReaderRepoId)
+          console.log(channelViewModel.channel.publishReaderRepoStatus)
+
+          await $update()
+
+          if (channelViewModel.channel.publishReaderRepoStatus != "complete") {
+            setTimeout(checkPublishRepoStatus, 5000)
+          }
+
+        }
+
+
         $(document).on('publish-progress', async (e) => {
           publishOutput += `<p>${e.detail.message}</p>`
           $update()
         })
-
 
         return $render
     }

@@ -54,14 +54,18 @@ import { ChannelWebService } from './service/web/channel-web-service'
 import { ItemWebService } from './service/web/item-web-service'
 import { AuthorWebService } from './service/web/author-web-service'
 import { PinningApi } from './dto/pinning-api'
+import { GitlabService } from './service/core/gitlab-service'
+import { Gitlab } from './dto/gitlab'
+import { GitlabRepository } from './repository/gitlab-repository'
 
 
 let container:Container
 let channelWebService:ChannelWebService
 let itemWebService:ItemWebService
 let authorWebService:AuthorWebService
-let walletService:WalletService
 let pinningService:PinningService
+let gitlabService:GitlabService
+let walletService:WalletService
 
 function getMainContainer() {
 
@@ -279,21 +283,39 @@ function getMainContainer() {
             } catch(ex) {}
             
             //If it doesn't exist create an empty one
-           
             if (!pinningApi) {
               
-              pinningApi = {
+              pinningApi = Object.assign(new PinningApi(), {
                 apiKey: '',
                 secretApiKey: '',
                 url: "https://api.pinata.cloud"
-              }
+              })
+
             }
+
+
+            let gitlab:Gitlab
+
+            try {
+              gitlab = await gitlabService.get()
+            } catch(ex) {}
+
+            //If it doesn't exist create an empty one
+            if (!gitlab) {
+              
+              gitlab = Object.assign(new Gitlab(), {
+                personalAccessToken: ''
+              })
+
+            }
+
 
             resolve({ 
               component: AdminSettingsComponent
             }, {
               props: {
-                pinningApi: pinningApi
+                pinningApi: pinningApi,
+                gitlab: gitlab
               } 
             })
 
@@ -383,7 +405,8 @@ function getMainContainer() {
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(SchemaService).toSelf().inSingletonScope()
   container.bind(PinningService).toSelf().inSingletonScope()
-  
+  container.bind(GitlabService).toSelf().inSingletonScope()
+
   container.bind(ChannelWebService).toSelf().inSingletonScope()
   container.bind(ItemWebService).toSelf().inSingletonScope()
   container.bind(AuthorWebService).toSelf().inSingletonScope()
@@ -401,12 +424,14 @@ function getMainContainer() {
   container.bind(ImageRepository).toSelf().inSingletonScope()
   container.bind(AuthorRepository).toSelf().inSingletonScope()
   container.bind(PinningApiRepository).toSelf().inSingletonScope()
+  container.bind(GitlabRepository).toSelf().inSingletonScope()
 
   channelWebService = container.get(ChannelWebService)
   itemWebService = container.get(ItemWebService)
   authorWebService = container.get(AuthorWebService)
   walletService = container.get<WalletService>(TYPES.WalletService)
   pinningService = container.get(PinningService)
+  gitlabService = container.get(GitlabService)
 
 
   return container

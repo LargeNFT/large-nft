@@ -7,48 +7,70 @@
 
         <div class="page-content">
 
-            <div class="block-title">Pinata Settings</div>
+            <form id="edit-settings-form" @submit="${formSubmit}">
 
+                <div class="block-title">Pinata Settings</div>
+                <div class="block list">
+                    <p>
+                        Commercial IPFS hosting is available through <a href="https://www.pinata.cloud/" class="external">Pinata</a>. Create a free
+                        account and set up your API key and Secret API Key below. 
+                    </p>
 
-
-            <form class="block list" id="edit-settings-form" @submit="${formSubmit}">
-
-                <input type="hidden" name="_id" value="${pinningApi._id}" />
-                <input type="hidden" name="_rev" value="${pinningApi._rev}" />
-                <input type="hidden" name="url" value="${pinningApi.url}" />
-                <input type="hidden" name="dateCreated" value="${pinningApi.dateCreated}" />
-
-                <p>
-                    Commercial IPFS hosting is available through <a href="https://www.pinata.cloud/" class="external">Pinata</a>. Create a free
-                    account and set up your API key and Secret API Key below. 
-                </p>
-
-                <ul>
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">API Key</div>
-                                <div class="item-input-wrap">
-                                    <input type="text" name="apiKey" placeholder="API Key"
-                                        value="${pinningApi.apiKey}" />
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">API Key</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="apiKey" placeholder="API Key"
+                                            value="${pinningApi.apiKey}" @change="${apiKeyChange}" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Secret API Key</div>
-                                <div class="item-input-wrap">
-                                    <input type="password" name="secretApiKey" placeholder="Secret API Key"
-                                        value="${pinningApi.secretApiKey}" />
+                        </li>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Secret API Key</div>
+                                    <div class="item-input-wrap">
+                                        <input type="password" name="secretApiKey" placeholder="Secret API Key"
+                                            value="${pinningApi.secretApiKey}" @change="${secretApiKeyChange}" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                        
+                    </ul>
+                </div>
 
-                <div class="row block">
+                <div class="block-title">Gitlab Settings</div>
+                <div class="block list">
+                    <p>
+                        To deploy the reader for your collection you will need a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account. 
+                        Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
+                        save it below. If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
+                        take you directly to the create form. 
+                    </p>
+
+                    <p>Name the token "Large" (or whatever you choose) and select an appropriate expiration date. Under "Select scopes" check the box beside "api".</p>
+
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Personal Access Token</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="personalAccessToken" placeholder="Personal access token"
+                                            value="${gitlab.personalAccessToken}" @change="${personalAccessTokenChange}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+
+                <div class="block row">
 
                     <div class="col-70"></div>
 
@@ -58,11 +80,7 @@
 
                 </div>
 
-
             </form>
-
-
-
         </div>
 
 
@@ -77,6 +95,9 @@
 <script>
     import { ContainerService } from "../../../service/core/container-service"
     import { PinningService } from "../../../service/core/pinning-service"
+    import { GitlabService } from "../../../service/core/gitlab-service"
+
+    import { Gitlab } from "../../../dto/gitlab"
     import { PinningApi } from "../../../dto/pinning-api"
 
     import Navbar from "../../admin/navbar.f7.html"
@@ -84,21 +105,22 @@
     export default (props, { $, $on, $f7, $update }) => {
 
         let pinningService = ContainerService.getInstance(PinningService)
+        let gitlabService = ContainerService.getInstance(GitlabService)
 
         let pinningApi = props.pinningApi
+        let gitlab = props.gitlab 
 
         const formSubmit = async (e) => {
 
             e.preventDefault()
-
-            //Get data
-            let pinningApi = Object.assign(new PinningApi(), $f7.form.convertToData('#edit-settings-form'))
 
             //Save
             try {
 
                 //Validate credentials
                 await pinningService.validateAccount(pinningApi)
+
+                await gitlabService.put(gitlab)
 
                 await pinningService.put(pinningApi)
 
@@ -115,12 +137,22 @@
 
             } catch (ex) {
                 console.log(ex)
-                $f7.dialog.alert(ex, "Test connection failed")
+                $f7.dialog.alert(ex.errors, "Test connection failed")
             }
 
         }
 
+        const apiKeyChange = async (e) => {
+            pinningApi.apiKey = $(e.currentTarget).val()
+        }
 
+        const secretApiKeyChange = async (e) => {
+            pinningApi.secretApiKey = $(e.currentTarget).val()
+        }
+
+        const personalAccessTokenChange = async (e) => {
+            gitlab.personalAccessToken = $(e.currentTarget).val()
+        }
 
         return $render
     }

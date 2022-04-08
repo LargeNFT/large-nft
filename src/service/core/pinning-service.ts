@@ -18,10 +18,11 @@ class PinningService {
     }
 
     async getPinata() : Promise<PinningApi> {
+
         let result = await this.pinningApiRepository.list(1, 0)
 
         if (result?.length > 0) {
-            return result[0]
+            return Object.assign(new PinningApi(), result[0]) 
         }
         
     }

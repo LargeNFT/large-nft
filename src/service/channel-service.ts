@@ -260,7 +260,7 @@ class ChannelService {
 
 
 
-    //Write initial page to file. Then iterage through rest of chunks.
+    //Write initial page to file. Then iterate through rest of chunks.
     await this.ipfsService.ipfs.files.write(`${backupPath}/initial.json`, new TextEncoder().encode(JSON.stringify(backup.initial)), { create: true, parents: true})
 
     let counter=0

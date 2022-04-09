@@ -211,7 +211,7 @@
                                         <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                              
                                       </div>
 
-                                      ${showPublishReaderStatus ? $h`
+                                      ${showPublishReaderStatus && ipfsReady ? $h`
 
                                         ${channelViewModel.channel.contractAddress ? $h`
                                           <p>Reader will be configured to connect to: ${channelViewModel.channel.contractAddress}</p>  
@@ -351,6 +351,8 @@
         const deployPinataClick = async (e) => {
 
           publishing = true
+          showDeploy = false
+          showPublishReader = false 
 
           await $update()
           
@@ -428,7 +430,7 @@
           e.preventDefault()
 
           try {
-
+            await gitlabService.deployReader(channelViewModel.channel)
             
           } catch(ex) {
             $f7.dialog.alert(ex, "There was an error")
@@ -443,6 +445,8 @@
           e.preventDefault()
 
           forking = true
+          showPublishReaderStatus = false
+          
           $update()
 
           try {

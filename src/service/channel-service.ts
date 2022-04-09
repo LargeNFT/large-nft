@@ -141,6 +141,11 @@ class ChannelService {
       imageCids.push(channel.coverImageId)
     }
 
+    //Add author image
+    if (author.coverPhotoId?.length > 0) {
+      imageCids.push(author.coverPhotoId)
+    }
+
     //Gather NFT data
     for (let item of items) {
 
@@ -280,9 +285,8 @@ class ChannelService {
     //Write image backups.
     for (let image of images) {
       this.logPublishProgress(`Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
-      await this.ipfsService.ipfs.files.write(`${backupPath}/images/${image.cid}.json`, new TextEncoder().encode(JSON.stringify(image, Object.keys(image).sort())), { create: true, parents: true})
+      await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${backupPath}/images/${image.cid}`, { parents: true })
     }
-
 
     let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
       hash: true

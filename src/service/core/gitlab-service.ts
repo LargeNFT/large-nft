@@ -103,7 +103,7 @@ class GitlabService {
 
         //Delete all existing files from the repo
 
-        console.log(`Deploying reader..`)
+        this.logPublishReaderProgress(`Deploying reader...`)
 
         let config = await this.get()
 
@@ -128,7 +128,7 @@ class GitlabService {
             content: new TextDecoder("utf-8").decode(bufferedContents)
         })
 
-        console.log(`Saving item chunks...`)
+        this.logPublishReaderProgress(`Saving item chunks...`)
 
 
         //Get list of files in /itemChunks
@@ -151,7 +151,7 @@ class GitlabService {
             // console.log(ex)
         }
 
-        console.log(`Saving items...`)
+        this.logPublishReaderProgress(`Saving items...`)
 
         //Get list of files in /items
 
@@ -171,13 +171,13 @@ class GitlabService {
             }
             
         } catch(ex) {
-            console.log(ex)
+            this.logPublishReaderProgress(ex)
         }
 
 
 
         //Get list of files in /images
-        console.log(`Saving images...`)
+        this.logPublishReaderProgress(`Saving images...`)
 
         try {
 
@@ -195,7 +195,7 @@ class GitlabService {
             }
             
         } catch(ex) {
-            console.log(ex)
+            this.logPublishReaderProgress(ex)
         }
 
 
@@ -212,7 +212,7 @@ class GitlabService {
             }
         })
 
-        console.log(`Publish complete`)
+        this.logPublishReaderProgress(`Publish complete`)
 
 
 
@@ -235,7 +235,9 @@ class GitlabService {
             }
         })
 
-        let actions = results?.data?.map( result => {
+        //Skip directories because gitlab chokes on them.
+        let actions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
+
             return {
                 action: 'delete',
                 file_path: result.path
@@ -243,8 +245,6 @@ class GitlabService {
         })
 
         
-        console.log(actions)
-
         if (actions?.length > 0) {
 
             let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
@@ -265,6 +265,24 @@ class GitlabService {
 
 
     }
+
+
+    private logPublishReaderProgress(message:string) {
+    
+        console.log(message)
+    
+        if (typeof window !== "undefined" && typeof window.document !== "undefined") {
+          // browser
+          const imageSelectedEvent = new CustomEvent('publish-reader-progress', {
+            detail: { message: message }
+          })
+      
+          document.dispatchEvent(imageSelectedEvent)
+    
+        }
+    
+      }
+    
 
 }
 

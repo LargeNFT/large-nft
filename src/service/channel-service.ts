@@ -114,6 +114,7 @@ class ChannelService {
     delete channel.pubDate
     delete channel.publishReaderRepoId
     delete channel.publishReaderRepoPath
+    delete channel.publishReaderRepoStatus
     delete channel.lastUpdated
     delete channel._rev
     delete channel["_rev_tree"]
@@ -423,8 +424,6 @@ class ChannelService {
       document.dispatchEvent(imageSelectedEvent)
 
     }
-
-
 
   }
 

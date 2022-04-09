@@ -32,6 +32,7 @@ import { WalletService } from "../src/service/core/wallet-service";
 import { PinningService } from "../src/service/core/pinning-service";
 
 import TYPES from "../src/service/core/types";
+import { GitlabRepository } from "../src/repository/gitlab-repository";
 
 
 let container:Container
@@ -86,6 +87,7 @@ async function getContainer() {
     container.bind(ImageRepository).toSelf().inSingletonScope()
     container.bind(AuthorRepository).toSelf().inSingletonScope()
     container.bind(PinningApiRepository).toSelf().inSingletonScope()
+    container.bind(GitlabRepository).toSelf().inSingletonScope()
 
 
 

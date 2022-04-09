@@ -218,6 +218,13 @@
                                         ` : $h`
                                           <p>Note: Contract is not deployed. The reader will not attempt to connect to Ethereum.</p>  
                                         `}
+
+                                        ${publishReaderOutput ? $h`
+                                          <div class="publish-output" innerHTML="${publishReaderOutput}"></div>
+                                        ` : $h`
+                                          <div class="publish-output" style="display:none;"></div>
+                                        `}
+
     
                                         <button class="button button-fill button-small deploy-button" type="submit">Publish Reader</button>
                                         
@@ -283,7 +290,9 @@
     .publish-output {
       border: 1px solid #cccccc;
       font-size: 13px;
-      padding: 15px;
+      width: 100%;
+      max-width: 100%;
+      padding: 5px;
     }
   </style>
   
@@ -318,6 +327,7 @@
 
         let publishing = false
         let publishOutput = ""
+        let publishReaderOutput = ""
 
         let deploying = false 
         let ipfsReady = ipfsService.ipfs != undefined 
@@ -446,7 +456,7 @@
 
           forking = true
           showPublishReaderStatus = false
-          
+
           $update()
 
           try {
@@ -469,6 +479,9 @@
           forking = false
 
           await $update()
+
+          await checkPublishRepoStatus()
+
 
         }
 
@@ -506,6 +519,11 @@
 
         $(document).on('publish-progress', async (e) => {
           publishOutput += `<p>${e.detail.message}</p>`
+          $update()
+        })
+
+        $(document).on('publish-reader-progress', async (e) => {
+          publishReaderOutput += `<p>${e.detail.message}</p>`
           $update()
         })
 

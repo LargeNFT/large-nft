@@ -37,17 +37,20 @@ class ChannelController {
         return new ModelView(async (routeTo:RouteTo) => {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+            
+            let pinningApi
+            let gitlab
 
-            let pinningApi = await this.pinningService.getPinata()
-
-            let gitlab = await this.gitlabService.get()
+            try {
+                pinningApi = await this.pinningService.getPinata()
+                gitlab = await this.gitlabService.get()
+            } catch(ex) {}
 
             return {
                 channelViewModel: channelViewModel,
                 pinningApi: pinningApi,
                 gitlab: gitlab
             }
-
 
         }, AdminPublishIndexComponent)
     }

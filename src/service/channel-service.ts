@@ -141,6 +141,11 @@ class ChannelService {
       imageCids.push(channel.coverImageId)
     }
 
+    //Add banner image
+    if (channel.coverBannerId?.length > 0) {
+      imageCids.push(channel.coverBannerId)
+    }
+
     //Add author image
     if (author.coverPhotoId?.length > 0) {
       imageCids.push(author.coverPhotoId)

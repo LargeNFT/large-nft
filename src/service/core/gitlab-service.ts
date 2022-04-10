@@ -113,7 +113,6 @@ class GitlabService {
 
         await this.deleteReaderBackup(channel)
         
-
         let actions = []
 
         let directory = `/blogs/${channel._id}/backup`
@@ -189,7 +188,8 @@ class GitlabService {
                 actions.push({
                     action: "create",
                     file_path: `backup/images/${file.name}`,
-                    content: new TextDecoder("utf-8").decode(bufferedContents)
+                    content: Buffer.from(bufferedContents).toString('base64'),
+                    encoding: 'base64'
                 })
     
             }
@@ -200,7 +200,6 @@ class GitlabService {
 
 
         let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
-
 
         await axios.post(url, {
             branch: "master",
@@ -214,11 +213,7 @@ class GitlabService {
 
         this.logPublishReaderProgress(`Publish complete`)
 
-
-
     }
-
-
 
     async deleteReaderBackup(channel:Channel) {
 
@@ -266,7 +261,6 @@ class GitlabService {
 
     }
 
-
     private logPublishReaderProgress(message:string) {
     
         console.log(message)
@@ -281,8 +275,7 @@ class GitlabService {
     
         }
     
-      }
-    
+    }
 
 }
 

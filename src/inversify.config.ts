@@ -48,7 +48,9 @@ import { AuthorController } from './controller/author-controller';
 import { SettingsController } from './controller/settings-controller';
 
 
-let container:Container
+
+
+let container: Container
 
 
 function getMainContainer() {
@@ -56,8 +58,6 @@ function getMainContainer() {
   if (container) return container
 
   container = new Container()
-
-
 
   function framework7() {
 
@@ -96,16 +96,15 @@ function getMainContainer() {
     }
   }
 
-
-
   function ipfsOptions() {
+
     return {
-      repo: "large-repo",
-      config: {
-        Addresses: {
-          Swarm: []
-        }
-      }
+      // config: {
+      //   Addresses: {
+      //     Swarm: [
+      //     ]
+      //   }
+      // }
     }
 
   }

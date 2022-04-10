@@ -5,12 +5,14 @@ import { PinningApiRepository } from "../../repository/pinning-api-repository";
 import { ValidationException } from "../../util/validation-exception";
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios'
+import { IpfsService } from "./ipfs-service";
 
 @injectable()
 class PinningService {
 
     constructor(
-        private pinningApiRepository:PinningApiRepository
+        private pinningApiRepository:PinningApiRepository,
+        private ipfsService:IpfsService
     ) {}
 
     async get(_id: string): Promise<PinningApi> {
@@ -53,10 +55,18 @@ class PinningService {
 
         let url = `${pinningApi.url}/pinning/pinByHash`
 
+        let nodeId = await this.ipfsService.ipfs.id()
+        
         let body = {
             hashToPin: cid,
             pinataMetadata: {
                 name: name
+            }
+        }
+
+        if (nodeId.addresses?.length > 0) {
+            body["pinataOptions"] = {
+                hostNodes: nodeId.addresses
             }
         }
 

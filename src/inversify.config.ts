@@ -101,6 +101,7 @@ function getMainContainer() {
   function ipfsOptions() {
 
     return {
+      preload: { enabled: false },
       relay: {
         enabled: true, // enable relay dialer/listener (STOP)
         hop: {
@@ -114,9 +115,7 @@ function getMainContainer() {
             '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
             '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star'
           ]
-        },
-        // If you want to connect to the public bootstrap nodes, remove the next line
-        Bootstrap: []
+        }
       }
 
     }

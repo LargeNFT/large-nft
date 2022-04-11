@@ -6,6 +6,7 @@ import * as IPFS from 'ipfs-core'
 class IpfsService {
 
   public peerCount:number=0
+  public addresses
 
   public ipfs
 
@@ -41,10 +42,11 @@ class IpfsService {
     let peers = await this.ipfs.swarm.peers()
 
     this.peerCount = peers.length
+    this.addresses = id?.addresses?.map( a => a.toString())
 
     const updatePeerCountEvent = new CustomEvent('update-peers', {
       detail: { 
-        addresses: id?.addresses?.map( a => a.toString()),
+        addresses: this.addresses,
         peers: peers.map(p => p.addr.toString()),
         count: this.peerCount 
       }

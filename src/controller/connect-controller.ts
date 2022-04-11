@@ -25,9 +25,12 @@ class ConnectController {
 
           let peers = await this.ipfsService.ipfs.swarm.peers()
             
+          let id = await this.ipfsService.ipfs.id()
+
           return {
             peers: peers.map(e => e.addr.toString()),
-            peerCount: peers.length
+            peerCount: peers.length,
+            addresses: id?.addresses?.map( a => a.toString())
           }
 
 

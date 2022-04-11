@@ -12,7 +12,7 @@
       </a>
     </div>
 
-    <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll}>
+    <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll} id="channel-index-infinite-scroll">
 
       <div class="row">
 
@@ -72,7 +72,7 @@
       console.log("Unload infinite scroll")
 
       // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-      $f7.infiniteScroll.destroy('.infinite-scroll-content')
+      $f7.infiniteScroll.destroy('#channel-index-infinite-scroll')
 
       // Remove preloader
       $('.infinite-scroll-preloader').hide()
@@ -173,7 +173,7 @@
       })
 
       //Get the page
-      $('.infinite-scroll-content').trigger('infinite')
+      $('#channel-index-infinite-scroll').trigger('infinite')
 
 
       virtualList.on('itemsAfterInsert', (virtualList, fragment) => {

@@ -23,25 +23,31 @@ class IpfsService {
     this.ipfs = await IPFS.create(this.ipfsOptions)
 
     this.ipfs.libp2p.connectionManager.on('peer:connect', (connection) => {
-      this.updatePeerCount()
+      this.updateInfo()
     })
 
     this.ipfs.libp2p.connectionManager.on('peer:disconnect', (connection) => {
-      this.updatePeerCount()
+      this.updateInfo()
     })
 
     console.log('Init IPFS complete')
 
   }
   
-  async updatePeerCount() {
+  async updateInfo() {
+
+    let id = await this.ipfs.id()
 
     let peers = await this.ipfs.swarm.peers()
 
     this.peerCount = peers.length
 
-    const updatePeerCountEvent = new CustomEvent('update-peer-count', {
-      detail: { count: this.peerCount }
+    const updatePeerCountEvent = new CustomEvent('update-peers', {
+      detail: { 
+        addresses: id?.addresses?.map( a => a.toString()),
+        peers: peers.map(p => p.addr.toString()),
+        count: this.peerCount 
+      }
     })
 
     document.dispatchEvent(updatePeerCountEvent)

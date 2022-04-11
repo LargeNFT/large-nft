@@ -95,7 +95,7 @@
                       ${!ipfsReady ? $h`
                         <div class="ipfs-label">IPFS Initializing...</div>
                       ` : $h`
-                        <div class="ipfs-label">IPFS Ready: ${peerCount} peers</div>
+                        <div class="ipfs-label"><a href="/admin/connect">IPFS Ready</a>: ${peerCount} peers</div>
                       `}
 
                       ${publishing ? $h`
@@ -542,7 +542,7 @@
           $update()
         })
 
-        $(document).on('update-peer-count', async (e) => {
+        $(document).on('update-peers', async (e) => {
           peerCount = e.detail.count
           $update()
         })

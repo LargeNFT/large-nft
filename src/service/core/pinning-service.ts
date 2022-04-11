@@ -66,7 +66,7 @@ class PinningService {
 
         if (nodeId.addresses?.length > 0) {
             body["pinataOptions"] = {
-                hostNodes: nodeId.addresses
+                hostNodes: nodeId.addresses?.map( a => a.toString())
             }
         }
 

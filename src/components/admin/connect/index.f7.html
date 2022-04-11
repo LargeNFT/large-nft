@@ -3,21 +3,31 @@
 
     <div class="page" data-name="connect">
 
-        <div class="navbar theme-dark">
-            <div class="navbar-bg"></div>
-            <div class="navbar-inner">
-                <div class="title">Connect</div>
-                <div class="right">
-                    <${HeaderRight} />
-                </div>
-            </div>
-        </div>
+        <${Navbar} />
 
 
         <div class="page-content">
 
             <div class="row">
                 <div class="col-100 tablet-50 center">
+
+                    <div class="block-title">IPFS Addresses
+                    </div>
+                    <div class="block list media-list peer-list">
+                        <ul>
+                            ${addresses?.map( (address) => $h`
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-subtitle no-wrap">
+                                            ${address}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            `)}
+                        </ul>
+                    </div>
 
                     <div class="block-title">IPFS Peers <span class="badge peers-badge color-blue">${peerCount}</span>
                     </div>
@@ -57,25 +67,6 @@
                         </ul>
                     </div>
 
-
-                    <div class="block-title">Monitored Feeds</div>
-                    <div class="block list media-list peer-list">
-                        <ul>
-                            ${subscribed?.map( (sub) => $h`
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-inner">
-                                            <div class="item-subtitle no-wrap">
-                                                ${sub}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            `)}
-
-                        </ul>
-                    </div>
-
                 </div>
             </div>
 
@@ -97,7 +88,7 @@
 
     import { IpfsService } from "../../../service/core/ipfs-service"
 
-    import HeaderRight from "../../admin/header-right.f7.html"
+    import Navbar from "../../admin/navbar.f7.html"
 
 
     export default (props, { $, $on, $f7, $update }) => {
@@ -105,22 +96,12 @@
         let uiService = ContainerService.getInstance(UiService)
         let ipfsService = ContainerService.getInstance(IpfsService)
 
-        let peers 
-        let peerCount
+        let peers = props.peers
+        let peerCount = props.peerCount
+        let addresses = props.addresses 
 
         let subscribed
 
-        $on('pageInit', async (e, page) => {
-            
-            peers = await ipfsService.ipfs.swarm.peers()
-            
-            peers = peers.map(e => e.addr.toString())
-
-            peerCount = peers.length
-
-            subscribed = await ipfsService.ipfs.pubsub.ls()
-
-        })
 
         const addPeerClick = async(e) => {
 
@@ -146,6 +127,15 @@
 
 
         }
+
+
+        $(document).on('update-peers', async (e) => {
+          peers = e.detail.peers
+          peerCount = e.detail.count
+          addresses = e.detail.addresses
+          $update()
+        })
+
 
         return $render
     }

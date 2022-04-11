@@ -47,6 +47,7 @@ import { ItemController } from './controller/item-controller'
 import { AuthorController } from './controller/author-controller';
 import { SettingsController } from './controller/settings-controller';
 import { PublishService } from './service/core/publish-service';
+import { ConnectController } from './controller/connect-controller';
 
 
 
@@ -135,6 +136,7 @@ function getMainContainer() {
   container.bind(ItemController).toSelf().inSingletonScope()
   container.bind(AuthorController).toSelf().inSingletonScope()
   container.bind(SettingsController).toSelf().inSingletonScope()
+  container.bind(ConnectController).toSelf().inSingletonScope()
 
 
   container.bind(UiService).toSelf().inSingletonScope()

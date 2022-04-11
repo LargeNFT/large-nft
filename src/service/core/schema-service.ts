@@ -50,10 +50,9 @@ class SchemaService {
             initial: {
                 channels: [channel],
                 authors: [author],
-                items: chunkedItems[0] //first page in initial load
             },
 
-            itemChunks: chunkedItems.slice(1) //rest of items            
+            itemChunks: chunkedItems //rest of items            
         }
       
     }

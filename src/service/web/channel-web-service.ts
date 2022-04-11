@@ -1,33 +1,36 @@
 import { injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
+import { Item } from "../../dto/item";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
+import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
+import { ItemWebService } from "./item-web-service";
 
 @injectable()
 class ChannelWebService {
 
     constructor(
-        private channelService:ChannelService,
-        private imageService:ImageService,
-        private authorService:AuthorService
-    ) {}
+        private channelService: ChannelService,
+        private imageService: ImageService,
+        private authorService: AuthorService,
+    ) { }
 
-    async get(_id:string) : Promise<ChannelViewModel> {
+    async get(_id: string): Promise<ChannelViewModel> {
         return this.getViewModel(await this.channelService.get(_id))
     }
 
-    async getViewModel(channel:Channel) : Promise<ChannelViewModel> {
+    async getViewModel(channel: Channel): Promise<ChannelViewModel> {
 
-        let coverImage:ImageViewModel
-        let coverBanner:ImageViewModel 
-        let authorPhoto:ImageViewModel
+        let coverImage: ImageViewModel
+        let coverBanner: ImageViewModel
+        let authorPhoto: ImageViewModel
 
-        let author:Author
+        let author: Author
 
         let editable = !channel.contractAddress
 
@@ -53,7 +56,7 @@ class ChannelWebService {
         }
 
         if (channel.authorId) {
-            
+
             author = await this.authorService.get(channel.authorId)
 
             //Load cover photo if there is one.
@@ -73,7 +76,7 @@ class ChannelWebService {
         return {
             channel: channel,
             coverImage: coverImage,
-            coverBanner:coverBanner,
+            coverBanner: coverBanner,
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
             authorPhoto: authorPhoto,
@@ -83,19 +86,23 @@ class ChannelWebService {
 
     }
 
-    async list(limit: number, skip:number): Promise<ChannelViewModel[]> {
+    async list(limit: number, skip: number): Promise<ChannelViewModel[]> {
 
-        let result:ChannelViewModel[] = []
+        let result: ChannelViewModel[] = []
 
-        let channels:Channel[] = await this.channelService.list(limit, skip)
+        let channels: Channel[] = await this.channelService.list(limit, skip)
 
         for (let channel of channels) {
             result.push(await this.getViewModel(channel))
         }
 
         return result
-    
-      }
+
+    }
+
+
+
+
 
 }
 

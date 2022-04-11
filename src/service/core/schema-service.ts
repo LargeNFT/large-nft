@@ -2,6 +2,7 @@ import { injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
+import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
 import { AuthorRepository } from "../../repository/author-repository";
 import { ChannelRepository } from "../../repository/channel-repository";
 import { GitlabRepository } from "../../repository/gitlab-repository";
@@ -34,30 +35,6 @@ class SchemaService {
         await this.gitlabRepository.load(walletAddress)
 
     }
-
-    async backup(channel:Channel, items:Item[], author:Author) {
-        
-        const chunkedItems = []
-
-        //Split items into chunks
-        const chunkSize = 20
-        for (let i = 0; i < items.length; i += chunkSize) {
-            chunkedItems.push(items.slice(i, i + chunkSize))
-        }
-
-        //Save pouch dbs
-        return {
-            initial: {
-                channels: [channel],
-                authors: [author],
-            },
-
-            itemChunks: chunkedItems //rest of items            
-        }
-      
-    }
-
-
 
 }
 

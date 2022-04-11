@@ -46,6 +46,7 @@ import { ChannelController } from './controller/channel-controller'
 import { ItemController } from './controller/item-controller'
 import { AuthorController } from './controller/author-controller';
 import { SettingsController } from './controller/settings-controller';
+import { PublishService } from './service/core/publish-service';
 
 
 
@@ -99,7 +100,12 @@ function getMainContainer() {
   function ipfsOptions() {
 
     return {
-      
+      relay: {
+        enabled: true, // enable relay dialer/listener (STOP)
+        hop: {
+          enabled: true // make this node a relay (HOP)
+        }
+      },
       config: {
         Addresses: {
           Swarm: [
@@ -136,6 +142,7 @@ function getMainContainer() {
   container.bind(DeployService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(QuillEditorService).toSelf().inSingletonScope()
+  container.bind(PublishService).toSelf().inSingletonScope()
 
   container.bind(UploadService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()

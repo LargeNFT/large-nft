@@ -302,6 +302,8 @@
   
     import { ContainerService } from "../../../service/core/container-service"
     import { ChannelService } from "../../../service/channel-service"
+    import { PublishService } from "../../../service/core/publish-service"
+
     import { PinningService } from "../../../service/core/pinning-service"
     import { GitlabService } from "../../../service/core/gitlab-service"
 
@@ -320,6 +322,7 @@
         let ipfsService = ContainerService.getInstance(IpfsService)
         let queueService = ContainerService.getInstance(QueueService)
         let gitlabService = ContainerService.getInstance(GitlabService)
+        let publishService = ContainerService.getInstance(PublishService)
 
         let channelViewModel = props.channelViewModel
         let pinningApi = props.pinningApi
@@ -385,7 +388,7 @@
           await channelService.put(channelViewModel.channel)
 
           //Now publish
-          await channelService.publishToIPFS(channelViewModel.channel, pinningApi)
+          await publishService.publishToIPFS(channelViewModel.channel, pinningApi)
 
           showPinStatus = true
           publishing = false
@@ -403,7 +406,7 @@
           
           let promiseView = {
             title: `Deploying contract ${name}. Waiting for transaction to be mined.`,
-            promise: channelService.deployContract(channelViewModel.channel)
+            promise: publishService.deployContract(channelViewModel.channel)
           }
 
           //Wait for it to be mined

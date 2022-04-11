@@ -101,6 +101,7 @@ function getMainContainer() {
   function ipfsOptions() {
 
     return {
+      repo: Math.random().toString(36).substring(7),
       preload: { enabled: false },
       relay: {
         enabled: true, // enable relay dialer/listener (STOP)

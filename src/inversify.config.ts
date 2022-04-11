@@ -99,12 +99,19 @@ function getMainContainer() {
   function ipfsOptions() {
 
     return {
-      // config: {
-      //   Addresses: {
-      //     Swarm: [
-      //     ]
-      //   }
-      // }
+      
+      config: {
+        Addresses: {
+          Swarm: [
+            // This is a public webrtc-star server
+            '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
+            '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star'
+          ]
+        },
+        // If you want to connect to the public bootstrap nodes, remove the next line
+        Bootstrap: []
+      }
+
     }
 
   }

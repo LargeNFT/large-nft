@@ -244,7 +244,7 @@
 
                     
                     ` : $h`
-                      <p>Collection must be deployed to Pinata</p>  
+                      <p>Collection must be deployed to IPFS</p>  
                     `}
                     
                   ` : $h`
@@ -345,7 +345,7 @@
         let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
 
         let showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
-        let showPublishReader = showDeploy
+        let showPublishReader = channelViewModel.channel.publishedCid != undefined
 
         let pageUnloaded = false
 
@@ -441,7 +441,7 @@
 
           //Update deploy button 
           showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
-          showPublishReader = showDeploy
+          showPublishReader = channelViewModel.channel.publishedCid != undefined
 
           await $update()
 

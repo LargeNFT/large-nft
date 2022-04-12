@@ -130,10 +130,11 @@ class GitlabService {
         //Authors
         let authorsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/authors.json`)) 
 
+
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/channels.json",
+            file_path: "backup/authors.json",
             content: new TextDecoder("utf-8").decode(authorsContents)
         })
 
@@ -251,6 +252,9 @@ class GitlabService {
 
         
         if (actions?.length > 0) {
+
+            console.log(`Deleting from reader repo...`)
+            console.log(actions)
 
             let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
 

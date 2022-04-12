@@ -53,11 +53,8 @@ class PublishService {
 
         //Save pouch dbs
         return {
-            initial: {
-                channels: [await this.channelWebService.getViewModel(channel)],
-                authors: [author],
-            },
-
+            channels: [await this.channelWebService.getViewModel(channel)],
+            authors: [author],
             itemChunks: chunkedItems //rest of items            
         }
 
@@ -229,8 +226,12 @@ class PublishService {
 
 
 
-        //Write initial page to file. Then iterate through rest of chunks.
-        await this.ipfsService.ipfs.files.write(`${backupPath}/initial.json`, new TextEncoder().encode(JSON.stringify(backup.initial)), { create: true, parents: true })
+        //Write channels
+        await this.ipfsService.ipfs.files.write(`${backupPath}/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true })
+
+        //Write authors
+        await this.ipfsService.ipfs.files.write(`${backupPath}/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true })
+
 
         let counter = 0
         for (let itemChunk of backup.itemChunks) {
@@ -239,7 +240,7 @@ class PublishService {
 
         this.logPublishProgress(`Saving items to backup`)
         //Also write each row as a file so the reader can open it quickly 
-        for (let item of items) {
+        for (let item of backup.itemChunks) {
             this.logPublishProgress(`Saving #${item.tokenId} to ${backupPath}/items/${item.tokenId}.json`)
             await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item.tokenId}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
         }

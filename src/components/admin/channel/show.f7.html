@@ -23,13 +23,22 @@
           <div class="card channel-card-show">
 
             <div class="card-header banner" id="banner">
-    
+              
+                ${showEdit ? $h`
+                  <div class="float-right">
+                    <a class="button button-fill button-raised color-blue text-color-white" href="/admin/channel/publish/${channelViewModel.channel._id}">Publish</a>
+                  </div>  
+                ` : $h``} 
+
+
                 ${channelViewModel?.coverImage ? $h`
                   <img src="${channelViewModel.coverImage.url}" class="avatar" />
                 ` : $h`
                   <i class="material-icons avatar">image</i>
                 `}
                 
+
+
             </div>
     
             <div class="card-content">
@@ -37,6 +46,7 @@
                 <div class="card-content card-content-padding">
 
                     <div class="float-right">
+
                       <div class="menu-item menu-item-dropdown">
                         <div class="menu-item-content icon-only">
                           <div class="menu-item-content">
@@ -50,12 +60,10 @@
                             ${showEdit ? $h`
                               <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
                               <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
-                              <a class="menu-dropdown-link menu-close" href="/admin/channel/publish/${channelViewModel.channel._id}">Publish</a>
                             ` : $h``} 
                           </div>
                         </div>
                       </div>
-
                     </div>
 
                     <div class="title">${channelViewModel?.channel?.title}</div>

@@ -36,24 +36,17 @@ class PublishService {
 
     async createBackup(channel: Channel, items: Item[], author: Author) {
 
-        let itemViewModels: ItemViewModel[] = []
-
-        for (let item of items) {
-            itemViewModels.push(await this.itemWebService.getViewModel(item, channel))
-        }
-
-
         const chunkedItems = []
 
         //Split items into chunks
         const chunkSize = 20
-        for (let i = 0; i < itemViewModels.length; i += chunkSize) {
-            chunkedItems.push(itemViewModels.slice(i, i + chunkSize))
+        for (let i = 0; i < items.length; i += chunkSize) {
+            chunkedItems.push(items.slice(i, i + chunkSize))
         }
 
         //Save pouch dbs
         return {
-            channels: [await this.channelWebService.getViewModel(channel)],
+            channels: [channel],
             authors: [author],
             itemChunks: chunkedItems //rest of items            
         }
@@ -240,9 +233,10 @@ class PublishService {
 
         this.logPublishProgress(`Saving items to backup`)
         //Also write each row as a file so the reader can open it quickly 
-        for (let item of backup.itemChunks) {
-            this.logPublishProgress(`Saving #${item.item.tokenId} to ${backupPath}/items/${item.item.tokenId}.json`)
-            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item.item.tokenId}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
+        for (let item of [].concat.apply([], backup.itemChunks)) {
+            console.log(item)
+            this.logPublishProgress(`Saving #${item.tokenId} to ${backupPath}/items/${item.tokenId}.json`)
+            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item.tokenId}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
         }
 
         this.logPublishProgress(`Saving images to backup`)

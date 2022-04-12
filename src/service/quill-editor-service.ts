@@ -2,6 +2,7 @@
 import { injectable } from 'inversify';
 
 import Quill from 'quill';
+import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter'
 
 import { Dom7 } from "framework7"
@@ -52,7 +53,7 @@ class QuillEditorService {
     const self = this
     if (this.initialized) return
 
-
+    Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste)
     Quill.register('modules/blotFormatter', BlotFormatter)
     Quill.debug(false)
 
@@ -206,6 +207,13 @@ class QuillEditorService {
     this.activeEditor = new Quill(selector, {
       bounds: ".page-content",
       modules: {
+        imageDropAndPaste: {
+          // add an custom image handler
+          handler: (imageDataUrl, type, imageData) => {
+            this.imageDropAndPasteHandler(imageDataUrl, type, imageData)
+          }
+        },
+
         toolbar: toolbarSelector,
 
         blotFormatter: {
@@ -257,7 +265,16 @@ class QuillEditorService {
 
     this.uiService.showSpinner("Processing image...")
 
-    let resizedImageBlob = await readAndCompressImage(fileElement.files[0], {
+    this.insertImage(fileElement.files[0])
+
+    this.uiService.hideSpinner()
+
+  }
+
+
+  async insertImage(file) {
+
+    let resizedImageBlob = await readAndCompressImage(file, {
       maxWidth: 1024
     })
 
@@ -286,14 +303,19 @@ class QuillEditorService {
     })
 
     document.dispatchEvent(imageSelectedEvent)
-
-    this.uiService.hideSpinner()
-
   }
 
-
+  async imageDropAndPasteHandler(imageDataUrl, type, imageData) {
+    const file = imageData.toFile()
+    await this.insertImage(file)
+  }
 
 }
+
+
+
+
+
 
 /**
  * THESE CLASSES ARE HERE BECAUSE I NEEDED TO OVERRIDE THEM TO FIX A PROBLEM WITH DELETING

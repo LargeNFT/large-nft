@@ -57,61 +57,67 @@
 
         ${itemViewModel.images?.length > 0 ? $h`
 
-        <li class="cover-photo-preview">
+            <li class="cover-photo-preview">
 
-            <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
+                ${itemViewModel.coverImage ? $h`
+                    <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
+                ` : $h`
+                    <input type="hidden" name="coverImageId" value="" />
+                `}
 
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Cover Image</div>
-                    <div class="item-input-wrap">
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Cover Image</div>
+                        <div class="item-input-wrap">
 
-                        ${itemViewModel.images.map( (image) => $h`
-                        <img class="cover-image-thumbnail ${image.cid == itemViewModel.coverImage?.cid ? 'selected' : ''}  "
-                            src="${image.url}" data-id="${image.cid}" @click=${coverImageClick} />
-                        `)}
+                            ${itemViewModel.images.map( (image) => $h`
+                                <img class="cover-image-thumbnail ${image.cid == itemViewModel.coverImage?.cid ? 'selected' : ''}  "
+                                    src="${image.url}" data-id="${image.cid}" @click=${coverImageClick} />
+                            `)}
+
+                            <button class="button button-outline clear-button" @click="${coverImageClearClick}">Clear</button>
 
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </li>
+            </li>
 
         ` : $h``}
 
         ${itemViewModel.attributeSelections?.length > 0 ? $h`
 
-            <div class="block-title">Attributes</div>
+        <div class="block-title">Attributes</div>
 
-            ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
-                <li>
-                    <div class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-title item-label">${attributeSelectionViewModel?.traitType}</div>
-                            <div class="item-input-wrap">
+        ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">${attributeSelectionViewModel?.traitType}</div>
+                        <div class="item-input-wrap">
 
-                                <select @change="${valueNameChange}" class="value-input"
-                                    data-id="${attributeSelectionViewModel?.id}">
+                            <select @change="${valueNameChange}" class="value-input"
+                                data-id="${attributeSelectionViewModel?.id}">
 
-                                    ${attributeSelectionViewModel?.values?.map( v => $h`
+                                ${attributeSelectionViewModel?.values?.map( v => $h`
 
-                                    ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
-                                    <option value="${v}" selected>${v}</option>
-                                    ` : $h`
-                                    <option value="${v}">${v}</option>
-                                    `}
+                                ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
+                                <option value="${v}" selected>${v}</option>
+                                ` : $h`
+                                <option value="${v}">${v}</option>
+                                `}
 
-                                    `)}
+                                `)}
 
-                                </select>
+                            </select>
 
 
-                            </div>
                         </div>
                     </div>
-                </li>
-            `)}
+                </div>
+            </li>
+        `)}
         ` : $h``}
 
         <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
@@ -126,6 +132,7 @@
 <style>
     .cover-image-thumbnail {
         max-width: 100px;
+        max-height: 100px;
     }
 
     .cover-image-thumbnail.selected {
@@ -138,6 +145,11 @@
         font-weight: 700;
         height: 50px;
     }
+
+    .clear-button {
+        width: 100px;
+    }
+
 </style>
 
 
@@ -161,9 +173,6 @@
 
         let imageService = ContainerService.getInstance(ImageService)
 
-
-
-
         const loadCoverImages = async () => {
             itemViewModel.images = itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
             await $update()
@@ -178,16 +187,11 @@
             await $update()
         }
 
-        $(document).on('image-selected', async (e) => {
-
-            //Make it the cover photo
-            itemViewModel.coverImage = await imageService.get(e.detail._id)
-
-            await loadCoverImages()
-
-        })
-
-
+        const coverImageClearClick = async (e) => {
+            e.preventDefault()
+            itemViewModel.coverImage = undefined
+            await $update()
+        }
 
         const valueNameChange = async (e) => {
 
@@ -213,7 +217,6 @@
 
         }
 
-
         let itemViewModel = props.item
         let editorId = props.editor
         let toolbarId = props.toolbar
@@ -223,6 +226,16 @@
         if (itemViewModel) {
             setAttributeSelections(itemViewModel.attributeSelections)
         }
+
+
+        $(document).on('image-selected', async (e) => {
+
+            //Make it the cover photo
+            itemViewModel.coverImage = await imageService.get(e.detail._id)
+
+            await loadCoverImages()
+
+        })
 
 
         return $render

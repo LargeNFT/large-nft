@@ -202,7 +202,6 @@ class QuillEditorService {
 
     this.init()
 
-
     // this.activeEditor = undefined
     this.activeEditor = new Quill(selector, {
       bounds: ".page-content",

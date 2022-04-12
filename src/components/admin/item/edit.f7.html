@@ -134,7 +134,34 @@
 
       quillEditorService.activeEditor.setContents(itemViewModel.item.content)
 
-      // await quillEditorService.loadCoverPhotos()
+
+      quillEditorService.activeEditor.on('text-change', (delta, oldContents, source) => {
+
+        if (source !== 'user') return
+
+        function getImgUrls(delta) {
+          return delta.ops.filter(i => i.insert && i.insert.ipfsimage).map(i => i.insert.ipfsimage)
+        }
+
+        //Get images that have been removed. 
+        const deleted = getImgUrls(quillEditorService.activeEditor.getContents().diff(oldContents))
+
+        //Remove them from the images array
+        deleted.forEach(img => {
+
+          itemViewModel.images = itemViewModel.images.filter(i => i.cid != img.cid)
+
+          if (img.cid == itemViewModel.coverImage?.cid) {
+            itemViewModel.coverImage = undefined
+          }
+
+        })
+
+        $update()
+
+      })
+
+
 
     })
 

@@ -234,8 +234,8 @@ class PublishService {
         this.logPublishProgress(`Saving items to backup`)
         //Also write each row as a file so the reader can open it quickly 
         for (let item of [].concat.apply([], backup.itemChunks)) {
-            this.logPublishProgress(`Saving #${item.tokenId} to ${backupPath}/items/${item.tokenId}.json`)
-            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item.tokenId}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
+            this.logPublishProgress(`Saving #${item._id} to ${backupPath}/items/${item._id}.json`)
+            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
         }
 
         this.logPublishProgress(`Saving images to backup`)

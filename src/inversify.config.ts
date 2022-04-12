@@ -10,7 +10,6 @@ import { UiService } from './service/core/ui-service';
 
 import { providers } from "ethers"
 import { QueueService } from './service/core/queue-service';
-import { DeployService } from './service/core/deploy-service';
 
 import { QuillService } from "./service/quill-service";
 import { QuillEditorService } from "./service/quill-editor-service";
@@ -141,7 +140,6 @@ function getMainContainer() {
 
   container.bind(UiService).toSelf().inSingletonScope()
   container.bind(QueueService).toSelf().inSingletonScope()
-  container.bind(DeployService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(QuillEditorService).toSelf().inSingletonScope()
   container.bind(PublishService).toSelf().inSingletonScope()

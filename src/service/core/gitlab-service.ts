@@ -117,14 +117,24 @@ class GitlabService {
 
         let directory = `/blogs/${channel._id}/backup`
 
-        //Read initial.json
-        let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/initial.json`)) 
+        //Read channels
+        let channelsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/channels.json`)) 
 
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/initial.json",
-            content: new TextDecoder("utf-8").decode(bufferedContents)
+            file_path: "backup/channels.json",
+            content: new TextDecoder("utf-8").decode(channelsContents)
+        })
+
+        //Authors
+        let authorsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/authors.json`)) 
+
+        //Add create action
+        actions.push({
+            action: "create",
+            file_path: "backup/channels.json",
+            content: new TextDecoder("utf-8").decode(authorsContents)
         })
 
         this.logPublishReaderProgress(`Saving item chunks...`)

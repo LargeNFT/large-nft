@@ -33,6 +33,16 @@ class ItemWebService {
         return this.getViewModel(item, channel)
     }
 
+    async getNavigation(_id: string): Promise<ItemViewModel> {
+
+        let item:Item = await this.itemService.get(_id)
+
+        //Get channel
+        const channel:Channel = await this.channelService.get(item.channelId)
+
+        return this.getNavigationViewModel(item, channel)
+    }
+
     async getViewModel(item: Item, channel:Channel): Promise<ItemViewModel> {
 
         let coverImage: ImageViewModel
@@ -91,6 +101,7 @@ class ItemWebService {
 
         }
 
+        
         return {
             item: item,
             dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
@@ -101,9 +112,23 @@ class ItemWebService {
             authorDisplayName: this.authorService.getDisplayName(author),
             images: this.getImagesFromPostContentOps(item.content?.ops),
             attributeSelections: attributeSelections,
-            editable: editable
+            editable: editable,
         }
 
+    }
+
+    async getNavigationViewModel(item:Item, channel:Channel) : Promise<ItemViewModel> {
+
+        let itemViewModel:ItemViewModel = await this.getViewModel(item, channel)
+
+        itemViewModel.previous = await this.itemService.getPrevious(item)
+        itemViewModel.next = await this.itemService.getNext(item)
+
+        console.log(itemViewModel.previous)
+        console.log(itemViewModel.item)
+        console.log(itemViewModel.next)
+
+        return itemViewModel
     }
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<ItemViewModel[]> {

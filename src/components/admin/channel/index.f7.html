@@ -134,13 +134,13 @@
 
         renderItem(channelViewModel) {
           if (!channelViewModel.channel) return `
-              <li class="card">
-                    <div class="card-content">
-                        <div class="card-content card-content-padding">
-                          Loading...                          
-                        </div>
-                    </div>
-              </li>
+          <li class="card skeleton-text skeleton-effect-wave">
+            <div class="card-header">Loading Loading Loading</div>
+            <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
+                interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
+                Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
+                aliquet urna, nec imperdiet felis sapien at enim.</div>
+          </li>
           `
           return getTemplate(channelViewModel);
         },

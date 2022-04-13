@@ -22,6 +22,10 @@ interface ItemViewModel {
 
     editable:boolean
 
+    //For previous/next navigation
+    next?:Item
+    previous?:Item 
+
 }
 
 export {

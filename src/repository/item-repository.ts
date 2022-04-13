@@ -41,11 +41,10 @@ class ItemRepository {
         private databaseService: DatabaseService
     ) { }
 
-
     async load(walletAddress: string) {
-
         this.db = await this.databaseService.getDatabase(walletAddress, "item", this.CREATE_INDEXES)
     }
+
     async get(_id: string): Promise<Item> {
         return Object.assign(new Item(), await this.db.get(_id))
     }
@@ -68,6 +67,40 @@ class ItemRepository {
 
         return response.docs
 
+    }
+    
+    async getNext(item:Item) : Promise<Item> {
+
+        let response = await this.db.find({
+            selector: {
+                channelId: { $eq: item.channelId },
+                dateCreated: { $gt: item.dateCreated }
+            },
+            sort: [{ 'dateCreated': 'asc' }],
+            limit: 1,
+            skip: 0
+        })
+
+        if (response.docs?.length > 0) {
+            return Object.assign(new Item(), response.docs[0])
+        }
+    }
+
+    async getPrevious(item:Item) : Promise<Item> {
+
+        let response = await this.db.find({
+            selector: {
+                channelId: { $eq: item.channelId },
+                dateCreated: { $lt: item.dateCreated }
+            },
+            sort: [{ 'dateCreated': 'desc' }],
+            limit: 1,
+            skip: 0
+        })
+
+        if (response.docs?.length > 0) {
+            return Object.assign(new Item(), response.docs[0])
+        }
     }
 
     async countByChannel(channelId:string) : Promise<number> {

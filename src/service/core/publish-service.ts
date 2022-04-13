@@ -36,9 +36,24 @@ class PublishService {
 
     async createBackup(channel: Channel, items: Item[], author: Author) {
 
-        const chunkedItems = []
+        //Look up any data we need to add to the bundle
+
+
+        //Generate bundles with extra info for each item
+        for (let item of items) {
+
+            //Add the previous and next items so they can used in navigation
+            item['previous'] = await this.itemService.getPrevious(item)
+            item['next'] = await this.itemService.getNext(item)
+        }
+
+        //Add itemCount to channel
+        channel['itemCount'] = items?.length
+
 
         //Split items into chunks
+        const chunkedItems = []
+
         const chunkSize = 20
         for (let i = 0; i < items.length; i += chunkSize) {
             chunkedItems.push(items.slice(i, i + chunkSize))
@@ -217,8 +232,6 @@ class PublishService {
         let backupPath = `${directory}/backup`
         let backup = await this.createBackup(channel, items, author)
 
-
-
         //Write channels
         await this.ipfsService.ipfs.files.write(`${backupPath}/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true })
 
@@ -236,6 +249,8 @@ class PublishService {
         for (let item of [].concat.apply([], backup.itemChunks)) {
             this.logPublishProgress(`Saving #${item._id} to ${backupPath}/items/${item._id}.json`)
             await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
+        
+            
         }
 
         this.logPublishProgress(`Saving images to backup`)

@@ -71,6 +71,16 @@ class ItemService {
         return this.itemRepository.listByChannel(channelId, limit, skip)
     }
 
+
+    async getNext(item:Item) : Promise<Item> {
+        return this.itemRepository.getNext(item)
+    }
+
+    async getPrevious(item:Item) : Promise<Item> {
+        return this.itemRepository.getPrevious(item)
+    }
+
+
     async exportNFTMetadata(channel:Channel, item:Item, animationCid:string, coverImageCid:string): Promise<NFTMetadata> {
 
         let result: NFTMetadata = {
@@ -108,12 +118,9 @@ class ItemService {
 
     }
 
-
-
     async mint(_id: string) {
 
     }
-
 
     public buildAnimationPage(item:Item) :string {
 

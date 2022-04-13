@@ -71,8 +71,30 @@
 
             </div>
 
+          </div>
+
+          <div class="block row center">
+
+            ${itemViewModel.previous ? $h`
+              <div class="col-100 large-50 previous">
+                <a class="button button-outline" href="/admin/item/show/${itemViewModel.previous._id}">
+                  <span class="material-icons">arrow_back</span>
+                  ${itemViewModel.previous.title}
+                </a>
+              </div>
+            ` : $h``}
+
+            ${itemViewModel.next ? $h`
+              <div class="col-100 large-50 next">
+                <a class="button button-outline" href="/admin/item/show/${itemViewModel.next._id}">
+                  ${itemViewModel.next.title}
+                  <span class="material-icons">arrow_forward</span>
+                </a>
+              </div>
+              ` : $h``}
 
           </div>
+
 
         </div>
       </div>
@@ -85,6 +107,28 @@
 
 
 <style>
+
+  .previous {
+    text-align: right;
+  }
+
+  .next {
+    text-align: left;
+  }
+
+
+  @media only screen and (max-width: 1024px) {
+    .previous {
+      text-align: center;
+    }
+
+    .next {
+      margin-top: 3px;
+      text-align: center;
+    }
+  }
+
+
   
   .content {
     width: 100%;
@@ -100,9 +144,9 @@
     max-width: 100%;
   }
 
-  .item-card-show a {
+  /* .item-card-show a {
     color: var(--f7-text-color);
-  }
+  } */
 
 
   .menu-dropdown-link.menu-close {

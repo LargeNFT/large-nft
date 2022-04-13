@@ -508,8 +508,11 @@ ul.breadcrumb li a:hover {
 
 .author-header{
   width: 100%;
-  margin-bottom: 5px;
   font-size: 14px;
+}
+
+.author-header .name {
+  margin-bottom: 3px;
 }
 
 .author-avatar {

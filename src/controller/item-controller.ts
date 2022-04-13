@@ -7,7 +7,6 @@ import AdminItemCreateComponent from '../components/admin/item/create.f7.html'
 import AdminItemShowComponent from '../components/admin/item/show.f7.html'
 import AdminItemEditComponent from '../components/admin/item/edit.f7.html'
 
-import { ChannelWebService } from "../service/web/channel-web-service";
 import { PinningService } from "../service/core/pinning-service";
 import { ItemWebService } from "../service/web/item-web-service";
 
@@ -39,7 +38,7 @@ class ItemController {
         
         return new ModelView(async (routeTo:RouteTo) => {
 
-            let itemViewModel = await this.itemWebService.get(routeTo.params.id)
+            let itemViewModel = await this.itemWebService.getNavigation(routeTo.params.id)
 
             return {
                 itemViewModel: itemViewModel

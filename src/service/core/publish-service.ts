@@ -6,13 +6,11 @@ import { ContractMetadata } from "../../dto/contract-metadata"
 import { Item } from "../../dto/item"
 import { NFTMetadata } from "../../dto/nft-metadata"
 import { PinningApi } from "../../dto/pinning-api"
-import { ItemViewModel } from "../../dto/viewmodel/item-view-model"
 import { AuthorService } from "../author-service"
 import { ChannelService } from "../channel-service"
 import { ImageService } from "../image-service"
 import { ItemService } from "../item-service"
-import { ChannelWebService } from "../web/channel-web-service"
-import { ItemWebService } from "../web/item-web-service"
+
 import { IpfsService } from "./ipfs-service"
 import { PinningService } from "./pinning-service"
 import TYPES from "./types"
@@ -22,15 +20,13 @@ import { WalletService } from "./wallet-service"
 class PublishService {
 
     constructor(
-        private itemWebService: ItemWebService,
-        private channelWebService: ChannelWebService,
-        private channelService:ChannelService,
-        private itemService:ItemService,
-        private authorService:AuthorService,
-        private ipfsService:IpfsService,
-        private imageService:ImageService,
-        private pinningService:PinningService,
-        @inject(TYPES.WalletService) private walletService:WalletService,
+        private channelService: ChannelService,
+        private itemService: ItemService,
+        private authorService: AuthorService,
+        private ipfsService: IpfsService,
+        private imageService: ImageService,
+        private pinningService: PinningService,
+        @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }
 
@@ -249,8 +245,8 @@ class PublishService {
         for (let item of [].concat.apply([], backup.itemChunks)) {
             this.logPublishProgress(`Saving #${item._id} to ${backupPath}/items/${item._id}.json`)
             await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
-        
-            
+
+
         }
 
         this.logPublishProgress(`Saving images to backup`)
@@ -269,107 +265,101 @@ class PublishService {
         return result.cid.toString()
 
     }
-
-
-    async publishToIPFS(channel:Channel, pinningApi:PinningApi) {
+    
+    async publishToIPFS(channel: Channel, pinningApi: PinningApi) {
 
         //Get all the items
-        const items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
-    
+        const items: Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+
         //Get author
         const author = await this.authorService.get(channel.authorId)
-    
+
         let tokenId = 1
         for (let item of items) {
-    
-          //Set the tokenID
-          item.tokenId = tokenId.toString()
-    
-          //Save it
-          await this.itemService.put(Object.assign(new Item(), item))
-    
-          tokenId++
+
+            //Set the tokenID
+            item.tokenId = tokenId.toString()
+
+            //Save it
+            await this.itemService.put(Object.assign(new Item(), item))
+
+            tokenId++
         }
-    
-    
+
+
         //Export metadata
-        let cid:string = await this.exportNFTMetadata(channel, items, author, this.walletService.address)
-    
+        let cid: string = await this.exportNFTMetadata(channel, items, author, this.walletService.address)
+
         //Save to Pinata
         if (pinningApi) {
-          let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
-          if (!result.ipfsHash) throw new Error("Problem publishing")
-    
-          //Get the ID of the Pinata deploy job and update the channel
-          channel = await this.channelService.get(channel._id)
-          channel.pinJobId = result.id 
-          channel.pinJobStatus = result.status 
-          channel.publishedCid = result.ipfsHash
-    
-          await this.channelService.put(channel)
-    
+            let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
+            if (!result.ipfsHash) throw new Error("Problem publishing")
+
+            //Get the ID of the Pinata deploy job and update the channel
+            channel = await this.channelService.get(channel._id)
+            channel.pinJobId = result.id
+            channel.pinJobStatus = result.status
+            channel.publishedCid = result.ipfsHash
+
+            await this.channelService.put(channel)
+
         }
-    
-      }
-    
-      async deployContract(channel:Channel) {
-    
+
+    }
+
+    async deployContract(channel: Channel) {
+
         if (!channel.publishedCid) {
-          throw new Error("Not published to Pinata")
+            throw new Error("Not published to Pinata")
         }
-    
+
         let count = await this.channelService.countItemsByChannel(channel._id)
-    
+
         if (count <= 0) {
-          throw new Error("No NFTs")
+            throw new Error("No NFTs")
         }
-    
+
         //Deploy contract
         let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')
         let receipt = await this.deploy(channel.title, channel.symbol, channel.publishedCid, mintPriceWei.toString(), count)
-    
+
         //Update address locally
         channel.contractAddress = receipt.contractAddress
         await this.channelService.put(channel)
-    
-      }
-    
-      private async deploy(name:string, symbol:string, ipfsCid:string, mintFee:string, maxTokenId:number) {
-    
+
+    }
+
+    private async deploy(name: string, symbol: string, ipfsCid: string, mintFee: string, maxTokenId: number) {
+
         if (!name || !symbol || !mintFee || !maxTokenId || !ipfsCid) throw new Error("Missing inputs to deploy")
-    
+
         let wallet = this.walletService.wallet
         if (!wallet) throw new Error("No wallet!")
-    
+
         const c = this.contracts['Channel']
-    
+
         const factory = new ethers.ContractFactory(c.abi, c.bytecode, wallet)
-        
-        let contract = await factory.deploy( name, symbol, ipfsCid, BigNumber.from(mintFee), BigNumber.from(maxTokenId)  )
-      
+
+        let contract = await factory.deploy(name, symbol, ipfsCid, BigNumber.from(mintFee), BigNumber.from(maxTokenId))
+
         return contract.deployTransaction.wait()
-      }
-    
-    
-      private logPublishProgress(message:string) {
-        
+    }
+
+    private logPublishProgress(message: string) {
+
         console.log(message)
-    
+
         if (typeof window !== "undefined" && typeof window.document !== "undefined") {
-          // browser
-          const imageSelectedEvent = new CustomEvent('publish-progress', {
-            detail: { message: message }
-          })
-      
-          document.dispatchEvent(imageSelectedEvent)
-    
+            // browser
+            const imageSelectedEvent = new CustomEvent('publish-progress', {
+                detail: { message: message }
+            })
+
+            document.dispatchEvent(imageSelectedEvent)
+
         }
-    
-      }
-    
 
-
-
+    }
 
 }
 

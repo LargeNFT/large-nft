@@ -14,22 +14,22 @@
             <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
             <li>Create Blog NFT</li>
           </ul>
-    
+
           <form class="block list" id="create-item-form" @submit="${formSubmit}">
-    
+
             <${ItemForm} item=${itemViewModel} editor="create-item-editor" toolbar="create-item-toolbar" />
-    
+
             <div class="row block">
-    
+
               <div class="col-70"></div>
-    
+
               <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
                 <i class="material-icons">save</i> Save
               </button>
-    
+
             </div>
-    
-    
+
+
           </form>
 
         </div>
@@ -73,7 +73,7 @@
 
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
     let itemService = ContainerService.getInstance(ItemService)
-    
+
     let walletService = ContainerService.getWalletService()
 
 
@@ -92,12 +92,12 @@
 
       //Parse attributes
       item.attributeSelections = JSON.parse(item.attributeSelections).map(as => {
-          return {
-            id: as.id,
-            traitType: as.traitType,
-            value: as.value
-          }
-        })
+        return {
+          id: as.id,
+          traitType: as.traitType,
+          value: as.value
+        }
+      })
 
       //Save
       try {
@@ -126,6 +126,35 @@
     $on('pageInit', async (e, page) => {
 
       quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar")
+
+      quillEditorService.activeEditor.on('text-change', (delta, oldContents, source) => {
+
+        if (source !== 'user') return
+
+        function getImgUrls(delta) {
+          return delta.ops.filter(i => i.insert && i.insert.ipfsimage).map(i => i.insert.ipfsimage)
+        }
+
+        //Get images that have been removed. 
+        const deleted = getImgUrls(quillEditorService.activeEditor.getContents().diff(oldContents))
+
+        //Remove them from the images array
+        deleted.forEach(img => {
+
+          itemViewModel.images = itemViewModel.images.filter(i => i.cid != img.cid)
+
+          if (img.cid == itemViewModel.coverImage?.cid) {
+            itemViewModel.coverImage = undefined
+          }
+
+        })
+
+        $update()
+
+      })
+
+
+
     })
 
     $on('pageBeforeRemove', () => {

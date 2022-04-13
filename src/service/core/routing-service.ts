@@ -90,7 +90,7 @@ class RoutingService {
     public async resolveRoute(routeTo, resolve, controller_promise: Promise<ModelView>, showSpinner=true) {
 
         if (showSpinner) {
-            this.uiService.showSpinner()
+            this.uiService.showSpinner("Loading...")
         }
 
         let modelView: ModelView = await controller_promise;

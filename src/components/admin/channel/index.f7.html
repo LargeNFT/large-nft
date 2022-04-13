@@ -89,11 +89,6 @@
       // Set loading flag
       loadingInProgress = true
 
-      if (pageCounter == 0) {
-        //Remove the fake one
-        virtualList.deleteAllItems()
-      }
-
       try {
         channels = await channelWebService.list(LIMIT, channelsShown)
 
@@ -101,6 +96,11 @@
           channelsShown += channels.length
         } else {
           hasMoreChannels = false
+        }
+
+        if (pageCounter == 0) {
+          //Remove the fake one
+          virtualList.deleteAllItems()
         }
 
         virtualList.appendItems(channels)
@@ -133,7 +133,15 @@
         el: '#channel-list',
 
         renderItem(channelViewModel) {
-          if (!channelViewModel.channel) return '<li>Loading</li>'
+          if (!channelViewModel.channel) return `
+              <li class="card">
+                    <div class="card-content">
+                        <div class="card-content card-content-padding">
+                          Loading...                          
+                        </div>
+                    </div>
+              </li>
+          `
           return getTemplate(channelViewModel);
         },
         items: [{

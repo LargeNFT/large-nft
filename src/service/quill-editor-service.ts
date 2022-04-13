@@ -254,7 +254,7 @@ class QuillEditorService {
   }
 
   imageClick() {
-    const imageButtonInput = $$(".image-button-input");
+    const imageButtonInput = $$(".image-button-input")
     imageButtonInput.click()
 
   }

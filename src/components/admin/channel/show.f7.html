@@ -275,7 +275,15 @@
         el: '#item-list',
 
         renderItem(itemViewModel) {
-          if (!itemViewModel.item) return '<li>Loading</li>'
+          if (!itemViewModel.item) return `
+              <li class="card">
+                    <div class="card-content">
+                        <div class="card-content card-content-padding">
+                          Loading...                          
+                        </div>
+                    </div>
+              </li>
+          `
           return getTemplate(itemViewModel)
         },
 
@@ -352,11 +360,6 @@
       // Set loading flag
       loadingInProgress = true
 
-      if (pageCounter == 0) {
-        //Remove the fake one
-        virtualList.deleteAllItems()
-      }
-
       try {
         items = await itemWebService.listByChannel(props.id, LIMIT, itemsShown)
 
@@ -364,6 +367,11 @@
           itemsShown += items.length
         } else {
           hasMoreItems = false
+        }
+        
+        if (pageCounter == 0) {
+          //Remove the fake one
+          virtualList.deleteAllItems()
         }
 
         virtualList.appendItems(items)

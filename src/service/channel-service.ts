@@ -111,20 +111,36 @@ class ChannelService {
 
   }
 
-  async publish(channel:Channel, items:Item[], pinningApi:PinningApi, cid:string) { 
 
-    //Save to Pinata
-    if (pinningApi) {
-      let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
-      if (!result.ipfsHash) throw new Error("Problem publishing")
-    }
+  async pin(pinningApi:PinningApi, channel:Channel) {
 
-    //Deploy contract
-    // let receipt = await this.deploy(channel.title, channel.symbol, cid, channel.mintPrice, items.length)
+    let result = await this.pinningService.pinByHash(pinningApi, channel)
+    if (!result.ipfsHash) throw new Error("Problem publishing")
 
-    // return receipt.contractAddress
+    //Get the ID of the Pinata deploy job and update the channel
+    channel = await this.get(channel._id)
+    channel.pinJobId = result.id 
+    channel.pinJobStatus = result.status 
+    channel.publishedCid = result.ipfsHash
 
+    await this.put(channel)
   }
+
+
+  // async publish(channel:Channel, items:Item[], pinningApi:PinningApi, cid:string) { 
+
+  //   //Save to Pinata
+  //   if (pinningApi) {
+  //     let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
+  //     if (!result.ipfsHash) throw new Error("Problem publishing")
+  //   }
+
+  //   //Deploy contract
+  //   // let receipt = await this.deploy(channel.title, channel.symbol, cid, channel.mintPrice, items.length)
+
+  //   // return receipt.contractAddress
+
+  // }
 
 
 }

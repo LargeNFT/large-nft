@@ -6,6 +6,8 @@ import { ValidationException } from "../../util/validation-exception";
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios'
 import { IpfsService } from "./ipfs-service";
+import { ChannelService } from "../channel-service";
+import { Channel } from "../../dto/channel";
 
 @injectable()
 class PinningService {
@@ -51,16 +53,16 @@ class PinningService {
         await this.pinningApiRepository.put(pinningApi)    
     }
 
-    async pinByHash(pinningApi:PinningApi, cid:string, name:string) {
+    async pinByHash(pinningApi:PinningApi, channel:Channel) {
 
         let url = `${pinningApi.url}/pinning/pinByHash`
 
         let nodeId = await this.ipfsService.ipfs.id()
         
         let body = {
-            hashToPin: cid,
+            hashToPin: channel.localCid,
             pinataMetadata: {
-                name: name
+                name: channel.title
             }
         }
 
@@ -79,6 +81,7 @@ class PinningService {
 
         return response.data
 
+        
     }
 
     async userPinnedDataTotal(pinningApi:PinningApi) {

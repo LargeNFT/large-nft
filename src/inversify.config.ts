@@ -47,6 +47,7 @@ import { AuthorController } from './controller/author-controller';
 import { SettingsController } from './controller/settings-controller';
 import { PublishService } from './service/core/publish-service';
 import { ConnectController } from './controller/connect-controller';
+import { PublishController } from './controller/publish-controller';
 
 
 
@@ -101,7 +102,7 @@ function getMainContainer() {
 
     return {
       // repo: Math.random().toString(36).substring(7),
-      preload: { enabled: false },
+      preload: { enabled: true },
       relay: {
         enabled: true, // enable relay dialer/listener (STOP)
         hop: {
@@ -136,7 +137,7 @@ function getMainContainer() {
   container.bind(AuthorController).toSelf().inSingletonScope()
   container.bind(SettingsController).toSelf().inSingletonScope()
   container.bind(ConnectController).toSelf().inSingletonScope()
-
+  container.bind(PublishController).toSelf().inSingletonScope()
 
   container.bind(UiService).toSelf().inSingletonScope()
   container.bind(QueueService).toSelf().inSingletonScope()

@@ -64,9 +64,11 @@ class PublishService {
 
     }
 
-    async exportNFTMetadata(channel: Channel, items: Item[], author: Author, ownerAddress: string): Promise<string> {
+    async exportToIPFS(channel: Channel, items: Item[], author: Author, ownerAddress: string): Promise<string> {
 
         //Remove publishing related field from channel
+        delete channel.localCid
+        delete channel.localPubDate
         delete channel.pinJobId
         delete channel.pinJobStatus
         delete channel.publishedCid
@@ -266,7 +268,7 @@ class PublishService {
 
     }
     
-    async publishToIPFS(channel: Channel, pinningApi: PinningApi) {
+    async publishToIPFS(channel: Channel) {
 
         //Get all the items
         const items: Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
@@ -288,22 +290,17 @@ class PublishService {
 
 
         //Export metadata
-        let cid: string = await this.exportNFTMetadata(channel, items, author, this.walletService.address)
+        let cid: string = await this.exportToIPFS(channel, items, author, this.walletService.address)
 
-        //Save to Pinata
-        if (pinningApi) {
-            let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
-            if (!result.ipfsHash) throw new Error("Problem publishing")
 
-            //Get the ID of the Pinata deploy job and update the channel
-            channel = await this.channelService.get(channel._id)
-            channel.pinJobId = result.id
-            channel.pinJobStatus = result.status
-            channel.publishedCid = result.ipfsHash
+        //Update local cid info
+        channel = await this.channelService.get(channel._id)
 
-            await this.channelService.put(channel)
+        channel.localCid = cid
+        channel.localPubDate = new Date().toJSON()
 
-        }
+        await this.channelService.put(channel)
+
 
     }
 

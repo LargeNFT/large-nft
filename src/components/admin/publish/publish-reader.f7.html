@@ -1,0 +1,284 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="page" data-name="publish">
+  
+      <${Navbar} />
+  
+      <div class="page-content">
+        <div class="row">
+  
+          <div class="col-100 large-50 center">
+
+            <ul class="breadcrumb">
+                <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
+                <li>Publish</li>
+            </ul>
+
+            ${channelViewModel.itemCount > 0 ? $h`
+              
+              <div class="block-title">Publish</div>
+              <div class="block list">
+                <ul>
+                  <li>
+                    <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title">
+                              Export to local IPFS
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="item-link">
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title">
+                              Publish to Pinata
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title">
+                              Create New Reader
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title">
+                              Publish Collection to Reader
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+
+              <div class="block-title">Publish Reader</div>
+              <div class="card">
+
+                <div class="card-content card-content-padding">
+
+                  ${gitlab?.personalAccessToken?.length > 0 ? $h`
+
+                    ${showPublishReader ? $h`
+                      
+                      <form class="list" id="publish-reader" @submit="${publishReaderSubmit}">
+                        <ul>
+                          <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+
+                                    ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
+                                      <div class="repo-status">
+                                        <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                                        <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>  
+                                        <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                              
+                                      </div>
+
+                                      ${showPublishReaderStatus && ipfsReady ? $h`
+
+                                        ${channelViewModel.channel.contractAddress ? $h`
+                                          <p>Reader will be configured to connect to: ${channelViewModel.channel.contractAddress}</p>  
+                                        ` : $h`
+                                          <p>Note: Contract is not deployed. The reader will not attempt to connect to Ethereum.</p>  
+                                        `}
+
+                                        ${publishReaderOutput ? $h`
+                                          <div class="publish-output" innerHTML="${publishReaderOutput}"></div>
+                                        ` : $h`
+                                          <div class="publish-output" style="display:none;"></div>
+                                        `}
+
+    
+                                        <button class="button button-fill button-small deploy-button" type="submit">Publish Reader</button>
+                                        
+                                      ` : $h`
+                                        <p style="display:none;"></p>
+                                      `}
+
+                                    ` : $h``}
+
+
+
+                                </div>
+                            </div>
+                          </li>
+                        </ul>
+                      </form>
+
+                    
+                    ` : $h`
+                      <p>Collection must be deployed to IPFS</p>  
+                    `}
+                    
+                  ` : $h`
+                    <p>Configure <a href="/admin/settings">Gitlab</a> to deploy the collection reader.</p>
+                  `}
+
+
+                </div>
+
+              </div>
+
+            ` : $h`
+              <div class="card">
+                <div class="card-content card-content-padding">
+                  <p>Add NFTs to the collection before publishing.</p>
+                </div>
+              </div>
+              
+            `}
+
+          </div>
+  
+        </div>
+      </div>
+  
+    </div>
+  
+  </template>
+  
+  <style>
+
+    .publish-label, .ipfs-label, .forking-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .publish-output {
+      border: 1px solid #cccccc;
+      font-size: 13px;
+      width: 100%;
+      max-width: 100%;
+      padding: 5px;
+      height: 300px;
+      overflow-y : scroll;
+    }
+  </style>
+  
+  <script>
+  
+    import moment from "moment"
+  
+    import { ContainerService } from "../../../service/core/container-service"
+    import { ChannelService } from "../../../service/channel-service"
+    import { PublishService } from "../../../service/core/publish-service"
+
+    import { PinningService } from "../../../service/core/pinning-service"
+    import { GitlabService } from "../../../service/core/gitlab-service"
+
+    import { QueueService } from   "../../../service/core/queue-service"
+
+    import { IpfsService } from "../../../service/core/ipfs-service"
+
+
+    import Navbar from "../../admin/navbar.f7.html"
+    
+  
+    export default (props, { $, $h, $on, $f7, $update }) => {
+  
+        let channelService = ContainerService.getInstance(ChannelService)
+        let pinningService = ContainerService.getInstance(PinningService)
+        let ipfsService = ContainerService.getInstance(IpfsService)
+        let queueService = ContainerService.getInstance(QueueService)
+        let gitlabService = ContainerService.getInstance(GitlabService)
+        let publishService = ContainerService.getInstance(PublishService)
+
+        let ipfsReady = true //remoooove
+
+        let channelViewModel = props.channelViewModel
+        let gitlab = props.gitlab
+
+        let publishReaderOutput = ""
+
+        let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
+        let showPublishReader = channelViewModel.channel.publishedCid != undefined
+
+        let pageUnloaded = false
+
+        $on('pageInit', async () => {
+
+          await checkPublishRepoStatus()
+
+        })
+
+        $on('pageAfterOut', (e, page) => {
+          console.log("Unloading page")
+          pageUnloaded = true
+        })
+
+        const publishReaderSubmit = async (e) => {
+
+          e.preventDefault()
+
+          try {
+            await gitlabService.deployReader(channelViewModel.channel)
+            
+          } catch(ex) {
+            $f7.dialog.alert(ex, "There was an error")
+          }
+
+          await $update()
+          
+        }
+
+        const checkPublishRepoStatus = async (e) => {
+
+          if (pageUnloaded) return
+          if (!gitlab) return
+          if (channelViewModel.channel.publishReaderRepoStatus == "complete" && channelViewModel.channel.publishReaderRepoId > 0) return 
+          if (forking) return
+
+          console.log('Checking repo fork status...')
+
+          channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+
+          let id = channelViewModel.channel.publishReaderRepoId
+          let status = channelViewModel.channel.publishReaderRepoStatus
+
+          let forkRepoStatus = await gitlabService.getForkRepoStatus(channelViewModel.channel)
+          
+          if (forkRepoStatus == "finished") { //TODO
+            channelViewModel.channel.publishReaderRepoStatus = "complete"
+            await channelService.put(channelViewModel.channel)
+          }
+
+          showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
+
+          await $update()
+
+          if (channelViewModel.channel.publishReaderRepoStatus != "complete") {
+            setTimeout(checkPublishRepoStatus, 5000)
+          }
+
+        }
+
+
+        $(document).on('publish-reader-progress', async (e) => {
+          publishReaderOutput += `<p>${e.detail.message}</p>`
+          $update()
+        })
+
+        return $render
+    }
+  </script>

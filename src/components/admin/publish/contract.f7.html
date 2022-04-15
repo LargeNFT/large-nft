@@ -70,6 +70,49 @@
                 </ul>
               </div>
 
+              <div class="block-title">Verify Mint Info</div>
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+
+                    <p>
+                      <strong>Mint Price:</strong> ${channelViewModel.channel.mintPrice} ETH each
+                    </p>
+
+                    <p>
+                      <strong>Royalty:</strong> ${channelViewModel.channel.royaltyPercent}% 
+                    </p>
+
+                  </div>
+                </div>
+              </div>
+              
+              <div class="block-title">Deploy Contract</div>
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+                    ${showDeploy ? $h`
+
+                      <p><strong>Contract Address:</strong> ${channelViewModel.channel.contractAddress}</p>
+
+                      ${deploying ? $h`
+                        <p>Deploying...</p>
+                      ` : $h`
+                        ${!channelViewModel.channel.contractAddress ? $h`
+                          <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
+                        ` : $h`
+                          <p>Success!</p>
+                        `}                        
+                      `}
+
+                      
+                    ` : $h`
+                      <p>Collection must be deployed to Pinata</p>
+                    `}
+                  </div>
+                </div>
+              </div>
+
             ` : $h`
               <div class="card">
                 <div class="card-content card-content-padding">
@@ -88,7 +131,9 @@
   
   </template>
   
+  <style>
 
+  </style>
   
   <script>
   
@@ -111,8 +156,38 @@
   
     export default (props, { $, $h, $on, $f7, $update }) => {
   
+        let channelService = ContainerService.getInstance(ChannelService)
+        let pinningService = ContainerService.getInstance(PinningService)
+        let ipfsService = ContainerService.getInstance(IpfsService)
+        let queueService = ContainerService.getInstance(QueueService)
+        let gitlabService = ContainerService.getInstance(GitlabService)
+        let publishService = ContainerService.getInstance(PublishService)
+
+
         let channelViewModel = props.channelViewModel
-  
+
+        let deploying = false 
+
+        let showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
+
+
+        const deployContractClick = async (e) => {
+
+          deploying = true
+          await $update()
+          
+          let promiseView = {
+            title: `Deploying contract ${name}. Waiting for transaction to be mined.`,
+            promise: publishService.deployContract(channelViewModel.channel)
+          }
+
+          //Wait for it to be mined
+          await queueService.queuePromiseView(promiseView)
+          
+          deploying = false
+          await $update()
+        }
+
         return $render
     }
   </script>

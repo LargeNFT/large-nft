@@ -64,7 +64,7 @@
                                 ${ipfsReady ? $h`
 
                                     ${publishing ? $h`
-                                        <div class="preloader margin-top" id="ipfs-preloader"></div>    
+                                        <div class="preloader margin-top"></div>    
                                     ` : $h`
 
                                         ${showRefresh ? $h`
@@ -73,11 +73,11 @@
                                                 <div class="chip-label">Success!</div>
                                             </div>
 
-                                            <button class="button button-fill color-gray text-color-white" @click="${copyIPFSClick}" id="refresh-button">
+                                            <button class="button button-fill color-gray text-color-white" @click="${copyIPFSClick}" id="export-refresh-button">
                                                 <i class="material-icons">refresh</i> Export Again
                                             </button>
 
-                                            <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="button button-fill" id="next-button">Next <i class="material-icons">arrow_right</i></a>
+                                            <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="button button-fill" id="export-next-button">Next <i class="material-icons">arrow_right</i></a>
 
                                         ` : $h`
                                             <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export to Local IPFS</button>
@@ -140,7 +140,7 @@
         overflow-y: scroll;
     }
 
-    #refresh-button {
+    #export-refresh-button {
         width: 45px;
         height: 30px;
         display: inline-block;
@@ -148,7 +148,7 @@
         padding-top: 2.5px;
     }
 
-    #next-button {
+    #export-next-button {
         width: 200px;
         float: right;
     }

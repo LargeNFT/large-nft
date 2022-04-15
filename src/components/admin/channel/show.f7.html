@@ -74,7 +74,27 @@
                       </div>
                     ` : ``}
 
-                    <${InfoRow} count="${channelViewModel.itemCount}" price="${channelViewModel.channel.mintPrice}" royalty="${channelViewModel.channel.royaltyPercent}" />
+
+                    <div class="info row no-gap">
+
+                      <div class="col-33 info-box left">
+                          <span class="value">${channelViewModel.itemCount}</span>
+                          <label>items</label>
+                      </div>
+              
+                      <div class="col-33 info-box left">
+                          <span class="value">${channelViewModel.channel.mintPrice}</span>
+                          <label>mint price</label>
+                      </div>
+              
+                      <div class="col-33 info-box">
+                          <span class="value">${channelViewModel.channel.royaltyPercent}%</span>
+                          <label>royalty</label>
+                      </div>
+              
+                    </div>
+
+
     
                     <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
 

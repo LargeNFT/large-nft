@@ -628,3 +628,39 @@ ul.breadcrumb li a:hover {
   margin-top: 10px;
   width: 200px;
 }
+
+
+
+
+.info {
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.info-box .value {
+    display: block;
+    font-weight: 600;
+    font-size: 24px;
+    color: rgb(4, 17, 29);
+}
+
+.info-box {
+  border: 1px solid rgb(229, 232, 235);
+  padding: 15px;
+  text-align: center;
+  height: 90px;
+  width: 150px;
+}
+
+.info-box.left {
+    border-right: 0px;
+}
+
+.info-box label {
+  display: block;
+  color: rgb(138, 147, 155);
+
+}
+

@@ -18,7 +18,7 @@
 
         <div class="col-100 large-50 center">
 
-          <div class="list cards-list virtual-list" id="channel-list">
+          <div class="list cards-list virtual-list" id="channel-index-list">
           </div>
 
           <div class="preloader infinite-scroll-preloader"></div>
@@ -130,7 +130,7 @@
 
       //Get first page
       virtualList = $f7.virtualList.create({
-        el: '#channel-list',
+        el: '#channel-index-list',
 
         renderItem(channelViewModel) {
           if (!channelViewModel.channel) return `

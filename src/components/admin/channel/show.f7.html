@@ -22,7 +22,7 @@
 
           <div class="card channel-card-show">
 
-            <div class="card-header banner" id="banner">
+            <div class="card-header banner" id="home-banner">
               
                 ${showEdit ? $h`
                   <div class="float-right">
@@ -92,7 +92,7 @@
     
           </div>
     
-          <div class="list cards-list virtual-list" id="item-list">
+          <div class="list cards-list virtual-list" id="item-list-home">
           </div>
     
           <div class="preloader infinite-scroll-preloader"></div>
@@ -272,7 +272,7 @@
 
       //Get first page
       virtualList = $f7.virtualList.create({
-        el: '#item-list',
+        el: '#item-list-home',
 
         renderItem(itemViewModel) {
           if (!itemViewModel.item) return `
@@ -328,7 +328,7 @@
 
       //Load cover banner into CSS
       if (channelViewModel?.coverBanner?.url) {
-        document.getElementById('banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
+        document.getElementById('home-banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
       }
 
       //Get the page

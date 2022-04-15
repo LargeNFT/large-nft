@@ -1,243 +1,222 @@
 <!--suppress JSAnnotator -->
 <template>
 
-    <div class="page" data-name="publish">
-  
-      <${Navbar} />
-  
-      <div class="page-content">
-        <div class="row">
-  
-          <div class="col-100 large-50 center">
+  <div class="page" data-name="publish">
 
-            <ul class="breadcrumb">
-                <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
-                <li>Publish</li>
-            </ul>
+    <${Navbar} />
 
-            ${channelViewModel.itemCount > 0 ? $h`
-              
-              <div class="block-title">Publish</div>
-              <div class="block list">
-                <ul>
-                  <li>
-                    <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
+    <div class="page-content">
+      <div class="row">
+
+        <div class="col-100 large-50 center">
+
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
+            <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
+            <li>Fork Reader</li>
+          </ul>
+
+          ${channelViewModel.itemCount > 0 ? $h`
+
+          <div class="block-title">Fork Reader</div>
+          <div class="card">
+
+            <div class="card-content card-content-padding">
+
+              ${gitlab?.personalAccessToken?.length > 0 ? $h`
+
+                <form class="list" id="publish-reader" @submit="${createForkSubmit}">
+                  <ul>
+                    <li>
+                      <div class="item-content item-input">
                         <div class="item-inner">
-                          <div class="item-title">
-                              Export to local IPFS
+
+                          ${forking ? $h`
+                          <div class="forking-label">
+                            Forking...
                           </div>
+
+                          <div class="preloader" id="pin-preloader"></div>
+
+                          ` : $h`
+                          <button href="#" class="button button-fill button-small deploy-button">Create New Fork</button>
+                          <div class="forking-label" style="display:none;"></div>
+                          `}
+
+                          ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
+                          <div class="repo-status">
+                            <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                            <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>
+                            <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
+                          </div>
+                          ` : $h`<span />`}
                         </div>
                       </div>
-                    </a>
-                  </li>
+                    </li>
+                  </ul>
+                </form>
 
-                  <li>
-                    <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Publish to Pinata
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Create New Reader
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Publish Collection to Reader
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              ` : $h`
+                <p>Configure <a href="/admin/settings">Gitlab</a> to deploy the collection reader.</p>
+              `}
 
 
-              <div class="block-title">Publish Reader</div>
-              <div class="card">
-
-                <div class="card-content card-content-padding">
-
-                  ${gitlab?.personalAccessToken?.length > 0 ? $h`
-
-                    ${showPublishReader ? $h`
-                      
-                      <form class="list" id="publish-reader" @submit="${publishReaderSubmit}">
-                        <ul>
-                          <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-
-                                    ${forking ? $h`
-                                      <div class="forking-label">
-                                        Forking...
-                                      </div>
-
-                                      <div class="preloader" id="pin-preloader"></div>
-
-                                    ` : $h`
-                                      <a href="#" @click="${deployForkClick}" class="button button-fill button-small deploy-button">Create New Fork</a>
-                                      <div class="forking-label" style="display:none;"></div>
-                                    `}
-
-                                    ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
-                                      <div class="repo-status">
-                                        <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
-                                        <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>  
-                                        <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                              
-                                      </div>
-
-                                      
-                                </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </form>
-
-                    
-                    ` : $h`
-                      <p>Collection must be deployed to IPFS</p>  
-                    `}
-                    
-                  ` : $h`
-                    <p>Configure <a href="/admin/settings">Gitlab</a> to deploy the collection reader.</p>
-                  `}
-
-
-                </div>
-
-              </div>
-
-            ` : $h`
-              <div class="card">
-                <div class="card-content card-content-padding">
-                  <p>Add NFTs to the collection before publishing.</p>
-                </div>
-              </div>
-              
-            `}
+            </div>
 
           </div>
-  
+
+          ` : $h`
+          <div class="card">
+            <div class="card-content card-content-padding">
+              <p>Add NFTs to the collection before publishing.</p>
+            </div>
+          </div>
+
+          `}
+
         </div>
+
       </div>
-  
     </div>
-  
-  </template>
-  
-  <style>
 
-    .publish-label, .ipfs-label, .forking-label {
-      margin-top: 10px;
-      margin-bottom: 10px;
-      font-weight: bold;
-      font-size: 18px;
-    }
+  </div>
 
-    .publish-output {
-      border: 1px solid #cccccc;
-      font-size: 13px;
-      width: 100%;
-      max-width: 100%;
-      padding: 5px;
-      height: 300px;
-      overflow-y : scroll;
-    }
-  </style>
-  
-  <script>
-  
-    import moment from "moment"
-  
-    import { ContainerService } from "../../../service/core/container-service"
-    import { ChannelService } from "../../../service/channel-service"
-    import { PublishService } from "../../../service/core/publish-service"
+</template>
 
-    import { PinningService } from "../../../service/core/pinning-service"
-    import { GitlabService } from "../../../service/core/gitlab-service"
+<style>
+  .publish-label,
+  .ipfs-label,
+  .forking-label {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+  }
 
-    import { QueueService } from   "../../../service/core/queue-service"
+  .publish-output {
+    border: 1px solid #cccccc;
+    font-size: 13px;
+    width: 100%;
+    max-width: 100%;
+    padding: 5px;
+    height: 300px;
+    overflow-y: scroll;
+  }
+</style>
 
-    import { IpfsService } from "../../../service/core/ipfs-service"
+<script>
 
+  import moment from "moment"
 
-    import Navbar from "../../admin/navbar.f7.html"
-    
-  
-    export default (props, { $, $h, $on, $f7, $update }) => {
-  
-        let channelService = ContainerService.getInstance(ChannelService)
-        let pinningService = ContainerService.getInstance(PinningService)
-        let ipfsService = ContainerService.getInstance(IpfsService)
-        let queueService = ContainerService.getInstance(QueueService)
-        let gitlabService = ContainerService.getInstance(GitlabService)
-        let publishService = ContainerService.getInstance(PublishService)
+  import { ContainerService } from "../../../service/core/container-service"
+  import { ChannelService } from "../../../service/channel-service"
+  import { PublishService } from "../../../service/core/publish-service"
 
-        let ipfsReady = true ///remooooove
+  import { PinningService } from "../../../service/core/pinning-service"
+  import { GitlabService } from "../../../service/core/gitlab-service"
 
-        let channelViewModel = props.channelViewModel
-        let gitlab = props.gitlab
+  import { QueueService } from "../../../service/core/queue-service"
 
-        let publishReaderOutput = ""
-
-        let forking = false
-
-        let showPublishReader = channelViewModel.channel.publishedCid != undefined
-
-        const deployForkClick = async (e) => {
-          
-          e.preventDefault()
-
-          forking = true
-          showPublishReaderStatus = false
-
-          $update()
-
-          try {
-
-            let response = await gitlabService.createReaderFork(channelViewModel.channel)
-
-            channelViewModel.channel.publishReaderRepoId = response.id
-            channelViewModel.channel.publishReaderRepoPath = response.path
-            channelViewModel.channel.publishReaderRepoStatus = "pending"
+  import { IpfsService } from "../../../service/core/ipfs-service"
 
 
-            await channelService.put(channelViewModel.channel)
-
-            showPublishReaderStatus = true
-
-          } catch(ex) {
-            $f7.dialog.alert(ex, "There was an error")
-          }
-
-          forking = false
-
-          await $update()
-
-          await checkPublishRepoStatus()
+  import Navbar from "../../admin/navbar.f7.html"
 
 
+  export default (props, { $, $h, $on, $f7, $update }) => {
+
+    let channelService = ContainerService.getInstance(ChannelService)
+    let pinningService = ContainerService.getInstance(PinningService)
+    let ipfsService = ContainerService.getInstance(IpfsService)
+    let queueService = ContainerService.getInstance(QueueService)
+    let gitlabService = ContainerService.getInstance(GitlabService)
+    let publishService = ContainerService.getInstance(PublishService)
+
+    let channelViewModel = props.channelViewModel
+    let gitlab = props.gitlab
+    let pageUnloaded = false
+
+    let forking = false
+
+    $on('pageInit', async () => {
+      pageUnloaded = false
+
+      await checkPublishRepoStatus()
+    })
+
+    $on('pageAfterOut', (e, page) => {
+      console.log("Unloading page")
+      pageUnloaded = true
+    })
+
+    const createForkSubmit = async (e) => {
+
+      e.preventDefault()
+
+      forking = true
+
+      $update()
+
+      try {
+
+        let response = await gitlabService.createReaderFork(channelViewModel.channel)
+
+        channelViewModel.channel.publishReaderRepoId = response.id
+        channelViewModel.channel.publishReaderRepoPath = response.path
+        channelViewModel.channel.publishReaderRepoStatus = "pending"
+
+        await channelService.put(channelViewModel.channel)
+
+      } catch (ex) {
+
+        if (ex.toString() == "Error: Request failed with status code 409") {
+          $f7.dialog.alert("Git repo already exists with that name. Delete it from Gitlab and try again.", "There was an error")
+        } else {
+          $f7.dialog.alert(ex, "There was an error")
         }
 
-        return $render
+      }
+
+      forking = false
+
+      await $update()
+
+      await checkPublishRepoStatus()
+
+
     }
-  </script>
+
+    const checkPublishRepoStatus = async (e) => {
+
+      if (pageUnloaded) return
+      if (!gitlab) return
+      if (channelViewModel.channel.publishReaderRepoStatus == "complete" && channelViewModel.channel.publishReaderRepoId > 0) return
+      if (forking) return
+
+      console.log('Checking repo fork status...')
+
+      channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+
+      let id = channelViewModel.channel.publishReaderRepoId
+      let status = channelViewModel.channel.publishReaderRepoStatus
+
+      let forkRepoStatus = await gitlabService.getForkRepoStatus(channelViewModel.channel)
+
+      if (forkRepoStatus == "finished") { //TODO
+        channelViewModel.channel.publishReaderRepoStatus = "complete"
+        await channelService.put(channelViewModel.channel)
+      }
+
+      await $update()
+
+      if (channelViewModel.channel.publishReaderRepoStatus != "complete") {
+        setTimeout(checkPublishRepoStatus, 5000)
+      }
+
+    }
+
+
+
+    return $render
+  }
+</script>

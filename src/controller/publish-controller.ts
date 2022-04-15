@@ -6,6 +6,7 @@ import { RouteTo } from '../service/core/routing-service';
 import AdminPublishIndexComponent from '../components/admin/publish/index.f7.html'
 import AdminPublishExportComponent from '../components/admin/publish/export.f7.html'
 import AdminPublishPinataComponent from '../components/admin/publish/pinata.f7.html'
+import AdminPublishForkReaderComponent from '../components/admin/publish/fork-reader.f7.html'
 
 import { ChannelWebService } from "../service/web/channel-web-service";
 import { PinningService } from "../service/core/pinning-service";
@@ -85,6 +86,30 @@ class PublishController {
             }
 
         }, AdminPublishPinataComponent)
+    }
+
+
+
+    
+    @routeMap("/admin/publish/fork-reader/:id")
+    async forkReader() : Promise<ModelView> {
+
+        return new ModelView(async (routeTo:RouteTo) => {
+
+            let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+            
+            let gitlab
+
+            try {
+                gitlab = await this.gitlabService.get()
+            } catch(ex) {}
+
+            return {
+                channelViewModel: channelViewModel,
+                gitlab: gitlab
+            }
+
+        }, AdminPublishForkReaderComponent)
     }
 
 }

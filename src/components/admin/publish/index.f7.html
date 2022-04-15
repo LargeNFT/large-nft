@@ -23,9 +23,12 @@
                   <li>
                     <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
                       <div class="item-content">
+                        <div class="item-media">
+                          <span class="material-icons">import_export</span>
+                        </div>
                         <div class="item-inner">
                           <div class="item-title">
-                              Export to local IPFS
+                            Export to local IPFS
                           </div>
                         </div>
                       </div>
@@ -35,6 +38,9 @@
                   <li>
                     <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="item-link">
                       <div class="item-content">
+                        <div class="item-media">
+                          <span class="material-icons">cloud_upload</span>
+                        </div>
                         <div class="item-inner">
                           <div class="item-title">
                               Publish to Pinata
@@ -45,11 +51,14 @@
                   </li>
 
                   <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
+                    <a href="/admin/publish/fork-reader/${channelViewModel.channel._id}" class="item-link">
                       <div class="item-content">
+                        <div class="item-media">
+                          <span class="material-icons">fork_left</span>
+                        </div>
                         <div class="item-inner">
                           <div class="item-title">
-                              Create New Reader
+                              Fork Reader
                           </div>
                         </div>
                       </div>
@@ -57,8 +66,11 @@
                   </li>
 
                   <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
+                    <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="item-link">
                       <div class="item-content">
+                        <div class="item-media">
+                          <span class="material-icons">upload</span>
+                        </div>
                         <div class="item-inner">
                           <div class="item-title">
                               Publish Collection to Reader
@@ -67,6 +79,23 @@
                       </div>
                     </a>
                   </li>
+
+
+                  <li>
+                    <a href="/admin/publish/deploy-contract/${channelViewModel.channel._id}" class="item-link">
+                      <div class="item-content">
+                        <div class="item-media">
+                          <span class="material-icons">gavel</span>
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-title">
+                              Deploy Contract
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+
                 </ul>
               </div>
 

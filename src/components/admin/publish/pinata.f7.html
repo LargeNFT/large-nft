@@ -14,7 +14,7 @@
               <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
               <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
               <li>Publish to Pinata</li>
-          </ul>
+            </ul>
 
 
             ${channelViewModel.itemCount > 0 ? $h`
@@ -174,8 +174,6 @@
         
         let publishing = false
         let pageUnloaded = false
-
-        console.log(channelViewModel.channel)
 
         $on('pageInit', async () => {
 

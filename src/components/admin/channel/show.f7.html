@@ -74,7 +74,14 @@
                       </div>
                     ` : ``}
 
+    
+                    <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
 
+                    ${channelViewModel.channel.contractAddress ? $h`
+                      <div class="contract-address">
+                        <strong>Contract Address:</strong> ${channelViewModel?.channel.contractAddress}
+                      </div>
+                    ` : $h``}
                   
                 </div>
     

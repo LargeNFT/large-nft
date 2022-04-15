@@ -85,9 +85,15 @@
 
                               
                           ${ipfsReady && !showLocalStatus ? $h`
-                            <button class="button button-fill color-gray text-color-white" @click="${deployPinataClick}" id="refresh-pinata-button">
-                              Submit
-                            </button>
+
+                            ${isLocal ? $h`
+                              <button class="button button-fill color-gray text-color-white" @click="${deployPinataClick}" id="refresh-pinata-button">
+                                Submit
+                              </button>
+                            ` : $h`
+                              Collection must first be <a href="/admin/publish/export/${channelViewModel.channel._id}">exported</a> to local IPFS. 
+                            `}
+
                           ` : $h`
                             <p></p>
                           `}
@@ -171,7 +177,8 @@
 
         let showPinStatus = channelViewModel.channel.pinJobId?.length > 0
         let showLocalStatus = channelViewModel.channel?.localCid && channelViewModel.channel.localCid != channelViewModel.channel.publishedCid
-        
+        let isLocal = channelViewModel.channel.localCid != undefined
+
         let publishing = false
         let pageUnloaded = false
 

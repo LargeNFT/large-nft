@@ -12,64 +12,12 @@
 
             <ul class="breadcrumb">
                 <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
-                <li>Publish</li>
+                <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
+                <li>Deploy Contract</li>
             </ul>
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Publish</div>
-              <div class="block list">
-                <ul>
-                  <li>
-                    <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Export to local IPFS
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Publish to Pinata
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Create New Reader
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Publish Collection to Reader
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
               <div class="block-title">Verify Mint Info</div>
               <div class="card">
                 <div class="card-content">

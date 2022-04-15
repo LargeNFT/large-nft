@@ -11,66 +11,13 @@
           <div class="col-100 large-50 center">
 
             <ul class="breadcrumb">
-                <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
-                <li>Publish</li>
+              <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
+              <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
+              <li>Publish Collection to Reader</li>
             </ul>
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Publish</div>
-              <div class="block list">
-                <ul>
-                  <li>
-                    <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Export to local IPFS
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Publish to Pinata
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Create New Reader
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="/admin/publish/create-reader/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-inner">
-                          <div class="item-title">
-                              Publish Collection to Reader
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-
               <div class="block-title">Publish Reader</div>
               <div class="card">
 
@@ -122,9 +69,7 @@
                             </div>
                           </li>
                         </ul>
-                      </form>
-
-                    
+                      </form>                    
                     ` : $h`
                       <p>Collection must be deployed to IPFS</p>  
                     `}
@@ -214,18 +159,6 @@
         let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
         let showPublishReader = channelViewModel.channel.publishedCid != undefined
 
-        let pageUnloaded = false
-
-        $on('pageInit', async () => {
-
-          await checkPublishRepoStatus()
-
-        })
-
-        $on('pageAfterOut', (e, page) => {
-          console.log("Unloading page")
-          pageUnloaded = true
-        })
 
         const publishReaderSubmit = async (e) => {
 
@@ -240,37 +173,6 @@
 
           await $update()
           
-        }
-
-        const checkPublishRepoStatus = async (e) => {
-
-          if (pageUnloaded) return
-          if (!gitlab) return
-          if (channelViewModel.channel.publishReaderRepoStatus == "complete" && channelViewModel.channel.publishReaderRepoId > 0) return 
-          if (forking) return
-
-          console.log('Checking repo fork status...')
-
-          channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
-
-          let id = channelViewModel.channel.publishReaderRepoId
-          let status = channelViewModel.channel.publishReaderRepoStatus
-
-          let forkRepoStatus = await gitlabService.getForkRepoStatus(channelViewModel.channel)
-          
-          if (forkRepoStatus == "finished") { //TODO
-            channelViewModel.channel.publishReaderRepoStatus = "complete"
-            await channelService.put(channelViewModel.channel)
-          }
-
-          showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
-
-          await $update()
-
-          if (channelViewModel.channel.publishReaderRepoStatus != "complete") {
-            setTimeout(checkPublishRepoStatus, 5000)
-          }
-
         }
 
 

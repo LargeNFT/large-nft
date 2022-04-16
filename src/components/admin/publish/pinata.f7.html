@@ -53,8 +53,8 @@
 
                             <div class="local-status">
                               <p><strong>Latest local export:</strong> ${channelViewModel.channel.localCid}</p>
-
-                              <button class="button button-fill color-gray text-color-white" @click="${deployPinataClick}" id="refresh-pinata-button">
+ 
+                              <button class="button button-fill color-gray text-color-white refresh-pinata-button" @click="${deployPinataClick}">
                                 Submit
                               </button>
 
@@ -87,7 +87,7 @@
                           ${ipfsReady && !showLocalStatus ? $h`
 
                             ${isLocal ? $h`
-                              <button class="button button-fill color-gray text-color-white" @click="${deployPinataClick}">
+                              <button class="button button-fill color-gray text-color-white refresh-pinata-button" @click="${deployPinataClick}">
                                 Submit
                               </button>
                             ` : $h`
@@ -135,7 +135,7 @@
     }
 
     
-    #refresh-pinata-button {
+    .refresh-pinata-button {
         width: 150px;
         height: 30px;
         margin-top: 10px;

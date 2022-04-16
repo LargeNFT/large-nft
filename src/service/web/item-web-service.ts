@@ -124,10 +124,6 @@ class ItemWebService {
         itemViewModel.previous = await this.itemService.getPrevious(item)
         itemViewModel.next = await this.itemService.getNext(item)
 
-        console.log(itemViewModel.previous)
-        console.log(itemViewModel.item)
-        console.log(itemViewModel.next)
-
         return itemViewModel
     }
 

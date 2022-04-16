@@ -33,6 +33,15 @@
                             <div class="item-content item-input">
                                 <div class="item-inner">
 
+                                    ${!ipfsReady ? $h`
+                                      <div class="ipfs-label">IPFS Initializing...</div>
+                                    ` : $h`
+                                        <div class="ipfs-label">
+                                            <a href="/admin/connect">IPFS Ready</a>: ${peerCount} peers
+                                        </div>
+                                    `}
+
+
                                     ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
                                       <div class="repo-status">
                                         <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
@@ -54,8 +63,12 @@
                                           <div class="publish-output" style="display:none;"></div>
                                         `}
 
-    
-                                        <button class="button button-fill button-small deploy-button" type="submit">Publish Reader</button>
+                                        ${!publishing ? $h`
+                                          <button class="button button-fill button-small deploy-button" type="submit">Publish Reader</button>
+                                        ` : $h`
+                                          <span/>
+                                        `}
+                                        
                                         
                                       ` : $h`
                                         <p style="display:none;"></p>
@@ -149,20 +162,35 @@
         let gitlabService = ContainerService.getInstance(GitlabService)
         let publishService = ContainerService.getInstance(PublishService)
 
-        let ipfsReady = true //remoooove
+        let ipfsReady = ipfsService.ipfs != undefined
+        let peerCount = ipfsService.peerCount
 
         let channelViewModel = props.channelViewModel
         let gitlab = props.gitlab
 
+        let publishing = false
         let publishReaderOutput = ""
 
         let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
         let showPublishReader = channelViewModel.channel.publishedCid != undefined
 
+        $on('pageInit', async () => {
+
+          //Initialize IPFS
+          await ipfsService.init()
+          ipfsReady = ipfsService.ipfs != undefined
+
+          await $update()
+
+        })
+
 
         const publishReaderSubmit = async (e) => {
 
           e.preventDefault()
+
+          publishing = true
+          await $update()
 
           try {
             await gitlabService.deployReader(channelViewModel.channel)
@@ -171,6 +199,7 @@
             $f7.dialog.alert(ex, "There was an error")
           }
 
+          publishing = false
           await $update()
           
         }
@@ -180,6 +209,12 @@
           publishReaderOutput += `<p>${e.detail.message}</p>`
           $update()
         })
+
+        $(document).on('update-peers', async (e) => {
+          peerCount = e.detail.count
+          $update()
+        })
+
 
         return $render
     }

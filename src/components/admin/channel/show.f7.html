@@ -255,7 +255,6 @@
   import { UiService } from "../../../service/core/ui-service"
 
   import Navbar from "../../admin/navbar.f7.html"
-  import InfoRow from "../../admin/channel/info-row.f7.html"
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -267,11 +266,7 @@
 
     let channelViewModel = props.channelViewModel
 
-    let showEdit = channelViewModel.editable
-
-    // let coverBannerSrc 
-    // let coverImageSrc 
-
+    let showEdit = true //channelViewModel.editable
 
 
     //Pagination

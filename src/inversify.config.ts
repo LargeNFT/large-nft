@@ -172,6 +172,9 @@ function getMainContainer() {
   container.bind(PinningApiRepository).toSelf().inSingletonScope()
   container.bind(GitlabRepository).toSelf().inSingletonScope()
 
+  //Attach container to window so we can easily access it from the browser console
+  globalThis.container = container
+
   return container
 }
 

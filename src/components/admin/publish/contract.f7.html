@@ -39,9 +39,16 @@
               <div class="card">
                 <div class="card-content">
                   <div class="card-content card-content-padding">
+
                     ${showDeploy ? $h`
 
-                      <p><strong>Contract Address:</strong> ${channelViewModel.channel.contractAddress}</p>
+                      <div class="pin-status">
+                        <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}</p>
+                        <p><strong>Date Exported:</strong> ${channelViewModel.channel.localPubDate}</p>
+                      </div>
+
+
+                      <p><strong>Current Contract Address:</strong> ${channelViewModel.channel.contractAddress}</p>
 
                       ${deploying ? $h`
                         <p>Deploying...</p>
@@ -49,13 +56,21 @@
                         ${!channelViewModel.channel.contractAddress ? $h`
                           <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
                         ` : $h`
-                          <p>Success!</p>
+                          
+                          <h1>Success!</h1>
+                          
+                          <p>
+                            After deploying the contract the Reader can be re-published and it will become aware of Ethereum and show users the 
+                            appropriate controls to begin minting NFTs.
+                          </p>
+                          <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="button button-outline">Publish Collection to Reader</a>
+
+
                         `}                        
                       `}
-
                       
                     ` : $h`
-                      <p>Collection must be deployed to Pinata</p>
+                      <p>Collection must be deployed to IPFS</p>
                     `}
                   </div>
                 </div>
@@ -116,7 +131,7 @@
 
         let deploying = false 
 
-        let showDeploy = channelViewModel.channel.publishedCid && channelViewModel.channel.pinJobStatus == "complete"
+        let showDeploy = channelViewModel.channel.localCid != undefined
 
 
         const deployContractClick = async (e) => {

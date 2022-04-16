@@ -5,7 +5,6 @@ import { Channel } from "../../dto/channel"
 import { ContractMetadata } from "../../dto/contract-metadata"
 import { Item } from "../../dto/item"
 import { NFTMetadata } from "../../dto/nft-metadata"
-import { PinningApi } from "../../dto/pinning-api"
 import { AuthorService } from "../author-service"
 import { ChannelService } from "../channel-service"
 import { ImageService } from "../image-service"
@@ -54,7 +53,7 @@ class PublishService {
         for (let i = 0; i < items.length; i += chunkSize) {
             chunkedItems.push(items.slice(i, i + chunkSize))
         }
-
+        
         //Save pouch dbs
         return {
             channels: [channel],
@@ -300,6 +299,8 @@ class PublishService {
         channel.localPubDate = new Date().toJSON()
 
         await this.channelService.put(channel)
+
+        console.log(channel)
 
 
     }

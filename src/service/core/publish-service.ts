@@ -35,12 +35,12 @@ class PublishService {
 
 
         //Generate bundles with extra info for each item
-        // for (let item of items) {
+        for (let item of items) {
 
-        //     //Add the previous and next items so they can used in navigation
-        //     item['previous'] = await this.itemService.getPrevious(item)
-        //     item['next'] = await this.itemService.getNext(item)
-        // }
+            //Add the previous and next items so they can used in navigation
+            item['previous'] = await this.itemService.getPrevious(item)
+            item['next'] = await this.itemService.getNext(item)
+        }
 
         //Add itemCount to channel
         channel['itemCount'] = items?.length

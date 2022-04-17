@@ -101,6 +101,10 @@ class ItemWebService {
 
         }
 
+        //Is this the last one? 
+        let maxToken = await this.itemService.getMaxTokenId()
+
+        let canDelete = (maxToken == item.tokenId)
         
         return {
             item: item,
@@ -113,6 +117,7 @@ class ItemWebService {
             images: this.getImagesFromPostContentOps(item.content?.ops),
             attributeSelections: attributeSelections,
             editable: editable,
+            canDelete: canDelete
         }
 
     }
@@ -190,7 +195,8 @@ class ItemWebService {
             },
             channel: channel,
             attributeSelections: attributeSelections,
-            editable: true
+            editable: true,
+            canDelete: true
         }
 
         return itemViewModel

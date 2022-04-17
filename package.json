@@ -127,6 +127,7 @@
     "quill-image-drop-and-paste": "1.2.10",
     "quill-delta-to-html": "0.11.0",
     "quill-delta-to-markdown": "0.6.0",
+    "quill-paste-smart": "1.4.10",
 
     "@yaireo/tagify": "4.9.8",
     

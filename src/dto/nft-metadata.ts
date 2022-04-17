@@ -2,7 +2,7 @@ import { AttributeSelection } from "./attribute";
 
 interface NFTMetadata {
 
-    tokenId:string
+    tokenId:number
 
     name?:string
     description?:string

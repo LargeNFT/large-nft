@@ -35,12 +35,12 @@ class PublishService {
 
 
         //Generate bundles with extra info for each item
-        for (let item of items) {
+        // for (let item of items) {
 
-            //Add the previous and next items so they can used in navigation
-            item['previous'] = await this.itemService.getPrevious(item)
-            item['next'] = await this.itemService.getNext(item)
-        }
+        //     //Add the previous and next items so they can used in navigation
+        //     item['previous'] = await this.itemService.getPrevious(item)
+        //     item['next'] = await this.itemService.getNext(item)
+        // }
 
         //Add itemCount to channel
         channel['itemCount'] = items?.length
@@ -275,17 +275,17 @@ class PublishService {
         //Get author
         const author = await this.authorService.get(channel.authorId)
 
-        let tokenId = 1
-        for (let item of items) {
+        // let tokenId = 1
+        // for (let item of items) {
 
-            //Set the tokenID
-            item.tokenId = tokenId.toString()
+        //     //Set the tokenID
+        //     item.tokenId = tokenId.toString()
 
-            //Save it
-            await this.itemService.put(Object.assign(new Item(), item))
+        //     //Save it
+        //     await this.itemService.put(Object.assign(new Item(), item))
 
-            tokenId++
-        }
+        //     tokenId++
+        // }
 
 
         //Export metadata
@@ -299,8 +299,6 @@ class PublishService {
         channel.localPubDate = new Date().toJSON()
 
         await this.channelService.put(channel)
-
-        console.log(channel)
 
 
     }

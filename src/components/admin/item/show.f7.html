@@ -4,6 +4,16 @@
 
     <${Navbar} />
 
+    ${showEdit ? $h`
+      <div class="fab fab-extended fab-right-bottom">
+        <a href="/admin/item/create/${itemViewModel.channel._id}" class="text-color-black">
+          <i class="material-icons">create</i>
+          <div class="fab-text">Create Blog NFT</div>
+        </a>
+      </div>
+    ` : $h``} 
+
+
     <div class="page-content">
 
       <div class="row">
@@ -17,24 +27,6 @@
           <div class="card item-card-show">
 
             <div class="card-content card-content-padding">
-
-              ${showEdit ? $h`
-                <div class="float-right">
-                  <div class="menu-item menu-item-dropdown">
-                    <div class="menu-item-content icon-only">
-                      <div class="menu-item-content">
-                        <i class="material-icons">more_vert</i>
-                      </div>
-                    </div>
-                    <div class="menu-dropdown menu-dropdown-right">
-                      <div class="menu-dropdown-content">                        
-                          <a class="menu-dropdown-link menu-close" href="/admin/item/edit/${itemViewModel.item._id}">Edit</a>
-                          <a class="menu-dropdown-link menu-close" @click="${deleteClick}">Delete</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ` : $h``} 
 
               <div class="author-header">
 
@@ -56,22 +48,47 @@
                 id="item-content-${itemViewModel.item._id}">
               </div>
 
+            </div>
 
-              ${itemViewModel.attributeSelections?.length > 0 ? $h`
+            <div class="card-footer item-show-footer">
+              ${showEdit ? $h`
+                <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}">Edit</a>
 
-                <h3 style="margin-bottom: 0px;">Attributes</h3>
-                ${itemViewModel.attributeSelections?.map(as => $h`
-                  <div class="attribute-row">
-                    <strong>${as.traitType}:</strong> ${as.value}
-                  </div>
-              `)}
+                ${itemViewModel.canDelete ? $h`
+                  <a class="button button-outline button-small color-red" @click="${deleteClick}">
+                    <i class="material-icons">delete</i>
+                  </a>
+                ` : $h`
+                  Note: Only the last NFT can be deleted.
+                `}
 
-              ` : $h``}
 
-
+              ` : $h``} 
             </div>
 
           </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span>
+                <i class="material-icons">label</i>
+                <label>Attributes</label>
+              </span>
+            </div>
+            <div class="card-content card-content-padding">
+
+              <div class="attribute-row"> 
+                <strong>Token ID:</strong> #${itemViewModel.item.tokenId}
+              </div>
+
+              ${itemViewModel.attributeSelections?.map(as => $h`
+                <div class="attribute-row">
+                  <strong>${as.traitType}:</strong> ${as.value}
+                </div>
+              `)}
+            </div>
+          </div>
+
 
           <div class="block row center margin-bottom">
 
@@ -79,7 +96,7 @@
               <div class="col-100 large-50 previous">
                 <a class="button button-outline" href="/admin/item/show/${itemViewModel.previous._id}">
                   <span class="material-icons">arrow_back</span>
-                  ${itemViewModel.previous.title}
+                  ${ parseInt(itemViewModel.item.tokenId) - 1}
                 </a>
               </div>
             ` : $h``}
@@ -87,7 +104,7 @@
             ${itemViewModel.next ? $h`
               <div class="col-100 large-50 next">
                 <a class="button button-outline" href="/admin/item/show/${itemViewModel.next._id}">
-                  ${itemViewModel.next.title}
+                  ${ parseInt(itemViewModel.item.tokenId) + 1}
                   <span class="material-icons">arrow_forward</span>
                 </a>
               </div>
@@ -151,6 +168,31 @@
 
   .menu-dropdown-link.menu-close {
     color: #ffffff;
+  }
+
+
+  .attribute-row {
+    font-size: 16px;
+  }
+
+
+
+  .item-show-footer {
+    font-size: 14px;
+  }
+
+  .card-header {
+    line-height: 21px;
+  }
+
+  .card-header label {
+    padding-bottom: 3px;
+    margin-left: 5px;
+    float: left;
+  }
+
+  .card-header .material-icons {
+    float: left;
   }
 
 

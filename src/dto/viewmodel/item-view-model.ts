@@ -21,6 +21,7 @@ interface ItemViewModel {
     attributeSelections:AttributeSelectionViewModel[]
 
     editable:boolean
+    canDelete:boolean
 
     //For previous/next navigation
     next?:Item

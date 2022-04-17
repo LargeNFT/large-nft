@@ -4,7 +4,7 @@ import { injectable } from 'inversify';
 import Quill from 'quill';
 import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
 import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } from 'quill-blot-formatter'
-
+import "quill-paste-smart";
 import { Dom7 } from "framework7"
 
 // import { UploadService } from './core/upload-service'

@@ -33,6 +33,21 @@ class ItemRepository {
             }
         })
 
+        await db.put({
+            _id: '_design/item_token_id',
+            views: {
+              token_id_stats: {
+                map: function (doc) { 
+                    //@ts-ignore
+                    emit(doc.tokenId)
+                }.toString(),
+                reduce: '_count'
+              }
+            }
+        })
+
+
+
     }
 
     db: any
@@ -121,6 +136,23 @@ class ItemRepository {
     async delete(item: Item): Promise<void> {
         await this.db.remove(item)
     }
+
+    async getMaxTokenId() : Promise<number> {
+
+
+        let result = await this.db.query('item_token_id/token_id_stats', {
+            reduce: true,
+            include_docs: false
+        })
+
+        if (result.rows[0]) {
+            return result.rows[0].value
+        } else {
+            return 0
+        }
+
+    }
+
 
 }
 

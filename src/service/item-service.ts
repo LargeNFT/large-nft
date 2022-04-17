@@ -29,8 +29,13 @@ class ItemService {
     async put(item: Item) {
 
         if (!item._id) {
+            
             item._id = uuidv4()
             item.dateCreated = new Date().toJSON()
+
+            //Get next token ID
+            item.tokenId = await this.itemRepository.getMaxTokenId() + 1
+
         } else {
             item.lastUpdated = new Date().toJSON()
         }
@@ -69,6 +74,10 @@ class ItemService {
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
         return this.itemRepository.listByChannel(channelId, limit, skip)
+    }
+
+    async getMaxTokenId() : Promise<number> {
+        return this.itemRepository.getMaxTokenId()
     }
 
 

@@ -24,11 +24,9 @@
 
             <div class="card-header banner" id="show-channel-banner">
               
-                ${showEdit ? $h`
-                  <div class="float-right">
-                    <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;" href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
-                  </div>  
-                ` : $h``} 
+                <div class="float-right">
+                  <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;" href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
+                </div> 
 
 
                 ${channelViewModel?.coverImage ? $h`
@@ -96,7 +94,7 @@
 
 
     
-                    <div class="description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
+                    <div class="description" id="channel-show-description" innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
 
                     ${channelViewModel.channel.contractAddress ? $h`
                       <div class="contract-address">
@@ -234,6 +232,12 @@
     color: #ffffff;
   }
 
+
+  
+  .channel-show-token-id {
+    color:rgb(79, 79, 79);
+  }
+
 }
 
 
@@ -266,7 +270,7 @@
 
     let channelViewModel = props.channelViewModel
 
-    let showEdit = true //channelViewModel.editable
+    let showEdit = channelViewModel.editable
 
 
     //Pagination
@@ -344,6 +348,16 @@
       if (channelViewModel?.coverBanner?.url) {
         document.getElementById('show-channel-banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
       }
+
+
+      //Make links external
+      let links = document.getElementById('channel-show-description').getElementsByTagName('a')
+
+      for (let link of links) {
+        link.classList.add('external')
+      }
+
+
 
       //Get the page
       $('#show-channel-infinite-scroll').trigger('infinite')
@@ -432,6 +446,10 @@
 
                         <div class="card-content card-content-padding">
 
+                          <div class="float-right">
+                            <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                          </div>
+
                           <div class="author-header">
 
                             <div class="author-avatar">
@@ -452,7 +470,7 @@
                           <div class="item-preview">
                             <div class="left">
 
-                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}">${itemViewModel.item.title}</a>  
+                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> ${itemViewModel.item.title}</a>  
                               
                               ${itemViewModel.item.excerpt ? `
                                 <p>${itemViewModel.item.excerpt}</p>

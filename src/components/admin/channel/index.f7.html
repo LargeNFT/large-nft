@@ -195,6 +195,14 @@
 
           element.innerHTML = c.channel.descriptionHTML
 
+          //Make links external
+          let links = element.getElementsByTagName('a')
+
+          for (let link of links) {
+            link.classList.add('external')
+          }
+
+  
           $(element).removeClass('empty')
         })
 

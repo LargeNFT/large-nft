@@ -13,8 +13,8 @@ class Item {
     @IsNotEmpty()
     channelId?:string
     
-    @Allow()
-    tokenId?:string //Generated when we publish 
+    @IsNotEmpty()
+    tokenId?:number 
     
     @MinLength(3, { message: "Title must be more than 3 characters." })
     title?:string 

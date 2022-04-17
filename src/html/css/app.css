@@ -66,6 +66,11 @@
     --f7-input-invalid-border-color: #ff0000;
     --f7-input-error-text-color: #ff0000;
     
+    --f7-card-font-size: 15px;
+    --f7-card-header-font-size: 17px;
+    --f7-card-header-font-weight: bold;
+
+
   }
   
   .main h1 {
@@ -215,64 +220,6 @@
   
   
   
-  .post h1 {
-    color: rgba(0,0,0, 0.84);
-    font-size: 40px;
-    font-weight: 700;
-    font-style: normal;
-    margin-block-end: 0px;
-    margin-block-start: 0em;
-    line-height: 45px;
-  }
-  
-  
-  .post h2 {
-    font-size: 24px;
-    font-weight: 400;
-    font-style: normal;
-    color: rgba(0, 0, 0, 0.54);
-    margin-block-start: 0.33em;
-    margin-block-end: 0.5em;
-  }
-  
-  .post .author {
-    margin-top: 5px;
-    height: 50px;
-    display: flex;
-    box-sizing: border-box; /* used so the padding will be inline and not extend the 100% width */
-  }
-  
-  .post .author .pic {
-    max-width: 50px;
-    margin-right: 10px; 
-  }
-  
-  .post author .info {
-    flex: 1; /* my goal is that the width always fills up independent of browser width */
-  }
-  
-  
-  .post .author .owner {
-    color: rgba(0,0,0,0.84);
-    font-size: 16px;
-    font-weight: 500;
-    font-style: normal;
-    line-height: 20px;
-  }
-  
-  .post .author .date {
-    color: rgba(0,0,0,0.54);
-    font-size: 16px;
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  .post .content {
-    font-weight: 400;
-    font-style: normal;
-    font-size: 21px;
-    color: rgba(0, 0, 0, 0.84);
-  }
   
   
   .ql-editor {
@@ -513,6 +460,10 @@ ul.breadcrumb li a:hover {
 
 .author-header .name {
   margin-bottom: 3px;
+}
+
+.author-header a {
+  font-weight: bold;
 }
 
 .author-avatar {

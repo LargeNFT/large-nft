@@ -89,8 +89,6 @@ class ChannelService {
     return this.itemService.countByChannel(channelId)
   }
 
-
-
   async exportContractMetadata(channel:Channel, ownerAddress:string) : Promise<ContractMetadata> {
 
 
@@ -111,7 +109,6 @@ class ChannelService {
 
   }
 
-
   async pin(pinningApi:PinningApi, channel:Channel) {
 
     let result = await this.pinningService.pinByHash(pinningApi, channel)
@@ -125,22 +122,6 @@ class ChannelService {
 
     await this.put(channel)
   }
-
-
-  // async publish(channel:Channel, items:Item[], pinningApi:PinningApi, cid:string) { 
-
-  //   //Save to Pinata
-  //   if (pinningApi) {
-  //     let result = await this.pinningService.pinByHash(pinningApi, cid, channel.title)
-  //     if (!result.ipfsHash) throw new Error("Problem publishing")
-  //   }
-
-  //   //Deploy contract
-  //   // let receipt = await this.deploy(channel.title, channel.symbol, cid, channel.mintPrice, items.length)
-
-  //   // return receipt.contractAddress
-
-  // }
 
 
 }

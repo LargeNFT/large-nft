@@ -50,6 +50,20 @@
                             <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
                           </div>
                           ` : $h`<span />`}
+
+                          ${channelViewModel.channel.publishReaderRepoStatus == "complete" ? $h`
+                            <div class="row" style="width: 100%;">
+                              <div class="chip chip-outline">
+                                <div class="chip-label">Success!</div>
+                              </div>
+    
+                              <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="button button-fill" id="fork-next-button">Next <i class="material-icons">arrow_right</i></a>
+    
+                            </div>
+                          ` : $h`<span/>`}
+
+
+
                         </div>
                       </div>
                     </li>
@@ -101,6 +115,11 @@
     padding: 5px;
     height: 300px;
     overflow-y: scroll;
+  }
+
+  #fork-next-button {
+    width: 200px;
+    float: right;
   }
 </style>
 

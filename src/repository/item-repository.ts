@@ -1,4 +1,5 @@
 import { injectable } from "inversify"
+import { Channel } from "../dto/channel"
 import { Item } from "../dto/item"
 import { DatabaseService } from "../service/core/database-service"
 
@@ -39,7 +40,7 @@ class ItemRepository {
               token_id_stats: {
                 map: function (doc) { 
                     //@ts-ignore
-                    emit(doc.tokenId)
+                    emit(doc.channelId, doc.tokenId)
                 }.toString(),
                 reduce: '_count'
               }
@@ -137,13 +138,16 @@ class ItemRepository {
         await this.db.remove(item)
     }
 
-    async getMaxTokenId() : Promise<number> {
+    async getMaxTokenId(channelId:string) : Promise<number> {
 
 
         let result = await this.db.query('item_token_id/token_id_stats', {
             reduce: true,
-            include_docs: false
+            include_docs: false,
+            key: channelId
         })
+
+        console.log(result)
 
         if (result.rows[0]) {
             return result.rows[0].value

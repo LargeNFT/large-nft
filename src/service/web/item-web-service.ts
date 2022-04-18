@@ -102,7 +102,7 @@ class ItemWebService {
         }
 
         //Is this the last one? 
-        let maxToken = await this.itemService.getMaxTokenId()
+        let maxToken = await this.itemService.getMaxTokenId(channel._id)
 
         let canDelete = (maxToken == item.tokenId)
         

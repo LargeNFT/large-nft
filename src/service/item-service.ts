@@ -34,7 +34,7 @@ class ItemService {
             item.dateCreated = new Date().toJSON()
 
             //Get next token ID
-            item.tokenId = await this.itemRepository.getMaxTokenId() + 1
+            item.tokenId = await this.itemRepository.getMaxTokenId(item.channelId) + 1
 
         } else {
             item.lastUpdated = new Date().toJSON()
@@ -76,8 +76,8 @@ class ItemService {
         return this.itemRepository.listByChannel(channelId, limit, skip)
     }
 
-    async getMaxTokenId() : Promise<number> {
-        return this.itemRepository.getMaxTokenId()
+    async getMaxTokenId(channelId:string) : Promise<number> {
+        return this.itemRepository.getMaxTokenId(channelId)
     }
 
 

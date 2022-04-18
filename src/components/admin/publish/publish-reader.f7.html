@@ -84,7 +84,7 @@
                         </ul>
                       </form>                    
                     ` : $h`
-                      <p>Collection must be deployed to IPFS</p>  
+                      <p>Collection must be deployed to IPFS and you must fork the Large Reader before publishing.</p>  
                     `}
                     
                   ` : $h`
@@ -172,7 +172,7 @@
         let publishReaderOutput = ""
 
         let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
-        let showPublishReader = channelViewModel.channel.publishedCid != undefined
+        let showPublishReader = channelViewModel.channel.localCid != undefined
 
         $on('pageInit', async () => {
 
@@ -192,12 +192,18 @@
           publishing = true
           await $update()
 
+          let elem = document.getElementsByClassName('ipfs-label')[0]
+
+          $f7.preloader.showIn(elem)
+
           try {
             await gitlabService.deployReader(channelViewModel.channel)
-            
           } catch(ex) {
             $f7.dialog.alert(ex, "There was an error")
           }
+
+          console.log('hide')
+          $f7.preloader.hideIn(elem)
 
           publishing = false
           await $update()

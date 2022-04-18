@@ -117,6 +117,22 @@ class GitlabService {
 
         let directory = `/blogs/${channel._id}/backup`
 
+        
+        //If the contract is deployed add a file with the address
+        if (channel.contractAddress) {
+            actions.push({
+                action: "create",
+                file_path: "backup/contract.json",
+                content: JSON.stringify({ contractAddress: channel.contractAddress })
+            })
+        } else {
+            actions.push({
+                action: "create",
+                file_path: "backup/contract.json",
+                content: undefined //empty file
+            })
+        }
+
         //Read channels
         let channelsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/channels.json`)) 
 

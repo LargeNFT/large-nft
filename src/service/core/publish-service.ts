@@ -11,7 +11,6 @@ import { ImageService } from "../image-service"
 import { ItemService } from "../item-service"
 
 import { IpfsService } from "./ipfs-service"
-import { PinningService } from "./pinning-service"
 import TYPES from "./types"
 import { WalletService } from "./wallet-service"
 
@@ -24,7 +23,6 @@ class PublishService {
         private authorService: AuthorService,
         private ipfsService: IpfsService,
         private imageService: ImageService,
-        private pinningService: PinningService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }
@@ -66,6 +64,7 @@ class PublishService {
     async exportToIPFS(channel: Channel, items: Item[], author: Author, ownerAddress: string): Promise<string> {
 
         //Remove publishing related field from channel
+        delete channel.contractAddress
         delete channel.localCid
         delete channel.localPubDate
         delete channel.pinJobId
@@ -275,19 +274,6 @@ class PublishService {
         //Get author
         const author = await this.authorService.get(channel.authorId)
 
-        // let tokenId = 1
-        // for (let item of items) {
-
-        //     //Set the tokenID
-        //     item.tokenId = tokenId.toString()
-
-        //     //Save it
-        //     await this.itemService.put(Object.assign(new Item(), item))
-
-        //     tokenId++
-        // }
-
-
         //Export metadata
         let cid: string = await this.exportToIPFS(channel, items, author, this.walletService.address)
 
@@ -305,7 +291,7 @@ class PublishService {
 
     async deployContract(channel: Channel) {
 
-        if (!channel.publishedCid) {
+        if (!channel.localCid) {
             throw new Error("Not published to Pinata")
         }
 
@@ -317,7 +303,7 @@ class PublishService {
 
         //Deploy contract
         let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')
-        let receipt = await this.deploy(channel.title, channel.symbol, channel.publishedCid, mintPriceWei.toString(), count)
+        let receipt = await this.deploy(channel.title, channel.symbol, channel.localCid, mintPriceWei.toString(), count)
 
         //Update address locally
         channel.contractAddress = receipt.contractAddress

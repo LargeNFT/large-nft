@@ -118,12 +118,13 @@
             try {
 
                 //Validate credentials
-                await pinningService.validateAccount(pinningApi)
+                if (pinningApi.apiKey) {
+                    await pinningService.validateAccount(pinningApi)
+                    await pinningService.put(pinningApi)
+                }
 
                 await gitlabService.put(gitlab)
-
-                await pinningService.put(pinningApi)
-
+            
                 const toast = $f7.toast.show({
                     text: 'Pinata Settings Saved',
                     closeTimeout: 2000,

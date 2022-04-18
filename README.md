@@ -1,18 +1,11 @@
 
 # Large
 
-![image](https://raw.githubusercontent.com/ptoner/Large/master/www/images/logo_white.png)
-
-Large is a serverless and peer-to-peer blogging platform. Build a website that's hosted by your users with [IPFS](http://ipfs.io).
+Large is a serverless and peer-to-peer blogging platform. 
 
 ## Features
 * Available on web, desktop, and (future) Android/iOS.
 * Create blog posts with embedded media. Images (video soon).
-* Create pages with static content. 
-* Build custom navigation menus (soon).
-* Users are notified when new content is posted. Real time updates.
-* Users with wallets can interact with the app. Make comments, post media, etc. 
-* Create complex, data-driven plugins. (future)  
 
 ## Peer-to-Peer
 * Basic functionality requires no infrastructure to manage or servers to maintain.

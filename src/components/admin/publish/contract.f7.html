@@ -140,7 +140,7 @@
           await $update()
           
           let promiseView = {
-            title: `Deploying contract ${name}. Waiting for transaction to be mined.`,
+            title: `Deploying contract ${name}. Approve transaction and wait for it to be mined.`,
             promise: publishService.deployContract(channelViewModel.channel)
           }
 

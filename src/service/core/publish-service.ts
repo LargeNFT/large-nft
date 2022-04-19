@@ -133,6 +133,7 @@ class PublishService {
                 }
             }
 
+
             //Delete publishing related fields
             delete item._rev
             delete item.lastUpdated

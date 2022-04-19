@@ -16,7 +16,7 @@ class Item {
     @IsNotEmpty()
     tokenId?:number 
     
-    @MinLength(3, { message: "Title must be more than 3 characters." })
+    @Allow()
     title?:string 
 
     @Allow()

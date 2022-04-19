@@ -21,28 +21,16 @@
 
           <ul class="breadcrumb">
             <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
-            <li>${itemViewModel.item.title}</li>
+            <li>${itemViewModel.item.title} ${itemViewModel.item.tokenId}</li>
           </ul>
 
           <div class="card item-card-show">
 
+            <div class="card-header">
+              <span>${itemViewModel.item.title} <span class="item-show-token-id">#${itemViewModel.item.tokenId}</span></span>
+            </div>
+
             <div class="card-content card-content-padding">
-
-              <div class="author-header">
-
-                <div class="author-avatar">
-                  ${itemViewModel.authorPhoto ? $h`
-                    <img src="${itemViewModel.authorPhoto.url}" />
-                  ` : $h`
-                    <i class="material-icons">person</i>
-                  `}
-                </div>
-
-                <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a> · <span class="date">${itemViewModel.dateDisplay}</span>
-
-              </div>
-
-              <h1>${itemViewModel.item.title}</h1>
 
               <div class="content" innerHTML="${itemViewModel.item.contentHTML}"
                 id="item-content-${itemViewModel.item._id}">
@@ -90,6 +78,27 @@
           </div>
 
 
+          <div class="card">
+            <div class="card-header">
+              <span>
+                <i class="material-icons">person</i>
+                <label>Creator</label>
+              </span>
+            </div>
+            <div class="card-content card-content-padding">
+
+              <div class="attribute-row"> 
+                <strong>Creator:</strong> <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a>
+              </div>
+
+              <div class="attribute-row"> 
+                <strong>Date:</strong> <span class="date">${itemViewModel.dateDisplay}</span>
+              </div>
+
+            </div>
+          </div>
+
+
           <div class="block row center margin-bottom">
 
             ${itemViewModel.previous ? $h`
@@ -112,6 +121,9 @@
 
           </div>
 
+          <div class="block">
+            <br />
+          </div>
 
         </div>
       </div>
@@ -140,7 +152,6 @@
     }
 
     .next {
-      margin-top: 3px;
       text-align: center;
     }
   }
@@ -193,6 +204,10 @@
 
   .card-header .material-icons {
     float: left;
+  }
+
+  .item-show-token-id {
+    color: rgb(79, 79, 79);
   }
 
 

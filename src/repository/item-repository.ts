@@ -147,8 +147,6 @@ class ItemRepository {
             key: channelId
         })
 
-        console.log(result)
-
         if (result.rows[0]) {
             return result.rows[0].value
         } else {

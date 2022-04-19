@@ -220,10 +220,18 @@
             $f7.preloader.showIn(elem)
 
             //Now publish
-            await publishService.publishToIPFS(channelViewModel.channel)
+            try {
+                
+                await publishService.publishToIPFS(channelViewModel.channel)
 
-            //Get updated channel
-            channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+                //Get updated channel
+                channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+
+            } catch(ex) {
+                console.log(ex)
+                $f7.dialog.alert(ex.errors, "There was an error")
+            }
+            
 
             $f7.preloader.hideIn(elem)
 

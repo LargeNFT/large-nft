@@ -63,6 +63,13 @@ class PublishService {
 
     async exportToIPFS(channel: Channel, items: Item[], author: Author, ownerAddress: string): Promise<string> {
 
+        //Clone
+        channel = JSON.parse(JSON.stringify(channel))
+        items = JSON.parse(JSON.stringify(items))
+        author = JSON.parse(JSON.stringify(author))
+
+
+
         //Remove publishing related field from channel
         delete channel.contractAddress
         delete channel.localCid
@@ -213,8 +220,21 @@ class PublishService {
 
             let animationCid = result.cid.toString()
 
-            this.logPublishProgress(`Saving animation #${animationCid} to ${directory}/images/${animationCid}`)
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
+            this.logPublishProgress(`Saving animation ${animationCid} to ${directory}/animations/${animationCid}`)
+
+            //In theory there can be duplicates if any NFTs have identical content.
+            let stat
+            try {
+                stat = await this.ipfsService.ipfs.files.stat(`${directory}/animations/${animationCid}`)
+            } catch(ex) {}
+
+            if (stat) {
+                console.log(`${directory}/animations/${animationCid} already exists. Skipping.`)
+            } else {
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
+            }
+            
+
         }
 
 
@@ -245,7 +265,7 @@ class PublishService {
         //Also write each row as a file so the reader can open it quickly 
         for (let item of [].concat.apply([], backup.itemChunks)) {
             this.logPublishProgress(`Saving #${item._id} to ${backupPath}/items/${item._id}.json`)
-            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(JSON.stringify(item, Object.keys(item).sort())), { create: true, parents: true })
+            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(JSON.stringify(item)), { create: true, parents: true })
 
 
         }

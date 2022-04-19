@@ -63,8 +63,9 @@ class GitlabService {
 
         let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
+
         let response = await axios.post(url, {
-            name: `${channel.title} - Large Reader`,
+            name: path,
             path: path
         } , {
             headers: {

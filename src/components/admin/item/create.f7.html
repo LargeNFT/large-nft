@@ -15,7 +15,7 @@
             <li>Create Blog NFT</li>
           </ul>
 
-          <form class="block list" id="create-item-form" @submit="${formSubmit}">
+          <form class="block list media-list" id="create-item-form" @submit="${formSubmit}">
 
             <${ItemForm} item=${itemViewModel} editor="create-item-editor" toolbar="create-item-toolbar" />
 
@@ -57,6 +57,8 @@
 
   import { ContainerService } from "../../../service/core/container-service"
   import { QuillEditorService } from "../../../service/quill-editor-service"
+  import { QuillService } from "../../../service/quill-service"
+
   import { ItemService } from "../../../service/item-service"
 
   import { WalletService } from "../../../service/core/wallet-service"
@@ -66,12 +68,15 @@
 
   import Navbar from "../../admin/navbar.f7.html"
   import ItemForm from "../../admin/item/form.f7.html"
+  import excerptHtml from 'excerpt-html'
 
   import moment from "moment"
 
   export default (props, { $, $on, $f7, $update }) => {
 
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
+    let quillService = ContainerService.getInstance(QuillService)
+
     let itemService = ContainerService.getInstance(ItemService)
 
     let walletService = ContainerService.getWalletService()
@@ -84,8 +89,12 @@
 
       e.preventDefault()
 
+      let formData = $f7.form.convertToData('#create-item-form')
+
+      let showExcerpt = (formData.showExcerpt === 'true') 
+
       //Get data
-      let item = Object.assign(new Item(), $f7.form.convertToData('#create-item-form'))
+      let item = Object.assign(new Item(), formData)
 
       //Get content from quill
       item.content = quillEditorService.activeEditor.getContents()
@@ -99,8 +108,21 @@
         }
       })
 
+      //Translate description content
+      item.contentHTML = await quillService.translateContent(item.content)
+
+      //Check showExcerpt
+      if (showExcerpt) {
+          item.excerpt = excerptHtml(item.contentHTML, {
+              pruneLength: 500
+          })
+      } else {
+        delete item.excerpt
+      }
+      
       //Save
       try {
+        console.log(item)
 
         await itemService.put(item)
 

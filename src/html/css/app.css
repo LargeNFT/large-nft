@@ -1,17 +1,7 @@
 /* Your app styles here */
-
-@font-face {
-    font-family: 'Quicksand';
-    src: url('../fonts/Quicksand-VariableFont-wght.ttf') format('truetype')
-  }
+:root {
   
-  
-  
-  :root {
-  
-    /* --f7-font-size: 16px; */
-    --f7-font-family: 'Quicksand', sans-serif;
-  
+    /* --f7-font-size: 16px; */  
     --f7-fab-extended-text-font-weight: 700;
   
   
@@ -71,6 +61,11 @@
     --f7-card-header-font-weight: bold;
 
   }
+
+  html {
+    overscroll-behavior-y: contain;
+  }
+
 
   a {
     font-weight: bold;

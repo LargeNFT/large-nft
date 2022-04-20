@@ -9,7 +9,6 @@ import { QuillService } from "./quill-service";
 import { IpfsService } from "./core/ipfs-service";
 import { ItemRepository } from "../repository/item-repository";
 
-import excerptHtml from 'excerpt-html'
 import { Channel } from "../dto/channel";
 
 
@@ -39,17 +38,6 @@ class ItemService {
         } else {
             item.lastUpdated = new Date().toJSON()
         }
-
-        //Translate description content
-        item.contentHTML = await this.quillService.translateContent(item.content)
-
-        //Generate excerpt
-        if (item.contentHTML?.length > 0) {
-            item.excerpt = excerptHtml(item.contentHTML, {
-                pruneLength: 500
-            })
-        }
-        
 
         //Validate
         let errors: ValidationError[] = await validate(item, {

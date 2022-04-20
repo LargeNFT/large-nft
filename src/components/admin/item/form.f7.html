@@ -6,6 +6,7 @@
         <input type="hidden" name="dateCreated" value="${itemViewModel?.item?.dateCreated}" />
         <input type="hidden" name="tokenId" value="${itemViewModel?.item?.tokenId}" />
         <input type="hidden" name="channelId" value="${itemViewModel?.channel?._id}" />
+        <input type="hidden" name="showExcerpt" value="${itemViewModel.item.excerpt?.length > 0 ? 'true' : 'false'}" />
 
         <li>
             <div class="item-content item-input">
@@ -85,6 +86,35 @@
             </li>
 
         ` : $h``}
+
+
+            <li>
+                <label class="item-checkbox item-content">
+
+                    ${itemViewModel.item.excerpt?.length > 0 ? $h`
+                        <input type="checkbox" checked="true"  @change="${showExcerptOnChange}" />
+                    ` : $h`
+                        <input type="checkbox"  @change="${showExcerptOnChange}" />
+                    `}
+
+                    
+                    <i class="icon icon-checkbox"></i>
+                    <div class="item-inner">
+                        <div class="item-title-row">
+                            <div class="item-title">Show Excerpt</div>
+                        </div>
+                        <div class="item-text">
+                            If this box is checked the Reader will display a ~500 character excerpt in the timeline for this item. Otherwise it will show the full HTML. The full HTML will always display on the item detail page.
+                        </div>
+                    </div>
+                </label>
+            </li>
+
+
+
+
+
+
 
         ${itemViewModel.attributeSelections?.length > 0 ? $h`
 
@@ -215,6 +245,10 @@
             }
 
 
+        }
+
+        const showExcerptOnChange = (e) => {
+            $('input[name="showExcerpt"]').val(e.currentTarget.checked)
         }
 
         let itemViewModel = props.item

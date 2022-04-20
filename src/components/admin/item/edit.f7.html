@@ -16,7 +16,7 @@
             <li>Edit Blog NFT</li>
           </ul>
 
-          <form class="block list" id="edit-item-form" @submit="${formSubmit}">
+          <form class="block list media-list" id="edit-item-form" @submit="${formSubmit}">
 
             <${ItemForm} item=${itemViewModel} editor="edit-item-editor" toolbar="edit-item-toolbar" />
 
@@ -57,6 +57,8 @@
 
   import { ContainerService } from "../../../service/core/container-service"
   import { QuillEditorService } from "../../../service/quill-editor-service"
+  import { QuillService } from "../../../service/quill-service"
+
   import { ItemService } from "../../../service/item-service"
 
   import { UiService } from "../../../service/core/ui-service"
@@ -67,11 +69,13 @@
 
   import Navbar from "../../admin/navbar.f7.html"
   import ItemForm from "../../admin/item/form.f7.html"
+  import excerptHtml from 'excerpt-html'
 
 
   export default (props, { $, $on, $f7, $update }) => {
 
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
+    let quillService = ContainerService.getInstance(QuillService)
 
     let itemService = ContainerService.getInstance(ItemService)
     let walletService = ContainerService.getWalletService()
@@ -83,8 +87,13 @@
 
       e.preventDefault()
 
+      let formData = $f7.form.convertToData('#edit-item-form')
+
+      let showExcerpt = (formData.showExcerpt === 'true') 
+
+
       //Get data
-      let item = Object.assign(new Item(), $f7.form.convertToData('#edit-item-form'))
+      let item = Object.assign(new Item(), formData)
 
       //Get content from quill
       item.content = quillEditorService.activeEditor.getContents()
@@ -103,6 +112,19 @@
       } else {
         item.attributeSelections = []
       }
+
+      //Translate description content
+      item.contentHTML = await quillService.translateContent(item.content)
+
+      //Check showExcerpt
+      if (showExcerpt) {
+          item.excerpt = excerptHtml(item.contentHTML, {
+              pruneLength: 500
+          })
+      } else {
+        delete item.excerpt
+      }
+        
 
       //Save
       try {

@@ -443,30 +443,44 @@
 
                         <div class="card-content card-content-padding">
 
-                          <div class="item-preview">
+                          ${itemViewModel.item.excerpt ? `
+                                
+                              <div class="item-preview">
 
-                            <div class="left">
+                                <div class="left">
+
+                                  <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
+                                    ${itemViewModel.item.title}
+                                    <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                                  </a>  
+                                  
+                                  ${itemViewModel.item.excerpt ? `
+                                    <p>${itemViewModel.item.excerpt}</p>
+                                  ` : ``}
+
+                                </div>
+
+                                ${itemViewModel.coverImage ? `
+                                  <div class="right">
+                                    <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
+                                      <img src="${itemViewModel.coverImage.url}" />
+                                    </a>
+                                  </div>
+                                ` : ``}
+
+                              </div> 
+
+                          ` : `
 
                               <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
                                 ${itemViewModel.item.title}
                                 <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                              </a>  
-                              
-                              ${itemViewModel.item.excerpt ? `
-                                <p>${itemViewModel.item.excerpt}</p>
-                              ` : ``}
+                              </a> 
 
-                            </div>
-                            
-                            ${itemViewModel.coverImage ? `
-                              <div class="right">
-                                <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
-                                  <img src="${itemViewModel.coverImage.url}" />
-                                </a>
-                              </div>
-                            ` : ``}
-                            
-                          </div>  
+                              <div class="item-description" innerHTML="${itemViewModel.item.contentHTML}"></div>
+                          `}
+
+                           
                         </div>
                     </div>
               </li>

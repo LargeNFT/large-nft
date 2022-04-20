@@ -68,8 +68,6 @@ class PublishService {
         items = JSON.parse(JSON.stringify(items))
         author = JSON.parse(JSON.stringify(author))
 
-
-
         //Remove publishing related field from channel
         delete channel.contractAddress
         delete channel.localCid

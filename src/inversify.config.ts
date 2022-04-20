@@ -1,11 +1,5 @@
 import AppComponent from './components/admin/app.f7.html'
 
-
-
-
-
-
-
 import { UiService } from './service/core/ui-service';
 
 import { providers } from "ethers"
@@ -73,7 +67,7 @@ function getMainContainer() {
       theme: 'auto', // Automatic theme detection
       component: AppComponent
     })
-
+    
 
     return app
 

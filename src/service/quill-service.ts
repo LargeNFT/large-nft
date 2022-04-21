@@ -3,7 +3,6 @@ import { deltaToMarkdown } from 'quill-delta-to-markdown'
 
 import { ImageService } from './image-service'
 import { injectable } from 'inversify';
-import { Image } from "../dto/image"
 
 
 @injectable()
@@ -17,7 +16,7 @@ class QuillService {
 
     if (!content?.ops) return ""
 
-    const qdc = new QuillDeltaToHtmlConverter(content.ops, {})
+    const qdc = new QuillDeltaToHtmlConverter(content.ops, { })
 
     //Render dividers into HTML
     qdc.renderCustomWith(function (customOp, contextOp) {
@@ -27,6 +26,7 @@ class QuillService {
       }
 
       if (customOp.insert.type === 'ipfsimage') {
+        
         return `<img
                 src="${customOp.insert.value.src}" 
                 width="${customOp.insert.value.width}" 
@@ -35,7 +35,6 @@ class QuillService {
       }
 
     })
-
 
     return qdc.convert()
   }

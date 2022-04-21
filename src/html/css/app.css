@@ -71,6 +71,23 @@
     font-weight: bold;
   }
 
+
+  
+  .content {
+    width: 100%;
+  }
+
+  .content:after{
+    clear: both;
+    content: "";
+    display: block;
+  }
+  
+  .content img {
+    max-width: 100%;
+  }
+
+
   .main h1 {
     margin-bottom:0px;
     font-size: 24px;

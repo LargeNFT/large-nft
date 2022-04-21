@@ -1,5 +1,4 @@
 import { injectable } from "inversify"
-import { Channel } from "../dto/channel"
 import { Item } from "../dto/item"
 import { DatabaseService } from "../service/core/database-service"
 
@@ -55,7 +54,9 @@ class ItemRepository {
 
     constructor(
         private databaseService: DatabaseService
-    ) { }
+    ) { 
+
+    }
 
     async load(walletAddress: string) {
         this.db = await this.databaseService.getDatabase(walletAddress, "item", this.CREATE_INDEXES)
@@ -70,7 +71,7 @@ class ItemRepository {
     }
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
-        
+
         let response = await this.db.find({
             selector: {
                 channelId: { $eq: channelId },

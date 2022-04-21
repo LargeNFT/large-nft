@@ -42,6 +42,7 @@ import { SettingsController } from './controller/settings-controller';
 import { PublishService } from './service/core/publish-service';
 import { ConnectController } from './controller/connect-controller';
 import { PublishController } from './controller/publish-controller';
+import { PagingService } from './service/core/paging-service';
 
 
 
@@ -146,6 +147,7 @@ function getMainContainer() {
   container.bind(PinningService).toSelf().inSingletonScope()
   container.bind(GitlabService).toSelf().inSingletonScope()
   container.bind(RoutingService).toSelf().inSingletonScope()
+  container.bind(PagingService).toSelf().inSingletonScope()
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()
   container.bind(ItemWebService).toSelf().inSingletonScope()

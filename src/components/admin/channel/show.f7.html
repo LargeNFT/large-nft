@@ -15,110 +15,114 @@
     ` : $h``}
 
 
-    <div class="page-content infinite-scroll-content" @infinite=${infiniteScroll} id="show-channel-infinite-scroll">
+    <div class="page-content"  id="show-channel-infinite-scroll">
 
       <div class="row">
         <div class="col-100 large-66 center">
 
-          <div class="card channel-card-show">
+          ${pagingViewModel.offset == 0 ? $h`
 
-            <div class="card-header banner" id="show-channel-banner">
+            <div class="card channel-card-show">
 
-              <div class="float-right">
-                <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;"
-                  href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
-              </div>
-
-
-              ${channelViewModel?.coverImage ? $h`
-              <img src="${channelViewModel.coverImage.url}" class="avatar" />
-              ` : $h`
-              <i class="material-icons avatar">image</i>
-              `}
-
-
-
-            </div>
-
-            <div class="card-content">
-
-              <div class="card-content card-content-padding">
-
+              <div class="card-header banner" id="show-channel-banner">
+  
                 <div class="float-right">
-
-                  <div class="menu-item menu-item-dropdown">
-                    <div class="menu-item-content icon-only">
-                      <div class="menu-item-content">
-                        <i class="material-icons">more_vert</i>
-                      </div>
-                    </div>
-                    <div class="menu-dropdown menu-dropdown-right">
-                      <div class="menu-dropdown-content">
-                        <a class="menu-dropdown-link menu-close"
-                          href="/admin/channel/clone/${channelViewModel?.channel?._id}">Clone</a>
-
-                        ${showEdit ? $h`
-                        <a class="menu-dropdown-link menu-close"
-                          href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
-                        <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
-                        ` : $h``}
-                      </div>
-                    </div>
-                  </div>
+                  <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;"
+                    href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
                 </div>
-
-                <div class="title">${channelViewModel?.channel?.title}</div>
-
-                ${channelViewModel?.authorDisplayName ? $h`
-                <div class="name">
-                  By <a
-                    href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
-                </div>
-                ` : ``}
-
-
-                <div class="info row no-gap">
-
-                  <div class="col-33 info-box left">
-                    <span class="value">${channelViewModel.itemCount}</span>
-                    <label>items</label>
-                  </div>
-
-                  <div class="col-33 info-box left">
-                    <span class="value">${channelViewModel.channel.mintPrice}</span>
-                    <label>mint price</label>
-                  </div>
-
-                  <div class="col-33 info-box">
-                    <span class="value">${channelViewModel.channel.royaltyPercent}%</span>
-                    <label>royalty</label>
-                  </div>
-
-                </div>
-
-
-
-                <div class="description" id="channel-show-description"
-                  innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
-
-                ${channelViewModel.channel.contractAddress ? $h`
-                <div class="contract-address">
-                  <strong>Contract Address:</strong> ${channelViewModel?.channel.contractAddress}
-                </div>
-                ` : $h``}
-
+  
+  
+                ${channelViewModel?.coverImage ? $h`
+                <img src="${channelViewModel.coverImage.url}" class="avatar" />
+                ` : $h`
+                <i class="material-icons avatar">image</i>
+                `}
+  
+  
+  
               </div>
-
+  
+              <div class="card-content">
+  
+                <div class="card-content card-content-padding">
+  
+                  <div class="float-right">
+  
+                    <div class="menu-item menu-item-dropdown">
+                      <div class="menu-item-content icon-only">
+                        <div class="menu-item-content">
+                          <i class="material-icons">more_vert</i>
+                        </div>
+                      </div>
+                      <div class="menu-dropdown menu-dropdown-right">
+                        <div class="menu-dropdown-content">
+                          <a class="menu-dropdown-link menu-close"
+                            href="/admin/channel/clone/${channelViewModel?.channel?._id}">Clone</a>
+  
+                          ${showEdit ? $h`
+                          <a class="menu-dropdown-link menu-close"
+                            href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                          <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
+                          ` : $h``}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="title">${channelViewModel?.channel?.title}</div>
+  
+                  ${channelViewModel?.authorDisplayName ? $h`
+                  <div class="name">
+                    By <a
+                      href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                  </div>
+                  ` : ``}
+  
+  
+                  <div class="info row no-gap">
+  
+                    <div class="col-33 info-box left">
+                      <span class="value">${channelViewModel.itemCount}</span>
+                      <label>items</label>
+                    </div>
+  
+                    <div class="col-33 info-box left">
+                      <span class="value">${channelViewModel.channel.mintPrice}</span>
+                      <label>mint price</label>
+                    </div>
+  
+                    <div class="col-33 info-box">
+                      <span class="value">${channelViewModel.channel.royaltyPercent}%</span>
+                      <label>royalty</label>
+                    </div>
+  
+                  </div>
+  
+  
+  
+                  <div class="description" id="channel-show-description"
+                    innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
+  
+                  ${channelViewModel.channel.contractAddress ? $h`
+                  <div class="contract-address">
+                    <strong>Contract Address:</strong> ${channelViewModel?.channel.contractAddress}
+                  </div>
+                  ` : $h``}
+  
+                </div>
+  
+              </div>
+  
             </div>
+          
+          ` : $h`
+            <ul class="breadcrumb">
+              <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+              <li>Page ${pagingViewModel.page}</li>
+            </ul>
+          `}
 
-          </div>
-
-
-          <div class="list cards-list virtual-list" id="item-list-show-channel">
-          </div>
-
-          <div class="preloader infinite-scroll-preloader"></div>
-
+          <${ItemList} channel=${channelViewModel} items=${items} paging=${pagingViewModel} />
 
         </div>
       </div>
@@ -201,6 +205,8 @@
     margin-left: auto;
   }
 
+  
+
 
   .item-preview {
     width: 100%;
@@ -211,7 +217,7 @@
     margin-top: 5px;
   }
 
-  .item-preview .title {
+  .item-card .title {
     color: #000000;
     font-size: 23px;
     font-weight: 700;
@@ -248,7 +254,7 @@
   import { ChannelWebService } from "../../../service/web/channel-web-service"
   import { ItemWebService } from "../../../service/web/item-web-service"
 
-
+  import { PagingService } from "../../../service/core/paging-service"
   import { ChannelService } from "../../../service/channel-service"
 
   import { ImageService } from "../../../service/image-service"
@@ -256,6 +262,7 @@
   import { UiService } from "../../../service/core/ui-service"
 
   import Navbar from "../../admin/navbar.f7.html"
+  import ItemList from "../../admin/channel/item-list.f7.html"
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -264,156 +271,34 @@
 
     let imageService = ContainerService.getInstance(ImageService)
     let channelService = ContainerService.getInstance(ChannelService)
+    let pagingService = ContainerService.getInstance(PagingService)
 
     let channelViewModel = props.channelViewModel
+    let items = props.items
+    let pagingViewModel = props.pagingViewModel
 
     let showEdit = channelViewModel.editable
 
 
-    //Pagination
-    const LIMIT = 20
-
-    let itemsShown = 0
-    let hasMoreItems = true
-    let loadingInProgress = false
-
-    let items = []
-    let virtualList
-    let pageCounter = 0
-
-
-
     $on('pageInit', async (e, page) => {
 
-      //Get first page
-      virtualList = $f7.virtualList.create({
-        el: '#item-list-show-channel',
-
-        renderItem(itemViewModel) {
-          if (!itemViewModel.item) return `
-          <li class="card skeleton-text skeleton-effect-wave">
-            <div class="card-header">Loading Loading Loading</div>
-            <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
-                interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
-                Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
-                aliquet urna, nec imperdiet felis sapien at enim.</div>
-          </li>
-          `
-          return getTemplate(itemViewModel)
-        },
-
-        items: [{
-          title: 'Loading...'
-        }],
-        setListHeight: true,
-        updatableScroll: true,
-        height: function (itemViewModel) {
-
-          if (!itemViewModel.item) return 50
-
-          //Called 'horrible solution but it works' by author.  https://jsfiddle.net/mnahara/1cn6xqLg/
-
-          //Create a div, add the template to it, calculate height, destroy div
-          const measuringDiv = document.createElement('div')
-
-          measuringDiv.classList.add('list', 'cards-list')
-          measuringDiv.innerHTML = `<ul id='find-me'>${getTemplate(itemViewModel)}</ul>`
-
-          $('body').append(measuringDiv)
-
-          let height = $('#find-me li').height()
-
-          //Remove
-          measuringDiv.parentNode.removeChild(measuringDiv)
-
-          return height
-        },
-        emptyTemplate: `
-          <li class="card item-card">
-            <div class="card-content">
-              <div class="card-content card-content-padding">
-                There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
-              </div>
-            </div>
-          </li>
-        `
-      })
-
-      await $update()
-
-      //Load cover banner into CSS
-      if (channelViewModel?.coverBanner?.url) {
-        document.getElementById('show-channel-banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
-      }
-
-
-      //Make links external
-      let links = document.getElementById('channel-show-description').getElementsByTagName('a')
-
-      for (let link of links) {
-        link.classList.add('external')
-      }
-
-
-
-      //Get the page
-      $('#show-channel-infinite-scroll').trigger('infinite')
-
-
-    })
-
-    $on('pageAfterOut', (e, page) => {
-      unloadInfiniteScroll()
-    })
-
-
-    function unloadInfiniteScroll() {
-      console.log("Unload infinite scroll")
-
-      // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
-      $f7.infiniteScroll.destroy('#show-channel-infinite-scroll')
-
-      // Remove preloader
-      $('.infinite-scroll-preloader').hide()
-    }
-
-    async function infiniteScroll() {
-
-      // Exit, if loading in progress
-      if (loadingInProgress || !hasMoreItems) return
-
-      // Set loading flag
-      loadingInProgress = true
-
-      try {
-        items = await itemWebService.listByChannel(props.id, LIMIT, itemsShown)
-
-        if (items && items.length == LIMIT) {
-          itemsShown += items.length
-        } else {
-          hasMoreItems = false
+      if (pagingViewModel.offset == 0) {
+        //Load cover banner into CSS
+        if (channelViewModel?.coverBanner?.url) {
+          document.getElementById('show-channel-banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
         }
 
-        if (pageCounter == 0) {
-          //Remove the fake one
-          virtualList.deleteAllItems()
+        //Make links external
+        let links = document.getElementById('channel-show-description').getElementsByTagName('a')
+
+        for (let link of links) {
+          link.classList.add('external')
         }
-
-        virtualList.appendItems(items)
-
-      } catch (ex) {
-        console.log(ex)
       }
+      
+    })
 
-      if (!hasMoreItems) {
-        unloadInfiniteScroll()
-      }
-
-      pageCounter++
-      loadingInProgress = false
-
-    }
-
+ 
     const deleteCollectionClick = async (e) => {
 
       $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {
@@ -433,61 +318,6 @@
       })
 
     }
-
-    const getTemplate = (itemViewModel) => {
-
-      return `
-              <li class="card item-card">
-
-                    <div class="card-content">
-
-                        <div class="card-content card-content-padding">
-
-                          ${itemViewModel.item.excerpt ? `
-                                
-                              <div class="item-preview">
-
-                                <div class="left">
-
-                                  <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
-                                    ${itemViewModel.item.title}
-                                    <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                                  </a>  
-                                  
-                                  ${itemViewModel.item.excerpt ? `
-                                    <p>${itemViewModel.item.excerpt}</p>
-                                  ` : ``}
-
-                                </div>
-
-                                ${itemViewModel.coverImage ? `
-                                  <div class="right">
-                                    <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
-                                      <img src="${itemViewModel.coverImage.url}" />
-                                    </a>
-                                  </div>
-                                ` : ``}
-
-                              </div> 
-
-                          ` : `
-
-                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
-                                ${itemViewModel.item.title}
-                                <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                              </a> 
-
-                              <div class="item-description" innerHTML="${itemViewModel.item.contentHTML}"></div>
-                          `}
-
-                           
-                        </div>
-                    </div>
-              </li>
-          `
-
-    }
-
 
     return $render
   }

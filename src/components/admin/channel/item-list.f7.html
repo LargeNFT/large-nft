@@ -1,0 +1,263 @@
+<template>
+
+    <div class="list cards-list" id="item-list-show-channel-${channelViewModel.channel._id}">
+        <div id="item-list-show-channel-${channelViewModel.channel._id}-a" style="position: absolute; top: -100px; left: 0"></div>
+
+        <ul>
+
+          ${loadingItems ? $h`
+            <li class="card skeleton-text skeleton-effect-wave">
+              <div class="card-header">Loading Loading Loading</div>
+              <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
+                  interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
+                  Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
+                  aliquet urna, nec imperdiet felis sapien at enim.</div>
+            </li>              
+          ` : ''}
+
+
+          ${items?.length > 0 ? $h`
+
+            ${items?.map( (itemViewModel) => $h`
+            
+              <li class="card item-card">
+
+                <div class="card-content">
+
+                    <div class="card-content card-content-padding">
+
+                      ${itemViewModel.item.excerpt ? $h`
+                            
+                          <div class="item-preview">
+
+                            <div class="left">
+
+                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
+                                ${itemViewModel.item.title}
+                                <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                              </a>  
+                              
+                              ${itemViewModel.item.excerpt ? $h`
+                                <p>${itemViewModel.item.excerpt}</p>
+                              ` : `<span/>`}
+
+                            </div>
+
+                            ${itemViewModel.coverImage ? $h`
+                              <div class="right">
+                                <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
+                                  <img src="${itemViewModel.coverImage.url}" />
+                                </a>
+                              </div>
+                            ` : $h`<span/>`}
+
+                          </div> 
+
+                      ` : $h`
+
+                          <div class="item-preview">
+
+                            <div class="left">
+                              
+                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
+                                ${itemViewModel.item.title}
+                                <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                              </a> 
+
+                              <div class="content" innerHTML="${itemViewModel.item.contentHTML}"></div>
+
+                            </div>
+
+                          </div>
+
+                      `}
+
+                       
+                    </div>
+                </div>
+              </li>
+            
+            `)}
+
+            <div class="block row center margin-bottom">
+
+              ${pagingViewModel?.showPrevious ? $h`
+                <div class="col-50 previous">
+                  <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.previousOffset}" >
+                    <span class="material-icons">arrow_back</span>
+                    Previous
+                  </a>
+                </div>
+                ` : $h`<span/>`}
+  
+              ${pagingViewModel?.showNext ? $h`
+                <div class="col-50 next">
+                  <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.nextOffset}">
+                    Next
+                    <span class="material-icons">arrow_forward</span>
+                  </a>
+                </div>
+                ` : $h`<span/>`}
+  
+            </div>
+
+            <div class="block">
+              <br />
+            </div>
+
+          ` : $h`
+          
+            ${!loadingItems ? $h`
+              <li class="card item-card">
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+                    There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
+                  </div>
+                </div>
+              </li>
+            ` : $h`<span/>`}
+
+          `}
+        </ul>
+        
+    </div>
+
+</template>
+
+
+
+<style>
+    .item-preview {
+        width: 100%;
+        display: flex;
+    }
+
+    .item-preview p {
+        margin-top: 5px;
+    }
+
+    .item-card .title {
+        color: #000000;
+        font-size: 23px;
+        font-weight: 700;
+    }
+
+    .item-preview .right {
+        flex: 0 0 150px;
+        /* do not grow, do not shrink, start at 250px */
+    }
+
+    .item-preview .right img {
+        max-width: 100%;
+    }
+
+    .item-preview .left {
+        flex: 1;
+        /* grow */
+    }
+
+    .menu-dropdown-link.menu-close {
+        color: #ffffff;
+    }
+
+    .channel-show-token-id {
+        color: rgb(79, 79, 79);
+    }
+</style>
+
+
+<script>
+
+    import { ContainerService } from "../../../service/core/container-service"
+    import { ChannelWebService } from "../../../service/web/channel-web-service"
+    import { ItemWebService } from "../../../service/web/item-web-service"
+
+    import { PagingService } from "../../../service/core/paging-service"
+    import { ChannelService } from "../../../service/channel-service"
+
+    import { ImageService } from "../../../service/image-service"
+
+    import { UiService } from "../../../service/core/ui-service"
+
+    import Navbar from "../../admin/navbar.f7.html"
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let channelViewModel = props.channel
+        let items = props.items
+        let pagingViewModel = props.paging
+
+        let loadingItems = false
+
+        // const previousClick = async (e) => {
+
+        //     showPreloader()
+
+        //     loadingItems = true
+        //     items = []
+
+        //     await $update()
+
+        //     //Load previous page
+        //     items = await itemWebService.listByChannel(channelViewModel.channel._id, LIMIT, pagingViewModel.previousOffset)
+
+        //     updatePaging(pagingViewModel.previousOffset, LIMIT, channelViewModel.itemCount)
+
+        //     loadingItems = false
+
+        //     await $update()
+
+        //     scrollTop()
+
+        //     hidePreloader()
+
+        // }
+
+        // const nextClick = async (e) => {
+
+        //     showPreloader()
+
+        //     loadingItems = true
+        //     items = []
+
+        //     await $update()
+
+        //     //Load next page
+        //     items = await itemWebService.listByChannel(channelViewModel.channel._id, LIMIT, pagingViewModel.nextOffset)
+
+        //     updatePaging(pagingViewModel.nextOffset, LIMIT, channelViewModel.itemCount)
+
+        //     loadingItems = false
+
+        //     await $update()
+
+        //     scrollTop()
+
+        //     hidePreloader()
+
+
+        // }
+
+
+        // const showPreloader = () => {
+        //     $f7.preloader.showIn(`#item-list-show-channel-${channelViewModel.channel._id}`)
+
+        // }
+
+        // const hidePreloader = () => {
+        //     $f7.preloader.hideIn(`#item-list-show-channel-${channelViewModel.channel._id}`)
+        // }
+
+        // const updatePaging = (offset, limit, count) => {
+        //     pagingViewModel = pagingService.buildPagingViewModel(offset, limit, count)
+        // }
+
+        // const scrollTop = () => {
+        //     const element = document.getElementById(`item-list-show-channel-${channelViewModel.channel._id}-a`)
+        //     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // }
+
+        return $render
+    }
+
+</script>

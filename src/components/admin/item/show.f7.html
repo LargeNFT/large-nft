@@ -20,7 +20,7 @@
         <div class="col-100 large-66 center margin-top">
 
           <ul class="breadcrumb">
-            <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
+            <li><a href="/admin/channel/show/${itemViewModel.channel._id}/0">${itemViewModel.channel.title}</a></li>
             <li>${itemViewModel.item.title} #${itemViewModel.item.tokenId}</li>
           </ul>
 
@@ -157,20 +157,7 @@
   }
 
 
-  
-  .content {
-    width: 100%;
-  }
 
-  .content:after{
-    clear: both;
-    content: "";
-    display: block;
-  }
-  
-  .content img {
-    max-width: 100%;
-  }
 
   /* .item-card-show a {
     color: var(--f7-text-color);
@@ -260,7 +247,7 @@
             })
 
             //Redirect
-            $f7.views.main.router.navigate(`/admin/channel/show/${itemViewModel.channel._id}`)
+            $f7.views.main.router.navigate(`/admin/channel/show/${itemViewModel.channel._id}/0`)
           }
         )
 

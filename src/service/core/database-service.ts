@@ -2,8 +2,6 @@ import { injectable } from 'inversify';
 
 import PouchDB from 'pouchdb';
 import PouchFind from 'pouchdb-find'
-import { ChannelRepository } from '../../repository/channel-repository';
-import { ItemRepository } from '../../repository/item-repository';
 
 
 @injectable()

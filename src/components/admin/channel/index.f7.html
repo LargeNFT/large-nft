@@ -215,7 +215,7 @@
       return `
               <li class="card channel-card">
 
-                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                    <a href="/admin/channel/show/${channelViewModel.channel._id}/0">
                       <div class="card-header banner" ${channelViewModel.coverBanner ?
                           `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
 
@@ -231,7 +231,7 @@
                     <div class="card-content">
                         <div class="card-content card-content-padding">
                             <div class="title">
-                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
+                              <a href="/admin/channel/show/${channelViewModel.channel._id}/0">
                                 ${channelViewModel.channel.title}
                               </a>
                             </div>

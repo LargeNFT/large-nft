@@ -12,6 +12,7 @@ import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
 import { ChannelWebService } from "../service/web/channel-web-service";
 import { PagingService } from "../service/core/paging-service";
 import { ItemWebService } from "../service/web/item-web-service";
+import { ItemRepository } from "../repository/item-repository";
 
 
 
@@ -40,19 +41,17 @@ class ChannelController {
     }
 
 
-    @routeMap("/admin/channel/show/:id/:offset")
+    @routeMap("/admin/channel/show/:id/:offset?")
     async show() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
-
-            const LIMIT = 10
 
             const offset = parseInt(routeTo.params.offset)
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 
-            let pagingViewModel = this.pagingService.buildPagingViewModel(offset, LIMIT, channelViewModel.itemCount)
+            let pagingViewModel = this.pagingService.buildPagingViewModel(offset, ItemRepository.CHUNK_SIZE, channelViewModel.itemCount)
 
-            let items = await this.itemWebService.listByChannel(routeTo.params.id, LIMIT, offset)
+            let items = await this.itemWebService.listByChannel(routeTo.params.id, ItemRepository.CHUNK_SIZE, offset)
 
             return {
                 channelViewModel: channelViewModel,

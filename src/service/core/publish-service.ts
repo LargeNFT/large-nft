@@ -5,6 +5,7 @@ import { Channel } from "../../dto/channel"
 import { ContractMetadata } from "../../dto/contract-metadata"
 import { Item } from "../../dto/item"
 import { NFTMetadata } from "../../dto/nft-metadata"
+import { ItemRepository } from "../../repository/item-repository"
 import { AuthorService } from "../author-service"
 import { ChannelService } from "../channel-service"
 import { ImageService } from "../image-service"
@@ -47,7 +48,7 @@ class PublishService {
         //Split items into chunks
         const chunkedItems = []
 
-        const chunkSize = 20
+        const chunkSize = ItemRepository.CHUNK_SIZE
         for (let i = 0; i < items.length; i += chunkSize) {
             chunkedItems.push(items.slice(i, i + chunkSize))
         }

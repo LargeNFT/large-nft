@@ -74,6 +74,15 @@
                   <strong>${as.traitType}:</strong> ${as.value}
                 </div>
               `)}
+
+              <div class="attribute-row"> 
+                <strong>Show Excerpt:</strong> ${itemViewModel.item.excerpt ? $h`
+                    <span class="material-icons">check_box</span>
+                  ` : $h`
+                    <span class="material-icons">check_box_outline_blank</span>
+                  `}
+              </div>
+
             </div>
           </div>
 
@@ -171,9 +180,16 @@
 
   .attribute-row {
     font-size: 16px;
+    vertical-align: top;
   }
 
 
+
+  .attribute-row .material-icons {
+    line-height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+  }
 
   .item-show-footer {
     font-size: 14px;

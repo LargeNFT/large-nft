@@ -6,6 +6,8 @@ import { DatabaseService } from "../service/core/database-service"
 @injectable()
 class ItemRepository {
 
+    static CHUNK_SIZE = 10
+
     CREATE_INDEXES = async (db) => {
 
         await db.createIndex({

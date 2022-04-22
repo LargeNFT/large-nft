@@ -12,7 +12,7 @@ class PagingService {
      * @param limit 
      * @param count 
      */
-    buildPagingViewModel(offset: number, limit: number, count: number) : PagingViewModel {
+    buildPagingViewModel(offset: number, limit: number, count: number, numberOfPages:number) : PagingViewModel {
 
         let viewModel = new PagingViewModel()
 
@@ -25,16 +25,41 @@ class PagingService {
 
         viewModel.end = Math.min(viewModel.offset + limit, count) 
 
+        
         viewModel.previousOffset = Math.max(viewModel.offset-limit, 0);
 
-        if ( (viewModel.offset + limit) < count -1) {
+        if ( (viewModel.offset + limit) < count ) {
             viewModel.nextOffset = viewModel.offset + limit
         }
 
-        viewModel.showNext = viewModel.end != viewModel.count
+        
+        //Set current page
+        viewModel.page = viewModel.offset/viewModel.limit + 1
+        if (viewModel.page > viewModel.endPage) viewModel.page = viewModel.endPage
+
+        viewModel.endPage = Math.ceil(viewModel.count / viewModel.limit)
+
+
+        viewModel.lastOffset = viewModel.endPage * viewModel.limit - viewModel.limit
+        
+
+        viewModel.showNext = viewModel.endPage > viewModel.page
         viewModel.showPrevious = viewModel.offset != 0
 
-        viewModel.page = Math.ceil(viewModel.end / limit)
+        viewModel.showFirst = viewModel.page > 2
+        viewModel.showLast = viewModel.page < (viewModel.endPage - 1)
+
+
+        //Number of pages shouldn't be past the end
+        // numberOfPages = Math.min(numberOfPages, viewModel.endPage - viewModel.page)
+
+        // viewModel.pageNumbers = []
+        // for (let i=viewModel.page; i < numberOfPages + viewModel.page; i++) {
+        //     viewModel.pageNumbers.push({
+        //         display: i + 1,
+        //         offset: i * viewModel.limit
+        //     })
+        // }
 
         return viewModel
     }
@@ -69,6 +94,9 @@ class PagingService {
 class PagingViewModel {
 
     page:number
+    pageNumbers:PageNumber[]
+    endPage:number
+
     offset: number
     limit: number
     count: number
@@ -78,12 +106,19 @@ class PagingViewModel {
 
     previousOffset: number 
     nextOffset: number 
+    lastOffset:number
 
     showPrevious:boolean
     showNext:boolean
+    showFirst:boolean
+    showLast:boolean
 
 }
 
+interface PageNumber {
+    display:number
+    offset:number
+}
 
 export {
     PagingService,

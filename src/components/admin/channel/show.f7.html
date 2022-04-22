@@ -15,7 +15,7 @@
     ` : $h``}
 
 
-    <div class="page-content"  id="show-channel-infinite-scroll">
+    <div class="page-content" >
 
       <div class="row">
         <div class="col-100 large-66 center">
@@ -100,7 +100,7 @@
   
   
   
-                  <div class="description" id="channel-show-description"
+                  <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
                     innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
   
                   ${channelViewModel.channel.contractAddress ? $h`
@@ -289,7 +289,7 @@
         }
 
         //Make links external
-        let links = document.getElementById('channel-show-description').getElementsByTagName('a')
+        let links = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).getElementsByTagName('a')
 
         for (let link of links) {
           link.classList.add('external')

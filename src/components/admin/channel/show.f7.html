@@ -24,7 +24,7 @@
 
             <div class="card channel-card-show">
 
-              <div class="card-header banner" id="show-channel-banner">
+              <div class="card-header banner" id="show-channel-banner-${channelViewModel.channel._id}">
   
                 <div class="float-right">
                   <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;"
@@ -285,7 +285,7 @@
       if (pagingViewModel.offset == 0) {
         //Load cover banner into CSS
         if (channelViewModel?.coverBanner?.url) {
-          document.getElementById('show-channel-banner').style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
+          document.getElementById(`show-channel-banner-${channelViewModel.channel._id}`).style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
         }
 
         //Make links external

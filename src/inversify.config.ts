@@ -67,11 +67,12 @@ import Stepper from 'framework7/components/stepper'
 import SmartSelect from 'framework7/components/smart-select'
 import Grid from 'framework7/components/grid'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
+import Menu from 'framework7/components/menu'
 
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
-  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll,
+  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu
 ])
 
 

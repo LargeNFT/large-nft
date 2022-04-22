@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-100 large-66 center">
 
-          ${pagingViewModel.offset == 0 ? $h`
+          ${pagingViewModel?.offset == 0 ? $h`
 
             <div class="card channel-card-show">
 
@@ -126,7 +126,6 @@
 
         </div>
       </div>
-
 
 
     </div>
@@ -251,27 +250,14 @@
 <script>
 
   import { ContainerService } from "../../../service/core/container-service"
-  import { ChannelWebService } from "../../../service/web/channel-web-service"
-  import { ItemWebService } from "../../../service/web/item-web-service"
-
-  import { PagingService } from "../../../service/core/paging-service"
   import { ChannelService } from "../../../service/channel-service"
-
-  import { ImageService } from "../../../service/image-service"
-
-  import { UiService } from "../../../service/core/ui-service"
 
   import Navbar from "../../admin/navbar.f7.html"
   import ItemList from "../../admin/channel/item-list.f7.html"
 
   export default (props, { $, $on, $f7, $update }) => {
 
-    let channelWebService = ContainerService.getInstance(ChannelWebService)
-    let itemWebService = ContainerService.getInstance(ItemWebService)
-
-    let imageService = ContainerService.getInstance(ImageService)
     let channelService = ContainerService.getInstance(ChannelService)
-    let pagingService = ContainerService.getInstance(PagingService)
 
     let channelViewModel = props.channelViewModel
     let items = props.items

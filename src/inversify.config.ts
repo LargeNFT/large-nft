@@ -44,7 +44,35 @@ import { ConnectController } from './controller/connect-controller';
 import { PublishController } from './controller/publish-controller';
 import { PagingService } from './service/core/paging-service';
 
+//Init framework7
+// const Framework7 = require('framework7/bundle').default
+import Framework7 from 'framework7';
 
+// Import additional components
+import Dialog from 'framework7/components/dialog';
+import Toast from 'framework7/components/toast';
+import Preloader from 'framework7/components/preloader';
+import VirtualList from 'framework7/components/virtual-list'
+import ListIndex from 'framework7/components/list-index'
+import Card from 'framework7/components/card'
+import Chip from 'framework7/components/chip'
+
+import Form from 'framework7/components/form'
+import Input from 'framework7/components/input'
+import Checkbox from 'framework7/components/checkbox'
+import Radio from 'framework7/components/radio'
+import Toggle from 'framework7/components/toggle'
+import Range from 'framework7/components/range'
+import Stepper from 'framework7/components/stepper'
+import SmartSelect from 'framework7/components/smart-select'
+import Grid from 'framework7/components/grid'
+import InfiniteScroll from 'framework7/components/infinite-scroll'
+
+
+// Install F7 Components using .use() method on Framework7 class:
+Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
+  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll,
+])
 
 
 let container: Container
@@ -58,14 +86,14 @@ function getMainContainer() {
 
   function framework7() {
 
-    //Init framework7
-    const Framework7 = require('framework7/bundle').default
+
 
     let app = new Framework7({
       el: '#app', // App root element
       id: 'large', // App bundle ID
       name: 'Large', // App name
       theme: 'auto', // Automatic theme detection
+      //@ts-ignore
       component: AppComponent
     })
     

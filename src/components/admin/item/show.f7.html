@@ -112,7 +112,7 @@
 
             ${itemViewModel.previous ? $h`
               <div class="col-50 previous">
-                <a class="button button-outline" href="/admin/item/show/${itemViewModel.previous._id}">
+                <a class="button button-outline" href="/admin/item/show/${itemViewModel.previous._id}" id="previous-${itemViewModel.item._id}">
                   <span class="material-icons">arrow_back</span>
                   ${ parseInt(itemViewModel.item.tokenId) - 1}
                 </a>
@@ -121,7 +121,7 @@
 
             ${itemViewModel.next ? $h`
               <div class="col-50 next">
-                <a class="button button-outline" href="/admin/item/show/${itemViewModel.next._id}">
+                <a class="button button-outline" href="/admin/item/show/${itemViewModel.next._id}" id="next-${itemViewModel.item._id}">
                   ${ parseInt(itemViewModel.item.tokenId) + 1}
                   <span class="material-icons">arrow_forward</span>
                 </a>
@@ -224,6 +224,7 @@
 
   import Navbar from "../../admin/navbar.f7.html"
 
+  import Mousetrap from 'mousetrap'
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -240,9 +241,29 @@
       //Add external to any links in the doc
       $(`#item-content-${itemViewModel.item._id} a`).addClass('external')
 
+      //Bind arrow keys
+      Mousetrap.bind('right', next);      
+      Mousetrap.bind('left', previous);      
+
       await $update()
 
     })
+
+    $on('pageAfterOut', (e, page) => {
+      Mousetrap.unbind('right', next);      
+      Mousetrap.unbind('left', previous); 
+    })
+
+    const next = () => {
+      $(`#next-${itemViewModel.item._id}`).trigger('click')
+      // $f7.views.main.router.navigate(`/admin/item/show/${itemViewModel.next._id}`)
+    }
+
+    const previous = () => {
+      $(`#previous-${itemViewModel.item._id}`).trigger('click')
+
+      // $f7.views.main.router.navigate(`/admin/item/show/${itemViewModel.previous._id}`)
+    }
 
     const deleteClick = async (e) => {
 

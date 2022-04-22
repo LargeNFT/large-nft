@@ -141,7 +141,9 @@
 
     "excerpt-html": "1.2.2",
 
-    "browser-image-resizer": "2.2.1"
+    "browser-image-resizer": "2.2.1",
+
+    "mousetrap": "1.6.5"
     
   }
 }

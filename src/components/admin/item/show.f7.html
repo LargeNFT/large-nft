@@ -224,7 +224,7 @@
 
   import Navbar from "../../admin/navbar.f7.html"
 
-  import Mousetrap from 'mousetrap'
+  import hotkeys from 'hotkeys-js'
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -241,29 +241,31 @@
       //Add external to any links in the doc
       $(`#item-content-${itemViewModel.item._id} a`).addClass('external')
 
-      //Bind arrow keys
-      Mousetrap.bind('right', next);      
-      Mousetrap.bind('left', previous);      
+      // //Bind arrow keys
+      // hotkeys('right', (event, handler) => {
+      //   next()
+      // })
+
+      // hotkeys('left', (event, handler) => {
+      //   previous()
+      // })    
 
       await $update()
 
     })
 
-    $on('pageAfterOut', (e, page) => {
-      Mousetrap.unbind('right', next);      
-      Mousetrap.unbind('left', previous); 
-    })
+    // $on('pageAfterOut', (e, page) => {
+    //   hotkeys.unbind('right')  
+    //   hotkeys.unbind('left')
+    // })
 
-    const next = () => {
-      $(`#next-${itemViewModel.item._id}`).trigger('click')
-      // $f7.views.main.router.navigate(`/admin/item/show/${itemViewModel.next._id}`)
-    }
+    // const next = () => {
+    //   $(`#next-${itemViewModel.item._id}`).trigger('click')
+    // }
 
-    const previous = () => {
-      $(`#previous-${itemViewModel.item._id}`).trigger('click')
-
-      // $f7.views.main.router.navigate(`/admin/item/show/${itemViewModel.previous._id}`)
-    }
+    // const previous = () => {
+    //   $(`#previous-${itemViewModel.item._id}`).trigger('click')
+    // }
 
     const deleteClick = async (e) => {
 

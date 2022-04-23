@@ -38,8 +38,6 @@
                 <i class="material-icons avatar">image</i>
                 `}
   
-  
-  
               </div>
   
               <div class="card-content">
@@ -255,6 +253,8 @@
   import Navbar from "../../admin/navbar.f7.html"
   import ItemList from "../../admin/channel/item-list.f7.html"
 
+  import hotkeys from 'hotkeys-js'
+
   export default (props, { $, $on, $f7, $update }) => {
 
     let channelService = ContainerService.getInstance(ChannelService)
@@ -280,11 +280,36 @@
         for (let link of links) {
           link.classList.add('external')
         }
+        
       }
+
+      // hotkeys('right', (event, handler) => {
+      //   next()
+      // })
+
+      // hotkeys('left', (event, handler) => {
+      //   previous()
+      // })
       
     })
 
- 
+    // $on('pageAfterOut', (e, page) => {
+    //   hotkeys.unbind('right');      
+    //   hotkeys.unbind('left'); 
+    // })
+
+    // const previous = () => {
+    //   let element = document.getElementById(`previous-${channelViewModel.channel._id}-${pagingViewModel.previousOffset}`)
+    //   element.click()
+    // }
+
+    // const next = () => {
+    //   let element = document.getElementById(`next-${channelViewModel.channel._id}-${pagingViewModel.nextOffset}`)
+    //   element.click()
+    // }
+
+
+
     const deleteCollectionClick = async (e) => {
 
       $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {

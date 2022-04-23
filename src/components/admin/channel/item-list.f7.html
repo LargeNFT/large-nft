@@ -81,7 +81,11 @@
               <div class="block segmented">
 
                 ${pagingViewModel?.showPrevious ? $h`
-                  <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.previousOffset}" >
+                  <a 
+                    class="button button-outline" 
+                    href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.previousOffset}" 
+                    id="previous-${channelViewModel.channel._id}-${pagingViewModel.previousOffset}"
+                  >
                     <span class="material-icons">arrow_back</span>
                   </a>
                 ` : ''}
@@ -91,7 +95,11 @@
                 </a>
 
                 ${pagingViewModel?.showNext ? $h`
-                  <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.nextOffset}">
+                  <a 
+                    class="button button-outline" 
+                    href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.nextOffset}"
+                    id="next-${channelViewModel.channel._id}-${pagingViewModel.nextOffset}"
+                  >
                     Next
                     <span class="material-icons">arrow_forward</span>
                   </a>

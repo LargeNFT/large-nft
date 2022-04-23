@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify"
 import { Author } from "../../dto/author"
 import { Channel } from "../../dto/channel"
 import { ContractMetadata } from "../../dto/contract-metadata"
+import { ExportBundle } from "../../dto/export-bundle"
 import { Item } from "../../dto/item"
 import { NFTMetadata } from "../../dto/nft-metadata"
 import { ItemRepository } from "../../repository/item-repository"
@@ -52,7 +53,7 @@ class PublishService {
         for (let i = 0; i < items.length; i += chunkSize) {
             chunkedItems.push(items.slice(i, i + chunkSize))
         }
-        
+
         //Save pouch dbs
         return {
             channels: [channel],
@@ -62,7 +63,7 @@ class PublishService {
 
     }
 
-    async exportToIPFS(channel: Channel, items: Item[], author: Author, ownerAddress: string): Promise<string> {
+    async prepareExport(channel: Channel, items: Item[], author: Author, ownerAddress:string) : Promise<ExportBundle> {
 
         //Clone
         channel = JSON.parse(JSON.stringify(channel))
@@ -92,14 +93,9 @@ class PublishService {
         }
 
         //Assign  
-        let nftMetadata: NFTMetadata[] = []
-
-        let animations: string[] = []
-
-        let imageCids: string[] = []
-
-        //Get contract metadata
-        let contractMetadata: ContractMetadata = await this.channelService.exportContractMetadata(channel, ownerAddress)
+        let imageCids:string[] = []
+        let animations:string[] = []
+        let nftMetadata:NFTMetadata[] = []
 
         //Add cover image
         if (channel.coverImageId?.length > 0) {
@@ -139,7 +135,6 @@ class PublishService {
                 }
             }
 
-
             //Delete publishing related fields
             delete item._rev
             delete item.lastUpdated
@@ -160,8 +155,27 @@ class PublishService {
         }
 
 
+        return {
+
+            nftMetadata: nftMetadata,
+            animations: animations,
+            images: images,
+
+            channel: channel,
+            items: items,
+            author: author,
+
+            contractMetadata: await this.channelService.exportContractMetadata(channel, ownerAddress)
+
+        }
+
+    }
+
+    async exportToIPFS(exportBundle:ExportBundle): Promise<string> {
+
+
         //Add all images to IPFS
-        for (let image of images) {
+        for (let image of exportBundle.images) {
 
             //Add to IPFS
             let result = await this.ipfsService.ipfs.add({
@@ -174,12 +188,11 @@ class PublishService {
 
             //Remove publishing related field from image
             delete image._rev
-            delete image.lastUpdated
             delete image["_rev_tree"]
         }
 
 
-        let directory = `/blogs/${channel._id}`
+        let directory = `/blogs/${exportBundle.channel._id}`
 
         //Clear 
         try {
@@ -192,10 +205,10 @@ class PublishService {
 
         this.logPublishProgress(`Saving contract metadata to ${contractMetadataPath}`)
 
-        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true })
+        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true })
 
         //Save metadata for each NFT
-        for (let nft of nftMetadata) {
+        for (let nft of exportBundle.nftMetadata) {
 
             let nftMetadataPath = `${directory}/${nft.tokenId}.json`
 
@@ -205,13 +218,14 @@ class PublishService {
         }
 
         //Save images 
-        for (let image of images) {
+        for (let image of exportBundle.images) {
             this.logPublishProgress(`Saving image #${image.cid} to ${directory}/images/${image.cid}`)
             await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { parents: true })
         }
 
         //Save animation cids
-        for (let animation of animations) {
+        let animationCounter = 1
+        for (let animation of exportBundle.animations) {
 
             let result = await this.ipfsService.ipfs.add({
                 content: animation
@@ -219,24 +233,21 @@ class PublishService {
 
             let animationCid = result.cid.toString()
 
-            this.logPublishProgress(`Saving animation ${animationCid} to ${directory}/animations/${animationCid}`)
+            this.logPublishProgress(`Saving animation #${animationCounter++} ${animationCid} to ${directory}/animations/${animationCid}`)
 
             //In theory there can be duplicates if any NFTs have identical content.
             let stat
             try {
                 stat = await this.ipfsService.ipfs.files.stat(`${directory}/animations/${animationCid}`)
-            } catch(ex) {}
+            } catch (ex) { }
 
             if (stat) {
                 console.log(`${directory}/animations/${animationCid} already exists. Skipping.`)
             } else {
                 await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
             }
-            
 
         }
-
-
 
 
         /**
@@ -246,7 +257,7 @@ class PublishService {
         //Save pouch dbs
         this.logPublishProgress(`Starting backup`)
         let backupPath = `${directory}/backup`
-        let backup = await this.createBackup(channel, items, author)
+        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author)
 
         //Write channels
         await this.ipfsService.ipfs.files.write(`${backupPath}/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true })
@@ -263,20 +274,18 @@ class PublishService {
         this.logPublishProgress(`Saving items to backup`)
         //Also write each row as a file so the reader can open it quickly 
         for (let item of [].concat.apply([], backup.itemChunks)) {
-            this.logPublishProgress(`Saving #${item._id} to ${backupPath}/items/${item._id}.json`)
+            this.logPublishProgress(`Saving #${item.tokenId} to ${backupPath}/items/${item._id}.json`)
             await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(JSON.stringify(item)), { create: true, parents: true })
-
-
         }
 
         this.logPublishProgress(`Saving images to backup`)
         //Write image backups.
-        for (let image of images) {
+        for (let image of exportBundle.images) {
             this.logPublishProgress(`Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
             await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${backupPath}/images/${image.cid}`, { parents: true })
         }
 
-        let result = await this.ipfsService.ipfs.files.stat(`/blogs/${channel._id}/`, {
+        let result = await this.ipfsService.ipfs.files.stat(`/blogs/${exportBundle.channel._id}/`, {
             hash: true
         })
 
@@ -285,7 +294,7 @@ class PublishService {
         return result.cid.toString()
 
     }
-    
+
     async publishToIPFS(channel: Channel) {
 
         //Get all the items
@@ -295,7 +304,8 @@ class PublishService {
         const author = await this.authorService.get(channel.authorId)
 
         //Export metadata
-        let cid: string = await this.exportToIPFS(channel, items, author, this.walletService.address)
+        let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, this.walletService.address)
+        let cid: string = await this.exportToIPFS(exportBundle)
 
 
         //Update local cid info

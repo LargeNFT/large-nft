@@ -23,32 +23,38 @@
   import { ContainerService } from "../../service/core/container-service"
 
   import { UiService } from "../../service/core/ui-service"
-
   import { WalletService } from "../../service/core/wallet-service"
-  import { IpfsService } from "../../service/core/ipfs-service"
   import { SchemaService } from "../../service/core/schema-service"
 
   export default (props, { $on, $f7ready, $f7, $f7router, $update }) => {
 
     $f7ready(async () => {
 
+      let baseURI = window.location.pathname
+      let hash = window.location.hash?.length > 2 ? window.location.hash.substring(2) : undefined
+
+      console.log(hash)
+
       let uiService = ContainerService.getInstance(UiService)
       let walletService = ContainerService.getWalletService()
-      let ipfsService = ContainerService.getInstance(IpfsService)
       let schemaService = ContainerService.getInstance(SchemaService)
 
       if (typeof window !== "undefined" && window['ethereum']) {
+
         await init()
+
+        //Listen for changes
+        window['ethereum'].on('accountsChanged', async (accounts) => {
+          if (accounts?.length > 0) {
+            await init()
+          }
+        })
+
       } else {
         uiService.showSpinner("Must be connected to Ethereum mainnet. Please install <a href='http://metamask.io' class='external'>Metamask</a> or <a href='https://trustwallet.com/' class='external'>Trust Wallet</a>")        
       }
 
-      //Listen for changes
-      window['ethereum'].on('accountsChanged', async (accounts) => {
-        if (accounts?.length > 0) {
-          await init()
-        }
-      })
+
 
 
       async function init() {
@@ -62,11 +68,13 @@
         await schemaService.loadWallet(walletAddress)
 
         $f7.views.create('.view-main', {
-          url: '/',
-          browserHistory: true
+          url: hash ? hash : '/',
+          browserHistory: true,
+          // browserHistoryRoot: baseURI,
+          reloadCurrent: true
         })
 
-        $f7.views.main.router.navigate("/", { reloadCurrent : true })
+        // $f7.views.main.router.navigate("/", { reloadCurrent : true })
 
         uiService.hideSpinner()
 

@@ -63,7 +63,17 @@ class GitlabService {
 
         let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
+        //Look for an existing fork and just return it.
+        let existingFork = await this.getExistingFork(channel)
 
+        if (existingFork) {
+            return {
+                id: existingFork.id,
+                path: existingFork.path
+            }
+        }
+
+        //Create a new one
         let response = await axios.post(url, {
             name: path,
             path: path
@@ -77,6 +87,36 @@ class GitlabService {
             id: response.data.id,
             path: path
         }
+
+    }
+
+    async getExistingFork(channel:Channel) {
+
+        let config = await this.get()
+
+        if (config.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+
+        let url = `${GitlabService.BASE_URL}/projects/${GitlabService.READER_REPO_ID}/forks`
+        
+        let response = await axios.get(url, {
+            headers: {
+                "Authorization": `Bearer ${config.personalAccessToken}`
+            }
+        })
+
+        console.log(response)
+
+        let forks = response.data
+
+        let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+
+        //Search for one with the same path
+        let results = forks.filter( f => f.path == path)
+
+        if (results?.length == 1) return results[0]
 
     }
 
@@ -271,7 +311,6 @@ class GitlabService {
         if (actions?.length > 0) {
 
             console.log(`Deleting from reader repo...`)
-            console.log(actions)
 
             let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
 

@@ -40,7 +40,7 @@
 
             <div class="card-footer item-show-footer">
               ${showEdit ? $h`
-                <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}">Edit</a>
+                <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
 
                 ${itemViewModel.canDelete ? $h`
                   <a class="button button-outline button-small color-red" @click="${deleteClick}">
@@ -241,7 +241,7 @@
       //Add external to any links in the doc
       $(`#item-content-${itemViewModel.item._id} a`).addClass('external')
 
-      // //Bind arrow keys
+      //Bind arrow keys
       // hotkeys('right', (event, handler) => {
       //   next()
       // })
@@ -250,6 +250,10 @@
       //   previous()
       // })    
 
+      // hotkeys('e', (event, handler) => {
+      //   edit()
+      // })  
+
       await $update()
 
     })
@@ -257,6 +261,7 @@
     // $on('pageAfterOut', (e, page) => {
     //   hotkeys.unbind('right')  
     //   hotkeys.unbind('left')
+    //   // hotkeys.unbind('e')
     // })
 
     // const next = () => {
@@ -265,6 +270,10 @@
 
     // const previous = () => {
     //   $(`#previous-${itemViewModel.item._id}`).trigger('click')
+    // }
+
+    // const edit = () => {
+    //   $(`#edit-${itemViewModel.item._id}`).trigger('click')
     // }
 
     const deleteClick = async (e) => {

@@ -63,12 +63,12 @@ class PublishService {
 
     }
 
-    async prepareExport(channel: Channel, items: Item[], author: Author, ownerAddress:string) : Promise<ExportBundle> {
+    async prepareExport(originalChannel: Channel, originalItems: Item[], originalAuthor: Author, ownerAddress:string) : Promise<ExportBundle> {
 
         //Clone
-        channel = JSON.parse(JSON.stringify(channel))
-        items = JSON.parse(JSON.stringify(items))
-        author = JSON.parse(JSON.stringify(author))
+        let channel = JSON.parse(JSON.stringify(originalChannel))
+        let items = JSON.parse(JSON.stringify(originalItems))
+        let author = JSON.parse(JSON.stringify(originalAuthor))
 
         //Remove publishing related field from channel
         delete channel.contractAddress

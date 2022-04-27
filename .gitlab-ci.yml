@@ -11,6 +11,7 @@ pages:
     - mkdir .public2
     - cp -r * .public2
     - mv .public2 public2
+    - gzip -k -6 -r public
   artifacts:
     paths:
       - public

@@ -5,6 +5,7 @@ import fs from 'fs'
 
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+// const CompressionPlugin = require("compression-webpack-plugin")
 
 // const nodeExternals = require('webpack-node-externals')
 
@@ -114,6 +115,7 @@ let adminConfig = {
       template: 'src/html/index.html',
       filename: 'index.html'
     }),
+
 
     {
       apply: (compiler) => {

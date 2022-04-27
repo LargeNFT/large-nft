@@ -32,15 +32,15 @@
                         <div class="item-inner">
 
                           ${forking ? $h`
-                          <div class="forking-label">
-                            Forking...
-                          </div>
+                            <div class="forking-label">
+                              Forking...
+                            </div>
 
-                          <div class="preloader"></div>
+                            <div class="preloader"></div>
 
                           ` : $h`
-                          <button href="#" class="button button-fill button-small deploy-button">Create New Fork</button>
-                          <div class="forking-label" style="display:none;"></div>
+                            <button href="#" class="button button-fill button-small deploy-button">Create New Fork</button>
+                            <div class="forking-label" style="display:none;"></div>
                           `}
 
                           ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
@@ -189,7 +189,7 @@
       } catch (ex) {
 
         if (ex.toString() == "Error: Request failed with status code 409") {
-          $f7.dialog.alert("Git repo already exists with that name. Delete it from Gitlab and try again.", "There was an error")
+          $f7.dialog.alert("Git repo already exists with that name.", "There was an error")
         } else {
           $f7.dialog.alert(ex, "There was an error")
         }

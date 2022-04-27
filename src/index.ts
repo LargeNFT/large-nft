@@ -16,7 +16,6 @@ import '@yaireo/tagify/dist/tagify.css'
 import './html/css/app.css'
 
 
-import './html/images/logo.png'
 import { RoutingService } from "./service/core/routing-service"
 
 

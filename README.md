@@ -10,17 +10,17 @@ Like WordPress for NFTs but offline-first and web3 native.
 * Generate all metadata to integrate with OpenSea and other public NFT infrastructure.
 * Available on web, desktop, and mobile.
 
-## IPFS
-* Publish to an IPFS node running in the browser.
-* Upload to commerical IPFS hosting when ready to deploy to production. 
-* Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
-
 ## Reader
-* Publish to the Reader at any time.
+* Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
  - Users do not need a web3 browser to read the collection.
  - Users do need a web3 browser to mint and interact with NFTs.
 
 * Fully open source. Requires no special infrastrcture to run either the admin panel or the Reader.
+* Publish to the Reader at any time.
+
+## IPFS
+* Publish to an IPFS node running in the browser.
+* Upload to commerical IPFS hosting when ready to deploy to production. 
 
 ## Solidity
 * Deploy a Solidity contract when ready to mint. Use a pre-built contract or deploy your own. 

@@ -165,8 +165,28 @@
           return delta.ops.filter(i => i.insert && i.insert.ipfsimage).map(i => i.insert.ipfsimage)
         }
 
-        //Get images that have been removed. 
-        const deleted = getImgUrls(quillEditorService.activeEditor.getContents().diff(oldContents))
+        let current = quillEditorService.activeEditor.getContents()
+        let diff = quillEditorService.activeEditor.getContents().diff(oldContents)
+        
+        //Get images that have been changed. 
+        const changed = getImgUrls(diff)
+
+        //Filter images that are different but just style updates
+        const deleted = []
+        for (let d of changed) {
+
+          //Look for it in original
+          let old = oldContents.ops.filter(i => i.insert && i.insert.ipfsimage && i.insert.ipfsimage.cid == d.cid)
+
+          //Look for it in current
+          let cur = current.ops.filter(i => i.insert && i.insert.ipfsimage && i.insert.ipfsimage.cid == d.cid)
+
+          if (old.length > 0 && cur.length == 0) {
+            deleted.push(d)
+          }
+
+        }
+
 
         //Remove them from the images array
         deleted.forEach(img => {

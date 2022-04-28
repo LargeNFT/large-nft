@@ -1,16 +1,13 @@
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html"
 import { deltaToMarkdown } from 'quill-delta-to-markdown'
 
-import { ImageService } from './image-service'
 import { injectable } from 'inversify';
 
 
 @injectable()
 class QuillService {
 
-  constructor(
-    private imageService: ImageService
-  ) {}
+  constructor() {}
 
   async translateContent(content: any): Promise<string> {
 
@@ -27,11 +24,23 @@ class QuillService {
 
       if (customOp.insert.type === 'ipfsimage') {
         
-        return `<img
-                src="${customOp.insert.value.src}" 
-                width="${customOp.insert.value.width}" 
-                height="${customOp.insert.value.height}" 
-                style="${customOp.insert.value.style}" />`
+        let img = `<img src="${customOp.insert.value.src}" `
+
+        if (customOp.insert.value.width) {
+          img += `width="${customOp.insert.value.width}" `
+        }
+
+        if (customOp.insert.value.height) {
+          img += `height="${customOp.insert.value.height}" `
+        }
+
+        if (customOp.insert.value.style) {
+          img += `style="${customOp.insert.value.style}"`
+        }
+
+        img += "/>"
+
+        return img
       }
 
     })

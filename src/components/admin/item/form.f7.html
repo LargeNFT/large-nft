@@ -70,6 +70,7 @@
                     <div class="item-input-wrap">
 
                         ${itemViewModel?.images?.length > 0 ? $h`
+                            
                             ${itemViewModel?.images?.map( (image) => $h`
                                 <img class="cover-image-thumbnail ${image?.cid == itemViewModel.coverImage?.cid ? 'selected' : ''}  "
                                     src="${image.url}" data-id="${image.cid}" @click=${coverImageClick} />
@@ -264,7 +265,9 @@
         $(document).on('image-selected', async (e) => {
 
             //Make it the cover photo
-            itemViewModel.coverImage = await imageService.get(e.detail._id)
+            if (!itemViewModel.coverImage) {
+                itemViewModel.coverImage = await imageService.get(e.detail._id)
+            }
 
             await loadCoverImages()
 

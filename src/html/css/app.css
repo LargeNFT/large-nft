@@ -452,6 +452,7 @@ ul.breadcrumb li+li:before {
 /* Add a color to all links inside the list */
 ul.breadcrumb li a {
   font-weight: bold;
+  color:#000000;
 }
 
 /* Add a color on mouse-over */

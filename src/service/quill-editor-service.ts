@@ -7,7 +7,6 @@ import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } fro
 import "quill-paste-smart";
 import { Dom7 } from "framework7"
 
-// import { UploadService } from './core/upload-service'
 import { ImageService } from './image-service'
 import { readAndCompressImage } from 'browser-image-resizer';
 import { UiService } from './core/ui-service';
@@ -67,8 +66,6 @@ class QuillEditorService {
 
     BoldBlot.blotName = 'bold';
     BoldBlot.tagName = 'strong';
-
-
 
 
     class ItalicBlot extends Inline {
@@ -145,7 +142,7 @@ class QuillEditorService {
       static tagName?: string
 
       static create(value) {
-        
+  
         let node = super.create()
 
         node.setAttribute('src', value.src)
@@ -285,13 +282,19 @@ class QuillEditorService {
       await this.imageService.put(image)
     } catch(ex) { console.log(ex)} //Might already exist. That's fine.  
 
+    let src = await this.imageService.getUrl(image)
+    let dimensions = await this.getHeightAndWidthFromDataUrl(src)
+
+
     let range = this.activeEditor.getSelection(true)
 
     this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
 
     this.activeEditor.insertEmbed(range.index, 'ipfsimage', { 
       cid: image.cid,
-      src: await this.imageService.getUrl(image)
+      src: src,
+      height: dimensions.height,
+      width: dimensions.width
     }, Quill.sources.USER)
 
     this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
@@ -307,6 +310,19 @@ class QuillEditorService {
   async imageDropAndPasteHandler(imageDataUrl, type, imageData) {
     const file = imageData.toFile()
     await this.insertImage(file)
+  }
+
+  async getHeightAndWidthFromDataUrl(dataURL) {
+    return new Promise(resolve => {
+      const img = new Image()
+      img.onload = () => {
+        resolve({
+          height: img.height,
+          width: img.width
+        })
+      }
+      img.src = dataURL
+    })
   }
 
 }

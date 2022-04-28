@@ -6,7 +6,8 @@ import fs from 'fs'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 // const CompressionPlugin = require("compression-webpack-plugin")
-
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default
 // const nodeExternals = require('webpack-node-externals')
 
 // const exec = require('child_process').exec;
@@ -115,6 +116,13 @@ let adminConfig = {
       template: 'src/html/index.html',
       filename: 'index.html'
     }),
+
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+
+    new HTMLInlineCSSWebpackPlugin(),
 
 
     {

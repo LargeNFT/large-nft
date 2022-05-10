@@ -108,6 +108,10 @@ let adminConfig = {
       Buffer: ['buffer', 'Buffer'],
     }),
 
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(require("./package.json").version)
+    }),
+
     //Admin index page
     new HtmlWebpackPlugin({
       inject: false,

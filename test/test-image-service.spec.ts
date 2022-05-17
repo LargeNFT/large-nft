@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { getContainer } from "./inversify.config"
+import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 

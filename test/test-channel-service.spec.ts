@@ -1,7 +1,7 @@
 //@ts-nocheck
 require("dotenv").config();
 
-import { getContainer } from "./inversify.config"
+import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 
@@ -17,8 +17,6 @@ import { IpfsService } from "../src/service/core/ipfs-service"
 import { SchemaService } from "../src/service/core/schema-service"
 import { PinningService } from "../src/service/core/pinning-service"
 
-const ChannelContract = artifacts.require("Channel")
-const truffleAssert = require('truffle-assertions')
 
 const toBuffer = require('it-to-buffer')
 

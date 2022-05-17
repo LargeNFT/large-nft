@@ -91,12 +91,7 @@ async function getContainer() {
     container.bind(PinningApiRepository).toSelf().inSingletonScope()
     container.bind(GitlabRepository).toSelf().inSingletonScope()
 
-
-
-    fs.rmSync('./pouch', { recursive: true, force: true })
-    fs.rmSync('./test-repo', { recursive: true, force: true })
-
-
+    await cleanup()
 
     let ipfsService:IpfsService = container.get(IpfsService)
     let walletService:WalletService = container.get<WalletService>(TYPES.WalletService);   
@@ -108,9 +103,12 @@ async function getContainer() {
     return container
 }
 
-
+const cleanup = async () => {
+    fs.rmSync('./pouch', { recursive: true, force: true })
+    fs.rmSync('./test-repo', { recursive: true, force: true })
+}
 
 
 export {
-    getContainer
+    getContainer, cleanup
 }

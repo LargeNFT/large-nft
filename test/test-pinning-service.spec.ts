@@ -1,7 +1,7 @@
 //@ts-nocheck
 require("dotenv").config();
 
-import { getContainer } from "./inversify.config"
+import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 

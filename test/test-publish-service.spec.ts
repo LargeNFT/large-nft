@@ -1,7 +1,7 @@
 //@ts-nocheck
 require("dotenv").config();
 
-import { getContainer } from "./inversify.config"
+import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 
@@ -86,6 +86,7 @@ contract('PublishService', async (accounts) => {
 
         let image1 = await imageService.newFromBuffer(Buffer.from("image1!"))
         let image2 = await imageService.newFromBuffer(Buffer.from("image2!"))
+
 
         //Create category with attributes
         channel = Object.assign(new Channel(), {
@@ -323,24 +324,21 @@ contract('PublishService', async (accounts) => {
 
         //Mint a token and validate it
         let value = web3.utils.toWei('0.08', 'ether')
-        console.log(value)
         await c.mint( 1, { from: user4, value: value })
-        console.log('2222')
 
         let owner = await c.ownerOf( 1, { from: user4 })
         let uri = await c.tokenURI( 1, { from: user4 })
 
         assert.strictEqual(owner, user4)
-        assert.strictEqual(uri, `ipfs://${cid}/1.json`)
+        assert.strictEqual(uri, `ipfs://${channel.localCid}/1.json`)
 
         //Get the metadata and make sure it's right
-        let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${cid}/1.json`))
+        let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${channel.localCid}/1.json`))
         
         let tokenMetadata = JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
 
         assert.strictEqual(tokenMetadata.tokenId,1)
         assert.strictEqual(tokenMetadata.name, "An image!")
-
 
     })
 

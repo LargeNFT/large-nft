@@ -335,9 +335,10 @@ class PublishService {
         }
 
         //Deploy contract
-        let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')
-        console.log("mint price",mintPriceWei.toString())
-        let receipt = await this.deploy(channel.title, channel.symbol, channel.localCid, mintPriceWei.toString(), count)
+        // let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')
+        // console.log("before",channel.mintPrice )
+        // console.log("mint price",mintPriceWei.toString())
+        let receipt = await this.deploy(channel.title, channel.symbol, channel.localCid, channel.mintPrice.toString(), count)
 
         //Update address locally
         channel.contractAddress = receipt.contractAddress

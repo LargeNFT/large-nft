@@ -3,7 +3,7 @@
     <div class="right">
 
         ${walletAddress != undefined ? $h`
-          <a href="/admin/author/show/${walletAddress}" class="button button-fill">...${walletAbbrev}</a>
+          <a href="/admin/author/show/${walletAddress}" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
         ` : $h`
           <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
         `}
@@ -37,6 +37,15 @@
 
         let walletAddress = walletService.wallet?.address
         let walletAbbrev
+
+        // Captures 0x + 4 characters, then the last 4 characters.
+        const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/
+        
+        const truncateEthAddress = (address) => {
+            const match = address.match(truncateRegex)
+            if (!match) return address
+            return `${match[1]}…${match[2]}`
+        }
 
         const displayAddress = async (e) => {
 

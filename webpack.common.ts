@@ -13,6 +13,8 @@ const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").def
 // const exec = require('child_process').exec;
 
 
+
+
 const fileLoader = {
   loader: 'file-loader',
   options: {

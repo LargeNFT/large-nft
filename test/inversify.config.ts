@@ -33,6 +33,7 @@ import { PinningService } from "../src/service/core/pinning-service";
 
 import TYPES from "../src/service/core/types";
 import { GitlabRepository } from "../src/repository/gitlab-repository";
+import { PublishService } from "../src/service/core/publish-service";
 
 
 let container:Container
@@ -81,6 +82,7 @@ async function getContainer() {
     container.bind(ItemService).toSelf().inSingletonScope()
     container.bind(QuillService).toSelf().inSingletonScope()
     container.bind(PinningService).toSelf().inSingletonScope()
+    container.bind(PublishService).toSelf().inSingletonScope()
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
     container.bind(ItemRepository).toSelf().inSingletonScope()

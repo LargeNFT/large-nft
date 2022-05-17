@@ -89,7 +89,7 @@ contract('ItemService', async (accounts) => {
             await service.put(new Item())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 2)
+            assert.strictEqual(ex.errors.length, 1)
         }
 
     })

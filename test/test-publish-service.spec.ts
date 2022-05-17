@@ -49,6 +49,8 @@ let items:Item[]
 let author:Author
 let cid:string
 
+let exportBundle:ExportBundle
+
 contract('PublishService', async (accounts) => {
 
 
@@ -68,7 +70,9 @@ contract('PublishService', async (accounts) => {
         itemService = container.get(ItemService)
         channelService = container.get(ChannelService)
         imageService = container.get(ImageService)
-        
+        ipfsService = container.get(IpfsService)
+
+
         await schemaService.loadWallet(user0)
 
 
@@ -191,89 +195,81 @@ contract('PublishService', async (accounts) => {
     })
 
 
-    it("should create an export bundle", async () => {
+    // it("should create an export bundle", async () => {
         
-        //Arrange
+    //     //Arrange
 
-        //Act
-        let exportBundle:ExportBundle = await service.prepareExport(channel, items, author, user0)
+    //     //Act
+    //     exportBundle = await service.prepareExport(channel, items, author, user0)
 
-        //Assert
-        assertNftMetadata(exportBundle.nftMetadata[0], {
-            tokenId: 1,
-            name: 'An image!',
-            description: undefined,
-            image: 'ipfs://QmdiZ38cTbpsGzLYmzne4qfnCa8qLmjf9UGyaeEFoTuqSd',
-            attributes: [
-                { traitType: 'Hair', value: 'Curly'},
-                { traitType: 'Teeth', value: 'Nice'}
+    //     //Assert
+    //     assertNftMetadata(exportBundle.nftMetadata[0], {
+    //         tokenId: 1,
+    //         name: 'An image!',
+    //         description: undefined,
+    //         image: 'ipfs://QmdiZ38cTbpsGzLYmzne4qfnCa8qLmjf9UGyaeEFoTuqSd',
+    //         attributes: [
+    //             { traitType: 'Hair', value: 'Curly'},
+    //             { traitType: 'Teeth', value: 'Nice'}
 
-            ]
-        })
+    //         ]
+    //     })
 
-        assertNftMetadata(exportBundle.nftMetadata[1], {
-            tokenId: 2,
-            name: '2An image!',
-            description: undefined,
-            attributes: [
-                { traitType: 'Hair', value: 'Curly'},
-                { traitType: 'Teeth', value: 'None'}
+    //     assertNftMetadata(exportBundle.nftMetadata[1], {
+    //         tokenId: 2,
+    //         name: '2An image!',
+    //         description: undefined,
+    //         attributes: [
+    //             { traitType: 'Hair', value: 'Curly'},
+    //             { traitType: 'Teeth', value: 'None'}
 
-            ]
-        })
+    //         ]
+    //     })
 
-        assertNftMetadata(exportBundle.nftMetadata[2], {
-            tokenId: 3,
-            name: '2An image!',
-            description: undefined,
-            attributes: [
-                { traitType: 'Hair', value: 'Straight'},
-                { traitType: 'Teeth', value: 'Have them'}
+    //     assertNftMetadata(exportBundle.nftMetadata[2], {
+    //         tokenId: 3,
+    //         name: '2An image!',
+    //         description: undefined,
+    //         attributes: [
+    //             { traitType: 'Hair', value: 'Straight'},
+    //             { traitType: 'Teeth', value: 'Have them'}
 
-            ]
-        })
+    //         ]
+    //     })
 
-        assert.strictEqual(exportBundle.images[0].cid, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
-        assert.strictEqual(exportBundle.images[1].cid, 'QmdiZ38cTbpsGzLYmzne4qfnCa8qLmjf9UGyaeEFoTuqSd')
+    //     assert.strictEqual(exportBundle.images[0].cid, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
+    //     assert.strictEqual(exportBundle.images[1].cid, 'QmdiZ38cTbpsGzLYmzne4qfnCa8qLmjf9UGyaeEFoTuqSd')
 
-        // assert.strictEqual(exportBundle.channel, channel)
-        // assert.strictEqual(exportBundle.items, items)
-        // assert.strictEqual(exportBundle.author, author)
-
-
-
-    })
-
-    const assertNftMetadata = (nftMetadata:NFTMetadata, value:NFTMetadata) => {
-
-        assert.strictEqual(nftMetadata.tokenId, value.tokenId)
-        assert.strictEqual(nftMetadata.name, value.name)
-        assert.strictEqual(nftMetadata.description, value.description)
-        assert.strictEqual(nftMetadata.image, value.image)
-
-        assert.deepStrictEqual(nftMetadata.attributes, value.attributes)
-
-    }
+    //     // assert.strictEqual(exportBundle.channel, channel)
+    //     // assert.strictEqual(exportBundle.items, items)
+    //     // assert.strictEqual(exportBundle.author, author)
 
 
-    // it("should publish to IPFS", async () => {
+
+    // })
+
+    // const assertNftMetadata = (nftMetadata:NFTMetadata, value:NFTMetadata) => {
+
+    //     assert.strictEqual(nftMetadata.tokenId, value.tokenId)
+    //     assert.strictEqual(nftMetadata.name, value.name)
+    //     assert.strictEqual(nftMetadata.description, value.description)
+    //     assert.strictEqual(nftMetadata.image, value.image)
+
+    //     assert.deepStrictEqual(nftMetadata.attributes, value.attributes)
+
+    // }
+
+
+    // it("should export to IPFS", async () => {
    
     //     //Now export metadata to IPFS
-    //     cid = await service.exportToIPFS(channel,items, user0)
+    //     cid = await service.exportToIPFS(exportBundle)
 
 
     //     //Assert
 
     //     //Copy to tmp directory so we're not just reading the underlying folder directly.
     //     await ipfsService.ipfs.files.cp(`/ipfs/${cid}`, "/tmp/" )
-
-
-    //     let backup = await getFileContent(`/tmp/initial.json`)
-
-    //     assert.strictEqual(backup.channels.length, 1)
-    //     assert.strictEqual(backup.items.length, 3)
-    //     assert.strictEqual(backup.authors.length, 1)
-
 
     //     let contractMetadata:ContractMetadata = await getFileContent(`/tmp/contractMetadata.json`)
         
@@ -285,74 +281,82 @@ contract('PublishService', async (accounts) => {
     //     assert.strictEqual(contractMetadata.external_link, 'google.com')
     //     assert.strictEqual(contractMetadata.image, 'ipfs://QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
 
-    //     assert.strictEqual(item1File.tokenId, '1')
+    //     assert.strictEqual(item1File.tokenId, 1)
     //     assert.strictEqual(item1File.name, 'An image!')
-    //     assert.strictEqual(item1File.animation_url, 'ipfs://QmTTczWjxoGJW8wmo4DCyy25n2KVHWtb3jBRHdHxUVeYkj')
+    //     // assert.strictEqual(item1File.animation_url, 'ipfs://QmTTczWjxoGJW8wmo4DCyy25n2KVHWtb3jBRHdHxUVeYkj')
     //     assert.strictEqual(item1File.image, 'ipfs://QmdiZ38cTbpsGzLYmzne4qfnCa8qLmjf9UGyaeEFoTuqSd')
     //     assert.deepEqual(item1File.attributes, [
     //         { traitType: "Hair", value: "Curly" },
     //         { traitType: "Teeth", value: "Nice" }
     //     ])
 
-    //     assert.strictEqual(item2File.tokenId, '2')
-    //     assert.strictEqual(item3File.tokenId, '3')
+    //     assert.strictEqual(item2File.tokenId, 2)
+    //     assert.strictEqual(item3File.tokenId, 3)
 
 
     // })
 
-    // it("should should get the JSON Feed for a channel", async () => {
 
-    // })
 
-    // it("should should get the RSS Feed for a channel", async () => {
 
-    // })
+    it("should publish a channel", async () => {
 
-    // it("should publish a channel", async () => {
+        //Arrange
+        await service.publishToIPFS(channel)
 
-    //     //Arrange
+        await service.deployContract(channel)
 
-    //     //Set up Pinata
-    //     let contractAddress = await service.publish(channel, items, {
-    //         apiKey: apiKey,
-    //         secretApiKey: secretApiKey,
-    //         url: "https://api.pinata.cloud"
-    //     }, cid)
+        //Set up Pinata
+        let contractAddress = channel.contractAddress
 
-    //     assert.notEqual(contractAddress, undefined)
+        assert.notEqual(contractAddress, undefined)
 
-    //     //Read from contract
-    //     let c = await ChannelContract.at(contractAddress)
+        //Read from contract
+        let c = await ChannelContract.at(contractAddress)
 
-    //     //should fail to get tokenURI if token doesn't exist
-    //     await truffleAssert.fails(
-    //         c.tokenURI( 1, { from: user4 }),
-    //         truffleAssert.ErrorType.REVERT,
-    //         "ERC721Metadata: URI query for nonexistent token"
-    //     )
+        //should fail to get tokenURI if token doesn't exist
+        await truffleAssert.fails(
+            c.tokenURI( 1, { from: user4 }),
+            truffleAssert.ErrorType.REVERT,
+            "ERC721Metadata: URI query for nonexistent token"
+        )
 
-    //     //Mint a token and validate it
-    //     await c.mint( 1, { from: user4, value: web3.utils.toWei('0.08', 'ether') })
+        //Mint a token and validate it
+        let value = web3.utils.toWei('0.08', 'ether')
+        console.log(value)
+        await c.mint( 1, { from: user4, value: value })
+        console.log('2222')
 
-    //     let owner = await c.ownerOf( 1, { from: user4 })
-    //     let uri = await c.tokenURI( 1, { from: user4 })
+        let owner = await c.ownerOf( 1, { from: user4 })
+        let uri = await c.tokenURI( 1, { from: user4 })
 
-    //     assert.strictEqual(owner, user4)
-    //     assert.strictEqual(uri, `ipfs://${cid}/1.json`)
+        assert.strictEqual(owner, user4)
+        assert.strictEqual(uri, `ipfs://${cid}/1.json`)
 
-    //     //Get the metadata and make sure it's right
-    //     let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${cid}/1.json`))
+        //Get the metadata and make sure it's right
+        let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${cid}/1.json`))
         
-    //     let tokenMetadata = JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
+        let tokenMetadata = JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
 
-    //     assert.strictEqual(tokenMetadata.tokenId, "1")
-    //     assert.strictEqual(tokenMetadata.name, "An image!")
+        assert.strictEqual(tokenMetadata.tokenId,1)
+        assert.strictEqual(tokenMetadata.name, "An image!")
 
+
+    })
+
+
+
+    // it("should publish to IPFS", async () => {
+
+    //     //Act
+    //     await service.publishToIPFS(channel)
+
+    //     //Assert
+    //     let fetchedChannel = await channelService.get(channel._id)
+        
+    //     assert.strictEqual(fetchedChannel.localCid, cid)
 
     // })
-
-
-
 
 
 })

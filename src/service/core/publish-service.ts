@@ -82,6 +82,7 @@ class PublishService {
         delete channel.publishReaderRepoPath
         delete channel.publishReaderRepoStatus
         delete channel.lastUpdated
+        delete channel.dateCreated
         delete channel._rev
         delete channel["_rev_tree"]
 
@@ -89,6 +90,7 @@ class PublishService {
         if (author) {
             delete author._rev
             delete author.lastUpdated
+            delete author.dateCreated
             delete author["_rev_tree"]
         }
 
@@ -138,6 +140,7 @@ class PublishService {
             //Delete publishing related fields
             delete item._rev
             delete item.lastUpdated
+            delete item.dateCreated
             delete item["_rev_tree"]
 
             //Generate metadata and add to list
@@ -188,6 +191,7 @@ class PublishService {
 
             //Remove publishing related field from image
             delete image._rev
+            delete image.dateCreated
             delete image["_rev_tree"]
         }
 
@@ -275,7 +279,7 @@ class PublishService {
         //Also write each row as a file so the reader can open it quickly 
         for (let item of [].concat.apply([], backup.itemChunks)) {
             this.logPublishProgress(`Saving #${item.tokenId} to ${backupPath}/items/${item._id}.json`)
-            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(JSON.stringify(item)), { create: true, parents: true })
+            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(  JSON.stringify(item, Object.keys(item).sort() )  ), { create: true, parents: true })
         }
 
         this.logPublishProgress(`Saving images to backup`)
@@ -309,13 +313,12 @@ class PublishService {
 
 
         //Update local cid info
-        channel = await this.channelService.get(channel._id)
+        Object.assign(channel, await this.channelService.get(channel._id))
 
         channel.localCid = cid
         channel.localPubDate = new Date().toJSON()
 
         await this.channelService.put(channel)
-
 
     }
 
@@ -333,6 +336,7 @@ class PublishService {
 
         //Deploy contract
         let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')
+        console.log("mint price",mintPriceWei.toString())
         let receipt = await this.deploy(channel.title, channel.symbol, channel.localCid, mintPriceWei.toString(), count)
 
         //Update address locally

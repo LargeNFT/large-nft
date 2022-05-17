@@ -153,20 +153,20 @@ contract('PinningService', async (accounts) => {
     })
     
 
-    it("should pin by hash", async () => {
+    // it("should pin by hash", async () => {
 
-        let file1 = await ipfsService.ipfs.add({
-            content: "pretend that this is sweet file data"
-        })
+    //     let file1 = await ipfsService.ipfs.add({
+    //         content: "pretend that this is sweet file data"
+    //     })
 
-        //Arrange
-        let pinningApi:PinningApi = await service.get(id1)
+    //     //Arrange
+    //     let pinningApi:PinningApi = await service.get(id1)
 
-        //Act
-        let result = await service.pinByHash(pinningApi, file1.cid.toString(), "Sweet title")
-        assert.equal(result.ipfsHash, 'QmXf5U9ZjZ5H8qvGKeSv2N3tU2nn21V1jmRPhAppkN2Wvt')
+    //     //Act
+    //     let result = await service.pinByHash(pinningApi, file1.cid.toString(), "Sweet title")
+    //     assert.equal(result.ipfsHash, 'QmXf5U9ZjZ5H8qvGKeSv2N3tU2nn21V1jmRPhAppkN2Wvt')
 
-    })
+    // })
 
 
 })

@@ -6,6 +6,7 @@ import { ContractMetadata } from "../../dto/contract-metadata"
 import { ExportBundle } from "../../dto/export-bundle"
 import { Item } from "../../dto/item"
 import { NFTMetadata } from "../../dto/nft-metadata"
+import { PublishStatus } from "../../dto/viewmodel/publish-status"
 import { ItemRepository } from "../../repository/item-repository"
 import { AuthorService } from "../author-service"
 import { ChannelService } from "../channel-service"
@@ -37,9 +38,12 @@ class PublishService {
         //Generate bundles with extra info for each item
         for (let item of items) {
 
+            let previous = items.filter( i => i.tokenId == item.tokenId-1)
+            let next = items.filter( i => i.tokenId == item.tokenId+1)
+
             //Add the previous and next items so they can used in navigation
-            item['previous'] = await this.itemService.getPrevious(item)
-            item['next'] = await this.itemService.getNext(item)
+            item['previous'] = previous?.length > 0 ? previous[0] : undefined
+            item['next'] = next?.length > 0 ? next[0] : undefined
         }
 
         //Add itemCount to channel
@@ -58,7 +62,8 @@ class PublishService {
         return {
             channels: [channel],
             authors: [author],
-            itemChunks: chunkedItems //rest of items            
+            itemChunks: chunkedItems, 
+            items: items      
         }
 
     }
@@ -82,7 +87,7 @@ class PublishService {
         delete channel.publishReaderRepoPath
         delete channel.publishReaderRepoStatus
         delete channel.lastUpdated
-        delete channel.dateCreated
+        // delete channel.dateCreated
         delete channel._rev
         delete channel["_rev_tree"]
 
@@ -90,7 +95,7 @@ class PublishService {
         if (author) {
             delete author._rev
             delete author.lastUpdated
-            delete author.dateCreated
+            // delete author.dateCreated
             delete author["_rev_tree"]
         }
 
@@ -140,7 +145,7 @@ class PublishService {
             //Delete publishing related fields
             delete item._rev
             delete item.lastUpdated
-            delete item.dateCreated
+            // delete item.dateCreated
             delete item["_rev_tree"]
 
             //Generate metadata and add to list
@@ -176,6 +181,32 @@ class PublishService {
 
     async exportToIPFS(exportBundle:ExportBundle): Promise<string> {
 
+        let directory = `/blogs/${exportBundle.channel._id}`
+
+        /**
+         * BACKUP FOR READER
+        */
+        let backupPath = `${directory}/backup`
+        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author)
+
+        let publishStatus:PublishStatus = {
+
+            contractMetadata:false,
+            
+            nftMetadata: { saved: 0, total: exportBundle.nftMetadata.length },
+            images: { saved: 0, total: exportBundle.images.length },
+            animations: { saved: 0, total: exportBundle.animations.length },
+        
+            backups: {
+                channels: false, 
+                authors: false, 
+                itemChunks: { saved: 0, total: backup.itemChunks.length },
+                items: { saved: 0, total: backup.items.length },
+                images: { saved: 0, total: exportBundle.images.length },
+            }
+        }
+
+        this.logPublishProgress(publishStatus)
 
         //Add all images to IPFS
         for (let image of exportBundle.images) {
@@ -191,12 +222,12 @@ class PublishService {
 
             //Remove publishing related field from image
             delete image._rev
-            delete image.dateCreated
+            // delete image.dateCreated
             delete image["_rev_tree"]
         }
 
 
-        let directory = `/blogs/${exportBundle.channel._id}`
+        
 
         //Clear 
         try {
@@ -204,31 +235,47 @@ class PublishService {
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true })
         } catch (ex) { }
 
+
+
         //Save contract metadata
         let contractMetadataPath = `${directory}/contractMetadata.json`
+        
+        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true, flush:true })
+        
+        publishStatus.contractMetadata = true
+        this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
 
-        this.logPublishProgress(`Saving contract metadata to ${contractMetadataPath}`)
 
-        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true })
 
         //Save metadata for each NFT
         for (let nft of exportBundle.nftMetadata) {
 
             let nftMetadataPath = `${directory}/${nft.tokenId}.json`
 
-            this.logPublishProgress(`Saving #${nft.tokenId} to ${nftMetadataPath}`)
-            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true })
+            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:true })
+
+            publishStatus.nftMetadata.saved++
+
+            this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath}`)
 
         }
+
+
 
         //Save images 
         for (let image of exportBundle.images) {
-            this.logPublishProgress(`Saving image #${image.cid} to ${directory}/images/${image.cid}`)
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { parents: true })
+
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { parents: true, flush:true })
+
+            publishStatus.images.saved++
+
+            this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${directory}/images/${image.cid}`)
+
         }
 
+
+
         //Save animation cids
-        let animationCounter = 1
         for (let animation of exportBundle.animations) {
 
             let result = await this.ipfsService.ipfs.add({
@@ -237,7 +284,6 @@ class PublishService {
 
             let animationCid = result.cid.toString()
 
-            this.logPublishProgress(`Saving animation #${animationCounter++} ${animationCid} to ${directory}/animations/${animationCid}`)
 
             //In theory there can be duplicates if any NFTs have identical content.
             let stat
@@ -248,52 +294,72 @@ class PublishService {
             if (stat) {
                 console.log(`${directory}/animations/${animationCid} already exists. Skipping.`)
             } else {
-                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true })
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true, flush: true })
             }
 
+            publishStatus.animations.saved++
+
+            this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animationCid} to ${directory}/animations/${animationCid}`)
+
+
         }
 
 
-        /**
-         * BACKUP FOR READER
-         */
 
-        //Save pouch dbs
-        this.logPublishProgress(`Starting backup`)
-        let backupPath = `${directory}/backup`
-        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author)
 
         //Write channels
-        await this.ipfsService.ipfs.files.write(`${backupPath}/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true })
+        await this.ipfsService.ipfs.files.write(`${backupPath}/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: true })
+
+        publishStatus.backups.channels = true
+        this.logPublishProgress(publishStatus)
+
 
         //Write authors
-        await this.ipfsService.ipfs.files.write(`${backupPath}/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true })
+        await this.ipfsService.ipfs.files.write(`${backupPath}/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true, flush: true })
+        publishStatus.backups.authors = true
+        this.logPublishProgress(publishStatus)
 
 
-        let counter = 0
+        //Write item chunks
+        publishStatus.backups.itemChunks.total = backup.itemChunks.length
         for (let itemChunk of backup.itemChunks) {
-            await this.ipfsService.ipfs.files.write(`${backupPath}/itemChunks/${counter++}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true })
+            
+            await this.ipfsService.ipfs.files.write(`${backupPath}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: true })
+        
+            publishStatus.backups.itemChunks.saved++ 
+            
+            this.logPublishProgress(publishStatus)
+
         }
 
-        this.logPublishProgress(`Saving items to backup`)
         //Also write each row as a file so the reader can open it quickly 
-        for (let item of [].concat.apply([], backup.itemChunks)) {
-            this.logPublishProgress(`Saving #${item.tokenId} to ${backupPath}/items/${item._id}.json`)
-            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(  JSON.stringify(item, Object.keys(item).sort() )  ), { create: true, parents: true })
+        for (let item of backup.items) {
+
+            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(  JSON.stringify(item, Object.keys(item).sort() )  ), { create: true, parents: true, flush: true })
+        
+            publishStatus.backups.items.saved++
+
+            this.logPublishProgress(publishStatus, `Saving #${item.tokenId} to ${backupPath}/items/${item._id}.json`)
+
         }
 
-        this.logPublishProgress(`Saving images to backup`)
+
+
         //Write image backups.
         for (let image of exportBundle.images) {
-            this.logPublishProgress(`Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${backupPath}/images/${image.cid}`, { parents: true })
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${backupPath}/images/${image.cid}`, { parents: true, flush: true })
+
+            publishStatus.backups.images.saved++
+
+            this.logPublishProgress(publishStatus, `Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
         }
+
 
         let result = await this.ipfsService.ipfs.files.stat(`/blogs/${exportBundle.channel._id}/`, {
             hash: true
         })
 
-        this.logPublishProgress(`Published to local IPFS at ${result.cid.toString()}`)
+        this.logPublishProgress(publishStatus, `Published to local IPFS at ${result.cid.toString()}`)
 
         return result.cid.toString()
 
@@ -362,14 +428,20 @@ class PublishService {
         return contract.deployTransaction.wait()
     }
 
-    private logPublishProgress(message: string) {
+    private logPublishProgress(publishStatus:PublishStatus, message?: string) {
 
-        console.log(message)
+        if (message) {
+            console.log(message)
+        }
+        
 
         if (typeof window !== "undefined" && typeof window.document !== "undefined") {
             // browser
             const imageSelectedEvent = new CustomEvent('publish-progress', {
-                detail: { message: message }
+                detail: { 
+                    publishStatus: publishStatus,
+                    message: message 
+                }
             })
 
             document.dispatchEvent(imageSelectedEvent)

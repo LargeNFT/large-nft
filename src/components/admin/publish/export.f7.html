@@ -40,6 +40,49 @@
                                     <div class="publish-label">
                                         Publishing...
                                     </div>
+
+                                    ${publishStatus? $h`
+                                        <div class="publish-status">
+
+                                            <div class="item">
+                                                <label>Contract Metadata:</label> ${publishStatus.contractMetadata}
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>Reader Channels:</label> ${publishStatus.backups.channels} 
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>Reader Authors:</label> ${publishStatus.backups.authors} 
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>Reader Item Chunks:</label> ${publishStatus.backups.itemChunks.saved} / ${publishStatus.backups.itemChunks.total} 
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>Reader Items:</label> ${publishStatus.backups.items.saved} / ${publishStatus.backups.items.total} 
+                                            </div>
+    
+                                            <div class="item">
+                                                <label>Reader Images:</label> ${publishStatus.backups.images.saved} / ${publishStatus.backups.images.total} 
+                                            </div>                                    
+    
+                                        </div>
+                                    ` : $h`<span />`}
+
                                 ` : $h`
                                     <div class="publish-label" style="display:none;"></div>
                                 `}
@@ -133,6 +176,18 @@
         overflow-y: scroll;
     }
 
+    .publish-status {
+        font-size: 14px;
+        padding: 10px;
+        border: 1px solid #f1f1f1;
+    }
+
+    .publish-status .item label {
+        font-weight: bold;
+        display: inline-block;
+        width: 180px;
+    }
+
     #export-refresh-button {
         width: 45px;
         height: 30px;
@@ -181,6 +236,7 @@
         let peerCount = ipfsService.peerCount
 
         let publishing = false
+        let publishStatus 
         let publishOutput = ""
 
         let ipfsReady = ipfsService.ipfs != undefined
@@ -190,6 +246,7 @@
         let pageUnloaded = false
 
         let showRefresh = false
+        
 
         $on('pageInit', async () => {
 
@@ -246,6 +303,7 @@
         $(document).on('publish-progress', async (e) => {
 
             publishOutput += `<p>${e.detail.message}</p>`
+            publishStatus = e.detail.publishStatus
 
             $update()
 

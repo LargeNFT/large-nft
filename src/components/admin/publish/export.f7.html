@@ -302,7 +302,10 @@
 
         $(document).on('publish-progress', async (e) => {
 
-            publishOutput += `<p>${e.detail.message}</p>`
+            if (e.detail.message) {
+                publishOutput += `<p>${e.detail.message}</p>`
+            }
+            
             publishStatus = e.detail.publishStatus
 
             $update()

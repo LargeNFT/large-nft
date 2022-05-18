@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "erc721a/contracts/ERC721A.sol";
+
 import "@openzeppelin/contracts/access/Ownable.sol";
+
 // import "./util/console.sol";
 
-contract Channel is ERC721Enumerable, Ownable {
+contract Channel is ERC721A, Ownable {
 
     string private _ipfsCid;
 
@@ -14,29 +16,41 @@ contract Channel is ERC721Enumerable, Ownable {
 
     uint256 private _maxTokenId;
 
-    constructor(string memory name, string memory symbol, string memory ipfsCid, uint256 mintFee, uint256 maxTokenId) ERC721(name, symbol) {
+    //set the maximum number an address can mint at a time
+    uint256 public MAX_MINT_AMOUNT = 10;
+
+
+    constructor(string memory name, string memory symbol, string memory ipfsCid, uint256 mintFee, uint256 maxTokenId) ERC721A(name, symbol) {
         _mintFee = mintFee;
         _maxTokenId = maxTokenId;
         _ipfsCid = ipfsCid;
     }
 
-    function mint(uint256 tokenId) public payable {
+    function _startTokenId() internal view virtual override returns (uint256) {
+        return 1;
+    }
+
+    function mint(uint256 quantity) public payable {
 
         /**
         Checks
          */
+         uint256 totalMinted = _totalMinted();
 
-        //Validate tokenId is in range
-        require(tokenId > 0 && tokenId <= _maxTokenId, "Invalid token");
+        //No zeros
+        require(quantity > 0, "Too few");
 
-        //Make sure this one hasn't been minted
-        require(_exists(tokenId) == false, "Exists");
+        //Enforce mint limit
+        require(quantity <= MAX_MINT_AMOUNT, "Too many");
+
+        //Don't mint past final token
+        require(totalMinted + quantity <= _maxTokenId, "Minting closed");
 
         //Validate we have enough ETH. 
-        require(msg.value == _mintFee, "Send exact ETH");
+        require(msg.value == quantity * _mintFee, "Send exact ETH");
 
         //Mint
-        _safeMint(_msgSender(), tokenId, "");
+        _safeMint(_msgSender(), quantity);
 
     }
 
@@ -48,15 +62,12 @@ contract Channel is ERC721Enumerable, Ownable {
     
     }
 
-
     function withdraw() public payable onlyOwner {
 
         (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(success);
 
     }
-
-
 
     function uint2str(uint _i) public pure returns (string memory _uintAsString) {
         if (_i == 0) {
@@ -79,7 +90,5 @@ contract Channel is ERC721Enumerable, Ownable {
         }
         return string(bstr);
     }
-
-
 
 }

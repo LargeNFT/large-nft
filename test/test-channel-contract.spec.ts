@@ -47,23 +47,31 @@ contract('Channel Contract', async (accounts) => {
 
 
     it("should fail to mint if token ID is out of range", async () => {
-        await truffleAssert.fails(
-            mainContract.mint( 11, { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "Invalid token"
-        )
 
         await truffleAssert.fails(
             mainContract.mint( 0, { from: user4 }),
             truffleAssert.ErrorType.REVERT,
-            "Invalid token"
+            "Too few"
+        )
+
+        await truffleAssert.fails(
+            mainContract.mint( 11, { from: user4 }),
+            truffleAssert.ErrorType.REVERT,
+            "Too many"
         )
 
     })
 
     it("should fail to mint if we don't send enough ETH", async () => {
+
         await truffleAssert.fails(
-            mainContract.mint( 1, { from: user4 }),
+            mainContract.mint( 1, { from: user4, value: web3.utils.toWei('0.0799', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "Send exact ETH"
+        )
+
+        await truffleAssert.fails(
+            mainContract.mint( 2, { from: user4, value: web3.utils.toWei('0.15', 'ether') }),
             truffleAssert.ErrorType.REVERT,
             "Send exact ETH"
         )
@@ -77,26 +85,50 @@ contract('Channel Contract', async (accounts) => {
             "Send exact ETH"
         )
 
+        await truffleAssert.fails(
+            mainContract.mint( 2, { from: user4, value: web3.utils.toWei('0.19', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "Send exact ETH"
+        )
+
     })
 
 
-    it("should mint all tokens by ID", async () => {
+    it("should mint all tokens", async () => {
+
+        await mainContract.mint( 3, { from: user0, value: web3.utils.toWei('0.24', 'ether') })
+        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (3 * 0.08).toString() , 'ether'))
+
+        await mainContract.mint( 3, { from: user1, value: web3.utils.toWei('0.24', 'ether') })
+        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (6 * 0.08).toString() , 'ether'))
+
+        await mainContract.mint( 2, { from: user2, value: web3.utils.toWei('0.16', 'ether') })
+        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (8 * 0.08).toString() , 'ether'))
+
+        await mainContract.mint( 2, { from: user3, value: web3.utils.toWei('0.16', 'ether') })
+        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (10 * 0.08).toString() , 'ether'))
+
+        assert.strictEqual(await mainContract.ownerOf( 1, { from: user0 }), user0)
+        assert.strictEqual(await mainContract.ownerOf( 2, { from: user0 }), user0)
+        assert.strictEqual(await mainContract.ownerOf( 3, { from: user0 }), user0)
+
+        assert.strictEqual(await mainContract.ownerOf( 4, { from: user1 }), user1)
+        assert.strictEqual(await mainContract.ownerOf( 5, { from: user1 }), user1)
+        assert.strictEqual(await mainContract.ownerOf( 6, { from: user1 }), user1)
+
+        assert.strictEqual(await mainContract.ownerOf( 7, { from: user2 }), user2)
+        assert.strictEqual(await mainContract.ownerOf( 8, { from: user2 }), user2)
+        
+        assert.strictEqual(await mainContract.ownerOf( 9, { from: user3 }), user3)
+        assert.strictEqual(await mainContract.ownerOf( 10, { from: user3 }), user3)
+
 
         for (let i=1; i < 11; i++) {
-
-            await mainContract.mint( i, { from: user4, value: web3.utils.toWei('0.08', 'ether') })
-
-            //Validate
-            let owner = await mainContract.ownerOf( i, { from: user4 })
             let uri = await mainContract.tokenURI( i, { from: user4 })
-  
-            let balance = await web3.eth.getBalance(mainContract.address)
-
-            assert.strictEqual(balance, web3.utils.toWei( (i * 0.08).toString() , 'ether'))
-            assert.strictEqual(owner, user4)
             assert.strictEqual(uri, `ipfs://xyz/${i}.json`)
         }
 
+        
 
     })
 
@@ -104,7 +136,7 @@ contract('Channel Contract', async (accounts) => {
         await truffleAssert.fails(
             mainContract.mint( 1, { from: user4, value: web3.utils.toWei('0.08', 'ether') }),
             truffleAssert.ErrorType.REVERT,
-            "Exists"
+            "Minting closed"
         )
     })
 
@@ -144,53 +176,44 @@ contract('Channel Contract', async (accounts) => {
 
 
 
-    it("should mint token ID with mintFee set to zero", async () => {
+    // it("should mint token ID with mintFee set to zero", async () => {
 
-        let freeContract = await Channel.new( "Test", "TST", "zyx", 0, 10, { from: user0 })
+    //     let freeContract = await Channel.new( "Test", "TST", "zyx", 0, 10, { from: user0 })
 
         
 
-        //Fail before range
-        await truffleAssert.fails(
-            freeContract.mint( 0, { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "Invalid token"
-        )
+    //     //Fail before range
+    //     await truffleAssert.fails(
+    //         freeContract.mint( 0, { from: user4 }),
+    //         truffleAssert.ErrorType.REVERT,
+    //         "Invalid token"
+    //     )
 
-        for (let i=1; i < 11; i++) {
+    //     for (let i=1; i < 11; i++) {
 
-            await freeContract.mint( i, { from: user4 })
+    //         await freeContract.mint( i, { from: user4 })
 
-            //Validate
-            let owner = await freeContract.ownerOf( i, { from: user4 })
-            let uri = await freeContract.tokenURI( i, { from: user4 })
+    //         //Validate
+    //         let owner = await freeContract.ownerOf( i, { from: user4 })
+    //         let uri = await freeContract.tokenURI( i, { from: user4 })
 
-            assert.strictEqual(owner, user4)
-            assert.strictEqual(uri, `ipfs://zyx/${i}.json`)
-        }
-
-        //Fail after range
-        await truffleAssert.fails(
-            freeContract.mint( 11, { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "Invalid token"
-        )
-
-
-
-    })
-
-
-    // it("should fail to create invalid channel", async () => {
-        
-    //     try {
-    //         await service.put(new Channel())
-    //         assert.fail("Did not throw exception")
-    //     } catch(ex) {
-    //         assert.strictEqual(ex.errors.length, 3)
+    //         assert.strictEqual(owner, user4)
+    //         assert.strictEqual(uri, `ipfs://zyx/${i}.json`)
     //     }
 
+    //     //Fail after range
+    //     await truffleAssert.fails(
+    //         freeContract.mint( 11, { from: user4 }),
+    //         truffleAssert.ErrorType.REVERT,
+    //         "Invalid token"
+    //     )
+
+
+
     // })
+
+
+
 
 })
 

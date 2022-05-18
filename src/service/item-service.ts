@@ -5,8 +5,6 @@ import { NFTMetadata } from "../dto/nft-metadata";
 import { ValidationException } from "../util/validation-exception";
 import { validate, ValidationError } from 'class-validator';
 import { v4 as uuidv4 } from 'uuid';
-import { QuillService } from "./quill-service";
-import { IpfsService } from "./core/ipfs-service";
 import { ItemRepository } from "../repository/item-repository";
 
 import { Channel } from "../dto/channel";
@@ -16,9 +14,7 @@ import { Channel } from "../dto/channel";
 class ItemService {
 
     constructor(
-        private itemRepository: ItemRepository,
-        private quillService:QuillService,
-        private ipfsService:IpfsService,
+        private itemRepository: ItemRepository
     ) { }
 
     async get(_id: string): Promise<Item> {
@@ -68,7 +64,6 @@ class ItemService {
         return this.itemRepository.getMaxTokenId(channelId)
     }
 
-
     async getNext(item:Item) : Promise<Item> {
         return this.itemRepository.getNext(item)
     }
@@ -76,7 +71,6 @@ class ItemService {
     async getPrevious(item:Item) : Promise<Item> {
         return this.itemRepository.getPrevious(item)
     }
-
 
     async exportNFTMetadata(channel:Channel, item:Item, animationCid:string, coverImageCid:string): Promise<NFTMetadata> {
 
@@ -112,10 +106,6 @@ class ItemService {
         }
 
         return result
-
-    }
-
-    async mint(_id: string) {
 
     }
 

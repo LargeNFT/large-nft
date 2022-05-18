@@ -38,12 +38,20 @@ class PublishService {
         //Generate bundles with extra info for each item
         for (let item of items) {
 
-            let previous = items.filter( i => i.tokenId == item.tokenId-1)
-            let next = items.filter( i => i.tokenId == item.tokenId+1)
+            let previous = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) -1)
+            let next = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) + 1)
 
             //Add the previous and next items so they can used in navigation
-            item['previous'] = previous?.length > 0 ? previous[0] : undefined
-            item['next'] = next?.length > 0 ? next[0] : undefined
+            item['previous'] = previous?.length > 0 ? { 
+                _id: previous[0]._id,
+                tokenId: previous[0].tokenId
+            }  : undefined
+
+            item['next'] = next?.length > 0 ? { 
+                _id: next[0]._id,
+                tokenId: next[0].tokenId
+            } : undefined
+
         }
 
         //Add itemCount to channel
@@ -401,10 +409,8 @@ class PublishService {
         }
 
         //Deploy contract
-        // let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')
-        // console.log("before",channel.mintPrice )
-        // console.log("mint price",mintPriceWei.toString())
-        let receipt = await this.deploy(channel.title, channel.symbol, channel.localCid, channel.mintPrice.toString(), count)
+        let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')        
+        let receipt = await this.deploy(channel.title, channel.symbol, channel.localCid, mintPriceWei.toString(), count)
 
         //Update address locally
         channel.contractAddress = receipt.contractAddress
@@ -422,8 +428,8 @@ class PublishService {
         const c = this.contracts['Channel']
 
         const factory = new ethers.ContractFactory(c.abi, c.bytecode, wallet)
-
-        let contract = await factory.deploy(name, symbol, ipfsCid, BigNumber.from(mintFee), BigNumber.from(maxTokenId))
+        
+        let contract = await factory.deploy(name, symbol, ipfsCid, BigNumber.from(mintFee.toString()), BigNumber.from(maxTokenId.toString()))
 
         return contract.deployTransaction.wait()
     }

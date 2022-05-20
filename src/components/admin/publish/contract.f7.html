@@ -48,11 +48,18 @@
                       </div>
 
 
-                      <p><strong>Current Contract Address:</strong> ${channelViewModel.channel.contractAddress}</p>
+                      ${channelViewModel.channel.contractAddress ? $h`
+                        <p>
+                          <strong>Current Contract Address:</strong> ${channelViewModel.channel.contractAddress} 
+                          <a @click="${resetContract}" class="button button-fill button-small deploy-button">Reset</a>
+                        </p> 
+                      ` : $h`<span/>`}
+
 
                       ${deploying ? $h`
                         <p>Deploying...</p>
                       ` : $h`
+                      
                         ${!channelViewModel.channel.contractAddress ? $h`
                           <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
                         ` : $h`
@@ -150,6 +157,19 @@
           deploying = false
           await $update()
         }
+
+        const resetContract = async (e) => {
+
+          channelViewModel.channel.contractAddress = undefined
+
+          await channelService.put(channelViewModel.channel)
+
+          channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+
+          $update()
+
+        }
+
 
         return $render
     }

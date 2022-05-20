@@ -35,7 +35,7 @@ contract Channel is ERC721A, Ownable {
         /**
         Checks
          */
-         uint256 totalMinted = _totalMinted();
+        uint256 totalMinted = _totalMinted();
 
         //No zeros
         require(quantity > 0, "Too few");

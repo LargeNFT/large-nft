@@ -44,8 +44,8 @@
                                     ${publishStatus? $h`
                                         <div class="publish-status">
 
-                                            <div class="item">
-                                                <label>Contract Metadata:</label> ${publishStatus.contractMetadata}
+                                            <div class="item"> 
+                                                <label>Contract Metadata:</label> ${publishStatus.contractMetadata.saved} / ${publishStatus.contractMetadata.total}
                                             </div>
     
                                             <div class="item">
@@ -59,27 +59,29 @@
                                             <div class="item">
                                                 <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
                                             </div>
-    
+
                                             <div class="item">
-                                                <label>Reader Channels:</label> ${publishStatus.backups.channels} 
+                                                <label>Item Pages:</label> ${publishStatus.backups.itemChunks.saved} / ${publishStatus.backups.itemChunks.total} 
+                                            </div>
+
+    
+                                            <h4>
+                                                Database Backup
+                                            </h4>
+
+                                            <div class="item">
+                                                <label>Channels:</label> ${publishStatus.backups.channels.saved} /  ${publishStatus.backups.channels.total}
                                             </div>
     
                                             <div class="item">
-                                                <label>Reader Authors:</label> ${publishStatus.backups.authors} 
+                                                <label>Authors:</label> ${publishStatus.backups.authors.saved} /  ${publishStatus.backups.authors.total}
                                             </div>
     
                                             <div class="item">
-                                                <label>Reader Item Chunks:</label> ${publishStatus.backups.itemChunks.saved} / ${publishStatus.backups.itemChunks.total} 
+                                                <label>Items:</label> ${publishStatus.backups.items.saved} / ${publishStatus.backups.items.total} 
                                             </div>
     
-                                            <div class="item">
-                                                <label>Reader Items:</label> ${publishStatus.backups.items.saved} / ${publishStatus.backups.items.total} 
-                                            </div>
-    
-                                            <div class="item">
-                                                <label>Reader Images:</label> ${publishStatus.backups.images.saved} / ${publishStatus.backups.images.total} 
-                                            </div>                                    
-    
+                            
                                         </div>
                                     ` : $h`<span />`}
 

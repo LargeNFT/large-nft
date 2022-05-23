@@ -194,23 +194,22 @@ class PublishService {
         /**
          * BACKUP FOR READER
         */
-        let backupPath = `${directory}/backup`
+        // let backupPath = `${directory}/backup`
         let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author)
 
         let publishStatus:PublishStatus = {
 
-            contractMetadata:false,
+            contractMetadata: { saved: 0, total: 1 },
             
             nftMetadata: { saved: 0, total: exportBundle.nftMetadata.length },
             images: { saved: 0, total: exportBundle.images.length },
             animations: { saved: 0, total: exportBundle.animations.length },
         
             backups: {
-                channels: false, 
-                authors: false, 
+                channels: { saved: 0, total: 1 },
+                authors: { saved: 0, total: 1 }, 
                 itemChunks: { saved: 0, total: backup.itemChunks.length },
-                items: { saved: 0, total: backup.items.length },
-                images: { saved: 0, total: exportBundle.images.length },
+                items: { saved: 0, total: backup.items.length }
             }
         }
 
@@ -249,8 +248,7 @@ class PublishService {
         let contractMetadataPath = `${directory}/contractMetadata.json`
         
         await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true, flush:true })
-        
-        publishStatus.contractMetadata = true
+        publishStatus.contractMetadata.saved = 1
         this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
 
 
@@ -258,7 +256,7 @@ class PublishService {
         //Save metadata for each NFT
         for (let nft of exportBundle.nftMetadata) {
 
-            let nftMetadataPath = `${directory}/${nft.tokenId}.json`
+            let nftMetadataPath = `${directory}/metadata/${nft.tokenId}.json`
 
             await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:true })
 
@@ -273,7 +271,7 @@ class PublishService {
         //Save images 
         for (let image of exportBundle.images) {
 
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { parents: true, flush:true })
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { create: true, parents: true, flush:true })
 
             publishStatus.images.saved++
 
@@ -315,24 +313,31 @@ class PublishService {
 
 
 
-        //Write channels
-        await this.ipfsService.ipfs.files.write(`${backupPath}/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: true })
-
-        publishStatus.backups.channels = true
+        //Write channels backup
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: true })
+        publishStatus.backups.channels.saved = 1
         this.logPublishProgress(publishStatus)
 
 
-        //Write authors
-        await this.ipfsService.ipfs.files.write(`${backupPath}/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true, flush: true })
-        publishStatus.backups.authors = true
+        //Write authors backup
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true, flush: true })
+        publishStatus.backups.authors.saved = 1
         this.logPublishProgress(publishStatus)
+
+        //Write items backup
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/items.json`,  new TextEncoder().encode(JSON.stringify(backup.items)) , { create: true, parents: true, flush: true })
+        publishStatus.backups.items.saved = backup.items.length
+        this.logPublishProgress(publishStatus)
+
+
+
 
 
         //Write item chunks
         publishStatus.backups.itemChunks.total = backup.itemChunks.length
         for (let itemChunk of backup.itemChunks) {
             
-            await this.ipfsService.ipfs.files.write(`${backupPath}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: true })
+            await this.ipfsService.ipfs.files.write(`${directory}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: true })
         
             publishStatus.backups.itemChunks.saved++ 
             
@@ -340,27 +345,14 @@ class PublishService {
 
         }
 
-        //Also write each row as a file so the reader can open it quickly 
-        for (let item of backup.items) {
+        // //Write image backups.
+        // for (let image of exportBundle.images) {
+        //     await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${backupPath}/images/${image.cid}`, { parents: true, flush: true })
 
-            await this.ipfsService.ipfs.files.write(`${backupPath}/items/${item._id}.json`, new TextEncoder().encode(  JSON.stringify(item, Object.keys(item).sort() )  ), { create: true, parents: true, flush: true })
-        
-            publishStatus.backups.items.saved++
+        //     publishStatus.backups.images.saved++
 
-            this.logPublishProgress(publishStatus, `Saving #${item.tokenId} to ${backupPath}/items/${item._id}.json`)
-
-        }
-
-
-
-        //Write image backups.
-        for (let image of exportBundle.images) {
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${backupPath}/images/${image.cid}`, { parents: true, flush: true })
-
-            publishStatus.backups.images.saved++
-
-            this.logPublishProgress(publishStatus, `Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
-        }
+        //     this.logPublishProgress(publishStatus, `Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
+        // }
 
 
         let result = await this.ipfsService.ipfs.files.stat(`/blogs/${exportBundle.channel._id}/`, {

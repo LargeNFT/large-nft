@@ -11,6 +11,10 @@ import { Gitlab } from "../../dto/gitlab";
 import { Channel } from "../../dto/channel";
 import { IpfsService } from './ipfs-service';
 
+
+const contractABI = require('../../../contracts.json')
+
+
 @injectable()
 class GitlabService {
 
@@ -156,16 +160,25 @@ class GitlabService {
         
         let actions = []
 
-        let directory = `/blogs/${channel._id}/backup`
+        let directory = `/blogs/${channel._id}`
 
         
         //If the contract is deployed add a file with the address
         if (channel.contractAddress) {
+            
             actions.push({
                 action: "create",
                 file_path: "backup/contract.json",
                 content: JSON.stringify({ contractAddress: channel.contractAddress })
             })
+
+            //Also the ABI
+            actions.push({
+                action: "create",
+                file_path: "backup/contract-abi.json",
+                content: JSON.stringify(contractABI)
+            })
+
         } else {
             actions.push({
                 action: "create",
@@ -175,7 +188,7 @@ class GitlabService {
         }
 
         //Read channels
-        let channelsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/channels.json`)) 
+        let channelsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/channels.json`)) 
 
         //Add create action
         actions.push({
@@ -185,7 +198,7 @@ class GitlabService {
         })
 
         //Authors
-        let authorsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/authors.json`)) 
+        let authorsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/authors.json`)) 
 
 
         //Add create action
@@ -195,10 +208,51 @@ class GitlabService {
             content: new TextDecoder("utf-8").decode(authorsContents)
         })
 
-        this.logPublishReaderProgress(`Saving item chunks...`)
+
+        
+
+        //Items
+        let itemsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/items.json`)) 
+
+        //Add create action
+        actions.push({
+            action: "create",
+            file_path: "backup/items.json",
+            content: new TextDecoder("utf-8").decode(itemsContents)
+        })
+
+
+
+
+
+        //Get list of files in /metadata
+        this.logPublishReaderProgress(`Saving NFT metadata...`)
+        
+        try {
+
+            for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/metadata/`)) {
+
+                let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/metadata/${file.name}`)) 
+    
+                //Add create action
+                actions.push({
+                    action: "create",
+                    file_path: `backup/metadata/${file.name}`,
+                    content: new TextDecoder("utf-8").decode(bufferedContents)
+                })
+    
+            }
+
+        } catch(ex) {
+            // console.log(ex)
+        }
+
+
 
 
         //Get list of files in /itemChunks
+        this.logPublishReaderProgress(`Saving item chunks...`)
+        
         try {
 
             for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/itemChunks/`)) {
@@ -218,28 +272,28 @@ class GitlabService {
             // console.log(ex)
         }
 
-        this.logPublishReaderProgress(`Saving items...`)
 
         //Get list of files in /items
+        // this.logPublishReaderProgress(`Saving items...`)
 
-        try {
+        // try {
 
-            for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/items/`)) {
+        //     for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/items/`)) {
 
-                let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/items/${file.name}`)) 
+        //         let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/items/${file.name}`)) 
     
-                //Add create action
-                actions.push({
-                    action: "create",
-                    file_path: `backup/items/${file.name}`,
-                    content: new TextDecoder("utf-8").decode(bufferedContents)
-                })
+        //         //Add create action
+        //         actions.push({
+        //             action: "create",
+        //             file_path: `backup/items/${file.name}`,
+        //             content: new TextDecoder("utf-8").decode(bufferedContents)
+        //         })
     
-            }
+        //     }
             
-        } catch(ex) {
-            this.logPublishReaderProgress(ex)
-        }
+        // } catch(ex) {
+        //     this.logPublishReaderProgress(ex)
+        // }
 
 
 

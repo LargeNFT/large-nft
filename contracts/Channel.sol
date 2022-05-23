@@ -58,7 +58,7 @@ contract Channel is ERC721A, Ownable {
         
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-        return string(abi.encodePacked("ipfs://", _ipfsCid, "/", uint2str(tokenId), ".json"));
+        return string(abi.encodePacked("ipfs://", _ipfsCid, "/metadata/", uint2str(tokenId), ".json"));
     
     }
 

@@ -1,17 +1,16 @@
 interface PublishStatus {
     
-    contractMetadata:boolean
+    contractMetadata:Status
     
     nftMetadata: Status
     images: Status
     animations: Status
 
     backups: {
-        channels: boolean 
-        authors: boolean 
+        channels: Status 
+        authors: Status 
         itemChunks: Status 
         items: Status 
-        images: Status
     }
 
 

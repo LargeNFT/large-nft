@@ -125,7 +125,7 @@ contract('Channel Contract', async (accounts) => {
 
         for (let i=1; i < 11; i++) {
             let uri = await mainContract.tokenURI( i, { from: user4 })
-            assert.strictEqual(uri, `ipfs://xyz/${i}.json`)
+            assert.strictEqual(uri, `ipfs://xyz/metadata/${i}.json`)
         }
 
         

@@ -35,7 +35,7 @@ contract Channel is ERC721A, Ownable {
         /**
         Checks
          */
-        uint256 totalMinted = _totalMinted();
+        uint256 minted = _totalMinted();
 
         //No zeros
         require(quantity > 0, "Too few");
@@ -44,7 +44,7 @@ contract Channel is ERC721A, Ownable {
         require(quantity <= MAX_MINT_AMOUNT, "Too many");
 
         //Don't mint past final token
-        require(totalMinted + quantity <= _maxTokenId, "Minting closed");
+        require(minted + quantity <= _maxTokenId, "Minting closed");
 
         //Validate we have enough ETH. 
         require(msg.value == quantity * _mintFee, "Send exact ETH");
@@ -67,6 +67,10 @@ contract Channel is ERC721A, Ownable {
         (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(success);
 
+    }
+
+    function totalMinted() public view returns (uint256) {
+        return _totalMinted();
     }
 
     function uint2str(uint _i) public pure returns (string memory _uintAsString) {

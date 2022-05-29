@@ -183,7 +183,13 @@ class GitlabService {
             actions.push({
                 action: "create",
                 file_path: "backup/contract.json",
-                content: undefined //empty file
+                content: JSON.stringify({}) //empty file
+            })
+
+            actions.push({
+                action: "create",
+                file_path: "backup/contract-abi.json",
+                content: JSON.stringify({}) //empty file
             })
         }
 

@@ -143,7 +143,6 @@ class ItemRepository {
 
     async getMaxTokenId(channelId:string) : Promise<number> {
 
-
         let result = await this.db.query('item_token_id/token_id_stats', {
             reduce: true,
             include_docs: false,

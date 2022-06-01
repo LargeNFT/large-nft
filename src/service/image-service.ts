@@ -5,6 +5,7 @@ import { validate, ValidationError } from 'class-validator'
 import { ImageRepository } from "../repository/image-repository"
 import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
+import { SvgService } from "./svg-service"
 
 
 @injectable()
@@ -13,7 +14,8 @@ class ImageService {
   db: any
 
   constructor(
-    private imageRepository: ImageRepository
+    private imageRepository: ImageRepository,
+    private svgService:SvgService
   ) { }
 
   async get(_id: string): Promise<Image> {
@@ -46,6 +48,8 @@ class ImageService {
 
     image.buffer = buffer
     image.cid = await Hash.of(buffer)
+    image.generated = false
+
     return image
 
   }
@@ -59,6 +63,15 @@ class ImageService {
     return this.blobToDataURL(blob)
 
   }
+
+  async getSVGURL(image: Image) {
+
+    if (!image.svg) return ""
+    return this.svgToDataURL(image.svg)
+
+  }
+
+
 
   public bufferToBlob(buffer: Uint8Array): Promise<Blob> {
 
@@ -84,8 +97,30 @@ class ImageService {
       fr.readAsDataURL(blob)
     })
 
+  }
+
+  public svgToDataURL(svgStr) {  
+    return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
+  }
+
+  public async newFromText(text:string) {
+
+    const image: Image = new Image()
+
+
+    //https://georgefrancis.dev/writing/generative-svg-social-images/
+
+    
+
+    image.svg = await this.svgService.fromText(text)
+
+    image.cid = await Hash.of(image.svg)
+    image.generated = true
+    
+    return image
 
   }
+
 
 }
 

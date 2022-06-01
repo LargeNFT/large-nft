@@ -1,5 +1,7 @@
 import { injectable } from "inversify";
 import moment from "moment";
+import excerptHtml from 'excerpt-html'
+
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Image } from "../../dto/image";
@@ -12,6 +14,7 @@ import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
+import { QuillService } from "../quill-service";
 
 @injectable()
 class ItemWebService {
@@ -20,7 +23,8 @@ class ItemWebService {
         private itemService: ItemService,
         private channelService: ChannelService,
         private imageService: ImageService,
-        private authorService: AuthorService
+        private authorService: AuthorService,
+        private quillService:QuillService
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
@@ -114,7 +118,7 @@ class ItemWebService {
             author: author,
             authorPhoto: authorPhoto,
             authorDisplayName: this.authorService.getDisplayName(author),
-            images: this.getImagesFromPostContentOps(item.content?.ops),
+            images: await this.getImagesFromPostContentOps(item.content?.ops),
             attributeSelections: attributeSelections,
             editable: editable,
             canDelete: canDelete
@@ -149,7 +153,7 @@ class ItemWebService {
 
     }
 
-    getImagesFromPostContentOps(ops) : ImageViewModel[] {
+    async getImagesFromPostContentOps(ops) : Promise<ImageViewModel[]> {
 
         const images = []
 
@@ -163,6 +167,18 @@ class ItemWebService {
                     })
                 }
             }
+
+            //Now generate the text preview
+            let content = await this.quillService.translateContent({ops:ops})
+
+            let image:Image = await this.imageService.newFromText(excerptHtml(content, {
+                pruneLength: 275
+            }))
+
+            images.push({
+                cid: image.cid,
+                url: await this.imageService.getSVGURL(image)
+            })
 
         }
 

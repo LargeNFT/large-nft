@@ -161,8 +161,8 @@
 
 <style>
     .cover-image-thumbnail {
-        max-width: 100px;
-        max-height: 100px;
+        width: 250px;
+        height: 250px;
     }
 
     .cover-image-thumbnail.selected {
@@ -204,12 +204,12 @@
         let imageService = ContainerService.getInstance(ImageService)
 
         const loadCoverImages = async () => {
-            itemViewModel.images = itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
+            itemViewModel.images = await itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
             await $update()
         }
 
         const coverImageClick = async (e) => {
-
+            console.log('here')
             let id = $(e.currentTarget).data('id')
 
             itemViewModel.coverImage = await imageService.get(id)
@@ -263,14 +263,8 @@
 
 
         $(document).on('image-selected', async (e) => {
-
-            //Make it the cover photo
-            if (!itemViewModel.coverImage) {
-                itemViewModel.coverImage = await imageService.get(e.detail._id)
-            }
-
+            itemViewModel.coverImage = await imageService.get(e.detail._id)
             await loadCoverImages()
-
         })
 
 

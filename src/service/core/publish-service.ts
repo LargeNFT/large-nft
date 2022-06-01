@@ -139,7 +139,7 @@ class PublishService {
             //Add cover image
             if (item.coverImageId?.length > 0) {
                 imageCids.push(item.coverImageId)
-            }
+            } 
 
             //Get images in post content
             if (item.content?.ops) {
@@ -266,8 +266,6 @@ class PublishService {
 
         }
 
-
-
         //Save images 
         for (let image of exportBundle.images) {
 
@@ -310,7 +308,17 @@ class PublishService {
 
         }
 
+        //Write item chunks
+        publishStatus.backups.itemChunks.total = backup.itemChunks.length
+        for (let itemChunk of backup.itemChunks) {
+            
+            await this.ipfsService.ipfs.files.write(`${directory}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: true })
+        
+            publishStatus.backups.itemChunks.saved++ 
+            
+            this.logPublishProgress(publishStatus)
 
+        }
 
 
         //Write channels backup
@@ -333,26 +341,8 @@ class PublishService {
 
 
 
-        //Write item chunks
-        publishStatus.backups.itemChunks.total = backup.itemChunks.length
-        for (let itemChunk of backup.itemChunks) {
-            
-            await this.ipfsService.ipfs.files.write(`${directory}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: true })
-        
-            publishStatus.backups.itemChunks.saved++ 
-            
-            this.logPublishProgress(publishStatus)
 
-        }
 
-        // //Write image backups.
-        // for (let image of exportBundle.images) {
-        //     await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${backupPath}/images/${image.cid}`, { parents: true, flush: true })
-
-        //     publishStatus.backups.images.saved++
-
-        //     this.logPublishProgress(publishStatus, `Saving #${image.cid} to ${backupPath}/images/${image.cid}.json`)
-        // }
 
 
         let result = await this.ipfsService.ipfs.files.stat(`/blogs/${exportBundle.channel._id}/`, {

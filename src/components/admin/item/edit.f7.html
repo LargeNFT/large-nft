@@ -60,6 +60,7 @@
   import { QuillService } from "../../../service/quill-service"
 
   import { ItemService } from "../../../service/item-service"
+  import { ImageService } from "../../../service/image-service"
 
   import { UiService } from "../../../service/core/ui-service"
 
@@ -69,8 +70,9 @@
 
   import Navbar from "../../admin/navbar.f7.html"
   import ItemForm from "../../admin/item/form.f7.html"
-  import excerptHtml from 'excerpt-html'
 
+  import excerptHtml from 'excerpt-html'
+  
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -78,10 +80,11 @@
     let quillService = ContainerService.getInstance(QuillService)
 
     let itemService = ContainerService.getInstance(ItemService)
+    let imageService = ContainerService.getInstance(ImageService)
+
     let walletService = ContainerService.getWalletService()
 
     let itemViewModel = props.itemViewModel
-
 
     const formSubmit = async (e) => {
 
@@ -124,7 +127,27 @@
       } else {
         delete item.excerpt
       }
+
+      
+      //If existing cover image is generated then clear it so it gets replaced.
+
+      if (item.coverImageId) {
+
+        let existingCoverImage = await imageService.get(item.coverImageId)
         
+        if (existingCoverImage.generated) {
+          item.coverImageId = undefined
+        }
+
+      }
+
+      
+      //If no coverImage selected then use the generated/preview one. 
+      // if (!item.coverImageId) {
+      //   itemService.setDefaultCoverImage(item)
+      // }
+
+      console.log(item)
 
       //Save
       try {

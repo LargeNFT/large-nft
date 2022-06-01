@@ -8,13 +8,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { ItemRepository } from "../repository/item-repository";
 
 import { Channel } from "../dto/channel";
+import { ImageService } from "./image-service";
 
+import excerptHtml from 'excerpt-html'
 
 @injectable()
 class ItemService {
 
     constructor(
-        private itemRepository: ItemRepository
+        private itemRepository: ItemRepository,
+        private imageService:ImageService
     ) { }
 
     async get(_id: string): Promise<Item> {
@@ -126,6 +129,28 @@ class ItemService {
             </html>
         `
     }
+
+    async setDefaultCoverImage(item:Item) {
+
+        let generated = await this.imageService.newFromText(excerptHtml(item.contentHTML, {
+            pruneLength: 500
+        }))
+
+        //Save it if it doesn't exist
+        let existing = await this.get(generated.cid)
+
+        if (existing) {
+
+            item.coverImageId = existing._id
+
+        } else {
+
+            await this.imageService.put(generated)
+            item.coverImageId = generated._id
+            
+        }
+    }
+
 
 }
 

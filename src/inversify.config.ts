@@ -68,6 +68,7 @@ import SmartSelect from 'framework7/components/smart-select'
 import Grid from 'framework7/components/grid'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
 import Menu from 'framework7/components/menu'
+import { SvgService } from './service/svg-service';
 
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -189,6 +190,7 @@ function getMainContainer() {
   container.bind(ChannelService).toSelf().inSingletonScope()
   container.bind(ImageService).toSelf().inSingletonScope()
   container.bind(ItemService).toSelf().inSingletonScope()
+  container.bind(SvgService).toSelf().inSingletonScope()
 
   container.bind(ChannelRepository).toSelf().inSingletonScope()
   container.bind(ItemRepository).toSelf().inSingletonScope()

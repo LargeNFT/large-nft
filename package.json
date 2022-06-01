@@ -147,7 +147,8 @@
 
     "browser-image-resizer": "2.2.1",
 
-    "hotkeys-js": "3.9.0"
-    
+    "hotkeys-js": "3.9.0",
+
+    "@svgdotjs/svg.js": "3.1.2"
   }
 }

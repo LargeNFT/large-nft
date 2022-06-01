@@ -120,12 +120,15 @@
         delete item.excerpt
       }
       
+      // if (!item.coverImageId) {
+      //   itemService.setDefaultCoverImage(item)
+      // }
+
+
       //Save
       try {
-        console.log(item)
 
         await itemService.put(item)
-
 
         const toast = $f7.toast.show({
           text: 'Blog NFT saved',

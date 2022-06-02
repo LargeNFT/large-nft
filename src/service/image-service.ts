@@ -6,6 +6,8 @@ import { ImageRepository } from "../repository/image-repository"
 import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
 import { SvgService } from "./svg-service"
+import { QuillService } from "./quill-service"
+import excerptHtml from 'excerpt-html'
 
 
 @injectable()
@@ -15,7 +17,8 @@ class ImageService {
 
   constructor(
     private imageRepository: ImageRepository,
-    private svgService:SvgService
+    private svgService:SvgService,
+    private quillService:QuillService
   ) { }
 
   async get(_id: string): Promise<Image> {
@@ -119,6 +122,23 @@ class ImageService {
     
     return image
 
+  }
+
+  public async newFromQuillOps(ops) {
+
+    let content = await this.quillService.translateContent({ops:ops})
+    
+    let excerpt = excerptHtml(content, {
+      pruneLength: 275
+    })
+
+    console.log(excerpt.length)
+
+    if (!excerpt || excerpt.length == 0) { 
+      throw new Error("No text") 
+    }
+
+    return this.newFromText(excerpt)
   }
 
 

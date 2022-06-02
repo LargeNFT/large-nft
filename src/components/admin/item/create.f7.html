@@ -60,6 +60,7 @@
   import { QuillService } from "../../../service/quill-service"
 
   import { ItemService } from "../../../service/item-service"
+  import { ImageService } from "../../../service/image-service"
 
   import { WalletService } from "../../../service/core/wallet-service"
 
@@ -78,6 +79,7 @@
     let quillService = ContainerService.getInstance(QuillService)
 
     let itemService = ContainerService.getInstance(ItemService)
+    let imageService = ContainerService.getInstance(ImageService)
 
     let walletService = ContainerService.getWalletService()
 
@@ -120,9 +122,11 @@
         delete item.excerpt
       }
       
-      // if (!item.coverImageId) {
-      //   itemService.setDefaultCoverImage(item)
-      // }
+      //Save the cover image in case it doesn't exist. 
+      // try {
+      //   await this.imageService.put(image)
+      // } catch(ex) { console.log(ex)} //Might already exist. That's fine.  
+      console.log(item)
 
 
       //Save
@@ -152,7 +156,11 @@
 
       quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar")
 
+      quillEditorService.activeEditor.off('text-change')
       quillEditorService.activeEditor.on('text-change', (delta, oldContents, source) => {
+
+        const loadCoverImagesEvent = new CustomEvent('load-cover-images')
+        document.dispatchEvent(loadCoverImagesEvent)
 
         if (source !== 'user') return
 
@@ -173,10 +181,9 @@
           }
 
         })
-
-        $update()
-
+        
       })
+
 
 
 

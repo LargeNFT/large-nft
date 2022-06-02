@@ -130,23 +130,6 @@
 
       
       //If existing cover image is generated then clear it so it gets replaced.
-
-      if (item.coverImageId) {
-
-        let existingCoverImage = await imageService.get(item.coverImageId)
-        
-        if (existingCoverImage.generated) {
-          item.coverImageId = undefined
-        }
-
-      }
-
-      
-      //If no coverImage selected then use the generated/preview one. 
-      // if (!item.coverImageId) {
-      //   itemService.setDefaultCoverImage(item)
-      // }
-
       console.log(item)
 
       //Save
@@ -179,8 +162,12 @@
 
       quillEditorService.activeEditor.setContents(itemViewModel.item.content)
 
-
+      
+      quillEditorService.activeEditor.off('text-change')
       quillEditorService.activeEditor.on('text-change', (delta, oldContents, source) => {
+
+        const loadCoverImagesEvent = new CustomEvent('load-cover-images')
+        document.dispatchEvent(loadCoverImagesEvent)
 
         if (source !== 'user') return
 

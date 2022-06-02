@@ -169,16 +169,19 @@ class ItemWebService {
             }
 
             //Now generate the text preview
-            let content = await this.quillService.translateContent({ops:ops})
+            try {
+                
+                let image:Image = await this.imageService.newFromQuillOps(ops)
 
-            let image:Image = await this.imageService.newFromText(excerptHtml(content, {
-                pruneLength: 275
-            }))
+                images.push({
+                    cid: image.cid,
+                    url: await this.imageService.getSVGURL(image),
+                    generated: true
+                })
 
-            images.push({
-                cid: image.cid,
-                url: await this.imageService.getSVGURL(image)
-            })
+            } catch(ex) {}
+
+
 
         }
 

@@ -9,62 +9,77 @@ class SvgService {
 
     async fromText(text:string) : Promise<string> {
 
-        let start = `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' class='social-image' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' style='background: rgb(254, 242, 241); color: rgb(15, 2, 0);'>
-        <style>
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-    
-          .social-image {   
-            width: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-          }
+        let fontSize = "140px"
+        let lineHeight = "160px"
 
-          @keyframes gradient {
-            0% {
-              background-position: 0% 50%;
-            }
-            25% {
-              background-position: 50%% 50%;
-            }
-            50% {
-              background-position: 100% 50%;
-            }
-            75% {
-                background-position: 50% 50%;
-            }
-            100% {
-              background-position: 0% 50%;
-            }
-          }
+        if (text.length > 50 && text.length <= 100) {
+            fontSize = "110px"
+            lineHeight = "130px"
+        }
 
-          .container {
-            background: linear-gradient(-45deg, #cccccc, #eff3f8, #B0C7DC, #FFFFFF );
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            height: 100%;
-            border: 5px solid #4e82b1;
-          }
+        if (text.length > 100 && text.length <= 175) {
+            fontSize = "95px"
+            lineHeight = "115px"
+        }
 
-          .social-image h1 {
-            text-align: left;
-            font-size: 70px;
-            margin: 70px;
-            line-height: 95px;
-            height: 100%;
-          }
+        if (text.length > 175) {
+            fontSize = "75px"
+            lineHeight = "95px"
+        }
 
-        </style>
-        <g>
-          <foreignObject x='0' y='0' width='1200' height='1200' class="container">
-            <h1 xmlns='http://www.w3.org/1999/xhtml'>${text}</h1>
-          </foreignObject>
-        </g>
+        let start = `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1'>
+            <style>
+                * {
+                    height:100%;
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+                }
+
+
+                @keyframes gradient {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    25% {
+                        background-position: 50%% 50%;
+                    }
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                    75% {
+                        background-position: 50% 50%;
+                    }
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+
+                .container {
+                    background: linear-gradient(-45deg, #cccccc, #eff3f8, #B0C7DC, #FFFFFF );
+                    background-size: 400% 400%;
+                    animation: gradient 15s ease infinite;
+                    height: 100%;
+                    width:100%;
+                    border: 5px solid #4e82b1;
+                }
+
+                h1 {
+                    text-align: center;
+                    font-size: ${fontSize};
+                    margin: ${fontSize};            
+                    line-height: ${lineHeight};
+                }
+
+            </style>
+            <g>
+                <foreignObject x='0' y='0' width='1200' height='1200' class="container">
+                    <h1 xmlns='http://www.w3.org/1999/xhtml'>${text}</h1>
+                </foreignObject>
+            </g>
         </svg>`
 
-        
 
         return start
     }

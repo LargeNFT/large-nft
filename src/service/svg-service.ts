@@ -1,5 +1,4 @@
 import { injectable } from "inversify"
-import { SVG } from '@svgdotjs/svg.js'
 
 
 @injectable()
@@ -18,8 +17,8 @@ class SvgService {
         }
 
         if (text.length > 100 && text.length <= 175) {
-            fontSize = "95px"
-            lineHeight = "115px"
+            fontSize = "90px"
+            lineHeight = "110px"
         }
 
         if (text.length > 175) {

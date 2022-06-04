@@ -9,7 +9,7 @@ class Image {
     @Allow()
     _rev?:string 
 
-    @IsNotEmpty()
+    @Allow()
     buffer?:any
 
     @Allow()

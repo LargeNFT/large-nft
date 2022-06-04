@@ -207,13 +207,14 @@
 
             itemViewModel.images = await itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
 
-            console.log(itemViewModel.images)
-
             if (itemViewModel.images?.length == 1) {
                 itemViewModel.coverImage = itemViewModel.images[0]
             }
 
+            quillEditorService.activeEditor.update()
+
             await $update()
+            
         }
 
         const coverImageClick = async (e) => {

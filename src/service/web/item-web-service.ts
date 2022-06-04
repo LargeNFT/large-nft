@@ -176,6 +176,7 @@ class ItemWebService {
                 images.push({
                     cid: image.cid,
                     url: await this.imageService.getSVGURL(image),
+                    svg: image.svg,
                     generated: true
                 })
 
@@ -219,6 +220,44 @@ class ItemWebService {
         }
 
         return itemViewModel
+
+    }
+
+
+    async saveGeneratedCoverImage(item:Item) {
+
+        let images = await this.getImagesFromPostContentOps(item.content.ops)
+
+        let matches = images?.filter(image => {
+  
+          if (item.coverImageId) {
+            //If there's a cover then only return true if this is it.
+            return image.cid == item.coverImageId
+          } else {
+            //If it's not set then we want to filter to the generated one.
+            return image.generated == true
+          }
+  
+        })
+  
+        let image = Object.assign(new Image(), matches[0]) 
+
+        if (image.generated == true) {
+                        
+            //Remove URL before saving
+            delete image['url']
+        
+            try {
+                await this.imageService.put(image)
+            } catch(ex) { 
+                console.log(ex.errors)
+            } //Might already exist. That's fine.  
+
+            item.coverImageId = image._id
+
+        }
+
+        
 
     }
 

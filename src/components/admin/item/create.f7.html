@@ -61,6 +61,7 @@
 
   import { ItemService } from "../../../service/item-service"
   import { ImageService } from "../../../service/image-service"
+  import { ItemWebService } from "../../../service/web/item-web-service"
 
   import { WalletService } from "../../../service/core/wallet-service"
 
@@ -80,6 +81,7 @@
 
     let itemService = ContainerService.getInstance(ItemService)
     let imageService = ContainerService.getInstance(ImageService)
+    let itemWebService = ContainerService.getInstance(ItemWebService)
 
     let walletService = ContainerService.getWalletService()
 
@@ -122,12 +124,9 @@
         delete item.excerpt
       }
       
-      //Save the cover image in case it doesn't exist. 
-      // try {
-      //   await this.imageService.put(image)
-      // } catch(ex) { console.log(ex)} //Might already exist. That's fine.  
-      console.log(item)
 
+      //Save the cover image if necessary
+      await itemWebService.saveGeneratedCoverImage(item)
 
       //Save
       try {
@@ -156,11 +155,14 @@
 
       quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar")
 
-      quillEditorService.activeEditor.off('text-change')
+
+      quillEditorService.activeEditor.root.addEventListener('blur', function () {
+        document.dispatchEvent(new CustomEvent('load-cover-images'))
+      })
+
       quillEditorService.activeEditor.on('text-change', (delta, oldContents, source) => {
 
-        const loadCoverImagesEvent = new CustomEvent('load-cover-images')
-        document.dispatchEvent(loadCoverImagesEvent)
+        document.dispatchEvent(new CustomEvent('load-cover-images'))
 
         if (source !== 'user') return
 

@@ -83,8 +83,17 @@
                   `}
               </div>
 
+              <div class="attribute-row">
+                <strong>Cover Image:</strong> 
+                <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" />
+              </div>
+              
+
+
             </div>
           </div>
+
+
 
 
           <div class="card">
@@ -183,6 +192,11 @@
     vertical-align: top;
   }
 
+  .attribute-row strong {
+    width: 175px;
+    display: inline-block;
+    vertical-align: top;
+  }
 
 
   .attribute-row .material-icons {
@@ -213,6 +227,13 @@
     color: rgb(79, 79, 79);
   }
 
+  .cover-image-preview {
+    margin-left: 5px;
+    height: 200px; 
+    width: 200px;
+    border: 1px solid #cccccc;
+  }
+
 
 </style>
 
@@ -234,7 +255,6 @@
     let itemViewModel = props.itemViewModel
 
     let showEdit = itemViewModel.editable
-
 
     $on('pageInit', async (e, page) => {
 

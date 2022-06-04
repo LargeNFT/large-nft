@@ -61,6 +61,8 @@
 
   import { ItemService } from "../../../service/item-service"
   import { ImageService } from "../../../service/image-service"
+  import { ItemWebService } from "../../../service/web/item-web-service"
+
 
   import { UiService } from "../../../service/core/ui-service"
 
@@ -80,6 +82,8 @@
     let quillService = ContainerService.getInstance(QuillService)
 
     let itemService = ContainerService.getInstance(ItemService)
+    let itemWebService = ContainerService.getInstance(ItemWebService)
+
     let imageService = ContainerService.getInstance(ImageService)
 
     let walletService = ContainerService.getWalletService()
@@ -129,8 +133,8 @@
       }
 
       
-      //If existing cover image is generated then clear it so it gets replaced.
-      console.log(item)
+      //Save the cover image if necessary
+      await itemWebService.saveGeneratedCoverImage(item)
 
       //Save
       try {
@@ -162,12 +166,15 @@
 
       quillEditorService.activeEditor.setContents(itemViewModel.item.content)
 
-      
-      quillEditorService.activeEditor.off('text-change')
+
+      quillEditorService.activeEditor.on('selection-change', range => {
+        document.dispatchEvent(new CustomEvent('load-cover-images'))
+      })
+
+
       quillEditorService.activeEditor.on('text-change', (delta, oldContents, source) => {
 
-        const loadCoverImagesEvent = new CustomEvent('load-cover-images')
-        document.dispatchEvent(loadCoverImagesEvent)
+        document.dispatchEvent(new CustomEvent('load-cover-images'))
 
         if (source !== 'user') return
 

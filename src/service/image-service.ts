@@ -7,7 +7,11 @@ import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
 import { SvgService } from "./svg-service"
 import { QuillService } from "./quill-service"
-import excerptHtml from 'excerpt-html'
+
+import he from 'he'
+import cheerio from 'cheerio'
+
+const truncate = require('html-truncate')
 
 
 @injectable()
@@ -59,11 +63,18 @@ class ImageService {
 
   async getUrl(image: Image) {
 
-    if (!image.buffer) return ""
+    if (!image.buffer && !image.svg) return ""
 
-    let blob: Blob = this.bufferToBlob(image.buffer)
+    //If we have a buffer return it as a URL
+    if (image.buffer) {
+      let blob: Blob = this.bufferToBlob(image.buffer)
+      return this.blobToDataURL(blob)
+    } 
 
-    return this.blobToDataURL(blob)
+    if (image.svg) {
+      return this.getSVGURL(image)
+    }
+    
 
   }
 
@@ -106,16 +117,25 @@ class ImageService {
     return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
   }
 
-  public async newFromText(text:string) {
+
+  public async newFromQuillOps(ops) {
+    let content = await this.quillService.translateContent({ops:ops})
+    return this.newFromText(content)
+  }
+
+  public async newFromText(content) {
+  
+    let excerpt = this.getExcerptByFirstParagraph(content, {
+      pruneLength: 275
+    })
+
+    if (!excerpt || excerpt.length == 0) { 
+      throw new Error("No text") 
+    }
 
     const image: Image = new Image()
 
-
-    //https://georgefrancis.dev/writing/generative-svg-social-images/
-
-    
-
-    image.svg = await this.svgService.fromText(text)
+    image.svg = await this.svgService.fromText(excerpt)
 
     image.cid = await Hash.of(image.svg)
     image.generated = true
@@ -124,21 +144,25 @@ class ImageService {
 
   }
 
-  public async newFromQuillOps(ops) {
 
-    let content = await this.quillService.translateContent({ops:ops})
+  //Grabbing from the 
+  private getExcerptByFirstParagraph (excerpt, options) {
+
+    //Strip tags except for <p>
+    excerpt = excerpt.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')
     
-    let excerpt = excerptHtml(content, {
-      pruneLength: 275
-    })
+    excerpt = he.unescape(excerpt)
+    excerpt = he.encode(excerpt, {allowUnsafeSymbols: true})
+   
+    const pruneLength = typeof options.pruneLength === 'number' ? options.pruneLength : 140
 
-    console.log(excerpt.length)
-
-    if (!excerpt || excerpt.length == 0) { 
-      throw new Error("No text") 
+    if (pruneLength > 0) {
+      excerpt = truncate(excerpt, pruneLength)
     }
 
-    return this.newFromText(excerpt)
+    return excerpt
+
+
   }
 
 

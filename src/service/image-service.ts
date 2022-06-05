@@ -126,7 +126,7 @@ class ImageService {
   public async newFromText(content) {
   
     let excerpt = this.getExcerptByFirstParagraph(content, {
-      pruneLength: 275
+      pruneLength: 500
     })
 
     if (!excerpt || excerpt.length == 0) { 
@@ -152,13 +152,16 @@ class ImageService {
     excerpt = excerpt.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')
     
     excerpt = he.unescape(excerpt)
-    excerpt = he.encode(excerpt, {allowUnsafeSymbols: true})
    
     const pruneLength = typeof options.pruneLength === 'number' ? options.pruneLength : 140
 
     if (pruneLength > 0) {
-      excerpt = truncate(excerpt, pruneLength)
+      excerpt = truncate(excerpt, pruneLength, {
+        ellipsis: ""
+      })
     }
+
+    excerpt = he.encode(excerpt, {allowUnsafeSymbols: true})
 
     return excerpt
 

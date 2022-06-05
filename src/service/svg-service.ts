@@ -29,6 +29,7 @@ class SvgService {
         let start = `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1'>
             <style>
                 * {
+                    --lh: ${lineHeight};
                     height:100%;
                     margin: 0;
                     padding: 0;
@@ -68,7 +69,10 @@ class SvgService {
                     text-align: center;
                     font-size: ${fontSize};
                     margin: ${fontSize};            
-                    line-height: ${lineHeight};
+                    line-height: var(--lh);
+                    height: 1050px;
+                    width: 1050px;          
+                    -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);        
                 }
 
             </style>

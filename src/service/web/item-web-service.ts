@@ -250,7 +250,7 @@ class ItemWebService {
             try {
                 await this.imageService.put(image)
             } catch(ex) { 
-                console.log(ex.errors)
+                console.log(ex)
             } //Might already exist. That's fine.  
 
             item.coverImageId = image._id

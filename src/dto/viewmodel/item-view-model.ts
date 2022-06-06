@@ -1,6 +1,7 @@
 import { Author } from "../author";
 import { Channel } from "../channel";
 import { Item } from "../item";
+import { AnimationViewModel } from "./animation-view-model";
 import { AttributeSelectionViewModel } from "./attribute-selection-view-model";
 import { ImageViewModel } from "./image-view-model";
 
@@ -11,6 +12,7 @@ interface ItemViewModel {
     item?:Item 
     dateDisplay?:string
     coverImage?:ImageViewModel
+    animation?:AnimationViewModel
 
     author?:Author
     authorDisplayName?:string 

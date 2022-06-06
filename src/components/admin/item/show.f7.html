@@ -88,6 +88,10 @@
                 <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" />
               </div>
               
+              <div class="attribute-row">
+                <strong>Animation:</strong> 
+                <iframe srcdoc="${itemViewModel.animation?.content}" class="animation-preview" />
+              </div>
 
 
             </div>
@@ -234,6 +238,12 @@
     border: 1px solid #cccccc;
   }
 
+  .animation-preview {
+    margin-left: 5px;
+    height: 500px; 
+    width: 500px;
+    border: 1px solid #cccccc;
+  }
 
 </style>
 
@@ -253,7 +263,7 @@
     let uiService = ContainerService.getInstance(UiService)
 
     let itemViewModel = props.itemViewModel
-
+    console.log(itemViewModel)
     let showEdit = itemViewModel.editable
 
     $on('pageInit', async (e, page) => {

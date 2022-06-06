@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import moment from "moment";
-import excerptHtml from 'excerpt-html'
+import he from 'he'
 
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
@@ -14,7 +14,9 @@ import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
-import { QuillService } from "../quill-service";
+import { AnimationService } from "../animation-service";
+import { Animation } from "../../dto/animation";
+import { AnimationViewModel } from "../../dto/viewmodel/animation-view-model";
 
 @injectable()
 class ItemWebService {
@@ -24,7 +26,7 @@ class ItemWebService {
         private channelService: ChannelService,
         private imageService: ImageService,
         private authorService: AuthorService,
-        private quillService:QuillService
+        private animationService:AnimationService
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
@@ -49,6 +51,7 @@ class ItemWebService {
 
     async getViewModel(item: Item, channel:Channel): Promise<ItemViewModel> {
 
+        let animation:AnimationViewModel
         let coverImage: ImageViewModel
         let authorPhoto:ImageViewModel
 
@@ -66,6 +69,16 @@ class ItemWebService {
             coverImage = {
                 cid: image.cid,
                 url: await this.imageService.getUrl(image)
+            }
+        }
+
+        if (item.animationId) {
+
+            let a:Animation = await this.animationService.get(item.animationId)
+            
+            animation = {
+                cid: a.cid,
+                content: he.unescape(a.content)
             }
         }
 
@@ -115,6 +128,7 @@ class ItemWebService {
             dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
             channel: channel,
             coverImage: coverImage,
+            animation: animation,
             author: author,
             authorPhoto: authorPhoto,
             authorDisplayName: this.authorService.getDisplayName(author),
@@ -223,7 +237,6 @@ class ItemWebService {
 
     }
 
-
     async saveGeneratedCoverImage(item:Item) {
 
         let images = await this.getImagesFromPostContentOps(item.content.ops)
@@ -261,6 +274,20 @@ class ItemWebService {
 
     }
 
+    async saveAnimation(item:Item) {
+
+        let content = await this.animationService.buildAnimationPage(item)
+
+        let animation:Animation = await this.animationService.newFromText(content)
+
+        try {
+            await this.animationService.put(animation)
+        } catch(ex) { 
+            console.log(ex)
+        } //Might already exist. That's fine.  
+
+        item.animationId = animation._id
+    }
 
 }
 

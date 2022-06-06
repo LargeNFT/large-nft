@@ -3,6 +3,7 @@ import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
 import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
+import { AnimationRepository } from "../../repository/animation-repository";
 import { AuthorRepository } from "../../repository/author-repository";
 import { ChannelRepository } from "../../repository/channel-repository";
 import { GitlabRepository } from "../../repository/gitlab-repository";
@@ -19,7 +20,8 @@ class SchemaService {
         private imageRepository:ImageRepository,
         private itemRepository:ItemRepository,
         private pinningApiRepository:PinningApiRepository,
-        private gitlabRepository:GitlabRepository
+        private gitlabRepository:GitlabRepository,
+        private animationRepository:AnimationRepository
     ) {}
 
     async loadWallet(walletAddress:string) {
@@ -33,6 +35,7 @@ class SchemaService {
         await this.itemRepository.load(walletAddress)
         await this.pinningApiRepository.load(walletAddress)
         await this.gitlabRepository.load(walletAddress)
+        await this.animationRepository.load(walletAddress)
 
     }
 

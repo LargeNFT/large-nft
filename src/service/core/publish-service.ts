@@ -2,9 +2,10 @@ import { BigNumber, ethers } from "ethers"
 import { inject, injectable } from "inversify"
 import { Author } from "../../dto/author"
 import { Channel } from "../../dto/channel"
-import { ContractMetadata } from "../../dto/contract-metadata"
 import { ExportBundle } from "../../dto/export-bundle"
 import { Item } from "../../dto/item"
+import { Image } from "../../dto/image"
+
 import { NFTMetadata } from "../../dto/nft-metadata"
 import { PublishStatus } from "../../dto/viewmodel/publish-status"
 import { ItemRepository } from "../../repository/item-repository"
@@ -16,6 +17,7 @@ import { ItemService } from "../item-service"
 import { IpfsService } from "./ipfs-service"
 import TYPES from "./types"
 import { WalletService } from "./wallet-service"
+import { AnimationService } from "../animation-service"
 
 @injectable()
 class PublishService {
@@ -26,6 +28,7 @@ class PublishService {
         private authorService: AuthorService,
         private ipfsService: IpfsService,
         private imageService: ImageService,
+        private animationService:AnimationService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }
@@ -109,8 +112,8 @@ class PublishService {
 
         //Assign  
         let imageCids:string[] = []
-        let animations:string[] = []
-        let nftMetadata:NFTMetadata[] = []
+        let animationCids:string[] = []
+        
 
         //Add cover image
         if (channel.coverImageId?.length > 0) {
@@ -131,9 +134,8 @@ class PublishService {
         for (let item of items) {
 
             //Build animation URL if we have content
-            let animationCid
-            if (item.contentHTML) {
-                animations.push(this.itemService.buildAnimationPage(item))
+            if (item.animationId) {
+                animationCids.push(item.animationId)
             }
 
             //Add cover image
@@ -156,9 +158,6 @@ class PublishService {
             // delete item.dateCreated
             delete item["_rev_tree"]
 
-            //Generate metadata and add to list
-            nftMetadata.push(await this.itemService.exportNFTMetadata(channel, item, animationCid, item.coverImageId))
-
         }
 
         //Look up all the images
@@ -167,13 +166,35 @@ class PublishService {
         let images = []
 
         for (let imageCid of imageCids) {
-            images.push(await this.imageService.get(imageCid))
+
+            let image = await this.imageService.get(imageCid)
+
+            //Remove publishing related field from image
+            delete image._rev
+            // delete image.dateCreated
+            delete image["_rev_tree"]
+
+            images.push(image)
+
         }
+
+        //Look up all the animations
+        let animations = []
+        for (let animationCid of animationCids) {
+            let animation = await this.animationService.get(animationCid)
+
+            //Remove publishing related field from image
+            delete animation._rev
+            // delete image.dateCreated
+            delete animation["_rev_tree"]
+
+            animations.push(animation)
+        }
+
 
 
         return {
 
-            nftMetadata: nftMetadata,
             animations: animations,
             images: images,
 
@@ -201,7 +222,7 @@ class PublishService {
 
             contractMetadata: { saved: 0, total: 1 },
             
-            nftMetadata: { saved: 0, total: exportBundle.nftMetadata.length },
+            nftMetadata: { saved: 0, total: exportBundle.items.length },
             images: { saved: 0, total: exportBundle.images.length },
             animations: { saved: 0, total: exportBundle.animations.length },
         
@@ -214,33 +235,13 @@ class PublishService {
         }
 
         this.logPublishProgress(publishStatus)
-
-        //Add all images to IPFS
-        for (let image of exportBundle.images) {
-
-            //Add to IPFS
-            let result = await this.ipfsService.ipfs.add({
-                content: image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
-            })
-
-            if (result.cid.toString() != image.cid) {
-                throw new Error("Incorrect cid when saving image. ")
-            }
-
-            //Remove publishing related field from image
-            delete image._rev
-            // delete image.dateCreated
-            delete image["_rev_tree"]
-        }
-
-
         
-
         //Clear 
         try {
             await this.ipfsService.ipfs.files.read(directory)
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true })
         } catch (ex) { }
+
 
 
 
@@ -252,22 +253,26 @@ class PublishService {
         this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
 
 
-
-        //Save metadata for each NFT
-        for (let nft of exportBundle.nftMetadata) {
-
-            let nftMetadataPath = `${directory}/metadata/${nft.tokenId}.json`
-
-            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:true })
-
-            publishStatus.nftMetadata.saved++
-
-            this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath}`)
-
-        }
-
         //Save images 
         for (let image of exportBundle.images) {
+
+            //Add to IPFS
+            let result 
+
+            if (image.buffer) {
+                result = await this.ipfsService.ipfs.add({
+                    content: image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
+                })
+            } else if (image.svg) {
+                result = await this.ipfsService.ipfs.add({
+                    content: image.svg
+                })
+            }
+            
+            if (result.cid.toString() != image.cid) {
+                throw new Error("Incorrect cid when saving image. ")
+            }
+
 
             await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { create: true, parents: true, flush:true })
 
@@ -277,16 +282,18 @@ class PublishService {
 
         }
 
-
-
         //Save animation cids
         for (let animation of exportBundle.animations) {
 
             let result = await this.ipfsService.ipfs.add({
-                content: animation
+                content: animation.content
             })
 
             let animationCid = result.cid.toString()
+
+            if (animationCid !== animation.cid.toString()) {
+                throw new Error('CIDs did not match')
+            }
 
 
             //In theory there can be duplicates if any NFTs have identical content.
@@ -319,6 +326,35 @@ class PublishService {
             this.logPublishProgress(publishStatus)
 
         }
+
+
+
+        //Save metadata for each NFT
+        let items:Item[] = backup.itemChunks.flat()
+        for (let item of items) {
+
+            let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
+                hash: true
+            })
+
+            let animationDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
+                hash: true
+            })
+
+            let coverImage:Image = await this.imageService.get(item.coverImageId)
+            let nft = await this.itemService.exportNFTMetadata(exportBundle.channel, item, coverImage, animationDirectory.cid.toString(), imageDirectory.cid.toString())
+            
+            
+            let nftMetadataPath = `${directory}/metadata/${nft.tokenId}.json`
+
+            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:true })
+
+            publishStatus.nftMetadata.saved++
+
+            this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath}`)
+
+        }
+
 
 
         //Write channels backup

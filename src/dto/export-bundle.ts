@@ -1,10 +1,11 @@
 import { Author } from "./author"
 import { Channel } from "./channel"
+import { Animation } from "./animation"
+
 import { ContractMetadata } from "./contract-metadata"
 import { Item } from "./item"
 import { Image } from "./image"
 
-import { NFTMetadata } from "./nft-metadata"
 
 interface ExportBundle {
 
@@ -12,10 +13,9 @@ interface ExportBundle {
     items: Item[]
     author: Author
     images: Image[]
+    animations: Animation[]
 
     contractMetadata: ContractMetadata
-    nftMetadata: NFTMetadata[]
-    animations: string[]
 }
 
 export {

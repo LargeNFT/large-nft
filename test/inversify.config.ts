@@ -34,6 +34,8 @@ import { PinningService } from "../src/service/core/pinning-service";
 import TYPES from "../src/service/core/types";
 import { GitlabRepository } from "../src/repository/gitlab-repository";
 import { PublishService } from "../src/service/core/publish-service";
+import { AnimationService } from "../src/service/animation-service";
+import { AnimationRepository } from "../src/repository/animation-repository";
 
 
 let container:Container
@@ -83,6 +85,7 @@ async function getContainer() {
     container.bind(QuillService).toSelf().inSingletonScope()
     container.bind(PinningService).toSelf().inSingletonScope()
     container.bind(PublishService).toSelf().inSingletonScope()
+    container.bind(AnimationService).toSelf().inSingletonScope()
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
     container.bind(ItemRepository).toSelf().inSingletonScope()
@@ -90,6 +93,7 @@ async function getContainer() {
     container.bind(AuthorRepository).toSelf().inSingletonScope()
     container.bind(PinningApiRepository).toSelf().inSingletonScope()
     container.bind(GitlabRepository).toSelf().inSingletonScope()
+    container.bind(AnimationRepository).toSelf().inSingletonScope()
 
     await cleanup()
 

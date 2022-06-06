@@ -399,7 +399,7 @@ contract('ItemService', async (accounts) => {
         await service.put(item)
 
 
-        const metadata = await service.exportNFTMetadata(channel, item, undefined, image._id)
+        const metadata = await service.exportNFTMetadata(channel, item, image, undefined, '')
         assert.strictEqual(metadata.image, 'ipfs://QmZyhR8TGNhD3s2HrykyFr9NFS9wCs4X4M66uaKq78Sd3p')
 
         assert.strictEqual(metadata.attributes[0].traitType, "Hair")

@@ -9,7 +9,6 @@ import { SvgService } from "./svg-service"
 import { QuillService } from "./quill-service"
 
 import he from 'he'
-import cheerio from 'cheerio'
 
 const truncate = require('html-truncate')
 

@@ -11,6 +11,7 @@ import { Channel } from "../dto/channel";
 import { ImageService } from "./image-service";
 
 import excerptHtml from 'excerpt-html'
+import { Image } from "../dto/image";
 
 @injectable()
 class ItemService {
@@ -75,7 +76,7 @@ class ItemService {
         return this.itemRepository.getPrevious(item)
     }
 
-    async exportNFTMetadata(channel:Channel, item:Item, animationCid:string, coverImageCid:string): Promise<NFTMetadata> {
+    async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
 
         let result: NFTMetadata = {
             tokenId: item.tokenId,
@@ -84,12 +85,12 @@ class ItemService {
             
         }
 
-        if (animationCid) {
-            result.animation_url = `ipfs://${animationCid}`
+        if (item.animationId) {
+            result.animation_url = `ipfs://${animationDirectoryCid}/${item.tokenId}.html`
         }
 
         if (item.coverImageId) {
-            result.image = `ipfs://${coverImageCid}`
+            result.image = `ipfs://${imageDirectoryCid}/${item.tokenId}.${coverImage.buffer ? 'jpg' : 'svg'}`
         }
 
         //Only show attributes that are valid at the category level. 
@@ -112,23 +113,7 @@ class ItemService {
 
     }
 
-    public buildAnimationPage(item:Item) :string {
-
-        return `
-            <!DOCTYPE html>
-            <html>
-            
-            <head>
-                <meta charset="utf-8">
-                <title>${item.title}></title>
-            </head>
-
-            <body style="margin: 0px;">
-                ${item.contentHTML}
-            </body>
-            </html>
-        `
-    }
+    
 
     async setDefaultCoverImage(item:Item) {
 

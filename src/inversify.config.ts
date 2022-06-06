@@ -69,6 +69,8 @@ import Grid from 'framework7/components/grid'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
 import Menu from 'framework7/components/menu'
 import { SvgService } from './service/svg-service';
+import { AnimationService } from './service/animation-service';
+import { AnimationRepository } from './repository/animation-repository';
 
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -138,8 +140,8 @@ function getMainContainer() {
         Addresses: {
           Swarm: [
             // This is a public webrtc-star server
-            '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
-            '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star'
+            // '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
+            // '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star'
           ]
         }
       }
@@ -185,13 +187,14 @@ function getMainContainer() {
 
   container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()
 
-
+  container.bind(AnimationService).toSelf().inSingletonScope()
   container.bind(AuthorService).toSelf().inSingletonScope()
   container.bind(ChannelService).toSelf().inSingletonScope()
   container.bind(ImageService).toSelf().inSingletonScope()
   container.bind(ItemService).toSelf().inSingletonScope()
   container.bind(SvgService).toSelf().inSingletonScope()
 
+  container.bind(AnimationRepository).toSelf().inSingletonScope()
   container.bind(ChannelRepository).toSelf().inSingletonScope()
   container.bind(ItemRepository).toSelf().inSingletonScope()
   container.bind(ImageRepository).toSelf().inSingletonScope()

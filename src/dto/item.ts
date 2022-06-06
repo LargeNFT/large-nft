@@ -47,6 +47,9 @@ class Item {
     coverImageId?:string
 
     @Allow()
+    animationId?:string
+
+    @Allow()
     datePublished?:string
 
     @Allow()

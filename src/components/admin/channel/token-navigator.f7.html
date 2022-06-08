@@ -1,0 +1,50 @@
+<template>
+
+    <form class="block" @submit="${goTokenFormSubmit}">
+        <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="1" min="1"  />
+        <span class="paging-label">Enter Token ID</span>
+        <button class="goto-button button button-small button-fill">Go</button>
+    </form>
+
+</template>
+
+
+<style>    
+</style>
+
+<script>
+
+    import { ContainerService } from "../../../service/core/container-service"
+    import { ItemService } from "../../../service/item-service"
+
+    import { ItemRepository } from "../../../repository/item-repository"
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let itemService = ContainerService.getInstance(ItemService)
+
+        let channelId = props.channel
+
+
+        const goTokenFormSubmit = async (e) => {
+          
+          e.preventDefault()
+
+          const val = $(e.currentTarget).children('.goto-input').val()
+
+          //Look up item by tokenId
+          let item = await itemService.getByTokenId(channelId, val.toString())
+
+          if (item) {
+            $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
+          } else {
+            $f7.dialog.alert("Invalid Page")
+          }
+
+        }
+
+
+        return $render
+    }
+
+</script>

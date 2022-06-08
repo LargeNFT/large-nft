@@ -227,6 +227,15 @@ class GitlabService {
             content: new TextDecoder("utf-8").decode(itemsContents)
         })
 
+        //Images
+        let imageContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/images.json`)) 
+
+        //Add create action
+        actions.push({
+            action: "create",
+            file_path: "backup/images.json",
+            content: new TextDecoder("utf-8").decode(imageContents)
+        })
 
 
 

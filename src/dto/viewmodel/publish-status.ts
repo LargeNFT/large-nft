@@ -11,6 +11,7 @@ interface PublishStatus {
         authors: Status 
         itemChunks: Status 
         items: Status 
+        images: Status
     }
 
 

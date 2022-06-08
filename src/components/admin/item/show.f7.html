@@ -143,6 +143,9 @@
 
           </div>
 
+          <${TokenNavigator} channel=${itemViewModel.channel._id} />
+
+
           <div class="block">
             <br />
           </div>
@@ -252,6 +255,7 @@
   import { ContainerService } from "../../../service/core/container-service"
   import { UiService } from "../../../service/core/ui-service"
   import { ItemService } from "../../../service/item-service"
+  import TokenNavigator from "../channel/token-navigator.f7.html"
 
   import Navbar from "../../admin/navbar.f7.html"
 
@@ -264,6 +268,7 @@
 
     let itemViewModel = props.itemViewModel
     let showEdit = itemViewModel.editable
+
 
     $on('pageInit', async (e, page) => {
 

@@ -33,7 +33,7 @@ class PublishService {
         @inject("contracts") private contracts,
     ) { }
 
-    async createBackup(channel: Channel, items: Item[], author: Author) {
+    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[]) {
 
         //Look up any data we need to add to the bundle
 
@@ -61,6 +61,15 @@ class PublishService {
         channel['itemCount'] = items?.length
 
 
+        //Remove the actual image data from the images
+        let backupImages:Image[] = JSON.parse(JSON.stringify(images))
+
+        for (let image of backupImages) {
+            delete image.svg
+            delete image.buffer
+        }
+
+
         //Split items into chunks
         const chunkedItems = []
 
@@ -74,7 +83,8 @@ class PublishService {
             channels: [channel],
             authors: [author],
             itemChunks: chunkedItems, 
-            items: items      
+            items: items,
+            images: backupImages      
         }
 
     }
@@ -216,7 +226,7 @@ class PublishService {
          * BACKUP FOR READER
         */
         // let backupPath = `${directory}/backup`
-        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author)
+        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author, exportBundle.images)
 
         let publishStatus:PublishStatus = {
 
@@ -230,7 +240,8 @@ class PublishService {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 }, 
                 itemChunks: { saved: 0, total: backup.itemChunks.length },
-                items: { saved: 0, total: backup.items.length }
+                items: { saved: 0, total: backup.items.length },
+                images: { saved: 0, total: backup.images.length }
             }
         }
 
@@ -274,11 +285,11 @@ class PublishService {
             }
 
 
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}`, { create: true, parents: true, flush:true })
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, { create: true, parents: true, flush:true })
 
             publishStatus.images.saved++
 
-            this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${directory}/images/${image.cid}`)
+            this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`)
 
         }
 
@@ -373,7 +384,10 @@ class PublishService {
         publishStatus.backups.items.saved = backup.items.length
         this.logPublishProgress(publishStatus)
 
-
+        //Write images backup
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: true })
+        publishStatus.backups.images.saved = backup.images.length
+        this.logPublishProgress(publishStatus)
 
 
 

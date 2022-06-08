@@ -25,6 +25,11 @@ class ItemService {
         return this.itemRepository.get(_id)
     }
 
+    async getByTokenId(channelId: string, tokenId:string) : Promise<Item> {
+        return this.itemRepository.getByTokenId(channelId, tokenId)
+    }
+
+
     async put(item: Item) {
 
         if (!item._id) {
@@ -90,7 +95,7 @@ class ItemService {
         }
 
         if (item.coverImageId) {
-            result.image = `ipfs://${imageDirectoryCid}/${item.tokenId}.${coverImage.buffer ? 'jpg' : 'svg'}`
+            result.image = `ipfs://${imageDirectoryCid}/${coverImage.cid}.${coverImage.buffer ? 'jpg' : 'svg'}`
         }
 
         //Only show attributes that are valid at the category level. 

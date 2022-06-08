@@ -68,6 +68,25 @@ class ItemRepository {
         return Object.assign(new Item(), await this.db.get(_id))
     }
 
+    async getByTokenId(channelId: string, tokenId:string) : Promise<Item> {
+
+        let response = await this.db.find({
+            selector: {
+                channelId: { $eq: channelId },
+                tokenId: { $eq: tokenId },
+                dateCreated: { $exists: true }
+            },
+            sort: [{ 'dateCreated': 'asc' }],
+            limit: 1,
+            skip: 0
+        })
+
+
+        if (response.docs?.length > 0) {
+            return Object.assign(new Item(), response.docs[0])
+        }
+    }
+
     async put(item: Item) {
         await this.db.put(item)
     }

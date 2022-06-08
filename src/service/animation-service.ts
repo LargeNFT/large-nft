@@ -69,13 +69,47 @@ class AnimationService {
 
               <style>
 
+                  html {
+                    height:100%;
+                  } 
+
+                  body {
+                      padding: 0;
+                      margin: 0;
+                      box-sizing: border-box;
+                      height: 100%;
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+                  }
+
+                  @keyframes gradient {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    25% {
+                        background-position: 50%% 50%;
+                    }
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                    75% {
+                        background-position: 50% 50%;
+                    }
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+
                 .card {
-                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+                  
                   box-sizing: border-box;
+                  padding: 20px;
                   width:100%;
-                  max-width: 100%;
-                  padding: 5px;
+                  min-height: 100%;
+
                   font-size: 20px;
+                  border: 5px solid #4e82b1;
+                  float: left;
+
                 }
 
                 img { 

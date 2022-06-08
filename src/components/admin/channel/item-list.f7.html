@@ -115,6 +115,9 @@
 
             ` : $h`<span/>`}
 
+            
+            <${TokenNavigator} channel=${channelViewModel.channel._id} />
+
             <div class="block">
               <br />
             </div>
@@ -178,17 +181,8 @@
         color: rgb(79, 79, 79);
     }
 
-    .goto-button {
-      display: inline-block;
-      margin-left: 10px;
-      width: 50px;
-    }
 
-    .paging-label {
-      font-size: 15px;
-      font-weight: bold;
-      margin-left: 10px;
-    }
+
 
     
 
@@ -197,9 +191,17 @@
 
 <script>
 
+    import { ContainerService } from "../../../service/core/container-service"
+    import { ItemService } from "../../../service/item-service"
+
     import { ItemRepository } from "../../../repository/item-repository"
 
+    import TokenNavigator from "./token-navigator.f7.html"
+
+
     export default (props, { $, $on, $f7, $update }) => {
+
+        let itemService = ContainerService.getInstance(ItemService)
 
         let channelViewModel = props.channel
         let items = props.items
@@ -210,7 +212,7 @@
         const goFormSubmit = async (e) => {
           
           e.preventDefault()
-
+          
           const val = $(e.currentTarget).children('.goto-input').val()
 
           if (val > 0 && val <= pagingViewModel.endPage) {

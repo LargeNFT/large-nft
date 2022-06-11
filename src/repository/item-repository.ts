@@ -22,6 +22,14 @@ class ItemRepository {
             }
         })
 
+
+        await db.createIndex({
+            index: {
+                fields: ['searchableContent']
+            }
+        })
+
+
         await db.put({
             _id: '_design/item_index',
             views: {

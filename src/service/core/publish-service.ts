@@ -191,6 +191,7 @@ class PublishService {
         //Look up all the animations
         let animations = []
         for (let animationCid of animationCids) {
+
             let animation = await this.animationService.get(animationCid)
 
             //Remove publishing related field from image
@@ -316,12 +317,12 @@ class PublishService {
             if (stat) {
                 console.log(`${directory}/animations/${animationCid} already exists. Skipping.`)
             } else {
-                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}`, { parents: true, flush: true })
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}.html`, { parents: true, flush: true })
             }
 
             publishStatus.animations.saved++
 
-            this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animationCid} to ${directory}/animations/${animationCid}`)
+            this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animationCid} to ${directory}/animations/${animationCid}.html`)
 
 
         }

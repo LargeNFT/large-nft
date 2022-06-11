@@ -32,6 +32,9 @@ class Item {
     contentHTML?:string
 
     @Allow()
+    searchableContent?:string
+
+    @Allow()
     excerpt?:string
 
     @Allow()

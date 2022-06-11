@@ -288,30 +288,6 @@ class GitlabService {
         }
 
 
-        //Get list of files in /items
-        // this.logPublishReaderProgress(`Saving items...`)
-
-        // try {
-
-        //     for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/items/`)) {
-
-        //         let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/items/${file.name}`)) 
-    
-        //         //Add create action
-        //         actions.push({
-        //             action: "create",
-        //             file_path: `backup/items/${file.name}`,
-        //             content: new TextDecoder("utf-8").decode(bufferedContents)
-        //         })
-    
-        //     }
-            
-        // } catch(ex) {
-        //     this.logPublishReaderProgress(ex)
-        // }
-
-
-
         //Get list of files in /images
         this.logPublishReaderProgress(`Saving images...`)
 
@@ -334,6 +310,33 @@ class GitlabService {
         } catch(ex) {
             this.logPublishReaderProgress(ex)
         }
+
+
+
+        //Get list of files in /animations
+        this.logPublishReaderProgress(`Saving animations...`)
+
+        try {
+
+            for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/animations/`)) {
+
+                let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/animations/${file.name}`)) 
+    
+                //Add create action
+                actions.push({
+                    action: "create",
+                    file_path: `backup/animations/${file.name}`,
+                    content: Buffer.from(bufferedContents).toString('base64'),
+                    encoding: 'base64'
+                })
+    
+            }
+            
+        } catch(ex) {
+            this.logPublishReaderProgress(ex)
+        }
+
+
 
 
         let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`

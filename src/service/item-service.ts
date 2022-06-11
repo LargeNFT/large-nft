@@ -91,7 +91,7 @@ class ItemService {
         }
 
         if (item.animationId) {
-            result.animation_url = `ipfs://${animationDirectoryCid}/${item.tokenId}.html`
+            result.animation_url = `ipfs://${animationDirectoryCid}/${item.animationId}.html`
         }
 
         if (item.coverImageId) {

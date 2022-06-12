@@ -21,6 +21,7 @@ import { SchemaService } from "../src/service/core/schema-service"
 import { ItemService } from "../src/service/item-service";
 import { ImageService } from "../src/service/image-service";
 import { NFTMetadata } from "../src/dto/nft-metadata";
+import { AnimationService } from "../src/service/animation-service";
 
 const ChannelContract = artifacts.require("Channel")
 const truffleAssert = require('truffle-assertions')
@@ -43,6 +44,7 @@ let authorService:AuthorService
 let itemService:ItemService
 let channelService:ChannelService
 let imageService:ImageService
+let animationService:AnimationService
 
 let channel:Channel
 let items:Item[]
@@ -71,7 +73,7 @@ contract('PublishService', async (accounts) => {
         channelService = container.get(ChannelService)
         imageService = container.get(ImageService)
         ipfsService = container.get(IpfsService)
-
+        animationService = container.get(AnimationService)
 
         await schemaService.loadWallet(user0)
 
@@ -88,11 +90,16 @@ contract('PublishService', async (accounts) => {
         let image2 = await imageService.newFromBuffer(Buffer.from("image2!"))
 
 
+        //Create animation
+        let animation:Animation = await animationService.newFromText("Hel343l33o")
+        await animationService.put(animation)
+
+
         //Create category with attributes
         channel = Object.assign(new Channel(), {
             title: "The Sound of Music",
             symbol: "SOM",
-            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            mintPrice: "0.08",
             link: "google.com",
             authorId: author._id,
             category: ['Gazebos'],
@@ -115,9 +122,6 @@ contract('PublishService', async (accounts) => {
  
 
         //Save images
-        image1.channelId = channel._id
-        image2.channelId = channel._id
-
         await imageService.put(image1)
         await imageService.put(image2)
 
@@ -140,7 +144,9 @@ contract('PublishService', async (accounts) => {
                 traitType: "Teeth",
                 value: "Nice"
             }],
-            coverImageId: image2.cid.toString()
+            coverImageId: image2.cid.toString(),
+            animationId: animation.cid.toString()
+
 
         })
 
@@ -159,7 +165,10 @@ contract('PublishService', async (accounts) => {
                 id: "7",
                 traitType: "Teeth",
                 value: "None"
-            }]
+            }],
+            coverImageId: image2.cid.toString(),
+            animationId: animation.cid.toString()
+
         })
 
         let item3:Item = Object.assign(new Item(), {
@@ -177,7 +186,10 @@ contract('PublishService', async (accounts) => {
                 id: "7",
                 traitType: "Teeth",
                 value: "Have them"
-            }]
+            }],
+            coverImageId: image2.cid.toString(),
+            animationId: animation.cid.toString()
+
         })
 
         //Save all these
@@ -330,10 +342,10 @@ contract('PublishService', async (accounts) => {
         let uri = await c.tokenURI( 1, { from: user4 })
 
         assert.strictEqual(owner, user4)
-        assert.strictEqual(uri, `ipfs://${channel.localCid}/1.json`)
+        assert.strictEqual(uri, `ipfs://${channel.localCid}/metadata/1.json`)
 
         //Get the metadata and make sure it's right
-        let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${channel.localCid}/1.json`))
+        let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${channel.localCid}/metadata/1.json`))
         
         let tokenMetadata = JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
 

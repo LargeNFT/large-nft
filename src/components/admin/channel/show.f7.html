@@ -103,7 +103,7 @@
   
                   ${channelViewModel.channel.contractAddress ? $h`
                   <div class="contract-address">
-                    <strong>Contract Address:</strong> ${channelViewModel?.channel.contractAddress}
+                    <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
                   </div>
                   ` : $h``}
   
@@ -258,12 +258,17 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let channelService = ContainerService.getInstance(ChannelService)
+    let walletService = ContainerService.getWalletService()
 
     let channelViewModel = props.channelViewModel
     let items = props.items
     let pagingViewModel = props.pagingViewModel
 
     let showEdit = channelViewModel.editable
+
+    const truncateEthAddress = (address) => {
+      return walletService.truncateEthAddress(address)
+    }
 
 
     $on('pageInit', async (e, page) => {

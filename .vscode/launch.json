@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Tests",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/ts-mocha",
+      "runtimeArgs": [
+        "--timeout",
+        "999999",
+        "-p",
+        "${workspaceFolder}/tsconfig.json",
+        "${file}",
+        "--exit"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "sourceMaps": true,
+      "cwd": "${workspaceFolder}"
+    },
+
+    {
+      "name": "Debug Truffle Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/truffle/build/cli.bundled.js",
+      "args": ["test", "${file}"],
+      "cwd": "${workspaceRoot}",
+      "outFiles": [
+          "${workspaceRoot}/test/**/*"
+      ],
+    },
+  ]
+}

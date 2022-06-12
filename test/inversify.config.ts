@@ -36,6 +36,7 @@ import { GitlabRepository } from "../src/repository/gitlab-repository";
 import { PublishService } from "../src/service/core/publish-service";
 import { AnimationService } from "../src/service/animation-service";
 import { AnimationRepository } from "../src/repository/animation-repository";
+import { SvgService } from "../src/service/svg-service";
 
 
 let container:Container
@@ -86,6 +87,7 @@ async function getContainer() {
     container.bind(PinningService).toSelf().inSingletonScope()
     container.bind(PublishService).toSelf().inSingletonScope()
     container.bind(AnimationService).toSelf().inSingletonScope()
+    container.bind(SvgService).toSelf().inSingletonScope()
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
     container.bind(ItemRepository).toSelf().inSingletonScope()

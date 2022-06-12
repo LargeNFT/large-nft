@@ -56,7 +56,7 @@ contract('ImageService', async (accounts) => {
             await service.put(new Image())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 2)
+            assert.strictEqual(ex.errors.length, 1)
         }
 
     })

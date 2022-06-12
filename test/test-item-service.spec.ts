@@ -11,9 +11,9 @@ import { Channel } from "../src/dto/channel"
 import { ChannelService } from "../src/service/channel-service"
 
 import { ImageService } from "../src/service/image-service"
-import { IpfsService } from "../src/service/core/ipfs-service"
 import { SchemaService } from "../src/service/core/schema-service"
 import { AuthorService } from "../src/service/author-service"
+import { AnimationService } from "../src/service/animation-service"
 
 
 let user0
@@ -34,6 +34,7 @@ contract('ItemService', async (accounts) => {
     let imageService:ImageService
     let schemaService:SchemaService
     let authorService:AuthorService
+    let animationService:AnimationService
 
     let channel1:Channel
     let channel2:Channel
@@ -53,6 +54,8 @@ contract('ItemService', async (accounts) => {
         imageService = container.get(ImageService)
         authorService = container.get(AuthorService)
         schemaService = container.get(SchemaService)
+        animationService = container.get(AnimationService)
+
 
         await schemaService.loadWallet(user0)
 
@@ -335,9 +338,13 @@ contract('ItemService', async (accounts) => {
 
         //Arrange
         //Upload pretend image data
-        let image:Image = await imageService.newFromBuffer(Buffer.from("pretend that this is image data4343243"))
-
+        let image:Image = await imageService.newFromBuffer(Buffer.from("pretend that this is image data4343243werwer"))
         await imageService.put(image)
+
+
+        //Create animation
+        let animation:Animation = await animationService.newFromText("Hel343lo")
+        await animationService.put(animation)
 
 
         //Add author
@@ -384,6 +391,7 @@ contract('ItemService', async (accounts) => {
             authorId: 3,
             category: ['Gazebos', 'Ants'],
             coverImageId: image._id,
+            animationId: animation._id,
             attributeSelections: [{
                 id: "6",
                 traitType: "Hair",
@@ -399,8 +407,9 @@ contract('ItemService', async (accounts) => {
         await service.put(item)
 
 
-        const metadata = await service.exportNFTMetadata(channel, item, image, undefined, '')
-        assert.strictEqual(metadata.image, 'ipfs://QmZyhR8TGNhD3s2HrykyFr9NFS9wCs4X4M66uaKq78Sd3p')
+        const metadata = await service.exportNFTMetadata(channel, item, image, "zyx", 'xyz')
+        assert.strictEqual(metadata.image, 'ipfs://xyz/QmZyhR8TGNhD3s2HrykyFr9NFS9wCs4X4M66uaKq78Sd3p.jpg')
+        assert.strictEqual(metadata.animation_url, 'ipfs://zyx/QmUWsz4rYoLV9iuQ7tBnsoR4GgxYQoaCh5M5GdT51nZUJ8.html')
 
         assert.strictEqual(metadata.attributes[0].traitType, "Hair")
         assert.strictEqual(metadata.attributes[0].value, "Curly")

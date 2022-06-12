@@ -311,7 +311,7 @@ class PublishService {
             //In theory there can be duplicates if any NFTs have identical content.
             let stat
             try {
-                stat = await this.ipfsService.ipfs.files.stat(`${directory}/animations/${animationCid}`)
+                stat = await this.ipfsService.ipfs.files.stat(`${directory}/animations/${animationCid}.html`)
             } catch (ex) { }
 
             if (stat) {

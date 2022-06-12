@@ -98,7 +98,10 @@ function getMainContainer() {
       name: 'Large', // App name
       theme: 'auto', // Automatic theme detection
       //@ts-ignore
-      component: AppComponent
+      component: AppComponent,
+      navbar: {
+        hideOnPageScroll: true
+      }
     })
     
 

@@ -37,6 +37,7 @@ import { PublishService } from "../src/service/core/publish-service";
 import { AnimationService } from "../src/service/animation-service";
 import { AnimationRepository } from "../src/repository/animation-repository";
 import { SvgService } from "../src/service/svg-service";
+import { ImportService } from "../src/service/core/import-service";
 
 
 let container:Container
@@ -88,6 +89,8 @@ async function getContainer() {
     container.bind(PublishService).toSelf().inSingletonScope()
     container.bind(AnimationService).toSelf().inSingletonScope()
     container.bind(SvgService).toSelf().inSingletonScope()
+    container.bind(ImportService).toSelf().inSingletonScope()
+
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
     container.bind(ItemRepository).toSelf().inSingletonScope()

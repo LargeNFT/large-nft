@@ -115,6 +115,7 @@ class AnimationService {
                 img { 
                   max-width: 100%;
                   border: 1px solid #cccccc;
+                  object-fit: cover;
                 }
 
                 .token-id {

@@ -71,6 +71,7 @@ import Menu from 'framework7/components/menu'
 import { SvgService } from './service/svg-service';
 import { AnimationService } from './service/animation-service';
 import { AnimationRepository } from './repository/animation-repository';
+import { ImportService } from './service/core/import-service';
 
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -196,6 +197,8 @@ function getMainContainer() {
   container.bind(ImageService).toSelf().inSingletonScope()
   container.bind(ItemService).toSelf().inSingletonScope()
   container.bind(SvgService).toSelf().inSingletonScope()
+  container.bind(ImportService).toSelf().inSingletonScope()
+
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()
   container.bind(ChannelRepository).toSelf().inSingletonScope()

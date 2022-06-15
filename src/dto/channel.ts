@@ -11,6 +11,9 @@ class Channel {
     _rev?:string 
 
     @Allow()
+    forkedFromCid?:string
+
+    @Allow()
     authorId:string
 
     @MinLength(3, { message: "Title must be more than 3 characters." })

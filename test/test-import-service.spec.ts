@@ -20,13 +20,8 @@ import { IpfsService } from "../src/service/core/ipfs-service"
 import { SchemaService } from "../src/service/core/schema-service"
 import { ItemService } from "../src/service/item-service";
 import { ImageService } from "../src/service/image-service";
-import { NFTMetadata } from "../src/dto/nft-metadata";
 import { AnimationService } from "../src/service/animation-service";
-
-const ChannelContract = artifacts.require("Channel")
-const truffleAssert = require('truffle-assertions')
-
-const toBuffer = require('it-to-buffer')
+import { PublishService } from "../src/service/core/publish-service";
 
 
 let user0
@@ -45,6 +40,8 @@ let itemService:ItemService
 let channelService:ChannelService
 let imageService:ImageService
 let animationService:AnimationService
+let publishService:PublishService
+
 
 let channel:Channel
 let items:Item[]
@@ -74,6 +71,8 @@ contract('PublishService', async (accounts) => {
         imageService = container.get(ImageService)
         ipfsService = container.get(IpfsService)
         animationService = container.get(AnimationService)
+        publishService = container.get(PublishService)
+
 
         await schemaService.loadWallet(user0)
 
@@ -211,45 +210,23 @@ contract('PublishService', async (accounts) => {
 
 
 
-    it("should publish a channel", async () => {
+    it("should import a channel from an export", async () => {
 
         //Arrange
-        await service.publishToIPFS(channel)
+        await publishService.publishToIPFS(channel)
 
-        await service.deployContract(channel)
+        let localCid = channel.localCid
 
-        //Set up Pinata
-        let contractAddress = channel.contractAddress
+        let channelId = await service.importFromIPFS(localCid)
 
-        assert.notEqual(contractAddress, undefined)
+        let importedChannel = await channelService.get(channelId)
 
-        //Read from contract
-        let c = await ChannelContract.at(contractAddress)
+        //Assert
+        console.log(importedChannel)
 
-        //should fail to get tokenURI if token doesn't exist
-        await truffleAssert.fails(
-            c.tokenURI( 1, { from: user4 }),
-            truffleAssert.ErrorType.REVERT,
-            "ERC721Metadata: URI query for nonexistent token"
-        )
 
-        //Mint a token and validate it
-        let value = web3.utils.toWei('0.08', 'ether')
-        await c.mint( 1, { from: user4, value: value })
 
-        let owner = await c.ownerOf( 1, { from: user4 })
-        let uri = await c.tokenURI( 1, { from: user4 })
 
-        assert.strictEqual(owner, user4)
-        assert.strictEqual(uri, `ipfs://${channel.localCid}/metadata/1.json`)
-
-        //Get the metadata and make sure it's right
-        let bufferedContents = await toBuffer(ipfsService.ipfs.cat(`${channel.localCid}/metadata/1.json`))
-        
-        let tokenMetadata = JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
-
-        assert.strictEqual(tokenMetadata.tokenId,1)
-        assert.strictEqual(tokenMetadata.name, "An image!")
 
     })
 
@@ -258,12 +235,4 @@ contract('PublishService', async (accounts) => {
 
 })
 
-async function getFileContent(filename) {
-    let bufferedContents = await toBuffer(ipfsService.ipfs.files.read(filename))  // a buffer
-    return JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
-}
 
-
-
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));

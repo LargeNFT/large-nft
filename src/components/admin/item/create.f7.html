@@ -127,8 +127,6 @@
       //Build searchable document. Combine title and content. Strip tags except for <p>
       item.searchableContent = item.title + " " + item.contentHTML.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')  
 
-      console.log(item.searchableContent)
-
 
       //Save the cover image if necessary
       await itemWebService.saveGeneratedCoverImage(item)

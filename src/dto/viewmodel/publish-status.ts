@@ -12,6 +12,7 @@ interface PublishStatus {
         itemChunks: Status 
         items: Status 
         images: Status
+        animations: Status
     }
 
 

@@ -44,6 +44,9 @@ import { ConnectController } from './controller/connect-controller';
 import { PublishController } from './controller/publish-controller';
 import { PagingService } from './service/core/paging-service';
 
+import * as IPFS from 'ipfs-core'
+
+
 //Init framework7
 // const Framework7 = require('framework7/bundle').default
 import Framework7 from 'framework7';
@@ -90,8 +93,6 @@ function getMainContainer() {
   container = new Container()
 
   function framework7() {
-
-
 
     let app = new Framework7({
       el: '#app', // App root element
@@ -162,6 +163,7 @@ function getMainContainer() {
   container.bind("framework7").toConstantValue(framework7())
 
   container.bind("ipfsOptions").toConstantValue(ipfsOptions())
+  container.bind("IPFS").toConstantValue(IPFS)
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()

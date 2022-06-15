@@ -7,6 +7,8 @@ import AdminChannelIndexComponent from '../components/admin/channel/index.f7.htm
 import AdminChannelCreateComponent from '../components/admin/channel/create.f7.html'
 import AdminChannelShowComponent from '../components/admin/channel/show.f7.html'
 import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
+import AdminChannelCreateMenuComponent from '../components/admin/channel/create-menu.f7.html'
+import AdminChannelForkComponent from '../components/admin/channel/fork.f7.html'
 
 
 import { ChannelWebService } from "../service/web/channel-web-service";
@@ -38,6 +40,22 @@ class ChannelController {
         return new ModelView(async (routeTo:RouteTo) => {
 
         }, AdminChannelCreateComponent)
+    }
+
+    @routeMap("/admin/channel/create-menu")
+    async createMenu() : Promise<ModelView> {
+        return new ModelView(async (routeTo:RouteTo) => {
+
+        }, AdminChannelCreateMenuComponent)
+    }
+
+    @routeMap("/admin/channel/fork")
+    async fork() : Promise<ModelView> {
+        return new ModelView(async (routeTo:RouteTo) => {
+
+
+
+        }, AdminChannelForkComponent)
     }
 
 

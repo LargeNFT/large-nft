@@ -2,6 +2,8 @@ import { BigNumber, ethers } from "ethers"
 import { inject, injectable } from "inversify"
 import { Author } from "../../dto/author"
 import { Channel } from "../../dto/channel"
+import { Animation } from "../../dto/animation"
+
 import { ExportBundle } from "../../dto/export-bundle"
 import { Item } from "../../dto/item"
 import { Image } from "../../dto/image"
@@ -33,59 +35,26 @@ class PublishService {
         @inject("contracts") private contracts,
     ) { }
 
-    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[]) {
+    async publishToIPFS(channel: Channel) {
 
-        //Look up any data we need to add to the bundle
+        //Get all the items
+        const items: Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
 
+        //Get author
+        const author = await this.authorService.get(channel.authorId)
 
-        //Generate bundles with extra info for each item
-        for (let item of items) {
-
-            let previous = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) -1)
-            let next = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) + 1)
-
-            //Add the previous and next items so they can used in navigation
-            item['previous'] = previous?.length > 0 ? { 
-                _id: previous[0]._id,
-                tokenId: previous[0].tokenId
-            }  : undefined
-
-            item['next'] = next?.length > 0 ? { 
-                _id: next[0]._id,
-                tokenId: next[0].tokenId
-            } : undefined
-
-        }
-
-        //Add itemCount to channel
-        channel['itemCount'] = items?.length
+        //Export metadata
+        let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, this.walletService.address)
+        let cid: string = await this.exportToIPFS(exportBundle)
 
 
-        //Remove the actual image data from the images
-        let backupImages:Image[] = JSON.parse(JSON.stringify(images))
+        //Update local cid info
+        Object.assign(channel, await this.channelService.get(channel._id))
 
-        for (let image of backupImages) {
-            delete image.svg
-            delete image.buffer
-        }
+        channel.localCid = cid
+        channel.localPubDate = new Date().toJSON()
 
-
-        //Split items into chunks
-        const chunkedItems = []
-
-        const chunkSize = ItemRepository.CHUNK_SIZE
-        for (let i = 0; i < items.length; i += chunkSize) {
-            chunkedItems.push(items.slice(i, i + chunkSize))
-        }
-
-        //Save pouch dbs
-        return {
-            channels: [channel],
-            authors: [author],
-            itemChunks: chunkedItems, 
-            items: items,
-            images: backupImages      
-        }
+        await this.channelService.put(channel)
 
     }
 
@@ -175,7 +144,7 @@ class PublishService {
 
         let images = []
 
-        for (let imageCid of imageCids) {
+        for (let imageCid of imageCids) {   
 
             let image = await this.imageService.get(imageCid)
 
@@ -184,9 +153,15 @@ class PublishService {
             // delete image.dateCreated
             delete image["_rev_tree"]
 
+            //Also remove content. Will refetch when needed.
+            delete image.buffer
+            delete image.svg
+
             images.push(image)
 
         }
+
+
 
         //Look up all the animations
         let animations = []
@@ -199,9 +174,10 @@ class PublishService {
             // delete image.dateCreated
             delete animation["_rev_tree"]
 
+            delete animation.content
+
             animations.push(animation)
         }
-
 
 
         return {
@@ -221,13 +197,15 @@ class PublishService {
 
     async exportToIPFS(exportBundle:ExportBundle): Promise<string> {
 
-        let directory = `/blogs/${exportBundle.channel._id}`
+        let flush = true
+        let directory = `/export/${exportBundle.channel._id}`
 
         /**
          * BACKUP FOR READER
         */
         // let backupPath = `${directory}/backup`
-        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author, exportBundle.images)
+        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author, exportBundle.images, exportBundle.animations)
+
 
         let publishStatus:PublishStatus = {
 
@@ -242,7 +220,8 @@ class PublishService {
                 authors: { saved: 0, total: 1 }, 
                 itemChunks: { saved: 0, total: backup.itemChunks.length },
                 items: { saved: 0, total: backup.items.length },
-                images: { saved: 0, total: backup.images.length }
+                images: { saved: 0, total: backup.images.length },
+                animations: { saved: 0, total: backup.animations.length }
             }
         }
 
@@ -260,13 +239,17 @@ class PublishService {
         //Save contract metadata
         let contractMetadataPath = `${directory}/contractMetadata.json`
         
-        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true, flush:true })
+        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true, flush:flush })
         publishStatus.contractMetadata.saved = 1
         this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
 
 
         //Save images 
         for (let image of exportBundle.images) {
+
+            //Fetch content
+            image = await this.imageService.get(image._id)
+
 
             //Add to IPFS
             let result 
@@ -286,7 +269,7 @@ class PublishService {
             }
 
 
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, { create: true, parents: true, flush:true })
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, { create: true, parents: true, flush:flush })
 
             publishStatus.images.saved++
 
@@ -296,6 +279,9 @@ class PublishService {
 
         //Save animation cids
         for (let animation of exportBundle.animations) {
+
+            //Fetch content
+            animation = await this.animationService.get(animation._id)
 
             let result = await this.ipfsService.ipfs.add({
                 content: animation.content
@@ -317,7 +303,7 @@ class PublishService {
             if (stat) {
                 console.log(`${directory}/animations/${animationCid} already exists. Skipping.`)
             } else {
-                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}.html`, { parents: true, flush: true })
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}.html`, { parents: true, flush: flush })
             }
 
             publishStatus.animations.saved++
@@ -331,7 +317,7 @@ class PublishService {
         publishStatus.backups.itemChunks.total = backup.itemChunks.length
         for (let itemChunk of backup.itemChunks) {
             
-            await this.ipfsService.ipfs.files.write(`${directory}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: true })
+            await this.ipfsService.ipfs.files.write(`${directory}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: flush })
         
             publishStatus.backups.itemChunks.saved++ 
             
@@ -359,7 +345,7 @@ class PublishService {
             
             let nftMetadataPath = `${directory}/metadata/${nft.tokenId}.json`
 
-            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:true })
+            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:flush })
 
             publishStatus.nftMetadata.saved++
 
@@ -370,33 +356,36 @@ class PublishService {
 
 
         //Write channels backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: true })
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: flush })
         publishStatus.backups.channels.saved = 1
         this.logPublishProgress(publishStatus)
 
 
         //Write authors backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true, flush: true })
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true, flush: flush })
         publishStatus.backups.authors.saved = 1
         this.logPublishProgress(publishStatus)
 
         //Write items backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/items.json`,  new TextEncoder().encode(JSON.stringify(backup.items)) , { create: true, parents: true, flush: true })
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/items.json`,  new TextEncoder().encode(JSON.stringify(backup.items)) , { create: true, parents: true, flush: flush })
         publishStatus.backups.items.saved = backup.items.length
         this.logPublishProgress(publishStatus)
 
         //Write images backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: true })
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: flush })
         publishStatus.backups.images.saved = backup.images.length
         this.logPublishProgress(publishStatus)
 
+        //Write animations backup
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/animations.json`,  new TextEncoder().encode(JSON.stringify(backup.animations)) , { create: true, parents: true, flush: flush })
+        publishStatus.backups.animations.saved = backup.animations.length
+        this.logPublishProgress(publishStatus)
 
 
+        await this.ipfsService.ipfs.files.flush(`/export/${exportBundle.channel._id}/`)
 
 
-
-
-        let result = await this.ipfsService.ipfs.files.stat(`/blogs/${exportBundle.channel._id}/`, {
+        let result = await this.ipfsService.ipfs.files.stat(`/export/${exportBundle.channel._id}/`, {
             hash: true
         })
 
@@ -406,28 +395,70 @@ class PublishService {
 
     }
 
-    async publishToIPFS(channel: Channel) {
+    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[], animations:Animation[]) {
 
-        //Get all the items
-        const items: Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
-
-        //Get author
-        const author = await this.authorService.get(channel.authorId)
-
-        //Export metadata
-        let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, this.walletService.address)
-        let cid: string = await this.exportToIPFS(exportBundle)
+        //Look up any data we need to add to the bundle
 
 
-        //Update local cid info
-        Object.assign(channel, await this.channelService.get(channel._id))
+        //Generate bundles with extra info for each item
+        for (let item of items) {
 
-        channel.localCid = cid
-        channel.localPubDate = new Date().toJSON()
+            let previous = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) -1)
+            let next = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) + 1)
 
-        await this.channelService.put(channel)
+            //Add the previous and next items so they can used in navigation
+            item['previous'] = previous?.length > 0 ? { 
+                _id: previous[0]._id,
+                tokenId: previous[0].tokenId
+            }  : undefined
+
+            item['next'] = next?.length > 0 ? { 
+                _id: next[0]._id,
+                tokenId: next[0].tokenId
+            } : undefined
+
+        }
+
+        //Add itemCount to channel
+        channel['itemCount'] = items?.length
+
+
+        //Remove the actual image data from the images
+        let backupImages:Image[] = JSON.parse(JSON.stringify(images))
+
+        for (let image of backupImages) {
+            delete image.svg
+            delete image.buffer
+        }
+
+        //And the animations
+        // let backupAnimations:Animation[] = JSON.parse(JSON.stringify(animations))
+        // for (let animation of backupAnimations) {
+        //     delete animation.content
+        // }
+
+
+        //Split items into chunks
+        const chunkedItems = []
+
+        const chunkSize = ItemRepository.CHUNK_SIZE
+        for (let i = 0; i < items.length; i += chunkSize) {
+            chunkedItems.push(items.slice(i, i + chunkSize))
+        }
+
+        //Save pouch dbs
+        return {
+            channels: [channel],
+            authors: [author],
+            itemChunks: chunkedItems, 
+            items: items,
+            images: backupImages,
+            animations: animations      
+        }
 
     }
+
+
 
     async deployContract(channel: Channel) {
 

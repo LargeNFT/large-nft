@@ -1,6 +1,5 @@
 import { inject, injectable } from "inversify"
 
-import * as IPFS from 'ipfs-core'
 
 @injectable()
 class IpfsService {
@@ -9,27 +8,36 @@ class IpfsService {
   public addresses
 
   public ipfs
+  
+  initializing=false
 
   constructor(
-    @inject('ipfsOptions') private ipfsOptions
+    @inject('ipfsOptions') private ipfsOptions,
+    @inject('IPFS') private IPFS
   ) { }
 
 
   async init() {
 
-    if (this.ipfs) return
+    if (this.ipfs || this.initializing) return
+    
+    this.initializing = true
     
     console.log('Init IPFS')
 
-    this.ipfs = await IPFS.create(this.ipfsOptions)
+    this.ipfs = await this.IPFS.create(this.ipfsOptions)
 
-    this.ipfs.libp2p.connectionManager.on('peer:connect', (connection) => {
-      this.updateInfo()
-    })
+    //TODO: 
 
-    this.ipfs.libp2p.connectionManager.on('peer:disconnect', (connection) => {
-      this.updateInfo()
-    })
+
+    // this.ipfs.libp2p.connectionManager.on('peer:connect', (connection) => {
+    //   // this.updateInfo()
+    //   
+    // })
+
+    // this.ipfs.libp2p.connectionManager.on('peer:disconnect', (connection) => {
+    //   // this.updateInfo()
+    // })
 
     console.log('Init IPFS complete')
 

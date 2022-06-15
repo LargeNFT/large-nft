@@ -238,7 +238,15 @@ class GitlabService {
         })
 
 
+        //Animations
+        let animationsContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/animations.json`)) 
 
+        //Add create action
+        actions.push({
+            action: "create",
+            file_path: "backup/animations.json",
+            content: new TextDecoder("utf-8").decode(animationsContents)
+        })
 
         //Get list of files in /metadata
         this.logPublishReaderProgress(`Saving NFT metadata...`)

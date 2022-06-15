@@ -32,7 +32,7 @@
                                     <div class="ipfs-label">IPFS Initializing...</div>
                                 ` : $h`
                                     <div class="ipfs-label">
-                                        <a href="/admin/connect">IPFS Ready</a>: ${peerCount} peers
+                                        <a href="/admin/connect">IPFS Ready</a>
                                     </div>
                                 `}
 
@@ -47,11 +47,7 @@
                                             <div class="item"> 
                                                 <label>Contract Metadata:</label> ${publishStatus.contractMetadata.saved} / ${publishStatus.contractMetadata.total}
                                             </div>
-    
-                                            <div class="item">
-                                                <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
-                                            </div>
-    
+
                                             <div class="item">
                                                 <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
                                             </div>
@@ -59,10 +55,15 @@
                                             <div class="item">
                                                 <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
                                             </div>
-
+    
                                             <div class="item">
                                                 <label>Item Pages:</label> ${publishStatus.backups.itemChunks.saved} / ${publishStatus.backups.itemChunks.total} 
                                             </div>
+
+                                            <div class="item">
+                                                <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
+                                            </div>
+    
 
     
                                             <h4>
@@ -83,6 +84,10 @@
     
                                             <div class="item">
                                                 <label>Images:</label> ${publishStatus.backups.images.saved} / ${publishStatus.backups.images.total} 
+                                            </div>
+
+                                            <div class="item">
+                                                <label>Animations:</label> ${publishStatus.backups.animations.saved} / ${publishStatus.backups.animations.total} 
                                             </div>
 
                             

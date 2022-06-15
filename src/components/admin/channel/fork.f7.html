@@ -1,0 +1,243 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="admin-create-channel">
+
+    <${Navbar} />
+
+    <div class="page-content">
+
+      <div class="row">
+        <form class="col-100 large-66 center" @submit="${formSubmit}" id="import-ipfs-hash">
+
+          <div class="block-title">Fork Collection</div>
+
+          <div class="card">
+
+            <div class="card-content">
+                <div class="card-content card-content-padding">
+
+                    ${!ipfsReady ? $h`
+                        <div class="ipfs-label">IPFS Initializing...</div>
+                    ` : $h`
+                        <div class="ipfs-label">
+                            <a href="/admin/connect">IPFS Ready</a>
+                        </div>
+                    `}
+
+                    ${forking ? $h`
+                        <div class="fork-label">
+                            Forking...
+                        </div>
+
+                        ${forkStatus? $h`
+                            <div class="fork-status">
+
+                                <div class="item">
+                                    <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
+                                </div>
+
+                                <div class="item"> 
+                                    <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
+                                </div>
+
+                                <div class="item">
+                                    <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                                </div>
+
+                                <div class="item">
+                                    <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                                </div>
+
+                                <div class="item">
+                                    <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
+                                </div>
+
+                
+                            </div>
+                        ` : $h`<span />`}
+
+                    ` : $h`
+                        <div class="fork-label" style="display:none;"></div>
+                    `}
+
+                    ${forkOutput ? $h`
+                        <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
+                    ` : $h`
+                        <div class="fork-output" style="display:none;"></div>
+                    `}
+
+
+
+                    ${ipfsReady & !forking ? $h`
+
+                      <div class="list media-list">
+                        <ul>
+                          <li>
+                            <a href="#" class="item-link">
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-input-wrap">
+                                    <input type="text" name="hash" placeholder="Enter IPFS Hash" required />
+                                    <span class="input-clear-button"></span>
+                                  </div>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="row block">
+
+                        <div class="col-70"></div>
+          
+                        <button type="submit" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px;">
+                          <i class="material-icons">fork_left</i> Fork
+                        </button>
+          
+                      </div>
+
+                        
+                    ` : $h`
+                        <p></p>
+                    `}
+
+
+
+                </div>
+            </div>
+
+          </div>
+
+
+        </form>
+      </div>
+
+
+
+    </div>
+  </div>
+
+</template>
+
+
+<style>
+  .ipfs-label,
+  .fork-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
+  }
+
+  .fork-output {
+      border: 1px solid #cccccc;
+      font-size: 13px;
+      width: 100%;
+      max-width: 100%;
+      padding: 5px;
+      height: 300px;
+      overflow-y: scroll;
+  }
+
+  .fork-status {
+      font-size: 14px;
+      padding: 10px;
+      border: 1px solid #f1f1f1;
+  }
+
+  .fork-status .item label {
+      font-weight: bold;
+      display: inline-block;
+      width: 180px;
+  }
+
+
+
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { IpfsService } from "../../../service/core/ipfs-service"
+  import { ImportService } from "../../../service/core/import-service"
+
+  import Navbar from "../../admin/navbar.f7.html"
+
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let importService = ContainerService.getInstance(ImportService)
+    let ipfsService = ContainerService.getInstance(IpfsService)
+
+    let ipfsReady = ipfsService.ipfs != undefined
+    let peerCount = ipfsService.peerCount
+
+    let forking = false
+    let forkStatus 
+    let forkOutput = ""
+
+    $on('pageInit', async () => {
+
+      //Initialize IPFS
+      await ipfsService.init()
+      ipfsReady = ipfsService.ipfs != undefined
+
+      await $update()
+
+    })
+
+
+
+    const formSubmit = async (e) => {
+
+      e.preventDefault()
+
+      let formData = $f7.form.convertToData('#import-ipfs-hash')
+
+      forking = true 
+      $update()
+
+      await importService.importFromIPFS(formData.hash)
+
+      forking = false
+      $update()
+
+    }
+
+
+    $(document).on('fork-progress', async (e) => {
+
+      if (e.detail.message) {
+          forkOutput += `<p>${e.detail.message}</p>`
+      }
+
+      forkStatus = e.detail.forkStatus
+
+      $update()
+
+      let outputElement = document.getElementById('ipfs-fork-process')
+
+      if (outputElement) {
+          $(outputElement).scrollTop(outputElement.scrollHeight)
+      }
+
+    })
+
+
+
+    $(document).on('update-peers', async (e) => {
+
+      peerCount = e.detail.count
+      $update()
+
+    })
+
+
+
+    return $render
+  }
+
+</script>

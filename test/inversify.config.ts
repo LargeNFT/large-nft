@@ -71,6 +71,7 @@ async function getContainer() {
     container.bind("provider").toConstantValue(provider())
     container.bind("ipfsOptions").toConstantValue(ipfsOptions())
     container.bind("contracts").toConstantValue(contracts())
+    container.bind("IPFS").toConstantValue(IPFS)
 
     container.bind(DatabaseService).toSelf().inSingletonScope()
     container.bind(SchemaService).toSelf().inSingletonScope()

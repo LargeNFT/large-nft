@@ -29,9 +29,6 @@ class Item {
     content?:any
 
     @Allow()
-    contentHTML?:string
-
-    @Allow()
     searchableContent?:string
 
     @Allow()

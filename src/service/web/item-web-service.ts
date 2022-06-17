@@ -17,6 +17,7 @@ import { ItemService } from "../item-service";
 import { AnimationService } from "../animation-service";
 import { Animation } from "../../dto/animation";
 import { AnimationViewModel } from "../../dto/viewmodel/animation-view-model";
+import { QuillService } from "../quill-service";
 
 @injectable()
 class ItemWebService {
@@ -26,7 +27,8 @@ class ItemWebService {
         private channelService: ChannelService,
         private imageService: ImageService,
         private authorService: AuthorService,
-        private animationService:AnimationService
+        private animationService:AnimationService,
+        private quillService:QuillService
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
@@ -123,8 +125,10 @@ class ItemWebService {
 
         let canDelete = (maxToken == item.tokenId)
         
+
         return {
             item: item,
+            contentHTML: await this.quillService.translateContent(item.content),
             dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
             channel: channel,
             coverImage: coverImage,
@@ -132,7 +136,7 @@ class ItemWebService {
             author: author,
             authorPhoto: authorPhoto,
             authorDisplayName: this.authorService.getDisplayName(author),
-            images: await this.getImagesFromPostContentOps(item.content?.ops),
+            images: await this.getImagesFromContent(item),
             attributeSelections: attributeSelections,
             editable: editable,
             canDelete: canDelete
@@ -167,7 +171,9 @@ class ItemWebService {
 
     }
 
-    async getImagesFromPostContentOps(ops) : Promise<ImageViewModel[]> {
+    async getImagesFromContent(item:Item) : Promise<ImageViewModel[]> {
+
+        let ops = item.content.ops
 
         const images = []
 
@@ -185,7 +191,7 @@ class ItemWebService {
             //Now generate the text preview
             try {
                 
-                let image:Image = await this.imageService.newFromQuillOps(ops)
+                let image:Image = await this.imageService.newFromItem(item)
 
                 images.push({
                     cid: image.cid,
@@ -239,7 +245,7 @@ class ItemWebService {
 
     async saveGeneratedCoverImage(item:Item) {
 
-        let images = await this.getImagesFromPostContentOps(item.content.ops)
+        let images = await this.getImagesFromContent(item)
 
         let matches = images?.filter(image => {
   

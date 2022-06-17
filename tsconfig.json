@@ -4,7 +4,7 @@
     "lib": [ "es2017", "dom" ],
     "target": "ES2017",
     "types": ["reflect-metadata", "node", "mocha"],
-    "skipLibCheck": true,
+    "skipLibCheck": true,  
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "declaration": true,

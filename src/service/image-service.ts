@@ -9,6 +9,8 @@ import { SvgService } from "./svg-service"
 import { QuillService } from "./quill-service"
 
 import he from 'he'
+import { Item } from "../dto/item"
+import excerptHtml from 'excerpt-html'
 
 const truncate = require('html-truncate')
 
@@ -117,13 +119,10 @@ class ImageService {
   }
 
 
-  public async newFromQuillOps(ops) {
-    let content = await this.quillService.translateContent({ops:ops})
-    return this.newFromText(content)
-  }
+  public async newFromItem(item:Item) {
+    
+    let content = await this.quillService.translateContent(item.content)
 
-  public async newFromText(content) {
-  
     let excerpt = this.getExcerptByFirstParagraph(content, {
       pruneLength: 500
     })
@@ -134,14 +133,42 @@ class ImageService {
 
     const image: Image = new Image()
 
-    image.svg = await this.svgService.fromText(excerpt)
+    image.svg = await this.svgService.fromText(item.title, excerpt)
 
     image.cid = await Hash.of(image.svg)
     image.generated = true
     
     return image
 
+
   }
+
+
+  // public async newFromQuillOps(ops) {
+  //   let content = await this.quillService.translateContent({ops:ops})
+  //   return this.newFromText(content)
+  // }
+
+  // public async newFromText(content) {
+  
+  //   let excerpt = this.getExcerptByFirstParagraph(content, {
+  //     pruneLength: 500
+  //   })
+
+  //   if (!excerpt || excerpt.length == 0) { 
+  //     throw new Error("No text") 
+  //   }
+
+  //   const image: Image = new Image()
+
+  //   image.svg = await this.svgService.fromText(excerpt)
+
+  //   image.cid = await Hash.of(image.svg)
+  //   image.generated = true
+    
+  //   return image
+
+  // }
 
 
   //Grabbing from the 

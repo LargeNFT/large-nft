@@ -9,6 +9,7 @@ import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
+import { ItemService } from "../item-service";
 import { ItemWebService } from "./item-web-service";
 
 @injectable()
@@ -18,6 +19,8 @@ class ChannelWebService {
         private channelService: ChannelService,
         private imageService: ImageService,
         private authorService: AuthorService,
+        private itemService:ItemService,
+        private itemWebService:ItemWebService
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -101,7 +104,29 @@ class ChannelWebService {
     }
 
 
+    async upgrade(channel:Channel) {
 
+        //Loop through each item. 
+
+        let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+
+
+        for (let item of items) {
+
+            //Delete the old contentHTML field
+            delete item['contentHTML']
+
+            //Resave
+            let updated = Object.assign(new Item(), item)
+            await this.itemService.put(updated)
+
+            console.log(updated)
+
+
+        }
+
+
+    }
 
 
 }

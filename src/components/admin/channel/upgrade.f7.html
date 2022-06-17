@@ -1,0 +1,93 @@
+<!--suppress JSAnnotator -->
+<template>
+
+  <div class="page" data-name="admin-edit-channel">
+
+    <${Navbar} />
+
+    <div class="page-content">
+
+      <div class="row">
+        <div class="col-100 large-66 center">
+
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
+            <li>Upgrade Collection</li>
+          </ul>
+
+          <form class="block list" id="upgrade-channel-form" @submit="${formSubmit}">
+
+            <p>This screen is used to update a collection to the latest database structure. Currently this is a 
+            diagnostic level tool and should only be used if you have backed up the data.</p>
+
+            <p>The effect is like opening each item individually and resaving it.</p>
+
+
+            <div class="row block">
+
+              <div class="col-70"></div>
+
+              <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                <i class="material-icons">upgrade</i> Upgrade
+              </button>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+
+</template>
+
+<style>
+
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { ChannelWebService } from "../../../service/web/channel-web-service"
+  import { ImageService } from "../../../service/image-service"
+  import { QuillEditorService } from "../../../service/quill-editor-service"
+
+  import { Channel } from "../../../dto/channel"
+
+  import Navbar from "../../admin/navbar.f7.html"
+  import ChannelForm from "../../admin/channel/form.f7.html"
+
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let channelWebService = ContainerService.getInstance(ChannelWebService)
+
+    let channelViewModel = props.channelViewModel
+
+    const formSubmit = async (e) => {
+
+      e.preventDefault()
+
+      //Save
+      try {
+        
+        await channelWebService.upgrade(channelViewModel.channel)
+
+      } catch (ex) {
+        $f7.dialog.alert(ex.errors, "There was an error")
+      }
+
+    }
+
+    $on('pageInit', async (e, page) => {
+
+    })
+
+    return $render
+  }
+
+</script>

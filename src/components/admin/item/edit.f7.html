@@ -120,20 +120,14 @@
         item.attributeSelections = []
       }
 
-      //Translate description content
-      item.contentHTML = await quillService.translateContent(item.content)
-
       //Check showExcerpt
       if (showExcerpt) {
-          item.excerpt = excerptHtml(item.contentHTML, {
+          item.excerpt = excerptHtml(await quillService.translateContent(item.content), {
               pruneLength: 500
           })
       } else {
         delete item.excerpt
       }
-
-      //Build searchable document. Combine title and content. Strip tags except for <p>
-      item.searchableContent = item.title + " " + item.contentHTML.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')  
 
       
       //Save the cover image if necessary

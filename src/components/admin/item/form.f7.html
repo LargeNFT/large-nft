@@ -14,7 +14,7 @@
                     <div class="item-title item-label">Title</div>
                     <div class="item-input-wrap">
                         <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
-                             id="title-header-input"  />
+                             id="title-header-input" @keyup="${titleOnKeyup}"  />
                     </div>
                 </div>
             </div>
@@ -205,8 +205,14 @@
 
         const loadCoverImages = async () => {
 
-            itemViewModel.images = await itemWebService.getImagesFromPostContentOps(quillEditorService.activeEditor.getContents().ops)
+            itemViewModel.images = await itemWebService.getImagesFromContent({
+                title: itemViewModel.item.title,
+                content: {
+                    ops: quillEditorService.activeEditor.getContents().ops
+                }
+            })
 
+            //If we just have the text baesd one select it.
             if (itemViewModel.images?.length == 1) {
                 itemViewModel.coverImage = itemViewModel.images[0]
             }
@@ -267,11 +273,24 @@
             $('input[name="showExcerpt"]').val(e.currentTarget.checked)
         }
 
+        const titleOnKeyup = (e) => {
+
+            let value = $(e.currentTarget).val();
+
+            itemViewModel.item.title = value
+
+            document.dispatchEvent(new CustomEvent('load-cover-images'))
+
+        }
+
         let itemViewModel = props.item
         let editorId = props.editor
         let toolbarId = props.toolbar
 
         let attributeSelections
+
+        let originalCoverImage = itemViewModel.coverImage
+
 
         if (itemViewModel) {
             setAttributeSelections(itemViewModel.attributeSelections)

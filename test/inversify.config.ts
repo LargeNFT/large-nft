@@ -18,7 +18,7 @@ import { QuillService } from "../src/service/quill-service";
 import { IpfsService } from "../src/service/core/ipfs-service";
 
 import fs from 'fs';
-import * as IPFS from 'ipfs-core'
+
 
 import { DatabaseService } from "../src/service/core/database-service";
 import { ChannelRepository } from "../src/repository/channel-repository";
@@ -69,9 +69,8 @@ async function getContainer() {
       }
 
     container.bind("provider").toConstantValue(provider())
-    container.bind("ipfsOptions").toConstantValue(ipfsOptions())
     container.bind("contracts").toConstantValue(contracts())
-    container.bind("IPFS").toConstantValue(IPFS)
+
 
     container.bind(DatabaseService).toSelf().inSingletonScope()
     container.bind(SchemaService).toSelf().inSingletonScope()
@@ -101,12 +100,25 @@ async function getContainer() {
     container.bind(GitlabRepository).toSelf().inSingletonScope()
     container.bind(AnimationRepository).toSelf().inSingletonScope()
 
+
+
+    container.bind("ipfsInit").toConstantValue( async () => {
+
+        const IPFS = await Function('return import("ipfs-core")')() as Promise<typeof import('ipfs-core')>
+
+        //@ts-ignore
+        return IPFS.create(ipfsOptions())
+    })
+
+
+
     await cleanup()
 
     let ipfsService:IpfsService = container.get(IpfsService)
     let walletService:WalletService = container.get<WalletService>(TYPES.WalletService);   
 
-    ipfsService.ipfs = await IPFS.create(container.get("ipfsOptions"))
+    
+    await ipfsService.init()
     await walletService.initWallet()
 
 

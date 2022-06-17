@@ -408,8 +408,8 @@ contract('ItemService', async (accounts) => {
 
 
         const metadata = await service.exportNFTMetadata(channel, item, image, "zyx", 'xyz')
-        assert.strictEqual(metadata.image, 'ipfs://xyz/QmZyhR8TGNhD3s2HrykyFr9NFS9wCs4X4M66uaKq78Sd3p.jpg')
-        assert.strictEqual(metadata.animation_url, 'ipfs://zyx/QmUWsz4rYoLV9iuQ7tBnsoR4GgxYQoaCh5M5GdT51nZUJ8.html')
+        assert.strictEqual(metadata.image, 'ipfs://xyz/QmUExZiPE59FBaVPxtLTwKWqpcy2f8qfE5d4SVuqRUYPbg.jpg')
+        assert.strictEqual(metadata.animation_url, 'ipfs://zyx/QmahFnt1WezHKTMZpc3mGJsYwKqcNsQhazFBzxG1ry7Etf.html')
 
         assert.strictEqual(metadata.attributes[0].traitType, "Hair")
         assert.strictEqual(metadata.attributes[0].value, "Curly")

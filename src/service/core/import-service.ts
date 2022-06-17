@@ -44,10 +44,16 @@ class ImportService {
 
         this.logForkProgress(forkStatus, "Starting fork. Fetching data...")
 
+
+        try {
+            await this.ipfsService.ipfs.files.rm('/fork', { recursive: true, flush: true})
+        } catch (ex) { }
+
+
         await this.ipfsService.ipfs.files.cp(`/ipfs/${cid}`, '/fork', { create: true, parents: true, flush: true })
 
 
-        this.logForkProgress(forkStatus, "Fetching files...")
+        this.logForkProgress(forkStatus, "Processing...")
 
         let channelId 
 
@@ -191,6 +197,7 @@ class ImportService {
 
 
         for (let item of items) {
+            
             delete item._id
             delete item._rev
             delete item.lastUpdated
@@ -198,6 +205,35 @@ class ImportService {
             delete item["_rev_tree"]
 
             item.channelId = idMap.get(item.channelId) //look up the new channel ID
+
+
+            //Get image data and re-insert it into the content ops
+            if (item.content?.ops?.length > 0) {
+
+                let ops = []
+
+                for (let op of item.content.ops) {
+
+                    if (op.insert && op.insert.ipfsimage) {
+
+                        let image:Image = await this.imageService.get(op.insert.ipfsimage.cid)
+                        op.src = await this.imageService.getUrl(image)
+                    }
+
+                    ops.push(op)
+                }
+
+                item.content.ops = ops
+
+            }
+
+
+
+
+
+
+
+
 
             let itemObj = Object.assign(new Item(), item)
 

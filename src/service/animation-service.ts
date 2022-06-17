@@ -9,6 +9,7 @@ import { Item } from "../dto/item"
 
 import he from 'he'
 import { ImageService } from "./image-service"
+import { QuillService } from "./quill-service"
 
 @injectable()
 class AnimationService {
@@ -17,7 +18,7 @@ class AnimationService {
 
   constructor(
     private animationRepository: AnimationRepository,
-    private imageService: ImageService
+    private quillService: QuillService
 
   ) { }
 
@@ -59,6 +60,8 @@ class AnimationService {
   }
 
   public async buildAnimationPage(item:Item) :Promise<string> {
+
+    let content = await this.quillService.translateContent(item.content)
 
     return `<!DOCTYPE html>
         <html>
@@ -138,7 +141,7 @@ class AnimationService {
             <div class="card">
               <div class="card-content">
                 <h4><b>${item.title ? item.title : ''} <span class="token-id">#${item.tokenId}</span></b></h4>
-                ${item.contentHTML}
+                ${content}
               </div>
             </div>
 

@@ -12,13 +12,15 @@ import { ImageService } from "./image-service";
 
 import excerptHtml from 'excerpt-html'
 import { Image } from "../dto/image";
+import { QuillService } from "./quill-service";
 
 @injectable()
 class ItemService {
 
     constructor(
         private itemRepository: ItemRepository,
-        private imageService:ImageService
+        private imageService:ImageService,
+        private quillService:QuillService
     ) { }
 
     async get(_id: string): Promise<Item> {
@@ -38,7 +40,7 @@ class ItemService {
             item.dateCreated = new Date().toJSON()
 
             //Get next token ID
-            item.tokenId = await this.itemRepository.getMaxTokenId(item.channelId) + 1
+            item.tokenId = await this.getNextTokenId(item.channelId)
 
         } else {
             item.lastUpdated = new Date().toJSON()
@@ -122,9 +124,7 @@ class ItemService {
 
     async setDefaultCoverImage(item:Item) {
 
-        let generated = await this.imageService.newFromText(excerptHtml(item.contentHTML, {
-            pruneLength: 500
-        }))
+        let generated = await this.imageService.newFromItem(item)
 
         //Save it if it doesn't exist
         let existing = await this.get(generated.cid)
@@ -141,7 +141,9 @@ class ItemService {
         }
     }
 
-
+    async getNextTokenId(channelId:string) {
+        return await this.itemRepository.getMaxTokenId(channelId) + 1
+    }
 }
 
 export {

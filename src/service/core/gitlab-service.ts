@@ -160,7 +160,7 @@ class GitlabService {
         
         let actions = []
 
-        let directory = `/blogs/${channel._id}`
+        let directory = `/export/${channel._id}`
 
         
         //If the contract is deployed add a file with the address
@@ -270,30 +270,6 @@ class GitlabService {
             // console.log(ex)
         }
 
-
-
-
-        //Get list of files in /itemChunks
-        this.logPublishReaderProgress(`Saving item chunks...`)
-        
-        try {
-
-            for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/itemChunks/`)) {
-
-                let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/itemChunks/${file.name}`)) 
-    
-                //Add create action
-                actions.push({
-                    action: "create",
-                    file_path: `backup/itemChunks/${file.name}`,
-                    content: new TextDecoder("utf-8").decode(bufferedContents)
-                })
-    
-            }
-
-        } catch(ex) {
-            // console.log(ex)
-        }
 
 
         //Get list of files in /images

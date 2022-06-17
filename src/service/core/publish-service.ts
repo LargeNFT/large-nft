@@ -21,6 +21,9 @@ import TYPES from "./types"
 import { WalletService } from "./wallet-service"
 import { AnimationService } from "../animation-service"
 
+import Hash from 'ipfs-only-hash'
+
+
 @injectable()
 class PublishService {
 
@@ -200,6 +203,15 @@ class PublishService {
         let flush = true
         let directory = `/export/${exportBundle.channel._id}`
 
+
+        try {
+            await this.ipfsService.ipfs.files.rm(directory, { recursive: true, flush: true})
+        } catch (ex) { }
+
+
+        
+
+
         /**
          * BACKUP FOR READER
         */
@@ -218,7 +230,6 @@ class PublishService {
             backups: {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 }, 
-                itemChunks: { saved: 0, total: backup.itemChunks.length },
                 items: { saved: 0, total: backup.items.length },
                 images: { saved: 0, total: backup.images.length },
                 animations: { saved: 0, total: backup.animations.length }
@@ -250,30 +261,30 @@ class PublishService {
             //Fetch content
             image = await this.imageService.get(image._id)
 
-
             //Add to IPFS
-            let result 
+            let content
+            let filename = `${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}` 
 
             if (image.buffer) {
-                result = await this.ipfsService.ipfs.add({
-                    content: image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
-                })
+                content = image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
             } else if (image.svg) {
-                result = await this.ipfsService.ipfs.add({
-                    content: image.svg
-                })
+                content = image.svg
             }
-            
+
+            let result = await this.ipfsService.ipfs.add({
+                content: content
+            })
+
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, filename, { create: true, parents: true, flush:flush })
+
+            //Validate cid
             if (result.cid.toString() != image.cid) {
                 throw new Error("Incorrect cid when saving image. ")
             }
 
-
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, `${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, { create: true, parents: true, flush:flush })
-
             publishStatus.images.saved++
 
-            this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`)
+            this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${filename}`)
 
         }
 
@@ -283,6 +294,9 @@ class PublishService {
             //Fetch content
             animation = await this.animationService.get(animation._id)
 
+            let filename = `${directory}/animations/${animation.cid}.html`
+
+            //Add content
             let result = await this.ipfsService.ipfs.add({
                 content: animation.content
             })
@@ -293,43 +307,28 @@ class PublishService {
                 throw new Error('CIDs did not match')
             }
 
-
             //In theory there can be duplicates if any NFTs have identical content.
             let stat
             try {
-                stat = await this.ipfsService.ipfs.files.stat(`${directory}/animations/${animationCid}.html`)
+                stat = await this.ipfsService.ipfs.files.stat(filename)
             } catch (ex) { }
 
             if (stat) {
-                console.log(`${directory}/animations/${animationCid} already exists. Skipping.`)
+                console.log(`${filename} already exists. Skipping.`)
             } else {
-                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, `${directory}/animations/${animationCid}.html`, { parents: true, flush: flush })
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, filename, { parents: true, flush: flush })
             }
+
 
             publishStatus.animations.saved++
 
-            this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animationCid} to ${directory}/animations/${animationCid}.html`)
+            this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animation.cid} to ${directory}/animations/${animation.cid}.html`)
 
 
         }
-
-        //Write item chunks
-        publishStatus.backups.itemChunks.total = backup.itemChunks.length
-        for (let itemChunk of backup.itemChunks) {
-            
-            await this.ipfsService.ipfs.files.write(`${directory}/itemChunks/${publishStatus.backups.itemChunks.saved}.json`, new TextEncoder().encode(JSON.stringify(itemChunk)), { create: true, parents: true, flush: flush })
-        
-            publishStatus.backups.itemChunks.saved++ 
-            
-            this.logPublishProgress(publishStatus)
-
-        }
-
-
 
         //Save metadata for each NFT
-        let items:Item[] = backup.itemChunks.flat()
-        for (let item of items) {
+        for (let item of backup.items) {
 
             let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
                 hash: true
@@ -352,6 +351,8 @@ class PublishService {
             this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath}`)
 
         }
+
+
 
 
 
@@ -417,6 +418,27 @@ class PublishService {
                 tokenId: next[0].tokenId
             } : undefined
 
+
+            //Remove the image src data from the content. Will restore from local copy when importing.
+            //Reduce backup filesize
+
+            if (item.content?.ops?.length > 0) {
+
+                let ops = []
+
+                for (let op of item.content.ops) {
+
+                    if (op.insert && op.insert.ipfsimage) {
+                        delete op.src
+                    }
+
+                    ops.push(op)
+                }
+
+                item.content.ops = ops
+
+            }
+
         }
 
         //Add itemCount to channel
@@ -438,19 +460,10 @@ class PublishService {
         // }
 
 
-        //Split items into chunks
-        const chunkedItems = []
-
-        const chunkSize = ItemRepository.CHUNK_SIZE
-        for (let i = 0; i < items.length; i += chunkSize) {
-            chunkedItems.push(items.slice(i, i + chunkSize))
-        }
-
         //Save pouch dbs
         return {
             channels: [channel],
             authors: [author],
-            itemChunks: chunkedItems, 
             items: items,
             images: backupImages,
             animations: animations      

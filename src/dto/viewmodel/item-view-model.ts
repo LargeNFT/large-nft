@@ -13,6 +13,7 @@ interface ItemViewModel {
     dateDisplay?:string
     coverImage?:ImageViewModel
     animation?:AnimationViewModel
+    contentHTML?:string
 
     author?:Author
     authorDisplayName?:string 

@@ -6,12 +6,12 @@ import fs from 'fs'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 // const CompressionPlugin = require("compression-webpack-plugin")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import HTMLInlineCSSWebpackPlugin from "html-inline-css-webpack-plugin"
+
 // const nodeExternals = require('webpack-node-externals')
 
 // const exec = require('child_process').exec;
-
 
 
 
@@ -81,7 +81,6 @@ let adminConfig = {
     filename: 'admin/[name].admin.js',
     library: "admin",
     path: path.resolve(__dirname, 'public'),
-    clean: true
   },
   optimization: {
     usedExports: true,
@@ -165,6 +164,9 @@ let adminConfig = {
 
   ]
 }
+
+
+
 
 function createContractFromTruffle(truffleJson)  {
 

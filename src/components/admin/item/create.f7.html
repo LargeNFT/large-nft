@@ -112,31 +112,25 @@
         }
       })
 
-      //Translate description content
-      item.contentHTML = await quillService.translateContent(item.content)
-
       //Check showExcerpt
       if (showExcerpt) {
-          item.excerpt = excerptHtml(item.contentHTML, {
+          item.excerpt = excerptHtml(await quillService.translateContent(item.content), {
               pruneLength: 500
           })
       } else {
         delete item.excerpt
       }
       
-      //Build searchable document. Combine title and content. Strip tags except for <p>
-      item.searchableContent = item.title + " " + item.contentHTML.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')  
-
 
       //Save the cover image if necessary
       await itemWebService.saveGeneratedCoverImage(item)
 
       //And the animation
+      item.tokenId = await itemService.getNextTokenId(item.channelId) //Will get overwritten when saved but we need it for the animation
       await itemWebService.saveAnimation(item)
 
       //Save
       try {
-
         await itemService.put(item)
 
         const toast = $f7.toast.show({

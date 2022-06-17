@@ -44,9 +44,6 @@ import { ConnectController } from './controller/connect-controller';
 import { PublishController } from './controller/publish-controller';
 import { PagingService } from './service/core/paging-service';
 
-import * as IPFS from 'ipfs-core'
-
-
 //Init framework7
 // const Framework7 = require('framework7/bundle').default
 import Framework7 from 'framework7';
@@ -75,6 +72,8 @@ import { SvgService } from './service/svg-service';
 import { AnimationService } from './service/animation-service';
 import { AnimationRepository } from './repository/animation-repository';
 import { ImportService } from './service/core/import-service';
+
+import * as IPFS from 'ipfs-core'
 
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -130,30 +129,6 @@ function getMainContainer() {
     }
   }
 
-  function ipfsOptions() {
-
-    return {
-      // repo: Math.random().toString(36).substring(7),
-      preload: { enabled: true },
-      relay: {
-        enabled: true, // enable relay dialer/listener (STOP)
-        hop: {
-          enabled: true // make this node a relay (HOP)
-        }
-      },
-      config: {
-        Addresses: {
-          Swarm: [
-            // This is a public webrtc-star server
-            // '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
-            // '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star'
-          ]
-        }
-      }
-
-    }
-
-  }
 
 
   // container.bind('sketch').toConstantValue(sketch())
@@ -162,8 +137,7 @@ function getMainContainer() {
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
 
-  container.bind("ipfsOptions").toConstantValue(ipfsOptions())
-  container.bind("IPFS").toConstantValue(IPFS)
+
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()
@@ -209,6 +183,34 @@ function getMainContainer() {
   container.bind(AuthorRepository).toSelf().inSingletonScope()
   container.bind(PinningApiRepository).toSelf().inSingletonScope()
   container.bind(GitlabRepository).toSelf().inSingletonScope()
+
+
+  container.bind("ipfsInit").toConstantValue( async () => {
+
+    return IPFS.create({
+      // repo: Math.random().toString(36).substring(7),
+      repo: 'large',
+      preload: { enabled: false },
+      relay: {
+        enabled: true, // enable relay dialer/listener (STOP)
+        hop: {
+          enabled: true // make this node a relay (HOP)
+        }
+      },
+      config: {
+        Addresses: {
+          Swarm: [
+            // This is a public webrtc-star server
+            // '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
+            // '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star'
+          ]
+        }
+      }
+
+    })
+
+  })
+
 
   //Attach container to window so we can easily access it from the browser console
   globalThis.container = container

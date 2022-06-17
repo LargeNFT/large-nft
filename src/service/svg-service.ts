@@ -6,10 +6,16 @@ class SvgService {
 
     constructor() {}
 
-    async fromText(text:string) : Promise<string> {
+    async fromText(title:string, text:string) : Promise<string> {
 
         let fontSize = "140px"
         let lineHeight = "160px"
+
+
+        if (title) {
+            text = `<span class='title'>${title}</span><br /><br /><span class='text'>${text}</span>`
+        }
+
 
         if (text.length > 50 && text.length <= 100) {
             fontSize = "110px"
@@ -68,11 +74,21 @@ class SvgService {
                 h1 {
                     text-align: center;
                     font-size: ${fontSize};
-                    margin: ${fontSize};            
+                    margin: 70px;            
                     line-height: var(--lh);
                     height: 1050px;
-                    width: 1050px;          
+                    width: 1050px;  
                     -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);        
+                }
+
+                .title {
+                    font-weight: 700;
+                    font-size: 1.25em;
+                }
+
+                .text {
+                    width: 100%;
+                    font-weight: 500;
                 }
 
             </style>

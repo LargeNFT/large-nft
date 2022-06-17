@@ -12,8 +12,7 @@ class IpfsService {
   initializing=false
 
   constructor(
-    @inject('ipfsOptions') private ipfsOptions,
-    @inject('IPFS') private IPFS
+    @inject('ipfsInit') private ipfsInit
   ) { }
 
 
@@ -25,7 +24,7 @@ class IpfsService {
     
     console.log('Init IPFS')
 
-    this.ipfs = await this.IPFS.create(this.ipfsOptions)
+    this.ipfs = await this.ipfsInit()
 
     //TODO: 
 

@@ -9,7 +9,6 @@ interface PublishStatus {
     backups: {
         channels: Status 
         authors: Status 
-        itemChunks: Status 
         items: Status 
         images: Status
         animations: Status

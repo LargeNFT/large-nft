@@ -58,8 +58,8 @@
                             href="/admin/channel/fork/${channelViewModel?.channel?._id}">Fork</a>
   
                           ${showEdit ? $h`
-                          <a class="menu-dropdown-link menu-close"
-                            href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                          <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                          <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a>
                           <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
                           ` : $h``}
                         </div>

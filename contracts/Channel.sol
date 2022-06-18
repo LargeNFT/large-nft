@@ -62,6 +62,10 @@ contract Channel is ERC721A, Ownable {
     
     }
 
+    function contractURI() public view returns (string memory) {
+        return string(abi.encodePacked("ipfs://", _ipfsCid, "/contractMetadata.json"));
+    }
+
     function withdraw() public payable onlyOwner {
 
         (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");

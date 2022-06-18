@@ -179,6 +179,15 @@ class GitlabService {
                 content: JSON.stringify(contractABI)
             })
 
+            //Also the contract metadata
+            let contractMetadata = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/contractMetadata.json`)) 
+            actions.push({
+                action: "create",
+                file_path: "backup/contractMetadata.json",
+                content: new TextDecoder("utf-8").decode(contractMetadata)
+            })
+
+
         } else {
             actions.push({
                 action: "create",

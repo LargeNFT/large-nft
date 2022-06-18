@@ -118,7 +118,7 @@ async function getContainer() {
     let walletService:WalletService = container.get<WalletService>(TYPES.WalletService);   
 
     
-    await ipfsService.init()
+    // await ipfsService.init()
     await walletService.initWallet()
 
 

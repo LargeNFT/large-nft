@@ -11,6 +11,8 @@ interface ContractMetadata {
     
     seller_fee_basis_points?:string
     fee_recipient?:string
+
+    license?:string
 } 
 
 export {

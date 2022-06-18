@@ -38,7 +38,7 @@ class Channel {
     category?:string[]
 
     @Allow()
-    copyright?:string
+    license?:string
 
     @Allow()
     language?:string

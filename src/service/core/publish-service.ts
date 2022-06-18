@@ -218,7 +218,6 @@ class PublishService {
         // let backupPath = `${directory}/backup`
         let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author, exportBundle.images, exportBundle.animations)
 
-
         let publishStatus:PublishStatus = {
 
             contractMetadata: { saved: 0, total: 1 },
@@ -429,7 +428,7 @@ class PublishService {
                 for (let op of item.content.ops) {
 
                     if (op.insert && op.insert.ipfsimage) {
-                        delete op.src
+                        delete op.insert.ipfsimage.src
                     }
 
                     ops.push(op)

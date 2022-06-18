@@ -174,7 +174,12 @@ contract('Channel Contract', async (accounts) => {
 
     })
 
+    it("should get contract metadata", async () => {
 
+        let uri = await mainContract.contractURI( { from: user4 })
+        assert.strictEqual(uri, `ipfs://xyz/contractMetadata.json`)
+
+    })
 
     // it("should mint token ID with mintFee set to zero", async () => {
 

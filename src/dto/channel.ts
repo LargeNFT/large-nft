@@ -26,19 +26,29 @@ class Channel {
     link?:string
 
     @Allow()
-    description?:string
+    description?:any
 
     @Allow()
     descriptionHTML?:string
 
     @Allow()
     descriptionMarkdown?:string
-    
+
+
+    @Allow()
+    license?:any
+
+    @Allow()
+    licenseHTML?:string
+
+    @Allow()
+    licenseMarkdown?:string
+
+
     @Allow()
     category?:string[]
 
-    @Allow()
-    license?:string
+
 
     @Allow()
     language?:string

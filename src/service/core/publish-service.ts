@@ -22,6 +22,7 @@ import { WalletService } from "./wallet-service"
 import { AnimationService } from "../animation-service"
 
 import Hash from 'ipfs-only-hash'
+import { QuillService } from "../quill-service"
 
 
 @injectable()
@@ -34,6 +35,7 @@ class PublishService {
         private ipfsService: IpfsService,
         private imageService: ImageService,
         private animationService:AnimationService,
+        private quillService:QuillService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }

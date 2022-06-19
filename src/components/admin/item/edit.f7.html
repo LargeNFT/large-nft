@@ -129,6 +129,11 @@
         delete item.excerpt
       }
 
+
+
+      //Build contentHTML for searching
+      item.contentHTML = await quillService.translateContent(item.content, true)
+
       
       //Save the cover image if necessary
       await itemWebService.saveGeneratedCoverImage(item)
@@ -139,6 +144,9 @@
 
       //Save
       try {
+
+        console.log(item)
+
 
         await itemService.put(item)
 

@@ -634,6 +634,12 @@ ul.breadcrumb li a:hover {
 
 
 
+.channel-editor {
+  min-height: 300px;
+  width: 100%;
+}
+
+
 
 .goto-button {
   display: inline-block;

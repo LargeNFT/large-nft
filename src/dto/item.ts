@@ -29,7 +29,7 @@ class Item {
     content?:any
 
     @Allow()
-    searchableContent?:string
+    contentHTML?:string
 
     @Allow()
     excerpt?:string

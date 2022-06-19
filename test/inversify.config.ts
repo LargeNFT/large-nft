@@ -104,7 +104,7 @@ async function getContainer() {
 
     container.bind("ipfsInit").toConstantValue( async () => {
 
-        const IPFS = await Function('return import("ipfs-core")')() as Promise<typeof import('ipfs-core')>
+        const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
 
         //@ts-ignore
         return IPFS.create(ipfsOptions())

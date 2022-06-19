@@ -36,7 +36,7 @@
                 <div class="item-inner">
                     <div class="item-title item-label">Description</div>
 
-                    <div id="${toolbarId}">
+                    <div id="${descriptionToolbarId}">
 
                         <select class="ql-header">
                             <option selected></option>
@@ -51,11 +51,10 @@
                         <button class="ql-italic"></button>
                         <button class="ql-strike"></button>
                         <button class="ql-underline"></button>
-                        <button class="ql-link"></button>
 
                     </div>
 
-                    <div class="editor bg-color-white text-color-black" id="${editorId}" tabindex="3"></div>
+                    <div class="editor bg-color-white text-color-black channel-editor" id="${descriptionEditorId}" tabindex="3"></div>
 
                 </div>
             </div>
@@ -117,19 +116,28 @@
                 </div>
             </div>
         </li>
+
         <li>
             <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
                     <div class="item-title item-label">License</div>
-                    <div class="item-input-wrap">
-                        <textarea name="license" placeholder="License" tabindex="7" value="${channelViewModel?.channel?.license}">
-                            
-                        </textarea>
-                        
+
+                    <div id="${licenseToolbarId}">
+
+                        <!-- Add a bold button -->
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-strike"></button>
+                        <button class="ql-underline"></button>
+
                     </div>
+
+                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="3"></div>
+
                 </div>
             </div>
         </li>
+
         <li>
             <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
@@ -494,8 +502,12 @@
 
 
         let channelViewModel = props.channel
-        let toolbarId = props.toolbar
-        let editorId = props.editor
+
+        let descriptionToolbarId = props.description_toolbar
+        let descriptionEditorId = props.description_editor
+
+        let licenseToolbarId = props.license_toolbar
+        let licenseEditorId = props.license_editor
 
         let attributeOptions = []
 

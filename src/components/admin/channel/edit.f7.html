@@ -17,7 +17,12 @@
 
           <form class="block list" id="edit-channel-form" @submit="${formSubmit}">
 
-            <${ChannelForm} channel=${channelViewModel} editor="edit-channel-description-editor" toolbar="edit-channel-description-toolbar" />
+            <${ChannelForm} channel=${channelViewModel} 
+                description_editor="edit-channel-description-editor" 
+                description_toolbar="edit-channel-description-toolbar" 
+                license_editor="edit-channel-license-editor" 
+                license_toolbar="edit-channel-license-toolbar" 
+              />
 
             <div class="row block">
 
@@ -41,10 +46,6 @@
 </template>
 
 <style>
-  #edit-channel-description-editor {
-    min-height: 300px;
-    width: 100%;
-  }
 </style>
 
 
@@ -59,6 +60,7 @@
 
   import Navbar from "../../admin/navbar.f7.html"
   import ChannelForm from "../../admin/channel/form.f7.html"
+  import Quill from 'quill'
 
 
   import { ethers } from "ethers"
@@ -69,6 +71,9 @@
     let channelService = ContainerService.getInstance(ChannelService)
     let imageService = ContainerService.getInstance(ImageService)
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
+
+    let licenseQuillEditor 
+
 
     let channelViewModel = props.channelViewModel
 
@@ -81,6 +86,9 @@
 
       //Get content from quill
       channel.description = quillEditorService.activeEditor.getContents()
+      channel.license = licenseQuillEditor.getContents()
+
+
 
       //Parse attributeOptions and category
       if (channel.attributeOptions) {
@@ -129,7 +137,20 @@
       if (channelViewModel.channel.description) {
         quillEditorService.activeEditor.setContents(channelViewModel.channel.description)
       }
-      
+
+      //License
+      licenseQuillEditor = new Quill('#edit-channel-license-editor', {
+        bounds: ".page-content",
+        modules: {
+          toolbar: '#edit-channel-license-toolbar',
+        },
+        theme: "snow"
+      })
+
+
+      if (channelViewModel.channel.license) {
+        licenseQuillEditor.setContents(channelViewModel.channel.license)
+      }
 
       //Open attribute options too
       if (channelViewModel.channel?.attributeOptions?.length > 0) {

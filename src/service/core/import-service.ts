@@ -217,7 +217,7 @@ class ImportService {
                     if (op.insert && op.insert.ipfsimage) {
 
                         let image:Image = await this.imageService.get(op.insert.ipfsimage.cid)
-                        op.src = await this.imageService.getUrl(image)
+                        op.insert.ipfsimage.src = await this.imageService.getUrl(image)
                     }
 
                     ops.push(op)

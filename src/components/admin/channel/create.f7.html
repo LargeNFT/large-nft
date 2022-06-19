@@ -13,7 +13,12 @@
           <div class="block-title">Create Collection</div>
           <form class="block list" id="create-channel-form" @submit="${formSubmit}">
 
-            <${ChannelForm} channel=${channelViewModel} editor="create-channel-description-editor" toolbar="create-channel-description-toolbar" />
+            <${ChannelForm} channel=${channelViewModel} 
+                description_editor="create-channel-description-editor" 
+                description_toolbar="create-channel-description-toolbar" 
+                license_editor="create-channel-license-editor" 
+                license_toolbar="create-channel-license-toolbar" 
+            />
 
             <div class="row block">
 
@@ -37,10 +42,6 @@
 </template>
 
 <style>
-  #create-channel-description-editor {
-    min-height: 300px;
-    width: 100%;
-  }
 
 </style>
 
@@ -61,6 +62,7 @@
   import Navbar from "../../admin/navbar.f7.html"
   import ChannelForm from "../../admin/channel/form.f7.html"
 
+  import Quill from 'quill'
 
   import { ethers } from "ethers"
   import Tagify from '@yaireo/tagify'
@@ -73,7 +75,7 @@
 
     let walletService = ContainerService.getWalletService()
 
-
+    let licenseQuillEditor 
 
     let channelViewModel = {
       channel: {
@@ -92,6 +94,7 @@
 
       //Get content from quill
       channel.description = quillEditorService.activeEditor.getContents()
+      channel.license = licenseQuillEditor.getContents()
 
       //Parse attributeOptions and category
       if (channel.attributeOptions) {
@@ -140,6 +143,15 @@
 
       //Description
       quillEditorService.buildQuillPostEditor("#create-channel-description-editor", "#create-channel-description-toolbar")
+
+      //License
+      licenseQuillEditor = new Quill('#create-channel-license-editor', {
+        bounds: ".page-content",
+        modules: {
+          toolbar: '#create-channel-license-toolbar',
+        },
+        theme: "snow"
+      })
 
 
     })

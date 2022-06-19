@@ -9,7 +9,7 @@ class QuillService {
 
   constructor() {}
 
-  async translateContent(content: any): Promise<string> {
+  async translateContent(content: any, suppressSrc:boolean=false): Promise<string> {
 
     if (!content?.ops) return ""
 
@@ -24,8 +24,13 @@ class QuillService {
 
       if (customOp.insert.type === 'ipfsimage') {
         
-        let img = `<img src="${customOp.insert.value.src}" `
+        let img = `<img `
 
+        if (!suppressSrc) {
+          img += `src="${customOp.insert.value.src}" `
+        }
+
+        
         if (customOp.insert.value.width) {
           img += `width="${customOp.insert.value.width}" `
         }
@@ -50,7 +55,7 @@ class QuillService {
 
 
   async generateMarkdown(content: any) : Promise<string> {
-    return deltaToMarkdown(content)
+    return deltaToMarkdown(content.ops)
   }
 
 

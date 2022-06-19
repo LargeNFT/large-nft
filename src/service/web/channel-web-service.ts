@@ -10,6 +10,7 @@ import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
+import { QuillService } from "../quill-service";
 import { ItemWebService } from "./item-web-service";
 
 @injectable()
@@ -20,7 +21,8 @@ class ChannelWebService {
         private imageService: ImageService,
         private authorService: AuthorService,
         private itemService:ItemService,
-        private itemWebService:ItemWebService
+        private itemWebService:ItemWebService,
+        private quillService:QuillService
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -113,15 +115,12 @@ class ChannelWebService {
 
         for (let item of items) {
 
-            //Delete the old contentHTML field
-            delete item['contentHTML']
+            //Build contentHTML for searching
+            item.contentHTML = await this.quillService.translateContent(item.content, true)
 
             //Resave
             let updated = Object.assign(new Item(), item)
             await this.itemService.put(updated)
-
-            console.log(updated)
-
 
         }
 

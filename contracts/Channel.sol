@@ -6,7 +6,7 @@ import "erc721a/contracts/ERC721A.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// import "./util/console.sol";
+import "./util/console.sol";
 
 contract Channel is ERC721A, Ownable {
 
@@ -49,10 +49,33 @@ contract Channel is ERC721A, Ownable {
         //Validate we have enough ETH. 
         require(msg.value == quantity * _mintFee, "Send exact ETH");
 
+        console.log(_msgSender());
+
         //Mint
         _safeMint(_msgSender(), quantity);
 
+        console.log('here2');
+
     }
+
+
+    //A version of mint if users care deeply about which token they start minting from. 
+    function mintFromStartOrFail(uint256 quantity, uint256 start) public payable {
+
+        uint256 minted = _totalMinted();
+
+        require(start > 0, "No start passed");
+
+        //Make sure that token is the same as minted + 1
+        require(start == minted + 1, "Token is past start"); 
+
+        console.log(msg.value);
+
+        mint(quantity);
+
+    }
+
+
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         

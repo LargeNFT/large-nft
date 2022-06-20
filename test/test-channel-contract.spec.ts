@@ -60,6 +60,21 @@ contract('Channel Contract', async (accounts) => {
             "Too many"
         )
 
+
+        //Try the mintFromStartOrFail
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 0, 1, { from: user4 }),
+            truffleAssert.ErrorType.REVERT,
+            "Too few"
+        )
+
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 11, 1, { from: user4 }),
+            truffleAssert.ErrorType.REVERT,
+            "Too many"
+        )
+
+
     })
 
     it("should fail to mint if we don't send enough ETH", async () => {
@@ -76,6 +91,21 @@ contract('Channel Contract', async (accounts) => {
             "Send exact ETH"
         )
 
+
+        //Try the mintFromStartOrFail
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 1, 1, { from: user4, value: web3.utils.toWei('0.0799', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "Send exact ETH"
+        )
+
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 2, 1, { from: user4, value: web3.utils.toWei('0.15', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "Send exact ETH"
+        )
+
+
     })
 
     it("should fail to mint if we send too much ETH", async () => {
@@ -91,30 +121,86 @@ contract('Channel Contract', async (accounts) => {
             "Send exact ETH"
         )
 
+
+        //Try the mintFromStartOrFail
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 1, 1, { from: user4, value: web3.utils.toWei('0.09', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "Send exact ETH"
+        )
+
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 2, 1, { from: user4, value: web3.utils.toWei('0.19', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "Send exact ETH"
+        )
+
     })
 
 
-    it("should mint all tokens", async () => {
+    it("should mint multiple tokens", async () => {
 
         await mainContract.mint( 3, { from: user0, value: web3.utils.toWei('0.24', 'ether') })
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (3 * 0.08).toString() , 'ether'))
 
-        await mainContract.mint( 3, { from: user1, value: web3.utils.toWei('0.24', 'ether') })
+        assert.strictEqual(await mainContract.ownerOf( 1, { from: user0 }), user0)
+        assert.strictEqual(await mainContract.ownerOf( 2, { from: user0 }), user0)
+        assert.strictEqual(await mainContract.ownerOf( 3, { from: user0 }), user0)
+
+        for (let i=1; i < 3; i++) {
+            let uri = await mainContract.tokenURI( i, { from: user4 })
+            assert.strictEqual(uri, `ipfs://xyz/metadata/${i}.json`)
+        }
+
+    })
+
+
+    it("should fail to mint if start is past the current token", async () => {
+
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 3, 2, { from: user1, value: web3.utils.toWei('0.24', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "Token is past start"
+        )
+
+    })
+
+    it("should fail to mint if start is zero", async () => {
+
+        await truffleAssert.fails(
+            mainContract.mintFromStartOrFail( 3, 0, { from: user1, value: web3.utils.toWei('0.24', 'ether') }),
+            truffleAssert.ErrorType.REVERT,
+            "No start passed"
+        )
+
+    })
+
+    it("should mint multiple if start token is current token", async () => {
+
+        await mainContract.mintFromStartOrFail( 3, 4, { from: user1, value: web3.utils.toWei('0.24', 'ether') }),
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (6 * 0.08).toString() , 'ether'))
+
+        assert.strictEqual(await mainContract.ownerOf( 4, { from: user1 }), user1)
+        assert.strictEqual(await mainContract.ownerOf( 5, { from: user1 }), user1)
+        assert.strictEqual(await mainContract.ownerOf( 6, { from: user1 }), user1)
+
+        for (let i=4; i < 7; i++) {
+            let uri = await mainContract.tokenURI( i, { from: user4 })
+            assert.strictEqual(uri, `ipfs://xyz/metadata/${i}.json`)
+        }
+
+
+    })
+
+
+
+    it("should mint the rest of the tokens", async () => {
 
         await mainContract.mint( 2, { from: user2, value: web3.utils.toWei('0.16', 'ether') })
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (8 * 0.08).toString() , 'ether'))
 
         await mainContract.mint( 2, { from: user3, value: web3.utils.toWei('0.16', 'ether') })
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (10 * 0.08).toString() , 'ether'))
-
-        assert.strictEqual(await mainContract.ownerOf( 1, { from: user0 }), user0)
-        assert.strictEqual(await mainContract.ownerOf( 2, { from: user0 }), user0)
-        assert.strictEqual(await mainContract.ownerOf( 3, { from: user0 }), user0)
-
-        assert.strictEqual(await mainContract.ownerOf( 4, { from: user1 }), user1)
-        assert.strictEqual(await mainContract.ownerOf( 5, { from: user1 }), user1)
-        assert.strictEqual(await mainContract.ownerOf( 6, { from: user1 }), user1)
 
         assert.strictEqual(await mainContract.ownerOf( 7, { from: user2 }), user2)
         assert.strictEqual(await mainContract.ownerOf( 8, { from: user2 }), user2)
@@ -123,12 +209,10 @@ contract('Channel Contract', async (accounts) => {
         assert.strictEqual(await mainContract.ownerOf( 10, { from: user3 }), user3)
 
 
-        for (let i=1; i < 11; i++) {
+        for (let i=7; i < 11; i++) {
             let uri = await mainContract.tokenURI( i, { from: user4 })
             assert.strictEqual(uri, `ipfs://xyz/metadata/${i}.json`)
         }
-
-        
 
     })
 

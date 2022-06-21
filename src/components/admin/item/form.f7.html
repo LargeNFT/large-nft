@@ -7,6 +7,8 @@
         <input type="hidden" name="tokenId" value="${itemViewModel?.item?.tokenId}" />
         <input type="hidden" name="channelId" value="${itemViewModel?.channel?._id}" />
         <input type="hidden" name="showExcerpt" value="${itemViewModel.item.excerpt?.length > 0 ? 'true' : 'false'}" />
+        <input type="hidden" name="coverImageAsAnimation" value="${itemViewModel.item.coverImageAsAnimation ? 'true' : 'false'}" />
+
 
         <li>
             <div class="item-content item-input">
@@ -110,7 +112,46 @@
             </label>
         </li>
 
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Cover Image CSS (SVG)</div>
+                    <div class="editor bg-color-white text-color-black css-editor" id="${coverImageCSSEditorId}" tabindex="3"></div>
+                </div>
+            </div>
+        </li>
 
+        <li>
+            <div class="item-content item-input item-input-outline">
+                <div class="item-inner">
+                    <div class="item-title item-label">Animation CSS (HTML)</div>
+                    <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
+                </div>
+            </div>
+        </li>
+
+
+        <li>
+            <label class="item-checkbox item-content">
+
+                ${itemViewModel.item.coverImageAsAnimation ? $h`
+                    <input type="checkbox" checked="true"  @change="${coverImageAsAnimationOnChange}" />
+                ` : $h`
+                    <input type="checkbox"  @change="${coverImageAsAnimationOnChange}" />
+                `}
+
+                
+                <i class="icon icon-checkbox"></i>
+                <div class="item-inner">
+                    <div class="item-title-row">
+                        <div class="item-title">Show Cover Image As Animation</div>
+                    </div>
+                    <div class="item-text">
+                        If this box is checked the animation will only display the cover image. All other content will be ignored.
+                    </div>
+                </div>
+            </label>
+        </li>
 
 
 
@@ -203,13 +244,17 @@
 
         let imageService = ContainerService.getInstance(ImageService)
 
+        
+
+
         const loadCoverImages = async () => {
 
             itemViewModel.images = await itemWebService.getImagesFromContent({
                 title: itemViewModel.item.title,
                 content: {
                     ops: quillEditorService.activeEditor.getContents().ops
-                }
+                },
+                coverImageCSS: itemViewModel.item.coverImageCSS
             })
 
             //If we just have the text baesd one select it.
@@ -273,6 +318,10 @@
             $('input[name="showExcerpt"]').val(e.currentTarget.checked)
         }
 
+        const coverImageAsAnimationOnChange = (e) => {
+            $('input[name="coverImageAsAnimation"]').val(e.currentTarget.checked)
+        }
+
         const titleOnKeyup = (e) => {
 
             let value = $(e.currentTarget).val();
@@ -283,6 +332,9 @@
 
         }
 
+
+
+
         let itemViewModel = props.item
         let editorId = props.editor
         let toolbarId = props.toolbar
@@ -290,6 +342,11 @@
         let attributeSelections
 
         let originalCoverImage = itemViewModel.coverImage
+
+        let coverImageCSSEditorId = props.cover_image_css_editor_id
+        let animationCSSEditorId = props.animation_css_editor_id
+
+
 
 
         if (itemViewModel) {
@@ -302,8 +359,13 @@
             await loadCoverImages()
         })
 
+        $(document).on('update-cover-image-css', async (e) => {
+            itemViewModel.item.coverImageCSS = e?.detail?.coverImageCSS
+            await loadCoverImages()
+        })
+
         
-        $(document).on('load-cover-images', async (e) => {
+        $(document).on('load-cover-images', async (e) => {            
             await loadCoverImages()
         })
 

@@ -516,17 +516,15 @@ ul.breadcrumb li a:hover {
   /* height: 415px; */
 }
 
+
 .channel-card .card-header {
   display: block;
   padding: 10px;
 }
 
-.channel-card .avatar {
-  float: left;
-}
 
 .channel-card .name {
-  text-align: center;
+  text-align: left;
   color: var(--f7-text-color);
 
 }
@@ -546,17 +544,14 @@ ul.breadcrumb li a:hover {
   font-size: 22px;
   font-weight: bold;
   margin-top: 50px;
-  text-align: center;
+  text-align: left;
 }
 
 
 .channel-card .description {
-  font-size: 22px;
-  text-align: center;
-  width: 750px;
+  font-size: 17px;
+  text-align: left;
   max-width: 100%;
-  margin-right: auto;
-  margin-left: auto;
 }
 
 .channel-card .card-content img {
@@ -576,14 +571,15 @@ ul.breadcrumb li a:hover {
   position: absolute;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
-  left: calc(50% - 50px);
+  border-radius: 25%;
+  left: 10px;
   bottom: 0;
   margin-bottom: -50px;
   z-index: 10000;
   border: 3px solid #ffffff;
   font-size: 100px;
   background: #ffffff;
+  float: left;
 }
 
 .channel-card a {
@@ -602,8 +598,6 @@ ul.breadcrumb li a:hover {
 
 .info {
   max-width: 450px;
-  margin-left: auto;
-  margin-right: auto;
   margin-top: 10px;
 }
 
@@ -639,6 +633,11 @@ ul.breadcrumb li a:hover {
   width: 100%;
 }
 
+.css-editor {
+  min-height: 100px;
+  width: 100%;
+  font-size: 12px;
+}
 
 
 .goto-button {

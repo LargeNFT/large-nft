@@ -50,6 +50,15 @@ class Item {
     animationId?:string
 
     @Allow()
+    coverImageCSS?:string 
+
+    @Allow()
+    animationCSS?:string
+
+    @Allow()
+    coverImageAsAnimation?:boolean
+
+    @Allow()
     datePublished?:string
 
     @Allow()

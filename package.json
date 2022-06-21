@@ -153,7 +153,9 @@
     "hotkeys-js": "3.9.0",
 
     "@svgdotjs/svg.js": "3.1.2",
-    "html-truncate": "1.2.2"
+    "html-truncate": "1.2.2",
+
+    "highlight.js": "11.5.1"
 
   }
 }

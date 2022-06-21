@@ -67,6 +67,7 @@
                     </div>
                   </div>
   
+                  
                   <div class="title">${channelViewModel?.channel?.title}</div>
   
                   ${channelViewModel?.authorDisplayName ? $h`
@@ -75,8 +76,13 @@
                       href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
                   </div>
                   ` : ``}
+    
   
+                  <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
+                    innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
   
+
+                      
                   <div class="info row no-gap">
   
                     <div class="col-33 info-box left">
@@ -95,12 +101,7 @@
                     </div>
   
                   </div>
-  
-  
-  
-                  <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
-                    innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
-  
+
                   ${channelViewModel.channel.contractAddress ? $h`
                   <div class="contract-address">
                     <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
@@ -142,15 +143,15 @@
 
 
   .channel-card-show .title {
-    font-size: 30px;
+    font-size: 22px;
     font-weight: bold;
     margin-top: 50px;
-    text-align: center;
+    text-align: left;
   }
 
   .channel-card-show .name,
   .channel-card-show .contract-address {
-    text-align: center;
+    text-align: left;
   }
 
   .channel-card-show .name a {
@@ -179,8 +180,8 @@
     position: absolute;
     width: 100px;
     height: 100px;
-    border-radius: 50%;
-    left: calc(50% - 50px);
+    border-radius: 25%;
+    left: 10px;
     bottom: 0;
     margin-bottom: -50px;
     z-index: 10000;
@@ -194,12 +195,9 @@
   }
 
   .channel-card-show .description {
-    font-size: 22px;
-    text-align: center;
-    width: 750px;
+    font-size: 17px;
+    text-align: left;
     max-width: 100%;
-    margin-right: auto;
-    margin-left: auto;
   }
 
   

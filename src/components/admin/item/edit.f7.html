@@ -18,7 +18,12 @@
 
           <form class="block list media-list" id="edit-item-form" @submit="${formSubmit}">
 
-            <${ItemForm} item=${itemViewModel} editor="edit-item-editor" toolbar="edit-item-toolbar" />
+            <${ItemForm} item=${itemViewModel} 
+            editor="edit-item-editor" 
+            toolbar="edit-item-toolbar" 
+            cover_image_css_editor_id="cover-image-edit-css-editor"
+            animation_css_editor_id="animation-edit-css-editor"
+            />
 
             <div class="row block">
 
@@ -74,7 +79,8 @@
   import ItemForm from "../../admin/item/form.f7.html"
 
   import excerptHtml from 'excerpt-html'
-  
+  import hljs from "highlight.js"
+  import Quill from "quill"
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -90,6 +96,16 @@
 
     let itemViewModel = props.itemViewModel
 
+    let coverImageCSSQuillEditor
+    let animationCSSQuillEditor
+
+
+    hljs.configure({   // optionally configure hljs
+      languages: ['css']
+    })
+
+
+
     const formSubmit = async (e) => {
 
       e.preventDefault()
@@ -102,8 +118,13 @@
       //Get data
       let item = Object.assign(new Item(), formData)
 
+      item.coverImageAsAnimation = (formData.coverImageAsAnimation === 'true') 
+
+
       //Get content from quill
       item.content = quillEditorService.activeEditor.getContents()
+      item.coverImageCSS = coverImageCSSQuillEditor.getText() != "\n" ? coverImageCSSQuillEditor.getText() : undefined
+      item.animationCSS = animationCSSQuillEditor.getText() != "\n" ? animationCSSQuillEditor.getText() : undefined
 
       //Parse attributeOptions and category
       if (item.attributeSelections) {
@@ -144,9 +165,6 @@
 
       //Save
       try {
-
-        console.log(item)
-
 
         await itemService.put(item)
 
@@ -229,6 +247,53 @@
 
       })
 
+
+
+
+
+
+
+      //Cover image
+      coverImageCSSQuillEditor = new Quill('#cover-image-edit-css-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },          
+          toolbar: false
+        }
+      })
+      
+      coverImageCSSQuillEditor.on('text-change', (delta, oldContents, source) => {
+        document.dispatchEvent(new CustomEvent('update-cover-image-css', {
+          detail: {
+            coverImageCSS:  coverImageCSSQuillEditor.getText() != "\n" ? coverImageCSSQuillEditor.getText() : undefined
+          }
+        }))
+      })
+
+
+      animationCSSQuillEditor = new Quill('#animation-edit-css-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },          
+          toolbar: false
+        }
+      })
+
+
+      if (itemViewModel.item.coverImageCSS) {
+        coverImageCSSQuillEditor.setText(itemViewModel.item.coverImageCSS)
+      }
+
+      if (itemViewModel.item.animationCSS) {
+        animationCSSQuillEditor.setText(itemViewModel.item.animationCSS)
+      }
+      
 
 
     })

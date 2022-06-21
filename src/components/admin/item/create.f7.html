@@ -17,7 +17,12 @@
 
           <form class="block list media-list" id="create-item-form" @submit="${formSubmit}">
 
-            <${ItemForm} item=${itemViewModel} editor="create-item-editor" toolbar="create-item-toolbar" />
+            <${ItemForm} item=${itemViewModel} 
+              editor="create-item-editor" 
+              toolbar="create-item-toolbar" 
+              cover_image_css_editor_id="cover-image-css-editor"
+              animation_css_editor_id="animation-css-editor"
+            />
 
             <div class="row block">
 
@@ -73,6 +78,11 @@
   import excerptHtml from 'excerpt-html'
 
   import moment from "moment"
+  import hljs from "highlight.js"
+  import Quill from "quill"
+
+ 
+
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -89,6 +99,13 @@
     let itemViewModel = props.itemViewModel
     let toast
 
+    let coverImageCSSQuillEditor
+    let animationCSSQuillEditor
+
+    hljs.configure({   // optionally configure hljs
+      languages: ['css']
+    });
+
     const formSubmit = async (e) => {
 
       e.preventDefault()
@@ -97,11 +114,18 @@
 
       let showExcerpt = (formData.showExcerpt === 'true') 
 
+
       //Get data
       let item = Object.assign(new Item(), formData)
 
+      item.coverImageAsAnimation = (formData.coverImageAsAnimation === 'true') 
+
+
       //Get content from quill
       item.content = quillEditorService.activeEditor.getContents()
+      item.coverImageCSS = coverImageCSSQuillEditor.getText() != "\n" ? coverImageCSSQuillEditor.getText() : undefined
+      item.animationCSS = animationCSSQuillEditor.getText() != "\n" ? animationCSSQuillEditor.getText() : undefined
+
 
       //Parse attributes
       item.attributeSelections = JSON.parse(item.attributeSelections).map(as => {
@@ -193,6 +217,39 @@
       })
 
 
+
+
+      //Cover image
+      coverImageCSSQuillEditor = new Quill('#cover-image-css-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },          
+          toolbar: false
+        }
+      })
+      
+      coverImageCSSQuillEditor.on('text-change', (delta, oldContents, source) => {
+        document.dispatchEvent(new CustomEvent('update-cover-image-css', {
+          detail: {
+            coverImageCSS:  coverImageCSSQuillEditor.getText() != "\n" ? coverImageCSSQuillEditor.getText() : undefined
+          }
+        }))
+      })
+
+
+      animationCSSQuillEditor = new Quill('#animation-css-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },          
+          toolbar: false
+        }
+      })
 
 
     })

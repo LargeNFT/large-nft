@@ -6,7 +6,7 @@ class SvgService {
 
     constructor() {}
 
-    async fromText(title:string, text:string) : Promise<string> {
+    async fromText(title:string, text:string, css:string) : Promise<string> {
 
         let fontSize = "140px"
         let lineHeight = "160px"
@@ -90,6 +90,8 @@ class SvgService {
                     width: 100%;
                     font-weight: 500;
                 }
+
+                ${css}
 
             </style>
             <g>

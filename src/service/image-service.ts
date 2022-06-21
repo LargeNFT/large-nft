@@ -120,7 +120,7 @@ class ImageService {
 
 
   public async newFromItem(item:Item) {
-    
+
     let content = await this.quillService.translateContent(item.content)
 
     let excerpt = this.getExcerptByFirstParagraph(content, {
@@ -133,7 +133,7 @@ class ImageService {
 
     const image: Image = new Image()
 
-    image.svg = await this.svgService.fromText(item.title, excerpt)
+    image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS)
 
     image.cid = await Hash.of(image.svg)
     image.generated = true

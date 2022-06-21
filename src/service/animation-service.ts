@@ -18,7 +18,8 @@ class AnimationService {
 
   constructor(
     private animationRepository: AnimationRepository,
-    private quillService: QuillService
+    private quillService: QuillService,
+    private imageService:ImageService
 
   ) { }
 
@@ -62,6 +63,49 @@ class AnimationService {
   public async buildAnimationPage(item:Item) :Promise<string> {
 
     let content = await this.quillService.translateContent(item.content)
+
+
+  
+    if (item.coverImageAsAnimation) {
+
+      let image = await this.imageService.get(item.coverImageId)
+
+      let imageSrc = await this.imageService.getUrl(image)
+
+      return `<!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body { 
+              height: 100%; 
+              width: 100%;
+              margin: 0;
+              padding: 0;
+
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              overflow: hidden
+
+            }
+
+            img {
+              flex-shrink: 0;
+              min-width: 100%;
+              min-height: 100%
+              object-fit: cover;
+            }
+
+            ${item.animationCSS}
+
+          </style>
+        </head>
+
+        <body>
+          <img src="${imageSrc}" />
+        </body>
+      </html>`
+    }
 
     return `<!DOCTYPE html>
         <html>
@@ -131,6 +175,8 @@ class AnimationService {
                   font-size: 25px;
                   margin-bottom: 0px;
                 }
+
+                ${item.animationCSS}
 
               </style>
 

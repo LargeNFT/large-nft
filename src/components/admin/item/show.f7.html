@@ -69,6 +69,12 @@
                 <strong>Token ID:</strong> #${itemViewModel.item.tokenId}
               </div>
 
+              ${itemViewModel.theme ? $h`
+                <div class="attribute-row"> 
+                  <strong>Theme:</strong> ${itemViewModel.theme.name}
+                </div>
+              ` : $h`<span/>`}
+
               ${itemViewModel.attributeSelections?.map(as => $h`
                 <div class="attribute-row">
                   <strong>${as.traitType}:</strong> ${as.value}
@@ -276,40 +282,9 @@
       //Add external to any links in the doc
       $(`#item-content-${itemViewModel.item._id} a`).addClass('external')
 
-      //Bind arrow keys
-      // hotkeys('right', (event, handler) => {
-      //   next()
-      // })
-
-      // hotkeys('left', (event, handler) => {
-      //   previous()
-      // })    
-
-      // hotkeys('e', (event, handler) => {
-      //   edit()
-      // })  
-
       await $update()
 
     })
-
-    // $on('pageAfterOut', (e, page) => {
-    //   hotkeys.unbind('right')  
-    //   hotkeys.unbind('left')
-    //   // hotkeys.unbind('e')
-    // })
-
-    // const next = () => {
-    //   $(`#next-${itemViewModel.item._id}`).trigger('click')
-    // }
-
-    // const previous = () => {
-    //   $(`#previous-${itemViewModel.item._id}`).trigger('click')
-    // }
-
-    // const edit = () => {
-    //   $(`#edit-${itemViewModel.item._id}`).trigger('click')
-    // }
 
     const deleteClick = async (e) => {
 

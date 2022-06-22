@@ -112,6 +112,30 @@
             </label>
         </li>
 
+        <li class="item-content item-input">
+            <div class="item-inner">
+                <div class="item-title item-label">Theme</div>
+                <!-- additional "input-dropdown-wrap" class -->
+                <div class="item-input-wrap input-dropdown-wrap">
+                <select name="themeId" @change="${themeIdChange}">
+                    <option value="">None</option>
+
+                    ${themes?.map( (theme) => $h`
+
+                        ${theme._id === itemViewModel.item.themeId ? $h`
+                            <option value="${theme._id}" selected>${theme.name}</option>
+                        ` : $h`
+                            <option value="${theme._id}">${theme.name}</option>
+                        `}
+
+                        
+                    `)}
+                </select>
+                </div>
+            </div>
+        </li>
+
+
         <li>
             <div class="item-content item-input item-input-outline">
                 <div class="item-inner">
@@ -254,8 +278,11 @@
                 content: {
                     ops: quillEditorService.activeEditor.getContents().ops
                 },
-                coverImageCSS: itemViewModel.item.coverImageCSS
+                coverImageCSS: itemViewModel.item.coverImageCSS,
+                themeId: itemViewModel.item.themeId
             })
+
+            console.log(itemViewModel.images)
 
             //If we just have the text baesd one select it.
             if (itemViewModel.images?.length == 1) {
@@ -300,6 +327,18 @@
 
         }
 
+        const themeIdChange = async (e) => {
+
+            let id = $(e.currentTarget).val()
+
+            itemViewModel.item.themeId = id 
+
+            await $update()
+
+            await loadCoverImages()
+
+        }
+
         const setAttributeSelections = (as) => {
 
             attributeSelections = as
@@ -339,14 +378,14 @@
         let editorId = props.editor
         let toolbarId = props.toolbar
 
+        let themes = props.themes
+
         let attributeSelections
 
         let originalCoverImage = itemViewModel.coverImage
 
         let coverImageCSSEditorId = props.cover_image_css_editor_id
         let animationCSSEditorId = props.animation_css_editor_id
-
-
 
 
         if (itemViewModel) {

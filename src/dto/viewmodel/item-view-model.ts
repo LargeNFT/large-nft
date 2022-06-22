@@ -1,6 +1,7 @@
 import { Author } from "../author";
 import { Channel } from "../channel";
 import { Item } from "../item";
+import { Theme } from "../theme";
 import { AnimationViewModel } from "./animation-view-model";
 import { AttributeSelectionViewModel } from "./attribute-selection-view-model";
 import { ImageViewModel } from "./image-view-model";
@@ -14,6 +15,8 @@ interface ItemViewModel {
     coverImage?:ImageViewModel
     animation?:AnimationViewModel
     contentHTML?:string
+
+    theme?:Theme
 
     author?:Author
     authorDisplayName?:string 

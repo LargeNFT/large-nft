@@ -19,10 +19,11 @@
           <form class="block list media-list" id="edit-item-form" @submit="${formSubmit}">
 
             <${ItemForm} item=${itemViewModel} 
-            editor="edit-item-editor" 
-            toolbar="edit-item-toolbar" 
-            cover_image_css_editor_id="cover-image-edit-css-editor"
-            animation_css_editor_id="animation-edit-css-editor"
+              editor="edit-item-editor" 
+              toolbar="edit-item-toolbar" 
+              cover_image_css_editor_id="cover-image-edit-css-editor"
+              animation_css_editor_id="animation-edit-css-editor"
+              themes=${themes}
             />
 
             <div class="row block">
@@ -95,6 +96,9 @@
     let walletService = ContainerService.getWalletService()
 
     let itemViewModel = props.itemViewModel
+    let themes = props.themes 
+
+
 
     let coverImageCSSQuillEditor
     let animationCSSQuillEditor
@@ -165,7 +169,7 @@
 
       //Save
       try {
-
+        console.log(`Editing: ${item}`)
         await itemService.put(item)
 
         const toast = $f7.toast.show({

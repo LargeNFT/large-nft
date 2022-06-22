@@ -18,6 +18,8 @@ import { AnimationService } from "../animation-service";
 import { Animation } from "../../dto/animation";
 import { AnimationViewModel } from "../../dto/viewmodel/animation-view-model";
 import { QuillService } from "../quill-service";
+import { ThemeService } from "../theme-service";
+import { Theme } from "../../dto/theme";
 
 @injectable()
 class ItemWebService {
@@ -28,7 +30,8 @@ class ItemWebService {
         private imageService: ImageService,
         private authorService: AuthorService,
         private animationService:AnimationService,
-        private quillService:QuillService
+        private quillService:QuillService,
+        private themeService:ThemeService
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
@@ -125,9 +128,21 @@ class ItemWebService {
 
         let canDelete = (maxToken == item.tokenId)
         
+        let theme:Theme 
+
+        if (item.themeId) {
+            try {
+                theme = await this.themeService.get(item.themeId)
+            } catch(ex) {
+                
+            }
+        }
+
+        
 
         return {
             item: item,
+            theme: theme,
             contentHTML: await this.quillService.translateContent(item.content),
             dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
             channel: channel,
@@ -164,6 +179,7 @@ class ItemWebService {
         const channel:Channel = await this.channelService.get(channelId)
 
         for (let item of items) {
+            console.log(item)
             result.push(await this.getViewModel(item, channel))
         }
 
@@ -269,7 +285,7 @@ class ItemWebService {
             try {
                 await this.imageService.put(image)
             } catch(ex) { 
-                console.log(ex)
+                // console.log(ex)
             } //Might already exist. That's fine.  
 
             item.coverImageId = image._id
@@ -289,7 +305,7 @@ class ItemWebService {
         try {
             await this.animationService.put(animation)
         } catch(ex) { 
-            console.log(ex)
+            // console.log(ex)
         } //Might already exist. That's fine.  
 
         item.animationId = animation._id

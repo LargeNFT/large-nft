@@ -9,6 +9,7 @@ import AdminItemEditComponent from '../components/admin/item/edit.f7.html'
 
 import { PinningService } from "../service/core/pinning-service";
 import { ItemWebService } from "../service/web/item-web-service";
+import { ThemeService } from "../service/theme-service";
 
 
 @injectable()
@@ -16,7 +17,8 @@ class ItemController {
 
     constructor(
         private itemWebService:ItemWebService,
-        private pinningService:PinningService
+        private pinningService:PinningService,
+        private themeService:ThemeService
     ) {}
 
     @routeMap("/admin/item/create/:channelId")
@@ -27,7 +29,8 @@ class ItemController {
             let itemViewModel = await this.itemWebService.getNewViewModel(routeTo.params.channelId)
 
             return {
-                itemViewModel: itemViewModel
+                itemViewModel: itemViewModel,
+                themes: await this.themeService.listByChannel(itemViewModel.channel._id, 1000, 0)
             }
 
         }, AdminItemCreateComponent)
@@ -55,7 +58,8 @@ class ItemController {
             let itemViewModel = await this.itemWebService.get(routeTo.params.id)
 
             return {
-                itemViewModel: itemViewModel
+                itemViewModel: itemViewModel,
+                themes: await this.themeService.listByChannel(itemViewModel.channel._id, 1000, 0)
             }
 
         }, AdminItemEditComponent)

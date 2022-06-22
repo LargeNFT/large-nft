@@ -38,6 +38,8 @@ import { AnimationService } from "../src/service/animation-service";
 import { AnimationRepository } from "../src/repository/animation-repository";
 import { SvgService } from "../src/service/svg-service";
 import { ImportService } from "../src/service/core/import-service";
+import { ThemeRepository } from "../src/repository/theme-repository";
+import { ThemeService } from "../src/service/theme-service";
 
 
 let container:Container
@@ -90,6 +92,7 @@ async function getContainer() {
     container.bind(AnimationService).toSelf().inSingletonScope()
     container.bind(SvgService).toSelf().inSingletonScope()
     container.bind(ImportService).toSelf().inSingletonScope()
+    container.bind(ThemeService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
@@ -99,6 +102,7 @@ async function getContainer() {
     container.bind(PinningApiRepository).toSelf().inSingletonScope()
     container.bind(GitlabRepository).toSelf().inSingletonScope()
     container.bind(AnimationRepository).toSelf().inSingletonScope()
+    container.bind(ThemeRepository).toSelf().inSingletonScope()
 
 
 

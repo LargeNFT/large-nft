@@ -11,6 +11,8 @@ import { QuillService } from "./quill-service"
 import he from 'he'
 import { Item } from "../dto/item"
 import excerptHtml from 'excerpt-html'
+import { Theme } from "../dto/theme"
+import { ThemeService } from "./theme-service"
 
 const truncate = require('html-truncate')
 
@@ -23,7 +25,8 @@ class ImageService {
   constructor(
     private imageRepository: ImageRepository,
     private svgService:SvgService,
-    private quillService:QuillService
+    private quillService:QuillService,
+    private themeService:ThemeService
   ) { }
 
   async get(_id: string): Promise<Image> {
@@ -123,6 +126,13 @@ class ImageService {
 
     let content = await this.quillService.translateContent(item.content)
 
+    let theme:Theme
+    if (item.themeId) {
+      try {
+        theme = await this.themeService.get(item.themeId)
+      } catch(ex) {} //might not exist because it got deleted.
+    }
+
     let excerpt = this.getExcerptByFirstParagraph(content, {
       pruneLength: 500
     })
@@ -133,7 +143,7 @@ class ImageService {
 
     const image: Image = new Image()
 
-    image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS)
+    image.svg = await this.svgService.fromText(item.title, excerpt, theme ? theme.coverImageCSS : item.coverImageCSS)
 
     image.cid = await Hash.of(image.svg)
     image.generated = true

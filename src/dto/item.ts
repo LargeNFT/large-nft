@@ -50,6 +50,9 @@ class Item {
     animationId?:string
 
     @Allow()
+    themeId?:string
+
+    @Allow()
     coverImageCSS?:string 
 
     @Allow()

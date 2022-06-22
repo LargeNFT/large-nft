@@ -56,6 +56,7 @@ import VirtualList from 'framework7/components/virtual-list'
 import ListIndex from 'framework7/components/list-index'
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
+import Popup from 'framework7/components/popup'
 
 import Form from 'framework7/components/form'
 import Input from 'framework7/components/input'
@@ -74,11 +75,13 @@ import { AnimationRepository } from './repository/animation-repository';
 import { ImportService } from './service/core/import-service';
 
 import * as IPFS from 'ipfs-core'
+import { ThemeService } from './service/theme-service';
+import { ThemeRepository } from './repository/theme-repository';
 
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
-  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu
+  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup
 ])
 
 
@@ -174,6 +177,7 @@ function getMainContainer() {
   container.bind(ItemService).toSelf().inSingletonScope()
   container.bind(SvgService).toSelf().inSingletonScope()
   container.bind(ImportService).toSelf().inSingletonScope()
+  container.bind(ThemeService).toSelf().inSingletonScope()
 
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()
@@ -183,6 +187,7 @@ function getMainContainer() {
   container.bind(AuthorRepository).toSelf().inSingletonScope()
   container.bind(PinningApiRepository).toSelf().inSingletonScope()
   container.bind(GitlabRepository).toSelf().inSingletonScope()
+  container.bind(ThemeRepository).toSelf().inSingletonScope()
 
 
   container.bind("ipfsInit").toConstantValue( async () => {

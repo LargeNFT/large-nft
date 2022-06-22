@@ -1,269 +1,342 @@
 <!--suppress JSAnnotator -->
 <template>
-    <ul>
+
+    <div>
         <input type="hidden" name="_id"  value="${channelViewModel?.channel?._id}" />
         <input type="hidden" name="_rev" value="${channelViewModel?.channel?._rev}" />
         <input type="hidden" name="dateCreated" value="${channelViewModel?.channel?.dateCreated}" />
         <input type="hidden" name="authorId" value="${channelViewModel?.channel?.authorId}" />
 
 
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Title</div>
-                    <div class="item-input-wrap">
-                        <input type="text" name="title" placeholder="Collection title"
-                            value="${channelViewModel?.channel?.title}" required  minlength="3" tabindex="1" />
-                    </div>
-                </div>
-            </div>
-        </li>
+        <div class="card">
+            <div class="card-content">
+                <div class="list">
+                    <ul>
 
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Symbol</div>
-                    <div class="item-input-wrap">
-                        <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
-                            value="${channelViewModel?.channel?.symbol}" tabindex="2" required />
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Description</div>
-
-                    <div id="${descriptionToolbarId}">
-
-                        <select class="ql-header">
-                            <option selected></option>
-                            <option value="1">Heading</option>
-                            <option value="2">Subheading</option>
-                            <option value="3">Normal</option>
-                        </select>
-
-
-                        <!-- Add a bold button -->
-                        <button class="ql-bold"></button>
-                        <button class="ql-italic"></button>
-                        <button class="ql-strike"></button>
-                        <button class="ql-underline"></button>
-
-                    </div>
-
-                    <div class="editor bg-color-white text-color-black channel-editor" id="${descriptionEditorId}" tabindex="3"></div>
-
-                </div>
-            </div>
-        </li>
-
-
-
-        <li>
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Collection Avatar</div>
-                    <div class="item-input-wrap">
-
-                        ${channelViewModel.coverImage ? $h`
-                        <img class="cover-image-preview" src="${channelViewModel?.coverImage.url}" />
-
-                        ` : $h`
-                        <i class="material-icons cover-image-preview">image</i>
-                        `}
-
-                        <input type="button" class="button button-fill browse-file" value="Browse"
-                            @click="${handleCoverImageBrowseClick}" tabindex="4" />
-                        <input type="hidden" name="coverImageId" value="${channelViewModel?.coverImage?.cid}" />
-                        <input type="file" id="cover-image-browse" style="display: none"
-                            @change="${handleCoverImageChange}" />
-
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Collection Banner</div>
-                    <div class="item-input-wrap">
-
-                        ${channelViewModel?.coverBanner ? $h`
-                        <img class="cover-banner-preview" src="${channelViewModel?.coverBanner.url}" />
-                        ` : $h`
-                        <i class="material-icons cover-banner-preview">image</i>
-                        `}
-
-                        <input type="button" class="button button-fill browse-file" value="Browse"
-                            @click="${handleBannerBrowseClick}" tabindex="5" />
-                        <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?.cid}" />
-                        <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />
-
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Category</div>
-                    <div class="item-input-wrap">
-                        <input type="text" name="category" placeholder="Category" id="category" tabindex="6" value="${channelViewModel?.channel?.category}" />
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">License</div>
-
-                    <div id="${licenseToolbarId}">
-
-                        <!-- Add a bold button -->
-                        <button class="ql-bold"></button>
-                        <button class="ql-italic"></button>
-                        <button class="ql-strike"></button>
-                        <button class="ql-underline"></button>
-
-                    </div>
-
-                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="3"></div>
-
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">External Link</div>
-                    <div class="item-input-wrap">
-                        <input type="text" name="link" placeholder="External Link" tabindex="8" value="${channelViewModel?.channel?.link}" />
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="item-content item-input item-input-outline">
-            <div class="item-inner">
-                <div class="item-title item-label">Language</div>
-                <!-- additional "input-dropdown-wrap" class -->
-                <div class="item-input-wrap input-dropdown-wrap">
-                    <select name="language" tabindex="9">
-                        ${languages.map( language => $h`
-                            ${channelViewModel?.channel?.language == language ? $h`
-                                <option value="${language}" selected >${language}</option>
-                            ` : $h`
-                                <option value="${language}">${language}</option>
-                            `}
-                        `)}
-                    </select>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Attribute Categories (eg Shirt, Size, Hat)</div>
-                    <div>
-
-                        <p>Add attributes to give specific items special properties. Items can be sorted and filtered by
-                            attribute.</p>
-
-                        <div>
-                            <div class="category-name-label">Category Name</div>
-                            <div class="options-label">Option Values</div>
-                        </div>
-
-
-                        ${attributeOptions?.map( (ao) => $h`
-
-                        <div id="category-${ao.id}">
-
-                            <div class="category-name-input">
-                                <input type="text" placeholder="Category Name" @change="${categoryNameChange}" data-id="${ao.id}" value="${ao.traitType}" />
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Title</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="title" placeholder="Collection title"
+                                            value="${channelViewModel?.channel?.title}" required  minlength="3" tabindex="1" />
+                                    </div>
+                                </div>
                             </div>
+                        </li>
 
-                            <div class="options-input">
-                                <input type="text" placeholder="Enter options" @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" value="${ao.values}" />
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Symbol</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
+                                            value="${channelViewModel?.channel?.symbol}" tabindex="2" required />
+                                    </div>
+                                </div>
                             </div>
+                        </li>
 
-                            <a @click="${deleteOptionClick}" data-id="${ao.id}"><i class="material-icons">delete</i></a>
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Description</div>
 
-                        </div>
-                        `)}
+                                    <div id="${descriptionToolbarId}">
 
-                        <input type="hidden" name="attributeOptions" value="${JSON.stringify(attributeOptions)}" />
+                                        <select class="ql-header">
+                                            <option selected></option>
+                                            <option value="1">Heading</option>
+                                            <option value="2">Subheading</option>
+                                            <option value="3">Normal</option>
+                                        </select>
 
-                        <div class="row">
-                            <div class="col-30">
-                                <a class="button button-outline add-category-button" @click="${addCategoryClick}" tabindex="10">Add Category</a>
+
+                                        <!-- Add a bold button -->
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-strike"></button>
+                                        <button class="ql-underline"></button>
+
+                                    </div>
+
+                                    <div class="editor bg-color-white text-color-black channel-editor" id="${descriptionEditorId}" tabindex="3"></div>
+
+                                </div>
                             </div>
-                            <div class="col-70"></div>
-                        </div>
+                        </li>
 
-                    </div>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Collection Avatar</div>
+                                    <div class="item-input-wrap">
+
+                                        ${channelViewModel.coverImage ? $h`
+                                        <img class="cover-image-preview" src="${channelViewModel?.coverImage.url}" />
+
+                                        ` : $h`
+                                        <i class="material-icons cover-image-preview">image</i>
+                                        `}
+
+                                        <input type="button" class="button button-fill browse-file" value="Browse"
+                                            @click="${handleCoverImageBrowseClick}" tabindex="4" />
+                                        <input type="hidden" name="coverImageId" value="${channelViewModel?.coverImage?.cid}" />
+                                        <input type="file" id="cover-image-browse" style="display: none"
+                                            @change="${handleCoverImageChange}" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Collection Banner</div>
+                                    <div class="item-input-wrap">
+
+                                        ${channelViewModel?.coverBanner ? $h`
+                                        <img class="cover-banner-preview" src="${channelViewModel?.coverBanner.url}" />
+                                        ` : $h`
+                                        <i class="material-icons cover-banner-preview">image</i>
+                                        `}
+
+                                        <input type="button" class="button button-fill browse-file" value="Browse"
+                                            @click="${handleBannerBrowseClick}" tabindex="5" />
+                                        <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?.cid}" />
+                                        <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Category</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="category" placeholder="Category" id="category" tabindex="6" value="${channelViewModel?.channel?.category}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">License</div>
+
+                                    <div id="${licenseToolbarId}">
+
+                                        <!-- Add a bold button -->
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-strike"></button>
+                                        <button class="ql-underline"></button>
+
+                                    </div>
+
+                                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="3"></div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">External Link</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="link" placeholder="External Link" tabindex="8" value="${channelViewModel?.channel?.link}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="item-content item-input item-input-outline">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Language</div>
+                                <!-- additional "input-dropdown-wrap" class -->
+                                <div class="item-input-wrap input-dropdown-wrap">
+                                    <select name="language" tabindex="9">
+                                        ${languages.map( language => $h`
+                                            ${channelViewModel?.channel?.language == language ? $h`
+                                                <option value="${language}" selected >${language}</option>
+                                            ` : $h`
+                                                <option value="${language}">${language}</option>
+                                            `}
+                                        `)}
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Attribute Categories (eg Shirt, Size, Hat)</div>
+                                    <div>
+                
+                                        <p>Add attributes to give specific items special properties. Items can be sorted and filtered by
+                                            attribute.</p>
+                
+                                        <div>
+                                            <div class="category-name-label">Category Name</div>
+                                            <div class="options-label">Option Values</div>
+                                        </div>
+                
+                
+                                        ${attributeOptions?.map( (ao) => $h`
+                
+                                        <div id="category-${ao.id}">
+                
+                                            <div class="category-name-input">
+                                                <input type="text" placeholder="Category Name" @change="${categoryNameChange}" data-id="${ao.id}" value="${ao.traitType}" />
+                                            </div>
+                
+                                            <div class="options-input">
+                                                <input type="text" placeholder="Enter options" @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" value="${ao.values}" />
+                                            </div>
+                
+                                            <a @click="${deleteOptionClick}" data-id="${ao.id}"><i class="material-icons">delete</i></a>
+                
+                                        </div>
+                                        `)}
+                
+                                        <input type="hidden" name="attributeOptions" value="${JSON.stringify(attributeOptions)}" />
+                
+                                        <div class="row">
+                                            <div class="col-30">
+                                                <a class="button button-outline add-category-button" @click="${addCategoryClick}" tabindex="10">Add Category</a>
+                                            </div>
+                                            <div class="col-70"></div>
+                                        </div>
+                
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </li>
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Mint Price in ETH</div>
-                    <div class="item-input-wrap">
-                        <input type="number" placeholder="Enter price for one piece (eg 0.08)" @change="${mintPriceChange}" 
-                               step="any" tabindex="11" value="${channelViewModel?.channel?.mintPrice}" />
-                        <input type="hidden" name="mintPrice" value="${mintPrice}" />
-                    </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Themes</div>
+                                    <div>
+                
+                                        <p>A theme allows you to apply CSS formatting to an item. Create themes and then apply them to individual item.</p>
+                
+                                        <ul class="theme-list" style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
+                                            ${channelViewModel.themes?.map( (theme) => $h`
+                                                <li>
+                                                    <span class="theme-name">${theme.name}</span> 
+                                                    <a class="link theme-link edit-theme" href="#" data-id="${theme._id}">Edit</a>
+                                                    <a class="link theme-link delete-theme" href="#" data-id="${theme._id}">Delete</a>
+                                                </li>
+                                            `)}
+                                        </ul>
+
+
+
+                                
+                                        <div class="row">
+                                            <div class="col-30">
+                                                <a class="button button-outline add-theme-button popup-open" data-popup="${addThemePopup}" tabindex="10">Add Theme</a>
+                                            </div>
+                                            <div class="col-70"></div>
+                                        </div>
+                
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </li>
+        </div>
 
-        ${mintPrice ? $h`
-        <li tabindex="-1">
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-text"> You will receive <strong>${mintPrice}</strong> ETH (${mintPriceWei} wei) for
-                        each mint.</div>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Mint Price in ETH</div>
+                                    <div class="item-input-wrap">
+                                        <input type="number" placeholder="Enter price for one piece (eg 0.08)" @change="${mintPriceChange}" 
+                                               step="any" tabindex="11" value="${channelViewModel?.channel?.mintPrice}" />
+                                        <input type="hidden" name="mintPrice" value="${mintPrice}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                
+                        ${mintPrice ? $h`
+                        <li tabindex="-1">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-text"> You will receive <strong>${mintPrice}</strong> ETH (${mintPriceWei} wei) for
+                                        each mint.</div>
+                                </div>
+                            </div>
+                        </li>
+                        ` : $h``}
+                
+                        <li>
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Royalty %</div>
+                                    <div class="item-input-wrap">
+                                        <input type="number" name="royaltyPercent" placeholder="Royalty %" @change="${royaltyChange}" step="any"  tabindex="12" value="${channelViewModel?.channel?.royaltyPercent}" />
+                                        <input type="hidden" name="sellerFeeBasisPoints" value="${channelViewModel?.channel?.sellerFeeBasisPoints}" />
+                
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                
+                
+                        ${channelViewModel?.channel?.royaltyPercent ? $h`
+                        <li tabindex="-1">
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-text">
+                                        You will receive a <strong>${channelViewModel?.channel?.royaltyPercent}%</strong> for each sale on OpenSea, etc. Confirm this
+                                        value when you set up your
+                                        collection on the marketplace. This just presets it for you.
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        ` : $h``}
+                    </ul>
                 </div>
             </div>
-        </li>
-        ` : $h``}
+        </div>
 
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Royalty %</div>
-                    <div class="item-input-wrap">
-                        <input type="number" name="royaltyPercent" placeholder="Royalty %" @change="${royaltyChange}" step="any"  tabindex="12" value="${channelViewModel?.channel?.royaltyPercent}" />
-                        <input type="hidden" name="sellerFeeBasisPoints" value="${channelViewModel?.channel?.sellerFeeBasisPoints}" />
-
-                    </div>
-                </div>
-            </div>
-        </li>
+    </div>
 
 
-        ${channelViewModel?.channel?.royaltyPercent ? $h`
-        <li tabindex="-1">
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-text">
-                        You will receive a <strong>${channelViewModel?.channel?.royaltyPercent}%</strong> for each sale on OpenSea, etc. Confirm this
-                        value when you set up your
-                        collection on the marketplace. This just presets it for you.
-                    </div>
-                </div>
-            </div>
-        </li>
-        ` : $h``}
-
-
-    </ul>
 </template>
 
 <style>
@@ -318,9 +391,27 @@
         display: inline-block;
     }
 
-    .add-category-button {
+    .add-category-button, .add-theme-button {
         width: 250px;
     }
+
+    .theme-name {
+        width: 150px;
+        display: inline-block;
+    }
+
+    .theme-list {
+        border-top: 1px solid #cccccc;
+        border-bottom: 1px solid #cccccc;
+
+        
+    }
+
+    .theme-link {
+        margin-left: 10px;
+    }
+
+
 </style>
 
 
@@ -335,10 +426,11 @@
     import { WalletService } from "../../../service/core/wallet-service"
 
     import { ChannelService } from "../../../service/channel-service"
+    import { Theme } from "../../../dto/theme"
+
     import languages from "../../../util/languages"
 
     import HeaderRight from "../../admin/header-right.f7.html"
-    import ChannelForm from "../../admin/channel/form.f7.html"
 
 
     import moment from "moment"
@@ -501,6 +593,7 @@
         }
 
 
+
         let channelViewModel = props.channel
 
         let descriptionToolbarId = props.description_toolbar
@@ -508,6 +601,8 @@
 
         let licenseToolbarId = props.license_toolbar
         let licenseEditorId = props.license_editor
+
+        let addThemePopup = props.add_theme_popup
 
         let attributeOptions = []
 

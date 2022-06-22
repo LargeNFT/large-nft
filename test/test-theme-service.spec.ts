@@ -52,7 +52,7 @@ contract('ThemeService', async (accounts) => {
             await service.put(new Theme())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 1)
+            assert.strictEqual(ex.errors.length, 2)
         }
 
     })
@@ -78,6 +78,7 @@ contract('ThemeService', async (accounts) => {
         //Arrange
         let theme:Theme = Object.assign(new Theme(), {
             name: "Bob",
+            channelId: "xyz",
             coverImageCSS: "Really is bob",
             animationCSS: "https://bobshouse.com"
         })
@@ -112,6 +113,63 @@ contract('ThemeService', async (accounts) => {
 
     })
 
+
+    it("should listByChannel", async () => {
+
+        //Arrange
+        let theme1:Theme = Object.assign(new Theme(), {
+            name: "Bob",
+            channelId: "xyz",
+            coverImageCSS: "Really is bob",
+            animationCSS: "https://bobshouse.com"
+        })
+
+        let theme2:Theme = Object.assign(new Theme(), {
+            name: "Bob",
+            channelId: "xyz",
+            coverImageCSS: "Really is bob",
+            animationCSS: "https://bobshouse.com"
+        })
+
+        let theme3:Theme = Object.assign(new Theme(), {
+            name: "Bob",
+            channelId: "yyy",
+            coverImageCSS: "Really is bob",
+            animationCSS: "https://bobshouse.com"
+        })
+
+        //Act
+        await service.put(theme1)
+        await service.put(theme2)
+        await service.put(theme3)
+
+
+        //Read via permalinkKey
+        let list = await service.listByChannel("xyz", 10, 0)
+
+        assert.equal(list.length, 3)
+
+    })
+
+    it("should delete a theme", async () => {
+
+        //Arrange
+        let theme:Theme = await service.get(id1)
+
+        //Act
+        await service.delete(theme)
+
+        //Assert
+        let fetched
+        try {
+            fetched = await service.get(id1)
+            assert.fail('Did not fail')
+        } catch(ex) {}
+        
+
+        assert.equal(fetched, undefined)
+
+    })
 
 })
 

@@ -10,6 +10,7 @@ import { GitlabRepository } from "../../repository/gitlab-repository";
 import { ImageRepository } from "../../repository/image-repository";
 import { ItemRepository } from "../../repository/item-repository";
 import { PinningApiRepository } from "../../repository/pinning-api-repository";
+import { ThemeRepository } from "../../repository/theme-repository";
 
 @injectable()
 class SchemaService {
@@ -21,7 +22,8 @@ class SchemaService {
         private itemRepository:ItemRepository,
         private pinningApiRepository:PinningApiRepository,
         private gitlabRepository:GitlabRepository,
-        private animationRepository:AnimationRepository
+        private animationRepository:AnimationRepository,
+        private themeRepository:ThemeRepository
     ) {}
 
     async loadWallet(walletAddress:string) {
@@ -36,6 +38,7 @@ class SchemaService {
         await this.pinningApiRepository.load(walletAddress)
         await this.gitlabRepository.load(walletAddress)
         await this.animationRepository.load(walletAddress)
+        await this.themeRepository.load(walletAddress)
 
     }
 

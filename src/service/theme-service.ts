@@ -6,6 +6,7 @@ import { ValidationException } from "../util/validation-exception";
 import { WalletService } from "./core/wallet-service";
 import TYPES from "./core/types";
 import Hash from 'ipfs-only-hash'
+import { v4 as uuidv4 } from 'uuid';
 
 @injectable()
 class ThemeService {
@@ -24,14 +25,13 @@ class ThemeService {
   async put(theme: Theme) {
 
     if (!theme._id) {
+      theme._id = uuidv4()
       theme.dateCreated = new Date().toJSON()
+    } else {
+      theme.lastUpdated = new Date().toJSON()
     }
 
-    theme._id = Hash.of(JSON.stringify(theme))
-    
-    theme.lastUpdated = new Date().toJSON()
-
-
+  
     //Validate
     let errors: ValidationError[] = await validate(theme, {
       forbidUnknownValues: true,
@@ -43,6 +43,15 @@ class ThemeService {
     }
 
     await this.themeRepository.put(theme)
+  }
+
+  async delete(theme:Theme) {
+    return this.themeRepository.delete(theme)
+  }
+
+
+  async listByChannel(channelId: string, limit: number, skip: number): Promise<Theme[]> {
+    return this.themeRepository.listByChannel(channelId, limit, skip)
   }
 
 

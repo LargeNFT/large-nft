@@ -9,6 +9,9 @@ class Theme {
   _rev?:string
 
   @IsNotEmpty()
+  channelId?:string
+
+  @IsNotEmpty()
   name?: string
 
   @Allow()

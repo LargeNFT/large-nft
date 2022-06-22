@@ -10,6 +10,8 @@ import { Item } from "../dto/item"
 import he from 'he'
 import { ImageService } from "./image-service"
 import { QuillService } from "./quill-service"
+import { ThemeService } from "./theme-service"
+import { Theme } from "../dto/theme"
 
 @injectable()
 class AnimationService {
@@ -19,7 +21,8 @@ class AnimationService {
   constructor(
     private animationRepository: AnimationRepository,
     private quillService: QuillService,
-    private imageService:ImageService
+    private imageService:ImageService,
+    private themeService:ThemeService
 
   ) { }
 
@@ -64,6 +67,13 @@ class AnimationService {
 
     let content = await this.quillService.translateContent(item.content)
 
+    let theme:Theme
+
+    if (item.themeId) {
+      try {
+        theme = await this.themeService.get(item.themeId)
+      } catch(ex) {} //might not exist because it got deleted.
+    }
 
   
     if (item.coverImageAsAnimation) {
@@ -96,7 +106,7 @@ class AnimationService {
               object-fit: cover;
             }
 
-            ${item.animationCSS}
+            ${ theme ? theme.animationCSS : item.animationCSS}
 
           </style>
         </head>
@@ -158,7 +168,7 @@ class AnimationService {
                   margin-bottom: 0px;
                 }
 
-                ${item.animationCSS}
+                ${ theme ? theme.animationCSS : item.animationCSS}
 
               </style>
 

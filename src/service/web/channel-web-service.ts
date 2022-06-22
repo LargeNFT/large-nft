@@ -2,6 +2,7 @@ import { injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
+import { Theme } from "../../dto/theme";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
@@ -11,6 +12,7 @@ import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
 import { QuillService } from "../quill-service";
+import { ThemeService } from "../theme-service";
 import { ItemWebService } from "./item-web-service";
 
 @injectable()
@@ -22,7 +24,8 @@ class ChannelWebService {
         private authorService: AuthorService,
         private itemService:ItemService,
         private itemWebService:ItemWebService,
-        private quillService:QuillService
+        private quillService:QuillService,
+        private themeService:ThemeService
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -76,10 +79,14 @@ class ChannelWebService {
 
         }
 
+        let themes:Theme[] = await this.themeService.listByChannel(channel._id, 1000, 0)
+
+
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
 
         return {
             channel: channel,
+            themes: themes,
             coverImage: coverImage,
             coverBanner: coverBanner,
             author: author,

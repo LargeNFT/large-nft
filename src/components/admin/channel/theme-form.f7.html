@@ -1,0 +1,70 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="list">
+
+        <input type="hidden" name="_id"  value="${theme?._id}" />
+        <input type="hidden" name="_rev" value="${theme?._rev}" />
+        <input type="hidden" name="dateCreated" value="${theme?.dateCreated}" />
+
+        <ul>
+            <li>
+                <div class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Title</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="name" placeholder="Name"
+                                value="${theme?.name}" required  minlength="3" tabindex="1" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Cover Image CSS (SVG)</div>
+                        <div class="editor bg-color-white text-color-black css-editor" id="${coverImageCSSEditorId}" tabindex="2"></div>
+                    </div>
+                </div>
+            </li>
+    
+            <li>
+                <div class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Animation CSS (HTML)</div>
+                        <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="3"></div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+
+</template>
+
+<style>
+    
+</style>
+
+
+<script>
+
+    import { ContainerService } from "../../../service/core/container-service"
+
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let theme = props.theme
+
+        console.log(theme)
+
+        let coverImageCSSEditorId = props.cover_image_css_editor_id
+        let animationCSSEditorId = props.animation_css_editor_id
+
+        return $render
+    }
+
+</script>

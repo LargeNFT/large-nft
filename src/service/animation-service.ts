@@ -128,24 +128,6 @@ class AnimationService {
                       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
                   }
 
-                  @keyframes gradient {
-                    0% {
-                        background-position: 0% 50%;
-                    }
-                    25% {
-                        background-position: 50%% 50%;
-                    }
-                    50% {
-                        background-position: 100% 50%;
-                    }
-                    75% {
-                        background-position: 50% 50%;
-                    }
-                    100% {
-                        background-position: 0% 50%;
-                    }
-                }
-
                 .card {
                   
                   box-sizing: border-box;

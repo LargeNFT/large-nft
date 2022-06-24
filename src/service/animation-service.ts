@@ -13,6 +13,12 @@ import { QuillService } from "./quill-service"
 import { ThemeService } from "./theme-service"
 import { Theme } from "../dto/theme"
 
+const { forEach: each } = Array.prototype;
+
+
+import juice from "juice/client"
+
+
 @injectable()
 class AnimationService {
 
@@ -75,6 +81,14 @@ class AnimationService {
       } catch(ex) {} //might not exist because it got deleted.
     }
 
+    let css
+
+    if (theme) {
+      css = theme.animationCSS
+    } else {
+      css = item.animationCSS
+    }
+
   
     if (item.coverImageAsAnimation) {
 
@@ -82,47 +96,63 @@ class AnimationService {
 
       let imageSrc = await this.imageService.getUrl(image)
 
-      return `<!DOCTYPE html>
-      <html>
-        <head>
-          <style>
-            body { 
-              height: 100%; 
-              width: 100%;
-              margin: 0;
-              padding: 0;
+      return this.getFullImageTemplate(css, imageSrc)
 
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              overflow: hidden
-
-            }
-
-            img {
-              flex-shrink: 0;
-              min-width: 100%;
-              min-height: 100%
-              object-fit: cover;
-            }
-
-            ${ theme ? theme.animationCSS : item.animationCSS}
-
-          </style>
-        </head>
-
-        <body>
-          <img src="${imageSrc}" />
-        </body>
-      </html>`
     }
 
+
+    let result = this.getAnimationTemplate(item, content, css)
+
+
+    return juice(result)
+
+  }
+
+
+  getFullImageTemplate(css:string, imageSrc:string) {
+    return `<!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+        
+          body { 
+            height: 100%; 
+            width: 100%;
+            margin: 0;
+            padding: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden
+          }
+
+          img {
+            flex-shrink: 0;
+            min-width: 100%;
+            min-height: 100%
+            object-fit: cover;
+          }
+
+          ${css ? css : ''}
+
+        </style>
+      </head>
+
+      <body>
+        <img src="${imageSrc}" />
+      </body>
+    </html>`
+  }
+
+
+  getAnimationTemplate(item:Item, content:string, css:string) {
     return `<!DOCTYPE html>
         <html>
         
           <head>
               <meta charset="utf-8">
-              <title>${item.title}></title>
+              <title>${item.title}</title>
 
               <style>
 
@@ -168,7 +198,7 @@ class AnimationService {
                   margin-bottom: 0px;
                 }
 
-                ${ theme ? theme.animationCSS : item.animationCSS}
+                ${css ? css : ''}
 
               </style>
 
@@ -186,6 +216,9 @@ class AnimationService {
           </body>
         </html>`
   }
+
+
+
 
 }
 

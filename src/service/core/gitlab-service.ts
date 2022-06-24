@@ -257,6 +257,18 @@ class GitlabService {
             content: new TextDecoder("utf-8").decode(animationsContents)
         })
 
+        //Themes
+        let themesContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/themes.json`)) 
+
+        //Add create action
+        actions.push({
+            action: "create",
+            file_path: "backup/themes.json",
+            content: new TextDecoder("utf-8").decode(themesContents)
+        })
+
+
+
         //Get list of files in /metadata
         this.logPublishReaderProgress(`Saving NFT metadata...`)
         

@@ -116,7 +116,6 @@ class ChannelWebService {
     async upgrade(channel:Channel) {
 
         //Loop through each item. 
-
         let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
 
 
@@ -125,13 +124,37 @@ class ChannelWebService {
             //Build contentHTML for searching
             item.contentHTML = await this.quillService.translateContent(item.content, true)
 
+
+
             //Resave
             let updated = Object.assign(new Item(), item)
             await this.itemService.put(updated)
 
         }
 
+    }
 
+    async regenerateItemMedia(channel:Channel) {
+
+        //Loop through each item. 
+        let items:Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
+
+
+        for (let item of items) {
+
+            //Save the cover image 
+            await this.itemWebService.saveGeneratedCoverImage(item)
+
+            //And the animation
+            await this.itemWebService.saveAnimation(item)
+
+            //Resave
+            let updated = Object.assign(new Item(), item)
+            await this.itemService.put(updated)
+
+            console.log(updated)
+
+        }
     }
 
 

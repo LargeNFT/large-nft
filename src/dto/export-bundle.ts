@@ -5,6 +5,7 @@ import { Animation } from "./animation"
 import { ContractMetadata } from "./contract-metadata"
 import { Item } from "./item"
 import { Image } from "./image"
+import { Theme } from "./theme"
 
 
 interface ExportBundle {
@@ -14,6 +15,8 @@ interface ExportBundle {
     author: Author
     images: Image[]
     animations: Animation[]
+    themes: Theme[]
+
 
     contractMetadata: ContractMetadata
 }

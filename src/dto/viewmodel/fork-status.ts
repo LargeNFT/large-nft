@@ -4,6 +4,7 @@ interface ForkStatus {
     items: Status 
     images: Status
     animations: Status
+    themes:Status
 }
 
 interface Status {

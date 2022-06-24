@@ -179,7 +179,6 @@ class ItemWebService {
         const channel:Channel = await this.channelService.get(channelId)
 
         for (let item of items) {
-            console.log(item)
             result.push(await this.getViewModel(item, channel))
         }
 
@@ -259,7 +258,7 @@ class ItemWebService {
 
     }
 
-    async saveGeneratedCoverImage(item:Item) {
+    async saveGeneratedCoverImage(item:Item) : Promise<Image> {
 
         let images = await this.getImagesFromContent(item)
 
@@ -292,11 +291,11 @@ class ItemWebService {
 
         }
 
-        
+        return image
 
     }
 
-    async saveAnimation(item:Item) {
+    async saveAnimation(item:Item) : Promise<Animation> {
 
         let content = await this.animationService.buildAnimationPage(item)
 
@@ -309,6 +308,8 @@ class ItemWebService {
         } //Might already exist. That's fine.  
 
         item.animationId = animation._id
+
+        return animation
     }
 
 }

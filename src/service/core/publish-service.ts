@@ -23,6 +23,8 @@ import { AnimationService } from "../animation-service"
 
 import Hash from 'ipfs-only-hash'
 import { QuillService } from "../quill-service"
+import { ThemeService } from "../theme-service"
+import { Theme } from "../../dto/theme"
 
 
 @injectable()
@@ -36,6 +38,7 @@ class PublishService {
         private imageService: ImageService,
         private animationService:AnimationService,
         private quillService:QuillService,
+        private themeService:ThemeService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }
@@ -48,8 +51,11 @@ class PublishService {
         //Get author
         const author = await this.authorService.get(channel.authorId)
 
+        //Get themes
+        const themes = await this.themeService.listByChannel(channel._id, 1000, 0)
+
         //Export metadata
-        let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, this.walletService.address)
+        let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, themes, this.walletService.address)
         let cid: string = await this.exportToIPFS(exportBundle)
 
 
@@ -63,12 +69,13 @@ class PublishService {
 
     }
 
-    async prepareExport(originalChannel: Channel, originalItems: Item[], originalAuthor: Author, ownerAddress:string) : Promise<ExportBundle> {
+    async prepareExport(originalChannel: Channel, originalItems: Item[], originalAuthor: Author, originalThemes:Theme[], ownerAddress:string) : Promise<ExportBundle> {
 
         //Clone
         let channel = JSON.parse(JSON.stringify(originalChannel))
         let items = JSON.parse(JSON.stringify(originalItems))
         let author = JSON.parse(JSON.stringify(originalAuthor))
+        let themes = JSON.parse(JSON.stringify(originalThemes))
 
         //Remove publishing related field from channel
         delete channel.contractAddress
@@ -184,6 +191,14 @@ class PublishService {
             animations.push(animation)
         }
 
+        //Clean up themes
+        for (let theme of themes) {
+
+            delete theme._rev
+            // delete image.dateCreated
+            delete theme["_rev_tree"]
+        }
+
 
         return {
 
@@ -193,6 +208,7 @@ class PublishService {
             channel: channel,
             items: items,
             author: author,
+            themes: themes,
 
             contractMetadata: await this.channelService.exportContractMetadata(channel, ownerAddress)
 
@@ -218,7 +234,14 @@ class PublishService {
          * BACKUP FOR READER
         */
         // let backupPath = `${directory}/backup`
-        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author, exportBundle.images, exportBundle.animations)
+        let backup = await this.createBackup(
+            exportBundle.channel, 
+            exportBundle.items, 
+            exportBundle.author, 
+            exportBundle.images, 
+            exportBundle.animations, 
+            exportBundle.themes
+        )
 
         let publishStatus:PublishStatus = {
 
@@ -233,7 +256,8 @@ class PublishService {
                 authors: { saved: 0, total: 1 }, 
                 items: { saved: 0, total: backup.items.length },
                 images: { saved: 0, total: backup.images.length },
-                animations: { saved: 0, total: backup.animations.length }
+                animations: { saved: 0, total: backup.animations.length },
+                themes: { saved: 0, total: backup.themes.length }
             }
         }
 
@@ -383,6 +407,11 @@ class PublishService {
         publishStatus.backups.animations.saved = backup.animations.length
         this.logPublishProgress(publishStatus)
 
+        //Write themes backup
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/themes.json`,  new TextEncoder().encode(JSON.stringify(backup.themes)) , { create: true, parents: true, flush: flush })
+        publishStatus.backups.themes.saved = backup.themes.length
+        this.logPublishProgress(publishStatus)
+
 
         await this.ipfsService.ipfs.files.flush(`/export/${exportBundle.channel._id}/`)
 
@@ -397,7 +426,7 @@ class PublishService {
 
     }
 
-    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[], animations:Animation[]) {
+    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[], animations:Animation[], themes:Theme[]) {
 
         //Look up any data we need to add to the bundle
 
@@ -467,7 +496,8 @@ class PublishService {
             authors: [author],
             items: items,
             images: backupImages,
-            animations: animations      
+            animations: animations,
+            themes: themes      
         }
 
     }

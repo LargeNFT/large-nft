@@ -57,6 +57,7 @@ import ListIndex from 'framework7/components/list-index'
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
 import Popup from 'framework7/components/popup'
+import Accordion from 'framework7/components/accordion'
 
 import Form from 'framework7/components/form'
 import Input from 'framework7/components/input'
@@ -81,7 +82,7 @@ import { ThemeRepository } from './repository/theme-repository';
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
-  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup
+  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup,Accordion
 ])
 
 

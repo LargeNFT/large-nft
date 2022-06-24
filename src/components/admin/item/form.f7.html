@@ -1,6 +1,8 @@
 <!--suppress JSAnnotator -->
 <template>
-    <ul>
+
+    <div>
+
         <input type="hidden" name="_id" value="${itemViewModel?.item?._id}" />
         <input type="hidden" name="_rev" value="${itemViewModel?.item?._rev}" />
         <input type="hidden" name="dateCreated" value="${itemViewModel?.item?.dateCreated}" />
@@ -9,215 +11,247 @@
         <input type="hidden" name="showExcerpt" value="${itemViewModel.item.excerpt?.length > 0 ? 'true' : 'false'}" />
         <input type="hidden" name="coverImageAsAnimation" value="${itemViewModel.item.coverImageAsAnimation ? 'true' : 'false'}" />
 
+        <div class="card">
+            <div class="card-content">
+                <div class="list">
+                    <ul>
 
-        <li>
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Title</div>
-                    <div class="item-input-wrap">
-                        <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
-                             id="title-header-input" @keyup="${titleOnKeyup}"  />
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-input">
-                <div class="item-inner post-area">
-                    <div class="item-title item-label">Content</div>
-
-                    <div id="${toolbarId}">
-
-                        <select class="ql-header">
-                            <option selected></option>
-                            <option value="1">Heading</option>
-                            <option value="2">Subheading</option>
-                        </select>
-
-
-                        <!-- Add a bold button -->
-                        <button class="ql-bold"></button>
-                        <button class="ql-italic"></button>
-                        <button class="ql-strike"></button>
-                        <button class="ql-underline"></button>
-                        <button class="ql-link"></button>
-
-
-
-                        <!-- Add subscript and superscript buttons -->
-                        <button class="ql-script" value="sub"></button>
-                        <button class="ql-script" value="super"></button>
-
-                        <button class="text-editor-button image-button"><i class="material-icons">image</i></button>
-                        <label><input type="file" class="image-button-input" /></label>
-                    </div>
-
-                    <div class="editor bg-color-white text-color-black" id="${editorId}"></div>
-                </div>
-            </div>
-        </li>
-
-
-        <li class="cover-photo-preview">
-
-            ${itemViewModel?.coverImage ? $h`
-                <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
-            ` : $h`
-                <input type="hidden" name="coverImageId" value="" />
-            `}
-
-            <div class="item-content item-input">
-                <div class="item-inner">
-                    <div class="item-title item-label">Cover Image</div>
-                    <div class="item-input-wrap">
-
-                        ${itemViewModel?.images?.length > 0 ? $h`
-                            
-                            ${itemViewModel?.images?.map( (image) => $h`
-                                <img class="cover-image-thumbnail ${ (  (image?.cid == itemViewModel.coverImage?.cid) || (itemViewModel.coverImage == undefined && image.generated == true) )  ? 'selected' : ''}  "
-                                    src="${image.url}" data-id="${image.cid}" @click=${coverImageClick} />
-                            `)}                            
-                        ` : $h`
-                            <p>No images</p>
-                        `}  
-
-                        <button class="button button-outline clear-button margin-bottom" @click="${coverImageClearClick}">Clear</button>
-
-                    </div>
-                </div>
-            </div>
-
-        </li>
-
-
-        <li>
-            <label class="item-checkbox item-content">
-
-                ${itemViewModel.item.excerpt?.length > 0 ? $h`
-                    <input type="checkbox" checked="true"  @change="${showExcerptOnChange}" />
-                ` : $h`
-                    <input type="checkbox"  @change="${showExcerptOnChange}" />
-                `}
-
-                
-                <i class="icon icon-checkbox"></i>
-                <div class="item-inner">
-                    <div class="item-title-row">
-                        <div class="item-title">Show Excerpt</div>
-                    </div>
-                    <div class="item-text">
-                        If this box is checked the Reader will display a ~500 character excerpt in the timeline for this item. Otherwise it will show the full HTML. The full HTML will always display on the item detail page.
-                    </div>
-                </div>
-            </label>
-        </li>
-
-        <li class="item-content item-input">
-            <div class="item-inner">
-                <div class="item-title item-label">Theme</div>
-                <!-- additional "input-dropdown-wrap" class -->
-                <div class="item-input-wrap input-dropdown-wrap">
-                <select name="themeId" @change="${themeIdChange}">
-                    <option value="">None</option>
-
-                    ${themes?.map( (theme) => $h`
-
-                        ${theme._id === itemViewModel.item.themeId ? $h`
-                            <option value="${theme._id}" selected>${theme.name}</option>
-                        ` : $h`
-                            <option value="${theme._id}">${theme.name}</option>
-                        `}
-
-                        
-                    `)}
-                </select>
-                </div>
-            </div>
-        </li>
-
-
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Cover Image CSS (SVG)</div>
-                    <div class="editor bg-color-white text-color-black css-editor" id="${coverImageCSSEditorId}" tabindex="3"></div>
-                </div>
-            </div>
-        </li>
-
-        <li>
-            <div class="item-content item-input item-input-outline">
-                <div class="item-inner">
-                    <div class="item-title item-label">Animation CSS (HTML)</div>
-                    <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
-                </div>
-            </div>
-        </li>
-
-
-        <li>
-            <label class="item-checkbox item-content">
-
-                ${itemViewModel.item.coverImageAsAnimation ? $h`
-                    <input type="checkbox" checked="true"  @change="${coverImageAsAnimationOnChange}" />
-                ` : $h`
-                    <input type="checkbox"  @change="${coverImageAsAnimationOnChange}" />
-                `}
-
-                
-                <i class="icon icon-checkbox"></i>
-                <div class="item-inner">
-                    <div class="item-title-row">
-                        <div class="item-title">Show Cover Image As Animation</div>
-                    </div>
-                    <div class="item-text">
-                        If this box is checked the animation will only display the cover image. All other content will be ignored.
-                    </div>
-                </div>
-            </label>
-        </li>
-
-
-
-
-
-        ${itemViewModel.attributeSelections?.length > 0 ? $h`
-
-            <div class="block-title">Attributes</div>
-
-            ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
-                <li>
-                    <div class="item-content item-input">
-                        <div class="item-inner">
-                            <div class="item-title item-label">${attributeSelectionViewModel?.traitType}</div>
-                            <div class="item-input-wrap">
-
-                                <select @change="${valueNameChange}" class="value-input"
-                                    data-id="${attributeSelectionViewModel?.id}">
-
-                                    ${attributeSelectionViewModel?.values?.map( v => $h`
-
-                                    ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
-                                    <option value="${v}" selected>${v}</option>
-                                    ` : $h`
-                                    <option value="${v}">${v}</option>
-                                    `}
-
-                                    `)}
-
-                                </select>
-
-
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Title</div>
+                                    <div class="item-input-wrap">
+                                        <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
+                                             id="title-header-input" @keyup="${titleOnKeyup}"  />
+                                    </div>
+                                </div>
                             </div>
+                        </li>
+                
+                        <li>
+                            <div class="item-content item-input">
+                                <div class="item-inner post-area">
+                                    <div class="item-title item-label">Content</div>
+                
+                                    <div id="${toolbarId}">
+                
+                                        <select class="ql-header">
+                                            <option selected></option>
+                                            <option value="1">Heading</option>
+                                            <option value="2">Subheading</option>
+                                        </select>
+                
+                
+                                        <!-- Add a bold button -->
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-strike"></button>
+                                        <button class="ql-underline"></button>
+                                        <button class="ql-link"></button>
+                
+                
+                
+                                        <!-- Add subscript and superscript buttons -->
+                                        <button class="ql-script" value="sub"></button>
+                                        <button class="ql-script" value="super"></button>
+                
+                                        <button class="text-editor-button image-button"><i class="material-icons">image</i></button>
+                                        <label><input type="file" class="image-button-input" /></label>
+                                    </div>
+                
+                                    <div class="editor bg-color-white text-color-black" id="${editorId}"></div>
+                                </div>
+                            </div>
+                        </li>
+                                
+                        <li class="cover-photo-preview">
+                
+                            ${itemViewModel?.coverImage ? $h`
+                                <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
+                            ` : $h`
+                                <input type="hidden" name="coverImageId" value="" />
+                            `}
+                
+                            <div class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Cover Image</div>
+                                    <div class="item-input-wrap">
+                
+                                        ${itemViewModel?.images?.length > 0 ? $h`
+                                            
+                                            ${itemViewModel?.images?.map( (image) => $h`
+                                                <img class="cover-image-thumbnail ${ (  (image?.cid == itemViewModel.coverImage?.cid) || (itemViewModel.coverImage == undefined && image.generated == true) )  ? 'selected' : ''}  "
+                                                    src="${image.url}" data-id="${image.cid}" @click=${coverImageClick} />
+                                            `)}                            
+                                        ` : $h`
+                                            <p>No images</p>
+                                        `}  
+                
+                                        <button class="button button-outline clear-button margin-bottom" @click="${coverImageClearClick}">Clear</button>
+                
+                                    </div>
+                                </div>
+                            </div>
+                
+                        </li>
+                
+                        <li>
+                            <label class="item-checkbox item-content">
+                
+                                ${itemViewModel.item.excerpt?.length > 0 ? $h`
+                                    <input type="checkbox" checked="true"  @change="${showExcerptOnChange}" />
+                                ` : $h`
+                                    <input type="checkbox"  @change="${showExcerptOnChange}" />
+                                `}
+                
+                                
+                                <i class="icon icon-checkbox"></i>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">Show Excerpt</div>
+                                    </div>
+                                    <div class="item-text">
+                                        If this box is checked the Reader will display a ~500 character excerpt in the timeline for this item. Otherwise it will show the full HTML. The full HTML will always display on the item detail page.
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Attributes</div>
+            <div class="card-content">
+                <div class="list">
+                    <ul>
+
+                        ${itemViewModel.attributeSelections?.length > 0 ? $h`
+
+                            ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">${attributeSelectionViewModel?.traitType}</div>
+                                            <div class="item-input-wrap">
+                
+                                                <select @change="${valueNameChange}" class="value-input"
+                                                    data-id="${attributeSelectionViewModel?.id}">
+                
+                                                    ${attributeSelectionViewModel?.values?.map( v => $h`
+                
+                                                    ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
+                                                    <option value="${v}" selected>${v}</option>
+                                                    ` : $h`
+                                                    <option value="${v}">${v}</option>
+                                                    `}
+                
+                                                    `)}
+                
+                                                </select>
+                
+                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            `)}
+                        ` : $h``}
+                
+                        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="list accordion-list inset">
+            <ul>
+                <li class="accordion-item customize-accordion">
+                    <a href="#" class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Customize</div>
+                        </div>
+                    </a>
+                    <div class="accordion-item-content">
+                        <div class="list">
+                            <ul>
+        
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Theme</div>
+                                        <!-- additional "input-dropdown-wrap" class -->
+                                        <div class="item-input-wrap input-dropdown-wrap">
+                                        <select name="themeId" @change="${themeIdChange}">
+                                            <option value="">None</option>
+                        
+                                            ${themes?.map( (theme) => $h`
+                        
+                                                ${theme._id === itemViewModel.item.themeId ? $h`
+                                                    <option value="${theme._id}" selected>${theme.name}</option>
+                                                ` : $h`
+                                                    <option value="${theme._id}">${theme.name}</option>
+                                                `}
+                        
+                                                
+                                            `)}
+                                        </select>
+                                        </div>
+                                    </div>
+                                </li>
+                        
+                                <li>
+                                    <div class="item-content item-input item-input-outline">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Cover Image CSS (SVG)</div>
+                                            <div class="editor bg-color-white text-color-black css-editor" id="${coverImageCSSEditorId}" tabindex="3"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                        
+                                <li>
+                                    <div class="item-content item-input item-input-outline">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Animation CSS (HTML)</div>
+                                            <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
+                                        </div>
+                                    </div>
+                                </li>
+                        
+                                <li>
+                                    <label class="item-checkbox item-content">
+                        
+                                        ${itemViewModel.item.coverImageAsAnimation ? $h`
+                                            <input type="checkbox" checked="true"  @change="${coverImageAsAnimationOnChange}" />
+                                        ` : $h`
+                                            <input type="checkbox"  @change="${coverImageAsAnimationOnChange}" />
+                                        `}
+                        
+                                        
+                                        <i class="icon icon-checkbox"></i>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">Show Cover Image As Animation</div>
+                                            </div>
+                                            <div class="item-text">
+                                                If this box is checked the animation will only display the cover image. All other content will be ignored.
+                                            </div>
+                                        </div>
+                                    </label>
+                                </li>
+                        
+                            </ul>
                         </div>
                     </div>
                 </li>
-            `)}
-        ` : $h``}
+            </ul>
+        </div>
 
-        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
 
-    </ul>
+    </div>
 
 
 
@@ -281,8 +315,6 @@
                 coverImageCSS: itemViewModel.item.coverImageCSS,
                 themeId: itemViewModel.item.themeId
             })
-
-            console.log(itemViewModel.images)
 
             //If we just have the text baesd one select it.
             if (itemViewModel.images?.length == 1) {

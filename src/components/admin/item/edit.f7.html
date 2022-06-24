@@ -154,8 +154,6 @@
         delete item.excerpt
       }
 
-
-
       //Build contentHTML for searching
       item.contentHTML = await quillService.translateContent(item.content, true)
 
@@ -298,6 +296,16 @@
         animationCSSQuillEditor.setText(itemViewModel.item.animationCSS)
       }
       
+
+      //Expand customize box if set
+      if (itemViewModel.item.themeId || itemViewModel.item.coverImageCSS || 
+          itemViewModel.item.animationCSS || itemViewModel.item.coverImageAsAnimation) {
+
+        $f7.accordion.open('.customize-accordion')
+
+
+      }
+
 
 
     })

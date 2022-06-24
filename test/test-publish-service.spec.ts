@@ -75,6 +75,7 @@ contract('PublishService', async (accounts) => {
         ipfsService = container.get(IpfsService)
         animationService = container.get(AnimationService)
 
+        await ipfsService.init()
         await schemaService.loadWallet(user0)
 
 

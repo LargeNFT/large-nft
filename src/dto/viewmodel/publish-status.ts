@@ -12,6 +12,7 @@ interface PublishStatus {
         items: Status 
         images: Status
         animations: Status
+        themes:Status
     }
 
 

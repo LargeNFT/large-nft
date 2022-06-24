@@ -15,7 +15,7 @@
             <li>Upgrade Collection</li>
           </ul>
 
-          <form class="block list" id="upgrade-channel-form" @submit="${formSubmit}">
+          <div class="block list">
 
             <p>This screen is used to update a collection to the latest database structure. Currently this is a 
             diagnostic level tool and should only be used if you have backed up the data.</p>
@@ -23,17 +23,12 @@
             <p>The effect is like opening each item individually and resaving it.</p>
 
 
-            <div class="row block">
+            <button class="button button-fill" @click="${regenerateAnimationsClick}">
+              Regenerate Animations
+            </button>
 
-              <div class="col-70"></div>
+          </div>
 
-              <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-                <i class="material-icons">upgrade</i> Upgrade
-              </button>
-
-            </div>
-
-          </form>
         </div>
       </div>
 
@@ -83,7 +78,21 @@
 
     }
 
+    const regenerateAnimationsClick = async (e) => {
+      
+      e.preventDefault()
+
+      try {
+        await channelWebService.regenerateItemMedia(channelViewModel.channel)
+      } catch(ex) {
+        $f7.dialog.alert(ex.errors, "There was an error")
+      }
+
+    }
+
     $on('pageInit', async (e, page) => {
+      
+
 
     })
 

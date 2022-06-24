@@ -104,7 +104,7 @@
 
     "inversify": "6.0.1",
 
-    "ipfs-core": "0.15.2",
+    "ipfs-core": "0.15.3",
     "ipfs-only-hash": "4.0.0",
 
     "ethers": "5.5.4",
@@ -128,6 +128,7 @@
     "browserify-fs": "1.0.0",
     "dgram-browserify": "0.0.13",
     "https-browserify": "1.0.0",
+
     "url": "0.11.0",
     "util": "0.12.4",
 
@@ -155,7 +156,9 @@
     "@svgdotjs/svg.js": "3.1.2",
     "html-truncate": "1.2.2",
 
-    "highlight.js": "11.5.1"
+    "highlight.js": "11.5.1",
+
+    "juice": "8.0.0"
 
   }
 }

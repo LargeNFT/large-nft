@@ -651,3 +651,15 @@ ul.breadcrumb li a:hover {
   font-weight: bold;
   margin-left: 10px;
 }
+
+
+
+
+
+
+.animation-card {
+  overflow:auto; 
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+

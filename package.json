@@ -9,6 +9,7 @@
   "scripts": {
     "start:dev": "node node_modules/webpack/bin/webpack.js serve --config=webpack.dev.ts",
     "test": "cd test && truffle test",
+    "electron": "electron ./src/electron.js",
     "build": "node node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",
     "build:dev": "node node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",
     "build:reader": "node node_modules/webpack/bin/webpack.js --config=webpack.reader.ts"
@@ -91,7 +92,9 @@
 
     "http-server": "14.1.0",
 
-    "ipfs": "0.63.3"
+    "ipfs": "0.63.3",
+
+    "electron": "19.0.6"
 
   },
 
@@ -158,7 +161,9 @@
 
     "highlight.js": "11.5.1",
 
-    "juice": "8.0.0"
+    "juice": "8.0.0",
+
+    "@xmldom/xmldom": "0.8.2"
 
   }
 }

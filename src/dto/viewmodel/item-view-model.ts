@@ -15,6 +15,7 @@ interface ItemViewModel {
     coverImage?:ImageViewModel
     animation?:AnimationViewModel
     contentHTML?:string
+    animationContentHTML?:string
 
     theme?:Theme
 

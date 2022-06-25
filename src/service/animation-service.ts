@@ -156,20 +156,19 @@ class AnimationService {
 
               <style>
 
-                  html {
+                html {
                     height:100%;
-                  } 
+                } 
 
-                  body {
+                body {
                       padding: 0;
                       margin: 0;
                       box-sizing: border-box;
                       height: 100%;
                       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-                  }
+                }
 
-                .card {
-                  
+                .animation-container {
                   box-sizing: border-box;
                   padding: 20px;
                   width:100%;
@@ -178,7 +177,6 @@ class AnimationService {
                   font-size: 20px;
                   border: 5px solid #4e82b1;
                   float: left;
-
                 }
 
                 img { 
@@ -206,11 +204,9 @@ class AnimationService {
 
           <body>
 
-            <div class="card">
-              <div class="card-content">
-                <h4><b>${item.title ? item.title : ''} <span class="token-id">#${item.tokenId}</span></b></h4>
-                ${content}
-              </div>
+            <div class="animation-container">
+              <h4><b>${item.title ? item.title : ''} <span class="token-id">#${item.tokenId}</span></b></h4>
+              ${content}
             </div>
 
           </body>

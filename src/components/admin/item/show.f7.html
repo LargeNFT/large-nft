@@ -26,13 +26,9 @@
 
           <div class="card item-card-show">
 
-            <div class="card-header">
-              <span>${itemViewModel.item.title} <span class="item-show-token-id">#${itemViewModel.item.tokenId}</span></span>
-            </div>
+            <div class="card-content">
 
-            <div class="card-content card-content-padding">
-
-              <div class="content" innerHTML="${itemViewModel.contentHTML}"
+              <div class="content" innerHTML="${itemViewModel.animationContentHTML}"
                 id="item-content-${itemViewModel.item._id}">
               </div>
 

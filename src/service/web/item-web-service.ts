@@ -21,6 +21,9 @@ import { QuillService } from "../quill-service";
 import { ThemeService } from "../theme-service";
 import { Theme } from "../../dto/theme";
 
+const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
+const parser = new DOMParser()
+
 @injectable()
 class ItemWebService {
 
@@ -60,6 +63,9 @@ class ItemWebService {
         let coverImage: ImageViewModel
         let authorPhoto:ImageViewModel
 
+        let animationContentHTML
+
+
         let attributeSelections:AttributeSelectionViewModel[] = []
 
         let author: Author
@@ -85,7 +91,28 @@ class ItemWebService {
                 cid: a.cid,
                 content: he.unescape(a.content)
             }
+
+            let page = parser.parseFromString(a.content, 'text/html')
+
+            let body = page.getElementsByTagName('body')[0]
+            
+            animationContentHTML = he.unescape(new XMLSerializer().serializeToString(body))
+
+            //Swap body tag to a div
+            animationContentHTML = "<div" + animationContentHTML.slice(5)
+            animationContentHTML = animationContentHTML.substring(0, animationContentHTML.length - 7) + "</div>"
+
         }
+
+
+        //Get animation
+        if (item.animationId) {
+
+
+        }
+
+
+
 
         //Get author
         if (channel.authorId) {
@@ -144,6 +171,7 @@ class ItemWebService {
             item: item,
             theme: theme,
             contentHTML: await this.quillService.translateContent(item.content),
+            animationContentHTML: animationContentHTML,
             dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
             channel: channel,
             coverImage: coverImage,

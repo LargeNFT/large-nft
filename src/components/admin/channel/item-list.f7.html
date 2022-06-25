@@ -19,60 +19,47 @@
 
             ${items?.map( (itemViewModel) => $h`
             
-              <li class="card item-card">
-
-                <div class="card-content">
-
-                    <div class="card-content card-content-padding">
-
-                      ${itemViewModel.item.excerpt ? $h`
+              ${itemViewModel.item.excerpt ? $h`
                             
-                          <div class="item-preview">
+                <li class="card item-card">
 
-                            <div class="left">
+                  <div class="card-content">
+                      <div class="card-content card-content-padding">
+                        <div class="item-preview">
 
-                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
-                                ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                              </a>  
-                              
-                              ${itemViewModel.item.excerpt ? $h`
-                                <p>${itemViewModel.item.excerpt}</p>
-                              ` : `<span/>`}
-
-                            </div>
-
-                            ${itemViewModel.coverImage ? $h`
-                              <div class="right">
-                                <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
-                                  <img src="${itemViewModel.coverImage.url}" />
-                                </a>
-                              </div>
-                            ` : $h`<span/>`}
-
-                          </div> 
-
-                      ` : $h`
-
-                          <div class="item-preview">
-
-                            <div class="left">
-                              
-                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
-                                ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                              </a> 
-
-                              <div class="content" innerHTML="${itemViewModel.contentHTML}"></div>
-
-                            </div>
-
+                          <div class="left">
+        
+                            <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
+                              ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                            </a>  
+                            
+                            ${itemViewModel.item.excerpt ? $h`
+                              <p>${itemViewModel.item.excerpt}</p>
+                            ` : `<span/>`}
+        
                           </div>
+        
+                          ${itemViewModel.coverImage ? $h`
+                            <div class="right">
+                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
+                                <img src="${itemViewModel.coverImage.url}" />
+                              </a>
+                            </div>
+                          ` : $h`<span/>`}
+        
+                        </div> 
+                      </div>
+                  </div>
+                </li>
 
-                      `}
+              ` : $h`
 
-                       
-                    </div>
-                </div>
-              </li>
+                <li class="card animation-card" 
+                    innerHTML="${itemViewModel.animationContentHTML}"
+                    data-href="/admin/item/show/${itemViewModel.item._id}"
+                ></li>
+
+              `}
             
             `)}
 
@@ -208,6 +195,7 @@
         let pagingViewModel = props.paging
 
         let loadingItems = false
+
 
         const goFormSubmit = async (e) => {
           

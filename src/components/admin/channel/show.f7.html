@@ -291,6 +291,23 @@
         
       }
       
+
+      $(`.animation-container a`).addClass('external')
+
+      $('.animation-card').on('click', (e) => {
+
+        const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a"
+
+        if (!islink) {
+          let href = $(e.currentTarget).data('href')
+          $f7.views.main.router.navigate(href)
+        } 
+
+      })
+
+
+
+
     })
 
 

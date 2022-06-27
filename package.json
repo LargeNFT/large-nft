@@ -163,7 +163,8 @@
 
     "juice": "8.0.0",
 
-    "@xmldom/xmldom": "0.8.2"
+    "@xmldom/xmldom": "0.8.2",
+    "mini-svg-data-uri": "1.4.4"
 
   }
 }

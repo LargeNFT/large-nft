@@ -15,6 +15,7 @@ import { Theme } from "../dto/theme"
 import { ThemeService } from "./theme-service"
 
 const truncate = require('html-truncate')
+import svgToMiniDataURI from 'mini-svg-data-uri'
 
 
 @injectable()
@@ -118,7 +119,9 @@ class ImageService {
   }
 
   public svgToDataURL(svgStr) {  
-    return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
+    return svgToMiniDataURI(svgStr)
+
+    // return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
   }
 
 
@@ -152,33 +155,6 @@ class ImageService {
 
 
   }
-
-
-  // public async newFromQuillOps(ops) {
-  //   let content = await this.quillService.translateContent({ops:ops})
-  //   return this.newFromText(content)
-  // }
-
-  // public async newFromText(content) {
-  
-  //   let excerpt = this.getExcerptByFirstParagraph(content, {
-  //     pruneLength: 500
-  //   })
-
-  //   if (!excerpt || excerpt.length == 0) { 
-  //     throw new Error("No text") 
-  //   }
-
-  //   const image: Image = new Image()
-
-  //   image.svg = await this.svgService.fromText(excerpt)
-
-  //   image.cid = await Hash.of(image.svg)
-  //   image.generated = true
-    
-  //   return image
-
-  // }
 
 
   //Grabbing from the 

@@ -13,7 +13,7 @@ class SvgService {
 
 
         if (title) {
-            text = `<span class='title'>${title}</span><br /><br /><span class='text'>${text}</span>`
+            text = `<span class='svg-title'>${title}</span><br /><br /><span class='svg-text'>${text}</span>`
         }
 
 
@@ -62,31 +62,30 @@ class SvgService {
                     }
                 }
 
-                .container {
-                    background: linear-gradient(-45deg, #cccccc, #eff3f8, #B0C7DC, #FFFFFF );
+
+                .svg-h1 {
+
+                    border: 5px solid rgb(78,130,177);
+                    
+                    background: linear-gradient(-45deg, rgb(204,204,204), rgb(239,243,248), rgb(176,199,220), rgb(255,255,255) );
                     background-size: 400% 400%;
                     animation: gradient 15s ease infinite;
-                    height: 100%;
-                    width:100%;
-                    border: 5px solid #4e82b1;
-                }
 
-                h1 {
                     text-align: center;
                     font-size: ${fontSize};
-                    margin: 70px;            
+                    padding: 70px;            
                     line-height: var(--lh);
-                    height: 1050px;
-                    width: 1050px;  
-                    -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);        
+                    height: 1200px;
+                    width: 1200px;  
+                    -webkit-mask-image: linear-gradient(180deg, rgb(0,0,0) 60%, transparent);        
                 }
 
-                .title {
+                .svg-title {
                     font-weight: 700;
                     font-size: 1.25em;
                 }
 
-                .text {
+                .svg-text {
                     width: 100%;
                     font-weight: 500;
                 }
@@ -95,8 +94,8 @@ class SvgService {
 
             </style>
             <g>
-                <foreignObject x='0' y='0' width='1200' height='1200' class="container">
-                    <h1 xmlns='http://www.w3.org/1999/xhtml'>${text}</h1>
+                <foreignObject x='0' y='0' width='1200' height='1200'>
+                    <h1 class="svg-h1" xmlns='http://www.w3.org/1999/xhtml'>${text}</h1>
                 </foreignObject>
             </g>
         </svg>`

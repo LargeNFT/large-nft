@@ -71,6 +71,8 @@ class AnimationService {
 
   public async buildAnimationPage(item:Item) :Promise<string> {
 
+    let result
+
     let content = await this.quillService.translateContent(item.content)
 
     let theme:Theme
@@ -96,13 +98,12 @@ class AnimationService {
 
       let imageSrc = await this.imageService.getUrl(image)
 
-      return this.getFullImageTemplate(css, imageSrc)
+      result = this.getFullImageTemplate(css, imageSrc)
 
+    } else {
+
+      result = this.getAnimationTemplate(item, content, css)
     }
-
-
-    let result = this.getAnimationTemplate(item, content, css)
-
 
     return juice(result)
 
@@ -130,6 +131,7 @@ class AnimationService {
           img {
             flex-shrink: 0;
             min-width: 100%;
+            width: 100%;
             min-height: 100%
             object-fit: cover;
           }
@@ -173,7 +175,7 @@ class AnimationService {
                   padding: 20px;
                   width:100%;
                   min-height: 100%;
-
+                  background: #FFFFFF;
                   font-size: 20px;
                   border: 5px solid #4e82b1;
                   float: left;

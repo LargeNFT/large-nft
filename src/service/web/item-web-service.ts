@@ -340,6 +340,29 @@ class ItemWebService {
         return animation
     }
 
+    async updateGeneratedCoverImage(item:Item) {
+
+        //Check if the current cover image is generated.
+        let coverImage = await this.imageService.get(item.coverImageId)
+
+        //If it's not generated then leave.
+        if (!coverImage.generated) return 
+
+        //If it is then generate a new one.
+        let newCoverImage:Image = await this.imageService.newFromItem(item)
+
+
+        //Save it
+        try {
+            await this.imageService.put(newCoverImage)
+        } catch(ex) {}
+
+        item.coverImageId = newCoverImage._id
+
+
+    }
+
+
 }
 
 export {

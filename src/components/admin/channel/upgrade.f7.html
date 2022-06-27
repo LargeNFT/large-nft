@@ -85,7 +85,8 @@
       try {
         await channelWebService.regenerateItemMedia(channelViewModel.channel)
       } catch(ex) {
-        $f7.dialog.alert(ex.errors, "There was an error")
+        console.log(ex)
+        $f7.dialog.alert(ex, "There was an error")
       }
 
     }

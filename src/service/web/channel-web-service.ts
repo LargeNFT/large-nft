@@ -143,7 +143,7 @@ class ChannelWebService {
         for (let item of items) {
 
             //Save the cover image 
-            await this.itemWebService.saveGeneratedCoverImage(item)
+            await this.itemWebService.updateGeneratedCoverImage(item)
 
             //And the animation
             await this.itemWebService.saveAnimation(item)

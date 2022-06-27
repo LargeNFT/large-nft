@@ -24,8 +24,15 @@
                         <div class="card-content">
                             <div class="card-content card-content-padding">
 
-                                <p>The JSON metadata for the collection as well as a backup of the source database
-                                    will be copied to an IPFS node running in the browser.</p>
+                                <p>
+                                    The JSON metadata for the collection as well as a backup of the source database
+                                    will be copied to an IPFS node running in the browser.
+                                </p>
+
+                                <p>
+                                    Note: This process can be slow due to perfomance issues with IPFS in the browser. 
+                                    We are exploring options to make it faster and/or support connections to external IPFS servers.
+                                </p>
 
 
                                 ${!ipfsReady ? $h`

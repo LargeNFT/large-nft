@@ -17,8 +17,8 @@
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Publish</div>
-              <div class="block list">
+              <div class="block-title">Publish </div>
+              <div class="block list media-list">
                 <ul>
                   <li>
                     <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
@@ -27,8 +27,12 @@
                           <span class="material-icons">import_export</span>
                         </div>
                         <div class="item-inner">
-                          <div class="item-title">
-                            Export to local IPFS
+                          <div class="item-title-row">
+                            <div class="item-title">Export to local IPFS</div>
+                          </div>
+                          <div class="item-text">
+                            The first publishing task is to export the data to a local IPFS node. The rest of the publishing tasks
+                            rely on this step and will always publish the last copy that was exported to IPFS.
                           </div>
                         </div>
                       </div>
@@ -42,8 +46,12 @@
                           <span class="material-icons">cloud_upload</span>
                         </div>
                         <div class="item-inner">
-                          <div class="item-title">
-                              Publish to Pinata
+                          <div class="item-title-row">
+                            <div class="item-title">Publish to Pinata</div>
+                          </div>
+                          <div class="item-text">
+                            When you are ready to publish your collection and deploy your NFT contract, upload the NFT metadata to Pinata 
+                            to help make it widely available. This will help make it discoverable by marketplaces like OpenSea and LooksRare.
                           </div>
                         </div>
                       </div>
@@ -57,8 +65,12 @@
                           <span class="material-icons">fork_left</span>
                         </div>
                         <div class="item-inner">
-                          <div class="item-title">
-                              Fork Reader
+                          <div class="item-title-row">
+                            <div class="item-title">Fork Reader</div>
+                          </div>
+                          <div class="item-text">
+                            (Optional) Large Reader is a js app that you can deploy to enhance your collection. The default implementation lives in a GitLab repo and to deploy
+                            a custom copy you fork it. Better support for choosing a git provider will be available in a future version. 
                           </div>
                         </div>
                       </div>
@@ -72,10 +84,14 @@
                           <span class="material-icons">upload</span>
                         </div>
                         <div class="item-inner">
-                          <div class="item-title">
-                              Publish Collection to Reader
+                          <div class="item-title-row">
+                            <div class="item-title">Publish Collection to Reader</div>
+                          </div>
+                          <div class="item-text">
+                            Copy data from the local IPFS node to your custom Large Reader fork. 
                           </div>
                         </div>
+
                       </div>
                     </a>
                   </li>
@@ -87,11 +103,16 @@
                         <div class="item-media">
                           <span class="material-icons">gavel</span>
                         </div>
+
                         <div class="item-inner">
-                          <div class="item-title">
-                              Deploy Contract
+                          <div class="item-title-row">
+                            <div class="item-title">Deploy Contract</div>
+                          </div>
+                          <div class="item-text">
+                            Deploy contract to connected network. Will publish the last IPFS hash from the first step.  
                           </div>
                         </div>
+
                       </div>
                     </a>
                   </li>

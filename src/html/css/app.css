@@ -427,7 +427,9 @@
     font-size: 23px;
   }
   
-
+  .license-editor .ql-container {
+    font-size: 15px;
+  }
 
 
   /* Style the list */
@@ -630,6 +632,11 @@ ul.breadcrumb li a:hover {
 
 .channel-editor {
   min-height: 300px;
+  width: 100%;
+}
+
+.license-editor .channel-editor {
+  min-height: 150px;
   width: 100%;
 }
 

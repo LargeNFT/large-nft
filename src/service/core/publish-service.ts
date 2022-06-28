@@ -271,7 +271,7 @@ class PublishService {
                 images: { saved: 0, total: backup.images.length },
                 animations: { saved: 0, total: backup.animations.length },
                 themes: { saved: 0, total: backup.themes.length },
-                staticPages: { saved: 0, total: backup.themes.length }
+                staticPages: { saved: 0, total: backup.staticPages.length }
             }
         }
 

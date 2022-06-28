@@ -186,7 +186,7 @@ class QuillEditorService {
     // Quill.register(DividerBlot)
     // Quill.register(HeaderBlot)
     Quill.register(BlockquoteBlot)
-    Quill.register(LinkBlot)
+    // Quill.register(LinkBlot)
     Quill.register(BoldBlot)
     Quill.register(ItalicBlot)
 

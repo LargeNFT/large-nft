@@ -17,9 +17,13 @@
 
           <form id="edit-channel-form" @submit="${formSubmit}">
 
-            <${ChannelForm} channel=${channelViewModel} description_editor="edit-channel-description-editor"
-              description_toolbar="edit-channel-description-toolbar" license_editor="edit-channel-license-editor"
-              license_toolbar="edit-channel-license-toolbar" add_theme_popup=".add-theme-popup-channel-edit"
+            <${ChannelForm} 
+              channel=${channelViewModel} 
+              description_editor="edit-channel-description-editor"
+              description_toolbar="edit-channel-description-toolbar" 
+              license_editor="edit-channel-license-editor"
+              license_toolbar="edit-channel-license-toolbar" 
+              add_theme_popup=".add-theme-popup-channel-edit"
               add_static_page_popup=".add-static-page-popup-channel-edit" />
 
             <div class="row block">
@@ -118,7 +122,8 @@
             </div>
             <div class="page-content">
               <form id="add-static-page-form-channel-edit">
-                <${StaticPageForm} static_page_content_editor_id="add-static-page-content-editor-channel-edit"
+                <${StaticPageForm} 
+                  static_page_content_editor_id="add-static-page-content-editor-channel-edit"
                   static_page_content_toolbar_id="add-static-page-content-toolbar-channel-edit"
                   image_button_input_id="add-static-page-image-button-input"
                   image_button_id="add-static-page-image-button" />

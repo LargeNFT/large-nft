@@ -6,6 +6,7 @@ import { ContractMetadata } from "./contract-metadata"
 import { Item } from "./item"
 import { Image } from "./image"
 import { Theme } from "./theme"
+import { StaticPage } from "./static-page"
 
 
 interface ExportBundle {
@@ -16,7 +17,7 @@ interface ExportBundle {
     images: Image[]
     animations: Animation[]
     themes: Theme[]
-
+    staticPages: StaticPage[]
 
     contractMetadata: ContractMetadata
 }

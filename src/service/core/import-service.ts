@@ -17,6 +17,8 @@ import { ForkStatus } from "../../dto/viewmodel/fork-status"
 import toBuffer from 'it-to-buffer'
 import { Theme } from "../../dto/theme";
 import { ThemeService } from "../theme-service";
+import { StaticPage } from "../../dto/static-page";
+import { StaticPageService } from "../static-page-service";
 
 
 
@@ -31,6 +33,7 @@ class ImportService {
         private imageService: ImageService,
         private animationService:AnimationService,
         private themeService:ThemeService,
+        private staticPageService:StaticPageService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) {}
@@ -43,7 +46,8 @@ class ImportService {
             channels: { saved: 0, total: 0},
             items: { saved: 0, total: 0},
             authors: { saved: 0, total: 0},
-            themes: { saved: 0, total: 0 }
+            themes: { saved: 0, total: 0 },
+            staticPages:  { saved: 0, total: 0 }
         }
 
         this.logForkProgress(forkStatus, "Starting fork. Fetching data...")
@@ -70,6 +74,7 @@ class ImportService {
         let items:Item[] = await this._readFile(`/fork/backup/items.json`)
         let animations:Animation[] = await this._readFile(`/fork/backup/animations.json`)
         let themes:Theme[] = await this._readFile(`/fork/backup/themes.json`)
+        let staticPages:StaticPage[] = await this._readFile(`/fork/backup/static-pages.json`)
 
         if (!authors || !channels || !images || !items) {
             throw new Error("Invalid collection hash")
@@ -81,6 +86,7 @@ class ImportService {
         forkStatus.items.total = items.length
         forkStatus.animations.total = animations.length
         forkStatus.themes.total = themes.length
+        forkStatus.staticPages.total = staticPages.length
 
         this.logForkProgress(forkStatus, "Updating totals...")
 
@@ -104,7 +110,6 @@ class ImportService {
             forkStatus.authors.saved++
             this.logForkProgress(forkStatus, `Inserted author ${authorObj._id}`)
         }
-
 
         for (let channel of channels) {
 
@@ -179,7 +184,6 @@ class ImportService {
 
         }
 
-
         for (let animation of animations) {
 
             delete animation._rev
@@ -200,7 +204,6 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted animation ${animationObj._id}`)
 
         }
-
 
         for (let item of items) {
             
@@ -266,6 +269,43 @@ class ImportService {
             forkStatus.items.saved++
             this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
 
+        }
+
+
+        for (let theme of themes) {
+
+            delete theme._id
+            delete theme._rev
+            delete theme.lastUpdated
+            delete theme.dateCreated
+            delete theme["_rev_tree"]
+
+            let themeObj = Object.assign(new Theme(), theme)
+
+            try {
+                await this.themeService.put(themeObj)
+            } catch (ex) {} //ignore duplicates            
+
+            forkStatus.themes.saved++
+            this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
+        }
+
+        for (let staticPage of staticPages) {
+
+            delete staticPage._id
+            delete staticPage._rev
+            delete staticPage.lastUpdated
+            delete staticPage.dateCreated
+            delete staticPage["_rev_tree"]
+
+            let staticPageObj = Object.assign(new StaticPage(), staticPage)
+
+            try {
+                await this.staticPageService.put(staticPageObj)
+            } catch (ex) {} //ignore duplicates            
+
+            forkStatus.staticPages.saved++
+            this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
         }
 
 

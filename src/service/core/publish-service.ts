@@ -8,9 +8,7 @@ import { ExportBundle } from "../../dto/export-bundle"
 import { Item } from "../../dto/item"
 import { Image } from "../../dto/image"
 
-import { NFTMetadata } from "../../dto/nft-metadata"
 import { PublishStatus } from "../../dto/viewmodel/publish-status"
-import { ItemRepository } from "../../repository/item-repository"
 import { AuthorService } from "../author-service"
 import { ChannelService } from "../channel-service"
 import { ImageService } from "../image-service"
@@ -25,6 +23,8 @@ import Hash from 'ipfs-only-hash'
 import { QuillService } from "../quill-service"
 import { ThemeService } from "../theme-service"
 import { Theme } from "../../dto/theme"
+import { StaticPage } from "../../dto/static-page"
+import { StaticPageService } from "../static-page-service"
 
 
 @injectable()
@@ -39,6 +39,7 @@ class PublishService {
         private animationService:AnimationService,
         private quillService:QuillService,
         private themeService:ThemeService,
+        private staticPageService:StaticPageService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }
@@ -54,8 +55,11 @@ class PublishService {
         //Get themes
         const themes = await this.themeService.listByChannel(channel._id, 1000, 0)
 
+        //Get static pages
+        const staticPages = await this.staticPageService.listByChannel(channel._id, 1000, 0)
+
         //Export metadata
-        let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, themes, this.walletService.address)
+        let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, themes, staticPages, this.walletService.address)
         let cid: string = await this.exportToIPFS(exportBundle)
 
 
@@ -69,13 +73,14 @@ class PublishService {
 
     }
 
-    async prepareExport(originalChannel: Channel, originalItems: Item[], originalAuthor: Author, originalThemes:Theme[], ownerAddress:string) : Promise<ExportBundle> {
+    async prepareExport(originalChannel: Channel, originalItems: Item[], originalAuthor: Author, originalThemes:Theme[], originalStaticPages:StaticPage[], ownerAddress:string) : Promise<ExportBundle> {
 
         //Clone
         let channel = JSON.parse(JSON.stringify(originalChannel))
         let items = JSON.parse(JSON.stringify(originalItems))
         let author = JSON.parse(JSON.stringify(originalAuthor))
         let themes = JSON.parse(JSON.stringify(originalThemes))
+        let staticPages = JSON.parse(JSON.stringify(originalStaticPages))
 
         //Remove publishing related field from channel
         delete channel.contractAddress
@@ -195,8 +200,14 @@ class PublishService {
         for (let theme of themes) {
 
             delete theme._rev
-            // delete image.dateCreated
             delete theme["_rev_tree"]
+        }
+
+        //Clean up staticPages
+        for (let staticPage of staticPages) {
+
+            delete staticPage._rev
+            delete staticPage["_rev_tree"]
         }
 
 
@@ -209,6 +220,7 @@ class PublishService {
             items: items,
             author: author,
             themes: themes,
+            staticPages: staticPages,
 
             contractMetadata: await this.channelService.exportContractMetadata(channel, ownerAddress)
 
@@ -240,7 +252,8 @@ class PublishService {
             exportBundle.author, 
             exportBundle.images, 
             exportBundle.animations, 
-            exportBundle.themes
+            exportBundle.themes,
+            exportBundle.staticPages
         )
 
         let publishStatus:PublishStatus = {
@@ -257,7 +270,8 @@ class PublishService {
                 items: { saved: 0, total: backup.items.length },
                 images: { saved: 0, total: backup.images.length },
                 animations: { saved: 0, total: backup.animations.length },
-                themes: { saved: 0, total: backup.themes.length }
+                themes: { saved: 0, total: backup.themes.length },
+                staticPages: { saved: 0, total: backup.themes.length }
             }
         }
 
@@ -412,6 +426,11 @@ class PublishService {
         publishStatus.backups.themes.saved = backup.themes.length
         this.logPublishProgress(publishStatus)
 
+        //Write staticPages backup
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/static-pages.json`,  new TextEncoder().encode(JSON.stringify(backup.staticPages)) , { create: true, parents: true, flush: flush })
+        publishStatus.backups.staticPages.saved = backup.staticPages.length
+        this.logPublishProgress(publishStatus)
+
 
         await this.ipfsService.ipfs.files.flush(`/export/${exportBundle.channel._id}/`)
 
@@ -426,7 +445,7 @@ class PublishService {
 
     }
 
-    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[], animations:Animation[], themes:Theme[]) {
+    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[], animations:Animation[], themes:Theme[], staticPages:StaticPage[]) {
 
         //Look up any data we need to add to the bundle
 
@@ -497,7 +516,8 @@ class PublishService {
             items: items,
             images: backupImages,
             animations: animations,
-            themes: themes      
+            themes: themes,
+            staticPages: staticPages      
         }
 
     }

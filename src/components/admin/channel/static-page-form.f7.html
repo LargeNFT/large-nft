@@ -1,0 +1,137 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="list">
+
+        <input type="hidden" name="_id"  value="${staticPage?._id}" />
+        <input type="hidden" name="_rev" value="${staticPage?._rev}" />
+        <input type="hidden" name="dateCreated" value="${staticPage?.dateCreated}" />
+
+        <ul>
+            <li>
+                <div class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Name</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="name" placeholder="Name"
+                                value="${staticPage?.name}" required  minlength="3" tabindex="1" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="#" class="item-link smart-select smart-select-init" data-open-in="popup">
+                  <!-- "multiple" attribute for multiple select-->
+                    <select name="locations" tabindex="2"  multiple>
+                        <optgroup>
+                            ${locations.map( location => $h`
+                                ${isLocationSelected(location) ? $h`
+                                    <option value="${location.name}" selected >${location.description}</option>
+                                ` : $h`
+                                    <option value="${location.name}">${location.description}</option>
+                                `}
+                            `)}
+                        </optgroup>
+                    </select>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Choose Display Location(s)</div>
+                    </div>
+                  </div>
+                </a>
+            </li>
+
+
+
+
+
+            <li>
+                <div class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Content</div>
+
+                        <div id="${toolbarId}">
+                
+                            <select class="ql-header">
+                                <option selected></option>
+                                <option value="1">Heading</option>
+                                <option value="2">Subheading</option>
+                            </select>
+    
+    
+                            <!-- Add a bold button -->
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-strike"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-link"></button>
+    
+    
+    
+                            <!-- Add subscript and superscript buttons -->
+                            <button class="ql-script" value="sub"></button>
+                            <button class="ql-script" value="super"></button>
+    
+                            <button class="text-editor-button" id="${imageButtonId}"><i class="material-icons">image</i></button>
+                            <label><input type="file" id="${imageButtonInputId}" /></label>
+                        </div>
+
+                        <div class="editor bg-color-white text-color-black static-page-editor" id="${editorId}" tabindex="3"></div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+
+</template>
+
+<style>
+    
+</style>
+
+
+<script>
+
+    import { ContainerService } from "../../../service/core/container-service"
+
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let staticPage = props.static_page
+
+        let locations = [
+            { name: "navbar", description: "Show link on navigation bar"},
+            { name: "links", description: "Show in list of links on home page"},
+            { name: "index", description: "Show content on home page"},
+
+        ]
+
+        const isLocationSelected = (location) => {
+
+            //Is this location in the list of selected locations?
+            if (staticPage?.locations?.length > 0) {
+                for (let staticPageLocation of staticPage.locations) {
+                    if (location.name == staticPageLocation.name) return true
+                }
+            }
+
+
+            return false
+
+        }
+
+
+        let editorId = props.static_page_content_editor_id
+        let toolbarId = props.static_page_content_toolbar_id
+
+
+        let imageButtonInputId = props.image_button_input_id
+        let imageButtonId = props.image_button_id
+
+        return $render
+    }
+
+</script>

@@ -13,6 +13,7 @@ interface PublishStatus {
         images: Status
         animations: Status
         themes:Status
+        staticPages:Status
     }
 
 

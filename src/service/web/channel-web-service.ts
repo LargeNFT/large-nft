@@ -2,6 +2,7 @@ import { injectable } from "inversify";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
+import { StaticPage } from "../../dto/static-page";
 import { Theme } from "../../dto/theme";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
@@ -12,6 +13,7 @@ import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
 import { QuillService } from "../quill-service";
+import { StaticPageService } from "../static-page-service";
 import { ThemeService } from "../theme-service";
 import { ItemWebService } from "./item-web-service";
 
@@ -25,7 +27,8 @@ class ChannelWebService {
         private itemService:ItemService,
         private itemWebService:ItemWebService,
         private quillService:QuillService,
-        private themeService:ThemeService
+        private themeService:ThemeService,
+        private staticPageService:StaticPageService
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -80,6 +83,7 @@ class ChannelWebService {
         }
 
         let themes:Theme[] = await this.themeService.listByChannel(channel._id, 1000, 0)
+        let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 1000, 0)
 
 
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
@@ -87,6 +91,7 @@ class ChannelWebService {
         return {
             channel: channel,
             themes: themes,
+            staticPages: staticPages,
             coverImage: coverImage,
             coverBanner: coverBanner,
             author: author,

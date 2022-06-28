@@ -24,12 +24,18 @@ import { DatabaseService } from "../src/service/core/database-service";
 import { ChannelRepository } from "../src/repository/channel-repository";
 import { PinningApiRepository } from "../src/repository/pinning-api-repository";
 
+import { StaticPageRepository } from "../src/repository/static-page-repository";
+
 import { ItemRepository } from "../src/repository/item-repository";
 import { ImageRepository } from "../src/repository/image-repository";
 import { AuthorRepository } from "../src/repository/author-repository";
+
 import { SchemaService } from "../src/service/core/schema-service";
 import { WalletService } from "../src/service/core/wallet-service";
 import { PinningService } from "../src/service/core/pinning-service";
+import { StaticPageService } from "../src/service/static-page-service";
+
+
 
 import TYPES from "../src/service/core/types";
 import { GitlabRepository } from "../src/repository/gitlab-repository";
@@ -93,6 +99,7 @@ async function getContainer() {
     container.bind(SvgService).toSelf().inSingletonScope()
     container.bind(ImportService).toSelf().inSingletonScope()
     container.bind(ThemeService).toSelf().inSingletonScope()
+    container.bind(StaticPageService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
@@ -103,6 +110,7 @@ async function getContainer() {
     container.bind(GitlabRepository).toSelf().inSingletonScope()
     container.bind(AnimationRepository).toSelf().inSingletonScope()
     container.bind(ThemeRepository).toSelf().inSingletonScope()
+    container.bind(StaticPageRepository).toSelf().inSingletonScope()
 
 
 

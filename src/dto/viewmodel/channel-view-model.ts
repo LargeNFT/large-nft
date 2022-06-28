@@ -1,6 +1,7 @@
 import { Author } from "../author";
 import { Channel } from "../channel";
 import { Image } from "../image";
+import { StaticPage } from "../static-page";
 import { Theme } from "../theme";
 import { ImageViewModel } from "../viewmodel/image-view-model";
 
@@ -16,6 +17,7 @@ interface ChannelViewModel {
     authorPhoto:ImageViewModel
 
     themes:Theme[]
+    staticPages:StaticPage[]
 
     itemCount:number
 

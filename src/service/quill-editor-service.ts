@@ -269,6 +269,18 @@ class QuillEditorService {
 
 
   async insertImage(file) {
+    
+    await this.insertImageInEditor(file, this.activeEditor)    
+
+    const imageSelectedEvent = new CustomEvent('image-selected', {
+      detail: { _id: image._id }
+    })
+
+    document.dispatchEvent(imageSelectedEvent)
+
+  }
+
+  async insertImageInEditor(file, editor) {
 
     let resizedImageBlob = await readAndCompressImage(file, {
       maxWidth: 1024
@@ -286,26 +298,23 @@ class QuillEditorService {
     let dimensions = await this.getHeightAndWidthFromDataUrl(src)
 
 
-    let range = this.activeEditor.getSelection(true)
+    let range = editor.getSelection(true)
 
-    this.activeEditor.insertText(range.index, '\n', Quill.sources.USER)
+    editor.insertText(range.index, '\n', Quill.sources.USER)
 
-    this.activeEditor.insertEmbed(range.index, 'ipfsimage', { 
+    editor.insertEmbed(range.index, 'ipfsimage', { 
       cid: image.cid,
       src: src,
       height: dimensions.height,
       width: dimensions.width
     }, Quill.sources.USER)
 
-    this.activeEditor.setSelection(range.index + 2, Quill.sources.SILENT)
+    editor.setSelection(range.index + 2, Quill.sources.SILENT)
 
- 
-    const imageSelectedEvent = new CustomEvent('image-selected', {
-      detail: { _id: image._id }
-    })
 
-    document.dispatchEvent(imageSelectedEvent)
   }
+
+
 
   async imageDropAndPasteHandler(imageDataUrl, type, imageData) {
     const file = imageData.toFile()
@@ -388,5 +397,5 @@ class CustomImageSpec extends ImageSpec {
 }
 
 
-export { QuillEditorService }
+export { QuillEditorService, CustomImageSpec }
 

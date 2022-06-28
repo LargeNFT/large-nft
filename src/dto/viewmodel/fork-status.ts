@@ -5,6 +5,7 @@ interface ForkStatus {
     images: Status
     animations: Status
     themes:Status
+    staticPages:Status
 }
 
 interface Status {

@@ -325,7 +325,7 @@
     content: '...';
   }
   
-  .image-button-input, .video-button-input {
+  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {
     opacity:0;
     width: 0px;
   }
@@ -642,6 +642,12 @@ ul.breadcrumb li a:hover {
 
 .css-editor {
   min-height: 100px;
+  width: 100%;
+  font-size: 12px;
+}
+
+.static-page-editor {
+  min-height: 500px;
   width: 100%;
   font-size: 12px;
 }

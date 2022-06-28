@@ -257,6 +257,12 @@ class GitlabService {
             content: new TextDecoder("utf-8").decode(animationsContents)
         })
 
+
+
+
+
+
+
         //Themes
         let themesContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/themes.json`)) 
 
@@ -265,6 +271,18 @@ class GitlabService {
             action: "create",
             file_path: "backup/themes.json",
             content: new TextDecoder("utf-8").decode(themesContents)
+        })
+
+
+
+        //Themes
+        let staticPagesContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/backup/static-pages.json`)) 
+
+        //Add create action
+        actions.push({
+            action: "create",
+            file_path: "backup/static-pages.json",
+            content: new TextDecoder("utf-8").decode(staticPagesContents)
         })
 
 

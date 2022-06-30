@@ -19,38 +19,89 @@
       <div class="row">
         <div class="col-100 large-66 center margin-top">
 
-          <ul class="breadcrumb">
-            <li><a href="/admin/channel/show/${itemViewModel.channel._id}/0">${itemViewModel.channel.title}</a></li>
-            <li>${itemViewModel.item.title} #${itemViewModel.item.tokenId}</li>
-          </ul>
+          <div class="nft-header-row">
 
-          <div class="card item-card-show">
+            <div class="left">
 
-            <div class="card-content">
+                <div class="card">
 
-              <div class="content" innerHTML="${itemViewModel.animationContentHTML}"
-                id="item-content-${itemViewModel.item._id}">
-              </div>
+                    <div class="card-header">
+                        <span class="small-ethereum-icon"></span>
+                    </div>
+                    <div class="card-content">
+                        <div class="animation-content" innerHTML="${itemViewModel.animationContentHTML}"id="item-content-${itemViewModel.item._id}">
+                        </div>
+                    </div>
+
+                    ${showEdit ? $h`
+                      <div class="card-footer item-show-footer">
+                        
+                          <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
+          
+                          ${itemViewModel.canDelete ? $h`
+                            <a class="button button-outline button-small color-red" @click="${deleteClick}">
+                              <i class="material-icons">delete</i>
+                            </a>
+                          ` : $h`
+                            Note: Only the last NFT can be deleted.
+                          `}
+                      
+                      </div>
+                    ` : $h``} 
+
+
+                </div>    
 
             </div>
 
-            <div class="card-footer item-show-footer">
-              ${showEdit ? $h`
-                <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
+            <div class="right">
 
-                ${itemViewModel.canDelete ? $h`
-                  <a class="button button-outline button-small color-red" @click="${deleteClick}">
-                    <i class="material-icons">delete</i>
-                  </a>
-                ` : $h`
-                  Note: Only the last NFT can be deleted.
-                `}
+                <div class="block">
 
+                    <h4>
+                        <a href="/admin/channel/show/${itemViewModel.channel._id}/0">${itemViewModel.channel.title}</a>
+                    </h4>
 
-              ` : $h``} 
+                    <h1>
+                        ${itemViewModel.item.title ? itemViewModel.item.title : itemViewModel.channel.title} #${itemViewModel.item.tokenId}
+                    </h1>
+
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <span>
+                      <i class="material-icons">person</i>
+                      <label>Creator</label>
+                    </span>
+                  </div>
+                  <div class="card-content data-table">
+
+                    <table>
+                      <tbody>
+      
+                        <tr>
+                          <td class="label-cell">Creator:</td> 
+                          <td><a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a></td>
+                        </tr>
+
+                        <tr>
+                          <td class="label-cell">Date:</td> 
+                          <td><span class="date">${itemViewModel.dateDisplay}</span></td>
+                        </tr>
+      
+                      </tbody>
+                    </table>
+
+      
+                  </div>
+                </div>
+
             </div>
 
           </div>
+
+
 
           <div class="card">
             <div class="card-header">
@@ -105,28 +156,6 @@
             </div>
           </div>
 
-
-
-
-          <div class="card">
-            <div class="card-header">
-              <span>
-                <i class="material-icons">person</i>
-                <label>Creator</label>
-              </span>
-            </div>
-            <div class="card-content card-content-padding">
-
-              <div class="attribute-row"> 
-                <strong>Creator:</strong> <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a>
-              </div>
-
-              <div class="attribute-row"> 
-                <strong>Date:</strong> <span class="date">${itemViewModel.dateDisplay}</span>
-              </div>
-
-            </div>
-          </div>
 
 
           <div class="block row center margin-bottom">
@@ -258,6 +287,55 @@
     max-width: 100%;
     border: 1px solid #cccccc;
   }
+
+
+  .nft-header-row {
+    display: flex;  
+  }
+
+  .nft-header-row .left {
+    flex: 0 0 500px;
+  }
+
+  .nft-header-row .right {
+    flex: 1;
+  }
+
+  .nft-header-row .right h1 {
+    font-size: 25px;
+  }
+
+  .nft-header-row .right h4 {
+    margin-bottom: 0px;
+  }
+
+
+
+
+
+@media only screen and (max-width: 1024px) {
+
+  .nft-header-row {
+    display: block;  
+  }
+  
+  .nft-header-row .left {
+    width: 100%;
+  }
+  
+  .nft-header-row .right {
+    width: 100%;
+  }
+  
+}
+
+
+
+
+
+
+
+
 
 </style>
 

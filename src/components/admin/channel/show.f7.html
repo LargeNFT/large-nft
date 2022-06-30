@@ -202,6 +202,9 @@
 
   
 
+  .item-card {
+    cursor: pointer;
+  } 
 
   .item-preview {
     width: 100%;
@@ -295,21 +298,26 @@
       $(`.animation-container a`).addClass('external')
 
       $('.animation-card').on('click', (e) => {
-
-        const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a"
-
-        if (!islink) {
-          let href = $(e.currentTarget).data('href')
-          $f7.views.main.router.navigate(href)
-        } 
-
+        cardClick(e)
       })
 
-
-
+      $('.item-card').on('click', (e) => {
+        cardClick(e)
+      })
 
     })
 
+
+    const cardClick = (e) => {
+
+      const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a"
+
+      if (!islink) {
+        let href = $(e.currentTarget).data('href')
+        $f7.views.main.router.navigate(href)
+      } 
+
+    }
 
 
     const deleteCollectionClick = async (e) => {

@@ -137,13 +137,19 @@ class ChannelWebService {
         for (let item of items) {
 
             //Build contentHTML for searching
-            item.contentHTML = await this.quillService.translateContent(item.content, true)
+            //@ts-ignore
 
+            if (item.themes?.length == 1 && item.themes[0] == "") {
+                delete item.themes
+            }
 
-
+        
             //Resave
             let updated = Object.assign(new Item(), item)
             await this.itemService.put(updated)
+
+            console.log(updated)
+
 
         }
 

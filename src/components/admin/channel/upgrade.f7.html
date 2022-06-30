@@ -27,6 +27,10 @@
               Regenerate Animations
             </button>
 
+            <button class="button button-fill" @click="${upgradeClick}">
+              Upgrade
+            </button>
+
           </div>
 
         </div>
@@ -77,6 +81,21 @@
       }
 
     }
+
+
+    const upgradeClick = async (e) => {
+      
+      e.preventDefault()
+
+      try {
+        await channelWebService.upgrade(channelViewModel.channel)
+      } catch(ex) {
+        console.log(ex)
+        $f7.dialog.alert(ex, "There was an error")
+      }
+
+    }
+
 
     const regenerateAnimationsClick = async (e) => {
       

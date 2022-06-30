@@ -206,7 +206,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ea2e4831f9';
+framework7Component.id = '1b73b9d247';
 framework7Component.style = `
 
 
@@ -399,7 +399,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a9d86fcc52';
+framework7Component.id = '21b6429bb6';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -511,7 +511,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c0ae913545';
+framework7Component.id = '8dcefbc0e9';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -642,7 +642,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '62d405c6ab';
+framework7Component.id = 'a906bf963a';
 framework7Component.style = `
 
 
@@ -1295,7 +1295,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f3170f0261';
+framework7Component.id = '4400a5d9bd';
 framework7Component.style = `
 
 `;
@@ -1943,7 +1943,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0b187ebbbc';
+framework7Component.id = '39161588be';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2157,7 +2157,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '6742b771a6';
+framework7Component.id = 'e2f44c90d7';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2769,7 +2769,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '71209fdb8a';
+framework7Component.id = '9f72c77657';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3092,7 +3092,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '39c32e8076';
+framework7Component.id = 'bba9c5c133';
 framework7Component.style = `
 
 `;
@@ -3288,7 +3288,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7dcfb01910';
+framework7Component.id = '0099a1d4f6';
 framework7Component.style = `
     .item-preview {
         width: 100%;
@@ -3573,7 +3573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '69c1f09f03';
+framework7Component.id = '6f99baf058';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3843,7 +3843,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '38f8043af2';
+framework7Component.id = '2ef8705596';
 framework7Component.style = `
     
 `;
@@ -3933,7 +3933,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd58801e77e';
+framework7Component.id = '7cb6add41c';
 framework7Component.style = `
     
 `;
@@ -4005,7 +4005,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2386400414';
+framework7Component.id = '64bef8157b';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4051,6 +4051,17 @@ function framework7Component(props, {
       await channelWebService.upgrade(channelViewModel.channel);
     } catch (ex) {
       $f7.dialog.alert(ex.errors, "There was an error");
+    }
+  };
+
+  const upgradeClick = async e => {
+    e.preventDefault();
+
+    try {
+      await channelWebService.upgrade(channelViewModel.channel);
+    } catch (ex) {
+      console.log(ex);
+      $f7.dialog.alert(ex, "There was an error");
     }
   };
 
@@ -4105,6 +4116,10 @@ function framework7Component(props, {
               Regenerate Animations
             </button>
 
+            <button class="button button-fill" @click="${upgradeClick}">
+              Upgrade
+            </button>
+
           </div>
 
         </div>
@@ -4120,7 +4135,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '785c5ab47b';
+framework7Component.id = 'b3914e6ece';
 framework7Component.style = `
 
 `;
@@ -4276,7 +4291,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '22b79ae24b';
+framework7Component.id = 'e30083c756';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4369,7 +4384,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '488f03a2cf';
+framework7Component.id = 'f403631376';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4628,7 +4643,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '11a944331a';
+framework7Component.id = '127bc7c6ad';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4922,7 +4937,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '78970f26e8';
+framework7Component.id = 'd6cfca0ca8';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5351,7 +5366,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '79e1871f91';
+framework7Component.id = '39913e9787';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5571,10 +5586,15 @@ function framework7Component(props, {
                     <td>#${itemViewModel.item.tokenId}</td>
                   </tr>
 
-                  ${itemViewModel.theme ? $h`
+                  ${itemViewModel.themes ? $h`
                     <tr>
-                      <td class="label-cell">Theme:</td> 
-                      <td>${itemViewModel.theme.name}</td>
+                      <td class="label-cell">Theme(s):</td> 
+                      <td>
+                          ${itemViewModel.themes?.map( (theme) => $h`
+                            <span class="theme-name">${theme.name}</span>
+                          `)}
+
+                      </td>
                     </tr>
                   ` : $h`<span/>`}
 
@@ -5650,7 +5670,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f5bcae162f';
+framework7Component.id = '5fb13ebe7c';
 framework7Component.style = `
 
   .previous {
@@ -5784,7 +5804,13 @@ framework7Component.style = `
 }
 
 
-
+.theme-name {
+  display: inline-block;
+  margin-right: 10px;
+  background: #f1f1f1;
+  border: 1px solid #cccccc;
+  padding: 3px;
+}
 
 
 
@@ -5850,7 +5876,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '49e65952d1';
+framework7Component.id = 'cb6ce29a62';
 framework7Component.style = `
 
  .logo {
@@ -6053,7 +6079,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4b95f234cc';
+framework7Component.id = '1c3de886e3';
 framework7Component.style = `
 
   `;
@@ -6358,7 +6384,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '726c32a9fa';
+framework7Component.id = '8b1cc6761f';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6632,7 +6658,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '91e5ad1ec8';
+framework7Component.id = '39696172a7';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6849,7 +6875,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b4db003c34';
+framework7Component.id = '5d9bc4280a';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7101,7 +7127,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '63677cb86d';
+framework7Component.id = '1e022b4a5a';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7339,7 +7365,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3811664881';
+framework7Component.id = '67ef460004';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7540,7 +7566,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '634c736db8';
+framework7Component.id = '3000603cfa';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -14060,14 +14086,19 @@ let ChannelWebService = class ChannelWebService {
         return result;
     }
     async upgrade(channel) {
+        var _a;
         //Loop through each item. 
         let items = await this.itemService.listByChannel(channel._id, 100000, 0);
         for (let item of items) {
             //Build contentHTML for searching
-            item.contentHTML = await this.quillService.translateContent(item.content, true);
+            //@ts-ignore
+            if (((_a = item.themes) === null || _a === void 0 ? void 0 : _a.length) == 1 && item.themes[0] == "") {
+                delete item.themes;
+            }
             //Resave
             let updated = Object.assign(new _dto_item__WEBPACK_IMPORTED_MODULE_0__.Item(), item);
             await this.itemService.put(updated);
+            console.log(updated);
         }
     }
     async regenerateItemMedia(channel) {
@@ -14231,7 +14262,7 @@ let ItemWebService = class ItemWebService {
         //Is this the last one? 
         let maxToken = await this.itemService.getMaxTokenId(channel._id);
         let canDelete = (maxToken == item.tokenId);
-        let themes;
+        let themes = [];
         if (((_b = item.themes) === null || _b === void 0 ? void 0 : _b.length) > 0) {
             try {
                 for (let theme of item.themes) {

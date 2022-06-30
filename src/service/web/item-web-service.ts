@@ -152,7 +152,7 @@ class ItemWebService {
 
         let canDelete = (maxToken == item.tokenId)
         
-        let themes:Theme[] 
+        let themes:Theme[] = []
 
         if (item.themes?.length > 0) {
 

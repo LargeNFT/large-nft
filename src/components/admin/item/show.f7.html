@@ -120,10 +120,15 @@
                     <td>#${itemViewModel.item.tokenId}</td>
                   </tr>
 
-                  ${itemViewModel.theme ? $h`
+                  ${itemViewModel.themes ? $h`
                     <tr>
-                      <td class="label-cell">Theme:</td> 
-                      <td>${itemViewModel.theme.name}</td>
+                      <td class="label-cell">Theme(s):</td> 
+                      <td>
+                          ${itemViewModel.themes?.map( (theme) => $h`
+                            <span class="theme-name">${theme.name}</span>
+                          `)}
+
+                      </td>
                     </tr>
                   ` : $h`<span/>`}
 
@@ -330,7 +335,13 @@
 }
 
 
-
+.theme-name {
+  display: inline-block;
+  margin-right: 10px;
+  background: #f1f1f1;
+  border: 1px solid #cccccc;
+  padding: 3px;
+}
 
 
 

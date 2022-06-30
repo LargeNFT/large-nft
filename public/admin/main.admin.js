@@ -20,7 +20,7 @@ var admin;
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n", "",{"version":3,"sources":["webpack://./src/html/css/app.css"],"names":[],"mappings":"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","sourcesContent":["/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table .label-cell {\r\n  font-weight: bold;\r\n  width: 225px;\r\n}\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n\r\n.animation-content {\r\n  max-width: 100%; \r\n  overflow-y: scroll;\r\n  height: 500px; \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n", "",{"version":3,"sources":["webpack://./src/html/css/app.css"],"names":[],"mappings":"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","sourcesContent":["/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table .label-cell {\r\n  font-weight: bold;\r\n  width: 225px;\r\n}\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n\r\n.animation-content {\r\n  max-width: 100%; \r\n  overflow-y: scroll;\r\n  height: 500px; \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -206,7 +206,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5934bf48bf';
+framework7Component.id = 'ea2e4831f9';
 framework7Component.style = `
 
 
@@ -399,7 +399,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e78abb2820';
+framework7Component.id = 'a9d86fcc52';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -511,7 +511,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5e8ab9eb4a';
+framework7Component.id = 'c0ae913545';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -642,7 +642,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5f2cbe7ab0';
+framework7Component.id = '62d405c6ab';
 framework7Component.style = `
 
 
@@ -1295,7 +1295,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ee25e535e7';
+framework7Component.id = 'f3170f0261';
 framework7Component.style = `
 
 `;
@@ -1943,7 +1943,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7b9bfb99c2';
+framework7Component.id = '0b187ebbbc';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2157,7 +2157,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'dfe2e4b3e6';
+framework7Component.id = '6742b771a6';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2769,7 +2769,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bb6501c992';
+framework7Component.id = '71209fdb8a';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3092,7 +3092,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '81e202fbf2';
+framework7Component.id = '39c32e8076';
 framework7Component.style = `
 
 `;
@@ -3178,7 +3178,7 @@ function framework7Component(props, {
             
               ${itemViewModel.item.excerpt ? $h`
                             
-                <li class="card item-card">
+                <li class="card item-card" data-href="/admin/item/show/${itemViewModel.item._id}">
 
                   <div class="card-content">
                       <div class="card-content card-content-padding">
@@ -3288,7 +3288,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd4a03828dc';
+framework7Component.id = '7dcfb01910';
 framework7Component.style = `
     .item-preview {
         width: 100%;
@@ -3394,14 +3394,21 @@ function framework7Component(props, {
 
     $(`.animation-container a`).addClass('external');
     $('.animation-card').on('click', e => {
-      const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a";
-
-      if (!islink) {
-        let href = $(e.currentTarget).data('href');
-        $f7.views.main.router.navigate(href);
-      }
+      cardClick(e);
+    });
+    $('.item-card').on('click', e => {
+      cardClick(e);
     });
   });
+
+  const cardClick = e => {
+    const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a";
+
+    if (!islink) {
+      let href = $(e.currentTarget).data('href');
+      $f7.views.main.router.navigate(href);
+    }
+  };
 
   const deleteCollectionClick = async e => {
     $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {
@@ -3566,7 +3573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '077e5589b2';
+framework7Component.id = '69c1f09f03';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3634,6 +3641,9 @@ framework7Component.style = `
 
   
 
+  .item-card {
+    cursor: pointer;
+  } 
 
   .item-preview {
     width: 100%;
@@ -3833,7 +3843,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bd4c956127';
+framework7Component.id = '38f8043af2';
 framework7Component.style = `
     
 `;
@@ -3923,7 +3933,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '68f646fc6b';
+framework7Component.id = 'd58801e77e';
 framework7Component.style = `
     
 `;
@@ -3995,7 +4005,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a720cf7a32';
+framework7Component.id = '2386400414';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4110,7 +4120,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '93686ed588';
+framework7Component.id = '785c5ab47b';
 framework7Component.style = `
 
 `;
@@ -4266,7 +4276,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '6f00fa4775';
+framework7Component.id = '22b79ae24b';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4359,7 +4369,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0601962c0f';
+framework7Component.id = '488f03a2cf';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4511,6 +4521,17 @@ function framework7Component(props, {
           itemViewModel.coverImage = undefined;
         }
       });
+    });
+    $('.image-button').off('click');
+    $('.image-button-input').off('click');
+    $('.image-button').on('click', function (e) {
+      e.preventDefault();
+      const imageButtonInput = $(".image-button-input");
+      imageButtonInput.click();
+    });
+    $('.image-button-input').on('change', async function (e) {
+      e.preventDefault();
+      await quillEditorService.imageSelected(this);
     }); //Cover image
 
     coverImageCSSQuillEditor = new (quill__WEBPACK_IMPORTED_MODULE_3___default())('#cover-image-css-editor', {
@@ -4571,7 +4592,7 @@ function framework7Component(props, {
             <li>Create Blog NFT</li>
           </ul>
 
-          <form class="block list media-list" id="create-item-form" @submit="${formSubmit}">
+          <form class="list media-list" id="create-item-form" @submit="${formSubmit}">
 
             <${_admin_item_form_f7_html__WEBPACK_IMPORTED_MODULE_12__["default"]} item=${itemViewModel} 
               themes=${themes}
@@ -4607,7 +4628,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7565085d29';
+framework7Component.id = '11a944331a';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4783,6 +4804,17 @@ function framework7Component(props, {
         }
       });
       $update();
+    });
+    $('.image-button').off('click');
+    $('.image-button-input').off('click');
+    $('.image-button').on('click', function (e) {
+      e.preventDefault();
+      const imageButtonInput = $(".image-button-input");
+      imageButtonInput.click();
+    });
+    $('.image-button-input').on('change', async function (e) {
+      e.preventDefault();
+      await quillEditorService.imageSelected(this);
     }); //Cover image
 
     coverImageCSSQuillEditor = new (quill__WEBPACK_IMPORTED_MODULE_2___default())('#cover-image-edit-css-editor', {
@@ -4855,7 +4887,7 @@ function framework7Component(props, {
             <li>Edit Blog NFT</li>
           </ul>
 
-          <form class="block list media-list" id="edit-item-form" @submit="${formSubmit}">
+          <form class="list media-list" id="edit-item-form" @submit="${formSubmit}">
 
             <${_admin_item_form_f7_html__WEBPACK_IMPORTED_MODULE_11__["default"]} item=${itemViewModel} 
               editor="edit-item-editor" 
@@ -4890,7 +4922,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '792891c1a1';
+framework7Component.id = '78970f26e8';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -4947,8 +4979,8 @@ function framework7Component(props, {
         ops: quillEditorService.activeEditor.getContents().ops
       },
       coverImageCSS: itemViewModel.item.coverImageCSS,
-      themeId: itemViewModel.item.themeId
-    }); //If we just have the text baesd one select it.
+      themes: itemViewModel.item.themes
+    }); //If we just have the text based one select it.
 
     if (itemViewModel.images?.length == 1) {
       itemViewModel.coverImage = itemViewModel.images[0];
@@ -4981,9 +5013,9 @@ function framework7Component(props, {
     await $update();
   };
 
-  const themeIdChange = async e => {
-    let id = $(e.currentTarget).val();
-    itemViewModel.item.themeId = id;
+  const themeSelectionChange = async e => {
+    let themes = $(e.currentTarget).val();
+    itemViewModel.item.themes = themes;
     await $update();
     await loadCoverImages();
   };
@@ -5006,7 +5038,7 @@ function framework7Component(props, {
     $('input[name="coverImageAsAnimation"]').val(e.currentTarget.checked);
   };
 
-  const titleOnKeyup = e => {
+  const titleOnInput = e => {
     let value = $(e.currentTarget).val();
     itemViewModel.item.title = value;
     document.dispatchEvent(new CustomEvent('load-cover-images'));
@@ -5070,7 +5102,7 @@ function framework7Component(props, {
                                     <div class="item-title item-label">Title</div>
                                     <div class="item-input-wrap">
                                         <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
-                                             id="title-header-input" @keyup="${titleOnKeyup}"  />
+                                             id="title-header-input" @input="${titleOnInput}"  />
                                     </div>
                                 </div>
                             </div>
@@ -5171,13 +5203,12 @@ function framework7Component(props, {
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">Attributes</div>
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-
-                        ${itemViewModel.attributeSelections?.length > 0 ? $h`
+        ${itemViewModel.attributeSelections?.length > 0 ? $h`
+            <div class="card">
+                <div class="card-header">Attributes</div>
+                <div class="card-content">
+                    <div class="list">
+                        <ul>
 
                             ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
                                 <li>
@@ -5207,14 +5238,19 @@ function framework7Component(props, {
                                     </div>
                                 </li>
                             `)}
-                        ` : $h``}
-                
-                        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
+                            
+                    
+                            
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        ` : $h``}
+
+        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
+
+
 
 
         <div class="list accordion-list inset">
@@ -5228,29 +5264,34 @@ function framework7Component(props, {
                     <div class="accordion-item-content">
                         <div class="list">
                             <ul>
-        
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Theme</div>
-                                        <!-- additional "input-dropdown-wrap" class -->
-                                        <div class="item-input-wrap input-dropdown-wrap">
-                                        <select name="themeId" @change="${themeIdChange}">
-                                            <option value="">None</option>
+
+                                <li>
+                                    <a href="#" class="item-link smart-select smart-select-init" data-open-in="popup">
+                                      <!-- "multiple" attribute for multiple select-->
+                                        <select name="themes" @change="${themeSelectionChange}" tabindex="2"  multiple>
+                                            <optgroup>
+
+                                                ${themes?.map( (theme) => $h`
                         
-                                            ${themes?.map( (theme) => $h`
-                        
-                                                ${theme._id === itemViewModel.item.themeId ? $h`
-                                                    <option value="${theme._id}" selected>${theme.name}</option>
-                                                ` : $h`
-                                                    <option value="${theme._id}">${theme.name}</option>
-                                                `}
-                        
-                                                
-                                            `)}
+                                                    ${itemViewModel.item?.themes?.includes(theme._id) ? $h`
+                                                        <option value="${theme._id}" selected>${theme.name}</option>
+                                                    ` : $h`
+                                                        <option value="${theme._id}">${theme.name}</option>
+                                                    `}
+                            
+                                                `)}
+
+
+                                            </optgroup>
                                         </select>
+                                      <div class="item-content">
+                                        <div class="item-inner">
+                                          <div class="item-title">Choose Theme(s)</div>
                                         </div>
-                                    </div>
+                                      </div>
+                                    </a>
                                 </li>
+                                
                         
                                 <li>
                                     <div class="item-content item-input item-input-outline">
@@ -5310,7 +5351,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ad497468ea';
+framework7Component.id = '79e1871f91';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5429,38 +5470,89 @@ function framework7Component(props, {
       <div class="row">
         <div class="col-100 large-66 center margin-top">
 
-          <ul class="breadcrumb">
-            <li><a href="/admin/channel/show/${itemViewModel.channel._id}/0">${itemViewModel.channel.title}</a></li>
-            <li>${itemViewModel.item.title} #${itemViewModel.item.tokenId}</li>
-          </ul>
+          <div class="nft-header-row">
 
-          <div class="card item-card-show">
+            <div class="left">
 
-            <div class="card-content">
+                <div class="card">
 
-              <div class="content" innerHTML="${itemViewModel.animationContentHTML}"
-                id="item-content-${itemViewModel.item._id}">
-              </div>
+                    <div class="card-header">
+                        <span class="small-ethereum-icon"></span>
+                    </div>
+                    <div class="card-content">
+                        <div class="animation-content" innerHTML="${itemViewModel.animationContentHTML}"id="item-content-${itemViewModel.item._id}">
+                        </div>
+                    </div>
+
+                    ${showEdit ? $h`
+                      <div class="card-footer item-show-footer">
+                        
+                          <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
+          
+                          ${itemViewModel.canDelete ? $h`
+                            <a class="button button-outline button-small color-red" @click="${deleteClick}">
+                              <i class="material-icons">delete</i>
+                            </a>
+                          ` : $h`
+                            Note: Only the last NFT can be deleted.
+                          `}
+                      
+                      </div>
+                    ` : $h``} 
+
+
+                </div>    
 
             </div>
 
-            <div class="card-footer item-show-footer">
-              ${showEdit ? $h`
-                <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
+            <div class="right">
 
-                ${itemViewModel.canDelete ? $h`
-                  <a class="button button-outline button-small color-red" @click="${deleteClick}">
-                    <i class="material-icons">delete</i>
-                  </a>
-                ` : $h`
-                  Note: Only the last NFT can be deleted.
-                `}
+                <div class="block">
 
+                    <h4>
+                        <a href="/admin/channel/show/${itemViewModel.channel._id}/0">${itemViewModel.channel.title}</a>
+                    </h4>
 
-              ` : $h``} 
+                    <h1>
+                        ${itemViewModel.item.title ? itemViewModel.item.title : itemViewModel.channel.title} #${itemViewModel.item.tokenId}
+                    </h1>
+
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <span>
+                      <i class="material-icons">person</i>
+                      <label>Creator</label>
+                    </span>
+                  </div>
+                  <div class="card-content data-table">
+
+                    <table>
+                      <tbody>
+      
+                        <tr>
+                          <td class="label-cell">Creator:</td> 
+                          <td><a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a></td>
+                        </tr>
+
+                        <tr>
+                          <td class="label-cell">Date:</td> 
+                          <td><span class="date">${itemViewModel.dateDisplay}</span></td>
+                        </tr>
+      
+                      </tbody>
+                    </table>
+
+      
+                  </div>
+                </div>
+
             </div>
 
           </div>
+
+
 
           <div class="card">
             <div class="card-header">
@@ -5469,68 +5561,52 @@ function framework7Component(props, {
                 <label>Attributes</label>
               </span>
             </div>
-            <div class="card-content card-content-padding">
+            <div class="card-content data-table">
 
-              <div class="attribute-row"> 
-                <strong>Token ID:</strong> #${itemViewModel.item.tokenId}
-              </div>
+              <table>
+                <tbody>
 
-              ${itemViewModel.theme ? $h`
-                <div class="attribute-row"> 
-                  <strong>Theme:</strong> ${itemViewModel.theme.name}
-                </div>
-              ` : $h`<span/>`}
+                  <tr>
+                    <td class="label-cell">Token ID:</td> 
+                    <td>#${itemViewModel.item.tokenId}</td>
+                  </tr>
 
-              ${itemViewModel.attributeSelections?.map(as => $h`
-                <div class="attribute-row">
-                  <strong>${as.traitType}:</strong> ${as.value}
-                </div>
-              `)}
+                  ${itemViewModel.theme ? $h`
+                    <tr>
+                      <td class="label-cell">Theme:</td> 
+                      <td>${itemViewModel.theme.name}</td>
+                    </tr>
+                  ` : $h`<span/>`}
 
-              <div class="attribute-row"> 
-                <strong>Show Excerpt:</strong> ${itemViewModel.item.excerpt ? $h`
-                    <span class="material-icons">check_box</span>
-                  ` : $h`
-                    <span class="material-icons">check_box_outline_blank</span>
-                  `}
-              </div>
+                  ${itemViewModel.attributeSelections?.map(as => $h`
+                    <tr>
+                      <td class="label-cell">${as.traitType}:</td> 
+                      <td>${as.value}</td>
+                    </tr>
+                  `)}
 
-              <div class="attribute-row">
-                <strong>Cover Image:</strong> 
-                <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" />
-              </div>
-              
-              <div class="attribute-row">
-                <strong>Animation:</strong> 
-                <iframe srcdoc="${itemViewModel.animation?.content}" class="animation-preview" />
-              </div>
+                  <tr>
+                    <td class="label-cell">Show Excerpt:</td> 
+                    <td>
+                      ${itemViewModel.item.excerpt ? $h`
+                        <span class="material-icons">check_box</span>
+                      ` : $h`
+                        <span class="material-icons">check_box_outline_blank</span>
+                      `}
+                    </td>
+                  </tr>
 
+                  <tr>
+                    <td class="label-cell">Cover Image:</td> 
+                    <td><img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" /></td>
+                  </tr>
 
-            </div>
-          </div>
-
-
-
-
-          <div class="card">
-            <div class="card-header">
-              <span>
-                <i class="material-icons">person</i>
-                <label>Creator</label>
-              </span>
-            </div>
-            <div class="card-content card-content-padding">
-
-              <div class="attribute-row"> 
-                <strong>Creator:</strong> <a href="/admin/author/show/${itemViewModel?.author._id}">${itemViewModel?.authorDisplayName}</a>
-              </div>
-
-              <div class="attribute-row"> 
-                <strong>Date:</strong> <span class="date">${itemViewModel.dateDisplay}</span>
-              </div>
+                </tbody>
+              </table>
 
             </div>
           </div>
+
 
 
           <div class="block row center margin-bottom">
@@ -5574,7 +5650,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '286ed609b7';
+framework7Component.id = 'f5bcae162f';
 framework7Component.style = `
 
   .previous {
@@ -5650,6 +5726,8 @@ framework7Component.style = `
   }
 
   .cover-image-preview {
+    margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: 5px;
     height: 200px; 
     width: 200px;
@@ -5663,6 +5741,55 @@ framework7Component.style = `
     max-width: 100%;
     border: 1px solid #cccccc;
   }
+
+
+  .nft-header-row {
+    display: flex;  
+  }
+
+  .nft-header-row .left {
+    flex: 0 0 500px;
+  }
+
+  .nft-header-row .right {
+    flex: 1;
+  }
+
+  .nft-header-row .right h1 {
+    font-size: 25px;
+  }
+
+  .nft-header-row .right h4 {
+    margin-bottom: 0px;
+  }
+
+
+
+
+
+@media only screen and (max-width: 1024px) {
+
+  .nft-header-row {
+    display: block;  
+  }
+  
+  .nft-header-row .left {
+    width: 100%;
+  }
+  
+  .nft-header-row .right {
+    width: 100%;
+  }
+  
+}
+
+
+
+
+
+
+
+
 
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5723,7 +5850,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2659ea00a3';
+framework7Component.id = '49e65952d1';
 framework7Component.style = `
 
  .logo {
@@ -5926,7 +6053,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '541362a66d';
+framework7Component.id = '4b95f234cc';
 framework7Component.style = `
 
   `;
@@ -6231,7 +6358,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0db8834aed';
+framework7Component.id = '726c32a9fa';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6505,7 +6632,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '82a77b4365';
+framework7Component.id = '91e5ad1ec8';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6722,7 +6849,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c7805a90f2';
+framework7Component.id = 'b4db003c34';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6974,7 +7101,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '519f9cb371';
+framework7Component.id = '63677cb86d';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7212,7 +7339,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0970b6bf0c';
+framework7Component.id = '3811664881';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7413,7 +7540,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b4144ad6a5';
+framework7Component.id = '634c736db8';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -9074,8 +9201,8 @@ __decorate([
 ], Item.prototype, "animationId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], Item.prototype, "themeId", void 0);
+    __metadata("design:type", Array)
+], Item.prototype, "themes", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -10345,33 +10472,35 @@ let AnimationService = class AnimationService {
         return animation;
     }
     async buildAnimationPage(item) {
+        var _a;
         let result;
         let content = await this.quillService.translateContent(item.content);
-        let theme;
-        if (item.themeId) {
-            try {
-                theme = await this.themeService.get(item.themeId);
+        let themes = [];
+        if (item.themes) {
+            for (let theme of item.themes) {
+                themes.push(await this.themeService.get(theme));
+            } //might not exist because it got deleted.
+        }
+        let allThemeCss = "";
+        if ((themes === null || themes === void 0 ? void 0 : themes.length) > 0) {
+            for (let theme of themes) {
+                if (((_a = theme.animationCSS) === null || _a === void 0 ? void 0 : _a.length) > 0)
+                    allThemeCss += theme.animationCSS;
             }
-            catch (ex) { } //might not exist because it got deleted.
         }
-        let css;
-        if (theme) {
-            css = theme.animationCSS;
-        }
-        else {
-            css = item.animationCSS;
-        }
+        // console.log(`Theme CSS: ${allThemeCss}`)
+        // console.log(`Individual CSS: ${item.animationCSS}`)
         if (item.coverImageAsAnimation) {
             let image = await this.imageService.get(item.coverImageId);
             let imageSrc = await this.imageService.getUrl(image);
-            result = this.getFullImageTemplate(css, imageSrc);
+            result = this.getFullImageTemplate(imageSrc, item.animationCSS, allThemeCss);
         }
         else {
-            result = this.getAnimationTemplate(item, content, css);
+            result = this.getAnimationTemplate(item, content, item.animationCSS, allThemeCss);
         }
         return juice_client__WEBPACK_IMPORTED_MODULE_1___default()(result);
     }
-    getFullImageTemplate(css, imageSrc) {
+    getFullImageTemplate(imageSrc, individualCss, themeCss) {
         return `<!DOCTYPE html>
     <html>
       <head>
@@ -10397,7 +10526,8 @@ let AnimationService = class AnimationService {
             object-fit: cover;
           }
 
-          ${css ? css : ''}
+          ${themeCss ? themeCss : ''}
+          ${individualCss ? individualCss : ''}
 
         </style>
       </head>
@@ -10407,7 +10537,7 @@ let AnimationService = class AnimationService {
       </body>
     </html>`;
     }
-    getAnimationTemplate(item, content, css) {
+    getAnimationTemplate(item, content, individualCss, themeCss) {
         return `<!DOCTYPE html>
         <html>
         
@@ -10457,7 +10587,9 @@ let AnimationService = class AnimationService {
                   margin-bottom: 0px;
                 }
 
-                ${css ? css : ''}
+                ${themeCss ? themeCss : ''}
+                ${individualCss ? individualCss : ''}
+
 
               </style>
 
@@ -12897,12 +13029,18 @@ let ImageService = class ImageService {
     }
     async newFromItem(item) {
         let content = await this.quillService.translateContent(item.content);
-        let theme;
-        if (item.themeId) {
-            try {
-                theme = await this.themeService.get(item.themeId);
+        let themes = [];
+        if (item.themes) {
+            for (let theme of item.themes) {
+                themes.push(await this.themeService.get(theme));
+            } //might not exist because it got deleted.
+        }
+        let allThemeCss = "";
+        if ((themes === null || themes === void 0 ? void 0 : themes.length) > 0) {
+            for (let css of themes === null || themes === void 0 ? void 0 : themes.map(theme => theme === null || theme === void 0 ? void 0 : theme.coverImageCSS)) {
+                if ((css === null || css === void 0 ? void 0 : css.length) > 0)
+                    allThemeCss += css;
             }
-            catch (ex) { } //might not exist because it got deleted.
         }
         let excerpt = this.getExcerptByFirstParagraph(content, {
             pruneLength: 500
@@ -12911,7 +13049,7 @@ let ImageService = class ImageService {
             throw new Error("No text");
         }
         const image = new _dto_image__WEBPACK_IMPORTED_MODULE_6__.Image();
-        image.svg = await this.svgService.fromText(item.title, excerpt, theme ? theme.coverImageCSS : item.coverImageCSS);
+        image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, allThemeCss);
         image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_1__.of(image.svg);
         image.generated = true;
         return image;
@@ -13131,14 +13269,6 @@ let QuillEditorService = class QuillEditorService {
         this.uiService = uiService;
         this.initialized = false;
         const self = this;
-        $$(document).on('click', '.image-button', function (e) {
-            e.preventDefault();
-            self.imageClick();
-        });
-        $$(document).on('change', '.image-button-input', async function (e) {
-            e.preventDefault();
-            await self.imageSelected(this);
-        });
         // console.log("Quill service init")
     }
     init() {
@@ -13157,25 +13287,27 @@ let QuillEditorService = class QuillEditorService {
         }
         ItalicBlot.blotName = 'italic';
         ItalicBlot.tagName = 'em';
-        class LinkBlot extends Inline {
-            static create(value) {
-                let node = super.create();
-                // Sanitize url value if desired
-                node.setAttribute('href', value);
-                // Okay to set other non-format related attributes
-                // These are invisible to Parchment so must be static
-                node.setAttribute('target', '_blank');
-                return node;
-            }
-            static formats(node) {
-                // We will only be called with a node already
-                // determined to be a Link blot, so we do
-                // not need to check ourselves
-                return node.getAttribute('href');
-            }
-        }
-        LinkBlot.blotName = 'link';
-        LinkBlot.tagName = 'a';
+        // class LinkBlot extends Inline {
+        //   static blotName?: string
+        //   static tagName?: string
+        //   static create(value) {
+        //     let node = super.create();
+        //     // Sanitize url value if desired
+        //     node.setAttribute('href', value);
+        //     // Okay to set other non-format related attributes
+        //     // These are invisible to Parchment so must be static
+        //     node.setAttribute('target', '_blank')
+        //     return node;
+        //   }
+        //   static formats(node) {
+        //     // We will only be called with a node already
+        //     // determined to be a Link blot, so we do
+        //     // not need to check ourselves
+        //     return node.getAttribute('href')
+        //   }
+        // }
+        // LinkBlot.blotName = 'link'
+        // LinkBlot.tagName = 'a'
         let Block = quill__WEBPACK_IMPORTED_MODULE_0___default()["import"]('blots/block');
         class BlockquoteBlot extends Block {
         }
@@ -13279,8 +13411,6 @@ let QuillEditorService = class QuillEditorService {
         return this.activeEditor;
     }
     imageClick() {
-        const imageButtonInput = $$(".image-button-input");
-        imageButtonInput.click();
     }
     //TODO: move to service
     async imageSelected(fileElement) {
@@ -13289,7 +13419,7 @@ let QuillEditorService = class QuillEditorService {
         this.uiService.hideSpinner();
     }
     async insertImage(file) {
-        await this.insertImageInEditor(file, this.activeEditor);
+        let image = await this.insertImageInEditor(file, this.activeEditor);
         const imageSelectedEvent = new CustomEvent('image-selected', {
             detail: { _id: image._id }
         });
@@ -13318,6 +13448,7 @@ let QuillEditorService = class QuillEditorService {
             width: dimensions.width
         }, (quill__WEBPACK_IMPORTED_MODULE_0___default().sources.USER));
         editor.setSelection(range.index + 2, (quill__WEBPACK_IMPORTED_MODULE_0___default().sources.SILENT));
+        return image;
     }
     async imageDropAndPasteHandler(imageDataUrl, type, imageData) {
         const file = imageData.toFile();
@@ -13572,7 +13703,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 let SvgService = class SvgService {
     constructor() { }
-    async fromText(title, text, css) {
+    async fromText(title, text, individualCss, themeCss) {
         let fontSize = "140px";
         let lineHeight = "160px";
         if (title) {
@@ -13590,6 +13721,8 @@ let SvgService = class SvgService {
             fontSize = "75px";
             lineHeight = "95px";
         }
+        // console.log(`Theme CSS: ${themeCss}`)
+        // console.log(`Individual CSS: ${individualCss}`)
         let start = `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1'>
             <style>
                 * {
@@ -13648,7 +13781,9 @@ let SvgService = class SvgService {
                     font-weight: 500;
                 }
 
-                ${css}
+                ${themeCss ? themeCss : ''}
+
+                ${individualCss ? individualCss : ''}
 
             </style>
             <g>
@@ -13867,28 +14002,37 @@ let ChannelWebService = class ChannelWebService {
         let author;
         let editable = !channel.contractAddress;
         if (channel.coverImageId) {
-            let cImage = await this.imageService.get(channel.coverImageId);
-            coverImage = {
-                cid: cImage.cid,
-                url: await this.imageService.getUrl(cImage)
-            };
+            try {
+                let cImage = await this.imageService.get(channel.coverImageId);
+                coverImage = {
+                    cid: cImage.cid,
+                    url: await this.imageService.getUrl(cImage)
+                };
+            }
+            catch (ex) { }
         }
         if (channel.coverBannerId) {
-            let cBanner = await this.imageService.get(channel.coverBannerId);
-            coverBanner = {
-                cid: cBanner.cid,
-                url: await this.imageService.getUrl(cBanner)
-            };
+            try {
+                let cBanner = await this.imageService.get(channel.coverBannerId);
+                coverBanner = {
+                    cid: cBanner.cid,
+                    url: await this.imageService.getUrl(cBanner)
+                };
+            }
+            catch (ex) { }
         }
         if (channel.authorId) {
             author = await this.authorService.get(channel.authorId);
             //Load cover photo if there is one.
             if (author.coverPhotoId) {
-                let aImage = await this.imageService.get(author.coverPhotoId);
-                authorPhoto = {
-                    cid: aImage.cid,
-                    url: await this.imageService.getUrl(aImage)
-                };
+                try {
+                    let aImage = await this.imageService.get(author.coverPhotoId);
+                    authorPhoto = {
+                        cid: aImage.cid,
+                        url: await this.imageService.getUrl(aImage)
+                    };
+                }
+                catch (ex) { }
             }
         }
         let themes = await this.themeService.listByChannel(channel._id, 1000, 0);
@@ -14025,7 +14169,7 @@ let ItemWebService = class ItemWebService {
         return this.getNavigationViewModel(item, channel);
     }
     async getViewModel(item, channel) {
-        var _a;
+        var _a, _b;
         let animation;
         let coverImage;
         let authorPhoto;
@@ -14034,27 +14178,30 @@ let ItemWebService = class ItemWebService {
         let author;
         let editable = !channel.contractAddress;
         if (item.coverImageId) {
-            let image = await this.imageService.get(item.coverImageId);
-            coverImage = {
-                cid: image.cid,
-                url: await this.imageService.getUrl(image)
-            };
+            try {
+                let image = await this.imageService.get(item.coverImageId);
+                coverImage = {
+                    cid: image.cid,
+                    url: await this.imageService.getUrl(image)
+                };
+            }
+            catch (ex) { }
         }
         if (item.animationId) {
-            let a = await this.animationService.get(item.animationId);
-            animation = {
-                cid: a.cid,
-                content: he__WEBPACK_IMPORTED_MODULE_1___default().unescape(a.content)
-            };
-            let page = parser.parseFromString(a.content, 'text/html');
-            let body = page.getElementsByTagName('body')[0];
-            animationContentHTML = he__WEBPACK_IMPORTED_MODULE_1___default().unescape(new XMLSerializer().serializeToString(body));
-            //Swap body tag to a div
-            animationContentHTML = "<div" + animationContentHTML.slice(5);
-            animationContentHTML = animationContentHTML.substring(0, animationContentHTML.length - 7) + "</div>";
-        }
-        //Get animation
-        if (item.animationId) {
+            try {
+                let a = await this.animationService.get(item.animationId);
+                animation = {
+                    cid: a.cid,
+                    content: he__WEBPACK_IMPORTED_MODULE_1___default().unescape(a.content)
+                };
+                let page = parser.parseFromString(a.content, 'text/html');
+                let body = page.getElementsByTagName('body')[0];
+                animationContentHTML = he__WEBPACK_IMPORTED_MODULE_1___default().unescape(new XMLSerializer().serializeToString(body));
+                //Swap body tag to a div
+                animationContentHTML = "<div" + animationContentHTML.slice(5);
+                animationContentHTML = animationContentHTML.substring(0, animationContentHTML.length - 7) + "</div>";
+            }
+            catch (ex) { }
         }
         //Get author
         if (channel.authorId) {
@@ -14084,17 +14231,18 @@ let ItemWebService = class ItemWebService {
         //Is this the last one? 
         let maxToken = await this.itemService.getMaxTokenId(channel._id);
         let canDelete = (maxToken == item.tokenId);
-        let theme;
-        if (item.themeId) {
+        let themes;
+        if (((_b = item.themes) === null || _b === void 0 ? void 0 : _b.length) > 0) {
             try {
-                theme = await this.themeService.get(item.themeId);
+                for (let theme of item.themes) {
+                    themes.push(await this.themeService.get(theme));
+                }
             }
-            catch (ex) {
-            }
+            catch (ex) { }
         }
         return {
             item: item,
-            theme: theme,
+            themes: themes,
             contentHTML: await this.quillService.translateContent(item.content),
             animationContentHTML: animationContentHTML,
             dateDisplay: moment__WEBPACK_IMPORTED_MODULE_0___default()(item.dateCreated).format("MMM Do YYYY"),

@@ -129,12 +129,25 @@ class ImageService {
 
     let content = await this.quillService.translateContent(item.content)
 
-    let theme:Theme
-    if (item.themeId) {
-      try {
-        theme = await this.themeService.get(item.themeId)
-      } catch(ex) {} //might not exist because it got deleted.
+    let themes:Theme[] = []
+    
+    if (item.themes) {
+
+      for (let theme of item.themes) {
+        themes.push(await this.themeService.get(theme))
+      } //might not exist because it got deleted.
+
     }
+
+
+    let allThemeCss = ""
+
+    if (themes?.length > 0) {
+        for (let css of themes?.map( theme => theme?.coverImageCSS)) {
+            if (css?.length > 0) allThemeCss += css
+        }
+    }
+
 
     let excerpt = this.getExcerptByFirstParagraph(content, {
       pruneLength: 500
@@ -146,7 +159,7 @@ class ImageService {
 
     const image: Image = new Image()
 
-    image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, theme?.coverImageCSS)
+    image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, allThemeCss)
 
     image.cid = await Hash.of(image.svg)
     image.generated = true

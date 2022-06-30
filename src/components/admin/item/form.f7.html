@@ -184,29 +184,34 @@
                     <div class="accordion-item-content">
                         <div class="list">
                             <ul>
-        
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Theme</div>
-                                        <!-- additional "input-dropdown-wrap" class -->
-                                        <div class="item-input-wrap input-dropdown-wrap">
-                                        <select name="themeId" @change="${themeIdChange}">
-                                            <option value="">None</option>
+
+                                <li>
+                                    <a href="#" class="item-link smart-select smart-select-init" data-open-in="popup">
+                                      <!-- "multiple" attribute for multiple select-->
+                                        <select name="themes" @change="${themeSelectionChange}" tabindex="2"  multiple>
+                                            <optgroup>
+
+                                                ${themes?.map( (theme) => $h`
                         
-                                            ${themes?.map( (theme) => $h`
-                        
-                                                ${theme._id === itemViewModel.item.themeId ? $h`
-                                                    <option value="${theme._id}" selected>${theme.name}</option>
-                                                ` : $h`
-                                                    <option value="${theme._id}">${theme.name}</option>
-                                                `}
-                        
-                                                
-                                            `)}
+                                                    ${itemViewModel.item?.themes?.includes(theme._id) ? $h`
+                                                        <option value="${theme._id}" selected>${theme.name}</option>
+                                                    ` : $h`
+                                                        <option value="${theme._id}">${theme.name}</option>
+                                                    `}
+                            
+                                                `)}
+
+
+                                            </optgroup>
                                         </select>
+                                      <div class="item-content">
+                                        <div class="item-inner">
+                                          <div class="item-title">Choose Theme(s)</div>
                                         </div>
-                                    </div>
+                                      </div>
+                                    </a>
                                 </li>
+                                
                         
                                 <li>
                                     <div class="item-content item-input item-input-outline">
@@ -318,7 +323,7 @@
                     ops: quillEditorService.activeEditor.getContents().ops
                 },
                 coverImageCSS: itemViewModel.item.coverImageCSS,
-                themeId: itemViewModel.item.themeId
+                themes: itemViewModel.item.themes
             })
 
 
@@ -365,12 +370,12 @@
 
         }
 
-        const themeIdChange = async (e) => {
+        const themeSelectionChange = async (e) => {
 
-            let id = $(e.currentTarget).val()
+            let themes = $(e.currentTarget).val()
 
-            itemViewModel.item.themeId = id 
-
+            itemViewModel.item.themes = themes
+            
             await $update()
 
             await loadCoverImages()
@@ -408,6 +413,8 @@
             document.dispatchEvent(new CustomEvent('load-cover-images'))
 
         }
+
+
 
         let itemViewModel = props.item
         let editorId = props.editor

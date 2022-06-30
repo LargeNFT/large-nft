@@ -75,21 +75,27 @@ class AnimationService {
 
     let content = await this.quillService.translateContent(item.content)
 
-    let theme:Theme
+    let themes:Theme[] = []
 
-    if (item.themeId) {
-      try {
-        theme = await this.themeService.get(item.themeId)
-      } catch(ex) {} //might not exist because it got deleted.
+    if (item.themes) {
+
+      for (let theme of item.themes) {
+        themes.push(await this.themeService.get(theme))
+      } //might not exist because it got deleted.
+
     }
 
-    let css
+    let allThemeCss = ""
 
-    if (theme) {
-      css = theme.animationCSS
-    } else {
-      css = item.animationCSS
+    if (themes?.length > 0) {
+      for (let theme of themes) {
+        if (theme.animationCSS?.length > 0) allThemeCss += theme.animationCSS
+      }
     }
+
+    // console.log(`Theme CSS: ${allThemeCss}`)
+    // console.log(`Individual CSS: ${item.animationCSS}`)
+
 
   
     if (item.coverImageAsAnimation) {
@@ -98,11 +104,11 @@ class AnimationService {
 
       let imageSrc = await this.imageService.getUrl(image)
 
-      result = this.getFullImageTemplate(imageSrc, item.animationCSS, theme?.animationCSS)
+      result = this.getFullImageTemplate(imageSrc, item.animationCSS, allThemeCss)
 
     } else {
 
-      result = this.getAnimationTemplate(item, content, item.animationCSS, theme?.animationCSS)
+      result = this.getAnimationTemplate(item, content, item.animationCSS, allThemeCss)
     }
 
     return juice(result)

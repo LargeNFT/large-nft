@@ -50,7 +50,7 @@ class Item {
     animationId?:string
 
     @Allow()
-    themeId?:string
+    themes?:string[]
 
     @Allow()
     coverImageCSS?:string 

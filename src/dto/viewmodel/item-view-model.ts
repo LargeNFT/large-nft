@@ -17,7 +17,7 @@ interface ItemViewModel {
     contentHTML?:string
     animationContentHTML?:string
 
-    theme?:Theme
+    themes?:Theme[]
 
     author?:Author
     authorDisplayName?:string 

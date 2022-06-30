@@ -75,44 +75,41 @@ class ItemWebService {
 
         if (item.coverImageId) {
 
-            let image:Image = await this.imageService.get(item.coverImageId)
+            try {
+                let image:Image = await this.imageService.get(item.coverImageId)
             
-            coverImage = {
-                cid: image.cid,
-                url: await this.imageService.getUrl(image)
-            }
+                coverImage = {
+                    cid: image.cid,
+                    url: await this.imageService.getUrl(image)
+                }
+            } catch(ex) {}
+
         }
 
         if (item.animationId) {
 
-            let a:Animation = await this.animationService.get(item.animationId)
+            try {
+
+                let a:Animation = await this.animationService.get(item.animationId)
             
-            animation = {
-                cid: a.cid,
-                content: he.unescape(a.content)
-            }
+                animation = {
+                    cid: a.cid,
+                    content: he.unescape(a.content)
+                }
+    
+                let page = parser.parseFromString(a.content, 'text/html')
+    
+                let body = page.getElementsByTagName('body')[0]
+                
+                animationContentHTML = he.unescape(new XMLSerializer().serializeToString(body))
+    
+                //Swap body tag to a div
+                animationContentHTML = "<div" + animationContentHTML.slice(5)
+                animationContentHTML = animationContentHTML.substring(0, animationContentHTML.length - 7) + "</div>"
 
-            let page = parser.parseFromString(a.content, 'text/html')
-
-            let body = page.getElementsByTagName('body')[0]
-            
-            animationContentHTML = he.unescape(new XMLSerializer().serializeToString(body))
-
-            //Swap body tag to a div
-            animationContentHTML = "<div" + animationContentHTML.slice(5)
-            animationContentHTML = animationContentHTML.substring(0, animationContentHTML.length - 7) + "</div>"
+            } catch(ex) { }
 
         }
-
-
-        //Get animation
-        if (item.animationId) {
-
-
-        }
-
-
-
 
         //Get author
         if (channel.authorId) {
@@ -155,21 +152,24 @@ class ItemWebService {
 
         let canDelete = (maxToken == item.tokenId)
         
-        let theme:Theme 
+        let themes:Theme[] 
 
-        if (item.themeId) {
+        if (item.themes?.length > 0) {
+
             try {
-                theme = await this.themeService.get(item.themeId)
-            } catch(ex) {
-                
-            }
+            
+                for (let theme of item.themes) {
+                    themes.push(await this.themeService.get(theme))
+                }
+
+            } catch(ex) {}
         }
 
         
 
         return {
             item: item,
-            theme: theme,
+            themes: themes,
             contentHTML: await this.quillService.translateContent(item.content),
             animationContentHTML: animationContentHTML,
             dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),

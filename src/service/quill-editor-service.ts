@@ -32,15 +32,7 @@ class QuillEditorService {
 
     const self = this
 
-    $$(document).on('click', '.image-button', function (e) {
-      e.preventDefault()
-      self.imageClick()
-    })
 
-    $$(document).on('change', '.image-button-input', async function (e) {
-      e.preventDefault()
-      await self.imageSelected(this)
-    })
 
     // console.log("Quill service init")
 
@@ -77,30 +69,30 @@ class QuillEditorService {
     ItalicBlot.tagName = 'em';
 
 
-    class LinkBlot extends Inline {
+    // class LinkBlot extends Inline {
 
-      static blotName?: string
-      static tagName?: string
+    //   static blotName?: string
+    //   static tagName?: string
 
-      static create(value) {
-        let node = super.create();
-        // Sanitize url value if desired
-        node.setAttribute('href', value);
-        // Okay to set other non-format related attributes
-        // These are invisible to Parchment so must be static
-        node.setAttribute('target', '_blank')
-        return node;
-      }
+    //   static create(value) {
+    //     let node = super.create();
+    //     // Sanitize url value if desired
+    //     node.setAttribute('href', value);
+    //     // Okay to set other non-format related attributes
+    //     // These are invisible to Parchment so must be static
+    //     node.setAttribute('target', '_blank')
+    //     return node;
+    //   }
 
-      static formats(node) {
-        // We will only be called with a node already
-        // determined to be a Link blot, so we do
-        // not need to check ourselves
-        return node.getAttribute('href')
-      }
-    }
-    LinkBlot.blotName = 'link'
-    LinkBlot.tagName = 'a'
+    //   static formats(node) {
+    //     // We will only be called with a node already
+    //     // determined to be a Link blot, so we do
+    //     // not need to check ourselves
+    //     return node.getAttribute('href')
+    //   }
+    // }
+    // LinkBlot.blotName = 'link'
+    // LinkBlot.tagName = 'a'
 
 
     let Block = Quill.import('blots/block')
@@ -251,8 +243,6 @@ class QuillEditorService {
   }
 
   imageClick() {
-    const imageButtonInput = $$(".image-button-input")
-    imageButtonInput.click()
 
   }
 
@@ -262,7 +252,7 @@ class QuillEditorService {
     this.uiService.showSpinner("Processing image...")
 
     this.insertImage(fileElement.files[0])
-
+    
     this.uiService.hideSpinner()
 
   }
@@ -270,7 +260,7 @@ class QuillEditorService {
 
   async insertImage(file) {
     
-    await this.insertImageInEditor(file, this.activeEditor)    
+    let image = await this.insertImageInEditor(file, this.activeEditor)    
 
     const imageSelectedEvent = new CustomEvent('image-selected', {
       detail: { _id: image._id }
@@ -310,6 +300,8 @@ class QuillEditorService {
     }, Quill.sources.USER)
 
     editor.setSelection(range.index + 2, Quill.sources.SILENT)
+
+    return image
 
 
   }

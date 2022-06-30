@@ -47,23 +47,29 @@ class ChannelWebService {
 
         if (channel.coverImageId) {
 
-            let cImage = await this.imageService.get(channel.coverImageId)
+            try {
+                let cImage = await this.imageService.get(channel.coverImageId)
 
-            coverImage = {
-                cid: cImage.cid,
-                url: await this.imageService.getUrl(cImage)
-            }
+                coverImage = {
+                    cid: cImage.cid,
+                    url: await this.imageService.getUrl(cImage)
+                }
+    
+            } catch (ex) {}
 
         }
 
         if (channel.coverBannerId) {
 
-            let cBanner = await this.imageService.get(channel.coverBannerId)
+            try {
+                let cBanner = await this.imageService.get(channel.coverBannerId)
 
-            coverBanner = {
-                cid: cBanner.cid,
-                url: await this.imageService.getUrl(cBanner)
-            }
+                coverBanner = {
+                    cid: cBanner.cid,
+                    url: await this.imageService.getUrl(cBanner)
+                }
+            } catch(ex) {}
+
         }
 
         if (channel.authorId) {
@@ -72,12 +78,16 @@ class ChannelWebService {
 
             //Load cover photo if there is one.
             if (author.coverPhotoId) {
-                let aImage = await this.imageService.get(author.coverPhotoId)
 
-                authorPhoto = {
-                    cid: aImage.cid,
-                    url: await this.imageService.getUrl(aImage)
-                }
+                try {
+                    let aImage = await this.imageService.get(author.coverPhotoId)
+
+                    authorPhoto = {
+                        cid: aImage.cid,
+                        url: await this.imageService.getUrl(aImage)
+                    }
+                } catch(ex) {}
+
             }
 
         }

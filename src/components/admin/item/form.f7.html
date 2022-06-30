@@ -322,7 +322,7 @@
             })
 
 
-            //If we just have the text baesd one select it.
+            //If we just have the text based one select it.
             if (itemViewModel.images?.length == 1) {
                 itemViewModel.coverImage = itemViewModel.images[0]
             }
@@ -408,9 +408,6 @@
             document.dispatchEvent(new CustomEvent('load-cover-images'))
 
         }
-
-
-
 
         let itemViewModel = props.item
         let editorId = props.editor

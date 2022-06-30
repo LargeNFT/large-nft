@@ -218,6 +218,26 @@
         
       })
 
+      $('.image-button').off('click')
+      $('.image-button-input').off('click')
+
+      $('.image-button').on('click', function (e) {
+        e.preventDefault()
+
+        const imageButtonInput = $(".image-button-input")
+        imageButtonInput.click()
+
+      })
+
+      $('.image-button-input').on('change', async function (e) {
+        e.preventDefault()
+        await quillEditorService.imageSelected(this)
+      })
+
+
+
+
+
 
 
 

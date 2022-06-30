@@ -22,7 +22,7 @@
                                     <div class="item-title item-label">Title</div>
                                     <div class="item-input-wrap">
                                         <input type="text" name="title" placeholder="Title" value="${itemViewModel?.item?.title}"
-                                             id="title-header-input" @keyup="${titleOnKeyup}"  />
+                                             id="title-header-input" @input="${titleOnInput}"  />
                                     </div>
                                 </div>
                             </div>
@@ -123,13 +123,12 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">Attributes</div>
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-
-                        ${itemViewModel.attributeSelections?.length > 0 ? $h`
+        ${itemViewModel.attributeSelections?.length > 0 ? $h`
+            <div class="card">
+                <div class="card-header">Attributes</div>
+                <div class="card-content">
+                    <div class="list">
+                        <ul>
 
                             ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
                                 <li>
@@ -159,14 +158,19 @@
                                     </div>
                                 </li>
                             `)}
-                        ` : $h``}
-                
-                        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
+                            
+                    
+                            
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        ` : $h``}
+
+        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
+
+
 
 
         <div class="list accordion-list inset">
@@ -317,6 +321,7 @@
                 themeId: itemViewModel.item.themeId
             })
 
+
             //If we just have the text baesd one select it.
             if (itemViewModel.images?.length == 1) {
                 itemViewModel.coverImage = itemViewModel.images[0]
@@ -394,7 +399,7 @@
             $('input[name="coverImageAsAnimation"]').val(e.currentTarget.checked)
         }
 
-        const titleOnKeyup = (e) => {
+        const titleOnInput = (e) => {
 
             let value = $(e.currentTarget).val();
 

@@ -98,11 +98,11 @@ class AnimationService {
 
       let imageSrc = await this.imageService.getUrl(image)
 
-      result = this.getFullImageTemplate(css, imageSrc)
+      result = this.getFullImageTemplate(imageSrc, item.animationCSS, theme?.animationCSS)
 
     } else {
 
-      result = this.getAnimationTemplate(item, content, css)
+      result = this.getAnimationTemplate(item, content, item.animationCSS, theme?.animationCSS)
     }
 
     return juice(result)
@@ -110,7 +110,7 @@ class AnimationService {
   }
 
 
-  getFullImageTemplate(css:string, imageSrc:string) {
+  getFullImageTemplate(imageSrc:string, individualCss?:string, themeCss?:string) {
     return `<!DOCTYPE html>
     <html>
       <head>
@@ -136,7 +136,8 @@ class AnimationService {
             object-fit: cover;
           }
 
-          ${css ? css : ''}
+          ${themeCss ? themeCss : ''}
+          ${individualCss ? individualCss : ''}
 
         </style>
       </head>
@@ -148,7 +149,7 @@ class AnimationService {
   }
 
 
-  getAnimationTemplate(item:Item, content:string, css:string) {
+  getAnimationTemplate(item:Item, content:string, individualCss?:string, themeCss?:string) {
     return `<!DOCTYPE html>
         <html>
         
@@ -198,7 +199,9 @@ class AnimationService {
                   margin-bottom: 0px;
                 }
 
-                ${css ? css : ''}
+                ${themeCss ? themeCss : ''}
+                ${individualCss ? individualCss : ''}
+
 
               </style>
 

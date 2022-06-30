@@ -676,3 +676,11 @@ ul.breadcrumb li a:hover {
   cursor: pointer;
 }
 
+
+
+
+.data-table .label-cell {
+  font-weight: bold;
+  width: 225px;
+}
+

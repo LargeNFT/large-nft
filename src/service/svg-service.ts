@@ -6,7 +6,7 @@ class SvgService {
 
     constructor() {}
 
-    async fromText(title:string, text:string, css:string) : Promise<string> {
+    async fromText(title:string, text:string, individualCss?:string, themeCss?:string) : Promise<string> {
 
         let fontSize = "140px"
         let lineHeight = "160px"
@@ -90,7 +90,8 @@ class SvgService {
                     font-weight: 500;
                 }
 
-                ${css}
+                ${themeCss ? themeCss : ''}
+                ${individualCss ? individualCss : ''}
 
             </style>
             <g>

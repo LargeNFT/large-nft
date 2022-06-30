@@ -146,7 +146,7 @@ class ImageService {
 
     const image: Image = new Image()
 
-    image.svg = await this.svgService.fromText(item.title, excerpt, theme ? theme.coverImageCSS : item.coverImageCSS)
+    image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, theme?.coverImageCSS)
 
     image.cid = await Hash.of(image.svg)
     image.generated = true

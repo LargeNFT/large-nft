@@ -59,42 +59,48 @@
                 <label>Attributes</label>
               </span>
             </div>
-            <div class="card-content card-content-padding">
+            <div class="card-content data-table">
 
-              <div class="attribute-row"> 
-                <strong>Token ID:</strong> #${itemViewModel.item.tokenId}
-              </div>
+              <table>
+                <tbody>
 
-              ${itemViewModel.theme ? $h`
-                <div class="attribute-row"> 
-                  <strong>Theme:</strong> ${itemViewModel.theme.name}
-                </div>
-              ` : $h`<span/>`}
+                  <tr>
+                    <td class="label-cell">Token ID:</td> 
+                    <td>#${itemViewModel.item.tokenId}</td>
+                  </tr>
 
-              ${itemViewModel.attributeSelections?.map(as => $h`
-                <div class="attribute-row">
-                  <strong>${as.traitType}:</strong> ${as.value}
-                </div>
-              `)}
+                  ${itemViewModel.theme ? $h`
+                    <tr>
+                      <td class="label-cell">Theme:</td> 
+                      <td>${itemViewModel.theme.name}</td>
+                    </tr>
+                  ` : $h`<span/>`}
 
-              <div class="attribute-row"> 
-                <strong>Show Excerpt:</strong> ${itemViewModel.item.excerpt ? $h`
-                    <span class="material-icons">check_box</span>
-                  ` : $h`
-                    <span class="material-icons">check_box_outline_blank</span>
-                  `}
-              </div>
+                  ${itemViewModel.attributeSelections?.map(as => $h`
+                    <tr>
+                      <td class="label-cell">${as.traitType}:</td> 
+                      <td>${as.value}</td>
+                    </tr>
+                  `)}
 
-              <div class="attribute-row">
-                <strong>Cover Image:</strong> 
-                <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" />
-              </div>
-              
-              <div class="attribute-row">
-                <strong>Animation:</strong> 
-                <iframe srcdoc="${itemViewModel.animation?.content}" class="animation-preview" />
-              </div>
+                  <tr>
+                    <td class="label-cell">Show Excerpt:</td> 
+                    <td>
+                      ${itemViewModel.item.excerpt ? $h`
+                        <span class="material-icons">check_box</span>
+                      ` : $h`
+                        <span class="material-icons">check_box_outline_blank</span>
+                      `}
+                    </td>
+                  </tr>
 
+                  <tr>
+                    <td class="label-cell">Cover Image:</td> 
+                    <td><img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" /></td>
+                  </tr>
+
+                </tbody>
+              </table>
 
             </div>
           </div>
@@ -237,6 +243,8 @@
   }
 
   .cover-image-preview {
+    margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: 5px;
     height: 200px; 
     width: 200px;

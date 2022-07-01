@@ -206,7 +206,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '673de5ecaf';
+framework7Component.id = '2da65ecb23';
 framework7Component.style = `
 
 
@@ -399,7 +399,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '18ffa50465';
+framework7Component.id = '7b500f2326';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -511,7 +511,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '478c9abf31';
+framework7Component.id = 'c1bcf23789';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -642,7 +642,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '61ada96260';
+framework7Component.id = 'df871b715a';
 framework7Component.style = `
 
 
@@ -1295,7 +1295,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0ce0a40bce';
+framework7Component.id = '8d42f3c6df';
 framework7Component.style = `
 
 `;
@@ -1943,7 +1943,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '41217e07ee';
+framework7Component.id = 'dd8cb8ddf6';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2157,7 +2157,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b1e59ddb92';
+framework7Component.id = '050fa206cc';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2769,7 +2769,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c867834974';
+framework7Component.id = 'b3d8c8b8fc';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3092,7 +3092,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b860693b9d';
+framework7Component.id = '9e5a2f3749';
 framework7Component.style = `
 
 `;
@@ -3288,7 +3288,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f94b280035';
+framework7Component.id = 'f26dfa744d';
 framework7Component.style = `
     .item-preview {
         width: 100%;
@@ -3573,7 +3573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5d91012b52';
+framework7Component.id = '389aeb6cab';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3843,7 +3843,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '62937c027c';
+framework7Component.id = 'e25e6b13e1';
 framework7Component.style = `
     
 `;
@@ -3933,7 +3933,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3334d849be';
+framework7Component.id = 'e2c326076f';
 framework7Component.style = `
     
 `;
@@ -4005,7 +4005,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '34f3a0f1cd';
+framework7Component.id = '27f2bf5aef';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4135,7 +4135,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e09d45a59d';
+framework7Component.id = '54f0a0f526';
 framework7Component.style = `
 
 `;
@@ -4291,7 +4291,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7c63efdfd9';
+framework7Component.id = 'e54de47d84';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4384,7 +4384,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f667572f1d';
+framework7Component.id = 'a74e59b38a';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4643,7 +4643,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '45f3b3eaac';
+framework7Component.id = 'f84baee23e';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4869,7 +4869,7 @@ function framework7Component(props, {
     } //Expand customize box if set
 
 
-    if (itemViewModel.item.themeId || itemViewModel.item.coverImageCSS || itemViewModel.item.animationCSS || itemViewModel.item.coverImageAsAnimation) {
+    if (itemViewModel.item.themes?.length > 0 || itemViewModel.item.coverImageCSS || itemViewModel.item.animationCSS || itemViewModel.item.coverImageAsAnimation) {
       $f7.accordion.open('.customize-accordion');
     }
   });
@@ -4937,7 +4937,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f8fa19deac';
+framework7Component.id = 'e0d04819ac';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5366,7 +5366,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e4c5ab39c4';
+framework7Component.id = '465e1aaaba';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5670,7 +5670,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4d4cbd3c22';
+framework7Component.id = '64a8486fbe';
 framework7Component.style = `
 
   .previous {
@@ -5876,7 +5876,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ca920143e5';
+framework7Component.id = '790395c67a';
 framework7Component.style = `
 
  .logo {
@@ -6079,7 +6079,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '700847f39f';
+framework7Component.id = 'c5d75d9f46';
 framework7Component.style = `
 
   `;
@@ -6384,7 +6384,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a4014eb6c9';
+framework7Component.id = '01f01bb03f';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6658,7 +6658,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '317c6a4b46';
+framework7Component.id = 'a843b18818';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6875,7 +6875,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1608b17321';
+framework7Component.id = 'e5be6c83d5';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7127,7 +7127,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fd854b489a';
+framework7Component.id = 'd434cead6a';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7365,7 +7365,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '51f6b338ca';
+framework7Component.id = '06b6ab6523';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7566,7 +7566,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bea6a73f9c';
+framework7Component.id = 'ae3ef681df';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -10548,6 +10548,7 @@ let AnimationService = class AnimationService {
             flex-shrink: 0;
             min-width: 100%;
             width: 100%;
+            height: 100%;
             min-height: 100%
             object-fit: cover;
           }

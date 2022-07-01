@@ -318,7 +318,7 @@
       
 
       //Expand customize box if set
-      if (itemViewModel.item.themeId || itemViewModel.item.coverImageCSS || 
+      if (itemViewModel.item.themes?.length > 0 || itemViewModel.item.coverImageCSS || 
           itemViewModel.item.animationCSS || itemViewModel.item.coverImageAsAnimation) {
 
         $f7.accordion.open('.customize-accordion')

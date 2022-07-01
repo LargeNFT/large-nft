@@ -138,6 +138,7 @@ class AnimationService {
             flex-shrink: 0;
             min-width: 100%;
             width: 100%;
+            height: 100%;
             min-height: 100%
             object-fit: cover;
           }

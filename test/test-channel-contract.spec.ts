@@ -140,7 +140,9 @@ contract('Channel Contract', async (accounts) => {
 
     it("should mint multiple tokens", async () => {
 
-        await mainContract.mint( 3, { from: user0, value: web3.utils.toWei('0.24', 'ether') })
+        let tx = await mainContract.mint( 3, { from: user0, value: web3.utils.toWei('0.24', 'ether') })
+        verifyMintEvent(tx, 3)
+
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (3 * 0.08).toString() , 'ether'))
 
         assert.strictEqual(await mainContract.ownerOf( 1, { from: user0 }), user0)
@@ -177,7 +179,10 @@ contract('Channel Contract', async (accounts) => {
 
     it("should mint multiple if start token is current token", async () => {
 
-        await mainContract.mintFromStartOrFail( 3, 4, { from: user1, value: web3.utils.toWei('0.24', 'ether') }),
+        let tx = await mainContract.mintFromStartOrFail( 3, 4, { from: user1, value: web3.utils.toWei('0.24', 'ether') })
+        
+        verifyMintEvent(tx, 6)
+        
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (6 * 0.08).toString() , 'ether'))
 
         assert.strictEqual(await mainContract.ownerOf( 4, { from: user1 }), user1)
@@ -196,11 +201,16 @@ contract('Channel Contract', async (accounts) => {
 
     it("should mint the rest of the tokens", async () => {
 
-        await mainContract.mint( 2, { from: user2, value: web3.utils.toWei('0.16', 'ether') })
+        let tx1 = await mainContract.mint( 2, { from: user2, value: web3.utils.toWei('0.16', 'ether') })
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (8 * 0.08).toString() , 'ether'))
+        verifyMintEvent(tx1, 8)
 
-        await mainContract.mint( 2, { from: user3, value: web3.utils.toWei('0.16', 'ether') })
+
+        let tx2 = await mainContract.mint( 2, { from: user3, value: web3.utils.toWei('0.16', 'ether') })
         assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (10 * 0.08).toString() , 'ether'))
+        verifyMintEvent(tx2, 10)
+
+
 
         assert.strictEqual(await mainContract.ownerOf( 7, { from: user2 }), user2)
         assert.strictEqual(await mainContract.ownerOf( 8, { from: user2 }), user2)
@@ -306,3 +316,19 @@ contract('Channel Contract', async (accounts) => {
 
 })
 
+function verifyMintEvent(tx, tokenId) {
+  let eventCount = 0;
+  for (let l of tx.logs) {
+    if (l.event === 'MintEvent') {
+      try {
+        assert.strictEqual(l.args.tokenId.toNumber(), tokenId)
+        eventCount += 1
+      } catch (ex) { }
+    }
+  }
+  if (eventCount === 0) {
+    assert(false, 'Missing Mint Event')
+  } else {
+    assert(eventCount === 1, 'Unexpected number of Mint events')
+  }
+}

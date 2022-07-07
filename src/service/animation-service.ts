@@ -183,7 +183,10 @@ class AnimationService {
                   padding: 20px;
                   width:100%;
                   min-height: 100%;
-                  background: #FFFFFF;
+                  
+                  background: rgb(241,241,241);
+                  background: linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%);
+
                   font-size: 20px;
                   border: 5px solid #4e82b1;
                   float: left;

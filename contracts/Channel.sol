@@ -19,6 +19,8 @@ contract Channel is ERC721A, Ownable {
     //set the maximum number an address can mint at a time
     uint256 public MAX_MINT_AMOUNT = 10;
 
+    event MintEvent(uint256 tokenId);
+
 
     constructor(string memory name, string memory symbol, string memory ipfsCid, uint256 mintFee, uint256 maxTokenId) ERC721A(name, symbol) {
         _mintFee = mintFee;
@@ -49,12 +51,10 @@ contract Channel is ERC721A, Ownable {
         //Validate we have enough ETH. 
         require(msg.value == quantity * _mintFee, "Send exact ETH");
 
-        console.log(_msgSender());
-
         //Mint
         _safeMint(_msgSender(), quantity);
 
-        console.log('here2');
+        emit MintEvent(minted + quantity);
 
     }
 
@@ -68,8 +68,6 @@ contract Channel is ERC721A, Ownable {
 
         //Make sure that token is the same as minted + 1
         require(start == minted + 1, "Token is past start"); 
-
-        console.log(msg.value);
 
         mint(quantity);
 

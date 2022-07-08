@@ -7,9 +7,8 @@
     "url": "git+https://gitlab.com/ptoner/large"
   },
   "scripts": {
-    "start:dev": "node node_modules/webpack/bin/webpack.js serve --config=webpack.dev.ts",
+    "start:dev": "node node_modules/webpack/bin/webpack.js serve --config=webpack.dev.ts ",
     "test": "cd test && truffle test",
-    "electron": "electron ./src/electron.js",
     "build": "node node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",
     "build:dev": "node node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",
     "build:reader": "node node_modules/webpack/bin/webpack.js --config=webpack.reader.ts"
@@ -45,9 +44,6 @@
   
     "eth-gas-reporter": "0.2.24",
   
-    "framework7": "7.0.5",
-    "framework7-loader": "3.0.2",
-
     "html-inline-script-webpack-plugin": "2.0.3",
     "html-webpack-plugin": "5.5.0",
     "html-inline-css-webpack-plugin": "1.11.1",
@@ -62,6 +58,7 @@
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "10.2.4",
     "url-loader": "4.1.1",
+    "framework7-loader": "3.0.2",
 
     "ts-mocha": "10.0.0",
     "ts-mockito": "2.6.1",
@@ -102,12 +99,12 @@
 
     "reflect-metadata": "0.1.13",
 
-    "framework7": "6.3.16",
+    "framework7": "7.0.5",
     "framework7-icons": "5.0.5",
 
     "inversify": "6.0.1",
 
-    "ipfs-core": "0.15.3",
+    "ipfs-core": "0.15.4",
     "ipfs-only-hash": "4.0.0",
 
     "ethers": "5.5.4",

@@ -60,7 +60,7 @@ let adminConfig = {
     extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
     alias: {
       buffer: 'buffer',
-      process: 'process/browser',
+      process: 'process/browser.js',
     },
     fallback: { 
       "path": require.resolve("path-browserify"),
@@ -102,7 +102,7 @@ let adminConfig = {
     }),
 
     new webpack.ProvidePlugin({
-      process: 'process/browser',
+      process: 'process/browser.js',
     }),
 
     new webpack.ProvidePlugin({

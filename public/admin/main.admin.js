@@ -206,7 +206,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd4bcb48094';
+framework7Component.id = '0898d0dd29';
 framework7Component.style = `
 
 
@@ -399,7 +399,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '004a2c72a1';
+framework7Component.id = 'b71ec7d345';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -511,7 +511,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '033c9f488b';
+framework7Component.id = 'ac271a3a0a';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -642,7 +642,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a61f5b0450';
+framework7Component.id = 'b6673b3ccf';
 framework7Component.style = `
 
 
@@ -1295,7 +1295,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ccab345060';
+framework7Component.id = 'acd4c30065';
 framework7Component.style = `
 
 `;
@@ -1943,7 +1943,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd198d6ccf7';
+framework7Component.id = 'accad3a235';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2157,7 +2157,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e6c5cf339a';
+framework7Component.id = 'e26f034d26';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2769,7 +2769,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0d3ef762fc';
+framework7Component.id = 'cc17cf8c75';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3092,7 +3092,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1fa5fa7862';
+framework7Component.id = '18423abe08';
 framework7Component.style = `
 
 `;
@@ -3288,7 +3288,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '04f8acffa2';
+framework7Component.id = '1072f1d93a';
 framework7Component.style = `
     .item-preview {
         width: 100%;
@@ -3573,7 +3573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '870d9bc23f';
+framework7Component.id = '2ee2760b61';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3843,7 +3843,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fb825a7c2f';
+framework7Component.id = 'cce09a0bf7';
 framework7Component.style = `
     
 `;
@@ -3933,7 +3933,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '526959afe0';
+framework7Component.id = '1fa8ecb279';
 framework7Component.style = `
     
 `;
@@ -4005,7 +4005,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9a0b9e7cea';
+framework7Component.id = '6ea19d3517';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4140,7 +4140,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd6b50111b7';
+framework7Component.id = '9db2af00d1';
 framework7Component.style = `
 
 `;
@@ -4296,7 +4296,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9c4aeb486b';
+framework7Component.id = '9f6d2eb5ee';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4389,7 +4389,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fc8a390b3c';
+framework7Component.id = '101e1eb5ba';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4648,7 +4648,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2ac2e73c13';
+framework7Component.id = '45fc656bb0';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4731,7 +4731,8 @@ function framework7Component(props, {
     let showExcerpt = formData.showExcerpt === 'true'; //Get data
 
     let item = Object.assign(new _dto_item__WEBPACK_IMPORTED_MODULE_9__.Item(), formData);
-    item.coverImageAsAnimation = formData.coverImageAsAnimation === 'true'; //Get content from quill
+    item.coverImageAsAnimation = formData.coverImageAsAnimation === 'true';
+    item.tokenId = parseInt(formData.tokenId); //Get content from quill
 
     item.content = quillEditorService.activeEditor.getContents();
     item.coverImageCSS = coverImageCSSQuillEditor.getText() != "\n" ? coverImageCSSQuillEditor.getText() : undefined;
@@ -4766,6 +4767,7 @@ function framework7Component(props, {
     await itemWebService.saveAnimation(item); //Save
 
     try {
+      console.log(item);
       await itemService.put(item);
       const toast = $f7.toast.show({
         text: 'Blog NFT saved',
@@ -4942,7 +4944,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ecfa2a7b7e';
+framework7Component.id = 'e8e8bdfb62';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5371,7 +5373,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '44821fad5d';
+framework7Component.id = '71c5155076';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5675,7 +5677,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a5a3a202bf';
+framework7Component.id = '43e08a93af';
 framework7Component.style = `
 
   .previous {
@@ -5881,7 +5883,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '6772ffbaf9';
+framework7Component.id = '37803572f3';
 framework7Component.style = `
 
  .logo {
@@ -6084,7 +6086,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3e8606aa27';
+framework7Component.id = '6ae76bcdcd';
 framework7Component.style = `
 
   `;
@@ -6389,7 +6391,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cc14fb1f45';
+framework7Component.id = 'f9fdf067e3';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6663,7 +6665,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '294dfb2a4b';
+framework7Component.id = 'ad694917ca';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6880,7 +6882,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b38200b2eb';
+framework7Component.id = '4ad1d6c927';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7132,7 +7134,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ecd480cffb';
+framework7Component.id = '84a13b0dd1';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7370,7 +7372,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7cfb31fd69';
+framework7Component.id = 'bd0c28345d';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7571,7 +7573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '34cbc839cb';
+framework7Component.id = '91214afc00';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -12041,7 +12043,9 @@ let PublishService = class PublishService {
         //Get static pages
         const staticPages = await this.staticPageService.listByChannel(channel._id, 1000, 0);
         //Export metadata
+        this.logPublishProgress(undefined, "Preparing export...");
         let exportBundle = await this.prepareExport(channel, items, author, themes, staticPages, this.walletService.address);
+        this.logPublishProgress(undefined, "Exporting backup...");
         let cid = await this.exportToIPFS(exportBundle);
         //Update local cid info
         Object.assign(channel, await this.channelService.get(channel._id));
@@ -12094,6 +12098,7 @@ let PublishService = class PublishService {
         if (((_c = author.coverPhotoId) === null || _c === void 0 ? void 0 : _c.length) > 0) {
             imageCids.push(author.coverPhotoId);
         }
+        this.logPublishProgress(undefined, "Exporting items...");
         //Gather NFT data
         for (let item of items) {
             //Build animation URL if we have content
@@ -12118,31 +12123,34 @@ let PublishService = class PublishService {
             // delete item.dateCreated
             delete item["_rev_tree"];
         }
+        // this.logPublishProgress(undefined, "Exporting images...")
         //Look up all the images
         imageCids = [...new Set(imageCids)]; //deduplicate
-        let images = [];
-        for (let imageCid of imageCids) {
-            let image = await this.imageService.get(imageCid);
-            //Remove publishing related field from image
-            delete image._rev;
-            // delete image.dateCreated
-            delete image["_rev_tree"];
-            //Also remove content. Will refetch when needed.
-            delete image.buffer;
-            delete image.svg;
-            images.push(image);
-        }
+        // let images = []
+        // for (let imageCid of imageCids) {   
+        //     let image = await this.imageService.get(imageCid)
+        //     console.log(image)
+        //     //Remove publishing related field from image
+        //     delete image._rev
+        //     // delete image.dateCreated
+        //     delete image["_rev_tree"]
+        //     //Also remove content. Will refetch when needed.
+        //     delete image.buffer
+        //     delete image.svg
+        //     images.push(image)
+        // }
+        // this.logPublishProgress(undefined, "Exporting animations...")
         //Look up all the animations
-        let animations = [];
-        for (let animationCid of animationCids) {
-            let animation = await this.animationService.get(animationCid);
-            //Remove publishing related field from image
-            delete animation._rev;
-            // delete image.dateCreated
-            delete animation["_rev_tree"];
-            delete animation.content;
-            animations.push(animation);
-        }
+        // let animations = []
+        // for (let animationCid of animationCids) {
+        //     let animation = await this.animationService.get(animationCid)
+        //     //Remove publishing related field from image
+        //     delete animation._rev
+        //     // delete image.dateCreated
+        //     delete animation["_rev_tree"]
+        //     delete animation.content
+        //     animations.push(animation)
+        // }
         //Clean up themes
         for (let theme of themes) {
             delete theme._rev;
@@ -12154,8 +12162,8 @@ let PublishService = class PublishService {
             delete staticPage["_rev_tree"];
         }
         return {
-            animations: animations,
-            images: images,
+            animations: animationCids,
+            images: imageCids,
             channel: channel,
             items: items,
             author: author,
@@ -12176,7 +12184,7 @@ let PublishService = class PublishService {
          * BACKUP FOR READER
         */
         // let backupPath = `${directory}/backup`
-        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author, exportBundle.images, exportBundle.animations, exportBundle.themes, exportBundle.staticPages);
+        let backup = await this.createBackup(exportBundle.channel, exportBundle.items, exportBundle.author, exportBundle.themes, exportBundle.staticPages);
         let publishStatus = {
             contractMetadata: { saved: 0, total: 1 },
             nftMetadata: { saved: 0, total: exportBundle.items.length },
@@ -12186,8 +12194,8 @@ let PublishService = class PublishService {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 },
                 items: { saved: 0, total: backup.items.length },
-                images: { saved: 0, total: backup.images.length },
-                animations: { saved: 0, total: backup.animations.length },
+                images: { saved: 0, total: exportBundle.images.length },
+                animations: { saved: 0, total: exportBundle.animations.length },
                 themes: { saved: 0, total: backup.themes.length },
                 staticPages: { saved: 0, total: backup.staticPages.length }
             }
@@ -12204,10 +12212,11 @@ let PublishService = class PublishService {
         await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true, flush: flush });
         publishStatus.contractMetadata.saved = 1;
         this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`);
+        let images = [];
         //Save images 
-        for (let image of exportBundle.images) {
+        for (let imageCid of exportBundle.images) {
             //Fetch content
-            image = await this.imageService.get(image._id);
+            let image = await this.imageService.get(imageCid);
             //Add to IPFS
             let content;
             let filename = `${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`;
@@ -12217,6 +12226,7 @@ let PublishService = class PublishService {
             else if (image.svg) {
                 content = image.svg;
             }
+            //Adding and then copying otherwise the CID does not match what we'd expect. 
             let result = await this.ipfsService.ipfs.add({
                 content: content
             });
@@ -12226,19 +12236,26 @@ let PublishService = class PublishService {
                 throw new Error("Incorrect cid when saving image. ");
             }
             publishStatus.images.saved++;
+            let clonedImage = JSON.parse(JSON.stringify(image));
+            //Remove publishing related field from image
+            delete clonedImage._rev;
+            delete clonedImage["_rev_tree"];
+            delete clonedImage.buffer;
+            delete clonedImage.svg;
+            images.push(clonedImage);
             this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${filename}`);
         }
+        let animations = [];
         //Save animation cids
-        for (let animation of exportBundle.animations) {
+        for (let animationCid of exportBundle.animations) {
             //Fetch content
-            animation = await this.animationService.get(animation._id);
+            let animation = await this.animationService.get(animationCid);
             let filename = `${directory}/animations/${animation.cid}.html`;
             //Add content
             let result = await this.ipfsService.ipfs.add({
                 content: animation.content
             });
-            let animationCid = result.cid.toString();
-            if (animationCid !== animation.cid.toString()) {
+            if (result.cid.toString() !== animation.cid.toString()) {
                 throw new Error('CIDs did not match');
             }
             //In theory there can be duplicates if any NFTs have identical content.
@@ -12251,9 +12268,15 @@ let PublishService = class PublishService {
                 console.log(`${filename} already exists. Skipping.`);
             }
             else {
-                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, filename, { parents: true, flush: flush });
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, filename, { parents: true, flush: flush });
             }
             publishStatus.animations.saved++;
+            let clonedAnimation = JSON.parse(JSON.stringify(animation));
+            //Remove publishing related fields
+            delete clonedAnimation._rev;
+            delete clonedAnimation["_rev_tree"];
+            delete clonedAnimation.content;
+            animations.push(clonedAnimation);
             this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animation.cid} to ${directory}/animations/${animation.cid}.html`);
         }
         //Save metadata for each NFT
@@ -12284,12 +12307,12 @@ let PublishService = class PublishService {
         publishStatus.backups.items.saved = backup.items.length;
         this.logPublishProgress(publishStatus);
         //Write images backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`, new TextEncoder().encode(JSON.stringify(backup.images)), { create: true, parents: true, flush: flush });
-        publishStatus.backups.images.saved = backup.images.length;
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`, new TextEncoder().encode(JSON.stringify(images)), { create: true, parents: true, flush: flush });
+        publishStatus.backups.images.saved = images.length;
         this.logPublishProgress(publishStatus);
         //Write animations backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/animations.json`, new TextEncoder().encode(JSON.stringify(backup.animations)), { create: true, parents: true, flush: flush });
-        publishStatus.backups.animations.saved = backup.animations.length;
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/animations.json`, new TextEncoder().encode(JSON.stringify(animations)), { create: true, parents: true, flush: flush });
+        publishStatus.backups.animations.saved = animations.length;
         this.logPublishProgress(publishStatus);
         //Write themes backup
         await this.ipfsService.ipfs.files.write(`${directory}/backup/themes.json`, new TextEncoder().encode(JSON.stringify(backup.themes)), { create: true, parents: true, flush: flush });
@@ -12306,7 +12329,7 @@ let PublishService = class PublishService {
         this.logPublishProgress(publishStatus, `Published to local IPFS at ${result.cid.toString()}`);
         return result.cid.toString();
     }
-    async createBackup(channel, items, author, images, animations, themes, staticPages) {
+    async createBackup(channel, items, author, themes, staticPages) {
         //Look up any data we need to add to the bundle
         var _a, _b;
         //Generate bundles with extra info for each item
@@ -12338,11 +12361,11 @@ let PublishService = class PublishService {
         //Add itemCount to channel
         channel['itemCount'] = items === null || items === void 0 ? void 0 : items.length;
         //Remove the actual image data from the images
-        let backupImages = JSON.parse(JSON.stringify(images));
-        for (let image of backupImages) {
-            delete image.svg;
-            delete image.buffer;
-        }
+        // let backupImages:Image[] = JSON.parse(JSON.stringify(images))
+        // for (let image of backupImages) {
+        //     delete image.svg
+        //     delete image.buffer
+        // }
         //And the animations
         // let backupAnimations:Animation[] = JSON.parse(JSON.stringify(animations))
         // for (let animation of backupAnimations) {
@@ -12353,8 +12376,8 @@ let PublishService = class PublishService {
             channels: [channel],
             authors: [author],
             items: items,
-            images: backupImages,
-            animations: animations,
+            // images: backupImages,
+            // animations: animations,
             themes: themes,
             staticPages: staticPages
         };
@@ -14118,15 +14141,11 @@ let ChannelWebService = class ChannelWebService {
         return result;
     }
     async upgrade(channel) {
-        var _a;
         //Loop through each item. 
         let items = await this.itemService.listByChannel(channel._id, 100000, 0);
         for (let item of items) {
-            //Build contentHTML for searching
             //@ts-ignore
-            if (((_a = item.themes) === null || _a === void 0 ? void 0 : _a.length) == 1 && item.themes[0] == "") {
-                delete item.themes;
-            }
+            item.tokenId = parseInt(item.tokenId);
             //Resave
             let updated = Object.assign(new _dto_item__WEBPACK_IMPORTED_MODULE_0__.Item(), item);
             await this.itemService.put(updated);

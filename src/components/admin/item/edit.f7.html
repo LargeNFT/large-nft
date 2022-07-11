@@ -123,7 +123,7 @@
       let item = Object.assign(new Item(), formData)
 
       item.coverImageAsAnimation = (formData.coverImageAsAnimation === 'true') 
-
+      item.tokenId = parseInt(formData.tokenId)
 
       //Get content from quill
       item.content = quillEditorService.activeEditor.getContents()
@@ -159,7 +159,8 @@
 
       
       //Save the cover image if necessary
-      await itemWebService.saveGeneratedCoverImage(item)
+      let coverImage = await itemWebService.saveGeneratedCoverImage(item)
+      item.coverImageGenerated = coverImage.generated
 
       //And the animation
       await itemWebService.saveAnimation(item)
@@ -167,6 +168,8 @@
 
       //Save
       try {
+
+        // console.log(item)
 
         await itemService.put(item)
 

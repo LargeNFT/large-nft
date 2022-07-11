@@ -136,13 +136,11 @@ class ChannelWebService {
 
         for (let item of items) {
 
-            //Build contentHTML for searching
             //@ts-ignore
+            //Look up the cover image
+            let coverImage = await this.imageService.get(item.coverImageId)
 
-            if (item.themes?.length == 1 && item.themes[0] == "") {
-                delete item.themes
-            }
-
+            item.coverImageGenerated = coverImage.generated
         
             //Resave
             let updated = Object.assign(new Item(), item)

@@ -154,7 +154,8 @@
       item.contentHTML = await quillService.translateContent(item.content, true)
 
       //Save the cover image if necessary
-      await itemWebService.saveGeneratedCoverImage(item)
+      let coverImage = await itemWebService.saveGeneratedCoverImage(item)
+      item.coverImageGenerated = coverImage.generated
 
       //And the animation
       item.tokenId = await itemService.getNextTokenId(item.channelId) //Will get overwritten when saved but we need it for the animation
@@ -163,6 +164,7 @@
       //Save
       try {
 
+        // console.log(item)
         await itemService.put(item)
 
         const toast = $f7.toast.show({

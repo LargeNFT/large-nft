@@ -14,10 +14,11 @@ interface ExportBundle {
     channel: Channel
     items: Item[]
     author: Author
-    images: Image[]
-    animations: Animation[]
     themes: Theme[]
     staticPages: StaticPage[]
+
+    images: string[]
+    animations: string[]
 
     contractMetadata: ContractMetadata
 }

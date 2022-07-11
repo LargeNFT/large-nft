@@ -59,7 +59,10 @@ class PublishService {
         const staticPages = await this.staticPageService.listByChannel(channel._id, 1000, 0)
 
         //Export metadata
+        this.logPublishProgress(undefined, "Preparing export...")
         let exportBundle:ExportBundle = await this.prepareExport(channel, items, author, themes, staticPages, this.walletService.address)
+        this.logPublishProgress(undefined, "Exporting backup...")
+
         let cid: string = await this.exportToIPFS(exportBundle)
 
 
@@ -126,6 +129,9 @@ class PublishService {
             imageCids.push(author.coverPhotoId)
         }
 
+        this.logPublishProgress(undefined, "Exporting items...")
+
+
         //Gather NFT data
         for (let item of items) {
 
@@ -156,45 +162,53 @@ class PublishService {
 
         }
 
+
+        // this.logPublishProgress(undefined, "Exporting images...")
+
+
+
         //Look up all the images
         imageCids = [...new Set(imageCids)] //deduplicate
 
-        let images = []
+        // let images = []
 
-        for (let imageCid of imageCids) {   
+        // for (let imageCid of imageCids) {   
 
-            let image = await this.imageService.get(imageCid)
+        //     let image = await this.imageService.get(imageCid)
+        //     console.log(image)
 
-            //Remove publishing related field from image
-            delete image._rev
-            // delete image.dateCreated
-            delete image["_rev_tree"]
+        //     //Remove publishing related field from image
+        //     delete image._rev
+        //     // delete image.dateCreated
+        //     delete image["_rev_tree"]
 
-            //Also remove content. Will refetch when needed.
-            delete image.buffer
-            delete image.svg
+        //     //Also remove content. Will refetch when needed.
+        //     delete image.buffer
+        //     delete image.svg
 
-            images.push(image)
+        //     images.push(image)
 
-        }
+        // }
 
+
+        // this.logPublishProgress(undefined, "Exporting animations...")
 
 
         //Look up all the animations
-        let animations = []
-        for (let animationCid of animationCids) {
+        // let animations = []
+        // for (let animationCid of animationCids) {
 
-            let animation = await this.animationService.get(animationCid)
+        //     let animation = await this.animationService.get(animationCid)
 
-            //Remove publishing related field from image
-            delete animation._rev
-            // delete image.dateCreated
-            delete animation["_rev_tree"]
+        //     //Remove publishing related field from image
+        //     delete animation._rev
+        //     // delete image.dateCreated
+        //     delete animation["_rev_tree"]
 
-            delete animation.content
+        //     delete animation.content
 
-            animations.push(animation)
-        }
+        //     animations.push(animation)
+        // }
 
         //Clean up themes
         for (let theme of themes) {
@@ -213,8 +227,8 @@ class PublishService {
 
         return {
 
-            animations: animations,
-            images: images,
+            animations: animationCids,
+            images: imageCids,
 
             channel: channel,
             items: items,
@@ -239,9 +253,7 @@ class PublishService {
         } catch (ex) { }
 
 
-        
-
-
+    
         /**
          * BACKUP FOR READER
         */
@@ -250,8 +262,6 @@ class PublishService {
             exportBundle.channel, 
             exportBundle.items, 
             exportBundle.author, 
-            exportBundle.images, 
-            exportBundle.animations, 
             exportBundle.themes,
             exportBundle.staticPages
         )
@@ -268,8 +278,8 @@ class PublishService {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 }, 
                 items: { saved: 0, total: backup.items.length },
-                images: { saved: 0, total: backup.images.length },
-                animations: { saved: 0, total: backup.animations.length },
+                images: { saved: 0, total: exportBundle.images.length },
+                animations: { saved: 0, total: exportBundle.animations.length },
                 themes: { saved: 0, total: backup.themes.length },
                 staticPages: { saved: 0, total: backup.staticPages.length }
             }
@@ -294,11 +304,13 @@ class PublishService {
         this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
 
 
+        let images:Image[] = []
+
         //Save images 
-        for (let image of exportBundle.images) {
+        for (let imageCid of exportBundle.images) {
 
             //Fetch content
-            image = await this.imageService.get(image._id)
+            let image = await this.imageService.get(imageCid)
 
             //Add to IPFS
             let content
@@ -310,28 +322,48 @@ class PublishService {
                 content = image.svg
             }
 
+
+
+            //Adding and then copying otherwise the CID does not match what we'd expect. 
             let result = await this.ipfsService.ipfs.add({
                 content: content
             })
 
             await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, filename, { create: true, parents: true, flush:flush })
+        
 
             //Validate cid
             if (result.cid.toString() != image.cid) {
                 throw new Error("Incorrect cid when saving image. ")
             }
 
+
             publishStatus.images.saved++
+
+
+            let clonedImage = JSON.parse( JSON.stringify(image) )
+
+            //Remove publishing related field from image
+            delete clonedImage._rev
+            delete clonedImage["_rev_tree"]
+            delete clonedImage.buffer
+            delete clonedImage.svg
+
+            images.push( clonedImage )
 
             this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${filename}`)
 
         }
 
+
+        let animations:Animation[] = []
+
+
         //Save animation cids
-        for (let animation of exportBundle.animations) {
+        for (let animationCid of exportBundle.animations) {
 
             //Fetch content
-            animation = await this.animationService.get(animation._id)
+            let animation = await this.animationService.get(animationCid)
 
             let filename = `${directory}/animations/${animation.cid}.html`
 
@@ -340,9 +372,8 @@ class PublishService {
                 content: animation.content
             })
 
-            let animationCid = result.cid.toString()
 
-            if (animationCid !== animation.cid.toString()) {
+            if (result.cid.toString() !== animation.cid.toString()) {
                 throw new Error('CIDs did not match')
             }
 
@@ -355,11 +386,21 @@ class PublishService {
             if (stat) {
                 console.log(`${filename} already exists. Skipping.`)
             } else {
-                await this.ipfsService.ipfs.files.cp(`/ipfs/${animationCid}`, filename, { parents: true, flush: flush })
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, filename, { parents: true, flush: flush })
             }
 
 
             publishStatus.animations.saved++
+
+
+            let clonedAnimation = JSON.parse( JSON.stringify(animation) )
+
+            //Remove publishing related fields
+            delete clonedAnimation._rev
+            delete clonedAnimation["_rev_tree"]
+            delete clonedAnimation.content
+
+            animations.push( clonedAnimation )
 
             this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animation.cid} to ${directory}/animations/${animation.cid}.html`)
 
@@ -412,13 +453,13 @@ class PublishService {
         this.logPublishProgress(publishStatus)
 
         //Write images backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: flush })
-        publishStatus.backups.images.saved = backup.images.length
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(images)) , { create: true, parents: true, flush: flush })
+        publishStatus.backups.images.saved = images.length
         this.logPublishProgress(publishStatus)
 
         //Write animations backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/animations.json`,  new TextEncoder().encode(JSON.stringify(backup.animations)) , { create: true, parents: true, flush: flush })
-        publishStatus.backups.animations.saved = backup.animations.length
+        await this.ipfsService.ipfs.files.write(`${directory}/backup/animations.json`,  new TextEncoder().encode(JSON.stringify(animations)) , { create: true, parents: true, flush: flush })
+        publishStatus.backups.animations.saved = animations.length
         this.logPublishProgress(publishStatus)
 
         //Write themes backup
@@ -445,7 +486,7 @@ class PublishService {
 
     }
 
-    async createBackup(channel: Channel, items: Item[], author: Author, images:Image[], animations:Animation[], themes:Theme[], staticPages:StaticPage[]) {
+    async createBackup(channel: Channel, items: Item[], author: Author, themes:Theme[], staticPages:StaticPage[]) {
 
         //Look up any data we need to add to the bundle
 
@@ -495,12 +536,12 @@ class PublishService {
 
 
         //Remove the actual image data from the images
-        let backupImages:Image[] = JSON.parse(JSON.stringify(images))
+        // let backupImages:Image[] = JSON.parse(JSON.stringify(images))
 
-        for (let image of backupImages) {
-            delete image.svg
-            delete image.buffer
-        }
+        // for (let image of backupImages) {
+        //     delete image.svg
+        //     delete image.buffer
+        // }
 
         //And the animations
         // let backupAnimations:Animation[] = JSON.parse(JSON.stringify(animations))
@@ -514,8 +555,8 @@ class PublishService {
             channels: [channel],
             authors: [author],
             items: items,
-            images: backupImages,
-            animations: animations,
+            // images: backupImages,
+            // animations: animations,
             themes: themes,
             staticPages: staticPages      
         }

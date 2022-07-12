@@ -194,6 +194,17 @@ contract('Channel Contract', async (accounts) => {
             assert.strictEqual(uri, `ipfs://xyz/metadata/${i}.json`)
         }
 
+    })
+
+
+    it("should mint to owner without a mint fee", async () => {
+
+        let tx1 = await mainContract.mint( 2, { from: user0 })
+        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (6 * 0.08).toString() , 'ether'))
+        verifyMintEvent(tx1, 8)
+
+        assert.strictEqual(await mainContract.ownerOf( 7, { from: user0 }), user0)
+        assert.strictEqual(await mainContract.ownerOf( 8, { from: user0 }), user0)
 
     })
 
@@ -201,19 +212,11 @@ contract('Channel Contract', async (accounts) => {
 
     it("should mint the rest of the tokens", async () => {
 
-        let tx1 = await mainContract.mint( 2, { from: user2, value: web3.utils.toWei('0.16', 'ether') })
-        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (8 * 0.08).toString() , 'ether'))
-        verifyMintEvent(tx1, 8)
-
-
         let tx2 = await mainContract.mint( 2, { from: user3, value: web3.utils.toWei('0.16', 'ether') })
-        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (10 * 0.08).toString() , 'ether'))
+        assert.strictEqual(await web3.eth.getBalance(mainContract.address), web3.utils.toWei( (8 * 0.08).toString() , 'ether'))
         verifyMintEvent(tx2, 10)
 
 
-
-        assert.strictEqual(await mainContract.ownerOf( 7, { from: user2 }), user2)
-        assert.strictEqual(await mainContract.ownerOf( 8, { from: user2 }), user2)
         
         assert.strictEqual(await mainContract.ownerOf( 9, { from: user3 }), user3)
         assert.strictEqual(await mainContract.ownerOf( 10, { from: user3 }), user3)

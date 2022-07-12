@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
-import "erc721a/contracts/ERC721A.sol";
+import "erc721a/contracts/extensions/ERC721AQueryable.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "./util/console.sol";
 
-contract Channel is ERC721A, Ownable {
+contract Channel is ERC721AQueryable, Ownable {
 
     string private _ipfsCid;
 
@@ -49,7 +49,9 @@ contract Channel is ERC721A, Ownable {
         require(minted + quantity <= _maxTokenId, "Minting closed");
 
         //Validate we have enough ETH. 
-        require(msg.value == quantity * _mintFee, "Send exact ETH");
+        if (_msgSender() != owner()) {
+            require(msg.value == quantity * _mintFee, "Send exact ETH");
+        }
 
         //Mint
         _safeMint(_msgSender(), quantity);
@@ -75,7 +77,7 @@ contract Channel is ERC721A, Ownable {
 
 
 
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+    function tokenURI(uint256 tokenId) public view virtual override(ERC721A, IERC721Metadata) returns (string memory) {
         
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 

@@ -249,6 +249,7 @@ class PublishService {
 
 
         try {
+            //TODO: investigate leaving files in place that will still exist for optimization reasons
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true, flush: true})
         } catch (ex) { }
 

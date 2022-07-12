@@ -50,7 +50,7 @@ class ImportService {
             staticPages:  { saved: 0, total: 0 }
         }
 
-        this.logForkProgress(forkStatus, "Starting fork. Fetching data...")
+        this.logForkProgress(forkStatus, `Starting fork of ${cid}. Fetching data...`)
 
 
         try {
@@ -236,30 +236,6 @@ class ImportService {
 
             }
 
-
-
-            for (let theme of themes) {
-
-                delete theme._rev
-                delete theme.dateCreated
-                delete theme["_rev_tree"]
-    
-    
-                let themeObj = Object.assign(new Theme(), theme)
-    
-                try {
-                    await this.themeService.put(themeObj)
-                } catch (ex) {} //ignore duplicates   
-    
-                forkStatus.themes.saved++
-                this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
-    
-            }
-
-
-
-
-
             let itemObj = Object.assign(new Item(), item)
 
             try {
@@ -267,7 +243,7 @@ class ImportService {
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.items.saved++
-            this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
+            this.logForkProgress(forkStatus, `Inserted item ${itemObj}`)
 
         }
 
@@ -279,6 +255,9 @@ class ImportService {
             delete theme.lastUpdated
             delete theme.dateCreated
             delete theme["_rev_tree"]
+
+            theme.channelId = idMap.get(theme.channelId) //look up the new channel ID
+
 
             let themeObj = Object.assign(new Theme(), theme)
 
@@ -297,6 +276,9 @@ class ImportService {
             delete staticPage.lastUpdated
             delete staticPage.dateCreated
             delete staticPage["_rev_tree"]
+
+            staticPage.channelId = idMap.get(staticPage.channelId) //look up the new channel ID
+
 
             let staticPageObj = Object.assign(new StaticPage(), staticPage)
 

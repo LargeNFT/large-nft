@@ -98,6 +98,8 @@ class ChannelWebService {
 
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
 
+        // console.log(channel)
+
         return {
             channel: channel,
             themes: themes,

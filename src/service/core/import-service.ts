@@ -243,10 +243,9 @@ class ImportService {
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.items.saved++
-            this.logForkProgress(forkStatus, `Inserted item ${itemObj}`)
+            this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
 
         }
-
 
         for (let theme of themes) {
 

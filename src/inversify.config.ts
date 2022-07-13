@@ -237,8 +237,12 @@ function getMainContainer() {
         Addresses: {
           Swarm: [
             // This is a public webrtc-star server
-            // '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
-            // '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star'
+            '/dns4/quiet-eyrie-88477.herokuapp.com/tcp/443/wss/p2p-webrtc-star',
+            // '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
+            // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
+            // '/ip4/127.0.0.1/tcp/4003/ws/p2p/12D3KooWSDvhHLC79A3V2jZXzeHFv4vBDirQWJuHZLza8grvo3Cm'
+            '/ip4/127.0.0.1/tcp/9092/wss/p2p-webrtc-star'
+
           ]
         }
       }

@@ -40,7 +40,9 @@ class ItemService {
             item.dateCreated = new Date().toJSON()
 
             //Get next token ID
-            item.tokenId = await this.getNextTokenId(item.channelId)
+            if (!item.tokenId) {
+                item.tokenId = await this.getNextTokenId(item.channelId)
+            }
 
         } else {
             item.lastUpdated = new Date().toJSON()

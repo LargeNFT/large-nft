@@ -101,7 +101,7 @@ class ChannelService {
     return this.itemService.countByChannel(channelId)
   }
 
-  async exportContractMetadata(channel:Channel, ownerAddress:string) : Promise<ContractMetadata> {
+  async exportContractMetadata(channel:Channel, ownerAddress:string, imageDirectoryCid:string) : Promise<ContractMetadata> {
 
 
     let result:ContractMetadata = {
@@ -115,7 +115,7 @@ class ChannelService {
 
     if (channel.coverImageId) {
       let coverImage:Image = await this.imageService.get(channel.coverImageId)
-      result.image = `ipfs://${coverImage.cid}`
+      result.image = `ipfs://${imageDirectoryCid}/${coverImage.cid}.${coverImage.buffer ? 'jpg' : 'svg'}`
     }
 
     return result

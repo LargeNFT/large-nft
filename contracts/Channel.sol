@@ -10,11 +10,11 @@ import "./util/console.sol";
 
 contract Channel is ERC721AQueryable, Ownable {
 
+    string private _contractURI;
     string private _ipfsCid;
-
     uint256 private _mintFee;
-
     uint256 private _maxTokenId;
+    
 
     //set the maximum number an address can mint at a time
     uint256 public MAX_MINT_AMOUNT = 10;
@@ -26,6 +26,7 @@ contract Channel is ERC721AQueryable, Ownable {
         _mintFee = mintFee;
         _maxTokenId = maxTokenId;
         _ipfsCid = ipfsCid;
+        _contractURI = string(abi.encodePacked("ipfs://", _ipfsCid, "/contractMetadata.json"));
     }
 
     function _startTokenId() internal view virtual override returns (uint256) {
@@ -60,7 +61,6 @@ contract Channel is ERC721AQueryable, Ownable {
 
     }
 
-
     //A version of mint if users care deeply about which token they start minting from. 
     function mintFromStartOrFail(uint256 quantity, uint256 start) public payable {
 
@@ -75,8 +75,6 @@ contract Channel is ERC721AQueryable, Ownable {
 
     }
 
-
-
     function tokenURI(uint256 tokenId) public view virtual override(ERC721A, IERC721Metadata) returns (string memory) {
         
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
@@ -86,7 +84,7 @@ contract Channel is ERC721AQueryable, Ownable {
     }
 
     function contractURI() public view returns (string memory) {
-        return string(abi.encodePacked("ipfs://", _ipfsCid, "/contractMetadata.json"));
+        return _contractURI;
     }
 
     function withdraw() public payable onlyOwner {

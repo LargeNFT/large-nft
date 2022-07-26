@@ -364,15 +364,23 @@ class GitlabService {
 
         let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
 
-        await axios.post(url, {
-            branch: "master",
-            commit_message: `Commiting reader data for ${channel.title}`,
-            actions: actions
-        } , {
-            headers: {
-                "Authorization": `Bearer ${config.personalAccessToken}`
-            }
-        })
+        this.logPublishReaderProgress(`Commiting reader data for ${channel.title}`)
+
+        try {
+            const res = await axios.post(url, {
+                branch: "master",
+                commit_message: `Commiting reader data for ${channel.title}`,
+                actions: actions,
+            } , {
+                headers: {
+                    "Authorization": `Bearer ${config.personalAccessToken}`
+                }
+            })
+        } catch(ex) {
+            console.log(ex.response.data)
+        }
+
+
 
         this.logPublishReaderProgress(`Publish complete`)
 

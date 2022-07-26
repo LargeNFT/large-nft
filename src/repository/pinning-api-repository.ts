@@ -40,10 +40,16 @@ class PinningApiRepository {
 
     }
 
+    
 
     async put(pinningApi: PinningApi) {
         await this.db.put(pinningApi)
     }
+
+    async delete(pinningApi: PinningApi): Promise<void> {
+        await this.db.remove(pinningApi)
+    }
+
 
 }
 

@@ -111,7 +111,7 @@ class ItemService {
                 let selections = item?.attributeSelections?.filter( as => ao.traitType == as.traitType)
 
                 return {
-                    traitType: ao.traitType,
+                    trait_type: ao.traitType,
                     value: selections?.length > 0 ? selections[0].value : '' 
                 }
 

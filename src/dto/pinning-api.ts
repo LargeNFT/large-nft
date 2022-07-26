@@ -10,14 +10,19 @@ class PinningApi {
     _rev?:string
 
     @IsNotEmpty()
-    apiKey?:string
+    name?:string
 
-    @IsNotEmpty()
-    secretApiKey?:string
-    
     @IsNotEmpty()
     url?:string
 
+    @Allow()
+    apiKey?:string
+
+    @Allow()
+    secretApiKey?:string
+
+    @Allow()
+    jwt?:string
     @Allow()
     dateCreated?:string
 

@@ -20,7 +20,7 @@ interface ExportBundle {
     images: string[]
     animations: string[]
 
-    contractMetadata: ContractMetadata
+    ownerAddress:string
 }
 
 export {

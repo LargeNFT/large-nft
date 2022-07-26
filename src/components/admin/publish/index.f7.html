@@ -17,7 +17,8 @@
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Publish </div>
+              <div class="block-title block-title-medium">IPFS</div>
+
               <div class="block list media-list">
                 <ul>
                   <li>
@@ -28,10 +29,10 @@
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">Export to local IPFS</div>
+                            <div class="item-title">Export to IPFS</div>
                           </div>
                           <div class="item-text">
-                            The first publishing task is to export the data to a local IPFS node. The rest of the publishing tasks
+                            The first publishing task is to export the data to an IPFS node. The rest of the publishing tasks
                             rely on this step and will always publish the last copy that was exported to IPFS.
                           </div>
                         </div>
@@ -47,7 +48,7 @@
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">Publish to Pinata</div>
+                            <div class="item-title">Publish to Pinning Service</div>
                           </div>
                           <div class="item-text">
                             When you are ready to publish your collection and deploy your NFT contract, upload the NFT metadata to Pinata 
@@ -57,6 +58,14 @@
                       </div>
                     </a>
                   </li>
+
+                </ul>
+              </div>
+
+
+              <div class="block-title block-title-medium">Large Reader</div>
+              <div class="block list media-list">
+                <ul>
 
                   <li>
                     <a href="/admin/publish/fork-reader/${channelViewModel.channel._id}" class="item-link">
@@ -96,7 +105,14 @@
                     </a>
                   </li>
 
+                </ul>
+              </div>
 
+
+
+              <div class="block-title block-title-medium">Contract</div>
+              <div class="block list media-list">
+                <ul>
                   <li>
                     <a href="/admin/publish/contract/${channelViewModel.channel._id}" class="item-link">
                       <div class="item-content">
@@ -117,9 +133,10 @@
                       </div>
                     </a>
                   </li>
-
                 </ul>
               </div>
+
+
 
             ` : $h`
               <div class="card">

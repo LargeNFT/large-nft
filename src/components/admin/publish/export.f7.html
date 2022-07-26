@@ -23,17 +23,11 @@
 
                         <div class="card-content">
                             <div class="card-content card-content-padding">
-
+                                
                                 <p>
                                     The JSON metadata for the collection as well as a backup of the source database
-                                    will be copied to an IPFS node running in the browser.
+                                    will be copied to the IPFS node.
                                 </p>
-
-                                <p>
-                                    Note: This process can be slow due to perfomance issues with IPFS in the browser. 
-                                    We are exploring options to make it faster and/or support connections to external IPFS servers.
-                                </p>
-
 
                                 ${!ipfsReady ? $h`
                                     <div class="ipfs-label">IPFS Initializing...</div>
@@ -257,6 +251,7 @@
         let publishService = ContainerService.getInstance(PublishService)
 
         let channelViewModel = props.channelViewModel
+        let ipfsHost = props.ipfsHost
 
         let peerCount = ipfsService.peerCount
 
@@ -343,6 +338,7 @@
             
         })
 
+89
         $(document).on('update-peers', async (e) => {
             peerCount = e.detail.count
             $update()

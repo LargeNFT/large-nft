@@ -53,29 +53,24 @@ class PinningService {
         await this.pinningApiRepository.put(pinningApi)    
     }
 
+
+    async list(limit: number, skip:number): Promise<PinningApi[]> {
+        return this.pinningApiRepository.list(limit, skip)
+    }
+
+
     async pinByHash(pinningApi:PinningApi, channel:Channel) {
 
-        let url = `${pinningApi.url}/pinning/pinByHash`
-
-        let nodeId = await this.ipfsService.ipfs.id()
-        
         let body = {
-            hashToPin: channel.localCid,
-            pinataMetadata: {
-                name: channel.title
-            }
+            cid: channel.localCid,
+            name: channel.title
         }
 
-        if (nodeId.addresses?.length > 0) {
-            body["pinataOptions"] = {
-                hostNodes: nodeId.addresses?.map( a => a.toString())
-            }
-        }
-
-        let response = await axios.post(url, body, {
+        let response = await axios.post(pinningApi.url, body, {
             headers: {
-                pinata_api_key: pinningApi.apiKey,
-                pinata_secret_api_key: pinningApi.secretApiKey
+                'Accept': '*/*',
+                'Authorization': `Bearer ${pinningApi.jwt}`,
+                'Content-Type': 'application/json'
             }
         })
 
@@ -127,6 +122,11 @@ class PinningService {
 
     async validateAccount(pinningApi:PinningApi) {
         await this.userPinnedDataTotal(pinningApi)
+    }
+
+    
+    async delete(pinningApi: PinningApi): Promise<void> {
+        await this.pinningApiRepository.delete(pinningApi)
     }
 
 

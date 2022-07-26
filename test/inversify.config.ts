@@ -16,6 +16,7 @@ import { QuillService } from "../src/service/quill-service";
 
 
 import { IpfsService } from "../src/service/core/ipfs-service";
+import { IpfsHostService } from "../src/service/core/ipfs-host-service";
 
 import fs from 'fs';
 
@@ -23,6 +24,7 @@ import fs from 'fs';
 import { DatabaseService } from "../src/service/core/database-service";
 import { ChannelRepository } from "../src/repository/channel-repository";
 import { PinningApiRepository } from "../src/repository/pinning-api-repository";
+import { IpfsHostRepository } from "../src/repository/ipfs-host-repository";
 
 import { StaticPageRepository } from "../src/repository/static-page-repository";
 
@@ -100,6 +102,7 @@ async function getContainer() {
     container.bind(ImportService).toSelf().inSingletonScope()
     container.bind(ThemeService).toSelf().inSingletonScope()
     container.bind(StaticPageService).toSelf().inSingletonScope()
+    container.bind(IpfsHostService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
@@ -111,6 +114,7 @@ async function getContainer() {
     container.bind(AnimationRepository).toSelf().inSingletonScope()
     container.bind(ThemeRepository).toSelf().inSingletonScope()
     container.bind(StaticPageRepository).toSelf().inSingletonScope()
+    container.bind(IpfsHostRepository).toSelf().inSingletonScope()
 
 
 

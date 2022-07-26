@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import { IpfsHostRepository } from "../../repository/ipfs-host-repository";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
@@ -25,7 +26,8 @@ class SchemaService {
         private gitlabRepository:GitlabRepository,
         private animationRepository:AnimationRepository,
         private themeRepository:ThemeRepository,
-        private staticPageRepository:StaticPageRepository
+        private staticPageRepository:StaticPageRepository,
+        private ipfsHostRepository:IpfsHostRepository
     ) {}
 
     async loadWallet(walletAddress:string) {
@@ -42,6 +44,7 @@ class SchemaService {
         await this.animationRepository.load(walletAddress)
         await this.themeRepository.load(walletAddress)
         await this.staticPageRepository.load(walletAddress)
+        await this.ipfsHostRepository.load(walletAddress)
 
     }
 

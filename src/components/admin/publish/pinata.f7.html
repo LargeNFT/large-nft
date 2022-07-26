@@ -13,22 +13,47 @@
             <ul class="breadcrumb">
               <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
               <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
-              <li>Publish to Pinata</li>
+              <li>Publish to Pinning Service</li>
             </ul>
 
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Publish to Pinata</div>
+              <div class="block-title">Publish to Pinning Service</div>
               <div class="card">
 
                   <div class="card-content">
                       <div class="card-content card-content-padding">
 
+                        ${pinningApis?.length > 0 ? $h`
+                          <div class="list">
+                            <ul>
+                              <li class="item-content item-input">
+                                <div class="item-inner">
+                                  <div class="item-title item-label">Choose a pinning service</div>
+                                  <!-- additional "input-dropdown-wrap" class -->
+                                  <div class="item-input-wrap input-dropdown-wrap">
+                                    <select name="pinapi" @change="${pinapiOnChange}">
+                                      <option value="">Select...</option>
+          
+                                      ${pinningApis?.map( (pinapi) => $h`
+                                          <option value="${pinapi._id}">${pinapi.name}</option>
+                                      `)}
+                                    </select>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        ` : $h`
+                          <p>Configure <a href="/admin/settings">a pinning service</a>.</p>
+                        `}
+
+
                         ${pinningApi ? $h`
                           
                           <p>The JSON metadata for the collection as well as a backup of the source database
-                            will be uploaded to your Pinata account.</p>
+                            will be uploaded to your  account.</p>
 
 
                           ${!ipfsReady ? $h`
@@ -99,9 +124,7 @@
                           `}
 
 
-                        ` : $h`
-                          <p>Configure <a href="/admin/settings">Pinata</a>.</p>
-                        `}
+                        ` : $h`<span />`}
 
                       </div>
                   </div>
@@ -171,7 +194,8 @@
         let pinningService = ContainerService.getInstance(PinningService)
 
         let channelViewModel = props.channelViewModel
-        let pinningApi = props.pinningApi
+        let pinningApis = props.pinningApis
+        let pinningApi
         let peerCount = props.peerCount
         let ipfsReady = props.ipfsReady
 
@@ -256,6 +280,19 @@
             setTimeout(checkPinJob, 5000)
           }
 
+        }
+
+
+        const pinapiOnChange = async (e) => {
+
+          pinningApi = undefined
+
+          if (e.target.value) {
+            pinningApi = await pinningService.get(e.target.value)
+          }
+          console.log( pinningApi)
+
+          await $update()
         }
 
         $(document).on('update-peers', async (e) => {

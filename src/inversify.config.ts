@@ -104,6 +104,8 @@ import { ThemeService } from './service/theme-service';
 import { ThemeRepository } from './repository/theme-repository';
 import { StaticPageRepository } from './repository/static-page-repository';
 import { StaticPageService } from './service/static-page-service';
+import { IpfsHostService } from './service/core/ipfs-host-service';
+import { IpfsHostRepository } from './repository/ipfs-host-repository';
 
 
 // Install F7 Components using .use() method on Framework7 class:
@@ -191,6 +193,9 @@ function getMainContainer() {
   container.bind(GitlabService).toSelf().inSingletonScope()
   container.bind(RoutingService).toSelf().inSingletonScope()
   container.bind(PagingService).toSelf().inSingletonScope()
+  container.bind(IpfsHostService).toSelf().inSingletonScope()
+
+
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()
   container.bind(ItemWebService).toSelf().inSingletonScope()
@@ -218,7 +223,7 @@ function getMainContainer() {
   container.bind(GitlabRepository).toSelf().inSingletonScope()
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
-
+  container.bind(IpfsHostRepository).toSelf().inSingletonScope()
 
 
   container.bind("ipfsInit").toConstantValue( async () => {

@@ -1,0 +1,93 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="list">
+
+        <input type="hidden" name="_id"  value="${pinapi?._id}" />
+        <input type="hidden" name="_rev" value="${pinapi?._rev}" />
+        <input type="hidden" name="dateCreated" value="${pinapi?.dateCreated}" />
+
+        <ul>
+            <li>
+                <div class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Title</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="name" placeholder="Name"
+                                value="${pinapi?.name}" required  minlength="3" tabindex="1" required />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">URL</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="url" placeholder="URL"
+                                value="${pinapi?.url}" required />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">API Key</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="apiKey" placeholder="API Key"
+                                value="${pinapi?.apiKey}" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Secret API Key</div>
+                        <div class="item-input-wrap">
+                            <input type="password" name="secretApiKey" placeholder="Secret API Key"
+                                value="${pinapi?.secretApiKey}" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">JWT (Secret access token)</div>
+                        <div class="item-input-wrap">
+                            <input type="password" name="jwt" placeholder="JWT (Secret access token)"
+                                value="${pinapi?.jwt}" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+
+</template>
+
+<style>
+    
+</style>
+
+
+<script>
+
+    import { ContainerService } from "../../../service/core/container-service"
+
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let pinapi = props.pinapi
+
+
+        return $render
+    }
+
+</script>

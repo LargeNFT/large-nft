@@ -1,4 +1,8 @@
 import { inject, injectable } from "inversify"
+import { IpfsHostService } from "./ipfs-host-service"
+import { create } from 'ipfs-http-client'
+import { IpfsHost } from "../../dto/ipfs-host"
+import { Channel } from "../../dto/channel"
 
 
 @injectable()
@@ -12,8 +16,9 @@ class IpfsService {
   initializing=false
 
   constructor(
-    @inject('ipfsInit') private ipfsInit
-  ) { }
+    @inject('ipfsInit') private ipfsInit,
+    private ipfsHostService:IpfsHostService
+  ) {}
 
 
   async init() {
@@ -24,7 +29,15 @@ class IpfsService {
     
     console.log('Init IPFS')
 
-    this.ipfs = await this.ipfsInit()
+    let ipfsHost = await this.ipfsHostService.get()
+
+    if (ipfsHost) {
+      this.ipfs = create({ url: ipfsHost.url })
+    } else {
+      this.ipfs = await this.ipfsInit()
+    }
+
+    
 
     //TODO: 
 
@@ -63,6 +76,7 @@ class IpfsService {
     
     console.log(`IPFS has ${this.peerCount} peers.`)
   }
+
 
 }
 

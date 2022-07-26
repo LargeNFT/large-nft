@@ -9,6 +9,8 @@ import { PinningApi } from "../dto/pinning-api";
 import { Gitlab } from "../dto/gitlab";
 import { PinningService } from "../service/core/pinning-service";
 import { GitlabService } from "../service/core/gitlab-service";
+import { IpfsHostService } from "../service/core/ipfs-host-service";
+import { IpfsHost } from "../dto/ipfs-host";
 
 
 @injectable()
@@ -16,7 +18,8 @@ class SettingsController {
 
   constructor(
     private pinningService: PinningService,
-    private gitlabService: GitlabService
+    private gitlabService: GitlabService,
+    private ipfsHostService: IpfsHostService
   ) { }
 
   @routeMap("/admin/settings")
@@ -24,24 +27,18 @@ class SettingsController {
 
     return new ModelView(async (routeTo: RouteTo) => {
 
-      let pinningApi: PinningApi
+
+      //Pinning APIs
+      let pinningApis: PinningApi[]
 
       try {
-        pinningApi = await this.pinningService.getPinata()
+        pinningApis = await this.pinningService.list(1000,0)
       } catch (ex) { }
 
-      //If it doesn't exist create an empty one
-      if (!pinningApi) {
-
-        pinningApi = Object.assign(new PinningApi(), {
-          apiKey: '',
-          secretApiKey: '',
-          url: "https://api.pinata.cloud"
-        })
-
-      }
 
 
+
+      //GitLab
       let gitlab: Gitlab
 
       try {
@@ -57,9 +54,25 @@ class SettingsController {
 
       }
 
+
+      //Ipfs Host
+      let ipfsHost: IpfsHost
+
+      try {
+        ipfsHost = await this.ipfsHostService.get()
+      } catch (ex) { }
+
+
+      //If it doesn't exist create an empty one
+      if (!ipfsHost) {
+        ipfsHost = Object.assign(new IpfsHost(), {})
+      }
+
+      
       return {
-        pinningApi: pinningApi,
-        gitlab: gitlab
+        pinningApis: pinningApis,
+        gitlab: gitlab,
+        ipfsHost: ipfsHost
       }
       
 

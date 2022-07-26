@@ -37,7 +37,6 @@ class PublishService {
         private ipfsService: IpfsService,
         private imageService: ImageService,
         private animationService:AnimationService,
-        private quillService:QuillService,
         private themeService:ThemeService,
         private staticPageService:StaticPageService,
         @inject(TYPES.WalletService) private walletService: WalletService,
@@ -162,53 +161,9 @@ class PublishService {
 
         }
 
-
-        // this.logPublishProgress(undefined, "Exporting images...")
-
-
-
         //Look up all the images
         imageCids = [...new Set(imageCids)] //deduplicate
 
-        // let images = []
-
-        // for (let imageCid of imageCids) {   
-
-        //     let image = await this.imageService.get(imageCid)
-        //     console.log(image)
-
-        //     //Remove publishing related field from image
-        //     delete image._rev
-        //     // delete image.dateCreated
-        //     delete image["_rev_tree"]
-
-        //     //Also remove content. Will refetch when needed.
-        //     delete image.buffer
-        //     delete image.svg
-
-        //     images.push(image)
-
-        // }
-
-
-        // this.logPublishProgress(undefined, "Exporting animations...")
-
-
-        //Look up all the animations
-        // let animations = []
-        // for (let animationCid of animationCids) {
-
-        //     let animation = await this.animationService.get(animationCid)
-
-        //     //Remove publishing related field from image
-        //     delete animation._rev
-        //     // delete image.dateCreated
-        //     delete animation["_rev_tree"]
-
-        //     delete animation.content
-
-        //     animations.push(animation)
-        // }
 
         //Clean up themes
         for (let theme of themes) {
@@ -236,7 +191,8 @@ class PublishService {
             themes: themes,
             staticPages: staticPages,
 
-            contractMetadata: await this.channelService.exportContractMetadata(channel, ownerAddress)
+            ownerAddress: ownerAddress
+
 
         }
 
@@ -252,7 +208,6 @@ class PublishService {
             //TODO: investigate leaving files in place that will still exist for optimization reasons
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true, flush: true})
         } catch (ex) { }
-
 
     
         /**
@@ -294,15 +249,6 @@ class PublishService {
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true })
         } catch (ex) { }
 
-
-
-
-        //Save contract metadata
-        let contractMetadataPath = `${directory}/contractMetadata.json`
-        
-        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true, flush:flush })
-        publishStatus.contractMetadata.saved = 1
-        this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
 
 
         let images:Image[] = []
@@ -408,16 +354,20 @@ class PublishService {
 
         }
 
+
+        //Get directory cids
+        let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
+            hash: true
+        })
+
+        let animationDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
+            hash: true
+        })
+
+
+
         //Save metadata for each NFT
         for (let item of backup.items) {
-
-            let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
-                hash: true
-            })
-
-            let animationDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
-                hash: true
-            })
 
             let coverImage:Image = await this.imageService.get(item.coverImageId)
             let nft = await this.itemService.exportNFTMetadata(exportBundle.channel, item, coverImage, animationDirectory.cid.toString(), imageDirectory.cid.toString())
@@ -434,6 +384,15 @@ class PublishService {
         }
 
 
+        //Save contract metadata
+        let contractMetadataPath = `${directory}/contractMetadata.json`
+        
+        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, exportBundle.ownerAddress, imageDirectory.cid.toString())
+
+
+        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
+        publishStatus.contractMetadata.saved = 1
+        this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
 
 
 
@@ -536,35 +495,16 @@ class PublishService {
         channel['itemCount'] = items?.length
 
 
-        //Remove the actual image data from the images
-        // let backupImages:Image[] = JSON.parse(JSON.stringify(images))
-
-        // for (let image of backupImages) {
-        //     delete image.svg
-        //     delete image.buffer
-        // }
-
-        //And the animations
-        // let backupAnimations:Animation[] = JSON.parse(JSON.stringify(animations))
-        // for (let animation of backupAnimations) {
-        //     delete animation.content
-        // }
-
-
         //Save pouch dbs
         return {
             channels: [channel],
             authors: [author],
             items: items,
-            // images: backupImages,
-            // animations: animations,
             themes: themes,
             staticPages: staticPages      
         }
 
     }
-
-
 
     async deployContract(channel: Channel) {
 

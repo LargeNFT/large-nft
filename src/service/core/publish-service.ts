@@ -539,8 +539,14 @@ class PublishService {
 
         const factory = new ethers.ContractFactory(c.abi, c.bytecode, wallet)
         
-        let contract = await factory.deploy(name, symbol, ipfsCid, BigNumber.from(mintFee.toString()), BigNumber.from(maxTokenId.toString()))
-
+        let contract = await factory.deploy(
+            name, 
+            symbol, 
+            ipfsCid, 
+            BigNumber.from(mintFee.toString()), 
+            BigNumber.from(maxTokenId.toString())
+        )
+        
         return contract.deployTransaction.wait()
     }
 

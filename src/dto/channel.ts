@@ -66,7 +66,7 @@ class Channel {
     attributeOptions:AttributeOptions[]
 
     @Allow()
-    sellerFeeBasisPoints:string
+    sellerFeeBasisPoints:number
 
     @Allow()
     royaltyPercent:string

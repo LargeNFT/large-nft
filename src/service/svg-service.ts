@@ -70,7 +70,7 @@ class SvgService {
 
                 .svg-h1 {
 
-                    border: 5px solid rgb(78,130,177);
+                    border: 25px solid rgb(78,130,177);
                     
                     background: rgb(241,241,241);
                     background: linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%);

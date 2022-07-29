@@ -515,7 +515,7 @@
 
             if (value) {
                 channelViewModel.channel.royaltyPercent = value 
-                channelViewModel.channel.sellerFeeBasisPoints = Math.round(value / 100)
+                channelViewModel.channel.sellerFeeBasisPoints = parseInt(value * 100)
             }
 
         }

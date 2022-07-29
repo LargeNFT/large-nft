@@ -366,7 +366,7 @@ class GitlabService {
 
         this.logPublishReaderProgress(`Commiting reader data for ${channel.title}`)
 
-        try {
+        // try {
             const res = await axios.post(url, {
                 branch: "master",
                 commit_message: `Commiting reader data for ${channel.title}`,
@@ -376,9 +376,9 @@ class GitlabService {
                     "Authorization": `Bearer ${config.personalAccessToken}`
                 }
             })
-        } catch(ex) {
-            console.log(ex.response.data)
-        }
+        // } catch(ex) {
+        //     console.log(ex.response.data)
+        // }
 
 
 

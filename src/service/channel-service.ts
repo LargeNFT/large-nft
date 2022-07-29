@@ -72,7 +72,7 @@ class ChannelService {
     if (errors.length > 0) {
       throw new ValidationException(errors)
     }
-    
+    console.log(channel)
     await this.channelRepository.put(channel)
 
   }
@@ -108,7 +108,7 @@ class ChannelService {
       name: channel.title,
       description: channel.descriptionMarkdown,
       external_link: channel.link,
-      seller_fee_basis_points: channel.sellerFeeBasisPoints,
+      seller_fee_basis_points: 0, //channel.sellerFeeBasisPoints, //TODO: Setting this to anything other than zero ruins OpenSea. Investigate.
       fee_recipient: ownerAddress,
       license: channel.license
     }

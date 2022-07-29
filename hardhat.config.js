@@ -1,6 +1,10 @@
 
 require("@nomiclabs/hardhat-etherscan");
 
+const { API_URL, PRIVATE_KEY } = process.env
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
+
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -16,4 +20,4 @@ require("@nomiclabs/hardhat-etherscan");
     },
   }
 
-};
+}

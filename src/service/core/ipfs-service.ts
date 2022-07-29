@@ -29,7 +29,11 @@ class IpfsService {
     
     console.log('Init IPFS')
 
-    let ipfsHost = await this.ipfsHostService.get()
+    let ipfsHost
+
+    try {
+      ipfsHost = await this.ipfsHostService.get()
+    } catch(ex) {}
 
     if (ipfsHost) {
       this.ipfs = create({ url: ipfsHost.url })
@@ -37,8 +41,7 @@ class IpfsService {
       this.ipfs = await this.ipfsInit()
     }
 
-    
-
+  
     //TODO: 
 
 

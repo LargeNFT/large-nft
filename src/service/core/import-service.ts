@@ -249,11 +249,11 @@ class ImportService {
 
         for (let theme of themes) {
 
-            delete theme._id
-            delete theme._rev
-            delete theme.lastUpdated
-            delete theme.dateCreated
-            delete theme["_rev_tree"]
+            // delete theme._id
+            // delete theme._rev
+            // delete theme.lastUpdated
+            // delete theme.dateCreated
+            // delete theme["_rev_tree"]
 
             theme.channelId = idMap.get(theme.channelId) //look up the new channel ID
 

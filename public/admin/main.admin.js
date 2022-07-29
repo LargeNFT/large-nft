@@ -206,7 +206,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3db4440cf1';
+framework7Component.id = 'cfc98504b8';
 framework7Component.style = `
 
 
@@ -398,7 +398,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c6a630b0de';
+framework7Component.id = '3639fef332';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -510,7 +510,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cc5a39dff5';
+framework7Component.id = '87311ec905';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -641,7 +641,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9f944b62f5';
+framework7Component.id = '7a62a01f4e';
 framework7Component.style = `
 
 
@@ -742,7 +742,9 @@ function framework7Component(props, {
     let channel = Object.assign(new _dto_channel__WEBPACK_IMPORTED_MODULE_10__.Channel(), $f7.form.convertToData('#create-channel-form')); //Get content from quill
 
     channel.description = quillEditorService.activeEditor.getContents();
-    channel.license = licenseQuillEditor.getContents(); //Parse attributeOptions and category
+    channel.license = licenseQuillEditor.getContents(); //Convert numbers
+
+    channel.sellerFeeBasisPoints = parseInt(channel.sellerFeeBasisPoints); //Parse attributeOptions and category
 
     if (channel.attributeOptions) {
       channel.attributeOptions = JSON.parse(channel.attributeOptions);
@@ -1189,8 +1191,10 @@ function framework7Component(props, {
             <div class="page-content">
               <form id="edit-theme-form-channel-create">
 
-                <${_admin_channel_theme_form_f7_html__WEBPACK_IMPORTED_MODULE_16__["default"]} cover_image_css_editor_id="edit-theme-cover-image-editor-channel-create"
-                  animation_css_editor_id="edit-theme-animation-editor-channel-create" theme="${editingTheme}" />
+                <${_admin_channel_theme_form_f7_html__WEBPACK_IMPORTED_MODULE_16__["default"]} 
+                  cover_image_css_editor_id="edit-theme-cover-image-editor-channel-create"
+                  animation_css_editor_id="edit-theme-animation-editor-channel-create" 
+                  theme="${editingTheme}" />
 
                 <div class="row block">
 
@@ -1294,7 +1298,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3e3455a07b';
+framework7Component.id = '5e3e8bbac0';
 framework7Component.style = `
 
 `;
@@ -1383,7 +1387,9 @@ function framework7Component(props, {
     let channel = Object.assign(new _dto_channel__WEBPACK_IMPORTED_MODULE_10__.Channel(), $f7.form.convertToData('#edit-channel-form')); //Get content from quill
 
     channel.description = quillEditorService.activeEditor.getContents();
-    channel.license = licenseQuillEditor.getContents(); //Parse attributeOptions and category
+    channel.license = licenseQuillEditor.getContents(); //Convert numbers
+
+    channel.sellerFeeBasisPoints = parseInt(channel.sellerFeeBasisPoints); //Parse attributeOptions and category
 
     if (channel.attributeOptions) {
       channel.attributeOptions = JSON.parse(channel.attributeOptions);
@@ -1942,7 +1948,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8bbf7b5887';
+framework7Component.id = '5a1113f66a';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2160,7 +2166,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3a8cc05bec';
+framework7Component.id = '48e3ee1d87';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2271,7 +2277,7 @@ function framework7Component(props, {
 
     if (value) {
       channelViewModel.channel.royaltyPercent = value;
-      channelViewModel.channel.sellerFeeBasisPoints = Math.round(value / 100);
+      channelViewModel.channel.sellerFeeBasisPoints = parseInt(value * 100);
     }
   };
 
@@ -2772,7 +2778,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0c8255521d';
+framework7Component.id = 'c5905e6090';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3095,7 +3101,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4454f2c068';
+framework7Component.id = '79e894be87';
 framework7Component.style = `
 
 `;
@@ -3291,7 +3297,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0c76cc73ba';
+framework7Component.id = '5be7dd1603';
 framework7Component.style = `
     .item-preview {
         width: 100%;
@@ -3576,7 +3582,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e472ee8d2c';
+framework7Component.id = 'a4e04133e3';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3846,7 +3852,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7030e6b323';
+framework7Component.id = 'c98282153b';
 framework7Component.style = `
     
 `;
@@ -3936,7 +3942,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '88960a042f';
+framework7Component.id = '8cae183005';
 framework7Component.style = `
     
 `;
@@ -4008,7 +4014,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0e779c44d5';
+framework7Component.id = 'a79646c60a';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4143,7 +4149,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5ab2e68c1b';
+framework7Component.id = 'cbd0729f71';
 framework7Component.style = `
 
 `;
@@ -4299,7 +4305,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9d9efcc847';
+framework7Component.id = 'e61ce47610';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4392,7 +4398,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '76f2b82d12';
+framework7Component.id = '40cc7850a1';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4653,7 +4659,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fe01857a69';
+framework7Component.id = 'beba530ad5';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4950,7 +4956,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '86057e25f3';
+framework7Component.id = '19ee68f2a7';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5379,7 +5385,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '72d1fd5943';
+framework7Component.id = '9eddb28b90';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5683,7 +5689,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '04a3d3570d';
+framework7Component.id = '98caa004bf';
 framework7Component.style = `
 
   .previous {
@@ -5889,7 +5895,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e686375ef5';
+framework7Component.id = 'b38153b76b';
 framework7Component.style = `
 
  .logo {
@@ -6092,7 +6098,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cc44823908';
+framework7Component.id = '7e505ce9f9';
 framework7Component.style = `
 
   `;
@@ -6146,6 +6152,7 @@ function framework7Component(props, {
   let gitlabService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_6__.GitlabService);
   let publishService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_core_publish_service__WEBPACK_IMPORTED_MODULE_7__.PublishService);
   let channelViewModel = props.channelViewModel;
+  let ipfsHost = props.ipfsHost;
   let peerCount = ipfsService.peerCount;
   let publishing = false;
   let publishStatus;
@@ -6202,6 +6209,7 @@ function framework7Component(props, {
       $(outputElement).scrollTop(outputElement.scrollHeight);
     }
   });
+  89;
   $(document).on('update-peers', async e => {
     peerCount = e.detail.count;
     $update();
@@ -6241,17 +6249,11 @@ function framework7Component(props, {
 
                         <div class="card-content">
                             <div class="card-content card-content-padding">
-
+                                
                                 <p>
                                     The JSON metadata for the collection as well as a backup of the source database
-                                    will be copied to an IPFS node running in the browser.
+                                    will be copied to the IPFS node.
                                 </p>
-
-                                <p>
-                                    Note: This process can be slow due to perfomance issues with IPFS in the browser. 
-                                    We are exploring options to make it faster and/or support connections to external IPFS servers.
-                                </p>
-
 
                                 ${!ipfsReady ? $h`
                                     <div class="ipfs-label">IPFS Initializing...</div>
@@ -6273,10 +6275,6 @@ function framework7Component(props, {
                                                 NFT Collection Data
                                             </h4>
 
-                                            <div class="item"> 
-                                                <label>Contract Metadata:</label> ${publishStatus.contractMetadata.saved} / ${publishStatus.contractMetadata.total}
-                                            </div>
-
                                             <div class="item">
                                                 <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
                                             </div>
@@ -6289,7 +6287,9 @@ function framework7Component(props, {
                                                 <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
                                             </div>
     
-
+                                            <div class="item"> 
+                                                <label>Contract Metadata:</label> ${publishStatus.contractMetadata.saved} / ${publishStatus.contractMetadata.total}
+                                            </div>
     
                                             <h4>
                                                 Database Backup
@@ -6397,7 +6397,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '01eba34551';
+framework7Component.id = '9db13fbc75';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6671,7 +6671,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '858325010b';
+framework7Component.id = '9df3e821d4';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6763,7 +6763,8 @@ function framework7Component(props, {
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Publish </div>
+              <div class="block-title block-title-medium">IPFS</div>
+
               <div class="block list media-list">
                 <ul>
                   <li>
@@ -6774,10 +6775,10 @@ function framework7Component(props, {
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">Export to local IPFS</div>
+                            <div class="item-title">Export to IPFS</div>
                           </div>
                           <div class="item-text">
-                            The first publishing task is to export the data to a local IPFS node. The rest of the publishing tasks
+                            The first publishing task is to export the data to an IPFS node. The rest of the publishing tasks
                             rely on this step and will always publish the last copy that was exported to IPFS.
                           </div>
                         </div>
@@ -6793,7 +6794,7 @@ function framework7Component(props, {
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">Publish to Pinata</div>
+                            <div class="item-title">Publish to Pinning Service</div>
                           </div>
                           <div class="item-text">
                             When you are ready to publish your collection and deploy your NFT contract, upload the NFT metadata to Pinata 
@@ -6803,6 +6804,42 @@ function framework7Component(props, {
                       </div>
                     </a>
                   </li>
+
+                </ul>
+              </div>
+
+
+              <div class="block-title block-title-medium">Contract (optional)</div>
+              <div class="block list media-list">
+                <ul>
+                  <li>
+                    <a href="/admin/publish/contract/${channelViewModel.channel._id}" class="item-link">
+                      <div class="item-content">
+                        <div class="item-media">
+                          <span class="material-icons">gavel</span>
+                        </div>
+
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">Deploy Contract</div>
+                          </div>
+                          <div class="item-text">
+                            Deploy contract to connected network. Will publish the last IPFS hash from the first step. You can publish the 
+                            latest database without deploying the contract. 
+                          </div>
+                        </div>
+
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+
+
+              <div class="block-title block-title-medium">Large Reader</div>
+              <div class="block list media-list">
+                <ul>
 
                   <li>
                     <a href="/admin/publish/fork-reader/${channelViewModel.channel._id}" class="item-link">
@@ -6842,29 +6879,212 @@ function framework7Component(props, {
                     </a>
                   </li>
 
+                </ul>
+              </div>
 
-                  <li>
-                    <a href="/admin/publish/contract/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-media">
-                          <span class="material-icons">gavel</span>
-                        </div>
 
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">Deploy Contract</div>
-                          </div>
-                          <div class="item-text">
-                            Deploy contract to connected network. Will publish the last IPFS hash from the first step. You can publish the 
-                            latest database without deploying the contract. 
-                          </div>
-                        </div>
+
+
+
+
+
+            ` : $h`
+              <div class="card">
+                <div class="card-content card-content-padding">
+                  <p>Add NFTs to the collection before publishing.</p>
+                </div>
+              </div>
+              
+            `}
+
+          </div>
+  
+        </div>
+      </div>
+  
+    </div>
+  
+  `
+    }
+    ;
+}
+
+framework7Component.id = '8adbf68339';
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
+
+/***/ }),
+
+/***/ "./src/components/admin/publish/ipfs-host.f7.html":
+/*!********************************************************!*\
+  !*** ./src/components/admin/publish/ipfs-host.f7.html ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../service/core/container-service */ "./src/service/core/container-service.ts");
+/* harmony import */ var _service_channel_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../service/channel-service */ "./src/service/channel-service.ts");
+/* harmony import */ var _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../service/core/ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
+/* harmony import */ var _admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../admin/navbar.f7.html */ "./src/components/admin/navbar.f7.html");
+/** @jsx $jsx */
+
+
+
+
+
+
+
+
+
+
+
+
+function framework7Component(props, {
+  $,
+  $h,
+  $on,
+  $f7,
+  $update
+}) {
+  let channelService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_channel_service__WEBPACK_IMPORTED_MODULE_2__.ChannelService);
+  let ipfsService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_3__.IpfsService);
+  let ipfsHostService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_4__.IpfsHostService);
+  let channelViewModel = props.channelViewModel;
+  let ipfsHost = props.ipfsHost;
+  let peerCount = props.peerCount;
+  let ipfsReady = props.ipfsReady;
+  let showLocalStatus = channelViewModel.channel?.localCid && channelViewModel.channel.localCid != channelViewModel.channel.publishedCid;
+  let isLocal = channelViewModel.channel.localCid != undefined;
+  let publishing = false;
+  let pageUnloaded = false;
+  $on('pageInit', async () => {
+    pageUnloaded = false; //Initialize IPFS
+
+    await ipfsService.init();
+    ipfsReady = ipfsService.ipfs != undefined;
+    await $update();
+  });
+  $on('pageAfterOut', (e, page) => {
+    console.log("Unloading page");
+    pageUnloaded = true;
+  });
+
+  const deployIpfsHostClick = async e => {
+    publishing = true;
+    await $update();
+    channelViewModel.channel = await channelService.get(channelViewModel.channel._id); //Now publish
+
+    await ipfsHostService.pin(ipfsHost, channelViewModel.channel);
+    showLocalStatus = false;
+    publishing = false;
+    await $update();
+  };
+
+  $(document).on('update-peers', async e => {
+    peerCount = e.detail.count;
+    $update();
+  });
+  return function ($ctx) {
+      var $ = $ctx.$;
+      var $h = $ctx.$h;
+      var $root = $ctx.$root;
+      var $f7 = $ctx.$f7;
+      var $f7route = $ctx.$f7route;
+      var $f7router = $ctx.$f7router;
+      var $theme = $ctx.$theme;
+      var $update = $ctx.$update;
+      var $store = $ctx.$store;
+
+      return $h`
+
+    <div class="page" data-name="publish">
+  
+      <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]} />
+  
+      <div class="page-content">
+        <div class="row">
+  
+          <div class="col-100 large-50 center">
+
+            <ul class="breadcrumb">
+              <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+              <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
+              <li>Publish to IPFS Host</li>
+            </ul>
+
+
+            ${channelViewModel.itemCount > 0 ? $h`
+              
+              <div class="block-title">Publish to IPFS Host</div>
+              <div class="card">
+
+                  <div class="card-content">
+                      <div class="card-content card-content-padding">
+                    
+                        ${ipfsHost ? $h`
+                          
+                          <p>The JSON metadata for the collection as well as a backup of the source database
+                            will be uploaded to remote host.</p>
+
+
+                          ${!ipfsReady ? $h`
+                              <div class="ipfs-label">
+                                IPFS Initializing...
+                              </div>
+                          ` : $h`
+                              <div class="ipfs-label">
+                                  <a href="/admin/connect">IPFS Ready</a>
+                              </div>
+                          `}
+
+                          ${publishing ? $h`
+                              <div class="publish-label">
+                                  Publishing...
+                              </div>
+                          ` : $h`
+                              <div class="publish-label" style="display:none;"></div>
+                          `}
+
+                          ${showLocalStatus ? $h`
+
+                            <div class="local-status">
+                              <p><strong>Latest local export:</strong> ${channelViewModel.channel.localCid}</p>
+ 
+                              <button class="button button-fill color-gray text-color-white refresh-ipfshost-button" @click="${deployIpfsHostClick}">
+                                Submit
+                              </button>
+
+                            </div>
+
+                          ` : $h`<span/>`}
+
+
+                              
+                          ${ipfsReady && !showLocalStatus ? $h`
+
+                            ${isLocal ? $h`
+                              <button class="button button-fill color-gray text-color-white refresh-ipfshost-button" @click="${deployIpfsHostClick}">
+                                Submit
+                              </button>
+                            ` : $h`
+                              Collection must first be <a href="/admin/publish/export/${channelViewModel.channel._id}">exported</a> to local IPFS. 
+                            `}
+
+                          ` : $h`
+                            <p></p>
+                          `}
+
+
+                        ` : $h`<span />`}
 
                       </div>
-                    </a>
-                  </li>
+                  </div>
 
-                </ul>
               </div>
 
             ` : $h`
@@ -6888,7 +7108,24 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'df20f0b5ca';
+framework7Component.id = 'bc7400e895';
+framework7Component.style = `
+    .publish-label, .ipfs-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    
+    .refresh-ipfshost-button {
+        width: 150px;
+        height: 30px;
+        margin-top: 10px;
+    }
+
+
+  `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6933,7 +7170,8 @@ function framework7Component(props, {
   let ipfsService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_3__.IpfsService);
   let pinningService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_core_pinning_service__WEBPACK_IMPORTED_MODULE_4__.PinningService);
   let channelViewModel = props.channelViewModel;
-  let pinningApi = props.pinningApi;
+  let pinningApis = props.pinningApis;
+  let pinningApi;
   let peerCount = props.peerCount;
   let ipfsReady = props.ipfsReady;
   let showPinStatus = channelViewModel.channel.pinJobId?.length > 0;
@@ -6995,6 +7233,17 @@ function framework7Component(props, {
     }
   };
 
+  const pinapiOnChange = async e => {
+    pinningApi = undefined;
+
+    if (e.target.value) {
+      pinningApi = await pinningService.get(e.target.value);
+    }
+
+    console.log(pinningApi);
+    await $update();
+  };
+
   $(document).on('update-peers', async e => {
     peerCount = e.detail.count;
     $update();
@@ -7024,22 +7273,47 @@ function framework7Component(props, {
             <ul class="breadcrumb">
               <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
               <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
-              <li>Publish to Pinata</li>
+              <li>Publish to Pinning Service</li>
             </ul>
 
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Publish to Pinata</div>
+              <div class="block-title">Publish to Pinning Service</div>
               <div class="card">
 
                   <div class="card-content">
                       <div class="card-content card-content-padding">
 
+                        ${pinningApis?.length > 0 ? $h`
+                          <div class="list">
+                            <ul>
+                              <li class="item-content item-input">
+                                <div class="item-inner">
+                                  <div class="item-title item-label">Choose a pinning service</div>
+                                  <!-- additional "input-dropdown-wrap" class -->
+                                  <div class="item-input-wrap input-dropdown-wrap">
+                                    <select name="pinapi" @change="${pinapiOnChange}">
+                                      <option value="">Select...</option>
+          
+                                      ${pinningApis?.map( (pinapi) => $h`
+                                          <option value="${pinapi._id}">${pinapi.name}</option>
+                                      `)}
+                                    </select>
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        ` : $h`
+                          <p>Configure <a href="/admin/settings">a pinning service</a>.</p>
+                        `}
+
+
                         ${pinningApi ? $h`
                           
                           <p>The JSON metadata for the collection as well as a backup of the source database
-                            will be uploaded to your Pinata account.</p>
+                            will be uploaded to your  account.</p>
 
 
                           ${!ipfsReady ? $h`
@@ -7110,9 +7384,7 @@ function framework7Component(props, {
                           `}
 
 
-                        ` : $h`
-                          <p>Configure <a href="/admin/settings">Pinata</a>.</p>
-                        `}
+                        ` : $h`<span />`}
 
                       </div>
                   </div>
@@ -7140,7 +7412,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '75bfc78461';
+framework7Component.id = '29f30651fc';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7378,7 +7650,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '48c804f8dc';
+framework7Component.id = '0a318df068';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7415,8 +7687,14 @@ framework7Component.style = `
 /* harmony import */ var _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../service/core/container-service */ "./src/service/core/container-service.ts");
 /* harmony import */ var _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../service/core/pinning-service */ "./src/service/core/pinning-service.ts");
 /* harmony import */ var _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../service/core/gitlab-service */ "./src/service/core/gitlab-service.ts");
-/* harmony import */ var _admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../admin/navbar.f7.html */ "./src/components/admin/navbar.f7.html");
+/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
+/* harmony import */ var _dto_pinning_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../dto/pinning-api */ "./src/dto/pinning-api.ts");
+/* harmony import */ var _admin_settings_pinapi_form_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../admin/settings/pinapi-form.f7.html */ "./src/components/admin/settings/pinapi-form.f7.html");
+/* harmony import */ var _admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../admin/navbar.f7.html */ "./src/components/admin/navbar.f7.html");
 /** @jsx $jsx */
+
+
+
 
 
 
@@ -7433,20 +7711,22 @@ function framework7Component(props, {
 }) {
   let pinningService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_pinning_service__WEBPACK_IMPORTED_MODULE_1__.PinningService);
   let gitlabService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_2__.GitlabService);
-  let pinningApi = props.pinningApi;
+  let ipfsHostService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_3__.IpfsHostService);
+  let pinningApis = props.pinningApis;
   let gitlab = props.gitlab;
+  let ipfsHost = props.ipfsHost;
+  let editingPinapi; //Clear existing listeners
+
+  $(document).off('click', '.delete-pinapi');
+  $(document).off('click', '.edit-pinapi');
 
   const formSubmit = async e => {
     e.preventDefault(); //Save
 
     try {
-      //Validate credentials
-      if (pinningApi.apiKey) {
-        await pinningService.validateAccount(pinningApi);
-        await pinningService.put(pinningApi);
-      }
-
       await gitlabService.put(gitlab);
+      await ipfsHostService.put(ipfsHost);
+      console.log(ipfsHost);
       const toast = $f7.toast.show({
         text: 'Pinata Settings Saved',
         closeTimeout: 2000,
@@ -7458,22 +7738,87 @@ function framework7Component(props, {
       $f7.views.main.router.navigate(`/`);
     } catch (ex) {
       console.log(ex);
-      $f7.dialog.alert(ex.errors, "Test connection failed");
+      $f7.dialog.alert(ex, "Saving settings failed");
     }
-  };
-
-  const apiKeyChange = async e => {
-    pinningApi.apiKey = $(e.currentTarget).val();
-  };
-
-  const secretApiKeyChange = async e => {
-    pinningApi.secretApiKey = $(e.currentTarget).val();
   };
 
   const personalAccessTokenChange = async e => {
     gitlab.personalAccessToken = $(e.currentTarget).val();
   };
 
+  const ipfsHostChange = async e => {
+    ipfsHost.url = $(e.currentTarget).val();
+    console.log(ipfsHost);
+  };
+
+  const updatePinapiList = async () => {
+    //Refresh pinapi list
+    pinningApis = await pinningService.list(1000, 0);
+  };
+
+  $on('pageInit', async e => {
+    $('.add-pinapi-popup').on('popup:open', function (e) {});
+    $('#add-pinapi-form').on('submit', async function (e) {
+      e.preventDefault(); //Get data
+
+      let pinningApi = Object.assign(new _dto_pinning_api__WEBPACK_IMPORTED_MODULE_4__.PinningApi(), $f7.form.convertToData('#add-pinapi-form'));
+
+      try {
+        await pinningService.put(pinningApi); //Clear form
+
+        $f7.form.fillFromData('#add-pinapi-form', {
+          name: ""
+        }); //Refresh pinapi list
+
+        await updatePinapiList();
+        await $update();
+        $f7.popup.close('.add-pinapi-popup');
+      } catch (ex) {
+        console.log(ex);
+        $f7.dialog.alert(ex.errors, "There was an error");
+      }
+    });
+    $('#edit-pinapi-form').on('submit', async function (e) {
+      e.preventDefault(); //Get data
+
+      let pinningApi = Object.assign(new _dto_pinning_api__WEBPACK_IMPORTED_MODULE_4__.PinningApi(), $f7.form.convertToData('#edit-pinapi-form'));
+
+      try {
+        await pinningService.put(pinningApi); //Refresh list
+
+        await updatePinapiList();
+        await $update();
+        $f7.popup.close('.edit-pinapi-popup');
+      } catch (ex) {
+        console.log(ex);
+        $f7.dialog.alert(ex.errors, "There was an error");
+      }
+    });
+    $(document).on('click', '.delete-pinapi', async function (e) {
+      let id = $(e.target).data('id');
+      $f7.dialog.confirm("Are you sure you want to delete this pinning service?", async () => {
+        await pinningService.delete(await pinningService.get(id)); //Refresh theme list
+
+        await updatePinapiList();
+        await $update();
+        const toast = $f7.toast.show({
+          text: 'Pinning Service deleted',
+          closeTimeout: 2000,
+          closeButton: true,
+          position: 'bottom',
+          horizontalPosition: 'left'
+        });
+      });
+    });
+    $(document).on('click', '.edit-pinapi', async function (e) {
+      let id = $(e.target).data('id');
+      editingPinapi = pinningApis.filter(pinapi => pinapi._id == id)[0]; //Populate form
+
+      $f7.form.fillFromData('#edit-pinapi-form', editingPinapi);
+      await $update();
+      $f7.popup.open('.edit-pinapi-popup');
+    });
+  });
   return function ($ctx) {
       var $ = $ctx.$;
       var $h = $ctx.$h;
@@ -7489,88 +7834,182 @@ function framework7Component(props, {
 
     <div class="page" data-name="admin-settings">
 
-        <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_3__["default"]} />
-
+        <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]} />
 
         <div class="page-content">
-
             <form id="edit-settings-form" @submit="${formSubmit}">
-
-                <div class="block-title">Pinata Settings</div>
-                <div class="block list">
-                    <p>
-                        Commercial IPFS hosting is available through <a href="https://www.pinata.cloud/" class="external">Pinata</a>. Create a free
-                        account and set up your API key and Secret API Key below. 
-                    </p>
-
-                    <ul>
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">API Key</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" name="apiKey" placeholder="API Key"
-                                            value="${pinningApi.apiKey}" @change="${apiKeyChange}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Secret API Key</div>
-                                    <div class="item-input-wrap">
-                                        <input type="password" name="secretApiKey" placeholder="Secret API Key"
-                                            value="${pinningApi.secretApiKey}" @change="${secretApiKeyChange}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                
+                <div class="card">
+                    <div class="card-header">IPFS Pinning APIs</div>
+                    <div class="card-content">
+                        <div class="list">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            
+                                            <div>
                         
-                    </ul>
+                                                <p>Both free and commercial IPFS hosting is available from different providers</p>
+                        
+                                                <ul class="pinapi-list" style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
+                                                    ${pinningApis?.map( (pinAPI) => $h`
+                                                        <li>
+                                                            <span class="pinapi-name">${pinAPI.name}</span> 
+                                                            <a class="link pinapi-link edit-pinapi" href="#" data-id="${pinAPI._id}">Edit</a>
+                                                            <a class="link pinapi-link delete-pinapi" href="#" data-id="${pinAPI._id}">Delete</a>
+                                                        </li>
+                                                    `)}
+                                                </ul>
+                                        
+                                                <div class="row">
+                                                    <div class="col-30">
+                                                        <a class="button button-outline add-pinapi-button popup-open" data-popup=".add-pinapi-popup" tabindex="10">Add Pinning API</a>
+                                                    </div>
+                                                    <div class="col-70"></div>
+                                                </div>
+                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="block-title">Gitlab Settings</div>
-                <div class="block list">
-                    <p>
-                        To deploy the reader for your collection you will need a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account. 
-                        Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
-                        save it below. If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
-                        take you directly to the create form. 
-                    </p>
-
-                    <p>Name the token "Large" (or whatever you choose) and select an appropriate expiration date. Under "Select scopes" check the box beside "api".</p>
-
-                    <ul>
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Personal Access Token</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" name="personalAccessToken" placeholder="Personal access token"
-                                            value="${gitlab.personalAccessToken}" @change="${personalAccessTokenChange}" />
+                <div class="card">
+                    <div class="card-header">Remote IPFS API</div>
+                    <div class="card-content">
+                        <div class="list">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">URL</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="remoteApiUrl" value="${ipfsHost.url}" placeholder="http://localhost:5001/api/v0" @change="${ipfsHostChange}" />
+                                            <span class="input-clear-button"></span>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                        
-                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Gitlab Settings</div>
+                    
+                    <div class="card-content card-content-padding">
+                        <p>
+                            To deploy the reader for your collection you will need a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account. 
+                            Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
+                            save it below. If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
+                            take you directly to the create form. 
+                        </p>
+    
+                        <p>Name the token "Large" (or whatever you choose) and select an appropriate expiration date. Under "Select scopes" check the box beside "api".</p>
+    
+
+
+                        <div class="list">
+
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Personal Access Token</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="personalAccessToken" placeholder="Personal access token"
+                                                    value="${gitlab.personalAccessToken}" @change="${personalAccessTokenChange}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </div>
+        
+
+                    </div>
+
                 </div>
 
                 <div class="block row">
-
                     <div class="col-70"></div>
-
                     <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-                        <i class="material-icons">save</i> Save
+                        Save
                     </button>
-
                 </div>
+
 
             </form>
         </div>
 
+        <div class="popup add-pinapi-popup">
+            <div class="view">
+              <div class="page">
+                <div class="navbar">
+                  <div class="navbar-bg"></div>
+                  <div class="navbar-inner">
+                    <div class="title">Add Pinning API</div>
+                    <div class="right">
+                      <!-- Link to close popup -->
+                      <a class="link popup-close">Close</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="page-content">
+                  <form id="add-pinapi-form">
+                    <${_admin_settings_pinapi_form_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]} />
+    
+                    <div class="row block">
+    
+                      <div class="col-70"></div>
+    
+                      <button type="submit" class="button button-fill col-30" tabindex="12">
+                        Add
+                      </button>
+    
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
 
+        <div class="popup edit-pinapi-popup">
+            <div class="view">
+                <div class="page">
+                <div class="navbar">
+                    <div class="navbar-bg"></div>
+                    <div class="navbar-inner">
+                    <div class="title">Edit Pinning API</div>
+                    <div class="right">
+                        <!-- Link to close popup -->
+                        <a class="link popup-close">Close</a>
+                    </div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <form id="edit-pinapi-form">
+
+                    <${_admin_settings_pinapi_form_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]} pinapi="${editingPinapi}" />
+
+                    <div class="row block">
+
+                        <div class="col-70"></div>
+
+                        <button type="submit" class="button button-fill col-30" tabindex="12">
+                            Save Changes
+                        </button>
+
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -7579,7 +8018,143 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '67bb117924';
+framework7Component.id = '91425459b7';
+framework7Component.style = `
+
+    .pinapi-name, .static-page-name {
+        width: 150px;
+        display: inline-block;
+    }
+
+    .pinapi-list, .static-page-list {
+        border-top: 1px solid #cccccc;
+        border-bottom: 1px solid #cccccc;
+    }
+
+    .pinapi-link, .static-page-link {
+        margin-left: 10px;
+    }
+
+    #saveButton {
+        width: 250px;
+    }
+
+`;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
+
+/***/ }),
+
+/***/ "./src/components/admin/settings/pinapi-form.f7.html":
+/*!***********************************************************!*\
+  !*** ./src/components/admin/settings/pinapi-form.f7.html ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/** @jsx $jsx */
+
+
+
+function framework7Component(props, {
+  $,
+  $on,
+  $f7,
+  $update
+}) {
+  let pinapi = props.pinapi;
+  return function ($ctx) {
+      var $ = $ctx.$;
+      var $h = $ctx.$h;
+      var $root = $ctx.$root;
+      var $f7 = $ctx.$f7;
+      var $f7route = $ctx.$f7route;
+      var $f7router = $ctx.$f7router;
+      var $theme = $ctx.$theme;
+      var $update = $ctx.$update;
+      var $store = $ctx.$store;
+
+      return $h`
+
+    <div class="list">
+
+        <input type="hidden" name="_id"  value="${pinapi?._id}" />
+        <input type="hidden" name="_rev" value="${pinapi?._rev}" />
+        <input type="hidden" name="dateCreated" value="${pinapi?.dateCreated}" />
+
+        <ul>
+            <li>
+                <div class="item-content item-input item-input-outline">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Title</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="name" placeholder="Name"
+                                value="${pinapi?.name}" required  minlength="3" tabindex="1" required />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">URL</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="url" placeholder="URL"
+                                value="${pinapi?.url}" required />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">API Key</div>
+                        <div class="item-input-wrap">
+                            <input type="text" name="apiKey" placeholder="API Key"
+                                value="${pinapi?.apiKey}" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Secret API Key</div>
+                        <div class="item-input-wrap">
+                            <input type="password" name="secretApiKey" placeholder="Secret API Key"
+                                value="${pinapi?.secretApiKey}" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li>
+                <div class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">JWT (Secret access token)</div>
+                        <div class="item-input-wrap">
+                            <input type="password" name="jwt" placeholder="JWT (Secret access token)"
+                                value="${pinapi?.jwt}" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+
+`
+    }
+    ;
+}
+
+framework7Component.id = '14f7c6bec4';
+framework7Component.style = `
+    
+`;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -8512,19 +9087,21 @@ ItemController = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "PublishController": () => (/* binding */ PublishController)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 /* harmony import */ var _util_model_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/model-view */ "./src/util/model-view.ts");
-/* harmony import */ var _util_route_map__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../util/route-map */ "./src/util/route-map.ts");
+/* harmony import */ var _util_route_map__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../util/route-map */ "./src/util/route-map.ts");
 /* harmony import */ var _components_admin_publish_index_f7_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/admin/publish/index.f7.html */ "./src/components/admin/publish/index.f7.html");
 /* harmony import */ var _components_admin_publish_export_f7_html__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/admin/publish/export.f7.html */ "./src/components/admin/publish/export.f7.html");
 /* harmony import */ var _components_admin_publish_pinata_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/publish/pinata.f7.html */ "./src/components/admin/publish/pinata.f7.html");
-/* harmony import */ var _components_admin_publish_fork_reader_f7_html__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/publish/fork-reader.f7.html */ "./src/components/admin/publish/fork-reader.f7.html");
-/* harmony import */ var _components_admin_publish_publish_reader_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/publish/publish-reader.f7.html */ "./src/components/admin/publish/publish-reader.f7.html");
-/* harmony import */ var _components_admin_publish_contract_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/admin/publish/contract.f7.html */ "./src/components/admin/publish/contract.f7.html");
-/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
-/* harmony import */ var _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../service/core/pinning-service */ "./src/service/core/pinning-service.ts");
-/* harmony import */ var _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../service/core/gitlab-service */ "./src/service/core/gitlab-service.ts");
-/* harmony import */ var _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../service/core/ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var _components_admin_publish_ipfs_host_f7_html__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/publish/ipfs-host.f7.html */ "./src/components/admin/publish/ipfs-host.f7.html");
+/* harmony import */ var _components_admin_publish_fork_reader_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/publish/fork-reader.f7.html */ "./src/components/admin/publish/fork-reader.f7.html");
+/* harmony import */ var _components_admin_publish_publish_reader_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/admin/publish/publish-reader.f7.html */ "./src/components/admin/publish/publish-reader.f7.html");
+/* harmony import */ var _components_admin_publish_contract_f7_html__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/admin/publish/contract.f7.html */ "./src/components/admin/publish/contract.f7.html");
+/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
+/* harmony import */ var _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../service/core/pinning-service */ "./src/service/core/pinning-service.ts");
+/* harmony import */ var _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../service/core/gitlab-service */ "./src/service/core/gitlab-service.ts");
+/* harmony import */ var _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../service/core/ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8547,12 +9124,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 let PublishController = class PublishController {
-    constructor(channelWebService, pinningService, gitlabService, ipfsService) {
+    constructor(channelWebService, pinningService, gitlabService, ipfsService, ipfsHostService) {
         this.channelWebService = channelWebService;
         this.pinningService = pinningService;
         this.gitlabService = gitlabService;
         this.ipfsService = ipfsService;
+        this.ipfsHostService = ipfsHostService;
     }
     async publish() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8574,26 +9154,41 @@ let PublishController = class PublishController {
     async export() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
             let channelViewModel = await this.channelWebService.get(routeTo.params.id);
+            let ipfsHost;
+            try {
+                ipfsHost = await this.ipfsHostService.get();
+            }
+            catch (ex) { }
             return {
-                channelViewModel: channelViewModel
+                channelViewModel: channelViewModel,
+                ipfsHost: ipfsHost
             };
         }, _components_admin_publish_export_f7_html__WEBPACK_IMPORTED_MODULE_2__["default"]);
     }
     async pinata() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
             let channelViewModel = await this.channelWebService.get(routeTo.params.id);
-            let pinningApi;
-            try {
-                pinningApi = await this.pinningService.getPinata();
-            }
-            catch (ex) { }
             return {
                 channelViewModel: channelViewModel,
-                pinningApi: pinningApi,
+                pinningApis: await this.pinningService.list(1000, 0),
                 peerCount: this.ipfsService.peerCount,
                 ipfsReady: this.ipfsService.ipfs != undefined
             };
         }, _components_admin_publish_pinata_f7_html__WEBPACK_IMPORTED_MODULE_3__["default"]);
+    }
+    async ipfs() {
+        return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
+            let channelViewModel = await this.channelWebService.get(routeTo.params.id);
+            let ipfsHost;
+            try {
+                ipfsHost = await this.ipfsHostService.get();
+            }
+            catch (ex) { }
+            return {
+                channelViewModel: channelViewModel,
+                ipfsHost: ipfsHost
+            };
+        }, _components_admin_publish_ipfs_host_f7_html__WEBPACK_IMPORTED_MODULE_4__["default"]);
     }
     async forkReader() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8607,7 +9202,7 @@ let PublishController = class PublishController {
                 channelViewModel: channelViewModel,
                 gitlab: gitlab
             };
-        }, _components_admin_publish_fork_reader_f7_html__WEBPACK_IMPORTED_MODULE_4__["default"]);
+        }, _components_admin_publish_fork_reader_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]);
     }
     async publishReader() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8621,7 +9216,7 @@ let PublishController = class PublishController {
                 channelViewModel: channelViewModel,
                 gitlab: gitlab
             };
-        }, _components_admin_publish_publish_reader_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]);
+        }, _components_admin_publish_publish_reader_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]);
     }
     async contract() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8629,51 +9224,58 @@ let PublishController = class PublishController {
             return {
                 channelViewModel: channelViewModel
             };
-        }, _components_admin_publish_contract_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]);
+        }, _components_admin_publish_contract_f7_html__WEBPACK_IMPORTED_MODULE_7__["default"]);
     }
 };
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_7__.routeMap)("/admin/publish/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/publish/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublishController.prototype, "publish", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_7__.routeMap)("/admin/publish/export/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/publish/export/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublishController.prototype, "export", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_7__.routeMap)("/admin/publish/pinata/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/publish/pinata/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublishController.prototype, "pinata", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_7__.routeMap)("/admin/publish/fork-reader/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/publish/ipfs/:id"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PublishController.prototype, "ipfs", null);
+__decorate([
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/publish/fork-reader/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublishController.prototype, "forkReader", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_7__.routeMap)("/admin/publish/publish-reader/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/publish/publish-reader/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublishController.prototype, "publishReader", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_7__.routeMap)("/admin/publish/contract/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/publish/contract/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublishController.prototype, "contract", null);
 PublishController = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_8__.injectable)(),
-    __metadata("design:paramtypes", [_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_9__.ChannelWebService,
-        _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_10__.PinningService,
-        _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_11__.GitlabService,
-        _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_12__.IpfsService])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_9__.injectable)(),
+    __metadata("design:paramtypes", [_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_10__.ChannelWebService,
+        _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_11__.PinningService,
+        _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_12__.GitlabService,
+        _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_13__.IpfsService,
+        _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_14__.IpfsHostService])
 ], PublishController);
 
 
@@ -8694,10 +9296,11 @@ PublishController = __decorate([
 /* harmony import */ var _util_model_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/model-view */ "./src/util/model-view.ts");
 /* harmony import */ var _util_route_map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../util/route-map */ "./src/util/route-map.ts");
 /* harmony import */ var _components_admin_settings_index_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/settings/index.f7.html */ "./src/components/admin/settings/index.f7.html");
-/* harmony import */ var _dto_pinning_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../dto/pinning-api */ "./src/dto/pinning-api.ts");
-/* harmony import */ var _dto_gitlab__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../dto/gitlab */ "./src/dto/gitlab.ts");
+/* harmony import */ var _dto_gitlab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../dto/gitlab */ "./src/dto/gitlab.ts");
 /* harmony import */ var _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../service/core/pinning-service */ "./src/service/core/pinning-service.ts");
 /* harmony import */ var _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../service/core/gitlab-service */ "./src/service/core/gitlab-service.ts");
+/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
+/* harmony import */ var _dto_ipfs_host__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../dto/ipfs-host */ "./src/dto/ipfs-host.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8715,26 +9318,22 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 let SettingsController = class SettingsController {
-    constructor(pinningService, gitlabService) {
+    constructor(pinningService, gitlabService, ipfsHostService) {
         this.pinningService = pinningService;
         this.gitlabService = gitlabService;
+        this.ipfsHostService = ipfsHostService;
     }
     async show() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
-            let pinningApi;
+            //Pinning APIs
+            let pinningApis;
             try {
-                pinningApi = await this.pinningService.getPinata();
+                pinningApis = await this.pinningService.list(1000, 0);
             }
             catch (ex) { }
-            //If it doesn't exist create an empty one
-            if (!pinningApi) {
-                pinningApi = Object.assign(new _dto_pinning_api__WEBPACK_IMPORTED_MODULE_1__.PinningApi(), {
-                    apiKey: '',
-                    secretApiKey: '',
-                    url: "https://api.pinata.cloud"
-                });
-            }
+            //GitLab
             let gitlab;
             try {
                 gitlab = await this.gitlabService.get();
@@ -8742,13 +9341,24 @@ let SettingsController = class SettingsController {
             catch (ex) { }
             //If it doesn't exist create an empty one
             if (!gitlab) {
-                gitlab = Object.assign(new _dto_gitlab__WEBPACK_IMPORTED_MODULE_2__.Gitlab(), {
+                gitlab = Object.assign(new _dto_gitlab__WEBPACK_IMPORTED_MODULE_1__.Gitlab(), {
                     personalAccessToken: ''
                 });
             }
+            //Ipfs Host
+            let ipfsHost;
+            try {
+                ipfsHost = await this.ipfsHostService.get();
+            }
+            catch (ex) { }
+            //If it doesn't exist create an empty one
+            if (!ipfsHost) {
+                ipfsHost = Object.assign(new _dto_ipfs_host__WEBPACK_IMPORTED_MODULE_2__.IpfsHost(), {});
+            }
             return {
-                pinningApi: pinningApi,
-                gitlab: gitlab
+                pinningApis: pinningApis,
+                gitlab: gitlab,
+                ipfsHost: ipfsHost
             };
         }, _components_admin_settings_index_f7_html__WEBPACK_IMPORTED_MODULE_3__["default"]);
     }
@@ -8762,7 +9372,8 @@ __decorate([
 SettingsController = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_5__.injectable)(),
     __metadata("design:paramtypes", [_service_core_pinning_service__WEBPACK_IMPORTED_MODULE_6__.PinningService,
-        _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_7__.GitlabService])
+        _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_7__.GitlabService,
+        _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_8__.IpfsHostService])
 ], SettingsController);
 
 
@@ -8986,7 +9597,7 @@ __decorate([
 ], Channel.prototype, "attributeOptions", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Number)
 ], Channel.prototype, "sellerFeeBasisPoints", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
@@ -9154,6 +9765,54 @@ __decorate([
 
 /***/ }),
 
+/***/ "./src/dto/ipfs-host.ts":
+/*!******************************!*\
+  !*** ./src/dto/ipfs-host.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "IpfsHost": () => (/* binding */ IpfsHost)
+/* harmony export */ });
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/decorator/common/Allow.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+class IpfsHost {
+}
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], IpfsHost.prototype, "_id", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], IpfsHost.prototype, "_rev", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], IpfsHost.prototype, "url", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], IpfsHost.prototype, "dateCreated", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], IpfsHost.prototype, "lastUpdated", void 0);
+
+
+
+/***/ }),
+
 /***/ "./src/dto/item.ts":
 /*!*************************!*\
   !*** ./src/dto/item.ts ***!
@@ -9310,15 +9969,23 @@ __decorate([
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.IsNotEmpty)(),
     __metadata("design:type", String)
-], PinningApi.prototype, "apiKey", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.IsNotEmpty)(),
-    __metadata("design:type", String)
-], PinningApi.prototype, "secretApiKey", void 0);
+], PinningApi.prototype, "name", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.IsNotEmpty)(),
     __metadata("design:type", String)
 ], PinningApi.prototype, "url", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], PinningApi.prototype, "apiKey", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], PinningApi.prototype, "secretApiKey", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], PinningApi.prototype, "jwt", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -9532,27 +10199,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_quill_service__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/quill-service */ "./src/service/quill-service.ts");
 /* harmony import */ var _service_quill_editor_service__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/quill-editor-service */ "./src/service/quill-editor-service.ts");
 /* harmony import */ var _service_core_upload_service__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/core/upload-service */ "./src/service/core/upload-service.ts");
-/* harmony import */ var _service_image_service__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/image-service */ "./src/service/image-service.ts");
-/* harmony import */ var _service_author_service__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/author-service */ "./src/service/author-service.ts");
-/* harmony import */ var _service_channel_service__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/channel-service */ "./src/service/channel-service.ts");
+/* harmony import */ var _service_image_service__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/image-service */ "./src/service/image-service.ts");
+/* harmony import */ var _service_author_service__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/author-service */ "./src/service/author-service.ts");
+/* harmony import */ var _service_channel_service__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/channel-service */ "./src/service/channel-service.ts");
 /* harmony import */ var _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/core/ipfs-service */ "./src/service/core/ipfs-service.ts");
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/container/container.js");
 /* harmony import */ var _service_core_database_service__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/database-service */ "./src/service/core/database-service.ts");
-/* harmony import */ var _repository_channel_repository__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./repository/channel-repository */ "./src/repository/channel-repository.ts");
-/* harmony import */ var _repository_item_repository__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./repository/item-repository */ "./src/repository/item-repository.ts");
-/* harmony import */ var _repository_image_repository__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./repository/image-repository */ "./src/repository/image-repository.ts");
-/* harmony import */ var _repository_author_repository__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./repository/author-repository */ "./src/repository/author-repository.ts");
+/* harmony import */ var _repository_channel_repository__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./repository/channel-repository */ "./src/repository/channel-repository.ts");
+/* harmony import */ var _repository_item_repository__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./repository/item-repository */ "./src/repository/item-repository.ts");
+/* harmony import */ var _repository_image_repository__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./repository/image-repository */ "./src/repository/image-repository.ts");
+/* harmony import */ var _repository_author_repository__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./repository/author-repository */ "./src/repository/author-repository.ts");
 /* harmony import */ var _service_core_schema_service__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/core/schema-service */ "./src/service/core/schema-service.ts");
-/* harmony import */ var _service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/core/wallet-service-impl */ "./src/service/core/wallet-service-impl.ts");
-/* harmony import */ var _service_core_types__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/core/types */ "./src/service/core/types.ts");
+/* harmony import */ var _service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/core/wallet-service-impl */ "./src/service/core/wallet-service-impl.ts");
+/* harmony import */ var _service_core_types__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/core/types */ "./src/service/core/types.ts");
 /* harmony import */ var _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/core/pinning-service */ "./src/service/core/pinning-service.ts");
-/* harmony import */ var _repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./repository/pinning-api-repository */ "./src/repository/pinning-api-repository.ts");
-/* harmony import */ var _service_item_service__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/item-service */ "./src/service/item-service.ts");
-/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/web/item-web-service */ "./src/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_author_web_service__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/web/author-web-service */ "./src/service/web/author-web-service.ts");
+/* harmony import */ var _repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./repository/pinning-api-repository */ "./src/repository/pinning-api-repository.ts");
+/* harmony import */ var _service_item_service__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/item-service */ "./src/service/item-service.ts");
+/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/web/item-web-service */ "./src/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_author_web_service__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/web/author-web-service */ "./src/service/web/author-web-service.ts");
 /* harmony import */ var _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/core/gitlab-service */ "./src/service/core/gitlab-service.ts");
-/* harmony import */ var _repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./repository/gitlab-repository */ "./src/repository/gitlab-repository.ts");
+/* harmony import */ var _repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./repository/gitlab-repository */ "./src/repository/gitlab-repository.ts");
 /* harmony import */ var _service_core_routing_service__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/core/routing-service */ "./src/service/core/routing-service.ts");
 /* harmony import */ var _controller_channel_controller__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./controller/channel-controller */ "./src/controller/channel-controller.ts");
 /* harmony import */ var _controller_item_controller__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./controller/item-controller */ "./src/controller/item-controller.ts");
@@ -9584,15 +10251,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var framework7_components_grid__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! framework7/components/grid */ "./node_modules/framework7/components/grid/grid.js");
 /* harmony import */ var framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! framework7/components/infinite-scroll */ "./node_modules/framework7/components/infinite-scroll/infinite-scroll.js");
 /* harmony import */ var framework7_components_menu__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! framework7/components/menu */ "./node_modules/framework7/components/menu/menu.js");
-/* harmony import */ var _service_svg_service__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/svg-service */ "./src/service/svg-service.ts");
-/* harmony import */ var _service_animation_service__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/animation-service */ "./src/service/animation-service.ts");
-/* harmony import */ var _repository_animation_repository__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./repository/animation-repository */ "./src/repository/animation-repository.ts");
-/* harmony import */ var _service_core_import_service__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/core/import-service */ "./src/service/core/import-service.ts");
+/* harmony import */ var _service_svg_service__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/svg-service */ "./src/service/svg-service.ts");
+/* harmony import */ var _service_animation_service__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/animation-service */ "./src/service/animation-service.ts");
+/* harmony import */ var _repository_animation_repository__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./repository/animation-repository */ "./src/repository/animation-repository.ts");
+/* harmony import */ var _service_core_import_service__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/core/import-service */ "./src/service/core/import-service.ts");
 /* harmony import */ var ipfs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-core */ "./node_modules/ipfs-core/src/index.js");
-/* harmony import */ var _service_theme_service__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/theme-service */ "./src/service/theme-service.ts");
-/* harmony import */ var _repository_theme_repository__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./repository/theme-repository */ "./src/repository/theme-repository.ts");
-/* harmony import */ var _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./repository/static-page-repository */ "./src/repository/static-page-repository.ts");
-/* harmony import */ var _service_static_page_service__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/static-page-service */ "./src/service/static-page-service.ts");
+/* harmony import */ var _service_theme_service__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/theme-service */ "./src/service/theme-service.ts");
+/* harmony import */ var _repository_theme_repository__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./repository/theme-repository */ "./src/repository/theme-repository.ts");
+/* harmony import */ var _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./repository/static-page-repository */ "./src/repository/static-page-repository.ts");
+/* harmony import */ var _service_static_page_service__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/static-page-service */ "./src/service/static-page-service.ts");
+/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
+/* harmony import */ var _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./repository/ipfs-host-repository */ "./src/repository/ipfs-host-repository.ts");
 
 
 
@@ -9686,6 +10355,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 // Install F7 Components using .use() method on Framework7 class:
 framework7__WEBPACK_IMPORTED_MODULE_1__["default"].use([framework7_components_dialog__WEBPACK_IMPORTED_MODULE_2__["default"], framework7_components_toast__WEBPACK_IMPORTED_MODULE_3__["default"], framework7_components_preloader__WEBPACK_IMPORTED_MODULE_4__["default"], framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_5__["default"], framework7_components_list_index__WEBPACK_IMPORTED_MODULE_6__["default"], framework7_components_card__WEBPACK_IMPORTED_MODULE_7__["default"], framework7_components_chip__WEBPACK_IMPORTED_MODULE_8__["default"],
     framework7_components_form__WEBPACK_IMPORTED_MODULE_9__["default"], framework7_components_input__WEBPACK_IMPORTED_MODULE_10__["default"], framework7_components_checkbox__WEBPACK_IMPORTED_MODULE_11__["default"], framework7_components_radio__WEBPACK_IMPORTED_MODULE_12__["default"], framework7_components_toggle__WEBPACK_IMPORTED_MODULE_13__["default"], framework7_components_range__WEBPACK_IMPORTED_MODULE_14__["default"], framework7_components_stepper__WEBPACK_IMPORTED_MODULE_15__["default"], framework7_components_smart_select__WEBPACK_IMPORTED_MODULE_16__["default"], framework7_components_grid__WEBPACK_IMPORTED_MODULE_17__["default"], framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_18__["default"], framework7_components_menu__WEBPACK_IMPORTED_MODULE_19__["default"], framework7_components_popup__WEBPACK_IMPORTED_MODULE_20__["default"], framework7_components_accordion__WEBPACK_IMPORTED_MODULE_21__["default"],
@@ -9746,28 +10417,30 @@ function getMainContainer() {
     container.bind(_service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_42__.GitlabService).toSelf().inSingletonScope();
     container.bind(_service_core_routing_service__WEBPACK_IMPORTED_MODULE_43__.RoutingService).toSelf().inSingletonScope();
     container.bind(_service_core_paging_service__WEBPACK_IMPORTED_MODULE_44__.PagingService).toSelf().inSingletonScope();
-    container.bind(_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_45__.ChannelWebService).toSelf().inSingletonScope();
-    container.bind(_service_web_item_web_service__WEBPACK_IMPORTED_MODULE_46__.ItemWebService).toSelf().inSingletonScope();
-    container.bind(_service_web_author_web_service__WEBPACK_IMPORTED_MODULE_47__.AuthorWebService).toSelf().inSingletonScope();
-    container.bind(_service_core_types__WEBPACK_IMPORTED_MODULE_48__["default"].WalletService).to(_service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_49__.WalletServiceImpl).inSingletonScope();
-    container.bind(_service_animation_service__WEBPACK_IMPORTED_MODULE_50__.AnimationService).toSelf().inSingletonScope();
-    container.bind(_service_author_service__WEBPACK_IMPORTED_MODULE_51__.AuthorService).toSelf().inSingletonScope();
-    container.bind(_service_channel_service__WEBPACK_IMPORTED_MODULE_52__.ChannelService).toSelf().inSingletonScope();
-    container.bind(_service_image_service__WEBPACK_IMPORTED_MODULE_53__.ImageService).toSelf().inSingletonScope();
-    container.bind(_service_item_service__WEBPACK_IMPORTED_MODULE_54__.ItemService).toSelf().inSingletonScope();
-    container.bind(_service_svg_service__WEBPACK_IMPORTED_MODULE_55__.SvgService).toSelf().inSingletonScope();
-    container.bind(_service_core_import_service__WEBPACK_IMPORTED_MODULE_56__.ImportService).toSelf().inSingletonScope();
-    container.bind(_service_theme_service__WEBPACK_IMPORTED_MODULE_57__.ThemeService).toSelf().inSingletonScope();
-    container.bind(_service_static_page_service__WEBPACK_IMPORTED_MODULE_58__.StaticPageService).toSelf().inSingletonScope();
-    container.bind(_repository_animation_repository__WEBPACK_IMPORTED_MODULE_59__.AnimationRepository).toSelf().inSingletonScope();
-    container.bind(_repository_channel_repository__WEBPACK_IMPORTED_MODULE_60__.ChannelRepository).toSelf().inSingletonScope();
-    container.bind(_repository_item_repository__WEBPACK_IMPORTED_MODULE_61__.ItemRepository).toSelf().inSingletonScope();
-    container.bind(_repository_image_repository__WEBPACK_IMPORTED_MODULE_62__.ImageRepository).toSelf().inSingletonScope();
-    container.bind(_repository_author_repository__WEBPACK_IMPORTED_MODULE_63__.AuthorRepository).toSelf().inSingletonScope();
-    container.bind(_repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_64__.PinningApiRepository).toSelf().inSingletonScope();
-    container.bind(_repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_65__.GitlabRepository).toSelf().inSingletonScope();
-    container.bind(_repository_theme_repository__WEBPACK_IMPORTED_MODULE_66__.ThemeRepository).toSelf().inSingletonScope();
-    container.bind(_repository_static_page_repository__WEBPACK_IMPORTED_MODULE_67__.StaticPageRepository).toSelf().inSingletonScope();
+    container.bind(_service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_45__.IpfsHostService).toSelf().inSingletonScope();
+    container.bind(_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_46__.ChannelWebService).toSelf().inSingletonScope();
+    container.bind(_service_web_item_web_service__WEBPACK_IMPORTED_MODULE_47__.ItemWebService).toSelf().inSingletonScope();
+    container.bind(_service_web_author_web_service__WEBPACK_IMPORTED_MODULE_48__.AuthorWebService).toSelf().inSingletonScope();
+    container.bind(_service_core_types__WEBPACK_IMPORTED_MODULE_49__["default"].WalletService).to(_service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_50__.WalletServiceImpl).inSingletonScope();
+    container.bind(_service_animation_service__WEBPACK_IMPORTED_MODULE_51__.AnimationService).toSelf().inSingletonScope();
+    container.bind(_service_author_service__WEBPACK_IMPORTED_MODULE_52__.AuthorService).toSelf().inSingletonScope();
+    container.bind(_service_channel_service__WEBPACK_IMPORTED_MODULE_53__.ChannelService).toSelf().inSingletonScope();
+    container.bind(_service_image_service__WEBPACK_IMPORTED_MODULE_54__.ImageService).toSelf().inSingletonScope();
+    container.bind(_service_item_service__WEBPACK_IMPORTED_MODULE_55__.ItemService).toSelf().inSingletonScope();
+    container.bind(_service_svg_service__WEBPACK_IMPORTED_MODULE_56__.SvgService).toSelf().inSingletonScope();
+    container.bind(_service_core_import_service__WEBPACK_IMPORTED_MODULE_57__.ImportService).toSelf().inSingletonScope();
+    container.bind(_service_theme_service__WEBPACK_IMPORTED_MODULE_58__.ThemeService).toSelf().inSingletonScope();
+    container.bind(_service_static_page_service__WEBPACK_IMPORTED_MODULE_59__.StaticPageService).toSelf().inSingletonScope();
+    container.bind(_repository_animation_repository__WEBPACK_IMPORTED_MODULE_60__.AnimationRepository).toSelf().inSingletonScope();
+    container.bind(_repository_channel_repository__WEBPACK_IMPORTED_MODULE_61__.ChannelRepository).toSelf().inSingletonScope();
+    container.bind(_repository_item_repository__WEBPACK_IMPORTED_MODULE_62__.ItemRepository).toSelf().inSingletonScope();
+    container.bind(_repository_image_repository__WEBPACK_IMPORTED_MODULE_63__.ImageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_author_repository__WEBPACK_IMPORTED_MODULE_64__.AuthorRepository).toSelf().inSingletonScope();
+    container.bind(_repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_65__.PinningApiRepository).toSelf().inSingletonScope();
+    container.bind(_repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_66__.GitlabRepository).toSelf().inSingletonScope();
+    container.bind(_repository_theme_repository__WEBPACK_IMPORTED_MODULE_67__.ThemeRepository).toSelf().inSingletonScope();
+    container.bind(_repository_static_page_repository__WEBPACK_IMPORTED_MODULE_68__.StaticPageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_69__.IpfsHostRepository).toSelf().inSingletonScope();
     container.bind("ipfsInit").toConstantValue(async () => {
         return ipfs_core__WEBPACK_IMPORTED_MODULE_0__.create({
             // repo: Math.random().toString(36).substring(7),
@@ -10079,6 +10752,60 @@ ImageRepository = __decorate([
 
 /***/ }),
 
+/***/ "./src/repository/ipfs-host-repository.ts":
+/*!************************************************!*\
+  !*** ./src/repository/ipfs-host-repository.ts ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "IpfsHostRepository": () => (/* binding */ IpfsHostRepository)
+/* harmony export */ });
+/* harmony import */ var _dto_ipfs_host__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../dto/ipfs-host */ "./src/dto/ipfs-host.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _service_core_database_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/core/database-service */ "./src/service/core/database-service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let IpfsHostRepository = class IpfsHostRepository {
+    constructor(databaseService) {
+        this.databaseService = databaseService;
+        this.CREATE_INDEXES = async (db) => {
+            //Create indexes
+            await db.createIndex({ index: { fields: ['dateCreated'] } });
+        };
+    }
+    async load(walletAddress) {
+        this.db = await this.databaseService.getDatabase(walletAddress, "ipfs-host", this.CREATE_INDEXES);
+    }
+    async get() {
+        return Object.assign(new _dto_ipfs_host__WEBPACK_IMPORTED_MODULE_0__.IpfsHost(), await this.db.get("single"));
+    }
+    async put(ipfsHost) {
+        //Force it to have the 'single' id
+        ipfsHost._id = "single";
+        await this.db.put(ipfsHost);
+    }
+};
+IpfsHostRepository = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
+    __metadata("design:paramtypes", [_service_core_database_service__WEBPACK_IMPORTED_MODULE_2__.DatabaseService])
+], IpfsHostRepository);
+
+
+
+/***/ }),
+
 /***/ "./src/repository/item-repository.ts":
 /*!*******************************************!*\
   !*** ./src/repository/item-repository.ts ***!
@@ -10306,6 +11033,9 @@ let PinningApiRepository = class PinningApiRepository {
     }
     async put(pinningApi) {
         await this.db.put(pinningApi);
+    }
+    async delete(pinningApi) {
+        await this.db.remove(pinningApi);
     }
 };
 PinningApiRepository = __decorate([
@@ -10858,6 +11588,7 @@ let ChannelService = class ChannelService {
         if (errors.length > 0) {
             throw new _util_validation_exception__WEBPACK_IMPORTED_MODULE_2__.ValidationException(errors);
         }
+        console.log(channel);
         await this.channelRepository.put(channel);
     }
     async list(limit, skip) {
@@ -10874,18 +11605,18 @@ let ChannelService = class ChannelService {
     async countItemsByChannel(channelId) {
         return this.itemService.countByChannel(channelId);
     }
-    async exportContractMetadata(channel, ownerAddress) {
+    async exportContractMetadata(channel, ownerAddress, imageDirectoryCid) {
         let result = {
             name: channel.title,
             description: channel.descriptionMarkdown,
             external_link: channel.link,
-            seller_fee_basis_points: channel.sellerFeeBasisPoints,
+            seller_fee_basis_points: 0,
             fee_recipient: ownerAddress,
             license: channel.license
         };
         if (channel.coverImageId) {
             let coverImage = await this.imageService.get(channel.coverImageId);
-            result.image = `ipfs://${coverImage.cid}`;
+            result.image = `ipfs://${imageDirectoryCid}/${coverImage.cid}.${coverImage.buffer ? 'jpg' : 'svg'}`;
         }
         return result;
     }
@@ -11315,15 +12046,20 @@ let GitlabService = GitlabService_1 = class GitlabService {
             this.logPublishReaderProgress(ex);
         }
         let url = `${GitlabService_1.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`;
-        await axios__WEBPACK_IMPORTED_MODULE_0___default().post(url, {
+        this.logPublishReaderProgress(`Commiting reader data for ${channel.title}`);
+        // try {
+        const res = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(url, {
             branch: "master",
             commit_message: `Commiting reader data for ${channel.title}`,
-            actions: actions
+            actions: actions,
         }, {
             headers: {
                 "Authorization": `Bearer ${config.personalAccessToken}`
             }
         });
+        // } catch(ex) {
+        //     console.log(ex.response.data)
+        // }
         this.logPublishReaderProgress(`Publish complete`);
     }
     async deleteReaderBackup(channel) {
@@ -11676,6 +12412,49 @@ ImportService = __decorate([
 
 /***/ }),
 
+/***/ "./src/service/core/ipfs-host-service.ts":
+/*!***********************************************!*\
+  !*** ./src/service/core/ipfs-host-service.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "IpfsHostService": () => (/* binding */ IpfsHostService)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../repository/ipfs-host-repository */ "./src/repository/ipfs-host-repository.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+let IpfsHostService = class IpfsHostService {
+    constructor(ipfsHostRepository) {
+        this.ipfsHostRepository = ipfsHostRepository;
+    }
+    async get() {
+        return this.ipfsHostRepository.get();
+    }
+    async put(ipfsHost) {
+        await this.ipfsHostRepository.put(ipfsHost);
+    }
+};
+IpfsHostService = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.injectable)(),
+    __metadata("design:paramtypes", [_repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_1__.IpfsHostRepository])
+], IpfsHostService);
+
+
+
+/***/ }),
+
 /***/ "./src/service/core/ipfs-service.ts":
 /*!******************************************!*\
   !*** ./src/service/core/ipfs-service.ts ***!
@@ -11686,8 +12465,10 @@ ImportService = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "IpfsService": () => (/* binding */ IpfsService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var _ipfs_host_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
+/* harmony import */ var ipfs_http_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-http-client */ "./node_modules/ipfs-http-client/src/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11701,9 +12482,12 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 
+
+
 let IpfsService = class IpfsService {
-    constructor(ipfsInit) {
+    constructor(ipfsInit, ipfsHostService) {
         this.ipfsInit = ipfsInit;
+        this.ipfsHostService = ipfsHostService;
         this.peerCount = 0;
         this.initializing = false;
     }
@@ -11712,7 +12496,13 @@ let IpfsService = class IpfsService {
             return;
         this.initializing = true;
         console.log('Init IPFS');
-        this.ipfs = await this.ipfsInit();
+        let ipfsHost = await this.ipfsHostService.get();
+        if (ipfsHost) {
+            this.ipfs = (0,ipfs_http_client__WEBPACK_IMPORTED_MODULE_0__.create)({ url: ipfsHost.url });
+        }
+        else {
+            this.ipfs = await this.ipfsInit();
+        }
         //TODO: 
         // this.ipfs.libp2p.connectionManager.on('peer:connect', (connection) => {
         //   // this.updateInfo()
@@ -11741,9 +12531,9 @@ let IpfsService = class IpfsService {
     }
 };
 IpfsService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.injectable)(),
-    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('ipfsInit')),
-    __metadata("design:paramtypes", [Object])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
+    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)('ipfsInit')),
+    __metadata("design:paramtypes", [Object, _ipfs_host_service__WEBPACK_IMPORTED_MODULE_3__.IpfsHostService])
 ], IpfsService);
 
 
@@ -11908,25 +12698,19 @@ let PinningService = class PinningService {
         }
         await this.pinningApiRepository.put(pinningApi);
     }
+    async list(limit, skip) {
+        return this.pinningApiRepository.list(limit, skip);
+    }
     async pinByHash(pinningApi, channel) {
-        var _a, _b;
-        let url = `${pinningApi.url}/pinning/pinByHash`;
-        let nodeId = await this.ipfsService.ipfs.id();
         let body = {
-            hashToPin: channel.localCid,
-            pinataMetadata: {
-                name: channel.title
-            }
+            cid: channel.localCid,
+            name: channel.title
         };
-        if (((_a = nodeId.addresses) === null || _a === void 0 ? void 0 : _a.length) > 0) {
-            body["pinataOptions"] = {
-                hostNodes: (_b = nodeId.addresses) === null || _b === void 0 ? void 0 : _b.map(a => a.toString())
-            };
-        }
-        let response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(url, body, {
+        let response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(pinningApi.url, body, {
             headers: {
-                pinata_api_key: pinningApi.apiKey,
-                pinata_secret_api_key: pinningApi.secretApiKey
+                'Accept': '*/*',
+                'Authorization': `Bearer ${pinningApi.jwt}`,
+                'Content-Type': 'application/json'
             }
         });
         return response.data;
@@ -11962,6 +12746,9 @@ let PinningService = class PinningService {
     async validateAccount(pinningApi) {
         await this.userPinnedDataTotal(pinningApi);
     }
+    async delete(pinningApi) {
+        await this.pinningApiRepository.delete(pinningApi);
+    }
 };
 PinningService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_5__.injectable)(),
@@ -11995,9 +12782,8 @@ PinningService = __decorate([
 /* harmony import */ var _ipfs_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ipfs-service */ "./src/service/core/ipfs-service.ts");
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./types */ "./src/service/core/types.ts");
 /* harmony import */ var _animation_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../animation-service */ "./src/service/animation-service.ts");
-/* harmony import */ var _quill_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../quill-service */ "./src/service/quill-service.ts");
-/* harmony import */ var _theme_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../theme-service */ "./src/service/theme-service.ts");
-/* harmony import */ var _static_page_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../static-page-service */ "./src/service/static-page-service.ts");
+/* harmony import */ var _theme_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../theme-service */ "./src/service/theme-service.ts");
+/* harmony import */ var _static_page_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../static-page-service */ "./src/service/static-page-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12021,16 +12807,14 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 
-
 let PublishService = class PublishService {
-    constructor(channelService, itemService, authorService, ipfsService, imageService, animationService, quillService, themeService, staticPageService, walletService, contracts) {
+    constructor(channelService, itemService, authorService, ipfsService, imageService, animationService, themeService, staticPageService, walletService, contracts) {
         this.channelService = channelService;
         this.itemService = itemService;
         this.authorService = authorService;
         this.ipfsService = ipfsService;
         this.imageService = imageService;
         this.animationService = animationService;
-        this.quillService = quillService;
         this.themeService = themeService;
         this.staticPageService = staticPageService;
         this.walletService = walletService;
@@ -12126,34 +12910,8 @@ let PublishService = class PublishService {
             // delete item.dateCreated
             delete item["_rev_tree"];
         }
-        // this.logPublishProgress(undefined, "Exporting images...")
         //Look up all the images
         imageCids = [...new Set(imageCids)]; //deduplicate
-        // let images = []
-        // for (let imageCid of imageCids) {   
-        //     let image = await this.imageService.get(imageCid)
-        //     console.log(image)
-        //     //Remove publishing related field from image
-        //     delete image._rev
-        //     // delete image.dateCreated
-        //     delete image["_rev_tree"]
-        //     //Also remove content. Will refetch when needed.
-        //     delete image.buffer
-        //     delete image.svg
-        //     images.push(image)
-        // }
-        // this.logPublishProgress(undefined, "Exporting animations...")
-        //Look up all the animations
-        // let animations = []
-        // for (let animationCid of animationCids) {
-        //     let animation = await this.animationService.get(animationCid)
-        //     //Remove publishing related field from image
-        //     delete animation._rev
-        //     // delete image.dateCreated
-        //     delete animation["_rev_tree"]
-        //     delete animation.content
-        //     animations.push(animation)
-        // }
         //Clean up themes
         for (let theme of themes) {
             delete theme._rev;
@@ -12172,7 +12930,7 @@ let PublishService = class PublishService {
             author: author,
             themes: themes,
             staticPages: staticPages,
-            contractMetadata: await this.channelService.exportContractMetadata(channel, ownerAddress)
+            ownerAddress: ownerAddress
         };
     }
     async exportToIPFS(exportBundle) {
@@ -12211,11 +12969,6 @@ let PublishService = class PublishService {
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true });
         }
         catch (ex) { }
-        //Save contract metadata
-        let contractMetadataPath = `${directory}/contractMetadata.json`;
-        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(exportBundle.contractMetadata)), { create: true, parents: true, flush: flush });
-        publishStatus.contractMetadata.saved = 1;
-        this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`);
         let images = [];
         //Save images 
         for (let imageCid of exportBundle.images) {
@@ -12283,14 +13036,15 @@ let PublishService = class PublishService {
             animations.push(clonedAnimation);
             this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animation.cid} to ${directory}/animations/${animation.cid}.html`);
         }
+        //Get directory cids
+        let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
+            hash: true
+        });
+        let animationDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
+            hash: true
+        });
         //Save metadata for each NFT
         for (let item of backup.items) {
-            let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
-                hash: true
-            });
-            let animationDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
-                hash: true
-            });
             let coverImage = await this.imageService.get(item.coverImageId);
             let nft = await this.itemService.exportNFTMetadata(exportBundle.channel, item, coverImage, animationDirectory.cid.toString(), imageDirectory.cid.toString());
             let nftMetadataPath = `${directory}/metadata/${nft.tokenId}.json`;
@@ -12298,6 +13052,12 @@ let PublishService = class PublishService {
             publishStatus.nftMetadata.saved++;
             this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath}`);
         }
+        //Save contract metadata
+        let contractMetadataPath = `${directory}/contractMetadata.json`;
+        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, exportBundle.ownerAddress, imageDirectory.cid.toString());
+        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush: flush });
+        publishStatus.contractMetadata.saved = 1;
+        this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`);
         //Write channels backup
         await this.ipfsService.ipfs.files.write(`${directory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: flush });
         publishStatus.backups.channels.saved = 1;
@@ -12364,24 +13124,11 @@ let PublishService = class PublishService {
         }
         //Add itemCount to channel
         channel['itemCount'] = items === null || items === void 0 ? void 0 : items.length;
-        //Remove the actual image data from the images
-        // let backupImages:Image[] = JSON.parse(JSON.stringify(images))
-        // for (let image of backupImages) {
-        //     delete image.svg
-        //     delete image.buffer
-        // }
-        //And the animations
-        // let backupAnimations:Animation[] = JSON.parse(JSON.stringify(animations))
-        // for (let animation of backupAnimations) {
-        //     delete animation.content
-        // }
         //Save pouch dbs
         return {
             channels: [channel],
             authors: [author],
             items: items,
-            // images: backupImages,
-            // animations: animations,
             themes: themes,
             staticPages: staticPages
         };
@@ -12430,17 +13177,16 @@ let PublishService = class PublishService {
 };
 PublishService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
-    __param(9, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)(_types__WEBPACK_IMPORTED_MODULE_5__["default"].WalletService)),
-    __param(10, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("contracts")),
+    __param(8, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)(_types__WEBPACK_IMPORTED_MODULE_5__["default"].WalletService)),
+    __param(9, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("contracts")),
     __metadata("design:paramtypes", [_channel_service__WEBPACK_IMPORTED_MODULE_6__.ChannelService,
         _item_service__WEBPACK_IMPORTED_MODULE_7__.ItemService,
         _author_service__WEBPACK_IMPORTED_MODULE_8__.AuthorService,
         _ipfs_service__WEBPACK_IMPORTED_MODULE_9__.IpfsService,
         _image_service__WEBPACK_IMPORTED_MODULE_10__.ImageService,
         _animation_service__WEBPACK_IMPORTED_MODULE_11__.AnimationService,
-        _quill_service__WEBPACK_IMPORTED_MODULE_12__.QuillService,
-        _theme_service__WEBPACK_IMPORTED_MODULE_13__.ThemeService,
-        _static_page_service__WEBPACK_IMPORTED_MODULE_14__.StaticPageService, Object, Object])
+        _theme_service__WEBPACK_IMPORTED_MODULE_12__.ThemeService,
+        _static_page_service__WEBPACK_IMPORTED_MODULE_13__.StaticPageService, Object, Object])
 ], PublishService);
 
 
@@ -12688,6 +13434,7 @@ RoutingService = __decorate([
 /* harmony export */   "SchemaService": () => (/* binding */ SchemaService)
 /* harmony export */ });
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../repository/ipfs-host-repository */ "./src/repository/ipfs-host-repository.ts");
 /* harmony import */ var _repository_animation_repository__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../repository/animation-repository */ "./src/repository/animation-repository.ts");
 /* harmony import */ var _repository_author_repository__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../repository/author-repository */ "./src/repository/author-repository.ts");
 /* harmony import */ var _repository_channel_repository__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../repository/channel-repository */ "./src/repository/channel-repository.ts");
@@ -12716,8 +13463,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 let SchemaService = class SchemaService {
-    constructor(authorRepository, channelRepository, imageRepository, itemRepository, pinningApiRepository, gitlabRepository, animationRepository, themeRepository, staticPageRepository) {
+    constructor(authorRepository, channelRepository, imageRepository, itemRepository, pinningApiRepository, gitlabRepository, animationRepository, themeRepository, staticPageRepository, ipfsHostRepository) {
         this.authorRepository = authorRepository;
         this.channelRepository = channelRepository;
         this.imageRepository = imageRepository;
@@ -12727,6 +13475,7 @@ let SchemaService = class SchemaService {
         this.animationRepository = animationRepository;
         this.themeRepository = themeRepository;
         this.staticPageRepository = staticPageRepository;
+        this.ipfsHostRepository = ipfsHostRepository;
     }
     async loadWallet(walletAddress) {
         console.log(`Loading wallet: ${walletAddress}`);
@@ -12740,6 +13489,7 @@ let SchemaService = class SchemaService {
         await this.animationRepository.load(walletAddress);
         await this.themeRepository.load(walletAddress);
         await this.staticPageRepository.load(walletAddress);
+        await this.ipfsHostRepository.load(walletAddress);
     }
 };
 SchemaService = __decorate([
@@ -12752,7 +13502,8 @@ SchemaService = __decorate([
         _repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_6__.GitlabRepository,
         _repository_animation_repository__WEBPACK_IMPORTED_MODULE_7__.AnimationRepository,
         _repository_theme_repository__WEBPACK_IMPORTED_MODULE_8__.ThemeRepository,
-        _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_9__.StaticPageRepository])
+        _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_9__.StaticPageRepository,
+        _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_10__.IpfsHostRepository])
 ], SchemaService);
 
 
@@ -13269,7 +14020,7 @@ let ItemService = class ItemService {
                 //find the one selected by this item
                 let selections = (_a = item === null || item === void 0 ? void 0 : item.attributeSelections) === null || _a === void 0 ? void 0 : _a.filter(as => ao.traitType == as.traitType);
                 return {
-                    traitType: ao.traitType,
+                    trait_type: ao.traitType,
                     value: (selections === null || selections === void 0 ? void 0 : selections.length) > 0 ? selections[0].value : ''
                 };
             });
@@ -13842,7 +14593,7 @@ let SvgService = class SvgService {
 
                 .svg-h1 {
 
-                    border: 5px solid rgb(78,130,177);
+                    border: 25px solid rgb(78,130,177);
                     
                     background: rgb(241,241,241);
                     background: linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%);
@@ -14952,7 +15703,7 @@ class ValidationException extends Error {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"Channel":{"abi":[{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"symbol","type":"string"},{"internalType":"string","name":"ipfsCid","type":"string"},{"internalType":"uint256","name":"mintFee","type":"uint256"},{"internalType":"uint256","name":"maxTokenId","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ApprovalCallerNotOwnerNorApproved","type":"error"},{"inputs":[],"name":"ApprovalQueryForNonexistentToken","type":"error"},{"inputs":[],"name":"ApprovalToCurrentOwner","type":"error"},{"inputs":[],"name":"ApproveToCaller","type":"error"},{"inputs":[],"name":"BalanceQueryForZeroAddress","type":"error"},{"inputs":[],"name":"InvalidQueryRange","type":"error"},{"inputs":[],"name":"MintToZeroAddress","type":"error"},{"inputs":[],"name":"MintZeroQuantity","type":"error"},{"inputs":[],"name":"OwnerQueryForNonexistentToken","type":"error"},{"inputs":[],"name":"TransferCallerNotOwnerNorApproved","type":"error"},{"inputs":[],"name":"TransferFromIncorrectOwner","type":"error"},{"inputs":[],"name":"TransferToNonERC721ReceiverImplementer","type":"error"},{"inputs":[],"name":"TransferToZeroAddress","type":"error"},{"inputs":[],"name":"URIQueryForNonexistentToken","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"MintEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"MAX_MINT_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"explicitOwnershipOf","outputs":[{"components":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint64","name":"startTimestamp","type":"uint64"},{"internalType":"bool","name":"burned","type":"bool"}],"internalType":"struct IERC721A.TokenOwnership","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"tokenIds","type":"uint256[]"}],"name":"explicitOwnershipsOf","outputs":[{"components":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint64","name":"startTimestamp","type":"uint64"},{"internalType":"bool","name":"burned","type":"bool"}],"internalType":"struct IERC721A.TokenOwnership[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"tokensOfOwner","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"start","type":"uint256"},{"internalType":"uint256","name":"stop","type":"uint256"}],"name":"tokensOfOwnerIn","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"},{"internalType":"uint256","name":"start","type":"uint256"}],"name":"mintFromStartOrFail","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contractURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"totalMinted","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_i","type":"uint256"}],"name":"uint2str","outputs":[{"internalType":"string","name":"_uintAsString","type":"string"}],"stateMutability":"pure","type":"function"}],"name":"Channel","bytecode":"0x6080604052600a600c553480156200001657600080fd5b50604051620030303803806200303083398101604081905262000039916200026b565b84518590859062000052906002906020850190620000f8565b50805162000068906003906020840190620000f8565b50506001600055506200007b33620000a6565b600a829055600b81905582516200009a906009906020860190620000f8565b5050505050506200034b565b600880546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b82805462000106906200030f565b90600052602060002090601f0160209004810192826200012a576000855562000175565b82601f106200014557805160ff191683800117855562000175565b8280016001018555821562000175579182015b828111156200017557825182559160200191906001019062000158565b506200018392915062000187565b5090565b5b8082111562000183576000815560010162000188565b634e487b7160e01b600052604160045260246000fd5b600082601f830112620001c657600080fd5b81516001600160401b0380821115620001e357620001e36200019e565b604051601f8301601f19908116603f011681019082821181831017156200020e576200020e6200019e565b816040528381526020925086838588010111156200022b57600080fd5b600091505b838210156200024f578582018301518183018401529082019062000230565b83821115620002615760008385830101525b9695505050505050565b600080600080600060a086880312156200028457600080fd5b85516001600160401b03808211156200029c57600080fd5b620002aa89838a01620001b4565b96506020880151915080821115620002c157600080fd5b620002cf89838a01620001b4565b95506040880151915080821115620002e657600080fd5b50620002f588828901620001b4565b606088015160809098015196999598509695949350505050565b600181811c908216806200032457607f821691505b6020821081036200034557634e487b7160e01b600052602260045260246000fd5b50919050565b612cd5806200035b6000396000f3fe6080604052600436106101b75760003560e01c80638da5cb5b116100ec578063c23dc68f1161008a578063e985e9c511610064578063e985e9c514610515578063f2fde38b1461056b578063f76f950e1461058b578063fa9b7018146105ab57600080fd5b8063c23dc68f146104b3578063c87b56dd146104e0578063e8a3d4851461050057600080fd5b8063a0712d68116100c6578063a0712d6814610429578063a22cb4651461043c578063a2309ff81461045c578063b88d4fde1461049357600080fd5b80638da5cb5b146103c957806395d89b41146103f457806399a2557a1461040957600080fd5b806342842e0e1161015957806370a082311161013357806370a0823114610354578063715018a6146103745780637a4d892a146103895780638462151c1461039c57600080fd5b806342842e0e146102e75780635bbb2177146103075780636352211e1461033457600080fd5b8063095ea7b311610195578063095ea7b31461025857806318160ddd1461027a57806323b872dd146102bf5780633ccfd60b146102df57600080fd5b806301ffc9a7146101bc57806306fdde03146101f1578063081812fc14610213575b600080fd5b3480156101c857600080fd5b506101dc6101d7366004612395565b6105c1565b60405190151581526020015b60405180910390f35b3480156101fd57600080fd5b506102066106a6565b6040516101e89190612428565b34801561021f57600080fd5b5061023361022e36600461243b565b610738565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016101e8565b34801561026457600080fd5b5061027861027336600461247d565b6107a2565b005b34801561028657600080fd5b50600154600054037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff015b6040519081526020016101e8565b3480156102cb57600080fd5b506102786102da3660046124a7565b6108ab565b6102786108b6565b3480156102f357600080fd5b506102786103023660046124a7565b610994565b34801561031357600080fd5b50610327610322366004612561565b6109af565b6040516101e89190612607565b34801561034057600080fd5b5061023361034f36600461243b565b610a94565b34801561036057600080fd5b506102b161036f36600461267f565b610aa6565b34801561038057600080fd5b50610278610b28565b61027861039736600461269a565b610bb5565b3480156103a857600080fd5b506103bc6103b736600461267f565b610cbd565b6040516101e891906126bc565b3480156103d557600080fd5b5060085473ffffffffffffffffffffffffffffffffffffffff16610233565b34801561040057600080fd5b50610206610e5d565b34801561041557600080fd5b506103bc6104243660046126f4565b610e6c565b61027861043736600461243b565b6110a6565b34801561044857600080fd5b50610278610457366004612727565b6112f1565b34801561046857600080fd5b506000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016102b1565b34801561049f57600080fd5b506102786104ae366004612763565b6113d7565b3480156104bf57600080fd5b506104d36104ce36600461243b565b611447565b6040516101e89190612841565b3480156104ec57600080fd5b506102066104fb36600461243b565b611539565b34801561050c57600080fd5b50610206611602565b34801561052157600080fd5b506101dc610530366004612884565b73ffffffffffffffffffffffffffffffffffffffff918216600090815260076020908152604080832093909416825291909152205460ff1690565b34801561057757600080fd5b5061027861058636600461267f565b61162a565b34801561059757600080fd5b506102066105a636600461243b565b611757565b3480156105b757600080fd5b506102b1600c5481565b60007fffffffff0000000000000000000000000000000000000000000000000000000082167f80ac58cd00000000000000000000000000000000000000000000000000000000148061065457507fffffffff0000000000000000000000000000000000000000000000000000000082167f5b5e139f00000000000000000000000000000000000000000000000000000000145b806106a057507f01ffc9a7000000000000000000000000000000000000000000000000000000007fffffffff000000000000000000000000000000000000000000000000000000008316145b92915050565b6060600280546106b5906128b7565b80601f01602080910402602001604051908101604052809291908181526020018280546106e1906128b7565b801561072e5780601f106107035761010080835404028352916020019161072e565b820191906000526020600020905b81548152906001019060200180831161071157829003601f168201915b5050505050905090565b6000610743826118b7565b610779576040517fcf4700e400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5060009081526006602052604090205473ffffffffffffffffffffffffffffffffffffffff1690565b60006107ad82610a94565b90508073ffffffffffffffffffffffffffffffffffffffff168373ffffffffffffffffffffffffffffffffffffffff1603610814576040517f943f7b8c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff82161461089b5773ffffffffffffffffffffffffffffffffffffffff8116600090815260076020908152604080832033845290915290205460ff1661089b576040517fcfb3b94200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6108a6838383611909565b505050565b6108a683838361198a565b60085473ffffffffffffffffffffffffffffffffffffffff16331461093c576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064015b60405180910390fd5b604051600090339047908381818185875af1925050503d806000811461097e576040519150601f19603f3d011682016040523d82523d6000602084013e610983565b606091505b505090508061099157600080fd5b50565b6108a6838383604051806020016040528060008152506113d7565b805160609060008167ffffffffffffffff8111156109cf576109cf6124e3565b604051908082528060200260200182016040528015610a3857816020015b60408051606081018252600080825260208083018290529282015282527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9092019101816109ed5790505b50905060005b828114610a8c57610a67858281518110610a5a57610a5a61290a565b6020026020010151611447565b828281518110610a7957610a7961290a565b6020908102919091010152600101610a3e565b509392505050565b6000610a9f82611cec565b5192915050565b600073ffffffffffffffffffffffffffffffffffffffff8216610af5576040517f8f4eb60400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5073ffffffffffffffffffffffffffffffffffffffff1660009081526005602052604090205467ffffffffffffffff1690565b60085473ffffffffffffffffffffffffffffffffffffffff163314610ba9576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b610bb36000611ec2565b565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181610c41576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600f60248201527f4e6f2073746172742070617373656400000000000000000000000000000000006044820152606401610933565b610c4c816001612968565b8214610cb4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601360248201527f546f6b656e2069732070617374207374617274000000000000000000000000006044820152606401610933565b6108a6836110a6565b60606000806000610ccd85610aa6565b905060008167ffffffffffffffff811115610cea57610cea6124e3565b604051908082528060200260200182016040528015610d13578160200160208202803683370190505b50604080516060810182526000808252602082018190529181019190915290915060015b838614610e51576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615159181018290529250610e4957815173ffffffffffffffffffffffffffffffffffffffff1615610df057815194505b8773ffffffffffffffffffffffffffffffffffffffff168573ffffffffffffffffffffffffffffffffffffffff1603610e495780838780600101985081518110610e3c57610e3c61290a565b6020026020010181815250505b600101610d37565b50909695505050505050565b6060600380546106b5906128b7565b6060818310610ea7576040517f32c1995a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080546001851015610eb957600194505b80841115610ec5578093505b6000610ed087610aa6565b905084861015610eef5785850381811015610ee9578091505b50610ef3565b5060005b60008167ffffffffffffffff811115610f0e57610f0e6124e3565b604051908082528060200260200182016040528015610f37578160200160208202803683370190505b50905081600003610f4d57935061109f92505050565b6000610f5888611447565b905060008160400151610f69575080515b885b888114158015610f7b5750848714155b15611093576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff161515918101829052935061108b57825173ffffffffffffffffffffffffffffffffffffffff161561103257825191505b8a73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff160361108b578084888060010199508151811061107e5761107e61290a565b6020026020010181815250505b600101610f6b565b50505092835250909150505b9392505050565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181611132576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600760248201527f546f6f20666577000000000000000000000000000000000000000000000000006044820152606401610933565b600c5482111561119e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600860248201527f546f6f206d616e790000000000000000000000000000000000000000000000006044820152606401610933565b600b546111ab8383612968565b1115611213576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f4d696e74696e6720636c6f7365640000000000000000000000000000000000006044820152606401610933565b60085473ffffffffffffffffffffffffffffffffffffffff1633146112a757600a5461123f9083612980565b34146112a7576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f53656e64206578616374204554480000000000000000000000000000000000006044820152606401610933565b6112b13383611f39565b7f94242c431036b9ba6723a138d4b275a5b38e13a95ef66227a45df427c0f843f36112dc8383612968565b60405190815260200160405180910390a15050565b3373ffffffffffffffffffffffffffffffffffffffff831603611340576040517fb06307db00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b33600081815260076020908152604080832073ffffffffffffffffffffffffffffffffffffffff87168085529083529281902080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001686151590811790915590519081529192917f17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31910160405180910390a35050565b6113e284848461198a565b73ffffffffffffffffffffffffffffffffffffffff83163b156114415761140b84848484611f57565b611441576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50505050565b6040805160608082018352600080835260208084018290528385018290528451928301855281835282018190529281019290925290600183108061148d57506000548310155b156114985792915050565b506000828152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615801592820192909252906115305792915050565b61109f83611cec565b6060611544826118b7565b6115d0576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602f60248201527f4552433732314d657461646174613a2055524920717565727920666f72206e6f60448201527f6e6578697374656e7420746f6b656e00000000000000000000000000000000006064820152608401610933565b60096115db83611757565b6040516020016115ec929190612a8d565b6040516020818303038152906040529050919050565b606060096040516020016116169190612b2b565b604051602081830303815290604052905090565b60085473ffffffffffffffffffffffffffffffffffffffff1633146116ab576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b73ffffffffffffffffffffffffffffffffffffffff811661174e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201527f64647265737300000000000000000000000000000000000000000000000000006064820152608401610933565b61099181611ec2565b60608160000361179a57505060408051808201909152600181527f3000000000000000000000000000000000000000000000000000000000000000602082015290565b8160005b81156117c457806117ae81612b8a565b91506117bd9050600a83612bc2565b915061179e565b60008167ffffffffffffffff8111156117df576117df6124e3565b6040519080825280601f01601f191660200182016040528015611809576020820181803683370190505b509050815b85156118ae5761181f600182612bfd565b9050600061182e600a88612bc2565b61183990600a612980565b6118439088612bfd565b61184e906030612c14565b905060008160f81b90508084848151811061186b5761186b61290a565b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916908160001a9053506118a5600a89612bc2565b9750505061180e565b50949350505050565b6000816001111580156118cb575060005482105b80156106a05750506000908152600460205260409020547c0100000000000000000000000000000000000000000000000000000000900460ff161590565b60008281526006602052604080822080547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff87811691821790925591518593918516917f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b92591a4505050565b600061199582611cec565b90508373ffffffffffffffffffffffffffffffffffffffff16816000015173ffffffffffffffffffffffffffffffffffffffff1614611a00576040517fa114810000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60003373ffffffffffffffffffffffffffffffffffffffff86161480611a56575073ffffffffffffffffffffffffffffffffffffffff8516600090815260076020908152604080832033845290915290205460ff165b80611a7e575033611a6684610738565b73ffffffffffffffffffffffffffffffffffffffff16145b905080611ab7576040517f59c896be00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416611b04576040517fea553b3400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611b1060008487611909565b73ffffffffffffffffffffffffffffffffffffffff858116600090815260056020908152604080832080547fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000080821667ffffffffffffffff9283167fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01831617909255898616808652838620805493841693831660019081018416949094179055898652600490945282852080547fffffffff00000000000000000000000000000000000000000000000000000000169094177401000000000000000000000000000000000000000042909216919091021783558701808452922080549193909116611c87576000548214611c87578054602086015167ffffffffffffffff1674010000000000000000000000000000000000000000027fffffffff0000000000000000000000000000000000000000000000000000000090911673ffffffffffffffffffffffffffffffffffffffff8a16171781555b505050828473ffffffffffffffffffffffffffffffffffffffff168673ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef60405160405180910390a45050505050565b60408051606081018252600080825260208201819052918101919091528180600111611e9057600054811015611e90576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff16151591810182905290611e8e57805173ffffffffffffffffffffffffffffffffffffffff1615611dcf579392505050565b507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff811680835274010000000000000000000000000000000000000000820467ffffffffffffffff16938301939093527c0100000000000000000000000000000000000000000000000000000000900460ff1615159281019290925215611e89579392505050565b611dcf565b505b6040517fdf2d9b4200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6008805473ffffffffffffffffffffffffffffffffffffffff8381167fffffffffffffffffffffffff0000000000000000000000000000000000000000831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b611f538282604051806020016040528060008152506120d0565b5050565b6040517f150b7a0200000000000000000000000000000000000000000000000000000000815260009073ffffffffffffffffffffffffffffffffffffffff85169063150b7a0290611fb2903390899088908890600401612c39565b6020604051808303816000875af192505050801561200b575060408051601f3d9081017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016820190925261200891810190612c82565b60015b612082573d808015612039576040519150601f19603f3d011682016040523d82523d6000602084013e61203e565b606091505b50805160000361207a576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b805181602001fd5b7fffffffff00000000000000000000000000000000000000000000000000000000167f150b7a0200000000000000000000000000000000000000000000000000000000149050949350505050565b60005473ffffffffffffffffffffffffffffffffffffffff8416612120576040517f2e07630000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8260000361215a576040517fb562e8dd00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416600081815260056020908152604080832080547fffffffffffffffffffffffffffffffff00000000000000000000000000000000811667ffffffffffffffff8083168b018116918217680100000000000000007fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000090941690921783900481168b01811690920217909155858452600490925290912080547fffffffff000000000000000000000000000000000000000000000000000000001683177401000000000000000000000000000000000000000042909316929092029190911790558190818501903b15612305575b604051829073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a46122b56000878480600101955087611f57565b6122eb576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b80821061225d57826000541461230057600080fd5b612357565b5b60405160018301929073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a4808210612306575b5060009081556114419085838684565b7fffffffff000000000000000000000000000000000000000000000000000000008116811461099157600080fd5b6000602082840312156123a757600080fd5b813561109f81612367565b60005b838110156123cd5781810151838201526020016123b5565b838111156114415750506000910152565b600081518084526123f68160208601602086016123b2565b601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0169290920160200192915050565b60208152600061109f60208301846123de565b60006020828403121561244d57600080fd5b5035919050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461247857600080fd5b919050565b6000806040838503121561249057600080fd5b61249983612454565b946020939093013593505050565b6000806000606084860312156124bc57600080fd5b6124c584612454565b92506124d360208501612454565b9150604084013590509250925092565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff81118282101715612559576125596124e3565b604052919050565b6000602080838503121561257457600080fd5b823567ffffffffffffffff8082111561258c57600080fd5b818501915085601f8301126125a057600080fd5b8135818111156125b2576125b26124e3565b8060051b91506125c3848301612512565b81815291830184019184810190888411156125dd57600080fd5b938501935b838510156125fb578435825293850193908501906125e2565b98975050505050505050565b6020808252825182820181905260009190848201906040850190845b81811015610e515761266c838551805173ffffffffffffffffffffffffffffffffffffffff16825260208082015167ffffffffffffffff16908301526040908101511515910152565b9284019260609290920191600101612623565b60006020828403121561269157600080fd5b61109f82612454565b600080604083850312156126ad57600080fd5b50508035926020909101359150565b6020808252825182820181905260009190848201906040850190845b81811015610e51578351835292840192918401916001016126d8565b60008060006060848603121561270957600080fd5b61271284612454565b95602085013595506040909401359392505050565b6000806040838503121561273a57600080fd5b61274383612454565b91506020830135801515811461275857600080fd5b809150509250929050565b6000806000806080858703121561277957600080fd5b61278285612454565b93506020612791818701612454565b935060408601359250606086013567ffffffffffffffff808211156127b557600080fd5b818801915088601f8301126127c957600080fd5b8135818111156127db576127db6124e3565b61280b847fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601612512565b9150808252898482850101111561282157600080fd5b808484018584013760008482840101525080935050505092959194509250565b815173ffffffffffffffffffffffffffffffffffffffff16815260208083015167ffffffffffffffff1690820152604080830151151590820152606081016106a0565b6000806040838503121561289757600080fd5b6128a083612454565b91506128ae60208401612454565b90509250929050565b600181811c908216806128cb57607f821691505b602082108103612904577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000821982111561297b5761297b612939565b500190565b6000817fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff04831182151516156129b8576129b8612939565b500290565b8054600090600181811c90808316806129d757607f831692505b60208084108203612a11577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b818015612a255760018114612a5457612a81565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00861689528489019650612a81565b60008881526020902060005b86811015612a795781548b820152908501908301612a60565b505084890196505b50505050505092915050565b7f697066733a2f2f0000000000000000000000000000000000000000000000000081526000612abf60078301856129bd565b7f2f6d657461646174612f0000000000000000000000000000000000000000000081528351612af581600a8401602088016123b2565b7f2e6a736f6e000000000000000000000000000000000000000000000000000000600a9290910191820152600f01949350505050565b7f697066733a2f2f0000000000000000000000000000000000000000000000000081526000612b5d60078301846129bd565b7f2f636f6e74726163744d657461646174612e6a736f6e0000000000000000000081526016019392505050565b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203612bbb57612bbb612939565b5060010190565b600082612bf8577f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b500490565b600082821015612c0f57612c0f612939565b500390565b600060ff821660ff84168060ff03821115612c3157612c31612939565b019392505050565b600073ffffffffffffffffffffffffffffffffffffffff808716835280861660208401525083604083015260806060830152612c7860808301846123de565b9695505050505050565b600060208284031215612c9457600080fd5b815161109f8161236756fea2646970667358221220359f261ae01476295110a481f0680e2f9dff6437800e023e54f502a0c632c09764736f6c634300080d0033","deployedBytecode":"0x6080604052600436106101b75760003560e01c80638da5cb5b116100ec578063c23dc68f1161008a578063e985e9c511610064578063e985e9c514610515578063f2fde38b1461056b578063f76f950e1461058b578063fa9b7018146105ab57600080fd5b8063c23dc68f146104b3578063c87b56dd146104e0578063e8a3d4851461050057600080fd5b8063a0712d68116100c6578063a0712d6814610429578063a22cb4651461043c578063a2309ff81461045c578063b88d4fde1461049357600080fd5b80638da5cb5b146103c957806395d89b41146103f457806399a2557a1461040957600080fd5b806342842e0e1161015957806370a082311161013357806370a0823114610354578063715018a6146103745780637a4d892a146103895780638462151c1461039c57600080fd5b806342842e0e146102e75780635bbb2177146103075780636352211e1461033457600080fd5b8063095ea7b311610195578063095ea7b31461025857806318160ddd1461027a57806323b872dd146102bf5780633ccfd60b146102df57600080fd5b806301ffc9a7146101bc57806306fdde03146101f1578063081812fc14610213575b600080fd5b3480156101c857600080fd5b506101dc6101d7366004612395565b6105c1565b60405190151581526020015b60405180910390f35b3480156101fd57600080fd5b506102066106a6565b6040516101e89190612428565b34801561021f57600080fd5b5061023361022e36600461243b565b610738565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016101e8565b34801561026457600080fd5b5061027861027336600461247d565b6107a2565b005b34801561028657600080fd5b50600154600054037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff015b6040519081526020016101e8565b3480156102cb57600080fd5b506102786102da3660046124a7565b6108ab565b6102786108b6565b3480156102f357600080fd5b506102786103023660046124a7565b610994565b34801561031357600080fd5b50610327610322366004612561565b6109af565b6040516101e89190612607565b34801561034057600080fd5b5061023361034f36600461243b565b610a94565b34801561036057600080fd5b506102b161036f36600461267f565b610aa6565b34801561038057600080fd5b50610278610b28565b61027861039736600461269a565b610bb5565b3480156103a857600080fd5b506103bc6103b736600461267f565b610cbd565b6040516101e891906126bc565b3480156103d557600080fd5b5060085473ffffffffffffffffffffffffffffffffffffffff16610233565b34801561040057600080fd5b50610206610e5d565b34801561041557600080fd5b506103bc6104243660046126f4565b610e6c565b61027861043736600461243b565b6110a6565b34801561044857600080fd5b50610278610457366004612727565b6112f1565b34801561046857600080fd5b506000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016102b1565b34801561049f57600080fd5b506102786104ae366004612763565b6113d7565b3480156104bf57600080fd5b506104d36104ce36600461243b565b611447565b6040516101e89190612841565b3480156104ec57600080fd5b506102066104fb36600461243b565b611539565b34801561050c57600080fd5b50610206611602565b34801561052157600080fd5b506101dc610530366004612884565b73ffffffffffffffffffffffffffffffffffffffff918216600090815260076020908152604080832093909416825291909152205460ff1690565b34801561057757600080fd5b5061027861058636600461267f565b61162a565b34801561059757600080fd5b506102066105a636600461243b565b611757565b3480156105b757600080fd5b506102b1600c5481565b60007fffffffff0000000000000000000000000000000000000000000000000000000082167f80ac58cd00000000000000000000000000000000000000000000000000000000148061065457507fffffffff0000000000000000000000000000000000000000000000000000000082167f5b5e139f00000000000000000000000000000000000000000000000000000000145b806106a057507f01ffc9a7000000000000000000000000000000000000000000000000000000007fffffffff000000000000000000000000000000000000000000000000000000008316145b92915050565b6060600280546106b5906128b7565b80601f01602080910402602001604051908101604052809291908181526020018280546106e1906128b7565b801561072e5780601f106107035761010080835404028352916020019161072e565b820191906000526020600020905b81548152906001019060200180831161071157829003601f168201915b5050505050905090565b6000610743826118b7565b610779576040517fcf4700e400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5060009081526006602052604090205473ffffffffffffffffffffffffffffffffffffffff1690565b60006107ad82610a94565b90508073ffffffffffffffffffffffffffffffffffffffff168373ffffffffffffffffffffffffffffffffffffffff1603610814576040517f943f7b8c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff82161461089b5773ffffffffffffffffffffffffffffffffffffffff8116600090815260076020908152604080832033845290915290205460ff1661089b576040517fcfb3b94200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6108a6838383611909565b505050565b6108a683838361198a565b60085473ffffffffffffffffffffffffffffffffffffffff16331461093c576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064015b60405180910390fd5b604051600090339047908381818185875af1925050503d806000811461097e576040519150601f19603f3d011682016040523d82523d6000602084013e610983565b606091505b505090508061099157600080fd5b50565b6108a6838383604051806020016040528060008152506113d7565b805160609060008167ffffffffffffffff8111156109cf576109cf6124e3565b604051908082528060200260200182016040528015610a3857816020015b60408051606081018252600080825260208083018290529282015282527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9092019101816109ed5790505b50905060005b828114610a8c57610a67858281518110610a5a57610a5a61290a565b6020026020010151611447565b828281518110610a7957610a7961290a565b6020908102919091010152600101610a3e565b509392505050565b6000610a9f82611cec565b5192915050565b600073ffffffffffffffffffffffffffffffffffffffff8216610af5576040517f8f4eb60400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5073ffffffffffffffffffffffffffffffffffffffff1660009081526005602052604090205467ffffffffffffffff1690565b60085473ffffffffffffffffffffffffffffffffffffffff163314610ba9576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b610bb36000611ec2565b565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181610c41576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600f60248201527f4e6f2073746172742070617373656400000000000000000000000000000000006044820152606401610933565b610c4c816001612968565b8214610cb4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601360248201527f546f6b656e2069732070617374207374617274000000000000000000000000006044820152606401610933565b6108a6836110a6565b60606000806000610ccd85610aa6565b905060008167ffffffffffffffff811115610cea57610cea6124e3565b604051908082528060200260200182016040528015610d13578160200160208202803683370190505b50604080516060810182526000808252602082018190529181019190915290915060015b838614610e51576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615159181018290529250610e4957815173ffffffffffffffffffffffffffffffffffffffff1615610df057815194505b8773ffffffffffffffffffffffffffffffffffffffff168573ffffffffffffffffffffffffffffffffffffffff1603610e495780838780600101985081518110610e3c57610e3c61290a565b6020026020010181815250505b600101610d37565b50909695505050505050565b6060600380546106b5906128b7565b6060818310610ea7576040517f32c1995a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080546001851015610eb957600194505b80841115610ec5578093505b6000610ed087610aa6565b905084861015610eef5785850381811015610ee9578091505b50610ef3565b5060005b60008167ffffffffffffffff811115610f0e57610f0e6124e3565b604051908082528060200260200182016040528015610f37578160200160208202803683370190505b50905081600003610f4d57935061109f92505050565b6000610f5888611447565b905060008160400151610f69575080515b885b888114158015610f7b5750848714155b15611093576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff161515918101829052935061108b57825173ffffffffffffffffffffffffffffffffffffffff161561103257825191505b8a73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff160361108b578084888060010199508151811061107e5761107e61290a565b6020026020010181815250505b600101610f6b565b50505092835250909150505b9392505050565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181611132576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600760248201527f546f6f20666577000000000000000000000000000000000000000000000000006044820152606401610933565b600c5482111561119e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600860248201527f546f6f206d616e790000000000000000000000000000000000000000000000006044820152606401610933565b600b546111ab8383612968565b1115611213576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f4d696e74696e6720636c6f7365640000000000000000000000000000000000006044820152606401610933565b60085473ffffffffffffffffffffffffffffffffffffffff1633146112a757600a5461123f9083612980565b34146112a7576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f53656e64206578616374204554480000000000000000000000000000000000006044820152606401610933565b6112b13383611f39565b7f94242c431036b9ba6723a138d4b275a5b38e13a95ef66227a45df427c0f843f36112dc8383612968565b60405190815260200160405180910390a15050565b3373ffffffffffffffffffffffffffffffffffffffff831603611340576040517fb06307db00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b33600081815260076020908152604080832073ffffffffffffffffffffffffffffffffffffffff87168085529083529281902080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001686151590811790915590519081529192917f17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31910160405180910390a35050565b6113e284848461198a565b73ffffffffffffffffffffffffffffffffffffffff83163b156114415761140b84848484611f57565b611441576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50505050565b6040805160608082018352600080835260208084018290528385018290528451928301855281835282018190529281019290925290600183108061148d57506000548310155b156114985792915050565b506000828152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615801592820192909252906115305792915050565b61109f83611cec565b6060611544826118b7565b6115d0576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602f60248201527f4552433732314d657461646174613a2055524920717565727920666f72206e6f60448201527f6e6578697374656e7420746f6b656e00000000000000000000000000000000006064820152608401610933565b60096115db83611757565b6040516020016115ec929190612a8d565b6040516020818303038152906040529050919050565b606060096040516020016116169190612b2b565b604051602081830303815290604052905090565b60085473ffffffffffffffffffffffffffffffffffffffff1633146116ab576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b73ffffffffffffffffffffffffffffffffffffffff811661174e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201527f64647265737300000000000000000000000000000000000000000000000000006064820152608401610933565b61099181611ec2565b60608160000361179a57505060408051808201909152600181527f3000000000000000000000000000000000000000000000000000000000000000602082015290565b8160005b81156117c457806117ae81612b8a565b91506117bd9050600a83612bc2565b915061179e565b60008167ffffffffffffffff8111156117df576117df6124e3565b6040519080825280601f01601f191660200182016040528015611809576020820181803683370190505b509050815b85156118ae5761181f600182612bfd565b9050600061182e600a88612bc2565b61183990600a612980565b6118439088612bfd565b61184e906030612c14565b905060008160f81b90508084848151811061186b5761186b61290a565b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916908160001a9053506118a5600a89612bc2565b9750505061180e565b50949350505050565b6000816001111580156118cb575060005482105b80156106a05750506000908152600460205260409020547c0100000000000000000000000000000000000000000000000000000000900460ff161590565b60008281526006602052604080822080547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff87811691821790925591518593918516917f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b92591a4505050565b600061199582611cec565b90508373ffffffffffffffffffffffffffffffffffffffff16816000015173ffffffffffffffffffffffffffffffffffffffff1614611a00576040517fa114810000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60003373ffffffffffffffffffffffffffffffffffffffff86161480611a56575073ffffffffffffffffffffffffffffffffffffffff8516600090815260076020908152604080832033845290915290205460ff165b80611a7e575033611a6684610738565b73ffffffffffffffffffffffffffffffffffffffff16145b905080611ab7576040517f59c896be00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416611b04576040517fea553b3400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611b1060008487611909565b73ffffffffffffffffffffffffffffffffffffffff858116600090815260056020908152604080832080547fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000080821667ffffffffffffffff9283167fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01831617909255898616808652838620805493841693831660019081018416949094179055898652600490945282852080547fffffffff00000000000000000000000000000000000000000000000000000000169094177401000000000000000000000000000000000000000042909216919091021783558701808452922080549193909116611c87576000548214611c87578054602086015167ffffffffffffffff1674010000000000000000000000000000000000000000027fffffffff0000000000000000000000000000000000000000000000000000000090911673ffffffffffffffffffffffffffffffffffffffff8a16171781555b505050828473ffffffffffffffffffffffffffffffffffffffff168673ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef60405160405180910390a45050505050565b60408051606081018252600080825260208201819052918101919091528180600111611e9057600054811015611e90576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff16151591810182905290611e8e57805173ffffffffffffffffffffffffffffffffffffffff1615611dcf579392505050565b507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff811680835274010000000000000000000000000000000000000000820467ffffffffffffffff16938301939093527c0100000000000000000000000000000000000000000000000000000000900460ff1615159281019290925215611e89579392505050565b611dcf565b505b6040517fdf2d9b4200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6008805473ffffffffffffffffffffffffffffffffffffffff8381167fffffffffffffffffffffffff0000000000000000000000000000000000000000831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b611f538282604051806020016040528060008152506120d0565b5050565b6040517f150b7a0200000000000000000000000000000000000000000000000000000000815260009073ffffffffffffffffffffffffffffffffffffffff85169063150b7a0290611fb2903390899088908890600401612c39565b6020604051808303816000875af192505050801561200b575060408051601f3d9081017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016820190925261200891810190612c82565b60015b612082573d808015612039576040519150601f19603f3d011682016040523d82523d6000602084013e61203e565b606091505b50805160000361207a576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b805181602001fd5b7fffffffff00000000000000000000000000000000000000000000000000000000167f150b7a0200000000000000000000000000000000000000000000000000000000149050949350505050565b60005473ffffffffffffffffffffffffffffffffffffffff8416612120576040517f2e07630000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8260000361215a576040517fb562e8dd00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416600081815260056020908152604080832080547fffffffffffffffffffffffffffffffff00000000000000000000000000000000811667ffffffffffffffff8083168b018116918217680100000000000000007fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000090941690921783900481168b01811690920217909155858452600490925290912080547fffffffff000000000000000000000000000000000000000000000000000000001683177401000000000000000000000000000000000000000042909316929092029190911790558190818501903b15612305575b604051829073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a46122b56000878480600101955087611f57565b6122eb576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b80821061225d57826000541461230057600080fd5b612357565b5b60405160018301929073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a4808210612306575b5060009081556114419085838684565b7fffffffff000000000000000000000000000000000000000000000000000000008116811461099157600080fd5b6000602082840312156123a757600080fd5b813561109f81612367565b60005b838110156123cd5781810151838201526020016123b5565b838111156114415750506000910152565b600081518084526123f68160208601602086016123b2565b601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0169290920160200192915050565b60208152600061109f60208301846123de565b60006020828403121561244d57600080fd5b5035919050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461247857600080fd5b919050565b6000806040838503121561249057600080fd5b61249983612454565b946020939093013593505050565b6000806000606084860312156124bc57600080fd5b6124c584612454565b92506124d360208501612454565b9150604084013590509250925092565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff81118282101715612559576125596124e3565b604052919050565b6000602080838503121561257457600080fd5b823567ffffffffffffffff8082111561258c57600080fd5b818501915085601f8301126125a057600080fd5b8135818111156125b2576125b26124e3565b8060051b91506125c3848301612512565b81815291830184019184810190888411156125dd57600080fd5b938501935b838510156125fb578435825293850193908501906125e2565b98975050505050505050565b6020808252825182820181905260009190848201906040850190845b81811015610e515761266c838551805173ffffffffffffffffffffffffffffffffffffffff16825260208082015167ffffffffffffffff16908301526040908101511515910152565b9284019260609290920191600101612623565b60006020828403121561269157600080fd5b61109f82612454565b600080604083850312156126ad57600080fd5b50508035926020909101359150565b6020808252825182820181905260009190848201906040850190845b81811015610e51578351835292840192918401916001016126d8565b60008060006060848603121561270957600080fd5b61271284612454565b95602085013595506040909401359392505050565b6000806040838503121561273a57600080fd5b61274383612454565b91506020830135801515811461275857600080fd5b809150509250929050565b6000806000806080858703121561277957600080fd5b61278285612454565b93506020612791818701612454565b935060408601359250606086013567ffffffffffffffff808211156127b557600080fd5b818801915088601f8301126127c957600080fd5b8135818111156127db576127db6124e3565b61280b847fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f84011601612512565b9150808252898482850101111561282157600080fd5b808484018584013760008482840101525080935050505092959194509250565b815173ffffffffffffffffffffffffffffffffffffffff16815260208083015167ffffffffffffffff1690820152604080830151151590820152606081016106a0565b6000806040838503121561289757600080fd5b6128a083612454565b91506128ae60208401612454565b90509250929050565b600181811c908216806128cb57607f821691505b602082108103612904577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000821982111561297b5761297b612939565b500190565b6000817fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff04831182151516156129b8576129b8612939565b500290565b8054600090600181811c90808316806129d757607f831692505b60208084108203612a11577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b818015612a255760018114612a5457612a81565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00861689528489019650612a81565b60008881526020902060005b86811015612a795781548b820152908501908301612a60565b505084890196505b50505050505092915050565b7f697066733a2f2f0000000000000000000000000000000000000000000000000081526000612abf60078301856129bd565b7f2f6d657461646174612f0000000000000000000000000000000000000000000081528351612af581600a8401602088016123b2565b7f2e6a736f6e000000000000000000000000000000000000000000000000000000600a9290910191820152600f01949350505050565b7f697066733a2f2f0000000000000000000000000000000000000000000000000081526000612b5d60078301846129bd565b7f2f636f6e74726163744d657461646174612e6a736f6e0000000000000000000081526016019392505050565b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203612bbb57612bbb612939565b5060010190565b600082612bf8577f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b500490565b600082821015612c0f57612c0f612939565b500390565b600060ff821660ff84168060ff03821115612c3157612c31612939565b019392505050565b600073ffffffffffffffffffffffffffffffffffffffff808716835280861660208401525083604083015260806060830152612c7860808301846123de565b9695505050505050565b600060208284031215612c9457600080fd5b815161109f8161236756fea2646970667358221220359f261ae01476295110a481f0680e2f9dff6437800e023e54f502a0c632c09764736f6c634300080d0033"}}');
+module.exports = JSON.parse('{"Channel":{"abi":[{"inputs":[{"internalType":"string","name":"name","type":"string"},{"internalType":"string","name":"symbol","type":"string"},{"internalType":"string","name":"ipfsCid","type":"string"},{"internalType":"uint256","name":"mintFee","type":"uint256"},{"internalType":"uint256","name":"maxTokenId","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"ApprovalCallerNotOwnerNorApproved","type":"error"},{"inputs":[],"name":"ApprovalQueryForNonexistentToken","type":"error"},{"inputs":[],"name":"ApprovalToCurrentOwner","type":"error"},{"inputs":[],"name":"ApproveToCaller","type":"error"},{"inputs":[],"name":"BalanceQueryForZeroAddress","type":"error"},{"inputs":[],"name":"InvalidQueryRange","type":"error"},{"inputs":[],"name":"MintToZeroAddress","type":"error"},{"inputs":[],"name":"MintZeroQuantity","type":"error"},{"inputs":[],"name":"OwnerQueryForNonexistentToken","type":"error"},{"inputs":[],"name":"TransferCallerNotOwnerNorApproved","type":"error"},{"inputs":[],"name":"TransferFromIncorrectOwner","type":"error"},{"inputs":[],"name":"TransferToNonERC721ReceiverImplementer","type":"error"},{"inputs":[],"name":"TransferToZeroAddress","type":"error"},{"inputs":[],"name":"URIQueryForNonexistentToken","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"approved","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"MintEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":true,"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"MAX_MINT_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"explicitOwnershipOf","outputs":[{"components":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint64","name":"startTimestamp","type":"uint64"},{"internalType":"bool","name":"burned","type":"bool"}],"internalType":"struct IERC721A.TokenOwnership","name":"","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256[]","name":"tokenIds","type":"uint256[]"}],"name":"explicitOwnershipsOf","outputs":[{"components":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"uint64","name":"startTimestamp","type":"uint64"},{"internalType":"bool","name":"burned","type":"bool"}],"internalType":"struct IERC721A.TokenOwnership[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"tokensOfOwner","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"start","type":"uint256"},{"internalType":"uint256","name":"stop","type":"uint256"}],"name":"tokensOfOwnerIn","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"quantity","type":"uint256"},{"internalType":"uint256","name":"start","type":"uint256"}],"name":"mintFromStartOrFail","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"contractURI","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"withdraw","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"totalMinted","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_i","type":"uint256"}],"name":"uint2str","outputs":[{"internalType":"string","name":"_uintAsString","type":"string"}],"stateMutability":"pure","type":"function"}],"name":"Channel","bytecode":"0x6080604052600a600d553480156200001657600080fd5b50604051620030e5380380620030e58339810160408190526200003991620002a6565b8451859085906200005290600290602085019062000133565b5080516200006890600390602084019062000133565b50506001600055506200007b33620000e1565b600b829055600c81905582516200009a90600a90602086019062000133565b50600a604051602001620000af919062000386565b60405160208183030381529060405260099080519060200190620000d592919062000133565b50505050505062000470565b600880546001600160a01b038381166001600160a01b0319831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b82805462000141906200034a565b90600052602060002090601f016020900481019282620001655760008555620001b0565b82601f106200018057805160ff1916838001178555620001b0565b82800160010185558215620001b0579182015b82811115620001b057825182559160200191906001019062000193565b50620001be929150620001c2565b5090565b5b80821115620001be5760008155600101620001c3565b634e487b7160e01b600052604160045260246000fd5b600082601f8301126200020157600080fd5b81516001600160401b03808211156200021e576200021e620001d9565b604051601f8301601f19908116603f01168101908282118183101715620002495762000249620001d9565b816040528381526020925086838588010111156200026657600080fd5b600091505b838210156200028a57858201830151818301840152908201906200026b565b838211156200029c5760008385830101525b9695505050505050565b600080600080600060a08688031215620002bf57600080fd5b85516001600160401b0380821115620002d757600080fd5b620002e589838a01620001ef565b96506020880151915080821115620002fc57600080fd5b6200030a89838a01620001ef565b955060408801519150808211156200032157600080fd5b506200033088828901620001ef565b606088015160809098015196999598509695949350505050565b600181811c908216806200035f57607f821691505b6020821081036200038057634e487b7160e01b600052602260045260246000fd5b50919050565b66697066733a2f2f60c81b8152600060076000845481600182811c915080831680620003b357607f831692505b60208084108203620003d357634e487b7160e01b86526022600452602486fd5b818015620003ea5760018114620004005762000433565b60ff1986168a890152848a018801965062000433565b60008b81526020902060005b86811015620004295781548c82018b01529085019083016200040c565b505087858b010196505b50505050505062000467817f2f636f6e74726163744d657461646174612e6a736f6e00000000000000000000815260160190565b95945050505050565b612c6580620004806000396000f3fe6080604052600436106101b75760003560e01c80638da5cb5b116100ec578063c23dc68f1161008a578063e985e9c511610064578063e985e9c514610515578063f2fde38b1461056b578063f76f950e1461058b578063fa9b7018146105ab57600080fd5b8063c23dc68f146104b3578063c87b56dd146104e0578063e8a3d4851461050057600080fd5b8063a0712d68116100c6578063a0712d6814610429578063a22cb4651461043c578063a2309ff81461045c578063b88d4fde1461049357600080fd5b80638da5cb5b146103c957806395d89b41146103f457806399a2557a1461040957600080fd5b806342842e0e1161015957806370a082311161013357806370a0823114610354578063715018a6146103745780637a4d892a146103895780638462151c1461039c57600080fd5b806342842e0e146102e75780635bbb2177146103075780636352211e1461033457600080fd5b8063095ea7b311610195578063095ea7b31461025857806318160ddd1461027a57806323b872dd146102bf5780633ccfd60b146102df57600080fd5b806301ffc9a7146101bc57806306fdde03146101f1578063081812fc14610213575b600080fd5b3480156101c857600080fd5b506101dc6101d736600461237c565b6105c1565b60405190151581526020015b60405180910390f35b3480156101fd57600080fd5b506102066106a6565b6040516101e8919061240f565b34801561021f57600080fd5b5061023361022e366004612422565b610738565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016101e8565b34801561026457600080fd5b50610278610273366004612464565b6107a2565b005b34801561028657600080fd5b50600154600054037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff015b6040519081526020016101e8565b3480156102cb57600080fd5b506102786102da36600461248e565b6108ab565b6102786108b6565b3480156102f357600080fd5b5061027861030236600461248e565b610994565b34801561031357600080fd5b50610327610322366004612548565b6109af565b6040516101e891906125ee565b34801561034057600080fd5b5061023361034f366004612422565b610a94565b34801561036057600080fd5b506102b161036f366004612666565b610aa6565b34801561038057600080fd5b50610278610b28565b610278610397366004612681565b610bb5565b3480156103a857600080fd5b506103bc6103b7366004612666565b610cbd565b6040516101e891906126a3565b3480156103d557600080fd5b5060085473ffffffffffffffffffffffffffffffffffffffff16610233565b34801561040057600080fd5b50610206610e5d565b34801561041557600080fd5b506103bc6104243660046126db565b610e6c565b610278610437366004612422565b6110a6565b34801561044857600080fd5b5061027861045736600461270e565b6112f1565b34801561046857600080fd5b506000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016102b1565b34801561049f57600080fd5b506102786104ae36600461274a565b6113d7565b3480156104bf57600080fd5b506104d36104ce366004612422565b611447565b6040516101e89190612828565b3480156104ec57600080fd5b506102066104fb366004612422565b611539565b34801561050c57600080fd5b50610206611602565b34801561052157600080fd5b506101dc61053036600461286b565b73ffffffffffffffffffffffffffffffffffffffff918216600090815260076020908152604080832093909416825291909152205460ff1690565b34801561057757600080fd5b50610278610586366004612666565b611611565b34801561059757600080fd5b506102066105a6366004612422565b61173e565b3480156105b757600080fd5b506102b1600d5481565b60007fffffffff0000000000000000000000000000000000000000000000000000000082167f80ac58cd00000000000000000000000000000000000000000000000000000000148061065457507fffffffff0000000000000000000000000000000000000000000000000000000082167f5b5e139f00000000000000000000000000000000000000000000000000000000145b806106a057507f01ffc9a7000000000000000000000000000000000000000000000000000000007fffffffff000000000000000000000000000000000000000000000000000000008316145b92915050565b6060600280546106b59061289e565b80601f01602080910402602001604051908101604052809291908181526020018280546106e19061289e565b801561072e5780601f106107035761010080835404028352916020019161072e565b820191906000526020600020905b81548152906001019060200180831161071157829003601f168201915b5050505050905090565b60006107438261189e565b610779576040517fcf4700e400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5060009081526006602052604090205473ffffffffffffffffffffffffffffffffffffffff1690565b60006107ad82610a94565b90508073ffffffffffffffffffffffffffffffffffffffff168373ffffffffffffffffffffffffffffffffffffffff1603610814576040517f943f7b8c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff82161461089b5773ffffffffffffffffffffffffffffffffffffffff8116600090815260076020908152604080832033845290915290205460ff1661089b576040517fcfb3b94200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6108a68383836118f0565b505050565b6108a6838383611971565b60085473ffffffffffffffffffffffffffffffffffffffff16331461093c576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064015b60405180910390fd5b604051600090339047908381818185875af1925050503d806000811461097e576040519150601f19603f3d011682016040523d82523d6000602084013e610983565b606091505b505090508061099157600080fd5b50565b6108a6838383604051806020016040528060008152506113d7565b805160609060008167ffffffffffffffff8111156109cf576109cf6124ca565b604051908082528060200260200182016040528015610a3857816020015b60408051606081018252600080825260208083018290529282015282527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9092019101816109ed5790505b50905060005b828114610a8c57610a67858281518110610a5a57610a5a6128f1565b6020026020010151611447565b828281518110610a7957610a796128f1565b6020908102919091010152600101610a3e565b509392505050565b6000610a9f82611cd3565b5192915050565b600073ffffffffffffffffffffffffffffffffffffffff8216610af5576040517f8f4eb60400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5073ffffffffffffffffffffffffffffffffffffffff1660009081526005602052604090205467ffffffffffffffff1690565b60085473ffffffffffffffffffffffffffffffffffffffff163314610ba9576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b610bb36000611ea9565b565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181610c41576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600f60248201527f4e6f2073746172742070617373656400000000000000000000000000000000006044820152606401610933565b610c4c81600161294f565b8214610cb4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601360248201527f546f6b656e2069732070617374207374617274000000000000000000000000006044820152606401610933565b6108a6836110a6565b60606000806000610ccd85610aa6565b905060008167ffffffffffffffff811115610cea57610cea6124ca565b604051908082528060200260200182016040528015610d13578160200160208202803683370190505b50604080516060810182526000808252602082018190529181019190915290915060015b838614610e51576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615159181018290529250610e4957815173ffffffffffffffffffffffffffffffffffffffff1615610df057815194505b8773ffffffffffffffffffffffffffffffffffffffff168573ffffffffffffffffffffffffffffffffffffffff1603610e495780838780600101985081518110610e3c57610e3c6128f1565b6020026020010181815250505b600101610d37565b50909695505050505050565b6060600380546106b59061289e565b6060818310610ea7576040517f32c1995a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080546001851015610eb957600194505b80841115610ec5578093505b6000610ed087610aa6565b905084861015610eef5785850381811015610ee9578091505b50610ef3565b5060005b60008167ffffffffffffffff811115610f0e57610f0e6124ca565b604051908082528060200260200182016040528015610f37578160200160208202803683370190505b50905081600003610f4d57935061109f92505050565b6000610f5888611447565b905060008160400151610f69575080515b885b888114158015610f7b5750848714155b15611093576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff161515918101829052935061108b57825173ffffffffffffffffffffffffffffffffffffffff161561103257825191505b8a73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff160361108b578084888060010199508151811061107e5761107e6128f1565b6020026020010181815250505b600101610f6b565b50505092835250909150505b9392505050565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181611132576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600760248201527f546f6f20666577000000000000000000000000000000000000000000000000006044820152606401610933565b600d5482111561119e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600860248201527f546f6f206d616e790000000000000000000000000000000000000000000000006044820152606401610933565b600c546111ab838361294f565b1115611213576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f4d696e74696e6720636c6f7365640000000000000000000000000000000000006044820152606401610933565b60085473ffffffffffffffffffffffffffffffffffffffff1633146112a757600b5461123f9083612967565b34146112a7576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f53656e64206578616374204554480000000000000000000000000000000000006044820152606401610933565b6112b13383611f20565b7f94242c431036b9ba6723a138d4b275a5b38e13a95ef66227a45df427c0f843f36112dc838361294f565b60405190815260200160405180910390a15050565b3373ffffffffffffffffffffffffffffffffffffffff831603611340576040517fb06307db00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b33600081815260076020908152604080832073ffffffffffffffffffffffffffffffffffffffff87168085529083529281902080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001686151590811790915590519081529192917f17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31910160405180910390a35050565b6113e2848484611971565b73ffffffffffffffffffffffffffffffffffffffff83163b156114415761140b84848484611f3e565b611441576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50505050565b6040805160608082018352600080835260208084018290528385018290528451928301855281835282018190529281019290925290600183108061148d57506000548310155b156114985792915050565b506000828152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615801592820192909252906115305792915050565b61109f83611cd3565b60606115448261189e565b6115d0576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602f60248201527f4552433732314d657461646174613a2055524920717565727920666f72206e6f60448201527f6e6578697374656e7420746f6b656e00000000000000000000000000000000006064820152608401610933565b600a6115db8361173e565b6040516020016115ec9291906129c0565b6040516020818303038152906040529050919050565b6060600980546106b59061289e565b60085473ffffffffffffffffffffffffffffffffffffffff163314611692576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b73ffffffffffffffffffffffffffffffffffffffff8116611735576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201527f64647265737300000000000000000000000000000000000000000000000000006064820152608401610933565b61099181611ea9565b60608160000361178157505060408051808201909152600181527f3000000000000000000000000000000000000000000000000000000000000000602082015290565b8160005b81156117ab578061179581612b24565b91506117a49050600a83612b5c565b9150611785565b60008167ffffffffffffffff8111156117c6576117c66124ca565b6040519080825280601f01601f1916602001820160405280156117f0576020820181803683370190505b509050815b851561189557611806600182612b97565b90506000611815600a88612b5c565b61182090600a612967565b61182a9088612b97565b611835906030612bae565b905060008160f81b905080848481518110611852576118526128f1565b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916908160001a90535061188c600a89612b5c565b975050506117f5565b50949350505050565b6000816001111580156118b2575060005482105b80156106a05750506000908152600460205260409020547c0100000000000000000000000000000000000000000000000000000000900460ff161590565b60008281526006602052604080822080547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff87811691821790925591518593918516917f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b92591a4505050565b600061197c82611cd3565b90508373ffffffffffffffffffffffffffffffffffffffff16816000015173ffffffffffffffffffffffffffffffffffffffff16146119e7576040517fa114810000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60003373ffffffffffffffffffffffffffffffffffffffff86161480611a3d575073ffffffffffffffffffffffffffffffffffffffff8516600090815260076020908152604080832033845290915290205460ff165b80611a65575033611a4d84610738565b73ffffffffffffffffffffffffffffffffffffffff16145b905080611a9e576040517f59c896be00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416611aeb576040517fea553b3400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611af7600084876118f0565b73ffffffffffffffffffffffffffffffffffffffff858116600090815260056020908152604080832080547fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000080821667ffffffffffffffff9283167fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01831617909255898616808652838620805493841693831660019081018416949094179055898652600490945282852080547fffffffff00000000000000000000000000000000000000000000000000000000169094177401000000000000000000000000000000000000000042909216919091021783558701808452922080549193909116611c6e576000548214611c6e578054602086015167ffffffffffffffff1674010000000000000000000000000000000000000000027fffffffff0000000000000000000000000000000000000000000000000000000090911673ffffffffffffffffffffffffffffffffffffffff8a16171781555b505050828473ffffffffffffffffffffffffffffffffffffffff168673ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef60405160405180910390a45050505050565b60408051606081018252600080825260208201819052918101919091528180600111611e7757600054811015611e77576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff16151591810182905290611e7557805173ffffffffffffffffffffffffffffffffffffffff1615611db6579392505050565b507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff811680835274010000000000000000000000000000000000000000820467ffffffffffffffff16938301939093527c0100000000000000000000000000000000000000000000000000000000900460ff1615159281019290925215611e70579392505050565b611db6565b505b6040517fdf2d9b4200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6008805473ffffffffffffffffffffffffffffffffffffffff8381167fffffffffffffffffffffffff0000000000000000000000000000000000000000831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b611f3a8282604051806020016040528060008152506120b7565b5050565b6040517f150b7a0200000000000000000000000000000000000000000000000000000000815260009073ffffffffffffffffffffffffffffffffffffffff85169063150b7a0290611f99903390899088908890600401612bd3565b6020604051808303816000875af1925050508015611ff2575060408051601f3d9081017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0168201909252611fef91810190612c12565b60015b612069573d808015612020576040519150601f19603f3d011682016040523d82523d6000602084013e612025565b606091505b508051600003612061576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b805181602001fd5b7fffffffff00000000000000000000000000000000000000000000000000000000167f150b7a0200000000000000000000000000000000000000000000000000000000149050949350505050565b60005473ffffffffffffffffffffffffffffffffffffffff8416612107576040517f2e07630000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b82600003612141576040517fb562e8dd00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416600081815260056020908152604080832080547fffffffffffffffffffffffffffffffff00000000000000000000000000000000811667ffffffffffffffff8083168b018116918217680100000000000000007fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000090941690921783900481168b01811690920217909155858452600490925290912080547fffffffff000000000000000000000000000000000000000000000000000000001683177401000000000000000000000000000000000000000042909316929092029190911790558190818501903b156122ec575b604051829073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a461229c6000878480600101955087611f3e565b6122d2576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8082106122445782600054146122e757600080fd5b61233e565b5b60405160018301929073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a48082106122ed575b5060009081556114419085838684565b7fffffffff000000000000000000000000000000000000000000000000000000008116811461099157600080fd5b60006020828403121561238e57600080fd5b813561109f8161234e565b60005b838110156123b457818101518382015260200161239c565b838111156114415750506000910152565b600081518084526123dd816020860160208601612399565b601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0169290920160200192915050565b60208152600061109f60208301846123c5565b60006020828403121561243457600080fd5b5035919050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461245f57600080fd5b919050565b6000806040838503121561247757600080fd5b6124808361243b565b946020939093013593505050565b6000806000606084860312156124a357600080fd5b6124ac8461243b565b92506124ba6020850161243b565b9150604084013590509250925092565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff81118282101715612540576125406124ca565b604052919050565b6000602080838503121561255b57600080fd5b823567ffffffffffffffff8082111561257357600080fd5b818501915085601f83011261258757600080fd5b813581811115612599576125996124ca565b8060051b91506125aa8483016124f9565b81815291830184019184810190888411156125c457600080fd5b938501935b838510156125e2578435825293850193908501906125c9565b98975050505050505050565b6020808252825182820181905260009190848201906040850190845b81811015610e5157612653838551805173ffffffffffffffffffffffffffffffffffffffff16825260208082015167ffffffffffffffff16908301526040908101511515910152565b928401926060929092019160010161260a565b60006020828403121561267857600080fd5b61109f8261243b565b6000806040838503121561269457600080fd5b50508035926020909101359150565b6020808252825182820181905260009190848201906040850190845b81811015610e51578351835292840192918401916001016126bf565b6000806000606084860312156126f057600080fd5b6126f98461243b565b95602085013595506040909401359392505050565b6000806040838503121561272157600080fd5b61272a8361243b565b91506020830135801515811461273f57600080fd5b809150509250929050565b6000806000806080858703121561276057600080fd5b6127698561243b565b9350602061277881870161243b565b935060408601359250606086013567ffffffffffffffff8082111561279c57600080fd5b818801915088601f8301126127b057600080fd5b8135818111156127c2576127c26124ca565b6127f2847fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f840116016124f9565b9150808252898482850101111561280857600080fd5b808484018584013760008482840101525080935050505092959194509250565b815173ffffffffffffffffffffffffffffffffffffffff16815260208083015167ffffffffffffffff1690820152604080830151151590820152606081016106a0565b6000806040838503121561287e57600080fd5b6128878361243b565b91506128956020840161243b565b90509250929050565b600181811c908216806128b257607f821691505b6020821081036128eb577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000821982111561296257612962612920565b500190565b6000817fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff048311821515161561299f5761299f612920565b500290565b600081516129b6818560208601612399565b9290920192915050565b7f697066733a2f2f000000000000000000000000000000000000000000000000008152600060076000855481600182811c915080831680612a0257607f831692505b60208084108203612a3a577f4e487b710000000000000000000000000000000000000000000000000000000086526022600452602486fd5b818015612a4e5760018114612a8157612ab2565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff008616888b015287858b01019650612ab2565b60008c81526020902060005b86811015612aa85781548c82018b0152908501908301612a8d565b505087858b010196505b505050505050612b1a612af1612aeb837f2f6d657461646174612f000000000000000000000000000000000000000000008152600a0190565b876129a4565b7f2e6a736f6e000000000000000000000000000000000000000000000000000000815260050190565b9695505050505050565b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203612b5557612b55612920565b5060010190565b600082612b92577f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b500490565b600082821015612ba957612ba9612920565b500390565b600060ff821660ff84168060ff03821115612bcb57612bcb612920565b019392505050565b600073ffffffffffffffffffffffffffffffffffffffff808716835280861660208401525083604083015260806060830152612b1a60808301846123c5565b600060208284031215612c2457600080fd5b815161109f8161234e56fea264697066735822122077a8110e0c07e1e91db6a0afcd253eb4afaa674c06061f496eabc29f0ca8f56a64736f6c634300080d0033","deployedBytecode":"0x6080604052600436106101b75760003560e01c80638da5cb5b116100ec578063c23dc68f1161008a578063e985e9c511610064578063e985e9c514610515578063f2fde38b1461056b578063f76f950e1461058b578063fa9b7018146105ab57600080fd5b8063c23dc68f146104b3578063c87b56dd146104e0578063e8a3d4851461050057600080fd5b8063a0712d68116100c6578063a0712d6814610429578063a22cb4651461043c578063a2309ff81461045c578063b88d4fde1461049357600080fd5b80638da5cb5b146103c957806395d89b41146103f457806399a2557a1461040957600080fd5b806342842e0e1161015957806370a082311161013357806370a0823114610354578063715018a6146103745780637a4d892a146103895780638462151c1461039c57600080fd5b806342842e0e146102e75780635bbb2177146103075780636352211e1461033457600080fd5b8063095ea7b311610195578063095ea7b31461025857806318160ddd1461027a57806323b872dd146102bf5780633ccfd60b146102df57600080fd5b806301ffc9a7146101bc57806306fdde03146101f1578063081812fc14610213575b600080fd5b3480156101c857600080fd5b506101dc6101d736600461237c565b6105c1565b60405190151581526020015b60405180910390f35b3480156101fd57600080fd5b506102066106a6565b6040516101e8919061240f565b34801561021f57600080fd5b5061023361022e366004612422565b610738565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020016101e8565b34801561026457600080fd5b50610278610273366004612464565b6107a2565b005b34801561028657600080fd5b50600154600054037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff015b6040519081526020016101e8565b3480156102cb57600080fd5b506102786102da36600461248e565b6108ab565b6102786108b6565b3480156102f357600080fd5b5061027861030236600461248e565b610994565b34801561031357600080fd5b50610327610322366004612548565b6109af565b6040516101e891906125ee565b34801561034057600080fd5b5061023361034f366004612422565b610a94565b34801561036057600080fd5b506102b161036f366004612666565b610aa6565b34801561038057600080fd5b50610278610b28565b610278610397366004612681565b610bb5565b3480156103a857600080fd5b506103bc6103b7366004612666565b610cbd565b6040516101e891906126a3565b3480156103d557600080fd5b5060085473ffffffffffffffffffffffffffffffffffffffff16610233565b34801561040057600080fd5b50610206610e5d565b34801561041557600080fd5b506103bc6104243660046126db565b610e6c565b610278610437366004612422565b6110a6565b34801561044857600080fd5b5061027861045736600461270e565b6112f1565b34801561046857600080fd5b506000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016102b1565b34801561049f57600080fd5b506102786104ae36600461274a565b6113d7565b3480156104bf57600080fd5b506104d36104ce366004612422565b611447565b6040516101e89190612828565b3480156104ec57600080fd5b506102066104fb366004612422565b611539565b34801561050c57600080fd5b50610206611602565b34801561052157600080fd5b506101dc61053036600461286b565b73ffffffffffffffffffffffffffffffffffffffff918216600090815260076020908152604080832093909416825291909152205460ff1690565b34801561057757600080fd5b50610278610586366004612666565b611611565b34801561059757600080fd5b506102066105a6366004612422565b61173e565b3480156105b757600080fd5b506102b1600d5481565b60007fffffffff0000000000000000000000000000000000000000000000000000000082167f80ac58cd00000000000000000000000000000000000000000000000000000000148061065457507fffffffff0000000000000000000000000000000000000000000000000000000082167f5b5e139f00000000000000000000000000000000000000000000000000000000145b806106a057507f01ffc9a7000000000000000000000000000000000000000000000000000000007fffffffff000000000000000000000000000000000000000000000000000000008316145b92915050565b6060600280546106b59061289e565b80601f01602080910402602001604051908101604052809291908181526020018280546106e19061289e565b801561072e5780601f106107035761010080835404028352916020019161072e565b820191906000526020600020905b81548152906001019060200180831161071157829003601f168201915b5050505050905090565b60006107438261189e565b610779576040517fcf4700e400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5060009081526006602052604090205473ffffffffffffffffffffffffffffffffffffffff1690565b60006107ad82610a94565b90508073ffffffffffffffffffffffffffffffffffffffff168373ffffffffffffffffffffffffffffffffffffffff1603610814576040517f943f7b8c00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff82161461089b5773ffffffffffffffffffffffffffffffffffffffff8116600090815260076020908152604080832033845290915290205460ff1661089b576040517fcfb3b94200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6108a68383836118f0565b505050565b6108a6838383611971565b60085473ffffffffffffffffffffffffffffffffffffffff16331461093c576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e657260448201526064015b60405180910390fd5b604051600090339047908381818185875af1925050503d806000811461097e576040519150601f19603f3d011682016040523d82523d6000602084013e610983565b606091505b505090508061099157600080fd5b50565b6108a6838383604051806020016040528060008152506113d7565b805160609060008167ffffffffffffffff8111156109cf576109cf6124ca565b604051908082528060200260200182016040528015610a3857816020015b60408051606081018252600080825260208083018290529282015282527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9092019101816109ed5790505b50905060005b828114610a8c57610a67858281518110610a5a57610a5a6128f1565b6020026020010151611447565b828281518110610a7957610a796128f1565b6020908102919091010152600101610a3e565b509392505050565b6000610a9f82611cd3565b5192915050565b600073ffffffffffffffffffffffffffffffffffffffff8216610af5576040517f8f4eb60400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5073ffffffffffffffffffffffffffffffffffffffff1660009081526005602052604090205467ffffffffffffffff1690565b60085473ffffffffffffffffffffffffffffffffffffffff163314610ba9576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b610bb36000611ea9565b565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181610c41576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600f60248201527f4e6f2073746172742070617373656400000000000000000000000000000000006044820152606401610933565b610c4c81600161294f565b8214610cb4576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601360248201527f546f6b656e2069732070617374207374617274000000000000000000000000006044820152606401610933565b6108a6836110a6565b60606000806000610ccd85610aa6565b905060008167ffffffffffffffff811115610cea57610cea6124ca565b604051908082528060200260200182016040528015610d13578160200160208202803683370190505b50604080516060810182526000808252602082018190529181019190915290915060015b838614610e51576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615159181018290529250610e4957815173ffffffffffffffffffffffffffffffffffffffff1615610df057815194505b8773ffffffffffffffffffffffffffffffffffffffff168573ffffffffffffffffffffffffffffffffffffffff1603610e495780838780600101985081518110610e3c57610e3c6128f1565b6020026020010181815250505b600101610d37565b50909695505050505050565b6060600380546106b59061289e565b6060818310610ea7576040517f32c1995a00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080546001851015610eb957600194505b80841115610ec5578093505b6000610ed087610aa6565b905084861015610eef5785850381811015610ee9578091505b50610ef3565b5060005b60008167ffffffffffffffff811115610f0e57610f0e6124ca565b604051908082528060200260200182016040528015610f37578160200160208202803683370190505b50905081600003610f4d57935061109f92505050565b6000610f5888611447565b905060008160400151610f69575080515b885b888114158015610f7b5750848714155b15611093576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff161515918101829052935061108b57825173ffffffffffffffffffffffffffffffffffffffff161561103257825191505b8a73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff160361108b578084888060010199508151811061107e5761107e6128f1565b6020026020010181815250505b600101610f6b565b50505092835250909150505b9392505050565b6000547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0181611132576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600760248201527f546f6f20666577000000000000000000000000000000000000000000000000006044820152606401610933565b600d5482111561119e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600860248201527f546f6f206d616e790000000000000000000000000000000000000000000000006044820152606401610933565b600c546111ab838361294f565b1115611213576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f4d696e74696e6720636c6f7365640000000000000000000000000000000000006044820152606401610933565b60085473ffffffffffffffffffffffffffffffffffffffff1633146112a757600b5461123f9083612967565b34146112a7576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600e60248201527f53656e64206578616374204554480000000000000000000000000000000000006044820152606401610933565b6112b13383611f20565b7f94242c431036b9ba6723a138d4b275a5b38e13a95ef66227a45df427c0f843f36112dc838361294f565b60405190815260200160405180910390a15050565b3373ffffffffffffffffffffffffffffffffffffffff831603611340576040517fb06307db00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b33600081815260076020908152604080832073ffffffffffffffffffffffffffffffffffffffff87168085529083529281902080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001686151590811790915590519081529192917f17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31910160405180910390a35050565b6113e2848484611971565b73ffffffffffffffffffffffffffffffffffffffff83163b156114415761140b84848484611f3e565b611441576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50505050565b6040805160608082018352600080835260208084018290528385018290528451928301855281835282018190529281019290925290600183108061148d57506000548310155b156114985792915050565b506000828152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff1615801592820192909252906115305792915050565b61109f83611cd3565b60606115448261189e565b6115d0576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602f60248201527f4552433732314d657461646174613a2055524920717565727920666f72206e6f60448201527f6e6578697374656e7420746f6b656e00000000000000000000000000000000006064820152608401610933565b600a6115db8361173e565b6040516020016115ec9291906129c0565b6040516020818303038152906040529050919050565b6060600980546106b59061289e565b60085473ffffffffffffffffffffffffffffffffffffffff163314611692576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65726044820152606401610933565b73ffffffffffffffffffffffffffffffffffffffff8116611735576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201527f64647265737300000000000000000000000000000000000000000000000000006064820152608401610933565b61099181611ea9565b60608160000361178157505060408051808201909152600181527f3000000000000000000000000000000000000000000000000000000000000000602082015290565b8160005b81156117ab578061179581612b24565b91506117a49050600a83612b5c565b9150611785565b60008167ffffffffffffffff8111156117c6576117c66124ca565b6040519080825280601f01601f1916602001820160405280156117f0576020820181803683370190505b509050815b851561189557611806600182612b97565b90506000611815600a88612b5c565b61182090600a612967565b61182a9088612b97565b611835906030612bae565b905060008160f81b905080848481518110611852576118526128f1565b60200101907effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916908160001a90535061188c600a89612b5c565b975050506117f5565b50949350505050565b6000816001111580156118b2575060005482105b80156106a05750506000908152600460205260409020547c0100000000000000000000000000000000000000000000000000000000900460ff161590565b60008281526006602052604080822080547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff87811691821790925591518593918516917f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b92591a4505050565b600061197c82611cd3565b90508373ffffffffffffffffffffffffffffffffffffffff16816000015173ffffffffffffffffffffffffffffffffffffffff16146119e7576040517fa114810000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60003373ffffffffffffffffffffffffffffffffffffffff86161480611a3d575073ffffffffffffffffffffffffffffffffffffffff8516600090815260076020908152604080832033845290915290205460ff165b80611a65575033611a4d84610738565b73ffffffffffffffffffffffffffffffffffffffff16145b905080611a9e576040517f59c896be00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416611aeb576040517fea553b3400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611af7600084876118f0565b73ffffffffffffffffffffffffffffffffffffffff858116600090815260056020908152604080832080547fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000080821667ffffffffffffffff9283167fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01831617909255898616808652838620805493841693831660019081018416949094179055898652600490945282852080547fffffffff00000000000000000000000000000000000000000000000000000000169094177401000000000000000000000000000000000000000042909216919091021783558701808452922080549193909116611c6e576000548214611c6e578054602086015167ffffffffffffffff1674010000000000000000000000000000000000000000027fffffffff0000000000000000000000000000000000000000000000000000000090911673ffffffffffffffffffffffffffffffffffffffff8a16171781555b505050828473ffffffffffffffffffffffffffffffffffffffff168673ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef60405160405180910390a45050505050565b60408051606081018252600080825260208201819052918101919091528180600111611e7757600054811015611e77576000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff8116825274010000000000000000000000000000000000000000810467ffffffffffffffff16928201929092527c010000000000000000000000000000000000000000000000000000000090910460ff16151591810182905290611e7557805173ffffffffffffffffffffffffffffffffffffffff1615611db6579392505050565b507fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff016000818152600460209081526040918290208251606081018452905473ffffffffffffffffffffffffffffffffffffffff811680835274010000000000000000000000000000000000000000820467ffffffffffffffff16938301939093527c0100000000000000000000000000000000000000000000000000000000900460ff1615159281019290925215611e70579392505050565b611db6565b505b6040517fdf2d9b4200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6008805473ffffffffffffffffffffffffffffffffffffffff8381167fffffffffffffffffffffffff0000000000000000000000000000000000000000831681179093556040519116919082907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a35050565b611f3a8282604051806020016040528060008152506120b7565b5050565b6040517f150b7a0200000000000000000000000000000000000000000000000000000000815260009073ffffffffffffffffffffffffffffffffffffffff85169063150b7a0290611f99903390899088908890600401612bd3565b6020604051808303816000875af1925050508015611ff2575060408051601f3d9081017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0168201909252611fef91810190612c12565b60015b612069573d808015612020576040519150601f19603f3d011682016040523d82523d6000602084013e612025565b606091505b508051600003612061576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b805181602001fd5b7fffffffff00000000000000000000000000000000000000000000000000000000167f150b7a0200000000000000000000000000000000000000000000000000000000149050949350505050565b60005473ffffffffffffffffffffffffffffffffffffffff8416612107576040517f2e07630000000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b82600003612141576040517fb562e8dd00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b73ffffffffffffffffffffffffffffffffffffffff8416600081815260056020908152604080832080547fffffffffffffffffffffffffffffffff00000000000000000000000000000000811667ffffffffffffffff8083168b018116918217680100000000000000007fffffffffffffffffffffffffffffffffffffffffffffffff000000000000000090941690921783900481168b01811690920217909155858452600490925290912080547fffffffff000000000000000000000000000000000000000000000000000000001683177401000000000000000000000000000000000000000042909316929092029190911790558190818501903b156122ec575b604051829073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a461229c6000878480600101955087611f3e565b6122d2576040517fd1a57ed600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8082106122445782600054146122e757600080fd5b61233e565b5b60405160018301929073ffffffffffffffffffffffffffffffffffffffff8816906000907fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef908290a48082106122ed575b5060009081556114419085838684565b7fffffffff000000000000000000000000000000000000000000000000000000008116811461099157600080fd5b60006020828403121561238e57600080fd5b813561109f8161234e565b60005b838110156123b457818101518382015260200161239c565b838111156114415750506000910152565b600081518084526123dd816020860160208601612399565b601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0169290920160200192915050565b60208152600061109f60208301846123c5565b60006020828403121561243457600080fd5b5035919050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461245f57600080fd5b919050565b6000806040838503121561247757600080fd5b6124808361243b565b946020939093013593505050565b6000806000606084860312156124a357600080fd5b6124ac8461243b565b92506124ba6020850161243b565b9150604084013590509250925092565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff81118282101715612540576125406124ca565b604052919050565b6000602080838503121561255b57600080fd5b823567ffffffffffffffff8082111561257357600080fd5b818501915085601f83011261258757600080fd5b813581811115612599576125996124ca565b8060051b91506125aa8483016124f9565b81815291830184019184810190888411156125c457600080fd5b938501935b838510156125e2578435825293850193908501906125c9565b98975050505050505050565b6020808252825182820181905260009190848201906040850190845b81811015610e5157612653838551805173ffffffffffffffffffffffffffffffffffffffff16825260208082015167ffffffffffffffff16908301526040908101511515910152565b928401926060929092019160010161260a565b60006020828403121561267857600080fd5b61109f8261243b565b6000806040838503121561269457600080fd5b50508035926020909101359150565b6020808252825182820181905260009190848201906040850190845b81811015610e51578351835292840192918401916001016126bf565b6000806000606084860312156126f057600080fd5b6126f98461243b565b95602085013595506040909401359392505050565b6000806040838503121561272157600080fd5b61272a8361243b565b91506020830135801515811461273f57600080fd5b809150509250929050565b6000806000806080858703121561276057600080fd5b6127698561243b565b9350602061277881870161243b565b935060408601359250606086013567ffffffffffffffff8082111561279c57600080fd5b818801915088601f8301126127b057600080fd5b8135818111156127c2576127c26124ca565b6127f2847fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f840116016124f9565b9150808252898482850101111561280857600080fd5b808484018584013760008482840101525080935050505092959194509250565b815173ffffffffffffffffffffffffffffffffffffffff16815260208083015167ffffffffffffffff1690820152604080830151151590820152606081016106a0565b6000806040838503121561287e57600080fd5b6128878361243b565b91506128956020840161243b565b90509250929050565b600181811c908216806128b257607f821691505b6020821081036128eb577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b6000821982111561296257612962612920565b500190565b6000817fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff048311821515161561299f5761299f612920565b500290565b600081516129b6818560208601612399565b9290920192915050565b7f697066733a2f2f000000000000000000000000000000000000000000000000008152600060076000855481600182811c915080831680612a0257607f831692505b60208084108203612a3a577f4e487b710000000000000000000000000000000000000000000000000000000086526022600452602486fd5b818015612a4e5760018114612a8157612ab2565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff008616888b015287858b01019650612ab2565b60008c81526020902060005b86811015612aa85781548c82018b0152908501908301612a8d565b505087858b010196505b505050505050612b1a612af1612aeb837f2f6d657461646174612f000000000000000000000000000000000000000000008152600a0190565b876129a4565b7f2e6a736f6e000000000000000000000000000000000000000000000000000000815260050190565b9695505050505050565b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203612b5557612b55612920565b5060010190565b600082612b92577f4e487b7100000000000000000000000000000000000000000000000000000000600052601260045260246000fd5b500490565b600082821015612ba957612ba9612920565b500390565b600060ff821660ff84168060ff03821115612bcb57612bcb612920565b019392505050565b600073ffffffffffffffffffffffffffffffffffffffff808716835280861660208401525083604083015260806060830152612b1a60808301846123c5565b600060208284031215612c2457600080fd5b815161109f8161234e56fea264697066735822122077a8110e0c07e1e91db6a0afcd253eb4afaa674c06061f496eabc29f0ca8f56a64736f6c634300080d0033"}}');
 
 /***/ })
 

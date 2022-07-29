@@ -357,6 +357,7 @@ class ItemWebService {
             await this.imageService.put(newCoverImage)
         } catch(ex) {}
 
+
         item.coverImageId = newCoverImage._id
 
 

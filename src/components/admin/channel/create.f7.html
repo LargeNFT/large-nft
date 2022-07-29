@@ -279,6 +279,9 @@
       channel.description = quillEditorService.activeEditor.getContents()
       channel.license = licenseQuillEditor.getContents()
 
+      //Convert numbers
+      channel.sellerFeeBasisPoints = parseInt(channel.sellerFeeBasisPoints)
+
       //Parse attributeOptions and category
       if (channel.attributeOptions) {
         channel.attributeOptions = JSON.parse(channel.attributeOptions)

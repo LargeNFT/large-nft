@@ -704,3 +704,46 @@ ul.breadcrumb li a:hover {
 
 
 
+
+
+
+
+
+
+
+.item-flex {
+  display: flex; 
+  flex-flow: row wrap; 
+  align-content: start;
+}
+
+.flex-card {
+  flex: 0 0 20%;
+  margin: 0px;
+  height: 300px;
+}
+
+.flex-card .card {
+  background: white;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+.flex-card img {
+  max-width: 100%;
+  border: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .fixed-width-content {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+ 
+  .flex-card {
+    flex: 0 0 50%;
+    margin: 0px;
+  }
+}

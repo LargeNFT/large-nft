@@ -57,22 +57,14 @@ class ChannelController {
     }
 
 
-    @routeMap("/admin/channel/show/:id/:offset?")
+    @routeMap("/admin/channel/show/:id")
     async show() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
 
-            const offset = parseInt(routeTo.params.offset)
-
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 
-            let pagingViewModel = this.pagingService.buildPagingViewModel(offset, ItemRepository.CHUNK_SIZE, channelViewModel.itemCount, 5)
-
-            let items = await this.itemWebService.listByChannel(routeTo.params.id, ItemRepository.CHUNK_SIZE, offset)
-
             return {
-                channelViewModel: channelViewModel,
-                pagingViewModel: pagingViewModel,
-                items: items
+                channelViewModel: channelViewModel
             }
 
         }, AdminChannelShowComponent)

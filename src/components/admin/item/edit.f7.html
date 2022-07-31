@@ -116,7 +116,7 @@
 
       let formData = $f7.form.convertToData('#edit-item-form')
 
-      let showExcerpt = (formData.showExcerpt === 'true') 
+      let showExcerpt = false
 
 
       //Get data
@@ -146,13 +146,13 @@
       }
 
       //Check showExcerpt
-      if (showExcerpt) {
-          item.excerpt = excerptHtml(await quillService.translateContent(item.content), {
-              pruneLength: 500
-          })
-      } else {
-        delete item.excerpt
-      }
+      // if (showExcerpt) {
+      //     item.excerpt = excerptHtml(await quillService.translateContent(item.content), {
+      //         pruneLength: 500
+      //     })
+      // } else {
+      //   delete item.excerpt
+      // }
 
       //Build contentHTML for searching
       item.contentHTML = await quillService.translateContent(item.content, true)

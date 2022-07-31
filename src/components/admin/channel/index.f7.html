@@ -21,7 +21,7 @@
           <div class="list cards-list virtual-list" id="channel-index-list">
           </div>
 
-          <div class="preloader infinite-scroll-preloader"></div>
+          <div class="preloader infinite-scroll-preloader" id="channel-index-preloader"></div>
 
         </div>
 
@@ -77,7 +77,7 @@
       $f7.infiniteScroll.destroy('#channel-index-infinite-scroll')
 
       // Remove preloader
-      $('.infinite-scroll-preloader').hide()
+      $('#channel-index-preloader').hide()
 
     }
 
@@ -217,7 +217,7 @@
       return `
               <li class="card channel-card">
 
-                    <a href="/admin/channel/show/${channelViewModel.channel._id}/0">
+                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
                       <div class="card-header banner" ${channelViewModel.coverBanner ?
                           `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
 
@@ -234,7 +234,7 @@
                         <div class="card-content card-content-padding">
                           
                             <div class="title">
-                              <a href="/admin/channel/show/${channelViewModel.channel._id}/0">
+                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
                                 ${channelViewModel.channel.title}
                               </a>
                             </div>

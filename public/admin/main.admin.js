@@ -20,7 +20,7 @@ var admin;
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table .label-cell {\r\n  font-weight: bold;\r\n  width: 225px;\r\n}\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n\r\n.animation-content {\r\n  max-width: 100%; \r\n  overflow-y: scroll;\r\n  height: 500px; \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n", "",{"version":3,"sources":["webpack://./src/html/css/app.css"],"names":[],"mappings":"AAAA,yBAAyB;AACzB;;IAEI,0BAA0B;IAC1B,uCAAuC;;;IAGvC,4BAA4B;IAC5B,+BAA+B;IAC/B,oCAAoC;;IAEpC,uBAAuB;;;IAGvB,4BAA4B;IAC5B,kCAAkC;;IAElC,yBAAyB;IACzB,kCAAkC;IAClC,+BAA+B;IAC/B,8BAA8B;;IAE9B,0BAA0B;IAC1B,gDAAgD;IAChD,wCAAwC;;IAExC,sCAAsC;IACtC,6BAA6B;IAC7B,2BAA2B;IAC3B,0BAA0B;IAC1B,4BAA4B;IAC5B,qCAAqC;;;IAGrC,0BAA0B;;IAE1B,gCAAgC;IAChC,kCAAkC;IAClC,kCAAkC;IAClC,8CAA8C;IAC9C,mCAAmC;IACnC,2BAA2B;;IAE3B,kCAAkC;IAClC,8CAA8C;IAC9C,+BAA+B;;;IAG/B,oDAAoD;IACpD,0DAA0D;;;IAG1D,wCAAwC;IACxC,oCAAoC;;IAEpC,wCAAwC;IACxC,oCAAoC;;IAEpC,yBAAyB;IACzB,gCAAgC;IAChC,kCAAkC;;EAEpC;;EAEA;IACE,8BAA8B;EAChC;;;EAGA;IACE,iBAAiB;EACnB;;;;EAIA;IACE,WAAW;EACb;;EAEA;IACE,WAAW;IACX,WAAW;IACX,cAAc;EAChB;;EAEA;IACE,eAAe;IACf,iBAAiB;EACnB;;;EAGA;IACE,iBAAiB;IACjB,eAAe;IACf,uBAAuB;EACzB;;EAEA;IACE,kBAAkB;IAClB,eAAe;IACf,eAAe;IACf,0BAA0B;EAC5B;;EAEA;IACE,kBAAkB;IAClB,uBAAuB;EACzB;;EAEA;IACE,eAAe;IACf,mBAAmB;IACnB,gBAAgB;EAClB;;;EAGA;IACE,iCAAiC;EACnC;;EAEA;IACE;EACF;;EAEA;IACE,iDAAiD;EACnD;;EAEA;IACE,2CAA2C;IAC3C,gCAAgC;;EAElC;;EAEA;IACE,kDAAkD;EACpD;;EAEA;IACE,WAAW;IACX,wCAAwC;IACxC,0CAA0C;IAC1C,yCAAyC;IACzC,yBAAyB;;EAE3B;;EAEA;IACE,eAAe;IACf,mBAAmB;IACnB,gBAAgB;IAChB,uBAAuB;IACvB,cAAc;IACd,gBAAgB,EAAE,8CAA8C;IAChE,iDAAiD;EACnD;;EAEA;IACE,aAAa;EACf;;EAEA;IACE,aAAa;IACb,eAAe;IACf,kBAAkB;EACpB;;;EAGA;IACE,aAAa;EACf;;;EAGA;IACE;MACE,aAAa;IACf;EACF;EACA;;;KAGG;;EAEH;IACE,WAAW;EACb;;EAEA;IACE,eAAe;IACf,eAAe;EACjB;;;;EAIA;IACE,mBAAmB;EACrB;;;;EAIA;;;;KAIG;;EAEH;IACE,mCAAmC;EACrC;;EAEA;IACE,WAAW;EACb;EACA;IACE,eAAe;IACf,WAAW;EACb;;EAEA;IACE,gBAAgB;IAChB,iBAAiB;IACjB,WAAW;EACb;;;EAGA;IACE,cAAc;IACd,iBAAiB;IACjB,eAAe;EACjB;;EAEA;IACE,cAAc;IACd,eAAe;EACjB;;;;;;EAMA;IACE,yBAAyB;EAC3B;;EAEA;IACE,cAAc;EAChB;;;EAGA;IACE,WAAW;EACb;;;EAGA;IACE,WAAW;IACX,aAAa;IACb,qBAAqB;IACrB,mBAAmB;IACnB,eAAe;EACjB;;EAEA;IACE,WAAW;EACb;;EAEA;IACE,WAAW;EACb;;EAEA;IACE,WAAW;EACb;;EAEA;IACE,oBAAoB;EACtB;;EAEA;IACE,aAAa;EACf;;;EAGA;IACE,eAAe;EACjB;;;;;EAKA;IACE,eAAe;IACf,kBAAkB;EACpB;;EAEA;IACE,eAAe;IACf,kBAAkB;EACpB;;EAEA;IACE,eAAe;EACjB;;EAEA;IACE,eAAe;EACjB;;EAEA;;KAEG;;EAEH;IACE,2BAA2B;IAC3B,iBAAiB;EACnB;;EAEA;IACE,YAAY;IACZ,WAAW;IACX,mBAAmB;IACnB,kBAAkB;EACpB;EACA;IACE,cAAc;EAChB;;EAEA;IACE,SAAS;IACT,UAAU;EACZ;;;EAGA;;;;;;;;;;;KAWG;;;EAGH;;;;;KAKG;EACH;;;;;;;;;;;;;;;;;;KAkBG;;;EAGH;IACE,aAAa;EACf;;EAEA;IACE,UAAU;EACZ;;;;EAIA;;;;;;;;;;;;;KAaG;;;;;EAKH;IACE,eAAe;IACf,gBAAgB;EAClB;;EAEA;IACE,eAAe;EACjB;;EAEA;IACE,aAAa;EACf;;EAEA;MACI,cAAc;EAClB;;;;EAIA;IACE,WAAW;EACb;;EAEA;IACE,eAAe;EACjB;;EAEA;IACE,eAAe;EACjB;;;EAGA,mBAAmB;AACrB;EACE,kBAAkB;EAClB,gBAAgB;EAChB,sBAAsB;AACxB;;AAEA,oCAAoC;AACpC;EACE,eAAe;EACf,eAAe;AACjB;;AAEA,wDAAwD;AACxD;EACE,YAAY;EACZ,YAAY;EACZ,iBAAiB;AACnB;;AAEA,6CAA6C;AAC7C;EACE,iBAAiB;EACjB,aAAa;AACf;;AAEA,8BAA8B;AAC9B;EACE,cAAc;EACd,0BAA0B;AAC5B;;AAEA;EACE,YAAY;EACZ,gBAAgB;AAClB;;;;;AAKA;EACE,WAAW;EACX,eAAe;AACjB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,iBAAiB;AACnB;;AAEA;EACE,gBAAgB;EAChB,WAAW;EACX,YAAY;EACZ,eAAe;EACf,WAAW;EACX,sBAAsB;EACtB,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,gBAAgB;EAChB,eAAe;EACf,kBAAkB;AACpB;;AAEA;EACE,WAAW;AACb;;;;;;;;;;AAUA;EACE,mBAAmB;AACrB;;;AAGA;EACE,cAAc;EACd,aAAa;AACf;;;AAGA;EACE,gBAAgB;EAChB,2BAA2B;;AAE7B;;AAEA;EACE,4BAA4B;EAC5B,iBAAiB;AACnB;;;AAGA;EACE,eAAe;EACf,cAAc;AAChB;;AAEA;EACE,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,gBAAgB;AAClB;;;AAGA;EACE,eAAe;EACf,gBAAgB;EAChB,eAAe;AACjB;;AAEA;EACE,cAAc;EACd,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,WAAW;EACX,2BAA2B;EAC3B,sBAAsB;EACtB,yBAAyB;AAC3B;;AAEA;EACE,kBAAkB;EAClB,YAAY;EACZ,aAAa;EACb,kBAAkB;EAClB,UAAU;EACV,SAAS;EACT,oBAAoB;EACpB,cAAc;EACd,yBAAyB;EACzB,gBAAgB;EAChB,mBAAmB;EACnB,WAAW;AACb;;AAEA;EACE,2BAA2B;AAC7B;;;;AAIA;EACE,gBAAgB;EAChB,YAAY;AACd;;;;;AAKA;EACE,gBAAgB;EAChB,gBAAgB;AAClB;;AAEA;IACI,cAAc;IACd,gBAAgB;IAChB,eAAe;IACf,qBAAqB;AACzB;;AAEA;EACE,oCAAoC;EACpC,aAAa;EACb,kBAAkB;EAClB,YAAY;EACZ,YAAY;AACd;;AAEA;IACI,iBAAiB;AACrB;;AAEA;EACE,cAAc;EACd,yBAAyB;;AAE3B;;;;AAIA;EACE,iBAAiB;EACjB,WAAW;AACb;;AAEA;EACE,iBAAiB;EACjB,WAAW;AACb;;AAEA;EACE,iBAAiB;EACjB,WAAW;EACX,eAAe;AACjB;;AAEA;EACE,iBAAiB;EACjB,WAAW;EACX,eAAe;AACjB;;;AAGA;EACE,qBAAqB;EACrB,iBAAiB;EACjB,WAAW;AACb;;AAEA;EACE,eAAe;EACf,iBAAiB;EACjB,iBAAiB;AACnB;;;;;;;AAOA;EACE,aAAa;EACb,mBAAmB;EACnB,eAAe;AACjB;;;;;AAKA;EACE,iBAAiB;EACjB,YAAY;AACd;;AAEA;EACE,40BAA40B;EAC50B,0BAA0B;EAC1B,YAAY;EACZ,WAAW;AACb;;;AAGA;EACE,eAAe;EACf,kBAAkB;EAClB,aAAa;AACf","sourcesContent":["/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table .label-cell {\r\n  font-weight: bold;\r\n  width: 225px;\r\n}\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n\r\n.animation-content {\r\n  max-width: 100%; \r\n  overflow-y: scroll;\r\n  height: 500px; \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table .label-cell {\r\n  font-weight: bold;\r\n  width: 225px;\r\n}\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n\r\n.animation-content {\r\n  max-width: 100%; \r\n  overflow-y: scroll;\r\n  height: 500px; \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n  height: 300px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n\r\n.flex-card img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n}\r\n", "",{"version":3,"sources":["webpack://./src/html/css/app.css"],"names":[],"mappings":"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","sourcesContent":["/* Your app styles here */\r\n:root {\r\n  \r\n    /* --f7-font-size: 16px; */  \r\n    --f7-fab-extended-text-font-weight: 700;\r\n  \r\n  \r\n    --f7-button-font-weight: 700;\r\n    --f7-button-text-color: #000000; \r\n    --f7-button-fill-text-color: #000000;\r\n\r\n    --f7-input-height: 32px;\r\n  \r\n  \r\n    --f7-panel-bg-color: #1c1c1d;\r\n    /* --f7-page-bg-color: #aaa9af;  */\r\n  \r\n    --f7-theme-color: #FCB827;\r\n    --f7-theme-color-rgb: 252, 184, 39;\r\n    --f7-theme-color-shade: #f7a903;\r\n    --f7-theme-color-tint: #fdc54f; \r\n  \r\n    --f7-input-font-size: 18px;\r\n    --f7-input-outline-focused-border-color: #000000;\r\n    --f7-input-focused-border-color: #00338e;\r\n  \r\n    --f7-label-focused-text-color: #00338e;\r\n    --f7-label-text-color:#000000;\r\n    --f7-label-font-weight: 700;\r\n    --f7-label-font-size: 14px;\r\n    --f7-label-line-height: 20px;\r\n    --f7-label-text-decoration: underline;\r\n  \r\n  \r\n    --f7-block-font-size: 23px;\r\n    \r\n    --f7-block-title-font-size: 19px;\r\n    --f7-block-title-line-height: 23px;\r\n    --f7-block-title-font-weight: bold;\r\n    --f7-block-title-text-color: rgba(0,0,0, 0.84);\r\n    --f7-block-strong-bg-color: #ffffff;\r\n    --f7-list-bg-color: #ffffff;\r\n    \r\n    --f7-navbar-title-font-weight: 700;\r\n    --f7-navbar-bg-color: var(--f7-panel-bg-color);\r\n    --f7-navbar-text-color: #ffffff;\r\n  \r\n  \r\n    --f7-tabbar-link-active-color: var(--f7-theme-color);\r\n    --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);\r\n  \r\n  \r\n    --f7-list-item-title-text-color: #00338e;\r\n    --f7-list-item-title-font-weight:700;\r\n  \r\n    --f7-input-invalid-border-color: #ff0000;\r\n    --f7-input-error-text-color: #ff0000;\r\n    \r\n    --f7-card-font-size: 17px;\r\n    --f7-card-header-font-size: 17px;\r\n    --f7-card-header-font-weight: bold;\r\n\r\n  }\r\n\r\n  html {\r\n    overscroll-behavior-y: contain;\r\n  }\r\n\r\n\r\n  a {\r\n    font-weight: bold;\r\n  }\r\n\r\n\r\n  \r\n  .content {\r\n    width: 100%;\r\n  }\r\n\r\n  .content:after{\r\n    clear: both;\r\n    content: \"\";\r\n    display: block;\r\n  }\r\n  \r\n  .content img {\r\n    max-width: 100%;\r\n    object-fit: cover;\r\n  }\r\n\r\n\r\n  .main h1 {\r\n    margin-bottom:0px;\r\n    font-size: 24px;\r\n    color: rgba(0,0,0,0.84);\r\n  }\r\n  \r\n  .main h2 {\r\n    margin-bottom: 0px;\r\n    margin-top: 0px; \r\n    font-size: 19px;\r\n    color: rgba(0, 0, 0, 0.54);\r\n  }\r\n  \r\n  .main ul {\r\n    padding-left: 20px;\r\n    list-style-type: square;\r\n  }\r\n  \r\n  .main li {\r\n    font-size: 17px;\r\n    margin-bottom: 10px;\r\n    margin-left: 0px;\r\n  }\r\n  \r\n  \r\n  .toolbar {\r\n    background-color: rgb(32, 32, 32);\r\n  }\r\n  \r\n  .page-content {\r\n    background-color: rgb(238, 240, 243)\r\n  }\r\n  \r\n  .panel {\r\n    border-right: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .panel .list ul {\r\n    background-color: var(--f7-panel-bg-color) ;\r\n    color: rgba(255, 255, 255, 0.87);\r\n  \r\n  }\r\n  \r\n  .panel .list ul li {\r\n    border-bottom: 1px solid rgba(255, 255, 255, 0.15);\r\n  }\r\n  \r\n  .text-editor-toolbar {\r\n    width: 100%;\r\n    border-top: 1px solid rgb(204, 204, 204);\r\n    border-right: 1px solid rgb(204, 204, 204);\r\n    border-left: 1px solid rgb(204, 204, 204);\r\n    background-color: #CCCCCC;\r\n  \r\n  }\r\n  \r\n  .wallet-address {\r\n    font-size: 12px;\r\n    white-space: nowrap;                   \r\n    overflow: hidden;\r\n    text-overflow: ellipsis;  \r\n    direction: rtl;\r\n    text-align: left; /* https://davidwalsh.name/css-ellipsis-left */\r\n    /* border: 1px solid rgba(255, 255, 255, 0.15); */\r\n  }\r\n  \r\n  #wallet-list-item {\r\n    display: none;\r\n  }\r\n  \r\n  #wallet-image {\r\n    display: none;\r\n    max-width: 24px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  \r\n  .navbar a.link.small-only {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  @media only screen and (max-width: 1024px) {\r\n    .navbar a.link.small-only  {\r\n      display: flex;\r\n    }\r\n  }\r\n  /* \r\n  .logo {\r\n    height: var(--f7-navbar-height);\r\n  } */\r\n  \r\n  .logo a {\r\n    width: 100%;\r\n  }\r\n  \r\n  .logo img {\r\n    max-width: 100%;\r\n    margin-top:10px; \r\n  }\r\n  \r\n  \r\n  \r\n  .wrap {\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n  \r\n  /* \r\n  body, .md body {\r\n    font-family: Helvetica;\r\n    font-size: 19px;\r\n  } */\r\n\r\n  .toast-button {\r\n    background-color: rgb(252, 184, 39);\r\n  }\r\n  \r\n  .toast-content {\r\n    float: left;\r\n  }\r\n  .toast-icon {\r\n    max-width: 25px;\r\n    float: left;\r\n  }\r\n  \r\n  .toast.toast-with-icon .toast-text {\r\n    text-align: left;\r\n    margin-left: 30px;\r\n    float: left;\r\n  }\r\n  \r\n  \r\n  .title-name {\r\n    display: block;\r\n    font-weight: bold;\r\n    font-size: 25px;\r\n  }\r\n  \r\n  .title-sub {\r\n    display: block;\r\n    font-size: 15px;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  \r\n  .ql-editor {\r\n    border: 1px solid #cccccc;\r\n  }\r\n  \r\n  .center {\r\n    margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  .post-area {\r\n    width: 100%;\r\n  }\r\n  \r\n  \r\n  .post-area .editor {\r\n    width: 100%;\r\n    height: 125px;\r\n    display: inline-block;\r\n    margin-bottom: 10px;\r\n    font-size: 21px;\r\n  }\r\n  \r\n  .post-area .profile-pic {\r\n    width: 60px;\r\n  }\r\n  \r\n  .post-area .profile-pic-thumb {\r\n    margin: 5px;\r\n  }\r\n  \r\n  .post-area .bottom {\r\n    width: 100%;\r\n  }\r\n  \r\n  .post-area .bottom button {\r\n    text-overflow: unset;\r\n  }\r\n  \r\n  .post-area .bottom label {\r\n    display: none;\r\n  }\r\n  \r\n  \r\n  .post-content img {\r\n    max-width: 100%;\r\n  }\r\n  \r\n  \r\n  \r\n  \r\n  .profile-pic-thumb {\r\n    max-width: 48px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .cover-photo-thumb {\r\n    max-width: 50px;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  .item-media .cover-photo-thumb.f7-icons {\r\n    font-size: 50px;\r\n  }\r\n  \r\n  .item-media .profile-pic-thumb.f7-icons {\r\n    font-size: 40px;\r\n  }\r\n  \r\n  /* .item-inner {\r\n    padding-left: 10px;\r\n  } */\r\n  \r\n  blockquote {\r\n    border-left: 4px solid #111;\r\n    padding-left: 1em;\r\n  }\r\n  \r\n  hr {\r\n    border: none;\r\n    color: #111;\r\n    letter-spacing: 1em;\r\n    text-align: center;\r\n  }\r\n  hr:before {\r\n    content: '...';\r\n  }\r\n  \r\n  .image-button-input, .video-button-input, #add-static-page-image-button-input, #edit-static-page-image-button-input {\r\n    opacity:0;\r\n    width: 0px;\r\n  }\r\n  \r\n  \r\n  /* \r\n  \r\n  .profile-thumbnail-tiny {\r\n    display: inline;\r\n  }\r\n  \r\n  .profile-thumbnail-tiny .profile-pic {\r\n    display: inline;\r\n    max-width: 24px;\r\n    width: 24px;\r\n    vertical-align: middle;\r\n  } */\r\n  \r\n  \r\n  /* \r\n  .list .item-media img {\r\n    width: 49px;\r\n    max-height: 49px;\r\n    border-radius: 50%;\r\n  } */\r\n  /* \r\n  .list .post-owner {\r\n    color: var(--f7-list-item-text-text-color);\r\n    font-size: 8px;\r\n    display: inline-block;\r\n    text-overflow: ellipsis;\r\n  }\r\n  \r\n  .list .post-owner-display {\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .list .item-subtitle {\r\n    white-space: normal;\r\n  }\r\n  \r\n  .list .item-subtitle p {\r\n    margin-top: 2px;\r\n  } */\r\n  \r\n  \r\n  .no-results {\r\n    display: none;\r\n  }\r\n  \r\n  .queue-item .item-subtitle {\r\n    width: 90%;\r\n  }\r\n  \r\n  \r\n  \r\n  /* .block-title {\r\n    color: rgb(0,0,0);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .item-media .f7-icons {\r\n    font-size: 100px;\r\n    padding-left: 10px;\r\n  }\r\n  \r\n  .list .item-subtitle.no-wrap {\r\n    white-space: normal;\r\n    overflow: inherit;\r\n  } */\r\n  \r\n  \r\n  \r\n  \r\n  .mnemonic {\r\n    font-size: 45px;\r\n    font-weight: 700;\r\n  }\r\n  \r\n  .peer-list .item-subtitle {\r\n    font-size: 11px;\r\n  }\r\n  \r\n  .hide {\r\n    display: none;\r\n  }\r\n  \r\n  .center {\r\n      margin: 0 auto;\r\n  }\r\n  \r\n  \r\n  \r\n  .ql-toolbar {\r\n    width: 100%;\r\n  }\r\n  \r\n  .ql-container {\r\n    font-size: 23px;\r\n  }\r\n  \r\n  .license-editor .ql-container {\r\n    font-size: 15px;\r\n  }\r\n\r\n\r\n  /* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n  color:#000000;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n.browse-file {\r\n  width: 200px;\r\n  max-width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.author-header{\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-header a {\r\n  font-weight: bold;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;    \r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.channel-card {\r\n  /* height: 415px; */\r\n}\r\n\r\n\r\n.channel-card .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card .name {\r\n  text-align: left;\r\n  color: var(--f7-text-color);\r\n\r\n}\r\n\r\n.channel-card .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.channel-card .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n.channel-card .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n\r\n.channel-card .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n\r\n\r\n.deploy-button {\r\n  margin-top: 10px;\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.info {\r\n  max-width: 450px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.info-box .value {\r\n    display: block;\r\n    font-weight: 600;\r\n    font-size: 24px;\r\n    color: rgb(4, 17, 29);\r\n}\r\n\r\n.info-box {\r\n  border: 1px solid rgb(229, 232, 235);\r\n  padding: 15px;\r\n  text-align: center;\r\n  height: 90px;\r\n  width: 150px;\r\n}\r\n\r\n.info-box.left {\r\n    border-right: 0px;\r\n}\r\n\r\n.info-box label {\r\n  display: block;\r\n  color: rgb(138, 147, 155);\r\n\r\n}\r\n\r\n\r\n\r\n.channel-editor {\r\n  min-height: 300px;\r\n  width: 100%;\r\n}\r\n\r\n.license-editor .channel-editor {\r\n  min-height: 150px;\r\n  width: 100%;\r\n}\r\n\r\n.css-editor {\r\n  min-height: 100px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n.static-page-editor {\r\n  min-height: 500px;\r\n  width: 100%;\r\n  font-size: 12px;\r\n}\r\n\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  overflow:auto; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table .label-cell {\r\n  font-weight: bold;\r\n  width: 225px;\r\n}\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n\r\n.animation-content {\r\n  max-width: 100%; \r\n  overflow-y: scroll;\r\n  height: 500px; \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n  height: 300px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n\r\n.flex-card img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -206,7 +206,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cfc98504b8';
+framework7Component.id = 'eb9ee2e378';
 framework7Component.style = `
 
 
@@ -398,7 +398,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3639fef332';
+framework7Component.id = '1f91b0bf22';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -510,7 +510,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '87311ec905';
+framework7Component.id = '958a2cfe6d';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -641,7 +641,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7a62a01f4e';
+framework7Component.id = '3ef27f01b6';
 framework7Component.style = `
 
 
@@ -1298,7 +1298,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5e3e8bbac0';
+framework7Component.id = 'd9ce5772e2';
 framework7Component.style = `
 
 `;
@@ -1948,7 +1948,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5a1113f66a';
+framework7Component.id = 'b318861501';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2166,7 +2166,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '48e3ee1d87';
+framework7Component.id = '90c923c62f';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2778,7 +2778,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c5905e6090';
+framework7Component.id = '82c350495d';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -2906,7 +2906,7 @@ function framework7Component(props, {
 
     $f7.infiniteScroll.destroy('#channel-index-infinite-scroll'); // Remove preloader
 
-    $('.infinite-scroll-preloader').hide();
+    $('#channel-index-preloader').hide();
   }
 
   async function infiniteScroll() {
@@ -3015,7 +3015,7 @@ function framework7Component(props, {
     return `
               <li class="card channel-card">
 
-                    <a href="/admin/channel/show/${channelViewModel.channel._id}/0">
+                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
                       <div class="card-header banner" ${channelViewModel.coverBanner ? `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
 
                             ${channelViewModel.coverImage ? `
@@ -3031,7 +3031,7 @@ function framework7Component(props, {
                         <div class="card-content card-content-padding">
                           
                             <div class="title">
-                              <a href="/admin/channel/show/${channelViewModel.channel._id}/0">
+                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
                                 ${channelViewModel.channel.title}
                               </a>
                             </div>
@@ -3083,7 +3083,7 @@ function framework7Component(props, {
           <div class="list cards-list virtual-list" id="channel-index-list">
           </div>
 
-          <div class="preloader infinite-scroll-preloader"></div>
+          <div class="preloader infinite-scroll-preloader" id="channel-index-preloader"></div>
 
         </div>
 
@@ -3101,245 +3101,8 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '79e894be87';
+framework7Component.id = '3ce01f8b7b';
 framework7Component.style = `
-
-`;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
-
-/***/ }),
-
-/***/ "./src/components/admin/channel/item-list.f7.html":
-/*!********************************************************!*\
-  !*** ./src/components/admin/channel/item-list.f7.html ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../service/core/container-service */ "./src/service/core/container-service.ts");
-/* harmony import */ var _service_item_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../service/item-service */ "./src/service/item-service.ts");
-/* harmony import */ var _repository_item_repository__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../repository/item-repository */ "./src/repository/item-repository.ts");
-/* harmony import */ var _token_navigator_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./token-navigator.f7.html */ "./src/components/admin/channel/token-navigator.f7.html");
-/** @jsx $jsx */
-
-
-
-
-
-
-function framework7Component(props, {
-  $,
-  $on,
-  $f7,
-  $update
-}) {
-  let itemService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_item_service__WEBPACK_IMPORTED_MODULE_1__.ItemService);
-  let channelViewModel = props.channel;
-  let items = props.items;
-  let pagingViewModel = props.paging;
-  let loadingItems = false;
-
-  const goFormSubmit = async e => {
-    e.preventDefault();
-    const val = $(e.currentTarget).children('.goto-input').val();
-
-    if (val > 0 && val <= pagingViewModel.endPage) {
-      $f7.views.main.router.navigate(`/admin/channel/show/${channelViewModel.channel._id}/${val * _repository_item_repository__WEBPACK_IMPORTED_MODULE_2__.ItemRepository.CHUNK_SIZE - _repository_item_repository__WEBPACK_IMPORTED_MODULE_2__.ItemRepository.CHUNK_SIZE}`);
-    } else {
-      $f7.dialog.alert("Invalid Page");
-    }
-  };
-
-  return function ($ctx) {
-      var $ = $ctx.$;
-      var $h = $ctx.$h;
-      var $root = $ctx.$root;
-      var $f7 = $ctx.$f7;
-      var $f7route = $ctx.$f7route;
-      var $f7router = $ctx.$f7router;
-      var $theme = $ctx.$theme;
-      var $update = $ctx.$update;
-      var $store = $ctx.$store;
-
-      return $h`
-
-    <div class="list cards-list">
-
-        <ul>
-
-          ${loadingItems ? $h`
-            <li class="card skeleton-text skeleton-effect-wave">
-              <div class="card-header">Loading Loading Loading</div>
-              <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
-                  interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
-                  Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
-                  aliquet urna, nec imperdiet felis sapien at enim.</div>
-            </li>              
-          ` : ''}
-
-
-          ${items?.length > 0 ? $h`
-
-            ${items?.map( (itemViewModel) => $h`
-            
-              ${itemViewModel.item.excerpt ? $h`
-                            
-                <li class="card item-card" data-href="/admin/item/show/${itemViewModel.item._id}">
-
-                  <div class="card-content">
-                      <div class="card-content card-content-padding">
-                        <div class="item-preview">
-
-                          <div class="left">
-        
-                            <a class="title" href="/admin/item/show/${itemViewModel.item._id}"> 
-                              ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
-                            </a>  
-                            
-                            ${itemViewModel.item.excerpt ? $h`
-                              <p>${itemViewModel.item.excerpt}</p>
-                            ` : `<span/>`}
-        
-                          </div>
-        
-                          ${itemViewModel.coverImage ? $h`
-                            <div class="right">
-                              <a class="title" href="/admin/item/show/${itemViewModel.item._id}">
-                                <img src="${itemViewModel.coverImage.url}" />
-                              </a>
-                            </div>
-                          ` : $h`<span/>`}
-        
-                        </div> 
-                      </div>
-                  </div>
-                </li>
-
-              ` : $h`
-
-                <li class="card animation-card" 
-                    innerHTML="${itemViewModel.animationContentHTML}"
-                    data-href="/admin/item/show/${itemViewModel.item._id}"
-                ></li>
-
-              `}
-            
-            `)}
-
-            ${pagingViewModel.endPage > 1 ? $h`
-
-              <div class="block segmented">
-
-                ${pagingViewModel?.showPrevious ? $h`
-                  <a 
-                    class="button button-outline" 
-                    href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.previousOffset}" 
-                    id="previous-${channelViewModel.channel._id}-${pagingViewModel.previousOffset}"
-                  >
-                    <span class="material-icons">arrow_back</span>
-                  </a>
-                ` : ''}
-  
-                <a class="button button-active" href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.offset}" >
-                  ${pagingViewModel.page} of ${pagingViewModel.endPage} 
-                </a>
-
-                ${pagingViewModel?.showNext ? $h`
-                  <a 
-                    class="button button-outline" 
-                    href="/admin/channel/show/${channelViewModel.channel._id}/${pagingViewModel.nextOffset}"
-                    id="next-${channelViewModel.channel._id}-${pagingViewModel.nextOffset}"
-                  >
-                    Next
-                    <span class="material-icons">arrow_forward</span>
-                  </a>
-                ` : ''}
-              </div>
-
-              <form class="block" @submit="${goFormSubmit}">
-                <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${pagingViewModel.page}" min="1" max="${pagingViewModel.endPage}" />
-                <span class="paging-label">Pages 1 - ${pagingViewModel.endPage}</span>
-                <button class="goto-button button button-small button-fill">Go</button>
-              </form>
-
-
-            ` : $h`<span/>`}
-
-            
-            <${_token_navigator_f7_html__WEBPACK_IMPORTED_MODULE_3__["default"]} channel=${channelViewModel.channel._id} />
-
-            <div class="block">
-              <br />
-            </div>
-
-          ` : $h`
-          
-            ${!loadingItems ? $h`
-              <li class="card item-card">
-                <div class="card-content">
-                  <div class="card-content card-content-padding">
-                    There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
-                  </div>
-                </div>
-              </li>
-            ` : $h`<span/>`}
-
-          `}
-        </ul>
-        
-    </div>
-
-`
-    }
-    ;
-}
-
-framework7Component.id = '5be7dd1603';
-framework7Component.style = `
-    .item-preview {
-        width: 100%;
-        display: flex;
-    }
-
-    .item-preview p {
-        margin-top: 5px;
-    }
-
-    .item-card .title {
-        color: #000000;
-        font-size: 23px;
-        font-weight: 700;
-    }
-
-    .item-preview .right {
-        flex: 0 0 150px;
-        /* do not grow, do not shrink, start at 250px */
-    }
-
-    .item-preview .right img {
-        max-width: 100%;
-    }
-
-    .item-preview .left {
-        flex: 1;
-        /* grow */
-    }
-
-    .menu-dropdown-link.menu-close {
-        color: #ffffff;
-    }
-
-    .channel-show-token-id {
-        color: rgb(79, 79, 79);
-    }
-
-
-
-
-    
 
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -3358,10 +3121,15 @@ framework7Component.style = `
 /* harmony export */ });
 /* harmony import */ var _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../service/core/container-service */ "./src/service/core/container-service.ts");
 /* harmony import */ var _service_channel_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../service/channel-service */ "./src/service/channel-service.ts");
-/* harmony import */ var _admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../admin/navbar.f7.html */ "./src/components/admin/navbar.f7.html");
-/* harmony import */ var _admin_channel_item_list_f7_html__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../admin/channel/item-list.f7.html */ "./src/components/admin/channel/item-list.f7.html");
+/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../service/web/item-web-service */ "./src/service/web/item-web-service.ts");
+/* harmony import */ var _repository_item_repository__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../repository/item-repository */ "./src/repository/item-repository.ts");
+/* harmony import */ var _admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../admin/navbar.f7.html */ "./src/components/admin/navbar.f7.html");
+/* harmony import */ var _token_navigator_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./token-navigator.f7.html */ "./src/components/admin/channel/token-navigator.f7.html");
 /* harmony import */ var hotkeys_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! hotkeys-js */ "./node_modules/hotkeys-js/dist/hotkeys.esm.js");
 /** @jsx $jsx */
+
+
+
 
 
 
@@ -3377,46 +3145,155 @@ function framework7Component(props, {
 }) {
   let channelService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_channel_service__WEBPACK_IMPORTED_MODULE_2__.ChannelService);
   let walletService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getWalletService();
+  let itemWebService = globalThis.container.get(_service_web_item_web_service__WEBPACK_IMPORTED_MODULE_3__.ItemWebService);
   let channelViewModel = props.channelViewModel;
-  let items = props.items;
-  let pagingViewModel = props.pagingViewModel;
+  let items = [];
+  let itemsShown = 0;
+  let hasMoreItems = true;
+  let loadingInProgress = false;
+  let pageCounter = 1;
+  let virtualList;
+  let totalItemCount = channelViewModel.itemCount;
   let showEdit = channelViewModel.editable;
 
   const truncateEthAddress = address => {
     return walletService.truncateEthAddress(address);
   };
 
+  const resizeListener = e => {
+    const viewPortWidth = getWidth();
+    virtualList.params.cols = viewPortWidth >= 1024 ? 5 : 2;
+    virtualList.update();
+    console.log("Resized...");
+  };
+
+  const getWidth = () => {
+    return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  };
+
+  const virtualListParams = {
+    el: '#item-list',
+    createUl: false,
+
+    renderItem(item) {
+      return getTemplate(item);
+    },
+
+    height: 300,
+    items: items,
+    cols: getWidth() >= 1024 ? 5 : 2,
+    emptyTemplate: `
+                <li class="item-content">
+                    <div class="item-inner">
+                        No items in collection.
+                    </div>
+                </li>
+                `
+  };
   $on('pageInit', async (e, page) => {
-    if (pagingViewModel.offset == 0) {
-      //Load cover banner into CSS
-      if (channelViewModel?.coverBanner?.url) {
-        document.getElementById(`show-channel-banner-${channelViewModel.channel._id}`).style.backgroundImage = `url(${channelViewModel.coverBanner.url})`;
-      } //Make links external
+    let firstPageItems = await itemWebService.listByChannel(channelViewModel.channel._id, _repository_item_repository__WEBPACK_IMPORTED_MODULE_4__.ItemRepository.CHUNK_SIZE, 0);
+    items.push(...firstPageItems);
+    itemsShown = firstPageItems.length; //Load cover banner into CSS
+
+    if (channelViewModel?.coverBanner?.url) {
+      document.getElementById(`show-channel-banner-${channelViewModel.channel._id}`).style.backgroundImage = `url(${channelViewModel.coverBanner.url})`;
+    } //Make links external
 
 
-      let links = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).getElementsByTagName('a');
+    let links = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).getElementsByTagName('a');
 
-      for (let link of links) {
-        link.classList.add('external');
-      }
+    for (let link of links) {
+      link.classList.add('external');
     }
 
     $(`.animation-container a`).addClass('external');
-    $('.animation-card').on('click', e => {
-      cardClick(e);
-    });
-    $('.item-card').on('click', e => {
-      cardClick(e);
-    });
+    window.addEventListener('resize', resizeListener);
+    createVirtualList();
+  });
+  $on('pageBeforeOut', async () => {
+    // unloadInfiniteScroll()
+    window.removeEventListener('resize', resizeListener); // document.getElementById("item-list-infinite-scroll").removeEventListener( 'infinite', infiniteScroll )
   });
 
-  const cardClick = e => {
-    const islink = e.currentTarget.tagName.toLowerCase() == "a" || e.target.tagName.toLowerCase() == "a";
+  const createVirtualList = () => {
+    virtualList = $f7.virtualList.create(virtualListParams);
 
-    if (!islink) {
-      let href = $(e.currentTarget).data('href');
-      $f7.views.main.router.navigate(href);
+    if (virtualList.items?.length < totalItemCount) {
+      document.getElementById("item-list-infinite-scroll").addEventListener('infinite', infiniteScroll);
+    } else {
+      $('#channel-item-list-preloader').hide();
     }
+  };
+
+  function unloadInfiniteScroll() {
+    console.log("Unload infinite scroll item list"); // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+
+    $f7.infiniteScroll.destroy('#item-list-infinite-scroll');
+    $f7.virtualList.destroy('#item-list');
+    virtualList = undefined;
+    $('#channel-item-list-preloader').hide();
+  }
+
+  async function infiniteScroll(e) {
+    // Exit, if loading in progress
+    if (loadingInProgress || !hasMoreItems) return;
+    console.log(`Infinite scrolling...`); // Set loading flag
+
+    loadingInProgress = true;
+
+    try {
+      let itemPage = await itemWebService.listByChannel(channelViewModel.channel._id, _repository_item_repository__WEBPACK_IMPORTED_MODULE_4__.ItemRepository.CHUNK_SIZE, itemsShown); //Count actual items                    
+
+      itemsShown += itemPage.length;
+
+      if (itemsShown >= totalItemCount) {
+        hasMoreItems = false;
+      }
+
+      virtualList.appendItems(itemPage);
+      pageCounter++;
+    } catch (ex) {
+      console.log(ex);
+    }
+
+    $f7.preloader.hide();
+
+    if (!hasMoreItems) {
+      unloadInfiniteScroll();
+    }
+
+    loadingInProgress = false;
+  }
+
+  function getTemplate(rowItemViewModel) {
+    return `<li class="flex-card">
+                  <a href="/admin/item/show/${rowItemViewModel.item._id}" class="item-link">
+                      <div class="card" >
+                          <div class="card-content">
+                              <div class="square">
+                                  <img src="${rowItemViewModel.coverImage?.url}"/>
+                              </div>
+                          </div>
+
+
+                          <div class="card-footer">
+                              ${rowItemViewModel.item.title ? rowItemViewModel.item.title + ' ' : ''} #${rowItemViewModel.item.tokenId}
+                          </div>
+                      </div>
+                  </a>
+              </li>
+      `;
+  }
+
+  const countItems = itemRows => {
+    //Count actual items
+    let itemCount = 0;
+
+    for (let itemRow of itemRows) {
+      itemCount += itemRow.items?.length;
+    }
+
+    return itemCount;
   };
 
   const deleteCollectionClick = async e => {
@@ -3448,126 +3325,125 @@ function framework7Component(props, {
 
   <div class="page" data-name="admin-show-collection">
 
-    <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_3__["default"]} />
+    <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]} />
 
 
     ${showEdit ? $h`
     <div class="fab fab-extended fab-right-bottom">
       <a href="/admin/item/create/${channelViewModel.channel._id}" class="text-color-black">
         <i class="material-icons">create</i>
-        <div class="fab-text">Create Blog NFT</div>
+        <div class="fab-text">Create Item</div>
       </a>
     </div>
     ` : $h``}
 
 
-    <div class="page-content" >
+    <div class="page-content infinite-scroll-content" id="item-list-infinite-scroll">
 
       <div class="row">
         <div class="col-100 large-66 center">
 
-          ${pagingViewModel?.offset == 0 ? $h`
+          <div class="card channel-card-show">
 
-            <div class="card channel-card-show">
+            <div class="card-header banner" id="show-channel-banner-${channelViewModel.channel._id}">
 
-              <div class="card-header banner" id="show-channel-banner-${channelViewModel.channel._id}">
-  
-                <div class="float-right">
-                  <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;"
-                    href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
-                </div>
-  
-  
-                ${channelViewModel?.coverImage ? $h`
-                <img src="${channelViewModel.coverImage.url}" class="avatar" />
-                ` : $h`
-                <i class="material-icons avatar">image</i>
-                `}
-  
+              <div class="float-right">
+                <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;"
+                  href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
               </div>
-  
-              <div class="card-content">
-  
-                <div class="card-content card-content-padding">
-  
-                  <div class="float-right">
-  
-                    <div class="menu-item menu-item-dropdown">
-                      <div class="menu-item-content icon-only">
-                        <div class="menu-item-content">
-                          <i class="material-icons">more_vert</i>
-                        </div>
-                      </div>
-                      <div class="menu-dropdown menu-dropdown-right">
-                        <div class="menu-dropdown-content">
-                          <a class="menu-dropdown-link menu-close"
-                            href="/admin/channel/fork/${channelViewModel?.channel?._id}">Fork</a>
-  
-                          ${showEdit ? $h`
-                          <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
-                          <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a>
-                          <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
-                          ` : $h``}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-  
-                  
-                  <div class="title">${channelViewModel?.channel?.title}</div>
-  
-                  ${channelViewModel?.authorDisplayName ? $h`
-                  <div class="name">
-                    By <a
-                      href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
-                  </div>
-                  ` : ``}
-    
-  
-                  <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
-                    innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
-  
 
-                      
-                  <div class="info row no-gap">
-  
-                    <div class="col-33 info-box left">
-                      <span class="value">${channelViewModel.itemCount}</span>
-                      <label>items</label>
-                    </div>
-  
-                    <div class="col-33 info-box left">
-                      <span class="value">${channelViewModel.channel.mintPrice}</span>
-                      <label>mint price</label>
-                    </div>
-  
-                    <div class="col-33 info-box">
-                      <span class="value">${channelViewModel.channel.royaltyPercent}%</span>
-                      <label>royalty</label>
-                    </div>
-  
-                  </div>
 
-                  ${channelViewModel.channel.contractAddress ? $h`
-                  <div class="contract-address">
-                    <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
-                  </div>
-                  ` : $h``}
-  
-                </div>
-  
-              </div>
-  
+              ${channelViewModel?.coverImage ? $h`
+              <img src="${channelViewModel.coverImage.url}" class="avatar" />
+              ` : $h`
+              <i class="material-icons avatar">image</i>
+              `}
+
             </div>
-          
-          ` : $h`
-            <ul class="breadcrumb">
-              <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
-              <li>Page ${pagingViewModel.page}</li>
-            </ul>
-          `}
 
-          <${_admin_channel_item_list_f7_html__WEBPACK_IMPORTED_MODULE_4__["default"]} channel=${channelViewModel} items=${items} paging=${pagingViewModel} />
+            <div class="card-content">
+
+              <div class="card-content card-content-padding">
+
+                <div class="float-right">
+
+                  <div class="menu-item menu-item-dropdown">
+                    <div class="menu-item-content icon-only">
+                      <div class="menu-item-content">
+                        <i class="material-icons">more_vert</i>
+                      </div>
+                    </div>
+                    <div class="menu-dropdown menu-dropdown-right">
+                      <div class="menu-dropdown-content">
+                        <a class="menu-dropdown-link menu-close"
+                          href="/admin/channel/fork/${channelViewModel?.channel?._id}">Fork</a>
+
+                        ${showEdit ? $h`
+                        <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                        <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a>
+                        <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
+                        ` : $h``}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                
+                <div class="title">${channelViewModel?.channel?.title}</div>
+
+                ${channelViewModel?.authorDisplayName ? $h`
+                <div class="name">
+                  By <a
+                    href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+                </div>
+                ` : ``}
+  
+
+                <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
+                  innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
+
+
+                    
+                <div class="info row no-gap">
+
+                  <div class="col-33 info-box left">
+                    <span class="value">${channelViewModel.itemCount}</span>
+                    <label>items</label>
+                  </div>
+
+                  <div class="col-33 info-box left">
+                    <span class="value">${channelViewModel.channel.mintPrice}</span>
+                    <label>mint price</label>
+                  </div>
+
+                  <div class="col-33 info-box">
+                    <span class="value">${channelViewModel.channel.royaltyPercent}%</span>
+                    <label>royalty</label>
+                  </div>
+
+                </div>
+
+                ${channelViewModel.channel.contractAddress ? $h`
+                <div class="contract-address">
+                  <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
+                </div>
+                ` : $h``}
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="block-title block-title-medium">Items</div>
+
+          <${_token_navigator_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]} channel=${channelViewModel.channel._id} />
+
+          <div class="list cards-list virtual-list" id="item-list" >
+            <ul class="item-flex"></ul>
+          </div>
+
+          <div class="preloader infinite-scroll-preloader" id="channel-item-list-preloader"></div>
 
         </div>
       </div>
@@ -3582,7 +3458,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a4e04133e3';
+framework7Component.id = '2ac4481c08';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3692,6 +3568,12 @@ framework7Component.style = `
   }
 
   .contract-address {
+    margin-top: 10px;
+  }
+
+  #item-list {
+    margin-left: 5px;
+    margin-right: 5px;
     margin-top: 10px;
   }
 
@@ -3852,7 +3734,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c98282153b';
+framework7Component.id = '19cc91d154';
 framework7Component.style = `
     
 `;
@@ -3942,7 +3824,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8cae183005';
+framework7Component.id = 'c3ee0288dc';
 framework7Component.style = `
     
 `;
@@ -3981,7 +3863,8 @@ function framework7Component(props, {
     e.preventDefault();
     const val = $(e.currentTarget).children('.goto-input').val(); //Look up item by tokenId
 
-    let item = await itemService.getByTokenId(channelId, val.toString());
+    let item = await itemService.getByTokenId(channelId, parseInt(val.toString()));
+    console.log(channelId, item, val);
 
     if (item) {
       $f7.views.main.router.navigate(`/admin/item/show/${item._id}`);
@@ -4014,7 +3897,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a79646c60a';
+framework7Component.id = 'd9e40c5d6a';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4149,7 +4032,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cbd0729f71';
+framework7Component.id = 'c33ff2e6d9';
 framework7Component.style = `
 
 `;
@@ -4305,7 +4188,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e61ce47610';
+framework7Component.id = 'fd23733eaf';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4398,7 +4281,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '40cc7850a1';
+framework7Component.id = 'a279a32a6a';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4476,7 +4359,7 @@ function framework7Component(props, {
   const formSubmit = async e => {
     e.preventDefault();
     let formData = $f7.form.convertToData('#create-item-form');
-    let showExcerpt = formData.showExcerpt === 'true'; //Get data
+    let showExcerpt = false; //Get data
 
     let item = Object.assign(new _dto_item__WEBPACK_IMPORTED_MODULE_10__.Item(), formData);
     item.coverImageAsAnimation = formData.coverImageAsAnimation === 'true'; //Get content from quill
@@ -4491,16 +4374,15 @@ function framework7Component(props, {
         traitType: as.traitType,
         value: as.value
       };
-    }); //Check showExcerpt
-
-    if (showExcerpt) {
-      item.excerpt = excerpt_html__WEBPACK_IMPORTED_MODULE_0___default()(await quillService.translateContent(item.content), {
-        pruneLength: 500
-      });
-    } else {
-      delete item.excerpt;
-    } //Build contentHTML for searching
-
+    }); // //Check showExcerpt
+    // if (showExcerpt) {
+    //     item.excerpt = excerptHtml(await quillService.translateContent(item.content), {
+    //         pruneLength: 500
+    //     })
+    // } else {
+    //   delete item.excerpt
+    // }
+    //Build contentHTML for searching
 
     item.contentHTML = await quillService.translateContent(item.content, true); //Save the cover image if necessary
 
@@ -4659,7 +4541,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'beba530ad5';
+framework7Component.id = '0f9353fcae';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4739,7 +4621,7 @@ function framework7Component(props, {
   const formSubmit = async e => {
     e.preventDefault();
     let formData = $f7.form.convertToData('#edit-item-form');
-    let showExcerpt = formData.showExcerpt === 'true'; //Get data
+    let showExcerpt = false; //Get data
 
     let item = Object.assign(new _dto_item__WEBPACK_IMPORTED_MODULE_9__.Item(), formData);
     item.coverImageAsAnimation = formData.coverImageAsAnimation === 'true';
@@ -4760,15 +4642,14 @@ function framework7Component(props, {
     } else {
       item.attributeSelections = [];
     } //Check showExcerpt
-
-
-    if (showExcerpt) {
-      item.excerpt = excerpt_html__WEBPACK_IMPORTED_MODULE_0___default()(await quillService.translateContent(item.content), {
-        pruneLength: 500
-      });
-    } else {
-      delete item.excerpt;
-    } //Build contentHTML for searching
+    // if (showExcerpt) {
+    //     item.excerpt = excerptHtml(await quillService.translateContent(item.content), {
+    //         pruneLength: 500
+    //     })
+    // } else {
+    //   delete item.excerpt
+    // }
+    //Build contentHTML for searching
 
 
     item.contentHTML = await quillService.translateContent(item.content, true); //Save the cover image if necessary
@@ -4956,7 +4837,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '19ee68f2a7';
+framework7Component.id = '25355b5342';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5064,10 +4945,6 @@ function framework7Component(props, {
     }
   };
 
-  const showExcerptOnChange = e => {
-    $('input[name="showExcerpt"]').val(e.currentTarget.checked);
-  };
-
   const coverImageAsAnimationOnChange = e => {
     $('input[name="coverImageAsAnimation"]').val(e.currentTarget.checked);
   };
@@ -5122,7 +4999,6 @@ function framework7Component(props, {
         <input type="hidden" name="dateCreated" value="${itemViewModel?.item?.dateCreated}" />
         <input type="hidden" name="tokenId" value="${itemViewModel?.item?.tokenId}" />
         <input type="hidden" name="channelId" value="${itemViewModel?.channel?._id}" />
-        <input type="hidden" name="showExcerpt" value="${itemViewModel.item.excerpt?.length > 0 ? 'true' : 'false'}" />
         <input type="hidden" name="coverImageAsAnimation" value="${itemViewModel.item.coverImageAsAnimation ? 'true' : 'false'}" />
 
         <div class="card">
@@ -5209,29 +5085,7 @@ function framework7Component(props, {
                             </div>
                 
                         </li>
-                
-                        <li>
-                            <label class="item-checkbox item-content">
-                
-                                ${itemViewModel.item.excerpt?.length > 0 ? $h`
-                                    <input type="checkbox" checked="true"  @change="${showExcerptOnChange}" />
-                                ` : $h`
-                                    <input type="checkbox"  @change="${showExcerptOnChange}" />
-                                `}
-                
                                 
-                                <i class="icon icon-checkbox"></i>
-                                <div class="item-inner">
-                                    <div class="item-title-row">
-                                        <div class="item-title">Show Excerpt</div>
-                                    </div>
-                                    <div class="item-text">
-                                        If this box is checked the Reader will display a ~500 character excerpt in the timeline for this item. Otherwise it will show the full HTML. The full HTML will always display on the item detail page.
-                                    </div>
-                                </div>
-                            </label>
-                        </li>
-                
                     </ul>
                 </div>
             </div>
@@ -5385,7 +5239,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9eddb28b90';
+framework7Component.id = '43619c5e9b';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5465,7 +5319,7 @@ function framework7Component(props, {
           horizontalPosition: 'left'
         }); //Redirect
 
-        $f7.views.main.router.navigate(`/admin/channel/show/${itemViewModel.channel._id}/0`);
+        $f7.views.main.router.navigate(`/admin/channel/show/${itemViewModel.channel._id}`);
       });
     } catch (ex) {
       uiService.showExceptionPopup(ex);
@@ -5544,7 +5398,7 @@ function framework7Component(props, {
                 <div class="block">
 
                     <h4>
-                        <a href="/admin/channel/show/${itemViewModel.channel._id}/0">${itemViewModel.channel.title}</a>
+                        <a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a>
                     </h4>
 
                     <h1>
@@ -5625,17 +5479,6 @@ function framework7Component(props, {
                   `)}
 
                   <tr>
-                    <td class="label-cell">Show Excerpt:</td> 
-                    <td>
-                      ${itemViewModel.item.excerpt ? $h`
-                        <span class="material-icons">check_box</span>
-                      ` : $h`
-                        <span class="material-icons">check_box_outline_blank</span>
-                      `}
-                    </td>
-                  </tr>
-
-                  <tr>
                     <td class="label-cell">Cover Image:</td> 
                     <td><img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" /></td>
                   </tr>
@@ -5689,7 +5532,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '98caa004bf';
+framework7Component.id = '50b5c5b6aa';
 framework7Component.style = `
 
   .previous {
@@ -5895,7 +5738,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b38153b76b';
+framework7Component.id = 'c5ab852675';
 framework7Component.style = `
 
  .logo {
@@ -6098,7 +5941,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7e505ce9f9';
+framework7Component.id = 'e05a9066d5';
 framework7Component.style = `
 
   `;
@@ -6237,7 +6080,7 @@ function framework7Component(props, {
                 <div class="col-100 large-50 center">
 
                     <ul class="breadcrumb">
-                        <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+                        <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
                         <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
                         <li>Export To IPFS</li>
                     </ul>
@@ -6397,7 +6240,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9db13fbc75';
+framework7Component.id = 'e0f0f32130';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6582,7 +6425,7 @@ function framework7Component(props, {
         <div class="col-100 large-50 center">
 
           <ul class="breadcrumb">
-            <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+            <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
             <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
             <li>Fork Reader</li>
           </ul>
@@ -6671,7 +6514,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9df3e821d4';
+framework7Component.id = '9cf8a2db3b';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6757,7 +6600,7 @@ function framework7Component(props, {
           <div class="col-100 large-50 center">
 
             <ul class="breadcrumb">
-                <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+                <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
                 <li>Publish</li>
             </ul>
 
@@ -6909,7 +6752,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8adbf68339';
+framework7Component.id = 'a7389aeafc';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7012,7 +6855,7 @@ function framework7Component(props, {
           <div class="col-100 large-50 center">
 
             <ul class="breadcrumb">
-              <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+              <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
               <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
               <li>Publish to IPFS Host</li>
             </ul>
@@ -7108,7 +6951,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bc7400e895';
+framework7Component.id = '0a6591a398';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7271,7 +7114,7 @@ function framework7Component(props, {
           <div class="col-100 large-50 center">
 
             <ul class="breadcrumb">
-              <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+              <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
               <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
               <li>Publish to Pinning Service</li>
             </ul>
@@ -7412,7 +7255,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '29f30651fc';
+framework7Component.id = 'e5ef960540';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7544,7 +7387,7 @@ function framework7Component(props, {
           <div class="col-100 large-50 center">
 
             <ul class="breadcrumb">
-              <li><a href="/admin/channel/show/${channelViewModel.channel._id}/0">${channelViewModel.channel.title}</a></li>
+              <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
               <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
               <li>Publish Collection to Reader</li>
             </ul>
@@ -7650,7 +7493,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0a318df068';
+framework7Component.id = '158638a486';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -8018,7 +7861,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '91425459b7';
+framework7Component.id = '1e24c91918';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -8151,7 +7994,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '14f7c6bec4';
+framework7Component.id = 'd5f9126025';
 framework7Component.style = `
     
 `;
@@ -8773,20 +8616,19 @@ AuthorController = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ChannelController": () => (/* binding */ ChannelController)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 /* harmony import */ var _util_model_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/model-view */ "./src/util/model-view.ts");
-/* harmony import */ var _util_route_map__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../util/route-map */ "./src/util/route-map.ts");
+/* harmony import */ var _util_route_map__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../util/route-map */ "./src/util/route-map.ts");
 /* harmony import */ var _components_admin_channel_index_f7_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/admin/channel/index.f7.html */ "./src/components/admin/channel/index.f7.html");
 /* harmony import */ var _components_admin_channel_create_f7_html__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/admin/channel/create.f7.html */ "./src/components/admin/channel/create.f7.html");
-/* harmony import */ var _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/admin/channel/show.f7.html */ "./src/components/admin/channel/show.f7.html");
-/* harmony import */ var _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/admin/channel/edit.f7.html */ "./src/components/admin/channel/edit.f7.html");
+/* harmony import */ var _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/channel/show.f7.html */ "./src/components/admin/channel/show.f7.html");
+/* harmony import */ var _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/admin/channel/edit.f7.html */ "./src/components/admin/channel/edit.f7.html");
 /* harmony import */ var _components_admin_channel_create_menu_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/channel/create-menu.f7.html */ "./src/components/admin/channel/create-menu.f7.html");
 /* harmony import */ var _components_admin_channel_fork_f7_html__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/channel/fork.f7.html */ "./src/components/admin/channel/fork.f7.html");
-/* harmony import */ var _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/admin/channel/upgrade.f7.html */ "./src/components/admin/channel/upgrade.f7.html");
-/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
-/* harmony import */ var _service_core_paging_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../service/core/paging-service */ "./src/service/core/paging-service.ts");
-/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../service/web/item-web-service */ "./src/service/web/item-web-service.ts");
-/* harmony import */ var _repository_item_repository__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../repository/item-repository */ "./src/repository/item-repository.ts");
+/* harmony import */ var _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/admin/channel/upgrade.f7.html */ "./src/components/admin/channel/upgrade.f7.html");
+/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
+/* harmony import */ var _service_core_paging_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../service/core/paging-service */ "./src/service/core/paging-service.ts");
+/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../service/web/item-web-service */ "./src/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8796,7 +8638,6 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -8834,16 +8675,11 @@ let ChannelController = class ChannelController {
     }
     async show() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
-            const offset = parseInt(routeTo.params.offset);
             let channelViewModel = await this.channelWebService.get(routeTo.params.id);
-            let pagingViewModel = this.pagingService.buildPagingViewModel(offset, _repository_item_repository__WEBPACK_IMPORTED_MODULE_5__.ItemRepository.CHUNK_SIZE, channelViewModel.itemCount, 5);
-            let items = await this.itemWebService.listByChannel(routeTo.params.id, _repository_item_repository__WEBPACK_IMPORTED_MODULE_5__.ItemRepository.CHUNK_SIZE, offset);
             return {
-                channelViewModel: channelViewModel,
-                pagingViewModel: pagingViewModel,
-                items: items
+                channelViewModel: channelViewModel
             };
-        }, _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]);
+        }, _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]);
     }
     async edit() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8851,7 +8687,7 @@ let ChannelController = class ChannelController {
             return {
                 channelViewModel: channelViewModel
             };
-        }, _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_7__["default"]);
+        }, _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]);
     }
     async upgrade() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8859,56 +8695,56 @@ let ChannelController = class ChannelController {
             return {
                 channelViewModel: channelViewModel
             };
-        }, _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_8__["default"]);
+        }, _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_7__["default"]);
     }
 };
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "index", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/create"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/create"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "create", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/create-menu"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/create-menu"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "createMenu", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/fork"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/fork"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "fork", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/show/:id/:offset?"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/show/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "show", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/edit/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/edit/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "edit", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/upgrade/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/upgrade/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "upgrade", null);
 ChannelController = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_10__.injectable)(),
-    __metadata("design:paramtypes", [_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_11__.ChannelWebService,
-        _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_12__.ItemWebService,
-        _service_core_paging_service__WEBPACK_IMPORTED_MODULE_13__.PagingService])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_9__.injectable)(),
+    __metadata("design:paramtypes", [_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_10__.ChannelWebService,
+        _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_11__.ItemWebService,
+        _service_core_paging_service__WEBPACK_IMPORTED_MODULE_12__.PagingService])
 ], ChannelController);
 
 
@@ -10973,7 +10809,7 @@ let ItemRepository = class ItemRepository {
         }
     }
 };
-ItemRepository.CHUNK_SIZE = 10;
+ItemRepository.CHUNK_SIZE = 35;
 ItemRepository = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __metadata("design:paramtypes", [_service_core_database_service__WEBPACK_IMPORTED_MODULE_2__.DatabaseService])
@@ -12342,11 +12178,11 @@ let ImportService = class ImportService {
             this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`);
         }
         for (let theme of themes) {
-            delete theme._id;
-            delete theme._rev;
-            delete theme.lastUpdated;
-            delete theme.dateCreated;
-            delete theme["_rev_tree"];
+            // delete theme._id
+            // delete theme._rev
+            // delete theme.lastUpdated
+            // delete theme.dateCreated
+            // delete theme["_rev_tree"]
             theme.channelId = idMap.get(theme.channelId); //look up the new channel ID
             let themeObj = Object.assign(new _dto_theme__WEBPACK_IMPORTED_MODULE_6__.Theme(), theme);
             try {
@@ -12496,7 +12332,11 @@ let IpfsService = class IpfsService {
             return;
         this.initializing = true;
         console.log('Init IPFS');
-        let ipfsHost = await this.ipfsHostService.get();
+        let ipfsHost;
+        try {
+            ipfsHost = await this.ipfsHostService.get();
+        }
+        catch (ex) { }
         if (ipfsHost) {
             this.ipfs = (0,ipfs_http_client__WEBPACK_IMPORTED_MODULE_0__.create)({ url: ipfsHost.url });
         }
@@ -15107,13 +14947,30 @@ let ItemWebService = class ItemWebService {
         itemViewModel.next = await this.itemService.getNext(item);
         return itemViewModel;
     }
+    async getListViewModel(item, channel) {
+        let coverImage;
+        if (item.coverImageId) {
+            try {
+                let image = await this.imageService.get(item.coverImageId);
+                coverImage = {
+                    cid: image.cid,
+                    url: await this.imageService.getUrl(image)
+                };
+            }
+            catch (ex) { }
+        }
+        return {
+            item: item,
+            coverImage: coverImage
+        };
+    }
     async listByChannel(channelId, limit, skip) {
         let result = [];
         let items = await this.itemService.listByChannel(channelId, limit, skip);
         //Get channel
         const channel = await this.channelService.get(channelId);
         for (let item of items) {
-            result.push(await this.getViewModel(item, channel));
+            result.push(await this.getListViewModel(item, channel));
         }
         return result;
     }

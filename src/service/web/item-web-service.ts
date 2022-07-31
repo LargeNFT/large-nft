@@ -20,6 +20,7 @@ import { AnimationViewModel } from "../../dto/viewmodel/animation-view-model";
 import { QuillService } from "../quill-service";
 import { ThemeService } from "../theme-service";
 import { Theme } from "../../dto/theme";
+import { ItemListViewModel } from "dto/viewmodel/item-list-view-model";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
@@ -197,9 +198,34 @@ class ItemWebService {
         return itemViewModel
     }
 
-    async listByChannel(channelId: string, limit: number, skip: number): Promise<ItemViewModel[]> {
+    async getListViewModel(item:Item, channel:Channel) : Promise<ItemListViewModel> {
+     
+        let coverImage
 
-        let result: ItemViewModel[] = []
+        if (item.coverImageId) {
+
+            try {
+                let image:Image = await this.imageService.get(item.coverImageId)
+            
+                coverImage = {
+                    cid: image.cid,
+                    url: await this.imageService.getUrl(image)
+                }
+            } catch(ex) {}
+
+        }
+
+        return {
+            item: item,
+            coverImage: coverImage
+        }
+
+
+    }
+
+    async listByChannel(channelId: string, limit: number, skip: number): Promise<ItemListViewModel[]> {
+
+        let result: ItemListViewModel[] = []
 
         let items: Item[] = await this.itemService.listByChannel(channelId, limit, skip)
 
@@ -207,7 +233,7 @@ class ItemWebService {
         const channel:Channel = await this.channelService.get(channelId)
 
         for (let item of items) {
-            result.push(await this.getViewModel(item, channel))
+            result.push(await this.getListViewModel(item, channel))
         }
 
         return result

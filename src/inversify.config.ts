@@ -99,7 +99,11 @@ import { AnimationService } from './service/animation-service';
 import { AnimationRepository } from './repository/animation-repository';
 import { ImportService } from './service/core/import-service';
 //@ts-ignore
+
+
 import * as IPFS from 'ipfs-core'
+import { create } from 'ipfs-http-client'
+
 import { ThemeService } from './service/theme-service';
 import { ThemeRepository } from './repository/theme-repository';
 import { StaticPageRepository } from './repository/static-page-repository';
@@ -254,6 +258,10 @@ function getMainContainer() {
 
     })
 
+  })
+
+  container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
+    return create({ url: url })
   })
 
 

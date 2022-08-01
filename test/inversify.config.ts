@@ -126,7 +126,8 @@ async function getContainer() {
         return IPFS.create(ipfsOptions())
     })
 
-
+    container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
+    })
 
     await cleanup()
 

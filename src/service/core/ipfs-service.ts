@@ -1,8 +1,6 @@
 import { inject, injectable } from "inversify"
 import { IpfsHostService } from "./ipfs-host-service"
-import { create } from 'ipfs-http-client'
-import { IpfsHost } from "../../dto/ipfs-host"
-import { Channel } from "../../dto/channel"
+
 
 
 @injectable()
@@ -17,6 +15,7 @@ class IpfsService {
 
   constructor(
     @inject('ipfsInit') private ipfsInit,
+    @inject('ipfsRemoteInit') private ipfsRemoteInit,
     private ipfsHostService:IpfsHostService
   ) {}
 
@@ -36,12 +35,11 @@ class IpfsService {
     } catch(ex) {}
 
     if (ipfsHost) {
-      this.ipfs = create({ url: ipfsHost.url })
+      this.ipfs = await this.ipfsRemoteInit(ipfsHost.url)
     } else {
       this.ipfs = await this.ipfsInit()
     }
 
-  
     //TODO: 
 
 

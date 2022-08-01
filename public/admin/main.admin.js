@@ -206,7 +206,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'eb9ee2e378';
+framework7Component.id = '4d0d5cf197';
 framework7Component.style = `
 
 
@@ -398,7 +398,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1f91b0bf22';
+framework7Component.id = 'cf29cb451f';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -510,7 +510,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '958a2cfe6d';
+framework7Component.id = '6a91966e6e';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -641,7 +641,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3ef27f01b6';
+framework7Component.id = '07edef3bf8';
 framework7Component.style = `
 
 
@@ -1298,7 +1298,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd9ce5772e2';
+framework7Component.id = 'bd88ab45f0';
 framework7Component.style = `
 
 `;
@@ -1948,7 +1948,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b318861501';
+framework7Component.id = 'f9c709a0fd';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2166,7 +2166,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '90c923c62f';
+framework7Component.id = '09e36233d3';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2778,7 +2778,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '82c350495d';
+framework7Component.id = '4a77356d5f';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3101,7 +3101,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3ce01f8b7b';
+framework7Component.id = '7a7069b031';
 framework7Component.style = `
 
 `;
@@ -3458,7 +3458,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2ac4481c08';
+framework7Component.id = '5001cae809';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3734,7 +3734,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '19cc91d154';
+framework7Component.id = 'df592082e7';
 framework7Component.style = `
     
 `;
@@ -3824,7 +3824,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c3ee0288dc';
+framework7Component.id = 'd0c2cc710e';
 framework7Component.style = `
     
 `;
@@ -3897,7 +3897,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd9e40c5d6a';
+framework7Component.id = '6732e8fe7a';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4032,7 +4032,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c33ff2e6d9';
+framework7Component.id = '327d883597';
 framework7Component.style = `
 
 `;
@@ -4188,7 +4188,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fd23733eaf';
+framework7Component.id = '6076fc6f94';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4281,7 +4281,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a279a32a6a';
+framework7Component.id = 'fe15cfffca';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4541,7 +4541,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0f9353fcae';
+framework7Component.id = 'f773dd8d20';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4837,7 +4837,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '25355b5342';
+framework7Component.id = '2915c349c2';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5239,7 +5239,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '43619c5e9b';
+framework7Component.id = 'cf78315949';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5532,7 +5532,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '50b5c5b6aa';
+framework7Component.id = '57ee1d0003';
 framework7Component.style = `
 
   .previous {
@@ -5738,7 +5738,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c5ab852675';
+framework7Component.id = '6440abbbf2';
 framework7Component.style = `
 
  .logo {
@@ -5941,7 +5941,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e05a9066d5';
+framework7Component.id = '479aafe212';
 framework7Component.style = `
 
   `;
@@ -6240,7 +6240,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e0f0f32130';
+framework7Component.id = 'c0bac2b86d';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6514,7 +6514,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9cf8a2db3b';
+framework7Component.id = '0c636572ea';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6752,7 +6752,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a7389aeafc';
+framework7Component.id = '23c9fbc1d4';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6951,7 +6951,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0a6591a398';
+framework7Component.id = 'a9305eb6b1';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7255,7 +7255,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e5ef960540';
+framework7Component.id = '2607629b4d';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7493,7 +7493,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '158638a486';
+framework7Component.id = 'b3389775c3';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7861,7 +7861,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1e24c91918';
+framework7Component.id = '50c798e019';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -7994,7 +7994,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd5f9126025';
+framework7Component.id = 'baa42455c1';
 framework7Component.style = `
     
 `;
@@ -10028,76 +10028,77 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "container": () => (/* binding */ container),
 /* harmony export */   "getMainContainer": () => (/* binding */ getMainContainer)
 /* harmony export */ });
-/* harmony import */ var _components_admin_app_f7_html__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/admin/app.f7.html */ "./src/components/admin/app.f7.html");
-/* harmony import */ var _service_core_ui_service__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./service/core/ui-service */ "./src/service/core/ui-service.ts");
-/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/web3-provider.js");
-/* harmony import */ var _service_core_queue_service__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/core/queue-service */ "./src/service/core/queue-service.ts");
-/* harmony import */ var _service_quill_service__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/quill-service */ "./src/service/quill-service.ts");
-/* harmony import */ var _service_quill_editor_service__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/quill-editor-service */ "./src/service/quill-editor-service.ts");
-/* harmony import */ var _service_core_upload_service__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/core/upload-service */ "./src/service/core/upload-service.ts");
-/* harmony import */ var _service_image_service__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/image-service */ "./src/service/image-service.ts");
-/* harmony import */ var _service_author_service__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/author-service */ "./src/service/author-service.ts");
-/* harmony import */ var _service_channel_service__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/channel-service */ "./src/service/channel-service.ts");
-/* harmony import */ var _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/core/ipfs-service */ "./src/service/core/ipfs-service.ts");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/container/container.js");
-/* harmony import */ var _service_core_database_service__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/database-service */ "./src/service/core/database-service.ts");
-/* harmony import */ var _repository_channel_repository__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./repository/channel-repository */ "./src/repository/channel-repository.ts");
-/* harmony import */ var _repository_item_repository__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./repository/item-repository */ "./src/repository/item-repository.ts");
-/* harmony import */ var _repository_image_repository__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./repository/image-repository */ "./src/repository/image-repository.ts");
-/* harmony import */ var _repository_author_repository__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./repository/author-repository */ "./src/repository/author-repository.ts");
-/* harmony import */ var _service_core_schema_service__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/core/schema-service */ "./src/service/core/schema-service.ts");
-/* harmony import */ var _service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/core/wallet-service-impl */ "./src/service/core/wallet-service-impl.ts");
-/* harmony import */ var _service_core_types__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/core/types */ "./src/service/core/types.ts");
-/* harmony import */ var _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/core/pinning-service */ "./src/service/core/pinning-service.ts");
-/* harmony import */ var _repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./repository/pinning-api-repository */ "./src/repository/pinning-api-repository.ts");
-/* harmony import */ var _service_item_service__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/item-service */ "./src/service/item-service.ts");
-/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/web/item-web-service */ "./src/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_author_web_service__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/web/author-web-service */ "./src/service/web/author-web-service.ts");
-/* harmony import */ var _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/core/gitlab-service */ "./src/service/core/gitlab-service.ts");
-/* harmony import */ var _repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./repository/gitlab-repository */ "./src/repository/gitlab-repository.ts");
-/* harmony import */ var _service_core_routing_service__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/core/routing-service */ "./src/service/core/routing-service.ts");
-/* harmony import */ var _controller_channel_controller__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./controller/channel-controller */ "./src/controller/channel-controller.ts");
-/* harmony import */ var _controller_item_controller__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./controller/item-controller */ "./src/controller/item-controller.ts");
-/* harmony import */ var _controller_author_controller__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./controller/author-controller */ "./src/controller/author-controller.ts");
-/* harmony import */ var _controller_settings_controller__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./controller/settings-controller */ "./src/controller/settings-controller.ts");
-/* harmony import */ var _service_core_publish_service__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/core/publish-service */ "./src/service/core/publish-service.ts");
-/* harmony import */ var _controller_connect_controller__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./controller/connect-controller */ "./src/controller/connect-controller.ts");
-/* harmony import */ var _controller_publish_controller__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./controller/publish-controller */ "./src/controller/publish-controller.ts");
-/* harmony import */ var _service_core_paging_service__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./service/core/paging-service */ "./src/service/core/paging-service.ts");
-/* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
-/* harmony import */ var framework7_components_dialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! framework7/components/dialog */ "./node_modules/framework7/components/dialog/dialog.js");
-/* harmony import */ var framework7_components_toast__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7/components/toast */ "./node_modules/framework7/components/toast/toast.js");
-/* harmony import */ var framework7_components_preloader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framework7/components/preloader */ "./node_modules/framework7/components/preloader/preloader.js");
-/* harmony import */ var framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! framework7/components/virtual-list */ "./node_modules/framework7/components/virtual-list/virtual-list.js");
-/* harmony import */ var framework7_components_list_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! framework7/components/list-index */ "./node_modules/framework7/components/list-index/list-index.js");
-/* harmony import */ var framework7_components_card__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! framework7/components/card */ "./node_modules/framework7/components/card/card.js");
-/* harmony import */ var framework7_components_chip__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! framework7/components/chip */ "./node_modules/framework7/components/chip/chip.js");
-/* harmony import */ var framework7_components_popup__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! framework7/components/popup */ "./node_modules/framework7/components/popup/popup.js");
-/* harmony import */ var framework7_components_accordion__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! framework7/components/accordion */ "./node_modules/framework7/components/accordion/accordion.js");
-/* harmony import */ var framework7_components_popover__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! framework7/components/popover */ "./node_modules/framework7/components/popover/popover.js");
-/* harmony import */ var framework7_components_form__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! framework7/components/form */ "./node_modules/framework7/components/form/form.js");
-/* harmony import */ var framework7_components_input__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! framework7/components/input */ "./node_modules/framework7/components/input/input.js");
-/* harmony import */ var framework7_components_checkbox__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! framework7/components/checkbox */ "./node_modules/framework7/components/checkbox/checkbox.js");
-/* harmony import */ var framework7_components_radio__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! framework7/components/radio */ "./node_modules/framework7/components/radio/radio.js");
-/* harmony import */ var framework7_components_toggle__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! framework7/components/toggle */ "./node_modules/framework7/components/toggle/toggle.js");
-/* harmony import */ var framework7_components_range__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! framework7/components/range */ "./node_modules/framework7/components/range/range.js");
-/* harmony import */ var framework7_components_stepper__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! framework7/components/stepper */ "./node_modules/framework7/components/stepper/stepper.js");
-/* harmony import */ var framework7_components_smart_select__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! framework7/components/smart-select */ "./node_modules/framework7/components/smart-select/smart-select.js");
-/* harmony import */ var framework7_components_grid__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! framework7/components/grid */ "./node_modules/framework7/components/grid/grid.js");
-/* harmony import */ var framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! framework7/components/infinite-scroll */ "./node_modules/framework7/components/infinite-scroll/infinite-scroll.js");
-/* harmony import */ var framework7_components_menu__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! framework7/components/menu */ "./node_modules/framework7/components/menu/menu.js");
-/* harmony import */ var _service_svg_service__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/svg-service */ "./src/service/svg-service.ts");
-/* harmony import */ var _service_animation_service__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/animation-service */ "./src/service/animation-service.ts");
-/* harmony import */ var _repository_animation_repository__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./repository/animation-repository */ "./src/repository/animation-repository.ts");
-/* harmony import */ var _service_core_import_service__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/core/import-service */ "./src/service/core/import-service.ts");
+/* harmony import */ var _components_admin_app_f7_html__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/admin/app.f7.html */ "./src/components/admin/app.f7.html");
+/* harmony import */ var _service_core_ui_service__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/core/ui-service */ "./src/service/core/ui-service.ts");
+/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/web3-provider.js");
+/* harmony import */ var _service_core_queue_service__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/core/queue-service */ "./src/service/core/queue-service.ts");
+/* harmony import */ var _service_quill_service__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/quill-service */ "./src/service/quill-service.ts");
+/* harmony import */ var _service_quill_editor_service__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/quill-editor-service */ "./src/service/quill-editor-service.ts");
+/* harmony import */ var _service_core_upload_service__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/core/upload-service */ "./src/service/core/upload-service.ts");
+/* harmony import */ var _service_image_service__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/image-service */ "./src/service/image-service.ts");
+/* harmony import */ var _service_author_service__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/author-service */ "./src/service/author-service.ts");
+/* harmony import */ var _service_channel_service__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/channel-service */ "./src/service/channel-service.ts");
+/* harmony import */ var _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/container/container.js");
+/* harmony import */ var _service_core_database_service__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/core/database-service */ "./src/service/core/database-service.ts");
+/* harmony import */ var _repository_channel_repository__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./repository/channel-repository */ "./src/repository/channel-repository.ts");
+/* harmony import */ var _repository_item_repository__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./repository/item-repository */ "./src/repository/item-repository.ts");
+/* harmony import */ var _repository_image_repository__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./repository/image-repository */ "./src/repository/image-repository.ts");
+/* harmony import */ var _repository_author_repository__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./repository/author-repository */ "./src/repository/author-repository.ts");
+/* harmony import */ var _service_core_schema_service__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/core/schema-service */ "./src/service/core/schema-service.ts");
+/* harmony import */ var _service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/core/wallet-service-impl */ "./src/service/core/wallet-service-impl.ts");
+/* harmony import */ var _service_core_types__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/core/types */ "./src/service/core/types.ts");
+/* harmony import */ var _service_core_pinning_service__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/core/pinning-service */ "./src/service/core/pinning-service.ts");
+/* harmony import */ var _repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./repository/pinning-api-repository */ "./src/repository/pinning-api-repository.ts");
+/* harmony import */ var _service_item_service__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/item-service */ "./src/service/item-service.ts");
+/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/web/item-web-service */ "./src/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_author_web_service__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/web/author-web-service */ "./src/service/web/author-web-service.ts");
+/* harmony import */ var _service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/core/gitlab-service */ "./src/service/core/gitlab-service.ts");
+/* harmony import */ var _repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./repository/gitlab-repository */ "./src/repository/gitlab-repository.ts");
+/* harmony import */ var _service_core_routing_service__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./service/core/routing-service */ "./src/service/core/routing-service.ts");
+/* harmony import */ var _controller_channel_controller__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./controller/channel-controller */ "./src/controller/channel-controller.ts");
+/* harmony import */ var _controller_item_controller__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./controller/item-controller */ "./src/controller/item-controller.ts");
+/* harmony import */ var _controller_author_controller__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./controller/author-controller */ "./src/controller/author-controller.ts");
+/* harmony import */ var _controller_settings_controller__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./controller/settings-controller */ "./src/controller/settings-controller.ts");
+/* harmony import */ var _service_core_publish_service__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/core/publish-service */ "./src/service/core/publish-service.ts");
+/* harmony import */ var _controller_connect_controller__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./controller/connect-controller */ "./src/controller/connect-controller.ts");
+/* harmony import */ var _controller_publish_controller__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./controller/publish-controller */ "./src/controller/publish-controller.ts");
+/* harmony import */ var _service_core_paging_service__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/core/paging-service */ "./src/service/core/paging-service.ts");
+/* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
+/* harmony import */ var framework7_components_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7/components/dialog */ "./node_modules/framework7/components/dialog/dialog.js");
+/* harmony import */ var framework7_components_toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framework7/components/toast */ "./node_modules/framework7/components/toast/toast.js");
+/* harmony import */ var framework7_components_preloader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! framework7/components/preloader */ "./node_modules/framework7/components/preloader/preloader.js");
+/* harmony import */ var framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! framework7/components/virtual-list */ "./node_modules/framework7/components/virtual-list/virtual-list.js");
+/* harmony import */ var framework7_components_list_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! framework7/components/list-index */ "./node_modules/framework7/components/list-index/list-index.js");
+/* harmony import */ var framework7_components_card__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! framework7/components/card */ "./node_modules/framework7/components/card/card.js");
+/* harmony import */ var framework7_components_chip__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! framework7/components/chip */ "./node_modules/framework7/components/chip/chip.js");
+/* harmony import */ var framework7_components_popup__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! framework7/components/popup */ "./node_modules/framework7/components/popup/popup.js");
+/* harmony import */ var framework7_components_accordion__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! framework7/components/accordion */ "./node_modules/framework7/components/accordion/accordion.js");
+/* harmony import */ var framework7_components_popover__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! framework7/components/popover */ "./node_modules/framework7/components/popover/popover.js");
+/* harmony import */ var framework7_components_form__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! framework7/components/form */ "./node_modules/framework7/components/form/form.js");
+/* harmony import */ var framework7_components_input__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! framework7/components/input */ "./node_modules/framework7/components/input/input.js");
+/* harmony import */ var framework7_components_checkbox__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! framework7/components/checkbox */ "./node_modules/framework7/components/checkbox/checkbox.js");
+/* harmony import */ var framework7_components_radio__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! framework7/components/radio */ "./node_modules/framework7/components/radio/radio.js");
+/* harmony import */ var framework7_components_toggle__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! framework7/components/toggle */ "./node_modules/framework7/components/toggle/toggle.js");
+/* harmony import */ var framework7_components_range__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! framework7/components/range */ "./node_modules/framework7/components/range/range.js");
+/* harmony import */ var framework7_components_stepper__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! framework7/components/stepper */ "./node_modules/framework7/components/stepper/stepper.js");
+/* harmony import */ var framework7_components_smart_select__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! framework7/components/smart-select */ "./node_modules/framework7/components/smart-select/smart-select.js");
+/* harmony import */ var framework7_components_grid__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! framework7/components/grid */ "./node_modules/framework7/components/grid/grid.js");
+/* harmony import */ var framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! framework7/components/infinite-scroll */ "./node_modules/framework7/components/infinite-scroll/infinite-scroll.js");
+/* harmony import */ var framework7_components_menu__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! framework7/components/menu */ "./node_modules/framework7/components/menu/menu.js");
+/* harmony import */ var _service_svg_service__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/svg-service */ "./src/service/svg-service.ts");
+/* harmony import */ var _service_animation_service__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/animation-service */ "./src/service/animation-service.ts");
+/* harmony import */ var _repository_animation_repository__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./repository/animation-repository */ "./src/repository/animation-repository.ts");
+/* harmony import */ var _service_core_import_service__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/core/import-service */ "./src/service/core/import-service.ts");
 /* harmony import */ var ipfs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-core */ "./node_modules/ipfs-core/src/index.js");
-/* harmony import */ var _service_theme_service__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/theme-service */ "./src/service/theme-service.ts");
-/* harmony import */ var _repository_theme_repository__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./repository/theme-repository */ "./src/repository/theme-repository.ts");
-/* harmony import */ var _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./repository/static-page-repository */ "./src/repository/static-page-repository.ts");
-/* harmony import */ var _service_static_page_service__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/static-page-service */ "./src/service/static-page-service.ts");
-/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
-/* harmony import */ var _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./repository/ipfs-host-repository */ "./src/repository/ipfs-host-repository.ts");
+/* harmony import */ var ipfs_http_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ipfs-http-client */ "./node_modules/ipfs-http-client/src/index.js");
+/* harmony import */ var _service_theme_service__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/theme-service */ "./src/service/theme-service.ts");
+/* harmony import */ var _repository_theme_repository__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./repository/theme-repository */ "./src/repository/theme-repository.ts");
+/* harmony import */ var _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./repository/static-page-repository */ "./src/repository/static-page-repository.ts");
+/* harmony import */ var _service_static_page_service__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/static-page-service */ "./src/service/static-page-service.ts");
+/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
+/* harmony import */ var _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./repository/ipfs-host-repository */ "./src/repository/ipfs-host-repository.ts");
 
 
 
@@ -10193,24 +10194,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 // Install F7 Components using .use() method on Framework7 class:
-framework7__WEBPACK_IMPORTED_MODULE_1__["default"].use([framework7_components_dialog__WEBPACK_IMPORTED_MODULE_2__["default"], framework7_components_toast__WEBPACK_IMPORTED_MODULE_3__["default"], framework7_components_preloader__WEBPACK_IMPORTED_MODULE_4__["default"], framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_5__["default"], framework7_components_list_index__WEBPACK_IMPORTED_MODULE_6__["default"], framework7_components_card__WEBPACK_IMPORTED_MODULE_7__["default"], framework7_components_chip__WEBPACK_IMPORTED_MODULE_8__["default"],
-    framework7_components_form__WEBPACK_IMPORTED_MODULE_9__["default"], framework7_components_input__WEBPACK_IMPORTED_MODULE_10__["default"], framework7_components_checkbox__WEBPACK_IMPORTED_MODULE_11__["default"], framework7_components_radio__WEBPACK_IMPORTED_MODULE_12__["default"], framework7_components_toggle__WEBPACK_IMPORTED_MODULE_13__["default"], framework7_components_range__WEBPACK_IMPORTED_MODULE_14__["default"], framework7_components_stepper__WEBPACK_IMPORTED_MODULE_15__["default"], framework7_components_smart_select__WEBPACK_IMPORTED_MODULE_16__["default"], framework7_components_grid__WEBPACK_IMPORTED_MODULE_17__["default"], framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_18__["default"], framework7_components_menu__WEBPACK_IMPORTED_MODULE_19__["default"], framework7_components_popup__WEBPACK_IMPORTED_MODULE_20__["default"], framework7_components_accordion__WEBPACK_IMPORTED_MODULE_21__["default"],
-    framework7_components_popover__WEBPACK_IMPORTED_MODULE_22__["default"]
+framework7__WEBPACK_IMPORTED_MODULE_2__["default"].use([framework7_components_dialog__WEBPACK_IMPORTED_MODULE_3__["default"], framework7_components_toast__WEBPACK_IMPORTED_MODULE_4__["default"], framework7_components_preloader__WEBPACK_IMPORTED_MODULE_5__["default"], framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_6__["default"], framework7_components_list_index__WEBPACK_IMPORTED_MODULE_7__["default"], framework7_components_card__WEBPACK_IMPORTED_MODULE_8__["default"], framework7_components_chip__WEBPACK_IMPORTED_MODULE_9__["default"],
+    framework7_components_form__WEBPACK_IMPORTED_MODULE_10__["default"], framework7_components_input__WEBPACK_IMPORTED_MODULE_11__["default"], framework7_components_checkbox__WEBPACK_IMPORTED_MODULE_12__["default"], framework7_components_radio__WEBPACK_IMPORTED_MODULE_13__["default"], framework7_components_toggle__WEBPACK_IMPORTED_MODULE_14__["default"], framework7_components_range__WEBPACK_IMPORTED_MODULE_15__["default"], framework7_components_stepper__WEBPACK_IMPORTED_MODULE_16__["default"], framework7_components_smart_select__WEBPACK_IMPORTED_MODULE_17__["default"], framework7_components_grid__WEBPACK_IMPORTED_MODULE_18__["default"], framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_19__["default"], framework7_components_menu__WEBPACK_IMPORTED_MODULE_20__["default"], framework7_components_popup__WEBPACK_IMPORTED_MODULE_21__["default"], framework7_components_accordion__WEBPACK_IMPORTED_MODULE_22__["default"],
+    framework7_components_popover__WEBPACK_IMPORTED_MODULE_23__["default"]
 ]);
 let container;
 function getMainContainer() {
     if (container)
         return container;
-    container = new inversify__WEBPACK_IMPORTED_MODULE_23__.Container();
+    container = new inversify__WEBPACK_IMPORTED_MODULE_24__.Container();
     function framework7() {
-        let app = new framework7__WEBPACK_IMPORTED_MODULE_1__["default"]({
+        let app = new framework7__WEBPACK_IMPORTED_MODULE_2__["default"]({
             el: '#app',
             id: 'large',
             name: 'Large',
             theme: 'auto',
             //@ts-ignore
-            component: _components_admin_app_f7_html__WEBPACK_IMPORTED_MODULE_24__["default"],
+            component: _components_admin_app_f7_html__WEBPACK_IMPORTED_MODULE_25__["default"],
             navbar: {
                 hideOnPageScroll: true
             }
@@ -10226,7 +10228,7 @@ function getMainContainer() {
             //@ts-ignore
             window.web3Provider = window.ethereum;
             //@ts-ignore
-            return new ethers__WEBPACK_IMPORTED_MODULE_25__.Web3Provider(window.ethereum);
+            return new ethers__WEBPACK_IMPORTED_MODULE_26__.Web3Provider(window.ethereum);
         }
     }
     // container.bind('sketch').toConstantValue(sketch())
@@ -10234,49 +10236,49 @@ function getMainContainer() {
     container.bind("provider").toConstantValue(provider());
     container.bind("name").toConstantValue("Large");
     container.bind("framework7").toConstantValue(framework7());
-    container.bind(_controller_channel_controller__WEBPACK_IMPORTED_MODULE_26__.ChannelController).toSelf().inSingletonScope();
-    container.bind(_controller_item_controller__WEBPACK_IMPORTED_MODULE_27__.ItemController).toSelf().inSingletonScope();
-    container.bind(_controller_author_controller__WEBPACK_IMPORTED_MODULE_28__.AuthorController).toSelf().inSingletonScope();
-    container.bind(_controller_settings_controller__WEBPACK_IMPORTED_MODULE_29__.SettingsController).toSelf().inSingletonScope();
-    container.bind(_controller_connect_controller__WEBPACK_IMPORTED_MODULE_30__.ConnectController).toSelf().inSingletonScope();
-    container.bind(_controller_publish_controller__WEBPACK_IMPORTED_MODULE_31__.PublishController).toSelf().inSingletonScope();
-    container.bind(_service_core_ui_service__WEBPACK_IMPORTED_MODULE_32__.UiService).toSelf().inSingletonScope();
-    container.bind(_service_core_queue_service__WEBPACK_IMPORTED_MODULE_33__.QueueService).toSelf().inSingletonScope();
-    container.bind(_service_quill_service__WEBPACK_IMPORTED_MODULE_34__.QuillService).toSelf().inSingletonScope();
-    container.bind(_service_quill_editor_service__WEBPACK_IMPORTED_MODULE_35__.QuillEditorService).toSelf().inSingletonScope();
-    container.bind(_service_core_publish_service__WEBPACK_IMPORTED_MODULE_36__.PublishService).toSelf().inSingletonScope();
-    container.bind(_service_core_upload_service__WEBPACK_IMPORTED_MODULE_37__.UploadService).toSelf().inSingletonScope();
-    container.bind(_service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_38__.IpfsService).toSelf().inSingletonScope();
-    container.bind(_service_core_database_service__WEBPACK_IMPORTED_MODULE_39__.DatabaseService).toSelf().inSingletonScope();
-    container.bind(_service_core_schema_service__WEBPACK_IMPORTED_MODULE_40__.SchemaService).toSelf().inSingletonScope();
-    container.bind(_service_core_pinning_service__WEBPACK_IMPORTED_MODULE_41__.PinningService).toSelf().inSingletonScope();
-    container.bind(_service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_42__.GitlabService).toSelf().inSingletonScope();
-    container.bind(_service_core_routing_service__WEBPACK_IMPORTED_MODULE_43__.RoutingService).toSelf().inSingletonScope();
-    container.bind(_service_core_paging_service__WEBPACK_IMPORTED_MODULE_44__.PagingService).toSelf().inSingletonScope();
-    container.bind(_service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_45__.IpfsHostService).toSelf().inSingletonScope();
-    container.bind(_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_46__.ChannelWebService).toSelf().inSingletonScope();
-    container.bind(_service_web_item_web_service__WEBPACK_IMPORTED_MODULE_47__.ItemWebService).toSelf().inSingletonScope();
-    container.bind(_service_web_author_web_service__WEBPACK_IMPORTED_MODULE_48__.AuthorWebService).toSelf().inSingletonScope();
-    container.bind(_service_core_types__WEBPACK_IMPORTED_MODULE_49__["default"].WalletService).to(_service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_50__.WalletServiceImpl).inSingletonScope();
-    container.bind(_service_animation_service__WEBPACK_IMPORTED_MODULE_51__.AnimationService).toSelf().inSingletonScope();
-    container.bind(_service_author_service__WEBPACK_IMPORTED_MODULE_52__.AuthorService).toSelf().inSingletonScope();
-    container.bind(_service_channel_service__WEBPACK_IMPORTED_MODULE_53__.ChannelService).toSelf().inSingletonScope();
-    container.bind(_service_image_service__WEBPACK_IMPORTED_MODULE_54__.ImageService).toSelf().inSingletonScope();
-    container.bind(_service_item_service__WEBPACK_IMPORTED_MODULE_55__.ItemService).toSelf().inSingletonScope();
-    container.bind(_service_svg_service__WEBPACK_IMPORTED_MODULE_56__.SvgService).toSelf().inSingletonScope();
-    container.bind(_service_core_import_service__WEBPACK_IMPORTED_MODULE_57__.ImportService).toSelf().inSingletonScope();
-    container.bind(_service_theme_service__WEBPACK_IMPORTED_MODULE_58__.ThemeService).toSelf().inSingletonScope();
-    container.bind(_service_static_page_service__WEBPACK_IMPORTED_MODULE_59__.StaticPageService).toSelf().inSingletonScope();
-    container.bind(_repository_animation_repository__WEBPACK_IMPORTED_MODULE_60__.AnimationRepository).toSelf().inSingletonScope();
-    container.bind(_repository_channel_repository__WEBPACK_IMPORTED_MODULE_61__.ChannelRepository).toSelf().inSingletonScope();
-    container.bind(_repository_item_repository__WEBPACK_IMPORTED_MODULE_62__.ItemRepository).toSelf().inSingletonScope();
-    container.bind(_repository_image_repository__WEBPACK_IMPORTED_MODULE_63__.ImageRepository).toSelf().inSingletonScope();
-    container.bind(_repository_author_repository__WEBPACK_IMPORTED_MODULE_64__.AuthorRepository).toSelf().inSingletonScope();
-    container.bind(_repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_65__.PinningApiRepository).toSelf().inSingletonScope();
-    container.bind(_repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_66__.GitlabRepository).toSelf().inSingletonScope();
-    container.bind(_repository_theme_repository__WEBPACK_IMPORTED_MODULE_67__.ThemeRepository).toSelf().inSingletonScope();
-    container.bind(_repository_static_page_repository__WEBPACK_IMPORTED_MODULE_68__.StaticPageRepository).toSelf().inSingletonScope();
-    container.bind(_repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_69__.IpfsHostRepository).toSelf().inSingletonScope();
+    container.bind(_controller_channel_controller__WEBPACK_IMPORTED_MODULE_27__.ChannelController).toSelf().inSingletonScope();
+    container.bind(_controller_item_controller__WEBPACK_IMPORTED_MODULE_28__.ItemController).toSelf().inSingletonScope();
+    container.bind(_controller_author_controller__WEBPACK_IMPORTED_MODULE_29__.AuthorController).toSelf().inSingletonScope();
+    container.bind(_controller_settings_controller__WEBPACK_IMPORTED_MODULE_30__.SettingsController).toSelf().inSingletonScope();
+    container.bind(_controller_connect_controller__WEBPACK_IMPORTED_MODULE_31__.ConnectController).toSelf().inSingletonScope();
+    container.bind(_controller_publish_controller__WEBPACK_IMPORTED_MODULE_32__.PublishController).toSelf().inSingletonScope();
+    container.bind(_service_core_ui_service__WEBPACK_IMPORTED_MODULE_33__.UiService).toSelf().inSingletonScope();
+    container.bind(_service_core_queue_service__WEBPACK_IMPORTED_MODULE_34__.QueueService).toSelf().inSingletonScope();
+    container.bind(_service_quill_service__WEBPACK_IMPORTED_MODULE_35__.QuillService).toSelf().inSingletonScope();
+    container.bind(_service_quill_editor_service__WEBPACK_IMPORTED_MODULE_36__.QuillEditorService).toSelf().inSingletonScope();
+    container.bind(_service_core_publish_service__WEBPACK_IMPORTED_MODULE_37__.PublishService).toSelf().inSingletonScope();
+    container.bind(_service_core_upload_service__WEBPACK_IMPORTED_MODULE_38__.UploadService).toSelf().inSingletonScope();
+    container.bind(_service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_39__.IpfsService).toSelf().inSingletonScope();
+    container.bind(_service_core_database_service__WEBPACK_IMPORTED_MODULE_40__.DatabaseService).toSelf().inSingletonScope();
+    container.bind(_service_core_schema_service__WEBPACK_IMPORTED_MODULE_41__.SchemaService).toSelf().inSingletonScope();
+    container.bind(_service_core_pinning_service__WEBPACK_IMPORTED_MODULE_42__.PinningService).toSelf().inSingletonScope();
+    container.bind(_service_core_gitlab_service__WEBPACK_IMPORTED_MODULE_43__.GitlabService).toSelf().inSingletonScope();
+    container.bind(_service_core_routing_service__WEBPACK_IMPORTED_MODULE_44__.RoutingService).toSelf().inSingletonScope();
+    container.bind(_service_core_paging_service__WEBPACK_IMPORTED_MODULE_45__.PagingService).toSelf().inSingletonScope();
+    container.bind(_service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_46__.IpfsHostService).toSelf().inSingletonScope();
+    container.bind(_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_47__.ChannelWebService).toSelf().inSingletonScope();
+    container.bind(_service_web_item_web_service__WEBPACK_IMPORTED_MODULE_48__.ItemWebService).toSelf().inSingletonScope();
+    container.bind(_service_web_author_web_service__WEBPACK_IMPORTED_MODULE_49__.AuthorWebService).toSelf().inSingletonScope();
+    container.bind(_service_core_types__WEBPACK_IMPORTED_MODULE_50__["default"].WalletService).to(_service_core_wallet_service_impl__WEBPACK_IMPORTED_MODULE_51__.WalletServiceImpl).inSingletonScope();
+    container.bind(_service_animation_service__WEBPACK_IMPORTED_MODULE_52__.AnimationService).toSelf().inSingletonScope();
+    container.bind(_service_author_service__WEBPACK_IMPORTED_MODULE_53__.AuthorService).toSelf().inSingletonScope();
+    container.bind(_service_channel_service__WEBPACK_IMPORTED_MODULE_54__.ChannelService).toSelf().inSingletonScope();
+    container.bind(_service_image_service__WEBPACK_IMPORTED_MODULE_55__.ImageService).toSelf().inSingletonScope();
+    container.bind(_service_item_service__WEBPACK_IMPORTED_MODULE_56__.ItemService).toSelf().inSingletonScope();
+    container.bind(_service_svg_service__WEBPACK_IMPORTED_MODULE_57__.SvgService).toSelf().inSingletonScope();
+    container.bind(_service_core_import_service__WEBPACK_IMPORTED_MODULE_58__.ImportService).toSelf().inSingletonScope();
+    container.bind(_service_theme_service__WEBPACK_IMPORTED_MODULE_59__.ThemeService).toSelf().inSingletonScope();
+    container.bind(_service_static_page_service__WEBPACK_IMPORTED_MODULE_60__.StaticPageService).toSelf().inSingletonScope();
+    container.bind(_repository_animation_repository__WEBPACK_IMPORTED_MODULE_61__.AnimationRepository).toSelf().inSingletonScope();
+    container.bind(_repository_channel_repository__WEBPACK_IMPORTED_MODULE_62__.ChannelRepository).toSelf().inSingletonScope();
+    container.bind(_repository_item_repository__WEBPACK_IMPORTED_MODULE_63__.ItemRepository).toSelf().inSingletonScope();
+    container.bind(_repository_image_repository__WEBPACK_IMPORTED_MODULE_64__.ImageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_author_repository__WEBPACK_IMPORTED_MODULE_65__.AuthorRepository).toSelf().inSingletonScope();
+    container.bind(_repository_pinning_api_repository__WEBPACK_IMPORTED_MODULE_66__.PinningApiRepository).toSelf().inSingletonScope();
+    container.bind(_repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_67__.GitlabRepository).toSelf().inSingletonScope();
+    container.bind(_repository_theme_repository__WEBPACK_IMPORTED_MODULE_68__.ThemeRepository).toSelf().inSingletonScope();
+    container.bind(_repository_static_page_repository__WEBPACK_IMPORTED_MODULE_69__.StaticPageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_70__.IpfsHostRepository).toSelf().inSingletonScope();
     container.bind("ipfsInit").toConstantValue(async () => {
         return ipfs_core__WEBPACK_IMPORTED_MODULE_0__.create({
             // repo: Math.random().toString(36).substring(7),
@@ -10301,6 +10303,9 @@ function getMainContainer() {
                 }
             }
         });
+    });
+    container.bind("ipfsRemoteInit").toConstantValue(async (url) => {
+        return (0,ipfs_http_client__WEBPACK_IMPORTED_MODULE_1__.create)({ url: url });
     });
     //Attach container to window so we can easily access it from the browser console
     globalThis.container = container;
@@ -12301,10 +12306,9 @@ IpfsHostService = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "IpfsService": () => (/* binding */ IpfsService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var _ipfs_host_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
-/* harmony import */ var ipfs_http_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-http-client */ "./node_modules/ipfs-http-client/src/index.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var _ipfs_host_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12319,10 +12323,10 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 };
 
 
-
 let IpfsService = class IpfsService {
-    constructor(ipfsInit, ipfsHostService) {
+    constructor(ipfsInit, ipfsRemoteInit, ipfsHostService) {
         this.ipfsInit = ipfsInit;
+        this.ipfsRemoteInit = ipfsRemoteInit;
         this.ipfsHostService = ipfsHostService;
         this.peerCount = 0;
         this.initializing = false;
@@ -12338,7 +12342,7 @@ let IpfsService = class IpfsService {
         }
         catch (ex) { }
         if (ipfsHost) {
-            this.ipfs = (0,ipfs_http_client__WEBPACK_IMPORTED_MODULE_0__.create)({ url: ipfsHost.url });
+            this.ipfs = await this.ipfsRemoteInit(ipfsHost.url);
         }
         else {
             this.ipfs = await this.ipfsInit();
@@ -12371,9 +12375,10 @@ let IpfsService = class IpfsService {
     }
 };
 IpfsService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
-    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)('ipfsInit')),
-    __metadata("design:paramtypes", [Object, _ipfs_host_service__WEBPACK_IMPORTED_MODULE_3__.IpfsHostService])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.injectable)(),
+    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('ipfsInit')),
+    __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('ipfsRemoteInit')),
+    __metadata("design:paramtypes", [Object, Object, _ipfs_host_service__WEBPACK_IMPORTED_MODULE_2__.IpfsHostService])
 ], IpfsService);
 
 
@@ -12777,6 +12782,7 @@ let PublishService = class PublishService {
         var _a, _b;
         let flush = true;
         let directory = `/export/${exportBundle.channel._id}`;
+        console.log(this.ipfsService.ipfs);
         try {
             //TODO: investigate leaving files in place that will still exist for optimization reasons
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true, flush: true });

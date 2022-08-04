@@ -1,9 +1,15 @@
 import { merge } from 'webpack-merge'
 import path from 'path'
-import configs from './webpack.common'
+import common from './webpack.common'
 
 
 let mainConfigs = []
+
+
+let baseURI = "http://localhost:9081"
+let pathName = "/"
+
+let configs = common(baseURI, pathName)
 
 for (let config of configs) {
     //@ts-ignore

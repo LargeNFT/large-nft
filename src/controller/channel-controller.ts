@@ -15,7 +15,6 @@ import AdminChannelUpgradeComponent from '../components/admin/channel/upgrade.f7
 import { ChannelWebService } from "../service/web/channel-web-service";
 import { PagingService } from "../service/core/paging-service";
 import { ItemWebService } from "../service/web/item-web-service";
-import { ItemRepository } from "../repository/item-repository";
 
 
 
@@ -53,6 +52,14 @@ class ChannelController {
     @routeMap("/admin/channel/fork")
     async fork() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
+
+            console.log(routeTo)
+
+            return {
+                cid: routeTo.query.cid
+            }
+
+
         }, AdminChannelForkComponent)
     }
 

@@ -44,6 +44,23 @@ import { ConnectController } from './controller/connect-controller';
 import { PublishController } from './controller/publish-controller';
 import { PagingService } from './service/core/paging-service';
 
+
+import { SvgService } from './service/svg-service';
+import { AnimationService } from './service/animation-service';
+import { AnimationRepository } from './repository/animation-repository';
+import { ImportService } from './service/core/import-service';
+
+import * as IPFS from 'ipfs-core'
+import { create } from 'ipfs-http-client'
+
+import { ThemeService } from './service/theme-service';
+import { ThemeRepository } from './repository/theme-repository';
+import { StaticPageRepository } from './repository/static-page-repository';
+import { StaticPageService } from './service/static-page-service';
+import { IpfsHostService } from './service/core/ipfs-host-service';
+import { IpfsHostRepository } from './repository/ipfs-host-repository';
+
+
 //Init framework7
 //@ts-ignore
 import Framework7 from 'framework7';
@@ -94,24 +111,6 @@ import InfiniteScroll from 'framework7/components/infinite-scroll'
 import Menu from 'framework7/components/menu'
 
 
-import { SvgService } from './service/svg-service';
-import { AnimationService } from './service/animation-service';
-import { AnimationRepository } from './repository/animation-repository';
-import { ImportService } from './service/core/import-service';
-//@ts-ignore
-
-
-import * as IPFS from 'ipfs-core'
-import { create } from 'ipfs-http-client'
-
-import { ThemeService } from './service/theme-service';
-import { ThemeRepository } from './repository/theme-repository';
-import { StaticPageRepository } from './repository/static-page-repository';
-import { StaticPageService } from './service/static-page-service';
-import { IpfsHostService } from './service/core/ipfs-host-service';
-import { IpfsHostRepository } from './repository/ipfs-host-repository';
-
-
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
   Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup,Accordion,
@@ -122,7 +121,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
 let container: Container
 
 
-function getMainContainer() {
+function getMainContainer(baseURI:string, pathName:string) {
 
   if (container) return container
 
@@ -135,6 +134,9 @@ function getMainContainer() {
       id: 'large', // App bundle ID
       name: 'Large', // App name
       theme: 'auto', // Automatic theme detection
+
+      init: false,
+
       //@ts-ignore
       component: AppComponent,
       navbar: {
@@ -173,6 +175,9 @@ function getMainContainer() {
   container.bind("provider").toConstantValue(provider())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
+  container.bind("baseURI").toConstantValue(baseURI)
+  container.bind("pathName").toConstantValue(pathName)
+
 
 
 

@@ -10,7 +10,9 @@ class RoutingService {
 
     constructor(
         private uiService:UiService,
-        @inject("framework7") public app
+        @inject("framework7") public app,
+        @inject("baseURI") private baseURI,
+        @inject("pathName") private pathName
      ) {}
 
 

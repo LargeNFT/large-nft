@@ -85,7 +85,7 @@
                               <div class="item-content">
                                 <div class="item-inner">
                                   <div class="item-input-wrap">
-                                    <input type="text" name="hash" placeholder="Enter IPFS Hash" required />
+                                    <input type="text" name="hash" placeholder="Enter IPFS Hash" value="${cid ? cid : ''}" required />
                                     <span class="input-clear-button"></span>
                                   </div>
                                 </div>
@@ -181,6 +181,10 @@
 
     let ipfsReady = ipfsService.ipfs != undefined
     let peerCount = ipfsService.peerCount
+
+    let cid = props.cid
+
+    console.log(props)
 
     let forking = false
     let forkStatus 

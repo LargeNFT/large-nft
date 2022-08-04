@@ -10,6 +10,7 @@
     </div>
 
   </div>
+
 </template>
 
 <style>
@@ -30,7 +31,7 @@
 
     $f7ready(async () => {
 
-      let baseURI = window.location.pathname
+      // let baseURI = window.location.pathname
       let hash = window.location.hash?.length > 2 ? window.location.hash.substring(2) : undefined
 
       // console.log(baseURI)
@@ -39,6 +40,9 @@
       let uiService = ContainerService.getInstance(UiService)
       let walletService = ContainerService.getWalletService()
       let schemaService = ContainerService.getInstance(SchemaService)
+
+      let baseURI = ContainerService.getInstance("baseURI")
+      let pathName = ContainerService.getInstance("pathName")
 
       if (typeof window !== "undefined" && window['ethereum']) {
 
@@ -68,14 +72,14 @@
         
         await schemaService.loadWallet(walletAddress)
 
-        $f7.views.create('.view-main', {
+        const mainView = $f7.views.create('.view-main', {
           url: hash ? hash : '/',
           browserHistory: true,
           browserHistoryRoot: baseURI,
           reloadCurrent: true
         })
 
-        // $f7.views.main.router.navigate("/", { reloadCurrent : true })
+        // mainView.router.navigate("/", { reloadCurrent : true })
 
         uiService.hideSpinner()
 

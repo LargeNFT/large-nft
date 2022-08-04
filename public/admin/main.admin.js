@@ -145,13 +145,15 @@ function framework7Component(props, {
   $update
 }) {
   $f7ready(async () => {
-    let baseURI = window.location.pathname;
+    // let baseURI = window.location.pathname
     let hash = window.location.hash?.length > 2 ? window.location.hash.substring(2) : undefined; // console.log(baseURI)
     // console.log(hash)
 
     let uiService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_ui_service__WEBPACK_IMPORTED_MODULE_1__.UiService);
     let walletService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getWalletService();
     let schemaService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_schema_service__WEBPACK_IMPORTED_MODULE_2__.SchemaService);
+    let baseURI = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance("baseURI");
+    let pathName = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance("pathName");
 
     if (typeof window !== "undefined" && window['ethereum']) {
       await init(); //Listen for changes
@@ -170,12 +172,12 @@ function framework7Component(props, {
       await walletService.initWallet();
       let walletAddress = await walletService.getAddress();
       await schemaService.loadWallet(walletAddress);
-      $f7.views.create('.view-main', {
+      const mainView = $f7.views.create('.view-main', {
         url: hash ? hash : '/',
         browserHistory: true,
         browserHistoryRoot: baseURI,
         reloadCurrent: true
-      }); // $f7.views.main.router.navigate("/", { reloadCurrent : true })
+      }); // mainView.router.navigate("/", { reloadCurrent : true })
 
       uiService.hideSpinner();
     }
@@ -201,12 +203,13 @@ function framework7Component(props, {
     </div>
 
   </div>
+
 `
     }
     ;
 }
 
-framework7Component.id = '8c597ecf9e';
+framework7Component.id = '6b075f8630';
 framework7Component.style = `
 
 
@@ -398,7 +401,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4644e76b58';
+framework7Component.id = 'fec41a604b';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -510,7 +513,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'eb8f0b0fa3';
+framework7Component.id = 'd9e693434b';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -641,7 +644,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1c41685968';
+framework7Component.id = 'e71c52b3c6';
 framework7Component.style = `
 
 
@@ -1298,7 +1301,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4ecdd398c0';
+framework7Component.id = '00c43144f8';
 framework7Component.style = `
 
 `;
@@ -1948,7 +1951,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0892c06fd4';
+framework7Component.id = '482e3f3831';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1986,6 +1989,8 @@ function framework7Component(props, {
   let ipfsService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_2__.IpfsService);
   let ipfsReady = ipfsService.ipfs != undefined;
   let peerCount = ipfsService.peerCount;
+  let cid = props.cid;
+  console.log(props);
   let forking = false;
   let forkStatus;
   let forkOutput = "";
@@ -2120,7 +2125,7 @@ function framework7Component(props, {
                               <div class="item-content">
                                 <div class="item-inner">
                                   <div class="item-input-wrap">
-                                    <input type="text" name="hash" placeholder="Enter IPFS Hash" required />
+                                    <input type="text" name="hash" placeholder="Enter IPFS Hash" value="${cid ? cid : ''}" required />
                                     <span class="input-clear-button"></span>
                                   </div>
                                 </div>
@@ -2166,7 +2171,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c52674e113';
+framework7Component.id = 'c1521386b4';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2778,7 +2783,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '68e50a14fb';
+framework7Component.id = 'eac4325e8a';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3101,7 +3106,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4720cafc08';
+framework7Component.id = 'f3858060db';
 framework7Component.style = `
 
 `;
@@ -3458,7 +3463,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '01f90afbfc';
+framework7Component.id = '67ae6a476f';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3734,7 +3739,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1b68770883';
+framework7Component.id = 'c8e03e9e45';
 framework7Component.style = `
     
 `;
@@ -3824,7 +3829,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '50365e3d03';
+framework7Component.id = '957910361e';
 framework7Component.style = `
     
 `;
@@ -3897,7 +3902,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '6f7b764e7d';
+framework7Component.id = 'f517a8929d';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4032,7 +4037,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c7e0a832e5';
+framework7Component.id = 'f7eb2973c5';
 framework7Component.style = `
 
 `;
@@ -4188,7 +4193,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd1fef9e6cb';
+framework7Component.id = '50982045ec';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4281,7 +4286,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5dbe0e7ebc';
+framework7Component.id = '855929e59f';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4541,7 +4546,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '51ee9f31b5';
+framework7Component.id = '98583eb9ac';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4837,7 +4842,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3274ed170d';
+framework7Component.id = '7f4713d1e0';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5239,7 +5244,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '416b426aaf';
+framework7Component.id = '9d271446f2';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5532,7 +5537,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3fef677350';
+framework7Component.id = '337ae7b7d8';
 framework7Component.style = `
 
   .previous {
@@ -5738,7 +5743,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '667cb6023c';
+framework7Component.id = 'ed6fda970f';
 framework7Component.style = `
 
  .logo {
@@ -5941,7 +5946,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7188546e64';
+framework7Component.id = 'f4a8b843e7';
 framework7Component.style = `
 
   `;
@@ -6240,7 +6245,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'de0206a85c';
+framework7Component.id = 'bc82a52f6b';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6514,7 +6519,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5083d00173';
+framework7Component.id = 'dab2d3bb2a';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6752,7 +6757,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '95de375d61';
+framework7Component.id = '3e994c5105';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6951,7 +6956,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '55cc4b1336';
+framework7Component.id = '1a8683d43b';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7255,7 +7260,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7b3536e8cc';
+framework7Component.id = '45da1c87e0';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7493,7 +7498,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8aa8303024';
+framework7Component.id = 'f78e9c9807';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7861,7 +7866,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'db0bdbaeb7';
+framework7Component.id = '3773b053d8';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -7994,7 +7999,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9351887af4';
+framework7Component.id = '9b9e724892';
 framework7Component.style = `
     
 `;
@@ -8671,6 +8676,10 @@ let ChannelController = class ChannelController {
     }
     async fork() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
+            console.log(routeTo);
+            return {
+                cid: routeTo.query.cid
+            };
         }, _components_admin_channel_fork_f7_html__WEBPACK_IMPORTED_MODULE_4__["default"]);
     }
     async show() {
@@ -10006,12 +10015,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (async () => {
-    let container = (0,_inversify_config__WEBPACK_IMPORTED_MODULE_9__.getMainContainer)();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (async (baseURI, pathName) => {
+    let container = (0,_inversify_config__WEBPACK_IMPORTED_MODULE_9__.getMainContainer)(baseURI, pathName);
     let app = container.get("framework7");
     let routingService = container.get(_service_core_routing_service__WEBPACK_IMPORTED_MODULE_10__.RoutingService);
     //Initialize routing
     app.routes.push(...routingService.buildRoutesForContainer(container));
+    app.init();
 });
 
 
@@ -10065,6 +10075,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controller_connect_controller__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./controller/connect-controller */ "./src/controller/connect-controller.ts");
 /* harmony import */ var _controller_publish_controller__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./controller/publish-controller */ "./src/controller/publish-controller.ts");
 /* harmony import */ var _service_core_paging_service__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/core/paging-service */ "./src/service/core/paging-service.ts");
+/* harmony import */ var _service_svg_service__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/svg-service */ "./src/service/svg-service.ts");
+/* harmony import */ var _service_animation_service__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/animation-service */ "./src/service/animation-service.ts");
+/* harmony import */ var _repository_animation_repository__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./repository/animation-repository */ "./src/repository/animation-repository.ts");
+/* harmony import */ var _service_core_import_service__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/core/import-service */ "./src/service/core/import-service.ts");
+/* harmony import */ var ipfs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-core */ "./node_modules/ipfs-core/src/index.js");
+/* harmony import */ var ipfs_http_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ipfs-http-client */ "./node_modules/ipfs-http-client/src/index.js");
+/* harmony import */ var _service_theme_service__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/theme-service */ "./src/service/theme-service.ts");
+/* harmony import */ var _repository_theme_repository__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./repository/theme-repository */ "./src/repository/theme-repository.ts");
+/* harmony import */ var _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./repository/static-page-repository */ "./src/repository/static-page-repository.ts");
+/* harmony import */ var _service_static_page_service__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/static-page-service */ "./src/service/static-page-service.ts");
+/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
+/* harmony import */ var _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./repository/ipfs-host-repository */ "./src/repository/ipfs-host-repository.ts");
 /* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
 /* harmony import */ var framework7_components_dialog__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7/components/dialog */ "./node_modules/framework7/components/dialog/dialog.js");
 /* harmony import */ var framework7_components_toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framework7/components/toast */ "./node_modules/framework7/components/toast/toast.js");
@@ -10087,18 +10109,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var framework7_components_grid__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! framework7/components/grid */ "./node_modules/framework7/components/grid/grid.js");
 /* harmony import */ var framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! framework7/components/infinite-scroll */ "./node_modules/framework7/components/infinite-scroll/infinite-scroll.js");
 /* harmony import */ var framework7_components_menu__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! framework7/components/menu */ "./node_modules/framework7/components/menu/menu.js");
-/* harmony import */ var _service_svg_service__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/svg-service */ "./src/service/svg-service.ts");
-/* harmony import */ var _service_animation_service__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/animation-service */ "./src/service/animation-service.ts");
-/* harmony import */ var _repository_animation_repository__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./repository/animation-repository */ "./src/repository/animation-repository.ts");
-/* harmony import */ var _service_core_import_service__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/core/import-service */ "./src/service/core/import-service.ts");
-/* harmony import */ var ipfs_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-core */ "./node_modules/ipfs-core/src/index.js");
-/* harmony import */ var ipfs_http_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ipfs-http-client */ "./node_modules/ipfs-http-client/src/index.js");
-/* harmony import */ var _service_theme_service__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/theme-service */ "./src/service/theme-service.ts");
-/* harmony import */ var _repository_theme_repository__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./repository/theme-repository */ "./src/repository/theme-repository.ts");
-/* harmony import */ var _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./repository/static-page-repository */ "./src/repository/static-page-repository.ts");
-/* harmony import */ var _service_static_page_service__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/static-page-service */ "./src/service/static-page-service.ts");
-/* harmony import */ var _service_core_ipfs_host_service__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/core/ipfs-host-service */ "./src/service/core/ipfs-host-service.ts");
-/* harmony import */ var _repository_ipfs_host_repository__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./repository/ipfs-host-repository */ "./src/repository/ipfs-host-repository.ts");
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10182,26 +10204,13 @@ __webpack_require__.r(__webpack_exports__);
 
 //@ts-ignore
 
-
-
-
-
-//@ts-ignore
-
-
-
-
-
-
-
-
 // Install F7 Components using .use() method on Framework7 class:
 framework7__WEBPACK_IMPORTED_MODULE_2__["default"].use([framework7_components_dialog__WEBPACK_IMPORTED_MODULE_3__["default"], framework7_components_toast__WEBPACK_IMPORTED_MODULE_4__["default"], framework7_components_preloader__WEBPACK_IMPORTED_MODULE_5__["default"], framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_6__["default"], framework7_components_list_index__WEBPACK_IMPORTED_MODULE_7__["default"], framework7_components_card__WEBPACK_IMPORTED_MODULE_8__["default"], framework7_components_chip__WEBPACK_IMPORTED_MODULE_9__["default"],
     framework7_components_form__WEBPACK_IMPORTED_MODULE_10__["default"], framework7_components_input__WEBPACK_IMPORTED_MODULE_11__["default"], framework7_components_checkbox__WEBPACK_IMPORTED_MODULE_12__["default"], framework7_components_radio__WEBPACK_IMPORTED_MODULE_13__["default"], framework7_components_toggle__WEBPACK_IMPORTED_MODULE_14__["default"], framework7_components_range__WEBPACK_IMPORTED_MODULE_15__["default"], framework7_components_stepper__WEBPACK_IMPORTED_MODULE_16__["default"], framework7_components_smart_select__WEBPACK_IMPORTED_MODULE_17__["default"], framework7_components_grid__WEBPACK_IMPORTED_MODULE_18__["default"], framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_19__["default"], framework7_components_menu__WEBPACK_IMPORTED_MODULE_20__["default"], framework7_components_popup__WEBPACK_IMPORTED_MODULE_21__["default"], framework7_components_accordion__WEBPACK_IMPORTED_MODULE_22__["default"],
     framework7_components_popover__WEBPACK_IMPORTED_MODULE_23__["default"]
 ]);
 let container;
-function getMainContainer() {
+function getMainContainer(baseURI, pathName) {
     if (container)
         return container;
     container = new inversify__WEBPACK_IMPORTED_MODULE_24__.Container();
@@ -10211,6 +10220,7 @@ function getMainContainer() {
             id: 'large',
             name: 'Large',
             theme: 'auto',
+            init: false,
             //@ts-ignore
             component: _components_admin_app_f7_html__WEBPACK_IMPORTED_MODULE_25__["default"],
             navbar: {
@@ -10236,6 +10246,8 @@ function getMainContainer() {
     container.bind("provider").toConstantValue(provider());
     container.bind("name").toConstantValue("Large");
     container.bind("framework7").toConstantValue(framework7());
+    container.bind("baseURI").toConstantValue(baseURI);
+    container.bind("pathName").toConstantValue(pathName);
     container.bind(_controller_channel_controller__WEBPACK_IMPORTED_MODULE_27__.ChannelController).toSelf().inSingletonScope();
     container.bind(_controller_item_controller__WEBPACK_IMPORTED_MODULE_28__.ItemController).toSelf().inSingletonScope();
     container.bind(_controller_author_controller__WEBPACK_IMPORTED_MODULE_29__.AuthorController).toSelf().inSingletonScope();
@@ -11502,14 +11514,13 @@ ChannelService = __decorate([
 
 class ContainerService {
     static getInstance(clazz) {
-        let container = (0,_inversify_config__WEBPACK_IMPORTED_MODULE_0__.getMainContainer)();
-        return container.get(clazz);
+        return _inversify_config__WEBPACK_IMPORTED_MODULE_0__.container.get(clazz);
     }
     static getContainer() {
-        return (0,_inversify_config__WEBPACK_IMPORTED_MODULE_0__.getMainContainer)();
+        return _inversify_config__WEBPACK_IMPORTED_MODULE_0__.container;
     }
     static getWalletService() {
-        return (0,_inversify_config__WEBPACK_IMPORTED_MODULE_0__.getMainContainer)().get(_types__WEBPACK_IMPORTED_MODULE_1__["default"].WalletService);
+        return _inversify_config__WEBPACK_IMPORTED_MODULE_0__.container.get(_types__WEBPACK_IMPORTED_MODULE_1__["default"].WalletService);
     }
 }
 
@@ -13173,9 +13184,11 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 let RoutingService = class RoutingService {
-    constructor(uiService, app) {
+    constructor(uiService, app, baseURI, pathName) {
         this.uiService = uiService;
         this.app = app;
+        this.baseURI = baseURI;
+        this.pathName = pathName;
     }
     navigate(navigateParams, routeOptions, viewName = 'main') {
         console.log(`${viewName}: navigating to ${navigateParams.path}`);
@@ -13262,7 +13275,9 @@ let RoutingService = class RoutingService {
 RoutingService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("framework7")),
-    __metadata("design:paramtypes", [_ui_service__WEBPACK_IMPORTED_MODULE_3__.UiService, Object])
+    __param(2, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("baseURI")),
+    __param(3, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("pathName")),
+    __metadata("design:paramtypes", [_ui_service__WEBPACK_IMPORTED_MODULE_3__.UiService, Object, Object, Object])
 ], RoutingService);
 
 

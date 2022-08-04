@@ -32,7 +32,7 @@
   <%= htmlWebpackPlugin.tags.bodyTags %>
 
   <script type="module">
-    admin.default()
+    admin.default("<%= htmlWebpackPlugin.options.baseURI %>", "<%= htmlWebpackPlugin.options.pathName %>")
   </script>
 
 </body>

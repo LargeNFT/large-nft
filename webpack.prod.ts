@@ -1,5 +1,11 @@
 import { merge } from 'webpack-merge'
-import configs from './webpack.common'
+import common from './webpack.common'
+
+
+let baseURI = "https://gitlab.com/ptoner/large"
+let pathName = "/"
+
+let configs = common(baseURI, pathName)
 
 let mainConfigs = []
 

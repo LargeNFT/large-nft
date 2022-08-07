@@ -209,7 +209,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '6b075f8630';
+framework7Component.id = '3c9b233bf6';
 framework7Component.style = `
 
 
@@ -401,7 +401,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fec41a604b';
+framework7Component.id = '880d088c4e';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -513,7 +513,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd9e693434b';
+framework7Component.id = '0c9dac077e';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -588,7 +588,7 @@ function framework7Component(props, {
 
       return $h`
 
-  <div class="page" data-name="admin-create-channel">
+  <div class="page" data-name="admin-create-menu">
 
     <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_0__["default"]} />
 
@@ -623,12 +623,28 @@ function framework7Component(props, {
                     </div>
                     <div class="item-inner">
                       <div class="item-title-row">
-                        <div class="item-title">Fork Existing Collection</div>
+                        <div class="item-title">Fork Collection From IPFS Hash</div>
                       </div>
                     </div>
                   </div>
                 </a>
               </li>
+              <li>
+                <a href="/admin/channel/fork-contract" class="item-link">
+                  <div class="item-content">
+                    <div class="item-media">
+                      <i class="material-icons">fork_left</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Fork Collection From Contract</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+
+
             </ul>
           </div>
         </div>
@@ -644,7 +660,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e71c52b3c6';
+framework7Component.id = '58700f34b2';
 framework7Component.style = `
 
 
@@ -1301,7 +1317,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '00c43144f8';
+framework7Component.id = '42e537026e';
 framework7Component.style = `
 
 `;
@@ -1951,17 +1967,17 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '482e3f3831';
+framework7Component.id = '0501de3e68';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
 
-/***/ "./src/components/admin/channel/fork.f7.html":
-/*!***************************************************!*\
-  !*** ./src/components/admin/channel/fork.f7.html ***!
-  \***************************************************/
+/***/ "./src/components/admin/channel/fork-contract.f7.html":
+/*!************************************************************!*\
+  !*** ./src/components/admin/channel/fork-contract.f7.html ***!
+  \************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1989,8 +2005,7 @@ function framework7Component(props, {
   let ipfsService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_2__.IpfsService);
   let ipfsReady = ipfsService.ipfs != undefined;
   let peerCount = ipfsService.peerCount;
-  let cid = props.cid;
-  console.log(props);
+  let contractAddress = props.contractAddress;
   let forking = false;
   let forkStatus;
   let forkOutput = "";
@@ -2041,7 +2056,7 @@ function framework7Component(props, {
 
       return $h`
 
-  <div class="page" data-name="admin-create-channel">
+  <div class="page" data-name="admin-fork-contract">
 
     <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_3__["default"]} />
 
@@ -2050,70 +2065,78 @@ function framework7Component(props, {
       <div class="row">
         <form class="col-100 large-66 center" @submit="${formSubmit}" id="import-ipfs-hash">
 
-          <div class="block-title">Fork Collection</div>
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/create-menu">Create Collection</a></li>
+            <li>Fork Collection From Contract</li>
+          </ul>
+
+          <div class="block-title">Fork Collection From Contract</div>
 
           <div class="card">
+            <div class="card-content card-content-padding">
+              ${!ipfsReady ? $h`
+                <div class="ipfs-label">IPFS Initializing...</div>
+            ` : $h`
+                <div class="ipfs-label">
+                    Status: <a href="/admin/connect">IPFS Ready</a>
+                </div>
+            `}
+            </div>
+          </div>
+          
 
+          <div class="card">
             <div class="card-content">
                 <div class="card-content card-content-padding">
 
-                    ${!ipfsReady ? $h`
-                        <div class="ipfs-label">IPFS Initializing...</div>
-                    ` : $h`
-                        <div class="ipfs-label">
-                            <a href="/admin/connect">IPFS Ready</a>
-                        </div>
-                    `}
-
-                    ${forking ? $h`
-                        <div class="fork-label">
-                            Forking...
-                        </div>
-
-                        ${forkStatus? $h`
-                            <div class="fork-status">
-
-                                <div class="item">
-                                    <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
-                                </div>
-
-                                <div class="item"> 
-                                    <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
-                                </div>
-
-                                <div class="item">
-                                    <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
-                                </div>
-
-                                <div class="item">
-                                    <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
-                                </div>
-
-                                <div class="item">
-                                    <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
-                                </div>
-
-                                <div class="item">
-                                  <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
-                                </div>
-
-                                <div class="item">
-                                  <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
-                                </div>
-                
+                  ${forking ? $h`
+                    <div class="fork-label">
+                        Forking...
+                    </div>
+    
+                    ${forkStatus? $h`
+                        <div class="fork-status">
+    
+                            <div class="item">
+                                <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
                             </div>
-                        ` : $h`<span />`}
-
-                    ` : $h`
-                        <div class="fork-label" style="display:none;"></div>
-                    `}
-
-                    ${forkOutput ? $h`
-                        <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
-                    ` : $h`
-                        <div class="fork-output" style="display:none;"></div>
-                    `}
-
+    
+                            <div class="item"> 
+                                <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
+                            </div>
+    
+                            <div class="item">
+                                <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                            </div>
+    
+                            <div class="item">
+                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                            </div>
+    
+                            <div class="item">
+                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
+                            </div>
+    
+                            <div class="item">
+                              <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
+                            </div>
+    
+                            <div class="item">
+                              <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
+                            </div>
+            
+                        </div>
+                    ` : $h`<span />`}
+    
+                  ` : $h`
+                      <div class="fork-label" style="display:none;"></div>
+                  `}
+    
+                  ${forkOutput ? $h`
+                      <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
+                  ` : $h`
+                      <div class="fork-output" style="display:none;"></div>
+                  `}
 
 
                     ${ipfsReady & !forking ? $h`
@@ -2124,6 +2147,271 @@ function framework7Component(props, {
                             <a href="#" class="item-link">
                               <div class="item-content">
                                 <div class="item-inner">
+                                  <div class="item-title item-label">Contract Address</div>
+                                  <div class="item-input-wrap">
+                                    <input type="text" name="contractAddress" placeholder="Enter contract address" value="${contractAddress ? contractAddress : ''}" required />
+                                    <span class="input-clear-button"></span>
+                                  </div>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="row block">
+
+                        <div class="col-70"></div>
+          
+                        <button type="submit" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px;">
+                          <i class="material-icons">fork_left</i> Fork
+                        </button>
+          
+                      </div>
+
+                        
+                    ` : $h`
+                        <p></p>
+                    `}
+
+
+
+                </div>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+
+
+
+    </div>
+  </div>
+
+`
+    }
+    ;
+}
+
+framework7Component.id = '13c1d88c39';
+framework7Component.style = `
+  .ipfs-label,
+  .fork-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
+  }
+
+  .fork-output {
+      border: 1px solid #cccccc;
+      font-size: 13px;
+      width: 100%;
+      max-width: 100%;
+      padding: 5px;
+      height: 300px;
+      overflow-y: scroll;
+  }
+
+  .fork-status {
+      font-size: 14px;
+      padding: 10px;
+      border: 1px solid #f1f1f1;
+  }
+
+  .fork-status .item label {
+      font-weight: bold;
+      display: inline-block;
+      width: 180px;
+  }
+
+
+
+`;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
+
+/***/ }),
+
+/***/ "./src/components/admin/channel/fork.f7.html":
+/*!***************************************************!*\
+  !*** ./src/components/admin/channel/fork.f7.html ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../service/core/container-service */ "./src/service/core/container-service.ts");
+/* harmony import */ var _service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../service/core/ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var _service_core_import_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../service/core/import-service */ "./src/service/core/import-service.ts");
+/* harmony import */ var _admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../admin/navbar.f7.html */ "./src/components/admin/navbar.f7.html");
+/** @jsx $jsx */
+
+
+
+
+
+
+function framework7Component(props, {
+  $,
+  $on,
+  $f7,
+  $update
+}) {
+  let importService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_import_service__WEBPACK_IMPORTED_MODULE_1__.ImportService);
+  let ipfsService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_ipfs_service__WEBPACK_IMPORTED_MODULE_2__.IpfsService);
+  let ipfsReady = ipfsService.ipfs != undefined;
+  let peerCount = ipfsService.peerCount;
+  let cid = props.cid;
+  let forking = false;
+  let forkStatus;
+  let forkOutput = "";
+  $on('pageInit', async () => {
+    //Initialize IPFS
+    await ipfsService.init();
+    ipfsReady = ipfsService.ipfs != undefined;
+    await $update();
+  });
+
+  const formSubmit = async e => {
+    e.preventDefault();
+    let formData = $f7.form.convertToData('#import-ipfs-hash');
+    forking = true;
+    $update();
+    await importService.importFromIPFS(formData.hash);
+    forking = false;
+    $update();
+  };
+
+  $(document).on('fork-progress', async e => {
+    if (e.detail.message) {
+      forkOutput += `<p>${e.detail.message}</p>`;
+    }
+
+    forkStatus = e.detail.forkStatus;
+    $update();
+    let outputElement = document.getElementById('ipfs-fork-process');
+
+    if (outputElement) {
+      $(outputElement).scrollTop(outputElement.scrollHeight);
+    }
+  });
+  $(document).on('update-peers', async e => {
+    peerCount = e.detail.count;
+    $update();
+  });
+  return function ($ctx) {
+      var $ = $ctx.$;
+      var $h = $ctx.$h;
+      var $root = $ctx.$root;
+      var $f7 = $ctx.$f7;
+      var $f7route = $ctx.$f7route;
+      var $f7router = $ctx.$f7router;
+      var $theme = $ctx.$theme;
+      var $update = $ctx.$update;
+      var $store = $ctx.$store;
+
+      return $h`
+
+  <div class="page" data-name="admin-fork">
+
+    <${_admin_navbar_f7_html__WEBPACK_IMPORTED_MODULE_3__["default"]} />
+
+    <div class="page-content">
+
+      <div class="row">
+        <form class="col-100 large-66 center" @submit="${formSubmit}" id="import-ipfs-hash">
+
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/create-menu">Create Collection</a></li>
+            <li>Fork Collection From IPFS Hash</li>
+          </ul>
+
+          <div class="block-title">Fork Collection From IPFS Hash</div>
+
+          <div class="card">
+            <div class="card-content card-content-padding">
+              ${!ipfsReady ? $h`
+                <div class="ipfs-label">IPFS Initializing...</div>
+            ` : $h`
+                <div class="ipfs-label">
+                    Status: <a href="/admin/connect">IPFS Ready</a>
+                </div>
+            `}
+            </div>
+          </div>
+          
+
+          <div class="card">
+            <div class="card-content">
+                <div class="card-content card-content-padding">
+
+                  ${forking ? $h`
+                    <div class="fork-label">
+                        Forking...
+                    </div>
+    
+                    ${forkStatus? $h`
+                        <div class="fork-status">
+    
+                            <div class="item">
+                                <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
+                            </div>
+    
+                            <div class="item"> 
+                                <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
+                            </div>
+    
+                            <div class="item">
+                                <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                            </div>
+    
+                            <div class="item">
+                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                            </div>
+    
+                            <div class="item">
+                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
+                            </div>
+    
+                            <div class="item">
+                              <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
+                            </div>
+    
+                            <div class="item">
+                              <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
+                            </div>
+            
+                        </div>
+                    ` : $h`<span />`}
+    
+                  ` : $h`
+                      <div class="fork-label" style="display:none;"></div>
+                  `}
+    
+                  ${forkOutput ? $h`
+                      <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
+                  ` : $h`
+                      <div class="fork-output" style="display:none;"></div>
+                  `}
+
+
+                    ${ipfsReady & !forking ? $h`
+
+                      <p>
+                        Enter the IPFS hash of the Large collection to import. For this process to work the collection must have
+                        been built with Large otherwise use the <a href="/admin/channel/fork-contract">contract importer</a>.
+                      </p>
+
+                      <div class="list media-list">
+                        <ul>
+                          <li>
+                            <a href="#" class="item-link">
+                              <div class="item-content">
+                                <div class="item-inner">
+                                  <div class="item-title item-label">IPFS Hash</div>
                                   <div class="item-input-wrap">
                                     <input type="text" name="hash" placeholder="Enter IPFS Hash" value="${cid ? cid : ''}" required />
                                     <span class="input-clear-button"></span>
@@ -2154,7 +2442,6 @@ function framework7Component(props, {
 
                 </div>
             </div>
-
           </div>
 
 
@@ -2171,7 +2458,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c1521386b4';
+framework7Component.id = '4b4c4f7e47';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2783,7 +3070,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'eac4325e8a';
+framework7Component.id = 'f5ac4d81b0';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3106,7 +3393,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f3858060db';
+framework7Component.id = 'fafbdc86ff';
 framework7Component.style = `
 
 `;
@@ -3463,7 +3750,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '67ae6a476f';
+framework7Component.id = '5b8860ec96';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -3739,7 +4026,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c8e03e9e45';
+framework7Component.id = '4940300bb3';
 framework7Component.style = `
     
 `;
@@ -3829,7 +4116,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '957910361e';
+framework7Component.id = 'afbc1f4e49';
 framework7Component.style = `
     
 `;
@@ -3902,7 +4189,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f517a8929d';
+framework7Component.id = 'f64ba1f384';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4037,7 +4324,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f7eb2973c5';
+framework7Component.id = '35e6d67502';
 framework7Component.style = `
 
 `;
@@ -4193,7 +4480,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '50982045ec';
+framework7Component.id = '74b9e764c9';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4286,7 +4573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '855929e59f';
+framework7Component.id = '32d3c2d966';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4546,7 +4833,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '98583eb9ac';
+framework7Component.id = 'fc22190783';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -4842,7 +5129,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7f4713d1e0';
+framework7Component.id = 'f3be8e2ba9';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5244,7 +5531,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9d271446f2';
+framework7Component.id = '3198d19990';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5537,7 +5824,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '337ae7b7d8';
+framework7Component.id = 'c1770436cf';
 framework7Component.style = `
 
   .previous {
@@ -5743,7 +6030,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ed6fda970f';
+framework7Component.id = 'e031de0f1e';
 framework7Component.style = `
 
  .logo {
@@ -5946,7 +6233,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f4a8b843e7';
+framework7Component.id = '52ff15ebda';
 framework7Component.style = `
 
   `;
@@ -6107,7 +6394,7 @@ function framework7Component(props, {
                                     <div class="ipfs-label">IPFS Initializing...</div>
                                 ` : $h`
                                     <div class="ipfs-label">
-                                        <a href="/admin/connect">IPFS Ready</a>
+                                        Status: <a href="/admin/connect">IPFS Ready</a>
                                     </div>
                                 `}
 
@@ -6245,7 +6532,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bc82a52f6b';
+framework7Component.id = '81c0d2ea9a';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6519,7 +6806,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'dab2d3bb2a';
+framework7Component.id = '9ead76d9f7';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -6757,7 +7044,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3e994c5105';
+framework7Component.id = 'd4d8511147';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6956,7 +7243,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1a8683d43b';
+framework7Component.id = '0353aeca5c';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7260,7 +7547,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '45da1c87e0';
+framework7Component.id = '6ea41a412f';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7418,7 +7705,7 @@ function framework7Component(props, {
                                       <div class="ipfs-label">IPFS Initializing...</div>
                                     ` : $h`
                                         <div class="ipfs-label">
-                                            <a href="/admin/connect">IPFS Ready</a>
+                                            Status: <a href="/admin/connect">IPFS Ready</a>
                                         </div>
                                     `}
 
@@ -7498,7 +7785,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f78e9c9807';
+framework7Component.id = 'f21f6e9171';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7866,7 +8153,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3773b053d8';
+framework7Component.id = '1f2c90bb47';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -7999,7 +8286,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9b9e724892';
+framework7Component.id = 'd6eef19407';
 framework7Component.style = `
     
 `;
@@ -8621,19 +8908,20 @@ AuthorController = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ChannelController": () => (/* binding */ ChannelController)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 /* harmony import */ var _util_model_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/model-view */ "./src/util/model-view.ts");
-/* harmony import */ var _util_route_map__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../util/route-map */ "./src/util/route-map.ts");
+/* harmony import */ var _util_route_map__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../util/route-map */ "./src/util/route-map.ts");
 /* harmony import */ var _components_admin_channel_index_f7_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/admin/channel/index.f7.html */ "./src/components/admin/channel/index.f7.html");
 /* harmony import */ var _components_admin_channel_create_f7_html__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/admin/channel/create.f7.html */ "./src/components/admin/channel/create.f7.html");
-/* harmony import */ var _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/channel/show.f7.html */ "./src/components/admin/channel/show.f7.html");
-/* harmony import */ var _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/admin/channel/edit.f7.html */ "./src/components/admin/channel/edit.f7.html");
+/* harmony import */ var _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/admin/channel/show.f7.html */ "./src/components/admin/channel/show.f7.html");
+/* harmony import */ var _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/admin/channel/edit.f7.html */ "./src/components/admin/channel/edit.f7.html");
 /* harmony import */ var _components_admin_channel_create_menu_f7_html__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/channel/create-menu.f7.html */ "./src/components/admin/channel/create-menu.f7.html");
 /* harmony import */ var _components_admin_channel_fork_f7_html__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/channel/fork.f7.html */ "./src/components/admin/channel/fork.f7.html");
-/* harmony import */ var _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/admin/channel/upgrade.f7.html */ "./src/components/admin/channel/upgrade.f7.html");
-/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
-/* harmony import */ var _service_core_paging_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../service/core/paging-service */ "./src/service/core/paging-service.ts");
-/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../service/web/item-web-service */ "./src/service/web/item-web-service.ts");
+/* harmony import */ var _components_admin_channel_fork_contract_f7_html__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/channel/fork-contract.f7.html */ "./src/components/admin/channel/fork-contract.f7.html");
+/* harmony import */ var _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/admin/channel/upgrade.f7.html */ "./src/components/admin/channel/upgrade.f7.html");
+/* harmony import */ var _service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../service/web/channel-web-service */ "./src/service/web/channel-web-service.ts");
+/* harmony import */ var _service_core_paging_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../service/core/paging-service */ "./src/service/core/paging-service.ts");
+/* harmony import */ var _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../service/web/item-web-service */ "./src/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8643,6 +8931,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -8676,11 +8965,17 @@ let ChannelController = class ChannelController {
     }
     async fork() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
-            console.log(routeTo);
             return {
                 cid: routeTo.query.cid
             };
         }, _components_admin_channel_fork_f7_html__WEBPACK_IMPORTED_MODULE_4__["default"]);
+    }
+    async forkContract() {
+        return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
+            return {
+                contractAddress: routeTo.query.contractAddress
+            };
+        }, _components_admin_channel_fork_contract_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]);
     }
     async show() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8688,7 +8983,7 @@ let ChannelController = class ChannelController {
             return {
                 channelViewModel: channelViewModel
             };
-        }, _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_5__["default"]);
+        }, _components_admin_channel_show_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]);
     }
     async edit() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8696,7 +8991,7 @@ let ChannelController = class ChannelController {
             return {
                 channelViewModel: channelViewModel
             };
-        }, _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_6__["default"]);
+        }, _components_admin_channel_edit_f7_html__WEBPACK_IMPORTED_MODULE_7__["default"]);
     }
     async upgrade() {
         return new _util_model_view__WEBPACK_IMPORTED_MODULE_0__.ModelView(async (routeTo) => {
@@ -8704,56 +8999,62 @@ let ChannelController = class ChannelController {
             return {
                 channelViewModel: channelViewModel
             };
-        }, _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_7__["default"]);
+        }, _components_admin_channel_upgrade_f7_html__WEBPACK_IMPORTED_MODULE_8__["default"]);
     }
 };
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "index", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/create"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/create"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "create", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/create-menu"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/create-menu"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "createMenu", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/fork"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/fork"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "fork", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/show/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/fork-contract"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ChannelController.prototype, "forkContract", null);
+__decorate([
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/show/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "show", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/edit/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/edit/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "edit", null);
 __decorate([
-    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_8__.routeMap)("/admin/channel/upgrade/:id"),
+    (0,_util_route_map__WEBPACK_IMPORTED_MODULE_9__.routeMap)("/admin/channel/upgrade/:id"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "upgrade", null);
 ChannelController = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_9__.injectable)(),
-    __metadata("design:paramtypes", [_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_10__.ChannelWebService,
-        _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_11__.ItemWebService,
-        _service_core_paging_service__WEBPACK_IMPORTED_MODULE_12__.PagingService])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_10__.injectable)(),
+    __metadata("design:paramtypes", [_service_web_channel_web_service__WEBPACK_IMPORTED_MODULE_11__.ChannelWebService,
+        _service_web_item_web_service__WEBPACK_IMPORTED_MODULE_12__.ItemWebService,
+        _service_core_paging_service__WEBPACK_IMPORTED_MODULE_13__.PagingService])
 ], ChannelController);
 
 
@@ -10317,6 +10618,8 @@ function getMainContainer(baseURI, pathName) {
         });
     });
     container.bind("ipfsRemoteInit").toConstantValue(async (url) => {
+        if (!url)
+            return;
         return (0,ipfs_http_client__WEBPACK_IMPORTED_MODULE_1__.create)({ url: url });
     });
     //Attach container to window so we can easily access it from the browser console
@@ -11980,26 +12283,32 @@ GitlabService = GitlabService_1 = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ImportService": () => (/* binding */ ImportService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var _dto_author__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/author */ "./src/dto/author.ts");
-/* harmony import */ var _dto_channel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dto/channel */ "./src/dto/channel.ts");
-/* harmony import */ var _dto_item__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../dto/item */ "./src/dto/item.ts");
-/* harmony import */ var _dto_image__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dto/image */ "./src/dto/image.ts");
-/* harmony import */ var _animation_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../animation-service */ "./src/service/animation-service.ts");
-/* harmony import */ var _author_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../author-service */ "./src/service/author-service.ts");
-/* harmony import */ var _channel_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../channel-service */ "./src/service/channel-service.ts");
-/* harmony import */ var _image_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../image-service */ "./src/service/image-service.ts");
-/* harmony import */ var _item_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../item-service */ "./src/service/item-service.ts");
-/* harmony import */ var _ipfs_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ipfs-service */ "./src/service/core/ipfs-service.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./types */ "./src/service/core/types.ts");
-/* harmony import */ var _dto_animation__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../dto/animation */ "./src/dto/animation.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var _dto_author__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../dto/author */ "./src/dto/author.ts");
+/* harmony import */ var _dto_channel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../dto/channel */ "./src/dto/channel.ts");
+/* harmony import */ var _dto_item__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../dto/item */ "./src/dto/item.ts");
+/* harmony import */ var _dto_image__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../dto/image */ "./src/dto/image.ts");
+/* harmony import */ var _animation_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../animation-service */ "./src/service/animation-service.ts");
+/* harmony import */ var _author_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../author-service */ "./src/service/author-service.ts");
+/* harmony import */ var _channel_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../channel-service */ "./src/service/channel-service.ts");
+/* harmony import */ var _image_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../image-service */ "./src/service/image-service.ts");
+/* harmony import */ var _item_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../item-service */ "./src/service/item-service.ts");
+/* harmony import */ var _ipfs_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./types */ "./src/service/core/types.ts");
+/* harmony import */ var _dto_animation__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../dto/animation */ "./src/dto/animation.ts");
 /* harmony import */ var it_to_buffer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! it-to-buffer */ "./node_modules/it-to-buffer/index.js");
 /* harmony import */ var it_to_buffer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(it_to_buffer__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _dto_theme__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../dto/theme */ "./src/dto/theme.ts");
-/* harmony import */ var _theme_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../theme-service */ "./src/service/theme-service.ts");
-/* harmony import */ var _dto_static_page__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../dto/static-page */ "./src/dto/static-page.ts");
-/* harmony import */ var _static_page_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../static-page-service */ "./src/service/static-page-service.ts");
+/* harmony import */ var _dto_theme__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../dto/theme */ "./src/dto/theme.ts");
+/* harmony import */ var _theme_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../theme-service */ "./src/service/theme-service.ts");
+/* harmony import */ var _dto_static_page__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../dto/static-page */ "./src/dto/static-page.ts");
+/* harmony import */ var _static_page_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../static-page-service */ "./src/service/static-page-service.ts");
+/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/contracts/lib.esm/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var uint8arrays_concat__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! uint8arrays/concat */ "./node_modules/uint8arrays/esm/src/concat.js");
+/* harmony import */ var it_all__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! it-all */ "./node_modules/it-all/index.js");
+/* harmony import */ var it_all__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(it_all__WEBPACK_IMPORTED_MODULE_3__);
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12012,6 +12321,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
+
+
+
 
 
 
@@ -12044,7 +12357,7 @@ let ImportService = class ImportService {
         this.contracts = contracts;
     }
     async importFromIPFS(cid) {
-        var _a, _b;
+        var _a, _b, _c;
         let forkStatus = {
             animations: { saved: 0, total: 0 },
             images: { saved: 0, total: 0 },
@@ -12089,7 +12402,7 @@ let ImportService = class ImportService {
             delete author.lastUpdated;
             delete author.dateCreated;
             delete author["_rev_tree"];
-            let authorObj = Object.assign(new _dto_author__WEBPACK_IMPORTED_MODULE_1__.Author(), author);
+            let authorObj = Object.assign(new _dto_author__WEBPACK_IMPORTED_MODULE_4__.Author(), author);
             try {
                 await this.authorService.put(authorObj);
             }
@@ -12115,12 +12428,14 @@ let ImportService = class ImportService {
             delete channel.lastUpdated;
             delete channel.dateCreated;
             //Get the new author ID
-            channel.authorId = this.walletService.address.toString();
+            channel.authorId = (_a = this.walletService.address) === null || _a === void 0 ? void 0 : _a.toString();
             //Add it if doesn't exist 
-            await this.authorService.insertIfNew(channel.authorId);
+            if (channel.authorId) {
+                await this.authorService.insertIfNew(channel.authorId);
+            }
             //Mark parent
             channel.forkedFromCid = cid;
-            let channelObj = Object.assign(new _dto_channel__WEBPACK_IMPORTED_MODULE_2__.Channel(), channel);
+            let channelObj = Object.assign(new _dto_channel__WEBPACK_IMPORTED_MODULE_5__.Channel(), channel);
             try {
                 await this.channelService.put(channelObj);
             }
@@ -12143,7 +12458,7 @@ let ImportService = class ImportService {
             else {
                 image.buffer = bufferedContents;
             }
-            let imageObj = Object.assign(new _dto_image__WEBPACK_IMPORTED_MODULE_3__.Image(), image);
+            let imageObj = Object.assign(new _dto_image__WEBPACK_IMPORTED_MODULE_6__.Image(), image);
             try {
                 await this.imageService.put(imageObj);
             }
@@ -12158,7 +12473,7 @@ let ImportService = class ImportService {
             //Load content
             let bufferedContents = await it_to_buffer__WEBPACK_IMPORTED_MODULE_0___default()(this.ipfsService.ipfs.files.read(`/fork/animations/${animation.cid}.html`));
             animation.content = new TextDecoder("utf-8").decode(bufferedContents);
-            let animationObj = Object.assign(new _dto_animation__WEBPACK_IMPORTED_MODULE_4__.Animation(), animation);
+            let animationObj = Object.assign(new _dto_animation__WEBPACK_IMPORTED_MODULE_7__.Animation(), animation);
             try {
                 await this.animationService.put(animationObj);
             }
@@ -12174,7 +12489,7 @@ let ImportService = class ImportService {
             delete item["_rev_tree"];
             item.channelId = idMap.get(item.channelId); //look up the new channel ID
             //Get image data and re-insert it into the content ops
-            if (((_b = (_a = item.content) === null || _a === void 0 ? void 0 : _a.ops) === null || _b === void 0 ? void 0 : _b.length) > 0) {
+            if (((_c = (_b = item.content) === null || _b === void 0 ? void 0 : _b.ops) === null || _c === void 0 ? void 0 : _c.length) > 0) {
                 let ops = [];
                 for (let op of item.content.ops) {
                     if (op.insert && op.insert.ipfsimage) {
@@ -12185,7 +12500,7 @@ let ImportService = class ImportService {
                 }
                 item.content.ops = ops;
             }
-            let itemObj = Object.assign(new _dto_item__WEBPACK_IMPORTED_MODULE_5__.Item(), item);
+            let itemObj = Object.assign(new _dto_item__WEBPACK_IMPORTED_MODULE_8__.Item(), item);
             try {
                 await this.itemService.put(itemObj);
             }
@@ -12200,7 +12515,7 @@ let ImportService = class ImportService {
             // delete theme.dateCreated
             // delete theme["_rev_tree"]
             theme.channelId = idMap.get(theme.channelId); //look up the new channel ID
-            let themeObj = Object.assign(new _dto_theme__WEBPACK_IMPORTED_MODULE_6__.Theme(), theme);
+            let themeObj = Object.assign(new _dto_theme__WEBPACK_IMPORTED_MODULE_9__.Theme(), theme);
             try {
                 await this.themeService.put(themeObj);
             }
@@ -12215,7 +12530,7 @@ let ImportService = class ImportService {
             delete staticPage.dateCreated;
             delete staticPage["_rev_tree"];
             staticPage.channelId = idMap.get(staticPage.channelId); //look up the new channel ID
-            let staticPageObj = Object.assign(new _dto_static_page__WEBPACK_IMPORTED_MODULE_7__.StaticPage(), staticPage);
+            let staticPageObj = Object.assign(new _dto_static_page__WEBPACK_IMPORTED_MODULE_10__.StaticPage(), staticPage);
             try {
                 await this.staticPageService.put(staticPageObj);
             }
@@ -12225,6 +12540,42 @@ let ImportService = class ImportService {
         }
         console.log(`Import complete`);
         return channelId;
+    }
+    async importFromContract(contractAddress, startToken, endToken) {
+        let wallet = this.walletService.wallet;
+        //Look up channel since it has the basic ERC721 signature
+        const c = this.contracts['Channel'];
+        let contract = new ethers__WEBPACK_IMPORTED_MODULE_11__.Contract(contractAddress, c.abi, wallet);
+        // contract
+        for (let i = startToken; i <= endToken; i++) {
+            let tokenMetadata = await this._getTokenMetadata(contract, i);
+            console.log(tokenMetadata);
+            //Fetch image
+            if (tokenMetadata.image) {
+                let image = await this._fetchURI(tokenMetadata.image);
+                console.log(image.length);
+            }
+        }
+        return;
+    }
+    async _getTokenMetadata(contract, tokenId) {
+        let tokenURI = await contract.tokenURI(tokenId);
+        return this._fetchURI(tokenURI);
+    }
+    async _fetchURI(uri) {
+        if (uri === null || uri === void 0 ? void 0 : uri.startsWith("ipfs://")) {
+            //Remove ipfs://
+            uri = `/ipfs/${uri.substring(7, uri.length)}`;
+            //Get from IPFS
+            const data = (0,uint8arrays_concat__WEBPACK_IMPORTED_MODULE_2__.concat)(await it_all__WEBPACK_IMPORTED_MODULE_3___default()(this.ipfsService.ipfs.files.read(uri)));
+            //@ts-ignore
+            return new TextDecoder().decode(data);
+        }
+        else {
+            //Get from old interwebs
+            let result = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(uri);
+            return result.data;
+        }
     }
     async _readFile(filename) {
         let bufferedContents = await it_to_buffer__WEBPACK_IMPORTED_MODULE_0___default()(this.ipfsService.ipfs.files.read(filename));
@@ -12247,17 +12598,17 @@ let ImportService = class ImportService {
     }
 };
 ImportService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_8__.injectable)(),
-    __param(8, (0,inversify__WEBPACK_IMPORTED_MODULE_9__.inject)(_types__WEBPACK_IMPORTED_MODULE_10__["default"].WalletService)),
-    __param(9, (0,inversify__WEBPACK_IMPORTED_MODULE_9__.inject)("contracts")),
-    __metadata("design:paramtypes", [_channel_service__WEBPACK_IMPORTED_MODULE_11__.ChannelService,
-        _item_service__WEBPACK_IMPORTED_MODULE_12__.ItemService,
-        _author_service__WEBPACK_IMPORTED_MODULE_13__.AuthorService,
-        _ipfs_service__WEBPACK_IMPORTED_MODULE_14__.IpfsService,
-        _image_service__WEBPACK_IMPORTED_MODULE_15__.ImageService,
-        _animation_service__WEBPACK_IMPORTED_MODULE_16__.AnimationService,
-        _theme_service__WEBPACK_IMPORTED_MODULE_17__.ThemeService,
-        _static_page_service__WEBPACK_IMPORTED_MODULE_18__.StaticPageService, Object, Object])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_12__.injectable)(),
+    __param(8, (0,inversify__WEBPACK_IMPORTED_MODULE_13__.inject)(_types__WEBPACK_IMPORTED_MODULE_14__["default"].WalletService)),
+    __param(9, (0,inversify__WEBPACK_IMPORTED_MODULE_13__.inject)("contracts")),
+    __metadata("design:paramtypes", [_channel_service__WEBPACK_IMPORTED_MODULE_15__.ChannelService,
+        _item_service__WEBPACK_IMPORTED_MODULE_16__.ItemService,
+        _author_service__WEBPACK_IMPORTED_MODULE_17__.AuthorService,
+        _ipfs_service__WEBPACK_IMPORTED_MODULE_18__.IpfsService,
+        _image_service__WEBPACK_IMPORTED_MODULE_19__.ImageService,
+        _animation_service__WEBPACK_IMPORTED_MODULE_20__.AnimationService,
+        _theme_service__WEBPACK_IMPORTED_MODULE_21__.ThemeService,
+        _static_page_service__WEBPACK_IMPORTED_MODULE_22__.StaticPageService, Object, Object])
 ], ImportService);
 
 
@@ -12352,7 +12703,7 @@ let IpfsService = class IpfsService {
             ipfsHost = await this.ipfsHostService.get();
         }
         catch (ex) { }
-        if (ipfsHost) {
+        if (ipfsHost === null || ipfsHost === void 0 ? void 0 : ipfsHost.url) {
             this.ipfs = await this.ipfsRemoteInit(ipfsHost.url);
         }
         else {
@@ -12793,7 +13144,6 @@ let PublishService = class PublishService {
         var _a, _b;
         let flush = true;
         let directory = `/export/${exportBundle.channel._id}`;
-        console.log(this.ipfsService.ipfs);
         try {
             //TODO: investigate leaving files in place that will still exist for optimization reasons
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true, flush: true });
@@ -13533,8 +13883,9 @@ UploadService = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "WalletServiceImpl": () => (/* binding */ WalletServiceImpl)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/contracts/lib.esm/index.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13548,12 +13899,13 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 
+
 let WalletServiceImpl = class WalletServiceImpl {
-    // public ethersContracts:any = {}
-    constructor(
-    // @inject("contracts") private contracts:Contract[],
-    provider) {
+    constructor(contracts, provider) {
+        this.contracts = contracts;
         this.provider = provider;
+        // public ethersContracts:any = {}
+        this.ethersContracts = {};
     }
     async initWallet() {
         console.log('Init wallet');
@@ -13570,15 +13922,6 @@ let WalletServiceImpl = class WalletServiceImpl {
         this.address = await this.getAddress();
         console.log("Wallet connected");
     }
-    // getContract(name:string)  {
-    //   //If it's cached and the same wallet just return it.
-    //   if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
-    //   //Initialize and return
-    //   let c = this.contracts[name]
-    //   this.ethersContracts[name] = new ethers.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
-    //   // console.log(`Getting contract ${name}`)
-    //   return this.ethersContracts[name]
-    // }
     async getAddress() {
         let accounts = await this.provider.send("eth_accounts", []);
         if ((accounts === null || accounts === void 0 ? void 0 : accounts.length) > 0) {
@@ -13587,6 +13930,16 @@ let WalletServiceImpl = class WalletServiceImpl {
     }
     async getWallet() {
         return this.provider.getSigner();
+    }
+    getContract(name) {
+        //If it's cached and the same wallet just return it.
+        if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet)
+            return this.ethersContracts[name];
+        //Initialize and return
+        let c = this.contracts[name];
+        this.ethersContracts[name] = new ethers__WEBPACK_IMPORTED_MODULE_0__.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider);
+        // console.log(`Getting contract ${name}`)
+        return this.ethersContracts[name];
     }
     truncateEthAddress(address) {
         // Captures 0x + 4 characters, then the last 4 characters.
@@ -13598,9 +13951,10 @@ let WalletServiceImpl = class WalletServiceImpl {
     }
 };
 WalletServiceImpl = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.injectable)(),
-    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)("provider")),
-    __metadata("design:paramtypes", [Object])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
+    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("contracts")),
+    __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("provider")),
+    __metadata("design:paramtypes", [Array, Object])
 ], WalletServiceImpl);
 
 

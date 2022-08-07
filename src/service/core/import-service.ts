@@ -19,6 +19,12 @@ import { Theme } from "../../dto/theme";
 import { ThemeService } from "../theme-service";
 import { StaticPage } from "../../dto/static-page";
 import { StaticPageService } from "../static-page-service";
+import { BigNumber, ethers } from "ethers";
+import axios from "axios";
+
+import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
+import all from 'it-all'
+import isIPFS from 'is-ipfs'
 
 
 
@@ -132,10 +138,12 @@ class ImportService {
             delete channel.dateCreated
 
             //Get the new author ID
-            channel.authorId = this.walletService.address.toString()
+            channel.authorId = this.walletService.address?.toString()
 
             //Add it if doesn't exist 
-            await this.authorService.insertIfNew(channel.authorId)
+            if (channel.authorId) {
+                await this.authorService.insertIfNew(channel.authorId)
+            }
 
         
             //Mark parent
@@ -296,6 +304,72 @@ class ImportService {
         return channelId
     }
 
+
+    async importFromContract(contractAddress:string, startToken:number, endToken:number) : Promise<string> {
+
+        let wallet = this.walletService.wallet
+
+        //Look up channel since it has the basic ERC721 signature
+        const c = this.contracts['Channel']
+
+        let contract = new ethers.Contract(contractAddress, c.abi, wallet)
+
+        // contract
+
+        for (let i=startToken; i <= endToken; i++) {
+            
+            let tokenMetadata = await this._getTokenMetadata(contract, i)
+
+            console.log(tokenMetadata)
+
+            //Fetch image
+            if (tokenMetadata.image) {
+                let image = await this._fetchURI(tokenMetadata.image)
+                console.log(image.length)
+
+            }
+
+
+        }
+
+
+        return 
+
+    }
+
+    
+    async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
+
+        let tokenURI = await contract.tokenURI(tokenId)
+
+        return this._fetchURI(tokenURI)
+
+    }
+
+    async _fetchURI(uri) {
+
+        if (uri?.startsWith("ipfs://")) {
+
+            //Remove ipfs://
+            uri = `/ipfs/${uri.substring(7,uri.length)}`
+
+            //Get from IPFS
+            const data = uint8ArrayConcat(await all(this.ipfsService.ipfs.files.read(uri)))
+
+            //@ts-ignore
+            return new TextDecoder().decode(data)
+
+        } else {
+
+            //Get from old interwebs
+            let result = await axios.get(uri)
+            return result.data
+        }
+
+
+    }
+
+
     async _readFile(filename:string) {
         let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(filename)) 
         return JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
@@ -326,6 +400,24 @@ class ImportService {
     }
 
 
+}
+
+// interface ERC721 {
+//     ownerOf(tokenId:number) : string
+//     tokenURI(tokenId:number) : string
+//     balanceOf(address) : string
+//     totalSupply() : BigNumber
+//     address:string
+// }
+
+interface TokenMetadata {
+    name: string
+    image: string
+    external_url: string 
+    attributes: [{
+        trait_type: string
+        value:string
+    }]
 }
 
 export {

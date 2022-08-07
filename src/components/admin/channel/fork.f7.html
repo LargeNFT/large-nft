@@ -1,7 +1,7 @@
 <!--suppress JSAnnotator -->
 <template>
 
-  <div class="page" data-name="admin-create-channel">
+  <div class="page" data-name="admin-fork">
 
     <${Navbar} />
 
@@ -10,73 +10,86 @@
       <div class="row">
         <form class="col-100 large-66 center" @submit="${formSubmit}" id="import-ipfs-hash">
 
-          <div class="block-title">Fork Collection</div>
+          <ul class="breadcrumb">
+            <li><a href="/admin/channel/create-menu">Create Collection</a></li>
+            <li>Fork Collection From IPFS Hash</li>
+          </ul>
+
+          <div class="block-title">Fork Collection From IPFS Hash</div>
 
           <div class="card">
+            <div class="card-content card-content-padding">
+              ${!ipfsReady ? $h`
+                <div class="ipfs-label">IPFS Initializing...</div>
+            ` : $h`
+                <div class="ipfs-label">
+                    Status: <a href="/admin/connect">IPFS Ready</a>
+                </div>
+            `}
+            </div>
+          </div>
+          
 
+          <div class="card">
             <div class="card-content">
                 <div class="card-content card-content-padding">
 
-                    ${!ipfsReady ? $h`
-                        <div class="ipfs-label">IPFS Initializing...</div>
-                    ` : $h`
-                        <div class="ipfs-label">
-                            <a href="/admin/connect">IPFS Ready</a>
-                        </div>
-                    `}
-
-                    ${forking ? $h`
-                        <div class="fork-label">
-                            Forking...
-                        </div>
-
-                        ${forkStatus? $h`
-                            <div class="fork-status">
-
-                                <div class="item">
-                                    <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
-                                </div>
-
-                                <div class="item"> 
-                                    <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
-                                </div>
-
-                                <div class="item">
-                                    <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
-                                </div>
-
-                                <div class="item">
-                                    <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
-                                </div>
-
-                                <div class="item">
-                                    <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
-                                </div>
-
-                                <div class="item">
-                                  <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
-                                </div>
-
-                                <div class="item">
-                                  <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
-                                </div>
-                
+                  ${forking ? $h`
+                    <div class="fork-label">
+                        Forking...
+                    </div>
+    
+                    ${forkStatus? $h`
+                        <div class="fork-status">
+    
+                            <div class="item">
+                                <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
                             </div>
-                        ` : $h`<span />`}
-
-                    ` : $h`
-                        <div class="fork-label" style="display:none;"></div>
-                    `}
-
-                    ${forkOutput ? $h`
-                        <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
-                    ` : $h`
-                        <div class="fork-output" style="display:none;"></div>
-                    `}
-
+    
+                            <div class="item"> 
+                                <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
+                            </div>
+    
+                            <div class="item">
+                                <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                            </div>
+    
+                            <div class="item">
+                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                            </div>
+    
+                            <div class="item">
+                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
+                            </div>
+    
+                            <div class="item">
+                              <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
+                            </div>
+    
+                            <div class="item">
+                              <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
+                            </div>
+            
+                        </div>
+                    ` : $h`<span />`}
+    
+                  ` : $h`
+                      <div class="fork-label" style="display:none;"></div>
+                  `}
+    
+                  ${forkOutput ? $h`
+                      <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
+                  ` : $h`
+                      <div class="fork-output" style="display:none;"></div>
+                  `}
 
 
                     ${ipfsReady & !forking ? $h`
+
+                      <p>
+                        Enter the IPFS hash of the Large collection to import. For this process to work the collection must have
+                        been built with Large otherwise use the <a href="/admin/channel/fork-contract">contract importer</a>.
+                      </p>
 
                       <div class="list media-list">
                         <ul>
@@ -84,6 +97,7 @@
                             <a href="#" class="item-link">
                               <div class="item-content">
                                 <div class="item-inner">
+                                  <div class="item-title item-label">IPFS Hash</div>
                                   <div class="item-input-wrap">
                                     <input type="text" name="hash" placeholder="Enter IPFS Hash" value="${cid ? cid : ''}" required />
                                     <span class="input-clear-button"></span>
@@ -114,7 +128,6 @@
 
                 </div>
             </div>
-
           </div>
 
 
@@ -183,8 +196,6 @@
     let peerCount = ipfsService.peerCount
 
     let cid = props.cid
-
-    console.log(props)
 
     let forking = false
     let forkStatus 

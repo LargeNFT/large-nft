@@ -9,6 +9,8 @@ import AdminChannelShowComponent from '../components/admin/channel/show.f7.html'
 import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
 import AdminChannelCreateMenuComponent from '../components/admin/channel/create-menu.f7.html'
 import AdminChannelForkComponent from '../components/admin/channel/fork.f7.html'
+import AdminChannelForkContractComponent from '../components/admin/channel/fork-contract.f7.html'
+
 import AdminChannelUpgradeComponent from '../components/admin/channel/upgrade.f7.html'
 
 
@@ -45,7 +47,6 @@ class ChannelController {
     @routeMap("/admin/channel/create-menu")
     async createMenu() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
-
         }, AdminChannelCreateMenuComponent)
     }
 
@@ -53,15 +54,24 @@ class ChannelController {
     async fork() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
 
-            console.log(routeTo)
-
             return {
                 cid: routeTo.query.cid
             }
 
-
         }, AdminChannelForkComponent)
     }
+
+    @routeMap("/admin/channel/fork-contract")
+    async forkContract() : Promise<ModelView> {
+        return new ModelView(async (routeTo:RouteTo) => {
+
+            return {
+                contractAddress: routeTo.query.contractAddress
+            }
+
+        }, AdminChannelForkContractComponent)
+    }
+
 
 
     @routeMap("/admin/channel/show/:id")

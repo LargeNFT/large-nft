@@ -10,10 +10,11 @@ class WalletServiceImpl implements WalletService {
   public address: any
   // public ethersContracts:any = {}
 
-  
+  public ethersContracts:any = {}
+
 
   constructor(
-    // @inject("contracts") private contracts:Contract[],
+    @inject("contracts") private contracts:Contract[],
     @inject("provider") private provider
   ) {}
 
@@ -47,19 +48,6 @@ class WalletServiceImpl implements WalletService {
   }
 
 
-  // getContract(name:string)  {
-
-  //   //If it's cached and the same wallet just return it.
-  //   if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
-
-  //   //Initialize and return
-  //   let c = this.contracts[name]
-  //   this.ethersContracts[name] = new ethers.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
-
-  //   // console.log(`Getting contract ${name}`)
-
-  //   return this.ethersContracts[name]
-  // }
 
   async getAddress() {
 
@@ -74,6 +62,21 @@ class WalletServiceImpl implements WalletService {
   async getWallet() {
     return this.provider.getSigner()
   }
+
+  getContract(name:string)  {
+
+    //If it's cached and the same wallet just return it.
+    if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
+
+    //Initialize and return
+    let c = this.contracts[name]
+    this.ethersContracts[name] = new ethers.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
+
+    // console.log(`Getting contract ${name}`)
+
+    return this.ethersContracts[name]
+  }
+
 
 
   truncateEthAddress(address) : string {

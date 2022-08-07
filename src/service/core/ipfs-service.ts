@@ -34,11 +34,13 @@ class IpfsService {
       ipfsHost = await this.ipfsHostService.get()
     } catch(ex) {}
 
-    if (ipfsHost) {
+    if (ipfsHost?.url) {
       this.ipfs = await this.ipfsRemoteInit(ipfsHost.url)
     } else {
       this.ipfs = await this.ipfsInit()
     }
+
+    
 
     //TODO: 
 

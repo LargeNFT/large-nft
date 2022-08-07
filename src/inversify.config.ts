@@ -266,6 +266,7 @@ function getMainContainer(baseURI:string, pathName:string) {
   })
 
   container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
+    if (!url) return
     return create({ url: url })
   })
 

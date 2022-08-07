@@ -73,6 +73,7 @@ contract('PublishService', async (accounts) => {
         animationService = container.get(AnimationService)
         publishService = container.get(PublishService)
 
+        await ipfsService.init()
 
         await schemaService.loadWallet(user0)
 
@@ -207,26 +208,41 @@ contract('PublishService', async (accounts) => {
     })
 
 
+    // it("should import a channel from an export", async () => {
+
+    //     //Arrange
+    //     await publishService.publishToIPFS(channel)
+
+    //     let localCid = channel.localCid
+
+    //     let channelId = await service.importFromIPFS(localCid)
+
+    //     let importedChannel = await channelService.get(channelId)
+
+    //     //Assert
+    //     // console.log(importedChannel)
+
+    // })
 
 
 
-    it("should import a channel from an export", async () => {
+    it("should import an NFT collection from the network", async () => {
 
         //Arrange
-        await publishService.publishToIPFS(channel)
+        
+        //Moonbirds
+        await service.importFromContract("0x23581767a106ae21c074b2276D25e5C3e136a68b", 1, 5)
 
-        let localCid = channel.localCid
 
-        let channelId = await service.importFromIPFS(localCid)
 
-        let importedChannel = await channelService.get(channelId)
+        //IPFS
+        await service.importFromContract("0x7b94d6436407a850e6200c2c677e94dc8941bb6f", 1, 5)
+
+
+
+        // console.log(channelId)
 
         //Assert
-        console.log(importedChannel)
-
-
-
-
 
     })
 

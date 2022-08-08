@@ -19,9 +19,9 @@ import './html/css/app.css'
 import { RoutingService } from "./service/core/routing-service"
 
 
-export default async(baseURI:string) => {
+export default async() => {
                 
-    let container = getMainContainer(baseURI)
+    let container = getMainContainer()
 
     let app:any = container.get("framework7")
     let routingService:RoutingService = container.get(RoutingService)

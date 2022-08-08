@@ -6,9 +6,7 @@ import common from './webpack.common'
 let mainConfigs = []
 
 
-let baseURI = "http://localhost:9081"
-
-let configs = common(baseURI)
+let configs = common()
 
 for (let config of configs) {
     //@ts-ignore

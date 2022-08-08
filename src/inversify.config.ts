@@ -121,7 +121,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
 let container: Container
 
 
-function getMainContainer(baseURI:string) {
+function getMainContainer() {
 
   if (container) return container
 
@@ -175,10 +175,6 @@ function getMainContainer(baseURI:string) {
   container.bind("provider").toConstantValue(provider())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
-  container.bind("baseURI").toConstantValue(baseURI)
-
-
-
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()

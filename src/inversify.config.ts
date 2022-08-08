@@ -121,7 +121,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
 let container: Container
 
 
-function getMainContainer(baseURI:string, pathName:string) {
+function getMainContainer(baseURI:string) {
 
   if (container) return container
 
@@ -176,7 +176,6 @@ function getMainContainer(baseURI:string, pathName:string) {
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
   container.bind("baseURI").toConstantValue(baseURI)
-  container.bind("pathName").toConstantValue(pathName)
 
 
 

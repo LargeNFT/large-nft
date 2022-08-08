@@ -15,7 +15,7 @@ import { hostname } from 'os'
 // const exec = require('child_process').exec;
 
 
-export default (baseURI, pathName) => {
+export default (baseURI) => {
 
   const fileLoader = {
     loader: 'file-loader',
@@ -121,8 +121,7 @@ export default (baseURI, pathName) => {
         // favicon: 'src/html/favicon.ico',
         template: 'src/html/index.html',
         filename: 'index.html', 
-        baseURI: baseURI,
-        pathName: pathName
+        baseURI: baseURI
       }),
   
       new MiniCssExtractPlugin({

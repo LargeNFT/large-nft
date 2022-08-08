@@ -7,9 +7,8 @@ let mainConfigs = []
 
 
 let baseURI = "http://localhost:9081"
-let pathName = "/"
 
-let configs = common(baseURI, pathName)
+let configs = common(baseURI)
 
 for (let config of configs) {
     //@ts-ignore

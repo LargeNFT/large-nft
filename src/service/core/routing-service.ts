@@ -10,9 +10,7 @@ class RoutingService {
 
     constructor(
         private uiService:UiService,
-        @inject("framework7") public app,
-        @inject("baseURI") private baseURI,
-        @inject("pathName") private pathName
+        @inject("framework7") public app
      ) {}
 
 
@@ -61,7 +59,7 @@ class RoutingService {
             let controllerBean = container.get(mappedRoute.controllerClass)
 
             routes.push( {
-                path: `${this.pathName.split('/').pop()}${mappedRoute.path}`,
+                path: mappedRoute.path,
                 async: async (ctx: Router.RouteCallbackCtx) => {
                     try {
                         await this.resolveRoute(ctx.to, ctx.resolve, controllerBean[mappedRoute.action](), mappedRoute.showSpinner)

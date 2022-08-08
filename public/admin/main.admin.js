@@ -152,8 +152,7 @@ function framework7Component(props, {
     let uiService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_ui_service__WEBPACK_IMPORTED_MODULE_1__.UiService);
     let walletService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getWalletService();
     let schemaService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_schema_service__WEBPACK_IMPORTED_MODULE_2__.SchemaService);
-    let baseURI = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance("baseURI");
-    let pathName = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance("pathName");
+    let baseURI = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance("baseURI"); // let pathName = ContainerService.getInstance("pathName")
 
     if (typeof window !== "undefined" && window['ethereum']) {
       await init(); //Listen for changes
@@ -209,7 +208,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '6e231986b7';
+framework7Component.id = 'ce0f6f595a';
 framework7Component.style = `
 
 
@@ -401,7 +400,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '18a44f323a';
+framework7Component.id = 'b6a3f88f58';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -513,7 +512,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bdb1e1bfbf';
+framework7Component.id = 'bf681ed8c5';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -660,7 +659,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bc349d6c91';
+framework7Component.id = '885de9ac60';
 framework7Component.style = `
 
 
@@ -1317,7 +1316,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '12895038c8';
+framework7Component.id = '58318a33e5';
 framework7Component.style = `
 
 `;
@@ -1967,7 +1966,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4dbcb43199';
+framework7Component.id = '5c35dd9053';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2194,7 +2193,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9aeca1d133';
+framework7Component.id = '647be75bed';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2458,7 +2457,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'afd2218e49';
+framework7Component.id = '9e24874050';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3070,7 +3069,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'caede4c052';
+framework7Component.id = '43c82ae781';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3393,7 +3392,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '74c7e372c1';
+framework7Component.id = '9398231b61';
 framework7Component.style = `
 
 `;
@@ -3750,7 +3749,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f4d25b4afb';
+framework7Component.id = '421378183a';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -4026,7 +4025,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4bdaa88c66';
+framework7Component.id = '1039465ff4';
 framework7Component.style = `
     
 `;
@@ -4116,7 +4115,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4cefb6f488';
+framework7Component.id = 'facd6df84d';
 framework7Component.style = `
     
 `;
@@ -4189,7 +4188,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '286935ee5a';
+framework7Component.id = '1511f844f3';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4324,7 +4323,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fb118b26a0';
+framework7Component.id = '0e0b772677';
 framework7Component.style = `
 
 `;
@@ -4480,7 +4479,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7684ae9375';
+framework7Component.id = 'a3556a0d84';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4573,7 +4572,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '29b11da9a6';
+framework7Component.id = '7d1dd7280c';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4833,7 +4832,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2cdfbcb91a';
+framework7Component.id = '7e8fbd08b6';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -5129,7 +5128,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd0aebbb242';
+framework7Component.id = '555458a287';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5531,7 +5530,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '60b0a10fdb';
+framework7Component.id = '7261849499';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5824,7 +5823,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '97409c31a3';
+framework7Component.id = '577847864e';
 framework7Component.style = `
 
   .previous {
@@ -6030,7 +6029,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b4ef9e4c96';
+framework7Component.id = 'ea4fa0d6fc';
 framework7Component.style = `
 
  .logo {
@@ -6233,7 +6232,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '40b6eb4453';
+framework7Component.id = '0fccd4d431';
 framework7Component.style = `
 
   `;
@@ -6532,7 +6531,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '267775cd82';
+framework7Component.id = '26674e9d4d';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6806,7 +6805,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '61ce8a70f6';
+framework7Component.id = '775b253776';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -7044,7 +7043,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'dd85a9648a';
+framework7Component.id = '1bde1a8602';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7243,7 +7242,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8cdfceef98';
+framework7Component.id = '1499f657ad';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7547,7 +7546,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '39062131e1';
+framework7Component.id = '84fa5b0086';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7785,7 +7784,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'faa818492f';
+framework7Component.id = 'a579e6cf9b';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -8153,7 +8152,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '97b918528b';
+framework7Component.id = 'ecdd39add3';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -8286,7 +8285,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '6a5942ca90';
+framework7Component.id = 'f02a0d3740';
 framework7Component.style = `
     
 `;
@@ -10316,8 +10315,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (async (baseURI, pathName) => {
-    let container = (0,_inversify_config__WEBPACK_IMPORTED_MODULE_9__.getMainContainer)(baseURI, pathName);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (async (baseURI) => {
+    let container = (0,_inversify_config__WEBPACK_IMPORTED_MODULE_9__.getMainContainer)(baseURI);
     let app = container.get("framework7");
     let routingService = container.get(_service_core_routing_service__WEBPACK_IMPORTED_MODULE_10__.RoutingService);
     //Initialize routing
@@ -10511,7 +10510,7 @@ framework7__WEBPACK_IMPORTED_MODULE_2__["default"].use([framework7_components_di
     framework7_components_popover__WEBPACK_IMPORTED_MODULE_23__["default"]
 ]);
 let container;
-function getMainContainer(baseURI, pathName) {
+function getMainContainer(baseURI) {
     if (container)
         return container;
     container = new inversify__WEBPACK_IMPORTED_MODULE_24__.Container();
@@ -10548,7 +10547,6 @@ function getMainContainer(baseURI, pathName) {
     container.bind("name").toConstantValue("Large");
     container.bind("framework7").toConstantValue(framework7());
     container.bind("baseURI").toConstantValue(baseURI);
-    container.bind("pathName").toConstantValue(pathName);
     container.bind(_controller_channel_controller__WEBPACK_IMPORTED_MODULE_27__.ChannelController).toSelf().inSingletonScope();
     container.bind(_controller_item_controller__WEBPACK_IMPORTED_MODULE_28__.ItemController).toSelf().inSingletonScope();
     container.bind(_controller_author_controller__WEBPACK_IMPORTED_MODULE_29__.AuthorController).toSelf().inSingletonScope();
@@ -13534,11 +13532,9 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 let RoutingService = class RoutingService {
-    constructor(uiService, app, baseURI, pathName) {
+    constructor(uiService, app) {
         this.uiService = uiService;
         this.app = app;
-        this.baseURI = baseURI;
-        this.pathName = pathName;
     }
     navigate(navigateParams, routeOptions, viewName = 'main') {
         console.log(`${viewName}: navigating to ${navigateParams.path}`);
@@ -13573,7 +13569,7 @@ let RoutingService = class RoutingService {
             //Look up matching bean
             let controllerBean = container.get(mappedRoute.controllerClass);
             routes.push({
-                path: `${this.pathName.split('/').pop()}${mappedRoute.path}`,
+                path: mappedRoute.path,
                 async: async (ctx) => {
                     try {
                         await this.resolveRoute(ctx.to, ctx.resolve, controllerBean[mappedRoute.action](), mappedRoute.showSpinner);
@@ -13626,9 +13622,7 @@ let RoutingService = class RoutingService {
 RoutingService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("framework7")),
-    __param(2, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("baseURI")),
-    __param(3, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("pathName")),
-    __metadata("design:paramtypes", [_ui_service__WEBPACK_IMPORTED_MODULE_3__.UiService, Object, Object, Object])
+    __metadata("design:paramtypes", [_ui_service__WEBPACK_IMPORTED_MODULE_3__.UiService, Object])
 ], RoutingService);
 
 

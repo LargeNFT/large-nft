@@ -249,11 +249,9 @@
                 await gitlabService.put(gitlab)
                 await ipfsHostService.put(ipfsHost)
 
-                console.log(ipfsHost)
-
 
                 const toast = $f7.toast.show({
-                    text: 'Pinata Settings Saved',
+                    text: 'Settings Saved',
                     closeTimeout: 2000,
                     closeButton: true,
                     position: 'bottom',

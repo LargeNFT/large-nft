@@ -145,8 +145,13 @@ function framework7Component(props, {
   $update
 }) {
   $f7ready(async () => {
+    let getHash = () => {
+      return window.location.hash?.length > 2 ? window.location.hash.substring(2) : undefined;
+    };
+
     let baseURI = window.location.pathname;
-    let hash = window.location.hash?.length > 2 ? window.location.hash.substring(2) : undefined; // console.log(baseURI)
+    let hash = getHash();
+    let mainView; // console.log(baseURI)
     // console.log(hash)
 
     let uiService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_0__.ContainerService.getInstance(_service_core_ui_service__WEBPACK_IMPORTED_MODULE_1__.UiService);
@@ -158,7 +163,15 @@ function framework7Component(props, {
 
       window['ethereum'].on('accountsChanged', async accounts => {
         if (accounts?.length > 0) {
-          await init();
+          await walletService.initWallet();
+          let walletAddress = await walletService.getAddress();
+          await schemaService.loadWallet(walletAddress);
+          mainView.router.navigate("/", {
+            reloadAll: true,
+            reloadCurrent: true,
+            clearPreviousHistory: true,
+            ignoreCache: true
+          }); // await init()
         }
       });
     } else {
@@ -170,7 +183,7 @@ function framework7Component(props, {
       await walletService.initWallet();
       let walletAddress = await walletService.getAddress();
       await schemaService.loadWallet(walletAddress);
-      const mainView = $f7.views.create('.view-main', {
+      mainView = $f7.views.create('.view-main', {
         url: hash ? hash : '/',
         browserHistory: true,
         browserHistoryRoot: baseURI,
@@ -207,7 +220,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2c9bfcce08';
+framework7Component.id = '22138268b1';
 framework7Component.style = `
 
 
@@ -399,7 +412,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c5895bb079';
+framework7Component.id = '2b25f68cbc';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -511,7 +524,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e2f47bc31b';
+framework7Component.id = '06fe504e05';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -658,7 +671,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '294c058dc6';
+framework7Component.id = '743446fbfe';
 framework7Component.style = `
 
 
@@ -1315,7 +1328,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'de2abdc953';
+framework7Component.id = '09d92ef4c8';
 framework7Component.style = `
 
 `;
@@ -1965,7 +1978,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0c87da08ac';
+framework7Component.id = '2a9e447366';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2192,7 +2205,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2279de3450';
+framework7Component.id = 'cffb3be108';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2456,7 +2469,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'dc134b4c37';
+framework7Component.id = 'abb86a4005';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3068,7 +3081,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '68d8def34b';
+framework7Component.id = 'f3e7b96501';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3184,23 +3197,25 @@ function framework7Component(props, {
   let imageService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_image_service__WEBPACK_IMPORTED_MODULE_3__.ImageService);
   let uiService = _service_core_container_service__WEBPACK_IMPORTED_MODULE_1__.ContainerService.getInstance(_service_core_ui_service__WEBPACK_IMPORTED_MODULE_4__.UiService);
   const LIMIT = 20;
-  let channelsShown = 0;
-  let hasMoreChannels = true;
-  let loadingInProgress = false;
+  let channelsShown;
+  let pageCounter;
+  let hasMoreChannels;
+  let loadingInProgress;
   let channels = [];
   let virtualList;
-  let pageCounter = 0;
 
   function unloadInfiniteScroll() {
     console.log("Unload infinite scroll"); // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
 
-    $f7.infiniteScroll.destroy('#channel-index-infinite-scroll'); // Remove preloader
+    $f7.infiniteScroll.destroy('#channel-index-infinite-scroll'); // $f7.virtualList.destroy('#channel-index-list')
+    // Remove preloader
 
     $('#channel-index-preloader').hide();
   }
 
   async function infiniteScroll() {
-    // Exit, if loading in progress
+    console.log("triggered", loadingInProgress, hasMoreChannels); // Exit, if loading in progress
+
     if (loadingInProgress || !hasMoreChannels) return;
     uiService.showSpinner("Loading..."); // Set loading flag
 
@@ -3238,7 +3253,12 @@ function framework7Component(props, {
     unloadInfiniteScroll();
   });
   $on('pageInit', (e, page) => {
-    //Get first page
+    console.log('pageInit');
+    channelsShown = 0;
+    pageCounter = 0;
+    hasMoreChannels = true;
+    loadingInProgress = false; //Get first page
+
     virtualList = $f7.virtualList.create({
       el: '#channel-index-list',
 
@@ -3282,6 +3302,7 @@ function framework7Component(props, {
             `
     }); //Get the page
 
+    console.log("triggering");
     $('#channel-index-infinite-scroll').trigger('infinite');
     virtualList.on('itemsAfterInsert', (virtualList, fragment) => {
       //Find empty description divs and set their innerHTML
@@ -3370,6 +3391,13 @@ function framework7Component(props, {
 
         <div class="col-100 large-50 center">
 
+          <div class="card">
+            <div class="card-content card-content-padding">
+              Note: Large is pre-release software and there are known and unknown bugs. It is 
+              published with an MIT License and the <a href="https://gitlab.com/ptoner/large">code</a> can be copied or forked.
+            </div>
+          </div>
+
           <div class="list cards-list virtual-list" id="channel-index-list">
           </div>
 
@@ -3391,7 +3419,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0dc2bce9e5';
+framework7Component.id = '3bf866fa06';
 framework7Component.style = `
 
 `;
@@ -3748,7 +3776,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'be8601ba50';
+framework7Component.id = 'db81a28b0b';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -4024,7 +4052,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '88af5a5137';
+framework7Component.id = 'c5f2ff3cf7';
 framework7Component.style = `
     
 `;
@@ -4114,7 +4142,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e5b3519af3';
+framework7Component.id = '7548b768cf';
 framework7Component.style = `
     
 `;
@@ -4187,7 +4215,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ec3ab7469d';
+framework7Component.id = '175ac7cf6d';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4322,7 +4350,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a4eddb95ff';
+framework7Component.id = '87674c2b9c';
 framework7Component.style = `
 
 `;
@@ -4478,7 +4506,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cef2eb83f3';
+framework7Component.id = '58be98c526';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4571,7 +4599,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3ee0770903';
+framework7Component.id = '52658399dc';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4831,7 +4859,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2bfdb4c15f';
+framework7Component.id = '8d205995c6';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -5127,7 +5155,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a7edc3d172';
+framework7Component.id = 'c7f4188c58';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5529,7 +5557,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8e26ad6e15';
+framework7Component.id = '16587ae15f';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5822,7 +5850,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '23c61296ce';
+framework7Component.id = '74114ad142';
 framework7Component.style = `
 
   .previous {
@@ -6028,7 +6056,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b1cfae92f7';
+framework7Component.id = '26fff56ebb';
 framework7Component.style = `
 
  .logo {
@@ -6231,7 +6259,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0446b1d321';
+framework7Component.id = '8946b31f87';
 framework7Component.style = `
 
   `;
@@ -6530,7 +6558,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b17478ed91';
+framework7Component.id = '9f5d96b34b';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6804,7 +6832,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ded4251b6e';
+framework7Component.id = '336139d87f';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -7042,7 +7070,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0ae526487d';
+framework7Component.id = '82f89cd5c8';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7241,7 +7269,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a193ec6c8a';
+framework7Component.id = '9599b854cc';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7545,7 +7573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e7c2e8e441';
+framework7Component.id = 'bd138f064b';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7783,7 +7811,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '83a83db0a9';
+framework7Component.id = '8641aa75aa';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -7859,9 +7887,8 @@ function framework7Component(props, {
     try {
       await gitlabService.put(gitlab);
       await ipfsHostService.put(ipfsHost);
-      console.log(ipfsHost);
       const toast = $f7.toast.show({
-        text: 'Pinata Settings Saved',
+        text: 'Settings Saved',
         closeTimeout: 2000,
         closeButton: true,
         position: 'bottom',
@@ -8151,7 +8178,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'aab033486f';
+framework7Component.id = '143e38db06';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -8284,7 +8311,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2205a71c73';
+framework7Component.id = '5bf93f66f7';
 framework7Component.style = `
     
 `;

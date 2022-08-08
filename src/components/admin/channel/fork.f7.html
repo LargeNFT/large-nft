@@ -211,8 +211,6 @@
 
     })
 
-
-
     const formSubmit = async (e) => {
 
       e.preventDefault()
@@ -228,7 +226,6 @@
       $update()
 
     }
-
 
     $(document).on('fork-progress', async (e) => {
 
@@ -248,16 +245,12 @@
 
     })
 
-
-
     $(document).on('update-peers', async (e) => {
 
       peerCount = e.detail.count
       $update()
 
     })
-
-
 
     return $render
   }

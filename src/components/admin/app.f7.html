@@ -31,8 +31,14 @@
 
     $f7ready(async () => {
 
+      let getHash = () => {
+        return window.location.hash?.length > 2 ? window.location.hash.substring(2) : undefined
+      }
+
       let baseURI = window.location.pathname
-      let hash = window.location.hash?.length > 2 ? window.location.hash.substring(2) : undefined
+      let hash = getHash()
+
+      let mainView
 
       // console.log(baseURI)
       // console.log(hash)
@@ -48,8 +54,21 @@
 
         //Listen for changes
         window['ethereum'].on('accountsChanged', async (accounts) => {
+
           if (accounts?.length > 0) {
-            await init()
+
+            await walletService.initWallet()
+            let walletAddress = await walletService.getAddress()
+            await schemaService.loadWallet(walletAddress)
+
+            mainView.router.navigate("/", { 
+              reloadAll: true, 
+              reloadCurrent: true, 
+              clearPreviousHistory: true,
+              ignoreCache: true
+            })
+
+            // await init()
           }
         })
 
@@ -70,7 +89,7 @@
         
         await schemaService.loadWallet(walletAddress)
 
-        const mainView = $f7.views.create('.view-main', {
+        mainView = $f7.views.create('.view-main', {
           url: hash ? hash : '/',
           browserHistory: true,
           browserHistoryRoot: baseURI,

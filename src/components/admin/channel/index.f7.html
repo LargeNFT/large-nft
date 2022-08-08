@@ -18,6 +18,13 @@
 
         <div class="col-100 large-50 center">
 
+          <div class="card">
+            <div class="card-content card-content-padding">
+              Note: Large is pre-release software and there are known and unknown bugs. It is 
+              published with an MIT License and the <a href="https://gitlab.com/ptoner/large">code</a> can be copied or forked.
+            </div>
+          </div>
+
           <div class="list cards-list virtual-list" id="channel-index-list">
           </div>
 
@@ -62,13 +69,14 @@
 
     const LIMIT = 20
 
-    let channelsShown = 0
-    let hasMoreChannels = true
-    let loadingInProgress = false
+    let channelsShown 
+    let pageCounter
+    let hasMoreChannels
+    let loadingInProgress 
 
     let channels = []
     let virtualList
-    let pageCounter = 0
+    
 
     function unloadInfiniteScroll() {
       console.log("Unload infinite scroll")
@@ -76,12 +84,15 @@
       // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
       $f7.infiniteScroll.destroy('#channel-index-infinite-scroll')
 
+      // $f7.virtualList.destroy('#channel-index-list')
+
       // Remove preloader
       $('#channel-index-preloader').hide()
 
     }
 
     async function infiniteScroll() {
+      console.log("triggered", loadingInProgress, hasMoreChannels)
 
       // Exit, if loading in progress
       if (loadingInProgress || !hasMoreChannels) return
@@ -129,6 +140,13 @@
     })
 
     $on('pageInit', (e, page) => {
+      console.log('pageInit')
+
+      channelsShown = 0
+      pageCounter = 0
+      hasMoreChannels = true
+      loadingInProgress = false
+
 
       //Get first page
       virtualList = $f7.virtualList.create({
@@ -183,8 +201,8 @@
       })
 
       //Get the page
+      console.log("triggering")
       $('#channel-index-infinite-scroll').trigger('infinite')
-
 
       virtualList.on('itemsAfterInsert', (virtualList, fragment) => {
 
@@ -209,6 +227,7 @@
         })
 
       })
+
 
     })
 

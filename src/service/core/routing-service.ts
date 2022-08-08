@@ -61,7 +61,7 @@ class RoutingService {
             let controllerBean = container.get(mappedRoute.controllerClass)
 
             routes.push( {
-                path: mappedRoute.path,
+                path: `${this.pathName.split('/').pop()}${mappedRoute.path}`,
                 async: async (ctx: Router.RouteCallbackCtx) => {
                     try {
                         await this.resolveRoute(ctx.to, ctx.resolve, controllerBean[mappedRoute.action](), mappedRoute.showSpinner)
@@ -84,6 +84,8 @@ class RoutingService {
                 console.log(`404 error: ${ctx.to.path}`)
             }
         })
+
+        console.log(routes)
 
         return routes
 

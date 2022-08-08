@@ -209,7 +209,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '33c056d726';
+framework7Component.id = '1237bbc9c3';
 framework7Component.style = `
 
 
@@ -401,7 +401,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0a08cce41d';
+framework7Component.id = 'ed3840c3db';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -513,7 +513,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd795f05cec';
+framework7Component.id = '38c6d8c605';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -660,7 +660,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5790570add';
+framework7Component.id = '0358f54539';
 framework7Component.style = `
 
 
@@ -1317,7 +1317,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0d14dd5eb6';
+framework7Component.id = '84165c6d44';
 framework7Component.style = `
 
 `;
@@ -1967,7 +1967,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5a1bb06698';
+framework7Component.id = '97e115060e';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2194,7 +2194,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7b7bec9977';
+framework7Component.id = '8f8e058958';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -2458,7 +2458,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4a29c29a08';
+framework7Component.id = 'c31ff6ac1a';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3070,7 +3070,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0ce28c7767';
+framework7Component.id = '154e83ed8e';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3393,7 +3393,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '55c88db6ba';
+framework7Component.id = 'c13b1edb01';
 framework7Component.style = `
 
 `;
@@ -3750,7 +3750,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7ab7bf0a8f';
+framework7Component.id = '879a3fc1af';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -4026,7 +4026,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1387e17cde';
+framework7Component.id = '84666fbeee';
 framework7Component.style = `
     
 `;
@@ -4116,7 +4116,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0ff364a1d7';
+framework7Component.id = '22daaa153e';
 framework7Component.style = `
     
 `;
@@ -4189,7 +4189,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '81cdad5bf8';
+framework7Component.id = '0baf1b6c91';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4324,7 +4324,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '16fd4cfd1b';
+framework7Component.id = '2a2d31cd0a';
 framework7Component.style = `
 
 `;
@@ -4480,7 +4480,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c4d88c4c45';
+framework7Component.id = 'bf5e5b7ce9';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4573,7 +4573,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1ad71c5dbb';
+framework7Component.id = '60d4e0a59e';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -4833,7 +4833,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '76e0203dc8';
+framework7Component.id = '47e9404459';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -5129,7 +5129,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'a3121b3400';
+framework7Component.id = '45f5af00b5';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5531,7 +5531,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f277b2c799';
+framework7Component.id = 'd837aa14f6';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -5824,7 +5824,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8cfe9bdb62';
+framework7Component.id = '231de6d4e8';
 framework7Component.style = `
 
   .previous {
@@ -6030,7 +6030,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '61b2b70658';
+framework7Component.id = '7249f0d5e6';
 framework7Component.style = `
 
  .logo {
@@ -6233,7 +6233,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '656d42205a';
+framework7Component.id = '0d3f409afd';
 framework7Component.style = `
 
   `;
@@ -6532,7 +6532,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fcb26d15c5';
+framework7Component.id = 'f959260380';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -6806,7 +6806,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7f3bc34585';
+framework7Component.id = '29be075b8d';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -7044,7 +7044,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ef47318b45';
+framework7Component.id = '9c6bdebfbc';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7243,7 +7243,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd725faf671';
+framework7Component.id = 'c74ec97cf4';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7547,7 +7547,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4eb263ad2e';
+framework7Component.id = '2cce291cdb';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7785,7 +7785,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0618199d64';
+framework7Component.id = 'c3c3ce1101';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -8153,7 +8153,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '23af1ea16d';
+framework7Component.id = 'db98f6eed6';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -8286,7 +8286,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bcd2ee836f';
+framework7Component.id = '476d6c2562';
 framework7Component.style = `
     
 `;
@@ -13573,7 +13573,7 @@ let RoutingService = class RoutingService {
             //Look up matching bean
             let controllerBean = container.get(mappedRoute.controllerClass);
             routes.push({
-                path: mappedRoute.path,
+                path: `${this.pathName.split('/').pop()}${mappedRoute.path}`,
                 async: async (ctx) => {
                     try {
                         await this.resolveRoute(ctx.to, ctx.resolve, controllerBean[mappedRoute.action](), mappedRoute.showSpinner);
@@ -13593,6 +13593,7 @@ let RoutingService = class RoutingService {
                 console.log(`404 error: ${ctx.to.path}`);
             }
         });
+        console.log(routes);
         return routes;
     }
     async resolveRoute(routeTo, resolve, controller_promise, showSpinner = true) {

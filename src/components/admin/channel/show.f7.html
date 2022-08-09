@@ -101,10 +101,17 @@
                 </div>
 
                 ${channelViewModel.channel.contractAddress ? $h`
-                <div class="contract-address">
-                  <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
-                </div>
+                  <div class="contract-address">
+                    <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
+                  </div>
                 ` : $h``}
+
+                ${channelViewModel.channel.localCid ? $h`
+                  <div class="contract-address">
+                    <strong>Last Published IPFS CID:</strong> ${channelViewModel?.channel.localCid}
+                  </div>
+                ` : $h``}
+
 
               </div>
 
@@ -244,6 +251,7 @@
 
   .contract-address {
     margin-top: 10px;
+    font-size: 12px;
   }
 
   #item-list {

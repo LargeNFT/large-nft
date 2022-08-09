@@ -11,9 +11,17 @@ The Large Reader is a simple HTML/CSS/Javascript based application built with Fr
 
 ## How it Works
 
-* Create rich-text NFTs. Text, images, or audio (soon). 
+* Create rich-text NFTs.
 * Content is stored in your browser as you create it.
 * Generate all metadata to integrate with OpenSea and other public NFT infrastructure.
+
+* Data stored in local copy of [PouchDB](https://pouchdb.com)
+    * Sync devices (future)
+    * Control your own data
+    * Runs on your own devices
+
+* Fork and customize the Large Admin.
+
 
 Please note that data is NOT stored on a server and by default is only available on the device where you are using it.
 
@@ -26,10 +34,11 @@ Please note that data is NOT stored on a server and by default is only available
             * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
         * Create static pages.
             * Static pages all you to create content that is displayed in the Large Reader alongside your collection.
-        * Set a mint price. 
+        * Set a mint price. Keep 100% of fees. 
         * Pre-set royalties for third-party marketplaces. 
 
 * Create items.
+
     * Each item has a title, content, and a cover image.
     * If a cover image is not provided an SVG gets generated based on the text.
     * Choose a theme to apply custom CSS.
@@ -37,29 +46,62 @@ Please note that data is NOT stored on a server and by default is only available
     * Generate HTML-based animation/frame for display on marketplaces.
 
 * Publish collection.
+
     * Export data to IPFS node.
         * Connect to browser-based node or configure remote IPFS api.
         * NFT metadata, images, animations, and backup data are exported to IPFS.
+
     * Pin data to pinning service.
         * Configure commercial pinning service and pin collection data.
+
     * Deploy contract
         * Deploy ERC-721 smart contract with minting capability to Ethereum mainnet or other compatible network.
         * Customize smart contract or deploy the default low-gas contract.
             * Based on [ERC721A](https://github.com/chiru-labs/ERC721A)
+
     * Fork reader
         * Create a custom fork of the [Large Reader](https://gitlab.com/ptoner/large-reader)
         * Publish collection data to Reader app.
 
 * Fork a collection
+
     * Instead of starting your project from scratch, import an existing project that was published to IPFS with Large.
-    * Provide the IPFS hash 
+    * Provide the IPFS hash.
+    * Remix existing ideas.
 
 ## Reader
+
 * Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
  - Users do not need a web3 browser to read the collection.
  - Users do need a web3 browser to mint and interact with NFTs.
 
-* Fully open source. Requires no special infrastrcture to run either the admin panel or the Reader.
+* Easily read and enjoy content in a familiar interface.
+
+* Offline-first. Runs on your own devices.
+    * Distributed via IPFS, GitLab pages, or other CDNs.
+    * Any static webhost can easily host the Large Reader.
+
+* TypeScript/javascript
+
+* Fully open source. Fork and customize.
+    * Large Admin publishes your collection to your own private repo on GitLab.
+    * Includes a full database backup and all associated media. 
+
+* Data stored in local PouchDB
+    * Full-text search of collection contents.
+    * Multiple versions of the Large Reader can be deployed and each one has its own copy of the data. 
+    * Allows collection to be forked directly from the Reader as well as the admin. 
+    * This means your community can copy the Large Reader and make their own custom versions easily.
+    * Easy to build on top of. 
+
+* Custom minting experience
+    * NFTs are visible before minting.
+    * Minting starts at token #1 and increments.
+    * Stories are minted in the order they are told.
+    * Everyone views the same upcoming mints.
+    * As NFTs are minted users collectively experience the content in the order it was intended.
+        * Like listening to a music album as a group.
+
 * Publish to the Reader at any time.
 
 ## IPFS
@@ -77,11 +119,10 @@ Please note that data is NOT stored on a server and by default is only available
 * Sync to all your devices.
 * On-chain marketplace in Reader.
 
-
 # Install
 ```console
 
-git clone https://gitlab.com/ptoner/large.git
+git clone https://gitlab.com/american-space-software/large.git
 cd large
 
 npm run install
@@ -92,6 +133,11 @@ npm run install
 # Running the dev server
 ```console
 npm run start:dev
+```
+
+# Creating a production build
+```console
+npm run build
 ```
 
 # Latest Build

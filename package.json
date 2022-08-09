@@ -1,10 +1,10 @@
 {
   "name": "large",
   "version": "1.0.0",
-  "description": "A serverless and peer-to-peer blogging platform. Build a website that's hosted by your users with IPFS.",
+  "description": "Large is open source software that makes it simple to create and publish any content as an NFT collection on Ethereum and IPFS.",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/ptoner/large"
+    "url": "git+https://gitlab.com/american-space-software/large"
   },
   "scripts": {
     "start:dev": "node node_modules/webpack/bin/webpack.js serve --config=webpack.dev.ts ",
@@ -26,9 +26,9 @@
   "author": "Patrick Toner",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/ptoner/large/issues"
+    "url": "https://gitlab.com/american-space-software/large/issues"
   },
-  "homepage": "https://gitlab.com/ptoner/large#readme",
+  "homepage": "https://gitlab.com/american-space-software/large#readme",
   "sideEffects": ["**/*.css"],
   "devDependencies": {
 

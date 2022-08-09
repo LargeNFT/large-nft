@@ -51,7 +51,7 @@ npm run start:dev
 ```
 
 # Latest Build
-[https://ptoner.gitlab.io/large](https://ptoner.gitlab.io/large)
+[https://american-space-software.gitlab.io/large/](https://american-space-software.gitlab.io/large/)
 
 
 ## Accessing Your Large Website
@@ -62,7 +62,7 @@ To start, the end-user will need a copy of the Large distribution. There are a b
 * A third-party hosted copy.
 * Through an IPFS public gateway.
 * Fork this repo. It'll automatically deploy a copy of it in GitLab pages for you. 
-* Use [this one](https://ptoner.gitlab.io/large)
+* Use [this one](https://american-space-software.gitlab.io/large/)
 * Host it yourself. It's just a directory of HTML/javascript files. 
     * With IPFS
     * With regular web host.

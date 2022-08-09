@@ -1,6 +1,6 @@
 {
   "name": "large",
-  "version": "1.0.0",
+  "version": "0.0.9",
   "description": "Large is open source software that makes it simple to create and publish any content as an NFT collection on Ethereum and IPFS.",
   "repository": {
     "type": "git",
@@ -15,15 +15,15 @@
   },
   "keywords": [
     "framework7",
-    "template",
-    "ios",
+    "ethereum",
+    "ipfs",
     "android",
-    "mobile",
+    "nft",
     "app",
-    "cordova",
-    "phonegap"
+    "blog",
+    "cms"
   ],
-  "author": "Patrick Toner",
+  "author": "Large Authors",
   "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/american-space-software/large/issues"

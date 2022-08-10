@@ -26,13 +26,10 @@ Please note that data is NOT stored on a server and by default is only available
 Create a collection with the Large admin panel. 
 
 * Choose a name, symbol, description, license, and NFT attributes.
-
-    * Create attribute categories.
-        * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
-
-    * Set a mint price. Keep 100% of fees. 
-
-    * Pre-set royalties for third-party marketplaces. 
+* Create attribute categories.
+    * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
+* Set a mint price. Keep 100% of fees. 
+* Pre-set royalties for third-party marketplaces. 
 
 ## Create content. Publish as NFTs. 
 * Each item has a title, content, and a cover image.
@@ -74,45 +71,46 @@ A theme allows you to apply CSS formatting to an NFT. Create themes and apply th
 
 
 ### Static Pages.
-Static pages all you to create content that is displayed in the Large Reader alongside your collection. This allows
+Static pages let you create content that is displayed in the Large Reader alongside your collection. This allows
 you to include content like your "About US" and "FAQ" alongside the collection. When the collection is exported to IPFS
 these are exported alongside them which allows them to be displayed in the Large Reader. 
 
 
 ## Reader
 
-* Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
- - Users do not need a web3 browser to read the collection.
- - Users do need a web3 browser to mint and interact with NFTs.
+Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
+* Users do not need a web3 browser to read the collection.
+* Users do need a web3 browser to mint and interact with NFTs.
 
-* Easily read and enjoy content in a familiar interface.
+Easily read and enjoy content in a familiar interface.
 
-* Offline-first. Runs on your own devices.
-    * Distributed via IPFS, GitLab pages, or other CDNs.
-    * Any static webhost can easily host the Large Reader.
+### Offline-first. Runs on your own devices.
+* Distributed via IPFS, GitLab pages, or other CDNs.
+* Any static webhost can easily host the Large Reader.
 
-* TypeScript/javascript
+### TypeScript/javascript
 
-* Fully open source. Fork and customize.
-    * Large Admin publishes your collection to your own private repo on GitLab.
-    * Includes a full database backup and all associated media. 
+### Fully open source. Fork and customize.
+* Large Admin publishes your collection to your own private repo on GitLab.
+* Includes a full database backup and all associated media. 
 
-* Data stored in local PouchDB
-    * Full-text search of collection contents.
-    * Multiple versions of the Large Reader can be deployed and each one has its own copy of the data. 
-    * Allows collection to be forked directly from the Reader as well as the admin. 
-    * This means your community can copy the Large Reader and make their own custom versions easily.
-    * Easy to build on. 
+### Data stored in local PouchDB
+* Full-text search of collection contents.
+* Multiple versions of the Large Reader can be deployed and each one has its own copy of the data. 
+* Allows collection to be forked directly from the Reader as well as the admin. 
+* This means your community can copy the Large Reader and make their own custom versions easily.
+* Easy to build on. 
 
-* Custom minting experience
-    * NFTs are visible before minting.
-    * Minting starts at token #1 and increments.
-    * Stories are minted in the order they are told.
-    * Everyone views the same upcoming mints.
-    * As NFTs are minted users collectively experience the content in the order it was intended.
-        * Like listening to a music album as a group.
+### Custom minting experience
+* NFTs are visible before minting.
+* Minting starts at token #1 and increments.
+* Stories are minted in the order they are told.
+* Everyone views the same upcoming mints.
+* As NFTs are minted users collectively experience the content in the order it was intended.
+    * Like listening to a music album as a group.
 
-* Publish to the Reader at any time.
+### Publish to the Reader at any time.
+* Publish the Large Reader and collection content before deploying the smart contract. It's not required to deploy a contract if you do not want to mint NFTs.
 
 ## IPFS
 * Publish to an IPFS node running in the browser.

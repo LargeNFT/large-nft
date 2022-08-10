@@ -25,14 +25,14 @@ Please note that data is NOT stored on a server and by default is only available
 ## Create an NFT collection
 Create a collection with the Large admin panel. 
 
-    * Choose a name, symbol, description, license, and NFT attributes.
+* Choose a name, symbol, description, license, and NFT attributes.
 
-        * Create attribute categories.
-            * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
+    * Create attribute categories.
+        * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
 
-        * Set a mint price. Keep 100% of fees. 
+    * Set a mint price. Keep 100% of fees. 
 
-        * Pre-set royalties for third-party marketplaces. 
+    * Pre-set royalties for third-party marketplaces. 
 
 ## Create content. Publish as NFTs. 
 * Each item has a title, content, and a cover image.

@@ -5,6 +5,34 @@
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Pages/HTML.gitlab-ci.yml
 
 # Full project: https://gitlab.com/pages/plain-html
+
+
+image: node:latest
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+run_build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - public
+
 pages:
   stage: deploy
   script:

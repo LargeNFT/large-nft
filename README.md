@@ -111,9 +111,17 @@ Easily read and enjoy content in a familiar interface.
 ### Publish to the Reader at any time.
 * Publish the Large Reader and collection content before deploying the smart contract. It's not required to deploy a contract if you do not want to mint NFTs.
 
-## Reader Showcase
+
+# Reader Showcase
 These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
 * [Alice's Adventures in Wonderland](https://readalice.com)
+
+# Large Admin
+Recommended: Fork this repo to deploy your own copy. The following link will take you to the most recent build. There is currently no production-ready version. 
+[https://american-space-software.gitlab.io/large/](https://american-space-software.gitlab.io/large/)
+
+Remember that all your data is stored in your local browser. We are never able to help you retreive it. 
+
 
 ## IPFS
 * Publish to an IPFS node running in the browser.
@@ -151,8 +159,7 @@ npm run start:dev
 npm run build
 ```
 
-# Latest Build
-[https://american-space-software.gitlab.io/large/](https://american-space-software.gitlab.io/large/)
+
 
 
 ## Accessing Your Large Website

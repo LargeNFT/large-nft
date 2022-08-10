@@ -57,12 +57,8 @@ Create a collection with the Large admin panel.
     * Based on [ERC721A](https://github.com/chiru-labs/ERC721A)
 
 ### Fork reader
-* Create a custom fork of the [Large Reader](https://gitlab.com/ptoner/large-reader)
+* Automatically creates a custom fork of the [Large Reader](https://gitlab.com/ptoner/large-reader)
 * Publish collection data to Reader app.
-
-
-### Fork and customize the Large Admin. 
-Easy to whitelabel. 
 
 ### Themes
 A theme allows you to apply CSS formatting to an NFT. Create themes and apply them to multiple items. 
@@ -121,6 +117,9 @@ Recommended: Fork this repo to deploy your own copy. The following link will tak
 [https://american-space-software.gitlab.io/large/](https://american-space-software.gitlab.io/large/)
 
 Remember that all your data is stored in your local browser. We are never able to help you retreive it. 
+
+### Fork this repo and customize the Large Admin. 
+Easy to whitelabel. 
 
 ## Coming Soon
 * Import/Export/Clone existing collections. Works somewhat. Only tested on Alice. 

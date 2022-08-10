@@ -122,19 +122,8 @@ Recommended: Fork this repo to deploy your own copy. The following link will tak
 
 Remember that all your data is stored in your local browser. We are never able to help you retreive it. 
 
-
-## IPFS
-* Publish to an IPFS node running in the browser.
-* Upload to commerical IPFS hosting when ready to deploy to production. 
-
-## Solidity
-* Deploy a Solidity contract when ready to mint. Use a pre-built contract or deploy your own. 
-* Users can mint NFTs in the Reader app.
-* Configure a mint price in ETH.
-* Configure NFT royalties.
-
 ## Coming Soon
-* Import/Export/Clone existing collections.
+* Import/Export/Clone existing collections. Works somewhat. Only tested on Alice. 
 * Sync to all your devices.
 * On-chain marketplace in Reader.
 

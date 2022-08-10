@@ -4,6 +4,8 @@ import { routeMap } from "../util/route-map";
 import { RouteTo } from '../service/core/routing-service';
 
 import AdminChannelIndexComponent from '../components/admin/channel/index.f7.html'
+import AdminChannelSplashComponent from '../components/admin/channel/splash.f7.html'
+
 import AdminChannelCreateComponent from '../components/admin/channel/create.f7.html'
 import AdminChannelShowComponent from '../components/admin/channel/show.f7.html'
 import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
@@ -29,11 +31,18 @@ class ChannelController {
         private pagingService:PagingService
     ) {}
 
-    @routeMap("/")
-    async index() : Promise<ModelView> {
+    @routeMap("/app")
+    async app() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
 
         }, AdminChannelIndexComponent)
+    }
+
+    @routeMap("/")
+    async splash() : Promise<ModelView> {
+        return new ModelView(async (routeTo:RouteTo) => {
+
+        }, AdminChannelSplashComponent)
     }
 
 

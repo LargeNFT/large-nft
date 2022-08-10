@@ -87,8 +87,7 @@ Easily read and enjoy content in a familiar interface.
 ### Offline-first. Runs on your own devices.
 * Distributed via IPFS, GitLab pages, or other CDNs.
 * Any static webhost can easily host the Large Reader.
-
-### TypeScript/javascript
+* Built entirely with HTML/CSS/javascript.
 
 ### Fully open source. Fork and customize.
 * Large Admin publishes your collection to your own private repo on GitLab.

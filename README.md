@@ -127,7 +127,7 @@ Remember that all your data is stored in your local browser. We are never able t
 * Sync to all your devices.
 * On-chain marketplace in Reader.
 
-# Install
+# Run locally
 ```console
 
 git clone https://gitlab.com/american-space-software/large.git

@@ -14,12 +14,10 @@ The Large Reader is a simple HTML/CSS/Javascript based application built with Fr
 * Create rich-text NFTs.
 * Content is stored in your browser as you create it.
 * Generate all metadata to integrate with OpenSea and other public NFT infrastructure.
-
 * Data stored in local copy of [PouchDB](https://pouchdb.com)
     * Sync devices (future)
     * Control your own data
     * Runs on your own devices
-
 * Fork and customize the Large Admin.
 
 
@@ -28,16 +26,22 @@ Please note that data is NOT stored on a server and by default is only available
 * Create a collection with the Large admin panel. 
 
     * Choose a name, symbol, description, license, and NFT attributes.
+
         * Create NFT themes. 
             * A theme allows you to apply CSS formatting to an NFT. Create themes and apply them to multiple items. 
+
         * Create attribute categories.
             * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
+
         * Create static pages.
             * Static pages all you to create content that is displayed in the Large Reader alongside your collection.
+
         * Set a mint price. Keep 100% of fees. 
+
         * Pre-set royalties for third-party marketplaces. 
 
-* Create items.
+
+* Create content. Publish as NFTs.
 
     * Each item has a title, content, and a cover image.
     * If a cover image is not provided an SVG gets generated based on the text.

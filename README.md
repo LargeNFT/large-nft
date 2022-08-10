@@ -148,7 +148,7 @@ npm run start:dev
 npm run build
 ```
 
-
+The production build will be in the "public" folder. This repo includes a GitLab compatible script that builds and deploys Large automatically when there are new commits to the master branch. 
 
 
 ## Accessing Your Large Website

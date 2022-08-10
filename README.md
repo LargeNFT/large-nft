@@ -23,7 +23,7 @@ Both the Large Admin dashboard and the Large Reader are offline-first applicatio
 Please note that data is NOT stored on a server and by default is only available on the device where you are using it.
 
 ## Create an NFT collection
-* Create a collection with the Large admin panel. 
+Create a collection with the Large admin panel. 
 
     * Choose a name, symbol, description, license, and NFT attributes.
 
@@ -35,11 +35,17 @@ Please note that data is NOT stored on a server and by default is only available
         * Pre-set royalties for third-party marketplaces. 
 
 ## Create content. Publish as NFTs. 
-    * Each item has a title, content, and a cover image.
-    * If a cover image is not provided an SVG gets generated based on the text.
-    * Choose a theme to apply custom CSS.
-    * Add custom CSS per item.
-    * Generate HTML-based animation/frame for display on marketplaces.
+* Each item has a title, content, and a cover image.
+* If a cover image is not provided an SVG gets generated based on the text.
+* Choose a theme to apply custom CSS.
+* Add custom CSS per item.
+* Generate HTML-based animation/frame for display on marketplaces.
+
+## Import and fork existing NFT project
+* Instead of starting your project from scratch, import an existing project that was published to IPFS with Large.
+* Provide the IPFS hash.
+* Remix existing ideas.
+
 
 ## Publish collection.
 
@@ -59,10 +65,6 @@ Please note that data is NOT stored on a server and by default is only available
 * Create a custom fork of the [Large Reader](https://gitlab.com/ptoner/large-reader)
 * Publish collection data to Reader app.
 
-### Fork a collection
-* Instead of starting your project from scratch, import an existing project that was published to IPFS with Large.
-* Provide the IPFS hash.
-* Remix existing ideas.
 
 ### Fork and customize the Large Admin. 
 Easy to whitelabel. 

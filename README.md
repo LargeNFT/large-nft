@@ -2,7 +2,7 @@
 # Large
 Large is open source software that makes it simple to create and publish any content as an NFT collection on Ethereum and IPFS. 
 
-Create a beautiful website, blog, or app and publish your content as an NFT collection. The Large Reader is a simple HTML/CSS/Javascript based application built with Framework7 that includes native theming for iOS, Android, and Desktop. 
+Create a beautiful website, blog, or app and publish your content as an NFT collection. The Large Reader is a simple HTML/CSS/Javascript application built with Framework7 that includes native theming for iOS, Android, and Desktop. 
 
 * Easily create content in a familiar interface.
 * Publish a simple blog website that works on all devices.
@@ -75,10 +75,12 @@ these are exported alongside them which allows them to be displayed in the Large
 
 
 ## Reader
-
 Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
 * Users do not need a web3 browser to read the collection.
 * Users do need a web3 browser to mint and interact with NFTs.
+
+The Large Reader is statically generated based on your collection info. Google can crawl the website and you can customimze it to improve SEO. Also the app is a Progressive Web App (PWA) and the user will feel like they are using a native application. Framework7 handles styling components for iOS, Android, and the web which
+makes things easy. 
 
 Easily read and enjoy content in a familiar interface.
 

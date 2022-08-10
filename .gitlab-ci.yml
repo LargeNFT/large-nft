@@ -17,20 +17,13 @@ cache:
   paths:
     - node_modules/
 
-install_dependencies:
+install_and_build:
   stage: build
   script:
-    - npm install
+    - npm install; npm run build;
   artifacts:
     paths:
       - node_modules/
-
-run_build:
-  stage: build
-  script:
-    - npm run build
-  artifacts:
-    paths:
       - public
 
 pages:

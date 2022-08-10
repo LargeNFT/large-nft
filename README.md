@@ -111,6 +111,10 @@ Easily read and enjoy content in a familiar interface.
 ### Publish to the Reader at any time.
 * Publish the Large Reader and collection content before deploying the smart contract. It's not required to deploy a contract if you do not want to mint NFTs.
 
+## Reader Showcase
+These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
+* [Alice's Adventures in Wonderland](https://readalice.com)
+
 ## IPFS
 * Publish to an IPFS node running in the browser.
 * Upload to commerical IPFS hosting when ready to deploy to production. 

@@ -2,13 +2,11 @@
 # Large
 Large is open source software that makes it simple to create and publish any content as an NFT collection on Ethereum and IPFS. 
 
-Create a beautiful website, blog, or app and instantly turn all of your content into a professional-grade NFT collection. 
+Create a beautiful website, blog, or app and publish your content as an NFT collection. The Large Reader is a simple HTML/CSS/Javascript based application built with Framework7 that includes native theming for iOS, Android, and Desktop. 
 
 * Easily create content in a familiar interface.
 * Publish a simple blog website that works on all devices.
 * Generate all metadata to integrate with OpenSea and other public NFT infrastructure.
-
-The Large Reader is a simple HTML/CSS/Javascript based application built with Framework7 that includes native theming for iOS, Android, and Desktop. 
 
 Both the Large Admin dashboard and the Large Reader are offline-first applications and can be used without an internet connection. The user just needs to download the app/website before going offline. 
 

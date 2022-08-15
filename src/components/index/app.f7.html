@@ -26,11 +26,17 @@
 
     $f7ready(async () => {
 
+      let baseURI = window.location.pathname
+
+
       let mainView = $f7.views.create('.view-main', {
           url: '/',
           browserHistory: true,
+          browserHistoryRoot: baseURI,
           reloadCurrent: true
       })
+
+      console.log(mainView)
 
     })
 

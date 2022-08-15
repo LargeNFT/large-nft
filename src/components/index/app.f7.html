@@ -1,0 +1,40 @@
+<!--suppress JSAnnotator -->
+
+<template>
+  <div id="app">
+
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar"></div>
+
+    <div class="view view-main" >
+    </div>
+
+  </div>
+
+</template>
+
+<style>
+
+
+
+</style>
+
+<script>
+
+ 
+  export default (props, { $on, $f7ready, $f7, $f7router, $update }) => {
+
+    $f7ready(async () => {
+
+      let mainView = $f7.views.create('.view-main', {
+          url: '/',
+          browserHistory: true,
+          reloadCurrent: true
+      })
+
+    })
+
+    return $render
+  }
+
+</script>

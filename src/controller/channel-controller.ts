@@ -7,6 +7,8 @@ import AdminChannelIndexComponent from '../components/admin/channel/index.f7.htm
 
 import AdminChannelCreateComponent from '../components/admin/channel/create.f7.html'
 import AdminChannelShowComponent from '../components/admin/channel/show.f7.html'
+import AdminChannelSplashComponent from '../components/admin/channel/splash.f7.html'
+
 import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
 import AdminChannelCreateMenuComponent from '../components/admin/channel/create-menu.f7.html'
 import AdminChannelForkComponent from '../components/admin/channel/fork.f7.html'
@@ -25,9 +27,7 @@ import { ItemWebService } from "../service/web/item-web-service";
 class ChannelController {
 
     constructor(
-        private channelWebService:ChannelWebService,
-        private itemWebService:ItemWebService,
-        private pagingService:PagingService
+        private channelWebService:ChannelWebService
     ) {}
 
     @routeMap("/")
@@ -36,7 +36,6 @@ class ChannelController {
 
         }, AdminChannelIndexComponent)
     }
-
 
 
     @routeMap("/admin/channel/create")

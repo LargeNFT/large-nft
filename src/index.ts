@@ -9,6 +9,7 @@ import './html/css/framework7-icons.css'
 
 import 'material-icons/iconfont/material-icons.css'
 import './html/css/app.css'
+import './html/css/landing.css'
 
 
 

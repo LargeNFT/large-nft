@@ -1,0 +1,110 @@
+:root {
+    --f7-block-title-white-space: normal;
+    --f7-block-font-size: 17px;
+}
+
+
+.logo {
+    color: rgb(252,184,39);
+    height: 250px;
+    line-height: 250px;
+    width: 350px;
+    background-color: rgb(28,28,29);
+    text-align: center;
+    font-size: 75px;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border-radius: 15px;
+
+  }
+
+  #main-header {
+    /* line-height: 40px;
+    font-size: 40px; */
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  .explore-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 800px;
+  }
+
+  .explore-img {
+    width: 600px;
+    max-width: 100%;
+    margin: 15px;
+    border: 3px solid #cccccc;
+  }
+
+  @media only screen and (max-width: 1024px) {
+
+    .explore-div {
+      height: 100%;
+    }
+
+    .explore-img  {
+      width: 90%;
+    }
+
+  }
+  
+
+  .banner {
+    font-size: 18px;
+  }
+
+  .release {
+    font-size: 12px;
+    display: block;
+  }
+
+  /* ul {
+    padding-left: 15px;
+  }  
+
+  li {
+    list-style-type: none;
+  }
+
+  li .material-icons {
+    font-size: 18px;
+    color: green;
+  } */
+
+
+  .fork-button {
+    width: 190px;
+    display: inline-block;
+    margin-right: 15px;
+    vertical-align: middle;
+    margin-bottom: 30px;
+  }
+
+
+  .app-button {
+    width: 190px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 30px;
+  }
+
+  .headline {
+    font-size: 25px;
+    width: 75%;
+    margin: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  .headline h2 {
+    margin-bottom: 0px;
+  }
+
+  .caption {
+    font-size: 14px;
+    line-height: 14px;
+  }

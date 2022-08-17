@@ -20,13 +20,9 @@
 
 
 .logo {
-    color: rgb(252,184,39);
-    height: 250px;
-    line-height: 250px;
-    width: 350px;
-    background-color: rgb(28,28,29);
-    text-align: center;
-    font-size: 75px;
+    height: 300px;
+    width: 300px;
+
     margin-left: 20px;
     margin-top: 20px;
     margin-bottom: 30px;

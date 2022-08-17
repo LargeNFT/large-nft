@@ -4,7 +4,7 @@
     --f7-block-title-font-size: 27px;
     --f7-block-title-line-height: 35px;
 
-    --f7-block-padding-horizontal: 0px;
+    /* --f7-block-padding-horizontal: 0px; */
 
 
 }
@@ -120,4 +120,10 @@
   .caption {
     font-size: 14px;
     line-height: 14px;
+  }
+
+  .open-source-logo {
+    height: 100px; 
+    display: inline-block; 
+    padding: 10px;
   }

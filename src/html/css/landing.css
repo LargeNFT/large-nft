@@ -4,7 +4,18 @@
     --f7-block-title-font-size: 27px;
     --f7-block-title-line-height: 35px;
 
+    --f7-block-padding-horizontal: 0px;
 
+
+}
+
+.block.inverse {
+  background: #000000;
+  color: #ffffff;
+}
+
+.inverse .block-title {
+  color: #ffffff;
 }
 
 
@@ -42,7 +53,6 @@
   }
 
   .center-img-div img {
-    border: 1px solid #cccccc;
     padding: 5px;
   }
 
@@ -51,7 +61,6 @@
     width: 500px;
     max-width: 100%;
     margin: 100px 15px 15px 15px;
-    border: 1px solid #cccccc;
   }
 
   @media only screen and (max-width: 1024px) {

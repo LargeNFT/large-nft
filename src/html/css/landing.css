@@ -1,6 +1,10 @@
 :root {
     --f7-block-title-white-space: normal;
-    --f7-block-font-size: 17px;
+    --f7-block-font-size: 23px;
+    --f7-block-title-font-size: 27px;
+    --f7-block-title-line-height: 35px;
+
+
 }
 
 
@@ -26,18 +30,28 @@
     color: black;
   }
 
-  .explore-div {
+  .center-img-div {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 800px;
   }
 
-  .explore-img {
-    width: 600px;
+
+  img {
     max-width: 100%;
-    margin: 15px;
-    border: 3px solid #cccccc;
+  }
+
+  .center-img-div img {
+    border: 1px solid #cccccc;
+    padding: 5px;
+  }
+
+
+  .explore-img {
+    width: 500px;
+    max-width: 100%;
+    margin: 100px 15px 15px 15px;
+    border: 1px solid #cccccc;
   }
 
   @media only screen and (max-width: 1024px) {
@@ -47,6 +61,7 @@
     }
 
     .explore-img  {
+      margin: 15px;
       width: 90%;
     }
 
@@ -62,18 +77,7 @@
     display: block;
   }
 
-  /* ul {
-    padding-left: 15px;
-  }  
-
-  li {
-    list-style-type: none;
-  }
-
-  li .material-icons {
-    font-size: 18px;
-    color: green;
-  } */
+  
 
 
   .fork-button {

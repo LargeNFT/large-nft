@@ -54,6 +54,7 @@
     "css-loader": "5.2.7",
     "file-loader": "6.2.0",
     "style-loader": "3.3.1",
+    "html-loader": "4.1.0",
     "terser-webpack-plugin": "5.3.1",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "10.2.4",

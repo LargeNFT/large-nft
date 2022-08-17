@@ -192,6 +192,10 @@ export default () => {
         {
           test: /\.f7.html$/,
           use: ['framework7-loader'],
+        },
+        {
+          test: /\.iframe$/i,
+          loader: "html-loader",
         }
       ],
     },

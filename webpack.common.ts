@@ -176,9 +176,10 @@ export default () => {
           use: ['style-loader', 'css-loader']
         },
         {
-          test: /\.(png|jpe?g|gif|svg|eot)$/,
+          test: /\.(png|jpe?g|gif|svg|eot|mp4)$/,
           use: [fileLoader],
         },
+
         
         {
           test: /\.(ttf|woff|woff2)$/,

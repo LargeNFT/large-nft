@@ -123,3 +123,13 @@
     display: inline-block; 
     padding: 10px;
   }
+
+
+
+
+
+
+  .simple-list li {
+    white-space: unset;
+    line-height: 20px;
+  }

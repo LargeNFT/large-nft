@@ -85,7 +85,7 @@ export default async() => {
         theme: 'auto', // Automatic theme detection
   
         init: false,
-  
+
         //@ts-ignore
         component: AppComponent,
         routes: [

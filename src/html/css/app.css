@@ -757,3 +757,37 @@ ul.breadcrumb li a:hover {
 }
 
 
+
+
+
+
+.ipfs-label,
+  .fork-label {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 18px;
+  }
+
+  .fork-output {
+      border: 1px solid #cccccc;
+      font-size: 13px;
+      width: 100%;
+      max-width: 100%;
+      padding: 5px;
+      height: 300px;
+      overflow-y: scroll;
+  }
+
+  .fork-status {
+      font-size: 14px;
+      padding: 10px;
+      border: 1px solid #f1f1f1;
+  }
+
+  .fork-status .item label {
+      font-weight: bold;
+      display: inline-block;
+      width: 180px;
+  }
+

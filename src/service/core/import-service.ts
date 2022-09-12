@@ -24,8 +24,6 @@ import axios from "axios";
 
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import all from 'it-all'
-import isIPFS from 'is-ipfs'
-
 
 
 @injectable()
@@ -66,12 +64,8 @@ class ImportService {
 
         await this.ipfsService.ipfs.files.cp(`/ipfs/${cid}`, '/fork', { create: true, parents: true, flush: true })
 
-
         this.logForkProgress(forkStatus, "Processing...")
 
-        let channelId 
-
-        let idMap = new Map<string, string>()
 
         //Load the directory from IPFS
         let authors:Author[] = await this._readFile(`/fork/backup/authors.json`)
@@ -81,6 +75,81 @@ class ImportService {
         let animations:Animation[] = await this._readFile(`/fork/backup/animations.json`)
         let themes:Theme[] = await this._readFile(`/fork/backup/themes.json`)
         let staticPages:StaticPage[] = await this._readFile(`/fork/backup/static-pages.json`)
+
+        let mediaDownloader = new IPFSDownloader(this.ipfsService)
+
+        return this._importAsNew(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, cid)
+    }
+
+    async importFromContract(contractAddress:string, startToken:number, endToken:number) : Promise<string> {
+
+        let wallet = this.walletService.wallet
+
+        //Look up channel since it has the basic ERC721 signature
+        const c = this.contracts['Channel']
+
+        let contract = new ethers.Contract(contractAddress, c.abi, wallet)
+
+        // contract
+
+        for (let i=startToken; i <= endToken; i++) {
+            
+            let tokenMetadata = await this._getTokenMetadata(contract, i)
+
+            // console.log(tokenMetadata)
+
+            //Fetch image
+            if (tokenMetadata.image) {
+                let image = await this._fetchURI(tokenMetadata.image)
+                // console.log(image.length)
+
+            }
+
+
+        }
+
+
+        return 
+
+    }
+
+    async importFromReader(baseURI:string) : Promise<string> {
+
+        let forkStatus:ForkStatus = {
+            animations: { saved: 0, total: 0},
+            images: { saved: 0, total: 0},
+            channels: { saved: 0, total: 0},
+            items: { saved: 0, total: 0},
+            authors: { saved: 0, total: 0},
+            themes: { saved: 0, total: 0 },
+            staticPages:  { saved: 0, total: 0 }
+        }
+
+        this.logForkProgress(forkStatus, "Processing...")
+
+
+        //Load the directory from IPFS
+        let authors:Author[] = await this._fetchFile(`${baseURI}backup/authors.json`)
+        let channels:Channel[] = await this._fetchFile(`${baseURI}backup/channels.json`)
+        let images:Image[] = await this._fetchFile(`${baseURI}backup/images.json`)
+        let items:Item[] = await this._fetchFile(`${baseURI}backup/items.json`)
+        let animations:Animation[] = await this._fetchFile(`${baseURI}backup/animations.json`)
+        let themes:Theme[] = await this._fetchFile(`${baseURI}backup/themes.json`)
+        let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/static-pages.json`)
+
+        let mediaDownloader = new URLDownloader(baseURI)
+
+        return this._importAsNew(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader)
+
+    }
+    
+    private async _importAsNew(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, cid?:string) {
+
+        let channelId 
+
+
+        let idMap = new Map<string, string>()
+
 
         if (!authors || !channels || !images || !items) {
             throw new Error("Invalid collection hash")
@@ -161,9 +230,6 @@ class ImportService {
             forkStatus.channels.saved++
             this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`)
 
-            console.log(channel)
-
-
         }
 
         for (let image of images) {
@@ -172,13 +238,11 @@ class ImportService {
             delete image.dateCreated
             delete image["_rev_tree"]
 
-            let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`/fork/images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)) 
-
             //Load content
             if (image.generated) {
-                image.svg = new TextDecoder("utf-8").decode(bufferedContents)
+                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
             } else {
-                image.buffer = bufferedContents
+                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
             }
 
             let imageObj = Object.assign(new Image(), image)
@@ -199,8 +263,7 @@ class ImportService {
             delete animation["_rev_tree"]
 
             //Load content
-            let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`/fork/animations/${animation.cid}.html`)) 
-            animation.content = new TextDecoder("utf-8").decode(bufferedContents)
+            animation.content = await mediaDownloader.getAsString(`animations/${animation.cid}.html`)
 
             let animationObj = Object.assign(new Animation(), animation)
 
@@ -212,7 +275,7 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted animation ${animationObj._id}`)
 
         }
-
+        // console.log(items)
         for (let item of items) {
             
             delete item._id
@@ -304,40 +367,6 @@ class ImportService {
         return channelId
     }
 
-
-    async importFromContract(contractAddress:string, startToken:number, endToken:number) : Promise<string> {
-
-        let wallet = this.walletService.wallet
-
-        //Look up channel since it has the basic ERC721 signature
-        const c = this.contracts['Channel']
-
-        let contract = new ethers.Contract(contractAddress, c.abi, wallet)
-
-        // contract
-
-        for (let i=startToken; i <= endToken; i++) {
-            
-            let tokenMetadata = await this._getTokenMetadata(contract, i)
-
-            console.log(tokenMetadata)
-
-            //Fetch image
-            if (tokenMetadata.image) {
-                let image = await this._fetchURI(tokenMetadata.image)
-                console.log(image.length)
-
-            }
-
-
-        }
-
-
-        return 
-
-    }
-
-    
     async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
 
         let tokenURI = await contract.tokenURI(tokenId)
@@ -369,12 +398,17 @@ class ImportService {
 
     }
 
-
     async _readFile(filename:string) {
         let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(filename)) 
         return JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
 
     }
+
+    async _fetchFile(filename:string) {
+        let response = await axios.get(filename)
+        return response.data
+    }
+
 
 
     private logForkProgress(forkStatus:ForkStatus, message?: string) {
@@ -402,13 +436,60 @@ class ImportService {
 
 }
 
-// interface ERC721 {
-//     ownerOf(tokenId:number) : string
-//     tokenURI(tokenId:number) : string
-//     balanceOf(address) : string
-//     totalSupply() : BigNumber
-//     address:string
-// }
+
+
+
+
+class IPFSDownloader implements MediaDownloader {
+    
+    basePath:string = "/fork/"
+
+    constructor(
+        private ipfsService:IpfsService
+    ) {}
+
+    async getAsString(filename:string): Promise<string> {        
+        let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${this.basePath}${filename}`)) 
+        return new TextDecoder("utf-8").decode(bufferedContents)
+    }
+
+    async getAsBuffer(filename:string): Promise<Uint8Array> {        
+        return toBuffer(this.ipfsService.ipfs.files.read(`${this.basePath}${filename}`)) 
+    }
+
+}
+
+class URLDownloader implements MediaDownloader {
+    
+    constructor(
+        public basePath: string
+    ) {}
+
+    async getAsString(path:string): Promise<string> {
+        
+        let response = await axios.get(`${this.basePath}backup/${path}`)
+        return response.data?.toString()
+
+    }
+
+    async getAsBuffer(path:string): Promise<Uint8Array> {
+
+        // console.log(`${this.basePath}backup/${path}`)
+
+        let response = await axios.get(`${this.basePath}backup/${path}`, {
+            responseType: "arraybuffer"
+        })
+        return response.data
+    }
+
+}
+
+interface MediaDownloader {
+    basePath:string
+    getAsString(filename:string) : Promise<string>
+    getAsBuffer(filename:string) : Promise<Uint8Array>
+}
+
 
 interface TokenMetadata {
     name: string

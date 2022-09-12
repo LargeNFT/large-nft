@@ -23,6 +23,8 @@ import { ImageService } from "../src/service/image-service";
 import { AnimationService } from "../src/service/animation-service";
 import { PublishService } from "../src/service/core/publish-service";
 
+var MockAdapter = require("axios-mock-adapter")
+import axios from "axios"
 
 let user0
 let user1
@@ -50,7 +52,10 @@ let cid:string
 
 let exportBundle:ExportBundle
 
-contract('PublishService', async (accounts) => {
+let image1, image2, item1, item2, item3, animation
+
+
+contract('ImportService', async (accounts) => {
 
 
     before("", async () => {
@@ -86,12 +91,12 @@ contract('PublishService', async (accounts) => {
 
         await authorService.put(author)
 
-        let image1 = await imageService.newFromBuffer(Buffer.from("image1!"))
-        let image2 = await imageService.newFromBuffer(Buffer.from("image2!"))
+        image1 = await imageService.newFromBuffer(Buffer.from("image1!"))
+        image2 = await imageService.newFromBuffer(Buffer.from("image2!"))
 
 
         //Create animation
-        let animation:Animation = await animationService.newFromText("Hel343l33o")
+        animation = await animationService.newFromText("Hel343l33o")
         await animationService.put(animation)
 
 
@@ -127,7 +132,7 @@ contract('PublishService', async (accounts) => {
 
 
         //Add items with those attributes
-        let item1:Item = Object.assign(new Item(), {
+        item1 = Object.assign(new Item(), {
             channelId: channel._id,
             title: "An image!",
             link: "pontoon.com",
@@ -150,7 +155,7 @@ contract('PublishService', async (accounts) => {
 
         })
 
-        let item2:Item = Object.assign(new Item(), {
+        item2 = Object.assign(new Item(), {
             channelId: channel._id,
             title: "2An image!",
             link: "2pontoon.com",
@@ -171,7 +176,7 @@ contract('PublishService', async (accounts) => {
 
         })
 
-        let item3:Item = Object.assign(new Item(), {
+        item3 = Object.assign(new Item(), {
             channelId: channel._id,
             title: "2An image!",
             link: "2pontoon.com",
@@ -208,43 +213,87 @@ contract('PublishService', async (accounts) => {
     })
 
 
-    // it("should import a channel from an export", async () => {
-
-    //     //Arrange
-    //     await publishService.publishToIPFS(channel)
-
-    //     let localCid = channel.localCid
-
-    //     let channelId = await service.importFromIPFS(localCid)
-
-    //     let importedChannel = await channelService.get(channelId)
-
-    //     //Assert
-    //     // console.log(importedChannel)
-
-    // })
-
-
-
-    it("should import an NFT collection from the network", async () => {
+    it("should import a channel from an export", async () => {
 
         //Arrange
-        
-        //Moonbirds
-        await service.importFromContract("0x23581767a106ae21c074b2276D25e5C3e136a68b", 1, 5)
+        await publishService.publishToIPFS(channel)
 
+        let localCid = channel.localCid
 
+        let channelId = await service.importFromIPFS(localCid)
 
-        //IPFS
-        await service.importFromContract("0x7b94d6436407a850e6200c2c677e94dc8941bb6f", 1, 5)
+        let importedChannel = await channelService.get(channelId)
 
+        assert.strictEqual(importedChannel.title, 'The Sound of Music')
+        assert.strictEqual(importedChannel.symbol, 'SOM')
+        assert.strictEqual(importedChannel.mintPrice, '0.08')
+        assert.strictEqual(importedChannel.link, 'google.com')
+        assert.strictEqual(importedChannel.coverImageId, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
+        assert.strictEqual(importedChannel.title, 'The Sound of Music')
 
-
-        // console.log(channelId)
-
-        //Assert
+        //Need better asserts. 
 
     })
+
+
+    it("should import a channel from http", async () => {
+
+        //Arrange
+        let baseURI = "/"
+
+        var mockAxios = new MockAdapter(axios)
+
+
+        mockAxios.onGet("/backup/authors.json").reply(200, [author])
+        mockAxios.onGet("/backup/channels.json").reply(200, [channel])
+        mockAxios.onGet("/backup/images.json").reply(200, [image1, image2])
+        mockAxios.onGet("/backup/items.json").reply(200, [item1, item2, item3])
+        mockAxios.onGet("/backup/animations.json").reply(200, [animation])
+        mockAxios.onGet("/backup/themes.json").reply(200, [])
+        mockAxios.onGet("/backup/static-pages.json").reply(200, [])
+
+        mockAxios.onGet(`/backup/images/${image1._id}.jpg`).reply(200, Buffer.from("image1!"))
+        mockAxios.onGet(`/backup/images/${image2._id}.jpg`).reply(200, Buffer.from("image2!"))
+        mockAxios.onGet(`/backup/animations/${animation._id}.html`).reply(200, "")
+
+
+        let channelId = await service.importFromReader(baseURI)
+
+        let importedChannel = await channelService.get(channelId)
+
+        assert.strictEqual(importedChannel.title, 'The Sound of Music')
+        assert.strictEqual(importedChannel.symbol, 'SOM')
+        assert.strictEqual(importedChannel.mintPrice, '0.08')
+        assert.strictEqual(importedChannel.link, 'google.com')
+        assert.strictEqual(importedChannel.coverImageId, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
+        assert.strictEqual(importedChannel.title, 'The Sound of Music')
+
+        //Need better asserts. 
+
+    })
+
+
+
+
+    // it("should import an NFT collection from the network", async () => {
+
+    //     //Arrange
+        
+    //     //Moonbirds
+    //     await service.importFromContract("0x23581767a106ae21c074b2276D25e5C3e136a68b", 1, 5)
+
+
+
+    //     //IPFS
+    //     await service.importFromContract("0x7b94d6436407a850e6200c2c677e94dc8941bb6f", 1, 5)
+
+
+
+    //     // console.log(channelId)
+
+    //     //Assert
+
+    // })
 
 
 

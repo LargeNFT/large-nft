@@ -13,14 +13,12 @@ import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
 import AdminChannelCreateMenuComponent from '../components/admin/channel/create-menu.f7.html'
 import AdminChannelForkComponent from '../components/admin/channel/fork.f7.html'
 import AdminChannelForkContractComponent from '../components/admin/channel/fork-contract.f7.html'
+import AdminChannelForkReaderComponent from '../components/admin/channel/fork-reader.f7.html'
 
 import AdminChannelUpgradeComponent from '../components/admin/channel/upgrade.f7.html'
 
 
 import { ChannelWebService } from "../service/web/channel-web-service";
-import { PagingService } from "../service/core/paging-service";
-import { ItemWebService } from "../service/web/item-web-service";
-
 
 
 @injectable()
@@ -71,6 +69,13 @@ class ChannelController {
             }
 
         }, AdminChannelForkContractComponent)
+    }
+
+    @routeMap("/admin/channel/fork-reader")
+    async forkReader() : Promise<ModelView> {
+        return new ModelView(async (routeTo:RouteTo) => {
+
+        }, AdminChannelForkReaderComponent)
     }
 
 

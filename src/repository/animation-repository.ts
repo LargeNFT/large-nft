@@ -1,21 +1,23 @@
 import { injectable } from "inversify"
 import { Animation } from "../dto/animation"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
 class AnimationRepository {
 
-    CREATE_INDEXES = async (db) => {
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
 
-        await db.createIndex({
-            index: {
-                fields: ['dateCreated']
-            }
-        })
+            await db.createIndex({
+                index: {
+                    fields: ['dateCreated']
+                }
+            })
 
-    }
-
+        }
+    }]
 
     db: any
 
@@ -25,7 +27,7 @@ class AnimationRepository {
 
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "animation", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "animation", this.changesets)
     }
 
     async get(_id: string): Promise<Animation> {

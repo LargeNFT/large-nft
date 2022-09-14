@@ -1,18 +1,18 @@
 import { injectable } from "inversify"
 import { PinningApi } from "../dto/pinning-api"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
 class PinningApiRepository {
 
-    CREATE_INDEXES = async (db) => {
-
-        //Create indexes
-        await db.createIndex({ index: { fields: ['dateCreated'] } })
-        
-    }
-
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
+            //Create indexes
+            await db.createIndex({ index: { fields: ['dateCreated'] } })
+        }
+    }]
 
     db: any
 
@@ -21,7 +21,7 @@ class PinningApiRepository {
     ) { }
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "pinning-api", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "pinning-api", this.changesets)
     }
     async get(_id: string): Promise<PinningApi> {
         return Object.assign(new PinningApi(), await this.db.get(_id))

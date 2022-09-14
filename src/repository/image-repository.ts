@@ -1,20 +1,21 @@
 import { injectable } from "inversify"
 import { Image } from "../dto/image"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
 class ImageRepository {
 
-    CREATE_INDEXES = async (db) => {
-
-        await db.createIndex({
-            index: {
-                fields: ['dateCreated']
-            }
-        })
-
-    }
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
+            await db.createIndex({
+                index: {
+                    fields: ['dateCreated']
+                }
+            })
+        }
+    }]
 
 
     db: any
@@ -25,7 +26,7 @@ class ImageRepository {
 
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "image", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "image", this.changesets)
     }
 
     async get(_id: string): Promise<Image> {

@@ -1,18 +1,21 @@
 import { injectable } from "inversify"
 import { Channel } from "../dto/channel"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
 class ChannelRepository {
 
-    CREATE_INDEXES = async (db) => {
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
 
-        //Create indexes
-        await db.createIndex({ index: { fields: ['dateCreated'] } })
-        await db.createIndex({ index: { fields: ['lastUpdated'] } })
-        
-    }
+            //Create indexes
+            await db.createIndex({ index: { fields: ['dateCreated'] } })
+            await db.createIndex({ index: { fields: ['lastUpdated'] } })
+
+        }
+    }]
 
     db: any
 
@@ -22,7 +25,7 @@ class ChannelRepository {
 
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "channel", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "channel", this.changesets)
     }
 
     async get(_id: string): Promise<Channel> {

@@ -1,6 +1,6 @@
 import { injectable } from "inversify"
 import { Item } from "../dto/item"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
@@ -8,57 +8,87 @@ class ItemRepository {
 
     static CHUNK_SIZE = 35
 
-    CREATE_INDEXES = async (db) => {
+    changesets:Changeset[] = [
+        {
+            id: '0',
+            changeset: async (db) => {
 
-        await db.createIndex({
-            index: {
-                fields: ['channelId']
+            await db.createIndex({
+                index: {
+                    fields: ['channelId']
+                }
+            })
+    
+            await db.createIndex({
+                index: {
+                    fields: ['dateCreated']
+                }
+            })
+    
+    
+            await db.createIndex({
+                index: {
+                    fields: ['searchableContent']
+                }
+            })
+    
+    
+            await db.put({
+                _id: '_design/item_index',
+                views: {
+                  by_channel_id: {
+                    map: function (doc) { 
+                        //@ts-ignore
+                        emit(doc.channelId)
+                    }.toString(),
+                    reduce: '_count'
+                  }
+                }
+            })
+    
+            await db.put({
+                _id: '_design/item_token_id',
+                views: {
+                  token_id_stats: {
+                    map: function (doc) { 
+                        //@ts-ignore
+                        emit(doc.channelId, doc.tokenId)
+                    }.toString(),
+                    reduce: '_count'
+                  }
+                }
+            })
             }
-        })
+        },
 
-        await db.createIndex({
-            index: {
-                fields: ['dateCreated']
+        {
+            id: '1',
+            changeset: async (db) => {
+
+                await db.put({
+                    _id: '_design/item_attribute_counts_index',
+                    views: {
+                      attribute_counts: {
+                        map: function (doc) { 
+
+                            if (doc.attributeSelections?.length > 0) {
+                                for (let as of doc.attributeSelections) {
+                                    //@ts-ignore
+                                    emit ([doc.channelId, as.traitType, as.value])
+                                }
+                            }
+
+                        }.toString(),
+                        reduce: '_count'
+                      }
+                    }
+                })
+
+
             }
-        })
-
-
-        await db.createIndex({
-            index: {
-                fields: ['searchableContent']
-            }
-        })
-
-
-        await db.put({
-            _id: '_design/item_index',
-            views: {
-              by_channel_id: {
-                map: function (doc) { 
-                    //@ts-ignore
-                    emit(doc.channelId)
-                }.toString(),
-                reduce: '_count'
-              }
-            }
-        })
-
-        await db.put({
-            _id: '_design/item_token_id',
-            views: {
-              token_id_stats: {
-                map: function (doc) { 
-                    //@ts-ignore
-                    emit(doc.channelId, doc.tokenId)
-                }.toString(),
-                reduce: '_count'
-              }
-            }
-        })
-
-
-
-    }
+        }
+    
+]
 
     db: any
 
@@ -69,7 +99,7 @@ class ItemRepository {
     }
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "item", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "item", this.changesets)
     }
 
     async get(_id: string): Promise<Item> {
@@ -184,9 +214,35 @@ class ItemRepository {
 
     }
 
+    async getAttributeInfo(channelId:string, attributes:[{ traitType:string, value:string}]) : Promise<AttributeInfo[]> {
+
+        let result = await this.db.query('item_attribute_counts_index/attribute_counts', {
+            reduce: true,
+            keys: attributes.map(a => [channelId, a.traitType, a.value]),
+            include_docs: false,
+            group_level: 3
+        })
+
+        return result.rows.map(row => {
+            return {
+                traitType: row.key[1],
+                value: row.key[2],
+                count: row.value
+            }
+        })
+
+    }
 
 }
 
+interface AttributeInfo {   
+    traitType:string
+    value:string
+    count:number 
+    percent:number
+}
+
+
 export {
-    ItemRepository
+    ItemRepository, AttributeInfo
 }

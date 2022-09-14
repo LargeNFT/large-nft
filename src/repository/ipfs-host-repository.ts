@@ -1,17 +1,18 @@
 import { IpfsHost } from "../dto/ipfs-host"
 import { injectable } from "inversify"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
 class IpfsHostRepository {
 
-    CREATE_INDEXES = async (db) => {
-
-        //Create indexes
-        await db.createIndex({ index: { fields: ['dateCreated'] } })
-        
-    }
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
+            //Create indexes
+            await db.createIndex({ index: { fields: ['dateCreated'] } })
+        }
+    }]
 
     db: any
 
@@ -20,7 +21,7 @@ class IpfsHostRepository {
     ) { }
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "ipfs-host", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "ipfs-host", this.changesets)
     }
     async get(): Promise<IpfsHost> {
         return Object.assign(new IpfsHost(), await this.db.get("single"))

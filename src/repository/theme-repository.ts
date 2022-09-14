@@ -1,26 +1,27 @@
 import { injectable } from "inversify"
 import { Theme } from "../dto/theme"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
 class ThemeRepository {
 
-    CREATE_INDEXES = async (db) => {
-
-        await db.createIndex({
-            index: {
-                fields: ['channelId']
-            }
-        })
-
-        await db.createIndex({
-            index: {
-                fields: ['dateCreated']
-            }
-        })
-
-    }
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
+            await db.createIndex({
+                index: {
+                    fields: ['channelId']
+                }
+            })
+    
+            await db.createIndex({
+                index: {
+                    fields: ['dateCreated']
+                }
+            })
+        }
+    }]
 
     db: any
 
@@ -30,7 +31,7 @@ class ThemeRepository {
 
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "theme", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "theme", this.changesets)
     }
     async get(_id: string): Promise<Theme> {
         return Object.assign(new Theme(), await this.db.get(_id))

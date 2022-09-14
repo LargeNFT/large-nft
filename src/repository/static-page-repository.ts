@@ -1,26 +1,28 @@
 import { injectable } from "inversify"
 import { StaticPage } from "../dto/static-page"
-import { DatabaseService } from "../service/core/database-service"
+import { Changeset, DatabaseService } from "../service/core/database-service"
 
 
 @injectable()
 class StaticPageRepository {
 
-    CREATE_INDEXES = async (db) => {
-
-        await db.createIndex({
-            index: {
-                fields: ['channelId']
-            }
-        })
-
-        await db.createIndex({
-            index: {
-                fields: ['dateCreated']
-            }
-        })
-
-    }
+    changesets:Changeset[] = [{
+        id: '0',
+        changeset: async (db) => {
+            await db.createIndex({
+                index: {
+                    fields: ['channelId']
+                }
+            })
+    
+            await db.createIndex({
+                index: {
+                    fields: ['dateCreated']
+                }
+            })
+    
+        }
+    }]
 
     db: any
 
@@ -30,7 +32,7 @@ class StaticPageRepository {
 
 
     async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "static-page", this.CREATE_INDEXES)
+        this.db = await this.databaseService.getDatabase(walletAddress, "static-page", this.changesets)
     }
     async get(_id: string): Promise<StaticPage> {
         return Object.assign(new StaticPage(), await this.db.get(_id))

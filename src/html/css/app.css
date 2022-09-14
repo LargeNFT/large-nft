@@ -791,3 +791,35 @@ ul.breadcrumb li a:hover {
       width: 180px;
   }
 
+
+
+
+
+
+  
+.attribute-value {
+  width: 125px;
+  border: 1px solid var(--f7-theme-color);
+  border-radius: 5px;
+  background: hwb(41 88% 0%);
+  display: inline-block;
+  margin: 5px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.attribute-value .trait-type {
+  font-size: 12px;
+  color: hwb(41 0% 45%);
+}
+
+.attribute-value .value {
+  font-size: 14px;
+  font-weight: bold;
+  color:rgb(53, 56, 64);
+}
+
+.attribute-value .category-percent {
+  font-size: 12px;
+  color: rgb(112, 122, 131);
+}

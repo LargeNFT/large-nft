@@ -334,6 +334,8 @@ contract('ItemService', async (accounts) => {
 
     // })
 
+    let attributeChannel 
+
     it("should add and export item with cover photo and attributes", async () => {
 
         //Arrange
@@ -357,7 +359,7 @@ contract('ItemService', async (accounts) => {
 
 
         //Create category with attributes
-        let channel = Object.assign(new Channel(), {
+        attributeChannel = Object.assign(new Channel(), {
             title: "The Sound of Music",
             symbol: "SOM",
             mintPrice: web3.utils.toWei( "0.08" , 'ether'),
@@ -379,12 +381,12 @@ contract('ItemService', async (accounts) => {
             coverImageId: image.cid.toString()
         }) 
 
-        await service.put(channel)
+        await service.put(attributeChannel)
 
 
 
         let item:Item = Object.assign(new Item(), {
-            channelId: channel._id,
+            channelId: attributeChannel._id,
             title: "An image!",
             link: "pontoon.com",
             description: "Another boat and a man in a bat suit",
@@ -407,18 +409,29 @@ contract('ItemService', async (accounts) => {
         await service.put(item)
 
 
-        const metadata = await service.exportNFTMetadata(channel, item, image, "zyx", 'xyz')
+        const metadata = await service.exportNFTMetadata(attributeChannel, item, image, "zyx", 'xyz')
+
         assert.strictEqual(metadata.image, 'ipfs://xyz/QmUExZiPE59FBaVPxtLTwKWqpcy2f8qfE5d4SVuqRUYPbg.jpg')
         assert.strictEqual(metadata.animation_url, 'ipfs://zyx/QmahFnt1WezHKTMZpc3mGJsYwKqcNsQhazFBzxG1ry7Etf.html')
 
-        assert.strictEqual(metadata.attributes[0].traitType, "Hair")
+        assert.strictEqual(metadata.attributes[0].trait_type, "Hair")
         assert.strictEqual(metadata.attributes[0].value, "Curly")
 
-        assert.strictEqual(metadata.attributes[1].traitType, "Teeth")
+        assert.strictEqual(metadata.attributes[1].trait_type, "Teeth")
         assert.strictEqual(metadata.attributes[1].value, "Nice")
 
     })
 
+
+    it("should return counts of specific attributes", async () => {
+
+        let attributeInfo:AttributeInfo[] = await service.getAttributeInfo(attributeChannel._id, [{ traitType: "Hair", value: "Curly"}])
+
+        assert.strictEqual(attributeInfo[0].traitType, "Hair")
+        assert.strictEqual(attributeInfo[0].value, "Curly")
+        assert.strictEqual(attributeInfo[0].count,1)
+
+    })
 
 
 })

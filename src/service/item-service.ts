@@ -5,7 +5,7 @@ import { NFTMetadata } from "../dto/nft-metadata";
 import { ValidationException } from "../util/validation-exception";
 import { validate, ValidationError } from 'class-validator';
 import { v4 as uuidv4 } from 'uuid';
-import { ItemRepository } from "../repository/item-repository";
+import { AttributeInfo, ItemRepository } from "../repository/item-repository";
 
 import { Channel } from "../dto/channel";
 import { ImageService } from "./image-service";
@@ -145,6 +145,11 @@ class ItemService {
 
     async getNextTokenId(channelId:string) {
         return await this.itemRepository.getMaxTokenId(channelId) + 1
+    }
+
+    async getAttributeInfo(channelId:string, attributes:[{ traitType:string, value:string}]) : Promise<AttributeInfo[]> {
+        return this.itemRepository.getAttributeInfo(channelId, attributes)
+       
     }
 }
 

@@ -13,7 +13,7 @@ class DatabaseService {
         //Enable find plugin
         PouchDB.plugin(PouchFind)
 
-        PouchDB.replicate(`./pouch/0x98de44fe4fb29d4b0a44df46836cbd9b62670fcc-item`, 'http://localhost:5984/items', {live: true});
+        // PouchDB.replicate(`./pouch/0x98de44fe4fb29d4b0a44df46836cbd9b62670fcc-item`, 'http://localhost:5984/items', {live: true});
 
 
     }

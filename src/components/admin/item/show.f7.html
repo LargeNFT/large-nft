@@ -59,10 +59,15 @@
               </div>
 
               ${itemViewModel.attributeSelections?.map(as => $h`
-                <div class="button-outline attribute-value">
-                  <div class="trait-type">${as.traitType}</div>
-                  <div class="value">${as.value}</div>
-                </div>
+
+                ${as.value ? $h`
+                  <div class="button-outline attribute-value">
+                    <div class="trait-type">${as.traitType}</div>
+                    <div class="value">${as.value}</div>
+                    <div class="category-percent">${as.categoryPercent} have this trait</div>
+                  </div>
+                ` : $h`<span />`}
+
               `)}
 
             </div>

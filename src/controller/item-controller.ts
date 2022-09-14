@@ -7,7 +7,6 @@ import AdminItemCreateComponent from '../components/admin/item/create.f7.html'
 import AdminItemShowComponent from '../components/admin/item/show.f7.html'
 import AdminItemEditComponent from '../components/admin/item/edit.f7.html'
 
-import { PinningService } from "../service/core/pinning-service";
 import { ItemWebService } from "../service/web/item-web-service";
 import { ThemeService } from "../service/theme-service";
 
@@ -17,7 +16,6 @@ class ItemController {
 
     constructor(
         private itemWebService:ItemWebService,
-        private pinningService:PinningService,
         private themeService:ThemeService
     ) {}
 

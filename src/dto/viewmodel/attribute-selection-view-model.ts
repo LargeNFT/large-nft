@@ -8,6 +8,8 @@ interface AttributeSelectionViewModel {
 
     values:string[]
     value:string
+
+    categoryPercent?:string
 }
 
 export {

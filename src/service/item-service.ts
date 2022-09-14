@@ -147,7 +147,7 @@ class ItemService {
         return await this.itemRepository.getMaxTokenId(channelId) + 1
     }
 
-    async getAttributeInfo(channelId:string, attributes:[{ traitType:string, value:string}]) : Promise<AttributeInfo[]> {
+    async getAttributeInfo(channelId:string, attributes) : Promise<AttributeInfo[]> {
         return this.itemRepository.getAttributeInfo(channelId, attributes)
        
     }

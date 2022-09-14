@@ -21,6 +21,7 @@ import { QuillService } from "../quill-service";
 import { ThemeService } from "../theme-service";
 import { Theme } from "../../dto/theme";
 import { ItemListViewModel } from "dto/viewmodel/item-list-view-model";
+import { AttributeInfo } from "repository/item-repository";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
@@ -45,7 +46,9 @@ class ItemWebService {
         //Get channel
         const channel:Channel = await this.channelService.get(item.channelId)
 
-        return this.getViewModel(item, channel)
+        let totalItemCount = await this.channelService.countItemsByChannel(channel._id)
+
+        return this.getViewModel(item, channel, totalItemCount)
     }
 
     async getNavigation(_id: string): Promise<ItemViewModel> {
@@ -58,7 +61,7 @@ class ItemWebService {
         return this.getNavigationViewModel(item, channel)
     }
 
-    async getViewModel(item: Item, channel:Channel): Promise<ItemViewModel> {
+    async getViewModel(item: Item, channel:Channel, totalItemCount:number): Promise<ItemViewModel> {
 
         let animation:AnimationViewModel
         let coverImage: ImageViewModel
@@ -72,7 +75,6 @@ class ItemWebService {
         let author: Author
 
         let editable = !channel.contractAddress
-
 
         if (item.coverImageId) {
 
@@ -141,9 +143,26 @@ class ItemWebService {
                     id: ao.id,
                     traitType: ao.traitType,
                     values: ao.values,
-                    value: selections?.length > 0 ? selections[0].value : '' 
+                    value: selections?.length > 0 ? selections[0].value : '',
                 })
 
+            }
+
+            //Look up scarcity of attributes
+            let results = await this.itemService.getAttributeInfo(channel._id, attributeSelections.map(as => {
+                return {
+                    traitType: as.traitType,
+                    value: as.value
+                }
+            }))
+
+            for (let attributeSelection of attributeSelections) {
+                let matches = results.filter(ai => ai.traitType == attributeSelection.traitType && ai.value == attributeSelection.value)
+                attributeSelection.categoryPercent = matches?.length > 0 ? new Intl.NumberFormat('default', {
+                    style: 'percent',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                }).format((matches[0].count / totalItemCount)) : ''
             }
 
         }
@@ -190,7 +209,9 @@ class ItemWebService {
 
     async getNavigationViewModel(item:Item, channel:Channel) : Promise<ItemViewModel> {
 
-        let itemViewModel:ItemViewModel = await this.getViewModel(item, channel)
+        let totalItemCount = await this.channelService.countItemsByChannel(channel._id)
+
+        let itemViewModel:ItemViewModel = await this.getViewModel(item, channel, totalItemCount)
 
         itemViewModel.previous = await this.itemService.getPrevious(item)
         itemViewModel.next = await this.itemService.getNext(item)
@@ -292,7 +313,8 @@ class ItemWebService {
                 id: ao.id,
                 traitType: ao.traitType,
                 values: ao.values,
-                value: ''
+                value: '',
+                categoryPercent: ''
             })
         }
 

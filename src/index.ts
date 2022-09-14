@@ -97,7 +97,7 @@ export default async() => {
 
       })
 
-      console.log(app.routes)
+      // console.log(app.routes)
 
     app.init()
 

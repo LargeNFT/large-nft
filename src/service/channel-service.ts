@@ -15,6 +15,10 @@ import { ChannelRepository } from "../repository/channel-repository";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
+import { Theme } from "dto/theme";
+import { ThemeService } from "./theme-service";
+import { StaticPageService } from "./static-page-service";
+import { StaticPage } from "dto/static-page";
 
 
 @injectable()
@@ -26,6 +30,8 @@ class ChannelService {
     private itemService:ItemService,
     private pinningService:PinningService,
     private quillService:QuillService,
+    private themeService:ThemeService,
+    private staticPageService:StaticPageService
 
   ) { }
 
@@ -93,6 +99,26 @@ class ChannelService {
     for (let item of items) {
       await this.itemService.delete(item)
     }
+
+    //Delete themes
+    let themes:Theme[] = await this.themeService.listByChannel(channel._id, 100000, 0)
+
+    for (let theme of themes) {
+      await this.themeService.delete(theme)
+    }
+
+    //Delete static pages
+    let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 100000, 0)
+
+    for (let staticPage of staticPages) {
+      await this.staticPageService.delete(staticPage)
+    }
+
+    //
+
+    //Leave images and animations because they might be used by multiple projects. Maybe not ideal. 
+
+
 
 
   }

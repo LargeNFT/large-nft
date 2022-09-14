@@ -61,7 +61,8 @@
             let walletAddress = await walletService.getAddress()
             await schemaService.loadWallet(walletAddress)
 
-            mainView.router.navigate("/", { 
+            //Not great to blindly grab hash. Page might be user specific and not exist.
+            mainView.router.navigate(getHash() ? getHash() : "/", { 
               reloadAll: true, 
               reloadCurrent: true, 
               clearPreviousHistory: true,

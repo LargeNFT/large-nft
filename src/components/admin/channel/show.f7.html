@@ -42,29 +42,27 @@
 
               <div class="card-content card-content-padding">
 
-                <div class="float-right">
+                ${showEdit ? $h`
+                  <div class="float-right">
 
-                  <div class="menu-item menu-item-dropdown">
-                    <div class="menu-item-content icon-only">
-                      <div class="menu-item-content">
-                        <i class="material-icons">more_vert</i>
+                    <div class="menu-item menu-item-dropdown">
+                      <div class="menu-item-content icon-only">
+                        <div class="menu-item-content">
+                          <i class="material-icons">more_vert</i>
+                        </div>
                       </div>
-                    </div>
-                    <div class="menu-dropdown menu-dropdown-right">
-                      <div class="menu-dropdown-content">
-                        <a class="menu-dropdown-link menu-close"
-                          href="/admin/channel/fork/${channelViewModel?.channel?._id}">Fork</a>
-
-                        ${showEdit ? $h`
-                        <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
-                        <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a>
-                        <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
-                        ` : $h``}
+                      <div class="menu-dropdown menu-dropdown-right">
+                        <div class="menu-dropdown-content">
+                          
+                          <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                          <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a>
+                          <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
+                          
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-
+                ` : $h``}
                 
                 <div class="title">${channelViewModel?.channel?.title}</div>
 
@@ -112,6 +110,17 @@
                   </div>
                 ` : $h``}
 
+                ${channelViewModel.channel.forkedFromCid ? $h`
+                  <div class="contract-address">
+                    <strong>Forked from IPFS:</strong> ${channelViewModel?.channel.forkedFromCid}
+                  </div>
+                ` : $h``}
+
+                ${channelViewModel.channel.forkedFromId ? $h`
+                  <div class="contract-address">
+                    <strong>Forked from:</strong> ${channelViewModel?.channel.forkedFromId}
+                  </div>
+                ` : $h``}
 
               </div>
 

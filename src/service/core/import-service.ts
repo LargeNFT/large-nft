@@ -113,7 +113,7 @@ class ImportService {
 
     }
 
-    async importFromReader(baseURI:string) : Promise<string> {
+    async importFromReader(baseURI:string, title:string) : Promise<string> {
 
         let forkStatus:ForkStatus = {
             animations: { saved: 0, total: 0},
@@ -128,7 +128,7 @@ class ImportService {
         this.logForkProgress(forkStatus, "Processing...")
 
 
-        //Load the directory from IPFS
+        //Load the files from the server.
         let authors:Author[] = await this._fetchFile(`${baseURI}backup/authors.json`)
         let channels:Channel[] = await this._fetchFile(`${baseURI}backup/channels.json`)
         let images:Image[] = await this._fetchFile(`${baseURI}backup/images.json`)
@@ -138,6 +138,9 @@ class ImportService {
         let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/static-pages.json`)
 
         let mediaDownloader = new URLDownloader(baseURI)
+
+        //Set the new name
+        channels[0].title = title
 
         return this._importAsNew(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader)
 
@@ -216,7 +219,11 @@ class ImportService {
 
         
             //Mark parent
-            channel.forkedFromCid = cid
+            if (cid) {
+                channel.forkedFromCid = cid
+            } else {
+                channel.forkedFromId = oldId
+            }
 
             let channelObj = Object.assign(new Channel(), channel)
 
@@ -360,9 +367,15 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
         }
 
-
-        console.log(`Import complete`)
-
+        this.logForkProgress(forkStatus, `
+        ******************************
+        ******************************
+        ******************************
+                Import complete
+        ******************************
+        ******************************
+        ******************************
+        `)
 
         return channelId
     }
@@ -408,8 +421,6 @@ class ImportService {
         let response = await axios.get(filename)
         return response.data
     }
-
-
 
     private logForkProgress(forkStatus:ForkStatus, message?: string) {
 

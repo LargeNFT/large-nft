@@ -12,102 +12,139 @@
 
           <ul class="breadcrumb">
             <li><a href="/admin/channel/create-menu">Create Collection</a></li>
-            <li>Fork Collection From Reader</li>
+            <li>Create a new fork</li>
           </ul>
 
-          <div class="block-title">Fork Collection From Reader</div>
-
-          <div class="card">
-            <div class="card-content card-content-padding">
-              ${fetching ? $h`
-                <div class="ipfs-label">Fetching...</div>
-            ` : $h`
-
-
-
-
-            `}
-            </div>
-          </div>
-
-
-        
-          <div class="card">
-            <div class="card-content">
-                <div class="card-content card-content-padding">
-
-                  ${forking ? $h`
-                    <div class="fork-label">
-                        Forking...
-                    </div>
-    
-                    ${forkStatus? $h`
-                        <div class="fork-status">
-    
-                            <div class="item">
-                                <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
-                            </div>
-    
-                            <div class="item"> 
-                                <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
-                            </div>
-    
-                            <div class="item">
-                                <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
-                            </div>
-    
-                            <div class="item">
-                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
-                            </div>
-    
-                            <div class="item">
-                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
-                            </div>
-    
-                            <div class="item">
-                              <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
-                            </div>
-    
-                            <div class="item">
-                              <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
-                            </div>
+          ${channel ? $h`
             
+            <div class="block-title">Create a new fork</div>
+
+            <div class="block block-strong inset fork-block">
+
+              <p>
+                A <em>fork</em> is a copy of an NFT collection. Forking a project allows you to freely experiment with changes without affecting the original project. <a href="/admin/channel/view-forks">View existing forks.</a>
+              </p>
+
+              <p>Forking <a href="${getBaseURI()}" class="external">${channel.title}</a></p>
+
+              <div class="repo-name">
+
+                <div class="left">
+                  <strong>Owner</strong>
+                  <span class="owner">${owner}</span>
+                </div>
+
+                <div class="right">
+                  <strong>Collection Name</strong>
+
+                  <div class="list no-hairlines" style="margin: 0; padding-left: 0px;">
+                    <ul>
+                      <li class="item-content item-input" style="padding-left: 0px;">
+                        <div class="item-inner">
+                          <div class="item-input-wrap">
+                            <input type="text" id="collection-title" value="${channel.title}" />
+                            <span class="input-clear-button"></span>
+                          </div>
                         </div>
-                    ` : $h`<span />`}
-    
-                  ` : $h`
-                      <div class="fork-label" style="display:none;"></div>
-                  `}
-    
-                  ${forkOutput ? $h`
-                      <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
-                  ` : $h`
-                      <div class="fork-output" style="display:none;"></div>
-                  `}
-
-
-                    ${!forking ? $h`
-
-                      <div class="row">
-
-                        <div class="col-70"></div>
-          
-                        <button type="submit" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px;">
-                          <i class="material-icons">fork_left</i> Fork
-                        </button>
-          
-                      </div>
-
-                        
-                    ` : $h`
-                        <p></p>
-                    `}
-
-
+                      </li>
+                    </ul>
+                  </div>
 
                 </div>
+              </div>
+              
+
+              <p>
+                You are downloading all project data, including images and HTML, into a local web-based <a href="https://pouchdb.com" class="external">database</a> on your device.
+              </p>
+
+              ${!forking ? $h`
+                <button type="submit" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px; width: 200px;">
+                  <i class="material-icons">fork_left</i> Create Fork
+                </button>
+              ` : $h`
+                  <span />
+              `}
+
             </div>
-          </div>
+
+
+
+          ` : $h`
+            <div class="block-title">Loading...</div>
+          `}
+          
+
+
+          ${forking || forkOutput ? $h`
+
+            <div class="card">
+              <div class="card-content">
+                  <div class="card-content card-content-padding">
+  
+                    ${forking ? $h`
+                      <div class="fork-label">
+                          Forking...
+                      </div>
+      
+                      ${forkStatus? $h`
+                          <div class="fork-status">
+      
+                              <div class="item">
+                                  <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
+                              </div>
+      
+                              <div class="item"> 
+                                  <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
+                              </div>
+      
+                              <div class="item">
+                                  <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                              </div>
+      
+                              <div class="item">
+                                  <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                              </div>
+      
+                              <div class="item">
+                                  <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
+                              </div>
+      
+                              <div class="item">
+                                <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
+                              </div>
+      
+                              <div class="item">
+                                <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
+                              </div>
+              
+                          </div>
+                      ` : $h`<span />`}
+      
+                    ` : $h`
+                        <div class="fork-label" style="display:none;"></div>
+                    `}
+      
+                    ${forkOutput ? $h`
+                        <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
+                    ` : $h`
+                        <div class="fork-output" style="display:none;"></div>
+                    `}
+
+                    ${channelId ? $h`
+                      <a class="button button-fill" style="width: 200px;" href="/admin/channel/show/${channelId}">View Collection</a>
+                    ` : $h`<span />`}
+  
+                  </div>
+              </div>
+  
+            </div>
+
+          ` : $h`
+            <span />
+          `}
+          
+
 
 
         </form>
@@ -122,7 +159,28 @@
 
 
 <style>
-  
+
+  .fork-block {
+    font-size: 14px;
+  }
+
+  .repo-name {
+    display: flex;
+  }
+
+  .repo-name .left {
+    flex: 0 0 200px;
+  }
+
+  .repo-name .right {
+    flex: 1;
+  }
+
+  .repo-name strong {
+    display: block;
+  }
+
+
 
 </style>
 
@@ -135,11 +193,13 @@
 
   import Navbar from "../../admin/navbar.f7.html"
 
+  import axios from "axios"
 
   export default (props, { $, $on, $f7, $update }) => {
 
     let importService = ContainerService.getInstance(ImportService)
     let ipfsService = ContainerService.getInstance(IpfsService)
+    let walletService = ContainerService.getWalletService()
 
     let ipfsReady = ipfsService.ipfs != undefined
     let peerCount = ipfsService.peerCount
@@ -147,20 +207,37 @@
     let contractAddress = props.contractAddress
 
     let forking = false
-    let fetching = false
     let forkStatus 
     let forkOutput = ""
 
+    let channel
+    let owner
+
+    let channelId
+
+    const truncateEthAddress = (address) => {
+      return walletService.truncateEthAddress(address)
+    }
+
+    const getBaseURI = () => {
+      let baseURI = window.location.pathname
+
+      //Get what's before admin
+      return baseURI.substring(0, baseURI.indexOf('admin'))
+    }
 
 
     $on('pageInit', async () => {
 
-      let fetching = true 
+      owner = truncateEthAddress(await walletService.getAddress())
+
+      let response = await axios.get(`${getBaseURI()}backup/channels.json`)
+
+      let channels = response.data
+
+      channel = channels[0]
 
       await $update()
-
-      
-
 
 
     })
@@ -171,12 +248,13 @@
 
       e.preventDefault()
 
-      // let formData = $f7.form.convertToData('#import-ipfs-hash')
-
       forking = true 
       $update()
 
-      // await importService.importFromIPFS(formData.hash)
+      //Get collection name
+      let title = $('#collection-title').val()
+
+      channelId = await importService.importFromReader(getBaseURI(), title)
 
       forking = false
       $update()

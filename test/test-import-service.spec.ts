@@ -243,6 +243,7 @@ contract('ImportService', async (accounts) => {
 
         var mockAxios = new MockAdapter(axios)
 
+        let oldId = channel._id
 
         mockAxios.onGet("/backup/authors.json").reply(200, [author])
         mockAxios.onGet("/backup/channels.json").reply(200, [channel])
@@ -257,16 +258,16 @@ contract('ImportService', async (accounts) => {
         mockAxios.onGet(`/backup/animations/${animation._id}.html`).reply(200, "")
 
 
-        let channelId = await service.importFromReader(baseURI)
+        let channelId = await service.importFromReader(baseURI, "Doooo")
 
         let importedChannel = await channelService.get(channelId)
 
-        assert.strictEqual(importedChannel.title, 'The Sound of Music')
+        assert.strictEqual(importedChannel.title, 'Doooo')
         assert.strictEqual(importedChannel.symbol, 'SOM')
         assert.strictEqual(importedChannel.mintPrice, '0.08')
         assert.strictEqual(importedChannel.link, 'google.com')
         assert.strictEqual(importedChannel.coverImageId, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
-        assert.strictEqual(importedChannel.title, 'The Sound of Music')
+        assert.strictEqual(importedChannel.forkedFromId, oldId)
 
         //Need better asserts. 
 

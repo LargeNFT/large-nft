@@ -83,8 +83,6 @@ class RoutingService {
             }
         })
 
-        console.log(routes)
-
         return routes
 
     }

@@ -13,6 +13,21 @@
 
           <${HeaderRight} />
 
+          ${readerConfig ? $h`
+            <div class="subnavbar">
+              <div class="subnavbar-inner">
+                <div class="subnavbar-title">
+                  <a href="${getBaseURI()}" class="link external">
+                    <i class="icon icon-back"></i> ${readerConfig.title}
+                  </a>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+
+
+
+
         </div>
       </div>
 
@@ -37,8 +52,23 @@
 
     import HeaderRight from "./header-right.f7.html"
 
+    import { ContainerService } from "../../service/core/container-service"
+
+
     export default (props, { $on, $f7, $update }) => {
     
+        let readerConfig = ContainerService.getInstance("readerConfig")
+
+        let readerTitle
+
+
+        const getBaseURI = () => {
+          let baseURI = window.location.pathname
+
+          //Get what's before admin
+          return baseURI.substring(0, baseURI.indexOf('admin'))
+        }
+
         return $render
     }
 </script>

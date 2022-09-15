@@ -19,18 +19,29 @@ import './html/css/app.css'
 import { RoutingService } from "./service/core/routing-service"
 
 
+
 export default async() => {
                 
-    let container = getMainContainer()
+    //Check hash to see if we are linking to a Reader
+    let search = window.location.hash ? window.location.hash.substring(window.location.hash?.indexOf("?"), window.location.hash.length) : undefined
+
+    const urlParams = new URLSearchParams(search)
+
+    let readerConfig
+
+    if (urlParams.get('title')) {
+      readerConfig = {
+        title: urlParams.get('title')
+      }
+    }
+
+    let container = getMainContainer(readerConfig)
 
     let app:any = container.get("framework7")
     let routingService:RoutingService = container.get(RoutingService)
 
     //Initialize routing
     app.routes.push(...routingService.buildRoutesForContainer(container))
-
-
-
 
     app.init()
 

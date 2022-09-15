@@ -7,6 +7,7 @@ import { QueueService } from './service/core/queue-service';
 
 import { QuillService } from "./service/quill-service";
 import { QuillEditorService } from "./service/quill-editor-service";
+import { ReaderConfig } from 'dto/reader-config';
 
 import { UploadService } from "./service/core/upload-service";
 
@@ -110,7 +111,6 @@ import InfiniteScroll from 'framework7/components/infinite-scroll'
 //@ts-ignore
 import Menu from 'framework7/components/menu'
 
-
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
   Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup,Accordion,
@@ -121,7 +121,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
 let container: Container
 
 
-function getMainContainer() {
+function getMainContainer(readerConfig:ReaderConfig) {
 
   if (container) return container
 
@@ -168,13 +168,12 @@ function getMainContainer() {
     }
   }
 
-
-
   // container.bind('sketch').toConstantValue(sketch())
   container.bind("contracts").toConstantValue(contracts())
   container.bind("provider").toConstantValue(provider())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
+  container.bind("readerConfig").toConstantValue(readerConfig)
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()

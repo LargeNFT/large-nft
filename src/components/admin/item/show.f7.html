@@ -46,52 +46,7 @@
             ` : $h``}
           </div> 
 
-          <div class="card">
-            <div class="card-header">
-              <span>
-                <i class="material-icons">label</i>
-                <label>Attributes</label>
-              </span>
-            </div>
-            <div class="card-content data-table">
 
-              <div class="button-outline attribute-value">
-                <div class="trait-type">Token ID</div>
-                <div class="value">#${itemViewModel.item.tokenId}</div>
-              </div>
-
-              ${itemViewModel.attributeSelections?.map(as => $h`
-
-                ${as.value ? $h`
-                  <div class="button-outline attribute-value">
-                    <div class="trait-type">${as.traitType}</div>
-                    <div class="value">${as.value}</div>
-                    <div class="category-percent">${as.categoryPercent} have this trait</div>
-                  </div>
-                ` : $h`<span />`}
-
-              `)}
-
-            </div>
-          </div>
-
-            ${itemViewModel.themes?.length > 0 ? $h`
-
-              <div class="card">
-                <div class="card-header">Theme(s)</div>
-                <div class="card-content">
-                  
-                  ${itemViewModel.themes?.map( (theme) => $h`
-
-                    <div class="button-outline attribute-value">
-                      <div class="value">${theme.name}</div>
-                    </div>
-
-                  `)}
-                </div>
-              </div>
-
-            ` : $h`<span/>`}
 
 
           <div class="block row center margin-bottom">
@@ -151,6 +106,55 @@
 
             </div>
           </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span>
+                <i class="material-icons">label</i>
+                <label>Attributes</label>
+              </span>
+            </div>
+            <div class="card-content data-table">
+
+              <div class="button-outline attribute-value">
+                <div class="trait-type">Token ID</div>
+                <div class="value">#${itemViewModel.item.tokenId}</div>
+              </div>
+
+              ${itemViewModel.attributeSelections?.map(as => $h`
+
+                ${as.value ? $h`
+                  <div class="button-outline attribute-value">
+                    <div class="trait-type">${as.traitType}</div>
+                    <div class="value">${as.value}</div>
+                    <div class="category-percent">${as.categoryPercent} have this trait</div>
+                  </div>
+                ` : $h`<span />`}
+
+              `)}
+
+            </div>
+          </div>
+
+          ${itemViewModel.themes?.length > 0 ? $h`
+
+            <div class="card">
+              <div class="card-header">Theme(s)</div>
+              <div class="card-content">
+                
+                ${itemViewModel.themes?.map( (theme) => $h`
+
+                  <div class="button-outline attribute-value">
+                    <div class="value">${theme.name}</div>
+                  </div>
+
+                `)}
+              </div>
+            </div>
+
+          ` : $h`<span/>`}
+
+
 
           <div class="card">
             <div class="card-header">Cover Image</div>
@@ -302,7 +306,9 @@
   display: block;
 }
 
+.main-header {
 
+}
 
 
 

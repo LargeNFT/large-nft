@@ -1,24 +1,31 @@
 
 # Large
-Large is open source software that makes it simple to create and publish any content as an NFT collection on Ethereum and IPFS. 
+Build the biggest thing on the internet.
 
-Create a beautiful website, blog, or app and publish your content as an NFT collection. The Large Reader is a simple HTML/CSS/Javascript application built with Framework7 that includes native theming for iOS, Android, and Desktop. 
+Publish your book, fan-fiction, blog, or art as a forkable NFT collection and sell your work on marketplaces like OpenSea and LooksRare.
 
-* Easily create content in a familiar interface.
-* Publish a simple blog website that works on all devices.
-* Generate all metadata to integrate with OpenSea and other public NFT infrastructure.
+Large is open source software that makes it simple to create and publish your digital art and other creative content as an NFT collection on Ethereum and IPFS.  
 
-Both the Large Admin dashboard and the Large Reader are offline-first applications and can be used without an internet connection. The user just needs to download the app/website before going offline. 
+The Large Reader is a simple HTML/CSS/Javascript application built with Framework7 that includes native theming for iOS, Android, and Desktop. Data is stored directly on user's devices in a P2P database called PouchDB and can be published to an IPFS node (self-hosted or commercial) or directly to a built-in node in the browser with no extra setup*.  
+
+Both the Large Admin and the Large Reader apps are offline-first applications. 
+
+Large is open source software and is not a cloud service. Large gives users the tools to easily provide hosted infrastructure themselves and distribute the data in a format that guarantees any member of the community can help keep the content online for as long as necessary.
+
+*Networking in the browser can be tricky and caveats apply. There are commercial technical solutions to most problems.  
 
 ## How it Works
+* Easily create content in a familiar interface.  
 * Content is stored in your browser as you create it.
-* Data stored [PouchDB](https://pouchdb.com). PouchDB was created to help web developers build applications that work as well offline as they do online.
-    * Sync devices (future)
-    * Sync to cloud services (needs custom configuration)
-    * Control your own data
-    * Runs on your own devices
+    * Using [PouchDB](https://pouchdb.com). 
+    * PouchDB is a P2P database that was created to help web developers build applications that work as well offline as they do online.
+* Publish a simple blog website that works on all devices.
+* Generate all metadata to integrate with OpenSea and other public NFT infrastructure.
+* Deploy an ERC-721 gas-optimized smart contract to Ethereum.
+* Set a mint price. Keep 100% of fees. 
+* List NFTs for sale on OpenSea and other NFT marketplaces. 
 
-Please note that data is NOT stored on a server and by default is only available on the device where you are using it.
+Please note that data is NOT stored on a server and by default is only available on the device where you are using it until you publish. 
 
 ## Create an NFT collection
 Create a collection with the Large admin panel. 
@@ -70,7 +77,7 @@ you to include content like your "About US" and "FAQ" alongside the collection. 
 these are exported alongside them which allows them to be displayed in the Large Reader. 
 
 
-## Reader
+# Large Reader
 Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
 * Users do not need a web3 browser to read the collection.
 * Users do need a web3 browser to mint and interact with NFTs.
@@ -88,13 +95,16 @@ Easily read and enjoy content in a familiar interface.
 ### Fully open source. Fork and customize.
 * Large Admin publishes your collection to your own private repo on GitLab.
 * Includes a full database backup and all associated media. 
+* To support static-generated content Large uses GitLab CI to run and publish an npm build. 
+* This process can be run on your own hardware instead.
 
 ### Data stored in local PouchDB
+* P2P database. No master.
 * Full-text search of collection contents.
 * Multiple versions of the Large Reader can be deployed and each one has its own copy of the data. 
 * Allows collection to be forked directly from the Reader as well as the admin. 
 * This means your community can copy the Large Reader and make their own custom versions easily.
-* Easy to build on. 
+* Easy to build on. Sync your data with commercial scale CouchDB instances. 
 
 ### Custom minting experience
 * NFTs are visible before minting.
@@ -106,6 +116,13 @@ Easily read and enjoy content in a familiar interface.
 
 ### Publish to the Reader at any time.
 * Publish the Large Reader and collection content before deploying the smart contract. It's not required to deploy a contract if you do not want to mint NFTs.
+
+### Fork Project
+* Large Reader ships with a full-featured copy of Large Admin
+* Fork an existing project. Help keep the files online.
+* Create your own derivitive.
+* Each forked Reader also contains the Large Admin so each new project helps the network expand.
+
 
 
 # Reader Showcase
@@ -165,6 +182,3 @@ To start, the end-user will need a copy of the Large distribution. There are a b
     * Clone this repo and run the commands above to start the web client. 
 * You can also fork this git repo and make a competely custom version of Large. All of the above options are still available. 
 
-
-## Launch Signaling Server
-https://elements.heroku.com/buttons/penguin-academy/webrtc-signaling-server

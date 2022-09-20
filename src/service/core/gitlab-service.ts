@@ -111,7 +111,7 @@ class GitlabService {
             }
         })
 
-        console.log(response)
+        // console.log(response)
 
         let forks = response.data
 
@@ -168,14 +168,14 @@ class GitlabService {
             
             actions.push({
                 action: "create",
-                file_path: "backup/contract.json",
+                file_path: "backup/contract/contract.json",
                 content: JSON.stringify({ contractAddress: channel.contractAddress })
             })
 
             //Also the ABI
             actions.push({
                 action: "create",
-                file_path: "backup/contract-abi.json",
+                file_path: "backup/contract/contract-abi.json",
                 content: JSON.stringify(contractABI)
             })
 
@@ -183,7 +183,7 @@ class GitlabService {
             let contractMetadata = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/contractMetadata.json`)) 
             actions.push({
                 action: "create",
-                file_path: "backup/contractMetadata.json",
+                file_path: "backup/export/contractMetadata.json",
                 content: new TextDecoder("utf-8").decode(contractMetadata)
             })
 
@@ -191,13 +191,13 @@ class GitlabService {
         } else {
             actions.push({
                 action: "create",
-                file_path: "backup/contract.json",
+                file_path: "backup/contract/contract.json",
                 content: JSON.stringify({}) //empty file
             })
 
             actions.push({
                 action: "create",
-                file_path: "backup/contract-abi.json",
+                file_path: "backup/contract/contract-abi.json",
                 content: JSON.stringify({}) //empty file
             })
         }
@@ -208,7 +208,7 @@ class GitlabService {
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/channels.json",
+            file_path: "backup/export/backup/channels.json",
             content: new TextDecoder("utf-8").decode(channelsContents)
         })
 
@@ -219,7 +219,7 @@ class GitlabService {
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/authors.json",
+            file_path: "backup/export/backup/authors.json",
             content: new TextDecoder("utf-8").decode(authorsContents)
         })
 
@@ -232,7 +232,7 @@ class GitlabService {
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/items.json",
+            file_path: "backup/export/backup/items.json",
             content: new TextDecoder("utf-8").decode(itemsContents)
         })
 
@@ -242,7 +242,7 @@ class GitlabService {
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/images.json",
+            file_path: "backup/export/backup/images.json",
             content: new TextDecoder("utf-8").decode(imageContents)
         })
 
@@ -253,7 +253,7 @@ class GitlabService {
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/animations.json",
+            file_path: "backup/export/backup/animations.json",
             content: new TextDecoder("utf-8").decode(animationsContents)
         })
 
@@ -269,7 +269,7 @@ class GitlabService {
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/themes.json",
+            file_path: "backup/export/backup/themes.json",
             content: new TextDecoder("utf-8").decode(themesContents)
         })
 
@@ -281,7 +281,7 @@ class GitlabService {
         //Add create action
         actions.push({
             action: "create",
-            file_path: "backup/static-pages.json",
+            file_path: "backup/export/backup/static-pages.json",
             content: new TextDecoder("utf-8").decode(staticPagesContents)
         })
 
@@ -299,7 +299,7 @@ class GitlabService {
                 //Add create action
                 actions.push({
                     action: "create",
-                    file_path: `backup/metadata/${file.name}`,
+                    file_path: `backup/export/metadata/${file.name}`,
                     content: new TextDecoder("utf-8").decode(bufferedContents)
                 })
     
@@ -323,7 +323,7 @@ class GitlabService {
                 //Add create action
                 actions.push({
                     action: "create",
-                    file_path: `backup/images/${file.name}`,
+                    file_path: `backup/export/images/${file.name}`,
                     content: Buffer.from(bufferedContents).toString('base64'),
                     encoding: 'base64'
                 })
@@ -348,7 +348,7 @@ class GitlabService {
                 //Add create action
                 actions.push({
                     action: "create",
-                    file_path: `backup/animations/${file.name}`,
+                    file_path: `backup/export/animations/${file.name}`,
                     content: Buffer.from(bufferedContents).toString('base64'),
                     encoding: 'base64'
                 })

@@ -129,13 +129,13 @@ class ImportService {
 
 
         //Load the files from the server.
-        let authors:Author[] = await this._fetchFile(`${baseURI}backup/authors.json`)
-        let channels:Channel[] = await this._fetchFile(`${baseURI}backup/channels.json`)
-        let images:Image[] = await this._fetchFile(`${baseURI}backup/images.json`)
-        let items:Item[] = await this._fetchFile(`${baseURI}backup/items.json`)
-        let animations:Animation[] = await this._fetchFile(`${baseURI}backup/animations.json`)
-        let themes:Theme[] = await this._fetchFile(`${baseURI}backup/themes.json`)
-        let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/static-pages.json`)
+        let authors:Author[] = await this._fetchFile(`${baseURI}backup/export/backup/authors.json`)
+        let channels:Channel[] = await this._fetchFile(`${baseURI}backup/export/backup/channels.json`)
+        let images:Image[] = await this._fetchFile(`${baseURI}backup/export/backup/images.json`)
+        let items:Item[] = await this._fetchFile(`${baseURI}backup/export/backup/items.json`)
+        let animations:Animation[] = await this._fetchFile(`${baseURI}backup/export/backup/animations.json`)
+        let themes:Theme[] = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`)
+        let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`)
 
         let mediaDownloader = new URLDownloader(baseURI)
 
@@ -478,7 +478,7 @@ class URLDownloader implements MediaDownloader {
 
     async getAsString(path:string): Promise<string> {
         
-        let response = await axios.get(`${this.basePath}backup/${path}`)
+        let response = await axios.get(`${this.basePath}backup/export/${path}`)
         return response.data?.toString()
 
     }
@@ -487,7 +487,7 @@ class URLDownloader implements MediaDownloader {
 
         // console.log(`${this.basePath}backup/${path}`)
 
-        let response = await axios.get(`${this.basePath}backup/${path}`, {
+        let response = await axios.get(`${this.basePath}backup/export/${path}`, {
             responseType: "arraybuffer"
         })
         return response.data

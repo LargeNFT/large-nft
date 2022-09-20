@@ -245,17 +245,17 @@ contract('ImportService', async (accounts) => {
 
         let oldId = channel._id
 
-        mockAxios.onGet("/backup/authors.json").reply(200, [author])
-        mockAxios.onGet("/backup/channels.json").reply(200, [channel])
-        mockAxios.onGet("/backup/images.json").reply(200, [image1, image2])
-        mockAxios.onGet("/backup/items.json").reply(200, [item1, item2, item3])
-        mockAxios.onGet("/backup/animations.json").reply(200, [animation])
-        mockAxios.onGet("/backup/themes.json").reply(200, [])
-        mockAxios.onGet("/backup/static-pages.json").reply(200, [])
+        mockAxios.onGet("/backup/export/backup/authors.json").reply(200, [author])
+        mockAxios.onGet("/backup/export/backup/channels.json").reply(200, [channel])
+        mockAxios.onGet("/backup/export/backup/images.json").reply(200, [image1, image2])
+        mockAxios.onGet("/backup/export/backup/items.json").reply(200, [item1, item2, item3])
+        mockAxios.onGet("/backup/export/backup/animations.json").reply(200, [animation])
+        mockAxios.onGet("/backup/export/backup/themes.json").reply(200, [])
+        mockAxios.onGet("/backup/export/backup/static-pages.json").reply(200, [])
 
-        mockAxios.onGet(`/backup/images/${image1._id}.jpg`).reply(200, Buffer.from("image1!"))
-        mockAxios.onGet(`/backup/images/${image2._id}.jpg`).reply(200, Buffer.from("image2!"))
-        mockAxios.onGet(`/backup/animations/${animation._id}.html`).reply(200, "")
+        mockAxios.onGet(`/backup/export/images/${image1._id}.jpg`).reply(200, Buffer.from("image1!"))
+        mockAxios.onGet(`/backup/export/images/${image2._id}.jpg`).reply(200, Buffer.from("image2!"))
+        mockAxios.onGet(`/backup/export/animations/${animation._id}.html`).reply(200, "")
 
 
         let channelId = await service.importFromReader(baseURI, "Doooo")

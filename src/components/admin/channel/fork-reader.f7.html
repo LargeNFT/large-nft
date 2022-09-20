@@ -231,7 +231,7 @@
 
       owner = truncateEthAddress(await walletService.getAddress())
 
-      let response = await axios.get(`${getBaseURI()}backup/channels.json`)
+      let response = await axios.get(`${getBaseURI()}backup/export/backup/channels.json`)
 
       let channels = response.data
 

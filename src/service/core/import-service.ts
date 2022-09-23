@@ -225,9 +225,11 @@ class ImportService {
 
         this.logForkProgress(forkStatus, "Updating totals...")
 
-
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
+
+            delete author._rev 
+            delete author["_rev_tree"]
 
             //Author might already exist. Get it so we can update.
             let existingAuthor
@@ -241,7 +243,6 @@ class ImportService {
             forkStatus.authors.saved++
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
         }
-
 
         for (let channel of channels) {
 
@@ -446,6 +447,9 @@ class ImportService {
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
 
+            delete author._rev 
+            delete author["_rev_tree"]
+
             //Author might already exist. Get it so we can update.
             let existingAuthor
 
@@ -461,15 +465,15 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
         }
 
-
         for (let channel of channels) {
             
+            //Remove any existing rev info
+            delete channel._rev
+            delete channel["_rev_tree"]
+
             //Check if it exists
-            console.log(1)
             let channelObj = await this.channelService.getLatestRevision(channel._id)
             channelObj["_deleted"] = false
-        
-            console.log(JSON.stringify(channelObj))
 
             await this.channelService.put(Object.assign(channelObj, channel))  
 
@@ -516,6 +520,10 @@ class ImportService {
 
         for (let theme of themes) {
 
+            //Remove any existing rev info
+            delete theme._rev
+            delete theme["_rev_tree"]
+
             //Check if it exists
             let themeObj = await this.themeService.getLatestRevision(theme._id)
             themeObj["_deleted"] = false
@@ -548,6 +556,10 @@ class ImportService {
 
             }
 
+            //Remove any existing rev info
+            delete item._rev
+            delete item["_rev_tree"]
+
             //Check if it exists
             let itemObj = await this.itemService.getLatestRevision(item._id)
             itemObj["_deleted"] = false
@@ -560,6 +572,10 @@ class ImportService {
         }
 
         for (let staticPage of staticPages) {
+
+            //Remove any existing rev info
+            delete staticPage._rev
+            delete staticPage["_rev_tree"]
 
             //Check if it exists
             let staticPageObj = await this.staticPageService.getLatestRevision(staticPage._id)

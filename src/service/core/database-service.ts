@@ -121,11 +121,30 @@ class DatabaseService {
 
         let results = await db.allDocs({key: _id, include_docs: true, deleted: 'ok' })
 
-        console.log(results.rows[0])
+        let result = {
+            _id: _id,
+            _rev: results.rows[0].value.rev,
+            _deleted: true
+        }
 
-        // return 
+        return result
 
-        // console.log(JSON.stringify(results))
+        // let r = await db.get(_id, {
+        //     rev: results.rows[0].value.rev,
+        //     deleted: 'ok',
+        //     style: 'all_docs'
+        // })
+
+        // console.log(result)
+        // console.log(r)
+
+        // return r
+        
+
+        // console.log(results)
+
+        // return result
+
 
 
         // const viaChanges = await db.changes({
@@ -139,15 +158,15 @@ class DatabaseService {
 
         // if (viaChanges.results?.length > 0) {
 
-        //     console.log(await db.get(_id), { revs_info: true, deleted: 'ok', style: 'all_docs'})
-
         //     let lastRevision = viaChanges.results.map( result => result.changes[0].rev)
 
-        //     return db.get(_id, {
-        //         rev: lastRevision[0],
-        //         deleted: 'ok',
-        //         style: 'all_docs'
-        //     })
+        //     console.log(JSON.stringify(lastRevision))
+
+        //     // return db.get(_id, {
+        //     //     rev: lastRevision[0],
+        //     //     deleted: 'ok',
+        //     //     style: 'all_docs'
+        //     // })
             
         // }
 

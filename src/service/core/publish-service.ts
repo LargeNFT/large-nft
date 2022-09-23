@@ -208,7 +208,6 @@ class PublishService {
         /**
          * BACKUP FOR READER
         */
-        // let backupPath = `${directory}/backup`
         let backup = await this.createBackup(
             exportBundle.channel, 
             exportBundle.items, 
@@ -293,13 +292,11 @@ class PublishService {
 
             images.push( clonedImage )
 
-            this.logPublishProgress(publishStatus, `Saving image #${image.cid} to ${filename}`)
+            this.logPublishProgress(publishStatus, `Saving image to ${filename} (${image.cid})`)
 
         }
 
-
         let animations:Animation[] = []
-
 
         //Save animation cids
         for (let animationCid of exportBundle.animations) {
@@ -313,7 +310,6 @@ class PublishService {
             let result = await this.ipfsService.ipfs.add({
                 content: animation.content
             })
-
 
             if (result.cid.toString() !== animation.cid.toString()) {
                 throw new Error('CIDs did not match')
@@ -331,7 +327,6 @@ class PublishService {
                 await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, filename, { parents: true, flush: flush })
             }
 
-
             publishStatus.animations.saved++
 
 
@@ -344,11 +339,10 @@ class PublishService {
 
             animations.push( clonedAnimation )
 
-            this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} ${animation.cid} to ${directory}/animations/${animation.cid}.html`)
+            this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} to ${directory}/animations/${animation.cid}.html (${animation.cid})`)
 
 
         }
-
 
         //Get directory cids
         let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
@@ -360,7 +354,6 @@ class PublishService {
         })
 
 
-
         //Save metadata for each NFT
         for (let item of backup.items) {
 
@@ -370,24 +363,49 @@ class PublishService {
             
             let nftMetadataPath = `${directory}/metadata/${nft.tokenId}.json`
 
-            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:flush })
+
+            //Adding and then copying otherwise the CID does not match what we'd expect. 
+            let result = await this.ipfsService.ipfs.add({
+                content: new TextEncoder().encode(JSON.stringify(nft))
+            })
+
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, nftMetadataPath, { create: true, parents: true, flush:flush })
+
+
+
+            // await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:flush })
+
+            let stat = await this.ipfsService.ipfs.files.stat(nftMetadataPath)
 
             publishStatus.nftMetadata.saved++
 
-            this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath}`)
+            this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath} (${stat.cid})`)
 
         }
 
 
         //Save contract metadata
         let contractMetadataPath = `${directory}/contractMetadata.json`
-        
         let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, exportBundle.ownerAddress, imageDirectory.cid.toString())
 
+        //Adding and then copying otherwise the CID does not match what we'd expect. 
+        let contractResult = await this.ipfsService.ipfs.add({
+            content: new TextEncoder().encode(JSON.stringify(contractMetadata))
+        })
 
-        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
+        await this.ipfsService.ipfs.files.cp(`/ipfs/${contractResult.cid.toString()}`, contractMetadataPath, { create: true, parents: true, flush:flush })
+
+
+
+
+
+
+        // await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
+        
+        let stat = await this.ipfsService.ipfs.files.stat(contractMetadataPath)
+        
         publishStatus.contractMetadata.saved = 1
-        this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath}`)
+        this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath} (${stat.cid})`)
 
 
 

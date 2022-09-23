@@ -37,6 +37,10 @@ class ThemeRepository {
         return Object.assign(new Theme(), await this.db.get(_id))
     }
 
+    async getLatestRevision(_id:string) : Promise<Theme> {
+        return Object.assign(new Theme(), await this.databaseService.getLatestRevision(this.db, _id))
+    }
+
     async put(theme: Theme) {
         await this.db.put(theme)
     }

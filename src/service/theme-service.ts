@@ -22,6 +22,10 @@ class ThemeService {
     return this.themeRepository.get(_id)
   }
 
+  async getLatestRevision(_id:string) : Promise<Theme> {
+    return this.themeRepository.getLatestRevision(_id)
+  }
+
   async put(theme: Theme) {
 
     if (!theme._id) {

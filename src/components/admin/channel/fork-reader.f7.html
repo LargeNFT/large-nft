@@ -18,20 +18,67 @@
           ${channel ? $h`
             
             <div class="block-title">Create a new fork</div>
+            <div class="block-header">
+              A <em>fork</em> is a copy of an NFT collection. Forking a project allows you to freely experiment with changes without affecting the original project. <a href="/admin/channel/view-forks">View existing forks.</a>
+            </div>
+
+            <div class="list media-list inset">
+              <ul>
+                <li>
+                  <label class="item-radio item-radio-icon-start item-content">
+                    <input type="radio" name="demo-media-radio" checked @change="${radioButtonChange}" value="existing" />
+                    <i class="icon icon-radio" checked></i>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Create new experience around an existing collection.</div>
+                      </div>
+                      <div class="item-text">Collection items will not be editable and Reader will be configured to connect to existing smart contract to view ownership and create transactions.</div>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <label class="item-radio item-radio-icon-start item-content">
+                    <input type="radio" name="demo-media-radio" @change="${radioButtonChange}" value="fork" />
+                    <i class="icon icon-radio"></i>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Fork collection.</div>
+                      </div>
+                      <div class="item-text">Collection items can be added, deleted, or edited. Deploy and mint from a new smart contract.</div>
+                    </div>
+                  </label>
+                </li>
+
+              </ul>
+            </div>
+
 
             <div class="block block-strong inset fork-block">
-
-              <p>
-                A <em>fork</em> is a copy of an NFT collection. Forking a project allows you to freely experiment with changes without affecting the original project. <a href="/admin/channel/view-forks">View existing forks.</a>
-              </p>
 
               <p>Forking <a href="${getBaseURI()}" class="external">${channel.title}</a></p>
 
               <div class="repo-name">
 
                 <div class="left">
-                  <strong>Owner</strong>
-                  <span class="owner">${owner}</span>
+                  <strong>Author</strong>
+
+                  <div class="list no-hairlines" style="margin: 0; padding-left: 0px;">
+                    <ul>
+                      <li class="item-content item-input" style="padding-left: 0px;">
+                        <div class="item-inner">
+                          <div class="item-input-wrap">
+                            <select id="collection-author">
+                              ${forkType == "existing" ? $h`
+                                <option value="${author._id}">${truncateEthAddress(author._id)} (Original Author)</option>
+                              ` : $h`
+                                <option value="${owner}">${truncateEthAddress(owner)}</option>
+                              ` }
+                            </select>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
 
                 <div class="right">
@@ -41,10 +88,18 @@
                     <ul>
                       <li class="item-content item-input" style="padding-left: 0px;">
                         <div class="item-inner">
-                          <div class="item-input-wrap">
-                            <input type="text" id="collection-title" value="${channel.title}" />
-                            <span class="input-clear-button"></span>
-                          </div>
+
+                            ${forkType == "existing" ? $h`
+                              <div class="item-input-wrap ">
+                                ${channel.title}
+                              </div>
+                            ` : $h`
+                              <div class="item-input-wrap ">
+                                <input type="text" value="${customName}" @change="${collectionTitleChange}" />
+                                <span class="input-clear-button"></span>
+                              </div>
+                            ` }
+
                         </div>
                       </li>
                     </ul>
@@ -169,7 +224,7 @@
   }
 
   .repo-name .left {
-    flex: 0 0 200px;
+    flex: 0 0 260px;
   }
 
   .repo-name .right {
@@ -204,16 +259,21 @@
     let ipfsReady = ipfsService.ipfs != undefined
     let peerCount = ipfsService.peerCount
 
-    let contractAddress = props.contractAddress
+    let contractInfo 
 
     let forking = false
     let forkStatus 
     let forkOutput = ""
 
     let channel
+    let author
     let owner
+    
+    let customName
 
     let channelId
+
+    let forkType = "existing"
 
     const truncateEthAddress = (address) => {
       return walletService.truncateEthAddress(address)
@@ -227,22 +287,64 @@
     }
 
 
+    const getChannel = async () => {
+      let response = await axios.get(`${getBaseURI()}backup/export/backup/channels.json`)
+      let channels = response.data
+      return channels[0]
+    }
+
+    const getAuthor = async () => {
+      let response = await axios.get(`${getBaseURI()}backup/export/backup/authors.json`)
+      let authors = response.data
+      return authors[0]
+    }
+
+    const getContractInfo = async () => {
+      
+      try {
+
+        let response = await axios.get(`${getBaseURI()}backup/contract/contract.json`)
+        let contract = response.data
+        return contract
+
+      } catch(ex) {
+        console.log(ex)
+      }
+
+    }
+
+
     $on('pageInit', async () => {
 
-      owner = truncateEthAddress(await walletService.getAddress())
+      owner = await walletService.getAddress()
 
-      let response = await axios.get(`${getBaseURI()}backup/export/backup/channels.json`)
+      channel = await getChannel()
+      author = await getAuthor()
 
-      let channels = response.data
+      contractInfo = await getContractInfo()
 
-      channel = channels[0]
+      customName = channel.title
 
       await $update()
 
 
     })
 
+    const radioButtonChange = async (e) => {
 
+      e.preventDefault()
+
+      forkType = $(e.currentTarget).val()
+
+      await $update()
+
+    }
+
+    const collectionTitleChange = async (e) => {
+      e.preventDefault()
+      customName = $(e.currentTarget).val()
+      await $update()
+    }
 
     const formSubmit = async (e) => {
 
@@ -251,10 +353,15 @@
       forking = true 
       $update()
 
-      //Get collection name
-      let title = $('#collection-title').val()
+      let title = forkType == "existing" ? channel.title : customName
+      let contractAddress = forkType == "existing" ? contractInfo.contractAddress : undefined
+      let ipfsCid = forkType == "existing" ? contractInfo.ipfsCid : undefined
 
-      channelId = await importService.importFromReader(getBaseURI(), title)
+      // console.log(contractAddress)
+      // console.log(ipfsCid)
+
+      //Get collection name
+      channelId = await importService.importFromReader(getBaseURI(), title, contractAddress, ipfsCid )
 
       forking = false
       $update()

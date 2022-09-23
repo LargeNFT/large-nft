@@ -479,7 +479,11 @@
 
       $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {
 
+        $f7.preloader.show()
+
         await channelService.delete(channelViewModel.channel)
+
+        $f7.preloader.hide()
 
         $f7.views.main.router.navigate(`/`)
 

@@ -38,6 +38,10 @@ class StaticPageRepository {
         return Object.assign(new StaticPage(), await this.db.get(_id))
     }
 
+    async getLatestRevision(_id:string) : Promise<StaticPage> {
+        return Object.assign(new StaticPage(), await this.databaseService.getLatestRevision(this.db, _id))
+    }
+
     async put(staticPage: StaticPage) {
         await this.db.put(staticPage)
     }

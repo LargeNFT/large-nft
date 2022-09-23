@@ -24,6 +24,7 @@ import axios from "axios";
 
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import all from 'it-all'
+import { ImportBundle, MediaDownloader } from "dto/import-bundle";
 
 
 @injectable()
@@ -78,7 +79,7 @@ class ImportService {
 
         let mediaDownloader = new IPFSDownloader(this.ipfsService)
 
-        return this._importAsNew(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, cid)
+        return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, cid)
     }
 
     async importFromContract(contractAddress:string, startToken:number, endToken:number) : Promise<string> {
@@ -113,7 +114,56 @@ class ImportService {
 
     }
 
-    async importFromReader(baseURI:string, title:string) : Promise<string> {
+
+    async importExistingFromReader(baseURI:string, contractAddress:string, ipfsCid:string) {
+
+        let importBundle:ImportBundle = await this._buildImportBundle(baseURI)
+
+        importBundle.channels[0].contractAddress = contractAddress
+        importBundle.channels[0].localCid = ipfsCid
+
+        return this._importExisting(
+            importBundle.authors, 
+            importBundle.channels, 
+            importBundle.images, 
+            importBundle.items, 
+            importBundle.animations, 
+            importBundle.themes, 
+            importBundle.staticPages, 
+            importBundle.forkStatus, 
+            importBundle.mediaDownloader, 
+            ipfsCid)
+
+    }
+
+    async importAsForkFromReader(baseURI:string, title:string, ipfsCid?:string) {
+
+        let importBundle:ImportBundle = await this._buildImportBundle(baseURI)
+
+
+        delete importBundle.channels[0].contractAddress
+        delete importBundle.channels[0].localCid
+
+        //Set the new name
+        importBundle.channels[0].title = title
+
+        return this._importAsFork(
+            importBundle.authors, 
+            importBundle.channels, 
+            importBundle.images, 
+            importBundle.items, 
+            importBundle.animations, 
+            importBundle.themes, 
+            importBundle.staticPages, 
+            importBundle.forkStatus, 
+            importBundle.mediaDownloader,
+            ipfsCid)
+    }
+
+
+
+
+    private async _buildImportBundle(baseURI:string) : Promise<ImportBundle> {
 
         let forkStatus:ForkStatus = {
             animations: { saved: 0, total: 0},
@@ -127,7 +177,6 @@ class ImportService {
 
         this.logForkProgress(forkStatus, "Processing...")
 
-
         //Load the files from the server.
         let authors:Author[] = await this._fetchFile(`${baseURI}backup/export/backup/authors.json`)
         let channels:Channel[] = await this._fetchFile(`${baseURI}backup/export/backup/channels.json`)
@@ -139,17 +188,24 @@ class ImportService {
 
         let mediaDownloader = new URLDownloader(baseURI)
 
-        //Set the new name
-        channels[0].title = title
+        return {
+            authors: authors,
+            channels: channels,
+            images: images,
+            items: items,
+            animations: animations,
+            themes: themes,
+            staticPages: staticPages,
+            mediaDownloader: mediaDownloader,
+            forkStatus: forkStatus
 
-        return this._importAsNew(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader)
+        }
 
     }
-    
-    private async _importAsNew(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, cid?:string) {
+
+    private async _importAsFork(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, cid?:string) {
 
         let channelId 
-
 
         let idMap = new Map<string, string>()
 
@@ -158,6 +214,7 @@ class ImportService {
             throw new Error("Invalid collection hash")
         }
 
+        
         forkStatus.authors.total = authors.length
         forkStatus.channels.total = channels.length
         forkStatus.images.total = images.length
@@ -170,24 +227,21 @@ class ImportService {
 
 
         //Loop through the contents and insert each one like it's an unseen row
-
         for (let author of authors) {
 
-            //Remove ID 
-            delete author._rev
-            delete author.lastUpdated
-            delete author.dateCreated
-            delete author["_rev_tree"]
-
-            let authorObj = Object.assign(new Author(), author)
+            //Author might already exist. Get it so we can update.
+            let existingAuthor
 
             try {
-                await this.authorService.put(authorObj)
-            } catch (ex) {} //ignore duplicates            
+                existingAuthor = await this.authorService.get(author._id)
+            } catch(ex) {}
+
+            await this.authorService.put(Object.assign(existingAuthor, author))            
 
             forkStatus.authors.saved++
-            this.logForkProgress(forkStatus, `Inserted author ${authorObj._id}`)
+            this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
         }
+
 
         for (let channel of channels) {
 
@@ -196,18 +250,6 @@ class ImportService {
             delete channel._id
             delete channel._rev 
             delete channel["_rev_tree"]
-            delete channel.contractAddress
-            delete channel.localCid
-            delete channel.localPubDate
-            delete channel.pinJobId
-            delete channel.pinJobStatus
-            delete channel.publishedCid
-            delete channel.pubDate
-            delete channel.publishReaderRepoId
-            delete channel.publishReaderRepoPath
-            delete channel.publishReaderRepoStatus
-            delete channel.lastUpdated
-            delete channel.dateCreated
 
             //Get the new author ID
             channel.authorId = this.walletService.address?.toString()
@@ -216,20 +258,17 @@ class ImportService {
             if (channel.authorId) {
                 await this.authorService.insertIfNew(channel.authorId)
             }
-
         
             //Mark parent
             if (cid) {
                 channel.forkedFromCid = cid
-            } else {
-                channel.forkedFromId = oldId
-            }
+            } 
+
+            channel.forkedFromId = oldId
 
             let channelObj = Object.assign(new Channel(), channel)
 
-            try {
-                await this.channelService.put(channelObj)
-            } catch (ex) {} //ignore duplicates   
+            await this.channelService.put(channelObj) 
 
             idMap.set(oldId, channelObj._id)
             channelId = channelObj._id
@@ -240,10 +279,6 @@ class ImportService {
         }
 
         for (let image of images) {
-
-            delete image._rev
-            delete image.dateCreated
-            delete image["_rev_tree"]
 
             //Load content
             if (image.generated) {
@@ -265,10 +300,6 @@ class ImportService {
 
         for (let animation of animations) {
 
-            delete animation._rev
-            delete animation.dateCreated
-            delete animation["_rev_tree"]
-
             //Load content
             animation.content = await mediaDownloader.getAsString(`animations/${animation.cid}.html`)
 
@@ -282,17 +313,39 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted animation ${animationObj._id}`)
 
         }
-        // console.log(items)
+
+        for (let theme of themes) {
+
+            let oldId = theme._id
+
+            delete theme._id
+            delete theme._rev 
+            delete theme["_rev_tree"]
+
+            theme.channelId = idMap.get(theme.channelId) //look up the new channel ID
+
+            let themeObj = Object.assign(new Theme(), theme)
+
+            theme.forkedFromId = oldId
+
+            await this.themeService.put(themeObj)           
+
+            //map old id
+            idMap.set(oldId, themeObj._id)
+
+            forkStatus.themes.saved++
+            this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
+        }
+
         for (let item of items) {
             
+            let oldId = item._id
+
             delete item._id
-            delete item._rev
-            delete item.lastUpdated
-            delete item.dateCreated
+            delete item._rev 
             delete item["_rev_tree"]
 
             item.channelId = idMap.get(item.channelId) //look up the new channel ID
-
 
             //Get image data and re-insert it into the content ops
             if (item.content?.ops?.length > 0) {
@@ -314,48 +367,41 @@ class ImportService {
 
             }
 
+            //Loop through themes and update IDs
+            if (item.themes?.length > 0) {
+
+                let updatedThemes:string[] = []
+
+                for (let theme of item.themes) {
+                    updatedThemes.push(idMap.get(theme))
+                }
+    
+                item.themes = updatedThemes
+            }
+
+            item.forkedFromId = oldId
+
+
             let itemObj = Object.assign(new Item(), item)
 
-            try {
-                await this.itemService.put(itemObj)
-            } catch (ex) {} //ignore duplicates   
+            await this.itemService.put(itemObj) 
 
             forkStatus.items.saved++
             this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
 
         }
 
-        for (let theme of themes) {
-
-            // delete theme._id
-            // delete theme._rev
-            // delete theme.lastUpdated
-            // delete theme.dateCreated
-            // delete theme["_rev_tree"]
-
-            theme.channelId = idMap.get(theme.channelId) //look up the new channel ID
-
-
-            let themeObj = Object.assign(new Theme(), theme)
-
-            try {
-                await this.themeService.put(themeObj)
-            } catch (ex) {} //ignore duplicates            
-
-            forkStatus.themes.saved++
-            this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
-        }
-
         for (let staticPage of staticPages) {
 
+            let oldId = staticPage._id
+
             delete staticPage._id
-            delete staticPage._rev
-            delete staticPage.lastUpdated
-            delete staticPage.dateCreated
+            delete staticPage._rev 
             delete staticPage["_rev_tree"]
 
             staticPage.channelId = idMap.get(staticPage.channelId) //look up the new channel ID
 
+            staticPage.forkedFromId = oldId
 
             let staticPageObj = Object.assign(new StaticPage(), staticPage)
 
@@ -379,6 +425,167 @@ class ImportService {
 
         return channelId
     }
+
+    private async _importExisting(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, cid?:string) {
+
+        if (!authors || !channels || !images || !items) {
+            throw new Error("Invalid collection hash")
+        }
+
+        forkStatus.authors.total = authors.length
+        forkStatus.channels.total = channels.length
+        forkStatus.images.total = images.length
+        forkStatus.items.total = items.length
+        forkStatus.animations.total = animations.length
+        forkStatus.themes.total = themes.length
+        forkStatus.staticPages.total = staticPages.length
+
+        this.logForkProgress(forkStatus, "Updating totals...")
+
+
+        //Loop through the contents and insert each one like it's an unseen row
+        for (let author of authors) {
+
+            //Author might already exist. Get it so we can update.
+            let existingAuthor
+
+            try {
+                existingAuthor = await this.authorService.get(author._id)
+            } catch(ex) {}
+
+            try {
+                await this.authorService.put(Object.assign(existingAuthor, author))
+            } catch (ex) {} //ignore duplicates            
+
+            forkStatus.authors.saved++
+            this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
+        }
+
+
+        for (let channel of channels) {
+            
+            //Check if it exists
+            console.log(1)
+            let channelObj = await this.channelService.getLatestRevision(channel._id)
+            channelObj["_deleted"] = false
+        
+            console.log(JSON.stringify(channelObj))
+
+            await this.channelService.put(Object.assign(channelObj, channel))  
+
+            forkStatus.channels.saved++
+            this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`)
+
+        }
+
+        for (let image of images) {
+
+            //Load content
+            if (image.generated) {
+                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+            } else {
+                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+            }
+
+            let imageObj = Object.assign(new Image(), image)
+
+            try {
+                await this.imageService.put(imageObj)
+            } catch (ex) {} //ignore duplicates   
+
+            forkStatus.images.saved++
+            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`)
+
+        }
+
+        for (let animation of animations) {
+
+            //Load content
+            animation.content = await mediaDownloader.getAsString(`animations/${animation.cid}.html`)
+
+            let animationObj = Object.assign(new Animation(), animation)
+
+            try {
+                await this.animationService.put(animationObj)
+            } catch (ex) {} //ignore duplicates   
+
+            forkStatus.animations.saved++
+            this.logForkProgress(forkStatus, `Inserted animation ${animationObj._id}`)
+
+        }
+
+        for (let theme of themes) {
+
+            //Check if it exists
+            let themeObj = await this.themeService.getLatestRevision(theme._id)
+            themeObj["_deleted"] = false
+
+            await this.themeService.put(Object.assign(themeObj, theme))           
+
+            forkStatus.themes.saved++
+            this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
+        }
+
+        for (let item of items) {
+            
+            //Get image data and re-insert it into the content ops
+            if (item.content?.ops?.length > 0) {
+
+                let ops = []
+
+                for (let op of item.content.ops) {
+
+                    if (op.insert && op.insert.ipfsimage) {
+
+                        let image:Image = await this.imageService.get(op.insert.ipfsimage.cid)
+                        op.insert.ipfsimage.src = await this.imageService.getUrl(image)
+                    }
+
+                    ops.push(op)
+                }
+
+                item.content.ops = ops
+
+            }
+
+            //Check if it exists
+            let itemObj = await this.itemService.getLatestRevision(item._id)
+            itemObj["_deleted"] = false
+            
+            await this.itemService.put(Object.assign(itemObj, item))  
+
+            forkStatus.items.saved++
+            this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
+
+        }
+
+        for (let staticPage of staticPages) {
+
+            //Check if it exists
+            let staticPageObj = await this.staticPageService.getLatestRevision(staticPage._id)
+            staticPageObj["_deleted"] = false
+            
+            await this.staticPageService.put(Object.assign(staticPageObj, staticPage))          
+
+            forkStatus.staticPages.saved++
+            this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
+        }
+
+        this.logForkProgress(forkStatus, `
+        ******************************\n
+        ******************************\n
+        ******************************\n
+                Import complete\n
+        ******************************\n
+        ******************************\n
+        ******************************
+        `)
+
+        return channels[0]._id
+    }
+
+
+
 
     async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
 
@@ -495,11 +702,7 @@ class URLDownloader implements MediaDownloader {
 
 }
 
-interface MediaDownloader {
-    basePath:string
-    getAsString(filename:string) : Promise<string>
-    getAsBuffer(filename:string) : Promise<Uint8Array>
-}
+
 
 
 interface TokenMetadata {

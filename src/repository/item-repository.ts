@@ -106,6 +106,10 @@ class ItemRepository {
         return Object.assign(new Item(), await this.db.get(_id))
     }
 
+    async getLatestRevision(_id:string) : Promise<Item> {
+        return Object.assign(new Item(), await this.databaseService.getLatestRevision(this.db, _id))
+    }
+
     async getByTokenId(channelId: string, tokenId:string) : Promise<Item> {
 
         let response = await this.db.find({

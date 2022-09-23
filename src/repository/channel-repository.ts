@@ -32,6 +32,10 @@ class ChannelRepository {
         return Object.assign(new Channel(), await this.db.get(_id))
     }
 
+    async getLatestRevision(_id:string) : Promise<Channel> {
+        return Object.assign(new Channel(), await this.databaseService.getLatestRevision(this.db, _id))
+    }
+
     async put(channel: Channel) {
         await this.db.put(channel)
     }
@@ -48,9 +52,6 @@ class ChannelRepository {
         return response.docs
 
     }
-
-
-
 
     async delete(channel: Channel): Promise<void> {
         await this.db.remove(channel)

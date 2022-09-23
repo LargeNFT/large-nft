@@ -19,8 +19,7 @@ import TYPES from "./types"
 import { WalletService } from "./wallet-service"
 import { AnimationService } from "../animation-service"
 
-import Hash from 'ipfs-only-hash'
-import { QuillService } from "../quill-service"
+
 import { ThemeService } from "../theme-service"
 import { Theme } from "../../dto/theme"
 import { StaticPage } from "../../dto/static-page"
@@ -96,7 +95,6 @@ class PublishService {
         delete channel.publishReaderRepoPath
         delete channel.publishReaderRepoStatus
         delete channel.lastUpdated
-        // delete channel.dateCreated
         delete channel._rev
         delete channel["_rev_tree"]
 
@@ -104,7 +102,6 @@ class PublishService {
         if (author) {
             delete author._rev
             delete author.lastUpdated
-            // delete author.dateCreated
             delete author["_rev_tree"]
         }
 
@@ -156,7 +153,6 @@ class PublishService {
             //Delete publishing related fields
             delete item._rev
             delete item.lastUpdated
-            // delete item.dateCreated
             delete item["_rev_tree"]
 
         }

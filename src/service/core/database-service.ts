@@ -19,18 +19,14 @@ class DatabaseService {
     }
 
 
-
     async getDatabase(walletAddress:string, name:string, changesets?:Changeset[]) {
 
         const fullName = `./pouch/${walletAddress}-${name}`
 
-        console.log(fullName)
-
-
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 
         //Create or open database
-        this.dbCache[fullName] = new PouchDB(fullName)
+        this.dbCache[fullName] = new PouchDB(fullName, { auto_compaction: true })
 
         const details = await this.dbCache[fullName].info()
 
@@ -112,6 +108,51 @@ class DatabaseService {
         return this.dbCache[fullName]
 
     }
+
+    async getLatestRevision(db, _id:string) {
+        
+        let latest
+
+        try {
+            latest = await db.get(_id)
+        } catch(ex) {}
+
+        if (latest) return latest
+
+        let results = await db.allDocs({key: _id, include_docs: true, deleted: 'ok' })
+
+        console.log(results.rows[0])
+
+        // return 
+
+        // console.log(JSON.stringify(results))
+
+
+        // const viaChanges = await db.changes({
+        //     live: false,
+        //     since: 0,
+        //     doc_ids: [_id],
+        //     style: 'all_docs'
+        // })
+
+        // // console.log(JSON.stringify(viaChanges))
+
+        // if (viaChanges.results?.length > 0) {
+
+        //     console.log(await db.get(_id), { revs_info: true, deleted: 'ok', style: 'all_docs'})
+
+        //     let lastRevision = viaChanges.results.map( result => result.changes[0].rev)
+
+        //     return db.get(_id, {
+        //         rev: lastRevision[0],
+        //         deleted: 'ok',
+        //         style: 'all_docs'
+        //     })
+            
+        // }
+
+    }
+
 
 }
 

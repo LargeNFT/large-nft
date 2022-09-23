@@ -8,6 +8,9 @@ class Theme {
   @Allow()
   _rev?:string
 
+  @Allow()
+  forkedFromId?:string
+
   @IsNotEmpty()
   channelId?:string
 

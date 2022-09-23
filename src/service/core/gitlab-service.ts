@@ -169,7 +169,10 @@ class GitlabService {
             actions.push({
                 action: "create",
                 file_path: "backup/contract/contract.json",
-                content: JSON.stringify({ contractAddress: channel.contractAddress })
+                content: JSON.stringify({ 
+                    contractAddress: channel.contractAddress,
+                    ipfsCid: channel.localCid
+                 })
             })
 
             //Also the ABI

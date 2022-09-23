@@ -231,6 +231,49 @@ contract('ChannelService', async (accounts) => {
 
     })
 
+    it("should delete a channel and all associated items", async () => {
+
+        let channel1: Channel = await service.get(id1)
+        await service.delete(channel1)
+
+        try {
+            let channel1: Channel = await service.get(id1)
+            assert.fail('Did not fail')
+        } catch (ex) {
+            assert.strictEqual(ex.status, 404)
+        }
+
+        let items:Item[] = await itemService.listByChannel(id1, 100, 0)
+        assert.strictEqual(items.length, 0)
+
+    })
+
+
+    it("should get the last revision for a document even if it's deleted", async () => {
+
+        let latestId1 = await service.getLatestRevision(id1)
+        assert.strictEqual(latestId1._deleted, true )
+
+    })
+
+    it("should getLatestRevision of non-deleted records", async () => {
+
+        let latestId2 = await service.get(id2)
+
+        latestId2.title = "wow3"
+
+        await service.put(latestId2)
+
+        latestId2.title = "wow4"
+        await service.put(latestId2)
+
+        //Update a record a few times and get the latest
+        let fetched  = await service.getLatestRevision(id2)
+        assert.strictEqual(fetched.title, "wow4")
+
+    })
+
+
     it("should load a database with lots of records and page through them", async () => {
 
         //Arrange

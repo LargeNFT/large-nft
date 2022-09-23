@@ -39,6 +39,10 @@ class ChannelService {
     return this.channelRepository.get(_id)
   }
 
+  async getLatestRevision(_id:string) : Promise<Channel> {
+    return this.channelRepository.getLatestRevision(_id)
+  }
+
   async put(channel: Channel) {
     
     if (!channel._id) {
@@ -78,7 +82,7 @@ class ChannelService {
     if (errors.length > 0) {
       throw new ValidationException(errors)
     }
-    console.log(channel)
+
     await this.channelRepository.put(channel)
 
   }
@@ -99,6 +103,8 @@ class ChannelService {
     for (let item of items) {
       await this.itemService.delete(item)
     }
+
+
 
     //Delete themes
     let themes:Theme[] = await this.themeService.listByChannel(channel._id, 100000, 0)

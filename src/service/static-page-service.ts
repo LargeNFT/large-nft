@@ -23,6 +23,11 @@ class StaticPageService {
     return this.staticPageRepository.get(_id)
   }
 
+  async getLatestRevision(_id:string) : Promise<StaticPage> {
+    return this.staticPageRepository.getLatestRevision(_id)
+  }
+
+
   async put(staticPage: StaticPage) {
 
     if (!staticPage._id) {

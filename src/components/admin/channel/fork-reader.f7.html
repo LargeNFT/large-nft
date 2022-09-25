@@ -353,15 +353,21 @@
       forking = true 
       $update()
 
-      let title = forkType == "existing" ? channel.title : customName
-      let contractAddress = forkType == "existing" ? contractInfo.contractAddress : undefined
-      let ipfsCid = forkType == "existing" ? contractInfo.ipfsCid : undefined
+      // let title = forkType == "existing" ? channel.title : customName
+      // let contractAddress = forkType == "existing" ? contractInfo.contractAddress : undefined
+      // let ipfsCid = forkType == "existing" ? contractInfo.ipfsCid : undefined
+
+      if (forkType == "existing") {
+        channelId = await importService.importExistingFromReader(getBaseURI(), contractInfo.contractAddress, contractInfo.ipfsCid  )
+      } else {
+        channelId = await importService.importAsForkFromReader(getBaseURI(), customName)
+      }
 
       // console.log(contractAddress)
       // console.log(ipfsCid)
 
       //Get collection name
-      channelId = await importService.importFromReader(getBaseURI(), title, contractAddress, ipfsCid )
+      
 
       forking = false
       $update()

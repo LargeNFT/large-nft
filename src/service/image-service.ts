@@ -160,8 +160,11 @@ class ImageService {
     const image: Image = new Image()
 
     image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, allThemeCss)
-
     image.cid = await Hash.of(image.svg)
+
+    console.log(btoa(image.svg))
+    console.log(image.cid)
+
     image.generated = true
     
     return image

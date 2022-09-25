@@ -145,7 +145,7 @@
                 ${itemViewModel.themes?.map( (theme) => $h`
 
                   <div class="button-outline attribute-value">
-                    <div class="value">${theme.name}</div>
+                    <div class="value">${theme.name}</div> <span class="theme-id">${theme._id}</span>
                   </div>
 
                 `)}
@@ -311,8 +311,6 @@
 }
 
 
-
-
 </style>
 
 <script>
@@ -332,6 +330,8 @@
     let uiService = ContainerService.getInstance(UiService)
 
     let itemViewModel = props.itemViewModel
+    console.log(itemViewModel)
+    
     let showEdit = itemViewModel.editable
 
 

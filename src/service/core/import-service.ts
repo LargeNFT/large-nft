@@ -25,6 +25,7 @@ import axios from "axios";
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import all from 'it-all'
 import { ImportBundle, MediaDownloader } from "dto/import-bundle";
+import Hash from 'ipfs-only-hash'
 
 
 @injectable()
@@ -114,7 +115,6 @@ class ImportService {
 
     }
 
-
     async importExistingFromReader(baseURI:string, contractAddress:string, ipfsCid:string) {
 
         let importBundle:ImportBundle = await this._buildImportBundle(baseURI)
@@ -159,9 +159,6 @@ class ImportService {
             importBundle.mediaDownloader,
             ipfsCid)
     }
-
-
-
 
     private async _buildImportBundle(baseURI:string) : Promise<ImportBundle> {
 
@@ -484,14 +481,27 @@ class ImportService {
 
         for (let image of images) {
 
+            let content
+
             //Load content
             if (image.generated) {
                 image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                content = image.svg
             } else {
                 image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                content = new Uint8Array(image.buffer)
             }
 
             let imageObj = Object.assign(new Image(), image)
+
+            //Validate we match the IPFS cid 
+            let expectedCid = await Hash.of(content)
+
+            if (expectedCid.toString() != image.cid) {    
+                console.log(image.svg, expectedCid)
+                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
+            }
+
 
             try {
                 await this.imageService.put(imageObj)
@@ -506,6 +516,15 @@ class ImportService {
 
             //Load content
             animation.content = await mediaDownloader.getAsString(`animations/${animation.cid}.html`)
+
+
+            //Validate we match the IPFS cid 
+            let expectedCid = await Hash.of(animation.content)
+
+            if (expectedCid.toString() != animation.cid) {    
+                throw new Error(`Incorrect cid when importing animation. Expected: ${animation.cid}, Result: ${expectedCid.toString()}`)
+            }
+
 
             let animationObj = Object.assign(new Animation(), animation)
 
@@ -599,9 +618,6 @@ class ImportService {
 
         return channels[0]._id
     }
-
-
-
 
     async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
 
@@ -701,8 +717,21 @@ class URLDownloader implements MediaDownloader {
 
     async getAsString(path:string): Promise<string> {
         
-        let response = await axios.get(`${this.basePath}backup/export/${path}`)
-        return response.data?.toString()
+        // let response = await axios.get(`${this.basePath}backup/export/${path}`, {
+        //     responseType: 'arraybuffer',
+        //     responseEncoding: 'binary'
+        // })
+
+        // console.log(new TextEncoder().encode(response.data.toString()))
+
+        let response = await fetch(`${this.basePath}backup/export/${path}`)
+
+        console.log({
+            response: await response.text()
+        })
+
+        return 
+        // return response.data.toString()
 
     }
 

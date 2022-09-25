@@ -248,6 +248,7 @@
                                             ${channelViewModel.themes?.map( (theme) => $h`
                                                 <li>
                                                     <span class="theme-name">${theme.name}</span> 
+                                                    <span class="theme-id">${theme._id}</span>
                                                     <a class="link theme-link edit-theme" href="#" data-id="${theme._id}">Edit</a>
                                                     <a class="link theme-link delete-theme" href="#" data-id="${theme._id}">Delete</a>
                                                 </li>
@@ -451,6 +452,8 @@
     .theme-link, .static-page-link {
         margin-left: 10px;
     }
+
+
 
 
 </style>

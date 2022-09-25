@@ -121,54 +121,20 @@ class DatabaseService {
 
         let results = await db.allDocs({key: _id, include_docs: true, deleted: 'ok' })
 
-        let result = {
-            _id: _id,
-            _rev: results.rows[0].value.rev,
-            _deleted: true
+        if (results.rows?.length > 0) {
+
+            //Return a deleted representation
+            let result = {
+                _id: _id,
+                _rev: results.rows[0].value.rev,
+                _deleted: true
+            }
+    
+            return result
+    
         }
 
-        return result
-
-        // let r = await db.get(_id, {
-        //     rev: results.rows[0].value.rev,
-        //     deleted: 'ok',
-        //     style: 'all_docs'
-        // })
-
-        // console.log(result)
-        // console.log(r)
-
-        // return r
         
-
-        // console.log(results)
-
-        // return result
-
-
-
-        // const viaChanges = await db.changes({
-        //     live: false,
-        //     since: 0,
-        //     doc_ids: [_id],
-        //     style: 'all_docs'
-        // })
-
-        // // console.log(JSON.stringify(viaChanges))
-
-        // if (viaChanges.results?.length > 0) {
-
-        //     let lastRevision = viaChanges.results.map( result => result.changes[0].rev)
-
-        //     console.log(JSON.stringify(lastRevision))
-
-        //     // return db.get(_id, {
-        //     //     rev: lastRevision[0],
-        //     //     deleted: 'ok',
-        //     //     style: 'all_docs'
-        //     // })
-            
-        // }
 
     }
 

@@ -25,6 +25,8 @@ import { Theme } from "../../dto/theme"
 import { StaticPage } from "../../dto/static-page"
 import { StaticPageService } from "../static-page-service"
 
+import Hash from 'ipfs-only-hash'
+
 
 @injectable()
 class PublishService {
@@ -270,12 +272,12 @@ class PublishService {
                 content: content
             })
 
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${image.cid}`, filename, { create: true, parents: true, flush:flush })
-        
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, filename, { create: true, parents: true, flush:flush })
+    
 
             //Validate cid
-            if (result.cid.toString() != image.cid) {
-                throw new Error("Incorrect cid when saving image. ")
+            if (result.cid.toString() != image.cid) {    
+                throw new Error(`Incorrect cid when saving image. Expected: ${image.cid}, Result: ${result.cid.toString()}`)
             }
 
 
@@ -365,15 +367,15 @@ class PublishService {
 
 
             //Adding and then copying otherwise the CID does not match what we'd expect. 
-            let result = await this.ipfsService.ipfs.add({
-                content: new TextEncoder().encode(JSON.stringify(nft))
-            })
+            // let result = await this.ipfsService.ipfs.add({
+            //     content: new TextEncoder().encode(JSON.stringify(nft))
+            // })
 
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, nftMetadataPath, { create: true, parents: true, flush:flush })
+            // await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, nftMetadataPath, { create: true, parents: true, flush:flush })
+            await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:flush })
 
 
 
-            // await this.ipfsService.ipfs.files.write(nftMetadataPath, new TextEncoder().encode(JSON.stringify(nft)), { create: true, parents: true, flush:flush })
 
             let stat = await this.ipfsService.ipfs.files.stat(nftMetadataPath)
 
@@ -389,19 +391,18 @@ class PublishService {
         let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, exportBundle.ownerAddress, imageDirectory.cid.toString())
 
         //Adding and then copying otherwise the CID does not match what we'd expect. 
-        let contractResult = await this.ipfsService.ipfs.add({
-            content: new TextEncoder().encode(JSON.stringify(contractMetadata))
-        })
+        // let contractResult = await this.ipfsService.ipfs.add({
+        //     content: new TextEncoder().encode(JSON.stringify(contractMetadata))
+        // })
 
-        await this.ipfsService.ipfs.files.cp(`/ipfs/${contractResult.cid.toString()}`, contractMetadataPath, { create: true, parents: true, flush:flush })
+        // await this.ipfsService.ipfs.files.cp(`/ipfs/${contractResult.cid.toString()}`, contractMetadataPath, { create: true, parents: true, flush:flush })
 
-
-
-
+        await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
 
 
-        // await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
-        
+
+
+
         let stat = await this.ipfsService.ipfs.files.stat(contractMetadataPath)
         
         publishStatus.contractMetadata.saved = 1

@@ -389,7 +389,11 @@ class PublishService {
 
         //Save contract metadata
         let contractMetadataPath = `${directory}/contractMetadata.json`
-        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, exportBundle.ownerAddress, imageDirectory.cid.toString())
+        let contractMetadata = await this.channelService.exportContractMetadata(
+            exportBundle.channel, 
+            exportBundle.channel.forkType == "existing" ? exportBundle.channel.forkedFromFeeRecipient : exportBundle.ownerAddress, 
+            imageDirectory.cid.toString()
+        )
 
         //Adding and then copying otherwise the CID does not match what we'd expect. 
         // let contractResult = await this.ipfsService.ipfs.add({
@@ -412,6 +416,17 @@ class PublishService {
 
 
         //Write channels backup
+        
+        //If we're exporting an existing collection delete the "forkedBy" fields
+        for (let channel of backup.channels) {
+            if (channel.forkType == "existing") {
+                delete channel.forkType
+                delete channel.forkedFromCid
+                delete channel.forkedFromFeeRecipient
+                delete channel.forkedFromId
+            }
+        }
+
         await this.ipfsService.ipfs.files.write(`${directory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: flush })
         publishStatus.backups.channels.saved = 1
         this.logPublishProgress(publishStatus)
@@ -508,7 +523,6 @@ class PublishService {
 
         //Add itemCount to channel
         channel['itemCount'] = items?.length
-
 
         //Save pouch dbs
         return {

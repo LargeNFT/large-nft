@@ -221,7 +221,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '1a5c9c3a1c';
+framework7Component.id = '0d60f4672e';
 framework7Component.style = `
 
 
@@ -413,7 +413,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c9e70c3184';
+framework7Component.id = '363d6f98f5';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -525,7 +525,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7f75c5af8d';
+framework7Component.id = 'f7f8ee9076';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -685,7 +685,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cb96396789';
+framework7Component.id = '0646d933b0';
 framework7Component.style = `
 
 
@@ -1342,7 +1342,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '3853c7f14c';
+framework7Component.id = '3b0a9c84a6';
 framework7Component.style = `
 
 `;
@@ -1992,7 +1992,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'ea44320a78';
+framework7Component.id = '7af4180657';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2219,7 +2219,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f03bfebe23';
+framework7Component.id = '6803b0603f';
 framework7Component.style = `
 
 `;
@@ -2581,7 +2581,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fc344fcf4b';
+framework7Component.id = '8e5d6d6ad4';
 framework7Component.style = `
 
   .fork-block {
@@ -2836,7 +2836,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f345be24ba';
+framework7Component.id = 'ff093d1eb5';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3449,7 +3449,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '513afd6a24';
+framework7Component.id = 'e54b8e5ca1';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3787,7 +3787,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bc3b68f05a';
+framework7Component.id = 'c24318ac3f';
 framework7Component.style = `
 
 `;
@@ -4165,7 +4165,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '99627df88d';
+framework7Component.id = '74a5c24330';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -4442,7 +4442,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e169d661ce';
+framework7Component.id = 'bf0607591f';
 framework7Component.style = `
     
 `;
@@ -4532,7 +4532,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '23be462b40';
+framework7Component.id = 'a1f9abde0a';
 framework7Component.style = `
     
 `;
@@ -4605,7 +4605,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '0f6ed45917';
+framework7Component.id = 'fde6134046';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4740,7 +4740,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7f2ed79d84';
+framework7Component.id = '165142f081';
 framework7Component.style = `
 
 `;
@@ -4896,7 +4896,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4de2f60b5e';
+framework7Component.id = '248b43a922';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4989,7 +4989,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5263d5f951';
+framework7Component.id = '80a9815478';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -5249,7 +5249,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9e99ec711e';
+framework7Component.id = '9c476e700e';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -5537,7 +5537,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '689336205b';
+framework7Component.id = '62f8b40090';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5939,7 +5939,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '765f0cfd55';
+framework7Component.id = 'c44015f48d';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -6216,7 +6216,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cce9cf1fab';
+framework7Component.id = 'f61e257bf9';
 framework7Component.style = `
 
   .previous {
@@ -6439,7 +6439,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '49535317b0';
+framework7Component.id = 'eb443c3f6d';
 framework7Component.style = `
 
  .logo {
@@ -6642,7 +6642,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '67a78f7d46';
+framework7Component.id = 'babc859250';
 framework7Component.style = `
 
   `;
@@ -6941,7 +6941,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '748d58f829';
+framework7Component.id = 'b2f27ed910';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -7215,7 +7215,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '5a1b1b0801';
+framework7Component.id = '19cd98bde8';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -7453,7 +7453,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f940bbd280';
+framework7Component.id = '810cc64235';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7652,7 +7652,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '71248365c2';
+framework7Component.id = '407056a4f7';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7956,7 +7956,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8b281cb94f';
+framework7Component.id = 'c7093718fc';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -8194,7 +8194,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b0c9457560';
+framework7Component.id = 'd0589a190a';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -8561,7 +8561,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'bcaad5a06e';
+framework7Component.id = 'ef7f9fbe60';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -8694,7 +8694,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd23a885368';
+framework7Component.id = '70ca85800b';
 framework7Component.style = `
     
 `;
@@ -10148,6 +10148,14 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], Channel.prototype, "forkedFromId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Channel.prototype, "forkedFromFeeRecipient", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Channel.prototype, "forkType", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -12997,8 +13005,9 @@ let ImportService = class ImportService {
         let animations = await this._readFile(`/fork/backup/animations.json`);
         let themes = await this._readFile(`/fork/backup/themes.json`);
         let staticPages = await this._readFile(`/fork/backup/static-pages.json`);
+        let contractMetadata = await this._readFile(`/fork/contractMetadata.json`);
         let mediaDownloader = new IPFSDownloader(this.ipfsService);
-        return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, cid);
+        return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid);
     }
     async importFromContract(contractAddress, startToken, endToken) {
         let wallet = this.walletService.wallet;
@@ -13021,7 +13030,7 @@ let ImportService = class ImportService {
         let importBundle = await this._buildImportBundle(baseURI);
         importBundle.channels[0].contractAddress = contractAddress;
         importBundle.channels[0].localCid = ipfsCid;
-        return this._importExisting(importBundle.authors, importBundle.channels, importBundle.images, importBundle.items, importBundle.animations, importBundle.themes, importBundle.staticPages, importBundle.forkStatus, importBundle.mediaDownloader, ipfsCid);
+        return this._importExisting(importBundle.authors, importBundle.channels, importBundle.images, importBundle.items, importBundle.animations, importBundle.themes, importBundle.staticPages, importBundle.forkStatus, importBundle.mediaDownloader, importBundle.contractMetadata, ipfsCid);
     }
     async importAsForkFromReader(baseURI, title, ipfsCid) {
         let importBundle = await this._buildImportBundle(baseURI);
@@ -13029,7 +13038,7 @@ let ImportService = class ImportService {
         delete importBundle.channels[0].localCid;
         //Set the new name
         importBundle.channels[0].title = title;
-        return this._importAsFork(importBundle.authors, importBundle.channels, importBundle.images, importBundle.items, importBundle.animations, importBundle.themes, importBundle.staticPages, importBundle.forkStatus, importBundle.mediaDownloader, ipfsCid);
+        return this._importAsFork(importBundle.authors, importBundle.channels, importBundle.images, importBundle.items, importBundle.animations, importBundle.themes, importBundle.staticPages, importBundle.forkStatus, importBundle.mediaDownloader, importBundle.contractMetadata, ipfsCid);
     }
     async _buildImportBundle(baseURI) {
         let forkStatus = {
@@ -13050,6 +13059,7 @@ let ImportService = class ImportService {
         let animations = await this._fetchFile(`${baseURI}backup/export/backup/animations.json`);
         let themes = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`);
         let staticPages = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`);
+        let contractMetadata = await this._fetchFile(`${baseURI}backup/export/contractMetadata.json`);
         let mediaDownloader = new URLDownloader(baseURI);
         return {
             authors: authors,
@@ -13060,10 +13070,11 @@ let ImportService = class ImportService {
             themes: themes,
             staticPages: staticPages,
             mediaDownloader: mediaDownloader,
-            forkStatus: forkStatus
+            forkStatus: forkStatus,
+            contractMetadata: contractMetadata
         };
     }
-    async _importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, cid) {
+    async _importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid) {
         var _a, _b, _c, _d;
         let channelId;
         let idMap = new Map();
@@ -13078,6 +13089,8 @@ let ImportService = class ImportService {
         forkStatus.themes.total = themes.length;
         forkStatus.staticPages.total = staticPages.length;
         this.logForkProgress(forkStatus, "Updating totals...");
+        channels[0].forkType = "fork";
+        channels[0].forkedFromFeeRecipient = contractMetadata.fee_recipient;
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
             delete author._rev;
@@ -13214,7 +13227,7 @@ let ImportService = class ImportService {
         `);
         return channelId;
     }
-    async _importExisting(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, cid) {
+    async _importExisting(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid) {
         var _a, _b;
         if (!authors || !channels || !images || !items) {
             throw new Error("Invalid collection hash");
@@ -13227,6 +13240,8 @@ let ImportService = class ImportService {
         forkStatus.themes.total = themes.length;
         forkStatus.staticPages.total = staticPages.length;
         this.logForkProgress(forkStatus, "Updating totals...");
+        channels[0].forkType = "existing";
+        channels[0].forkedFromFeeRecipient = contractMetadata.fee_recipient;
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
             delete author._rev;
@@ -14090,7 +14105,7 @@ let PublishService = class PublishService {
         }
         //Save contract metadata
         let contractMetadataPath = `${directory}/contractMetadata.json`;
-        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, exportBundle.ownerAddress, imageDirectory.cid.toString());
+        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, exportBundle.channel.forkType == "existing" ? exportBundle.channel.forkedFromFeeRecipient : exportBundle.ownerAddress, imageDirectory.cid.toString());
         //Adding and then copying otherwise the CID does not match what we'd expect. 
         // let contractResult = await this.ipfsService.ipfs.add({
         //     content: new TextEncoder().encode(JSON.stringify(contractMetadata))
@@ -14101,6 +14116,15 @@ let PublishService = class PublishService {
         publishStatus.contractMetadata.saved = 1;
         this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath} (${stat.cid})`);
         //Write channels backup
+        //If we're exporting an existing collection delete the "forkedBy" fields
+        for (let channel of backup.channels) {
+            if (channel.forkType == "existing") {
+                delete channel.forkType;
+                delete channel.forkedFromCid;
+                delete channel.forkedFromFeeRecipient;
+                delete channel.forkedFromId;
+            }
+        }
         await this.ipfsService.ipfs.files.write(`${directory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: flush });
         publishStatus.backups.channels.saved = 1;
         this.logPublishProgress(publishStatus);
@@ -14932,8 +14956,8 @@ let ImageService = class ImageService {
         const image = new _dto_image__WEBPACK_IMPORTED_MODULE_6__.Image();
         image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, allThemeCss);
         image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_1__.of(image.svg);
-        console.log(new TextEncoder().encode(image.svg));
-        console.log(image.cid);
+        // console.log(new TextEncoder().encode(image.svg))
+        // console.log(image.cid)
         image.generated = true;
         return image;
     }

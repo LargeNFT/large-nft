@@ -78,10 +78,11 @@ class ImportService {
         let animations:Animation[] = await this._readFile(`/fork/backup/animations.json`)
         let themes:Theme[] = await this._readFile(`/fork/backup/themes.json`)
         let staticPages:StaticPage[] = await this._readFile(`/fork/backup/static-pages.json`)
+        let contractMetadata:ContractMetadata = await this._readFile(`/fork/contractMetadata.json`)
 
         let mediaDownloader = new IPFSDownloader(this.ipfsService)
 
-        return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, cid)
+        return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
     }
 
     async importFromContract(contractAddress:string, startToken:number, endToken:number) : Promise<string> {
@@ -133,6 +134,7 @@ class ImportService {
             importBundle.staticPages, 
             importBundle.forkStatus, 
             importBundle.mediaDownloader, 
+            importBundle.contractMetadata,
             ipfsCid)
 
     }
@@ -158,6 +160,7 @@ class ImportService {
             importBundle.staticPages, 
             importBundle.forkStatus, 
             importBundle.mediaDownloader,
+            importBundle.contractMetadata,
             ipfsCid)
     }
 
@@ -184,7 +187,7 @@ class ImportService {
         let themes:Theme[] = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`)
         let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`)
 
-        let contractMetadata:ContractMetadata = await this._fetchFile(`${baseURI}backup/contractMetadata.json`)
+        let contractMetadata:ContractMetadata = await this._fetchFile(`${baseURI}backup/export/contractMetadata.json`)
 
         let mediaDownloader = new URLDownloader(baseURI)
 
@@ -204,7 +207,7 @@ class ImportService {
 
     }
 
-    private async _importAsFork(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, cid?:string) {
+    private async _importAsFork(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, cid?:string) {
 
         let channelId 
 
@@ -225,6 +228,10 @@ class ImportService {
         forkStatus.staticPages.total = staticPages.length
 
         this.logForkProgress(forkStatus, "Updating totals...")
+
+        channels[0].forkType = "fork"
+        channels[0].forkedFromFeeRecipient = contractMetadata.fee_recipient
+
 
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
@@ -428,7 +435,7 @@ class ImportService {
         return channelId
     }
 
-    private async _importExisting(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, cid?:string) {
+    private async _importExisting(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, cid?:string) {
 
         if (!authors || !channels || !images || !items) {
             throw new Error("Invalid collection hash")
@@ -444,6 +451,8 @@ class ImportService {
 
         this.logForkProgress(forkStatus, "Updating totals...")
 
+        channels[0].forkType = "existing"
+        channels[0].forkedFromFeeRecipient = contractMetadata.fee_recipient
 
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {

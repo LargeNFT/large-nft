@@ -135,7 +135,6 @@ class ChannelService {
 
   async exportContractMetadata(channel:Channel, ownerAddress:string, imageDirectoryCid:string) : Promise<ContractMetadata> {
 
-
     let result:ContractMetadata = {
       name: channel.title,
       description: channel.descriptionMarkdown,

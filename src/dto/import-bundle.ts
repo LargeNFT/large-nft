@@ -7,6 +7,7 @@ import { StaticPage } from "./static-page"
 import { ForkStatus } from "./viewmodel/fork-status"
 import { Image } from "./image"
 import { Animation } from "./animation"
+import { ContractMetadata } from "./contract-metadata"
 
 
 interface ImportBundle {
@@ -22,6 +23,8 @@ interface ImportBundle {
 
     mediaDownloader:MediaDownloader
     forkStatus:ForkStatus
+
+    contractMetadata:ContractMetadata
 
 
 }

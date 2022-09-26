@@ -16,9 +16,7 @@ import { Animation } from "../../dto/animation"
 import { ForkStatus } from "../../dto/viewmodel/fork-status"
 import toBuffer from 'it-to-buffer'
 import { Theme } from "../../dto/theme";
-import { ThemeService } from "../theme-service";
 import { StaticPage } from "../../dto/static-page";
-import { StaticPageService } from "../static-page-service";
 import { BigNumber, ethers } from "ethers";
 import axios from "axios";
 
@@ -26,6 +24,9 @@ import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import all from 'it-all'
 import { ImportBundle, MediaDownloader } from "dto/import-bundle";
 import Hash from 'ipfs-only-hash'
+import { ThemeRepository } from "../../repository/theme-repository";
+import { StaticPageRepository } from "../../repository/static-page-repository";
+import { ContractMetadata } from "dto/contract-metadata";
 
 
 @injectable()
@@ -38,8 +39,8 @@ class ImportService {
         private ipfsService: IpfsService,
         private imageService: ImageService,
         private animationService:AnimationService,
-        private themeService:ThemeService,
-        private staticPageService:StaticPageService,
+        private themeRepository:ThemeRepository,
+        private staticPageRepository:StaticPageRepository,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) {}
@@ -183,6 +184,8 @@ class ImportService {
         let themes:Theme[] = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`)
         let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`)
 
+        let contractMetadata:ContractMetadata = await this._fetchFile(`${baseURI}backup/contractMetadata.json`)
+
         let mediaDownloader = new URLDownloader(baseURI)
 
         return {
@@ -194,7 +197,8 @@ class ImportService {
             themes: themes,
             staticPages: staticPages,
             mediaDownloader: mediaDownloader,
-            forkStatus: forkStatus
+            forkStatus: forkStatus,
+            contractMetadata: contractMetadata
 
         }
 
@@ -326,7 +330,7 @@ class ImportService {
 
             theme.forkedFromId = oldId
 
-            await this.themeService.put(themeObj)           
+            await this.themeRepository.put(themeObj)           
 
             //map old id
             idMap.set(oldId, themeObj._id)
@@ -404,7 +408,7 @@ class ImportService {
             let staticPageObj = Object.assign(new StaticPage(), staticPage)
 
             try {
-                await this.staticPageService.put(staticPageObj)
+                await this.staticPageRepository.put(staticPageObj)
             } catch (ex) {} //ignore duplicates            
 
             forkStatus.staticPages.saved++
@@ -454,9 +458,7 @@ class ImportService {
                 existingAuthor = await this.authorService.get(author._id)
             } catch(ex) {}
 
-            try {
-                await this.authorService.put(Object.assign(existingAuthor, author))
-            } catch (ex) {} //ignore duplicates            
+            await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))           
 
             forkStatus.authors.saved++
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
@@ -476,39 +478,6 @@ class ImportService {
 
             forkStatus.channels.saved++
             this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`)
-
-        }
-
-        for (let image of images) {
-
-            let content
-
-            //Load content
-            if (image.generated) {
-                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
-                content = image.svg
-            } else {
-                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
-                content = new Uint8Array(image.buffer)
-            }
-
-            let imageObj = Object.assign(new Image(), image)
-
-            //Validate we match the IPFS cid 
-            let expectedCid = await Hash.of(content)
-
-            if (expectedCid.toString() != image.cid) {    
-                console.log(image.svg, expectedCid)
-                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
-            }
-
-
-            try {
-                await this.imageService.put(imageObj)
-            } catch (ex) {} //ignore duplicates   
-
-            forkStatus.images.saved++
-            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`)
 
         }
 
@@ -537,6 +506,50 @@ class ImportService {
 
         }
 
+        for (let image of images) {
+
+            let content
+
+            //Load content
+            if (image.generated) {
+
+                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                content = image.svg
+
+                // image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                // console.log(new Uint8Array(image.buffer))
+                // console.log(new TextEncoder().encode(image.svg))
+
+            } else {
+                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                content = new Uint8Array(image.buffer)
+            }
+
+
+
+
+
+            let imageObj = Object.assign(new Image(), image)
+
+            //Validate we match the IPFS cid 
+            let expectedCid = await Hash.of(content)
+
+            if (expectedCid.toString() != image.cid) {    
+                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
+            }
+
+
+            try {
+                await this.imageService.put(imageObj)
+            } catch (ex) {} //ignore duplicates   
+
+            forkStatus.images.saved++
+            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`)
+
+        }
+
+
+
         for (let theme of themes) {
 
             //Remove any existing rev info
@@ -544,10 +557,10 @@ class ImportService {
             delete theme["_rev_tree"]
 
             //Check if it exists
-            let themeObj = await this.themeService.getLatestRevision(theme._id)
+            let themeObj = await this.themeRepository.getLatestRevision(theme._id)
             themeObj["_deleted"] = false
 
-            await this.themeService.put(Object.assign(themeObj, theme))           
+            await this.themeRepository.put(Object.assign(themeObj, theme))           
 
             forkStatus.themes.saved++
             this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
@@ -597,10 +610,10 @@ class ImportService {
             delete staticPage["_rev_tree"]
 
             //Check if it exists
-            let staticPageObj = await this.staticPageService.getLatestRevision(staticPage._id)
+            let staticPageObj = await this.staticPageRepository.getLatestRevision(staticPage._id)
             staticPageObj["_deleted"] = false
             
-            await this.staticPageService.put(Object.assign(staticPageObj, staticPage))          
+            await this.staticPageRepository.put(Object.assign(staticPageObj, staticPage))          
 
             forkStatus.staticPages.saved++
             this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)

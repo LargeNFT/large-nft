@@ -263,6 +263,7 @@ class PublishService {
                 content = image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
             } else if (image.svg) {
                 content = image.svg
+                console.log(new TextEncoder().encode(image.svg))
             }
 
 
@@ -314,7 +315,7 @@ class PublishService {
             })
 
             if (result.cid.toString() !== animation.cid.toString()) {
-                throw new Error('CIDs did not match')
+                throw new Error(`Incorrect cid when saving animation. Expected: ${animation.cid}, Result: ${result.cid.toString()}`)
             }
 
             //In theory there can be duplicates if any NFTs have identical content.

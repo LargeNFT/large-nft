@@ -325,28 +325,12 @@ class GitlabService {
                 let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/images/${file.name}`)) 
     
                 //Add create action
-                if (file.name.endsWith('.svg')) {
-                    
-                    if (file.name.indexOf("QmRZ3hhrnAauMgLmoSaZz24GXjq9LEQmY8z9SLnxaMiWNr") > -1) {
-                        console.log(bufferedContents)
-                    }
-
-                    actions.push({
-                        action: "create",
-                        file_path: `backup/export/images/${file.name}`,
-                        content: new TextDecoder("utf-8").decode(bufferedContents),
-                    })
-
-
-                } else {
-                    actions.push({
-                        action: "create",
-                        file_path: `backup/export/images/${file.name}`,
-                        content: Buffer.from(bufferedContents).toString('base64'),
-                        encoding: 'base64'
-                    })
-                }
-
+                actions.push({
+                    action: "create",
+                    file_path: `backup/export/images/${file.name}`,
+                    content: Buffer.from(bufferedContents).toString('base64'),
+                    encoding: 'base64'
+                })
     
             }
             

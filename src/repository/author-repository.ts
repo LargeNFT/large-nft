@@ -14,9 +14,9 @@ class AuthorRepository {
 
 
     async load(walletAddress: string) {
-
         this.db = await this.databaseService.getDatabase(walletAddress, "author")
     }
+    
     async get(_id: string): Promise<Author> {
         return Object.assign(new Author(), await this.db.get(_id))
     }

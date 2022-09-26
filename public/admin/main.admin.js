@@ -221,7 +221,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'fb968ad594';
+framework7Component.id = '1a5c9c3a1c';
 framework7Component.style = `
 
 
@@ -413,7 +413,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4a646f182a';
+framework7Component.id = 'c9e70c3184';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -525,7 +525,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '2bf3405912';
+framework7Component.id = '7f75c5af8d';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -685,7 +685,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b1b3707513';
+framework7Component.id = 'cb96396789';
 framework7Component.style = `
 
 
@@ -1342,7 +1342,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7d61858482';
+framework7Component.id = '3853c7f14c';
 framework7Component.style = `
 
 `;
@@ -1992,7 +1992,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '24df2955af';
+framework7Component.id = 'ea44320a78';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -2219,7 +2219,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd91e1c2652';
+framework7Component.id = 'f03bfebe23';
 framework7Component.style = `
 
 `;
@@ -2329,18 +2329,13 @@ function framework7Component(props, {
   const formSubmit = async e => {
     e.preventDefault();
     forking = true;
-    $update(); // let title = forkType == "existing" ? channel.title : customName
-    // let contractAddress = forkType == "existing" ? contractInfo.contractAddress : undefined
-    // let ipfsCid = forkType == "existing" ? contractInfo.ipfsCid : undefined
+    $update();
 
     if (forkType == "existing") {
       channelId = await importService.importExistingFromReader(getBaseURI(), contractInfo.contractAddress, contractInfo.ipfsCid);
     } else {
       channelId = await importService.importAsForkFromReader(getBaseURI(), customName);
-    } // console.log(contractAddress)
-    // console.log(ipfsCid)
-    //Get collection name
-
+    }
 
     forking = false;
     $update();
@@ -2523,13 +2518,13 @@ function framework7Component(props, {
                               <div class="item"> 
                                   <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
                               </div>
-      
+
                               <div class="item">
-                                  <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
                               </div>
       
                               <div class="item">
-                                  <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                                  <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
                               </div>
       
                               <div class="item">
@@ -2586,7 +2581,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'e20feafb8e';
+framework7Component.id = 'fc344fcf4b';
 framework7Component.style = `
 
   .fork-block {
@@ -2841,7 +2836,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f1bc57af62';
+framework7Component.id = 'f345be24ba';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3454,7 +3449,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'dbb60c7dba';
+framework7Component.id = '513afd6a24';
 framework7Component.style = `
     .cover-image-preview {
         max-width: 300px;
@@ -3792,7 +3787,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '727f996f0d';
+framework7Component.id = 'bc3b68f05a';
 framework7Component.style = `
 
 `;
@@ -4170,7 +4165,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '9a734115cf';
+framework7Component.id = '99627df88d';
 framework7Component.style = `
   .channel-card-show .card-header {
     display: block;
@@ -4447,7 +4442,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '16fe71accd';
+framework7Component.id = 'e169d661ce';
 framework7Component.style = `
     
 `;
@@ -4537,7 +4532,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '8075ff1016';
+framework7Component.id = '23be462b40';
 framework7Component.style = `
     
 `;
@@ -4610,7 +4605,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '7690ef42b4';
+framework7Component.id = '0f6ed45917';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -4745,7 +4740,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '305e4b6936';
+framework7Component.id = '7f2ed79d84';
 framework7Component.style = `
 
 `;
@@ -4901,7 +4896,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '270fcc1c33';
+framework7Component.id = '4de2f60b5e';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -4994,7 +4989,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'c9c3849ea7';
+framework7Component.id = '5263d5f951';
 framework7Component.style = `
     #settings-button {
         margin-left: 3px;
@@ -5254,7 +5249,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '033feb1d1f';
+framework7Component.id = '9e99ec711e';
 framework7Component.style = `
   #create-item-editor {
     min-height: 600px;
@@ -5542,7 +5537,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'cb9e5d0c1d';
+framework7Component.id = '689336205b';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 600px;
@@ -5944,7 +5939,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '56cb3bf229';
+framework7Component.id = '765f0cfd55';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -6221,7 +6216,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '078faede57';
+framework7Component.id = 'cce9cf1fab';
 framework7Component.style = `
 
   .previous {
@@ -6444,7 +6439,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b24776f82b';
+framework7Component.id = '49535317b0';
 framework7Component.style = `
 
  .logo {
@@ -6647,7 +6642,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'd8a1e19530';
+framework7Component.id = '67a78f7d46';
 framework7Component.style = `
 
   `;
@@ -6800,8 +6795,8 @@ function framework7Component(props, {
                             <div class="card-content card-content-padding">
                                 
                                 <p>
-                                    The JSON metadata for the collection as well as a backup of the source database
-                                    will be copied to the IPFS node.
+                                    The JSON metadata for the collection as well as a snapshot of the source database
+                                    will be exported to the IPFS node.
                                 </p>
 
                                 ${!ipfsReady ? $h`
@@ -6946,7 +6941,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f3a413d0c2';
+framework7Component.id = '748d58f829';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -7220,7 +7215,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '4348c0c6ab';
+framework7Component.id = '5a1b1b0801';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -7458,7 +7453,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '847ee3b2dc';
+framework7Component.id = 'f940bbd280';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -7657,7 +7652,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '41207aa424';
+framework7Component.id = '71248365c2';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -7961,7 +7956,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '89dca3ad3e';
+framework7Component.id = '8b281cb94f';
 framework7Component.style = `
     .publish-label, .ipfs-label {
       margin-top: 10px;
@@ -8199,7 +8194,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'f77cbede49';
+framework7Component.id = 'b0c9457560';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -8566,7 +8561,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = 'b774772929';
+framework7Component.id = 'bcaad5a06e';
 framework7Component.style = `
 
     .pinapi-name, .static-page-name {
@@ -8699,7 +8694,7 @@ function framework7Component(props, {
     ;
 }
 
-framework7Component.id = '503a21f1a5';
+framework7Component.id = 'd23a885368';
 framework7Component.style = `
     
 `;
@@ -12505,11 +12500,13 @@ DatabaseService = __decorate([
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _util_validation_exception__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../util/validation-exception */ "./src/util/validation-exception.ts");
-/* harmony import */ var _repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../repository/gitlab-repository */ "./src/repository/gitlab-repository.ts");
-/* harmony import */ var _ipfs_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var parse_link_header__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! parse-link-header */ "./node_modules/parse-link-header/index.js");
+/* harmony import */ var parse_link_header__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(parse_link_header__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _util_validation_exception__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/validation-exception */ "./src/util/validation-exception.ts");
+/* harmony import */ var _repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../repository/gitlab-repository */ "./src/repository/gitlab-repository.ts");
+/* harmony import */ var _ipfs_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ipfs-service */ "./src/service/core/ipfs-service.ts");
 /* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -12535,6 +12532,7 @@ const toBuffer = __webpack_require__(/*! it-to-buffer */ "./node_modules/it-to-b
 
 
 
+
 const contractABI = __webpack_require__(/*! ../../../contracts.json */ "./contracts.json");
 let GitlabService = GitlabService_1 = class GitlabService {
     constructor(gitlabRepository, ipfsService) {
@@ -12553,12 +12551,12 @@ let GitlabService = GitlabService_1 = class GitlabService {
             gitlab.lastUpdated = new Date().toJSON();
         }
         //Validate
-        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.validate)(gitlab, {
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_2__.validate)(gitlab, {
             forbidUnknownValues: true,
             whitelist: true
         });
         if (errors.length > 0) {
-            throw new _util_validation_exception__WEBPACK_IMPORTED_MODULE_2__.ValidationException(errors);
+            throw new _util_validation_exception__WEBPACK_IMPORTED_MODULE_3__.ValidationException(errors);
         }
         await this.gitlabRepository.put(gitlab);
     }
@@ -12761,25 +12759,12 @@ let GitlabService = GitlabService_1 = class GitlabService {
                     const file = _g.value;
                     let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/images/${file.name}`));
                     //Add create action
-                    if (file.name.endsWith('.svg')) {
-                        console.log(file.name);
-                        if (file.name.indexOf("QmRZ3hhrnAauMgLmoSaZz24GXjq9LEQmY8z9SLnxaMiWNr") > 0) {
-                            console.log(bufferedContents);
-                        }
-                        actions.push({
-                            action: "create",
-                            file_path: `backup/export/images/${file.name}`,
-                            content: new TextDecoder("utf-8").decode(bufferedContents),
-                        });
-                    }
-                    else {
-                        actions.push({
-                            action: "create",
-                            file_path: `backup/export/images/${file.name}`,
-                            content: Buffer.from(bufferedContents).toString('base64'),
-                            encoding: 'base64'
-                        });
-                    }
+                    actions.push({
+                        action: "create",
+                        file_path: `backup/export/images/${file.name}`,
+                        content: Buffer.from(bufferedContents).toString('base64'),
+                        encoding: 'base64'
+                    });
                 }
             }
             catch (e_2_1) { e_2 = { error: e_2_1 }; }
@@ -12838,26 +12823,35 @@ let GitlabService = GitlabService_1 = class GitlabService {
         this.logPublishReaderProgress(`Publish complete`);
     }
     async deleteReaderBackup(channel) {
-        var _a, _b;
+        var _a, _b, _c;
         let config = await this.get();
         if (config.personalAccessToken.length < 1) {
             throw new Error("Gitlab personal access token not set");
         }
-        //Get list of current files in backup folder
-        let results = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`${GitlabService_1.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=backup`, {
-            headers: {
-                "Authorization": `Bearer ${config.personalAccessToken}`
-            }
-        });
-        //Skip directories because gitlab chokes on them.
-        let actions = (_b = (_a = results === null || results === void 0 ? void 0 : results.data) === null || _a === void 0 ? void 0 : _a.reverse()) === null || _b === void 0 ? void 0 : _b.filter(result => result.name.indexOf('.') > 0).map(result => {
-            return {
-                action: 'delete',
-                file_path: result.path
-            };
-        });
+        this.logPublishReaderProgress(`Deleting existing files from repo...`);
+        let treeLink = `${GitlabService_1.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=backup&pagination=keyset`;
+        let linkHeaders;
+        let actions = [];
+        do {
+            //Get list of current files in backup folder
+            let results = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(treeLink, {
+                headers: {
+                    "Authorization": `Bearer ${config.personalAccessToken}`
+                }
+            });
+            //Skip directories because gitlab chokes on them.
+            let resultActions = (_b = (_a = results === null || results === void 0 ? void 0 : results.data) === null || _a === void 0 ? void 0 : _a.reverse()) === null || _b === void 0 ? void 0 : _b.filter(result => result.name.indexOf('.') > 0).map(result => {
+                return {
+                    action: 'delete',
+                    file_path: result.path
+                };
+            });
+            actions.push(...resultActions);
+            linkHeaders = parse_link_header__WEBPACK_IMPORTED_MODULE_1___default()(results.headers["link"]);
+            treeLink = (_c = linkHeaders === null || linkHeaders === void 0 ? void 0 : linkHeaders.next) === null || _c === void 0 ? void 0 : _c.url;
+        } while (treeLink);
         if ((actions === null || actions === void 0 ? void 0 : actions.length) > 0) {
-            console.log(`Deleting from reader repo...`);
+            this.logPublishReaderProgress(`Deleting ${actions.length} files from repo...`);
             let url = `${GitlabService_1.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`;
             await axios__WEBPACK_IMPORTED_MODULE_0___default().post(url, {
                 branch: "master",
@@ -12884,9 +12878,9 @@ let GitlabService = GitlabService_1 = class GitlabService {
 GitlabService.BASE_URL = 'https://gitlab.com/api/v4';
 GitlabService.READER_REPO_ID = 15461980;
 GitlabService = GitlabService_1 = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
-    __metadata("design:paramtypes", [_repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_4__.GitlabRepository,
-        _ipfs_service__WEBPACK_IMPORTED_MODULE_5__.IpfsService])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
+    __metadata("design:paramtypes", [_repository_gitlab_repository__WEBPACK_IMPORTED_MODULE_5__.GitlabRepository,
+        _ipfs_service__WEBPACK_IMPORTED_MODULE_6__.IpfsService])
 ], GitlabService);
 
 
@@ -12903,25 +12897,24 @@ GitlabService = GitlabService_1 = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ImportService": () => (/* binding */ ImportService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var _dto_author__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../dto/author */ "./src/dto/author.ts");
 /* harmony import */ var _dto_channel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../dto/channel */ "./src/dto/channel.ts");
 /* harmony import */ var _dto_item__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../dto/item */ "./src/dto/item.ts");
 /* harmony import */ var _dto_image__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../dto/image */ "./src/dto/image.ts");
-/* harmony import */ var _animation_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../animation-service */ "./src/service/animation-service.ts");
-/* harmony import */ var _author_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../author-service */ "./src/service/author-service.ts");
-/* harmony import */ var _channel_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../channel-service */ "./src/service/channel-service.ts");
-/* harmony import */ var _image_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../image-service */ "./src/service/image-service.ts");
-/* harmony import */ var _item_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../item-service */ "./src/service/item-service.ts");
-/* harmony import */ var _ipfs_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./ipfs-service */ "./src/service/core/ipfs-service.ts");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./types */ "./src/service/core/types.ts");
+/* harmony import */ var _animation_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../animation-service */ "./src/service/animation-service.ts");
+/* harmony import */ var _author_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../author-service */ "./src/service/author-service.ts");
+/* harmony import */ var _channel_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../channel-service */ "./src/service/channel-service.ts");
+/* harmony import */ var _image_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../image-service */ "./src/service/image-service.ts");
+/* harmony import */ var _item_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../item-service */ "./src/service/item-service.ts");
+/* harmony import */ var _ipfs_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./ipfs-service */ "./src/service/core/ipfs-service.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./types */ "./src/service/core/types.ts");
 /* harmony import */ var _dto_animation__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../dto/animation */ "./src/dto/animation.ts");
 /* harmony import */ var it_to_buffer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! it-to-buffer */ "./node_modules/it-to-buffer/index.js");
 /* harmony import */ var it_to_buffer__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(it_to_buffer__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _dto_theme__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../dto/theme */ "./src/dto/theme.ts");
-/* harmony import */ var _theme_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../theme-service */ "./src/service/theme-service.ts");
 /* harmony import */ var _dto_static_page__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../dto/static-page */ "./src/dto/static-page.ts");
-/* harmony import */ var _static_page_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../static-page-service */ "./src/service/static-page-service.ts");
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/contracts/lib.esm/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
@@ -12929,6 +12922,8 @@ GitlabService = GitlabService_1 = __decorate([
 /* harmony import */ var it_all__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! it-all */ "./node_modules/it-all/index.js");
 /* harmony import */ var it_all__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(it_all__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
+/* harmony import */ var _repository_theme_repository__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../../repository/theme-repository */ "./src/repository/theme-repository.ts");
+/* harmony import */ var _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../../repository/static-page-repository */ "./src/repository/static-page-repository.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12963,16 +12958,17 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 
+
 let ImportService = class ImportService {
-    constructor(channelService, itemService, authorService, ipfsService, imageService, animationService, themeService, staticPageService, walletService, contracts) {
+    constructor(channelService, itemService, authorService, ipfsService, imageService, animationService, themeRepository, staticPageRepository, walletService, contracts) {
         this.channelService = channelService;
         this.itemService = itemService;
         this.authorService = authorService;
         this.ipfsService = ipfsService;
         this.imageService = imageService;
         this.animationService = animationService;
-        this.themeService = themeService;
-        this.staticPageService = staticPageService;
+        this.themeRepository = themeRepository;
+        this.staticPageRepository = staticPageRepository;
         this.walletService = walletService;
         this.contracts = contracts;
     }
@@ -13154,7 +13150,7 @@ let ImportService = class ImportService {
             theme.channelId = idMap.get(theme.channelId); //look up the new channel ID
             let themeObj = Object.assign(new _dto_theme__WEBPACK_IMPORTED_MODULE_9__.Theme(), theme);
             theme.forkedFromId = oldId;
-            await this.themeService.put(themeObj);
+            await this.themeRepository.put(themeObj);
             //map old id
             idMap.set(oldId, themeObj._id);
             forkStatus.themes.saved++;
@@ -13201,7 +13197,7 @@ let ImportService = class ImportService {
             staticPage.forkedFromId = oldId;
             let staticPageObj = Object.assign(new _dto_static_page__WEBPACK_IMPORTED_MODULE_11__.StaticPage(), staticPage);
             try {
-                await this.staticPageService.put(staticPageObj);
+                await this.staticPageRepository.put(staticPageObj);
             }
             catch (ex) { } //ignore duplicates            
             forkStatus.staticPages.saved++;
@@ -13241,10 +13237,7 @@ let ImportService = class ImportService {
                 existingAuthor = await this.authorService.get(author._id);
             }
             catch (ex) { }
-            try {
-                await this.authorService.put(Object.assign(existingAuthor, author));
-            }
-            catch (ex) { } //ignore duplicates            
+            await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new _dto_author__WEBPACK_IMPORTED_MODULE_12__.Author(), author));
             forkStatus.authors.saved++;
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`);
         }
@@ -13258,31 +13251,6 @@ let ImportService = class ImportService {
             await this.channelService.put(Object.assign(channelObj, channel));
             forkStatus.channels.saved++;
             this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`);
-        }
-        for (let image of images) {
-            let content;
-            //Load content
-            if (image.generated) {
-                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg'}`);
-                content = image.svg;
-            }
-            else {
-                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg'}`);
-                content = new Uint8Array(image.buffer);
-            }
-            let imageObj = Object.assign(new _dto_image__WEBPACK_IMPORTED_MODULE_7__.Image(), image);
-            //Validate we match the IPFS cid 
-            let expectedCid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_4__.of(content);
-            if (expectedCid.toString() != image.cid) {
-                console.log(image.svg, expectedCid);
-                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`);
-            }
-            try {
-                await this.imageService.put(imageObj);
-            }
-            catch (ex) { } //ignore duplicates   
-            forkStatus.images.saved++;
-            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`);
         }
         for (let animation of animations) {
             //Load content
@@ -13300,14 +13268,41 @@ let ImportService = class ImportService {
             forkStatus.animations.saved++;
             this.logForkProgress(forkStatus, `Inserted animation ${animationObj._id}`);
         }
+        for (let image of images) {
+            let content;
+            //Load content
+            if (image.generated) {
+                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg'}`);
+                content = image.svg;
+                // image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                // console.log(new Uint8Array(image.buffer))
+                // console.log(new TextEncoder().encode(image.svg))
+            }
+            else {
+                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg'}`);
+                content = new Uint8Array(image.buffer);
+            }
+            let imageObj = Object.assign(new _dto_image__WEBPACK_IMPORTED_MODULE_7__.Image(), image);
+            //Validate we match the IPFS cid 
+            let expectedCid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_4__.of(content);
+            if (expectedCid.toString() != image.cid) {
+                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`);
+            }
+            try {
+                await this.imageService.put(imageObj);
+            }
+            catch (ex) { } //ignore duplicates   
+            forkStatus.images.saved++;
+            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`);
+        }
         for (let theme of themes) {
             //Remove any existing rev info
             delete theme._rev;
             delete theme["_rev_tree"];
             //Check if it exists
-            let themeObj = await this.themeService.getLatestRevision(theme._id);
+            let themeObj = await this.themeRepository.getLatestRevision(theme._id);
             themeObj["_deleted"] = false;
-            await this.themeService.put(Object.assign(themeObj, theme));
+            await this.themeRepository.put(Object.assign(themeObj, theme));
             forkStatus.themes.saved++;
             this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`);
         }
@@ -13339,9 +13334,9 @@ let ImportService = class ImportService {
             delete staticPage._rev;
             delete staticPage["_rev_tree"];
             //Check if it exists
-            let staticPageObj = await this.staticPageService.getLatestRevision(staticPage._id);
+            let staticPageObj = await this.staticPageRepository.getLatestRevision(staticPage._id);
             staticPageObj["_deleted"] = false;
-            await this.staticPageService.put(Object.assign(staticPageObj, staticPage));
+            await this.staticPageRepository.put(Object.assign(staticPageObj, staticPage));
             forkStatus.staticPages.saved++;
             this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`);
         }
@@ -13400,17 +13395,17 @@ let ImportService = class ImportService {
     }
 };
 ImportService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_12__.injectable)(),
-    __param(8, (0,inversify__WEBPACK_IMPORTED_MODULE_13__.inject)(_types__WEBPACK_IMPORTED_MODULE_14__["default"].WalletService)),
-    __param(9, (0,inversify__WEBPACK_IMPORTED_MODULE_13__.inject)("contracts")),
-    __metadata("design:paramtypes", [_channel_service__WEBPACK_IMPORTED_MODULE_15__.ChannelService,
-        _item_service__WEBPACK_IMPORTED_MODULE_16__.ItemService,
-        _author_service__WEBPACK_IMPORTED_MODULE_17__.AuthorService,
-        _ipfs_service__WEBPACK_IMPORTED_MODULE_18__.IpfsService,
-        _image_service__WEBPACK_IMPORTED_MODULE_19__.ImageService,
-        _animation_service__WEBPACK_IMPORTED_MODULE_20__.AnimationService,
-        _theme_service__WEBPACK_IMPORTED_MODULE_21__.ThemeService,
-        _static_page_service__WEBPACK_IMPORTED_MODULE_22__.StaticPageService, Object, Object])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_13__.injectable)(),
+    __param(8, (0,inversify__WEBPACK_IMPORTED_MODULE_14__.inject)(_types__WEBPACK_IMPORTED_MODULE_15__["default"].WalletService)),
+    __param(9, (0,inversify__WEBPACK_IMPORTED_MODULE_14__.inject)("contracts")),
+    __metadata("design:paramtypes", [_channel_service__WEBPACK_IMPORTED_MODULE_16__.ChannelService,
+        _item_service__WEBPACK_IMPORTED_MODULE_17__.ItemService,
+        _author_service__WEBPACK_IMPORTED_MODULE_18__.AuthorService,
+        _ipfs_service__WEBPACK_IMPORTED_MODULE_19__.IpfsService,
+        _image_service__WEBPACK_IMPORTED_MODULE_20__.ImageService,
+        _animation_service__WEBPACK_IMPORTED_MODULE_21__.AnimationService,
+        _repository_theme_repository__WEBPACK_IMPORTED_MODULE_22__.ThemeRepository,
+        _repository_static_page_repository__WEBPACK_IMPORTED_MODULE_23__.StaticPageRepository, Object, Object])
 ], ImportService);
 class IPFSDownloader {
     constructor(ipfsService) {
@@ -14016,6 +14011,7 @@ let PublishService = class PublishService {
             }
             else if (image.svg) {
                 content = image.svg;
+                console.log(new TextEncoder().encode(image.svg));
             }
             //Adding and then copying otherwise the CID does not match what we'd expect. 
             let result = await this.ipfsService.ipfs.add({
@@ -14047,7 +14043,7 @@ let PublishService = class PublishService {
                 content: animation.content
             });
             if (result.cid.toString() !== animation.cid.toString()) {
-                throw new Error('CIDs did not match');
+                throw new Error(`Incorrect cid when saving animation. Expected: ${animation.cid}, Result: ${result.cid.toString()}`);
             }
             //In theory there can be duplicates if any NFTs have identical content.
             let stat;

@@ -152,13 +152,13 @@
                               <div class="item"> 
                                   <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
                               </div>
-      
+
                               <div class="item">
-                                  <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
                               </div>
       
                               <div class="item">
-                                  <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                                  <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
                               </div>
       
                               <div class="item">
@@ -353,20 +353,11 @@
       forking = true 
       $update()
 
-      // let title = forkType == "existing" ? channel.title : customName
-      // let contractAddress = forkType == "existing" ? contractInfo.contractAddress : undefined
-      // let ipfsCid = forkType == "existing" ? contractInfo.ipfsCid : undefined
-
       if (forkType == "existing") {
         channelId = await importService.importExistingFromReader(getBaseURI(), contractInfo.contractAddress, contractInfo.ipfsCid  )
       } else {
         channelId = await importService.importAsForkFromReader(getBaseURI(), customName)
       }
-
-      // console.log(contractAddress)
-      // console.log(ipfsCid)
-
-      //Get collection name
       
 
       forking = false

@@ -717,27 +717,11 @@ class URLDownloader implements MediaDownloader {
 
     async getAsString(path:string): Promise<string> {
         
-        // let response = await axios.get(`${this.basePath}backup/export/${path}`, {
-        //     responseType: 'arraybuffer',
-        //     responseEncoding: 'binary'
-        // })
-
-        // console.log(new TextEncoder().encode(response.data.toString()))
-
-        let response = await fetch(`${this.basePath}backup/export/${path}`)
-
-        console.log({
-            response: await response.text()
-        })
-
-        return 
-        // return response.data.toString()
-
+        let response = await axios.get(`${this.basePath}backup/export/${path}`)
+        return response.data?.toString()
     }
 
     async getAsBuffer(path:string): Promise<Uint8Array> {
-
-        // console.log(`${this.basePath}backup/${path}`)
 
         let response = await axios.get(`${this.basePath}backup/export/${path}`, {
             responseType: "arraybuffer"

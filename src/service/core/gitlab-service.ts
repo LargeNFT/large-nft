@@ -1,5 +1,6 @@
 import axios from 'axios'
 const toBuffer = require('it-to-buffer')
+import parse from "parse-link-header"
 
 import { validate, ValidationError } from "class-validator";
 import { injectable } from "inversify";
@@ -10,6 +11,7 @@ import { GitlabRepository } from "../../repository/gitlab-repository";
 import { Gitlab } from "../../dto/gitlab";
 import { Channel } from "../../dto/channel";
 import { IpfsService } from './ipfs-service';
+
 
 
 const contractABI = require('../../../contracts.json')
@@ -149,7 +151,6 @@ class GitlabService {
         //Delete all existing files from the repo
 
         this.logPublishReaderProgress(`Deploying reader...`)
-
         let config = await this.get()
 
         if (config.personalAccessToken.length < 1) {
@@ -157,7 +158,7 @@ class GitlabService {
         }
 
         await this.deleteReaderBackup(channel)
-        
+
         let actions = []
 
         let directory = `/export/${channel._id}`
@@ -324,12 +325,28 @@ class GitlabService {
                 let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(`${directory}/images/${file.name}`)) 
     
                 //Add create action
-                actions.push({
-                    action: "create",
-                    file_path: `backup/export/images/${file.name}`,
-                    content: Buffer.from(bufferedContents).toString('base64'),
-                    encoding: 'base64'
-                })
+                if (file.name.endsWith('.svg')) {
+                    
+                    if (file.name.indexOf("QmRZ3hhrnAauMgLmoSaZz24GXjq9LEQmY8z9SLnxaMiWNr") > -1) {
+                        console.log(bufferedContents)
+                    }
+
+                    actions.push({
+                        action: "create",
+                        file_path: `backup/export/images/${file.name}`,
+                        content: new TextDecoder("utf-8").decode(bufferedContents),
+                    })
+
+
+                } else {
+                    actions.push({
+                        action: "create",
+                        file_path: `backup/export/images/${file.name}`,
+                        content: Buffer.from(bufferedContents).toString('base64'),
+                        encoding: 'base64'
+                    })
+                }
+
     
             }
             
@@ -397,26 +414,42 @@ class GitlabService {
             throw new Error("Gitlab personal access token not set")
         }
 
-        //Get list of current files in backup folder
-        let results = await axios.get(`${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=backup`, {
-            headers: {
-                "Authorization": `Bearer ${config.personalAccessToken}`
-            }
-        })
+        this.logPublishReaderProgress(`Deleting existing files from repo...`)
 
-        //Skip directories because gitlab chokes on them.
-        let actions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
 
-            return {
-                action: 'delete',
-                file_path: result.path
-            }
-        })
+        let treeLink = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=backup&pagination=keyset`
+        let linkHeaders
+        let actions = []
 
-        
+        do {
+
+            //Get list of current files in backup folder
+            let results = await axios.get(treeLink, {
+                headers: {
+                    "Authorization": `Bearer ${config.personalAccessToken}`
+                }
+            })
+
+            //Skip directories because gitlab chokes on them.
+            let resultActions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
+                return {
+                    action: 'delete',
+                    file_path: result.path
+                }
+            })
+
+            actions.push(...resultActions)
+
+            linkHeaders = parse(results.headers["link"])
+
+            treeLink = linkHeaders?.next?.url
+
+        } while(treeLink)
+
+
         if (actions?.length > 0) {
 
-            console.log(`Deleting from reader repo...`)
+            this.logPublishReaderProgress(`Deleting ${actions.length} files from repo...`)
 
             let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
 

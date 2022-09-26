@@ -162,7 +162,7 @@ class ImageService {
     image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, allThemeCss)
     image.cid = await Hash.of(image.svg)
 
-    console.log(btoa(image.svg))
+    console.log(new TextEncoder().encode(image.svg))
     console.log(image.cid)
 
     image.generated = true

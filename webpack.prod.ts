@@ -10,12 +10,7 @@ let mainConfigs = []
 for (let config of configs) {
 
     mainConfigs.push(merge(config, {
-        // mode: 'production'
-
-                //@ts-ignore
-                mode: 'development',
-                //@ts-ignore
-                devtool: 'source-map',
+        mode: 'production'
     }))
 
 }

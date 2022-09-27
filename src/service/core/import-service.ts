@@ -25,8 +25,11 @@ import all from 'it-all'
 import { ImportBundle, MediaDownloader } from "dto/import-bundle";
 import Hash from 'ipfs-only-hash'
 import { ThemeRepository } from "../../repository/theme-repository";
+import { ThemeService } from "../theme-service";
+
 import { StaticPageRepository } from "../../repository/static-page-repository";
 import { ContractMetadata } from "dto/contract-metadata";
+import { StaticPageService } from "../static-page-service";
 
 
 @injectable()
@@ -40,7 +43,9 @@ class ImportService {
         private imageService: ImageService,
         private animationService:AnimationService,
         private themeRepository:ThemeRepository,
+        private themeService:ThemeService,
         private staticPageRepository:StaticPageRepository,
+        private staticPageService:StaticPageService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) {}
@@ -287,30 +292,18 @@ class ImportService {
 
         }
 
-        for (let image of images) {
-
-            //Load content
-            if (image.generated) {
-                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
-            } else {
-                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
-            }
-
-            let imageObj = Object.assign(new Image(), image)
-
-            try {
-                await this.imageService.put(imageObj)
-            } catch (ex) {} //ignore duplicates   
-
-            forkStatus.images.saved++
-            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`)
-
-        }
-
         for (let animation of animations) {
 
             //Load content
             animation.content = await mediaDownloader.getAsString(`animations/${animation.cid}.html`)
+
+            //Validate we match the IPFS cid 
+            let expectedCid = await Hash.of(animation.content)
+
+            if (expectedCid.toString() != animation.cid) {    
+                throw new Error(`Incorrect cid when importing animation. Expected: ${animation.cid}, Result: ${expectedCid.toString()}`)
+            }
+
 
             let animationObj = Object.assign(new Animation(), animation)
 
@@ -320,6 +313,38 @@ class ImportService {
 
             forkStatus.animations.saved++
             this.logForkProgress(forkStatus, `Inserted animation ${animationObj._id}`)
+
+        }
+
+        for (let image of images) {
+
+            let content
+
+            //Load content
+            if (image.generated) {
+                image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                content = image.svg
+            } else {
+                image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
+                content = new Uint8Array(image.buffer)
+            }
+
+
+            let imageObj = Object.assign(new Image(), image)
+
+            //Validate we match the IPFS cid 
+            let expectedCid = await Hash.of(content)
+
+            if (expectedCid.toString() != image.cid) {    
+                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
+            }
+
+            try {
+                await this.imageService.put(imageObj)
+            } catch (ex) {} //ignore duplicates   
+
+            forkStatus.images.saved++
+            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`)
 
         }
 
@@ -337,7 +362,7 @@ class ImportService {
 
             theme.forkedFromId = oldId
 
-            await this.themeRepository.put(themeObj)           
+            await this.themeService.put(themeObj)           
 
             //map old id
             idMap.set(oldId, themeObj._id)
@@ -415,7 +440,7 @@ class ImportService {
             let staticPageObj = Object.assign(new StaticPage(), staticPage)
 
             try {
-                await this.staticPageRepository.put(staticPageObj)
+                await this.staticPageService.put(staticPageObj)
             } catch (ex) {} //ignore duplicates            
 
             forkStatus.staticPages.saved++
@@ -521,21 +546,12 @@ class ImportService {
 
             //Load content
             if (image.generated) {
-
                 image.svg = await mediaDownloader.getAsString(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
                 content = image.svg
-
-                // image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
-                // console.log(new Uint8Array(image.buffer))
-                // console.log(new TextEncoder().encode(image.svg))
-
             } else {
                 image.buffer = await mediaDownloader.getAsBuffer(`images/${image.cid}.${image.generated ? 'svg' : 'jpg' }`)
                 content = new Uint8Array(image.buffer)
             }
-
-
-
 
 
             let imageObj = Object.assign(new Image(), image)

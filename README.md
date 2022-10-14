@@ -1,6 +1,6 @@
 
 # Large
-The best NFT platform For writers.
+The NFT platform for writers.
 
 Publish your book, fan-fiction, blog, or art as a forkable NFT collection and sell your work as digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 

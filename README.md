@@ -1,16 +1,16 @@
 
 # Large
-Build the biggest thing on the internet.
+The best NFT platform For writers.
 
-Publish your book, fan-fiction, blog, or art as a forkable NFT collection and sell your work on marketplaces like OpenSea and LooksRare.
+Publish your book, fan-fiction, blog, or art as a forkable NFT collection and sell your work as digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
 Large is open source software that makes it simple to create and publish your digital art and other creative content as an NFT collection on Ethereum and IPFS.  
 
 The Large Reader is a simple HTML/CSS/Javascript application built with Framework7 that includes native theming for iOS, Android, and Desktop. Data is stored directly on user's devices in a P2P database called PouchDB and can be published to an IPFS node (self-hosted or commercial) or directly to a built-in node in the browser with no extra setup*.  
 
-Both the Large Admin and the Large Reader apps are offline-first applications. 
+The Large Admin and the [Large Reader](https://gitlab.com/american-space-software/large-reader) apps are offline-first applications and can be distributed with any simple CDN. No cloud computing required.
 
-Large is open source software and is not a cloud service. Large gives users the tools to easily provide hosted infrastructure themselves and distribute the data in a format that guarantees any member of the community can help keep the content online for as long as necessary.
+Large is open source software and is not a cloud service. Large gives users the tools to easily provide hosted infrastructure themselves and distribute the data in a format that guarantees all members of the community can contribute to keeping the content online for as long as necessary.
 
 *Networking in the browser can be tricky and caveats apply. There are commercial technical solutions to most problems.  
 

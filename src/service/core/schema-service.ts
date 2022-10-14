@@ -1,9 +1,6 @@
 import { injectable } from "inversify";
 import { IpfsHostRepository } from "../../repository/ipfs-host-repository";
-import { Author } from "../../dto/author";
-import { Channel } from "../../dto/channel";
-import { Item } from "../../dto/item";
-import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
+
 import { AnimationRepository } from "../../repository/animation-repository";
 import { AuthorRepository } from "../../repository/author-repository";
 import { ChannelRepository } from "../../repository/channel-repository";

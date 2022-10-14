@@ -76,6 +76,7 @@ import AppComponent from './components/index/app.f7.html'
 import IndexPageComponent from './components/index/index.f7.html'
 
 
+
 export default async() => {
                 
     let app = new Framework7({

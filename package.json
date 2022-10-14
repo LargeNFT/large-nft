@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.0.104-alpha",
+  "version": "0.0.106-alpha",
   "description": "Large is open source software that makes it simple to create and publish any content as an NFT collection on Ethereum and IPFS.",
   "repository": {
     "type": "git",
@@ -110,7 +110,7 @@
     "ipfs-only-hash": "4.0.0",
     "ipfs-http-client": "57.0.3",
 
-    "ethers": "5.5.4",
+    "ethers": "5.7.1",
     "pouchdb": "7.3.0",
     "pouchdb-find": "7.3.0",
 
@@ -166,7 +166,8 @@
     "@xmldom/xmldom": "0.8.2",
     "mini-svg-data-uri": "1.4.4",
 
-    "parse-link-header": "2.0.0"
+    "parse-link-header": "2.0.0",
 
+    "pdf-parse": "1.1.1"
   }
 }

@@ -48,6 +48,8 @@ import { SvgService } from "../src/service/svg-service";
 import { ImportService } from "../src/service/core/import-service";
 import { ThemeRepository } from "../src/repository/theme-repository";
 import { ThemeService } from "../src/service/theme-service";
+import { PDFService } from "../src/service/core/pdf-service";
+import { UploadService } from "../src/service/core/upload-service";
 
 
 let container:Container
@@ -78,8 +80,10 @@ async function getContainer() {
         return c
       }
 
-    container.bind("provider").toConstantValue(provider())
     container.bind("contracts").toConstantValue(contracts())
+
+    container.bind("provider").toConstantValue(provider())
+   
 
 
     container.bind(DatabaseService).toSelf().inSingletonScope()
@@ -103,6 +107,8 @@ async function getContainer() {
     container.bind(ThemeService).toSelf().inSingletonScope()
     container.bind(StaticPageService).toSelf().inSingletonScope()
     container.bind(IpfsHostService).toSelf().inSingletonScope()
+    container.bind(PDFService).toSelf().inSingletonScope()
+    container.bind(UploadService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()

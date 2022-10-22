@@ -829,3 +829,28 @@ ul.breadcrumb li a:hover {
   font-size: 11px;
   color: #414141;
 }
+
+
+
+
+
+
+.fork-block {
+  font-size: 14px;
+}
+
+.repo-name {
+  display: flex;
+}
+
+.repo-name .left {
+  flex: 0 0 260px;
+}
+
+.repo-name .right {
+  flex: 1;
+}
+
+.repo-name strong {
+  display: block;
+}

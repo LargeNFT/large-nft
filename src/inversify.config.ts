@@ -51,6 +51,8 @@ import { AnimationService } from './service/animation-service';
 import { AnimationRepository } from './repository/animation-repository';
 import { ImportService } from './service/core/import-service';
 
+import { ERCEventService } from './service/core/erc-event-service';
+
 import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
 
@@ -198,6 +200,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(PagingService).toSelf().inSingletonScope()
   container.bind(IpfsHostService).toSelf().inSingletonScope()
 
+  container.bind(ERCEventService).toSelf().inSingletonScope()
 
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()

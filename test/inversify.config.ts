@@ -50,6 +50,7 @@ import { ThemeRepository } from "../src/repository/theme-repository";
 import { ThemeService } from "../src/service/theme-service";
 import { PDFService } from "../src/service/core/pdf-service";
 import { UploadService } from "../src/service/core/upload-service";
+import { ERCEventService } from "../src/service/core/erc-event-service";
 
 
 let container:Container
@@ -109,6 +110,7 @@ async function getContainer() {
     container.bind(IpfsHostService).toSelf().inSingletonScope()
     container.bind(PDFService).toSelf().inSingletonScope()
     container.bind(UploadService).toSelf().inSingletonScope()
+    container.bind(ERCEventService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()

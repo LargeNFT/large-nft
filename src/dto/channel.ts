@@ -23,7 +23,7 @@ class Channel {
     forkType?:string
 
     @Allow()
-    authorId:string
+    authorId?:string
 
     @MinLength(3, { message: "Title must be more than 3 characters." })
     title?:string
@@ -72,40 +72,40 @@ class Channel {
     mintPrice?:string
 
     @Allow()
-    attributeOptions:AttributeOptions[]
+    attributeOptions?:AttributeOptions[]
 
     @Allow()
-    sellerFeeBasisPoints:number
+    sellerFeeBasisPoints?:number
 
     @Allow()
-    royaltyPercent:string
+    royaltyPercent?:string
 
     @Allow()
-    contractAddress:string
+    contractAddress?:string
 
     @Allow()
-    pinJobId:string
+    pinJobId?:string
 
     @Allow()
-    pinJobStatus:string
+    pinJobStatus?:string
 
     @Allow()
-    localCid:string
+    localCid?:string
 
     @Allow()
-    localPubDate:string
+    localPubDate?:string
 
     @Allow()
-    publishedCid:string
+    publishedCid?:string
 
     @Allow()
-    publishReaderRepoId:string
+    publishReaderRepoId?:string
 
     @Allow()
-    publishReaderRepoPath:string
+    publishReaderRepoPath?:string
 
     @Allow()
-    publishReaderRepoStatus:string
+    publishReaderRepoStatus?:string
 
     @Allow()
     pubDate?:string

@@ -17,7 +17,7 @@ import { ForkStatus } from "../../dto/viewmodel/fork-status"
 import toBuffer from 'it-to-buffer'
 import { Theme } from "../../dto/theme";
 import { StaticPage } from "../../dto/static-page";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import axios from "axios";
 
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
@@ -30,6 +30,7 @@ import { ThemeService } from "../theme-service";
 import { StaticPageRepository } from "../../repository/static-page-repository";
 import { ContractMetadata } from "dto/contract-metadata";
 import { StaticPageService } from "../static-page-service";
+import { ERCEventService } from "./erc-event-service";
 
 
 @injectable()
@@ -46,6 +47,7 @@ class ImportService {
         private themeService:ThemeService,
         private staticPageRepository:StaticPageRepository,
         private staticPageService:StaticPageService,
+        private ercEventService:ERCEventService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) {}
@@ -90,32 +92,65 @@ class ImportService {
         return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
     }
 
-    async importFromContract(contractAddress:string, startToken:number, endToken:number) : Promise<string> {
+    async importExistingFromContract(contractAddress:string) : Promise<string> {
 
         let wallet = this.walletService.wallet
 
         //Look up channel since it has the basic ERC721 signature
-        const c = this.contracts['Channel']
+        let contract = new ethers.Contract(contractAddress, this._getERC721ABI(), wallet)
 
-        let contract = new ethers.Contract(contractAddress, c.abi, wallet)
+        let tokenIds = await this.ercEventService.getTokensForContract(contract)
 
-        // contract
+        //Create channel
+        let channel:Channel = new Channel()
 
-        for (let i=startToken; i <= endToken; i++) {
-            
-            let tokenMetadata = await this._getTokenMetadata(contract, i)
+        channel.title = await contract.name()
+        channel.symbol = await contract.symbol() 
+        channel.contractAddress = contractAddress
 
-            // console.log(tokenMetadata)
+        await this.channelService.put(channel)
+        
+        for (let tokenId of tokenIds) {
 
-            //Fetch image
-            if (tokenMetadata.image) {
-                let image = await this._fetchURI(tokenMetadata.image)
-                // console.log(image.length)
+            let tokenProcessResult:TokenProcessResult = await this._processToken(contract, tokenId)
 
+            let image:Image
+            let animation:Animation
+
+            if (tokenProcessResult.image) {
+                image = await this.imageService.newFromBuffer(Buffer.from(tokenProcessResult.image))
+                await this.imageService.put(image)
+            }
+
+            if (tokenProcessResult.animationHtml) {
+                animation = await this.animationService.newFromText(tokenProcessResult.animationHtml)
+                await this.animationService.put(animation)
             }
 
 
+            //Create item
+            let item:Item = new Item()
+
+            item.tokenId = tokenProcessResult.metadata.tokenId 
+            item.title = tokenProcessResult.metadata.name 
+            item.channelId = channel._id
+
+            if (image) {
+                item.coverImageId = image._id
+            }
+
+            if (animation) {
+                item.animationId = animation._id                
+            } 
+
+            item.coverImageAsAnimation = (animation == undefined)
+
+            await this.itemService.put(item)
+
+            console.log(item)
         }
+
+        //Collect attributes from items and add to the channel.
 
 
         return 
@@ -661,11 +696,12 @@ class ImportService {
 
         let tokenURI = await contract.tokenURI(tokenId)
 
-        return this._fetchURI(tokenURI)
+        return JSON.parse(await this._fetchURI(tokenURI))
 
     }
 
     async _fetchURI(uri) {
+
 
         if (uri?.startsWith("ipfs://")) {
 
@@ -719,6 +755,289 @@ class ImportService {
 
         }
 
+    }
+
+    private async _processToken(contract:Contract, tokenId:number) : Promise<TokenProcessResult> {
+
+        let tokenProcessResult:TokenProcessResult = {
+            metadata: await this._getTokenMetadata(contract, tokenId ),
+        }
+
+        //Fetch image
+        if (tokenProcessResult.metadata.image) {
+            tokenProcessResult.image = await this._fetchURI(tokenProcessResult.metadata.image)
+        }
+
+        //Fetch animation
+        if (tokenProcessResult.metadata.animation_url) {
+            tokenProcessResult.animationHtml = await this._fetchURI(tokenProcessResult.metadata.animation_url)
+        }
+
+        return tokenProcessResult
+
+    }
+
+
+    private _getERC721ABI() {
+        return `[
+            {
+                "inputs":[
+                   {
+                      "internalType":"string",
+                      "name":"name",
+                      "type":"string"
+                   },
+                   {
+                      "internalType":"string",
+                      "name":"symbol",
+                      "type":"string"
+                   }
+                ],
+                "stateMutability":"nonpayable",
+                "type":"constructor"
+            },
+
+            {
+              "constant": true,
+              "inputs": [],
+              "name": "name",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "string"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "constant": false,
+              "inputs": [
+                {
+                  "name": "_spender",
+                  "type": "address"
+                },
+                {
+                  "name": "_value",
+                  "type": "uint256"
+                }
+              ],
+              "name": "approve",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "constant": true,
+              "inputs": [],
+              "name": "totalSupply",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "constant": false,
+              "inputs": [
+                {
+                  "name": "_from",
+                  "type": "address"
+                },
+                {
+                  "name": "_to",
+                  "type": "address"
+                },
+                {
+                  "name": "_value",
+                  "type": "uint256"
+                }
+              ],
+              "name": "transferFrom",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "constant": true,
+              "inputs": [],
+              "name": "decimals",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "uint8"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "constant": true,
+              "inputs": [
+                {
+                  "name": "_owner",
+                  "type": "address"
+                }
+              ],
+              "name": "balanceOf",
+              "outputs": [
+                {
+                  "name": "balance",
+                  "type": "uint256"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "constant": true,
+              "inputs": [],
+              "name": "symbol",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "string"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "constant": false,
+              "inputs": [
+                {
+                  "name": "_to",
+                  "type": "address"
+                },
+                {
+                  "name": "_value",
+                  "type": "uint256"
+                }
+              ],
+              "name": "transfer",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "constant": true,
+              "inputs": [
+                {
+                  "name": "_owner",
+                  "type": "address"
+                },
+                {
+                  "name": "_spender",
+                  "type": "address"
+                }
+              ],
+              "name": "allowance",
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "uint256"
+                }
+              ],
+              "payable": false,
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "payable": true,
+              "stateMutability": "payable",
+              "type": "fallback"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "name": "owner",
+                  "type": "address"
+                },
+                {
+                  "indexed": true,
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "indexed": false,
+                  "name": "value",
+                  "type": "uint256"
+                }
+              ],
+              "name": "Approval",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "indexed": true,
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "indexed": false,
+                  "name": "value",
+                  "type": "uint256"
+                }
+              ],
+              "name": "Transfer",
+              "type": "event"
+            },
+            {
+                "inputs":[
+                   {
+                      "internalType":"uint256",
+                      "name":"tokenId",
+                      "type":"uint256"
+                   }
+                ],
+                "name":"tokenURI",
+                "outputs":[
+                   {
+                      "internalType":"string",
+                      "name":"",
+                      "type":"string"
+                   }
+                ],
+                "stateMutability":"view",
+                "type":"function"
+             }
+             
+          ]`
     }
 
 
@@ -781,6 +1100,14 @@ interface TokenMetadata {
         value:string
     }]
 }
+
+
+interface TokenProcessResult {
+    metadata:any 
+    image?
+    animationHtml?
+}
+
 
 export {
     ImportService

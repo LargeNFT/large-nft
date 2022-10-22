@@ -8,7 +8,7 @@
     <div class="page-content">
 
       <div class="row">
-        <form class="col-100 large-66 center" @submit="${formSubmit}" id="import-ipfs-hash">
+        <form class="col-100 large-66 center" @submit="${formSubmit}" id="import-fork-contract">
 
           <ul class="breadcrumb">
             <li><a href="/admin/channel/create-menu">Create Collection</a></li>
@@ -16,114 +16,116 @@
           </ul>
 
           <div class="block-title">Fork Collection From Contract</div>
+          
 
-          <div class="card">
-            <div class="card-content card-content-padding">
-              ${!ipfsReady ? $h`
-                <div class="ipfs-label">IPFS Initializing...</div>
-            ` : $h`
-                <div class="ipfs-label">
-                    Status: <a href="/admin/connect">IPFS Ready</a>
-                </div>
-            `}
+          ${!forking ? $h`
+
+            <div class="block-header">
+              Enter the contract address of the collection to import. Must be standard ERC-721. Limit 10,000 tokens.
             </div>
-          </div>
-          
 
-          <div class="card">
-            <div class="card-content">
-                <div class="card-content card-content-padding">
-
-                  ${forking ? $h`
-                    <div class="fork-label">
-                        Forking...
-                    </div>
-    
-                    ${forkStatus? $h`
-                        <div class="fork-status">
-    
-                            <div class="item">
-                                <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
-                            </div>
-    
-                            <div class="item"> 
-                                <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
-                            </div>
-    
-                            <div class="item">
-                                <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
-                            </div>
-    
-                            <div class="item">
-                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
-                            </div>
-    
-                            <div class="item">
-                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
-                            </div>
-    
-                            <div class="item">
-                              <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
-                            </div>
-    
-                            <div class="item">
-                              <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
-                            </div>
-            
+            <div class="list media-list inset">
+              <ul>
+                <li>
+                  <a href="#" class="item-link">
+                    <div class="item-content">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Contract Address</div>
+                        <div class="item-input-wrap">
+                          <input type="text" name="contractAddress" placeholder="Enter Contract Address" value="${contractAddress ? contractAddress : ''}" required />
+                          <span class="input-clear-button"></span>
                         </div>
-                    ` : $h`<span />`}
-    
-                  ` : $h`
-                      <div class="fork-label" style="display:none;"></div>
-                  `}
-    
-                  ${forkOutput ? $h`
-                      <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
-                  ` : $h`
-                      <div class="fork-output" style="display:none;"></div>
-                  `}
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="row block">
+
+              <div class="col-70"></div>
+
+              <button type="submit" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px;">
+                <i class="material-icons">fork_left</i> Fork
+              </button>
+
+            </div>
+
+              
+          ` : $h`
+              <p></p>
+          `}
 
 
-                    ${ipfsReady & !forking ? $h`
 
-                      <div class="list media-list">
-                        <ul>
-                          <li>
-                            <a href="#" class="item-link">
-                              <div class="item-content">
-                                <div class="item-inner">
-                                  <div class="item-title item-label">Contract Address</div>
-                                  <div class="item-input-wrap">
-                                    <input type="text" name="contractAddress" placeholder="Enter contract address" value="${contractAddress ? contractAddress : ''}" required />
-                                    <span class="input-clear-button"></span>
-                                  </div>
-                                </div>
+          ${forking || forkOutput ? $h`
+
+            <div class="card">
+              <div class="card-content">
+                  <div class="card-content card-content-padding">
+  
+                    ${forking ? $h`
+                      <div class="fork-label">
+                          Forking...
+                      </div>
+      
+                      ${forkStatus? $h`
+                          <div class="fork-status">
+      
+                              <div class="item">
+                                  <label>Authors:</label> ${forkStatus.authors.saved} / ${forkStatus.authors.total} 
                               </div>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
+      
+                              <div class="item"> 
+                                  <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
+                              </div>
 
-                      <div class="row">
-
-                        <div class="col-70"></div>
-          
-                        <button type="submit" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px;">
-                          <i class="material-icons">fork_left</i> Fork
-                        </button>
-          
-                      </div>
-
-                        
+                              <div class="item">
+                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                              </div>
+      
+                              <div class="item">
+                                  <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
+                              </div>
+      
+                              <div class="item">
+                                  <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
+                              </div>
+      
+                              <div class="item">
+                                <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
+                              </div>
+      
+                              <div class="item">
+                                <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
+                              </div>
+              
+                          </div>
+                      ` : $h`<span />`}
+      
                     ` : $h`
-                        <p></p>
+                        <div class="fork-label" style="display:none;"></div>
+                    `}
+      
+                    ${forkOutput ? $h`
+                        <div class="fork-output" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
+                    ` : $h`
+                        <div class="fork-output" style="display:none;"></div>
                     `}
 
-
-
-                </div>
+                    ${channelId ? $h`
+                      <a class="button button-fill" style="width: 200px; margin-top: 10px;" href="/admin/channel/show/${channelId}">View Collection</a>
+                    ` : $h`<span />`}
+  
+                  </div>
+              </div>
+  
             </div>
-          </div>
+
+          ` : $h`
+            <span />
+          `}
 
 
         </form>
@@ -155,22 +157,22 @@
 
     let importService = ContainerService.getInstance(ImportService)
     let ipfsService = ContainerService.getInstance(IpfsService)
-
-    let ipfsReady = ipfsService.ipfs != undefined
-    let peerCount = ipfsService.peerCount
+    let walletService = ContainerService.getWalletService()
 
     let contractAddress = props.contractAddress
+
+    let owner 
+    let channelId
 
     let forking = false
     let forkStatus 
     let forkOutput = ""
 
+
+
     $on('pageInit', async () => {
 
-      //Initialize IPFS
-      await ipfsService.init()
-      ipfsReady = ipfsService.ipfs != undefined
-
+      owner = await walletService.getAddress()
       await $update()
 
     })
@@ -181,12 +183,16 @@
 
       e.preventDefault()
 
-      let formData = $f7.form.convertToData('#import-ipfs-hash')
+      let formData = $f7.form.convertToData('#import-fork-contract')
 
       forking = true 
       $update()
 
-      await importService.importFromIPFS(formData.hash)
+      try {
+        await importService.importExistingFromContract(formData.contractAddress)
+      } catch(ex) {
+        $f7.dialog.alert(ex.message, "There was an error")
+      }
 
       forking = false
       $update()
@@ -213,13 +219,6 @@
     })
 
 
-
-    $(document).on('update-peers', async (e) => {
-
-      peerCount = e.detail.count
-      $update()
-
-    })
 
 
 

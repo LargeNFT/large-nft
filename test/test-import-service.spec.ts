@@ -215,109 +215,148 @@ contract('ImportService', async (accounts) => {
 
     let originalCid 
 
-    it("should import a channel from an export", async () => {
+    // it("should import a channel from an export", async () => {
 
-        //Arrange
-        await publishService.publishToIPFS(channel)
+    //     //Arrange
+    //     await publishService.publishToIPFS(channel)
 
-        originalCid = channel.localCid
+    //     originalCid = channel.localCid
 
-        let channelId = await service.importFromIPFS(originalCid)
+    //     let channelId = await service.importFromIPFS(originalCid)
 
-        let importedChannel = await channelService.get(channelId)
+    //     let importedChannel = await channelService.get(channelId)
 
-        assert.strictEqual(importedChannel.title, 'The Sound of Music')
-        assert.strictEqual(importedChannel.symbol, 'SOM')
-        assert.strictEqual(importedChannel.mintPrice, '0.08')
-        assert.strictEqual(importedChannel.link, 'google.com')
-        assert.strictEqual(importedChannel.coverImageId, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
-        assert.strictEqual(importedChannel.title, 'The Sound of Music')
+    //     assert.strictEqual(importedChannel.title, 'The Sound of Music')
+    //     assert.strictEqual(importedChannel.symbol, 'SOM')
+    //     assert.strictEqual(importedChannel.mintPrice, '0.08')
+    //     assert.strictEqual(importedChannel.link, 'google.com')
+    //     assert.strictEqual(importedChannel.coverImageId, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
+    //     assert.strictEqual(importedChannel.title, 'The Sound of Music')
 
-        //Need better asserts. 
+    //     //Need better asserts. 
 
-    })
+    // })
 
-    it("should import a channel from http", async () => {
+    // it("should import a channel from http", async () => {
         
-        //Arrange
-        let baseURI = "/"
+    //     //Arrange
+    //     let baseURI = "/"
 
-        var mockAxios = new MockAdapter(axios)
+    //     var mockAxios = new MockAdapter(axios)
 
-        let oldId = channel._id
+    //     let oldId = channel._id
 
-        mockAxios.onGet("/backup/export/backup/authors.json").reply(200, [author])
-        mockAxios.onGet("/backup/export/backup/channels.json").reply(200, [channel])
-        mockAxios.onGet("/backup/export/backup/images.json").reply(200, [image1, image2])
-        mockAxios.onGet("/backup/export/backup/items.json").reply(200, [item1, item2, item3])
-        mockAxios.onGet("/backup/export/backup/animations.json").reply(200, [animation])
-        mockAxios.onGet("/backup/export/backup/themes.json").reply(200, [])
-        mockAxios.onGet("/backup/export/backup/static-pages.json").reply(200, [])
+    //     mockAxios.onGet("/backup/export/backup/authors.json").reply(200, [author])
+    //     mockAxios.onGet("/backup/export/backup/channels.json").reply(200, [channel])
+    //     mockAxios.onGet("/backup/export/backup/images.json").reply(200, [image1, image2])
+    //     mockAxios.onGet("/backup/export/backup/items.json").reply(200, [item1, item2, item3])
+    //     mockAxios.onGet("/backup/export/backup/animations.json").reply(200, [animation])
+    //     mockAxios.onGet("/backup/export/backup/themes.json").reply(200, [])
+    //     mockAxios.onGet("/backup/export/backup/static-pages.json").reply(200, [])
 
-        mockAxios.onGet(`/backup/export/images/${image1._id}.jpg`).reply(200, Buffer.from("image1!"))
-        mockAxios.onGet(`/backup/export/images/${image2._id}.jpg`).reply(200, Buffer.from("image2!"))
-        mockAxios.onGet(`/backup/export/animations/${animation._id}.html`).reply(200, "Hel343l33o")
-        mockAxios.onGet("/backup/export/contractMetadata.json").reply(200, {})
+    //     mockAxios.onGet(`/backup/export/images/${image1._id}.jpg`).reply(200, Buffer.from("image1!"))
+    //     mockAxios.onGet(`/backup/export/images/${image2._id}.jpg`).reply(200, Buffer.from("image2!"))
+    //     mockAxios.onGet(`/backup/export/animations/${animation._id}.html`).reply(200, "Hel343l33o")
+    //     mockAxios.onGet("/backup/export/contractMetadata.json").reply(200, {})
 
 
-        let channelId = await service.importAsForkFromReader(baseURI, "Doooo")
-        let importedChannel = await channelService.get(channelId)
+    //     let channelId = await service.importAsForkFromReader(baseURI, "Doooo")
+    //     let importedChannel = await channelService.get(channelId)
 
-        assert.strictEqual(importedChannel.title, 'Doooo')
-        assert.strictEqual(importedChannel.symbol, 'SOM')
-        assert.strictEqual(importedChannel.mintPrice, '0.08')
-        assert.strictEqual(importedChannel.link, 'google.com')
-        assert.strictEqual(importedChannel.coverImageId, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
-        assert.strictEqual(importedChannel.forkedFromId, oldId)
+    //     assert.strictEqual(importedChannel.title, 'Doooo')
+    //     assert.strictEqual(importedChannel.symbol, 'SOM')
+    //     assert.strictEqual(importedChannel.mintPrice, '0.08')
+    //     assert.strictEqual(importedChannel.link, 'google.com')
+    //     assert.strictEqual(importedChannel.coverImageId, 'QmVZ3JQMSQyvfA94kAWaR4AR1HeqSHk82YFnAv5Y2L3WWc')
+    //     assert.strictEqual(importedChannel.forkedFromId, oldId)
 
-        //Need better asserts. 
+    //     //Need better asserts. 
 
-    })
+    // })
 
-    it("should import an existing channel", async () => {
+    // it("should import an existing channel", async () => {
         
-        //Arrange
-        //Delete existing
-        await channelService.delete(channel)
+    //     //Arrange
+    //     //Delete existing
+    //     await channelService.delete(channel)
 
 
-        let baseURI = "/"
+    //     let baseURI = "/"
 
-        var mockAxios = new MockAdapter(axios)
+    //     var mockAxios = new MockAdapter(axios)
 
-        mockAxios.onGet("/backup/export/backup/authors.json").reply(200, [author])
-        mockAxios.onGet("/backup/export/backup/channels.json").reply(200, [channel])
-        mockAxios.onGet("/backup/export/backup/images.json").reply(200, [image1, image2])
-        mockAxios.onGet("/backup/export/backup/items.json").reply(200, [item1, item2, item3])
-        mockAxios.onGet("/backup/export/backup/animations.json").reply(200, [animation])
-        mockAxios.onGet("/backup/export/backup/themes.json").reply(200, [])
-        mockAxios.onGet("/backup/export/backup/static-pages.json").reply(200, [])
-        mockAxios.onGet("/backup/export/contractMetadata.json").reply(200, {})
+    //     mockAxios.onGet("/backup/export/backup/authors.json").reply(200, [author])
+    //     mockAxios.onGet("/backup/export/backup/channels.json").reply(200, [channel])
+    //     mockAxios.onGet("/backup/export/backup/images.json").reply(200, [image1, image2])
+    //     mockAxios.onGet("/backup/export/backup/items.json").reply(200, [item1, item2, item3])
+    //     mockAxios.onGet("/backup/export/backup/animations.json").reply(200, [animation])
+    //     mockAxios.onGet("/backup/export/backup/themes.json").reply(200, [])
+    //     mockAxios.onGet("/backup/export/backup/static-pages.json").reply(200, [])
+    //     mockAxios.onGet("/backup/export/contractMetadata.json").reply(200, {})
 
-        mockAxios.onGet(`/backup/export/images/${image1._id}.jpg`).reply(200, Buffer.from("image1!"))
-        mockAxios.onGet(`/backup/export/images/${image2._id}.jpg`).reply(200, Buffer.from("image2!"))
-        mockAxios.onGet(`/backup/export/animations/${animation._id}.html`).reply(200, "Hel343l33o")
+    //     mockAxios.onGet(`/backup/export/images/${image1._id}.jpg`).reply(200, Buffer.from("image1!"))
+    //     mockAxios.onGet(`/backup/export/images/${image2._id}.jpg`).reply(200, Buffer.from("image2!"))
+    //     mockAxios.onGet(`/backup/export/animations/${animation._id}.html`).reply(200, "Hel343l33o")
 
-        await service.importExistingFromReader(baseURI, "xyz", "abc")
+    //     await service.importExistingFromReader(baseURI, "xyz", "abc")
         
-        let importedChannel = await channelService.get(channel._id)
+    //     let importedChannel = await channelService.get(channel._id)
 
 
-        assert.strictEqual(importedChannel.title, channel.title)
-        assert.strictEqual(importedChannel.symbol, channel.symbol)
-        assert.strictEqual(importedChannel.mintPrice, channel.mintPrice)
-        assert.strictEqual(importedChannel.link, channel.link)
-        assert.strictEqual(importedChannel.coverImageId, channel.coverImageId)
+    //     assert.strictEqual(importedChannel.title, channel.title)
+    //     assert.strictEqual(importedChannel.symbol, channel.symbol)
+    //     assert.strictEqual(importedChannel.mintPrice, channel.mintPrice)
+    //     assert.strictEqual(importedChannel.link, channel.link)
+    //     assert.strictEqual(importedChannel.coverImageId, channel.coverImageId)
         
-    })
+    // })
 
-    it("should publish an imported collection and get the same IPFS hash", async () => {
+    // it("should publish an imported collection and get the same IPFS hash", async () => {
+    //     await publishService.publishToIPFS(channel)
+    //     assert.strictEqual(channel.localCid, originalCid)
+    // })
 
-        await publishService.publishToIPFS(channel)
+
+    it("should import an existing collection ", async () => {
+
+        await service.importExistingFromContract("0x7B94d6436407A850e6200C2C677E94dc8941BB6f")
         assert.strictEqual(channel.localCid, originalCid)
-
-
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

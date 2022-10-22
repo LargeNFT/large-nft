@@ -31,6 +31,7 @@ import { StaticPageRepository } from "../../repository/static-page-repository";
 import { ContractMetadata } from "dto/contract-metadata";
 import { StaticPageService } from "../static-page-service";
 import { ERCEventService } from "./erc-event-service";
+import { AttributeOptions } from "../../dto/attribute";
 
 
 @injectable()
@@ -94,6 +95,17 @@ class ImportService {
 
     async importExistingFromContract(contractAddress:string) : Promise<string> {
 
+        let forkStatus:ForkStatus = {
+            animations: { saved: 0, total: 0},
+            images: { saved: 0, total: 0},
+            channels: { saved: 0, total: 0},
+            items: { saved: 0, total: 0},
+            authors: { saved: 0, total: 0},
+            themes: { saved: 0, total: 0 },
+            staticPages:  { saved: 0, total: 0 }
+        }
+
+
         let wallet = this.walletService.wallet
 
         //Look up channel since it has the basic ERC721 signature
@@ -101,39 +113,83 @@ class ImportService {
 
         let tokenIds = await this.ercEventService.getTokensForContract(contract)
 
+        
+        forkStatus.channels.total = 1
+        forkStatus.items.total = tokenIds.size
+
+
         //Create channel
         let channel:Channel = new Channel()
 
         channel.title = await contract.name()
         channel.symbol = await contract.symbol() 
         channel.contractAddress = contractAddress
+        channel.attributeOptions = []
 
+        //Insert channel to get an _id
         await this.channelService.put(channel)
-        
-        for (let tokenId of tokenIds) {
 
-            let tokenProcessResult:TokenProcessResult = await this._processToken(contract, tokenId)
+        
+        //Fetch token metadata for all tokens
+        let tokenMetadata:TokenMetadata[] = []
+
+
+        for (let tokenId of tokenIds) {
+            this.logForkProgress(forkStatus, `Fetching metadata for #${tokenId}`)
+            tokenMetadata.push( await this._getTokenMetadata(contract, tokenId ) )
+        }
+
+        //Count images and animations
+        forkStatus.images.total = tokenMetadata.filter(tm => tm.image).length
+        forkStatus.animations.total = tokenMetadata.filter(tm => tm.animation_url).length
+
+        
+        for (let metadata of tokenMetadata) {
+
+            this.logForkProgress(forkStatus, `Importing token #${metadata.tokenId}`)
 
             let image:Image
             let animation:Animation
 
-            if (tokenProcessResult.image) {
-                image = await this.imageService.newFromBuffer(Buffer.from(tokenProcessResult.image))
-                await this.imageService.put(image)
+
+            if (metadata.image) {
+
+                //Fetch and create image
+                image = await this.imageService.newFromBuffer(Buffer.from(await this._fetchURI(metadata.image)))
+
+                try {
+                    await this.imageService.put(image)
+                } catch(ex) {} //ignore duplicates
+                
+
+                forkStatus.images.saved++
+                this.logForkProgress(forkStatus, `Importing image ${image._id}`)
+
             }
 
-            if (tokenProcessResult.animationHtml) {
-                animation = await this.animationService.newFromText(tokenProcessResult.animationHtml)
-                await this.animationService.put(animation)
+            if (metadata.animation_url) {
+
+                //Fetch and create animation
+                animation = await this.animationService.newFromText(await this._fetchURI(metadata.animation_url))
+
+                try {
+                    await this.animationService.put(animation)
+                } catch(ex) {} //ignore duplicates
+                
+
+                forkStatus.animations.saved++
+                this.logForkProgress(forkStatus, `Importing animation ${animation._id}`)
+
             }
 
 
             //Create item
             let item:Item = new Item()
 
-            item.tokenId = tokenProcessResult.metadata.tokenId 
-            item.title = tokenProcessResult.metadata.name 
+            item.tokenId = metadata.tokenId 
+            item.title = metadata.name 
             item.channelId = channel._id
+            item.attributeSelections = []
 
             if (image) {
                 item.coverImageId = image._id
@@ -145,15 +201,62 @@ class ImportService {
 
             item.coverImageAsAnimation = (animation == undefined)
 
+
+            for (let attribute of metadata.attributes) {
+
+                item.attributeSelections.push({
+                    traitType: attribute.trait_type,
+                    value: attribute.value
+                })
+
+                this._addAttributeToChannel(attribute, channel)
+
+            }
+            
+
+            //Build attributes for item
             await this.itemService.put(item)
 
-            console.log(item)
+            // console.log(item)
+
+            forkStatus.items.saved++
+            this.logForkProgress(forkStatus, `Importing item ${item._id}`)
+
+
         }
 
-        //Collect attributes from items and add to the channel.
+        //Save channel with attributes
+        await this.channelService.put(channel)
 
+        // console.log(channel)
+
+        forkStatus.channels.saved++
+        this.logForkProgress(forkStatus, `Importing channel ${channel._id}`)
 
         return 
+
+    }
+
+
+    private _addAttributeToChannel(attribute: { trait_type: string; value: string; }, channel: Channel) {
+    
+        let attributeOptions:AttributeOptions
+
+        //Check if the trait_type is already on the channel
+        let matching = channel.attributeOptions.filter(ao => ao.traitType == attribute.trait_type)
+
+        if (matching?.length > 0) {
+            attributeOptions = matching[0]            
+        } else {
+            channel.attributeOptions.push({ traitType: attribute.trait_type, values: [attribute.value] })
+            attributeOptions = channel.attributeOptions[channel.attributeOptions.length - 1]
+        }
+
+        //Add the value if it doesn't exist
+        if (!attributeOptions.values.includes(attribute.value)) {
+            attributeOptions.values.push(attribute.value)
+        }
+
 
     }
 
@@ -696,20 +799,25 @@ class ImportService {
 
         let tokenURI = await contract.tokenURI(tokenId)
 
-        return JSON.parse(await this._fetchURI(tokenURI))
+        let metadata = JSON.parse(await this._fetchURI(tokenURI))
+
+        metadata.tokenId = tokenId
+
+        return metadata
 
     }
 
     async _fetchURI(uri) {
 
-
         if (uri?.startsWith("ipfs://")) {
 
             //Remove ipfs://
             uri = `/ipfs/${uri.substring(7,uri.length)}`
+            
+            console.log(uri)
 
             //Get from IPFS
-            const data = uint8ArrayConcat(await all(this.ipfsService.ipfs.files.read(uri)))
+            const data = uint8ArrayConcat(await all(this.ipfsService.ipfs.cat(uri)))
 
             //@ts-ignore
             return new TextDecoder().decode(data)
@@ -757,25 +865,7 @@ class ImportService {
 
     }
 
-    private async _processToken(contract:Contract, tokenId:number) : Promise<TokenProcessResult> {
 
-        let tokenProcessResult:TokenProcessResult = {
-            metadata: await this._getTokenMetadata(contract, tokenId ),
-        }
-
-        //Fetch image
-        if (tokenProcessResult.metadata.image) {
-            tokenProcessResult.image = await this._fetchURI(tokenProcessResult.metadata.image)
-        }
-
-        //Fetch animation
-        if (tokenProcessResult.metadata.animation_url) {
-            tokenProcessResult.animationHtml = await this._fetchURI(tokenProcessResult.metadata.animation_url)
-        }
-
-        return tokenProcessResult
-
-    }
 
 
     private _getERC721ABI() {
@@ -1092,9 +1182,11 @@ class URLDownloader implements MediaDownloader {
 
 
 interface TokenMetadata {
+    tokenId:number
     name: string
     image: string
     external_url: string 
+    animation_url:string
     attributes: [{
         trait_type: string
         value:string
@@ -1102,11 +1194,6 @@ interface TokenMetadata {
 }
 
 
-interface TokenProcessResult {
-    metadata:any 
-    image?
-    animationHtml?
-}
 
 
 export {

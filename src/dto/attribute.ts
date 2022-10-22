@@ -1,7 +1,7 @@
 interface AttributeOptions {
-    id:string
-    traitType:string
-    values:string[]
+    id?:string
+    traitType?:string
+    values?:string[]
 }
 
 interface AttributeSelection {

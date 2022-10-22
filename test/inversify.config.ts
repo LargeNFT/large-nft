@@ -53,6 +53,8 @@ import { UploadService } from "../src/service/core/upload-service";
 import { ERCEventService } from "../src/service/core/erc-event-service";
 
 
+
+
 let container:Container
 
 async function getContainer() {
@@ -84,7 +86,7 @@ async function getContainer() {
     container.bind("contracts").toConstantValue(contracts())
 
     container.bind("provider").toConstantValue(provider())
-   
+    container.bind("pouch-prefix").toConstantValue("./test/pouch/")
 
 
     container.bind(DatabaseService).toSelf().inSingletonScope()
@@ -125,14 +127,28 @@ async function getContainer() {
     container.bind(IpfsHostRepository).toSelf().inSingletonScope()
 
 
+    //Spin up local IPFS
+    // container.bind("ipfsInit").toConstantValue( async () => {
 
+    //     const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
+
+    //     //@ts-ignore
+    //     return IPFS.create(ipfsOptions())
+    // })
+
+
+    //Use external IPFS
     container.bind("ipfsInit").toConstantValue( async () => {
 
-        const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
+        let url = "http://localhost:5001/api/v0"
+
+        const IPFS = await Function('return import("ipfs-http-client")')() as Promise<typeof import('ipfs-http-client')>
 
         //@ts-ignore
-        return IPFS.create(ipfsOptions())
+        return IPFS.create({ url: url })
     })
+
+
 
     container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
     })
@@ -151,8 +167,8 @@ async function getContainer() {
 }
 
 const cleanup = async () => {
-    fs.rmSync('./pouch', { recursive: true, force: true })
-    fs.rmSync('./test-repo', { recursive: true, force: true })
+    fs.rmSync('./test/pouch', { recursive: true, force: true })
+    fs.rmSync('./test/test-repo', { recursive: true, force: true })
 }
 
 

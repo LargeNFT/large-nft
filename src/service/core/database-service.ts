@@ -1,4 +1,4 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import PouchDB from 'pouchdb';
 import PouchFind from 'pouchdb-find'
@@ -9,7 +9,9 @@ class DatabaseService {
 
     dbCache = {}
 
-    constructor() {
+    constructor(
+        @inject("pouch-prefix") private pouchPrefix:string
+    ) {
         //Enable find plugin
         PouchDB.plugin(PouchFind)
 
@@ -21,7 +23,7 @@ class DatabaseService {
 
     async getDatabase(walletAddress:string, name:string, changesets?:Changeset[]) {
 
-        const fullName = `./pouch/${walletAddress}-${name}`
+        const fullName = `${this.pouchPrefix}${walletAddress}-${name}`
 
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 

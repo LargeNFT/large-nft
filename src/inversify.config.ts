@@ -176,6 +176,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
   container.bind("readerConfig").toConstantValue(readerConfig)
+  container.bind("pouch-prefix").toConstantValue("./pouch/")
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()

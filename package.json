@@ -168,6 +168,8 @@
 
     "parse-link-header": "2.0.0",
 
-    "pdf-parse": "1.1.1"
+    "pdf-parse": "1.1.1",
+
+    "is-svg": "4.3.2"
   }
 }

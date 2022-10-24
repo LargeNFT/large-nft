@@ -32,7 +32,9 @@ import { ContractMetadata } from "dto/contract-metadata";
 import { StaticPageService } from "../static-page-service";
 import { ERCEventService } from "./erc-event-service";
 import { AttributeOptions } from "../../dto/attribute";
+import { v4 as uuidv4 } from 'uuid';
 
+import isSvg from "is-svg"
 
 @injectable()
 class ImportService {
@@ -93,7 +95,19 @@ class ImportService {
         return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
     }
 
+
+
+
     async importExistingFromContract(contractAddress:string) : Promise<string> {
+        return this._importFromContract(contractAddress, "existing")
+    }
+
+    async importAsForkFromContract(contractAddress:string) : Promise<string> {
+        return this._importFromContract(contractAddress, "fork")
+    }
+
+
+    async _importFromContract(contractAddress:string, forkType:string) : Promise<string> {
 
         let forkStatus:ForkStatus = {
             animations: { saved: 0, total: 0},
@@ -111,6 +125,9 @@ class ImportService {
         //Look up channel since it has the basic ERC721 signature
         let contract = new ethers.Contract(contractAddress, this._getERC721ABI(), wallet)
 
+        this.logForkProgress(forkStatus, `Fetching tokens for contract ${contract.address}`)
+
+
         let tokenIds = await this.ercEventService.getTokensForContract(contract)
 
         
@@ -121,9 +138,13 @@ class ImportService {
         //Create channel
         let channel:Channel = new Channel()
 
+        if (forkType == "existing") {
+            channel.contractAddress = contractAddress
+        }
+
         channel.title = await contract.name()
         channel.symbol = await contract.symbol() 
-        channel.contractAddress = contractAddress
+        
         channel.attributeOptions = []
 
         //Insert channel to get an _id
@@ -135,13 +156,21 @@ class ImportService {
 
 
         for (let tokenId of tokenIds) {
-            this.logForkProgress(forkStatus, `Fetching metadata for #${tokenId}`)
-            tokenMetadata.push( await this._getTokenMetadata(contract, tokenId ) )
-        }
 
-        //Count images and animations
-        forkStatus.images.total = tokenMetadata.filter(tm => tm.image).length
-        forkStatus.animations.total = tokenMetadata.filter(tm => tm.animation_url).length
+            let metadata = await this._getTokenMetadata(contract, tokenId )
+
+            tokenMetadata.push( metadata )
+
+            if (metadata.image || metadata.image_url) {
+                forkStatus.images.total++
+            }
+
+            if (metadata.animation_url) {
+                forkStatus.animations.total++
+            }
+
+            this.logForkProgress(forkStatus, `Fetching metadata for #${tokenId}`)
+        }
 
         
         for (let metadata of tokenMetadata) {
@@ -152,10 +181,19 @@ class ImportService {
             let animation:Animation
 
 
-            if (metadata.image) {
+            if (metadata.image || metadata.image_url) {
 
                 //Fetch and create image
-                image = await this.imageService.newFromBuffer(Buffer.from(await this._fetchURI(metadata.image)))
+                let imageURI = metadata.image ? metadata.image : metadata.image_url
+
+                let imageData = await this._fetchURI(imageURI)
+
+                //Figure out if it's an svg and save appropriately
+                if (isSvg(new TextDecoder().decode(imageData))) {
+                    image = await this.imageService.newFromSvg(new TextDecoder().decode(imageData))
+                } else {
+                    image = await this.imageService.newFromBuffer(imageData)
+                }
 
                 try {
                     await this.imageService.put(image)
@@ -170,7 +208,7 @@ class ImportService {
             if (metadata.animation_url) {
 
                 //Fetch and create animation
-                animation = await this.animationService.newFromText(await this._fetchURI(metadata.animation_url))
+                animation = await this.animationService.newFromText(new TextDecoder().decode(await this._fetchURI(metadata.animation_url)))
 
                 try {
                     await this.animationService.put(animation)
@@ -211,6 +249,7 @@ class ImportService {
 
                 this._addAttributeToChannel(attribute, channel)
 
+
             }
             
 
@@ -225,15 +264,40 @@ class ImportService {
 
         }
 
-        //Save channel with attributes
-        await this.channelService.put(channel)
+        //Create author
+        let walletAddress = await this.walletService.getAddress()
 
-        // console.log(channel)
+        let author
+
+        try {
+            author = await this.authorService.get(walletAddress)
+        } catch(ex) {}
+
+        if (!author) {
+
+            author = new Author()
+            author.walletAddress = walletAddress
+
+            await this.authorService.put(author)            
+
+        }
+
+
+
+        forkStatus.authors.saved++
+        this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
+
+
+
+        //Save channel with attributes
+        channel.authorId = author._id
+        
+        await this.channelService.put(channel)
 
         forkStatus.channels.saved++
         this.logForkProgress(forkStatus, `Importing channel ${channel._id}`)
 
-        return 
+        return channel._id
 
     }
 
@@ -248,7 +312,11 @@ class ImportService {
         if (matching?.length > 0) {
             attributeOptions = matching[0]            
         } else {
-            channel.attributeOptions.push({ traitType: attribute.trait_type, values: [attribute.value] })
+            channel.attributeOptions.push({ 
+                id: uuidv4(),
+                traitType: attribute.trait_type, 
+                values: [attribute.value] 
+            })
             attributeOptions = channel.attributeOptions[channel.attributeOptions.length - 1]
         }
 
@@ -799,7 +867,7 @@ class ImportService {
 
         let tokenURI = await contract.tokenURI(tokenId)
 
-        let metadata = JSON.parse(await this._fetchURI(tokenURI))
+        let metadata = JSON.parse(new TextDecoder().decode(await this._fetchURI(tokenURI)))
 
         metadata.tokenId = tokenId
 
@@ -814,13 +882,13 @@ class ImportService {
             //Remove ipfs://
             uri = `/ipfs/${uri.substring(7,uri.length)}`
             
-            console.log(uri)
+            // console.log(uri)
 
             //Get from IPFS
             const data = uint8ArrayConcat(await all(this.ipfsService.ipfs.cat(uri)))
 
             //@ts-ignore
-            return new TextDecoder().decode(data)
+            return data
 
         } else {
 
@@ -1184,7 +1252,10 @@ class URLDownloader implements MediaDownloader {
 interface TokenMetadata {
     tokenId:number
     name: string
+    
     image: string
+    image_url:string 
+
     external_url: string 
     animation_url:string
     attributes: [{

@@ -30,6 +30,17 @@ class HardhatWalletServiceImpl implements WalletService {
   }
 
 
+  async getAddress() {
+
+    let accounts = await this.provider.send("eth_accounts", []);
+      
+      if (accounts?.length > 0) {
+        return accounts[0]
+      }
+
+  }
+
+
   getContract(name:string)  {
 
     //If it's cached and the same wallet just return it.

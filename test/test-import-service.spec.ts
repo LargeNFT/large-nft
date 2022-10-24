@@ -317,14 +317,16 @@ contract('ImportService', async (accounts) => {
     // })
 
 
-    it("should import an existing collection ", async () => {
+    // it("should import an existing collection (Alice)", async () => {
 
-        await service.importExistingFromContract("0x7B94d6436407A850e6200C2C677E94dc8941BB6f")
-        assert.strictEqual(channel.localCid, originalCid)
+    //     await service.importExistingFromContract("0x7B94d6436407A850e6200C2C677E94dc8941BB6f")
+    // })
+
+
+    it("should import an existing collection (Cryptophunks)", async () => {
+
+        await service.importExistingFromContract("0xf07468eAd8cf26c752C676E43C814FEe9c8CF402")
     })
-
-
-
 
 
 

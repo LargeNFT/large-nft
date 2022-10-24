@@ -199,7 +199,7 @@
       })
 
       //Get the page
-      console.log("triggering")
+      // console.log("triggering")
       $('#channel-index-infinite-scroll').trigger('infinite')
 
       virtualList.on('itemsAfterInsert', (virtualList, fragment) => {
@@ -211,7 +211,9 @@
 
           const c = channels.filter(channelViewModel => channelViewModel.channel._id == id)[0]
 
-          element.innerHTML = c.channel.descriptionHTML
+          if (c.channel.descriptionHTML) {
+            element.innerHTML = c.channel.descriptionHTML
+          }
 
           //Make links external
           let links = element.getElementsByTagName('a')

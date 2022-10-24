@@ -80,7 +80,6 @@ class ItemWebService {
 
             try {
                 let image:Image = await this.imageService.get(item.coverImageId)
-            
                 coverImage = {
                     cid: image.cid,
                     url: await this.imageService.getUrl(image)
@@ -262,6 +261,8 @@ class ItemWebService {
     }
 
     async getImagesFromContent(item:Item) : Promise<ImageViewModel[]> {
+
+        if (!item.content) return []
 
         let ops = item.content.ops
 

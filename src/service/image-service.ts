@@ -66,6 +66,18 @@ class ImageService {
 
   }
 
+  async newFromSvg(svg:string) {
+
+    const image: Image = new Image()
+
+    image.svg = svg
+    image.cid = await Hash.of(image.svg)
+    image.generated = true
+
+    return image
+
+  }
+
   async getUrl(image: Image) {
 
     if (!image.buffer && !image.svg) return ""

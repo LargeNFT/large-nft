@@ -76,10 +76,11 @@
                 </div>
                 ` : ``}
   
-
-                <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
-                  innerHTML="${channelViewModel.channel.descriptionHTML}"></div>
-
+                ${channelViewModel.channel.descriptionHTML ? $h`
+                  <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
+                    innerHTML="${channelViewModel.channel.descriptionHTML}">
+                  </div>
+                ` : $h`<span />`}
 
                     
                 <div class="info row no-gap">
@@ -361,11 +362,18 @@
       }
 
       //Make links external
-      let links = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).getElementsByTagName('a')
+      let description = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`)
 
-      for (let link of links) {
-        link.classList.add('external')
+      if (description) {
+
+        let links = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).getElementsByTagName('a')
+
+        for (let link of links) {
+          link.classList.add('external')
+        }
+
       }
+
 
       $(`.animation-container a`).addClass('external')
 

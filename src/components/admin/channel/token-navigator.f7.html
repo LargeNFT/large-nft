@@ -1,10 +1,12 @@
 <template>
 
-    <form class="block" @submit="${goTokenFormSubmit}">
-        <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${tokenId}" min="1"  />
-        <span class="paging-label">Enter Token ID</span>
-        <button class="goto-button button button-small button-fill">Go</button>
-    </form>
+    <div class="card" >
+        <form class="card-content card-content-padding" @submit="${goTokenFormSubmit}">
+          <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${tokenId}" min="0"  />
+          <span class="paging-label">Enter Token ID</span>
+          <button class="goto-button button button-small button-fill">Go</button>
+        </form>
+    </div>
 
 </template>
 
@@ -34,12 +36,11 @@
           const val = $(e.currentTarget).children('.goto-input').val()
 
           //Look up item by tokenId
-          let item = await itemService.getByTokenId(channelId, parseInt(val.toString()))
+          // let item = await itemService.getByTokenId(channelId, parseInt(val.toString()))
 
-          console.log(channelId, item, val)
 
-          if (item) {
-            $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
+          if (val) {
+            $f7.views.main.router.navigate(`/admin/channel/show/${channelId}/${parseInt(val.toString())}`)
           } else {
             $f7.dialog.alert("Invalid Page")
           }

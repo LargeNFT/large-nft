@@ -34,12 +34,14 @@ class ItemController {
         }, AdminItemCreateComponent)
     }
 
-    @routeMap("/admin/item/show/:id")
+    @routeMap("/admin/channel/show/:channelId/:tokenId")
     async show() : Promise<ModelView> {
         
         return new ModelView(async (routeTo:RouteTo) => {
 
-            let itemViewModel = await this.itemWebService.getNavigation(routeTo.params.id)
+            console.time('Get navigation view model')
+            let itemViewModel = await this.itemWebService.getNavigation(routeTo.params.channelId, parseInt(routeTo.params.tokenId))
+            console.timeEnd('Get navigation view model')
 
             return {
                 itemViewModel: itemViewModel

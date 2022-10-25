@@ -22,6 +22,7 @@ import { ThemeService } from "../theme-service";
 import { Theme } from "../../dto/theme";
 import { ItemListViewModel } from "dto/viewmodel/item-list-view-model";
 import { AttributeInfo } from "repository/item-repository";
+import { AggregateStats } from "dto/aggregate-stats";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
@@ -46,14 +47,15 @@ class ItemWebService {
         //Get channel
         const channel:Channel = await this.channelService.get(item.channelId)
 
-        let totalItemCount = await this.channelService.countItemsByChannel(channel._id)
+        //@ts-ignore
+        let tokenIdStats = await this.itemService.getTokenIdStatsByChannel(channel._id, "blah")
 
-        return this.getViewModel(item, channel, totalItemCount)
+        return this.getViewModel(item, channel, tokenIdStats)
     }
 
-    async getNavigation(_id: string): Promise<ItemViewModel> {
+    async getNavigation(channelId:string, tokenId: number): Promise<ItemViewModel> {
 
-        let item:Item = await this.itemService.get(_id)
+        let item:Item = await this.itemService.getByTokenId(channelId, tokenId)
 
         //Get channel
         const channel:Channel = await this.channelService.get(item.channelId)
@@ -61,7 +63,7 @@ class ItemWebService {
         return this.getNavigationViewModel(item, channel)
     }
 
-    async getViewModel(item: Item, channel:Channel, totalItemCount:number): Promise<ItemViewModel> {
+    async getViewModel(item: Item, channel:Channel, tokenIdStats:AggregateStats): Promise<ItemViewModel> {
 
         console.time('Get viewmodel')
 
@@ -79,7 +81,7 @@ class ItemWebService {
         let editable = !channel.contractAddress
 
 
-        console.time('Get image')
+        // console.time('Get image')
 
         if (item.coverImageId) {
 
@@ -155,21 +157,16 @@ class ItemWebService {
 
             }
 
-            //Look up scarcity of attributes
-            let results = await this.itemService.getAttributeInfo(channel._id, attributeSelections.map(as => {
-                return {
-                    traitType: as.traitType,
-                    value: as.value
-                }
-            }))
 
             for (let attributeSelection of attributeSelections) {
-                let matches = results.filter(ai => ai.traitType == attributeSelection.traitType && ai.value == attributeSelection.value)
-                attributeSelection.categoryPercent = matches?.length > 0 ? new Intl.NumberFormat('default', {
+
+                let info = await this.itemService.getAttributeInfo(channel._id, attributeSelection.traitType, attributeSelection.value)
+
+                attributeSelection.categoryPercent = new Intl.NumberFormat('default', {
                     style: 'percent',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
-                }).format((matches[0].count / totalItemCount)) : ''
+                }).format((info?.count / tokenIdStats?.count))
             }
 
         }
@@ -179,11 +176,7 @@ class ItemWebService {
 
         console.time('Get last')
 
-        //Is this the last one? 
-        let maxToken = await this.itemService.getMaxTokenId(channel._id)
-        console.timeEnd('Get last')
-
-        let canDelete = (maxToken == item.tokenId)
+        let canDelete = (tokenIdStats.max == item.tokenId)
         
         let themes:Theme[] = []
 
@@ -234,12 +227,19 @@ class ItemWebService {
 
     async getNavigationViewModel(item:Item, channel:Channel) : Promise<ItemViewModel> {
 
-        let totalItemCount = await this.channelService.countItemsByChannel(channel._id)
+        let tokenIdStats = await this.itemService.getTokenIdStatsByChannel(channel._id)
 
-        let itemViewModel:ItemViewModel = await this.getViewModel(item, channel, totalItemCount)
 
-        itemViewModel.previous = await this.itemService.getPrevious(item)
-        itemViewModel.next = await this.itemService.getNext(item)
+        let itemViewModel:ItemViewModel = await this.getViewModel(item, channel, tokenIdStats)
+
+        if (itemViewModel.item.tokenId < tokenIdStats.max) {
+            itemViewModel.next = itemViewModel.item.tokenId + 1
+        }
+
+        if (itemViewModel.item.tokenId > tokenIdStats.min) {
+            itemViewModel.previous =  itemViewModel.item.tokenId - 1
+        }
+
 
         return itemViewModel
     }
@@ -262,6 +262,7 @@ class ItemWebService {
 
         return {
             item: item,
+            channel:channel,
             coverImage: coverImage
         }
 

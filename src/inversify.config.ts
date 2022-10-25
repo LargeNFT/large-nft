@@ -52,6 +52,7 @@ import { AnimationRepository } from './repository/animation-repository';
 import { ImportService } from './service/core/import-service';
 
 import { ERCEventService } from './service/core/erc-event-service';
+import { QueryCacheService } from './service/core/query-cache-service';
 
 import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
@@ -221,6 +222,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(ImportService).toSelf().inSingletonScope()
   container.bind(ThemeService).toSelf().inSingletonScope()
   container.bind(StaticPageService).toSelf().inSingletonScope()
+  container.bind(QueryCacheService).toSelf().inSingletonScope()
 
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()

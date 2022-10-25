@@ -13,6 +13,7 @@ import { ImageService } from "./image-service";
 import excerptHtml from 'excerpt-html'
 import { Image } from "../dto/image";
 import { QuillService } from "./quill-service";
+import { AggregateStats } from "../dto/aggregate-stats";
 
 @injectable()
 class ItemService {
@@ -31,7 +32,7 @@ class ItemService {
         return this.itemRepository.getLatestRevision(_id)
     }
 
-    async getByTokenId(channelId: string, tokenId:string) : Promise<Item> {
+    async getByTokenId(channelId: string, tokenId:number) : Promise<Item> {
         return this.itemRepository.getByTokenId(channelId, tokenId)
     }
 
@@ -69,25 +70,23 @@ class ItemService {
         await this.itemRepository.delete(item)
     }
 
-    async countByChannel(channelId:string) : Promise<number> {
-        return this.itemRepository.countByChannel(channelId)
-    }
+
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
         return this.itemRepository.listByChannel(channelId, limit, skip)
     }
 
-    async getMaxTokenId(channelId:string) : Promise<number> {
-        return this.itemRepository.getMaxTokenId(channelId)
+    async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
+        return this.itemRepository.getTokenIdStatsByChannel(channelId)
     }
 
-    async getNext(item:Item) : Promise<Item> {
-        return this.itemRepository.getNext(item)
-    }
+    // async getNext(item:Item) : Promise<Item> {
+    //     return this.itemRepository.getNext(item)
+    // }
 
-    async getPrevious(item:Item) : Promise<Item> {
-        return this.itemRepository.getPrevious(item)
-    }
+    // async getPrevious(item:Item) : Promise<Item> {
+    //     return this.itemRepository.getPrevious(item)
+    // }
 
     async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
 
@@ -148,11 +147,14 @@ class ItemService {
     }
 
     async getNextTokenId(channelId:string) {
-        return await this.itemRepository.getMaxTokenId(channelId) + 1
+
+        let tokenIdStats = await this.itemRepository.getTokenIdStatsByChannel(channelId)
+
+        return tokenIdStats.max + 1
     }
 
-    async getAttributeInfo(channelId:string, attributes) : Promise<AttributeInfo[]> {
-        return this.itemRepository.getAttributeInfo(channelId, attributes)
+    async getAttributeInfo(channelId:string, traitType:string, value:string) : Promise<AttributeInfo> {
+        return this.itemRepository.getAttributeInfo(channelId, traitType, value)
        
     }
 }

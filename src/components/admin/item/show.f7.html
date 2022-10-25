@@ -16,7 +16,7 @@
 
     ${itemViewModel.previous ? $h`
       <div class="fab fab-left-center color-white">
-        <a href="/admin/item/show/${itemViewModel.previous._id}" id="previous-${itemViewModel.item._id}">
+        <a href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.previous}" id="previous-${itemViewModel.item._id}">
           <i class="icon f7-icons color-blue">arrow_left</i>
         </a>
       </div>
@@ -24,7 +24,7 @@
 
     ${itemViewModel.next ? $h`
       <div class="fab fab-right-center color-white">
-        <a  href="/admin/item/show/${itemViewModel.next._id}" id="next-${itemViewModel.item._id}" data-transition="f7-cover">
+        <a  href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.next}" id="next-${itemViewModel.item._id}" data-transition="f7-cover">
           <i class="icon f7-icons color-blue">arrow_right</i>
         </a>
       </div>
@@ -305,7 +305,7 @@
     let uiService = ContainerService.getInstance(UiService)
 
     let itemViewModel = props.itemViewModel
-    console.log(itemViewModel)
+    // console.log(itemViewModel)
     
     let showEdit = itemViewModel.editable
 

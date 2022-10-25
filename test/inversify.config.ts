@@ -41,6 +41,8 @@ import { StaticPageService } from "../src/service/static-page-service";
 
 import TYPES from "../src/service/core/types";
 import { GitlabRepository } from "../src/repository/gitlab-repository";
+import { QueryCacheService } from '../src/service/core/query-cache-service';
+
 import { PublishService } from "../src/service/core/publish-service";
 import { AnimationService } from "../src/service/animation-service";
 import { AnimationRepository } from "../src/repository/animation-repository";
@@ -113,6 +115,7 @@ async function getContainer() {
     container.bind(PDFService).toSelf().inSingletonScope()
     container.bind(UploadService).toSelf().inSingletonScope()
     container.bind(ERCEventService).toSelf().inSingletonScope()
+    container.bind(QueryCacheService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()

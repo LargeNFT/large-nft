@@ -155,8 +155,7 @@ class ImportService {
         channel.title = await contract.name()
         channel.symbol = await contract.symbol() 
         channel.sellerFeeBasisPoints = 0
-        channel.mintPrice = "0"
-        channel.royaltyPercent = "0"
+
 
         channel.attributeOptions = []
 

@@ -95,8 +95,9 @@ class ChannelWebService {
         let themes:Theme[] = await this.themeService.listByChannel(channel._id, 1000, 0)
         let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 1000, 0)
 
-
+        // console.time('Counting items')
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
+        // console.timeEnd('Counting items')
 
         // console.log(channel)
 

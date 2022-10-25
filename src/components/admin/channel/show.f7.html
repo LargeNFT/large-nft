@@ -102,6 +102,7 @@
 
                 </div>
 
+
                 ${channelViewModel.channel.contractAddress ? $h`
                   <div class="contract-address">
                     <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
@@ -455,7 +456,7 @@
     function getTemplate(rowItemViewModel) {
 
       return `<li class="flex-card">
-                  <a href="/admin/item/show/${rowItemViewModel.item._id}" class="item-link">
+                  <a href="/admin/channel/show/${rowItemViewModel.channel._id}/${rowItemViewModel.item.tokenId}" class="item-link">
                       <div class="card" >
                           <div class="card-content">
                               <div class="square">

@@ -31,8 +31,8 @@ interface ItemViewModel {
     canDelete:boolean
 
     //For previous/next navigation
-    next?:Item
-    previous?:Item 
+    next?:number
+    previous?:number
 
 }
 

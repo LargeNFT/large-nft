@@ -115,6 +115,10 @@ class AnimationService {
 
   }
 
+  
+
+
+
 
   getFullImageTemplate(imageSrc:string, individualCss?:string, themeCss?:string) {
     return `<!DOCTYPE html>

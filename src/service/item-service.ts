@@ -44,7 +44,7 @@ class ItemService {
             item.dateCreated = new Date().toJSON()
 
             //Get next token ID
-            if (!item.tokenId) {
+            if (item.tokenId == undefined) {
                 item.tokenId = await this.getNextTokenId(item.channelId)
             }
 

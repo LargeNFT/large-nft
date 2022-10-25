@@ -63,6 +63,7 @@ import { StaticPageService } from './service/static-page-service';
 import { IpfsHostService } from './service/core/ipfs-host-service';
 import { IpfsHostRepository } from './repository/ipfs-host-repository';
 
+import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository';
 
 //Init framework7
 //@ts-ignore
@@ -112,6 +113,7 @@ import Grid from 'framework7/components/grid'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
 //@ts-ignore
 import Menu from 'framework7/components/menu'
+
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
@@ -231,6 +233,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(IpfsHostRepository).toSelf().inSingletonScope()
+  container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
 
 
   container.bind("ipfsInit").toConstantValue( async () => {

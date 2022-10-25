@@ -10,6 +10,7 @@ import { ItemRepository } from "../../repository/item-repository";
 import { PinningApiRepository } from "../../repository/pinning-api-repository";
 import { StaticPageRepository } from "../../repository/static-page-repository";
 import { ThemeRepository } from "../../repository/theme-repository";
+import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository";
 
 @injectable()
 class SchemaService {
@@ -24,7 +25,8 @@ class SchemaService {
         private animationRepository:AnimationRepository,
         private themeRepository:ThemeRepository,
         private staticPageRepository:StaticPageRepository,
-        private ipfsHostRepository:IpfsHostRepository
+        private ipfsHostRepository:IpfsHostRepository,
+        private tokenMetadataCacheRepository:TokenMetadataCacheRepository
     ) {}
 
     async loadWallet(walletAddress:string) {
@@ -42,6 +44,7 @@ class SchemaService {
         await this.themeRepository.load(walletAddress)
         await this.staticPageRepository.load(walletAddress)
         await this.ipfsHostRepository.load(walletAddress)
+        await this.tokenMetadataCacheRepository.load(walletAddress)
 
     }
 

@@ -25,7 +25,7 @@
             </div>
           </div>
 
-          <div class="list cards-list virtual-list" id="channel-index-list">
+          <div class="list media-list virtual-list inset" id="channel-index-list">
           </div>
 
           <div class="preloader infinite-scroll-preloader" id="channel-index-preloader"></div>
@@ -44,6 +44,7 @@
 </template>
 
 <style>
+
 
 </style>
 
@@ -151,44 +152,10 @@
         el: '#channel-index-list',
 
         renderItem(channelViewModel) {
-          if (!channelViewModel.channel) return `
-          <li class="card skeleton-text skeleton-effect-wave">
-            <div class="card-header">Loading Loading Loading</div>
-            <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
-                interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
-                Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
-                aliquet urna, nec imperdiet felis sapien at enim.</div>
-          </li>
-          `
-          return getTemplate(channelViewModel);
+          return getTemplate(channelViewModel)
         },
-        items: [{
-          title: 'Loading...'
-        }],
-        setListHeight: true,
-        updatableScroll: true,
-        height: function (channelViewModel) {
-
-          if (!channelViewModel.channel) return 50
-
-          //Called 'horrible solution but it works' by author.  https://jsfiddle.net/mnahara/1cn6xqLg/
-          
-          //Create a div, add the template to it, calculate height, destroy div
-          const measuringDiv = document.createElement('div')
-    
-          measuringDiv.classList.add('list', 'cards-list')
-          measuringDiv.innerHTML = `<ul id='find-me'>${getTemplate(channelViewModel)}</ul>`
-
-          $('body').append(measuringDiv)
-
-          let height = $('#find-me li').height()
-
-          //Remove
-          measuringDiv.parentNode.removeChild(measuringDiv)
-
-          return height
-
-        },
+        items: [],
+        setListHeight: false,
         emptyTemplate: `
               <li class="item-content">
                 <div class="item-inner">
@@ -198,8 +165,9 @@
             `
       })
 
+
+
       //Get the page
-      // console.log("triggering")
       $('#channel-index-infinite-scroll').trigger('infinite')
 
       virtualList.on('itemsAfterInsert', (virtualList, fragment) => {
@@ -226,6 +194,9 @@
           $(element).removeClass('empty')
         })
 
+        $('#channel-index-list ul').css("height", "")
+
+
       })
 
 
@@ -234,40 +205,35 @@
 
     const getTemplate = (channelViewModel) => {
       return `
-              <li class="card channel-card">
-
-                    <a href="/admin/channel/show/${channelViewModel.channel._id}">
-                      <div class="card-header banner" ${channelViewModel.coverBanner ?
-                          `style="background-image: url(${channelViewModel.coverBanner.url});" ` : ``}>
-
-                            ${channelViewModel.coverImage ? `
-                            <img src="${channelViewModel.coverImage.url}" class="avatar" />
-                          ` : `
-                            <i class="material-icons avatar">image</i>
-                          `}
-
-                      </div>
-                    </a>
-
-                    <div class="card-content">
-                        <div class="card-content card-content-padding">
-                          
-                            <div class="title">
-                              <a href="/admin/channel/show/${channelViewModel.channel._id}">
-                                ${channelViewModel.channel.title}
-                              </a>
-                            </div>
-
-                            ${channelViewModel.authorDisplayName ? `
-                              <div class="name">
-                                By <a href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
-                              </div>
-                            ` : ``}
-
-                            <div class="description empty" id="channel-description-${channelViewModel.channel._id}" data-id="${channelViewModel.channel._id}"></div>
-                           
-                        </div>
+              <li>
+                <a href="/admin/channel/show/${channelViewModel.channel._id}" class="item-link">
+                  <div class="item-content">
+                    <div class="item-media">
+                      ${channelViewModel.coverImage ? `
+                        <img src="${channelViewModel.coverImage.url}" class="avatar" />
+                      ` : `
+                        <i class="material-icons avatar">image</i>
+                      `}
                     </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">
+                          ${channelViewModel.channel.title}                          
+                        </div>
+                        <div class="item-after"><span class="badge color-yellow text-color-black">${channelViewModel.itemCount}</span></div>
+                      </div>
+
+                      ${channelViewModel.authorDisplayName ? `
+                        <div class="item-subtitle">
+                          By ${channelViewModel?.authorDisplayName}
+                        </div>
+                      ` : ``}
+
+                      <div class="description item-text empty" id="channel-description-${channelViewModel.channel._id}" data-id="${channelViewModel.channel._id}"></div>
+                    
+                      </div>
+                  </div>
+                </a>
               </li>
           `
     }

@@ -569,10 +569,16 @@ ul.breadcrumb li a:hover {
   background-color: #f1f1f1;
 }
 
-.channel-card .avatar {
-  position: absolute;
+
+.avatar {
   width: 100px;
   height: 100px;
+  font-size: 100px;
+  border-radius: 25%;
+}
+
+.channel-card .avatar {
+  position: absolute;
   border-radius: 25%;
   left: 10px;
   bottom: 0;
@@ -692,13 +698,6 @@ ul.breadcrumb li a:hover {
 }
 
 
-.animation-content {
-  max-width: 100%; 
-  overflow-y: scroll;
-}
-
-
-
 
 
 
@@ -778,6 +777,16 @@ ul.breadcrumb li a:hover {
       overflow-y: scroll;
   }
 
+  .fork-output-simple {
+    border: 1px solid #cccccc;
+    font-size: 15px;
+    width: 100%;
+    max-width: 100%;
+    padding: 5px;
+    height: 65px;
+    overflow-y: scroll;
+  }
+
   .fork-status {
       font-size: 14px;
       padding: 10px;
@@ -853,4 +862,48 @@ ul.breadcrumb li a:hover {
 
 .repo-name strong {
   display: block;
+}
+
+
+
+.animation-image {
+  width: 700px;
+  max-width: 100%;
+}
+
+.animation-card {
+  margin-left: 42px;
+  margin-right: 42px;
+}
+
+
+@media only screen and (max-width: 1024px) {
+  .animation-image {
+    width: unset;
+  }
+}
+
+
+.animation-content {
+  width: 100%;
+  display: flex; 
+  overflow-y: scroll;
+}
+
+.animation-content:first-child {
+  display: block;
+}
+
+
+
+
+
+.fab-right-center {
+  right: calc(25% + 19px) ;
+}
+
+@media only screen and (max-width: 1024px) {
+  .fab-right-center {
+    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));
+  }
 }

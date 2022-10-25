@@ -19,13 +19,16 @@ import AdminChannelUpgradeComponent from '../components/admin/channel/upgrade.f7
 
 
 import { ChannelWebService } from "../service/web/channel-web-service";
+import { ItemWebService } from "../service/web/item-web-service";
+import { ItemRepository } from "../repository/item-repository";
 
 
 @injectable()
 class ChannelController {
 
     constructor(
-        private channelWebService:ChannelWebService
+        private channelWebService:ChannelWebService,
+        private itemWebService:ItemWebService
     ) {}
 
     @routeMap("/")
@@ -86,8 +89,12 @@ class ChannelController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 
+            let firstPageItems = await this.itemWebService.listByChannel(channelViewModel.channel._id, ItemRepository.CHUNK_SIZE, 0)
+
+
             return {
-                channelViewModel: channelViewModel
+                channelViewModel: channelViewModel,
+                firstPageItems: firstPageItems
             }
 
         }, AdminChannelShowComponent)

@@ -1,7 +1,7 @@
 <template>
 
     <form class="block" @submit="${goTokenFormSubmit}">
-        <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="1" min="1"  />
+        <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${tokenId}" min="1"  />
         <span class="paging-label">Enter Token ID</span>
         <button class="goto-button button button-small button-fill">Go</button>
     </form>
@@ -24,6 +24,7 @@
         let itemService = ContainerService.getInstance(ItemService)
 
         let channelId = props.channel
+        let tokenId = props.token_id
 
 
         const goTokenFormSubmit = async (e) => {

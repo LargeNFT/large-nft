@@ -63,6 +63,8 @@ class ItemWebService {
 
     async getViewModel(item: Item, channel:Channel, totalItemCount:number): Promise<ItemViewModel> {
 
+        console.time('Get viewmodel')
+
         let animation:AnimationViewModel
         let coverImage: ImageViewModel
         let authorPhoto:ImageViewModel
@@ -76,10 +78,14 @@ class ItemWebService {
 
         let editable = !channel.contractAddress
 
+
+        console.time('Get image')
+
         if (item.coverImageId) {
 
             try {
                 let image:Image = await this.imageService.get(item.coverImageId)
+
                 coverImage = {
                     cid: image.cid,
                     url: await this.imageService.getUrl(image)
@@ -130,6 +136,8 @@ class ItemWebService {
 
         }
 
+        console.time('Get attributes')
+
         //Only show attributes that are valid at the category level. 
         if (channel.attributeOptions.length > 0) {
 
@@ -166,8 +174,14 @@ class ItemWebService {
 
         }
 
+
+        console.timeEnd('Get attributes')
+
+        console.time('Get last')
+
         //Is this the last one? 
         let maxToken = await this.itemService.getMaxTokenId(channel._id)
+        console.timeEnd('Get last')
 
         let canDelete = (maxToken == item.tokenId)
         
@@ -184,6 +198,18 @@ class ItemWebService {
             } catch(ex) {}
         }
 
+
+
+        console.timeEnd('Get viewmodel')
+
+        let images:ImageViewModel[] = await this.getImagesFromContent(item)
+
+        //If cover image not part of image list add it.
+        if (images.filter(i => i.cid == coverImage.cid).length == 0) {
+            images.push(coverImage)
+        }
+
+
         // console.log(item)
 
         return {
@@ -198,7 +224,7 @@ class ItemWebService {
             author: author,
             authorPhoto: authorPhoto,
             authorDisplayName: this.authorService.getDisplayName(author),
-            images: await this.getImagesFromContent(item),
+            images: images,
             attributeSelections: attributeSelections,
             editable: editable,
             canDelete: canDelete
@@ -226,7 +252,6 @@ class ItemWebService {
 
             try {
                 let image:Image = await this.imageService.get(item.coverImageId)
-            
                 coverImage = {
                     cid: image.cid,
                     url: await this.imageService.getUrl(image)
@@ -293,9 +318,9 @@ class ItemWebService {
 
             } catch(ex) {}
 
-
-
         }
+        
+
 
         return images
     }

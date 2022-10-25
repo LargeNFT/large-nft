@@ -1,4 +1,12 @@
-import { inject, injectable } from "inversify";
+import { inject, injectable } from "inversify"
+import toBuffer from 'it-to-buffer'
+import all from 'it-all'
+import Hash from 'ipfs-only-hash'
+import axios from "axios"
+import { v4 as uuidv4 } from 'uuid'
+import IPFSGatewayTools from "@pinata/ipfs-gateway-tools/dist/node"
+
+
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
@@ -14,27 +22,28 @@ import TYPES from "./types";
 import { WalletService } from "./wallet-service"
 import { Animation } from "../../dto/animation"
 import { ForkStatus } from "../../dto/viewmodel/fork-status"
-import toBuffer from 'it-to-buffer'
 import { Theme } from "../../dto/theme";
 import { StaticPage } from "../../dto/static-page";
 import { BigNumber, Contract, ethers } from "ethers";
-import axios from "axios";
 
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
-import all from 'it-all'
 import { ImportBundle, MediaDownloader } from "dto/import-bundle";
-import Hash from 'ipfs-only-hash'
 import { ThemeRepository } from "../../repository/theme-repository";
 import { ThemeService } from "../theme-service";
 
 import { StaticPageRepository } from "../../repository/static-page-repository";
-import { ContractMetadata } from "dto/contract-metadata";
+import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository";
+
+import { ContractMetadata } from "../../dto/contract-metadata";
 import { StaticPageService } from "../static-page-service";
 import { ERCEventService } from "./erc-event-service";
 import { AttributeOptions } from "../../dto/attribute";
-import { v4 as uuidv4 } from 'uuid';
 
 import isSvg from "is-svg"
+import { TokenMetadata } from "../../dto/token-metadata-cache";
+import { ItemWebService } from "service/web/item-web-service"
+
+const gatewayTools = new IPFSGatewayTools()
 
 @injectable()
 class ImportService {
@@ -51,6 +60,7 @@ class ImportService {
         private staticPageRepository:StaticPageRepository,
         private staticPageService:StaticPageService,
         private ercEventService:ERCEventService,
+        private tokenMetadataCacheRepository:TokenMetadataCacheRepository,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) {}
@@ -144,7 +154,10 @@ class ImportService {
 
         channel.title = await contract.name()
         channel.symbol = await contract.symbol() 
-        
+        channel.sellerFeeBasisPoints = 0
+        channel.mintPrice = "0"
+        channel.royaltyPercent = "0"
+
         channel.attributeOptions = []
 
         //Insert channel to get an _id
@@ -177,9 +190,11 @@ class ImportService {
 
             this.logForkProgress(forkStatus, `Importing token #${metadata.tokenId}`)
 
+            let item:Item = new Item()
+            
+
             let image:Image
             let animation:Animation
-
 
             if (metadata.image || metadata.image_url) {
 
@@ -187,6 +202,8 @@ class ImportService {
                 let imageURI = metadata.image ? metadata.image : metadata.image_url
 
                 let imageData = await this._fetchURI(imageURI)
+
+
 
                 //Figure out if it's an svg and save appropriately
                 if (isSvg(new TextDecoder().decode(imageData))) {
@@ -199,47 +216,55 @@ class ImportService {
                     await this.imageService.put(image)
                 } catch(ex) {} //ignore duplicates
                 
+                item.coverImageId = image._id
 
                 forkStatus.images.saved++
                 this.logForkProgress(forkStatus, `Importing image ${image._id}`)
 
+            } else {
+                throw new Error("No image in metadata")
             }
 
+
+            //Create or save animation
             if (metadata.animation_url) {
+
+                item.coverImageAsAnimation = false
 
                 //Fetch and create animation
                 animation = await this.animationService.newFromText(new TextDecoder().decode(await this._fetchURI(metadata.animation_url)))
 
-                try {
-                    await this.animationService.put(animation)
-                } catch(ex) {} //ignore duplicates
-                
+            } else {
 
-                forkStatus.animations.saved++
-                this.logForkProgress(forkStatus, `Importing animation ${animation._id}`)
+                //Generate a new one from the cover image
+                item.coverImageAsAnimation = true 
+
+                let content = await this.animationService.buildAnimationPage(item)
+
+                animation = await this.animationService.newFromText(content)
 
             }
 
 
-            //Create item
-            let item:Item = new Item()
+            //Save animation
+            try {
+                await this.animationService.put(animation)
+            } catch(ex) {} //ignore duplicates
+            
+
+            forkStatus.animations.saved++
+            this.logForkProgress(forkStatus, `Importing animation ${animation._id}`)
+
+
 
             item.tokenId = metadata.tokenId 
             item.title = metadata.name 
             item.channelId = channel._id
             item.attributeSelections = []
-
-            if (image) {
-                item.coverImageId = image._id
-            }
-
-            if (animation) {
-                item.animationId = animation._id                
-            } 
-
-            item.coverImageAsAnimation = (animation == undefined)
+            item.animationId = animation._id 
 
 
+            //Build attributes for item
             for (let attribute of metadata.attributes) {
 
                 item.attributeSelections.push({
@@ -252,11 +277,8 @@ class ImportService {
 
             }
             
-
-            //Build attributes for item
+            //Save item
             await this.itemService.put(item)
-
-            // console.log(item)
 
             forkStatus.items.saved++
             this.logForkProgress(forkStatus, `Importing item ${item._id}`)
@@ -282,11 +304,8 @@ class ImportService {
 
         }
 
-
-
         forkStatus.authors.saved++
         this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
-
 
 
         //Save channel with attributes
@@ -865,11 +884,33 @@ class ImportService {
 
     async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
 
+        let cacheId = `${contract.address}-${tokenId}`
+
+        //Check the cache
+        let existing
+
+        try {
+            existing = await this.tokenMetadataCacheRepository.get(cacheId)
+        } catch(ex) {}
+        
+        if (existing) {
+            console.log(`Returning cached token metadata #${tokenId}`)
+            return existing.tokenMetadata
+        }
+
         let tokenURI = await contract.tokenURI(tokenId)
 
         let metadata = JSON.parse(new TextDecoder().decode(await this._fetchURI(tokenURI)))
 
         metadata.tokenId = tokenId
+
+        //Cache it
+        await this.tokenMetadataCacheRepository.put({
+            _id: cacheId,
+            tokenMetadata: metadata,
+            dateCreated: new Date().toJSON()
+        })
+
 
         return metadata
 
@@ -877,10 +918,14 @@ class ImportService {
 
     async _fetchURI(uri) {
 
-        if (uri?.startsWith("ipfs://")) {
+        
+
+        if (gatewayTools.containsCID(uri)) {
+
+            uri = gatewayTools.convertToDesiredGateway(uri, '')
 
             //Remove ipfs://
-            uri = `/ipfs/${uri.substring(7,uri.length)}`
+            // uri = `/ipfs/${uri.substring(7,uri.length)}`
             
             // console.log(uri)
 
@@ -893,8 +938,15 @@ class ImportService {
         } else {
 
             //Get from old interwebs
-            let result = await axios.get(uri)
-            return result.data
+            let result = await axios.get(uri, {
+                responseType: "arraybuffer",
+            })
+
+            return Buffer.from(result.data,'binary')
+
+            // console.log(result)
+
+            // return result.data
         }
 
 
@@ -1249,20 +1301,6 @@ class URLDownloader implements MediaDownloader {
 
 
 
-interface TokenMetadata {
-    tokenId:number
-    name: string
-    
-    image: string
-    image_url:string 
-
-    external_url: string 
-    animation_url:string
-    attributes: [{
-        trait_type: string
-        value:string
-    }]
-}
 
 
 

@@ -14,6 +14,24 @@
     ` : $h``} 
 
 
+    ${itemViewModel.previous ? $h`
+      <div class="fab fab-left-center color-white">
+        <a href="/admin/item/show/${itemViewModel.previous._id}" id="previous-${itemViewModel.item._id}">
+          <i class="icon f7-icons color-blue">arrow_left</i>
+        </a>
+      </div>
+    ` : $h``}
+
+    ${itemViewModel.next ? $h`
+      <div class="fab fab-right-center color-white">
+        <a  href="/admin/item/show/${itemViewModel.next._id}" id="next-${itemViewModel.item._id}" data-transition="f7-cover">
+          <i class="icon f7-icons color-blue">arrow_right</i>
+        </a>
+      </div>
+      ` : $h``}
+
+
+
     <div class="page-content">
 
       <div class="row">
@@ -22,13 +40,14 @@
 
           <ul class="breadcrumb">
             <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
-            <li>${itemViewModel.item.title} #${itemViewModel.item.tokenId}</li>
+            <li>${itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}`} </li>
           </ul>
 
-          <div class="card">
+          <div class="card col-100 ${itemViewModel.item.coverImageAsAnimation ? $h`animation-image` : $h``} animation-card">
             <div class="card-content">
-                <div class="animation-content" innerHTML="${itemViewModel.animationContentHTML}"></div>
+              <div class="animation-content" innerHTML="${itemViewModel.animationContentHTML}"></div>
             </div>
+
             ${showEdit ? $h`
               <div class="card-footer item-show-footer">
                 
@@ -47,36 +66,11 @@
           </div> 
 
 
-
-
-          <div class="block row center margin-bottom">
-
-            ${itemViewModel.previous ? $h`
-              <div class="col-50 previous">
-                <a class="button button-outline" href="/admin/item/show/${itemViewModel.previous._id}" id="previous-${itemViewModel.item._id}">
-                  <span class="material-icons">arrow_back</span>
-                  ${ parseInt(itemViewModel.item.tokenId) - 1}
-                </a>
-              </div>
-            ` : $h``}
-
-            ${itemViewModel.next ? $h`
-              <div class="col-50 next">
-                <a class="button button-outline" href="/admin/item/show/${itemViewModel.next._id}" id="next-${itemViewModel.item._id}">
-                  ${ parseInt(itemViewModel.item.tokenId) + 1}
-                  <span class="material-icons">arrow_forward</span>
-                </a>
-              </div>
-              ` : $h``}
-
-          </div>
-
-          <${TokenNavigator} channel=${itemViewModel.channel._id} />
-
-
         </div>
 
         <div class="col-100 large-25">
+
+          <${TokenNavigator} channel=${itemViewModel.channel._id} token_id=${itemViewModel.item.tokenId} />
 
           <div class="card">
             <div class="card-header">
@@ -175,25 +169,6 @@
 
 
 <style>
-
-  .previous {
-    text-align: right;
-  }
-
-  .next {
-    text-align: left;
-  }
-
-
-  @media only screen and (max-width: 1024px) {
-    .previous {
-      text-align: center;
-    }
-
-    .next {
-      text-align: center;
-    }
-  }
 
 
 

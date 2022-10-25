@@ -207,7 +207,9 @@ class ItemRepository {
         let result = await this.db.query('item_token_id/token_id_stats', {
             reduce: true,
             include_docs: false,
-            key: channelId
+            key: channelId,
+            stale: 'update_after',
+            limit: 1
         })
 
         if (result.rows[0]) {
@@ -224,6 +226,7 @@ class ItemRepository {
             reduce: true,
             keys: attributes.map(a => [channelId, a.traitType, a.value]),
             include_docs: false,
+            stale: 'update_after',
             group_level: 3
         })
 

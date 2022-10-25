@@ -134,7 +134,7 @@
 
           <div class="block-title block-title-medium">Items</div>
 
-          <${TokenNavigator} channel=${channelViewModel.channel._id} />
+          <${TokenNavigator} channel=${channelViewModel.channel._id} token_id="1" />
 
           <div class="list cards-list virtual-list" id="item-list" >
             <ul class="item-flex"></ul>
@@ -192,7 +192,6 @@
     width: 100%;
     background-position: center;
     background-size: cover;
-    background-color: #f1f1f1;
   }
 
   .channel-card-show .avatar {
@@ -297,6 +296,8 @@
     let itemWebService = globalThis.container.get(ItemWebService)
 
     let channelViewModel = props.channelViewModel
+    let firstPageItems = props.firstPageItems 
+    
     let items = []
 
     let itemsShown = 0
@@ -351,14 +352,14 @@
 
     $on('pageInit', async (e, page) => {
 
-      let firstPageItems = await itemWebService.listByChannel(channelViewModel.channel._id, ItemRepository.CHUNK_SIZE, 0)
-
       items.push(...firstPageItems)
       itemsShown = firstPageItems.length
 
       //Load cover banner into CSS
       if (channelViewModel?.coverBanner?.url) {
         document.getElementById(`show-channel-banner-${channelViewModel.channel._id}`).style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
+      } else {
+        document.getElementById(`show-channel-banner-${channelViewModel.channel._id}`).style.background = `linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%)`
       }
 
       //Make links external
@@ -464,7 +465,7 @@
 
 
                           <div class="card-footer">
-                              ${rowItemViewModel.item.title ? rowItemViewModel.item.title + ' ' : ''} #${rowItemViewModel.item.tokenId}
+                              ${rowItemViewModel.item.title ? rowItemViewModel.item.title : `#${rowItemViewModel.item.tokenId}`} 
                           </div>
                       </div>
                   </a>

@@ -36,10 +36,10 @@
           const val = $(e.currentTarget).children('.goto-input').val()
 
           //Look up item by tokenId
-          // let item = await itemService.getByTokenId(channelId, parseInt(val.toString()))
+          let item = await itemService.getByTokenId(channelId, parseInt(val.toString()))
 
 
-          if (val) {
+          if (item) {
             $f7.views.main.router.navigate(`/admin/channel/show/${channelId}/${parseInt(val.toString())}`)
           } else {
             $f7.dialog.alert("Invalid Page")

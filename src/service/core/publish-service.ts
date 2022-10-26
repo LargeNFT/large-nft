@@ -96,6 +96,7 @@ class PublishService {
         delete channel.publishReaderRepoId
         delete channel.publishReaderRepoPath
         delete channel.publishReaderRepoStatus
+        delete channel.importSuccess
         delete channel.lastUpdated
         delete channel._rev
         delete channel["_rev_tree"]

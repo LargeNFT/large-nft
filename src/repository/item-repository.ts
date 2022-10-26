@@ -26,21 +26,7 @@ class ItemRepository {
                         fields: ['dateCreated']
                     }
                 })
-        
-        
-                await db.put({
-                    _id: '_design/item_index',
-                    views: {
-                    by_channel_id: {
-                        map: function (doc) { 
-                            //@ts-ignore
-                            emit(doc.channelId)
-                        }.toString(),
-                        reduce: '_count'
-                    }
-                    }
-                })
-                
+                        
             }
         },
 
@@ -49,7 +35,7 @@ class ItemRepository {
             changeset: async (db) => {
 
                 await db.put({
-                    _id: '_design/item_attribute_counts_index',
+                    _id: '_design/attribute_counts',
                     views: {
                       attribute_counts: {
                         map: function (doc) { 
@@ -72,27 +58,31 @@ class ItemRepository {
         },
 
         {
-            id: '3',
+            id: '5',
             changeset: async (db) => {
-
-                await db.createIndex({
-                    index: {
-                        fields: ['channelId', 'tokenId']
+   
+                await db.put({
+                    _id: '_design/by_channel_token',
+                    views: {
+                        by_channel_token: {
+                            map: function (doc) { 
+                                //@ts-ignore
+                                emit([doc.channelId, doc.tokenId])
+                            }.toString(),
+                        }
                     }
                 })
 
-
-                        
                 await db.put({
-                    _id: '_design/token_id_stats',
+                    _id: '_design/by_channel_token_stats',
                     views: {
-                    token_id_stats: {
-                        map: function (doc) { 
-                            //@ts-ignore
-                            emit(doc.channelId, doc.tokenId)
-                        }.toString(),
-                        reduce: '_stats'
-                    }
+                        by_channel_token_stats: {
+                            map: function (doc) { 
+                                //@ts-ignore
+                                emit(doc.channelId, doc.tokenId)
+                            }.toString(),
+                            reduce: "_stats"
+                        }
                     }
                 })
 
@@ -105,13 +95,15 @@ class ItemRepository {
     db: any
 
     constructor(
-        private databaseService: DatabaseService
+        private databaseService: DatabaseService,
+        private queryCacheService:QueryCacheService
     ) { 
 
     }
 
     async load(walletAddress: string) {
         this.db = await this.databaseService.getDatabase(walletAddress, "item", this.changesets)
+        console.log(this.db)
     }
 
     async get(_id: string): Promise<Item> {
@@ -124,19 +116,17 @@ class ItemRepository {
 
     async getByTokenId(channelId: string, tokenId:number) : Promise<Item> {
 
-        let response = await this.db.find({
-            selector: {
-                channelId: { $eq: channelId },
-                tokenId: { $eq: tokenId },
-            },
-            limit: 1,
-            skip: 0
+        let result = await this.db.query('by_channel_token', {
+            reduce: false,
+            include_docs: true,
+            key: [channelId, tokenId],
+            limit: 1
         })
-
-
-        if (response.docs?.length > 0) {
-            return Object.assign(new Item(), response.docs[0])
+        
+        if (result.rows?.length > 0) {
+            return Object.assign(new Item(), result.rows[0].doc)
         }
+       
     }
 
     async put(item: Item) {
@@ -145,38 +135,55 @@ class ItemRepository {
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
 
-        let response = await this.db.find({
-            selector: {
-                channelId: { $eq: channelId },
-                dateCreated: { $exists: true }
-            },
-            sort: [{ 'dateCreated': 'asc' }],
+        let items:Item[] = []
+
+        let result = await this.db.query('by_channel_token', {
+            reduce: false,
+            include_docs: true,
+            startkey: [channelId, 0],
+            endkey: [channelId, {}],
             limit: limit,
             skip: skip
         })
 
-        return response.docs
+        if (result.rows?.length > 0) {
+
+            for (let row of result.rows) {
+                items.push(Object.assign(new Item(), row.doc))
+            }
+        }
+
+
+        return items
+
+        // let response = await this.db.find({
+        //     selector: {
+        //         channelId: { $eq: channelId },
+        //         tokenId: { $exists: true }
+        //     },
+        //     sort: [{ 'tokenId': 'asc' }],
+        //     limit: limit,
+        //     skip: skip
+        // })
+
+        // let expl = await this.db.explain({
+        //     selector: {
+        //         channelId: { $eq: channelId },
+        //         tokenId: { $exists: true }
+        //     },
+        //     sort: [{ 'tokenId': 'asc' }],
+        //     limit: limit,
+        //     skip: skip
+        // })
+
+        // console.log(expl)
+
+        // return response.docs
 
     }
     
 
     
-    @cacheQuery('token_id_stats_by_channel')
-    async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
-
-        let result = await this.db.query('token_id_stats', {
-            reduce: true,
-            include_docs: false,
-            key: channelId,
-            limit: 1
-        })
-
-        let tokenIdStats = result.rows[0].value
-
-        return tokenIdStats
-
-    }
-
 
 
 
@@ -187,12 +194,15 @@ class ItemRepository {
     }
 
 
-    @cacheQuery('attribute_info_by_channel_trait_type_value')
-    async getAttributeInfo(channelId:string, traitType:string, value:string) : Promise<AttributeInfo> {
 
-        let result = await this.db.query('item_attribute_counts_index/attribute_counts', {
+
+    @cacheQuery('attribute_info_by_channel')
+    async getAttributeInfo(channelId:string) : Promise<AttributeInfo[]> {
+
+        let result = await this.db.query('attribute_counts', {
             reduce: true,
-            key:[channelId, traitType, value],
+            startKey:[channelId, "", ""],
+            endKey:[channelId, {}, {}],
             include_docs: false,
             group_level: 3
         })
@@ -203,7 +213,50 @@ class ItemRepository {
                 value: row.key[2],
                 count: row.value
             }
-        })[0]
+        })
+
+    }
+
+
+
+    @cacheQuery('token_id_stats_by_channel')
+    async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
+
+        let result = await this.db.query('by_channel_token_stats', {
+            reduce: true,
+            include_docs: false,
+            key: channelId
+        })
+
+        // console.log(result)
+
+        let tokenIdStats
+        if (result.rows?.length > 0) {
+            tokenIdStats = result.rows[0].value
+        } else {
+            tokenIdStats = {
+                min: 0,
+                max: 0,
+                count: 0
+            }
+        }
+
+        return tokenIdStats
+
+    }
+
+
+    
+    async clearQueryCache(item:Item) {
+        await this.queryCacheService.clear(this.db, `token_id_stats_by_channel_${item.channelId}`)
+        await this.queryCacheService.clear(this.db, `attribute_info_by_channel_${item.channelId}`)
+    }
+
+    async buildQueryCache(channelId:string) {
+
+        //Just gotta call these
+        await this.getAttributeInfo(channelId)
+        await this.getTokenIdStatsByChannel(channelId)
 
     }
 

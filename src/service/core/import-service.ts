@@ -145,8 +145,30 @@ class ImportService {
         forkStatus.items.total = tokenIds.size
 
 
+        //Create author
+        let walletAddress = await this.walletService.getAddress()
+
+        let author
+
+        try {
+            author = await this.authorService.get(walletAddress)
+        } catch(ex) {}
+
+        if (!author) {
+
+            author = new Author()
+            author.walletAddress = walletAddress
+
+            await this.authorService.put(author)            
+
+        }
+
+
+
         //Create channel
         let channel:Channel = new Channel()
+
+        channel.importSuccess = false
 
         if (forkType == "existing") {
             channel.contractAddress = contractAddress
@@ -285,23 +307,7 @@ class ImportService {
 
         }
 
-        //Create author
-        let walletAddress = await this.walletService.getAddress()
 
-        let author
-
-        try {
-            author = await this.authorService.get(walletAddress)
-        } catch(ex) {}
-
-        if (!author) {
-
-            author = new Author()
-            author.walletAddress = walletAddress
-
-            await this.authorService.put(author)            
-
-        }
 
         forkStatus.authors.saved++
         this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
@@ -310,7 +316,11 @@ class ImportService {
         //Save channel with attributes
         channel.authorId = author._id
         
+        channel.importSuccess = true
+
         await this.channelService.put(channel)
+
+        await this.channelService.buildQueryCache(channel._id)
 
         forkStatus.channels.saved++
         this.logForkProgress(forkStatus, `Importing channel ${channel._id}`)

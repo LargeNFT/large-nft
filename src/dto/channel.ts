@@ -111,6 +111,9 @@ class Channel {
     pubDate?:string
 
     @Allow()
+    importSuccess?:boolean
+
+    @Allow()
     dateCreated?:string
 
     @Allow()

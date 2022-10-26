@@ -131,7 +131,7 @@ class ChannelService {
 
   async countItemsByChannel(channelId:string) : Promise<number> {
     let tokenIdStats = await this.itemService.getTokenIdStatsByChannel(channelId)
-    return tokenIdStats.count
+    return tokenIdStats?.count ? tokenIdStats.count : 0
   }
 
   async exportContractMetadata(channel:Channel, ownerAddress:string, imageDirectoryCid:string) : Promise<ContractMetadata> {
@@ -167,6 +167,15 @@ class ChannelService {
 
     await this.put(channel)
   }
+
+
+  async buildQueryCache(channelId:string) {
+
+    //Just gotta call these
+    await this.itemService.getAttributeInfo(channelId)
+    await this.itemService.getTokenIdStatsByChannel(channelId)
+
+}
 
 
 }

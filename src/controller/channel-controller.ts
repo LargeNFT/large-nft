@@ -87,10 +87,13 @@ class ChannelController {
     async show() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
 
+            console.time('Channel view model')
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+            console.timeEnd('Channel view model')
 
+            console.time('First page items')
             let firstPageItems = await this.itemWebService.listByChannel(channelViewModel.channel._id, ItemRepository.CHUNK_SIZE, 0)
-
+            console.timeEnd('First page items')
 
             return {
                 channelViewModel: channelViewModel,

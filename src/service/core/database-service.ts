@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import { inject, injectable } from 'inversify';
 
 import PouchDB from 'pouchdb';
@@ -15,7 +16,42 @@ class DatabaseService {
         //Enable find plugin
         PouchDB.plugin(PouchFind)
 
-        // PouchDB.replicate(`./pouch/0x98de44fe4fb29d4b0a44df46836cbd9b62670fcc-item`, 'http://localhost:5984/items', {live: true});
+        // console.log("Trying to replicate...")
+        // // PouchDB.replicate(`./pouch/0x842439CbB838069d087904F87fa9762069b1aB55-item`, 'http://localhost:5984/items', {live: true});
+
+
+        // const remote = new PouchDB('http://localhost:5984/items')
+        // const local = new PouchDB(`./pouch/0x842439CbB838069d087904F87fa9762069b1aB55-item`)
+
+
+        // const rep = local.replicate.to(remote, {
+        //     live: true,
+        //     retry: true
+        //   }).on('change', function (info) {
+        //     // handle change
+        //     console.log(info)
+        //   }).on('paused', function (err) {
+        //     // replication paused (e.g. replication up to date, user went offline)
+        //     console.log(err)
+
+        //   }).on('active', function () {
+        //     // replicate resumed (e.g. new changes replicating, user went back online)
+        //     console.log('active')
+
+        //   }).on('denied', function (err) {
+        //     // a document failed to replicate (e.g. due to permissions)
+        //     console.log(err)
+
+        //   }).on('complete', function (info) {
+        //     // handle complete
+        //     console.log(info)
+
+        //   }).on('error', function (err) {
+        //     // handle error
+        //     console.log(err)
+        //   });
+
+        //   console.log(rep)
 
 
     }
@@ -23,7 +59,7 @@ class DatabaseService {
 
     async getDatabase(walletAddress:string, name:string, changesets?:Changeset[]) {
 
-        const fullName = `${this.pouchPrefix}${walletAddress}-${name}`
+        const fullName = `${this.pouchPrefix}${ethers.utils.getAddress(walletAddress)}-${name}`
 
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 

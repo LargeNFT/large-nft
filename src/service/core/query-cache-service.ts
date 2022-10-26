@@ -1,5 +1,4 @@
 import { injectable } from "inversify"
-import { getMainContainer } from "inversify.config"
 import { QueryCache } from "../../dto/query-cache"
 
 
@@ -24,10 +23,10 @@ class QueryCacheService {
         if (!queryCache) {
             queryCache = new QueryCache()
             queryCache._id = queryCacheId
-            queryCache.result = result
             queryCache.dateCreated = new Date().toJSON()
         } 
 
+        queryCache.result = result
         queryCache.lastUpdated = new Date().toJSON()
 
         await db.put(queryCache)
@@ -37,6 +36,7 @@ class QueryCacheService {
 
         let queryCacheId = `_local/query_${queryName}`
 
+        // console.log(queryCacheId)
 
         let queryCache:QueryCache 
 
@@ -44,17 +44,24 @@ class QueryCacheService {
             queryCache = await db.get(queryCacheId)
         } catch(ex) {}
 
+        // console.log(queryCache)
+
         return queryCache
 
     }
 
     async clear(db:any, queryName:string) {
 
-        let queryCacheId = `_local/query_${queryName}`
+        let cache = await this.get(db, queryName)
 
-        try {
-            await db.remove(queryCacheId)
-        } catch(ex) {}
+        if (cache) {
+            try {
+                await db.remove(cache)
+            } catch(ex) {
+                console.log(ex)
+            }
+        }
+
     }
 
 
@@ -77,15 +84,12 @@ function cacheQuery(queryName: string) {
 
             const serializedArguments = serializeArgs(...arguments)
 
-            console.log(serializedArguments)
+            let queryCacheService = globalThis.container.get(QueryCacheService)
 
+            let cacheQueryName = `${queryName}_${serializedArguments}`
 
-            // let queryCacheService = globalThis.container.get(QueryCacheService)
-
-            // let cacheQueryName = `${queryName}_${serializedArguments}`
-
-            // let cachedResult = await queryCacheService.get(this.db, cacheQueryName)
-            // if (cachedResult) return cachedResult.result
+            let cachedResult = await queryCacheService.get(this.db, cacheQueryName)
+            if (cachedResult) return cachedResult.result
     
             // call the original function
             let result
@@ -94,10 +98,8 @@ function cacheQuery(queryName: string) {
             } else {
                 result = await originalValue.apply(this, arguments)
             }
-
-            console.log(result)
             
-            // await queryCacheService.put(this.db, cacheQueryName, result)
+            await queryCacheService.put(this.db, cacheQueryName, result)
 
             return result
     

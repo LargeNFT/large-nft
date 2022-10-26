@@ -12,7 +12,6 @@ import { ImageService } from "./image-service";
 
 import excerptHtml from 'excerpt-html'
 import { Image } from "../dto/image";
-import { QuillService } from "./quill-service";
 import { AggregateStats } from "../dto/aggregate-stats";
 
 @injectable()
@@ -21,7 +20,6 @@ class ItemService {
     constructor(
         private itemRepository: ItemRepository,
         private imageService:ImageService,
-        private quillService:QuillService
     ) { }
 
     async get(_id: string): Promise<Item> {
@@ -64,6 +62,7 @@ class ItemService {
         }
 
         await this.itemRepository.put(item)
+
     }
 
     async delete(item:Item): Promise<void> {
@@ -79,14 +78,6 @@ class ItemService {
     async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
         return this.itemRepository.getTokenIdStatsByChannel(channelId)
     }
-
-    // async getNext(item:Item) : Promise<Item> {
-    //     return this.itemRepository.getNext(item)
-    // }
-
-    // async getPrevious(item:Item) : Promise<Item> {
-    //     return this.itemRepository.getPrevious(item)
-    // }
 
     async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
 
@@ -153,10 +144,16 @@ class ItemService {
         return tokenIdStats.max + 1
     }
 
-    async getAttributeInfo(channelId:string, traitType:string, value:string) : Promise<AttributeInfo> {
-        return this.itemRepository.getAttributeInfo(channelId, traitType, value)
+    async getAttributeInfo(channelId:string) : Promise<AttributeInfo[]> {
+        return this.itemRepository.getAttributeInfo(channelId)
        
     }
+
+    async clearQueryCache(item:Item) {
+        return this.itemRepository.clearQueryCache(item)
+    }
+
+
 }
 
 export {

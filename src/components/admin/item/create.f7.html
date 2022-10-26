@@ -12,7 +12,7 @@
 
           <ul class="breadcrumb">
             <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
-            <li>Create Blog NFT</li>
+            <li>Create Item</li>
           </ul>
 
           <form class="list media-list" id="create-item-form" @submit="${formSubmit}">
@@ -168,15 +168,20 @@
         await itemService.put(item)
 
         const toast = $f7.toast.show({
-          text: 'Blog NFT saved',
+          text: 'Item created',
           closeTimeout: 2000,
           closeButton: true,
           position: 'bottom',
           horizontalPosition: 'left'
         })
 
+        //Clear caches
+        await itemService.clearQueryCache(item)
+
+
         //Redirect
-        $f7.views.main.router.navigate(`/admin/item/show/${item._id}`)
+        $f7.views.main.router.navigate(`/admin/channel/show/${item.channelId}/${item.tokenId}`)
+
 
       } catch (ex) {
         console.log(ex)

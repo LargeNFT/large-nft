@@ -157,17 +157,25 @@ class ItemWebService {
 
             }
 
+            //Look up scarcity of attributes
+            let attributeInfo
 
-            for (let attributeSelection of attributeSelections) {
+            try {
+                attributeInfo = await this.itemService.getAttributeInfo(channel._id)
+            } catch(ex) {}
 
-                let info = await this.itemService.getAttributeInfo(channel._id, attributeSelection.traitType, attributeSelection.value)
 
-                attributeSelection.categoryPercent = new Intl.NumberFormat('default', {
-                    style: 'percent',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                }).format((info?.count / tokenIdStats?.count))
+            if (attributeInfo) {
+                for (let attributeSelection of attributeSelections) {
+                    let matches = attributeInfo.filter(ai => ai.traitType == attributeSelection.traitType && ai.value == attributeSelection.value)
+                    attributeSelection.categoryPercent = matches?.length > 0 ? new Intl.NumberFormat('default', {
+                        style: 'percent',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    }).format((matches[0].count / tokenIdStats.count)) : ''
+                }
             }
+
 
         }
 
@@ -273,14 +281,18 @@ class ItemWebService {
 
         let result: ItemListViewModel[] = []
 
+        console.time('List by channel')
         let items: Item[] = await this.itemService.listByChannel(channelId, limit, skip)
+        console.timeEnd('List by channel')
 
         //Get channel
         const channel:Channel = await this.channelService.get(channelId)
 
+        console.time('Building view models')
         for (let item of items) {
             result.push(await this.getListViewModel(item, channel))
         }
+        console.timeEnd('Building view models')
 
         return result
 

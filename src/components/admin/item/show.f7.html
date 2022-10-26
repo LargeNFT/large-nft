@@ -8,7 +8,7 @@
       <div class="fab fab-extended fab-right-bottom">
         <a href="/admin/item/create/${itemViewModel.channel._id}" class="text-color-black">
           <i class="material-icons">create</i>
-          <div class="fab-text">Create Blog NFT</div>
+          <div class="fab-text">Create Item</div>
         </a>
       </div>
     ` : $h``} 
@@ -329,8 +329,11 @@
 
             await itemService.delete(itemViewModel.item)
 
+            //Clear caches
+            await itemService.clearQueryCache(itemViewModel.item)
+
             const toast = $f7.toast.show({
-              text: 'Blog NFT deleted',
+              text: 'Item deleted',
               closeTimeout: 2000,
               closeButton: true,
               position: 'bottom',

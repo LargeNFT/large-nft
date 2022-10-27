@@ -68,6 +68,9 @@ class Item {
     coverImageAsAnimation?:boolean
 
     @Allow()
+    originalJSONMetadata?:any
+
+    @Allow()
     datePublished?:string
 
     @Allow()

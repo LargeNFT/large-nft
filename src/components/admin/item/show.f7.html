@@ -4,7 +4,7 @@
 
     <${Navbar} />
 
-    ${showEdit ? $h`
+    ${itemViewModel.editable ? $h`
       <div class="fab fab-extended fab-right-bottom">
         <a href="/admin/item/create/${itemViewModel.channel._id}" class="text-color-black">
           <i class="material-icons">create</i>
@@ -48,7 +48,7 @@
               <div class="animation-content" innerHTML="${itemViewModel.animationContentHTML}"></div>
             </div>
 
-            ${showEdit ? $h`
+            ${itemViewModel.editable ? $h`
               <div class="card-footer item-show-footer">
                 
                   <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>

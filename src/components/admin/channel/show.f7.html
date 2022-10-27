@@ -41,32 +41,30 @@
             <div class="card-content">
 
               <div class="card-content card-content-padding">
-
                 
-                  <div class="float-right">
+                <div class="float-right">
 
-                    <div class="menu-item menu-item-dropdown">
-                      <div class="menu-item-content icon-only">
-                        <div class="menu-item-content">
-                          <i class="material-icons">more_vert</i>
-                        </div>
+                  <div class="menu-item menu-item-dropdown">
+                    <div class="menu-item-content icon-only">
+                      <div class="menu-item-content">
+                        <i class="material-icons">more_vert</i>
                       </div>
-                      <div class="menu-dropdown menu-dropdown-right">
-                        <div class="menu-dropdown-content">
+                    </div>
+                    <div class="menu-dropdown menu-dropdown-right">
+                      <div class="menu-dropdown-content">
 
-                          ${showEdit ? $h`
-                            <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
-                            <!-- <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a> -->
-                          ` : $h`<span />`}
-                          
-                          <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
-                          
-                        </div>
+                        ${showEdit ? $h`
+                          <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                          <!-- <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a> -->
+                        ` : $h`<span />`}
+                        
+                        <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
+                        
                       </div>
                     </div>
                   </div>
-                
-                
+                </div>
+                                
                 <div class="title">${channelViewModel?.channel?.title}</div>
 
                 ${channelViewModel?.authorDisplayName ? $h`
@@ -316,7 +314,6 @@
       return walletService.truncateEthAddress(address)
     }
 
-
     const resizeListener = (e) => {
         const viewPortWidth = getWidth()
 
@@ -349,7 +346,6 @@
                 </li>
                 `
     }
-
 
     $on('pageInit', async (e, page) => {
 
@@ -474,7 +470,6 @@
       `
     }
 
-
     const countItems = (itemRows) => {
         //Count actual items
         let itemCount = 0
@@ -485,8 +480,6 @@
 
         return itemCount
     }
-
-
 
     const deleteCollectionClick = async (e) => {
 

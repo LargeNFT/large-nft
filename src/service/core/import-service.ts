@@ -164,7 +164,6 @@ class ImportService {
         }
 
 
-
         //Create channel
         let channel:Channel = new Channel()
 
@@ -191,6 +190,8 @@ class ImportService {
 
         for (let tokenId of tokenIds) {
 
+            this.logForkProgress(forkStatus, `Fetching metadata for #${tokenId}`)
+
             let metadata = await this._getTokenMetadata(contract, tokenId )
 
             tokenMetadata.push( metadata )
@@ -203,7 +204,6 @@ class ImportService {
                 forkStatus.animations.total++
             }
 
-            this.logForkProgress(forkStatus, `Fetching metadata for #${tokenId}`)
         }
 
         
@@ -298,6 +298,8 @@ class ImportService {
 
             }
             
+            item.originalJSONMetadata = metadata
+
             //Save item
             await this.itemService.put(item)
 
@@ -903,11 +905,15 @@ class ImportService {
         } catch(ex) {}
         
         if (existing) {
+
             console.log(`Returning cached token metadata #${tokenId}`)
             return existing.tokenMetadata
-        }
+
+        } 
 
         let tokenURI = await contract.tokenURI(tokenId)
+
+        console.log(tokenURI)
 
         let metadata = JSON.parse(new TextDecoder().decode(await this._fetchURI(tokenURI)))
 

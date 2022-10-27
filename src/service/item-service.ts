@@ -34,7 +34,6 @@ class ItemService {
         return this.itemRepository.getByTokenId(channelId, tokenId)
     }
 
-
     async put(item: Item) {
 
         if (!item._id) {
@@ -69,8 +68,6 @@ class ItemService {
         await this.itemRepository.delete(item)
     }
 
-
-
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
         return this.itemRepository.listByChannel(channelId, limit, skip)
     }
@@ -80,6 +77,14 @@ class ItemService {
     }
 
     async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
+
+        //We are publishing an existing collection that we are not editing then export the original metadata
+        if (channel.forkType == "existing" && channel.importSuccess) {
+            console.log(`Exporting original metadata for token #${item.tokenId}`)
+            return item.originalJSONMetadata
+        }
+
+
 
         let result: NFTMetadata = {
             tokenId: item.tokenId,
@@ -116,8 +121,6 @@ class ItemService {
 
     }
 
-    
-
     async setDefaultCoverImage(item:Item) {
 
         let generated = await this.imageService.newFromItem(item)
@@ -138,15 +141,12 @@ class ItemService {
     }
 
     async getNextTokenId(channelId:string) {
-
         let tokenIdStats = await this.itemRepository.getTokenIdStatsByChannel(channelId)
-
         return tokenIdStats.max + 1
     }
 
     async getAttributeInfo(channelId:string) : Promise<AttributeInfo[]> {
         return this.itemRepository.getAttributeInfo(channelId)
-       
     }
 
     async clearQueryCache(item:Item) {

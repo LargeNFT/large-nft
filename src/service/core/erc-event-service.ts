@@ -20,9 +20,9 @@ class ERCEventService {
         let startBlock = 0
 
         //@ts-ignore
-        let endBlock = await this.walletService.provider.getBlockNumber()
+        // let endBlock = await this.walletService.provider.getBlockNumber()
 
-        console.log(`Fetching mint transfers for blocks: ${startBlock} to ${endBlock}`)
+        console.log(`Fetching mint transfers...`)
 
         const events = await contract.queryFilter({
                 address: contract.address,
@@ -33,8 +33,11 @@ class ERCEventService {
                 ]
             }, 
             startBlock, 
-            endBlock
+            "latest"
         )
+
+        console.log(`Found ${events.length} events`)
+
 
         return events
 

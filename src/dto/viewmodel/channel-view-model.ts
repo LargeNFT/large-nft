@@ -23,6 +23,8 @@ interface ChannelViewModel {
 
     editable:boolean
 
+    dateCreated:string
+
 }
 
 export {

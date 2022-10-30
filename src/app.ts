@@ -18,6 +18,7 @@ import './html/css/app.css'
 
 import { RoutingService } from "./service/core/routing-service"
 
+import AdminChannelShowComponent from './components/admin/channel/show.f7.html'
 
 
 export default async() => {
@@ -42,6 +43,7 @@ export default async() => {
 
     //Initialize routing
     app.routes.push(...routingService.buildRoutesForContainer(container))
+
 
     app.init()
 

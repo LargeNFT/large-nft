@@ -19,130 +19,21 @@
 
       <div class="row">
         <div class="col-100 large-66 center">
-
-          <div class="card channel-card-show">
-
-            <div class="card-header banner" id="show-channel-banner-${channelViewModel.channel._id}">
-
-              <div class="float-right">
-                <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;"
-                  href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
-              </div>
-
-
-              ${channelViewModel?.coverImage ? $h`
-              <img src="${channelViewModel.coverImage.url}" class="avatar" />
-              ` : $h`
-              <i class="material-icons avatar">image</i>
-              `}
-
-            </div>
-
-            <div class="card-content">
-
-              <div class="card-content card-content-padding">
-                
-                <div class="float-right">
-
-                  <div class="menu-item menu-item-dropdown">
-                    <div class="menu-item-content icon-only">
-                      <div class="menu-item-content">
-                        <i class="material-icons">more_vert</i>
-                      </div>
-                    </div>
-                    <div class="menu-dropdown menu-dropdown-right">
-                      <div class="menu-dropdown-content">
-
-                        ${showEdit ? $h`
-                          <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
-                          <!-- <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a> -->
-                        ` : $h`<span />`}
-                        
-                        <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                                
-                <div class="title">${channelViewModel?.channel?.title}</div>
-
-                ${channelViewModel?.authorDisplayName ? $h`
-                <div class="name">
-                  By <a
-                    href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
-                </div>
-                ` : ``}
-  
-                ${channelViewModel.channel.descriptionHTML ? $h`
-                  <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
-                    innerHTML="${channelViewModel.channel.descriptionHTML}">
-                  </div>
-                ` : $h`<span />`}
-
-                    
-                <div class="info row no-gap">
-
-                  <div class="col-33 info-box left">
-                    <span class="value">${channelViewModel.itemCount}</span>
-                    <label>items</label>
-                  </div>
-
-                  <div class="col-33 info-box left">
-                    <span class="value">${channelViewModel.channel.mintPrice}</span>
-                    <label>mint price</label>
-                  </div>
-
-                  <div class="col-33 info-box">
-                    <span class="value">${channelViewModel.channel.royaltyPercent}%</span>
-                    <label>royalty</label>
-                  </div>
-
-                </div>
-
-
-                ${channelViewModel.channel.contractAddress ? $h`
-                  <div class="contract-address">
-                    <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
-                  </div>
-                ` : $h``}
-
-                ${channelViewModel.channel.localCid ? $h`
-                  <div class="contract-address">
-                    <strong>Last Published IPFS CID:</strong> ${channelViewModel?.channel.localCid}
-                  </div>
-                ` : $h``}
-
-                ${channelViewModel.channel.forkedFromCid ? $h`
-                  <div class="contract-address">
-                    <strong>Forked from IPFS:</strong> ${channelViewModel?.channel.forkedFromCid}
-                  </div>
-                ` : $h``}
-
-                ${channelViewModel.channel.forkedFromId ? $h`
-                  <div class="contract-address">
-                    <strong>Forked from:</strong> ${channelViewModel?.channel.forkedFromId}
-                  </div>
-                ` : $h``}
-
-              </div>
-
-            </div>
-
-          </div>
+          <${ChannelCard} channel_view_model=${channelViewModel} />
 
           <div class="block-title block-title-medium">Items</div>
-
+    
           <${TokenNavigator} channel=${channelViewModel.channel._id} token_id="1" />
-
+    
           <div class="list cards-list virtual-list" id="item-list" >
             <ul class="item-flex"></ul>
           </div>
-
+    
           <div class="preloader infinite-scroll-preloader" id="channel-item-list-preloader"></div>
-
         </div>
       </div>
+
+
 
 
     </div>
@@ -154,123 +45,7 @@
 
 
 <style>
-  .channel-card-show .card-header {
-    display: block;
-    padding: 10px;
-  }
-
-
-  .channel-card-show .title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 50px;
-    text-align: left;
-  }
-
-  .channel-card-show .name,
-  .channel-card-show .contract-address {
-    text-align: left;
-  }
-
-  .channel-card-show .name a {
-    color: var(--f7-theme-color);
-    font-weight: bold;
-  }
-
-  .channel-card-show .excerpt {
-    font-size: 17px;
-  }
-
-  .channel-card-show .card-content img {
-    display: block;
-    max-width: 100%;
-  }
-
-  .channel-card-show .banner {
-    height: 200px;
-    width: 100%;
-    background-position: center;
-    background-size: cover;
-  }
-
-  .channel-card-show .avatar {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    border-radius: 25%;
-    left: 10px;
-    bottom: 0;
-    margin-bottom: -50px;
-    z-index: 10000;
-    border: 3px solid #ffffff;
-    font-size: 100px;
-    background: #ffffff;
-  }
-
-  .channel-card-show a {
-    color: var(--f7-text-color);
-  }
-
-  .channel-card-show .description {
-    font-size: 17px;
-    text-align: left;
-    max-width: 100%;
-  }
-
   
-
-  .item-card {
-    cursor: pointer;
-  } 
-
-  .item-preview {
-    width: 100%;
-    display: flex;
-  }
-
-  .item-preview p {
-    margin-top: 5px;
-  }
-
-  .item-card .title {
-    color: #000000;
-    font-size: 23px;
-    font-weight: 700;
-  }
-
-  .item-preview .right {
-    flex: 0 0 150px;
-    /* do not grow, do not shrink, start at 250px */
-  }
-
-  .item-preview .right img {
-    max-width: 100%;
-  }
-
-  .item-preview .left {
-    flex: 1;
-    /* grow */
-  }
-
-  .menu-dropdown-link.menu-close {
-    color: #ffffff;
-  }
-
-  .channel-show-token-id {
-    color: rgb(79, 79, 79);
-  }
-
-  .contract-address {
-    margin-top: 10px;
-    font-size: 12px;
-  }
-
-  #item-list {
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 10px;
-  }
-
 
 </style>
 
@@ -285,6 +60,7 @@
   import Navbar from "../../admin/navbar.f7.html"
   import ItemList from "../../admin/channel/item-list.f7.html"
   import TokenNavigator from "./token-navigator.f7.html"
+  import ChannelCard from "./channel-card.f7.html"
 
   import hotkeys from 'hotkeys-js'
 
@@ -307,8 +83,14 @@
     let virtualList
 
     let totalItemCount = channelViewModel.itemCount
-    let showEdit = channelViewModel.editable
 
+    const COLS_LARGE = 5
+    const HEIGHT_LARGE = 290
+
+    const COLS_SMALL = 2
+    const HEIGHT_SMALL = 250
+
+    let showEdit = channelViewModel.editable
 
     const truncateEthAddress = (address) => {
       return walletService.truncateEthAddress(address)
@@ -317,7 +99,8 @@
     const resizeListener = (e) => {
         const viewPortWidth = getWidth()
 
-        virtualList.params.cols = viewPortWidth >= 1024 ? 5 : 2
+        virtualList.params.cols = viewPortWidth >= 1024 ? COLS_LARGE : COLS_SMALL
+        virtualList.params.height = viewPortWidth >= 1024 ? HEIGHT_LARGE : HEIGHT_SMALL
         virtualList.update()
 
         console.log("Resized...")
@@ -330,21 +113,21 @@
 
     const virtualListParams = {
 
-            el: '#item-list',
-            createUl: false,
-            renderItem(item) {
-                return getTemplate(item)
-            },
-            height: 300,
-            items: items,                    
-            cols: getWidth() >= 1024 ? 5 : 2,
-            emptyTemplate: `
-                <li class="item-content">
-                    <div class="item-inner">
-                        No items in collection.
-                    </div>
-                </li>
-                `
+      el: '#item-list',
+      createUl: false,
+      renderItem(item) {
+          return getTemplate(item)
+      },
+      height: getWidth() >= 1024 ? HEIGHT_LARGE : HEIGHT_SMALL,
+      items: items,                    
+      cols: getWidth() >= 1024 ? COLS_LARGE : COLS_SMALL,
+      emptyTemplate: `
+          <li class="item-content">
+              <div class="item-inner">
+                  No items in collection.
+              </div>
+          </li>
+          `
     }
 
     $on('pageInit', async (e, page) => {
@@ -481,29 +264,6 @@
         return itemCount
     }
 
-    const deleteCollectionClick = async (e) => {
-
-      $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {
-
-        $f7.preloader.show()
-
-        await channelService.delete(channelViewModel.channel)
-
-        $f7.preloader.hide()
-
-        $f7.views.main.router.navigate(`/`)
-
-        const toast = $f7.toast.show({
-          text: 'Collection deleted',
-          closeTimeout: 2000,
-          closeButton: true,
-          position: 'bottom',
-          horizontalPosition: 'left'
-        })
-
-      })
-
-    }
 
     return $render
   }

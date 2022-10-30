@@ -262,7 +262,8 @@
       },
 
       themes: [],
-      staticPages: []
+      staticPages: [],
+      editable: true
     }
 
 
@@ -299,6 +300,7 @@
       if (channel.authorId) {
         await authorService.insertIfNew(channel.authorId)
       }
+
       //Save
       try {
 

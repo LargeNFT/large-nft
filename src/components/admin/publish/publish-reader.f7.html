@@ -174,6 +174,8 @@
         let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
         let showPublishReader = channelViewModel.channel.localCid != undefined
 
+        // console.log(channelViewModel)
+
         $on('pageInit', async () => {
 
           //Initialize IPFS
@@ -197,12 +199,12 @@
           $f7.preloader.showIn(elem)
 
           try {
-            await gitlabService.deployReader(channelViewModel.channel)
+            await gitlabService.deployReaderGit(channelViewModel.channel)
           } catch(ex) {
             $f7.dialog.alert(ex, "There was an error")
           }
 
-          console.log('hide')
+          // console.log('hide')
           $f7.preloader.hideIn(elem)
 
           publishing = false
@@ -212,7 +214,7 @@
 
 
         $(document).on('publish-reader-progress', async (e) => {
-          publishReaderOutput += `<p>${e.detail.message}</p>`
+          publishReaderOutput = `<p>${e.detail.message}</p>`
           $update()
         })
 

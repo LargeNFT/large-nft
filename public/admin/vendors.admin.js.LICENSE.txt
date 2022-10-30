@@ -50,6 +50,8 @@ and limitations under the License.
 
 /*! @license DOMPurify | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.2.2/LICENSE */
 
+/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
+
 /*! https://mths.be/he v1.2.0 by @mathias | MIT license */
 
 /*! https://mths.be/punycode v1.3.2 by @mathias */

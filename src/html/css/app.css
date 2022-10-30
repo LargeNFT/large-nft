@@ -604,36 +604,6 @@ ul.breadcrumb li a:hover {
 
 
 
-.info {
-  max-width: 450px;
-  margin-top: 10px;
-}
-
-.info-box .value {
-    display: block;
-    font-weight: 600;
-    font-size: 24px;
-    color: rgb(4, 17, 29);
-}
-
-.info-box {
-  border: 1px solid rgb(229, 232, 235);
-  padding: 15px;
-  text-align: center;
-  height: 90px;
-  width: 150px;
-}
-
-.info-box.left {
-    border-right: 0px;
-}
-
-.info-box label {
-  display: block;
-  color: rgb(138, 147, 155);
-
-}
-
 
 
 .channel-editor {
@@ -718,7 +688,7 @@ ul.breadcrumb li a:hover {
 .flex-card {
   flex: 0 0 20%;
   margin: 0px;
-  height: 300px;
+  height: 290px;
 }
 
 .flex-card .card {
@@ -733,6 +703,25 @@ ul.breadcrumb li a:hover {
   border: none;
 }
 
+.square {
+  position: relative;
+  width: 100%;
+}
+
+.square img {
+  position: absolute;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+}
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+
 @media only screen and (max-width: 1024px) {
   .fixed-width-content {
     width: 100%;
@@ -743,6 +732,7 @@ ul.breadcrumb li a:hover {
   .flex-card {
     flex: 0 0 50%;
     margin: 0px;
+    height: 250px;
   }
 }
 
@@ -906,4 +896,149 @@ ul.breadcrumb li a:hover {
   .fab-right-center {
     right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));
   }
+}
+
+
+
+
+
+
+
+
+.channel-card-show .card-header {
+  display: block;
+  padding: 10px;
+}
+
+
+.channel-card-show .title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 50px;
+  text-align: left;
+}
+
+.channel-card-show .name,
+.channel-card-show .contract-address {
+  text-align: left;
+}
+
+.channel-card-show .name a {
+  color: var(--f7-theme-color);
+  font-weight: bold;
+}
+
+.channel-card-show .excerpt {
+  font-size: 17px;
+}
+
+.channel-card-show .card-content img {
+  display: block;
+  max-width: 100%;
+}
+
+.channel-card-show .banner {
+  height: 200px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+.channel-card-show .avatar {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 25%;
+  left: 10px;
+  bottom: 0;
+  margin-bottom: -50px;
+  z-index: 10000;
+  border: 3px solid #ffffff;
+  font-size: 100px;
+  background: #ffffff;
+}
+
+.channel-card-show a {
+  color: var(--f7-text-color);
+}
+
+.channel-card-show .description {
+  font-size: 17px;
+  text-align: left;
+  max-width: 100%;
+}
+
+
+
+.item-card {
+  cursor: pointer;
+} 
+
+.item-preview {
+  width: 100%;
+  display: flex;
+}
+
+.item-preview p {
+  margin-top: 5px;
+}
+
+.item-card .title {
+  color: #000000;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.item-preview .right {
+  flex: 0 0 150px;
+  /* do not grow, do not shrink, start at 250px */
+}
+
+.item-preview .right img {
+  max-width: 100%;
+}
+
+.item-preview .left {
+  flex: 1;
+  /* grow */
+}
+
+.menu-dropdown-link.menu-close {
+  color: #ffffff;
+}
+
+.channel-show-token-id {
+  color: rgb(79, 79, 79);
+}
+
+.contract-address {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+#item-list {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 10px;
+}
+
+
+input[type="text"]:disabled {
+  background: #cccccc;
+}
+
+
+
+.collection-info  {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.collection-info label {
+  margin-right: 4px;
+}
+
+.collection-info .dot {
+  margin-left: 10px;
+  margin-right: 10px;
 }

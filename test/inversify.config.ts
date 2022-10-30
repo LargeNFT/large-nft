@@ -19,6 +19,7 @@ import { IpfsService } from "../src/service/core/ipfs-service";
 import { IpfsHostService } from "../src/service/core/ipfs-host-service";
 
 import fs from 'fs';
+import git from "isomorphic-git"
 
 
 import { DatabaseService } from "../src/service/core/database-service";
@@ -53,6 +54,7 @@ import { ThemeService } from "../src/service/theme-service";
 import { PDFService } from "../src/service/core/pdf-service";
 import { UploadService } from "../src/service/core/upload-service";
 import { ERCEventService } from "../src/service/core/erc-event-service";
+import { TokenMetadataCacheRepository } from "../src/repository/token-metadata-cache-repository";
 
 
 
@@ -89,6 +91,8 @@ async function getContainer() {
 
     container.bind("provider").toConstantValue(provider())
     container.bind("pouch-prefix").toConstantValue("./test/pouch/")
+    container.bind("fs").toConstantValue(fs)
+    container.bind("git").toConstantValue(git)
 
 
     container.bind(DatabaseService).toSelf().inSingletonScope()
@@ -128,6 +132,7 @@ async function getContainer() {
     container.bind(ThemeRepository).toSelf().inSingletonScope()
     container.bind(StaticPageRepository).toSelf().inSingletonScope()
     container.bind(IpfsHostRepository).toSelf().inSingletonScope()
+    container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
 
 
     //Spin up local IPFS

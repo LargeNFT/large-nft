@@ -60,6 +60,9 @@ class DatabaseService {
     async getDatabase(walletAddress:string, name:string, changesets?:Changeset[]) {
 
         const fullName = `${this.pouchPrefix}${ethers.utils.getAddress(walletAddress)}-${name}`
+        // const fullName = `${this.pouchPrefix}${walletAddress}-${name}`
+
+
 
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 

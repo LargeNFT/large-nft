@@ -1,0 +1,179 @@
+<template>
+
+  <div class="card channel-card-show">
+
+    <div class="card-header banner" id="show-channel-banner-${channelViewModel.channel._id}">
+
+      <div class="float-right">
+        <a class="button button-fill button-raised color-blue text-color-white" style="border:1px solid white;"
+          href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
+      </div>
+
+
+      ${channelViewModel?.coverImage ? $h`
+      <img src="${channelViewModel.coverImage.url}" class="avatar" />
+      ` : $h`
+      <i class="material-icons avatar">image</i>
+      `}
+
+    </div>
+
+    <div class="card-content">
+
+      <div class="card-content card-content-padding">
+        
+        <div class="float-right">
+
+          <div class="menu-item menu-item-dropdown">
+            <div class="menu-item-content icon-only">
+              <div class="menu-item-content">
+                <i class="material-icons">more_vert</i>
+              </div>
+            </div>
+            <div class="menu-dropdown menu-dropdown-right">
+              <div class="menu-dropdown-content">
+
+                ${showEdit ? $h`
+                  <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+                  <!-- <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a> -->
+                ` : $h`<span />`}
+                
+                <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+                        
+        <div class="title">${channelViewModel?.channel?.title}</div>
+
+        ${channelViewModel?.authorDisplayName ? $h`
+        <div class="name">
+          By <a
+            href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+        </div>
+        ` : ``}
+
+        <div class="collection-info">
+            <label>Items:</label><strong>${channelViewModel?.itemCount}</strong>
+            
+            <span class="dot">·</span>
+            <label>Created:</label><strong>${channelViewModel.dateCreated}</strong>
+  
+            ${channelViewModel.channel.mintPrice ? $h`
+              <span class="dot">·</span>
+              <label>Mint Price:</label><strong>${channelViewModel.channel.mintPrice} ETH</strong>
+            ` : $h``}
+  
+            ${channelViewModel.channel.royaltyPercent ? $h`
+              <span class="dot">·</span>
+              <label>Creator fee:</label><strong>${channelViewModel.channel.royaltyPercent}%</strong>
+            ` : $h``}
+    
+
+
+  
+        </div>
+
+
+
+
+        
+
+
+        ${channelViewModel.channel.descriptionHTML ? $h`
+          <div class="description" id="channel-show-description-${channelViewModel.channel._id}"
+            innerHTML="${channelViewModel.channel.descriptionHTML}">
+          </div>
+        ` : $h`<span />`}
+
+            
+
+
+
+        ${channelViewModel.channel.contractAddress ? $h`
+          <div class="contract-address">
+            <strong>Contract Address:</strong> ${truncateEthAddress(channelViewModel?.channel.contractAddress)}
+          </div>
+        ` : $h``}
+
+        ${channelViewModel.channel.localCid ? $h`
+          <div class="contract-address">
+            <strong>Last Published IPFS CID:</strong> ${channelViewModel?.channel.localCid}
+          </div>
+        ` : $h``}
+
+        ${channelViewModel.channel.forkedFromCid ? $h`
+          <div class="contract-address">
+            <strong>Forked from IPFS:</strong> ${channelViewModel?.channel.forkedFromCid}
+          </div>
+        ` : $h``}
+
+        ${channelViewModel.channel.forkedFromId ? $h`
+          <div class="contract-address">
+            <strong>Forked from:</strong> ${channelViewModel?.channel.forkedFromId}
+          </div>
+        ` : $h``}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</template>
+
+
+<style>    
+</style>
+
+<script>
+
+    import { ContainerService } from "../../../service/core/container-service"
+    import { ItemService } from "../../../service/item-service"
+    import { ChannelService } from "../../../service/channel-service"
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let itemService = ContainerService.getInstance(ItemService)
+        let channelService = ContainerService.getInstance(ChannelService)
+        let walletService = ContainerService.getWalletService()
+
+        let channelViewModel = props.channel_view_model
+
+        let showEdit = true
+
+        const truncateEthAddress = (address) => {
+          return walletService.truncateEthAddress(address)
+        }
+
+
+        const deleteCollectionClick = async (e) => {
+
+          $f7.dialog.confirm("Are you sure you want to delete this collection? This will only remove your local copy of the files.", async () => {
+
+              $f7.preloader.show()
+
+              await channelService.delete(channelViewModel.channel)
+
+              $f7.preloader.hide()
+
+              $f7.views.main.router.navigate(`/`)
+
+              const toast = $f7.toast.show({
+                text: 'Collection deleted',
+                closeTimeout: 2000,
+                closeButton: true,
+                position: 'bottom',
+                horizontalPosition: 'left'
+              })
+
+          })
+
+        }
+
+
+        return $render
+    }
+
+</script>

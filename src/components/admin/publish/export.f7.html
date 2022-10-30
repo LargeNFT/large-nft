@@ -321,7 +321,7 @@
         $(document).on('publish-progress', async (e) => {
 
             if (e.detail.message) {
-                publishOutput += `<p>${e.detail.message}</p>`
+                publishOutput = `<p>${e.detail.message}</p>`
             }
             
             publishStatus = e.detail.publishStatus

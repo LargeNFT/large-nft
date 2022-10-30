@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import moment from "moment";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
@@ -95,11 +96,8 @@ class ChannelWebService {
         let themes:Theme[] = await this.themeService.listByChannel(channel._id, 1000, 0)
         let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 1000, 0)
 
-        // console.time('Counting items')
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
-        // console.timeEnd('Counting items')
 
-        // console.log(channel)
 
         return {
             channel: channel,
@@ -111,7 +109,8 @@ class ChannelWebService {
             authorDisplayName: this.authorService.getDisplayName(author),
             authorPhoto: authorPhoto,
             itemCount: itemCount,
-            editable: editable
+            editable: editable,
+            dateCreated: moment(channel.dateCreated).format("MMM Do YYYY")    
         }
 
     }

@@ -3,7 +3,7 @@ const toBuffer = require('it-to-buffer')
 import parse from "parse-link-header"
 
 import { validate, ValidationError } from "class-validator";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { ValidationException } from "../../util/validation-exception";
 
 
@@ -12,7 +12,8 @@ import { Gitlab } from "../../dto/gitlab";
 import { Channel } from "../../dto/channel";
 import { IpfsService } from './ipfs-service';
 
-
+import http from 'isomorphic-git/http/web/index.js'
+import { AuthorService } from '../../service/author-service';
 
 const contractABI = require('../../../contracts.json')
 
@@ -25,7 +26,10 @@ class GitlabService {
 
     constructor(
         private gitlabRepository:GitlabRepository,
-        private ipfsService:IpfsService
+        private ipfsService:IpfsService,
+        private authorService:AuthorService,
+        @inject('fs') private fs,
+        @inject('git') private git
     ) {}
 
     async get(): Promise<Gitlab> {
@@ -290,11 +294,17 @@ class GitlabService {
         })
 
 
+        //Commit 
+        await this.commit(channel, actions, config)
+
+
 
         //Get list of files in /metadata
         this.logPublishReaderProgress(`Saving NFT metadata...`)
         
         try {
+
+            let i=0
 
             for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/metadata/`)) {
 
@@ -306,6 +316,13 @@ class GitlabService {
                     file_path: `backup/export/metadata/${file.name}`,
                     content: new TextDecoder("utf-8").decode(bufferedContents)
                 })
+
+                if (i % 500 == 0) {
+                    //Commit 
+                    await this.commit(channel, actions, config)
+                }
+
+                i++
     
             }
 
@@ -314,11 +331,16 @@ class GitlabService {
         }
 
 
+        //Commit 
+        await this.commit(channel, actions, config)
+
 
         //Get list of files in /images
         this.logPublishReaderProgress(`Saving images...`)
 
         try {
+
+            let i=0
 
             for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/images/`)) {
 
@@ -331,6 +353,13 @@ class GitlabService {
                     content: Buffer.from(bufferedContents).toString('base64'),
                     encoding: 'base64'
                 })
+
+                if (i % 500 == 0) {
+                    //Commit 
+                    await this.commit(channel, actions, config)
+                }
+
+                i++
     
             }
             
@@ -339,11 +368,16 @@ class GitlabService {
         }
 
 
+        //Commit 
+        await this.commit(channel, actions, config)
+
 
         //Get list of files in /animations
         this.logPublishReaderProgress(`Saving animations...`)
 
         try {
+
+            let i=0
 
             for await (const file of this.ipfsService.ipfs.files.ls(`${directory}/animations/`)) {
 
@@ -356,6 +390,13 @@ class GitlabService {
                     content: Buffer.from(bufferedContents).toString('base64'),
                     encoding: 'base64'
                 })
+
+                if (i % 500 == 0) {
+                    //Commit 
+                    await this.commit(channel, actions, config)
+                }
+
+                i++
     
             }
             
@@ -364,31 +405,32 @@ class GitlabService {
         }
 
 
-
-
-        let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
-
-        this.logPublishReaderProgress(`Commiting reader data for ${channel.title}`)
-
-        // try {
-            const res = await axios.post(url, {
-                branch: "master",
-                commit_message: `Commiting reader data for ${channel.title}`,
-                actions: actions,
-            } , {
-                headers: {
-                    "Authorization": `Bearer ${config.personalAccessToken}`
-                }
-            })
-        // } catch(ex) {
-        //     console.log(ex.response.data)
-        // }
-
-
+        await this.commit(channel, actions, config)
 
         this.logPublishReaderProgress(`Publish complete`)
 
     }
+
+    async commit(channel:Channel, actions:any[], config:Gitlab) {
+
+        this.logPublishReaderProgress(`Commiting reader data for ${channel.title}: ${actions.length} actions`)
+
+        let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
+
+        const res = await axios.post(url, {
+            branch: "master",
+            commit_message: `Commiting reader data for ${channel.title}`,
+            actions: actions,
+        } , {
+            headers: {
+                "Authorization": `Bearer ${config.personalAccessToken}`
+            }
+        })
+
+        //Clear actions
+        actions.length = 0
+    }
+
 
     async deleteReaderBackup(channel:Channel) {
 
@@ -397,6 +439,7 @@ class GitlabService {
         if (config.personalAccessToken.length < 1) {
             throw new Error("Gitlab personal access token not set")
         }
+        
 
         this.logPublishReaderProgress(`Deleting existing files from repo...`)
 
@@ -470,7 +513,249 @@ class GitlabService {
     
     }
 
+
+
+
+
+
+
+
+    async deployReaderGit(channel:Channel) {
+
+        let config = await this.get()
+
+        if (config.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        //Make sure we have an author
+        let author = await this.authorService.get(channel.authorId)
+
+        if (!author) {
+            throw new Error("No author found.")
+        }
+
+        let gitUsername = author.name ? author.name : author._id
+
+
+        //Get fork URL
+        let existingForkResult = await this.getExistingFork(channel)
+
+        let repoURI = existingForkResult.http_url_to_repo
+        let defaultBranch = existingForkResult.default_branch 
+
+
+        //Init FS
+        let fs = this.fs
+
+        fs.backend.ipfs = this.ipfsService.ipfs
+
+        //Get a reference to the IPFSFileList to build
+        let ipfsFileList:IPFSFileList = 
+
+
+        //Check if we already have a repo
+        let dir = `/repo-${channel._id}`
+        let exists = await this._dirExists(`${dir}/.git`)
+
+
+        //Clone or pull depending on if we already have the repo.
+        if (!exists) {
+
+            this.logPublishReaderProgress(`Git clone: ${repoURI} to ${dir}`)
+
+            await this.git.clone({
+                fs,
+                http,
+                dir,
+                corsProxy: 'https://cors.isomorphic-git.org',
+                url: repoURI,
+                ref: defaultBranch,
+                singleBranch: true
+            })
+
+
+            this.logPublishReaderProgress(`Setting git user.name to ${gitUsername}`)
+
+            await this.git.setConfig({
+                fs,
+                dir,
+                path: 'user.name',
+                value: gitUsername
+            })
+
+
+        } else {
+
+            this.logPublishReaderProgress(`Git pull`)
+
+            //Do a git pull
+            this.logPublishReaderProgress(
+                await this.git.pull({
+                    fs,
+                    http,
+                    dir,
+                    ref: defaultBranch,
+                    singleBranch: true
+                })
+            )
+
+
+        }
+
+        this.logPublishReaderProgress(`Deploying reader...`)
+
+
+
+
+
+        //IPFS MFS directory
+        let ipfsDir = `/export/${channel._id}`
+        
+        //If the contract is deployed add a file with the address
+        if (channel.contractAddress) {
+            
+            //Write contract info
+            await fs.promises.writeFile(`${dir}/backup/contract/contract.json`, JSON.stringify({
+                contractAddress: channel.contractAddress,
+                ipfsCid: channel.localCid
+            }), 'utf8')
+
+
+            //Also the ABI
+            await fs.promises.writeFile(`${dir}/backup/contract/contract-abi.json`, JSON.stringify(contractABI), 'utf8')
+
+            //Also the contract metadata
+            await this._ipfsToFs(`${ipfsDir}/contractMetadata.json`, `${dir}/backup/export/contractMetadata.json`)
+
+
+
+        } else {
+            await fs.promises.writeFile(`${dir}/backup/contract/contract.json`, JSON.stringify({}), 'utf8') //empty file
+            await fs.promises.writeFile(`${dir}/backup/contract/contract-abi.json`, JSON.stringify({}), 'utf8') //empty file
+        }
+
+        // //Channels
+        await this._ipfsToFs(`${ipfsDir}/backup/channels.json`, `${dir}/backup/export/backup/channels.json`)
+        await this._ipfsToFs(`${ipfsDir}/backup/authors.json`, `${dir}/backup/export/backup/authors.json`)
+        await this._ipfsToFs(`${ipfsDir}/backup/items.json`, `${dir}/backup/export/backup/items.json`)
+        await this._ipfsToFs(`${ipfsDir}/backup/images.json`, `${dir}/backup/export/backup/images.json`)
+        await this._ipfsToFs(`${ipfsDir}/backup/animations.json`, `${dir}/backup/export/backup/animations.json`)
+        await this._ipfsToFs(`${ipfsDir}/backup/themes.json`, `${dir}/backup/export/backup/themes.json`)
+        await this._ipfsToFs(`${ipfsDir}/backup/static-pages.json`, `${dir}/backup/export/backup/static-pages.json`)
+
+
+        // //Get list of files in /metadata        
+        // try {
+
+        //     this.logPublishReaderProgress(`Saving NFT metadata...`)
+
+        //     for await (const file of this.ipfsService.ipfs.files.ls(`${ipfsDir}/metadata/`)) {
+        //         this.logPublishReaderProgress(`Saving ${dir}/backup/export/metadata/${file.name}`)
+        //         await this._ipfsToFs(`${ipfsDir}/metadata/${file.name}`, `${dir}/backup/export/metadata/${file.name}`)
+        //     }
+
+        // } catch(ex) {
+        //     this.logPublishReaderProgress(ex)
+        // }
+
+   
+        // //Get list of files in /images
+        // try {
+
+        //     this.logPublishReaderProgress(`Saving images...`)
+
+        //     for await (const file of this.ipfsService.ipfs.files.ls(`${ipfsDir}/images/`)) {
+        //         this.logPublishReaderProgress(`Saving ${dir}/backup/export/images/${file.name}`)
+
+        //         await this._ipfsToFsBinary(`${ipfsDir}/images/${file.name}`, `${dir}/backup/export/images/${file.name}`)
+        //     }
+            
+        // } catch(ex) {
+        //     this.logPublishReaderProgress(ex)
+        // }
+
+
+        // //Get list of files in /animations
+        // try {
+
+        //     this.logPublishReaderProgress(`Saving animations...`)
+
+        //     for await (const file of this.ipfsService.ipfs.files.ls(`${ipfsDir}/animations/`)) {
+        //         this.logPublishReaderProgress(`Saving ${dir}/backup/export/animations/${file.name}`)
+
+        //         await this._ipfsToFsBinary(`${ipfsDir}/animations/${file.name}`, `${dir}/backup/export/animations/${file.name}`)
+        //     }
+            
+        // } catch(ex) {
+        //     this.logPublishReaderProgress(ex)
+        // }
+
+
+        //Git add
+        console.log("Git add")
+
+        await this.git.add({
+            fs,
+            dir,
+            filepath: "."
+        })
+
+        
+
+        console.log("Git commit")
+        await this.git.commit({
+            fs,
+            dir,
+            message: `Channel "${channel.title}" published`
+        })
+
+        console.log("Git push")
+        let pushResult = await this.git.push({
+            fs,
+            http,
+            dir: dir,
+            remote: 'origin',
+            ref: defaultBranch,
+            onAuth: () => ({ 
+                username: 'ptoner', //gotta store this somewhere
+                password: config.personalAccessToken
+            }),
+          })
+
+        console.log(pushResult)
+
+        this.logPublishReaderProgress(`Publish complete`)
+
+    }
+
+    private async _ipfsToFs(ipfsFilename:string, fsFilename:string) {
+        let contents = await toBuffer(this.ipfsService.ipfs.files.read(ipfsFilename)) 
+        return this.fs.promises.writeFile(fsFilename, new TextDecoder("utf-8").decode(contents), 'utf8') 
+    }
+
+    private async _ipfsToFsBinary(ipfsFilename:string, fsFilename:string) {
+        let contents = await toBuffer(this.ipfsService.ipfs.files.read(ipfsFilename)) 
+        return this.fs.promises.writeFile(fsFilename, contents, 'utf8') 
+    }
+
+    private async _dirExists(dir) {
+
+        let exists = false
+
+        //Make sure directory exists
+        try {
+            await this.fs.promises.readdir(dir)
+            exists = true
+        } catch (ex) {}
+
+        return exists
+    }
+
+
 }
+
+
 
 export {
     GitlabService

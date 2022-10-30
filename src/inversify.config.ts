@@ -57,6 +57,10 @@ import { QueryCacheService } from './service/core/query-cache-service';
 import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
 
+import git from "isomorphic-git"
+import FS from '@isomorphic-git/lightning-fs'
+
+
 import { ThemeService } from './service/theme-service';
 import { ThemeRepository } from './repository/theme-repository';
 import { StaticPageRepository } from './repository/static-page-repository';
@@ -65,6 +69,7 @@ import { IpfsHostService } from './service/core/ipfs-host-service';
 import { IpfsHostRepository } from './repository/ipfs-host-repository';
 
 import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository';
+import { LargeFSBackend } from './util/large-git-fs';
 
 //Init framework7
 //@ts-ignore
@@ -173,6 +178,8 @@ function getMainContainer(readerConfig:ReaderConfig) {
     }
   }
 
+  
+
   // container.bind('sketch').toConstantValue(sketch())
   container.bind("contracts").toConstantValue(contracts())
   container.bind("provider").toConstantValue(provider())
@@ -180,6 +187,15 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind("framework7").toConstantValue(framework7())
   container.bind("readerConfig").toConstantValue(readerConfig)
   container.bind("pouch-prefix").toConstantValue("./pouch/")
+
+  container.bind("fs").toConstantValue(new FS("large-fs", 
+  //@ts-ignore 
+  { backend: new LargeFSBackend() } ))
+
+
+  container.bind("git").toConstantValue(git)
+
+
 
   container.bind(ChannelController).toSelf().inSingletonScope()
   container.bind(ItemController).toSelf().inSingletonScope()

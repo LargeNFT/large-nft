@@ -5,10 +5,14 @@ class LargeFSBackend extends DefaultBackend {
 
     ipfs
 
-    ipfsFileList:IPFSFilelist = new IPFSFilelist()
+    ipfsFileList:IPFSFilelist
 
     async writeFile(filepath, data, opts) {
 
+        //If we're short-circuiting the read operation we do not actually write.
+        let fileInfo = this.ipfsFileList.getFileInfoByFilepath(filepath)
+        if (fileInfo) return 
+        
         let directory = getDirectory(filepath)
 
         //Check for files we want to get from IPFS or local
@@ -22,16 +26,18 @@ class LargeFSBackend extends DefaultBackend {
 
         let fileInfo = this.ipfsFileList.getFileInfoByFilepath(filepath)
 
-        if (fileInfo.ipfsDir) {
+        if (fileInfo) {
 
-            //get the actual file contents from IPFS
-            return toBuffer(this.ipfs.files.read(`${fileInfo.ipfsDir}/${fileInfo.filename}`)) 
+            if (fileInfo.ipfsDir) {
+                //get the actual file contents from IPFS
+                return toBuffer(this.ipfs.files.read(`${fileInfo.ipfsDir}/${fileInfo.filename}`)) 
+            }
+    
+            if (fileInfo.content) {
+                console.log(fileInfo.content)
+                return Buffer.from(fileInfo.content)
+            }
         }
-
-        if (fileInfo.content) {
-            return fileInfo.content
-        }
-
 
         //For most files get from LightningFS
         return super.readFile(filepath, opts)
@@ -39,9 +45,15 @@ class LargeFSBackend extends DefaultBackend {
 
     readdir(filepath, opts) {
 
+        let directory = getDirectory(filepath)
+
         //Check for files we want to get from IPFS or local
-        let dirContents = this.ipfsFileList.readdir(filepath)
-        if (dirContents) return dirContents
+        let dirContents = this.ipfsFileList.readdir(directory)
+
+        if (dirContents) {
+            // console.log(filepath, dirContents)
+            return dirContents
+        }
 
         return super.readdir(filepath)
     
@@ -61,23 +73,22 @@ interface FileInfo {
 
 class IPFSFilelist {
 
-    directoryFileInfoMap = new Map<string, FileInfo[]>()
+    directoryFileInfoMap = {}
 
-    addFile(toDirectory, filename, ipfsDir, content) {
+    addFile(toDirectory, filename, ipfsDir?, content?) {
 
         let file = {
             filename: filename,
             ipfsDir: ipfsDir,
-            content: Buffer.from(content) 
+            content: content
         }
 
-        let files = this.directoryFileInfoMap.get(toDirectory)
+        let files = this.directoryFileInfoMap[toDirectory]
+
+        // console.log(files)
 
         if (!files) {
-
-            files = [file]
-            this.directoryFileInfoMap.set(toDirectory, files)
-
+            this.directoryFileInfoMap[toDirectory] = [file]
         } else {
 
             files.push(file)
@@ -87,7 +98,7 @@ class IPFSFilelist {
     }
 
     readdir(directory) : string[] {
-        return this.directoryFileInfoMap.get(directory)?.map( f => f.filename)
+        return this.directoryFileInfoMap[directory]?.map( f => f.filename)
     }
 
 
@@ -97,8 +108,10 @@ class IPFSFilelist {
         let directory = getDirectory(filepath)
         let filename = getFilename(filepath)
 
+        // console.log(directory, filename)
+
         //Match on filename
-        let match = this.directoryFileInfoMap.get(directory).filter( f => f.filename == filename)
+        let match = this.directoryFileInfoMap[directory]?.filter( f => f.filename == filename)
 
         if (match?.length > 0) {
             return match[0]
@@ -110,12 +123,12 @@ class IPFSFilelist {
 }
 
 
-const getDirectory(filepath) {
+function getDirectory(filepath) {
     return filepath.substring(0, filepath.lastIndexOf('/'))
 }
 
-const getFilename(filepath) {
-    return filepath.substring(filepath.lastIndexOf('/') + 1, filepath.length - 1)
+function getFilename(filepath) {
+    return filepath.substring(filepath.lastIndexOf('/') + 1, filepath.length)
 }
 
 

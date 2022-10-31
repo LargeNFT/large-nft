@@ -188,9 +188,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind("readerConfig").toConstantValue(readerConfig)
   container.bind("pouch-prefix").toConstantValue("./pouch/")
 
-  container.bind("fs").toConstantValue(new FS("large-fs", 
-  //@ts-ignore 
-  { backend: new LargeFSBackend() } ))
+  container.bind("fs").toConstantValue(new FS())
 
 
   container.bind("git").toConstantValue(git)

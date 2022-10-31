@@ -38,7 +38,7 @@ contract('StaticPageService', async (accounts) => {
         service = container.get(StaticPageService)
         schemaService = container.get(SchemaService)
 
-        await schemaService.loadWallet(user0)
+        await schemaService.load()
 
        
     })

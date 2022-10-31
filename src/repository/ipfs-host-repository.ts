@@ -20,8 +20,8 @@ class IpfsHostRepository {
         private databaseService: DatabaseService
     ) { }
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "ipfs-host", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("ipfs-host", this.changesets)
     }
     async get(): Promise<IpfsHost> {
         return Object.assign(new IpfsHost(), await this.db.get("single"))

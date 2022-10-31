@@ -29,22 +29,22 @@ class SchemaService {
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository
     ) {}
 
-    async loadWallet(walletAddress:string) {
+    async load() {
 
-        console.log(`Loading wallet: ${walletAddress}`)
+        console.log(`Loading databases`)
 
         //Open and cache databases
-        await this.authorRepository.load(walletAddress)
-        await this.channelRepository.load(walletAddress)
-        await this.imageRepository.load(walletAddress)
-        await this.itemRepository.load(walletAddress)
-        await this.pinningApiRepository.load(walletAddress)
-        await this.gitlabRepository.load(walletAddress)
-        await this.animationRepository.load(walletAddress)
-        await this.themeRepository.load(walletAddress)
-        await this.staticPageRepository.load(walletAddress)
-        await this.ipfsHostRepository.load(walletAddress)
-        await this.tokenMetadataCacheRepository.load(walletAddress)
+        await this.authorRepository.load()
+        await this.channelRepository.load()
+        await this.imageRepository.load()
+        await this.itemRepository.load()
+        await this.pinningApiRepository.load()
+        await this.gitlabRepository.load()
+        await this.animationRepository.load()
+        await this.themeRepository.load()
+        await this.staticPageRepository.load()
+        await this.ipfsHostRepository.load()
+        await this.tokenMetadataCacheRepository.load()
 
     }
 

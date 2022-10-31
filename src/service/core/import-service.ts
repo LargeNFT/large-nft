@@ -487,7 +487,7 @@ class ImportService {
                 existingAuthor = await this.authorService.get(author._id)
             } catch(ex) {}
 
-            await this.authorService.put(Object.assign(existingAuthor, author))            
+            await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))            
 
             forkStatus.authors.saved++
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)

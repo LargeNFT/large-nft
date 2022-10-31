@@ -47,35 +47,40 @@
       let walletService = ContainerService.getWalletService()
       let schemaService = ContainerService.getInstance(SchemaService)
 
+      let walletAddress
 
-      if (typeof window !== "undefined" && window['ethereum']) {
+      const displayAddress = async (e) => {
 
-        await init()
+          walletAddress = undefined
 
-        //Listen for changes
-        window['ethereum'].on('accountsChanged', async (accounts) => {
-
-          if (accounts?.length > 0) {
-
-            await walletService.initWallet()
-            let walletAddress = await walletService.getAddress()
-            await schemaService.loadWallet(walletAddress)
-
-            //Not great to blindly grab hash. Page might be user specific and not exist.
-            mainView.router.navigate(getHash() ? getHash() : "/", { 
-              reloadAll: true, 
-              reloadCurrent: true, 
-              clearPreviousHistory: true,
-              ignoreCache: true
-            })
-
-            // await init()
+          if (!walletService.provider) {
+              await walletService.initProvider()
           }
-        })
 
-      } else {
-        uiService.showSpinner("Must be connected to Ethereum mainnet. Please install <a href='http://metamask.io' class='external'>Metamask</a> or <a href='https://trustwallet.com/' class='external'>Trust Wallet</a>")        
+          walletAddress = await walletService.getAddress()
+
+          if (walletAddress) {
+            walletService.address = walletAddress
+          }
+
+          await $update()
       }
+
+      const connectWallet = async (e) => {
+          
+          await walletService.initWallet()
+
+          //Connect to metamask
+          await walletService.connect()
+
+          await displayAddress()
+      }
+
+
+      document.addEventListener('connect-wallet', async (e) => {
+        await connectWallet()
+      })
+
 
 
 
@@ -83,12 +88,12 @@
       async function init() {
 
         uiService.showSpinner("Loading...")
-
-        await walletService.initWallet()
-
-        let walletAddress = await walletService.getAddress()
         
-        await schemaService.loadWallet(walletAddress)
+        await schemaService.load()
+
+      
+        await displayAddress()
+
 
         mainView = $f7.views.create('.view-main', {
           url: hash ? hash : '/',
@@ -97,12 +102,19 @@
           reloadCurrent: true
         })
 
+
+
         // mainView.router.navigate("/", { reloadCurrent : true })
 
         uiService.hideSpinner()
 
 
       }
+
+      await init()
+
+
+
 
     })
 

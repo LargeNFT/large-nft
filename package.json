@@ -78,8 +78,7 @@
     "webpack-cli": "4.10.0",
     "webpack-dev-server": "4.9.2",
     "webpack-merge": "5.8.0",
-    "webpack-node-externals": "3.0.0",
-    "cors-anywhere": "0.4.4"
+    "webpack-node-externals": "3.0.0"
   },
   "dependencies": {
     "@isomorphic-git/cors-proxy": "^2.7.1",

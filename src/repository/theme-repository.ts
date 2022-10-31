@@ -30,8 +30,8 @@ class ThemeRepository {
     ) { }
 
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "theme", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("theme", this.changesets)
     }
     async get(_id: string): Promise<Theme> {
         return Object.assign(new Theme(), await this.db.get(_id))

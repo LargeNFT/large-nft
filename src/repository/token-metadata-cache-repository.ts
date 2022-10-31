@@ -14,8 +14,8 @@ class TokenMetadataCacheRepository {
     ) { }
 
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "token-metadata-cache")
+    async load() {
+        this.db = await this.databaseService.getDatabase("token-metadata-cache")
     }
     
     async get(_id: string): Promise<TokenMetadataCache> {

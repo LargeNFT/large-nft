@@ -26,8 +26,8 @@ class AnimationRepository {
     ) { }
 
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "animation", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("animation", this.changesets)
     }
 
     async get(_id: string): Promise<Animation> {

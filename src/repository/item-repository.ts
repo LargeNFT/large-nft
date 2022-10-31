@@ -101,8 +101,8 @@ class ItemRepository {
 
     }
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "item", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("item", this.changesets)
     }
 
     async get(_id: string): Promise<Item> {

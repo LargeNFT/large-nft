@@ -31,8 +31,8 @@ class StaticPageRepository {
     ) { }
 
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "static-page", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("static-page", this.changesets)
     }
     async get(_id: string): Promise<StaticPage> {
         return Object.assign(new StaticPage(), await this.db.get(_id))

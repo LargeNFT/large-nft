@@ -50,7 +50,11 @@ class PublishService {
         const items: Item[] = await this.itemService.listByChannel(channel._id, 100000, 0)
 
         //Get author
-        const author = await this.authorService.get(channel.authorId)
+        let author
+        
+        try {
+            author = await this.authorService.get(channel.authorId)
+        } catch(ex) {}
 
         //Get themes
         const themes = await this.themeService.listByChannel(channel._id, 1000, 0)
@@ -81,7 +85,13 @@ class PublishService {
         //Clone
         let channel = JSON.parse(JSON.stringify(originalChannel))
         let items = JSON.parse(JSON.stringify(originalItems))
-        let author = JSON.parse(JSON.stringify(originalAuthor))
+
+        let author 
+        
+        if (originalAuthor) {
+            author = JSON.parse(JSON.stringify(originalAuthor))
+        }
+
         let themes = JSON.parse(JSON.stringify(originalThemes))
         let staticPages = JSON.parse(JSON.stringify(originalStaticPages))
 
@@ -124,7 +134,7 @@ class PublishService {
         }
 
         //Add author image
-        if (author.coverPhotoId?.length > 0) {
+        if (author?.coverPhotoId?.length > 0) {
             imageCids.push(author.coverPhotoId)
         }
 
@@ -205,9 +215,10 @@ class PublishService {
         try {
             //TODO: investigate leaving files in place that will still exist for optimization reasons
             await this.ipfsService.ipfs.files.rm(directory, { recursive: true, flush: true})
-        } catch (ex) { }
+        } catch (ex) { 
+            console.log(ex)
+        }
 
-    
         /**
          * BACKUP FOR READER
         */
@@ -243,7 +254,7 @@ class PublishService {
         //Clear 
         try {
             await this.ipfsService.ipfs.files.read(directory)
-            await this.ipfsService.ipfs.files.rm(directory, { recursive: true })
+            await this.ipfsService.ipfs.files.rm(directory,  { recursive: true, flush: true})
         } catch (ex) { }
 
 
@@ -264,7 +275,7 @@ class PublishService {
                 content = image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
             } else if (image.svg) {
                 content = image.svg
-                console.log(new TextEncoder().encode(image.svg))
+                // console.log(new TextEncoder().encode(image.svg))
             }
 
 

@@ -57,7 +57,7 @@ contract('ItemService', async (accounts) => {
         animationService = container.get(AnimationService)
 
 
-        await schemaService.loadWallet(user0)
+        await schemaService.load()
 
         //Create a couple of test channels
         channel1 = Object.assign(new Channel(), {

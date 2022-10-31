@@ -49,7 +49,7 @@ contract('PinningService', async (accounts) => {
         ipfsService = container.get(IpfsService)
         schemaService = container.get(SchemaService)
 
-        await schemaService.loadWallet(user0)
+        await schemaService.load()
 
     })
 

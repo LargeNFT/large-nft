@@ -38,7 +38,7 @@ contract('AuthorService', async (accounts) => {
         service = container.get(AuthorService)
         schemaService = container.get(SchemaService)
 
-        await schemaService.loadWallet(user0)
+        await schemaService.load()
 
        
     })

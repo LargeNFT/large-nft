@@ -22,8 +22,8 @@ class GitlabRepository {
         private databaseService: DatabaseService
     ) { }
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "gitlab", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("gitlab", this.changesets)
     }
     async get(): Promise<Gitlab> {
         return Object.assign(new Gitlab(), await this.db.get("single"))

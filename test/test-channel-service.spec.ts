@@ -74,7 +74,7 @@ contract('ChannelService', async (accounts) => {
         schemaService = container.get(SchemaService)
         pinningService = container.get(PinningService)
 
-        await schemaService.loadWallet(user0)
+        await schemaService.load()
 
 
     })

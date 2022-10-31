@@ -18,70 +18,84 @@
 
             ${channelViewModel.itemCount > 0 ? $h`
               
-              <div class="block-title">Verify Mint Info</div>
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-content card-content-padding">
-
-                    <p>
-                      <strong>Mint Price:</strong> ${channelViewModel.channel.mintPrice} ETH each
-                    </p>
-
-                    <p>
-                      <strong>Royalty:</strong> ${channelViewModel.channel.royaltyPercent}% 
-                    </p>
-
+              ${walletService?.address ? $h`
+                <div class="block-title">Verify Mint Info</div>
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-content card-content-padding">
+  
+                      <p>
+                        <strong>Mint Price:</strong> ${channelViewModel.channel.mintPrice} ETH each
+                      </p>
+  
+                      <p>
+                        <strong>Royalty:</strong> ${channelViewModel.channel.royaltyPercent}% 
+                      </p>
+  
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              <div class="block-title">Deploy Contract</div>
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-content card-content-padding">
-
-                    ${showDeploy ? $h`
-
-                      <div class="pin-status">
-                        <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}</p>
-                        <p><strong>Date Exported:</strong> ${channelViewModel.channel.localPubDate}</p>
-                      </div>
-
-
-                      ${channelViewModel.channel.contractAddress ? $h`
-                        <p>
-                          <strong>Current Contract Address:</strong> ${channelViewModel.channel.contractAddress} 
-                          <a @click="${resetContract}" class="button button-fill button-small deploy-button">Reset</a>
-                        </p> 
-                      ` : $h`<span/>`}
-
-
-                      ${deploying ? $h`
-                        <p>Deploying...</p>
-                      ` : $h`
-                      
-                        ${!channelViewModel.channel.contractAddress ? $h`
-                          <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
-                        ` : $h`
-                          
-                          <h1>Success!</h1>
-                          
+                
+                <div class="block-title">Deploy Contract</div>
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-content card-content-padding">
+  
+                      ${showDeploy ? $h`
+  
+                        <div class="pin-status">
+                          <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}</p>
+                          <p><strong>Date Exported:</strong> ${channelViewModel.channel.localPubDate}</p>
+                        </div>
+  
+  
+                        ${channelViewModel.channel.contractAddress ? $h`
                           <p>
-                            After deploying the contract the Reader can be re-published and it will become aware of Ethereum and show users the 
-                            appropriate controls to begin minting NFTs.
-                          </p>
-                          <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="button button-outline">Publish Collection to Reader</a>
-
-
-                        `}                        
+                            <strong>Current Contract Address:</strong> ${channelViewModel.channel.contractAddress} 
+                            <a @click="${resetContract}" class="button button-fill button-small deploy-button">Reset</a>
+                          </p> 
+                        ` : $h`<span/>`}
+  
+  
+                        ${deploying ? $h`
+                          <p>Deploying...</p>
+                        ` : $h`
+                        
+                          ${!channelViewModel.channel.contractAddress ? $h`
+                            <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
+                          ` : $h`
+                            
+                            <h1>Success!</h1>
+                            
+                            <p>
+                              After deploying the contract the Reader can be re-published and it will become aware of Ethereum and show users the 
+                              appropriate controls to begin minting NFTs.
+                            </p>
+                            <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="button button-outline">Publish Collection to Reader</a>
+  
+  
+                          `}                        
+                        `}
+                        
+                      ` : $h`
+                        <p>Collection must be deployed to IPFS</p>
                       `}
-                      
-                    ` : $h`
-                      <p>Collection must be deployed to IPFS</p>
-                    `}
+                    </div>
                   </div>
                 </div>
-              </div>
+                
+              ` : $h`
+                <div class="card">
+                  <div class="card-content card-content-padding">
+                    <p>Use a web browser with wallet support to deploy an ERC-721 smart contract.</p>
+                  </div>
+                </div>
+              
+              `}
+
+
+
+
 
             ` : $h`
               <div class="card">
@@ -132,13 +146,20 @@
         let queueService = ContainerService.getInstance(QueueService)
         let gitlabService = ContainerService.getInstance(GitlabService)
         let publishService = ContainerService.getInstance(PublishService)
-
+        let walletService
 
         let channelViewModel = props.channelViewModel
 
         let deploying = false 
 
         let showDeploy = channelViewModel.channel.localCid != undefined
+
+        $on('pageInit', async (e, page) => {
+          walletService = ContainerService.getWalletService()
+
+          await $update()
+
+        })
 
 
         const deployContractClick = async (e) => {

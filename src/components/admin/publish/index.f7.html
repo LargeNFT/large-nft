@@ -51,7 +51,7 @@
                             <div class="item-title">Publish to Pinning Service</div>
                           </div>
                           <div class="item-text">
-                            When you are ready to publish your collection and deploy your NFT contract, upload the NFT metadata to Pinata 
+                            When you are ready to publish your collection and deploy your NFT contract, upload the NFT metadata to commercial hosting 
                             to help make it widely available. This will help make it discoverable by marketplaces like OpenSea and LooksRare.
                           </div>
                         </div>
@@ -64,30 +64,41 @@
 
 
               <div class="block-title block-title-medium">Contract (optional)</div>
-              <div class="block list media-list">
-                <ul>
-                  <li>
-                    <a href="/admin/publish/contract/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-media">
-                          <span class="material-icons">gavel</span>
-                        </div>
 
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">Deploy Contract</div>
+              ${walletService?.address ? $h`
+                
+                <div class="block list media-list">
+                  <ul>
+                    <li>
+                      <a href="/admin/publish/contract/${channelViewModel.channel._id}" class="item-link">
+                        <div class="item-content">
+                          <div class="item-media">
+                            <span class="material-icons">gavel</span>
                           </div>
-                          <div class="item-text">
-                            Deploy contract to connected network. Will publish the last IPFS hash from the first step. You can publish the 
-                            latest database without deploying the contract. 
+  
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">Deploy Contract</div>
+                            </div>
+                            <div class="item-text">
+                              Deploy contract to connected network. Will publish the last IPFS hash from the first step. You can publish the 
+                              latest database without deploying the contract. 
+                            </div>
                           </div>
+  
                         </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
 
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              ` : $h`
+                <div class="block-header">
+                  Note: Use a web browser with wallet support to deploy an ERC-721 smart contract.
+                </div>
+              `}
+
+              
 
 
 
@@ -106,8 +117,8 @@
                             <div class="item-title">Fork Reader</div>
                           </div>
                           <div class="item-text">
-                            (Optional) Large Reader is a js app that you can deploy to enhance your collection. The default implementation lives in a GitLab repo and to deploy
-                            a custom copy you fork it. Better support for choosing a git provider will be available in a future version. 
+                            Large Reader is a PWA that you can deploy to enhance your collection. The default implementation lives in a GitLab repo and to deploy
+                            a custom copy you fork it. Better support for choosing a git provider will be available in a later version. 
                           </div>
                         </div>
                       </div>
@@ -167,15 +178,7 @@
     import moment from "moment"
   
     import { ContainerService } from "../../../service/core/container-service"
-    import { ChannelService } from "../../../service/channel-service"
-    import { PublishService } from "../../../service/core/publish-service"
-
-    import { PinningService } from "../../../service/core/pinning-service"
-    import { GitlabService } from "../../../service/core/gitlab-service"
-
-    import { QueueService } from   "../../../service/core/queue-service"
-
-    import { IpfsService } from "../../../service/core/ipfs-service"
+   
 
 
     import Navbar from "../../admin/navbar.f7.html"
@@ -183,8 +186,17 @@
   
     export default (props, { $, $h, $on, $f7, $update }) => {
   
+        let walletService
+
         let channelViewModel = props.channelViewModel
   
+        $on('pageInit', async (e, page) => {
+
+          walletService = ContainerService.getWalletService()
+          await $update()
+
+        })
+
         return $render
     }
   </script>

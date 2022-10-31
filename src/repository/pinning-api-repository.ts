@@ -20,8 +20,8 @@ class PinningApiRepository {
         private databaseService: DatabaseService
     ) { }
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "pinning-api", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("pinning-api", this.changesets)
     }
     async get(_id: string): Promise<PinningApi> {
         return Object.assign(new PinningApi(), await this.db.get(_id))

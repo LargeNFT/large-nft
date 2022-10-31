@@ -13,8 +13,8 @@ class AuthorRepository {
     ) { }
 
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "author")
+    async load() {
+        this.db = await this.databaseService.getDatabase("author")
     }
     
     async get(_id: string): Promise<Author> {

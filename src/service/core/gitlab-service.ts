@@ -699,7 +699,6 @@ class GitlabService {
                 fs,
                 http,
                 dir,
-                corsProxy: 'http://localhost:8180',
                 url: repoURI,
                 ref: defaultBranch,
                 singleBranch: true

@@ -24,8 +24,8 @@ class ChannelRepository {
     ) { }
 
 
-    async load(walletAddress: string) {
-        this.db = await this.databaseService.getDatabase(walletAddress, "channel", this.changesets)
+    async load() {
+        this.db = await this.databaseService.getDatabase("channel", this.changesets)
     }
 
     async get(_id: string): Promise<Channel> {

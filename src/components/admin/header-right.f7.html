@@ -2,11 +2,13 @@
 
     <div class="right">
 
-        ${walletAddress != undefined ? $h`
-          <a href="/admin/author/show/${walletAddress}" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
-        ` : $h`
-          <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
-        `}
+        ${showConnect ? $h`
+            ${walletAddress != undefined ? $h`
+                <a href="/admin/author/show/${walletAddress}" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
+              ` : $h`
+                <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
+              `}
+        ` : $h`<span />`}
 
         <a href="/admin/settings" class="button button-fill" id="settings-button" >
             <i class="material-icons">settings</i>
@@ -32,43 +34,23 @@
 
     export default (props, { $on, $f7, $update }) => {
         
-        let walletService = ContainerService.getWalletService()
-        let uiService = ContainerService.getInstance(UiService)
-
-        let walletAddress = walletService.wallet?.address
+        let walletAddress = props.wallet_address
+        let showConnect = props.show_connect
 
         // Captures 0x + 4 characters, then the last 4 characters.
         const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/
-        
+            
         const truncateEthAddress = (address) => {
             const match = address.match(truncateRegex)
             if (!match) return address
             return `${match[1]}…${match[2]}`
         }
 
-        const displayAddress = async (e) => {
 
-            walletAddress = undefined
-
-            if (!walletService.wallet && walletService.provider) {
-                await walletService.connect()
-            }
-
-
-            if (walletService.wallet) {
-                walletAddress = await walletService.getAddress()
-            }
-
-            $update()
-        }
 
         const connectWallet = async (e) => {
-            //Connect to metamask
-            await walletService.connect()
-            displayAddress()
+            document.dispatchEvent(new CustomEvent('connect-wallet'))
         }
-
-        displayAddress()
 
         return $render
     }

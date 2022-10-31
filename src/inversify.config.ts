@@ -164,7 +164,9 @@ function getMainContainer(readerConfig:ReaderConfig) {
     return c
   }
 
-  function provider() {
+
+
+  container.bind("provider").toConstantValue(() => {
 
     if (typeof window !== "undefined" && window['ethereum']) {
 
@@ -174,15 +176,12 @@ function getMainContainer(readerConfig:ReaderConfig) {
       //@ts-ignore
       return new providers.Web3Provider(window.ethereum)
 
-
     }
-  }
 
-  
+  })
 
   // container.bind('sketch').toConstantValue(sketch())
   container.bind("contracts").toConstantValue(contracts())
-  container.bind("provider").toConstantValue(provider())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
   container.bind("readerConfig").toConstantValue(readerConfig)

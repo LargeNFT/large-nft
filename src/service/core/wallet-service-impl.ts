@@ -8,23 +8,53 @@ class WalletServiceImpl implements WalletService {
 
   public wallet: any
   public address: any
-  // public ethersContracts:any = {}
 
   public ethersContracts:any = {}
+  public provider 
 
 
   constructor(
     @inject("contracts") private contracts:Contract[],
-    @inject("provider") private provider
+    @inject("provider") private getProvider:Function,
+    @inject("framework7") private $f7
   ) {}
+
+
+  async initProvider() {
+
+    this.provider = this.getProvider()
+
+    globalThis.ethereum?.on('accountsChanged', async (accounts) => {
+          
+      delete this.address
+
+      if (accounts?.length > 0) {
+        await this.initWallet()
+      }
+
+      this.$f7.views.main.router.refreshPage()
+
+
+    })
+
+  }
+
+
 
   async initWallet() {
 
     console.log('Init wallet')
 
+    delete this.address
+
+    if (!this.provider) {
+      await this.initProvider()
+    }
+
     let accounts = await this.provider.send("eth_accounts", [])
 
     if (accounts?.length > 0) {
+      // this.address = accounts[0]
       return this.connect()
     }
     
@@ -38,18 +68,20 @@ class WalletServiceImpl implements WalletService {
     
     console.log("Connect wallet")
 
-    await this.provider.send("eth_requestAccounts", []);
+    await this.provider.send("eth_requestAccounts", [])
     
     this.wallet = await this.provider.getSigner()
     this.address = await this.getAddress()
     
-    console.log("Wallet connected") 
+    console.log(`Wallet ${this.address} connected`) 
 
   }
 
 
 
   async getAddress() {
+
+    if (!this.provider) return
 
     let accounts = await this.provider.send("eth_accounts", []);
       

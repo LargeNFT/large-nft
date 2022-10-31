@@ -76,7 +76,7 @@ contract('PublishService', async (accounts) => {
         animationService = container.get(AnimationService)
 
         await ipfsService.init()
-        await schemaService.loadWallet(user0)
+        await schemaService.load()
 
 
         //Add a channel and some items

@@ -11,7 +11,7 @@
         
           <div class="title"></div>
 
-          <${HeaderRight} />
+          <${HeaderRight} wallet_address="${walletService?.address}" show_connect="${walletService?.provider}" />
 
           ${readerConfig ? $h`
             <div class="subnavbar">
@@ -58,6 +58,7 @@
     export default (props, { $on, $f7, $update }) => {
     
         let readerConfig = ContainerService.getInstance("readerConfig")
+        let walletService = ContainerService.getWalletService()
 
         let readerTitle
 

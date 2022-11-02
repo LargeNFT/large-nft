@@ -19,13 +19,16 @@ for (let config of configs) {
     }))
 }
 
+
+let api = "https://gitlab.com"
+
+
 mainConfigs[0].devServer = {
     static: {
         directory: path.join(__dirname, 'public'),
     },
     compress: false,
-    port: 9081,
-
+    port: 9081
 }
 
 

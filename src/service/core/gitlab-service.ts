@@ -34,7 +34,7 @@ class GitlabService {
         private authorService:AuthorService,
         private itemService:ItemService,
         private imageService:ImageService,
-        @inject('fs') private fs,
+        @inject('fs') private getFS:Function,
         @inject('git') private git
     ) {}
 
@@ -552,10 +552,8 @@ class GitlabService {
 
 
         //Init FS
-        let fs = this.fs
-        await fs.init("large-fs", { backend: new LargeFSBackend() } )
+        let fs = await this.getFS(this.ipfsService.ipfs)
 
-        fs.promises._backend.ipfs = this.ipfsService.ipfs
 
         //Get a reference to the IPFSFileList to build
         let ipfsFileList:IPFSFilelist = new IPFSFilelist()
@@ -792,7 +790,7 @@ class GitlabService {
 
         //Make sure directory exists
         try {
-            await this.fs.promises.readdir(dir)
+            await this.getFS().promises.readdir(dir)
             exists = true
         } catch (ex) {}
 

@@ -189,7 +189,29 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind("readerConfig").toConstantValue(readerConfig)
   container.bind("pouch-prefix").toConstantValue("./pouch/")
 
-  container.bind("fs").toConstantValue(new FS())
+  
+  let fs
+  
+  //@ts-ignore
+  container.bind("fs").toConstantValue(async (ipfs) => {
+
+    if (fs) return fs
+
+    if (!ipfs) {
+      throw new Error("Missing IPFS")
+    }
+
+    fs = new FS()
+
+    await fs.init("large-fs", { backend: new LargeFSBackend() })
+
+    //Set IPFS
+    fs.promises._backend.ipfs = ipfs
+
+    return fs
+
+  })
+   
 
 
   container.bind("git").toConstantValue(git)

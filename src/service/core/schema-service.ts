@@ -46,6 +46,8 @@ class SchemaService {
         await this.ipfsHostRepository.load()
         await this.tokenMetadataCacheRepository.load()
 
+        
+
     }
 
 }

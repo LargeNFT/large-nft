@@ -93,7 +93,10 @@ async function getContainer() {
 
     container.bind("provider").toConstantValue(provider())
     container.bind("pouch-prefix").toConstantValue("./test/pouch/")
-    container.bind("fs").toConstantValue(fs)
+    container.bind("fs").toConstantValue(() => {
+        return fs
+    })
+    
     container.bind("git").toConstantValue(git)
 
 

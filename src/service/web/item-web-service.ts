@@ -21,7 +21,6 @@ import { QuillService } from "../quill-service";
 import { ThemeService } from "../theme-service";
 import { Theme } from "../../dto/theme";
 import { ItemListViewModel } from "dto/viewmodel/item-list-view-model";
-import { AttributeInfo } from "repository/item-repository";
 import { AggregateStats } from "dto/aggregate-stats";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
@@ -65,7 +64,7 @@ class ItemWebService {
 
     async getViewModel(item: Item, channel:Channel, tokenIdStats:AggregateStats): Promise<ItemViewModel> {
 
-        console.time('Get viewmodel')
+        // console.time('Get viewmodel')
 
         let animation:AnimationViewModel
         let coverImage: ImageViewModel
@@ -138,7 +137,7 @@ class ItemWebService {
 
         }
 
-        console.time('Get attributes')
+        // console.time('Get attributes')
 
         //Only show attributes that are valid at the category level. 
         if (channel.attributeOptions.length > 0) {
@@ -180,9 +179,9 @@ class ItemWebService {
         }
 
 
-        console.timeEnd('Get attributes')
+        // console.timeEnd('Get attributes')
 
-        console.time('Get last')
+        // console.time('Get last')
 
         let canDelete = (tokenIdStats.max == item.tokenId)
         
@@ -201,7 +200,7 @@ class ItemWebService {
 
 
 
-        console.timeEnd('Get viewmodel')
+        // console.timeEnd('Get viewmodel')
 
         let images:ImageViewModel[] = await this.getImagesFromContent(item)
 

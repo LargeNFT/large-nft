@@ -10,7 +10,6 @@ import { QuillService } from "./quill-service"
 
 import he from 'he'
 import { Item } from "../dto/item"
-import excerptHtml from 'excerpt-html'
 import { Theme } from "../dto/theme"
 import { ThemeService } from "./theme-service"
 
@@ -206,6 +205,11 @@ class ImageService {
     return excerpt
 
 
+  }
+
+
+  async getByIds(ids:string[]) {
+    return this.imageRepository.getByIds(ids)
   }
 
 

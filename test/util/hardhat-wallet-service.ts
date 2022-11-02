@@ -41,6 +41,21 @@ class HardhatWalletServiceImpl implements WalletService {
   }
 
 
+  async connect() {
+    
+    console.log("Connect wallet")
+
+    await this.provider.send("eth_requestAccounts", [])
+    
+    this.wallet = await this.provider.getSigner()
+    this.address = await this.getAddress()
+    
+    console.log(`Wallet ${this.address} connected`) 
+
+  }
+
+
+
   getContract(name:string)  {
 
     //If it's cached and the same wallet just return it.

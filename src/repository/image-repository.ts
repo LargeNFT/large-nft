@@ -37,6 +37,17 @@ class ImageRepository {
         await this.db.put(image)
     }
 
+    async getByIds(ids:string[]) {
+        let results = await this.db.allDocs({
+            keys: ids,
+            include_docs: true
+
+        })
+
+        return results.rows?.map( d => d.doc)
+    }
+
+
 }
 
 export {

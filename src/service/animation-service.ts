@@ -233,7 +233,9 @@ class AnimationService {
   }
 
 
-
+  async getByIds(ids:string[]) {
+    return this.animationRepository.getByIds(ids)
+  }
 
 }
 

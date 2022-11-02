@@ -10,7 +10,6 @@ import { AttributeInfo, ItemRepository } from "../repository/item-repository";
 import { Channel } from "../dto/channel";
 import { ImageService } from "./image-service";
 
-import excerptHtml from 'excerpt-html'
 import { Image } from "../dto/image";
 import { AggregateStats } from "../dto/aggregate-stats";
 

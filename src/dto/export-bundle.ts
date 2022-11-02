@@ -2,7 +2,6 @@ import { Author } from "./author"
 import { Channel } from "./channel"
 import { Animation } from "./animation"
 
-import { ContractMetadata } from "./contract-metadata"
 import { Item } from "./item"
 import { Image } from "./image"
 import { Theme } from "./theme"
@@ -17,12 +16,26 @@ interface ExportBundle {
     themes: Theme[]
     staticPages: StaticPage[]
 
-    images: string[]
-    animations: string[]
+    images: Image[]
+    animations: Animation[]
 
     ownerAddress:string
+
+}
+
+
+interface BackupBundle {
+    channels: Channel[],
+    authors: Author[],
+    items: Item[],
+    themes: Theme[],
+    staticPages: StaticPage[],
+    images:Image[],
+    animations:Animation[] 
+
 }
 
 export {
-    ExportBundle
+    ExportBundle, 
+    BackupBundle
 }

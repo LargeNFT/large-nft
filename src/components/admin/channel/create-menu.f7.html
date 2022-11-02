@@ -10,9 +10,12 @@
       <div class="row">
         <div class="col-100 large-66 center">
 
-          <div class="block-title">Create Collection</div>
+          <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li>Create & Import</li>
+          </ul>
 
-          <div class="list media-list">
+          <div class="list media-list inset">
             <ul>
               <li>
                 <a href="/admin/channel/create" class="item-link">
@@ -42,34 +45,59 @@
                   </div>
                 </a>
               </li>
-              <li>
-                <a href="/admin/channel/fork-contract" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <i class="material-icons">fork_left</i>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Fork Collection From Contract</div>
+
+
+                ${walletService?.address ? $h`
+                  <li>
+                    <a href="/admin/channel/fork-contract" class="item-link">
+                      <div class="item-content">
+                        <div class="item-media">
+                          <i class="material-icons">fork_left</i>
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">Fork Collection From Contract</div>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                ` : $h`
+                  <li>
+                    <a class="item-link">
+                      <div class="item-content">
+                        <div class="item-media">
+                          <i class="material-icons">fork_left</i>
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">Fork Collection From Contract </div>
+                          </div>
+                          <div class="item-text">Requires browser with wallet support.</div>
+
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                `}
+
+                <li>
+                  <a href="/admin/channel/fork-reader" class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <i class="material-icons">fork_left</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Fork Collection From Reader</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="/admin/channel/fork-reader" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <i class="material-icons">fork_left</i>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Fork Collection From Reader</div>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </li>
+                  </a>
+                </li>
+
+
+              
 
             </ul>
           </div>
@@ -97,6 +125,16 @@
 
 
   export default (props, { $, $on, $f7, $update }) => {
+
+    let walletService
+
+
+    $on('pageInit', async () => {
+
+      walletService = ContainerService.getWalletService()
+      await $update()
+
+    })
 
     return $render
   }

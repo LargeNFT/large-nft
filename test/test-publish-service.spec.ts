@@ -23,6 +23,9 @@ import { ImageService } from "../src/service/image-service";
 import { NFTMetadata } from "../src/dto/nft-metadata";
 import { AnimationService } from "../src/service/animation-service";
 
+import Hash from 'ipfs-only-hash'
+
+
 const ChannelContract = artifacts.require("Channel")
 const truffleAssert = require('truffle-assertions')
 
@@ -65,6 +68,8 @@ contract('PublishService', async (accounts) => {
         user4 = accounts[4]
         
         let container = await getContainer()
+
+        globalThis.container = container
         
         service = container.get(PublishService)
         schemaService = container.get(SchemaService)
@@ -116,7 +121,8 @@ contract('PublishService', async (accounts) => {
                     values:['Have them', 'None', 'Nice']
                 },
             ],
-            coverImageId: image1.cid.toString()
+            coverImageId: image1.cid.toString(),
+            _id: "channelxyz"
         }) 
 
         await channelService.put(channel)
@@ -146,7 +152,9 @@ contract('PublishService', async (accounts) => {
                 value: "Nice"
             }],
             coverImageId: image2.cid.toString(),
-            animationId: animation.cid.toString()
+            animationId: animation.cid.toString(),
+            tokenId: 1,
+            _id: "item1"
 
 
         })
@@ -168,7 +176,9 @@ contract('PublishService', async (accounts) => {
                 value: "None"
             }],
             coverImageId: image2.cid.toString(),
-            animationId: animation.cid.toString()
+            animationId: animation.cid.toString(),
+            tokenId: 2,
+            _id: "item2"
 
         })
 
@@ -189,7 +199,10 @@ contract('PublishService', async (accounts) => {
                 value: "Have them"
             }],
             coverImageId: image2.cid.toString(),
-            animationId: animation.cid.toString()
+            animationId: animation.cid.toString(),
+            tokenId: 3,
+            _id: "item3"
+
 
         })
 
@@ -352,6 +365,17 @@ contract('PublishService', async (accounts) => {
 
         assert.strictEqual(tokenMetadata.tokenId,1)
         assert.strictEqual(tokenMetadata.name, "An image!")
+
+        // //Check the animations and images TODO://fails because dateCreated is different.
+        // let channels = await toBuffer(ipfsService.ipfs.cat(`${channel.localCid}/backup/channels.json`))
+        // let images = await toBuffer(ipfsService.ipfs.cat(`${channel.localCid}/backup/images.json`))
+        // let animations = await toBuffer(ipfsService.ipfs.cat(`${channel.localCid}/backup/animations.json`))
+
+        // // console.log(await Hash.of(channels), await Hash.of(images), await Hash.of(animations))
+        // assert.strictEqual(await Hash.of(channels), "QmaUAC7zPLyw3htUTZqzhgxgaJR7Nkoc4ZuRHTkRefvgxX")
+        // assert.strictEqual(await Hash.of(images), "QmdFbZxfWsJVMPobDgeCVWT26tQpyqyzwU8bzskbjtvRX2")
+        // assert.strictEqual(await Hash.of(animations), "QmXYqtNdCMAVRUKzTxf8hhBghgUVwJzqbcbv4PfrrJ5p5d")
+
 
     })
 

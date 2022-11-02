@@ -36,6 +36,8 @@ import { AuthorRepository } from "../src/repository/author-repository";
 import { SchemaService } from "../src/service/core/schema-service";
 import { WalletService } from "../src/service/core/wallet-service";
 import { PinningService } from "../src/service/core/pinning-service";
+import { ExportService } from "../src/service/core/export-service";
+
 import { StaticPageService } from "../src/service/static-page-service";
 
 
@@ -120,6 +122,7 @@ async function getContainer() {
     container.bind(UploadService).toSelf().inSingletonScope()
     container.bind(ERCEventService).toSelf().inSingletonScope()
     container.bind(QueryCacheService).toSelf().inSingletonScope()
+    container.bind(ExportService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()

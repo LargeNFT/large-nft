@@ -41,7 +41,6 @@ import { AttributeOptions } from "../../dto/attribute";
 
 import isSvg from "is-svg"
 import { TokenMetadata } from "../../dto/token-metadata-cache";
-import { ItemWebService } from "service/web/item-web-service"
 
 const gatewayTools = new IPFSGatewayTools()
 
@@ -65,7 +64,8 @@ class ImportService {
         @inject("contracts") private contracts,
     ) {}
 
-    async importFromIPFS(cid:string) : Promise<string> {
+
+    async importFromIPFS(cid:string, forkType:string, owner?:string) : Promise<string> {
 
         let forkStatus:ForkStatus = {
             animations: { saved: 0, total: 0},
@@ -102,7 +102,22 @@ class ImportService {
 
         let mediaDownloader = new IPFSDownloader(this.ipfsService)
 
-        return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
+        if (forkType == "existing") {
+
+            return this._importExisting(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
+        
+        } else {
+
+            //Create author
+            if (owner) {
+                let author = new Author()
+                author.walletAddress = owner
+                authors = [author]
+            } 
+
+            return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
+        }
+
     }
 
 
@@ -128,7 +143,6 @@ class ImportService {
             themes: { saved: 0, total: 0 },
             staticPages:  { saved: 0, total: 0 }
         }
-
 
         let wallet = this.walletService.wallet
 
@@ -322,6 +336,7 @@ class ImportService {
 
         await this.channelService.put(channel)
 
+        this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)
         await this.channelService.buildQueryCache(channel._id)
 
         forkStatus.channels.saved++

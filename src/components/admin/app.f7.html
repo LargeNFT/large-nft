@@ -61,7 +61,14 @@
 
           if (walletAddress) {
             walletService.address = walletAddress
+
+            if (!walletService.wallet) {
+              await walletService.connect()
+            }
+
           }
+
+
 
           await $update()
       }

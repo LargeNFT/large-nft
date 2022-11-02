@@ -39,9 +39,7 @@ class ItemController {
         
         return new ModelView(async (routeTo:RouteTo) => {
 
-            console.time('Get navigation view model')
             let itemViewModel = await this.itemWebService.getNavigation(routeTo.params.channelId, parseInt(routeTo.params.tokenId))
-            console.timeEnd('Get navigation view model')
 
             return {
                 itemViewModel: itemViewModel

@@ -25,7 +25,7 @@
                             <div class="card-content card-content-padding">
                                 
                                 <p>
-                                    The JSON metadata for the collection as well as a snapshot of the source database
+                                    The JSON metadata for the collection and a snapshot of the source database
                                     will be exported to the IPFS node.
                                 </p>
 
@@ -39,7 +39,7 @@
 
                                 ${publishing ? $h`
                                     <div class="publish-label">
-                                        Publishing...
+                                        Exporting...
                                     </div>
 
                                     ${publishStatus? $h`
@@ -189,7 +189,7 @@
         width: 100%;
         max-width: 100%;
         padding: 5px;
-        height: 300px;
+        height: 100px;
         overflow-y: scroll;
     }
 
@@ -336,7 +336,7 @@
             
         })
 
-89
+
         $(document).on('update-peers', async (e) => {
             peerCount = e.detail.count
             $update()

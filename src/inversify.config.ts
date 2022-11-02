@@ -66,6 +66,8 @@ import { ThemeRepository } from './repository/theme-repository';
 import { StaticPageRepository } from './repository/static-page-repository';
 import { StaticPageService } from './service/static-page-service';
 import { IpfsHostService } from './service/core/ipfs-host-service';
+import { ExportService } from './service/core/export-service';
+
 import { IpfsHostRepository } from './repository/ipfs-host-repository';
 
 import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository';
@@ -218,6 +220,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(IpfsHostService).toSelf().inSingletonScope()
 
   container.bind(ERCEventService).toSelf().inSingletonScope()
+  container.bind(ExportService).toSelf().inSingletonScope()
 
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()

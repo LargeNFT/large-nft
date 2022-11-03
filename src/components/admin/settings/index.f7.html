@@ -5,178 +5,111 @@
         <${Navbar} />
 
         <div class="page-content">
-            <form id="edit-settings-form" @submit="${formSubmit}">
+            <div class="row">
                 
-                <div class="card">
-                    <div class="card-header">IPFS Pinning APIs</div>
-                    <div class="card-content">
-                        <div class="list">
-                            <ul>
-                                <li>
-                                    <div class="item-content item-input">
+                <form id="edit-settings-form" @submit="${formSubmit}" class="col-100 large-66 center">
+                
+                    <input type="hidden" name="_id" value="${settings?._id}" />
+                    <input type="hidden" name="_rev" value="${settings?._rev}" />
+
+                    <div class="block-title block-title-medium">Settings</div>
+                    <div class="card">
+                        <div class="card-header">Remote IPFS API</div>
+                        <div class="card-content">
+                            <div class="list">
+                                <ul>
+                                    <li class="item-content item-input">
                                         <div class="item-inner">
-                                            
-                                            <div>
-                        
-                                                <p>Both free and commercial IPFS hosting is available from different providers</p>
-                        
-                                                <ul class="pinapi-list" style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
-                                                    ${pinningApis?.map( (pinAPI) => $h`
-                                                        <li>
-                                                            <span class="pinapi-name">${pinAPI.name}</span> 
-                                                            <a class="link pinapi-link edit-pinapi" href="#" data-id="${pinAPI._id}">Edit</a>
-                                                            <a class="link pinapi-link delete-pinapi" href="#" data-id="${pinAPI._id}">Delete</a>
-                                                        </li>
-                                                    `)}
-                                                </ul>
-                                        
-                                                <div class="row">
-                                                    <div class="col-30">
-                                                        <a class="button button-outline add-pinapi-button popup-open" data-popup=".add-pinapi-popup" tabindex="10">Add Pinning API</a>
-                                                    </div>
-                                                    <div class="col-70"></div>
-                                                </div>
-                        
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">Remote IPFS API</div>
-                    <div class="card-content">
-                        <div class="list">
-                            <ul>
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">URL</div>
-                                        <div class="item-input-wrap">
-                                            <input type="text" name="remoteApiUrl" value="${ipfsHost.url}" placeholder="http://localhost:5001/api/v0" @change="${ipfsHostChange}" />
-                                            <span class="input-clear-button"></span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">Gitlab Settings</div>
-                    
-                    <div class="card-content card-content-padding">
-                        <p>
-                            To deploy the reader for your collection you will need a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account. 
-                            Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
-                            save it below. If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
-                            take you directly to the create form. 
-                        </p>
-    
-                        <p>Name the token "Large" (or whatever you choose) and select an appropriate expiration date. Under "Select scopes" check the box beside "api".</p>
-    
-
-
-                        <div class="list">
-
-                            <ul>
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Personal Access Token</div>
+                                            <div class="item-title item-label">URL</div>
                                             <div class="item-input-wrap">
-                                                <input type="text" name="personalAccessToken" placeholder="Personal access token"
-                                                    value="${gitlab.personalAccessToken}" @change="${personalAccessTokenChange}" />
+                                                <input type="text" name="ipfsHost" value="${settings?.ipfsHost}" placeholder="http://localhost:5001/api/v0" />
+                                                <span class="input-clear-button"></span>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
+                    </div>
+    
+                    <div class="card">
+                        <div class="card-header">Git Settings</div>
+                        
+                        <div class="card-content card-content-padding">
+
+                            <div class="list">
+    
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Git Provider</div>
+                                                <div class="item-input-wrap">
+                                                    <select @change="${providerChange}" class="value-input" name="provider">                    
+                                                        <option value="gitlab" selected>GitLab</option>
+                                                        <option value="github" selected>GitHub</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+
+
+
+
+                            <p>
+                                To deploy the reader for your collection you will need a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account. 
+                                Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
+                                save it below. If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
+                                take you directly to the create form. 
+                            </p>
         
-
-                    </div>
-
-                </div>
-
-                <div class="block row">
-                    <div class="col-70"></div>
-                    <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-                        Save
-                    </button>
-                </div>
-
-
-            </form>
-        </div>
-
-        <div class="popup add-pinapi-popup">
-            <div class="view">
-              <div class="page">
-                <div class="navbar">
-                  <div class="navbar-bg"></div>
-                  <div class="navbar-inner">
-                    <div class="title">Add Pinning API</div>
-                    <div class="right">
-                      <!-- Link to close popup -->
-                      <a class="link popup-close">Close</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="page-content">
-                  <form id="add-pinapi-form">
-                    <${PinApiForm} />
+                            <p>Give the token a name and select an appropriate expiration date. Under "Select scopes" check the boxes beside:</p>
+                            
+                            <ul>
+                                <li>api</li>
+                                <li>read_api</li>
+                                <li>read_repository</li>
+                                <li>write_repository</li>
+                            </ul>
     
-                    <div class="row block">
+                            <div class="list">
     
-                      <div class="col-70"></div>
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Personal Access Token</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="personalAccessToken" placeholder="Personal access token"
+                                                        value="${settings.personalAccessToken}"  />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+            
     
-                      <button type="submit" class="button button-fill col-30" tabindex="12">
-                        Add
-                      </button>
+                        </div>
     
                     </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="popup edit-pinapi-popup">
-            <div class="view">
-                <div class="page">
-                <div class="navbar">
-                    <div class="navbar-bg"></div>
-                    <div class="navbar-inner">
-                    <div class="title">Edit Pinning API</div>
-                    <div class="right">
-                        <!-- Link to close popup -->
-                        <a class="link popup-close">Close</a>
-                    </div>
-                    </div>
-                </div>
-                <div class="page-content">
-                    <form id="edit-pinapi-form">
-
-                    <${PinApiForm} pinapi="${editingPinapi}" />
-
-                    <div class="row block">
-
+    
+                    <div class="block row">
                         <div class="col-70"></div>
-
-                        <button type="submit" class="button button-fill col-30" tabindex="12">
-                            Save Changes
+                        <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                            Save
                         </button>
-
                     </div>
-                    </form>
-                </div>
-                </div>
+    
+    
+                </form>
             </div>
+
         </div>
 
     </div>
@@ -185,7 +118,7 @@
 
 <style>
 
-    .pinapi-name, .static-page-name {
+    /* .pinapi-name, .static-page-name {
         width: 150px;
         display: inline-block;
     }
@@ -197,7 +130,7 @@
 
     .pinapi-link, .static-page-link {
         margin-left: 10px;
-    }
+    } */
 
     #saveButton {
         width: 250px;
@@ -208,13 +141,8 @@
 
 <script>
     import { ContainerService } from "../../../service/core/container-service"
-    import { PinningService } from "../../../service/core/pinning-service"
-    import { GitlabService } from "../../../service/core/gitlab-service"
-    import { IpfsHostService } from "../../../service/core/ipfs-host-service"
-
-    import { Gitlab } from "../../../dto/gitlab"
-    import { PinningApi } from "../../../dto/pinning-api"
-    import PinApiForm from "../../admin/settings/pinapi-form.f7.html"
+    import { SettingsService } from "../../../service/core/settings-service"
+    import { Settings } from "../../../dto/settings"
 
     import { v4 as uuidv4 } from 'uuid';
 
@@ -223,32 +151,21 @@
 
     export default (props, { $, $on, $f7, $update }) => {
 
-        let pinningService = ContainerService.getInstance(PinningService)
-        let gitlabService = ContainerService.getInstance(GitlabService)
-        let ipfsHostService = ContainerService.getInstance(IpfsHostService)
+        let settingsService = ContainerService.getInstance(SettingsService)
 
-        let pinningApis = props.pinningApis
-        let gitlab = props.gitlab 
-        let ipfsHost = props.ipfsHost
-
-        let editingPinapi
-
-        //Clear existing listeners
-        $(document).off('click', '.delete-pinapi')
-        $(document).off('click', '.edit-pinapi')
-
+        let settings = props.settings 
 
 
         const formSubmit = async (e) => {
 
             e.preventDefault()
 
+            let formData = $f7.form.convertToData('#edit-settings-form')
+
             //Save
             try {
 
-                await gitlabService.put(gitlab)
-                await ipfsHostService.put(ipfsHost)
-
+                await settingsService.put(Object.assign(new Settings(), formData))
 
                 const toast = $f7.toast.show({
                     text: 'Settings Saved',
@@ -262,126 +179,18 @@
                 $f7.views.main.router.navigate(`/`)
 
             } catch (ex) {
-                console.log(ex)
+                console.log(ex.errors)
                 $f7.dialog.alert(ex, "Saving settings failed")
             }
 
         }
 
-        const personalAccessTokenChange = async (e) => {
-            gitlab.personalAccessToken = $(e.currentTarget).val()
-        }
+        const providerChange = async (e) => {
 
-        const ipfsHostChange = async (e) => {
-            ipfsHost.url = $(e.currentTarget).val()
-            console.log(ipfsHost)
-        }
-
-
-        const updatePinapiList = async () => {
-             //Refresh pinapi list
-            pinningApis = await pinningService.list(1000, 0)
         }
 
 
         $on('pageInit', async (e) => {
-
-            $('.add-pinapi-popup').on('popup:open', function (e) {
-
-            })
-
-            $('#add-pinapi-form').on('submit', async function (e) {
-
-                e.preventDefault()
-
-                //Get data
-                let pinningApi = Object.assign(new PinningApi(), $f7.form.convertToData('#add-pinapi-form'))
-
-                try {
-
-                    await pinningService.put(pinningApi)
-
-                    //Clear form
-                    $f7.form.fillFromData('#add-pinapi-form', { name: "" })
-
-                    //Refresh pinapi list
-                    await updatePinapiList()
-                    await $update()
-
-                    $f7.popup.close('.add-pinapi-popup')
-
-
-                } catch (ex) {
-                    console.log(ex)
-
-                    $f7.dialog.alert(ex.errors, "There was an error")
-                }
-
-            })
-
-            $('#edit-pinapi-form').on('submit', async function (e) {
-
-                e.preventDefault()
-
-                //Get data
-                let pinningApi = Object.assign(new PinningApi(), $f7.form.convertToData('#edit-pinapi-form'))
-
-                try {
-
-                    await pinningService.put(pinningApi)
-
-                    //Refresh list
-                    await updatePinapiList()
-                    await $update()
-
-                    $f7.popup.close('.edit-pinapi-popup')
-
-                } catch (ex) {
-                    console.log(ex)
-                    $f7.dialog.alert(ex.errors, "There was an error")
-                }
-
-            })
-
-            $(document).on('click', '.delete-pinapi', async function (e) {
-
-                let id = $(e.target).data('id')
-
-                $f7.dialog.confirm("Are you sure you want to delete this pinning service?", async () => {
-
-                    
-                    await pinningService.delete(await pinningService.get(id))
-
-                    //Refresh theme list
-                    await updatePinapiList()
-                    await $update()
-
-                    const toast = $f7.toast.show({
-                        text: 'Pinning Service deleted',
-                        closeTimeout: 2000,
-                        closeButton: true,
-                        position: 'bottom',
-                        horizontalPosition: 'left'
-                    })
-
-                })
-
-            })
-
-            $(document).on('click', '.edit-pinapi', async function (e) {
-
-                let id = $(e.target).data('id')
-
-                editingPinapi = pinningApis.filter((pinapi) => pinapi._id == id)[0]
-
-                //Populate form
-                $f7.form.fillFromData('#edit-pinapi-form', editingPinapi)
-
-                await $update()
-
-                $f7.popup.open('.edit-pinapi-popup')
-
-            })
 
         })
 

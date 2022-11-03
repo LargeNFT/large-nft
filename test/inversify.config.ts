@@ -16,16 +16,16 @@ import { QuillService } from "../src/service/quill-service";
 
 
 import { IpfsService } from "../src/service/core/ipfs-service";
-import { IpfsHostService } from "../src/service/core/ipfs-host-service";
 
 import fs from 'fs';
 import git from "isomorphic-git"
 
 
 import { DatabaseService } from "../src/service/core/database-service";
+import { SettingsService } from "../src/service/core/settings-service";
+
 import { ChannelRepository } from "../src/repository/channel-repository";
 import { PinningApiRepository } from "../src/repository/pinning-api-repository";
-import { IpfsHostRepository } from "../src/repository/ipfs-host-repository";
 
 import { StaticPageRepository } from "../src/repository/static-page-repository";
 
@@ -43,7 +43,7 @@ import { StaticPageService } from "../src/service/static-page-service";
 
 
 import TYPES from "../src/service/core/types";
-import { GitlabRepository } from "../src/repository/gitlab-repository";
+import { SettingsRepository } from "../src/repository/settings-repository";
 import { QueryCacheService } from '../src/service/core/query-cache-service';
 
 import { PublishService } from "../src/service/core/publish-service";
@@ -120,12 +120,12 @@ async function getContainer() {
     container.bind(ImportService).toSelf().inSingletonScope()
     container.bind(ThemeService).toSelf().inSingletonScope()
     container.bind(StaticPageService).toSelf().inSingletonScope()
-    container.bind(IpfsHostService).toSelf().inSingletonScope()
     container.bind(PDFService).toSelf().inSingletonScope()
     container.bind(UploadService).toSelf().inSingletonScope()
     container.bind(ERCEventService).toSelf().inSingletonScope()
     container.bind(QueryCacheService).toSelf().inSingletonScope()
     container.bind(ExportService).toSelf().inSingletonScope()
+    container.bind(SettingsService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
@@ -133,11 +133,10 @@ async function getContainer() {
     container.bind(ImageRepository).toSelf().inSingletonScope()
     container.bind(AuthorRepository).toSelf().inSingletonScope()
     container.bind(PinningApiRepository).toSelf().inSingletonScope()
-    container.bind(GitlabRepository).toSelf().inSingletonScope()
+    container.bind(SettingsRepository).toSelf().inSingletonScope()
     container.bind(AnimationRepository).toSelf().inSingletonScope()
     container.bind(ThemeRepository).toSelf().inSingletonScope()
     container.bind(StaticPageRepository).toSelf().inSingletonScope()
-    container.bind(IpfsHostRepository).toSelf().inSingletonScope()
     container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
 
 

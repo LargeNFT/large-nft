@@ -5,18 +5,14 @@ import { RouteTo } from '../service/core/routing-service';
 
 import AdminPublishIndexComponent from '../components/admin/publish/index.f7.html'
 import AdminPublishExportComponent from '../components/admin/publish/export.f7.html'
-import AdminPublishPinataComponent from '../components/admin/publish/pinata.f7.html'
-import AdminPublishIpfsHostComponent from '../components/admin/publish/ipfs-host.f7.html'
 
 import AdminPublishForkReaderComponent from '../components/admin/publish/fork-reader.f7.html'
 import AdminPublishPublishReaderComponent from '../components/admin/publish/publish-reader.f7.html'
 import AdminPublishContractComponent from '../components/admin/publish/contract.f7.html'
 
 import { ChannelWebService } from "../service/web/channel-web-service";
-import { PinningService } from "../service/core/pinning-service";
-import { GitlabService } from "../service/core/gitlab-service";
-import { IpfsService } from "../service/core/ipfs-service";
-import { IpfsHostService } from "../service/core/ipfs-host-service";
+
+import { SettingsService } from "../service/core/settings-service";
 
 
 @injectable()
@@ -24,10 +20,7 @@ class PublishController {
 
     constructor(
         private channelWebService:ChannelWebService,
-        private pinningService:PinningService,
-        private gitlabService:GitlabService,
-        private ipfsService:IpfsService,
-        private ipfsHostService:IpfsHostService
+        private settingsService:SettingsService
     ) {}
 
     @routeMap("/admin/publish/:id")
@@ -37,18 +30,8 @@ class PublishController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
-            let pinningApi
-            let gitlab
-
-            try {
-                pinningApi = await this.pinningService.getPinata()
-                gitlab = await this.gitlabService.get()
-            } catch(ex) {}
-
             return {
-                channelViewModel: channelViewModel,
-                pinningApi: pinningApi,
-                gitlab: gitlab
+                channelViewModel: channelViewModel
             }
 
         }, AdminPublishIndexComponent)
@@ -62,15 +45,8 @@ class PublishController {
             
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
-            let ipfsHost
-
-            try {
-                ipfsHost = await this.ipfsHostService.get()
-            } catch(ex) {}
-
             return {
-                channelViewModel: channelViewModel,
-                ipfsHost: ipfsHost
+                channelViewModel: channelViewModel
             }
 
         }, AdminPublishExportComponent)
@@ -78,44 +54,44 @@ class PublishController {
 
 
     
-    @routeMap("/admin/publish/pinata/:id")
-    async pinata() : Promise<ModelView> {
+    // @routeMap("/admin/publish/pinata/:id")
+    // async pinata() : Promise<ModelView> {
 
-        return new ModelView(async (routeTo:RouteTo) => {
+    //     return new ModelView(async (routeTo:RouteTo) => {
 
-            let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+    //         let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
-            return {
-                channelViewModel: channelViewModel,
-                pinningApis: await this.pinningService.list(1000,0),
-                peerCount: this.ipfsService.peerCount,
-                ipfsReady: this.ipfsService.ipfs != undefined 
-            }
+    //         return {
+    //             channelViewModel: channelViewModel,
+    //             pinningApis: await this.pinningService.list(1000,0),
+    //             peerCount: this.ipfsService.peerCount,
+    //             ipfsReady: this.ipfsService.ipfs != undefined 
+    //         }
 
-        }, AdminPublishPinataComponent)
-    }
+    //     }, AdminPublishPinataComponent)
+    // }
 
 
-    @routeMap("/admin/publish/ipfs/:id")
-    async ipfs() : Promise<ModelView> {
+    // @routeMap("/admin/publish/ipfs/:id")
+    // async ipfs() : Promise<ModelView> {
 
-        return new ModelView(async (routeTo:RouteTo) => {
+    //     return new ModelView(async (routeTo:RouteTo) => {
 
-            let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+    //         let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
-            let ipfsHost
+    //         let ipfsHost
 
-            try {
-                ipfsHost = await this.ipfsHostService.get()
-            } catch(ex) {}
+    //         try {
+    //             ipfsHost = await this.ipfsHostService.get()
+    //         } catch(ex) {}
 
-            return {
-                channelViewModel: channelViewModel,
-                ipfsHost: ipfsHost
-            }
+    //         return {
+    //             channelViewModel: channelViewModel,
+    //             ipfsHost: ipfsHost
+    //         }
 
-        }, AdminPublishIpfsHostComponent)
-    }
+    //     }, AdminPublishIpfsHostComponent)
+    // }
 
 
 
@@ -127,16 +103,10 @@ class PublishController {
         return new ModelView(async (routeTo:RouteTo) => {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
-            
-            let gitlab
 
-            try {
-                gitlab = await this.gitlabService.get()
-            } catch(ex) {}
 
             return {
-                channelViewModel: channelViewModel,
-                gitlab: gitlab
+                channelViewModel: channelViewModel
             }
 
         }, AdminPublishForkReaderComponent)
@@ -152,15 +122,15 @@ class PublishController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
-            let gitlab
+            let settings
 
             try {
-                gitlab = await this.gitlabService.get()
+                settings = await this.settingsService.get()
             } catch(ex) {}
 
             return {
                 channelViewModel: channelViewModel,
-                gitlab: gitlab
+                settings: settings
             }
 
         }, AdminPublishPublishReaderComponent)

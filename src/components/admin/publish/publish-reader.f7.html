@@ -23,7 +23,7 @@
 
                 <div class="card-content card-content-padding">
 
-                  ${gitlab?.personalAccessToken?.length > 0 ? $h`
+                  ${settings?.personalAccessToken?.length > 0 ? $h`
 
                     ${showPublishReader ? $h`
                       
@@ -142,7 +142,6 @@
     import { ChannelService } from "../../../service/channel-service"
     import { PublishService } from "../../../service/core/publish-service"
 
-    import { PinningService } from "../../../service/core/pinning-service"
     import { GitlabService } from "../../../service/core/gitlab-service"
 
     import { QueueService } from   "../../../service/core/queue-service"
@@ -156,7 +155,6 @@
     export default (props, { $, $h, $on, $f7, $update }) => {
   
         let channelService = ContainerService.getInstance(ChannelService)
-        let pinningService = ContainerService.getInstance(PinningService)
         let ipfsService = ContainerService.getInstance(IpfsService)
         let queueService = ContainerService.getInstance(QueueService)
         let gitlabService = ContainerService.getInstance(GitlabService)
@@ -166,7 +164,7 @@
         let peerCount = ipfsService.peerCount
 
         let channelViewModel = props.channelViewModel
-        let gitlab = props.gitlab
+        let settings = props.settings
 
         let publishing = false
         let publishReaderOutput = ""

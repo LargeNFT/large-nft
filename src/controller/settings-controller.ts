@@ -5,21 +5,16 @@ import { RouteTo } from '../service/core/routing-service';
 
 
 import AdminSettingsComponent from '../components/admin/settings/index.f7.html'
-import { PinningApi } from "../dto/pinning-api";
-import { Gitlab } from "../dto/gitlab";
-import { PinningService } from "../service/core/pinning-service";
-import { GitlabService } from "../service/core/gitlab-service";
-import { IpfsHostService } from "../service/core/ipfs-host-service";
-import { IpfsHost } from "../dto/ipfs-host";
+
+import { SettingsService } from "../service/core/settings-service";
+import { Settings } from "../dto/settings";
 
 
 @injectable()
 class SettingsController {
 
   constructor(
-    private pinningService: PinningService,
-    private gitlabService: GitlabService,
-    private ipfsHostService: IpfsHostService
+    private settingsService: SettingsService
   ) { }
 
   @routeMap("/admin/settings")
@@ -27,52 +22,24 @@ class SettingsController {
 
     return new ModelView(async (routeTo: RouteTo) => {
 
-
-      //Pinning APIs
-      let pinningApis: PinningApi[]
-
-      try {
-        pinningApis = await this.pinningService.list(1000,0)
-      } catch (ex) { }
-
-
-
-
       //GitLab
-      let gitlab: Gitlab
+      let settings: Settings
 
       try {
-        gitlab = await this.gitlabService.get()
+        settings = await this.settingsService.get()
       } catch (ex) { }
 
       //If it doesn't exist create an empty one
-      if (!gitlab) {
+      if (!settings) {
 
-        gitlab = Object.assign(new Gitlab(), {
+        settings = Object.assign(new Settings(), {
           personalAccessToken: ''
         })
 
       }
-
-
-      //Ipfs Host
-      let ipfsHost: IpfsHost
-
-      try {
-        ipfsHost = await this.ipfsHostService.get()
-      } catch (ex) { }
-
-
-      //If it doesn't exist create an empty one
-      if (!ipfsHost) {
-        ipfsHost = Object.assign(new IpfsHost(), {})
-      }
-
       
       return {
-        pinningApis: pinningApis,
-        gitlab: gitlab,
-        ipfsHost: ipfsHost
+        settings: settings
       }
       
 

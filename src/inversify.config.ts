@@ -34,8 +34,10 @@ import { ChannelWebService } from './service/web/channel-web-service'
 import { ItemWebService } from './service/web/item-web-service'
 import { AuthorWebService } from './service/web/author-web-service'
 import { GitlabService } from './service/core/gitlab-service'
-import { GitlabRepository } from './repository/gitlab-repository'
+import { SettingsRepository } from './repository/settings-repository'
 import { RoutingService } from './service/core/routing-service'
+import { SettingsService } from './service/core/settings-service'
+
 import { ChannelController } from './controller/channel-controller'
 import { ItemController } from './controller/item-controller'
 import { AuthorController } from './controller/author-controller';
@@ -65,10 +67,8 @@ import { ThemeService } from './service/theme-service';
 import { ThemeRepository } from './repository/theme-repository';
 import { StaticPageRepository } from './repository/static-page-repository';
 import { StaticPageService } from './service/static-page-service';
-import { IpfsHostService } from './service/core/ipfs-host-service';
 import { ExportService } from './service/core/export-service';
 
-import { IpfsHostRepository } from './repository/ipfs-host-repository';
 
 import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository';
 import { LargeFSBackend } from './util/large-git-fs';
@@ -239,7 +239,6 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(GitlabService).toSelf().inSingletonScope()
   container.bind(RoutingService).toSelf().inSingletonScope()
   container.bind(PagingService).toSelf().inSingletonScope()
-  container.bind(IpfsHostService).toSelf().inSingletonScope()
 
   container.bind(ERCEventService).toSelf().inSingletonScope()
   container.bind(ExportService).toSelf().inSingletonScope()
@@ -261,6 +260,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(ThemeService).toSelf().inSingletonScope()
   container.bind(StaticPageService).toSelf().inSingletonScope()
   container.bind(QueryCacheService).toSelf().inSingletonScope()
+  container.bind(SettingsService).toSelf().inSingletonScope()
 
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()
@@ -269,10 +269,9 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(ImageRepository).toSelf().inSingletonScope()
   container.bind(AuthorRepository).toSelf().inSingletonScope()
   container.bind(PinningApiRepository).toSelf().inSingletonScope()
-  container.bind(GitlabRepository).toSelf().inSingletonScope()
+  container.bind(SettingsRepository).toSelf().inSingletonScope()
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
-  container.bind(IpfsHostRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
 
 

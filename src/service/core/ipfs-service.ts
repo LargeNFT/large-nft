@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify"
-import { IpfsHostService } from "./ipfs-host-service"
+import { SettingsService } from "./settings-service"
 
 
 
@@ -16,7 +16,7 @@ class IpfsService {
   constructor(
     @inject('ipfsInit') private ipfsInit,
     @inject('ipfsRemoteInit') private ipfsRemoteInit,
-    private ipfsHostService:IpfsHostService
+    private settingsService:SettingsService
   ) {}
 
 
@@ -28,14 +28,14 @@ class IpfsService {
     
     console.log('Init IPFS')
 
-    let ipfsHost
+    let settings
 
     try {
-      ipfsHost = await this.ipfsHostService.get()
+      settings = await this.settingsService.get()
     } catch(ex) {}
 
-    if (ipfsHost?.url) {
-      this.ipfs = await this.ipfsRemoteInit(ipfsHost.url)
+    if (settings?.ipfsHost) {
+      this.ipfs = await this.ipfsRemoteInit(settings?.ipfsHost)
     } else {
       this.ipfs = await this.ipfsInit()
     }

@@ -133,10 +133,9 @@
                                             <i class="material-icons">refresh</i> Export Again
                                         </button>
 
-                                        <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="button button-fill" id="export-next-button">Next <i class="material-icons">arrow_right</i></a>
 
                                     ` : $h`
-                                        <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export to Local IPFS</button>
+                                        <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export to IPFS</button>
                                     `}
                                     
                                 ` : $h`
@@ -249,7 +248,6 @@
         let publishService = ContainerService.getInstance(PublishService)
 
         let channelViewModel = props.channelViewModel
-        let ipfsHost = props.ipfsHost
 
         let peerCount = ipfsService.peerCount
 

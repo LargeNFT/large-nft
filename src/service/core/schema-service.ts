@@ -1,10 +1,9 @@
 import { injectable } from "inversify";
-import { IpfsHostRepository } from "../../repository/ipfs-host-repository";
 
 import { AnimationRepository } from "../../repository/animation-repository";
 import { AuthorRepository } from "../../repository/author-repository";
 import { ChannelRepository } from "../../repository/channel-repository";
-import { GitlabRepository } from "../../repository/gitlab-repository";
+import { SettingsRepository } from "../../repository/settings-repository";
 import { ImageRepository } from "../../repository/image-repository";
 import { ItemRepository } from "../../repository/item-repository";
 import { PinningApiRepository } from "../../repository/pinning-api-repository";
@@ -21,11 +20,10 @@ class SchemaService {
         private imageRepository:ImageRepository,
         private itemRepository:ItemRepository,
         private pinningApiRepository:PinningApiRepository,
-        private gitlabRepository:GitlabRepository,
+        private settingsRepository:SettingsRepository,
         private animationRepository:AnimationRepository,
         private themeRepository:ThemeRepository,
         private staticPageRepository:StaticPageRepository,
-        private ipfsHostRepository:IpfsHostRepository,
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository
     ) {}
 
@@ -39,11 +37,10 @@ class SchemaService {
         await this.imageRepository.load()
         await this.itemRepository.load()
         await this.pinningApiRepository.load()
-        await this.gitlabRepository.load()
+        await this.settingsRepository.load()
         await this.animationRepository.load()
         await this.themeRepository.load()
         await this.staticPageRepository.load()
-        await this.ipfsHostRepository.load()
         await this.tokenMetadataCacheRepository.load()
 
         

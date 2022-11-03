@@ -1,13 +1,19 @@
 import { IsNotEmpty, Allow } from 'class-validator'
 
 
-class Gitlab {
+class Settings {
 
     @Allow()
     _id?: string
 
     @Allow()
     _rev?:string
+
+    @Allow()
+    ipfsHost?:string
+
+    @Allow()
+    username?:string 
 
     @Allow()
     personalAccessToken?:string
@@ -22,5 +28,5 @@ class Gitlab {
 }
 
 export {
-    Gitlab
+    Settings
 }

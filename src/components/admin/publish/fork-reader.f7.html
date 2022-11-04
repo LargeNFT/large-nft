@@ -23,7 +23,7 @@
 
             <div class="card-content card-content-padding">
 
-              ${gitlab?.personalAccessToken?.length > 0 ? $h`
+              ${settings?.personalAccessToken?.length > 0 ? $h`
 
                 <form class="list" id="fork-reader" @submit="${createForkSubmit}">
                   <ul>
@@ -152,7 +152,7 @@
     let publishService = ContainerService.getInstance(PublishService)
 
     let channelViewModel = props.channelViewModel
-    let gitlab = props.gitlab
+    let settings = props.settings
     let pageUnloaded = false
 
     let forking = false
@@ -208,7 +208,7 @@
     const checkPublishRepoStatus = async (e) => {
 
       if (pageUnloaded) return
-      if (!gitlab) return
+      if (!settings) return
       if (channelViewModel.channel.publishReaderRepoStatus == "complete" && channelViewModel.channel.publishReaderRepoId > 0) return
       if (forking) return
 

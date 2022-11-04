@@ -45,12 +45,8 @@ class PublishService {
         this.logPublishProgress(undefined, "Preparing backup...")
         let backup:BackupBundle = await this.exportService.createBackup(exportBundle)
 
-        console.log('Backup created')
-
-
-
+        this.logPublishProgress(undefined, "Backup created. Exporting to IPFS...")
         let cid: string = await this.exportToIPFS(exportBundle, backup)
-
 
         //Update local cid info
         Object.assign(channel, await this.channelService.get(channel._id))
@@ -104,24 +100,19 @@ class PublishService {
 
 
         //Get directory cids
-        let imageDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
-            hash: true
-        })
-
-        let animationDirectory = await this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
-            hash: true
-        })
+        let imageDirectory = await this.getImageDirectoryCid(directory)
+        let animationDirectory = await this.getAnimationDirectoryCid(directory)
 
         await this._publishNFTMetadata(publishStatus, directory, exportBundle.channel, exportBundle.items, animationDirectory.cid.toString(), imageDirectory.cid.toString(), true)
 
 
+        console.log(exportBundle.channel)
+
+        let feeRecipient = exportBundle.channel.forkType == "existing" ? exportBundle.channel.forkedFromFeeRecipient : exportBundle.ownerAddress
+
         //Save contract metadata
         let contractMetadataPath = `${directory}/contractMetadata.json`
-        let contractMetadata = await this.channelService.exportContractMetadata(
-            exportBundle.channel, 
-            exportBundle.channel.forkType == "existing" ? exportBundle.channel.forkedFromFeeRecipient : exportBundle.ownerAddress, 
-            imageDirectory.cid.toString()
-        )
+        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory.cid.toString() )
 
         //Adding and then copying otherwise the CID does not match what we'd expect. 
         // let contractResult = await this.ipfsService.ipfs.add({
@@ -194,11 +185,31 @@ class PublishService {
     }
 
 
+    public async getAnimationDirectoryCid(directory) {
+        return this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
+            hash: true
+        })
+    }
+
+    public async getImageDirectoryCid(directory) {
+        return this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
+            hash: true
+        })
+    }
+
+
+
+
+
+
     private async _publishAnimations(publishStatus:PublishStatus, directory:string, animations:Animation[], flush: boolean) {
 
         //Save animation cids
         let animationContents = animations?.map( animation => { return { content: animation.content } })
                 
+        this.logPublishProgress(publishStatus, `Exporting ${animationContents.length} animations`)
+
+
         for await (const result of this.ipfsService.ipfs.addAll(animationContents)) {
 
             //Get animation from export
@@ -222,21 +233,15 @@ class PublishService {
 
     private async _publishImages(publishStatus:PublishStatus, directory:string, images:Image[], flush: boolean) {
 
-        let imageContents = images?.map( image => {
+        let imageContents = []
 
-            let content
+        for (let image of images) {
+            imageContents.push({
+                content: await this.imageService.getImageContent(image)
+            })
+        }
 
-            if (image.buffer) {
-                content = image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
-            } else if (image.svg) {
-                content = image.svg
-            }
-
-            return {
-                content: content
-            }
-
-        })
+        this.logPublishProgress(publishStatus, `Exporting ${imageContents.length} images`)
 
         for await (const result of this.ipfsService.ipfs.addAll(imageContents)) {
 
@@ -262,6 +267,8 @@ class PublishService {
     }
 
     private async _publishNFTMetadata(publishStatus:PublishStatus, directory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
+
+        this.logPublishProgress(publishStatus, `Exporting ${items.length} metadata files`)
 
 
         //Save metadata for each NFT
@@ -367,6 +374,9 @@ class PublishService {
         }
 
     }
+
+
+
 
 }
 

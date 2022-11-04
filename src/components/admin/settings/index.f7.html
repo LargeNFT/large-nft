@@ -47,7 +47,7 @@
                                                 <div class="item-input-wrap">
                                                     <select @change="${providerChange}" class="value-input" name="provider">                    
                                                         <option value="gitlab" selected>GitLab</option>
-                                                        <option value="github" selected>GitHub</option>
+                                                        <!-- <option value="github" selected>GitHub</option> -->
                                                     </select>
                                                 </div>
                                             </div>
@@ -57,8 +57,9 @@
                                 </ul>
                             </div>
 
+                            <br />
 
-
+                            <strong>Instructions</strong>
 
                             <p>
                                 To deploy the reader for your collection you will need a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account. 
@@ -79,6 +80,17 @@
                             <div class="list">
     
                                 <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Username</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="username" placeholder="Username"
+                                                        value="${settings.username}"  />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
                                     <li>
                                         <div class="item-content item-input">
                                             <div class="item-inner">
@@ -142,6 +154,8 @@
 <script>
     import { ContainerService } from "../../../service/core/container-service"
     import { SettingsService } from "../../../service/core/settings-service"
+    import { IpfsService } from "../../../service/core/ipfs-service"
+
     import { Settings } from "../../../dto/settings"
 
     import { v4 as uuidv4 } from 'uuid';
@@ -152,6 +166,7 @@
     export default (props, { $, $on, $f7, $update }) => {
 
         let settingsService = ContainerService.getInstance(SettingsService)
+        let ipfsService = ContainerService.getInstance(IpfsService)
 
         let settings = props.settings 
 
@@ -165,7 +180,14 @@
             //Save
             try {
 
-                await settingsService.put(Object.assign(new Settings(), formData))
+                let updatedSettings = Object.assign(new Settings(), formData)
+
+                await settingsService.put(updatedSettings)
+
+                if (settings?.ipfsHost != updatedSettings?.ipfsHost) {
+                    await ipfsService.clearInit()
+                }
+
 
                 const toast = $f7.toast.show({
                     text: 'Settings Saved',

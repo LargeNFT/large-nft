@@ -212,6 +212,20 @@ class ImageService {
     return this.imageRepository.getByIds(ids)
   }
 
+  async getImageContent(image:Image) {
+
+    let content
+
+    if (image.buffer) {
+        content = image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
+    } else if (image.svg) {
+        content = image.svg
+    }
+
+    return content
+
+  }
+
 
 }
 

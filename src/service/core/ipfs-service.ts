@@ -40,7 +40,8 @@ class IpfsService {
       this.ipfs = await this.ipfsInit()
     }
 
-    
+    this.initializing = false
+
 
     //TODO: 
 
@@ -58,6 +59,13 @@ class IpfsService {
 
   }
   
+  async clearInit() {
+
+    delete this.ipfs 
+    this.initializing = false
+
+  }
+
   async updateInfo() {
 
     let id = await this.ipfs.id()

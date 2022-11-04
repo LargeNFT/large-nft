@@ -115,19 +115,7 @@ class ExportService {
                 animationCids.push(item.animationId)
             }
 
-            //Add cover image
-            if (item.coverImageId?.length > 0) {
-                imageCids.push(item.coverImageId)
-            } 
-
-            //Get images in post content
-            if (item.content?.ops) {
-                for (let op of item.content.ops) {
-                    if (op.insert && op.insert.ipfsimage && op.insert.ipfsimage?.cid?.length > 0) {
-                        imageCids.push(op.insert.ipfsimage.cid)
-                    }
-                }
-            }
+            imageCids.push(...this.getImageCidsByItem(item))
 
             //Delete publishing related fields
             delete item._rev
@@ -181,7 +169,7 @@ class ExportService {
 
     async createBackup(exportBundle: ExportBundle) : Promise<BackupBundle> {
 
-        let channel: Channel = exportBundle.channel
+        let channel: Channel = JSON.parse( JSON.stringify(exportBundle.channel) )
         let items: Item[] = exportBundle.items
         let author: Author = exportBundle.author
         let themes:Theme[] = exportBundle.themes
@@ -196,8 +184,6 @@ class ExportService {
             delete channel.forkedFromFeeRecipient
             delete channel.forkedFromId
         }
-
-
 
         //Generate bundles with extra info for each item
         for (let item of items) {
@@ -238,9 +224,6 @@ class ExportService {
             }
 
         }
-
-
-
 
 
         let images:Image[] = []
@@ -291,6 +274,28 @@ class ExportService {
             animations: animations      
         }
 
+    }
+
+
+    getImageCidsByItem(item:Item) {
+
+        let imageCids:string[] = []
+
+        //Add cover image
+        if (item.coverImageId?.length > 0) {
+            imageCids.push(item.coverImageId)
+        } 
+
+        //Get images in post content
+        if (item.content?.ops) {
+            for (let op of item.content.ops) {
+                if (op.insert && op.insert.ipfsimage && op.insert.ipfsimage?.cid?.length > 0) {
+                    imageCids.push(op.insert.ipfsimage.cid)
+                }
+            }
+        }
+
+        return imageCids
     }
 
 

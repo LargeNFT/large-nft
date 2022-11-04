@@ -71,7 +71,6 @@ import { ExportService } from './service/core/export-service';
 
 
 import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository';
-import { LargeFSBackend } from './util/large-git-fs';
 
 //Init framework7
 //@ts-ignore
@@ -193,20 +192,13 @@ function getMainContainer(readerConfig:ReaderConfig) {
   let fs
   
   //@ts-ignore
-  container.bind("fs").toConstantValue(async (ipfs) => {
+  container.bind("fs").toConstantValue(async () => {
 
     if (fs) return fs
 
-    if (!ipfs) {
-      throw new Error("Missing IPFS")
-    }
-
     fs = new FS()
 
-    await fs.init("large-fs", { backend: new LargeFSBackend() })
-
-    //Set IPFS
-    fs.promises._backend.ipfs = ipfs
+    await fs.init("large-fs")
 
     return fs
 

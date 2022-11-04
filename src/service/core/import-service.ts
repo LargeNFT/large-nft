@@ -708,6 +708,11 @@ class ImportService {
         ******************************
         `)
 
+        this.logForkProgress(forkStatus, `Building query cache for channel ${channelId}`)
+        await this.channelService.buildQueryCache(channelId)
+
+
+
         return channelId
     }
 
@@ -904,6 +909,10 @@ class ImportService {
         ******************************\n
         ******************************
         `)
+
+        this.logForkProgress(forkStatus, `Building query cache for channel ${channels[0]._id}`)
+        await this.channelService.buildQueryCache(channels[0]._id)
+
 
         return channels[0]._id
     }

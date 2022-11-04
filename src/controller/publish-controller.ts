@@ -104,9 +104,15 @@ class PublishController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 
+            let settings
+
+            try {
+                settings = await this.settingsService.get()
+            } catch(ex) {}
 
             return {
-                channelViewModel: channelViewModel
+                channelViewModel: channelViewModel,
+                settings: settings
             }
 
         }, AdminPublishForkReaderComponent)

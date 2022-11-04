@@ -85,14 +85,10 @@ class IPFSFilelist {
 
         let files = this.directoryFileInfoMap[toDirectory]
 
-        // console.log(files)
-
         if (!files) {
             this.directoryFileInfoMap[toDirectory] = [file]
         } else {
-
             files.push(file)
-
         }
 
     }
@@ -107,8 +103,6 @@ class IPFSFilelist {
 
         let directory = getDirectory(filepath)
         let filename = getFilename(filepath)
-
-        // console.log(directory, filename)
 
         //Match on filename
         let match = this.directoryFileInfoMap[directory]?.filter( f => f.filename == filename)

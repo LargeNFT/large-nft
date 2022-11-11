@@ -57,6 +57,7 @@ export default () => {
       alias: {
         buffer: 'buffer',
         process: 'process/browser.js',
+        fs: 'memfs'
       },
       fallback: { 
         "path": require.resolve("path-browserify"),
@@ -68,7 +69,6 @@ export default () => {
         "https": require.resolve("https-browserify"),
         "zlib": require.resolve("browserify-zlib"),
         "crypto": require.resolve("crypto-browserify"),
-        "fs": require.resolve("browserify-fs"),
         "dgram": require.resolve("dgram-browserify"),
         "child_process": false
       }
@@ -205,6 +205,7 @@ export default () => {
       alias: {
         buffer: 'buffer',
         process: 'process/browser.js',
+        fs: 'memfs'
       },
       fallback: { 
         "path": require.resolve("path-browserify"),
@@ -216,7 +217,6 @@ export default () => {
         "https": require.resolve("https-browserify"),
         "zlib": require.resolve("browserify-zlib"),
         "crypto": require.resolve("crypto-browserify"),
-        "fs": require.resolve("browserify-fs"),
         "dgram": require.resolve("dgram-browserify"),
         "child_process": false
       }

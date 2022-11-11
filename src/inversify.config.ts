@@ -60,7 +60,7 @@ import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
 
 import git from "isomorphic-git"
-import FS from '@isomorphic-git/lightning-fs'
+import FS from '@isomorphic-git/lightning-fs';
 
 
 import { ThemeService } from './service/theme-service';
@@ -188,20 +188,18 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind("readerConfig").toConstantValue(readerConfig)
   container.bind("pouch-prefix").toConstantValue("./pouch/")
 
-  
   let fs
-  
+    
   //@ts-ignore
   container.bind("fs").toConstantValue(async () => {
-
+  
     if (fs) return fs
-
+  
     fs = new FS()
 
     await fs.init("large-fs")
 
     return fs
-
   })
    
 

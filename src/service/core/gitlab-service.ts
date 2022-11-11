@@ -535,6 +535,7 @@ class GitlabService {
         //Init FS
         let fs = await this.getFS()
 
+        console.log(fs)
 
         //Check if we already have a repo
         let dir = `/repo-${channel._id}`
@@ -600,34 +601,20 @@ class GitlabService {
         if (channel.contractAddress) {
             
             //Write contract info
-            await fs.promises.writeFile(`${dir}/backup/contract/contract.json`, Buffer.from(JSON.stringify({
+            await this.addFile(fs, dir, 'backup/contract/contract.json', Buffer.from(JSON.stringify({
                 contractAddress: channel.contractAddress,
                 ipfsCid: channel.localCid
             })))
 
+            
             //Also the ABI
-            await fs.promises.writeFile(
-                `${dir}/backup/contract/contract-abi.json`, 
-                Buffer.from(JSON.stringify(contractABI))
-            )
-
-            await fs.promises.writeFile(
-                `${dir}/backup/export/contractMetadata.json`, 
-                await toBuffer(this.ipfsService.ipfs.files.read(`${ipfsDir}/contractMetadata.json`))  
-            )
+            await this.addFile(fs, dir, 'backup/contract/contract-abi.json', Buffer.from(JSON.stringify(contractABI)))
+            await this.addFile(fs, dir, 'backup/export/contractMetadata.json', await toBuffer(this.ipfsService.ipfs.files.read(`${ipfsDir}/contractMetadata.json`)) )
 
         } else {
 
-            await fs.promises.writeFile(
-                `${dir}/backup/contract/contract.json`, 
-                Buffer.from(JSON.stringify({}))
-            )
-
-            //Also the ABI
-            await fs.promises.writeFile(
-                `${dir}/backup/contract/contract-abi.json`, 
-                Buffer.from(JSON.stringify({}))
-            )
+            await this.addFile(fs, dir, 'backup/contract/contract-abi.json', Buffer.from(JSON.stringify({})))
+            await this.addFile(fs, dir, 'backup/export/contractMetadata.json', Buffer.from(JSON.stringify({})) )
 
         }
 
@@ -641,11 +628,7 @@ class GitlabService {
 
             for (let filename of files) {
                 this.logPublishReaderProgress(`Saving ${dir}/backup/export/backup/${filename}`)
-
-                await fs.promises.writeFile(
-                    `${dir}/backup/export/backup/${filename}`, 
-                    await toBuffer(this.ipfsService.ipfs.files.read(`${ipfsDir}/backup/${filename}`))  
-                )
+                await this.addFile(fs, dir, `backup/export/backup/${filename}`, await toBuffer(this.ipfsService.ipfs.files.read(`${ipfsDir}/backup/${filename}`))  )
             }
 
         } catch(ex) {
@@ -659,6 +642,15 @@ class GitlabService {
 
         let imageCids:string[] = []
         let animationCids:string[] = []
+        
+        if (channel.coverImageId) {
+            imageCids.push(channel.coverImageId)
+        }
+
+        if (channel.coverBannerId) {
+            imageCids.push(channel.coverBannerId)
+        }
+
 
         //Get image and animation ids so we can quickly grab them. 
         for (let item of items) {
@@ -682,13 +674,9 @@ class GitlabService {
 
             this.logPublishReaderProgress(`Saving ${dir}/backup/export/metadata/${item.tokenId}.json`)
 
-            await fs.promises.writeFile(
-                `${dir}/backup/export/metadata/${item.tokenId}.json`, 
-                JSON.stringify(nftMetadata)
-            )
+            await this.addFile(fs, dir, `backup/export/metadata/${item.tokenId}.json`, JSON.stringify(nftMetadata) )
 
         }
-
 
 
         this.logPublishReaderProgress(`Saving images...`)
@@ -698,46 +686,23 @@ class GitlabService {
             let filename = `${image.cid}.${image.buffer ? 'jpg' : 'svg'}` 
 
             this.logPublishReaderProgress(`Saving ${dir}/backup/export/images/${filename}`)
-
-            await fs.promises.writeFile(
-                `${dir}/backup/export/images/${filename}`, 
-                await this.imageService.getImageContent(image)  
-            )
-
+            await this.addFile(fs, dir, `backup/export/images/${filename}`, await this.imageService.getImageContent(image)  )
 
         }
 
 
         this.logPublishReaderProgress(`Saving animations...`)
         for (let animation of animations) {
-            
             this.logPublishReaderProgress(`Saving ${dir}/backup/export/animations/${animation._id}.html`)
-
-            await fs.promises.writeFile(
-                `${dir}/backup/export/animations/${animation._id}.html`, 
-                animation.content
-            )
-
-
+            await this.addFile(fs, dir, `backup/export/animations/${animation._id}.html`, animation.content )
         }
 
-   
-
-
-
-
-
-
-        //Git add
-        this.logPublishReaderProgress("Git add")
-
-        let addResult = await this.git.add({
+        this.logPublishReaderProgress("Git add...")
+        await this.git.add({
             fs,
             dir,
-            filepath: "."
+            filepath: '.'
         })
-
-        this.logPublishReaderProgress(addResult.toString())
 
 
         this.logPublishReaderProgress("Git commit")
@@ -750,8 +715,7 @@ class GitlabService {
         this.logPublishReaderProgress(commitResult.toString())
 
 
-
-        this.logPublishReaderProgress("Git push")
+        this.logPublishReaderProgress("Git push...")
         let pushResult = await this.git.push({
             fs,
             http,
@@ -793,19 +757,31 @@ class GitlabService {
     private async _createDirectoryStructure(fs, dir:string) {
 
         //Create directory structure
-        await fs.promises.mkdir(`${dir}`)
-        await fs.promises.mkdir(`${dir}/backup`)
+        fs.mkdirSync(`${dir}`)
+        fs.mkdirSync(`${dir}/backup`)
 
-        await fs.promises.mkdir(`${dir}/backup/contract`)
-        await fs.promises.mkdir(`${dir}/backup/export`)
+        fs.mkdirSync(`${dir}/backup/contract`)
+        fs.mkdirSync(`${dir}/backup/export`)
 
-        await fs.promises.mkdir(`${dir}/backup/export/backup`)
-        await fs.promises.mkdir(`${dir}/backup/export/images`)
-        await fs.promises.mkdir(`${dir}/backup/export/metadata`)
-        await fs.promises.mkdir(`${dir}/backup/export/animations`)
+        fs.mkdirSync(`${dir}/backup/export/backup`)
+        fs.mkdirSync(`${dir}/backup/export/images`)
+        fs.mkdirSync(`${dir}/backup/export/metadata`)
+        fs.mkdirSync(`${dir}/backup/export/animations`)
 
     }
 
+    private async addFile(fs, dir, filepath, content) {
+
+        console.log(`${dir}/${filepath}`)
+
+        await fs.promises.writeFile(
+            `${dir}/${filepath}`, 
+            content
+        )
+
+
+
+    }
 
 }
 

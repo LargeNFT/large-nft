@@ -1,6 +1,6 @@
 //@ts-nocheck
+console.log(1)
 import { getContainer, cleanup } from "./inversify.config"
-
 import assert from 'assert'
 
 import { Animation } from "../src/dto/animation"
@@ -8,6 +8,7 @@ import { AnimationService } from "../src/service/animation-service"
 
 import { IpfsService } from "../src/service/core/ipfs-service"
 import { SchemaService } from "../src/service/core/schema-service"
+
 
 
 let user0
@@ -28,6 +29,7 @@ contract('AnimationService', async (accounts) => {
 
 
     before("", async () => {
+        console.log(3)
 
         user0 = accounts[0]
         user1 = accounts[1]
@@ -41,6 +43,7 @@ contract('AnimationService', async (accounts) => {
         ipfsService = container.get(IpfsService)
         schemaService = container.get(SchemaService)
 
+        console.log(4)
 
         await schemaService.load()
 

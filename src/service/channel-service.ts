@@ -5,6 +5,7 @@ import { Item } from "../dto/item"
 
 import { ValidationException } from "../util/validation-exception";
 import { v4 as uuidv4 } from 'uuid';
+
 import { ContractMetadata } from "../dto/contract-metadata";
 import { ImageService } from "./image-service";
 import { Image } from "../dto/image";
@@ -19,7 +20,6 @@ import { Theme } from "dto/theme";
 import { ThemeService } from "./theme-service";
 import { StaticPageService } from "./static-page-service";
 import { StaticPage } from "dto/static-page";
-
 
 @injectable()
 class ChannelService {

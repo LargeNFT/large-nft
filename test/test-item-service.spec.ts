@@ -92,7 +92,7 @@ contract('ItemService', async (accounts) => {
             await service.put(new Item())
             assert.fail("Did not throw exception")
         } catch(ex) {
-            assert.strictEqual(ex.errors.length, 1)
+            assert.strictEqual(ex.errors?.length, 1)
         }
 
     })
@@ -125,6 +125,7 @@ contract('ItemService', async (accounts) => {
         //Arrange
         let item:Item = Object.assign(new Item(), {
             channelId: channel1._id,
+            tokenId: 1,
             title: "The Sound of Music",
             link: "google.com",
             description: "Singing in the mountains",
@@ -167,9 +168,10 @@ contract('ItemService', async (accounts) => {
 
     it("should read posts back in order", async () => {
 
-        //Arrange - Add a few more channels
+        //Arrange - Add a few more items
         await service.put(Object.assign(new Item(), {
             channelId: channel1._id,
+            tokenId: 2,
             title: "Titanic",
             link: "google.com",
             description: "Singing in the mountains",
@@ -179,6 +181,7 @@ contract('ItemService', async (accounts) => {
 
         await service.put(Object.assign(new Item(), {
             channelId: channel1._id,
+            tokenId: 3,
             title: "Batman",
             link: "pontoon.com",
             description: "Another boat and a man in a bat suit",
@@ -230,9 +233,10 @@ contract('ItemService', async (accounts) => {
 
     it("should add items to a second channel and query both", async () => {
 
-        //Arrange - Add a few more channels
+        //Arrange - Add a few more items
         await service.put(Object.assign(new Item(), {
             channelId: channel2._id,
+            tokenId: 4,
             title: "Titanic2",
             link: "google.com",
             description: "Singing in the mountains",
@@ -242,6 +246,7 @@ contract('ItemService', async (accounts) => {
 
         await service.put(Object.assign(new Item(), {
             channelId: channel2._id,
+            tokenId: 5,
             title: "Batman2",
             link: "pontoon.com",
             description: "Another boat and a man in a bat suit",
@@ -251,6 +256,7 @@ contract('ItemService', async (accounts) => {
 
         await service.put(Object.assign(new Item(), {
             channelId: channel2._id,
+            tokenId: 6,
             title: "Another one2",
             link: "pontoon.com",
             description: "Another boat and a man in a bat suit",
@@ -277,11 +283,11 @@ contract('ItemService', async (accounts) => {
 
     })
 
-    it("should count items by channel", async () => {
+    // it("should count items by channel", async () => {
 
-        let count = await service.countByChannel(channel1._id)
-        assert.equal(count, 3)
-    })
+    //     let count = await service.countByChannel(channel1._id)
+    //     assert.equal(count, 3)
+    // })
 
     it("should load a database with lots of records and page through them", async () => {
 
@@ -292,6 +298,7 @@ contract('ItemService', async (accounts) => {
             
             await service.put(Object.assign(new Item(), {
                 channelId: 17,
+                tokenId: i,
                 title: (i).toString() + " has to be longer",
                 link: "pontoon.com",
                 description: "Another boat and a man in a bat suit",
@@ -387,6 +394,7 @@ contract('ItemService', async (accounts) => {
 
         let item:Item = Object.assign(new Item(), {
             channelId: attributeChannel._id,
+            tokenId: 7,
             title: "An image!",
             link: "pontoon.com",
             description: "Another boat and a man in a bat suit",

@@ -7,9 +7,9 @@ import { providers } from "ethers"
 
 
 import { HardhatWalletServiceImpl } from "../test/util/hardhat-wallet-service";
-
 import { AuthorService } from "../src/service/author-service";
 import { ChannelService } from "../src/service/channel-service";
+
 import { ImageService } from "../src/service/image-service";
 import { ItemService } from "../src/service/item-service";
 import { QuillService } from "../src/service/quill-service";
@@ -18,7 +18,7 @@ import { QuillService } from "../src/service/quill-service";
 import { IpfsService } from "../src/service/core/ipfs-service";
 
 import fs from 'fs';
-import git from "isomorphic-git"
+// import git from "isomorphic-git"
 
 
 import { DatabaseService } from "../src/service/core/database-service";
@@ -97,7 +97,7 @@ async function getContainer() {
         return fs
     })
     
-    container.bind("git").toConstantValue(git)
+    container.bind("git").toConstantValue({})
 
 
     container.bind(DatabaseService).toSelf().inSingletonScope()
@@ -141,25 +141,25 @@ async function getContainer() {
 
 
     //Spin up local IPFS
-    // container.bind("ipfsInit").toConstantValue( async () => {
+    container.bind("ipfsInit").toConstantValue( async () => {
 
-    //     const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
+        const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
 
-    //     //@ts-ignore
-    //     return IPFS.create(ipfsOptions())
-    // })
+        //@ts-ignore
+        return IPFS.create(ipfsOptions())
+    })
 
 
     //Use external IPFS
-    container.bind("ipfsInit").toConstantValue( async () => {
+    // container.bind("ipfsInit").toConstantValue( async () => {
 
-        let url = "http://localhost:5001/api/v0"
+    //     let url = "http://localhost:5001/api/v0"
 
-        const IPFS = await Function('return import("ipfs-http-client")')() as Promise<typeof import('ipfs-http-client')>
+    //     const IPFS = await Function('return import("ipfs-http-client")')() as Promise<typeof import('ipfs-http-client')>
 
-        //@ts-ignore
-        return IPFS.create({ url: url })
-    })
+    //     //@ts-ignore
+    //     return IPFS.create({ url: url })
+    // })
 
 
 
@@ -175,6 +175,7 @@ async function getContainer() {
     // await ipfsService.init()
     await walletService.initWallet()
 
+    globalThis.container = container
 
     return container
 }

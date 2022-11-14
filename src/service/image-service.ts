@@ -3,7 +3,7 @@ import { Image } from "../dto/image"
 import { ValidationException } from "../util/validation-exception"
 import { validate, ValidationError } from 'class-validator'
 import { ImageRepository } from "../repository/image-repository"
-import { Blob } from 'blob-polyfill'
+// import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
 import { SvgService } from "./svg-service"
 import { QuillService } from "./quill-service"
@@ -83,7 +83,7 @@ class ImageService {
 
     //If we have a buffer return it as a URL
     if (image.buffer) {
-      let blob: Blob = this.bufferToBlob(image.buffer)
+      let blob = this.bufferToBlob(image.buffer)
       return this.blobToDataURL(blob)
     } 
 
@@ -106,6 +106,7 @@ class ImageService {
   public bufferToBlob(buffer: Uint8Array): Promise<Blob> {
 
     if (Blob != undefined) {
+      //@ts-ignore
       return new Blob([buffer], { type: "image/jpg" })
     }
 

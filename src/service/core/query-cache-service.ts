@@ -75,7 +75,7 @@ function cacheQuery(queryName: string) {
         
         const serializeArgs = (...args: any[]) =>
             args
-            .map((arg: any) => arg.toString())
+            .map((arg: any) => arg?.toString())
             .join(':')
 
         const originalValue = descriptor.value;

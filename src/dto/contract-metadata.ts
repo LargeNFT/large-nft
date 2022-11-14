@@ -1,5 +1,3 @@
-import { AttributeSelection } from "./attribute";
-
 interface ContractMetadata {
 
     name?:string

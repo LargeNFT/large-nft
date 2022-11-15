@@ -65,12 +65,12 @@
 
                           <ul class="theme-list"
                             style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
-                            ${channelViewModel.themes?.map( (theme) => $h`
+                            ${themes?.map( (theme) => $h`
                             <li>
                               <span class="theme-name">${theme.name}</span>
                               <span class="theme-id">${theme._id}</span>
-                              <a class="link theme-link edit-theme" href="#" data-id="${theme._id}">Edit</a>
-                              <a class="link theme-link delete-theme" href="#" data-id="${theme._id}">Delete</a>
+                              <a class="link theme-link" href="#" data-id="${theme._id}" @click="${editTheme}">Edit</a>
+                              <a class="link theme-link" href="#" data-id="${theme._id}" @click="${deleteTheme}">Delete</a>
                             </li>
                             `)}
                           </ul>
@@ -106,7 +106,7 @@
                   </div>
                 </div>
                 <div class="page-content">
-                  <form id="add-theme-form">
+                  <form id="add-theme-form" @submit="${addThemeFormSubmit}">
                     <${ThemeForm} cover_image_css_editor_id="add-theme-cover-image-editor"
                       animation_css_editor_id="add-theme-animation-editor" />
 
@@ -139,7 +139,7 @@
                   </div>
                 </div>
                 <div class="page-content">
-                  <form id="edit-theme-form">
+                  <form id="edit-theme-form" @submit="${editThemeFormSubmit}">
 
                     <${ThemeForm} cover_image_css_editor_id="edit-theme-cover-image-editor"
                       animation_css_editor_id="edit-theme-animation-editor" theme="${editingTheme}" />
@@ -207,7 +207,10 @@
 
 
     let channelViewModel = props.channelViewModel
+    let themes = props.themes
     let showEdit = channelViewModel.editable
+    
+
 
     let editingTheme
     let themeCoverCssEditor
@@ -218,7 +221,7 @@
 
     const updateThemeList = async () => {
       //Refresh theme list
-      channelViewModel.themes = await themeService.listByChannel(channelViewModel.channel._id, 1000, 0)
+      themes = await themeService.listByChannel(channelViewModel.channel._id, 1000, 0)
     }
 
     const addThemePopupOpen = function (e) {
@@ -247,7 +250,7 @@
 
     }
 
-    const addThemeFormOpen = async function (e) {
+    const addThemeFormSubmit = async function (e) {
 
       e.preventDefault()
 
@@ -287,7 +290,7 @@
 
     }
 
-    const editThemeForm = async function (e) {
+    const editThemeFormSubmit = async function (e) {
 
       e.preventDefault()
 
@@ -348,7 +351,7 @@
 
       let id = $(e.target).data('id')
 
-      editingTheme = channelViewModel.themes.filter((theme) => theme._id == id)[0]
+      editingTheme = themes.filter((theme) => theme._id == id)[0]
 
       //Init editors
       themeCoverCssEditor = new Quill('#edit-theme-cover-image-editor', {
@@ -388,11 +391,8 @@
     $on('pageInit', async (e, page) => {
 
       //Clear existing listeners
-      $(document).off('popup:open', '.add-theme-popup')
-      $(document).off('submit', '#add-theme-form')
-      $(document).off('submit', '#edit-theme-form')
-      $(document).off('click', '.delete-theme')
-      $(document).off('click', '.edit-theme')
+      // $(document).off('popup:open', '.add-theme-popup')
+
 
 
       //Load cover banner into CSS
@@ -421,11 +421,8 @@
       /**
       *  THEMES
       */
-      $(document).on('popup:open', '.add-theme-popup', addThemePopupOpen)
-      $(document).on('submit', '#add-theme-form', addThemeFormOpen)
-      $(document).on('submit', '#edit-theme-form', editThemeForm)
-      $(document).on('click', '.delete-theme', deleteTheme)
-      $(document).on('click', '.edit-theme', editTheme)
+      $('.add-theme-popup').on('popup:open', addThemePopupOpen)
+
 
     })
 

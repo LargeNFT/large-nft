@@ -95,14 +95,13 @@ class ItemRepository {
     db: any
 
     constructor(
-        private databaseService: DatabaseService,
-        private queryCacheService:QueryCacheService
+        private databaseService: DatabaseService
     ) { 
 
     }
 
-    async load() {
-        this.db = await this.databaseService.getDatabase("item", this.changesets)
+    async load(channelId:string) {
+        this.db = await this.databaseService.getDatabase(`${channelId}-item`, this.changesets)
     }
 
     async get(_id: string): Promise<Item> {
@@ -180,20 +179,10 @@ class ItemRepository {
         // return response.docs
 
     }
-    
-
-    
-
-
-
-
 
     async delete(item: Item): Promise<void> {
         await this.db.remove(item)
     }
-
-
-
 
     @cacheQuery('attribute_info_by_channel')
     async getAttributeInfo(channelId:string) : Promise<AttributeInfo[]> {
@@ -216,48 +205,20 @@ class ItemRepository {
 
     }
 
+    // @cacheQuery('token_id_stats_by_channel')
+    // async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
 
+    //     let result = await this.db.query('by_channel_token_stats', {
+    //         reduce: true,
+    //         include_docs: false,
+    //         key: channelId
+    //     })
 
-    @cacheQuery('token_id_stats_by_channel')
-    async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
+    //     if (result.rows?.length > 0) {
+    //         return result.rows[0].value
+    //     } 
 
-        let result = await this.db.query('by_channel_token_stats', {
-            reduce: true,
-            include_docs: false,
-            key: channelId
-        })
-
-        // console.log(result)
-
-        let tokenIdStats
-        if (result.rows?.length > 0) {
-            tokenIdStats = result.rows[0].value
-        } else {
-            tokenIdStats = {
-                min: 0,
-                max: 0,
-                count: 0
-            }
-        }
-
-        return tokenIdStats
-
-    }
-
-
-    
-    async clearQueryCache(item:Item) {
-        await this.queryCacheService.clear(this.db, `token_id_stats_by_channel_${item.channelId}`)
-        await this.queryCacheService.clear(this.db, `attribute_info_by_channel_${item.channelId}`)
-    }
-
-    async buildQueryCache(channelId:string) {
-
-        //Just gotta call these
-        await this.getAttributeInfo(channelId)
-        await this.getTokenIdStatsByChannel(channelId)
-
-    }
+    // }
 
 }
 

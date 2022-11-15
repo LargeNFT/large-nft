@@ -57,6 +57,7 @@ import { PDFService } from "../src/service/core/pdf-service";
 import { UploadService } from "../src/service/core/upload-service";
 import { ERCEventService } from "../src/service/core/erc-event-service";
 import { TokenMetadataCacheRepository } from "../src/repository/token-metadata-cache-repository";
+import { QueryCacheRepository } from "../src/repository/query-cache-repository";
 
 
 
@@ -138,6 +139,7 @@ async function getContainer() {
     container.bind(ThemeRepository).toSelf().inSingletonScope()
     container.bind(StaticPageRepository).toSelf().inSingletonScope()
     container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
+    container.bind(QueryCacheRepository).toSelf().inSingletonScope()
 
 
     //Spin up local IPFS

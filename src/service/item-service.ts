@@ -12,6 +12,8 @@ import { ImageService } from "./image-service";
 
 import { Image } from "../dto/image";
 import { AggregateStats } from "../dto/aggregate-stats";
+import { QueryCacheService } from "./core/query-cache-service";
+import { QueryCache } from "../dto/query-cache";
 
 @injectable()
 class ItemService {
@@ -19,6 +21,7 @@ class ItemService {
     constructor(
         private itemRepository: ItemRepository,
         private imageService:ImageService,
+        private queryCacheService:QueryCacheService
     ) { }
 
     async get(_id: string): Promise<Item> {
@@ -69,10 +72,6 @@ class ItemService {
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {
         return this.itemRepository.listByChannel(channelId, limit, skip)
-    }
-
-    async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
-        return this.itemRepository.getTokenIdStatsByChannel(channelId)
     }
 
     async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
@@ -140,8 +139,9 @@ class ItemService {
     }
 
     async getNextTokenId(channelId:string) {
-        let tokenIdStats = await this.itemRepository.getTokenIdStatsByChannel(channelId)
-        return tokenIdStats.max + 1
+        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channelId}`)
+        let tokenIdStats = queryCache?.result
+        return tokenIdStats?.max ? tokenIdStats.max + 1 : 1
     }
 
     async getAttributeInfo(channelId:string) : Promise<AttributeInfo[]> {
@@ -149,7 +149,18 @@ class ItemService {
     }
 
     async clearQueryCache(item:Item) {
-        return this.itemRepository.clearQueryCache(item)
+
+        try {
+            await this.queryCacheService.delete(`attribute_info_by_channel_${item.channelId}`)
+        } catch(ex) {} //might not exist. ignore
+
+    }
+
+    async buildQueryCache(channelId:string) {
+
+        //Just gotta call these
+        await this.itemRepository.getAttributeInfo(channelId)
+
     }
 
 

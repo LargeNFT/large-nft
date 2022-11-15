@@ -188,9 +188,7 @@
       //Save
       try {
 
-        // console.log(item)
-
-        await itemService.put(item)
+        await itemWebService.put(item)
 
         const toast = $f7.toast.show({
           text: 'Item saved',
@@ -199,9 +197,6 @@
           position: 'bottom',
           horizontalPosition: 'left'
         })
-
-        //Clear caches
-        await itemService.clearQueryCache(item)
 
         //Redirect
         $f7.views.main.router.navigate(`/admin/channel/show/${item.channelId}/${item.tokenId}`)

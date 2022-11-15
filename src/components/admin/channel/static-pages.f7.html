@@ -69,14 +69,12 @@
 
                           <ul class="static-page-list"
                             style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
-                            ${channelViewModel.staticPages?.map( (staticPage) => $h`
-                            <li>
-                              <span class="static-page-name">${staticPage.name}</span>
-                              <a class="link static-page-link edit-static-page" href="#"
-                                data-id="${staticPage._id}">Edit</a>
-                              <a class="link static-page-link delete-static-page" href="#"
-                                data-id="${staticPage._id}">Delete</a>
-                            </li>
+                            ${staticPages?.map( (staticPage) => $h`
+                              <li>
+                                <span class="static-page-name">${staticPage.name}</span>
+                                <a class="link static-page-link" href="#" data-id="${staticPage._id}" @click="${editClick}">Edit</a>
+                                <a class="link static-page-link" href="#" data-id="${staticPage._id}" @click="${deleteClick}">Delete</a>
+                              </li>
                             `)}
                           </ul>
 
@@ -113,7 +111,7 @@
                   </div>
                 </div>
                 <div class="page-content">
-                  <form id="add-static-page-form">
+                  <form id="add-static-page-form" @submit="${addFormSubmit}">
                     <${StaticPageForm} static_page_content_editor_id="add-static-page-content-editor"
                       static_page_content_toolbar_id="add-static-page-content-toolbar"
                       image_button_input_id="add-static-page-image-button-input"
@@ -148,7 +146,7 @@
                   </div>
                 </div>
                 <div class="page-content">
-                  <form id="edit-static-page-form">
+                  <form id="edit-static-page-form" @submit="${editFormSubmit}">
 
                     <${StaticPageForm} static_page_content_editor_id="edit-static-page-content-editor"
                       static_page_content_toolbar_id="edit-static-page-content-toolbar"
@@ -223,6 +221,7 @@
     let staticPageService = ContainerService.getInstance(StaticPageService)
 
     let channelViewModel = props.channelViewModel
+    let staticPages = props.staticPages
     let showEdit = channelViewModel.editable
 
     let editingStaticPage
@@ -233,7 +232,7 @@
 
     const updateStaticPagesList = async () => {
       //Refresh static pages list
-      channelViewModel.staticPages = await staticPageService.listByChannel(channelViewModel.channel._id, 1000, 0)
+      staticPages = await staticPageService.listByChannel(channelViewModel.channel._id, 1000, 0)
     }
 
     let popupOpenHandler = (e) => {
@@ -365,7 +364,7 @@
 
       let id = $(e.target).data('id')
 
-      editingStaticPage = channelViewModel.staticPages.filter((staticPage) => staticPage._id == id)[0]
+      editingStaticPage = staticPages.filter((staticPage) => staticPage._id == id)[0]
 
       staticPageContentEditor = new Quill('#edit-static-page-content-editor', {
         bounds: ".page-content",
@@ -456,11 +455,8 @@
     $on('pageInit', async (e, page) => {
 
       //Clear existing listeners
-      $(document).off('popup:open', '.add-static-page-popup')
-      $(document).off('submit', '#add-static-page-form')
-      $(document).off('submit', '#edit-static-page-form')
-      $(document).off('click', '.delete-static-page')
-      $(document).off('click', '.edit-static-page')
+      // $(document).off('popup:open', '.add-static-page-popup')
+
       $(document).off('click', '#add-static-page-image-button')
       $(document).off('change', '#add-static-page-image-button-input')
       $(document).off('click', '#edit-static-page-image-button')
@@ -499,11 +495,9 @@
       /**
        *  STATIC PAGES
        */
-      $(document).on('popup:open', '.add-static-page-popup', popupOpenHandler)
-      $(document).on('submit', '#add-static-page-form', addFormSubmit)
-      $(document).on('submit', '#edit-static-page-form', editFormSubmit)
-      $(document).on('click', '.delete-static-page', deleteClick)
-      $(document).on('click', '.edit-static-page', editClick)
+      $('.add-static-page-popup').on('popup:open', popupOpenHandler)
+
+
 
       /**
       * ADDING IMAGE BUTTONS

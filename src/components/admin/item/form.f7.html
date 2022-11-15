@@ -64,6 +64,30 @@
                             </div>
                         </li>
                                 
+                        <li>
+                            <label class="item-checkbox item-content">
+                
+                                ${itemViewModel.item.coverImageAsAnimation ? $h`
+                                    <input type="checkbox" checked="true"  @change="${coverImageAsAnimationOnChange}" />
+                                ` : $h`
+                                    <input type="checkbox"  @change="${coverImageAsAnimationOnChange}" />
+                                `}
+                
+                                
+                                <i class="icon icon-checkbox"></i>
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">Show Cover Image As Animation</div>
+                                    </div>
+                                    <div class="item-text">
+                                        If this box is checked the animation will only display the cover image. All other content will be ignored.
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+
+
+
                         <li class="cover-photo-preview">
                 
                             ${itemViewModel?.coverImage ? $h`
@@ -208,27 +232,7 @@
                                     </div>
                                 </li>
                         
-                                <li>
-                                    <label class="item-checkbox item-content">
-                        
-                                        ${itemViewModel.item.coverImageAsAnimation ? $h`
-                                            <input type="checkbox" checked="true"  @change="${coverImageAsAnimationOnChange}" />
-                                        ` : $h`
-                                            <input type="checkbox"  @change="${coverImageAsAnimationOnChange}" />
-                                        `}
-                        
-                                        
-                                        <i class="icon icon-checkbox"></i>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Show Cover Image As Animation</div>
-                                            </div>
-                                            <div class="item-text">
-                                                If this box is checked the animation will only display the cover image. All other content will be ignored.
-                                            </div>
-                                        </div>
-                                    </label>
-                                </li>
+
                         
                             </ul>
                         </div>

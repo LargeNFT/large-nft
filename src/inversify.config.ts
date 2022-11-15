@@ -71,6 +71,7 @@ import { ExportService } from './service/core/export-service';
 
 
 import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository';
+import { QueryCacheRepository } from './repository/query-cache-repository';
 
 //Init framework7
 //@ts-ignore
@@ -263,6 +264,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
+  container.bind(QueryCacheRepository).toSelf().inSingletonScope()
 
 
   container.bind("ipfsInit").toConstantValue( async () => {

@@ -26,8 +26,8 @@ class AnimationRepository {
     ) { }
 
 
-    async load() {
-        this.db = await this.databaseService.getDatabase("animation", this.changesets)
+    async load(channelId:string) {
+        this.db = await this.databaseService.getDatabase(`${channelId}-animation`, this.changesets)
     }
 
     async get(_id: string): Promise<Animation> {

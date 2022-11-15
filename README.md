@@ -1,6 +1,6 @@
 
 # Large
-The NFT platform for writers.
+A decentralized content management system for NFT communities.
 
 Publish your book, fan-fiction, blog, or art as a forkable NFT collection and sell your work as digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 

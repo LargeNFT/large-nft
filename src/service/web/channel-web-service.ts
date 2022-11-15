@@ -1,14 +1,13 @@
+import { QueryCache } from "../../dto/query-cache";
 import { injectable } from "inversify";
 import moment from "moment";
 import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
-import { StaticPage } from "../../dto/static-page";
-import { Theme } from "../../dto/theme";
+
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
-import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
 import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
@@ -17,6 +16,7 @@ import { QuillService } from "../quill-service";
 import { StaticPageService } from "../static-page-service";
 import { ThemeService } from "../theme-service";
 import { ItemWebService } from "./item-web-service";
+import { QueryCacheService } from "../../service/core/query-cache-service";
 
 @injectable()
 class ChannelWebService {
@@ -29,7 +29,8 @@ class ChannelWebService {
         private itemWebService:ItemWebService,
         private quillService:QuillService,
         private themeService:ThemeService,
-        private staticPageService:StaticPageService
+        private staticPageService:StaticPageService,
+        private queryCacheService:QueryCacheService
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -93,16 +94,16 @@ class ChannelWebService {
 
         }
 
-        let themes:Theme[] = await this.themeService.listByChannel(channel._id, 1000, 0)
-        let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 1000, 0)
+        // let themes:Theme[] = await this.themeService.listByChannel(channel._id, 1000, 0)
+        // let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 1000, 0)
 
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
 
 
         return {
             channel: channel,
-            themes: themes,
-            staticPages: staticPages,
+            // themes: themes,
+            // staticPages: staticPages,
             coverImage: coverImage,
             coverBanner: coverBanner,
             author: author,
@@ -128,7 +129,6 @@ class ChannelWebService {
         return result
 
     }
-
 
     async upgrade(channel:Channel) {
 
@@ -177,6 +177,29 @@ class ChannelWebService {
 
         }
     }
+
+    async put(channel:Channel) : Promise<void> {
+
+        await this.channelService.put(channel)
+
+        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channel._id}`)
+
+        if (!queryCache) {
+            queryCache = new QueryCache()
+            queryCache._id = `token_id_stats_by_channel_${channel._id}`
+            queryCache.result = {
+                min: 0,
+                max: 0,
+                count: 0
+            }
+        }
+
+
+        //Update cache
+        await this.queryCacheService.put(queryCache)
+        
+    }
+
 
 
 }

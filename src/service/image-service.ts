@@ -1,3 +1,4 @@
+
 import { injectable } from "inversify"
 import { Image } from "../dto/image"
 import { ValidationException } from "../util/validation-exception"
@@ -224,6 +225,55 @@ class ImageService {
     }
 
     return content
+
+  }
+
+
+  async loadImage(image, imageData) {
+
+    return new Promise (function (resolved, rejected) {
+
+      //@ts-ignore
+      image.onload = function(){
+        //@ts-ignore
+        resolved()
+      }
+
+      //@ts-ignore
+      image.src = URL.createObjectURL(new Blob([imageData], {'type': 'image/jpg'}))
+
+    })
+
+
+  }
+
+
+
+  async phlipImage(inputImage) {
+
+    const outputImage = document.createElement("canvas")
+    outputImage.width = inputImage.naturalWidth
+    outputImage.height = inputImage.naturalHeight
+      
+    const ctx = outputImage.getContext("2d")
+  
+    // Phlip the image by scaling negatively to the left
+    ctx.scale(-1, 1)
+  
+    // Draw the image on the canvas
+    // Starts at [-width, 0] because the phlip scaled negatively
+    ctx.drawImage(inputImage, -outputImage.width, 0)
+
+
+    const imageData = ctx.getImageData(0, 0, outputImage.width, outputImage.height)
+
+    const binary = new Uint8Array(imageData.data.length)
+    
+    for (let i = 0; i < imageData.data.length; i++) {
+        binary[i] = imageData.data[i]
+    }
+
+    return binary
 
   }
 

@@ -83,6 +83,8 @@
   import { AuthorService } from "../../../service/author-service"
 
   import { ChannelService } from "../../../service/channel-service"
+  import { ChannelWebService } from "../../../service/web/channel-web-service"
+
   import { Channel } from "../../../dto/channel"
   import { Author } from "../../../dto/author"
 
@@ -102,6 +104,8 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let channelService = ContainerService.getInstance(ChannelService)
+    let channelWebService = ContainerService.getInstance(ChannelWebService)
+
     let authorService = ContainerService.getInstance(AuthorService)
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
 
@@ -169,7 +173,7 @@
       //Save
       try {
 
-        await channelService.put(channel)
+        await channelWebService.put(channel)
 
 
         const toast = $f7.toast.show({

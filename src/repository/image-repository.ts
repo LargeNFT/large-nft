@@ -25,8 +25,8 @@ class ImageRepository {
     ) { }
 
 
-    async load() {
-        this.db = await this.databaseService.getDatabase("image", this.changesets)
+    async load(channelId:string) {
+        this.db = await this.databaseService.getDatabase(`${channelId}-image`, this.changesets)
     }
 
     async get(_id: string): Promise<Image> {

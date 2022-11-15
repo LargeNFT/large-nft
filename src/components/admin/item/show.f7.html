@@ -69,7 +69,7 @@
             ${itemViewModel.editable ? $h`
               <div class="card-footer item-show-footer">
                 
-                  <a class="button button-fill button-small" href="/admin/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
+                  <a class="button button-fill button-small" href="/admin/channel/${itemViewModel.channel._id}/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
   
                   ${itemViewModel.canDelete ? $h`
                     <a class="button button-outline button-small color-red" @click="${deleteClick}">
@@ -314,6 +314,7 @@
   import { UiService } from "../../../service/core/ui-service"
   import { ItemService } from "../../../service/item-service"
   import TokenNavigator from "../channel/token-navigator.f7.html"
+  import { ItemWebService } from "../../../service/web/item-web-service"
 
   import Navbar from "../../admin/navbar.f7.html"
 
@@ -323,6 +324,7 @@
 
     let itemService = ContainerService.getInstance(ItemService)
     let uiService = ContainerService.getInstance(UiService)
+    let itemWebService = ContainerService.getInstance(ItemWebService)
 
     let itemViewModel = props.itemViewModel
     // console.log(itemViewModel)
@@ -347,10 +349,7 @@
           "Do you want to delete this item? Note: This only deletes from your device.",
           async function () {
 
-            await itemService.delete(itemViewModel.item)
-
-            //Clear caches
-            await itemService.clearQueryCache(itemViewModel.item)
+            await itemWebService.delete(itemViewModel.item)
 
             const toast = $f7.toast.show({
               text: 'Item deleted',

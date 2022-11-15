@@ -231,20 +231,32 @@ class ImportService {
             let image:Image
             let animation:Animation
 
+            let imageDimensions
+
+
+            let tempImage = document.createElement('img')
+
+            
             if (metadata.image || metadata.image_url) {
 
                 //Fetch and create image
                 let imageURI = metadata.image ? metadata.image : metadata.image_url
-
                 let imageData = await this._fetchURI(imageURI)
-
-
 
                 //Figure out if it's an svg and save appropriately
                 if (isSvg(new TextDecoder().decode(imageData))) {
                     image = await this.imageService.newFromSvg(new TextDecoder().decode(imageData))
                 } else {
+
                     image = await this.imageService.newFromBuffer(imageData)
+
+                    await this.imageService.loadImage(tempImage, imageData)
+
+                    imageDimensions = {
+                        width: tempImage.width,
+                        height: tempImage.height
+                    }
+
                 }
 
                 try {
@@ -273,6 +285,34 @@ class ImportService {
 
                 //Generate a new one from the cover image
                 item.coverImageAsAnimation = true 
+
+                if (imageDimensions) {
+
+                    //Insert the image into the Quill content so it shows up if we edit this item.
+                    item.content = {
+                        "ops": [
+                            {
+                                "insert": {
+                                    "ipfsimage": {
+                                        "src": await this.imageService.getUrl(image),
+                                        "cid": image.cid,
+                                        "width": imageDimensions.width,
+                                        "height": imageDimensions.height,
+                                        "style": null
+                                    }
+                                }
+                            },
+                            {
+                                "insert": "\n\n"
+                            }
+                        ]
+                    }
+
+
+                    console.log(item.content)
+
+                }
+
 
                 let content = await this.animationService.buildAnimationPage(item)
 
@@ -345,7 +385,6 @@ class ImportService {
         return channel._id
 
     }
-
 
     private _addAttributeToChannel(attribute: { trait_type: string; value: string; }, channel: Channel) {
     

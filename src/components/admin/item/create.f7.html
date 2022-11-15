@@ -182,8 +182,7 @@
       //Save
       try {
 
-        // console.log(item)
-        await itemService.put(item)
+        await itemWebService.put(item)
 
         const toast = $f7.toast.show({
           text: 'Item created',

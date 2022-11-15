@@ -22,6 +22,11 @@ import AdminChannelUpgradeComponent from '../components/admin/channel/upgrade.f7
 import { ChannelWebService } from "../service/web/channel-web-service";
 import { ItemWebService } from "../service/web/item-web-service";
 import { ItemRepository } from "../repository/item-repository";
+import { SchemaService } from "../service/core/schema-service";
+import { Theme } from "../dto/theme";
+import { ThemeService } from "../service/theme-service";
+import { StaticPage } from "../dto/static-page";
+import { StaticPageService } from "../service/static-page-service";
 
 
 @injectable()
@@ -29,7 +34,10 @@ class ChannelController {
 
     constructor(
         private channelWebService:ChannelWebService,
-        private itemWebService:ItemWebService
+        private itemWebService:ItemWebService,
+        private schemaService:SchemaService,
+        private themeService:ThemeService,
+        private staticPageService:StaticPageService
     ) {}
 
     @routeMap("/")
@@ -88,7 +96,11 @@ class ChannelController {
     async show() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
 
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
+
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+
             let firstPageItems = await this.itemWebService.listByChannel(channelViewModel.channel._id, ItemRepository.CHUNK_SIZE, 0)
 
             return {
@@ -104,10 +116,17 @@ class ChannelController {
     async themes() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
 
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
+
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+
+            let themes:Theme[] = await this.themeService.listByChannel(channelViewModel.channel._id, 1000, 0)
+
 
             return {
                 channelViewModel: channelViewModel,
+                themes: themes
             }
 
         }, AdminChannelThemesComponent)
@@ -118,10 +137,17 @@ class ChannelController {
     async staticPages() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
 
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
+
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+
+            let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channelViewModel.channel._id, 1000, 0)
+
 
             return {
                 channelViewModel: channelViewModel,
+                staticPages: staticPages
             }
 
         }, AdminChannelStaticPagesComponent)
@@ -131,6 +157,9 @@ class ChannelController {
     @routeMap("/admin/channel/edit/:id")
     async edit() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
+
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 
@@ -144,6 +173,9 @@ class ChannelController {
     @routeMap("/admin/channel/upgrade/:id")
     async upgrade() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
+
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 

@@ -16,8 +16,8 @@ interface ChannelViewModel {
     authorDisplayName:string 
     authorPhoto:ImageViewModel
 
-    themes:Theme[]
-    staticPages:StaticPage[]
+    // themes:Theme[]
+    // staticPages:StaticPage[]
 
     itemCount:number
 

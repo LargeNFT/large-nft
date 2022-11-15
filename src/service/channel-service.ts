@@ -16,10 +16,12 @@ import { ChannelRepository } from "../repository/channel-repository";
 import { PinningService } from "./core/pinning-service";
 import { PinningApi } from "../dto/pinning-api";
 import { QuillService } from "./quill-service";
-import { Theme } from "dto/theme";
+import { Theme } from "../dto/theme";
 import { ThemeService } from "./theme-service";
 import { StaticPageService } from "./static-page-service";
-import { StaticPage } from "dto/static-page";
+import { StaticPage } from "../dto/static-page";
+import { QueryCacheService } from "./core/query-cache-service";
+import { QueryCache } from "../dto/query-cache";
 
 @injectable()
 class ChannelService {
@@ -31,7 +33,8 @@ class ChannelService {
     private pinningService:PinningService,
     private quillService:QuillService,
     private themeService:ThemeService,
-    private staticPageService:StaticPageService
+    private staticPageService:StaticPageService,
+    private queryCacheService:QueryCacheService
 
   ) { }
 
@@ -130,7 +133,10 @@ class ChannelService {
   }
 
   async countItemsByChannel(channelId:string) : Promise<number> {
-    let tokenIdStats = await this.itemService.getTokenIdStatsByChannel(channelId)
+
+    let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channelId}`)
+    let tokenIdStats = queryCache?.result
+    
     return tokenIdStats?.count ? tokenIdStats.count : 0
   }
 
@@ -173,7 +179,6 @@ class ChannelService {
 
     //Just gotta call these
     await this.itemService.getAttributeInfo(channelId)
-    await this.itemService.getTokenIdStatsByChannel(channelId)
 
 }
 

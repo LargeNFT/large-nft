@@ -20,8 +20,11 @@ import { AnimationViewModel } from "../../dto/viewmodel/animation-view-model";
 import { QuillService } from "../quill-service";
 import { ThemeService } from "../theme-service";
 import { Theme } from "../../dto/theme";
-import { ItemListViewModel } from "dto/viewmodel/item-list-view-model";
-import { AggregateStats } from "dto/aggregate-stats";
+import { ItemListViewModel } from "../../dto/viewmodel/item-list-view-model";
+import { AggregateStats } from "../../dto/aggregate-stats";
+import { QueryCacheService } from "../../service/core/query-cache-service";
+import { ItemRepository } from "../../repository/item-repository";
+import { QueryCache } from "../../dto/query-cache";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
@@ -36,7 +39,9 @@ class ItemWebService {
         private authorService: AuthorService,
         private animationService:AnimationService,
         private quillService:QuillService,
-        private themeService:ThemeService
+        private themeService:ThemeService,
+        private queryCacheService:QueryCacheService,
+        private itemRepository:ItemRepository
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
@@ -46,8 +51,9 @@ class ItemWebService {
         //Get channel
         const channel:Channel = await this.channelService.get(item.channelId)
 
-        //@ts-ignore
-        let tokenIdStats = await this.itemService.getTokenIdStatsByChannel(channel._id, "blah")
+        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${item.channelId}`)
+        
+        let tokenIdStats = queryCache.result
 
         return this.getViewModel(item, channel, tokenIdStats)
     }
@@ -234,8 +240,8 @@ class ItemWebService {
 
     async getNavigationViewModel(item:Item, channel:Channel) : Promise<ItemViewModel> {
 
-        let tokenIdStats = await this.itemService.getTokenIdStatsByChannel(channel._id)
-
+        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channel._id}`)
+        let tokenIdStats = queryCache.result
 
         let itemViewModel:ItemViewModel = await this.getViewModel(item, channel, tokenIdStats)
 
@@ -280,18 +286,14 @@ class ItemWebService {
 
         let result: ItemListViewModel[] = []
 
-        console.time('List by channel')
         let items: Item[] = await this.itemService.listByChannel(channelId, limit, skip)
-        console.timeEnd('List by channel')
 
         //Get channel
         const channel:Channel = await this.channelService.get(channelId)
 
-        console.time('Building view models')
         for (let item of items) {
             result.push(await this.getListViewModel(item, channel))
         }
-        console.timeEnd('Building view models')
 
         return result
 
@@ -448,6 +450,60 @@ class ItemWebService {
 
 
     }
+
+
+
+    async put(item:Item) : Promise<void> {
+
+        await this.itemService.put(item)
+
+        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${item.channelId}`)
+
+        let tokenIdStats = queryCache.result
+
+        if (item.tokenId < tokenIdStats.min) {
+            tokenIdStats.min = item.tokenId
+        }
+
+        if (item.tokenId > tokenIdStats.max) {
+            tokenIdStats.max = item.tokenId
+            tokenIdStats.count++
+        }
+
+        queryCache.result = tokenIdStats
+
+        //Update cache
+        await this.queryCacheService.put(queryCache)
+
+    }
+
+
+    async delete(item:Item) : Promise<void> {
+
+        await this.itemService.delete(item)
+
+        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${item.channelId}`)
+
+        let tokenIdStats = queryCache.result
+
+        //If deleting the lowest token ID then reset. Only works because we can only delete the final item. Change this if that changes.
+        if (item.tokenId == tokenIdStats.min) {
+            //Reset
+            tokenIdStats.min = 0
+            tokenIdStats.max = 0 
+            tokenIdStats.count = 0
+        } else {
+            tokenIdStats.max = item.tokenId - 1
+            tokenIdStats.count--
+        }
+
+        queryCache.result = tokenIdStats
+
+        //Update cache
+        await this.queryCacheService.put(queryCache)
+
+    }
+
 
 
 }

@@ -646,11 +646,7 @@ ul.breadcrumb li a:hover {
 
 
 
-.animation-card {
-  overflow:auto; 
-  margin-bottom: 25px;
-  cursor: pointer;
-}
+
 
 
 
@@ -856,36 +852,6 @@ ul.breadcrumb li a:hover {
 
 
 
-.animation-image {
-  width: 700px;
-  max-width: 100%;
-}
-
-.animation-card {
-  margin-left: 42px;
-  margin-right: 42px;
-}
-
-
-@media only screen and (max-width: 1024px) {
-  .animation-image {
-    width: unset;
-  }
-}
-
-
-.animation-content {
-  width: 100%;
-  display: flex; 
-  overflow-y: scroll;
-}
-
-.animation-content:first-child {
-  display: block;
-}
-
-
-
 
 
 .fab-right-center {
@@ -1041,4 +1007,126 @@ input[type="text"]:disabled {
 .collection-info .dot {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+
+
+
+
+
+
+
+.animation-card {
+  width: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .animation-card {
+    margin-left: 42px;
+    margin-right: calc(42px - var(--scrollbar-width));
+  }
+}
+
+.animation-content {
+  width: 100%;
+  display: flex; 
+  overflow-y: scroll;
+}
+
+.animation-content:first-child {
+  display: block;
+}
+
+.animation-content.animation-image {
+  width: 700px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media only screen and (max-width: 1024px) {
+  .animation-image, .animation-card {
+    width: unset;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* 
+.cover-image-preview {
+  max-width: 300px;
+  max-height: 300px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+} */
+
+.cover-banner-preview {
+  max-width: 100%;
+  max-height: 200px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#browseButton {
+  width: 250px;
+}
+
+
+.tagify--empty {
+  height: 41px;
+}
+
+.category-name-label {
+  font-weight: bold;
+  width: 185px;
+  display: inline-block;
+}
+
+.options-label {
+  font-weight: bold;
+  width: 300px;
+  display: inline-block;
+}
+
+.category-name-input {
+  border: 1px solid #cccccc;
+  margin: 2px;
+  width: 175px;
+  display: inline-block;
+}
+
+.options-input {
+  margin: 2px;
+  width: 300px;
+  display: inline-block;
+}
+
+.add-category-button, .add-theme-button {
+  width: 250px;
+}
+
+.theme-name, .static-page-name {
+  width: 150px;
+  display: inline-block;
+}
+
+.theme-list, .static-page-list {
+  border-top: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+
+  
+}
+
+.theme-link, .static-page-link {
+  margin-left: 10px;
 }

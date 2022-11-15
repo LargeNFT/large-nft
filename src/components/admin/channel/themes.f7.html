@@ -1,0 +1,436 @@
+<template>
+
+  <div class="page" data-name="channel-show-themes">
+
+    <${Navbar} />
+
+
+    ${showEdit ? $h`
+    <div class="fab fab-extended fab-right-bottom">
+      <a href="/admin/item/create/${channelViewModel.channel._id}" class="text-color-black">
+        <i class="material-icons">create</i>
+        <div class="fab-text">Create Item</div>
+      </a>
+    </div>
+    ` : $h``}
+
+
+    <div class="page-content">
+
+      <div class="row">
+        <div class="col-100 large-66 center">
+
+          <div class="block block-strong inset">
+            <div class="breadcrumbs ">
+              <div class="breadcrumbs-item">
+                <a href="/" class="link">
+                  Home
+                </a>
+              </div>
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item breadcrumbs-item-active">
+                <a href="#" class="link">
+                  ${channelViewModel.channel.title}
+                </a>
+              </div>
+            </div>
+          </div>
+
+
+          <${ChannelCard} channel_view_model=${channelViewModel} />
+
+          <div class="block">
+            <p class="segmented">
+              <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}">Items</a>
+              <a class="button button-outline button-active" href="#">Themes</a>
+              <a class="button button-outline" href="/admin/channel/static-pages/${channelViewModel.channel._id}">Static
+                Pages</a>
+            </p>
+          </div>
+
+          
+
+          <div class="card">
+            <div class="card-content">
+              <div class="list">
+                <ul>
+                  <li>
+                    <div class="item-content item-input">
+                      <div class="item-inner">
+                        <div class="item-title item-label">Themes</div>
+                        <div>
+
+                          <p>A theme allows you to apply CSS formatting to an item. Create themes and then apply them to
+                            individual items.</p>
+
+                          <ul class="theme-list"
+                            style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
+                            ${channelViewModel.themes?.map( (theme) => $h`
+                            <li>
+                              <span class="theme-name">${theme.name}</span>
+                              <span class="theme-id">${theme._id}</span>
+                              <a class="link theme-link edit-theme" href="#" data-id="${theme._id}">Edit</a>
+                              <a class="link theme-link delete-theme" href="#" data-id="${theme._id}">Delete</a>
+                            </li>
+                            `)}
+                          </ul>
+
+                          <div class="row">
+                            <div class="col-30">
+                              <a class="button button-outline add-theme-button popup-open" data-popup=".add-theme-popup"
+                                tabindex="10">Add Theme</a>
+                            </div>
+                            <div class="col-70"></div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="popup add-theme-popup">
+            <div class="view">
+              <div class="page">
+                <div class="navbar">
+                  <div class="navbar-bg"></div>
+                  <div class="navbar-inner">
+                    <div class="title">Add Theme</div>
+                    <div class="right">
+                      <!-- Link to close popup -->
+                      <a class="link popup-close">Close</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="page-content">
+                  <form id="add-theme-form">
+                    <${ThemeForm} cover_image_css_editor_id="add-theme-cover-image-editor"
+                      animation_css_editor_id="add-theme-animation-editor" />
+
+                    <div class="row block">
+
+                      <div class="col-70"></div>
+
+                      <button type="submit" class="button button-fill col-30" tabindex="12">
+                        Add
+                      </button>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="popup edit-theme-popup">
+            <div class="view">
+              <div class="page">
+                <div class="navbar">
+                  <div class="navbar-bg"></div>
+                  <div class="navbar-inner">
+                    <div class="title">Edit Theme</div>
+                    <div class="right">
+                      <!-- Link to close popup -->
+                      <a class="link popup-close">Close</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="page-content">
+                  <form id="edit-theme-form">
+
+                    <${ThemeForm} cover_image_css_editor_id="edit-theme-cover-image-editor"
+                      animation_css_editor_id="edit-theme-animation-editor" theme="${editingTheme}" />
+
+                    <div class="row block">
+
+                      <div class="col-70"></div>
+
+                      <button type="submit" class="button button-fill col-30" tabindex="12">
+                        Save Changes
+                      </button>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+  </div>
+
+</template>
+
+
+
+<style>
+
+
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../../service/core/container-service"
+  import { ChannelService } from "../../../service/channel-service"
+  import { ItemWebService } from "../../../service/web/item-web-service"
+  import { ItemRepository } from "../../../repository/item-repository"
+  import { ThemeService } from "../../../service/theme-service"
+  import { Theme } from "../../../dto/theme"
+  import { UiService } from "../../../service/core/ui-service"
+
+  import Navbar from "../../admin/navbar.f7.html"
+  import ItemList from "../../admin/channel/item-list.f7.html"
+  import TokenNavigator from "./token-navigator.f7.html"
+  import ChannelCard from "./channel-card.f7.html"
+  import ThemeForm from "../../admin/channel/theme-form.f7.html"
+  import Quill from 'quill'
+
+  import hotkeys from 'hotkeys-js'
+  import { v4 as uuidv4 } from 'uuid';
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let themeService = ContainerService.getInstance(ThemeService)
+    let uiService = ContainerService.getInstance(UiService)
+
+
+    let channelViewModel = props.channelViewModel
+    let showEdit = channelViewModel.editable
+
+    let editingTheme
+    let themeCoverCssEditor
+    let themeAnimationCssEditor
+    let staticPageContentEditor
+
+
+
+    const updateThemeList = async () => {
+      //Refresh theme list
+      channelViewModel.themes = await themeService.listByChannel(channelViewModel.channel._id, 1000, 0)
+    }
+
+    const addThemePopupOpen = function (e) {
+
+      themeCoverCssEditor = new Quill('#add-theme-cover-image-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },
+          toolbar: false
+        }
+      })
+
+      themeAnimationCssEditor = new Quill('#add-theme-animation-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },
+          toolbar: false
+        }
+      })
+
+    }
+
+    const addThemeFormOpen = async function (e) {
+
+      e.preventDefault()
+
+      //Get data
+      let theme = Object.assign(new Theme(), $f7.form.convertToData('#add-theme-form'))
+
+      theme.coverImageCSS = themeCoverCssEditor.getText() != "\n" ? themeCoverCssEditor.getText() : undefined
+      theme.animationCSS = themeAnimationCssEditor.getText() != "\n" ? themeAnimationCssEditor.getText() : undefined
+      theme.channelId = channelViewModel.channel._id
+
+      //Generate id
+      theme._id = uuidv4()
+      theme.dateCreated = new Date().toJSON()
+
+      try {
+
+        //Save the theme
+        await themeService.put(theme)
+
+        await updateThemeList()
+
+
+        //Clear form
+        $f7.form.fillFromData('#add-theme-form', { name: "" })
+        themeCoverCssEditor.setText("")
+        themeAnimationCssEditor.setText("")
+
+        //Refresh theme list
+        await $update()
+
+        $f7.popup.close('.add-theme-popup')
+
+
+      } catch (ex) {
+        $f7.dialog.alert(ex, "There was an error")
+      }
+
+    }
+
+    const editThemeForm = async function (e) {
+
+      e.preventDefault()
+
+      //Get data
+      let theme = Object.assign(new Theme(), $f7.form.convertToData('#edit-theme-form'))
+
+      theme.coverImageCSS = themeCoverCssEditor.getText() != "\n" ? themeCoverCssEditor.getText() : undefined
+      theme.animationCSS = themeAnimationCssEditor.getText() != "\n" ? themeAnimationCssEditor.getText() : undefined
+      theme.channelId = channelViewModel.channel._id
+
+      try {
+
+        //Save the theme
+        await themeService.put(theme)
+
+        await updateThemeList()
+
+        //Refresh theme list
+        await $update()
+
+        $f7.popup.close('.edit-theme-popup')
+
+      } catch (ex) {
+        console.log(ex)
+        $f7.dialog.alert(ex.errors, "There was an error")
+      }
+
+    }
+
+    const deleteTheme = async function (e) {
+
+      let id = $(e.target).data('id')
+
+      $f7.dialog.confirm("Are you sure you want to delete this theme?", async () => {
+
+        let theme = await themeService.get(id)
+
+        await themeService.delete(theme)
+        await updateThemeList()
+
+
+        //Refresh theme list
+        await $update()
+
+        const toast = $f7.toast.show({
+          text: 'Theme deleted',
+          closeTimeout: 2000,
+          closeButton: true,
+          position: 'bottom',
+          horizontalPosition: 'left'
+        })
+
+      })
+
+    }
+
+    const editTheme = async function (e) {
+
+      let id = $(e.target).data('id')
+
+      editingTheme = channelViewModel.themes.filter((theme) => theme._id == id)[0]
+
+      //Init editors
+      themeCoverCssEditor = new Quill('#edit-theme-cover-image-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },
+          toolbar: false
+        }
+      })
+
+      themeAnimationCssEditor = new Quill('#edit-theme-animation-editor', {
+        bounds: ".page-content",
+        theme: "snow",
+        modules: {
+          syntax: {
+            highlight: text => hljs.highlightAuto(text).value,
+          },
+          toolbar: false
+        }
+      })
+
+      //Populate form
+      $f7.form.fillFromData('#edit-theme-form', editingTheme)
+      themeCoverCssEditor.setText(editingTheme.coverImageCSS ? editingTheme.coverImageCSS : "")
+      themeAnimationCssEditor.setText(editingTheme.animationCSS ? editingTheme.animationCSS : "")
+
+      await $update()
+
+      $f7.popup.open('.edit-theme-popup')
+
+    }
+
+
+    $on('pageInit', async (e, page) => {
+
+      //Clear existing listeners
+      $(document).off('popup:open', '.add-theme-popup')
+      $(document).off('submit', '#add-theme-form')
+      $(document).off('submit', '#edit-theme-form')
+      $(document).off('click', '.delete-theme')
+      $(document).off('click', '.edit-theme')
+
+
+      //Load cover banner into CSS
+      if (channelViewModel?.coverBanner?.url) {
+        $(`.show-channel-banner-${channelViewModel.channel._id}`).css('background-image', `url(${channelViewModel.coverBanner.url})`)
+      } else {
+        $(`.show-channel-banner-${channelViewModel.channel._id}`).css('background', `linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%)`)
+      }
+
+      //Make links external
+      let description = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`)
+
+      if (description) {
+
+        let links = document.getElementById(`channel-show-description-${channelViewModel.channel._id}`).getElementsByTagName('a')
+
+        for (let link of links) {
+          link.classList.add('external')
+        }
+
+      }
+
+      await $update()
+
+
+      /**
+      *  THEMES
+      */
+      $(document).on('popup:open', '.add-theme-popup', addThemePopupOpen)
+      $(document).on('submit', '#add-theme-form', addThemeFormOpen)
+      $(document).on('submit', '#edit-theme-form', editThemeForm)
+      $(document).on('click', '.delete-theme', deleteTheme)
+      $(document).on('click', '.edit-theme', editTheme)
+
+    })
+
+
+    return $render
+  }
+
+</script>

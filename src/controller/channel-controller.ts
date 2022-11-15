@@ -7,7 +7,8 @@ import AdminChannelIndexComponent from '../components/admin/channel/index.f7.htm
 
 import AdminChannelCreateComponent from '../components/admin/channel/create.f7.html'
 import AdminChannelShowComponent from '../components/admin/channel/show.f7.html'
-import AdminChannelSplashComponent from '../components/admin/channel/splash.f7.html'
+import AdminChannelThemesComponent from '../components/admin/channel/themes.f7.html'
+import AdminChannelStaticPagesComponent from '../components/admin/channel/static-pages.f7.html'
 
 import AdminChannelEditComponent from '../components/admin/channel/edit.f7.html'
 import AdminChannelCreateMenuComponent from '../components/admin/channel/create-menu.f7.html'
@@ -96,6 +97,34 @@ class ChannelController {
             }
 
         }, AdminChannelShowComponent)
+    }
+
+
+    @routeMap("/admin/channel/themes/:id")
+    async themes() : Promise<ModelView> {
+        return new ModelView(async (routeTo:RouteTo) => {
+
+            let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+
+            return {
+                channelViewModel: channelViewModel,
+            }
+
+        }, AdminChannelThemesComponent)
+    }
+
+
+    @routeMap("/admin/channel/static-pages/:id")
+    async staticPages() : Promise<ModelView> {
+        return new ModelView(async (routeTo:RouteTo) => {
+
+            let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+
+            return {
+                channelViewModel: channelViewModel,
+            }
+
+        }, AdminChannelStaticPagesComponent)
     }
 
 

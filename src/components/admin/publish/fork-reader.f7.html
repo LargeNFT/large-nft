@@ -10,15 +10,34 @@
 
         <div class="col-100 large-50 center">
 
-          <ul class="breadcrumb">
-            <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
-            <li><a href="/admin/publish/${channelViewModel.channel._id}">Publish</a></li>
-            <li>Fork Reader</li>
-          </ul>
+
+          <div class="block block-strong inset col-100 no-margin-bottom">
+            <div class="breadcrumbs ">
+              <div class="breadcrumbs-item">
+                <a href="/" class="link">
+                  Home
+                </a>
+              </div>    
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item">
+                <a href="/admin/channel/show/${channelViewModel.channel._id}" class="link">
+                  ${channelViewModel.channel.title}
+                </a>
+              </div>     
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item">
+                <a class="link" href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
+              </div> 
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item breadcrumbs-item-active">
+                Create Reader
+              </div> 
+            </div>
+          </div>
 
           ${channelViewModel.itemCount > 0 ? $h`
 
-          <div class="block-title">Fork Reader</div>
+          <div class="block-title">Create Reader</div>
           <div class="card">
 
             <div class="card-content card-content-padding">

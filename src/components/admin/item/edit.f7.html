@@ -10,13 +10,38 @@
 
         <div class="col-100 large-66 center">
 
-          <ul class="breadcrumb">
-            <li><a href="/admin/channel/show/${itemViewModel.channel._id}">${itemViewModel.channel.title}</a></li>
-            <li><a href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.item.tokenId}">
-              ${itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}`}
-            </a></li>
-            <li>Edit Item</li>
-          </ul>
+          <div class="block block-strong inset col-100 no-margin-bottom">
+            <div class="breadcrumbs ">
+              <div class="breadcrumbs-item">
+                <a href="/" class="link">
+                  Home
+                </a>
+              </div>    
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item">
+                <a href="/admin/channel/show/${itemViewModel.channel._id}" class="link">
+                  ${itemViewModel.channel.title}
+                </a>
+              </div>     
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item">
+                <a href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.item.tokenId}" class="link">
+                  ${itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}`}
+                </a>
+              </div> 
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item breadcrumbs-item-active">
+                Edit Item
+              </div> 
+            </div>
+          </div>
+  
+
+
+
+
+
+
 
           <form class="list media-list" id="edit-item-form" @submit="${formSubmit}">
 

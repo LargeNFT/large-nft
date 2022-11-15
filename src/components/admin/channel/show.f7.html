@@ -19,12 +19,38 @@
 
       <div class="row">
         <div class="col-100 large-66 center">
+
+          <div class="block block-strong inset">
+            <div class="breadcrumbs ">
+              <div class="breadcrumbs-item">
+                <a href="/" class="link">
+                  Home
+                </a>
+              </div>    
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item breadcrumbs-item-active">
+                <a href="#" class="link">
+                  ${channelViewModel.channel.title}
+                </a>
+              </div>     
+            </div>
+          </div>
+
+
           <${ChannelCard} channel_view_model=${channelViewModel} />
 
-          <div class="block-title block-title-medium">Items</div>
-    
+          <div class="block">
+            <p class="segmented">
+              <a class="button button-outline button-active" href="#">Items</a>
+              <a class="button button-outline" href="/admin/channel/themes/${channelViewModel.channel._id}">Themes</a>
+              <a class="button button-outline" href="/admin/channel/static-pages/${channelViewModel.channel._id}">Static Pages</a>
+            </p>
+          </div>
+
           <${TokenNavigator} channel=${channelViewModel.channel._id} token_id="1" />
-    
+
+
+        
           <div class="list cards-list virtual-list" id="item-list" >
             <ul class="item-flex"></ul>
           </div>
@@ -137,9 +163,9 @@
 
       //Load cover banner into CSS
       if (channelViewModel?.coverBanner?.url) {
-        document.getElementById(`show-channel-banner-${channelViewModel.channel._id}`).style.backgroundImage = `url(${channelViewModel.coverBanner.url})`
+        $(`.show-channel-banner-${channelViewModel.channel._id}`).css('background-image', `url(${channelViewModel.coverBanner.url})`)
       } else {
-        document.getElementById(`show-channel-banner-${channelViewModel.channel._id}`).style.background = `linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%)`
+        $(`.show-channel-banner-${channelViewModel.channel._id}`).css('background', `linear-gradient(-45deg, rgba(241,241,241,1) 13%, rgba(239,243,248,1) 37%, rgba(176,209,220,0.927608543417367) 69%, rgba(255,255,255,1) 100%)`)
       }
 
       //Make links external

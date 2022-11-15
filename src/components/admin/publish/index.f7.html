@@ -10,10 +10,28 @@
   
           <div class="col-100 large-50 center">
 
-            <ul class="breadcrumb">
-                <li><a href="/admin/channel/show/${channelViewModel.channel._id}">${channelViewModel.channel.title}</a></li>
-                <li>Publish</li>
-            </ul>
+            <div class="block block-strong inset col-100 no-margin-bottom">
+              <div class="breadcrumbs ">
+                <div class="breadcrumbs-item">
+                  <a href="/" class="link">
+                    Home
+                  </a>
+                </div>    
+                <div class="breadcrumbs-separator"></div>
+                <div class="breadcrumbs-item">
+                  <a href="/admin/channel/show/${channelViewModel.channel._id}" class="link">
+                    ${channelViewModel.channel.title}
+                  </a>
+                </div>     
+                <div class="breadcrumbs-separator"></div>
+                <div class="breadcrumbs-item breadcrumbs-item-active">
+                  Publish
+                </div> 
+              </div>
+            </div>
+
+
+
 
             ${channelViewModel.itemCount > 0 ? $h`
               

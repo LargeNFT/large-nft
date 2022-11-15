@@ -10,11 +10,24 @@
       <div class="row">
         <div class="col-100 large-66 center">
 
-          <ul class="breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li><a href="/admin/channel/create-menu">Create & Import</a></li>
-            <li>Create Collection</li>
-          </ul>
+          <div class="block block-strong inset col-100 no-margin-bottom">
+            <div class="breadcrumbs ">
+              <div class="breadcrumbs-item">
+                <a href="/" class="link">
+                  Home
+                </a>
+              </div>    
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item">
+                <a class="link" href="/admin/channel/create-menu">Create & Import</a>
+              </div> 
+              <div class="breadcrumbs-separator"></div>
+              <div class="breadcrumbs-item breadcrumbs-item-active">
+                Create Collection
+              </div> 
+            </div>
+          </div>
+
 
           <div class="block-title">Create Collection</div>
           <form id="create-channel-form" @submit="${formSubmit}">
@@ -25,8 +38,6 @@
               description_toolbar="create-channel-description-toolbar" 
               license_editor="create-channel-license-editor"
               license_toolbar="create-channel-license-toolbar" 
-              add_theme_popup=".add-theme-popup-channel-create"
-              add_static_page_popup=".add-static-page-popup-channel-create" 
             />
 
             <div class="row block">
@@ -43,149 +54,9 @@
         </div>
       </div>
 
-      <div class="popup add-theme-popup-channel-create">
-        <div class="view">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-bg"></div>
-              <div class="navbar-inner">
-                <div class="title">Add Theme</div>
-                <div class="right">
-                  <!-- Link to close popup -->
-                  <a class="link popup-close">Close</a>
-                </div>
-              </div>
-            </div>
-            <div class="page-content">
-              <form id="add-theme-form-channel-create">
-                <${ThemeForm} cover_image_css_editor_id="add-theme-cover-image-editor-channel-create"
-                  animation_css_editor_id="add-theme-animation-editor-channel-create" />
-
-                <div class="row block">
-
-                  <div class="col-70"></div>
-
-                  <button type="submit" class="button button-fill col-30" tabindex="12">
-                    Add
-                  </button>
-
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="popup edit-theme-popup-channel-create">
-        <div class="view">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-bg"></div>
-              <div class="navbar-inner">
-                <div class="title">Edit Theme</div>
-                <div class="right">
-                  <!-- Link to close popup -->
-                  <a class="link popup-close">Close</a>
-                </div>
-              </div>
-            </div>
-            <div class="page-content">
-              <form id="edit-theme-form-channel-create">
-
-                <${ThemeForm} 
-                  cover_image_css_editor_id="edit-theme-cover-image-editor-channel-create"
-                  animation_css_editor_id="edit-theme-animation-editor-channel-create" 
-                  theme="${editingTheme}" />
-
-                <div class="row block">
-
-                  <div class="col-70"></div>
-
-                  <button type="submit" class="button button-fill col-30" tabindex="12">
-                    Save Changes
-                  </button>
-
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
 
 
 
-      <div class="popup add-static-page-popup-channel-create popup-tablet-fullscreen">
-        <div class="view">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-bg"></div>
-              <div class="navbar-inner">
-                <div class="title">Add Static Page</div>
-                <div class="right">
-                  <!-- Link to close popup -->
-                  <a class="link popup-close">Close</a>
-                </div>
-              </div>
-            </div>
-            <div class="page-content">
-              <form id="add-static-page-form-channel-create">
-                <${StaticPageForm} static_page_content_editor_id="add-static-page-content-editor-channel-create"
-                  static_page_content_toolbar_id="add-static-page-content-toolbar-channel-create"
-                  image_button_input_id="add-static-page-image-button-input"
-                  image_button_id="add-static-page-image-button" />
-
-                <div class="row block">
-
-                  <div class="col-70"></div>
-
-                  <button type="submit" class="button button-fill col-30" tabindex="12">
-                    Add
-                  </button>
-
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="popup edit-static-page-popup-channel-create popup-tablet-fullscreen">
-        <div class="view">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-bg"></div>
-              <div class="navbar-inner">
-                <div class="title">Edit Static Page</div>
-                <div class="right">
-                  <!-- Link to close popup -->
-                  <a class="link popup-close">Close</a>
-                </div>
-              </div>
-            </div>
-            <div class="page-content">
-              <form id="edit-static-page-form-channel-create">
-
-                <${StaticPageForm} 
-                  static_page_content_editor_id="edit-static-page-content-editor-channel-create"
-                  static_page_content_toolbar_id="edit-static-page-content-toolbar-channel-create"
-                  image_button_input_id="edit-static-page-image-button-input"
-                  image_button_id="edit-static-page-image-button" 
-                  static_page="${editingStaticPage}" />
-
-                <div class="row block">
-
-                  <div class="col-70"></div>
-
-                  <button type="submit" class="button button-fill col-30" tabindex="12">
-                    Save Changes
-                  </button>
-
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
 
 
 
@@ -210,20 +81,14 @@
   import { QuillEditorService, CustomImageSpec } from "../../../service/quill-editor-service"
 
   import { AuthorService } from "../../../service/author-service"
-  import { ThemeService } from "../../../service/theme-service"
-  import { StaticPageService } from "../../../service/static-page-service"
 
   import { ChannelService } from "../../../service/channel-service"
   import { Channel } from "../../../dto/channel"
   import { Author } from "../../../dto/author"
-  import { StaticPage } from "../../../dto/static-page"
 
   import Navbar from "../../admin/navbar.f7.html"
   import ChannelForm from "../../admin/channel/form.f7.html"
-  import ThemeForm from "../../admin/channel/theme-form.f7.html"
-  import StaticPageForm from "../../admin/channel/static-page-form.f7.html"
 
-  import { Theme } from "../../../dto/theme"
 
   import hljs from "highlight.js"
   import Quill from 'quill'
@@ -239,21 +104,15 @@
     let channelService = ContainerService.getInstance(ChannelService)
     let authorService = ContainerService.getInstance(AuthorService)
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
-    let themeService = ContainerService.getInstance(ThemeService)
-    let staticPageService = ContainerService.getInstance(StaticPageService)
 
     let uiService = ContainerService.getInstance(UiService)
 
     let walletService = ContainerService.getWalletService()
 
     let licenseQuillEditor
-    let themeCoverCssEditor
-    let themeAnimationCssEditor
 
-    let staticPageContentEditor
 
-    let editingTheme
-    let editingStaticPage
+
 
     hljs.configure({
       languages: ['css']
@@ -312,18 +171,6 @@
 
         await channelService.put(channel)
 
-        //Save the themes
-        for (let theme of channelViewModel.themes) {
-          theme.channelId = channel._id
-          await themeService.put(theme)
-        }
-
-        //Save the themes
-        for (let staticPage of channelViewModel.staticPages) {
-          staticPage.channelId = channel._id
-          await staticPageService.put(staticPage)
-        }
-
 
         const toast = $f7.toast.show({
           text: 'Collection saved',
@@ -363,401 +210,6 @@
       })
 
 
-      //Clear existing listeners
-      $(document).off('click', '.delete-theme')
-      $(document).off('click', '.edit-theme')
-
-      $(document).off('click', '.delete-static-page')
-      $(document).off('click', '.edit-static-page')
-
-
-      /**
-       *  THEMES
-       */
-
-      $('.add-theme-popup-channel-create').on('popup:open', function (e) {
-
-        themeCoverCssEditor = new Quill('#add-theme-cover-image-editor-channel-create', {
-          bounds: ".page-content",
-          theme: "snow",
-          modules: {
-            syntax: {
-              highlight: text => hljs.highlightAuto(text).value,
-            },
-            toolbar: false
-          }
-        })
-
-        themeAnimationCssEditor = new Quill('#add-theme-animation-editor-channel-create', {
-          bounds: ".page-content",
-          theme: "snow",
-          modules: {
-            syntax: {
-              highlight: text => hljs.highlightAuto(text).value,
-            },
-            toolbar: false
-          }
-        })
-
-      })
-
-      $('#add-theme-form-channel-create').on('submit', async function (e) {
-
-        e.preventDefault()
-
-        //Get data
-        let theme = Object.assign(new Theme(), $f7.form.convertToData('#add-theme-form-channel-create'))
-
-        theme.coverImageCSS = themeCoverCssEditor.getText() != "\n" ? themeCoverCssEditor.getText() : undefined
-        theme.animationCSS = themeAnimationCssEditor.getText() != "\n" ? themeAnimationCssEditor.getText() : undefined
-        theme.channelId = channelViewModel.channel._id
-
-        //Generate id
-        theme._id = uuidv4()
-        theme.dateCreated = new Date().toJSON()
-
-        try {
-
-          channelViewModel.themes.push(theme)
-
-          //Clear form
-          $f7.form.fillFromData('#add-theme-form-channel-create', { name: "" })
-          themeCoverCssEditor.setText("")
-          themeAnimationCssEditor.setText("")
-
-          //Refresh theme list
-          await $update()
-
-          $f7.popup.close('.add-theme-popup-channel-create')
-
-
-        } catch (ex) {
-          $f7.dialog.alert(ex, "There was an error")
-        }
-
-      })
-
-      $('#edit-theme-form-channel-create').on('submit', async function (e) {
-
-        e.preventDefault()
-
-        //Get data
-        let theme = Object.assign(new Theme(), $f7.form.convertToData('#edit-theme-form-channel-create'))
-
-        theme.coverImageCSS = themeCoverCssEditor.getText() != "\n" ? themeCoverCssEditor.getText() : undefined
-        theme.animationCSS = themeAnimationCssEditor.getText() != "\n" ? themeAnimationCssEditor.getText() : undefined
-        theme.channelId = channelViewModel.channel._id
-
-        try {
-
-          //Update list
-          let existingTheme = channelViewModel.themes.filter((theme) => theme._id == editingTheme._id)[0]
-          channelViewModel.themes[channelViewModel.themes.indexOf(existingTheme)] = theme
-
-          //Refresh theme list
-          await $update()
-
-          $f7.popup.close('.edit-theme-popup-channel-create')
-
-        } catch (ex) {
-          console.log(ex)
-          $f7.dialog.alert(ex.errors, "There was an error")
-        }
-
-      })
-
-      $(document).on('click', '.delete-theme', async function (e) {
-
-        let id = $(e.target).data('id')
-
-        $f7.dialog.confirm("Are you sure you want to delete this theme?", async () => {
-
-          channelViewModel.themes = channelViewModel.themes.filter((theme) => theme._id != id)
-
-          //Refresh theme list
-          await $update()
-
-          const toast = $f7.toast.show({
-            text: 'Theme deleted',
-            closeTimeout: 2000,
-            closeButton: true,
-            position: 'bottom',
-            horizontalPosition: 'left'
-          })
-
-        })
-
-      })
-
-      $(document).on('click', '.edit-theme', async function (e) {
-
-        let id = $(e.target).data('id')
-
-        editingTheme = channelViewModel.themes.filter((theme) => theme._id == id)[0]
-
-        //Init editors
-        themeCoverCssEditor = new Quill('#edit-theme-cover-image-editor-channel-create', {
-          bounds: ".page-content",
-          theme: "snow",
-          modules: {
-            syntax: {
-              highlight: text => hljs.highlightAuto(text).value,
-            },
-            toolbar: false
-          }
-        })
-
-        themeAnimationCssEditor = new Quill('#edit-theme-animation-editor-channel-create', {
-          bounds: ".page-content",
-          theme: "snow",
-          modules: {
-            syntax: {
-              highlight: text => hljs.highlightAuto(text).value,
-            },
-            toolbar: false
-          }
-        })
-
-        //Populate form
-        $f7.form.fillFromData('#edit-theme-form-channel-create', editingTheme)
-        themeCoverCssEditor.setText(editingTheme.coverImageCSS ? editingTheme.coverImageCSS : "")
-        themeAnimationCssEditor.setText(editingTheme.animationCSS ? editingTheme.animationCSS : "")
-
-        await $update()
-
-        $f7.popup.open('.edit-theme-popup-channel-create')
-
-      })
-
-
-
-
-      /**
-       *  STATIC PAGES
-       */
-
-
-      $('.add-static-page-popup-channel-create').on('popup:open', function (e) {
-
-        staticPageContentEditor = new Quill('#add-static-page-content-editor-channel-create', {
-          bounds: ".page-content",
-          theme: "snow",
-          modules: {
-            imageDropAndPaste: {
-              // add an custom image handler
-              handler: (imageDataUrl, type, imageData) => {
-                const file = imageData.toFile()
-                quillEditorService.insertImageInEditor(file, staticPageContentEditor)
-              }
-            },
-            toolbar: '#add-static-page-content-toolbar-channel-create',
-            blotFormatter: {
-              specs: [
-                CustomImageSpec,
-              ],
-              align: {
-                icons: {
-                  left: "<i class='material-icons'>align_horizontal_left</i>",
-                  center: "<i class='material-icons'>align_horizontal_center</i>",
-                  right: "<i class='material-icons'>align_horizontal_right</i>"
-                },
-
-                toolbar: {
-                  svgStyle: {
-                    fontSize: '21px',
-                  },
-                }
-              }
-            },
-          }
-        })
-      })
-
-      $('#add-static-page-form-channel-create').on('submit', async function (e) {
-
-        e.preventDefault()
-
-        //Get data
-        let staticPage = Object.assign(new StaticPage(), $f7.form.convertToData('#add-static-page-form-channel-create'))
-
-        staticPage.content = staticPageContentEditor.getContents()
-        staticPage.channelId = channelViewModel.channel._id
-
-        //Generate id
-        staticPage._id = uuidv4()
-        staticPage.dateCreated = new Date().toJSON()
-
-        try {
-
-          channelViewModel.staticPages.push(staticPage)
-
-          //Clear form
-          $f7.form.fillFromData('#add-static-page-form-channel-create', { name: "", slug: "", locations: [] })
-          staticPageContentEditor.setText("")
-
-          //Refresh static page list
-          await $update()
-
-          $f7.popup.close('.add-static-page-popup-channel-create')
-
-
-        } catch (ex) {
-          $f7.dialog.alert(ex, "There was an error")
-        }
-
-      })
-
-      $('#edit-static-page-form-channel-create').on('submit', async function (e) {
-
-        e.preventDefault()
-
-        //Get data
-        let staticPage = Object.assign(new StaticPage(), $f7.form.convertToData('#edit-static-page-form-channel-create'))
-
-        staticPage.content = staticPageContentEditor.getContents()
-        staticPage.channelId = channelViewModel.channel._id
-
-        try {
-
-          //Update list
-          let existingStaticPage = channelViewModel.staticPages.filter((staticPage) => staticPage._id == editingStaticPage._id)[0]
-          channelViewModel.staticPages[channelViewModel.staticPages.indexOf(editingStaticPage)] = staticPage
-
-          //Refresh theme list
-          await $update()
-
-          $f7.popup.close('.edit-static-page-popup-channel-create')
-
-        } catch (ex) {
-          console.log(ex)
-          $f7.dialog.alert(ex.errors, "There was an error")
-        }
-
-      })
-
-      $(document).on('click', '.delete-static-page', async function (e) {
-
-        let id = $(e.target).data('id')
-
-        $f7.dialog.confirm("Are you sure you want to delete this static page?", async () => {
-
-          channelViewModel.staticPages = channelViewModel.staticPages.filter((staticPage) => staticPage._id != id)
-
-          //Refresh theme list
-          await $update()
-
-          const toast = $f7.toast.show({
-            text: 'Static Page deleted',
-            closeTimeout: 2000,
-            closeButton: true,
-            position: 'bottom',
-            horizontalPosition: 'left'
-          })
-
-        })
-
-      })
-
-      $(document).on('click', '.edit-static-page', async function (e) {
-
-        let id = $(e.target).data('id')
-
-        editingStaticPage = channelViewModel.staticPages.filter((staticPage) => staticPage._id == id)[0]
-
-        staticPageContentEditor = new Quill('#edit-static-page-content-editor-channel-create', {
-          bounds: ".page-content",
-          theme: "snow",
-          modules: {
-            imageDropAndPaste: {
-              // add an custom image handler
-              handler: (imageDataUrl, type, imageData) => {
-                const file = imageData.toFile()
-                quillEditorService.insertImageInEditor(file, staticPageContentEditor)
-              }
-            },
-            toolbar: '#edit-static-page-content-toolbar-channel-create',
-            blotFormatter: {
-              specs: [
-                CustomImageSpec,
-              ],
-              align: {
-                icons: {
-                  left: "<i class='material-icons'>align_horizontal_left</i>",
-                  center: "<i class='material-icons'>align_horizontal_center</i>",
-                  right: "<i class='material-icons'>align_horizontal_right</i>"
-                },
-
-                toolbar: {
-                  svgStyle: {
-                    fontSize: '21px',
-                  },
-                }
-              }
-            },
-          }
-        })
-
-
-        console.log(editingStaticPage)
-
-        //Populate form
-        $f7.form.fillFromData('#edit-static-page-form-channel-create', editingStaticPage)
-        staticPageContentEditor.setContents(editingStaticPage.content)
-
-        await $update()
-
-        $f7.popup.open('.edit-static-page-popup-channel-create')
-
-      })
-
-
-
-
-      /**
-       * ADDING IMAGE BUTTONS
-       */ 
-      $('#add-static-page-image-button').on('click', function (e) {
-
-        e.preventDefault()
-
-        //Click actual input
-        const imageButtonInput = $('#add-static-page-image-button-input')
-        imageButtonInput.click()
-      })
-
-      $('#add-static-page-image-button-input').on('change', async function (e) {
-
-        e.preventDefault()
-
-        uiService.showSpinner("Processing image...")
-
-        await quillEditorService.insertImageInEditor(this.files[0], staticPageContentEditor)
-
-        uiService.hideSpinner()
-
-      })
-
-
-      $('#edit-static-page-image-button').on('click', function (e) {
-
-        e.preventDefault()
-
-        //Click actual input
-        const imageButtonInput = $('#edit-static-page-image-button-input')
-        imageButtonInput.click()
-      })
-
-      $('#edit-static-page-image-button-input').on('change', async function (e) {
-
-        e.preventDefault()
-
-        uiService.showSpinner("Processing image...")
-
-        await quillEditorService.insertImageInEditor(this.files[0], staticPageContentEditor)
-
-        uiService.hideSpinner()
-
-      })
 
 
 

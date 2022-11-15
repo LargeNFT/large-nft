@@ -266,89 +266,6 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Themes</div>
-                                    <div>
-                
-                                        <p>A theme allows you to apply CSS formatting to an item. Create themes and then apply them to individual item.</p>
-                
-                                        <ul class="theme-list" style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
-                                            ${channelViewModel.themes?.map( (theme) => $h`
-                                                <li>
-                                                    <span class="theme-name">${theme.name}</span> 
-                                                    <span class="theme-id">${theme._id}</span>
-                                                    <a class="link theme-link edit-theme" href="#" data-id="${theme._id}">Edit</a>
-                                                    <a class="link theme-link delete-theme" href="#" data-id="${theme._id}">Delete</a>
-                                                </li>
-                                            `)}
-                                        </ul>
-                                
-                                        <div class="row">
-                                            <div class="col-30">
-                                                <a class="button button-outline add-theme-button popup-open" data-popup="${addThemePopup}" tabindex="10">Add Theme</a>
-                                            </div>
-                                            <div class="col-70"></div>
-                                        </div>
-                
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Static Pages</div>
-                                    <div>
-                
-                                        <p>
-                                            Static pages all you to create content that is displayed in the Large Reader 
-                                            alongside your collection. 
-                                        </p>
-
-                                        <p>
-                                            <strong>Example:</strong> About Us, Contact Us, etc. 
-                                        </p>
-                
-                                        <ul class="static-page-list" style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
-                                            ${channelViewModel.staticPages?.map( (staticPage) => $h`
-                                                <li>
-                                                    <span class="static-page-name">${staticPage.name}</span> 
-                                                    <a class="link static-page-link edit-static-page" href="#" data-id="${staticPage._id}">Edit</a>
-                                                    <a class="link static-page-link delete-static-page" href="#" data-id="${staticPage._id}">Delete</a>
-                                                </li>
-                                            `)}
-                                        </ul>
-                                
-                                        <div class="row">
-                                            <div class="col-30">
-                                                <a class="button button-outline add-theme-button popup-open" data-popup="${addStaticPagePopup}" tabindex="10">Add Static Page</a>
-                                            </div>
-                                            <div class="col-70"></div>
-                                        </div>
-                
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
 
         <div class="card">
             <div class="card-content">
@@ -429,76 +346,7 @@
 </template>
 
 <style>
-    .cover-image-preview {
-        max-width: 300px;
-        max-height: 300px;
-        border: 1px solid #cccccc;
-        padding: 5px;
-        margin-bottom: 10px;
-        border-radius: 50%;
-    }
-
-    .cover-banner-preview {
-        max-width: 100%;
-        max-height: 200px;
-        border: 1px solid #cccccc;
-        padding: 5px;
-        margin-bottom: 10px;
-    }
-
-    #browseButton {
-        width: 250px;
-    }
-
-
-    .tagify--empty {
-        height: 41px;
-    }
-
-    .category-name-label {
-        font-weight: bold;
-        width: 185px;
-        display: inline-block;
-    }
-
-    .options-label {
-        font-weight: bold;
-        width: 300px;
-        display: inline-block;
-    }
-
-    .category-name-input {
-        border: 1px solid #cccccc;
-        margin: 2px;
-        width: 175px;
-        display: inline-block;
-    }
-
-    .options-input {
-        margin: 2px;
-        width: 300px;
-        display: inline-block;
-    }
-
-    .add-category-button, .add-theme-button {
-        width: 250px;
-    }
-
-    .theme-name, .static-page-name {
-        width: 150px;
-        display: inline-block;
-    }
-
-    .theme-list, .static-page-list {
-        border-top: 1px solid #cccccc;
-        border-bottom: 1px solid #cccccc;
-
-        
-    }
-
-    .theme-link, .static-page-link {
-        margin-left: 10px;
-    }
+    
 
 
 
@@ -517,7 +365,6 @@
     import { WalletService } from "../../../service/core/wallet-service"
 
     import { ChannelService } from "../../../service/channel-service"
-    import { Theme } from "../../../dto/theme"
 
     import languages from "../../../util/languages"
 
@@ -693,9 +540,6 @@
 
         let licenseToolbarId = props.license_toolbar
         let licenseEditorId = props.license_editor
-
-        let addThemePopup = props.add_theme_popup
-        let addStaticPagePopup = props.add_static_page_popup
 
         let attributeOptions = []
 

@@ -1130,3 +1130,30 @@ input[type="text"]:disabled {
 .theme-link, .static-page-link {
   margin-left: 10px;
 }
+
+
+
+
+
+.copyright-block, .copyleft-block {
+  padding: 25px;
+  height: 400px;
+  background: #ffffff;
+}
+
+.copyright-block ul, .copyleft-block ul {
+  height: 220px;
+}
+
+.copyright-block {
+  border: 1px solid #cccccc;
+}
+
+.copyleft-block {
+  border: 3px solid var(--f7-theme-color);
+}
+
+
+#create-new-swiper {
+  height: 600px;
+}

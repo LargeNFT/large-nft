@@ -6,7 +6,7 @@
             ${walletAddress != undefined ? $h`
                 <a href="/admin/author/show/${walletAddress}" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
               ` : $h`
-                <button class="button button-outline button-fill" @click=${connectWallet}>Connect Metamask</button>
+                <button class="button button-outline button-fill" @click=${connectWallet}>Connect Wallet</button>
               `}
         ` : $h`<span />`}
 

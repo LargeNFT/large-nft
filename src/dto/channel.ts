@@ -23,6 +23,9 @@ class Channel {
     forkType?:string
 
     @Allow()
+    disableForks?:boolean
+
+    @Allow()
     authorId?:string
 
     @MinLength(3, { message: "Title must be more than 3 characters." })
@@ -43,7 +46,6 @@ class Channel {
     @Allow()
     descriptionMarkdown?:string
 
-
     @Allow()
     license?:any
 
@@ -53,11 +55,8 @@ class Channel {
     @Allow()
     licenseMarkdown?:string
 
-
     @Allow()
     category?:string[]
-
-
 
     @Allow()
     language?:string

@@ -109,7 +109,6 @@
 
     let channelViewModel = props.channelViewModel
 
-
     hljs.configure({
       languages: ['css']
     })
@@ -142,6 +141,8 @@
         channel.category = []
       }
 
+      channel.disableForks = channel.disableForks == "true"
+
       //Save
       try {
 
@@ -163,9 +164,6 @@
       }
 
     }
-
-
-
 
     $on('pageInit', async (e, page) => {
 

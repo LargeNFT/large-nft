@@ -133,26 +133,6 @@
                             </div>
                         </li> -->
 
-                        <li class="license-editor">
-                            <div class="item-content item-input item-input-outline">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">License</div>
-
-                                    <div id="${licenseToolbarId}">
-
-                                        <!-- Add a bold button -->
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-strike"></button>
-                                        <button class="ql-underline"></button>
-
-                                    </div>
-
-                                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="3"></div>
-
-                                </div>
-                            </div>
-                        </li>
 
                         <!-- <li>
                             <div class="item-content item-input item-input-outline">
@@ -339,6 +319,71 @@
                 </div>
             </div>
         </div>
+
+        <div class="card">
+            <div class="card-content">
+                <div class="list">
+                    <ul>
+                        <li class="item-content item-input item-input-outline">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Features and Licensing</div>
+                                <div class="item-input-wrap input-dropdown-wrap">
+                                    <select name="disableForks" @change="${disableForksChange}">
+
+                                        ${!channelViewModel.channel.disableForks ? $h`
+                                            <option value="false" selected>Copyleft / CC0</option>
+                                            <option value="true">Copyright</option>
+                                        ` : $h`
+                                            <option value="false">Copyleft / CC0</option>
+                                            <option value="true" selected>Copyright</option>
+                                        `}
+
+
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+
+                        ${showCC0Link ? $h`
+
+                            <li>
+                                <div class="item-content">
+                                  <div class="item-inner">
+                                    <div class="item-text">Use Creative Commons <a href="https://creativecommons.org/choose/zero/" class="external" target="_blank">CC0 tool</a> to generate licensing text.</div>
+                                  </div>
+                                </div>
+                              </li>
+
+                        ` : $h`<span />`}
+
+
+
+                        <li class="license-editor">
+                            <div class="item-content item-input item-input-outline">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">License</div>
+
+                                    <div id="${licenseToolbarId}">
+
+                                        <!-- Add a bold button -->
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-strike"></button>
+                                        <button class="ql-underline"></button>
+
+                                    </div>
+
+                                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="3"></div>
+
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
@@ -531,7 +576,15 @@
                 .replace(/\.|%[0-9a-z]{2}/gi, '');
         }
 
+        const disableForksChange = async (e) => {
+            
+            channelViewModel.channel.disableForks = $(e.currentTarget).val() == "true"
 
+            showCC0Link = !channelViewModel.channel.disableForks
+
+            await $update()
+
+        } 
 
         let channelViewModel = props.channel
 
@@ -540,6 +593,9 @@
 
         let licenseToolbarId = props.license_toolbar
         let licenseEditorId = props.license_editor
+
+        let showCC0Link = !channelViewModel.channel.disableForks
+
 
         let attributeOptions = []
 
@@ -556,6 +612,14 @@
             }
 
         }
+
+
+        // $(document).on('copyleft-updated', async (e) => {
+        //     copyleft = e.detail.copyleft
+        //     console.log(copyleft)
+        //     await $update()
+        // })
+
 
 
         return $render

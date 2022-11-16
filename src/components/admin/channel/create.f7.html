@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-100 large-66 center">
 
-          <div class="block block-strong inset col-100 no-margin-bottom">
+          <div class="block block-strong inset">
             <div class="breadcrumbs ">
               <div class="breadcrumbs-item">
                 <a href="/" class="link">
@@ -28,39 +28,99 @@
             </div>
           </div>
 
+          <div class="block block-strong inset" style="padding-left: 0px; padding-right: 0px; background: rgb(238, 240, 243);">
+            <!-- Slider container -->
+            <div class="swiper" id="create-new-swiper">
+              <!-- Slides wrapper -->
+              <div class="swiper-wrapper">
+                  <!-- Slides -->
+                  <div class="swiper-slide">
+                    
+                    <div class="block-title no-margin-bottom no-margin-top">Choose your features and licensing</div>
 
-          <div class="block-title">Create Collection</div>
-          <form id="create-channel-form" @submit="${formSubmit}">
+                    <div class="row">
 
-            <${ChannelForm} 
-              channel=${channelViewModel} 
-              description_editor="create-channel-description-editor"
-              description_toolbar="create-channel-description-toolbar" 
-              license_editor="create-channel-license-editor"
-              license_toolbar="create-channel-license-toolbar" 
-            />
+                      <div class="col-50">
 
-            <div class="row block">
+                        <div class="block copyright-block">
 
-              <div class="col-70"></div>
+                          <strong>Copyright</strong>
 
-              <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
-                Save
-              </button>
+                          <ul>
+                            <li>Use your own licensing terms.</li>
+                            <li>Restrict who can host the content (DMCA).</li>
+                            <li>MIT Licensed code</li>
+                          </ul>
 
+                          <button class="button color-red button-outline" @click="${copyrightClick}">Disable forking</button>
+                          
+                        </div>
+
+                      </div>
+
+                      <div class="col-50">
+
+                        <div class="block copyleft-block">
+
+                          <strong>Copyleft</strong>
+
+                          <ul>
+                            <li>Free as in speech.</li>
+                            <li>Allow sharing, remixes, and derivatives.</li>
+                            <li>Anyone can host the content.</li>
+                            <li>MIT Licensed code</li>
+                            <li><a href="https://creativecommons.org/share-your-work/public-domain/cc0/"></a>CC0 Content</li>
+                          </ul>
+
+                          <button class="button button-fill" @click="${copyleftClick}">Enable all features</button>
+
+                        </div>
+                        
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <div class="swiper-slide">
+
+                    <a class="link" @click="${backClick}" style="margin-left: 10px;">
+                      <i class="icon icon-back"></i> Back
+                    </a>
+
+                    <div class="block-title">Create Collection</div>
+                    <form id="create-channel-form" @submit="${formSubmit}">
+          
+                      <${ChannelForm} 
+                        channel=${channelViewModel} 
+                        description_editor="create-channel-description-editor"
+                        description_toolbar="create-channel-description-toolbar" 
+                        license_editor="create-channel-license-editor"
+                        license_toolbar="create-channel-license-toolbar" 
+                      />
+          
+                      <div class="row block">
+          
+                        <div class="col-70"></div>
+          
+                        <button type="submit" class="button button-fill col-30" tabindex="12" id="saveButton">
+                          Save
+                        </button>
+          
+                      </div>
+          
+                    </form>
+          
+                  </div>
+
+
+                  <!-- Pagination, if required -->
+                  <div class="swiper-pagination"></div>
+              </div>
             </div>
-
-          </form>
+          </div>
         </div>
       </div>
-
-
-
-
-
-
-
-
 
     </div>
   </div>
@@ -68,6 +128,8 @@
 </template>
 
 <style>
+
+
 
 </style>
 
@@ -105,18 +167,14 @@
 
     let channelService = ContainerService.getInstance(ChannelService)
     let channelWebService = ContainerService.getInstance(ChannelWebService)
-
     let authorService = ContainerService.getInstance(AuthorService)
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
-
     let uiService = ContainerService.getInstance(UiService)
-
     let walletService = ContainerService.getWalletService()
 
     let licenseQuillEditor
 
-
-
+    let swiper
 
     hljs.configure({
       languages: ['css']
@@ -132,11 +190,9 @@
 
       themes: [],
       staticPages: [],
-      editable: true
+      editable: true,
+      disableForks: false
     }
-
-
-
 
     const formSubmit = async (e) => {
 
@@ -169,6 +225,9 @@
       if (channel.authorId) {
         await authorService.insertIfNew(channel.authorId)
       }
+
+      channel.disableForks = channel.disableForks == "true"
+
 
       //Save
       try {
@@ -213,13 +272,71 @@
         theme: "snow"
       })
 
+      //Init swiper
+      swiper = $f7.swiper.create('.swiper', {
+        speed: 1000,
+        allowTouchMove: false,
+        createElements:true,
+        longSwipes: false,
+        preventInteractionOnTransition: true,
+        shortSwipes: false,
+        simulateTouch: false,
+        on: {
+          slideChange: function (s) {
+            
+            if (s.activeIndex == 0) {
+              document.getElementById('create-new-swiper').style.height = "600px"
+            } 
 
+            if (s.activeIndex == 1) {
+              document.getElementById('create-new-swiper').style.height = "2500px"
+            }
 
-
-
-
+          }
+        }
+      })
 
     })
+
+
+    const copyrightClick = async (e) => {
+
+      // copyleft = false
+
+      // const copyleftEvent = new CustomEvent('copyleft-updated', {
+      //   detail: { copyleft: copyleft }
+      // })
+
+      // document.dispatchEvent(copyleftEvent)
+      channelViewModel.channel.disableForks = true
+
+
+      await $update()
+      swiper.slideNext(1000)
+
+    }
+
+    const copyleftClick = async (e) => {
+
+      // copyleft = true
+
+      // const copyleftEvent = new CustomEvent('copyleft-updated', {
+      //   detail: { copyleft: copyleft }
+      // })
+
+      // document.dispatchEvent(copyleftEvent)
+
+      channelViewModel.channel.disableForks = false
+
+
+      await $update()
+      swiper.slideNext(1000)
+    }
+
+    const backClick = async (e) => {
+      swiper.slidePrev(1000)
+    }
+
 
     return $render
   }

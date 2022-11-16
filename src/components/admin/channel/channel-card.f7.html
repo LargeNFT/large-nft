@@ -60,6 +60,9 @@
             <span class="dot">·</span>
             <label>Created:</label><strong>${channelViewModel.dateCreated}</strong>
   
+            <span class="dot">·</span>
+            <label>Forkable:</label><strong>${!channelViewModel.channel.disableForks ? 'Yes' : 'No'}</strong>
+
             ${channelViewModel.channel.mintPrice ? $h`
               <span class="dot">·</span>
               <label>Mint Price:</label><strong>${channelViewModel.channel.mintPrice} ETH</strong>

@@ -30,6 +30,10 @@ class ImageService {
     private themeService:ThemeService
   ) { }
 
+  async load(channelId:string) {
+    this.db = await this.imageRepository.load(channelId)
+  }
+
   async get(_id: string): Promise<Image> {
     return this.imageRepository.get(_id)
   }

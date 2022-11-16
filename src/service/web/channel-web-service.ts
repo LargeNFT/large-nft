@@ -12,9 +12,6 @@ import { AuthorService } from "../author-service";
 import { ChannelService } from "../channel-service";
 import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
-import { QuillService } from "../quill-service";
-import { StaticPageService } from "../static-page-service";
-import { ThemeService } from "../theme-service";
 import { ItemWebService } from "./item-web-service";
 import { QueryCacheService } from "../../service/core/query-cache-service";
 
@@ -27,9 +24,6 @@ class ChannelWebService {
         private authorService: AuthorService,
         private itemService:ItemService,
         private itemWebService:ItemWebService,
-        private quillService:QuillService,
-        private themeService:ThemeService,
-        private staticPageService:StaticPageService,
         private queryCacheService:QueryCacheService
     ) { }
 
@@ -46,6 +40,10 @@ class ChannelWebService {
         let author: Author
 
         let editable = !channel.contractAddress
+
+        //Load the right image db so we can get the cover and banner
+        await this.imageService.load(channel._id)
+
 
         if (channel.coverImageId) {
 
@@ -94,11 +92,7 @@ class ChannelWebService {
 
         }
 
-        // let themes:Theme[] = await this.themeService.listByChannel(channel._id, 1000, 0)
-        // let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 1000, 0)
-
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
-
 
         return {
             channel: channel,

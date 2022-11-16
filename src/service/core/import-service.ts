@@ -41,6 +41,9 @@ import { AttributeOptions } from "../../dto/attribute";
 
 import isSvg from "is-svg"
 import { TokenMetadata } from "../../dto/token-metadata-cache";
+import { QueryCache } from "../../dto/query-cache"
+import { QueryCacheService } from "./query-cache-service"
+import { SchemaService } from "./schema-service"
 
 const gatewayTools = new IPFSGatewayTools()
 
@@ -49,6 +52,8 @@ class ImportService {
 
     constructor(
         private channelService: ChannelService,
+        private queryCacheService:QueryCacheService,
+        private schemaService:SchemaService,
         private itemService: ItemService,
         private authorService: AuthorService,
         private ipfsService: IpfsService,
@@ -63,7 +68,6 @@ class ImportService {
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) {}
-
 
     async importFromIPFS(cid:string, forkType:string, owner?:string) : Promise<string> {
 
@@ -120,9 +124,6 @@ class ImportService {
 
     }
 
-
-
-
     async importExistingFromContract(contractAddress:string) : Promise<string> {
         return this._importFromContract(contractAddress, "existing")
     }
@@ -131,8 +132,97 @@ class ImportService {
         return this._importFromContract(contractAddress, "fork")
     }
 
+    async importExistingFromReader(baseURI:string, contractAddress:string, ipfsCid:string) {
 
-    async _importFromContract(contractAddress:string, forkType:string) : Promise<string> {
+        let importBundle:ImportBundle = await this._buildImportBundle(baseURI)
+
+        importBundle.channels[0].contractAddress = contractAddress
+        importBundle.channels[0].localCid = ipfsCid
+
+        return this._importExisting(
+            importBundle.authors, 
+            importBundle.channels, 
+            importBundle.images, 
+            importBundle.items, 
+            importBundle.animations, 
+            importBundle.themes, 
+            importBundle.staticPages, 
+            importBundle.forkStatus, 
+            importBundle.mediaDownloader, 
+            importBundle.contractMetadata,
+            ipfsCid)
+
+    }
+
+    async importAsForkFromReader(baseURI:string, title:string, ipfsCid?:string) {
+
+        let importBundle:ImportBundle = await this._buildImportBundle(baseURI)
+
+
+        delete importBundle.channels[0].contractAddress
+        delete importBundle.channels[0].localCid
+
+        //Set the new name
+        importBundle.channels[0].title = title
+
+        return this._importAsFork(
+            importBundle.authors, 
+            importBundle.channels, 
+            importBundle.images, 
+            importBundle.items, 
+            importBundle.animations, 
+            importBundle.themes, 
+            importBundle.staticPages, 
+            importBundle.forkStatus, 
+            importBundle.mediaDownloader,
+            importBundle.contractMetadata,
+            ipfsCid)
+    }
+
+    private async _buildImportBundle(baseURI:string) : Promise<ImportBundle> {
+
+        let forkStatus:ForkStatus = {
+            animations: { saved: 0, total: 0},
+            images: { saved: 0, total: 0},
+            channels: { saved: 0, total: 0},
+            items: { saved: 0, total: 0},
+            authors: { saved: 0, total: 0},
+            themes: { saved: 0, total: 0 },
+            staticPages:  { saved: 0, total: 0 }
+        }
+
+        this.logForkProgress(forkStatus, "Processing...")
+
+        //Load the files from the server.
+        let authors:Author[] = await this._fetchFile(`${baseURI}backup/export/backup/authors.json`)
+        let channels:Channel[] = await this._fetchFile(`${baseURI}backup/export/backup/channels.json`)
+        let images:Image[] = await this._fetchFile(`${baseURI}backup/export/backup/images.json`)
+        let items:Item[] = await this._fetchFile(`${baseURI}backup/export/backup/items.json`)
+        let animations:Animation[] = await this._fetchFile(`${baseURI}backup/export/backup/animations.json`)
+        let themes:Theme[] = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`)
+        let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`)
+
+        let contractMetadata:ContractMetadata = await this._fetchFile(`${baseURI}backup/export/contractMetadata.json`)
+
+        let mediaDownloader = new URLDownloader(baseURI)
+
+        return {
+            authors: authors,
+            channels: channels,
+            images: images,
+            items: items,
+            animations: animations,
+            themes: themes,
+            staticPages: staticPages,
+            mediaDownloader: mediaDownloader,
+            forkStatus: forkStatus,
+            contractMetadata: contractMetadata
+
+        }
+
+    }
+
+    private async _importFromContract(contractAddress:string, forkType:string) : Promise<string> {
 
         let forkStatus:ForkStatus = {
             animations: { saved: 0, total: 0},
@@ -196,6 +286,17 @@ class ImportService {
 
         //Insert channel to get an _id
         await this.channelService.put(channel)
+
+
+        let tokenIdStatsQueryCache = new QueryCache()
+        tokenIdStatsQueryCache._id = `token_id_stats_by_channel_${channel._id}`
+        tokenIdStatsQueryCache.result = {
+            min: undefined,
+            max: undefined,
+            count: 0
+        }
+
+        await this.schemaService.loadChannel(channel._id)
 
         
         //Fetch token metadata for all tokens
@@ -308,9 +409,6 @@ class ImportService {
                         ]
                     }
 
-
-                    console.log(item.content)
-
                 }
 
 
@@ -357,6 +455,19 @@ class ImportService {
             //Save item
             await this.itemService.put(item)
 
+            //Update token stats
+            tokenIdStatsQueryCache.result.count++
+
+            if (!tokenIdStatsQueryCache.result.min || item.tokenId < tokenIdStatsQueryCache.result.min) {
+                tokenIdStatsQueryCache.result.min = item.tokenId
+            }
+
+            if (!tokenIdStatsQueryCache.result.max || item.tokenId > tokenIdStatsQueryCache.result.max) {
+                tokenIdStatsQueryCache.result.max = item.tokenId
+            }
+
+
+
             forkStatus.items.saved++
             this.logForkProgress(forkStatus, `Importing item ${item._id}`)
 
@@ -378,127 +489,14 @@ class ImportService {
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)
         await this.channelService.buildQueryCache(channel._id)
+        await this.queryCacheService.put(tokenIdStatsQueryCache)
 
         forkStatus.channels.saved++
         this.logForkProgress(forkStatus, `Importing channel ${channel._id}`)
 
+
+        
         return channel._id
-
-    }
-
-    private _addAttributeToChannel(attribute: { trait_type: string; value: string; }, channel: Channel) {
-    
-        let attributeOptions:AttributeOptions
-
-        //Check if the trait_type is already on the channel
-        let matching = channel.attributeOptions.filter(ao => ao.traitType == attribute.trait_type)
-
-        if (matching?.length > 0) {
-            attributeOptions = matching[0]            
-        } else {
-            channel.attributeOptions.push({ 
-                id: uuidv4(),
-                traitType: attribute.trait_type, 
-                values: [attribute.value] 
-            })
-            attributeOptions = channel.attributeOptions[channel.attributeOptions.length - 1]
-        }
-
-        //Add the value if it doesn't exist
-        if (!attributeOptions.values.includes(attribute.value)) {
-            attributeOptions.values.push(attribute.value)
-        }
-
-
-    }
-
-    async importExistingFromReader(baseURI:string, contractAddress:string, ipfsCid:string) {
-
-        let importBundle:ImportBundle = await this._buildImportBundle(baseURI)
-
-        importBundle.channels[0].contractAddress = contractAddress
-        importBundle.channels[0].localCid = ipfsCid
-
-        return this._importExisting(
-            importBundle.authors, 
-            importBundle.channels, 
-            importBundle.images, 
-            importBundle.items, 
-            importBundle.animations, 
-            importBundle.themes, 
-            importBundle.staticPages, 
-            importBundle.forkStatus, 
-            importBundle.mediaDownloader, 
-            importBundle.contractMetadata,
-            ipfsCid)
-
-    }
-
-    async importAsForkFromReader(baseURI:string, title:string, ipfsCid?:string) {
-
-        let importBundle:ImportBundle = await this._buildImportBundle(baseURI)
-
-
-        delete importBundle.channels[0].contractAddress
-        delete importBundle.channels[0].localCid
-
-        //Set the new name
-        importBundle.channels[0].title = title
-
-        return this._importAsFork(
-            importBundle.authors, 
-            importBundle.channels, 
-            importBundle.images, 
-            importBundle.items, 
-            importBundle.animations, 
-            importBundle.themes, 
-            importBundle.staticPages, 
-            importBundle.forkStatus, 
-            importBundle.mediaDownloader,
-            importBundle.contractMetadata,
-            ipfsCid)
-    }
-
-    private async _buildImportBundle(baseURI:string) : Promise<ImportBundle> {
-
-        let forkStatus:ForkStatus = {
-            animations: { saved: 0, total: 0},
-            images: { saved: 0, total: 0},
-            channels: { saved: 0, total: 0},
-            items: { saved: 0, total: 0},
-            authors: { saved: 0, total: 0},
-            themes: { saved: 0, total: 0 },
-            staticPages:  { saved: 0, total: 0 }
-        }
-
-        this.logForkProgress(forkStatus, "Processing...")
-
-        //Load the files from the server.
-        let authors:Author[] = await this._fetchFile(`${baseURI}backup/export/backup/authors.json`)
-        let channels:Channel[] = await this._fetchFile(`${baseURI}backup/export/backup/channels.json`)
-        let images:Image[] = await this._fetchFile(`${baseURI}backup/export/backup/images.json`)
-        let items:Item[] = await this._fetchFile(`${baseURI}backup/export/backup/items.json`)
-        let animations:Animation[] = await this._fetchFile(`${baseURI}backup/export/backup/animations.json`)
-        let themes:Theme[] = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`)
-        let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`)
-
-        let contractMetadata:ContractMetadata = await this._fetchFile(`${baseURI}backup/export/contractMetadata.json`)
-
-        let mediaDownloader = new URLDownloader(baseURI)
-
-        return {
-            authors: authors,
-            channels: channels,
-            images: images,
-            items: items,
-            animations: animations,
-            themes: themes,
-            staticPages: staticPages,
-            mediaDownloader: mediaDownloader,
-            forkStatus: forkStatus,
-            contractMetadata: contractMetadata
-
-        }
 
     }
 
@@ -526,7 +524,6 @@ class ImportService {
 
         channels[0].forkType = "fork"
         channels[0].forkedFromFeeRecipient = contractMetadata.fee_recipient
-
 
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
@@ -581,6 +578,19 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`)
 
         }
+
+
+
+        let tokenIdStatsQueryCache = new QueryCache()
+        tokenIdStatsQueryCache._id = `token_id_stats_by_channel_${channelId}`
+        tokenIdStatsQueryCache.result = {
+            min: undefined,
+            max: undefined,
+            count: 0
+        }
+
+        await this.schemaService.loadChannel(channelId)
+
 
         for (let animation of animations) {
 
@@ -710,6 +720,18 @@ class ImportService {
 
             await this.itemService.put(itemObj) 
 
+            //Update token stats
+            tokenIdStatsQueryCache.result.count++
+
+            if (!tokenIdStatsQueryCache.result.min || itemObj.tokenId < tokenIdStatsQueryCache.result.min) {
+                tokenIdStatsQueryCache.result.min = itemObj.tokenId
+            }
+
+            if (!tokenIdStatsQueryCache.result.max || itemObj.tokenId > tokenIdStatsQueryCache.result.max) {
+                tokenIdStatsQueryCache.result.max = itemObj.tokenId
+            }
+
+
             forkStatus.items.saved++
             this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
 
@@ -748,8 +770,10 @@ class ImportService {
         `)
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channelId}`)
-        await this.channelService.buildQueryCache(channelId)
 
+        
+        await this.channelService.buildQueryCache(channelId)
+        await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
         return channelId
@@ -760,6 +784,8 @@ class ImportService {
         if (!authors || !channels || !images || !items) {
             throw new Error("Invalid collection hash")
         }
+
+        let channelId
 
         forkStatus.authors.total = authors.length
         forkStatus.channels.total = channels.length
@@ -805,10 +831,24 @@ class ImportService {
 
             await this.channelService.put(Object.assign(channelObj, channel))  
 
+            channelId = channelObj._id
+
             forkStatus.channels.saved++
             this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`)
 
         }
+
+
+        let tokenIdStatsQueryCache = new QueryCache()
+        tokenIdStatsQueryCache._id = `token_id_stats_by_channel_${channelId}`
+        tokenIdStatsQueryCache.result = {
+            min: undefined,
+            max: undefined,
+            count: 0
+        }
+
+        await this.schemaService.loadChannel(channelId)
+
 
         for (let animation of animations) {
 
@@ -868,8 +908,6 @@ class ImportService {
 
         }
 
-
-
         for (let theme of themes) {
 
             //Remove any existing rev info
@@ -918,6 +956,18 @@ class ImportService {
             
             await this.itemService.put(Object.assign(itemObj, item))  
 
+            //Update token stats
+            tokenIdStatsQueryCache.result.count++
+
+            if (!tokenIdStatsQueryCache.result.min || itemObj.tokenId < tokenIdStatsQueryCache.result.min) {
+                tokenIdStatsQueryCache.result.min = itemObj.tokenId
+            }
+
+            if (!tokenIdStatsQueryCache.result.max || itemObj.tokenId > tokenIdStatsQueryCache.result.max) {
+                tokenIdStatsQueryCache.result.max = itemObj.tokenId
+            }
+
+
             forkStatus.items.saved++
             this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
 
@@ -950,13 +1000,41 @@ class ImportService {
         `)
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channels[0]._id}`)
+
         await this.channelService.buildQueryCache(channels[0]._id)
+        await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
         return channels[0]._id
     }
 
-    async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
+    private _addAttributeToChannel(attribute: { trait_type: string; value: string; }, channel: Channel) {
+    
+        let attributeOptions:AttributeOptions
+
+        //Check if the trait_type is already on the channel
+        let matching = channel.attributeOptions.filter(ao => ao.traitType == attribute.trait_type)
+
+        if (matching?.length > 0) {
+            attributeOptions = matching[0]            
+        } else {
+            channel.attributeOptions.push({ 
+                id: uuidv4(),
+                traitType: attribute.trait_type, 
+                values: [attribute.value] 
+            })
+            attributeOptions = channel.attributeOptions[channel.attributeOptions.length - 1]
+        }
+
+        //Add the value if it doesn't exist
+        if (!attributeOptions.values.includes(attribute.value)) {
+            attributeOptions.values.push(attribute.value)
+        }
+
+
+    }
+
+    private async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
 
         let cacheId = `${contract.address}-${tokenId}`
 
@@ -994,7 +1072,7 @@ class ImportService {
 
     }
 
-    async _fetchURI(uri) {
+    private async _fetchURI(uri) {
 
         
 
@@ -1030,13 +1108,13 @@ class ImportService {
 
     }
 
-    async _readFile(filename:string) {
+    private async _readFile(filename:string) {
         let bufferedContents = await toBuffer(this.ipfsService.ipfs.files.read(filename)) 
         return JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
 
     }
 
-    async _fetchFile(filename:string) {
+    private async _fetchFile(filename:string) {
         let response = await axios.get(filename)
         return response.data
     }
@@ -1062,9 +1140,6 @@ class ImportService {
         }
 
     }
-
-
-
 
     private _getERC721ABI() {
         return `[
@@ -1327,7 +1402,6 @@ class ImportService {
              
           ]`
     }
-
 
 }
 

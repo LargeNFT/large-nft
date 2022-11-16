@@ -257,7 +257,7 @@
     height: 125px;
     display: inline-block;
     margin-bottom: 10px;
-    font-size: 21px;
+    font-size: 15px;
   }
   
   .post-area .profile-pic {
@@ -424,7 +424,7 @@
   }
   
   .ql-container {
-    font-size: 23px;
+    font-size: 15px;
   }
   
   .license-editor .ql-container {

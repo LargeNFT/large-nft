@@ -13,6 +13,7 @@ import AdminPublishContractComponent from '../components/admin/publish/contract.
 import { ChannelWebService } from "../service/web/channel-web-service";
 
 import { SettingsService } from "../service/core/settings-service";
+import { SchemaService } from "../service/core/schema-service";
 
 
 @injectable()
@@ -20,13 +21,17 @@ class PublishController {
 
     constructor(
         private channelWebService:ChannelWebService,
-        private settingsService:SettingsService
+        private settingsService:SettingsService,
+        private schemaService:SchemaService
     ) {}
 
     @routeMap("/admin/publish/:id")
     async publish() : Promise<ModelView> {
 
         return new ModelView(async (routeTo:RouteTo) => {
+
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
@@ -43,6 +48,9 @@ class PublishController {
 
         return new ModelView(async (routeTo:RouteTo) => {
             
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
+
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
             return {
@@ -102,6 +110,9 @@ class PublishController {
 
         return new ModelView(async (routeTo:RouteTo) => {
 
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
+
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 
             let settings
@@ -125,6 +136,9 @@ class PublishController {
     async publishReader() : Promise<ModelView> {
 
         return new ModelView(async (routeTo:RouteTo) => {
+
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
@@ -150,6 +164,9 @@ class PublishController {
     async contract() : Promise<ModelView> {
 
         return new ModelView(async (routeTo:RouteTo) => {
+
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             

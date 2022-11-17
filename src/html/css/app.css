@@ -1153,7 +1153,20 @@ input[type="text"]:disabled {
   border: 3px solid var(--f7-theme-color);
 }
 
+@media only screen and (max-width: 1024px) {
+
+  .copyright-block ul, .copyleft-block ul {
+    height: 125px;
+  }
+
+  .copyright-block, .copyleft-block  {
+    height: 250px;
+    font-size: 15px;
+  }
+}
+
+
 
 #create-new-swiper {
-  height: 600px;
+  height: 700px;
 }

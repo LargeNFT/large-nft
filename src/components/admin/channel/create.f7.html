@@ -40,7 +40,7 @@
 
                     <div class="row">
 
-                      <div class="col-50">
+                      <div class="col-100 large-50">
 
                         <div class="block copyright-block">
 
@@ -58,7 +58,7 @@
 
                       </div>
 
-                      <div class="col-50">
+                      <div class="col-100 large-50">
 
                         <div class="block copyleft-block">
 
@@ -84,7 +84,7 @@
 
                   <div class="swiper-slide">
 
-                    <a class="link" @click="${backClick}" style="margin-left: 10px;">
+                    <a class="link" @click="${backClick}" style="margin-left: 20px;">
                       <i class="icon icon-back"></i> Back
                     </a>
 
@@ -285,7 +285,7 @@
           slideChange: function (s) {
             
             if (s.activeIndex == 0) {
-              document.getElementById('create-new-swiper').style.height = "600px"
+              document.getElementById('create-new-swiper').style.height = "700px"
             } 
 
             if (s.activeIndex == 1) {
@@ -301,15 +301,7 @@
 
     const copyrightClick = async (e) => {
 
-      // copyleft = false
-
-      // const copyleftEvent = new CustomEvent('copyleft-updated', {
-      //   detail: { copyleft: copyleft }
-      // })
-
-      // document.dispatchEvent(copyleftEvent)
       channelViewModel.channel.disableForks = true
-
 
       await $update()
       swiper.slideNext(1000)
@@ -318,16 +310,7 @@
 
     const copyleftClick = async (e) => {
 
-      // copyleft = true
-
-      // const copyleftEvent = new CustomEvent('copyleft-updated', {
-      //   detail: { copyleft: copyleft }
-      // })
-
-      // document.dispatchEvent(copyleftEvent)
-
       channelViewModel.channel.disableForks = false
-
 
       await $update()
       swiper.slideNext(1000)

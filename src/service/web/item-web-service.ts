@@ -167,7 +167,9 @@ class ItemWebService {
 
             try {
                 attributeInfo = await this.itemService.getAttributeInfo(channel._id)
-            } catch(ex) {}
+            } catch(ex) {
+                console.log(ex)
+            }
 
 
             if (attributeInfo) {
@@ -471,9 +473,15 @@ class ItemWebService {
         }
 
         queryCache.result = tokenIdStats
+        
 
         //Update cache
         await this.queryCacheService.put(queryCache)
+
+
+        //Clear attribute cache
+        await this.itemService.clearQueryCache(item)
+
 
     }
 

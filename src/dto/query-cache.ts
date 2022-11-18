@@ -1,3 +1,4 @@
+import { A } from '@svgdotjs/svg.js'
 import { IsNotEmpty, Allow } from 'class-validator'
 
 
@@ -11,6 +12,9 @@ class QueryCache {
 
     @Allow()
     result:any
+
+    @Allow()
+    stale?:boolean
 
     @Allow()
     lastUpdated?:string

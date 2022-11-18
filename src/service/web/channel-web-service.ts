@@ -184,9 +184,6 @@ class ChannelWebService {
         //Load the right channel dbs
         await this.schemaService.loadChannel(channel._id)
 
-        console.log(channel.coverImageId, channel.coverBannerId, coverImage, coverBanner)
-
-
         //Save cover image
         try {
             //Could be a duplicate. Which means it's fine.

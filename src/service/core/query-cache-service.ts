@@ -38,6 +38,7 @@ class QueryCacheService {
     }
 
     async delete(_id:string) {
+        console.log(_id)
         await this.queryCacheRepository.delete(_id)
     }
 
@@ -66,8 +67,9 @@ function cacheQuery(queryName: string) {
             let cacheQueryName = `${queryName}_${serializedArguments}`
 
             let cachedResult = await queryCacheService.get(cacheQueryName)
-            if (cachedResult) return cachedResult.result
+            if (cachedResult && !cachedResult.stale) return cachedResult.result
     
+
             // call the original function
             let result
             if (Array.isArray(arguments)) {
@@ -75,13 +77,17 @@ function cacheQuery(queryName: string) {
             } else {
                 result = await originalValue.apply(this, arguments)
             }
-            
-            let queryCache:QueryCache = {
-                _id: cacheQueryName,
-                result: result
+
+            if (!cachedResult) {
+                cachedResult = {
+                    _id: cacheQueryName
+                }
             }
 
-            await queryCacheService.put(queryCache)
+            cachedResult.result = result
+            cachedResult.stale = false
+
+            await queryCacheService.put(cachedResult)
 
             return result
     

@@ -150,9 +150,17 @@ class ItemService {
 
     async clearQueryCache(item:Item) {
 
+        let attributeInfoQueryCache
+
         try {
-            await this.queryCacheService.delete(`attribute_info_by_channel_${item.channelId}`)
-        } catch(ex) {} //might not exist. ignore
+            attributeInfoQueryCache = await this.queryCacheService.get(`attribute_info_by_channel_${item.channelId}`)
+        } catch(ex) {} 
+
+        if (attributeInfoQueryCache) {
+            attributeInfoQueryCache.stale = true
+            await this.queryCacheService.put(attributeInfoQueryCache)
+        }
+
 
     }
 

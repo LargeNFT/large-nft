@@ -158,15 +158,6 @@
         }
       })
 
-      // //Check showExcerpt
-      // if (showExcerpt) {
-      //     item.excerpt = excerptHtml(await quillService.translateContent(item.content), {
-      //         pruneLength: 500
-      //     })
-      // } else {
-      //   delete item.excerpt
-      // }
-      
 
       //Build contentHTML for searching
       item.contentHTML = await quillService.translateContent(item.content, true)
@@ -192,8 +183,7 @@
           horizontalPosition: 'left'
         })
 
-        //Clear caches
-        await itemService.clearQueryCache(item)
+
 
 
         //Redirect

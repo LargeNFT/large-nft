@@ -5,6 +5,7 @@ import { Author } from "../../dto/author";
 import { Channel } from "../../dto/channel";
 import { Item } from "../../dto/item";
 
+import { Image } from "../../dto/image";
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
@@ -14,6 +15,7 @@ import { ImageService } from "../image-service";
 import { ItemService } from "../item-service";
 import { ItemWebService } from "./item-web-service";
 import { QueryCacheService } from "../../service/core/query-cache-service";
+import { SchemaService } from "../../service/core/schema-service";
 
 @injectable()
 class ChannelWebService {
@@ -24,7 +26,8 @@ class ChannelWebService {
         private authorService: AuthorService,
         private itemService:ItemService,
         private itemWebService:ItemWebService,
-        private queryCacheService:QueryCacheService
+        private queryCacheService:QueryCacheService,
+        private schemaService:SchemaService
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -172,9 +175,33 @@ class ChannelWebService {
         }
     }
 
-    async put(channel:Channel) : Promise<void> {
+    async put(channel:Channel, coverImage:Image, coverBanner:Image) : Promise<void> {
+        
+        console.log(channel.coverImageId, channel.coverBannerId)
 
         await this.channelService.put(channel)
+
+        //Load the right channel dbs
+        await this.schemaService.loadChannel(channel._id)
+
+        console.log(channel.coverImageId, channel.coverBannerId, coverImage, coverBanner)
+
+
+        //Save cover image
+        try {
+            //Could be a duplicate. Which means it's fine.
+            await this.imageService.put(Object.assign(new Image(), coverImage))
+        } catch (ex) { console.log(ex) }
+
+
+        //Save cover banner
+        try {
+            //Could be a duplicate. Which means it's fine.
+            await this.imageService.put(Object.assign(new Image(), coverBanner))
+        } catch (ex) { console.log(ex) }
+
+
+
 
         let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channel._id}`)
 

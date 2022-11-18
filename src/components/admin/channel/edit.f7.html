@@ -69,6 +69,7 @@
 
   import { ContainerService } from "../../../service/core/container-service"
   import { ChannelService } from "../../../service/channel-service"
+  import { ChannelWebService } from "../../../service/web/channel-web-service"
   import { ImageService } from "../../../service/image-service"
   import { ThemeService } from "../../../service/theme-service"
   import { StaticPageService } from "../../../service/static-page-service"
@@ -98,6 +99,8 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let channelService = ContainerService.getInstance(ChannelService)
+    let channelWebService = ContainerService.getInstance(ChannelWebService)
+
     let imageService = ContainerService.getInstance(ImageService)
     let themeService = ContainerService.getInstance(ThemeService)
     let staticPageService = ContainerService.getInstance(StaticPageService)
@@ -109,6 +112,9 @@
 
     let channelViewModel = props.channelViewModel
 
+    let coverImage
+    let coverBanner
+
     hljs.configure({
       languages: ['css']
     })
@@ -117,8 +123,11 @@
 
       e.preventDefault()
 
+      let channel = Object.assign(new Channel(), channelViewModel.channel)
+
+
       //Get data
-      let channel = Object.assign(new Channel(), $f7.form.convertToData('#edit-channel-form'))
+      channel = Object.assign(channel, $f7.form.convertToData('#edit-channel-form'))
 
       //Get content from quill
       channel.description = quillEditorService.activeEditor.getContents()
@@ -135,18 +144,14 @@
 
       }
 
-      if (channel.category) {
-        channel.category = JSON.parse(channel.category).map(item => item.value)
-      } else {
-        channel.category = []
-      }
 
       channel.disableForks = channel.disableForks == "true"
+
 
       //Save
       try {
 
-        await channelService.put(channel)
+        await channelWebService.put(channel, coverImage, coverBanner)
 
         const toast = $f7.toast.show({
           text: 'Collection saved',
@@ -200,10 +205,15 @@
 
       }
 
+    })
 
 
+    $(document).on('cover-image-updated', async (e) => {
+        coverImage = e.detail.coverImage
+    })
 
-
+    $(document).on('cover-banner-updated', async (e) => {
+        coverBanner = e.detail.coverBanner
     })
 
     return $render

@@ -1059,15 +1059,15 @@ input[type="text"]:disabled {
 
 
 
-/* 
-.cover-image-preview {
+
+.avatar-preview {
   max-width: 300px;
   max-height: 300px;
   border: 1px solid #cccccc;
   padding: 5px;
   margin-bottom: 10px;
   border-radius: 50%;
-} */
+}
 
 .cover-banner-preview {
   max-width: 100%;

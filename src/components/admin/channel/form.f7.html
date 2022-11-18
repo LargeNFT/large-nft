@@ -6,6 +6,7 @@
         <input type="hidden" name="_rev" value="${channelViewModel?.channel?._rev}" />
         <input type="hidden" name="dateCreated" value="${channelViewModel?.channel?.dateCreated}" />
         <input type="hidden" name="authorId" value="${channelViewModel?.channel?.authorId}" />
+        <input type="hidden" name="contractAddress" value="${channelViewModel?.channel?.contractAddress}" />
 
 
         <div class="card">
@@ -83,10 +84,10 @@
                                     <div class="item-input-wrap">
 
                                         ${channelViewModel.coverImage ? $h`
-                                        <img class="cover-image-preview" src="${channelViewModel?.coverImage.url}" />
+                                        <img class="avatar-preview" src="${channelViewModel?.coverImage.url}" />
 
                                         ` : $h`
-                                        <i class="material-icons cover-image-preview">image</i>
+                                        <i class="material-icons avatar-preview">image</i>
                                         `}
 
                                         <input type="button" class="button button-fill browse-file" value="Browse"
@@ -115,6 +116,7 @@
                                         <input type="button" class="button button-fill browse-file" value="Browse"
                                             @click="${handleBannerBrowseClick}" tabindex="5" />
                                         <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?.cid}" />
+
                                         <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />
 
                                     </div>
@@ -533,19 +535,23 @@
 
             let imageBuffer = await uploadService.uploadFile(document.getElementById('cover-image-browse'))
 
-            let image = await imageService.newFromBuffer(imageBuffer)
+            let coverImage = await imageService.newFromBuffer(imageBuffer)
 
-            try {
-                //Could be a duplicate. Which means it's fine.
-                await imageService.put(image)
-            } catch (ex) { }
+            const coverImageUpdatedEvent = new CustomEvent('cover-image-updated', {
+                detail: { 
+                    coverImage: coverImage
+                }
+            })
+
+            document.dispatchEvent(coverImageUpdatedEvent)
+
 
             channelViewModel.coverImage = {
-                cid: image.cid,
-                url: await imageService.getUrl(image)
+                cid: coverImage.cid,
+                url: await imageService.getUrl(coverImage)
             }
 
-            $update()
+            await $update()
         }
 
         const handleBannerBrowseClick = async (e) => {
@@ -555,19 +561,24 @@
         const handleBannerChange = async (e) => {
 
             let imageBuffer = await uploadService.uploadFile(document.getElementById('banner-browse'))
-            let image = await imageService.newFromBuffer(imageBuffer)
+            let coverBanner = await imageService.newFromBuffer(imageBuffer)
 
-            try {
-                //Could be a duplicate. Which means it's fine.
-                await imageService.put(image)
-            } catch (ex) { }
+            const coverBannerUpdatedEvent = new CustomEvent('cover-banner-updated', {
+                detail: { 
+                    coverBanner: coverBanner
+                }
+            })
+
+            document.dispatchEvent(coverBannerUpdatedEvent)
+
+
 
             channelViewModel.coverBanner = {
-                cid: image.cid,
-                url: await imageService.getUrl(image)
+                cid: coverBanner.cid,
+                url: await imageService.getUrl(coverBanner)
             }
 
-            $update()
+            await $update()
         }
 
         const safeCSSId = (text) => {
@@ -601,6 +612,7 @@
 
         let mintPrice
         let mintPriceWei
+
 
         //Set values if passed in
         if (channelViewModel) {

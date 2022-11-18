@@ -28,6 +28,8 @@ class AuthorController {
               authorViewModel = await this.authorWebService.get(routeTo.params.id)
             } catch(ex) {} //might be missing
 
+            console.log(authorViewModel)
+
 
             //If it doesn't exist create an empty one
             if (!authorViewModel) {

@@ -250,22 +250,22 @@ class ImportService {
 
 
         //Create author
-        let walletAddress = await this.walletService.getAddress()
+        // let walletAddress = await this.walletService.getAddress()
 
-        let author
+        // let author
 
-        try {
-            author = await this.authorService.get(walletAddress)
-        } catch(ex) {}
+        // try {
+        //     author = await this.authorService.get(walletAddress)
+        // } catch(ex) {}
 
-        if (!author) {
+        // if (!author) {
 
-            author = new Author()
-            author.walletAddress = walletAddress
+        //     author = new Author()
+        //     author.walletAddress = walletAddress
 
-            await this.authorService.put(author)            
+        //     await this.authorService.put(author)            
 
-        }
+        // }
 
 
         //Create channel
@@ -476,12 +476,12 @@ class ImportService {
 
 
 
-        forkStatus.authors.saved++
-        this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
+        // forkStatus.authors.saved++
+        // this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
 
 
-        //Save channel with attributes
-        channel.authorId = author._id
+        // //Save channel with attributes
+        // channel.authorId = author._id
         
         channel.importSuccess = true
 

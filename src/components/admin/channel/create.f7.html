@@ -194,6 +194,10 @@
       disableForks: false
     }
 
+    let coverImage
+    let coverBanner
+
+
     const formSubmit = async (e) => {
 
       e.preventDefault()
@@ -215,12 +219,6 @@
         channel.attributeOptions = []
       }
 
-      if (channel.category) {
-        channel.category = JSON.parse(channel.category).map(item => item.value)
-      } else {
-        channel.category = []
-      }
-
       //If the author doesn't exist insert a 
       if (channel.authorId) {
         await authorService.insertIfNew(channel.authorId)
@@ -232,8 +230,7 @@
       //Save
       try {
 
-        await channelWebService.put(channel)
-
+        await channelWebService.put(channel, coverImage, coverBanner)
 
         const toast = $f7.toast.show({
           text: 'Collection saved',
@@ -296,6 +293,9 @@
         }
       })
 
+
+
+
     })
 
 
@@ -319,6 +319,16 @@
     const backClick = async (e) => {
       swiper.slidePrev(1000)
     }
+
+
+
+    $(document).on('cover-image-updated', async (e) => {
+        coverImage = e.detail.coverImage
+    })
+
+    $(document).on('cover-banner-updated', async (e) => {
+        coverBanner = e.detail.coverBanner
+    })
 
 
     return $render

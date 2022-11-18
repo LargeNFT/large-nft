@@ -145,7 +145,7 @@
                 $f7.views.main.router.navigate(`/admin/author/show/${author._id}`)
 
             } catch (ex) {
-                console.log
+                console.log(ex)
                 $f7.dialog.alert(ex.errors, "There was an error")
             }
 

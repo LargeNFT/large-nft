@@ -22,6 +22,8 @@ import { StaticPageService } from "./static-page-service";
 import { StaticPage } from "../dto/static-page";
 import { QueryCacheService } from "./core/query-cache-service";
 import { QueryCache } from "../dto/query-cache";
+import { AttributeCount } from "../dto/attribute";
+import { AttributeCountService } from "./attribute-count-service";
 
 @injectable()
 class ChannelService {
@@ -34,7 +36,8 @@ class ChannelService {
     private quillService:QuillService,
     private themeService:ThemeService,
     private staticPageService:StaticPageService,
-    private queryCacheService:QueryCacheService
+    private queryCacheService:QueryCacheService,
+    private attributeCountService:AttributeCountService
 
   ) { }
 
@@ -175,12 +178,16 @@ class ChannelService {
   }
 
 
-  async buildQueryCache(channelId:string) {
+  async buildAttributeCounts(channelId:string) {
 
-    //Just gotta call these
-    await this.itemService.getAttributeInfo(channelId)
+    let attributeCounts:AttributeCount[] = await this.itemService.getAttributeCountByChannel(channelId)
 
-}
+    for (let at of attributeCounts) {
+      await this.attributeCountService.put(Object.assign(new AttributeCount(), at))
+    }
+
+
+  }
 
 
 }

@@ -19,7 +19,6 @@ import { AnimationService } from "../animation-service"
 
 
 import { ExportService } from "./export-service"
-import { NFTMetadata } from "dto/nft-metadata"
 
 
 @injectable()
@@ -42,11 +41,16 @@ class PublishService {
         this.logPublishProgress(undefined, "Preparing export...")
         let exportBundle:ExportBundle = await this.exportService.prepareExport(channel, this.walletService.address)
 
+        let feeRecipient = await this._getFeeReceipient(exportBundle)
+
+        this.logPublishProgress(undefined, `Fee Recipient: ${feeRecipient}`)
+
+
         this.logPublishProgress(undefined, "Preparing backup...")
         let backup:BackupBundle = await this.exportService.createBackup(exportBundle)
 
         this.logPublishProgress(undefined, "Backup created. Exporting to IPFS...")
-        let cid: string = await this.exportToIPFS(exportBundle, backup)
+        let cid: string = await this.exportToIPFS(exportBundle, backup, feeRecipient)
 
         //Update local cid info
         Object.assign(channel, await this.channelService.get(channel._id))
@@ -59,7 +63,7 @@ class PublishService {
     }
 
 
-    async exportToIPFS(exportBundle:ExportBundle, backup:BackupBundle): Promise<string> {
+    async exportToIPFS(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string): Promise<string> {
 
         let flush = true
         let directory = `/export/${exportBundle.channel._id}`
@@ -103,16 +107,15 @@ class PublishService {
         let imageDirectory = await this.getImageDirectoryCid(directory)
         let animationDirectory = await this.getAnimationDirectoryCid(directory)
 
-        await this._publishNFTMetadata(publishStatus, directory, exportBundle.channel, exportBundle.items, animationDirectory.cid.toString(), imageDirectory.cid.toString(), true)
+        await this._publishNFTMetadata(publishStatus, directory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
 
 
-        console.log(exportBundle.channel)
 
-        let feeRecipient = exportBundle.channel.forkType == "existing" ? exportBundle.channel.forkedFromFeeRecipient : exportBundle.ownerAddress
+
 
         //Save contract metadata
         let contractMetadataPath = `${directory}/contractMetadata.json`
-        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory.cid.toString() )
+        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory)
 
         //Adding and then copying otherwise the CID does not match what we'd expect. 
         // let contractResult = await this.ipfsService.ipfs.add({
@@ -186,21 +189,48 @@ class PublishService {
 
 
     public async getAnimationDirectoryCid(directory) {
-        return this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
+
+        let stat = await this.ipfsService.ipfs.files.stat(`${directory}/animations/`, {
             hash: true
         })
+
+        let cid = stat.cid.toString()
+
+        console.log(cid)
+
+        return cid
     }
 
     public async getImageDirectoryCid(directory) {
-        return this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
+        
+        let stat = await this.ipfsService.ipfs.files.stat(`${directory}/images/`, {
             hash: true
         })
+
+        let cid = stat.cid.toString()
+
+        console.log(cid)
+
+        return cid
     }
 
 
 
 
+    private async _getFeeReceipient(exportBundle:ExportBundle) {
 
+        let feeRecipient
+
+        if (exportBundle.channel.forkType == "existing") {  
+            if (exportBundle.channel.forkedFromFeeRecipient) {
+                feeRecipient = exportBundle.channel.forkedFromFeeRecipient 
+            }
+        } else {
+            feeRecipient = exportBundle.ownerAddress
+        }
+
+        return feeRecipient
+    }
 
     private async _publishAnimations(publishStatus:PublishStatus, directory:string, animations:Animation[], flush: boolean) {
 

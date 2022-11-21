@@ -177,25 +177,29 @@ class ChannelWebService {
 
     async put(channel:Channel, coverImage:Image, coverBanner:Image) : Promise<void> {
         
-        console.log(channel.coverImageId, channel.coverBannerId)
-
         await this.channelService.put(channel)
 
         //Load the right channel dbs
         await this.schemaService.loadChannel(channel._id)
 
         //Save cover image
-        try {
-            //Could be a duplicate. Which means it's fine.
-            await this.imageService.put(Object.assign(new Image(), coverImage))
-        } catch (ex) { console.log(ex) }
+        if (coverImage) {
+            try {
+                //Could be a duplicate. Which means it's fine.
+                await this.imageService.put(Object.assign(new Image(), coverImage))
+            } catch (ex) { }
+        }
+
 
 
         //Save cover banner
-        try {
-            //Could be a duplicate. Which means it's fine.
-            await this.imageService.put(Object.assign(new Image(), coverBanner))
-        } catch (ex) { console.log(ex) }
+        if (coverBanner) {
+            try {
+                //Could be a duplicate. Which means it's fine.
+                await this.imageService.put(Object.assign(new Image(), coverBanner))
+            } catch (ex) {  }
+        }
+
 
 
 

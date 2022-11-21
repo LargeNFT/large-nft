@@ -25,6 +25,8 @@ import { AggregateStats } from "../../dto/aggregate-stats";
 import { QueryCacheService } from "../../service/core/query-cache-service";
 import { ItemRepository } from "../../repository/item-repository";
 import { QueryCache } from "../../dto/query-cache";
+import { AttributeCountService } from "../../service/attribute-count-service";
+import { AttributeCount } from "../../dto/attribute";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
@@ -41,7 +43,8 @@ class ItemWebService {
         private quillService:QuillService,
         private themeService:ThemeService,
         private queryCacheService:QueryCacheService,
-        private itemRepository:ItemRepository
+        private itemRepository:ItemRepository,
+        private attributeCountService:AttributeCountService
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
@@ -162,25 +165,21 @@ class ItemWebService {
 
             }
 
-            //Look up scarcity of attributes
-            let attributeInfo
 
-            try {
-                attributeInfo = await this.itemService.getAttributeInfo(channel._id)
-            } catch(ex) {
-                console.log(ex)
-            }
+            for (let attributeSelection of attributeSelections) {
 
+                try {
 
-            if (attributeInfo) {
-                for (let attributeSelection of attributeSelections) {
-                    let matches = attributeInfo.filter(ai => ai.traitType == attributeSelection.traitType && ai.value == attributeSelection.value)
-                    attributeSelection.categoryPercent = matches?.length > 0 ? new Intl.NumberFormat('default', {
+                    let attributeCount:AttributeCount = await this.attributeCountService.get(`${channel._id}-${attributeSelection.traitType}-${attributeSelection.value}`)
+
+                    attributeSelection.categoryPercent = attributeCount ? new Intl.NumberFormat('default', {
                         style: 'percent',
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
-                    }).format((matches[0].count / tokenIdStats.count)) : ''
-                }
+                    }).format((attributeCount.count / tokenIdStats.count)) : ''
+
+                } catch(ex) {}
+
             }
 
 
@@ -479,8 +478,29 @@ class ItemWebService {
         await this.queryCacheService.put(queryCache)
 
 
-        //Clear attribute cache
-        await this.itemService.clearQueryCache(item)
+        //Update attribute counts
+        let attributeCounts:AttributeCount[] = await this.itemService.getAttributeInfoBySelections(item.channelId, item.attributeSelections)
+
+
+        for (let attributeCount of attributeCounts) {
+
+            let existing:AttributeCount
+
+            try {
+                existing = await this.attributeCountService.get(`${item.channelId}-${attributeCount.traitType}-${attributeCount.value}`)
+            } catch(ex) {}
+
+            if (!existing) {
+                existing = new AttributeCount()
+                existing.channelId = item.channelId
+                existing.traitType = attributeCount.traitType
+                existing.value = attributeCount.value
+            }
+            
+            existing.count = attributeCount.count
+
+            await this.attributeCountService.put(existing)
+        }
 
 
     }

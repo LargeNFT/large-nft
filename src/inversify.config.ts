@@ -29,7 +29,11 @@ import TYPES from './service/core/types'
 
 import { PinningService } from './service/core/pinning-service'
 import { PinningApiRepository } from './repository/pinning-api-repository'
+import { AttributeCountRepository } from './repository/attribute-count-repository'
+
 import { ItemService } from './service/item-service'
+import { AttributeCountService } from './service/attribute-count-service'
+
 import { ChannelWebService } from './service/web/channel-web-service'
 import { ItemWebService } from './service/web/item-web-service'
 import { AuthorWebService } from './service/web/author-web-service'
@@ -211,6 +215,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
 
   container.bind(ERCEventService).toSelf().inSingletonScope()
   container.bind(ExportService).toSelf().inSingletonScope()
+  container.bind(AttributeCountService).toSelf().inSingletonScope()
 
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()
@@ -243,6 +248,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
+  container.bind(AttributeCountRepository).toSelf().inSingletonScope()
 
 
   container.bind("ipfsInit").toConstantValue( async () => {

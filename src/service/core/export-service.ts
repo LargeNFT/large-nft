@@ -175,8 +175,7 @@ class ExportService {
         let themes:Theme[] = exportBundle.themes
         let staticPages:StaticPage[] = exportBundle.staticPages
 
-        //Look up any data we need to add to the bundle
-
+    
         //If we're exporting an existing collection delete the "forkedBy" fields
         if (channel.forkType == "existing") {
             delete channel.forkType
@@ -259,6 +258,12 @@ class ExportService {
         }
 
 
+        let authors = []
+
+        if (author) {
+            authors.push(author)
+        }
+
 
         //Add itemCount to channel
         channel['itemCount'] = items?.length
@@ -266,7 +271,7 @@ class ExportService {
         //Save pouch dbs
         return {
             channels: [channel],
-            authors: [author],
+            authors: authors,
             items: items,
             themes: themes,
             staticPages: staticPages,

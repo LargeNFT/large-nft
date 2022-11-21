@@ -60,7 +60,8 @@ import { TokenMetadataCacheRepository } from "../src/repository/token-metadata-c
 import { QueryCacheRepository } from "../src/repository/query-cache-repository";
 
 
-
+import { AttributeCountRepository } from '../src/repository/attribute-count-repository'
+import { AttributeCountService } from '../src/service/attribute-count-service'
 
 let container:Container
 
@@ -127,6 +128,7 @@ async function getContainer() {
     container.bind(QueryCacheService).toSelf().inSingletonScope()
     container.bind(ExportService).toSelf().inSingletonScope()
     container.bind(SettingsService).toSelf().inSingletonScope()
+    container.bind(AttributeCountService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()
@@ -140,6 +142,7 @@ async function getContainer() {
     container.bind(StaticPageRepository).toSelf().inSingletonScope()
     container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
     container.bind(QueryCacheRepository).toSelf().inSingletonScope()
+    container.bind(AttributeCountRepository).toSelf().inSingletonScope()
 
 
     //Spin up local IPFS

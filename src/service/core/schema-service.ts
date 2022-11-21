@@ -11,6 +11,7 @@ import { StaticPageRepository } from "../../repository/static-page-repository";
 import { ThemeRepository } from "../../repository/theme-repository";
 import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository";
 import { QueryCacheRepository } from "../../repository/query-cache-repository";
+import { AttributeCountRepository } from "../../repository/attribute-count-repository";
 
 @injectable()
 class SchemaService {
@@ -28,7 +29,8 @@ class SchemaService {
         private themeRepository:ThemeRepository,
         private staticPageRepository:StaticPageRepository,
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository,
-        private queryCacheRepository:QueryCacheRepository
+        private queryCacheRepository:QueryCacheRepository,
+        private attributeCountRepository:AttributeCountRepository
     ) {}
 
     async load() {
@@ -53,6 +55,7 @@ class SchemaService {
         await this.imageRepository.load(channelId)
         await this.themeRepository.load(channelId)
         await this.staticPageRepository.load(channelId)
+        await this.attributeCountRepository.load(channelId)
 
         this.loadedChannelId = channelId
 

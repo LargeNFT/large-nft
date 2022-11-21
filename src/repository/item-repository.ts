@@ -2,7 +2,7 @@ import { injectable } from "inversify"
 import { cacheQuery, QueryCacheService } from "../service/core/query-cache-service"
 import { Item } from "../dto/item"
 import { Changeset, DatabaseService } from "../service/core/database-service"
-import { AggregateStats } from "dto/aggregate-stats"
+import { AttributeCount, AttributeSelection } from "../dto/attribute"
 
 
 @injectable()
@@ -184,8 +184,7 @@ class ItemRepository {
         await this.db.remove(item)
     }
 
-    @cacheQuery('attribute_info_by_channel')
-    async getAttributeInfo(channelId:string) : Promise<AttributeInfo[]> {
+    async getAttributeCountByChannel(channelId:string) : Promise<AttributeCount[]> {
 
         let result = await this.db.query('attribute_counts', {
             reduce: true,
@@ -199,26 +198,37 @@ class ItemRepository {
             return {
                 traitType: row.key[1],
                 value: row.key[2],
-                count: row.value
+                count: row.value,
+                channelId: channelId
             }
         })
 
     }
 
-    // @cacheQuery('token_id_stats_by_channel')
-    // async getTokenIdStatsByChannel(channelId:string) : Promise<AggregateStats> {
+    async getAttributeInfoBySelections(channelId:string, attributeSelections:AttributeSelection[]) : Promise<AttributeCount[]> {
 
-    //     let result = await this.db.query('by_channel_token_stats', {
-    //         reduce: true,
-    //         include_docs: false,
-    //         key: channelId
-    //     })
+        let result = await this.db.query('attribute_counts', {
+            reduce: true,
+            keys:attributeSelections.map( as => [channelId, as.traitType, as.value]),
+            include_docs: false,
+            group_level: 3
+        })
 
-    //     if (result.rows?.length > 0) {
-    //         return result.rows[0].value
-    //     } 
+        console.log(result)
 
-    // }
+        return result.rows.map(row => {
+            return {
+                traitType: row.key[1],
+                value: row.key[2],
+                count: row.value,
+                channelId: channelId
+            }
+        })
+
+    }
+
+
+
 
 }
 

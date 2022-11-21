@@ -516,13 +516,15 @@ class GitlabService {
         }
 
         //Make sure we have an author
-        let author = await this.authorService.get(channel.authorId)
+        let author
+        let gitUsername
+        try {
+            author = await this.authorService.get(channel.authorId)
+            gitUsername = author.name ? author.name : author._id
+        } catch(ex) {}
+        
 
-        if (!author) {
-            throw new Error("No author found.")
-        }
-
-        let gitUsername = author.name ? author.name : author._id
+        if (!gitUsername) gitUsername = "john"
 
 
         //Get fork URL
@@ -732,7 +734,7 @@ class GitlabService {
             },
           })
 
-        this.logPublishReaderProgress(pushResult.toString())
+        this.logPublishReaderProgress("Publish complete")
 
     }
 
@@ -757,16 +759,16 @@ class GitlabService {
     private async _createDirectoryStructure(fs, dir:string) {
 
         //Create directory structure
-        fs.mkdirSync(`${dir}`)
-        fs.mkdirSync(`${dir}/backup`)
+        fs.promises.mkdir(`${dir}`)
+        fs.promises.mkdir(`${dir}/backup`)
 
-        fs.mkdirSync(`${dir}/backup/contract`)
-        fs.mkdirSync(`${dir}/backup/export`)
+        fs.promises.mkdir(`${dir}/backup/contract`)
+        fs.promises.mkdir(`${dir}/backup/export`)
 
-        fs.mkdirSync(`${dir}/backup/export/backup`)
-        fs.mkdirSync(`${dir}/backup/export/images`)
-        fs.mkdirSync(`${dir}/backup/export/metadata`)
-        fs.mkdirSync(`${dir}/backup/export/animations`)
+        fs.promises.mkdir(`${dir}/backup/export/backup`)
+        fs.promises.mkdir(`${dir}/backup/export/images`)
+        fs.promises.mkdir(`${dir}/backup/export/metadata`)
+        fs.promises.mkdir(`${dir}/backup/export/animations`)
 
     }
 

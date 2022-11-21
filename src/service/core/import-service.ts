@@ -249,25 +249,6 @@ class ImportService {
         forkStatus.items.total = tokenIds.size
 
 
-        //Create author
-        // let walletAddress = await this.walletService.getAddress()
-
-        // let author
-
-        // try {
-        //     author = await this.authorService.get(walletAddress)
-        // } catch(ex) {}
-
-        // if (!author) {
-
-        //     author = new Author()
-        //     author.walletAddress = walletAddress
-
-        //     await this.authorService.put(author)            
-
-        // }
-
-
         //Create channel
         let channel:Channel = new Channel()
 
@@ -488,7 +469,7 @@ class ImportService {
         await this.channelService.put(channel)
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)
-        await this.channelService.buildQueryCache(channel._id)
+        await this.channelService.buildAttributeCounts(channel._id)
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
         forkStatus.channels.saved++
@@ -772,7 +753,7 @@ class ImportService {
         this.logForkProgress(forkStatus, `Building query cache for channel ${channelId}`)
 
         
-        await this.channelService.buildQueryCache(channelId)
+        await this.channelService.buildAttributeCounts(channelId)
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
@@ -1001,7 +982,7 @@ class ImportService {
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channels[0]._id}`)
 
-        await this.channelService.buildQueryCache(channels[0]._id)
+        await this.channelService.buildAttributeCounts(channels[0]._id)
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 

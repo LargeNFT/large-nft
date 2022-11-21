@@ -5,15 +5,15 @@ import { NFTMetadata } from "../dto/nft-metadata";
 import { ValidationException } from "../util/validation-exception";
 import { validate, ValidationError } from 'class-validator';
 import { v4 as uuidv4 } from 'uuid';
-import { AttributeInfo, ItemRepository } from "../repository/item-repository";
+import { ItemRepository } from "../repository/item-repository";
 
 import { Channel } from "../dto/channel";
 import { ImageService } from "./image-service";
 
 import { Image } from "../dto/image";
-import { AggregateStats } from "../dto/aggregate-stats";
 import { QueryCacheService } from "./core/query-cache-service";
 import { QueryCache } from "../dto/query-cache";
+import { AttributeCount, AttributeSelection } from "../dto/attribute";
 
 @injectable()
 class ItemService {
@@ -144,31 +144,14 @@ class ItemService {
         return tokenIdStats?.max ? tokenIdStats.max + 1 : 1
     }
 
-    async getAttributeInfo(channelId:string) : Promise<AttributeInfo[]> {
-        return this.itemRepository.getAttributeInfo(channelId)
+
+
+    async getAttributeCountByChannel(channelId:string) : Promise<AttributeCount[]> {
+        return this.itemRepository.getAttributeCountByChannel(channelId)
     }
 
-    async clearQueryCache(item:Item) {
-
-        let attributeInfoQueryCache
-
-        try {
-            attributeInfoQueryCache = await this.queryCacheService.get(`attribute_info_by_channel_${item.channelId}`)
-        } catch(ex) {} 
-
-        if (attributeInfoQueryCache) {
-            attributeInfoQueryCache.stale = true
-            await this.queryCacheService.put(attributeInfoQueryCache)
-        }
-
-
-    }
-
-    async buildQueryCache(channelId:string) {
-
-        //Just gotta call these
-        await this.itemRepository.getAttributeInfo(channelId)
-
+    async getAttributeInfoBySelections(channelId:string, attributeSelections:AttributeSelection[]) : Promise<AttributeCount[]> {
+        return this.itemRepository.getAttributeInfoBySelections(channelId, attributeSelections)
     }
 
 

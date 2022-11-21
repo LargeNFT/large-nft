@@ -96,7 +96,6 @@
   import { ImageService } from "../../../service/image-service"
   import { ItemWebService } from "../../../service/web/item-web-service"
 
-
   import { UiService } from "../../../service/core/ui-service"
 
   import { WalletService } from "../../../service/core/wallet-service"
@@ -114,6 +113,7 @@
 
     let quillEditorService = ContainerService.getInstance(QuillEditorService)
     let quillService = ContainerService.getInstance(QuillService)
+    let uiService = ContainerService.getInstance(UiService)
 
     let itemService = ContainerService.getInstance(ItemService)
     let itemWebService = ContainerService.getInstance(ItemWebService)
@@ -188,6 +188,8 @@
       //Save
       try {
 
+
+        uiService.showSpinner()
         await itemWebService.put(item)
 
         const toast = $f7.toast.show({

@@ -82,10 +82,16 @@
                         <div class="item-inner">
                           <div class="item-input-wrap">
                             <select id="collection-author">
-                              ${forkType == "existing" ? $h`
+                              ${forkType == "existing" && author != undefined ? $h`
                                 <option value="${author._id}">${truncateEthAddress(author._id)} (Original Author)</option>
                               ` : $h`
-                                <option value="${owner}">${truncateEthAddress(owner)}</option>
+
+                                ${owner ? $h`
+                                  <option value="${owner}">${truncateEthAddress(owner)}</option>
+                                ` : $h`
+                                  <option value="">None</option>
+                                `}
+                                
                               ` }
                             </select>
                           </div>

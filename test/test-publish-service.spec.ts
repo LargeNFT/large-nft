@@ -8,6 +8,7 @@ import assert from 'assert'
 import { ChannelService } from "../src/service/channel-service"
 import { PublishService } from "../src/service/core/publish-service"
 import { AuthorService } from "../src/service/author-service"
+import { ChannelWebService } from "../src/service/web/channel-web-service"
 
 import { Channel } from "../src/dto/channel"
 import { Item } from "../src/dto/item"
@@ -20,10 +21,10 @@ import { IpfsService } from "../src/service/core/ipfs-service"
 import { SchemaService } from "../src/service/core/schema-service"
 import { ItemService } from "../src/service/item-service";
 import { ImageService } from "../src/service/image-service";
-import { NFTMetadata } from "../src/dto/nft-metadata";
 import { AnimationService } from "../src/service/animation-service";
 
 import Hash from 'ipfs-only-hash'
+import { ItemWebService } from "../src/service/web/item-web-service";
 
 
 const ChannelContract = artifacts.require("Channel")
@@ -46,6 +47,9 @@ let schemaService:SchemaService
 let authorService:AuthorService
 let itemService:ItemService
 let channelService:ChannelService
+let channelWebService:ChannelWebService
+let itemWebService:ItemWebService
+
 let imageService:ImageService
 let animationService:AnimationService
 
@@ -79,6 +83,9 @@ contract('PublishService', async (accounts) => {
         imageService = container.get(ImageService)
         ipfsService = container.get(IpfsService)
         animationService = container.get(AnimationService)
+        channelWebService = container.get(ChannelWebService)
+        itemWebService = container.get(ItemWebService)
+
 
         await ipfsService.init()
         await schemaService.load()
@@ -92,14 +99,9 @@ contract('PublishService', async (accounts) => {
 
         await authorService.put(author)
 
+
         let image1 = await imageService.newFromBuffer(Buffer.from("image1!"))
         let image2 = await imageService.newFromBuffer(Buffer.from("image2!"))
-
-
-        //Create animation
-        let animation:Animation = await animationService.newFromText("Hel343l33o")
-        await animationService.put(animation)
-
 
         //Create category with attributes
         channel = Object.assign(new Channel(), {
@@ -125,8 +127,16 @@ contract('PublishService', async (accounts) => {
             _id: "channelxyz"
         }) 
 
-        await channelService.put(channel)
- 
+        await channelWebService.put(channel)
+        await schemaService.loadChannel(channel._id)
+
+
+
+
+
+        //Create animation
+        let animation:Animation = await animationService.newFromText("Hel343l33o")
+        await animationService.put(animation)
 
         //Save images
         await imageService.put(image1)
@@ -207,14 +217,17 @@ contract('PublishService', async (accounts) => {
         })
 
         //Save all these
-        await itemService.put(item1)
-        await itemService.put(item2)
-        await itemService.put(item3)
+        await itemWebService.put(item1)
+        await itemWebService.put(item2)
+        await itemWebService.put(item3)
 
         items = [item1, item2, item3]
 
         //And the channel
-        await channelService.put(channel)
+        await channelWebService.put(channel)
+
+
+
 
     })
 

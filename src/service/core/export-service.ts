@@ -111,7 +111,7 @@ class ExportService {
         for (let item of items) {
 
             //Build animation URL if we have content
-            if (item.animationId) {
+            if (item.animationId && !item.coverImageAsAnimation) {
                 animationCids.push(item.animationId)
             }
 

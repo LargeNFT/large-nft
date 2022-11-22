@@ -219,6 +219,7 @@ class ChannelWebService {
 
         //Update cache
         await this.queryCacheService.put(queryCache)
+        console.log(queryCache)
         
     }
 

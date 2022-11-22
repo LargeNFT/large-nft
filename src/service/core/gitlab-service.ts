@@ -537,15 +537,13 @@ class GitlabService {
         //Init FS
         let fs = await this.getFS()
 
-        console.log(fs)
+        // console.log(fs)
 
         //Check if we already have a repo
         let dir = `/repo-${channel._id}`
 
         let exists = await this._dirExists(fs, dir)
         let gitExists = await this._dirExists(fs, `${dir}/.git`)
-
-        console.log(exists, gitExists)
 
 
         //Create directory structure
@@ -656,8 +654,15 @@ class GitlabService {
 
         //Get image and animation ids so we can quickly grab them. 
         for (let item of items) {
+
             imageCids.push(...this.exportService.getImageCidsByItem(item))
-            animationCids.push(item.animationId)
+
+            //Only export if we're not showing the image only.
+            if (!item.coverImageAsAnimation) {
+                animationCids.push(item.animationId)
+            }
+
+
         }
 
         let images:Image[] = await this.imageService.getByIds(imageCids)
@@ -738,7 +743,15 @@ class GitlabService {
 
     }
 
+    async clearGitRepos() {
 
+        //Init FS
+        let fs = await this.getFS()
+
+        //Reinit and wipe
+        await fs.init("large-fs", { wipe: true})
+
+    }
 
     private async _dirExists(fs, dir) {
 

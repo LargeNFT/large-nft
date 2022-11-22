@@ -63,9 +63,10 @@
 
                                     ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
                                       <div class="repo-status">
-                                        <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                                        <p><strong>Remote Repository:</strong> ${repoURI}</p> <a href="#" class="link" @click="${clearGitClick}">Clear local cache</a>
+                                        <!-- <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
                                         <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>  
-                                        <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                              
+                                        <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                               -->
                                       </div>
 
                                       ${showPublishReaderStatus && ipfsReady ? $h`
@@ -193,11 +194,19 @@
 
         // console.log(channelViewModel)
 
+        let repoURI
+
+
         $on('pageInit', async () => {
 
           //Initialize IPFS
           await ipfsService.init()
           ipfsReady = ipfsService.ipfs != undefined
+
+          if (channelViewModel.channel.publishReaderRepoId) {
+            let existingForkResult = await gitlabService.getExistingFork(channelViewModel.channel)
+            repoURI = existingForkResult.http_url_to_repo
+          }
 
           await $update()
 
@@ -228,6 +237,30 @@
           publishing = false
           await $update()
           
+        }
+
+
+        const clearGitClick = async (e) => {
+
+          e.preventDefault()
+
+          let elem = document.getElementsByClassName('ipfs-label')[0]
+
+          $f7.preloader.showIn(elem)
+
+          try {
+            await gitlabService.clearGitRepos()
+          } catch(ex) {
+            console.log(ex)
+            $f7.dialog.alert(ex, "There was an error")
+          }
+
+          // console.log('hide')
+          $f7.preloader.hideIn(elem)
+
+          await $update()
+
+
         }
 
 

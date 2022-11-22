@@ -154,7 +154,11 @@
 
 
                                     ` : $h`
-                                        <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export to IPFS</button>
+
+                                        ${!publishing ? $h`
+                                            <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export to IPFS</button>
+                                        ` : $h`<span />`}  
+
                                     `}
                                     
                                 ` : $h`

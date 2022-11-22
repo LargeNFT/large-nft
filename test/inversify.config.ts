@@ -9,6 +9,8 @@ import { providers } from "ethers"
 import { HardhatWalletServiceImpl } from "../test/util/hardhat-wallet-service";
 import { AuthorService } from "../src/service/author-service";
 import { ChannelService } from "../src/service/channel-service";
+import { ChannelWebService } from "../src/service/web/channel-web-service";
+import { ItemWebService } from "../src/service/web/item-web-service";
 
 import { ImageService } from "../src/service/image-service";
 import { ItemService } from "../src/service/item-service";
@@ -129,6 +131,8 @@ async function getContainer() {
     container.bind(ExportService).toSelf().inSingletonScope()
     container.bind(SettingsService).toSelf().inSingletonScope()
     container.bind(AttributeCountService).toSelf().inSingletonScope()
+    container.bind(ChannelWebService).toSelf().inSingletonScope()
+    container.bind(ItemWebService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()

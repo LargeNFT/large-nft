@@ -40,6 +40,8 @@ contract('StaticPageService', async (accounts) => {
 
         await schemaService.load()
 
+        await schemaService.loadChannel("xyz")
+
        
     })
 

@@ -233,6 +233,8 @@ contract('ChannelService', async (accounts) => {
 
     it("should delete a channel and all associated items", async () => {
 
+        await schemaService.loadChannel(id1)
+
         let channel1: Channel = await service.get(id1)
         await service.delete(channel1)
 

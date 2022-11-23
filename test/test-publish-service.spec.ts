@@ -8,7 +8,6 @@ import assert from 'assert'
 import { ChannelService } from "../src/service/channel-service"
 import { PublishService } from "../src/service/core/publish-service"
 import { AuthorService } from "../src/service/author-service"
-import { ChannelWebService } from "../src/service/web/channel-web-service"
 
 import { Channel } from "../src/dto/channel"
 import { Item } from "../src/dto/item"
@@ -25,6 +24,7 @@ import { AnimationService } from "../src/service/animation-service";
 
 import Hash from 'ipfs-only-hash'
 import { ItemWebService } from "../src/service/web/item-web-service";
+import { ChannelWebService } from "../src/service/web/channel-web-service"
 
 
 const ChannelContract = artifacts.require("Channel")

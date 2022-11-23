@@ -14,7 +14,8 @@ import { ImageService } from "../src/service/image-service"
 import { SchemaService } from "../src/service/core/schema-service"
 import { AuthorService } from "../src/service/author-service"
 import { AnimationService } from "../src/service/animation-service"
-
+import { ItemWebService } from "../src/service/web/item-web-service";
+import { ChannelWebService } from "../src/service/web/channel-web-service"
 
 let user0
 let user1
@@ -35,6 +36,9 @@ contract('ItemService', async (accounts) => {
     let schemaService:SchemaService
     let authorService:AuthorService
     let animationService:AnimationService
+    let channelWebService:ChannelWebService
+    let itemWebService:ItemWebService
+
 
     let channel1:Channel
     let channel2:Channel
@@ -55,7 +59,8 @@ contract('ItemService', async (accounts) => {
         authorService = container.get(AuthorService)
         schemaService = container.get(SchemaService)
         animationService = container.get(AnimationService)
-
+        channelWebService = container.get(ChannelWebService)
+        itemWebService = container.get(ItemWebService)
 
         await schemaService.load()
 
@@ -78,8 +83,10 @@ contract('ItemService', async (accounts) => {
             category: ['Sunk']
         })
         
-        await channelService.put(channel1)
-        await channelService.put(channel2)
+        await channelWebService.put(channel1)
+        await channelWebService.put(channel2)
+
+        await schemaService.loadChannel(channel1._id)
 
     })
 
@@ -233,6 +240,9 @@ contract('ItemService', async (accounts) => {
 
     it("should add items to a second channel and query both", async () => {
 
+        await schemaService.loadChannel(channel2._id)
+
+
         //Arrange - Add a few more items
         await service.put(Object.assign(new Item(), {
             channelId: channel2._id,
@@ -266,6 +276,7 @@ contract('ItemService', async (accounts) => {
 
 
         //Act
+        await schemaService.loadChannel(channel1._id)
         let items1:Item[] = await service.listByChannel(channel1._id, 10, 0)
 
         assert.equal(items1.length, 3)
@@ -273,7 +284,7 @@ contract('ItemService', async (accounts) => {
         assert.equal(items1[1].title, "Titanic")
         assert.equal(items1[2].title, "Batman")
 
-
+        await schemaService.loadChannel(channel2._id)
         let items2:Item[] = await service.listByChannel(channel2._id, 10, 0)
 
         assert.equal(items2.length, 3)
@@ -289,50 +300,50 @@ contract('ItemService', async (accounts) => {
     //     assert.equal(count, 3)
     // })
 
-    it("should load a database with lots of records and page through them", async () => {
+    // it("should load a database with lots of records and page through them", async () => {
 
-        //Arrange
-        const sleep = ms => new Promise(r => setTimeout(r, ms));
+    //     //Arrange
+    //     const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-        for (var i = 0; i < 100; i++) {
+    //     for (var i = 0; i < 100; i++) {
             
-            await service.put(Object.assign(new Item(), {
-                channelId: 17,
-                tokenId: i,
-                title: (i).toString() + " has to be longer",
-                link: "pontoon.com",
-                description: "Another boat and a man in a bat suit",
-                authorId: 3,
-                category: ['Gazebos', 'Ants']
-            }))
+    //         await service.put(Object.assign(new Item(), {
+    //             channelId: 17,
+    //             tokenId: i,
+    //             title: (i).toString() + " has to be longer",
+    //             link: "pontoon.com",
+    //             description: "Another boat and a man in a bat suit",
+    //             authorId: 3,
+    //             category: ['Gazebos', 'Ants']
+    //         }))
     
-            await sleep(50) //just need different timestamp
-        }
+    //         await sleep(50) //just need different timestamp
+    //     }
 
-        //Get a page of 3
-        let items:Item[] = await service.listByChannel(17, 3, 0)
+    //     //Get a page of 3
+    //     let items:Item[] = await service.listByChannel(17, 3, 0)
 
-        //assert
-        assert.equal(items.length, 3)
-        assert.equal(items[0].title, "0 has to be longer")
-        assert.equal(items[1].title, "1 has to be longer")
-        assert.equal(items[2].title, "2 has to be longer")
+    //     //assert
+    //     assert.equal(items.length, 3)
+    //     assert.equal(items[0].title, "0 has to be longer")
+    //     assert.equal(items[1].title, "1 has to be longer")
+    //     assert.equal(items[2].title, "2 has to be longer")
 
-        items = await service.listByChannel(17, 3, 3)
+    //     items = await service.listByChannel(17, 3, 3)
 
-        assert.equal(items.length, 3)
-        assert.equal(items[0].title, "3 has to be longer")
-        assert.equal(items[1].title, "4 has to be longer")
-        assert.equal(items[2].title, "5 has to be longer")
+    //     assert.equal(items.length, 3)
+    //     assert.equal(items[0].title, "3 has to be longer")
+    //     assert.equal(items[1].title, "4 has to be longer")
+    //     assert.equal(items[2].title, "5 has to be longer")
 
-        items = await service.listByChannel(17, 3, 6)
+    //     items = await service.listByChannel(17, 3, 6)
 
-        assert.equal(items.length, 3)
-        assert.equal(items[0].title, "6 has to be longer")
-        assert.equal(items[1].title, "7 has to be longer")
-        assert.equal(items[2].title, "8 has to be longer")
+    //     assert.equal(items.length, 3)
+    //     assert.equal(items[0].title, "6 has to be longer")
+    //     assert.equal(items[1].title, "7 has to be longer")
+    //     assert.equal(items[2].title, "8 has to be longer")
 
-    })
+    // })
 
     // it("should export NFT metadata for an item", async () => {
         
@@ -348,7 +359,7 @@ contract('ItemService', async (accounts) => {
         //Arrange
         //Upload pretend image data
         let image:Image = await imageService.newFromBuffer(Buffer.from("pretend that this is image data4343243werwer"))
-        await imageService.put(image)
+
 
 
         //Create animation
@@ -362,7 +373,6 @@ contract('ItemService', async (accounts) => {
             walletAddress: user0
         })
 
-        await authorService.put(author)
 
 
         //Create category with attributes
@@ -388,9 +398,12 @@ contract('ItemService', async (accounts) => {
             coverImageId: image.cid.toString()
         }) 
 
-        await service.put(attributeChannel)
+        await channelWebService.put(attributeChannel)
 
+        await schemaService.loadChannel(attributeChannel._id)
 
+        await imageService.put(image)
+        await authorService.put(author)
 
         let item:Item = Object.assign(new Item(), {
             channelId: attributeChannel._id,
@@ -433,7 +446,7 @@ contract('ItemService', async (accounts) => {
 
     it("should return counts of specific attributes", async () => {
 
-        let attributeInfo:AttributeInfo[] = await service.getAttributeInfo(attributeChannel._id, [{ traitType: "Hair", value: "Curly"}])
+        let attributeInfo:AttributeInfo[] = await service.getAttributeInfoBySelections(attributeChannel._id, [{ traitType: "Hair", value: "Curly"}])
 
         assert.strictEqual(attributeInfo[0].traitType, "Hair")
         assert.strictEqual(attributeInfo[0].value, "Curly")

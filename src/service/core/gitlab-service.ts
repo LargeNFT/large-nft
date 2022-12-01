@@ -1,31 +1,35 @@
-import axios from 'axios'
-const toBuffer = require('it-to-buffer')
+import { default as axios } from 'axios'
+
+// const toBuffer = require('it-to-buffer')
+import toBuffer from "it-to-buffer"
+
 import parse from "parse-link-header"
 
 import { inject, injectable } from "inversify";
 
 
-import { Channel } from "../../dto/channel";
-import { IpfsService } from './ipfs-service';
+import { Channel } from "../../dto/channel.js";
+import { IpfsService } from './ipfs-service.js';
 
 import http from 'isomorphic-git/http/web/index.js'
-import { AuthorService } from '../../service/author-service';
-import { SettingsService } from './settings-service';
-import { Settings } from '../../dto/settings';
-import { ItemService } from '../../service/item-service';
-import { Item } from '../../dto/item';
-import { Image } from '../../dto/image';
-import { Animation } from '../../dto/animation';
+import { AuthorService } from '../../service/author-service.js';
+import { SettingsService } from './settings-service.js';
+import { Settings } from '../../dto/settings.js';
+import { ItemService } from '../../service/item-service.js';
+import { Item } from '../../dto/item.js';
+import { Image } from '../../dto/image.js';
+import { Animation } from '../../dto/animation.js';
 
-import { ExportService } from './export-service';
-import { ImageService } from '../../service/image-service';
-import { AnimationService } from '../../service/animation-service';
-import { PublishService } from './publish-service';
-import { NFTMetadata } from 'dto/nft-metadata';
+import { ExportService } from './export-service.js';
+import { ImageService } from '../../service/image-service.js';
+import { AnimationService } from '../../service/animation-service.js';
+import { PublishService } from './publish-service.js';
+import { NFTMetadata } from '../../dto/nft-metadata.js';
 
 
-const contractABI = require('../../../contracts.json')
+// const contractABI = require('../../../contracts.json')
 
+import contractABI from '../../../contracts.json'
 
 @injectable()
 class GitlabService {
@@ -70,7 +74,7 @@ class GitlabService {
                 path: existingFork.path
             }
         }
-
+        
         //Create a new one
         let response = await axios.post(url, {
             name: path,

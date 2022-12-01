@@ -1,6 +1,6 @@
 import { injectable } from "inversify"
-import { Theme } from "../dto/theme"
-import { Changeset, DatabaseService } from "../service/core/database-service"
+import { Theme } from "../dto/theme.js"
+import { Changeset, DatabaseService } from "../service/core/database-service.js"
 
 
 @injectable()

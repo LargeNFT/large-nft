@@ -1,6 +1,21 @@
+//@ts-nocheck
 import { merge } from 'webpack-merge'
-import path from 'path'
-import common from './webpack.common'
+import common from './webpack.common.js'
+
+
+
+import path, { dirname } from 'path'
+
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+
+
+
+
+
 
 
 let mainConfigs = []
@@ -20,9 +35,8 @@ for (let config of configs) {
 }
 
 
-let api = "https://gitlab.com"
 
-
+//@ts-ignore
 mainConfigs[0].devServer = {
     static: {
         directory: path.join(__dirname, 'public'),

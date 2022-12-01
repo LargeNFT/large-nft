@@ -1,4 +1,4 @@
-import { AttributeOptions, AttributeSelection } from "../../dto/attribute";
+import { AttributeOptions, AttributeSelection } from "../../dto/attribute.js";
 
 
 interface AttributeSelectionViewModel {

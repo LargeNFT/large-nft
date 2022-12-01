@@ -1,4 +1,4 @@
-import { AttributeOptions, AttributeSelection } from "./attribute"
+import { AttributeOptions, AttributeSelection } from "./attribute.js"
 
 import { MinLength, ArrayNotEmpty, ArrayMinSize ,IsNotEmpty, Allow } from 'class-validator'
 

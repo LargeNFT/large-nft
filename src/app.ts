@@ -3,7 +3,7 @@ import "regenerator-runtime/runtime"
 import "reflect-metadata"
 
 
-import { getMainContainer } from "./inversify.config"
+import { getMainContainer } from "./inversify.config.js"
 
 
 //Import CSS
@@ -16,7 +16,7 @@ import '@yaireo/tagify/dist/tagify.css'
 import './html/css/app.css'
 
 
-import { RoutingService } from "./service/core/routing-service"
+import { RoutingService } from "./service/core/routing-service.js"
 
 import AdminChannelShowComponent from './components/admin/channel/show.f7.html'
 

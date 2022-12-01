@@ -1,6 +1,6 @@
-import { Channel } from "../channel";
-import { Item } from "../item";
-import { ImageViewModel } from "./image-view-model";
+import { Channel } from "../channel.js";
+import { Item } from "../item.js";
+import { ImageViewModel } from "./image-view-model.js";
 
 interface ItemListViewModel {
     

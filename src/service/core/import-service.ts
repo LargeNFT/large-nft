@@ -4,46 +4,46 @@ import all from 'it-all'
 import Hash from 'ipfs-only-hash'
 import axios from "axios"
 import { v4 as uuidv4 } from 'uuid'
-import IPFSGatewayTools from "@pinata/ipfs-gateway-tools/dist/node"
+import IPFSGatewayTools from "@pinata/ipfs-gateway-tools/dist/node.js"
 
 
-import { Author } from "../../dto/author";
-import { Channel } from "../../dto/channel";
-import { Item } from "../../dto/item";
-import { Image } from "../../dto/image";
+import { Author } from "../../dto/author.js";
+import { Channel } from "../../dto/channel.js";
+import { Item } from "../../dto/item.js";
+import { Image } from "../../dto/image.js";
 
-import { AnimationService } from "../animation-service";
-import { AuthorService } from "../author-service";
-import { ChannelService } from "../channel-service";
-import { ImageService } from "../image-service";
-import { ItemService } from "../item-service";
-import { IpfsService } from "./ipfs-service";
-import TYPES from "./types";
-import { WalletService } from "./wallet-service"
-import { Animation } from "../../dto/animation"
-import { ForkStatus } from "../../dto/viewmodel/fork-status"
-import { Theme } from "../../dto/theme";
-import { StaticPage } from "../../dto/static-page";
+import { AnimationService } from "../animation-service.js";
+import { AuthorService } from "../author-service.js";
+import { ChannelService } from "../channel-service.js";
+import { ImageService } from "../image-service.js";
+import { ItemService } from "../item-service.js";
+import { IpfsService } from "./ipfs-service.js";
+import TYPES from "./types.js";
+import { WalletService } from "./wallet-service.js"
+import { Animation } from "../../dto/animation.js"
+import { ForkStatus } from "../../dto/viewmodel/fork-status.js"
+import { Theme } from "../../dto/theme.js";
+import { StaticPage } from "../../dto/static-page.js";
 import { BigNumber, Contract, ethers } from "ethers";
 
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
-import { ImportBundle, MediaDownloader } from "dto/import-bundle";
-import { ThemeRepository } from "../../repository/theme-repository";
-import { ThemeService } from "../theme-service";
+import { ImportBundle, MediaDownloader } from "../../dto/import-bundle.js";
+import { ThemeRepository } from "../../repository/theme-repository.js";
+import { ThemeService } from "../theme-service.js";
 
-import { StaticPageRepository } from "../../repository/static-page-repository";
-import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository";
+import { StaticPageRepository } from "../../repository/static-page-repository.js";
+import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository.js";
 
-import { ContractMetadata } from "../../dto/contract-metadata";
-import { StaticPageService } from "../static-page-service";
-import { ERCEventService } from "./erc-event-service";
-import { AttributeOptions } from "../../dto/attribute";
+import { ContractMetadata } from "../../dto/contract-metadata.js";
+import { StaticPageService } from "../static-page-service.js";
+import { ERCEventService } from "./erc-event-service.js";
+import { AttributeOptions } from "../../dto/attribute.js";
 
 import isSvg from "is-svg"
-import { TokenMetadata } from "../../dto/token-metadata-cache";
-import { QueryCache } from "../../dto/query-cache"
-import { QueryCacheService } from "./query-cache-service"
-import { SchemaService } from "./schema-service"
+import { TokenMetadata } from "../../dto/token-metadata-cache.js";
+import { QueryCache } from "../../dto/query-cache.js"
+import { QueryCacheService } from "./query-cache-service.js"
+import { SchemaService } from "./schema-service.js"
 
 const gatewayTools = new IPFSGatewayTools()
 

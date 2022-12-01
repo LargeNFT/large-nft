@@ -1,5 +1,5 @@
-import { Author } from "../author";
-import { ImageViewModel } from "./image-view-model";
+import { Author } from "../author.js";
+import { ImageViewModel } from "./image-view-model.js";
 
 interface AuthorViewModel {
 

@@ -1,18 +1,18 @@
 
 import { injectable } from "inversify"
-import { Image } from "../dto/image"
-import { ValidationException } from "../util/validation-exception"
+import { Image } from "../dto/image.js"
+import { ValidationException } from "../util/validation-exception.js"
 import { validate, ValidationError } from 'class-validator'
-import { ImageRepository } from "../repository/image-repository"
+import { ImageRepository } from "../repository/image-repository.js"
 // import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
-import { SvgService } from "./svg-service"
-import { QuillService } from "./quill-service"
+import { SvgService } from "./svg-service.js"
+import { QuillService } from "./quill-service.js"
 
 import he from 'he'
-import { Item } from "../dto/item"
-import { Theme } from "../dto/theme"
-import { ThemeService } from "./theme-service"
+import { Item } from "../dto/item.js"
+import { Theme } from "../dto/theme.js"
+import { ThemeService } from "./theme-service.js"
 
 const truncate = require('html-truncate')
 import svgToMiniDataURI from 'mini-svg-data-uri'

@@ -1,9 +1,9 @@
 import { injectable } from "inversify";
-import { Author } from "../../dto/author";
-import { AuthorViewModel } from "../../dto/viewmodel/author-view-model";
-import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
-import { AuthorService } from "../author-service";
-import { ImageService } from "../image-service";
+import { Author } from "../../dto/author.js";
+import { AuthorViewModel } from "../../dto/viewmodel/author-view-model.js";
+import { ImageViewModel } from "../../dto/viewmodel/image-view-model.js";
+import { AuthorService } from "../author-service.js";
+import { ImageService } from "../image-service.js";
 
 @injectable()
 class AuthorWebService {

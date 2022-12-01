@@ -1,12 +1,23 @@
-import path from 'path'
+//@ts-nocheck
+import path, { dirname } from 'path'
 import webpack from 'webpack'
 import fs from 'fs'
 
 
+import { createRequire } from 'module'
+import { fileURLToPath } from 'url'
+
+const require = createRequire(import.meta.url)
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default
+
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
-import MiniCssExtractPlugin from "mini-css-extract-plugin"
-import HTMLInlineCSSWebpackPlugin from "html-inline-css-webpack-plugin"
 
 
 
@@ -53,7 +64,12 @@ export default () => {
       ],
     },
     resolve: {
+
       extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensionAlias: {
+        ".js": [".js", ".ts"]
+      },
+
       alias: {
         buffer: 'buffer',
         process: 'process/browser.js',

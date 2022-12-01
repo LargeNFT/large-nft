@@ -1,4 +1,4 @@
-import { AttributeSelection } from "./attribute";
+import { AttributeSelection } from "./attribute.js";
 
 interface NFTMetadata {
 

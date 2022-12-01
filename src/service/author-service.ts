@@ -1,10 +1,10 @@
-import { Author } from "../dto/author";
+import { Author } from "../dto/author.js";
 import { inject, injectable } from "inversify";
-import { AuthorRepository } from "../repository/author-repository";
+import { AuthorRepository } from "../repository/author-repository.js";
 import { validate, ValidationError } from "class-validator";
-import { ValidationException } from "../util/validation-exception";
-import { WalletService } from "./core/wallet-service";
-import TYPES from "./core/types";
+import { ValidationException } from "../util/validation-exception.js";
+import { WalletService } from "./core/wallet-service.js";
+import TYPES from "./core/types.js";
 
 @injectable()
 class AuthorService {

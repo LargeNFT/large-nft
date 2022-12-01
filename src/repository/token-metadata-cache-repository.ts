@@ -1,7 +1,7 @@
-import { TokenMetadata, TokenMetadataCache } from "../dto/token-metadata-cache"
+import { TokenMetadata, TokenMetadataCache } from "../dto/token-metadata-cache.js"
 import { injectable } from "inversify"
-import { Author } from "../dto/author"
-import { DatabaseService } from "../service/core/database-service"
+import { Author } from "../dto/author.js"
+import { DatabaseService } from "../service/core/database-service.js"
 
 
 @injectable()

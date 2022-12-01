@@ -1,6 +1,6 @@
 import { MinLength, ArrayNotEmpty, ArrayMinSize, ValidateNested, IsNotEmpty, Allow } from 'class-validator'
 
-import { AttributeOptions } from "./attribute";
+import { AttributeOptions } from "./attribute.js";
 
 class Channel {
 

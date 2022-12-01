@@ -1,6 +1,6 @@
 import { injectable } from "inversify"
-import { Author } from "../dto/author"
-import { DatabaseService } from "../service/core/database-service"
+import { Author } from "../dto/author.js"
+import { DatabaseService } from "../service/core/database-service.js"
 
 
 @injectable()

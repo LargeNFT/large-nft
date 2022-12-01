@@ -1,10 +1,10 @@
-import { Author } from "../author";
-import { Channel } from "../channel";
-import { Item } from "../item";
-import { Theme } from "../theme";
-import { AnimationViewModel } from "./animation-view-model";
-import { AttributeSelectionViewModel } from "./attribute-selection-view-model";
-import { ImageViewModel } from "./image-view-model";
+import { Author } from "../author.js";
+import { Channel } from "../channel.js";
+import { Item } from "../item.js";
+import { Theme } from "../theme.js";
+import { AnimationViewModel } from "./animation-view-model.js";
+import { AttributeSelectionViewModel } from "./attribute-selection-view-model.js";
+import { ImageViewModel } from "./image-view-model.js";
 
 interface ItemViewModel {
 

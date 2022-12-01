@@ -1,11 +1,11 @@
-import { Author } from "./author"
-import { Channel } from "./channel"
-import { Animation } from "./animation"
+import { Author } from "./author.js"
+import { Channel } from "./channel.js"
+import { Animation } from "./animation.js"
 
-import { Item } from "./item"
-import { Image } from "./image"
-import { Theme } from "./theme"
-import { StaticPage } from "./static-page"
+import { Item } from "./item.js"
+import { Image } from "./image.js"
+import { Theme } from "./theme.js"
+import { StaticPage } from "./static-page.js"
 
 
 interface ExportBundle {

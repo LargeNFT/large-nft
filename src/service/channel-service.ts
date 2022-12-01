@@ -1,29 +1,29 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from 'class-validator';
-import { Channel } from "../dto/channel"
-import { Item } from "../dto/item"
+import { Channel } from "../dto/channel.js"
+import { Item } from "../dto/item.js"
 
-import { ValidationException } from "../util/validation-exception";
+import { ValidationException } from "../util/validation-exception.js";
 import { v4 as uuidv4 } from 'uuid';
 
-import { ContractMetadata } from "../dto/contract-metadata";
-import { ImageService } from "./image-service";
-import { Image } from "../dto/image";
-import { ItemService } from "./item-service";
+import { ContractMetadata } from "../dto/contract-metadata.js";
+import { ImageService } from "./image-service.js";
+import { Image } from "../dto/image.js";
+import { ItemService } from "./item-service.js";
 
-import { ChannelRepository } from "../repository/channel-repository";
+import { ChannelRepository } from "../repository/channel-repository.js";
 
-import { PinningService } from "./core/pinning-service";
-import { PinningApi } from "../dto/pinning-api";
-import { QuillService } from "./quill-service";
-import { Theme } from "../dto/theme";
-import { ThemeService } from "./theme-service";
-import { StaticPageService } from "./static-page-service";
-import { StaticPage } from "../dto/static-page";
-import { QueryCacheService } from "./core/query-cache-service";
-import { QueryCache } from "../dto/query-cache";
-import { AttributeCount } from "../dto/attribute";
-import { AttributeCountService } from "./attribute-count-service";
+import { PinningService } from "./core/pinning-service.js";
+import { PinningApi } from "../dto/pinning-api.js";
+import { QuillService } from "./quill-service.js";
+import { Theme } from "../dto/theme.js";
+import { ThemeService } from "./theme-service.js";
+import { StaticPageService } from "./static-page-service.js";
+import { StaticPage } from "../dto/static-page.js";
+import { QueryCacheService } from "./core/query-cache-service.js";
+import { QueryCache } from "../dto/query-cache.js";
+import { AttributeCount } from "../dto/attribute.js";
+import { AttributeCountService } from "./attribute-count-service.js";
 
 @injectable()
 class ChannelService {

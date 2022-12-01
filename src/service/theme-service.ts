@@ -1,10 +1,10 @@
-import { Theme } from "../dto/theme";
+import { Theme } from "../dto/theme.js";
 import { inject, injectable } from "inversify";
-import { ThemeRepository } from "../repository/theme-repository";
+import { ThemeRepository } from "../repository/theme-repository.js";
 import { validate, ValidationError } from "class-validator";
-import { ValidationException } from "../util/validation-exception";
-import { WalletService } from "./core/wallet-service";
-import TYPES from "./core/types";
+import { ValidationException } from "../util/validation-exception.js";
+import { WalletService } from "./core/wallet-service.js";
+import TYPES from "./core/types.js";
 import Hash from 'ipfs-only-hash'
 import { v4 as uuidv4 } from 'uuid';
 

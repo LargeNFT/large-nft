@@ -1,17 +1,17 @@
 import { injectable } from "inversify"
-import { Animation } from "../dto/animation"
+import { Animation } from "../dto/animation.js"
 
-import { ValidationException } from "../util/validation-exception"
+import { ValidationException } from "../util/validation-exception.js"
 import { validate, ValidationError } from 'class-validator'
 import Hash from 'ipfs-only-hash'
-import { AnimationRepository } from "../repository/animation-repository"
-import { Item } from "../dto/item"
+import { AnimationRepository } from "../repository/animation-repository.js"
+import { Item } from "../dto/item.js"
 
 import he from 'he'
-import { ImageService } from "./image-service"
-import { QuillService } from "./quill-service"
-import { ThemeService } from "./theme-service"
-import { Theme } from "../dto/theme"
+import { ImageService } from "./image-service.js"
+import { QuillService } from "./quill-service.js"
+import { ThemeService } from "./theme-service.js"
+import { Theme } from "../dto/theme.js"
 
 const { forEach: each } = Array.prototype;
 

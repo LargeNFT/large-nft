@@ -1,64 +1,64 @@
 import AppComponent from './components/admin/app.f7.html'
 
-import { UiService } from './service/core/ui-service';
+import { UiService } from './service/core/ui-service.js';
 
 import { providers } from "ethers"
-import { QueueService } from './service/core/queue-service';
+import { QueueService } from './service/core/queue-service.js';
 
-import { QuillService } from "./service/quill-service";
-import { QuillEditorService } from "./service/quill-editor-service";
-import { ReaderConfig } from 'dto/reader-config';
+import { QuillService } from "./service/quill-service.js";
+import { QuillEditorService } from "./service/quill-editor-service.js";
+import { ReaderConfig } from './dto/reader-config.js';
 
-import { UploadService } from "./service/core/upload-service";
+import { UploadService } from "./service/core/upload-service.js";
 
-import { WalletService } from "./service/core/wallet-service"
-import { ImageService } from "./service/image-service"
-import { AuthorService } from "./service/author-service"
-import { ChannelService } from "./service/channel-service"
-import { IpfsService } from "./service/core/ipfs-service"
+import { WalletService } from "./service/core/wallet-service.js"
+import { ImageService } from "./service/image-service.js"
+import { AuthorService } from "./service/author-service.js"
+import { ChannelService } from "./service/channel-service.js"
+import { IpfsService } from "./service/core/ipfs-service.js"
 import { Container } from "inversify";
-import { DatabaseService } from './service/core/database-service'
-import { ChannelRepository } from './repository/channel-repository'
-import { ItemRepository } from './repository/item-repository'
-import { ImageRepository } from './repository/image-repository'
-import { AuthorRepository } from './repository/author-repository'
-import { SchemaService } from './service/core/schema-service'
-import { WalletServiceImpl } from './service/core/wallet-service-impl'
+import { DatabaseService } from './service/core/database-service.js'
+import { ChannelRepository } from './repository/channel-repository.js'
+import { ItemRepository } from './repository/item-repository.js'
+import { ImageRepository } from './repository/image-repository.js'
+import { AuthorRepository } from './repository/author-repository.js'
+import { SchemaService } from './service/core/schema-service.js'
+import { WalletServiceImpl } from './service/core/wallet-service-impl.js'
 
-import TYPES from './service/core/types'
+import TYPES from './service/core/types.js'
 
-import { PinningService } from './service/core/pinning-service'
-import { PinningApiRepository } from './repository/pinning-api-repository'
-import { AttributeCountRepository } from './repository/attribute-count-repository'
+import { PinningService } from './service/core/pinning-service.js'
+import { PinningApiRepository } from './repository/pinning-api-repository.js'
+import { AttributeCountRepository } from './repository/attribute-count-repository.js'
 
-import { ItemService } from './service/item-service'
-import { AttributeCountService } from './service/attribute-count-service'
+import { ItemService } from './service/item-service.js'
+import { AttributeCountService } from './service/attribute-count-service.js'
 
-import { ChannelWebService } from './service/web/channel-web-service'
-import { ItemWebService } from './service/web/item-web-service'
-import { AuthorWebService } from './service/web/author-web-service'
-import { GitlabService } from './service/core/gitlab-service'
-import { SettingsRepository } from './repository/settings-repository'
-import { RoutingService } from './service/core/routing-service'
-import { SettingsService } from './service/core/settings-service'
+import { ChannelWebService } from './service/web/channel-web-service.js'
+import { ItemWebService } from './service/web/item-web-service.js'
+import { AuthorWebService } from './service/web/author-web-service.js'
+import { GitlabService } from './service/core/gitlab-service.js'
+import { SettingsRepository } from './repository/settings-repository.js'
+import { RoutingService } from './service/core/routing-service.js'
+import { SettingsService } from './service/core/settings-service.js'
 
-import { ChannelController } from './controller/channel-controller'
-import { ItemController } from './controller/item-controller'
-import { AuthorController } from './controller/author-controller';
-import { SettingsController } from './controller/settings-controller';
-import { PublishService } from './service/core/publish-service';
-import { ConnectController } from './controller/connect-controller';
-import { PublishController } from './controller/publish-controller';
-import { PagingService } from './service/core/paging-service';
+import { ChannelController } from './controller/channel-controller.js'
+import { ItemController } from './controller/item-controller.js'
+import { AuthorController } from './controller/author-controller.js';
+import { SettingsController } from './controller/settings-controller.js';
+import { PublishService } from './service/core/publish-service.js';
+import { ConnectController } from './controller/connect-controller.js';
+import { PublishController } from './controller/publish-controller.js';
+import { PagingService } from './service/core/paging-service.js';
 
 
-import { SvgService } from './service/svg-service';
-import { AnimationService } from './service/animation-service';
-import { AnimationRepository } from './repository/animation-repository';
-import { ImportService } from './service/core/import-service';
+import { SvgService } from './service/svg-service.js';
+import { AnimationService } from './service/animation-service.js';
+import { AnimationRepository } from './repository/animation-repository.js';
+import { ImportService } from './service/core/import-service.js';
 
-import { ERCEventService } from './service/core/erc-event-service';
-import { QueryCacheService } from './service/core/query-cache-service';
+import { ERCEventService } from './service/core/erc-event-service.js';
+import { QueryCacheService } from './service/core/query-cache-service.js';
 
 import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
@@ -67,15 +67,15 @@ import git from "isomorphic-git"
 import FS from '@isomorphic-git/lightning-fs';
 
 
-import { ThemeService } from './service/theme-service';
-import { ThemeRepository } from './repository/theme-repository';
-import { StaticPageRepository } from './repository/static-page-repository';
-import { StaticPageService } from './service/static-page-service';
-import { ExportService } from './service/core/export-service';
+import { ThemeService } from './service/theme-service.js';
+import { ThemeRepository } from './repository/theme-repository.js';
+import { StaticPageRepository } from './repository/static-page-repository.js';
+import { StaticPageService } from './service/static-page-service.js';
+import { ExportService } from './service/core/export-service.js';
 
 
-import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository';
-import { QueryCacheRepository } from './repository/query-cache-repository';
+import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository.js';
+import { QueryCacheRepository } from './repository/query-cache-repository.js';
 
 //Init framework7
 import Framework7 from 'framework7';

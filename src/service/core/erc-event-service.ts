@@ -1,8 +1,8 @@
 import { BigNumber, Contract, ethers, Event } from "ethers";
 import { inject, injectable } from "inversify";
-import TYPES from "./types";
+import TYPES from "./types.js";
 
-import { WalletService } from "./wallet-service";
+import { WalletService } from "./wallet-service.js";
 
 
 

@@ -1,6 +1,6 @@
 import { injectable } from "inversify"
-import { Channel } from "../dto/channel"
-import { Changeset, DatabaseService } from "../service/core/database-service"
+import { Channel } from "../dto/channel.js"
+import { Changeset, DatabaseService } from "../service/core/database-service.js"
 
 
 @injectable()

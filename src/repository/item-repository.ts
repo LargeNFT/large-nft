@@ -1,8 +1,8 @@
 import { injectable } from "inversify"
-import { cacheQuery, QueryCacheService } from "../service/core/query-cache-service"
-import { Item } from "../dto/item"
-import { Changeset, DatabaseService } from "../service/core/database-service"
-import { AttributeCount, AttributeSelection } from "../dto/attribute"
+import { cacheQuery, QueryCacheService } from "../service/core/query-cache-service.js"
+import { Item } from "../dto/item.js"
+import { Changeset, DatabaseService } from "../service/core/database-service.js"
+import { AttributeCount, AttributeSelection } from "../dto/attribute.js"
 
 
 @injectable()

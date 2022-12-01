@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { merge } from 'webpack-merge'
-import common from './webpack.common'
+import common from './webpack.common.js'
 
 
 let configs = common()

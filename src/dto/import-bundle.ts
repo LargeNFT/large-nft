@@ -1,13 +1,13 @@
-import { Author } from "./author"
-import { Channel } from "./channel"
+import { Author } from "./author.js"
+import { Channel } from "./channel.js"
 
-import { Item } from "./item"
-import { Theme } from "./theme"
-import { StaticPage } from "./static-page"
-import { ForkStatus } from "./viewmodel/fork-status"
-import { Image } from "./image"
-import { Animation } from "./animation"
-import { ContractMetadata } from "./contract-metadata"
+import { Item } from "./item.js"
+import { Theme } from "./theme.js"
+import { StaticPage } from "./static-page.js"
+import { ForkStatus } from "./viewmodel/fork-status.js"
+import { Image } from "./image.js"
+import { Animation } from "./animation.js"
+import { ContractMetadata } from "./contract-metadata.js"
 
 
 interface ImportBundle {

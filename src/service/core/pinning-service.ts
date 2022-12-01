@@ -1,13 +1,12 @@
 import { validate, ValidationError } from "class-validator";
 import { injectable } from "inversify";
-import { PinningApi } from "../../dto/pinning-api";
-import { PinningApiRepository } from "../../repository/pinning-api-repository";
-import { ValidationException } from "../../util/validation-exception";
+import { PinningApi } from "../../dto/pinning-api.js";
+import { PinningApiRepository } from "../../repository/pinning-api-repository.js";
+import { ValidationException } from "../../util/validation-exception.js";
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios'
-import { IpfsService } from "./ipfs-service";
-import { ChannelService } from "../channel-service";
-import { Channel } from "../../dto/channel";
+import { default as axios } from 'axios'
+import { IpfsService } from "./ipfs-service.js";
+import { Channel } from "../../dto/channel.js";
 
 @injectable()
 class PinningService {

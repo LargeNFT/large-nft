@@ -1,7 +1,7 @@
 
-import { container } from "../../inversify.config"
-import TYPES from "./types"
-import { WalletService } from "./wallet-service"
+import { container } from "../../inversify.config.js"
+import TYPES from "./types.js"
+import { WalletService } from "./wallet-service.js"
 
 class ContainerService {
 

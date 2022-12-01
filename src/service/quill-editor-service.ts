@@ -7,9 +7,9 @@ import BlotFormatter, { AlignAction, DeleteAction, ResizeAction, ImageSpec } fro
 import "quill-paste-smart";
 import { Dom7 } from "framework7"
 
-import { ImageService } from './image-service'
+import { ImageService } from './image-service.js'
 import { readAndCompressImage } from 'browser-image-resizer';
-import { UiService } from './core/ui-service';
+import { UiService } from './core/ui-service.js';
 
 
 var $$ = Dom7;

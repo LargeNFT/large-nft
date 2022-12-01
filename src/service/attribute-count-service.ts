@@ -1,9 +1,9 @@
 import {  injectable } from "inversify";
 import { validate, ValidationError } from "class-validator";
-import { ValidationException } from "../util/validation-exception";
+import { ValidationException } from "../util/validation-exception.js";
 
-import { AttributeCountRepository } from "../repository/attribute-count-repository";
-import { AttributeCount } from "../dto/attribute";
+import { AttributeCountRepository } from "../repository/attribute-count-repository.js";
+import { AttributeCount } from "../dto/attribute.js";
 
 @injectable()
 class AttributeCountService {

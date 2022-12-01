@@ -1,13 +1,10 @@
-import { StaticPage } from "../dto/static-page";
+import { StaticPage } from "../dto/static-page.js";
 import { inject, injectable } from "inversify";
 import { validate, ValidationError } from "class-validator";
-import { ValidationException } from "../util/validation-exception";
-import { WalletService } from "./core/wallet-service";
-import TYPES from "./core/types";
-import Hash from 'ipfs-only-hash'
+import { ValidationException } from "../util/validation-exception.js";
 import { v4 as uuidv4 } from 'uuid';
-import { StaticPageRepository } from "../repository/static-page-repository";
-import { QuillService } from "./quill-service";
+import { StaticPageRepository } from "../repository/static-page-repository.js";
+import { QuillService } from "./quill-service.js";
 
 @injectable()
 class StaticPageService {

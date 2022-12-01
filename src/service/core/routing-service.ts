@@ -1,8 +1,8 @@
-import { ModelView } from "../../util/model-view";
+import { ModelView } from "../../util/model-view.js";
 import { injectable, inject, Container } from "inversify";
-import { Router } from "framework7/modules/router/router";
-import { UiService } from "./ui-service";
-import { container } from "../../inversify.config"
+import { Router } from "framework7";
+import { UiService } from "./ui-service.js";
+import { container } from "../../inversify.config.js"
 
 
 @injectable()

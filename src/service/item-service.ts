@@ -1,19 +1,19 @@
 import { injectable } from "inversify";
-import { Item } from "../dto/item";
+import { Item } from "../dto/item.js";
 
-import { NFTMetadata } from "../dto/nft-metadata";
-import { ValidationException } from "../util/validation-exception";
+import { NFTMetadata } from "../dto/nft-metadata.js";
+import { ValidationException } from "../util/validation-exception.js";
 import { validate, ValidationError } from 'class-validator';
 import { v4 as uuidv4 } from 'uuid';
-import { ItemRepository } from "../repository/item-repository";
+import { ItemRepository } from "../repository/item-repository.js";
 
-import { Channel } from "../dto/channel";
-import { ImageService } from "./image-service";
+import { Channel } from "../dto/channel.js";
+import { ImageService } from "./image-service.js";
 
-import { Image } from "../dto/image";
-import { QueryCacheService } from "./core/query-cache-service";
-import { QueryCache } from "../dto/query-cache";
-import { AttributeCount, AttributeSelection } from "../dto/attribute";
+import { Image } from "../dto/image.js";
+import { QueryCacheService } from "./core/query-cache-service.js";
+import { QueryCache } from "../dto/query-cache.js";
+import { AttributeCount, AttributeSelection } from "../dto/attribute.js";
 
 @injectable()
 class ItemService {

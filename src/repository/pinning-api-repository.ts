@@ -1,6 +1,6 @@
 import { injectable } from "inversify"
-import { PinningApi } from "../dto/pinning-api"
-import { Changeset, DatabaseService } from "../service/core/database-service"
+import { PinningApi } from "../dto/pinning-api.js"
+import { Changeset, DatabaseService } from "../service/core/database-service.js"
 
 
 @injectable()

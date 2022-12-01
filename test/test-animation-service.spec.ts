@@ -1,13 +1,12 @@
-//@ts-nocheck
-console.log(1)
 import { getContainer, cleanup } from "./inversify.config"
+
 import assert from 'assert'
 
-import { Animation } from "../src/dto/animation"
-import { AnimationService } from "../src/service/animation-service"
+import { Animation } from "../src/dto/animation.js"
+import { AnimationService } from "../src/service/animation-service.js"
 
-import { IpfsService } from "../src/service/core/ipfs-service"
-import { SchemaService } from "../src/service/core/schema-service"
+import { IpfsService } from "../src/service/core/ipfs-service.js"
+import { SchemaService } from "../src/service/core/schema-service.js"
 
 
 
@@ -20,7 +19,7 @@ let user4
 
 let id1
 
-
+//@ts-ignore
 contract('AnimationService', async (accounts) => {
 
     let service: AnimationService

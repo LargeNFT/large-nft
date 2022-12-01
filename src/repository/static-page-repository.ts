@@ -1,6 +1,6 @@
 import { injectable } from "inversify"
-import { StaticPage } from "../dto/static-page"
-import { Changeset, DatabaseService } from "../service/core/database-service"
+import { StaticPage } from "../dto/static-page.js"
+import { Changeset, DatabaseService } from "../service/core/database-service.js"
 
 
 @injectable()

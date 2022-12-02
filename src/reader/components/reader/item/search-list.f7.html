@@ -1,0 +1,156 @@
+<template>
+
+  <div class="margin-top">
+
+
+
+    <div class="block block-strong block-search">
+
+      <form class="searchbar" @submit="${searchbarSubmit}">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Enter a search term" />
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button">Cancel</span>
+        </div>
+      </form>
+
+      Note: All searches are local. The first search will take longer because it has to build a local search index.
+    </div>
+
+
+    <div class="list cards-list">
+  
+      <ul>
+
+        ${results ? $h`
+          
+          ${ results?.length > 0 ? $h`
+          
+            ${results?.map( (itemViewModel) => $h`
+              <li class="card item-card">
+                <div class="card-content card-content-padding">
+                  ${itemViewModel.item.excerpt ? $h`
+                  
+                    <div class="item-preview">
+    
+                      <div class="left">
+                        
+                          <a class="title" href="${link(`token-${itemViewModel.item.tokenId}.html`)}">
+                              ${itemViewModel.item.title}
+                              <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                          </a>
+    
+                          <p innerHTML="${itemViewModel.item.excerpt}">
+                              
+                          </p>
+    
+                      </div>
+    
+                      ${itemViewModel.coverImage ? $h`
+                        <div class="right">
+                          <a class="title" href="${link(`token-${itemViewModel.item.tokenId}.html`)}">
+                            <img src="backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
+                          </a>
+                        </div>
+                      ` : $h`<span />`}
+    
+                    </div>
+    
+    
+                  ` : $h`
+                  
+                    <div class="item-preview">
+                      <div class="left">
+    
+                          <a class="title" href="${link(`t/${itemViewModel.item.tokenId}`)}">
+                            ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                          </a>
+    
+                          <div class="content" innerHTML="${itemViewModel.item.contentHTML}"></div>
+    
+                      </div>
+                    </div>
+                  
+                  `}
+    
+                </div>
+              </li>                        
+            `)}
+    
+          ` : $h`
+              <li class="card item-card">
+                <div class="card-content card-content-padding">
+                  No results found
+                </div>
+              </li>
+          `}
+          
+          
+        ` :$h`<span />`}
+  
+
+  
+      </ul>
+  
+    </div>
+
+  </div>
+
+</template>
+
+
+<style>
+
+.block-search {
+  background: #f1f1f1;
+  font-size: 14px;
+}
+
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let itemWebService = globalThis.container.get("ItemWebService")
+    let baseURI = globalThis.container.get("baseURI")
+
+    const link = (href) => {
+      return baseURI + href
+    } 
+
+
+    let results
+
+    let searching = false
+
+    const searchbarSubmit = async (e) => {
+
+      e.preventDefault()
+
+      $('.searchbar input').blur()
+
+
+      $f7.preloader.showIn('.cards-list')
+      
+      searching = true
+      $update()
+
+      results = await itemWebService.query( $('.searchbar input').val()  )
+
+      searching = false
+      $update()
+
+      $f7.preloader.hideIn('.cards-list')
+    }
+
+
+
+
+    return $render
+  }
+
+</script>

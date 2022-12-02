@@ -1,0 +1,73 @@
+<template>
+
+    <div class="info row no-gap">
+
+        <div class="col-33 info-box left">
+            <span class="value">${itemCount}</span>
+            <label>items</label>
+        </div>
+
+        <div class="col-33 info-box left">
+            <span class="value">${mintPrice}</span>
+            <label>mint price</label>
+        </div>
+
+        <div class="col-33 info-box">
+            <span class="value">${royalty}%</span>
+            <label>royalty</label>
+        </div>
+
+    </div>
+
+</template>
+
+<style>
+    
+  .info {
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+  }
+
+  .info-box .value {
+      display: block;
+      font-weight: 600;
+      font-size: 24px;
+      color: rgb(4, 17, 29);
+  }
+
+  .info-box {
+    border: 1px solid rgb(229, 232, 235);
+    padding: 15px;
+    text-align: center;
+    height: 90px;
+    width: 150px;
+  }
+
+  .info-box.left {
+      border-right: 0px;
+  }
+
+  .info-box label {
+    display: block;
+    color: rgb(138, 147, 155);
+
+  }
+
+
+
+</style>
+
+
+<script>
+
+    export default (props, { $on, $f7, $update }) => {
+
+        let itemCount = props.count
+        let mintPrice = props.price
+        let royalty = props.royalty
+
+        return $render
+    }
+</script>

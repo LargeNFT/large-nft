@@ -1,0 +1,153 @@
+<template>
+
+  <div>
+
+    <div class="block block-strong row">
+      
+      <div class="col-50">
+
+        ${Object.keys(attributeParams).map(key => $h`
+          <div class="chip">
+            <div class="chip-label">${key}: ${attributeParams[key]}</div>
+            <a href="#" class="chip-delete" @click="${deleteChipClick}" data-id="${key}"></a>
+          </div>
+        `)}
+
+      </div>
+      <div class="col-50 filter-button">
+        
+        <a href="#" data-popup=".filter-popup" class="popup-open">Filters (${Object.keys(attributeParams).length})</a>
+
+        <div class="popup filter-popup">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title">Filters</div>
+                  <div class="right">
+                    <!-- Link to close popup -->
+                    <a class="link popup-close">Close</a>
+                  </div>
+                </div>
+              </div>
+              <div class="page-content">
+
+                <div class="list">
+                  <ul>
+                    ${attributeOptions?.map( ao => $h`
+                      <li class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">${ao.traitType}</div>
+                          <div class="item-input-wrap input-dropdown-wrap">
+                            <select name="${ao.traitType}" @change="${attributeChange}">
+                              <option selected ></option>
+                              ${ao.values?.map( v => $h`
+                                ${v.value == attributeParams[ao.traitType] ? $h`
+                                  <option value="${v.value}" selected>${v.value} (${v.count})</option>
+                                ` : $h`
+                                  <option value="${v.value}">${v.value} (${v.count})</option>
+                                `} 
+                              `)}
+                            </select>
+                          </div>
+                        </div>
+                      </li>
+                    `)}
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+</template>
+
+
+<style>
+
+.item-content.attribute-select {
+  width: 175px;
+  display: inline-block;
+}
+
+
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+
+    let attributeOptions 
+
+
+    let filters = []
+    let attributeParams = {}
+
+    
+    document.addEventListener('attribute-options-loaded', async (e) => {
+
+      attributeOptions = e.attributeOptions
+
+      if (e.attributeParams) {
+        attributeParams = e.attributeParams
+        $('#attribute-accordian-item').addClass('accordion-item-opened')
+      }
+
+      await $update()
+    })
+
+
+    const attributeChange = (e) => {
+
+      attributeParams[e.currentTarget.name] = e.currentTarget.value
+
+      if (e.currentTarget.value) {
+        attributeParams[e.currentTarget.name] = e.currentTarget.value
+      } else {
+        delete attributeParams[e.currentTarget.name]
+      }
+
+      //Dispatch event so we can refresh list
+      let ev = new CustomEvent('explore-attribute-filter-changed')
+      ev.attributeParams = attributeParams
+      document.dispatchEvent(ev)
+
+    }
+
+    const deleteChipClick = async (e) => {
+
+      let attributeId = $(e.currentTarget).data('id')
+
+      delete attributeParams[attributeId]
+
+      await $update()
+
+      //Dispatch event so we can refresh list
+      let ev = new CustomEvent('explore-attribute-filter-changed')
+      ev.attributeParams = attributeParams
+      document.dispatchEvent(ev)
+
+    }
+
+
+    return $render
+  }
+
+</script>

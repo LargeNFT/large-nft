@@ -1,0 +1,539 @@
+<% 
+
+    let channelViewModel = it.baseViewModel.channelViewModel 
+    let hostname = it.baseViewModel.hostname
+    let baseURL = it.baseViewModel.baseURL
+    let marketplaces = it.baseViewModel.marketplaces
+    let externalLinks = it.baseViewModel.externalLinks
+    let routablePages = it.baseViewModel.routablePages
+    let attributeReport = it.baseViewModel.attributeReport
+    let base64Version = it.baseViewModel.base64Version
+    let channelId = it.baseViewModel.channelId
+    let showMintPage = it.baseViewModel.showMintPage
+
+
+  
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    }   
+
+    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
+
+
+    const absoluteLink = (href) => {
+      return `${hostname + baseURL + href}`
+    }   
+
+    
+    const escapeExcerpt = (excerpt) => {
+      excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
+      return it.baseViewModel.he.encode(excerpt.toString())
+    }
+
+%>
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <style>
+      html {
+        visibility: hidden;
+        opacity: 0;
+      }
+    </style>
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <title>
+      <%= it.title %>
+    </title>
+
+    <meta property="og:title" content="Mint '<%=channelViewModel.channel.title%>'" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="<%= link(`mint.html`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="og:description" content="Mint '<%=channelViewModel.channel.title%>' NFTs" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="<%= link(`mint.html`) %>" />
+    <meta property="twitter:title" content="Mint '<%=channelViewModel.channel.title%>'" />
+    <meta property="twitter:description" content="Mint '<%=channelViewModel.channel.title%>' NFTs" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+
+    <%~ it.baseViewModel.headContents %>
+    
+  </head>
+
+  <body>
+
+    <div id="app">
+
+      <div class="view view-main">
+
+
+
+        <div class="page" data-name="mint">
+
+          <nav-bar
+              logo="<%=logo%>"
+              title="Mint"
+              active="Mint"
+              show_mint_page="<%=showMintPage%>"
+          >
+          </nav-bar>
+
+          <div class="page-content infinite-scroll-content" id="mint-list-infinite-scroll">
+
+            <div class="row">
+    
+                <div class="fixed-width-content center">
+
+                    <div class="block block-strong inset col-100 no-margin-bottom">
+                      <div class="breadcrumbs ">
+                        <div class="breadcrumbs-item">
+                          <a href="<%=baseURL%>index.html" class="link">
+                            Home
+                          </a>
+                        </div>       
+                        <div class="breadcrumbs-separator"></div>
+                        <div class="breadcrumbs-item breadcrumbs-item-active">
+                          Mint
+                        </div> 
+                      </div>
+                    </div>
+
+
+                    <div class="card channel-card-show">
+
+                      <div class="card-header banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                        style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
+                          <% } %>
+                            >
+    
+                            <a href="<%= link('index.html') %>">
+
+                              <% if (channelViewModel?.channel.coverImageId) { %>
+                                <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
+                              <% } else { %>
+                                <i class="f7-icons avatar">photo</i>
+                              <% } %>
+
+                            </a>
+    
+                      </div> 
+    
+                      <div class="card-content card-content-padding">
+    
+                        <div class="title">
+                          <a href="<%= link('index.html') %>"><%= channelViewModel.channel.title %></a>
+                        </div>
+    
+                        <% if(channelViewModel?.authorDisplayName) { %>
+                          <div class="name">
+                            By <%= channelViewModel?.authorDisplayName %>
+                          </div>
+                        <% } %>
+    
+                        <% if(channelViewModel.channel?.contractAddress) { %>
+                          <div class="contract-address">
+                            <strong>Contract Address:</strong>
+                            <%= channelViewModel?.channelContractAbbrev %>
+                          </div>
+                        <% } %>
+    
+    
+                      </div>
+    
+                    </div>
+                    
+                    <mint-list 
+                      baseurl="<%= baseURL %>"
+                      last_minted="${lastMinted}"
+                    >
+
+                    </mint-list>
+
+                </div>
+
+            </div>
+    
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <%~ it.baseViewModel.bodyContents %>
+    
+    <script type="module" id="page-init-scripts">
+
+      const init = (props, { $, $f7, $h, $on, $update }) => {   
+
+        let itemWebService = globalThis.container.get("ItemWebService")
+        let mintWebService = globalThis.container.get("MintWebService")
+        let tokenService = globalThis.container.get("TokenService")
+        let walletService = globalThis.container.get("WalletService")
+
+        let totalItemCount = parseInt('<%= channelViewModel.itemCount %>')
+        let baseURL = '<%= baseURL %>'
+
+        const PER_PAGE = 35
+
+        let itemsShown = 0
+        let hasMoreItems = true
+        let loadingInProgress = false
+        let pageCounter=0
+
+        let virtualList
+        let swiper
+        let items = []
+        let mintingViewModel 
+
+        let lastMinted 
+
+        const resizeListener = (e) => {
+          const viewPortWidth = getWidth()
+
+          if (virtualList) {
+            virtualList.params.cols = viewPortWidth >= 1024 ? 5 : 2
+            virtualList.update()
+          }
+
+          if (swiper) {
+            swiper.params.slidesPerView = viewPortWidth >= 1024 ? 5 : 2
+            swiper.update()
+          }
+
+
+          console.log("Resized...")
+
+        }
+
+        const getWidth = () => {
+          return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        }
+
+        const virtualListParams = {
+          el: '#mint-list',
+          createUl: false,
+          renderItem(item) {
+              return getTemplate(item)
+          },
+          height: 300,
+          items: items,                    
+          cols: getWidth() >= 1024 ? 5 : 2,
+          emptyTemplate: `
+              <li class="item-content">
+                  <div class="item-inner">
+                      Loading...
+                  </div>
+              </li>
+              `
+        }
+
+        $on('pageInit', async () => {
+
+          window.addEventListener('resize', resizeListener)
+          
+        })
+
+        $on('pageBeforeOut', async () => {
+          window.removeEventListener('resize', resizeListener)
+        })        
+
+        const createVirtualList = () => {
+          
+          if (virtualList) return
+
+          virtualList = $f7.virtualList.create(virtualListParams)
+
+          if (virtualList.items?.length <= totalItemCount) {
+              document.getElementById("mint-list-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
+          } else {
+              $('.infinite-scroll-preloader').hide()
+          }
+
+        }
+
+        function unloadInfiniteScroll() {
+
+          console.log("Unload infinite scroll")
+
+          // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
+          $f7.infiniteScroll.destroy('#mint-list-infinite-scroll')
+          $f7.virtualList.destroy('#mint-list')
+          virtualList = undefined
+
+          $('.infinite-scroll-preloader').hide()
+        
+        }
+
+        async function infiniteScroll(e) {
+
+          // Exit, if loading in progress
+          if (loadingInProgress || !hasMoreItems) return
+
+          console.log(`Infinite scrolling...`)
+
+          // Set loading flag
+          loadingInProgress = true
+
+          try {
+              
+              let itemPage = await itemWebService.itemPage(pageCounter)
+
+              //Count actual items                    
+              itemsShown += itemPage.items.length
+
+              if (itemsShown >= totalItemCount) {
+                  hasMoreItems = false
+              }
+
+              virtualList.appendItems(itemPage.items)
+              pageCounter++
+
+          } catch (ex) {
+              console.log(ex)
+          }
+
+          $f7.preloader.hide()
+
+          if (!hasMoreItems) {
+              unloadInfiniteScroll()
+          }
+
+          loadingInProgress = false
+
+
+        }
+
+        function getTemplate(rowItemViewModel) {
+          
+          let tokenLink = link('t/' + rowItemViewModel.tokenId)
+          let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+          let imageLink = link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+          let title = rowItemViewModel.title
+
+          return `<li class="flex-card">
+                      <a href="${tokenLink}" class="item-link">
+                          <div class="card" >
+                              <div class="card-content">
+                                  <div class="square">
+                                      <img src="${imageLink}"/>
+                                  </div>
+                              </div>
+
+                              <div class="card-footer">
+                                  ${title}
+                              </div>
+                          </div>
+                      </a>
+                  </li>
+          `
+        }
+
+        const countItems = (itemRows) => {
+          //Count actual items
+          let itemCount = 0
+
+          for (let itemRow of itemRows) {
+              itemCount += itemRow.items?.length
+          }
+
+          return itemCount
+        }
+
+        const selectPreviews = (amount) => {
+
+          let selected = 0
+
+          $('.flex-card').each( (ele) => {
+            
+            //Remove selected from all
+            $(ele).removeClass('selected')
+
+            if (selected < amount ) {
+              $(ele).addClass('selected')
+              selected++
+              // console.log(ele)
+            }
+
+          })
+
+        }
+
+        const link = (href) => {
+          return `${baseURL + href}`
+        } 
+
+        document.addEventListener('mint-view-model-loaded', async (e) => {
+
+          console.log("Loaded...")
+          
+          mintingViewModel = e?.mintingViewModel
+
+          if (mintingViewModel) {
+
+            //Get the total minted 
+            let totalMinted = e?.mintingViewModel.totalMinted
+
+            //Get the start page
+            let startPage = parseInt(totalMinted / PER_PAGE)
+            let lastPage = parseInt(totalItemCount / PER_PAGE)
+
+            while (items.length < PER_PAGE && pageCounter <= lastPage) {
+              
+              let itemPage = await itemWebService.itemPage(pageCounter)
+
+              let unminted = itemPage.items.filter( item => parseInt(item.tokenId) > totalMinted)
+
+              //Remove any that are below totalMinted
+              items.push(...unminted)
+
+              pageCounter++
+
+            }
+
+            createVirtualList()
+
+            if (items?.length > 0) {
+              
+              //Count actual items                    
+              itemsShown += items.length
+
+              if (itemsShown >= totalItemCount) {
+                  hasMoreItems = false
+              }
+
+              if (!hasMoreItems) {
+                unloadInfiniteScroll()
+              }
+
+            }
+
+
+            swiper = $f7.swiper.create('#latest-mints-swiper', {
+              pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true
+              },
+              scrollbar: {
+                el: '.swiper-scrollbar',
+                dragSize: 50,
+                draggable: true,
+                hide: false
+              },
+              spaceBetween:0,
+              slidesPerView:getWidth() >= 1024 ? 5 : 2,
+            })
+
+            if (document.getElementById('latest-mints-swiper')) {
+              document.getElementById('latest-mints-swiper').style.display="block"
+            }
+
+
+            selectPreviews(1)
+
+
+            const stepperMintAmount = $f7.stepper.create({
+                el: '.stepper',
+                min: 1,
+                max: 10,
+                value: 1
+            })
+
+
+            await $update()
+
+          }
+
+        })
+
+        document.addEventListener('mint-view-model-refreshed', async (e) => {
+
+          mintingViewModel = e?.mintingViewModel
+
+          for (let latest of mintingViewModel.lastMinted) {
+                 
+            let removed = false
+
+            //Loop through virtual list items and get the index to remove
+            for (let i=0; i < virtualList.items?.length; i++) {
+              
+              // console.log(`${latest.item.tokenId} / ${virtualList.items[i].tokenId}`)
+
+              if (virtualList.items[i].tokenId == latest.item.tokenId) {
+                console.log("Deleting item")
+                virtualList.deleteItem(i)
+                removed = true
+                break
+              }
+
+            }
+
+            //If we didn't find this one we're not gonna find the next either since it's lower. Just break
+            if (!removed) break
+
+          }
+
+          //Reselect the right quantity
+          selectPreviews(e.quantity)
+
+          await $update()
+
+          if (document.getElementById('latest-mints-swiper')) {
+              document.getElementById('latest-mints-swiper').style.display="block"
+          }
+
+        })
+
+
+        document.querySelector('meta[property="og:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
+        document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
+        document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+        document.querySelector('meta[property="og:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs")
+
+        document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
+        document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
+        document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+        document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs" )
+
+        document.querySelector('title').innerHTML = "Mint '<%=channelViewModel.channel.title%>' NFTs."
+
+        $f7.preloader.hide()
+    
+        return $render
+
+
+      }
+
+
+    </script>
+
+    <script type="module" id="page-scripts">
+
+      let baseURL = '<%= baseURL %>'
+      let hostname = '<%= hostname %>'
+      let channelId = '<%= channelId %>'
+      let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
+
+      let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
+
+      let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )
+
+
+
+    </script>
+
+  </body>
+
+</html>

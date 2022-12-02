@@ -1,5 +1,7 @@
 
-require("@nomiclabs/hardhat-etherscan");
+// require("@nomiclabs/hardhat-etherscan");
+
+// import "@nomiclabs/hardhat-etherscan"
 
 const { API_URL, PRIVATE_KEY } = process.env
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY

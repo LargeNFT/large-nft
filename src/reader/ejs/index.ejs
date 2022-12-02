@@ -1,0 +1,422 @@
+<% 
+
+    let channelViewModel = it.baseViewModel.channelViewModel 
+    let hostname = it.baseViewModel.hostname
+    let baseURL = it.baseViewModel.baseURL
+    let marketplaces = it.baseViewModel.marketplaces
+    let externalLinks = it.baseViewModel.externalLinks
+    let routablePages = it.baseViewModel.routablePages
+    let attributeReport = it.baseViewModel.attributeReport
+    let base64Version = it.baseViewModel.base64Version
+    let channelId = it.baseViewModel.channelId
+    let showMintPage = it.baseViewModel.showMintPage
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    }   
+
+    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
+
+    const absoluteLink = (href) => {
+      return `${hostname + baseURL + href}`
+    }   
+    
+    const escapeExcerpt = (excerpt) => {
+      excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
+      return it.baseViewModel.he.encode(excerpt.toString())
+    }
+
+    const marketplaceLink = (marketplace) => {
+
+      let link = marketplace.link 
+
+      //Replace contract if we find it 
+      if (channelViewModel.channel.contractAddress) {
+        link = link.replace("{contractId}", channelViewModel.channel.contractAddress)
+      }
+
+      return link
+    }
+
+%>
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <style>
+      html {
+        visibility: hidden;
+        opacity: 0;
+      }
+    </style>
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <title>
+      <%= it.title %>
+    </title>
+
+    <meta property="og:title" content="<%=channelViewModel.channel.title%>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= link(`index.html`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="og:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="<%= link(`index.html`) %>" />
+    <meta property="twitter:title" content="<%=channelViewModel.channel.title%>" />
+    <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+
+    <%~ it.baseViewModel.headContents %>
+    
+
+  </head>
+
+  <body>
+
+    <div id="app">
+
+      <div class="view view-main">
+
+        <div class="page" data-name="home">
+
+          <nav-bar
+            logo="<%=logo%>"
+            title="<%=channelViewModel.channel.title%>"
+            show_mint_page="<%=showMintPage%>"
+          >
+          </nav-bar>
+
+          <token-toolbar
+            token_id="0"
+            item_count="<%= channelViewModel.channel.itemCount %>" 
+          >
+          </token-toolbar>
+<!-- 
+          <div class="fab fab-right-center color-white">
+            <a href="<%= link(`t/1`) %>" data-transition="f7-cover">
+                <i class="icon f7-icons color-blue">arrow_right</i>
+            </a>
+          </div> -->
+
+
+          <div class="page-content">
+
+            <div class="row">
+
+              <div class="col-100 large-75">
+
+
+                <div class="block block-strong inset col-100 no-margin-bottom">
+                  <div class="breadcrumbs ">
+                    <div class="breadcrumbs-item breadcrumbs-item-active">
+                      Home
+                    </div> 
+                  </div>
+                </div>
+
+
+                <div class="card channel-card-show">
+
+                  <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                    style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
+                      <% } %>
+                        >
+
+                        <a href="<%= link('index.html') %>">
+                          <% if (channelViewModel?.channel.coverImageId) { %>
+                            <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
+                          <% } else { %>
+                            <i class="f7-icons avatar">photo</i>
+                          <% } %>
+                        </a>
+
+                  </div>
+
+                  <div class="card-content card-content-padding">
+
+                    <div class="title">
+                      <%= channelViewModel.channel.title %>
+                    </div>
+
+                    <% if(channelViewModel?.authorDisplayName) { %>
+                      <div class="name">
+                        By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
+                          <%= channelViewModel?.authorDisplayName %>
+                        </a>
+                      </div>
+                    <% } %>
+
+                    <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
+                      <%~ channelViewModel.channel?.descriptionHTML %>
+                    </div>
+
+
+                    <ul>
+
+                      <% if(channelViewModel.channel?.contractAddress) { %>
+                        <li>
+                          <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                        </li>
+                      <% } %>
+
+                      <% for (let externalLink of externalLinks) { %>
+                        <li>
+                          <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                        </li>
+                      <% } %>
+
+                    </ul>
+
+
+                    <div class="start-buttons">
+                      <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+
+                <div class="card">
+                  <div class="card-header">Explore</div>
+                  <div class="card-content">
+                    
+                    <div class="list cards-list virtual-list" id="explore-list-index">
+                      <ul class="item-flex">
+
+                        <% 
+                        if (it.firstPageExploreItems?.length > 0) {
+                          for (let item of it.firstPageExploreItems) {
+                        %>
+      
+                          <li class="flex-card">
+                            <a href="<%= link(`t/${item.tokenId}`) %>" class="item-link">
+                                <div class="card" >
+                                    <div class="card-content">
+                                        <div class="square">
+                                            <img src="<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>"/>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-footer">
+                                        <%=item.title %>
+                                    </div>
+                                </div>
+                            </a>
+                          </li>
+      
+                        <%
+                            }
+                          }                  
+                        %>
+
+
+                      </ul>
+                    </div>
+
+                  </div>
+                  <div class="card-footer"><a href="<%= link('explore.html') %>" class="link">Explore more</a></div>
+                </div>
+
+
+                <% 
+                  if (channelViewModel.staticPagesViewModel.index?.length > 0) {
+
+                    for (let staticPage of channelViewModel.staticPagesViewModel.index) {
+                 %>
+
+                  <div class="card static-page-card">   
+                    <div class="card-content card-content-padding">
+                      <%~ staticPage.contentHTML %>
+                    </div>               
+                  </div>
+
+                <%
+                    }
+                  }                  
+                %>
+
+
+
+
+
+                <% if (channelViewModel?.channel.licenseHTML?.length > 0) { %>
+
+                  <div class="block-title block-title-small">License</div>
+                  <div class="card">
+                    <div class="card-content card-content-padding license">
+                      <%~ channelViewModel?.channel.licenseHTML %>
+                    </div>
+                    
+                  </div>
+
+                <% } %>
+
+
+
+              </div>
+
+              <div class="col-100 large-25">                
+
+                <div class="list links-list inset">   
+                  <ul>
+                
+                <%
+                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                %>
+                      <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
+                <%
+                  }
+                  
+                %>
+                    <li><a href="<%= link(`attributes.html`) %>">Attribute Report</a></li>
+
+                  </ul>
+                </div>
+
+
+                <% 
+                  if (marketplaces?.length > 0) {
+                %>
+                <div class="block-title block-title-medium">Marketplaces</div>
+
+                <div class="list simple-list inset">
+                  <ul>
+                  
+                    <% 
+                      for (let marketplace of marketplaces) { 
+                    %>  
+                      <li><a href="<%= marketplaceLink(marketplace) %>" class="external"><%= marketplace.name %></a></li>     
+                    <%
+                      }
+                    %>
+
+                  </ul>
+                </div>
+                <%
+                  }
+                %>
+
+
+                <% if (showMintPage) { %>
+                  <mint-info
+                    baseurl="<%= baseURL %>"
+                  ></mint-info>
+                <% } %>
+
+
+                <div class="block-title block-title-medium">Fork Collection</div>
+                <div class="list links-list inset">   
+                  <ul>
+                      <li>
+                        <a href="<%= link(`large/admin/app.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                          Fork
+                        </a>
+                      </li>
+                      <li>
+                        <a href="<%= link(`large/admin/app.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                          Your projects
+                        </a>
+                      </li>
+
+
+                  </ul>
+                </div>
+
+
+              </div>
+              
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <%~ it.baseViewModel.bodyContents %>
+    
+    <script type="module" id="page-init-scripts">
+
+      const init = (props, { $, $f7, $h, $on, $update }) => {
+              
+            let baseURI = globalThis.container.get("baseURI")
+            let itemWebService = globalThis.container.get("ItemWebService")
+
+            const PER_PAGE = 35
+
+            let firstPageExploreItems 
+
+            const link = (href) => {
+              return baseURI + href
+            }   
+
+
+            $on('pageInit', async () => {
+
+              //Make links external
+              let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')
+
+              for (let link of links) {
+                link.classList.add('external')
+              }
+
+            })
+
+            $on('pageBeforeOut', async () => {
+
+            })
+
+
+
+
+            document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`index.html`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>")
+
+            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`index.html`) %>")
+            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
+
+            document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"
+
+            $f7.preloader.hide()
+
+            return $render;
+
+          
+
+      }
+
+
+    </script>
+
+    <script type="module" id="page-scripts">
+
+      let baseURL = '<%= baseURL %>'
+      let hostname = '<%= hostname %>'
+      let channelId = '<%= channelId %>'
+      let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
+
+      let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
+
+      let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )
+
+    </script>
+
+  </body>
+
+</html>

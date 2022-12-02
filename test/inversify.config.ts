@@ -7,63 +7,63 @@ import { providers } from "ethers"
 
 
 import { HardhatWalletServiceImpl } from "../test/util/hardhat-wallet-service.js";
-import { AuthorService } from "../src/service/author-service.js";
-import { ChannelService } from "../src/service/channel-service.js";
-import { ChannelWebService } from "../src/service/web/channel-web-service.js";
-import { ItemWebService } from "../src/service/web/item-web-service.js";
+import { AuthorService } from "../src/admin/service/author-service.js";
+import { ChannelService } from "../src/admin/service/channel-service.js";
+import { ChannelWebService } from "../src/admin/service/web/channel-web-service.js";
+import { ItemWebService } from "../src/admin/service/web/item-web-service.js";
 
-import { ImageService } from "../src/service/image-service.js";
-import { ItemService } from "../src/service/item-service.js";
-import { QuillService } from "../src/service/quill-service.js";
+import { ImageService } from "../src/admin/service/image-service.js";
+import { ItemService } from "../src/admin/service/item-service.js";
+import { QuillService } from "../src/admin/service/quill-service.js";
 
 
-import { IpfsService } from "../src/service/core/ipfs-service.js";
+import { IpfsService } from "../src/admin/service/core/ipfs-service.js";
 
 import fs from 'fs';
 // import git from "isomorphic-git"
 
 
-import { DatabaseService } from "../src/service/core/database-service.js";
-import { SettingsService } from "../src/service/core/settings-service.js";
+import { DatabaseService } from "../src/admin/service/core/database-service.js";
+import { SettingsService } from "../src/admin/service/core/settings-service.js";
 
-import { ChannelRepository } from "../src/repository/channel-repository.js";
-import { PinningApiRepository } from "../src/repository/pinning-api-repository.js";
+import { ChannelRepository } from "../src/admin/repository/channel-repository.js";
+import { PinningApiRepository } from "../src/admin/repository/pinning-api-repository.js";
 
-import { StaticPageRepository } from "../src/repository/static-page-repository.js";
+import { StaticPageRepository } from "../src/admin/repository/static-page-repository.js";
 
-import { ItemRepository } from "../src/repository/item-repository.js";
-import { ImageRepository } from "../src/repository/image-repository.js";
-import { AuthorRepository } from "../src/repository/author-repository.js";
+import { ItemRepository } from "../src/admin/repository/item-repository.js";
+import { ImageRepository } from "../src/admin/repository/image-repository.js";
+import { AuthorRepository } from "../src/admin/repository/author-repository.js";
 
-import { SchemaService } from "../src/service/core/schema-service.js";
-import { WalletService } from "../src/service/core/wallet-service.js";
-import { PinningService } from "../src/service/core/pinning-service.js";
-import { ExportService } from "../src/service/core/export-service.js";
+import { SchemaService } from "../src/admin/service/core/schema-service.js";
+import { WalletService } from "../src/admin/service/core/wallet-service.js";
+import { PinningService } from "../src/admin/service/core/pinning-service.js";
+import { ExportService } from "../src/admin/service/core/export-service.js";
 
-import { StaticPageService } from "../src/service/static-page-service.js";
-
-
-
-import TYPES from "../src/service/core/types.js";
-import { SettingsRepository } from "../src/repository/settings-repository.js";
-import { QueryCacheService } from '../src/service/core/query-cache-service.js';
-
-import { PublishService } from "../src/service/core/publish-service.js";
-import { AnimationService } from "../src/service/animation-service.js";
-import { AnimationRepository } from "../src/repository/animation-repository.js";
-import { SvgService } from "../src/service/svg-service.js";
-import { ImportService } from "../src/service/core/import-service.js";
-import { ThemeRepository } from "../src/repository/theme-repository.js";
-import { ThemeService } from "../src/service/theme-service.js";
-import { PDFService } from "../src/service/core/pdf-service.js";
-import { UploadService } from "../src/service/core/upload-service.js";
-import { ERCEventService } from "../src/service/core/erc-event-service.js";
-import { TokenMetadataCacheRepository } from "../src/repository/token-metadata-cache-repository.js";
-import { QueryCacheRepository } from "../src/repository/query-cache-repository.js";
+import { StaticPageService } from "../src/admin/service/static-page-service.js";
 
 
-import { AttributeCountRepository } from '../src/repository/attribute-count-repository.js'
-import { AttributeCountService } from '../src/service/attribute-count-service.js'
+
+import TYPES from "../src/admin/service/core/types.js";
+import { SettingsRepository } from "../src/admin/repository/settings-repository.js";
+import { QueryCacheService } from '../src/admin/service/core/query-cache-service.js';
+
+import { PublishService } from "../src/admin/service/core/publish-service.js";
+import { AnimationService } from "../src/admin/service/animation-service.js";
+import { AnimationRepository } from "../src/admin/repository/animation-repository.js";
+import { SvgService } from "../src/admin/service/svg-service.js";
+import { ImportService } from "../src/admin/service/core/import-service.js";
+import { ThemeRepository } from "../src/admin/repository/theme-repository.js";
+import { ThemeService } from "../src/admin/service/theme-service.js";
+import { PDFService } from "../src/admin/service/core/pdf-service.js";
+import { UploadService } from "../src/admin/service/core/upload-service.js";
+import { ERCEventService } from "../src/admin/service/core/erc-event-service.js";
+import { TokenMetadataCacheRepository } from "../src/admin/repository/token-metadata-cache-repository.js";
+import { QueryCacheRepository } from "../src/admin/repository/query-cache-repository.js";
+
+
+import { AttributeCountRepository } from '../src/admin/repository/attribute-count-repository.js'
+import { AttributeCountService } from '../src/admin/service/attribute-count-service.js'
 
 let container:Container
 

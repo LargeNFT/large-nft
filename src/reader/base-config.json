@@ -1,0 +1,16 @@
+{
+    "hostname": "http://localhost:8081",
+    "baseURL": "/",
+    "maxItems": 100000,
+    "marketplaces": [
+        {
+            "name": "OpenSea",
+            "assetLink": "https://opensea.io/assets/ethereum/{contractId}/{tokenId}" 
+        },
+        {
+            "name": "LooksRare",
+            "link": "https://looksrare.org/collections/{contractId}",
+            "assetLink": "https://looksrare.org/collections/{contractId}/{tokenId}"
+        }
+    ]
+}

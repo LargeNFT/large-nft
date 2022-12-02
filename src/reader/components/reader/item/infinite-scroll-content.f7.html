@@ -1,0 +1,54 @@
+<template>
+
+    <div class="row" id="item-list">
+                            
+        ${items?.length > 0 ? $h`
+                                    
+            ${items.map(itemViewModel => $h`
+                <div class="card col-100 large-25">
+                    <div class="card-content">
+                        <div class="card-content card-content-padding">
+                            <div class="square">
+                                <a href="${link(`token-${itemViewModel.item.tokenId}.html`)}">
+                                    <img src="${link(`backup/export/images/${itemViewModel.coverImage._id}`)}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
+                                </a>
+                            </div>
+
+                            <div class="preview-info">
+                                <a href="">${itemViewModel.item.title ? itemViewModel.item.title + ' ' : ''} #${itemViewModel.item.tokenId}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `)}
+
+
+        ` : $h`<span />`}             
+                                            
+    </div>  
+  
+</template>
+  
+  
+<style>
+</style>
+  
+<script>
+
+export default (props, { $, $on, $f7, $update }) => {
+
+    let baseURL = props.baseurl 
+
+    let items = props.items
+
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    } 
+
+
+
+    return $render
+}
+
+</script>

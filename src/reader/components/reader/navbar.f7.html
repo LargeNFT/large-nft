@@ -1,0 +1,240 @@
+<template>
+
+    <div class="navbar">
+        <div class="navbar-bg"></div>
+
+        <div class="navbar-inner sliding">
+        
+          <div class="left">
+            <a href="${baseURI}index.html">
+              <i class="f7-icons">house</i>
+            </a>
+          </div>
+        
+          <div class="title">
+            ${title}
+          </div>
+          
+          <div class="right">
+            
+            <div class="small-only">
+
+              <a href="#" class="link popover-open" data-popover=".popover-menu">
+
+                <i class="f7-icons">menu</i>
+
+                ${showConnect ? $h`
+
+                  ${walletAddress != undefined ? $h`
+                    🟢
+                  ` : $h`
+                    
+                      <span @click=${connectWallet}>
+                        🔴
+                      </span>
+                  `} 
+
+                ` : $h`<span />`}
+              </a> 
+
+              <div class="popover popover-menu">
+                <div class="popover-angle"></div>
+                <div class="popover-inner">                    
+                  <div class="list">
+                    <ul>
+
+                      ${showConnect ? $h`
+        
+                          <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                  <div class="item-title">
+                                      ${walletAddress != undefined ? $h`
+                                        <a href="#" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
+                                    ` : $h`
+                                        <button class="button button-outline button-fill" @click=${connectWallet}>
+                                          Connect Wallet
+                                        </button>
+                                    `} 
+                                  </div>
+                              </div>
+                            </div>
+                          </li>
+
+                          ${showMintPage ? $h`
+                            <li>
+                              <a href="${baseURI}mint.html" class="item-link popover-close">
+                                <div class="item-content">
+                                  <div class="item-inner">
+                                      <div class="item-title">
+                                          Mint
+                                      </div>
+                                  </div>
+                                </div>
+                              </a>
+                            </li>
+                          ` : $h`<span />`}
+
+
+
+                              
+                        ` : $h`<span />`}
+
+                      <li>
+                        <a href="${baseURI}explore.html" class="item-link popover-close">
+                          <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    Explore
+                                </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+
+                    </ul>
+              
+                  </div>
+      
+                </div>
+              </div>
+
+            </div>
+
+            <div class="large-only segmented">
+  
+              <a class="button ${active == 'Explore' ? $h`button-active` : $h``}" href="${baseURI}explore.html" style="width: 150px; display: inline-block;">
+                Explore
+              </a>      
+
+              ${showConnect ? $h`
+
+
+                ${showMintPage ? $h`
+                  <a class="button ${active == 'Mint' ? $h`button-active` : $h``}" href="${baseURI}mint.html" style="width: 150px; display: inline-block;">
+                    Mint
+                  </a> 
+                ` : $h`<span />`}
+
+
+
+                ${walletAddress != undefined ? $h`
+                    <button class="button" style="width: 150px; display: inline-block;">${truncateEthAddress(walletAddress)}</button>
+                ` : $h`
+                    <button class="button" @click="${connectWallet}" style="width: 150px; display: inline-block;">Connect Wallet</button>
+                `} 
+     
+              ` : $h`<span style="display: none;" />`}
+
+            </div>
+            
+          </div>
+          
+        </div>
+        
+    </div>
+
+
+
+
+</template>
+ 
+<style>
+
+  .logo {
+    font-size: 35px;
+  }
+
+ .logo img {
+  margin-top: 10px;
+  height: 50px;
+  max-height: 100%;
+  border-radius: 25%;
+ }
+
+ @media only screen and (max-width: 1024px) {
+  
+    .logo img {
+      margin-top: 5px;
+      height: 35px;
+    }
+
+  }
+
+
+
+</style>
+
+
+<script>
+
+
+    export default (props, { $on, $f7, $update }) => {
+    
+        let walletService = globalThis.container.get("WalletService")
+        let uiService = globalThis.container.get("UiService")
+        let baseURI = globalThis.container.get("baseURI")
+        
+        let logo = props.logo
+        let title = props.title
+        let active = props.active
+        let showMintPage = props.show_mint_page == "true"
+
+
+        let walletAddress
+        let showConnect = true
+
+        const truncateEthAddress = (address) => {
+            return walletService.truncateEthAddress(address)
+        }
+
+        const displayAddress = async (e) => {
+
+            walletAddress = undefined
+
+            if (!walletService.provider) {
+                await walletService.initProvider()
+            }
+
+            walletAddress = await walletService.getAddress()
+
+            //If no provider still then clear the address so we don't show the button
+            if (!walletService.provider) {
+                showConnect = false
+            }
+
+            if (walletAddress) {
+              walletService.address = walletAddress
+
+              if (!walletService.wallet) {
+                await walletService.connect()
+              }
+
+            }
+
+
+
+            $update()
+        }
+
+        const connectWallet = async (e) => {
+       
+            await walletService.initWallet()
+
+            //Connect to metamask
+            await walletService.connect()
+
+            displayAddress()
+        }
+
+        displayAddress()
+
+
+        const showPopoverMenu = async (e) => {
+          
+        }
+
+
+        return $render
+    }
+</script>

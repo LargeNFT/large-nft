@@ -1,0 +1,77 @@
+<template>
+
+  <div>
+    <div class="block-title block-title-medium">Mint NFTs</div>
+
+    <div class="card">
+      <div class="card-content card-content-padding">
+
+        ${mintingViewModel ? $h`
+          <p>
+            <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+          </p>
+
+          <a href="${link('mint.html')}" class="link">Mint NFTs</a>
+
+        ` : $h`
+          Minting information unavailable. 
+          <p style="color: darkgray">Note: Use a web browser with wallet support to see NFT information.</p>
+        `}
+
+  
+      </div>
+    </div>
+  </div>
+
+</template>
+
+
+<style>
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let walletService = globalThis.container.get("WalletService")
+    let tokenService = globalThis.container.get("TokenService")
+    let mintWebService = globalThis.container.get("MintWebService")
+
+    let hasProvider = false
+    let mintingViewModel 
+
+    let baseURL = props.baseurl 
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    } 
+
+    const load = async () => {
+      
+      try  {
+
+        if (!walletService.provider) {
+          await walletService.initProvider()
+        }
+
+        //Might still not have a provider. 
+        if (walletService.provider) {
+          hasProvider = true
+          mintingViewModel = await mintWebService.getHomeMintingViewModel()
+        } 
+
+      } catch(ex) {
+        console.log(ex)
+      }
+      
+      $update()
+
+    }
+
+    load()
+
+
+    return $render
+  }
+
+</script>

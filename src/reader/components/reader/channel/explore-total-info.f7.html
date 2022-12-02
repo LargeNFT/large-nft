@@ -1,0 +1,45 @@
+<template>
+
+  <div class="block-title block-title-small">
+
+    ${totalMatches ? $h`
+
+      ${totalMatches != totalItems ? $h`
+        Showing ${totalMatches} results (${totalItems} total)
+      ` : $h`
+        Showing 1 - ${totalItems} results  
+      `}
+
+    ` : $h`<span/>`}
+
+  </div>
+
+</template>
+
+
+<style>
+
+
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let totalItems
+    let totalMatches
+
+    document.addEventListener('explore-total-info-changed', async (e) => {
+
+      totalItems = e.totalItems
+      totalMatches = e.totalMatches
+
+      await $update()
+
+    })
+
+
+    return $render
+  }
+
+</script>

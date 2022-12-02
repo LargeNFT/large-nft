@@ -1,0 +1,169 @@
+<template>
+
+    <div class="list cards-list" id="item-list-show-channel-${channelViewModel.channel._id}">
+
+        <ul>
+
+          ${loadingItems ? $h`
+            <li class="card skeleton-text skeleton-effect-wave">
+              <div class="card-header">Loading Loading Loading</div>
+              <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
+                  interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
+                  Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
+                  aliquet urna, nec imperdiet felis sapien at enim.</div>
+            </li>              
+          ` : ''}
+
+
+          ${items?.length > 0 ? $h`
+
+            ${items?.map( (itemViewModel) => $h`
+            
+              <li class="card item-card">
+
+                <div class="card-content">
+
+                    <div class="card-content card-content-padding">
+
+                      ${itemViewModel.item.excerpt ? $h`
+                            
+                          <div class="item-preview">
+
+                            <div class="left">
+
+                              <a class="title" href="/item/show/${itemViewModel.item._id}"> 
+                                ${itemViewModel.item.title}
+                                <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                              </a>  
+                              
+                              ${itemViewModel.item.excerpt ? $h`
+                                <p>${itemViewModel.item.excerpt}</p>
+                              ` : `<span/>`}
+
+                            </div>
+
+                            ${itemViewModel.coverImage ? $h`
+                              <div class="right">
+                                <a class="title" href="/item/show/${itemViewModel.item._id}">
+                                  <img src="backup/export/images/${itemViewModel.coverImage}" />
+                                </a>
+                              </div>
+                            ` : $h`<span/>`}
+
+                          </div> 
+
+                      ` : $h`
+
+                          <div class="item-preview">
+
+                            <div class="left">
+                              
+                              <a class="title" href="/item/show/${itemViewModel.item._id}"> 
+                                ${itemViewModel.item.title} <span class="channel-show-token-id">#${itemViewModel.item.tokenId}</span>
+                              </a> 
+
+                              <div class="content" innerHTML="${itemViewModel.contentHTML}"></div>
+
+                            </div>
+
+                          </div>
+
+                      `}
+
+                       
+                    </div>
+                </div>
+              </li>
+            
+            `)}
+
+
+
+
+            ${pagingViewModel.endPage > 1 ? $h`
+
+              <div class="block segmented">
+
+                ${pagingViewModel?.showPrevious ? $h`
+                  <a class="button button-outline" href="/${pagingViewModel.previousOffset}" >
+                    <i class="f7-icons">arrow_left</i>
+                  </a>
+                ` : ''}
+  
+                <a class="button button-active" href="/${pagingViewModel.offset}" >
+                  ${pagingViewModel.page} of ${pagingViewModel.endPage} 
+                </a>
+
+                ${pagingViewModel?.showNext ? $h`
+                  <a class="button button-outline" href="/${pagingViewModel.nextOffset}">
+                    Next
+                    <i class="f7-icons">arrow_right</i>
+                  </a>
+                ` : ''}
+              </div>
+
+              <form class="block" @submit="${goFormSubmit}">
+                <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${pagingViewModel.page}" min="1" max="${pagingViewModel.endPage}" />
+                <span class="paging-label">Pages 1 - ${pagingViewModel.endPage}</span>
+                <button class="goto-button button button-small button-fill">Go</button>
+              </form>
+
+
+            ` : $h`<span/>`}
+
+            <div class="block">
+              <br />
+            </div>
+
+          ` : $h`
+          
+            ${!loadingItems ? $h`
+              <li class="card item-card">
+                <div class="card-content">
+                  <div class="card-content card-content-padding">
+                    There are no NFTs in this collection yet. <br /><br />Click the 'Create Blog NFT' button to create the first item.
+                  </div>
+                </div>
+              </li>
+            ` : $h`<span/>`}
+
+          `}
+        </ul>
+        
+    </div>
+
+</template>
+
+
+
+<script>
+
+    import { ItemRepository } from "../../../repository/item-repository"
+
+
+    export default (props, { $, $on, $f7, $update }) => {
+
+        let channelViewModel = props.channel
+        let items = props.items
+        let pagingViewModel = props.paging
+
+        let loadingItems = false
+
+        const goFormSubmit = async (e) => {
+          
+          e.preventDefault()
+
+          const val = $(e.currentTarget).children('.goto-input').val()
+
+          if (val > 0 && val <= pagingViewModel.endPage) {
+            $f7.views.main.router.navigate(`/${val * ItemRepository.CHUNK_SIZE - ItemRepository.CHUNK_SIZE}`)
+          } else {
+            $f7.dialog.alert("Invalid Page")
+          }
+
+        }
+
+        return $render
+    }
+
+</script>

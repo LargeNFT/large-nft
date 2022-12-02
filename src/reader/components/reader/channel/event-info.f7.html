@@ -1,0 +1,94 @@
+<template>
+
+  <div>
+    <div class="card">
+      <div class="card-header">Ethereum Events</div>
+      <div class="card-content card-content-padding data-table">
+
+        ${eventList ? $h`
+
+          <table>
+            <thead>
+              <tr>
+                <th class="numeric-cell">Block #</th>
+                <th class="label-cell">Event</th>
+                <th class="label-cell">Address</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+          ${eventList.map(e => $h`
+
+                <tr>
+                  <td class="numeric-cell">${e.blockNumber}</td>
+                  <td class="label-cell">${e.event}</td>
+                  <td class="label-cell">${e.address}</td>
+                </tr>
+          
+          `)}
+            </tbody>
+
+          </table>
+
+
+        ` : $h`
+          Transaction information unavailable. 
+          <p style="color: darkgray">Note: Use a web browser with wallet support to see Ethereum events.</p>
+        `}
+
+  
+      </div>
+    </div>
+  </div>
+
+</template>
+
+
+<style>
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let walletService = globalThis.container.get("WalletService")
+    let eventWebService = globalThis.container.get("EventWebService")
+
+
+    let eventList
+
+    let baseURL = props.baseurl 
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    } 
+
+    const load = async () => {
+      
+      try  {
+
+        if (!walletService.provider) {
+          await walletService.initProvider()
+        }
+
+        //Might still not have a provider. 
+        if (walletService.provider) {
+          eventList = await eventWebService.getHomeEventList()
+        } 
+
+      } catch(ex) {
+        console.log(ex)
+      }
+      
+      $update()
+
+    }
+
+    load()
+
+
+    return $render
+  }
+
+</script>

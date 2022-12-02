@@ -1,0 +1,140 @@
+<template>
+
+  <div>
+
+    <div class="card">
+
+      <div class="card-content card-content-padding">
+  
+        ${hasProvider ? $h`
+          
+          ${owner ? $h`
+            Owned by <a href="https://etherscan.io/address/${ownerAddress}" class="external">${owner}</a>
+          ` : $h
+          `
+            NFT has not been <a href="${link(`mint.html`)}">minted</a> yet. 
+          `}
+
+        ` : $h`
+            Ownership information unavailable. 
+            
+            <p style="color: darkgray">Note: Use a web browser with wallet support to see NFT information.</p>
+
+        `}
+
+
+  
+      </div>
+    </div>
+
+    <div class="data-table card">
+
+      <div class="card-header">
+        Token Info
+      </div>
+
+      <div class="card-content">
+        <table>
+          <tbody>
+            <tr>
+              <td class="label-cell">Contract Address</td>
+              <td><a href="https://etherscan.io/token/${fullContractAddress}" class="external">${contractAddress}</a></td>
+            </tr>
+    
+            <tr>
+              <td class="label-cell">Token ID</td>
+              <td>#${id}</td>
+            </tr>
+    
+            <tr>
+              <td class="label-cell">Token Standard</td>
+              <td>ERC-721</td>
+            </tr>
+    
+            <tr>
+              <td class="label-cell">Blockchain</td>
+              <td>Ethereum</td>
+            </tr>
+
+            <tr>
+              <td class="label-cell">Metadata</td>
+              <td><a href="${metadataURL}" class="external">View</a></td>
+            </tr>
+
+
+
+          </tbody>
+          
+  
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+</template>
+
+
+<style>
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let walletService = globalThis.container.get("WalletService")
+    let tokenService = globalThis.container.get("TokenService")
+
+    let id = props.id
+    let owner = props.owner 
+
+    let ownerAddress 
+
+    let fullContractAddress = props.contract
+    let contractAddress = walletService.truncateEthAddress(props.contract)
+
+    let hasProvider = false
+
+    let baseURL = props.baseurl 
+
+    let metadataURL = `${baseURL}backup/export/metadata/${id}.json`
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    } 
+
+
+    const load = async () => {
+      
+      try  {
+
+        if (!walletService.provider) {
+          await walletService.initProvider()
+        }
+
+        //Might still not have a provider. 
+        if (walletService.provider) {
+          hasProvider = true
+          ownerAddress = await tokenService.ownerOf(id)
+          owner = walletService.truncateEthAddress(ownerAddress)
+        } 
+
+      } catch(ex) {
+        // console.log(ex)
+      }
+      
+      $update()
+
+    }
+
+    load()
+
+
+
+    return $render
+  }
+
+</script>

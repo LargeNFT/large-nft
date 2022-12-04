@@ -475,7 +475,6 @@ class ItemWebService {
         return viewModels
     }
 
-
     translateRowItemViewModel(item:Item, coverImage:Image) : RowItemViewModel {
 
         let viewModel:RowItemViewModel = {

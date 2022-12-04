@@ -2,31 +2,31 @@ import { injectable } from "inversify";
 import moment from "moment";
 import he from 'he'
 
-import { Author } from "../../dto/author";
-import { Channel } from "../../dto/channel";
-import { Image } from "../../dto/image";
-import { Item } from "../../dto/item";
-import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selection-view-model";
-import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
+import { Author } from "../../dto/author.js";
+import { Channel } from "../../dto/channel.js";
+import { Image } from "../../dto/image.js";
+import { Item } from "../../dto/item.js";
+import { AttributeSelectionViewModel } from "../../dto/viewmodel/attribute-selection-view-model.js";
+import { ImageViewModel } from "../../dto/viewmodel/image-view-model.js";
 
-import { ItemViewModel } from "../../dto/viewmodel/item-view-model";
-import { AuthorService } from "../author-service";
-import { ChannelService } from "../channel-service";
-import { ImageService } from "../image-service";
-import { ItemService } from "../item-service";
-import { AnimationService } from "../animation-service";
-import { Animation } from "../../dto/animation";
-import { AnimationViewModel } from "../../dto/viewmodel/animation-view-model";
-import { QuillService } from "../quill-service";
-import { ThemeService } from "../theme-service";
-import { Theme } from "../../dto/theme";
-import { ItemListViewModel } from "../../dto/viewmodel/item-list-view-model";
-import { AggregateStats } from "../../dto/aggregate-stats";
-import { QueryCacheService } from "../../service/core/query-cache-service";
-import { ItemRepository } from "../../repository/item-repository";
-import { QueryCache } from "../../dto/query-cache";
-import { AttributeCountService } from "../../service/attribute-count-service";
-import { AttributeCount } from "../../dto/attribute";
+import { ItemViewModel } from "../../dto/viewmodel/item-view-model.js";
+import { AuthorService } from "../author-service.js";
+import { ChannelService } from "../channel-service.js";
+import { ImageService } from "../image-service.js";
+import { ItemService } from "../item-service.js";
+import { AnimationService } from "../animation-service.js";
+import { Animation } from "../../dto/animation.js";
+import { AnimationViewModel } from "../../dto/viewmodel/animation-view-model.js";
+import { QuillService } from "../quill-service.js";
+import { ThemeService } from "../theme-service.js";
+import { Theme } from "../../dto/theme.js";
+import { ItemListViewModel } from "../../dto/viewmodel/item-list-view-model.js";
+import { AggregateStats } from "../../dto/aggregate-stats.js";
+import { QueryCacheService } from "../../service/core/query-cache-service.js";
+import { ItemRepository } from "../../repository/item-repository.js";
+import { QueryCache } from "../../dto/query-cache.js";
+import { AttributeCountService } from "../../service/attribute-count-service.js";
+import { AttributeCount } from "../../dto/attribute.js";
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
@@ -532,7 +532,38 @@ class ItemWebService {
 
     }
 
+    async clone(item:Item) : Promise<Item> {
 
+        let itemCopy = JSON.parse(JSON.stringify(item))
+
+        delete itemCopy._id
+        delete itemCopy._rev
+        delete itemCopy['_rev_tree']
+        delete itemCopy.tokenId
+
+        itemCopy = Object.assign(new Item(), itemCopy)
+
+        //Save to get an ID, etc
+        await this.put(itemCopy)
+
+
+        //Build contentHTML for searching
+        itemCopy.contentHTML = await this.quillService.translateContent(itemCopy.content, true)
+
+        //Save the cover image if necessary
+        let coverImage = await this.saveGeneratedCoverImage(itemCopy)
+        item.coverImageGenerated = coverImage.generated
+        
+        //And the animation
+        await this.saveAnimation(itemCopy)
+
+        //Save the result
+        await this.put(itemCopy)
+
+
+        return itemCopy
+
+    }
 
 }
 

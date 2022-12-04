@@ -70,7 +70,8 @@
               <div class="card-footer item-show-footer">
                 
                   <a class="button button-fill button-small" href="/admin/channel/${itemViewModel.channel._id}/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
-  
+                  <a class="button button-fill button-small" href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">Clone</a>
+
                   ${itemViewModel.canDelete ? $h`
                     <a class="button button-outline button-small color-red" @click="${deleteClick}">
                       <i class="material-icons">delete</i>
@@ -367,6 +368,17 @@
       } catch (ex) {
         uiService.showExceptionPopup(ex)
       }
+
+    }
+
+    const cloneClick = async (e) => {
+
+      let clone = await itemWebService.clone(itemViewModel.item)
+
+      console.log(`/admin/channel/show/${itemViewModel.channel._id}/${clone.tokenId}`)
+
+      $f7.views.main.router.navigate(`/admin/channel/show/${itemViewModel.channel._id}/${clone.tokenId}`)
+
 
     }
 

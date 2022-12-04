@@ -1,21 +1,21 @@
-import { QueryCache } from "../../dto/query-cache";
+import { QueryCache } from "../../dto/query-cache.js";
 import { injectable } from "inversify";
 import moment from "moment";
-import { Author } from "../../dto/author";
-import { Channel } from "../../dto/channel";
-import { Item } from "../../dto/item";
+import { Author } from "../../dto/author.js";
+import { Channel } from "../../dto/channel.js";
+import { Item } from "../../dto/item.js";
 
-import { Image } from "../../dto/image";
+import { Image } from "../../dto/image.js";
 
-import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model";
-import { ImageViewModel } from "../../dto/viewmodel/image-view-model";
-import { AuthorService } from "../author-service";
-import { ChannelService } from "../channel-service";
-import { ImageService } from "../image-service";
-import { ItemService } from "../item-service";
-import { ItemWebService } from "./item-web-service";
-import { QueryCacheService } from "../../service/core/query-cache-service";
-import { SchemaService } from "../../service/core/schema-service";
+import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model.js";
+import { ImageViewModel } from "../../dto/viewmodel/image-view-model.js";
+import { AuthorService } from "../author-service.js";
+import { ChannelService } from "../channel-service.js";
+import { ImageService } from "../image-service.js";
+import { ItemService } from "../item-service.js";
+import { ItemWebService } from "./item-web-service.js";
+import { QueryCacheService } from "../../service/core/query-cache-service.js";
+import { SchemaService } from "../../service/core/schema-service.js";
 
 @injectable()
 class ChannelWebService {

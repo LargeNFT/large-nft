@@ -236,7 +236,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'bd97fb9c6d';
+framework7Component.id = '3830b3179f';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -350,7 +350,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8f998d8c86';
+framework7Component.id = '2ea70d10ab';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -413,7 +413,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7bb3a7f00f';
+framework7Component.id = 'a02d417087';
 framework7Component.style = `
 
 
@@ -506,7 +506,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '15473d64ff';
+framework7Component.id = '21b9e60dc9';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -580,7 +580,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '87ea165509';
+framework7Component.id = '64bdc32b04';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -842,7 +842,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3ab8098b55';
+framework7Component.id = '31e106d7f3';
 framework7Component.style = `
 
 .mint-list-card .card-header {
@@ -1009,7 +1009,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0c2fdd3e18';
+framework7Component.id = 'd15d27cc5a';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1168,7 +1168,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '719affe31d';
+framework7Component.id = '70c6cc0855';
 framework7Component.style = `
 
 .block-search {
@@ -1392,7 +1392,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'be7f40ce90';
+framework7Component.id = '29815f1af7';
 framework7Component.style = `
 
   .logo {
@@ -1532,7 +1532,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f5776e0391';
+framework7Component.id = 'acd130cd39';
 framework7Component.style = `
 .page-number {
     width: 100%;

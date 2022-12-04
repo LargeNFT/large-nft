@@ -1030,7 +1030,7 @@ input[type="text"]:disabled {
 .animation-content {
   width: 100%;
   display: flex; 
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .animation-content:first-child {

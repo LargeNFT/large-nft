@@ -7,24 +7,24 @@
 # Full project: https://gitlab.com/pages/plain-html
 
 
-image: node:latest
+# image: node:latest
 
-stages:
-  - build
-  - deploy
+# stages:
+#   - build
+#   - deploy
 
-cache:
-  paths:
-    - node_modules/
+# cache:
+#   paths:
+#     - node_modules/
 
-install_and_build:
-  stage: build
-  script:
-    - npm install; npm run build;
-  artifacts:
-    paths:
-      - node_modules/
-      - public
+# install_and_build:
+#   stage: build
+#   script:
+#     - npm install; npm run build;
+#   artifacts:
+#     paths:
+#       - node_modules/
+#       - public
 
 pages:
   stage: deploy

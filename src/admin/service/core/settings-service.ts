@@ -1,8 +1,8 @@
-import { Settings } from "../../dto/settings";
+import { Settings } from "../../dto/settings.js";
 import { injectable } from "inversify";
-import { SettingsRepository } from "../../repository/settings-repository";
+import { SettingsRepository } from "../../repository/settings-repository.js";
 import { validate, ValidationError } from "class-validator";
-import { ValidationException } from "../../util/validation-exception";
+import { ValidationException } from "../../util/validation-exception.js";
 
 @injectable()
 class SettingsService {

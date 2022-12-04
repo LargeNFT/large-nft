@@ -1,25 +1,27 @@
 import { BigNumber, ethers } from "ethers"
 import { inject, injectable } from "inversify"
-import { Channel } from "../../dto/channel"
-import { Animation } from "../../dto/animation"
-import { Item } from "../../dto/item"
+import { Channel } from "../../dto/channel.js"
+import { Animation } from "../../dto/animation.js"
+import { Item } from "../../dto/item.js"
 
-import { BackupBundle, ExportBundle } from "../../dto/export-bundle"
-import { Image } from "../../dto/image"
+import { BackupBundle, ExportBundle } from "../../dto/export-bundle.js"
+import { Image } from "../../dto/image.js"
 
-import { PublishStatus } from "../../dto/viewmodel/publish-status"
-import { ChannelService } from "../channel-service"
-import { ImageService } from "../image-service"
-import { ItemService } from "../item-service"
+import { PublishStatus } from "../../dto/viewmodel/publish-status.js"
+import { ChannelService } from "../channel-service.js"
+import { ImageService } from "../image-service.js"
+import { ItemService } from "../item-service.js"
 
-import { IpfsService } from "./ipfs-service"
-import TYPES from "./types"
-import { WalletService } from "./wallet-service"
-import { AnimationService } from "../animation-service"
+import { IpfsService } from "./ipfs-service.js"
+import TYPES from "./types.js"
+import { WalletService } from "./wallet-service.js"
+import { AnimationService } from "../animation-service.js"
 
 
-import { ExportService } from "./export-service"
+import { ExportService } from "./export-service.js"
 import Hash from 'ipfs-only-hash'
+import { GitService } from "./git-service.js"
+import { GitlabService } from "./gitlab-service.js"
 
 
 @injectable()
@@ -32,11 +34,12 @@ class PublishService {
         private imageService: ImageService,
         private animationService:AnimationService,
         private exportService:ExportService,
+        private gitService:GitService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }
 
-    async publishToIPFS(channel: Channel) {
+    async publish(channel: Channel) {
 
         //Export metadata
         this.logPublishProgress(undefined, "Preparing export...")
@@ -50,8 +53,13 @@ class PublishService {
         this.logPublishProgress(undefined, "Preparing backup...")
         let backup:BackupBundle = await this.exportService.createBackup(exportBundle)
 
-        this.logPublishProgress(undefined, "Backup created. Exporting to IPFS...")
-        let cid: string = await this.exportToIPFS(exportBundle, backup, feeRecipient)
+        this.logPublishProgress(undefined, "Backup created. Initializing git...")
+
+        await this.gitService.init(channel)
+
+        this.logPublishProgress(undefined, "Git initialized. Exporting...")
+
+        let cid: string = await this.export(exportBundle, backup, feeRecipient)
 
         //Update local cid info
         Object.assign(channel, await this.channelService.get(channel._id))
@@ -63,11 +71,11 @@ class PublishService {
 
     }
 
-    async exportToIPFS(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string): Promise<string> {
+    async export(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string): Promise<string> {
 
         let flush = true
-        let directory = `/export/${exportBundle.channel._id}`
-
+        let ipfsDirectory = `/export/${exportBundle.channel._id}`
+        let gitDirectory = this.gitService.getBaseDir(exportBundle.channel)
 
         let publishStatus:PublishStatus = {
 
@@ -92,29 +100,29 @@ class PublishService {
         
         //Clear 
         try {
-            await this.ipfsService.ipfs.files.read(directory)
-            await this.ipfsService.ipfs.files.rm(directory,  { recursive: true, flush: true})
+            await this.ipfsService.ipfs.files.read(ipfsDirectory)
+            await this.ipfsService.ipfs.files.rm(ipfsDirectory,  { recursive: true, flush: true})
         } catch (ex) { }
 
         //Save images
-        await this._publishImages(publishStatus, directory, exportBundle.images, true)
+        await this._publishImages(publishStatus, ipfsDirectory, gitDirectory, exportBundle.images, true)
 
         //Save animations
-        await this._publishAnimations(publishStatus, directory, exportBundle.animations, true)
+        await this._publishAnimations(publishStatus, ipfsDirectory, gitDirectory, exportBundle.animations, true)
 
 
         //Get directory cids
-        let imageDirectory = await this.getImageDirectoryCid(directory)
-        let animationDirectory = await this.getAnimationDirectoryCid(directory)
+        let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
+        let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
 
-        await this._publishNFTMetadata(publishStatus, directory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
+        await this._publishNFTMetadata(publishStatus, ipfsDirectory, gitDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
 
 
 
 
 
         //Save contract metadata
-        let contractMetadataPath = `${directory}/contractMetadata.json`
+        let contractMetadataPath = `${ipfsDirectory}/contractMetadata.json`
         let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory)
 
         //Adding and then copying otherwise the CID does not match what we'd expect. 
@@ -124,8 +132,11 @@ class PublishService {
 
         // await this.ipfsService.ipfs.files.cp(`/ipfs/${contractResult.cid.toString()}`, contractMetadataPath, { create: true, parents: true, flush:flush })
 
+        //IPFS
         await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
-
+        
+        //Write to Git
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/contractMetadata.json`, new TextEncoder().encode(JSON.stringify(contractMetadata)))
 
 
 
@@ -136,41 +147,48 @@ class PublishService {
         this.logPublishProgress(publishStatus, `Saving contract metadata to ${contractMetadataPath} (${stat.cid})`)
 
         //Write channels backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: flush })
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)), { create: true, parents: true, flush: flush })
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/backup/channels.json`, new TextEncoder().encode(JSON.stringify(backup.channels)))
         publishStatus.backups.channels.saved = 1
         this.logPublishProgress(publishStatus)
 
         //Write authors backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true, flush: flush })
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)), { create: true, parents: true, flush: flush })
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/backup/authors.json`, new TextEncoder().encode(JSON.stringify(backup.authors)))
         publishStatus.backups.authors.saved = 1
         this.logPublishProgress(publishStatus)
 
         //Write items backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/items.json`,  new TextEncoder().encode(JSON.stringify(backup.items)) , { create: true, parents: true, flush: flush })
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/items.json`,  new TextEncoder().encode(JSON.stringify(backup.items)) , { create: true, parents: true, flush: flush })
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/backup/items.json`, new TextEncoder().encode(JSON.stringify(backup.items)))
         publishStatus.backups.items.saved = backup.items.length
         this.logPublishProgress(publishStatus)
 
         //Write images backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: flush })
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: flush })
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/backup/images.json`, new TextEncoder().encode(JSON.stringify(backup.images)))
         publishStatus.backups.images.saved = backup.images.length
         this.logPublishProgress(publishStatus)
 
         //Write animations backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/animations.json`,  new TextEncoder().encode(JSON.stringify(backup.animations)) , { create: true, parents: true, flush: flush })
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/animations.json`,  new TextEncoder().encode(JSON.stringify(backup.animations)) , { create: true, parents: true, flush: flush })
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/backup/animations.json`, new TextEncoder().encode(JSON.stringify(backup.animations)))
         publishStatus.backups.animations.saved = backup.animations.length
         this.logPublishProgress(publishStatus)
 
         //Write themes backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/themes.json`,  new TextEncoder().encode(JSON.stringify(backup.themes)) , { create: true, parents: true, flush: flush })
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/themes.json`,  new TextEncoder().encode(JSON.stringify(backup.themes)) , { create: true, parents: true, flush: flush })
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/backup/themes.json`, new TextEncoder().encode(JSON.stringify(backup.themes)))
         publishStatus.backups.themes.saved = backup.themes.length
         this.logPublishProgress(publishStatus)
 
         //Write staticPages backup
-        await this.ipfsService.ipfs.files.write(`${directory}/backup/static-pages.json`,  new TextEncoder().encode(JSON.stringify(backup.staticPages)) , { create: true, parents: true, flush: flush })
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/static-pages.json`,  new TextEncoder().encode(JSON.stringify(backup.staticPages)) , { create: true, parents: true, flush: flush })
+        await this.gitService.writeFile(`${gitDirectory}/backup/export/backup/static-pages.json`, new TextEncoder().encode(JSON.stringify(backup.staticPages)))
         publishStatus.backups.staticPages.saved = backup.staticPages.length
         this.logPublishProgress(publishStatus)
 
-
+        this.logPublishProgress(publishStatus, `Flushing to IPFS...`)
         await this.ipfsService.ipfs.files.flush(`/export/${exportBundle.channel._id}/`)
 
 
@@ -233,7 +251,7 @@ class PublishService {
         return feeRecipient
     }
 
-    private async _publishAnimations(publishStatus:PublishStatus, directory:string, animations:Animation[], flush: boolean) {
+    private async _publishAnimations(publishStatus:PublishStatus, ipfsDirectory:string, gitDirectory:string, animations:Animation[], flush: boolean) {
 
         //Save animation cids
         let animationContents = animations?.map( animation => { return { content: animation.content } })
@@ -242,53 +260,65 @@ class PublishService {
 
             this.logPublishProgress(publishStatus, `Exporting ${animationContents.length} animations`)
 
-            for await (const result of this.ipfsService.ipfs.addAll(animationContents)) {
-    
+            for (let animationContent of animationContents) {
+
+                const result = await this.ipfsService.ipfs.add(animationContent)
+
+
                 //Get animation from export
                 let animation = animations.filter( i => i.cid == result.cid.toString())[0]
-    
-                let filename = `${directory}/animations/${animation.cid}.html`
-    
+                    
+                let filename = `${ipfsDirectory}/animations/${animation.cid}.html`
+
                 await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, filename, { parents: true, flush: flush })
-    
+
+
+                //Save to git
+                await this.gitService.writeFile(`${gitDirectory}/backup/export/animations/${animation.cid}.html`, animationContent.content)
+
+
                 if (result.cid.toString() !== animation.cid.toString()) {
                     throw new Error(`Incorrect cid when saving animation. Expected: ${animation.cid}, Result: ${result.cid.toString()}`)
                 }
-    
+
                 publishStatus.animations.saved++
-    
-                this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} to ${directory}/animations/${animation.cid}.html (${animation.cid})`)
-                
+
+                this.logPublishProgress(publishStatus, `Saving animation #${publishStatus.animations.saved} to ${ipfsDirectory}/animations/${animation.cid}.html (${animation.cid})`)
+
+
             }
-    
+
         }
 
 
     }
 
-    private async _publishImages(publishStatus:PublishStatus, directory:string, images:Image[], flush: boolean) {
+    private async _publishImages(publishStatus:PublishStatus, ipfsDirectory:string, gitDirectory:string, images:Image[], flush: boolean) {
 
-        let imageContents = []
+        /** Using IPFS addAll was causing issues with bigger files.  */
 
-        for (let image of images) {
-            imageContents.push({
-                content: await this.imageService.getImageContent(image)
+        for (let i of images) {
+            
+            //Add to IPFS
+            const result = await this.ipfsService.ipfs.add({
+                content: await this.imageService.getImageContent(i)
             })
-        }
-
-        this.logPublishProgress(publishStatus, `Exporting ${imageContents.length} images`)
-
-        for await (const result of this.ipfsService.ipfs.addAll(imageContents)) {
 
             //Get image from export
             let image = images.filter( i => i.cid == result.cid.toString())[0]
 
-            let filename = `${directory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}` 
-
+            //Move to MFS directory in IPFS
+            let filename = `${ipfsDirectory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}` 
             await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, filename, { create: true, parents: true, flush:flush })
-    
+
+            
+            //Save to git
+            await this.gitService.writeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, await this.imageService.getImageContent(i))
+
+
+
             //Validate cid
-            if (result.cid.toString() != image.cid) {    
+            if (result.cid.toString() != i.cid) {    
                 throw new Error(`Incorrect cid when saving image. Expected: ${image.cid}, Result: ${result.cid.toString()}`)
             }
 
@@ -296,16 +326,17 @@ class PublishService {
 
             this.logPublishProgress(publishStatus, `Saving image to ${filename} (${image.cid})`)
 
+
         }
+
+
 
 
     }
 
-    private async _publishNFTMetadata(publishStatus:PublishStatus, directory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
+    private async _publishNFTMetadata(publishStatus:PublishStatus, ipfsDirectory:string, gitDirectory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
 
         this.logPublishProgress(publishStatus, `Exporting ${items.length} metadata files`)
-
-        let metadataContents = []
 
 
         let metadataNFTMap = {}
@@ -313,30 +344,35 @@ class PublishService {
         for (let item of items) {
 
             let coverImage:Image = await this.imageService.get(item.coverImageId)
-            let nft = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
+            let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
             
-            let content = new TextEncoder().encode(JSON.stringify(nft))
+            let content = new TextEncoder().encode(JSON.stringify(nftMetadata))
 
-            metadataNFTMap[await Hash.of(content)] = nft
+            metadataNFTMap[await Hash.of(content)] = nftMetadata
 
-            metadataContents.push({
-                content: new TextEncoder().encode(JSON.stringify(nft))
+
+            const result = await this.ipfsService.ipfs.add({
+                content: new TextEncoder().encode(JSON.stringify(nftMetadata))
             })
-        }
 
-        for await (const result of this.ipfsService.ipfs.addAll(metadataContents)) {
 
             let nft = metadataNFTMap[result.cid.toString()]
 
-            let nftMetadataPath = `${directory}/metadata/${nft.tokenId}.json`
+            let nftMetadataPath = `${ipfsDirectory}/metadata/${nft.tokenId}.json`
 
             await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, nftMetadataPath, { create: true, parents: true, flush:flush })
+
+
+            //Save to git
+            await this.gitService.writeFile(`${gitDirectory}/backup/export/metadata/${nft.tokenId}.json`, new TextEncoder().encode(JSON.stringify(nftMetadata)))
+
 
             publishStatus.nftMetadata.saved++
 
             this.logPublishProgress(publishStatus, `Saving #${nft.tokenId} to ${nftMetadataPath}`)
 
         }
+
 
     }
 

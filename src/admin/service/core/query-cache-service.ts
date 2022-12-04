@@ -1,6 +1,6 @@
 import { injectable } from "inversify"
-import { QueryCacheRepository } from "../../repository/query-cache-repository"
-import { QueryCache } from "../../dto/query-cache"
+import { QueryCacheRepository } from "../../repository/query-cache-repository.js"
+import { QueryCache } from "../../dto/query-cache.js"
 
 
 

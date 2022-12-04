@@ -1,6 +1,6 @@
 import { Contract, ethers } from "ethers"
 import { inject, injectable } from "inversify"
-import { WalletService } from "./wallet-service"
+import { WalletService } from "./wallet-service.js"
 
 
 @injectable()

@@ -226,7 +226,7 @@ contract('ImportService', async (accounts) => {
     it("should import a channel from an export", async () => {
 
         //Arrange
-        await publishService.publishToIPFS(channel)
+        await publishService.publish(channel)
 
         originalCid = channel.localCid
 
@@ -328,7 +328,7 @@ contract('ImportService', async (accounts) => {
     //     //change id back //TODO this isn't working...rebuild test from new data.
     //     channel._id = id1
 
-    //     await publishService.publishToIPFS(channel)
+    //     await publishService.publish(channel)
     //     assert.strictEqual(channel.localCid, originalCid)
     // })
 

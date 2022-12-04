@@ -1,6 +1,6 @@
 
 import { inject, injectable } from "inversify";
-import { PromiseView } from "../../util/promise-view";
+import { PromiseView } from "../../util/promise-view.js";
 
 @injectable()
 class QueueService {

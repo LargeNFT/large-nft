@@ -37,7 +37,7 @@
 
                     ${channelViewModel.itemCount > 0 ? $h`
 
-                    <div class="block-title">Export To IPFS</div>
+                    <div class="block-title">Export</div>
                     <div class="card">
 
                         <div class="card-content">
@@ -45,126 +45,134 @@
                                 
                                 <p>
                                     The JSON metadata for the collection and a snapshot of the source database
-                                    will be exported to the IPFS node.
+                                    will be exported to the IPFS node and a local git repository.
                                 </p>
 
-                                ${!ipfsReady ? $h`
-                                    <div class="ipfs-label">IPFS Initializing...</div>
-                                ` : $h`
-                                    <div class="ipfs-label">
-                                        Status: <a href="/admin/connect">IPFS Ready</a>
-                                    </div>
-                                `}
+                                
+                                ${settings?.personalAccessToken?.length > 0 ? $h`
 
-                                ${publishing ? $h`
-                                    <div class="publish-label">
-                                        Exporting...
-                                    </div>
-
-                                    ${publishStatus? $h`
-                                        <div class="publish-status">
-
-                                            <h4>
-                                                NFT Collection Data
-                                            </h4>
-
-                                            <div class="item">
-                                                <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
-                                            </div>
-    
-                                            <div class="item">
-                                                <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
-                                            </div>
-
-                                            <div class="item">
-                                                <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
-                                            </div>
-    
-                                            <div class="item"> 
-                                                <label>Contract Metadata:</label> ${publishStatus.contractMetadata.saved} / ${publishStatus.contractMetadata.total}
-                                            </div>
-    
-                                            <h4>
-                                                Database Backup
-                                            </h4>
-
-                                            <div class="item">
-                                                <label>Channels:</label> ${publishStatus.backups.channels.saved} /  ${publishStatus.backups.channels.total}
-                                            </div>
-    
-                                            <div class="item">
-                                                <label>Authors:</label> ${publishStatus.backups.authors.saved} /  ${publishStatus.backups.authors.total}
-                                            </div>
-    
-                                            <div class="item">
-                                                <label>Items:</label> ${publishStatus.backups.items.saved} / ${publishStatus.backups.items.total} 
-                                            </div>
-    
-                                            <div class="item">
-                                                <label>Images:</label> ${publishStatus.backups.images.saved} / ${publishStatus.backups.images.total} 
-                                            </div>
-
-                                            <div class="item">
-                                                <label>Animations:</label> ${publishStatus.backups.animations.saved} / ${publishStatus.backups.animations.total} 
-                                            </div>
-
-                                            <div class="item">
-                                                <label>Themes:</label> ${publishStatus.backups.themes.saved} / ${publishStatus.backups.themes.total} 
-                                            </div>
-
-                                            <div class="item">
-                                                <label>Static Pages:</label> ${publishStatus.backups.staticPages.saved} / ${publishStatus.backups.staticPages.total} 
-                                            </div>
-
-                                        </div>
-                                    ` : $h`<span />`}
-
-                                ` : $h`
-                                    <div class="publish-label" style="display:none;"></div>
-                                `}
-
-                                ${publishOutput ? $h`
-                                    <div class="publish-output" innerHTML="${publishOutput}" id="ipfs-publish-process" ></div>
-                                ` : $h`
-                                    <div class="publish-output" style="display:none;"></div>
-                                `}
-
-
-                                ${showCurrentCid ? $h`
-
-                                    <div class="pin-status">
-                                        <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}</p>
-                                        <p><strong>Date Exported:</strong> ${channelViewModel.channel.localPubDate}</p>
-                                    </div>
-
-                                ` : $h``}
-
-
-                                ${ipfsReady ? $h`
-
-                                    ${showRefresh ? $h`
-
-                                        <div class="chip chip-outline">
-                                            <div class="chip-label">Success!</div>
-                                        </div>
-
-                                        <button class="button button-fill color-gray text-color-white" @click="${copyIPFSClick}" id="export-refresh-button">
-                                            <i class="material-icons">refresh</i> Export Again
-                                        </button>
-
-
+                                    ${!ipfsReady ? $h`
+                                        <div class="ipfs-label">IPFS Initializing...</div>
                                     ` : $h`
-
-                                        ${!publishing ? $h`
-                                            <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export to IPFS</button>
-                                        ` : $h`<span />`}  
-
+                                        <div class="ipfs-label">
+                                            Status: <a href="/admin/connect">IPFS Ready</a>
+                                        </div>
                                     `}
-                                    
-                                ` : $h`
-                                    <p></p>
-                                `}
 
+
+                                    ${publishing ? $h`
+                                        <div class="publish-label">
+                                            Exporting...
+                                        </div>
+    
+                                        ${publishStatus? $h`
+                                            <div class="publish-status">
+    
+                                                <h4>
+                                                    NFT Collection Data
+                                                </h4>
+    
+                                                <div class="item">
+                                                    <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
+                                                </div>
+        
+                                                <div class="item">
+                                                    <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
+                                                </div>
+    
+                                                <div class="item">
+                                                    <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
+                                                </div>
+        
+                                                <div class="item"> 
+                                                    <label>Contract Metadata:</label> ${publishStatus.contractMetadata.saved} / ${publishStatus.contractMetadata.total}
+                                                </div>
+        
+                                                <h4>
+                                                    Database Backup
+                                                </h4>
+    
+                                                <div class="item">
+                                                    <label>Channels:</label> ${publishStatus.backups.channels.saved} /  ${publishStatus.backups.channels.total}
+                                                </div>
+        
+                                                <div class="item">
+                                                    <label>Authors:</label> ${publishStatus.backups.authors.saved} /  ${publishStatus.backups.authors.total}
+                                                </div>
+        
+                                                <div class="item">
+                                                    <label>Items:</label> ${publishStatus.backups.items.saved} / ${publishStatus.backups.items.total} 
+                                                </div>
+        
+                                                <div class="item">
+                                                    <label>Images:</label> ${publishStatus.backups.images.saved} / ${publishStatus.backups.images.total} 
+                                                </div>
+    
+                                                <div class="item">
+                                                    <label>Animations:</label> ${publishStatus.backups.animations.saved} / ${publishStatus.backups.animations.total} 
+                                                </div>
+    
+                                                <div class="item">
+                                                    <label>Themes:</label> ${publishStatus.backups.themes.saved} / ${publishStatus.backups.themes.total} 
+                                                </div>
+    
+                                                <div class="item">
+                                                    <label>Static Pages:</label> ${publishStatus.backups.staticPages.saved} / ${publishStatus.backups.staticPages.total} 
+                                                </div>
+    
+                                            </div>
+                                        ` : $h`<span />`}
+    
+                                    ` : $h`
+                                        <div class="publish-label" style="display:none;"></div>
+                                    `}
+    
+                                    ${publishOutput ? $h`
+                                        <div class="publish-output" innerHTML="${publishOutput}" id="ipfs-publish-process" ></div>
+                                    ` : $h`
+                                        <div class="publish-output" style="display:none;"></div>
+                                    `}
+    
+    
+                                    ${showCurrentCid ? $h`
+    
+                                        <div class="pin-status">
+                                            <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}</p>
+                                            <p><strong>Date Exported:</strong> ${channelViewModel.channel.localPubDate}</p>
+                                        </div>
+    
+                                    ` : $h`<span />`}
+    
+    
+                                    ${ipfsReady ? $h`
+    
+                                        ${showRefresh ? $h`
+    
+                                            <div class="chip chip-outline">
+                                                <div class="chip-label">Success!</div>
+                                            </div>
+    
+                                            <button class="button button-fill color-gray text-color-white" @click="${copyIPFSClick}" id="export-refresh-button">
+                                                <i class="material-icons">refresh</i> Export Again
+                                            </button>
+    
+    
+                                        ` : $h`
+    
+                                            ${!publishing ? $h`
+                                                <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export</button>
+                                            ` : $h`<span />`}  
+    
+                                        `}
+                                        
+                                    ` : $h`
+                                        <p></p>
+                                    `}
+
+
+                                ` : $h`
+                                    <p>Configure <a href="/admin/settings">Gitlab</a> to begin export.</p>
+                                `}
 
 
                             </div>
@@ -271,6 +279,7 @@
         let publishService = ContainerService.getInstance(PublishService)
 
         let channelViewModel = props.channelViewModel
+        let settings = props.settings
 
         let peerCount = ipfsService.peerCount
 
@@ -318,7 +327,7 @@
             //Now publish
             try {
                 
-                await publishService.publishToIPFS(channelViewModel.channel)
+                await publishService.publish(channelViewModel.channel)
 
                 //Get updated channel
                 channelViewModel.channel = await channelService.get(channelViewModel.channel._id)

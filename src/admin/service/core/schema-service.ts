@@ -1,17 +1,17 @@
 import { injectable } from "inversify";
 
-import { AnimationRepository } from "../../repository/animation-repository";
-import { AuthorRepository } from "../../repository/author-repository";
-import { ChannelRepository } from "../../repository/channel-repository";
-import { SettingsRepository } from "../../repository/settings-repository";
-import { ImageRepository } from "../../repository/image-repository";
-import { ItemRepository } from "../../repository/item-repository";
-import { PinningApiRepository } from "../../repository/pinning-api-repository";
-import { StaticPageRepository } from "../../repository/static-page-repository";
-import { ThemeRepository } from "../../repository/theme-repository";
-import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository";
-import { QueryCacheRepository } from "../../repository/query-cache-repository";
-import { AttributeCountRepository } from "../../repository/attribute-count-repository";
+import { AnimationRepository } from "../../repository/animation-repository.js";
+import { AuthorRepository } from "../../repository/author-repository.js";
+import { ChannelRepository } from "../../repository/channel-repository.js";
+import { SettingsRepository } from "../../repository/settings-repository.js";
+import { ImageRepository } from "../../repository/image-repository.js";
+import { ItemRepository } from "../../repository/item-repository.js";
+import { PinningApiRepository } from "../../repository/pinning-api-repository.js";
+import { StaticPageRepository } from "../../repository/static-page-repository.js";
+import { ThemeRepository } from "../../repository/theme-repository.js";
+import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository.js";
+import { QueryCacheRepository } from "../../repository/query-cache-repository.js";
+import { AttributeCountRepository } from "../../repository/attribute-count-repository.js";
 
 @injectable()
 class SchemaService {

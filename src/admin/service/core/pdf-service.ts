@@ -1,6 +1,6 @@
 import { injectable } from 'inversify'
 
-import { UploadService } from './upload-service'
+import { UploadService } from './upload-service.js'
 
 const pdf = require('pdf-parse');
 

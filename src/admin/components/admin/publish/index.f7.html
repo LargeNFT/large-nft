@@ -31,6 +31,28 @@
             </div>
 
 
+            <div class="block-title block-title-medium">Git</div>
+            <div class="block list media-list">
+              <ul>
+                <li>
+                  <a href="/admin/publish/fork-reader/${channelViewModel.channel._id}" class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <span class="material-icons">fork_left</span>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Create Git Repository</div>
+                        </div>
+                        <div class="item-text">
+                          Create a remote git repository for the collection.
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
 
 
             ${channelViewModel.itemCount > 0 ? $h`
@@ -47,11 +69,10 @@
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">Export to IPFS</div>
+                            <div class="item-title">Export</div>
                           </div>
                           <div class="item-text">
-                            The first publishing task is to export the data to an IPFS node. The rest of the publishing tasks
-                            rely on this step and will always publish the last copy that was exported to IPFS.
+                            Export collection data to IPFS and the local git repo.
                           </div>
                         </div>
                       </div>
@@ -125,25 +146,6 @@
                 <ul>
 
                   <li>
-                    <a href="/admin/publish/fork-reader/${channelViewModel.channel._id}" class="item-link">
-                      <div class="item-content">
-                        <div class="item-media">
-                          <span class="material-icons">fork_left</span>
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">Create Reader</div>
-                          </div>
-                          <div class="item-text">
-                            Large Reader is a PWA that you can deploy to enhance your collection. The default implementation lives in a GitLab repo and to deploy
-                            a custom copy you fork it. Better support for choosing a git provider will be available in a later version. 
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-
-                  <li>
                     <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="item-link">
                       <div class="item-content">
                         <div class="item-media">
@@ -151,10 +153,11 @@
                         </div>
                         <div class="item-inner">
                           <div class="item-title-row">
-                            <div class="item-title">Publish Collection to Reader</div>
+                            <div class="item-title">Push exported collection to Git</div>
                           </div>
                           <div class="item-text">
-                            Copy data from the local IPFS node to your custom Large Reader fork. 
+                            Push data from local git repository to remote provider. This will also kickstart a GitLab CI build to generate
+                            the Large Reader website for the collection.
                           </div>
                         </div>
 

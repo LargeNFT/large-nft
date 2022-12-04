@@ -1,6 +1,5 @@
 import { Buffer } from 'buffer'
 import { injectable } from 'inversify';
-import { IpfsService } from './ipfs-service';
 
 @injectable()
 class UploadService {

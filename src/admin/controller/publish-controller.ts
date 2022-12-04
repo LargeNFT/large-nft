@@ -14,6 +14,7 @@ import { ChannelWebService } from "../service/web/channel-web-service.js";
 
 import { SettingsService } from "../service/core/settings-service.js";
 import { SchemaService } from "../service/core/schema-service.js";
+import { GitlabService } from "../service/core/gitlab-service.js";
 
 
 @injectable()
@@ -22,7 +23,8 @@ class PublishController {
     constructor(
         private channelWebService:ChannelWebService,
         private settingsService:SettingsService,
-        private schemaService:SchemaService
+        private schemaService:SchemaService,
+        private gitlabService:GitlabService
     ) {}
 
     @routeMap("/admin/publish/:id")
@@ -35,8 +37,9 @@ class PublishController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
+
             return {
-                channelViewModel: channelViewModel
+                channelViewModel: channelViewModel,
             }
 
         }, AdminPublishIndexComponent)
@@ -53,8 +56,17 @@ class PublishController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
+
+            let settings
+
+            try {
+                settings = await this.settingsService.get()
+            } catch(ex) {}
+
+
             return {
-                channelViewModel: channelViewModel
+                channelViewModel: channelViewModel,
+                settings:settings
             }
 
         }, AdminPublishExportComponent)
@@ -121,9 +133,15 @@ class PublishController {
                 settings = await this.settingsService.get()
             } catch(ex) {}
 
+
+            let existingForkResult = await this.gitlabService.getExistingFork(channelViewModel.channel)
+
+            
             return {
                 channelViewModel: channelViewModel,
-                settings: settings
+                settings: settings,
+                repoURI: existingForkResult.http_url_to_repo
+
             }
 
         }, AdminPublishForkReaderComponent)

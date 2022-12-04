@@ -6,57 +6,101 @@ Publish your book, fan-fiction, blog, or art as a forkable NFT collection and se
 
 Large is open source software that makes it simple to create and publish your digital art and other creative content as an NFT collection on Ethereum and IPFS.  
 
-The Large Reader is a simple HTML/CSS/Javascript application built with Framework7 that includes native theming for iOS, Android, and Desktop. Data is stored directly on user's devices in a P2P database called PouchDB and can be published to an IPFS node (self-hosted or commercial) or directly to a built-in node in the browser with no extra setup*.  
+Each generated **Large Reader** website is a simple HTML/CSS/Javascript app built with Framework7 that includes native theming for iOS, Android, and Desktop.
 
-The Large Admin and the [Large Reader](https://gitlab.com/american-space-software/large-reader) apps are offline-first applications and can be distributed with any simple CDN. No cloud computing required.
+The **Large Admin** and each generated **Large Reader** apps are offline-first and can be distributed with any simple CDN or run locally. GitHub and GitLab Pages are integrated and their CI pipelines can be used to keep Ethereum transaction infomation current. Users can also connect their wallets directly to receive real-time data from their own nodes.  
 
-Large is open source software and is not a cloud service. Large gives users the tools to easily provide hosted infrastructure themselves and distribute the data in a format that guarantees all members of the community can contribute to keeping the content online for as long as necessary.
+Large is open source software and is not a cloud service. Large gives users the tools to easily provide hosted infrastructure themselves and distribute the data in a format that guarantees all members of the community can contribute to keeping the content online for as long as necessary. 
 
 *Networking in the browser can be tricky and caveats apply. There are commercial technical solutions to most problems.  
 
+## Installation 
+1. Recommended: Fork this repo. 
+    * The default CI pipeline will build and deploy a fresh copy.
+    * Access through GitLab/GitHub Pages.
+2. [Use most recent build](https://american-space-software.gitlab.io/large/)
+    * All data is stored in your local browser. We are never able to help you retreive it.
+3. Clone repo, install node dependencies, run local static webhost.
+
+
+### Install dependencies
+```console
+
+git clone https://gitlab.com/american-space-software/large.git
+cd large
+
+npm install
+```
+
+### Production build
+```console
+npm run build
+```
+
+### Dev server
+```console
+npm run start:dev
+```
+
+### Creating a development build
+
+The development build outputs full source maps to better debug certain kinds of issues.
+
+```console
+npm run build:dev
+```
+
+The production builds are located in the "public" folder. This repo includes a GitLab compatible script that builds and deploys Large automatically when there are new commits to the master branch. 
+
+
+## Enable CORS to publish to IPFS
+To publish to a hosted IPFS node:
+
+1. Set the Remote IPFS API url in the Large Admin settings.
+    * http://localhost:5001/api/v0 for local.
+2. Configure the local node to set the proper CORS headers. Otherwise the browser will block any requests.
+
+```console
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST", "PUT", "OPTIONS"]'
+```
+
 ## How it Works
-* Easily create content in a familiar interface.  
-* Content is stored in your browser as you create it.
-    * Using [PouchDB](https://pouchdb.com). 
-    * PouchDB is a P2P database that was created to help web developers build applications that work as well offline as they do online.
-* Publish a simple blog website that works on all devices.
-* Generate all metadata to integrate with OpenSea and other public NFT infrastructure.
+* Create one or more collections with text, images, and mixed-media NFTs.
+* Content is stored in your browser using [PouchDB](https://pouchdb.com).
+* Generate NFT metadata and publish to IPFS.
+* Generate a reader-style website to view each collection.
 * Deploy an ERC-721 gas-optimized smart contract to Ethereum.
 * Set a mint price. Keep 100% of fees. 
 * List NFTs for sale on OpenSea and other NFT marketplaces. 
+* Collection data and website stored in GitHub/GitLab.
 
-Please note that data is NOT stored on a server and by default is only available on the device where you are using it until you publish. 
+The community can easily keep the website online and use it as a starting point for custom fan experiences.
 
-## Create an NFT collection
+### Create an NFT collection
 Create a collection with the Large admin panel. 
 
 * Choose a name, symbol, description, license, and NFT attributes.
 * Create attribute categories.
     * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
-* Set a mint price. Keep 100% of fees. 
-* Pre-set royalties for third-party marketplaces. 
 
-## Create content. Publish as NFTs. 
+### Create content. 
 * Each item has a title, content, and a cover image.
-* If a cover image is not provided an SVG gets generated based on the text.
-* Choose a theme to apply custom CSS.
-* Add custom CSS per item.
-* Generate HTML-based animation/frame for display on marketplaces.
+* If a cover image is not provided an SVG is generated from the text.
+* Choose a theme for each item.
+* Automatically generates HTML animation for display on marketplaces.
 
-## Import and fork existing NFT project
+### Import and fork existing NFT project
 * Instead of starting your project from scratch, import an existing project that was published to IPFS with Large.
 * Provide the IPFS hash.
 * Remix existing ideas.
 
 
-## Publish collection.
+# Publish
 
-### Export data to IPFS node.
+### Export collection to IPFS node.
 * Connect to browser-based node or configure remote IPFS api.
 * NFT metadata, images, animations, and backup data are exported to IPFS.
-
-### Pin data to pinning service.
-* Configure commercial pinning service and pin collection data.
 
 ### Deploy contract
 * Deploy ERC-721 smart contract with minting capability to Ethereum mainnet or other compatible network.
@@ -64,121 +108,54 @@ Create a collection with the Large admin panel.
     * Based on [ERC721A](https://github.com/chiru-labs/ERC721A)
 
 ### Fork reader
-* Automatically creates a custom fork of the [Large Reader](https://gitlab.com/ptoner/large-reader)
-* Publish collection data to Reader app.
+* Creates a custom fork of the [Large Reader](https://gitlab.com/ptoner/large-reader)
 
 ### Themes
-A theme allows you to apply CSS formatting to an NFT. Create themes and apply them to multiple items. 
-
+A theme allows you to apply CSS formatting to an NFT/item. Create themes and apply them to multiple items. 
 
 ### Static Pages.
-Static pages let you create content that is displayed in the Large Reader alongside your collection. This allows
-you to include content like your "About US" and "FAQ" alongside the collection. When the collection is exported to IPFS
-these are exported alongside them which allows them to be displayed in the Large Reader. 
+Create pages with static content.
 
+# Large Reader 
+Generate a search-engine friendly static website for each collection. It is also a full-featured PWA (Progressive Web App) with a native look and feel on modern devices.
 
-# Large Reader
-Generate a search-engine friendly static website for the collection. [Large Reader](https://gitlab.com/ptoner/large-reader)
 * Users do not need a web3 browser to read the collection.
 * Users do need a web3 browser to mint and interact with NFTs.
 
-The Large Reader is statically generated based on your collection info. Google can crawl the website and you can customimze it to improve SEO. Also the app is a Progressive Web App (PWA) and the user will feel like they are using a native application. Framework7 handles styling components for iOS, Android, and the web which
-makes things easy. 
-
 Easily read and enjoy content in a familiar interface.
 
-### Offline-first. Runs on your own devices.
-* Distributed via IPFS, GitLab pages, or other CDNs.
-* Any static webhost can easily host the Large Reader.
-* Built entirely with HTML/CSS/javascript.
+### Offline-first.
+* Easily distributed on any static webhost. 
+* Simple and customizable HTML/CSS/javascript.
+* Wrap with Cordova to distribute to app stores.
 
-### Fully open source. Fork and customize.
-* Large Admin publishes your collection to your own private repo on GitLab.
+### Free and open source. Fork and customize.
+* Publish a collection to a public or private repo.
 * Includes a full database backup and all associated media. 
-* To support static-generated content Large uses GitLab CI to run and publish an npm build. 
-* This process can be run on your own hardware instead.
 
-### Data stored in local PouchDB
-* P2P database. No master.
+### Data lives in browser storage on the user's device.
 * Full-text search of collection contents.
-* Multiple versions of the Large Reader can be deployed and each one has its own copy of the data. 
-* Allows collection to be forked directly from the Reader as well as the admin. 
+* Fork collections directly from the generated **Large Reader** app. 
 * This means your community can copy the Large Reader and make their own custom versions easily.
 * Easy to build on. Sync your data with commercial scale CouchDB instances. 
 
-### Custom minting experience
-* NFTs are visible before minting.
+### Mint NFTs.
 * Minting starts at token #1 and increments.
 * Stories are minted in the order they are told.
-* Everyone views the same upcoming mints.
-* As NFTs are minted users collectively experience the content in the order it was intended.
-    * Like listening to a music album as a group.
 
-### Publish to the Reader at any time.
-* Publish the Large Reader and collection content before deploying the smart contract. It's not required to deploy a contract if you do not want to mint NFTs.
+### Generate Large Reader without deploying a smart contract.
+* It's not required to deploy a contract if you do not want to mint NFTs.
 
 ### Fork Project
-* Large Reader ships with a full-featured copy of Large Admin
+* Large Reader ships with a full-featured copy of Large Admin.
 * Fork an existing project. Help keep the files online.
-* Create your own derivitive.
-* Each forked Reader also contains the Large Admin so each new project helps the network expand.
-
+* Easily create derivitive projects.
 
 
 # Reader Showcase
 These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
 * [Alice's Adventures in Wonderland](https://readalice.com)
 
-# Large Admin
-Recommended: Fork this repo to deploy your own copy. The following link will take you to the most recent build. There is currently no production-ready version. 
-[https://american-space-software.gitlab.io/large/](https://american-space-software.gitlab.io/large/)
-
-Remember that all your data is stored in your local browser. We are never able to help you retreive it. 
-
-### Fork this repo and customize the Large Admin. 
-Easy to whitelabel. 
-
-## Coming Soon
-* Import/Export/Clone existing collections. Works somewhat. Only tested on Alice. 
-* Sync to all your devices.
-* On-chain marketplace in Reader.
-
-# Run locally
-```console
-
-git clone https://gitlab.com/american-space-software/large.git
-cd large
-
-npm run install
-
-```
 
 
-# Running the dev server
-```console
-npm run start:dev
-```
-
-# Creating a production build
-```console
-npm run build
-```
-
-The production build will be in the "public" folder. This repo includes a GitLab compatible script that builds and deploys Large automatically when there are new commits to the master branch. 
-
-
-## Accessing Your Large Website
-
-To start, the end-user will need a copy of the Large distribution. There are a bunch of different ways for them to get it. 
-
-* Desktop app. In future also Android / iOS.
-* A third-party hosted copy.
-* Through an IPFS public gateway.
-* Fork this repo. It'll automatically deploy a copy of it in GitLab pages for you. 
-* Use [this one](https://american-space-software.gitlab.io/large/)
-* Host it yourself. It's just a directory of HTML/javascript files. 
-    * With IPFS
-    * With regular web host.
-    * Clone this repo and run the commands above to start the web client. 
-* You can also fork this git repo and make a competely custom version of Large. All of the above options are still available. 
 

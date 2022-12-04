@@ -30,14 +30,14 @@
               </div> 
               <div class="breadcrumbs-separator"></div>
               <div class="breadcrumbs-item breadcrumbs-item-active">
-                Create Reader
+                Create Git Repository
               </div> 
             </div>
           </div>
 
           ${channelViewModel.itemCount > 0 ? $h`
 
-          <div class="block-title">Create Reader</div>
+          <div class="block-title">Create Git Repository</div>
           <div class="card">
 
             <div class="card-content card-content-padding">
@@ -58,15 +58,13 @@
                             <div class="preloader"></div>
 
                           ` : $h`
-                            <button href="#" class="button button-fill button-small deploy-button">Create New Fork</button>
+                            <button href="#" class="button button-fill button-small deploy-button">Create/Connect Fork</button>
                             <div class="forking-label" style="display:none;"></div>
                           `}
 
-                          ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
+                          ${repoURI ? $h`
                           <div class="repo-status">
-                            <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
-                            <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>
-                            <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
+                            <p><strong>Git Repo:</strong> ${repoURI}</p>
                           </div>
                           ` : $h`<span />`}
 
@@ -76,7 +74,7 @@
                                 <div class="chip-label">Success!</div>
                               </div>
     
-                              <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="button button-fill" id="fork-next-button">Next <i class="material-icons">arrow_right</i></a>
+                              <a href="/admin/publish/${channelViewModel.channel._id}" class="button button-fill color-gray" id="fork-next-button"><i class="material-icons">arrow_left</i> Back to menu </a>
     
                             </div>
                           ` : $h`<span/>`}
@@ -138,7 +136,6 @@
 
   #fork-next-button {
     width: 200px;
-    float: right;
   }
 </style>
 
@@ -172,9 +169,12 @@
 
     let channelViewModel = props.channelViewModel
     let settings = props.settings
+    let repoURI = props.repoURI
+
     let pageUnloaded = false
 
     let forking = false
+    
 
     $on('pageInit', async () => {
       pageUnloaded = false

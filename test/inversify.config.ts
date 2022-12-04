@@ -25,6 +25,7 @@ import fs from 'fs';
 
 import { DatabaseService } from "../src/admin/service/core/database-service.js";
 import { SettingsService } from "../src/admin/service/core/settings-service.js";
+import { GitService } from "../src/admin/service/core/git-service.js";
 
 import { ChannelRepository } from "../src/admin/repository/channel-repository.js";
 import { PinningApiRepository } from "../src/admin/repository/pinning-api-repository.js";
@@ -133,6 +134,7 @@ async function getContainer() {
     container.bind(AttributeCountService).toSelf().inSingletonScope()
     container.bind(ChannelWebService).toSelf().inSingletonScope()
     container.bind(ItemWebService).toSelf().inSingletonScope()
+    container.bind(GitService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()

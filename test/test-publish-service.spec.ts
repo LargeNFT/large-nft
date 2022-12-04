@@ -303,7 +303,7 @@ contract('PublishService', async (accounts) => {
     // it("should export to IPFS", async () => {
    
     //     //Now export metadata to IPFS
-    //     cid = await service.exportToIPFS(exportBundle)
+    //     cid = await service.export(exportBundle)
 
 
     //     //Assert
@@ -342,7 +342,7 @@ contract('PublishService', async (accounts) => {
     it("should publish a channel", async () => {
 
         //Arrange
-        await service.publishToIPFS(channel)
+        await service.publish(channel)
 
         await service.deployContract(channel)
 

@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify"
-import { SettingsService } from "./settings-service"
+import { SettingsService } from "./settings-service.js"
 
 
 

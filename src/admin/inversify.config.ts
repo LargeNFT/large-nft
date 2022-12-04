@@ -104,6 +104,7 @@ import Grid from 'framework7/components/grid'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
 import Menu from 'framework7/components/menu'
 import Swiper from 'framework7/components/swiper'
+import { GitService } from './service/core/git-service.js';
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
@@ -235,6 +236,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(StaticPageService).toSelf().inSingletonScope()
   container.bind(QueryCacheService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
+  container.bind(GitService).toSelf().inSingletonScope()
 
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()

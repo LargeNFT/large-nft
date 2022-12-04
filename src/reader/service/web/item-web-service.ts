@@ -265,10 +265,20 @@ class ItemWebService {
 
                 let at = attributeTotals.filter( at => at.traitType ==  ao.traitType && at.value == v)[0]
 
-                values.push({
-                    value: v,
-                    count: at.tokenIds.filter(x => parentFilteredIds.includes(x)).length 
-                })
+                if (at) {
+
+                    values.push({
+                        value: v,
+                        count: at.tokenIds.filter(x => parentFilteredIds.includes(x)).length 
+                    })
+
+                } else {
+
+                    console.log(`${ao.traitType} / ${v} totals not found.`)
+
+                }
+
+
             }
             
             //Sort by count

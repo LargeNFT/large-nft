@@ -375,7 +375,7 @@
 
       let clone = await itemWebService.clone(itemViewModel.item)
 
-      console.log(`/admin/channel/show/${itemViewModel.channel._id}/${clone.tokenId}`)
+      // console.log(`/admin/channel/show/${itemViewModel.channel._id}/${clone.tokenId}`)
 
       $f7.views.main.router.navigate(`/admin/channel/${itemViewModel.channel._id}/item/edit/${clone._id}`)
 

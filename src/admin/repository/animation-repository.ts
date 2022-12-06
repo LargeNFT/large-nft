@@ -38,6 +38,10 @@ class AnimationRepository {
         await this.db.put(animation)
     }
 
+    async delete(animation: Animation): Promise<void> {
+        await this.db.remove(animation)
+    }
+
     async getByIds(ids:string[]) {
         let results = await this.db.allDocs({
             keys: ids,

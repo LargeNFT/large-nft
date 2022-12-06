@@ -55,11 +55,16 @@
 
             <div class="row block">
 
-              <div class="col-70"></div>
+              <div class="col-40"></div>
 
-              <button type="submit" class="button button-fill col-30" tabindex="12">
-                Save
-              </button>
+              <a href="/admin/channel/show/${itemViewModel.item.channelId}/${itemViewModel.item.tokenId}" class="button button-outline color-gray col-30" tabindex="12">Cancel</a>
+
+              ${ipfsReady ? $h`
+                <button type="submit" class="button button-fill col-30" tabindex="12">Save</button>
+              ` : $h`
+                <button class="button button-outline color-lightblue col-30" tabindex="12" disabled>IPFS initializing...</button>
+              `}
+
 
             </div>
 
@@ -91,6 +96,8 @@
   import { ContainerService } from "../../../service/core/container-service"
   import { QuillEditorService } from "../../../service/quill-editor-service"
   import { QuillService } from "../../../service/quill-service"
+  import { IpfsService } from "../../../service/core/ipfs-service"
+  import { GitService } from "../../../service/core/git-service"
 
   import { ItemService } from "../../../service/item-service"
   import { ImageService } from "../../../service/image-service"
@@ -117,6 +124,8 @@
 
     let itemService = ContainerService.getInstance(ItemService)
     let itemWebService = ContainerService.getInstance(ItemWebService)
+    let ipfsService = ContainerService.getInstance(IpfsService)
+    let gitService = ContainerService.getInstance(GitService)
 
     let imageService = ContainerService.getInstance(ImageService)
 
@@ -125,6 +134,7 @@
     let itemViewModel = props.itemViewModel
     let themes = props.themes 
 
+    let ipfsReady = false
 
 
     let coverImageCSSQuillEditor
@@ -182,7 +192,9 @@
       item.coverImageGenerated = coverImage.generated
 
       //And the animation
-      await itemWebService.saveAnimation(item)
+      if (!item.coverImageAsAnimation) {
+        await itemWebService.saveAnimation(item)
+      }
 
 
       //Save
@@ -348,6 +360,21 @@
 
       }
 
+
+      await $update()
+      uiService.showSpinner()
+
+
+      //Initialize git's fs
+      await gitService.initFS(itemViewModel.channel)
+
+      //Initialize IPFS
+      await ipfsService.init()
+      ipfsReady = ipfsService.ipfs != undefined
+
+
+      uiService.hideSpinner()
+      await $update()
 
 
     })

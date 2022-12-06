@@ -140,7 +140,7 @@ class PublishController {
             return {
                 channelViewModel: channelViewModel,
                 settings: settings,
-                repoURI: existingForkResult.http_url_to_repo
+                repoURI: existingForkResult?.http_url_to_repo
 
             }
 

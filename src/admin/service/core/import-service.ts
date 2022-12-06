@@ -44,6 +44,8 @@ import { TokenMetadata } from "../../dto/token-metadata-cache.js";
 import { QueryCache } from "../../dto/query-cache.js"
 import { QueryCacheService } from "./query-cache-service.js"
 import { SchemaService } from "./schema-service.js"
+import { ItemWebService } from "../web/item-web-service.js"
+import { ChannelWebService } from "../web/channel-web-service.js"
 
 const gatewayTools = new IPFSGatewayTools()
 
@@ -52,9 +54,11 @@ class ImportService {
 
     constructor(
         private channelService: ChannelService,
+        private channelWebService: ChannelWebService,
         private queryCacheService:QueryCacheService,
         private schemaService:SchemaService,
         private itemService: ItemService,
+        private itemWebService:ItemWebService,
         private authorService: AuthorService,
         private ipfsService: IpfsService,
         private imageService: ImageService,
@@ -266,7 +270,7 @@ class ImportService {
         channel.attributeOptions = []
 
         //Insert channel to get an _id
-        await this.channelService.put(channel)
+        await this.channelWebService.put(channel)
 
 
         let tokenIdStatsQueryCache = new QueryCache()
@@ -343,6 +347,7 @@ class ImportService {
 
                 try {
                     await this.imageService.put(image)
+                    await this.itemWebService.publishImage(channel, image.cid)
                 } catch(ex) {} //ignore duplicates
                 
                 item.coverImageId = image._id
@@ -403,6 +408,7 @@ class ImportService {
             //Save animation
             try {
                 await this.animationService.put(animation)
+                await this.itemWebService.publishAnimation(channel, animation.cid)
             } catch(ex) {} //ignore duplicates
             
 
@@ -434,7 +440,7 @@ class ImportService {
             item.originalJSONMetadata = metadata
 
             //Save item
-            await this.itemService.put(item)
+            await this.itemWebService.put(item)
 
             //Update token stats
             tokenIdStatsQueryCache.result.count++
@@ -466,7 +472,7 @@ class ImportService {
         
         channel.importSuccess = true
 
-        await this.channelService.put(channel)
+        await this.channelWebService.put(channel)
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)
         await this.channelService.buildAttributeCounts(channel._id)
@@ -484,6 +490,7 @@ class ImportService {
     private async _importAsFork(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, cid?:string) {
 
         let channelId 
+        let channelObj
 
         let idMap = new Map<string, string>()
 
@@ -548,9 +555,9 @@ class ImportService {
 
             channel.forkedFromId = oldId
 
-            let channelObj = Object.assign(new Channel(), channel)
+            channelObj = Object.assign(new Channel(), channel)
 
-            await this.channelService.put(channelObj) 
+            await this.channelWebService.put(channelObj) 
 
             idMap.set(oldId, channelObj._id)
             channelId = channelObj._id
@@ -590,6 +597,7 @@ class ImportService {
 
             try {
                 await this.animationService.put(animationObj)
+                await this.itemWebService.publishAnimation(channels[0], animationObj.cid)
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.animations.saved++
@@ -622,6 +630,8 @@ class ImportService {
 
             try {
                 await this.imageService.put(imageObj)
+                await this.itemWebService.publishImage(channels[0], imageObj.cid)
+
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.images.saved++
@@ -699,7 +709,7 @@ class ImportService {
 
             let itemObj = Object.assign(new Item(), item)
 
-            await this.itemService.put(itemObj) 
+            await this.itemWebService.put(itemObj) 
 
             //Update token stats
             tokenIdStatsQueryCache.result.count++
@@ -740,6 +750,9 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
         }
 
+        await this.channelWebService.put(channelObj) 
+
+
         this.logForkProgress(forkStatus, `
         ******************************\n
         ******************************\n
@@ -767,6 +780,7 @@ class ImportService {
         }
 
         let channelId
+        let channelObj
 
         forkStatus.authors.total = authors.length
         forkStatus.channels.total = channels.length
@@ -807,10 +821,10 @@ class ImportService {
             delete channel["_rev_tree"]
 
             //Check if it exists
-            let channelObj = await this.channelService.getLatestRevision(channel._id)
+            channelObj = await this.channelService.getLatestRevision(channel._id)
             channelObj["_deleted"] = false
 
-            await this.channelService.put(Object.assign(channelObj, channel))  
+            await this.channelWebService.put(Object.assign(channelObj, channel))  
 
             channelId = channelObj._id
 
@@ -849,6 +863,8 @@ class ImportService {
 
             try {
                 await this.animationService.put(animationObj)
+                await this.itemWebService.publishAnimation(channels[0], animationObj.cid)
+
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.animations.saved++
@@ -882,6 +898,8 @@ class ImportService {
 
             try {
                 await this.imageService.put(imageObj)
+                await this.itemWebService.publishImage(channels[0], imageObj.cid)
+
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.images.saved++
@@ -935,7 +953,7 @@ class ImportService {
             let itemObj = await this.itemService.getLatestRevision(item._id)
             itemObj["_deleted"] = false
             
-            await this.itemService.put(Object.assign(itemObj, item))  
+            await this.itemWebService.put(Object.assign(itemObj, item))  
 
             //Update token stats
             tokenIdStatsQueryCache.result.count++
@@ -969,6 +987,10 @@ class ImportService {
             forkStatus.staticPages.saved++
             this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
         }
+
+        await this.channelWebService.put(channelObj) 
+
+
 
         this.logForkProgress(forkStatus, `
         ******************************\n

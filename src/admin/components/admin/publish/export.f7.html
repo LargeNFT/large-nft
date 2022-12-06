@@ -72,14 +72,20 @@
                                                     NFT Collection Data
                                                 </h4>
     
-                                                <div class="item">
-                                                    <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
-                                                </div>
-        
-                                                <div class="item">
-                                                    <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
-                                                </div>
-    
+                                                ${publishStatus.images.total > 0 ? $h`
+                                                    <div class="item">
+                                                        <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
+                                                    </div>    
+                                                ` : $h`<span/>`}
+
+
+                                                ${publishStatus.animations.total > 0 ? $h`
+                                                    <div class="item">
+                                                        <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
+                                                    </div>
+                                                ` : $h`<span/>`}
+
+
                                                 <div class="item">
                                                     <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
                                                 </div>
@@ -91,15 +97,7 @@
                                                 <h4>
                                                     Database Backup
                                                 </h4>
-    
-                                                <div class="item">
-                                                    <label>Channels:</label> ${publishStatus.backups.channels.saved} /  ${publishStatus.backups.channels.total}
-                                                </div>
-        
-                                                <div class="item">
-                                                    <label>Authors:</label> ${publishStatus.backups.authors.saved} /  ${publishStatus.backups.authors.total}
-                                                </div>
-        
+           
                                                 <div class="item">
                                                     <label>Items:</label> ${publishStatus.backups.items.saved} / ${publishStatus.backups.items.total} 
                                                 </div>
@@ -108,17 +106,37 @@
                                                     <label>Images:</label> ${publishStatus.backups.images.saved} / ${publishStatus.backups.images.total} 
                                                 </div>
     
-                                                <div class="item">
-                                                    <label>Animations:</label> ${publishStatus.backups.animations.saved} / ${publishStatus.backups.animations.total} 
-                                                </div>
+
+                                                ${publishStatus.backups.animations.total ? $h`
+                                                    <div class="item">
+                                                        <label>Animations:</label> ${publishStatus.backups.animations.saved} / ${publishStatus.backups.animations.total} 
+                                                    </div>
+                                                ` : $h`<span/>`}
+
     
-                                                <div class="item">
-                                                    <label>Themes:</label> ${publishStatus.backups.themes.saved} / ${publishStatus.backups.themes.total} 
-                                                </div>
+                                                ${publishStatus.backups.themes.total ? $h`
+                                                    <div class="item">
+                                                        <label>Themes:</label> ${publishStatus.backups.themes.saved} / ${publishStatus.backups.themes.total} 
+                                                    </div>
+                                                ` : $h`<span/>`}
+
     
+                                                ${publishStatus.backups.staticPages.total ? $h`
+                                                    <div class="item">
+                                                        <label>Static Pages:</label> ${publishStatus.backups.staticPages.saved} / ${publishStatus.backups.staticPages.total} 
+                                                    </div>
+                                                ` : $h`<span/>`}
+
                                                 <div class="item">
-                                                    <label>Static Pages:</label> ${publishStatus.backups.staticPages.saved} / ${publishStatus.backups.staticPages.total} 
+                                                    <label>Channels:</label> ${publishStatus.backups.channels.saved} /  ${publishStatus.backups.channels.total}
                                                 </div>
+
+                                                ${publishStatus.backups.authors.total ? $h`
+                                                    <div class="item">
+                                                        <label>Authors:</label> ${publishStatus.backups.authors.saved} /  ${publishStatus.backups.authors.total}
+                                                    </div>    
+                                                ` : $h`<span/>`}
+
     
                                             </div>
                                         ` : $h`<span />`}

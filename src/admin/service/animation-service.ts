@@ -56,7 +56,9 @@ class AnimationService {
     await this.animationRepository.put(animation)
   }
 
-
+  async delete(animation:Animation): Promise<void> {
+    await this.animationRepository.delete(animation)
+  }
 
   public async newFromText(content) {
   

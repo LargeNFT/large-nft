@@ -214,7 +214,7 @@ class ItemRepository {
             group_level: 3
         })
 
-        console.log(result)
+        // console.log(result)
 
         return result.rows.map(row => {
             return {

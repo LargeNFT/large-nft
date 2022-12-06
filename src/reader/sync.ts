@@ -8,88 +8,27 @@ import arg from 'arg'
 
 import { Container } from "inversify"
 
-// import PouchDB from 'pouchdb-node';
-
-
 import { getMainContainer } from "./node-inversify.config.js"
 import { ChannelWebService } from "./service/web/channel-web-service.js"
-import { ChannelService } from "./service/channel-service.js"
-import { ItemWebService } from "./service/web/item-web-service.js"
-import { StaticPageService } from "./service/static-page-service.js"
-
-import baseConfig from './base-config.json'
-
 
 
 import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js"
 import { WalletService } from "./service/core/wallet-service.js"
+import { ProcessConfig } from "./util/process-config.js"
 
 
 let channelId
 
 
-function parseArgumentsIntoOptions(rawArgs) {
-
-  const args = arg(
-    {
-      '--dir': String,
-      '--env': String
-    },
-    {
-      argv: rawArgs.slice(2),
-    }
-  )
-
-  return {
-    dir: args['--dir'] || "",
-    env: args['--env'] || "production"
-  }
-
-}
-
-
-
 
 let sync = async () => {
 
-  let theArgs = parseArgumentsIntoOptions(process.argv)
-
-  let baseDir = theArgs.dir ? theArgs.dir : process.env.INIT_CWD
-
-  if (!baseDir) baseDir = "."
-
-  let config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
-
-  config.publicPath = `${baseDir}/public`
-
-  if (theArgs.env == "dev") {
-
-    config.hostname = baseConfig.hostname
-    config.baseURL = baseConfig.baseURL
-    config.maxItems = baseConfig.maxItems
-
-  } else {
-
-    //Set base URL
-    if (!config.baseURL) {
-      config.baseURL = baseConfig.baseURL
-    }
-
-    //Set hostname
-    if (!config.hostname) {
-      config.hostname = baseConfig.hostname
-    }
-
-    //Set max items
-    if (!config.maxItems) {
-      config.maxItems = baseConfig.maxItems
-    }
-  }
-
-  let contract = JSON.parse(fs.readFileSync(`${baseDir}/backup/contract/contract.json`, 'utf8'))
-  let contractAbi = JSON.parse(fs.readFileSync(`${baseDir}/backup/contract/contract-abi.json`, 'utf8'))
+  let config:any = await ProcessConfig.getConfig() 
 
   console.log(config)
+
+  let contract = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract.json`, 'utf8'))
+  let contractAbi = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract-abi.json`, 'utf8'))
 
 
 
@@ -118,7 +57,7 @@ let sync = async () => {
 
 
 
-  container = await getMainContainer(container, config.baseURL, config.hostname, baseDir)
+  container = await getMainContainer(container, config.baseURL, config.hostname, config.baseDir)
 
   let channelWebService: ChannelWebService = container.get("ChannelWebService")
 

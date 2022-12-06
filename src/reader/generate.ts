@@ -17,10 +17,7 @@ import pkg from 'convert-svg-to-png';
 const { convert } = pkg;
 
 import { getMainContainer } from "./node-inversify.config.js"
-import { ChannelWebService } from "./service/web/channel-web-service.js"
-import { ChannelService } from "./service/channel-service.js"
 import { ItemWebService } from "./service/web/item-web-service.js"
-import { StaticPageService } from "./service/static-page-service.js"
 
 let channelId
 
@@ -34,97 +31,16 @@ import attributesEjs from './ejs/pages/attributes.ejs'
 import exploreEjs from './ejs/pages/explore.ejs'
 import staticPageEjs from './ejs/pages/static-page.ejs'
 
-import baseConfig from './base-config.json'
-import packageConfig from "../../package.json"
 
-function parseArgumentsIntoOptions(rawArgs) {
-
-  const args = arg(
-    {
-      '--dir': String,
-      '--env': String
-    },
-    {
-      argv: rawArgs.slice(2),
-    }
-  )
-
-  return {
-    dir: args['--dir'] || "",
-    env: args['--env'] || "production"
-  }
-
-}
+import { GenerateService, GenerateViewModel } from "./service/core/generate-service.js"
+import { ProcessConfig } from "./util/process-config.js"
 
 
 let generate = async () => {
 
-  let theArgs = parseArgumentsIntoOptions(process.argv)
-
-  let baseDir = theArgs.dir ? theArgs.dir : process.env.INIT_CWD
-
-  if (!baseDir) baseDir = "."
-
-  // console.log(theArgs)
-  // console.log(baseDir)
-
-  let config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
-
-  config.publicPath = `${baseDir}/public`
-  config.VERSION = packageConfig.version
-
-
-  if (theArgs.env == "dev") {
-
-    config.hostname = baseConfig.hostname
-    config.baseURL = baseConfig.baseURL
-    config.maxItems = baseConfig.maxItems
-
-  } else {
-
-    //Set base URL
-    if (!config.baseURL) {
-      config.baseURL = baseConfig.baseURL
-    }
-
-    //Set hostname
-    if (!config.hostname) {
-      config.hostname = baseConfig.hostname
-    }
-
-    //Set max items
-    if (!config.maxItems) {
-      config.maxItems = baseConfig.maxItems
-    }
-  }
-
-  //Create marketplace config from base config + anything set in config
-  if (config.marketplaces?.length > 0) {
-    for (let marketplace of config.marketplaces) {
-
-      //Look it up in base config
-      let matches = baseConfig.marketplaces.filter(m => m.name == marketplace.name)
-
-      if (matches?.length > 0) {
-
-        //Set asset link
-        if (!marketplace.assetLink) {
-          marketplace.assetLink = matches[0].assetLink
-        }
-
-        if (!marketplace.link) {
-          marketplace.link = matches[0].link
-        }
-
-      }
-
-    }
-  }
+  let config:any = await ProcessConfig.getConfig() 
 
   console.log(config)
-
-  let showMintPage = config?.showMintPage
-
 
 
   let container = new Container()
@@ -133,18 +49,11 @@ let generate = async () => {
     return channelId
   })
 
-  // container.bind("PouchDB").toConstantValue(PouchDB)
   container.bind("PouchDB").toConstantValue({})
   container.bind("contracts").toConstantValue([])
 
-  container = await getMainContainer(container, config.baseURL, config.hostname, baseDir)
 
-  const PER_PAGE = 35
-
-  let channelWebService: ChannelWebService = container.get("ChannelWebService")
-  let channelService: ChannelService = container.get("ChannelService")
-  let itemWebService: ItemWebService = container.get("ItemWebService")
-  let staticPageService: StaticPageService = container.get("StaticPageService")
+  container = await getMainContainer(container, config.baseURL, config.hostname, config.baseDir)
 
 
   //Not great to get the impl here. Maybe load should be part of interface. 
@@ -156,46 +65,33 @@ let generate = async () => {
   //@ts-ignore
   await staticPageRepository.load()
 
+  let itemWebService:ItemWebService = container.get("ItemWebService")
+  let generateService:GenerateService = container.get("GenerateService")
+
+  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config)
+
   //Attribute report
-  let attributeTotals = await channelWebService.buildAttributeTotals()
-  await fs.promises.writeFile(`${config.publicPath}/attributeTotals.json`, JSON.stringify(attributeTotals))
+  await fs.promises.writeFile(`${config.publicPath}/attributeTotals.json`, JSON.stringify(generateViewModel.attributeTotals))
 
-  //Get channel
-  let channel = await channelService.get()
-  let channelViewModel = await channelWebService.get(0)
+  channelId = generateViewModel.channelViewModel.channel._id
 
-
-  channelId = channelViewModel.channel._id
-
-  //Get items
-  let itemViewModels = await itemWebService.list(0, config.maxItems)
-
-  //Build item pages
-  let itemPages = await itemWebService.buildItemPages(itemViewModels, PER_PAGE)
 
   //Write these to files
   let pageCount = 0
-
   await fs.promises.mkdir(`${config.publicPath}/itemPages`, { recursive: true })
 
-  for (let itemPage of itemPages) {
+  for (let itemPage of generateViewModel.itemPages) {
     // console.log(`Writing item page: public/itemPages/${pageCount}.json`)
     await fs.promises.writeFile(`${config.publicPath}/itemPages/${pageCount}.json`, JSON.stringify(itemPage))
     pageCount++
   }
 
 
-  //Get first page of items for explore page
-  let itemResults = await itemWebService.exploreList({}, 0, PER_PAGE)
-  let firstPageExploreItems = itemResults.items
 
-  //Get svg images to convert to png
-  let svgItems = itemViewModels.filter(i => i.coverImage.generated)
 
   //Convert images
-  console.log(`Converting ${svgItems.length} images`)
-
-  for (let item of svgItems) {
+  console.log(`Converting ${generateViewModel.svgItems.length} images`)
+  for (let item of generateViewModel.svgItems) {
 
     await fs.promises.mkdir(`${config.publicPath}/backup/generated/images`, { recursive: true })
 
@@ -218,14 +114,6 @@ let generate = async () => {
   }
 
 
-  //The list of routable pages to generate.
-  let routablePages = await staticPageService.listRoutablePages()
-
-  //Some pages have trouble passing the 0.0.0 format of the version string (gets confused as weird number) so also
-  //create a base64Encoded copy
-  let base64Version = Buffer.from(JSON.stringify(config.VERSION)).toString('base64')
-
-
   if (!config.externalLinks) {
     config.externalLinks = []
   }
@@ -240,16 +128,16 @@ let generate = async () => {
 
 
   let baseViewModel = {
-    channelViewModel: channelViewModel,
-    attributeReport: attributeTotals,
-    routablePages: routablePages,
+    channelViewModel: generateViewModel.channelViewModel,
+    attributeReport: generateViewModel.attributeTotals,
+    routablePages: generateViewModel.routablePages,
     baseURL: config.baseURL,
     hostname: config.hostname,
     marketplaces: config.marketplaces,
     externalLinks: config.externalLinks,
-    base64Version: base64Version,
-    channelId: channelViewModel.channel._id,
-    showMintPage: showMintPage,
+    base64Version: generateViewModel.base64Version,
+    channelId: generateViewModel.channelViewModel.channel._id,
+    showMintPage: config.showMintPage,
     headContents: headContents,
     bodyContents: bodyContents,
     excerptHtml: excerptHtml,
@@ -259,9 +147,8 @@ let generate = async () => {
 
 
   console.log("Copying backup and Large Admin...")
-
-  fs.cpSync(`${baseDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
-  fs.cpSync(`${baseDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
+  fs.cpSync(`${config.baseDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
+  fs.cpSync(`${config.baseDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
 
   //Read app.html and index.html from Large and update the paths.
   let indexBuffer = fs.readFileSync(`${config.publicPath}/large/index.html`)
@@ -292,13 +179,12 @@ let generate = async () => {
 
   //Move SW
   fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
-
   fs.mkdirSync(config.publicPath, { recursive: true })
 
   const indexResult = Eta.render(indexEjs, {
-    title: channelViewModel.channel.title,
-    firstPageExploreItems: firstPageExploreItems,
-    firstPost: itemViewModels[0],
+    title: generateViewModel.channelViewModel.channel.title,
+    firstPageExploreItems: generateViewModel.firstPageExploreItems,
+    firstPost: generateViewModel.itemViewModels[0],
     baseViewModel: baseViewModel
   })
 
@@ -306,10 +192,10 @@ let generate = async () => {
 
 
   //Mint page
-  if (showMintPage) {
+  if (config.showMintPage) {
 
     const mintResult = Eta.render(mintEjs, {
-      title: channelViewModel.channel.title,
+      title: generateViewModel.channelViewModel.channel.title,
       baseViewModel: baseViewModel
     })
 
@@ -320,7 +206,7 @@ let generate = async () => {
 
   //Search page
   const searchResult = Eta.render(searchEjs, {
-    title: channelViewModel.channel.title,
+    title: generateViewModel.channelViewModel.channel.title,
     baseViewModel: baseViewModel
   })
 
@@ -329,7 +215,7 @@ let generate = async () => {
 
   //Attribute Report
   const attributesResult = Eta.render(attributesEjs, {
-    title: channelViewModel.channel.title,
+    title: generateViewModel.channelViewModel.channel.title,
     baseViewModel: baseViewModel
   })
 
@@ -337,8 +223,8 @@ let generate = async () => {
 
   //Explore
   const exploreResult = Eta.render(exploreEjs, {
-    title: channelViewModel.channel.title,
-    firstPageExploreItems: firstPageExploreItems,
+    title: generateViewModel.channelViewModel.channel.title,
+    firstPageExploreItems: generateViewModel.firstPageExploreItems,
     baseViewModel: baseViewModel
   })
 
@@ -347,20 +233,19 @@ let generate = async () => {
 
   //404 page
   const fourOhFourResult = Eta.render(fourOhFourEjs, {
-    title: channelViewModel.channel.title,
+    title: generateViewModel.channelViewModel.channel.title,
     baseViewModel: baseViewModel
   })
 
   fs.writeFileSync(`${config.publicPath}/404.html`, fourOhFourResult)
 
 
-
   //Build static pages
-  if (channelViewModel.staticPagesViewModel?.links?.length > 0) {
-    for (let staticPage of channelViewModel.staticPagesViewModel?.links) {
+  if (generateViewModel.channelViewModel.staticPagesViewModel?.links?.length > 0) {
+    for (let staticPage of generateViewModel.channelViewModel.staticPagesViewModel?.links) {
 
       const staticPagesResult = Eta.render(staticPageEjs, {
-        title: channelViewModel.channel.title,
+        title: generateViewModel.channelViewModel.channel.title,
         staticPage: staticPage,
         baseViewModel: baseViewModel
       })
@@ -373,7 +258,7 @@ let generate = async () => {
   //Generate token pages
 
   //Read the template file 
-  for (let itemViewModel of itemViewModels) {
+  for (let itemViewModel of generateViewModel.itemViewModels) {
 
     let rowItemViewModel = itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage)
 
@@ -399,10 +284,6 @@ let generate = async () => {
     console.timeEnd(`Generating /t/${itemViewModel.item.tokenId}`)
 
 
-
-
-
-
   }
 
 }
@@ -411,11 +292,3 @@ let generate = async () => {
 
 generate()
 
-
-
-
-// export default () => {
-//   console.log(process)
-
-//   console.log('HERE')
-// }

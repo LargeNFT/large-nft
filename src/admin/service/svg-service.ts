@@ -33,10 +33,6 @@ class SvgService {
         }
 
 
-        // console.log(`Theme CSS: ${themeCss}`)
-        // console.log(`Individual CSS: ${individualCss}`)
-
-
         let start = `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1'>
             <style>
                 * {

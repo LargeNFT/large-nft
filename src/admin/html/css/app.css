@@ -1044,6 +1044,11 @@ input[type="text"]:disabled {
   margin-right: auto;
 }
 
+.animation-content.animation-image img {
+  width: 100%;
+  max-width: 100%;
+}
+
 @media only screen and (max-width: 1024px) {
   .animation-image, .animation-card {
     width: unset;

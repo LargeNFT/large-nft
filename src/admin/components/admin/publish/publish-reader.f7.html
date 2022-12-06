@@ -163,6 +163,7 @@
     import { PublishService } from "../../../service/core/publish-service"
 
     import { GitlabService } from "../../../service/core/gitlab-service"
+    import { GitService } from "../../../service/core/git-service"
 
     import { QueueService } from   "../../../service/core/queue-service"
 
@@ -170,7 +171,8 @@
 
 
     import Navbar from "../../admin/navbar.f7.html"
-    
+    import toBuffer from "it-to-buffer"
+
   
     export default (props, { $, $h, $on, $f7, $update }) => {
   
@@ -178,6 +180,8 @@
         let ipfsService = ContainerService.getInstance(IpfsService)
         let queueService = ContainerService.getInstance(QueueService)
         let gitlabService = ContainerService.getInstance(GitlabService)
+        let gitService = ContainerService.getInstance(GitService)
+
         let publishService = ContainerService.getInstance(PublishService)
 
         let ipfsReady = ipfsService.ipfs != undefined
@@ -225,7 +229,11 @@
           $f7.preloader.showIn(elem)
 
           try {
-            await gitlabService.deployReaderGit(channelViewModel.channel)
+
+            let ipfsDir = `/export/${channel._id}`
+
+            await gitService.deployReaderGit(channelViewModel.channel, await toBuffer(this.ipfsService.ipfs.files.read(`${ipfsDir}/contractMetadata.json`)) )
+
           } catch(ex) {
             console.log(ex)
             $f7.dialog.alert(ex, "There was an error")
@@ -249,9 +257,8 @@
           $f7.preloader.showIn(elem)
 
           try {
-            await gitlabService.clearGitRepos()
+            await gitService.clearGitRepos()
           } catch(ex) {
-            console.log(ex)
             $f7.dialog.alert(ex, "There was an error")
           }
 

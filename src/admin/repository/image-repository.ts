@@ -37,6 +37,10 @@ class ImageRepository {
         await this.db.put(image)
     }
 
+    async delete(image: Image): Promise<void> {
+        await this.db.remove(image)
+    }
+
     async getByIds(ids:string[]) {
         let results = await this.db.allDocs({
             keys: ids,

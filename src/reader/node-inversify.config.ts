@@ -52,6 +52,7 @@ import { ERCEvent } from "./dto/erc-event.js";
 import { ContractState } from "./dto/contract-state.js";
 import { ComponentState } from "./dto/component-state.js";
 import { providers } from "ethers"
+import { GenerateService } from "./service/core/generate-service.js";
 
 
 let container:Container
@@ -65,6 +66,7 @@ function getMainContainer(customContainer:Container, baseURI:string, hostname:st
   container.bind("framework7").toConstantValue({})
   container.bind("baseURI").toConstantValue(baseURI)
   container.bind("hostname").toConstantValue(hostname)
+
   container.bind("baseDir").toConstantValue(baseDir)
 
   container.bind("provider").toConstantValue(() => {
@@ -161,6 +163,7 @@ function getMainContainer(customContainer:Container, baseURI:string, hostname:st
   container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
 
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
+  container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
 
   //@ts-ignore
   container.bind<DatabaseService>("DatabaseService").toConstantValue({})

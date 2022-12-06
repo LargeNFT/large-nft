@@ -63,7 +63,17 @@
 
           <div class="card col-100 animation-card">
             <div class="card-content ${itemViewModel.item.coverImageAsAnimation ? $h`card-content-padding` : $h``}">
-              <div class="animation-content ${itemViewModel.item.coverImageAsAnimation ? $h`animation-image` : $h``}" innerHTML="${itemViewModel.animationContentHTML}"></div>
+
+              ${itemViewModel.item.coverImageAsAnimation ? $h`
+                <div class="animation-content animation-image">
+                  <img src="${itemViewModel.coverImage?.url}" />
+                </div>
+               
+              ` : $h`
+                <div class="animation-content" innerHTML="${itemViewModel.animationContentHTML}"></div>
+
+              `}
+
             </div>
 
             ${itemViewModel.editable ? $h`
@@ -169,14 +179,21 @@
 
 
 
-          <div class="card">
-            <div class="card-header">Cover Image</div>
-            <div class="card-content">
-              <div class="square">
-                <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" />
+
+          ${!itemViewModel.item.coverImageAsAnimation ? $h`
+            <div class="card">
+              <div class="card-header">Cover Image</div>
+              <div class="card-content">
+                <div class="square">
+                  <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" />
+                </div>
               </div>
             </div>
-          </div>
+           
+          ` : $h`<span />`}
+
+
+
 
         </div>
 
@@ -328,7 +345,7 @@
     let itemWebService = ContainerService.getInstance(ItemWebService)
 
     let itemViewModel = props.itemViewModel
-    // console.log(itemViewModel)
+    console.log(itemViewModel)
     
     let showEdit = itemViewModel.editable
 

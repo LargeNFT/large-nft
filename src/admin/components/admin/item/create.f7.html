@@ -46,11 +46,16 @@
 
             <div class="row block">
 
-              <div class="col-70"></div>
+              <div class="col-40"></div>
 
-              <button type="submit" class="button button-fill col-30" tabindex="12">
-                Save
-              </button>
+              <a href="/admin/channel/show/${itemViewModel.channel._id}" class="button button-outline color-gray col-30" tabindex="12">Cancel</a>
+
+
+              ${ipfsReady ? $h`
+                <button type="submit" class="button button-fill col-30" tabindex="12">Save</button>
+              ` : $h`
+                <button class="button button-outline color-lightblue col-30" tabindex="12" disabled>IPFS initializing...</button>
+              `}
 
             </div>
 
@@ -81,6 +86,9 @@
 <script>
 
   import { ContainerService } from "../../../service/core/container-service"
+  import { IpfsService } from "../../../service/core/ipfs-service"
+  import { GitService } from "../../../service/core/git-service"
+
   import { QuillEditorService } from "../../../service/quill-editor-service"
   import { QuillService } from "../../../service/quill-service"
 
@@ -114,8 +122,11 @@
     let itemService = ContainerService.getInstance(ItemService)
     let imageService = ContainerService.getInstance(ImageService)
     let itemWebService = ContainerService.getInstance(ItemWebService)
+    let ipfsService = ContainerService.getInstance(IpfsService)
+    let gitService = ContainerService.getInstance(GitService)
 
     let walletService = ContainerService.getWalletService()
+    let ipfsReady = false
 
 
     let itemViewModel = props.itemViewModel
@@ -133,6 +144,12 @@
     const formSubmit = async (e) => {
 
       e.preventDefault()
+
+      //Initialize IPFS
+      await ipfsService.init()
+
+      //Initialize git's fs
+      await gitService.initFS(itemViewModel.channel)
 
       let formData = $f7.form.convertToData('#create-item-form')
 
@@ -170,7 +187,10 @@
 
       //And the animation
       item.tokenId = await itemService.getNextTokenId(item.channelId) //Will get overwritten when saved but we need it for the animation
-      await itemWebService.saveAnimation(item)
+
+      if (!item.coverImageAsAnimation) {
+        await itemWebService.saveAnimation(item)
+      }
 
       //Save
       try {
@@ -205,7 +225,6 @@
     $on('pageInit', async (e, page) => {
 
       quillEditorService.buildQuillPostEditor("#create-item-editor", "#create-item-toolbar")
-
 
       quillEditorService.activeEditor.root.addEventListener('blur', function () {
         document.dispatchEvent(new CustomEvent('load-cover-images'))
@@ -256,10 +275,6 @@
 
 
 
-
-
-
-
       //Cover image
       coverImageCSSQuillEditor = new Quill('#cover-image-css-editor', {
         bounds: ".page-content",
@@ -291,6 +306,22 @@
           toolbar: false
         }
       })
+
+
+      await $update()
+      uiService.showSpinner()
+
+
+      //Initialize git's fs
+      await gitService.initFS(itemViewModel.channel)
+
+      //Initialize IPFS
+      await ipfsService.init()
+      ipfsReady = ipfsService.ipfs != undefined
+
+
+      uiService.hideSpinner()
+      await $update()
 
 
     })

@@ -58,6 +58,10 @@ class ImageService {
     await this.imageRepository.put(image)
   }
 
+  async delete(image:Image): Promise<void> {
+    await this.imageRepository.delete(image)
+  }
+
   async newFromBuffer(buffer: Uint8Array): Promise<Image> {
 
     const image: Image = new Image()

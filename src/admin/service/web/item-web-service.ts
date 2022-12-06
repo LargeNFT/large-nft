@@ -23,10 +23,13 @@ import { Theme } from "../../dto/theme.js";
 import { ItemListViewModel } from "../../dto/viewmodel/item-list-view-model.js";
 import { AggregateStats } from "../../dto/aggregate-stats.js";
 import { QueryCacheService } from "../../service/core/query-cache-service.js";
-import { ItemRepository } from "../../repository/item-repository.js";
 import { QueryCache } from "../../dto/query-cache.js";
 import { AttributeCountService } from "../../service/attribute-count-service.js";
 import { AttributeCount } from "../../dto/attribute.js";
+import { ExportService } from "../core/export-service.js";
+import { GitService } from "../core/git-service.js";
+import { IpfsService } from "../core/ipfs-service.js";
+
 
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
@@ -43,7 +46,9 @@ class ItemWebService {
         private quillService:QuillService,
         private themeService:ThemeService,
         private queryCacheService:QueryCacheService,
-        private itemRepository:ItemRepository,
+        private exportService:ExportService,
+        private gitService:GitService,
+        private ipfsService:IpfsService,
         private attributeCountService:AttributeCountService
     ) { }
 
@@ -212,7 +217,7 @@ class ItemWebService {
         let images:ImageViewModel[] = await this.getImagesFromContent(item)
 
         //If cover image not part of image list add it.
-        if (images.filter(i => i.cid == coverImage.cid).length == 0) {
+        if (images.filter(i => i.cid == coverImage?.cid).length == 0) {
             images.push(coverImage)
         }
 
@@ -456,7 +461,48 @@ class ItemWebService {
 
     async put(item:Item) : Promise<void> {
 
+        let channel = await this.channelService.get(item.channelId)
+
+
+        //Get the image cids that we'll be left with.
+        let imageCids = this.exportService.getImageCidsByItem(item)
+
+
+        //If the item exists we need to do some cleanup before saving.
+        //Find any images and animations that are being removed and remove them.
+        if (item._id) {
+
+            let existing = await this.itemService.get(item._id)
+            
+            //Loop through the existing images and find the ones we're removing.
+            let removedImageCids = this.exportService.getImageCidsByItem(existing).filter( cid => !imageCids.includes(cid))
+
+            //Remove
+            for (let removedCid of removedImageCids) {
+                console.log(`Removing ${removedCid} from images.`)
+                await this.deletePublishedImageByChannel(channel, removedCid)
+            }
+
+            //Remove animation if changed
+            if (item.animationId != existing.animationId) {
+                console.log(`Removing ${existing.animationId} from animations.`)
+                await this.deletePublishedAnimationByChannel(channel, existing.animationId)
+            }
+
+        }
+
+        //Put item  
         await this.itemService.put(item)
+
+        
+        //Put images in IPFS and git
+        for (let imageCid of imageCids) {
+            await this.publishImage(channel, imageCid )
+        }
+
+        //Put animation
+        await this.publishAnimation(channel, item.animationId)
+
 
         let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${item.channelId}`)
 
@@ -508,7 +554,24 @@ class ItemWebService {
 
     async delete(item:Item) : Promise<void> {
 
+        let channel = await this.channelService.get(item.channelId)
+
+        //Delete item
         await this.itemService.delete(item)
+
+        // //Delete images
+        let imageCids = this.exportService.getImageCidsByItem(item)
+        for (let imageCid of imageCids) {
+            await this.deletePublishedImageByChannel(channel, imageCid)
+        }
+
+        // //Delete animation
+        await this.deletePublishedAnimationByChannel(channel, item.animationId)
+
+        // //Delete JSON metadata
+        await this.deleteJSONForItem(channel, item)
+
+
 
         let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${item.channelId}`)
 
@@ -563,6 +626,166 @@ class ItemWebService {
 
         return itemCopy
 
+    }
+
+
+
+    async publishImage(channel:Channel, imageCid:string) : Promise<void> {
+
+        let image
+
+        try {
+            image = await this.imageService.get(imageCid)
+        } catch(ex) {}
+
+
+        if (!image) return
+
+        let ipfsDirectory = `/export/${channel._id}`
+        let ipfsFilename = `${ipfsDirectory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}` 
+
+        let content = await this.imageService.getImageContent(image)
+
+
+        //Check if it's already in IPFS
+        let stat
+
+        try {
+            stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
+        } catch(ex) {}
+
+        if (!stat?.cid?.toString()) {
+
+            console.log(`Publishing image ${image._id}`)
+
+            //Add to IPFS
+            const result = await this.ipfsService.ipfs.add({
+                content: await this.imageService.getImageContent(image)
+            })
+
+            //Move to MFS directory in IPFS
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:true })
+
+            //Add to git
+            let gitDirectory = this.gitService.getBaseDir(channel)
+            await this.gitService.writeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, content)
+        }
+
+
+        console.log(`Saved image ${imageCid}`)
+
+
+    }
+
+    async deletePublishedImageByChannel(channel:Channel, removedCid:string): Promise<void> {
+
+        try {
+
+            let image = await this.imageService.get(removedCid)
+
+            //TODO: Make sure the image isn't still in use by another
+
+
+            await this.imageService.delete(image)
+
+            //Remove from IPFS
+            let ipfsDirectory = `/export/${channel._id}`
+            await this.ipfsService.ipfs.files.rm(`${ipfsDirectory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,  { recursive: true, flush: true})
+
+            //Remove from git
+            let gitDirectory = this.gitService.getBaseDir(channel)
+            await this.gitService.removeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`)
+
+        } catch(ex) {}
+
+
+
+    }
+
+
+    async publishAnimation(channel:Channel, animationCid:string) : Promise<void> {
+
+        let animation
+
+        try {
+            animation = await this.animationService.get(animationCid)
+        } catch(ex) {}
+
+
+        if (!animation) return
+
+        let ipfsDirectory = `/export/${channel._id}`
+        let ipfsFilename = `${ipfsDirectory}/animations/${animation.cid}.html`
+
+
+        let animationContent = {
+            content: animation.content
+        }
+
+        //Check if it's already in IPFS
+        let stat
+
+        try {
+            stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
+        } catch(ex) { }
+
+
+        if (!stat?.cid?.toString()) {
+            
+            console.log(`Publishing animation ${animation._id}`)
+
+            const result = await this.ipfsService.ipfs.add(animationContent)
+
+            //Move to MFS directory in IPFS
+            await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:true })
+    
+            //Add to git
+            let gitDirectory = this.gitService.getBaseDir(channel)
+            await this.gitService.writeFile(`${gitDirectory}/backup/export/animations/${animation.cid}.html`, animation.content)
+
+        }
+
+
+        console.log(`Saved animation ${animationCid}`)
+
+
+    }
+
+
+    async deletePublishedAnimationByChannel(channel:Channel, animationId:string): Promise<void> {
+
+        try {
+
+            let animation = await this.imageService.get(animationId)
+
+            //TODO: Make sure the image isn't still in use by another
+
+
+            await this.animationService.delete(animation)
+
+            //Remove from IPFS
+            let ipfsDirectory = `/export/${channel._id}`
+            await this.ipfsService.ipfs.files.rm(`${ipfsDirectory}/animations/${animation.cid}.html`,  { recursive: true, flush: true})
+
+            //Remove from git
+            let gitDirectory = this.gitService.getBaseDir(channel)
+            await this.gitService.removeFile(`${gitDirectory}/backup/export/animations/${animation.cid}.html`)
+
+        } catch(ex) {}
+
+
+    }
+
+
+    async deleteJSONForItem(channel:Channel, item:Item): Promise<void> {
+
+        //Remove from IPFS
+        let ipfsDirectory = `/export/${channel._id}`
+        await this.ipfsService.ipfs.files.rm(`${ipfsDirectory}/metadata/${item.tokenId}.json`,  { recursive: true, flush: true})
+
+        //Remove from git
+        let gitDirectory = this.gitService.getBaseDir(channel)
+        await this.gitService.removeFile(`${gitDirectory}/backup/export/metadata/${item.tokenId}.json`)
     }
 
 }

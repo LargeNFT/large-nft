@@ -64,6 +64,9 @@ class ItemService {
 
         await this.itemRepository.put(item)
 
+        console.log(`Saved item #${item.tokenId}`, item)
+
+
     }
 
     async delete(item:Item): Promise<void> {

@@ -6,6 +6,10 @@ import { SettingsService } from "./settings-service.js"
 @injectable()
 class IpfsService {
 
+
+  @inject(SettingsService)
+  private settingsService:SettingsService
+
   public peerCount:number=0
   public addresses
 
@@ -16,7 +20,6 @@ class IpfsService {
   constructor(
     @inject('ipfsInit') private ipfsInit,
     @inject('ipfsRemoteInit') private ipfsRemoteInit,
-    private settingsService:SettingsService
   ) {}
 
 

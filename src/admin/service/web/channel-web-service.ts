@@ -175,7 +175,7 @@ class ChannelWebService {
         }
     }
 
-    async put(channel:Channel, coverImage:Image, coverBanner:Image) : Promise<void> {
+    async put(channel:Channel, coverImage?:Image, coverBanner?:Image) : Promise<void> {
         
         await this.channelService.put(channel)
 

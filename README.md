@@ -25,10 +25,8 @@ Large is open source software and is not a cloud service. Large gives users the 
 
 ### Install dependencies
 ```console
-
 git clone https://gitlab.com/american-space-software/large.git
 cd large
-
 npm install
 ```
 
@@ -37,7 +35,7 @@ npm install
 npm run build
 ```
 
-### Dev server
+### Development server
 ```console
 npm run start:dev
 ```

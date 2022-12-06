@@ -4,10 +4,15 @@ import http from 'isomorphic-git/http/web/index.js'
 import { AuthorService } from "../author-service.js";
 import { SettingsService } from "./settings-service.js";
 import axios from "axios";
+
+import contractABI from '../../../../contracts.json'
 import { GitlabService } from "./gitlab-service.js";
+
+
 
 @injectable()
 class GitService {
+
 
     fs
 
@@ -16,16 +21,37 @@ class GitService {
 
     constructor(
         @inject('fs') private getFS:Function,
-        @inject('git') private git,
+        @inject('git') public git,
         private settingsService:SettingsService,
         private authorService:AuthorService
     ) {}
 
 
+    async initFS(channel:Channel) {
+
+        this.fs = await this.getFS()
+
+
+        let dir = this.getBaseDir(channel)
+
+        let exists = await this._dirExists(dir)
+        // let gitExists = await this._dirExists(`${dir}/.git`)
+
+
+        //Create directory structure
+        if (!exists) {
+            await this._createDirectoryStructure(dir)
+        }
+
+
+
+    }
+
     async init(channel:Channel) {
 
+        if (!this.fs) await this.initFS(channel)
+
         //Init FS
-        this.fs = await this.getFS()
         let fs = this.fs
 
         //Make sure we have an author
@@ -52,8 +78,6 @@ class GitService {
 
         let exists = await this._dirExists(dir)
         let gitExists = await this._dirExists(`${dir}/.git`)
-
-        console.log(exists, gitExists, gitUsername, this.git)
 
 
         //Create directory structure
@@ -108,16 +132,42 @@ class GitService {
         return `/repos-${channel._id}`
     }
 
-    public async writeFile(filepath, content) {
+    public async writeFile(filepath:string, content) {
 
         console.log(`Saving file to git repo: ${filepath}`)
 
-        await this.fs.promises.writeFile(
-            `${filepath}`, 
-            content
-        )
+        let fs = this.fs
+        let dir = filepath.substring(0, filepath.lastIndexOf("/"))
+        let gitdir = filepath.substring(0, filepath.indexOf("/", 1) + 1) + ".git"
+
+        let filename = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.length )
+
+        await this.fs.promises.writeFile(filepath, content)
+
+        let status = await this.git.status({ fs, dir, gitdir, filepath: filename })    
+
+        if (status != "unmodified") {
+            await this.git.add({ fs, dir, gitdir, filepath: filename })
+        }
 
     }
+
+    public async removeFile(filepath:string) {
+
+        console.log(`Removing file from git repo: ${filepath}`)
+
+        let fs = this.fs
+        let dir = filepath.substring(0, filepath.lastIndexOf("/"))
+        let gitdir = filepath.substring(0, filepath.indexOf("/", 1) + 1) + ".git"
+
+        let filename = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.length )
+
+        await this.fs.promises.unlink(filepath)
+
+        await this.git.remove({ fs, dir, gitdir, filepath: filename })
+
+    }
+
 
     public async gitAddAll(channel:Channel) {
 
@@ -209,7 +259,7 @@ class GitService {
 
 
 
-    private async clearGitRepos() {
+    public async clearGitRepos() {
 
         //Init FS
         this.fs = await this.getFS()
@@ -233,6 +283,52 @@ class GitService {
     
         }
     
+    }
+
+    async deployReaderGit(channel:Channel, contractMetadata:any) {
+
+        let settings = await this.settingsService.get()
+
+        if (settings.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        //Init or load repo
+        await this.init(channel)
+        
+        this.logPublishReaderProgress(`Copying files from IPFS to git repo...`)
+
+        let dir = this.getBaseDir(channel)
+
+        
+        //If the contract is deployed add a file with the address
+        if (channel.contractAddress) {
+            
+            //Write contract info
+            await this.writeFile(`${dir}/backup/contract/contract.json`, Buffer.from(JSON.stringify({
+                contractAddress: channel.contractAddress,
+                ipfsCid: channel.localCid
+            })))
+
+            
+            //Also the ABI
+            await this.writeFile(`${dir}/backup/contract/contract-abi.json`, Buffer.from(JSON.stringify(contractABI)))
+            await this.writeFile(`${dir}/backup/export/contractMetadata.json`, contractMetadata)
+
+        } else {
+
+            await this.writeFile(`${dir}/backup/contract/contract-abi.json`, Buffer.from(JSON.stringify({})))
+            await this.writeFile(`${dir}/backup/export/contractMetadata.json`, Buffer.from(JSON.stringify({})) )
+
+        }
+
+
+        await this.gitCommit(channel)
+
+        await this.gitPush(channel, settings.username, settings.personalAccessToken)
+
+        this.logPublishReaderProgress("Publish complete")
+
     }
 
 

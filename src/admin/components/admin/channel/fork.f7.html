@@ -123,17 +123,13 @@
                             </div>
     
                             <div class="item">
+                              <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
+                          </div>
+
+                            <div class="item">
                                 <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total} 
                             </div>
-    
-                            <div class="item">
-                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total} 
-                            </div>
-    
-                            <div class="item">
-                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
-                            </div>
-    
+  
                             <div class="item">
                               <label>Themes:</label> ${forkStatus.themes.saved} / ${forkStatus.themes.total} 
                             </div>
@@ -141,6 +137,11 @@
                             <div class="item">
                               <label>Static Pages:</label> ${forkStatus.staticPages.saved} / ${forkStatus.staticPages.total} 
                             </div>
+
+                            <div class="item">
+                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
+                            </div>
+  
             
                         </div>
                     ` : $h`<span />`}
@@ -178,25 +179,41 @@
                               </div>
                             </a>
                           </li>
+                          <li>
+
+                            <div class="row margin">
+          
+                              ${!channel ? $h`
+      
+                                <div class="col-0 large-30"></div>
+      
+                                <a href="/admin/channel/create-menu" class="button button-outline color-gray col-50 large-30" tabindex="12">
+                                  Cancel
+                                </a>
+      
+                                <button type="submit" class="button button-fill col-50 large-30" tabindex="12">
+                                  <i class="material-icons">fork_left</i> Create Fork
+                                </button>
+      
+      
+                              ` : $h`
+                                
+                                <a href="/admin/channel/show/${channel}" class="button button-fill color-green" class="button button-fill col-30" tabindex="12">
+                                  View Collection
+                                </a>
+      
+      
+                              `}
+      
+                
+                            </div>
+      
+
+
+                          </li>
+
+
                         </ul>
-                      </div>
-
-                      <div class="row block">
-
-                        <div class="col-70"></div>
-          
-                        ${!channel ? $h`
-                          <button type="submit" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px;">
-                            <i class="material-icons">fork_left</i> Create Fork
-                          </button>
-                        ` : $h`
-                          <a href="/admin/channel/show/${channel}" class="button button-fill color-green" class="button button-fill col-30" tabindex="12" style="margin-bottom: 10px;">
-                            View Collection
-                          </a>
-                        `}
-
-
-          
                       </div>
 
                         

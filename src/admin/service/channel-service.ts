@@ -137,7 +137,12 @@ class ChannelService {
 
   async countItemsByChannel(channelId:string) : Promise<number> {
 
-    let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channelId}`)
+    let queryCache:QueryCache
+
+    try {
+      queryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channelId}`)
+    } catch(ex) {}
+
     let tokenIdStats = queryCache?.result
     
     return tokenIdStats?.count ? tokenIdStats.count : 0
@@ -182,8 +187,23 @@ class ChannelService {
 
     let attributeCounts:AttributeCount[] = await this.itemService.getAttributeCountByChannel(channelId)
 
-    for (let at of attributeCounts) {
-      await this.attributeCountService.put(Object.assign(new AttributeCount(), at))
+    for (let attributeCount of attributeCounts) {
+
+      let ac 
+
+      let attributeCountId = `${channelId}-${attributeCount.traitType}-${attributeCount.value}`
+
+      try {
+        ac = await this.attributeCountService.get(attributeCountId)
+      } catch(ex) {}
+
+      if (!ac) {
+        ac = new AttributeCount()
+      } 
+      
+      console.log(ac)
+
+      await this.attributeCountService.put(Object.assign(ac, attributeCount))
     }
 
 

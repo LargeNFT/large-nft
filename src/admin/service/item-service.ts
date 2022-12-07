@@ -59,18 +59,27 @@ class ItemService {
         })
 
         if (errors.length > 0) {
+            console.log(errors)
             throw new ValidationException(errors)
         }
 
         await this.itemRepository.put(item)
 
-        console.log(`Saved item #${item.tokenId}`, item)
+        // console.log(`Saved item #${item.tokenId}`, item)
 
 
     }
 
     async delete(item:Item): Promise<void> {
         await this.itemRepository.delete(item)
+    }
+
+    async getByImageId(imageId:string) : Promise<Item[]> {
+        return this.itemRepository.getByImageId(imageId)
+    }
+
+    async getByAnimationId(animationId:string) : Promise<Item[]> {
+        return this.itemRepository.getByAnimationId(animationId)
     }
 
     async listByChannel(channelId: string, limit: number, skip: number): Promise<Item[]> {

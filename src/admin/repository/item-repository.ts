@@ -1,8 +1,10 @@
 import { injectable } from "inversify"
-import { cacheQuery, QueryCacheService } from "../service/core/query-cache-service.js"
 import { Item } from "../dto/item.js"
 import { Changeset, DatabaseService } from "../service/core/database-service.js"
 import { AttributeCount, AttributeSelection } from "../dto/attribute.js"
+import { emit } from "process"
+
+import { changesets } from "./changesets/item-changeset.js"
 
 
 @injectable()
@@ -10,87 +12,7 @@ class ItemRepository {
 
     static CHUNK_SIZE = 35
 
-    changesets:Changeset[] = [
-        {
-            id: '0',
-            changeset: async (db) => {
-
-                await db.createIndex({
-                    index: {
-                        fields: ['channelId']
-                    }
-                })
-        
-                await db.createIndex({
-                    index: {
-                        fields: ['dateCreated']
-                    }
-                })
-                        
-            }
-        },
-
-        {
-            id: '1',
-            changeset: async (db) => {
-
-                await db.put({
-                    _id: '_design/attribute_counts',
-                    views: {
-                      attribute_counts: {
-                        map: function (doc) { 
-
-                            if (doc.attributeSelections?.length > 0) {
-                                for (let as of doc.attributeSelections) {
-                                    //@ts-ignore
-                                    emit ([doc.channelId, as.traitType, as.value])
-                                }
-                            }
-
-                        }.toString(),
-                        reduce: '_count'
-                      }
-                    }
-                })
-
-
-            }
-        },
-
-        {
-            id: '5',
-            changeset: async (db) => {
-   
-                await db.put({
-                    _id: '_design/by_channel_token',
-                    views: {
-                        by_channel_token: {
-                            map: function (doc) { 
-                                //@ts-ignore
-                                emit([doc.channelId, doc.tokenId])
-                            }.toString(),
-                        }
-                    }
-                })
-
-                await db.put({
-                    _id: '_design/by_channel_token_stats',
-                    views: {
-                        by_channel_token_stats: {
-                            map: function (doc) { 
-                                //@ts-ignore
-                                emit(doc.channelId, doc.tokenId)
-                            }.toString(),
-                            reduce: "_stats"
-                        }
-                    }
-                })
-
-
-            }
-        }
-    
-]
+    changesets:Changeset[] = changesets
 
     db: any
 
@@ -154,29 +76,6 @@ class ItemRepository {
 
         return items
 
-        // let response = await this.db.find({
-        //     selector: {
-        //         channelId: { $eq: channelId },
-        //         tokenId: { $exists: true }
-        //     },
-        //     sort: [{ 'tokenId': 'asc' }],
-        //     limit: limit,
-        //     skip: skip
-        // })
-
-        // let expl = await this.db.explain({
-        //     selector: {
-        //         channelId: { $eq: channelId },
-        //         tokenId: { $exists: true }
-        //     },
-        //     sort: [{ 'tokenId': 'asc' }],
-        //     limit: limit,
-        //     skip: skip
-        // })
-
-        // console.log(expl)
-
-        // return response.docs
 
     }
 
@@ -228,7 +127,29 @@ class ItemRepository {
     }
 
 
+    async getByImageId(imageId:string) : Promise<Item[]> {
 
+        let result = await this.db.query('by_image_id', {
+            reduce: false,
+            include_docs: true,
+            key: imageId
+        })
+
+        return result.rows?.map( r => r.doc)
+
+
+    }
+
+
+    async getByAnimationId(animationId:string) : Promise<Item[]> {
+
+        let response = await this.db.find({
+            selector: { "animationId": { $eq: animationId } }
+        })
+
+        return response.docs
+
+    }
 
 }
 

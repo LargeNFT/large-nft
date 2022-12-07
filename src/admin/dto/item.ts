@@ -71,6 +71,9 @@ class Item {
     originalJSONMetadata?:any
 
     @Allow()
+    imageIds?:string[]
+
+    @Allow()
     datePublished?:string
 
     @Allow()

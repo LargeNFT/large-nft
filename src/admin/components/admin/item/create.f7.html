@@ -198,7 +198,7 @@
         uiService.showSpinner()
 
 
-        await itemWebService.put(item)
+        await itemWebService.put(itemViewModel.channel, item)
 
         const toast = $f7.toast.show({
           text: 'Item created',

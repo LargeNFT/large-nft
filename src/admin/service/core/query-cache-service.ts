@@ -26,15 +26,7 @@ class QueryCacheService {
     }
 
     async get(queryName:string) : Promise<QueryCache> {
-
-        let queryCache:QueryCache 
-
-        try {
-            queryCache = await this.queryCacheRepository.get(queryName)
-        } catch(ex) {}
-
-        return queryCache
-
+        return this.queryCacheRepository.get(queryName)
     }
 
     async delete(_id:string) {

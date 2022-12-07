@@ -281,6 +281,9 @@ class ImportService {
             count: 0
         }
 
+
+
+
         await this.schemaService.loadChannel(channel._id)
 
         
@@ -347,7 +350,7 @@ class ImportService {
 
                 try {
                     await this.imageService.put(image)
-                    await this.itemWebService.publishImage(channel, image.cid)
+                    // await this.itemWebService.publishImage(channel, image.cid, false)
                 } catch(ex) {} //ignore duplicates
                 
                 item.coverImageId = image._id
@@ -408,7 +411,7 @@ class ImportService {
             //Save animation
             try {
                 await this.animationService.put(animation)
-                await this.itemWebService.publishAnimation(channel, animation.cid)
+                // await this.itemWebService.publishAnimation(channel, animation.cid, false)
             } catch(ex) {} //ignore duplicates
             
 
@@ -440,7 +443,7 @@ class ImportService {
             item.originalJSONMetadata = metadata
 
             //Save item
-            await this.itemWebService.put(item)
+            await this.itemWebService.put(channel, item, false)
 
             //Update token stats
             tokenIdStatsQueryCache.result.count++
@@ -455,6 +458,8 @@ class ImportService {
 
 
 
+
+
             forkStatus.items.saved++
             this.logForkProgress(forkStatus, `Importing item ${item._id}`)
 
@@ -462,25 +467,23 @@ class ImportService {
         }
 
 
-
-        // forkStatus.authors.saved++
-        // this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
-
-
-        // //Save channel with attributes
-        // channel.authorId = author._id
         
         channel.importSuccess = true
 
         await this.channelWebService.put(channel)
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)
+
+
         await this.channelService.buildAttributeCounts(channel._id)
         await this.queryCacheService.put(tokenIdStatsQueryCache)
+
+
 
         forkStatus.channels.saved++
         this.logForkProgress(forkStatus, `Importing channel ${channel._id}`)
 
+        await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
 
         
         return channel._id
@@ -490,7 +493,7 @@ class ImportService {
     private async _importAsFork(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, cid?:string) {
 
         let channelId 
-        let channelObj
+        let channel
 
         let idMap = new Map<string, string>()
 
@@ -510,8 +513,11 @@ class ImportService {
 
         this.logForkProgress(forkStatus, "Updating totals...")
 
-        channels[0].forkType = "fork"
-        channels[0].forkedFromFeeRecipient = contractMetadata.fee_recipient
+        channel = new Channel()
+        Object.assign(channel, channels[0])
+
+        channel.forkType = "fork"
+        channel.forkedFromFeeRecipient = contractMetadata.fee_recipient
 
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
@@ -532,50 +538,49 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
         }
 
-        for (let channel of channels) {
 
-            let oldId = channel._id
+        //Insert channel
+        let oldId = `${channel._id}`
 
-            delete channel._id
-            delete channel._rev 
-            delete channel["_rev_tree"]
+        delete channel._id
+        delete channel._rev 
+        delete channel["_rev_tree"]
 
-            //Get the new author ID
-            channel.authorId = this.walletService.address?.toString()
+        //Get the new author ID
+        channel.authorId = this.walletService.address?.toString()
 
-            //Add it if doesn't exist 
-            if (channel.authorId) {
-                await this.authorService.insertIfNew(channel.authorId)
-            }
-        
-            //Mark parent
-            if (cid) {
-                channel.forkedFromCid = cid
-            } 
-
-            channel.forkedFromId = oldId
-
-            channelObj = Object.assign(new Channel(), channel)
-
-            await this.channelWebService.put(channelObj) 
-
-            idMap.set(oldId, channelObj._id)
-            channelId = channelObj._id
-
-            forkStatus.channels.saved++
-            this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`)
-
+        //Add it if doesn't exist 
+        if (channel.authorId) {
+            await this.authorService.insertIfNew(channel.authorId)
         }
+    
+        //Mark parent
+        if (cid) {
+            channel.forkedFromCid = cid
+        } 
+
+        channel.forkedFromId = oldId
+
+        await this.channelWebService.put(channel) 
+
+        idMap.set(oldId, channel._id)
+        channelId = channel._id
+
+        forkStatus.channels.saved++
+        this.logForkProgress(forkStatus, `Inserted channel ${channel._id}`)
 
 
 
         let tokenIdStatsQueryCache = new QueryCache()
-        tokenIdStatsQueryCache._id = `token_id_stats_by_channel_${channelId}`
+        tokenIdStatsQueryCache._id = `token_id_stats_by_channel_${channel._id}`
         tokenIdStatsQueryCache.result = {
             min: undefined,
             max: undefined,
             count: 0
         }
+
+
+
 
         await this.schemaService.loadChannel(channelId)
 
@@ -597,7 +602,7 @@ class ImportService {
 
             try {
                 await this.animationService.put(animationObj)
-                await this.itemWebService.publishAnimation(channels[0], animationObj.cid)
+                // await this.itemWebService.publishAnimation(channels[0], animationObj.cid, false)
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.animations.saved++
@@ -630,7 +635,7 @@ class ImportService {
 
             try {
                 await this.imageService.put(imageObj)
-                await this.itemWebService.publishImage(channels[0], imageObj.cid)
+                // await this.itemWebService.publishImage(channels[0], imageObj.cid, false)
 
             } catch (ex) {} //ignore duplicates   
 
@@ -661,6 +666,30 @@ class ImportService {
             forkStatus.themes.saved++
             this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
         }
+
+        for (let staticPage of staticPages) {
+
+            let oldId = staticPage._id
+
+            delete staticPage._id
+            delete staticPage._rev 
+            delete staticPage["_rev_tree"]
+
+            staticPage.channelId = idMap.get(staticPage.channelId) //look up the new channel ID
+
+            staticPage.forkedFromId = oldId
+
+            let staticPageObj = Object.assign(new StaticPage(), staticPage)
+
+            try {
+                await this.staticPageService.put(staticPageObj)
+            } catch (ex) {} //ignore duplicates            
+
+            forkStatus.staticPages.saved++
+            this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
+        }
+
+
 
         for (let item of items) {
             
@@ -709,18 +738,21 @@ class ImportService {
 
             let itemObj = Object.assign(new Item(), item)
 
-            await this.itemWebService.put(itemObj) 
+            await this.itemWebService.put(channel, itemObj, false) 
+
+
 
             //Update token stats
             tokenIdStatsQueryCache.result.count++
 
-            if (!tokenIdStatsQueryCache.result.min || itemObj.tokenId < tokenIdStatsQueryCache.result.min) {
-                tokenIdStatsQueryCache.result.min = itemObj.tokenId
+            if (!tokenIdStatsQueryCache.result.min || item.tokenId < tokenIdStatsQueryCache.result.min) {
+                tokenIdStatsQueryCache.result.min = item.tokenId
             }
 
-            if (!tokenIdStatsQueryCache.result.max || itemObj.tokenId > tokenIdStatsQueryCache.result.max) {
-                tokenIdStatsQueryCache.result.max = itemObj.tokenId
+            if (!tokenIdStatsQueryCache.result.max || item.tokenId > tokenIdStatsQueryCache.result.max) {
+                tokenIdStatsQueryCache.result.max = item.tokenId
             }
+
 
 
             forkStatus.items.saved++
@@ -728,29 +760,9 @@ class ImportService {
 
         }
 
-        for (let staticPage of staticPages) {
+        
 
-            let oldId = staticPage._id
-
-            delete staticPage._id
-            delete staticPage._rev 
-            delete staticPage["_rev_tree"]
-
-            staticPage.channelId = idMap.get(staticPage.channelId) //look up the new channel ID
-
-            staticPage.forkedFromId = oldId
-
-            let staticPageObj = Object.assign(new StaticPage(), staticPage)
-
-            try {
-                await this.staticPageService.put(staticPageObj)
-            } catch (ex) {} //ignore duplicates            
-
-            forkStatus.staticPages.saved++
-            this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
-        }
-
-        await this.channelWebService.put(channelObj) 
+        // await this.channelWebService.put(channel) 
 
 
         this.logForkProgress(forkStatus, `
@@ -763,11 +775,12 @@ class ImportService {
         ******************************
         `)
 
-        this.logForkProgress(forkStatus, `Building query cache for channel ${channelId}`)
+        this.logForkProgress(forkStatus, `Building query cache for channel ${channelId}`)    
 
-        
-        await this.channelService.buildAttributeCounts(channelId)
+        await this.channelService.buildAttributeCounts(channel._id)
         await this.queryCacheService.put(tokenIdStatsQueryCache)
+
+        await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
 
 
         return channelId
@@ -780,7 +793,7 @@ class ImportService {
         }
 
         let channelId
-        let channelObj
+        let channel
 
         forkStatus.authors.total = authors.length
         forkStatus.channels.total = channels.length
@@ -792,8 +805,10 @@ class ImportService {
 
         this.logForkProgress(forkStatus, "Updating totals...")
 
-        channels[0].forkType = "existing"
-        channels[0].forkedFromFeeRecipient = contractMetadata.fee_recipient
+        channel = Object.assign(new Channel(), channels[0])
+
+        channel.forkType = "existing"
+        channel.forkedFromFeeRecipient = contractMetadata.fee_recipient
 
         //Loop through the contents and insert each one like it's an unseen row
         for (let author of authors) {
@@ -814,28 +829,30 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
         }
 
-        for (let channel of channels) {
-            
-            //Remove any existing rev info
-            delete channel._rev
-            delete channel["_rev_tree"]
+        //Remove any existing rev info
+        delete channel._rev
+        delete channel["_rev_tree"]
 
-            //Check if it exists
-            channelObj = await this.channelService.getLatestRevision(channel._id)
-            channelObj["_deleted"] = false
+        //Check if it exists
+        let channelObj = await this.channelService.getLatestRevision(channel._id)
 
-            await this.channelWebService.put(Object.assign(channelObj, channel))  
-
-            channelId = channelObj._id
-
-            forkStatus.channels.saved++
-            this.logForkProgress(forkStatus, `Inserted channel ${channelObj._id}`)
-
+        if (channelObj) {
+            channel["_deleted"] = false
+            channel._rev = channelObj._rev
         }
 
 
+        await this.channelWebService.put(channel)  
+
+        channelId = channelObj._id
+
+        forkStatus.channels.saved++
+        this.logForkProgress(forkStatus, `Inserted channel ${channel._id}`)
+
+
+
         let tokenIdStatsQueryCache = new QueryCache()
-        tokenIdStatsQueryCache._id = `token_id_stats_by_channel_${channelId}`
+        tokenIdStatsQueryCache._id = `token_id_stats_by_channel_${channel._id}`
         tokenIdStatsQueryCache.result = {
             min: undefined,
             max: undefined,
@@ -843,7 +860,6 @@ class ImportService {
         }
 
         await this.schemaService.loadChannel(channelId)
-
 
         for (let animation of animations) {
 
@@ -863,8 +879,6 @@ class ImportService {
 
             try {
                 await this.animationService.put(animationObj)
-                await this.itemWebService.publishAnimation(channels[0], animationObj.cid)
-
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.animations.saved++
@@ -898,8 +912,6 @@ class ImportService {
 
             try {
                 await this.imageService.put(imageObj)
-                await this.itemWebService.publishImage(channels[0], imageObj.cid)
-
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.images.saved++
@@ -921,6 +933,22 @@ class ImportService {
 
             forkStatus.themes.saved++
             this.logForkProgress(forkStatus, `Inserted theme ${themeObj._id}`)
+        }
+
+        for (let staticPage of staticPages) {
+
+            //Remove any existing rev info
+            delete staticPage._rev
+            delete staticPage["_rev_tree"]
+
+            //Check if it exists
+            let staticPageObj = await this.staticPageRepository.getLatestRevision(staticPage._id)
+            staticPageObj["_deleted"] = false
+            
+            await this.staticPageRepository.put(Object.assign(staticPageObj, staticPage))          
+
+            forkStatus.staticPages.saved++
+            this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
         }
 
         for (let item of items) {
@@ -951,45 +979,33 @@ class ImportService {
 
             //Check if it exists
             let itemObj = await this.itemService.getLatestRevision(item._id)
-            itemObj["_deleted"] = false
-            
-            await this.itemWebService.put(Object.assign(itemObj, item))  
+
+            if (itemObj) {
+                item["_deleted"] = false
+                item._rev = itemObj._rev
+            }
+
+            await this.itemWebService.put(channel, Object.assign(new Item(), item), false)  
+
 
             //Update token stats
             tokenIdStatsQueryCache.result.count++
 
-            if (!tokenIdStatsQueryCache.result.min || itemObj.tokenId < tokenIdStatsQueryCache.result.min) {
-                tokenIdStatsQueryCache.result.min = itemObj.tokenId
+            if (!tokenIdStatsQueryCache.result.min || item.tokenId < tokenIdStatsQueryCache.result.min) {
+                tokenIdStatsQueryCache.result.min = item.tokenId
             }
 
-            if (!tokenIdStatsQueryCache.result.max || itemObj.tokenId > tokenIdStatsQueryCache.result.max) {
-                tokenIdStatsQueryCache.result.max = itemObj.tokenId
+            if (!tokenIdStatsQueryCache.result.max || item.tokenId > tokenIdStatsQueryCache.result.max) {
+                tokenIdStatsQueryCache.result.max = item.tokenId
             }
 
 
             forkStatus.items.saved++
-            this.logForkProgress(forkStatus, `Inserted item ${itemObj._id}`)
+            this.logForkProgress(forkStatus, `Inserted item ${item._id}`)
 
         }
 
-        for (let staticPage of staticPages) {
-
-            //Remove any existing rev info
-            delete staticPage._rev
-            delete staticPage["_rev_tree"]
-
-            //Check if it exists
-            let staticPageObj = await this.staticPageRepository.getLatestRevision(staticPage._id)
-            staticPageObj["_deleted"] = false
-            
-            await this.staticPageRepository.put(Object.assign(staticPageObj, staticPage))          
-
-            forkStatus.staticPages.saved++
-            this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
-        }
-
-        await this.channelWebService.put(channelObj) 
-
+        // await this.channelWebService.put(channel) 
 
 
         this.logForkProgress(forkStatus, `
@@ -1002,12 +1018,31 @@ class ImportService {
         ******************************
         `)
 
-        this.logForkProgress(forkStatus, `Building query cache for channel ${channels[0]._id}`)
+        this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)    
 
-        await this.channelService.buildAttributeCounts(channels[0]._id)
+        await this.channelService.buildAttributeCounts(channel._id)
+
+
+        //Update existing token cache if it exists or create a new one.
+        let existingTokenIdStatsCache 
+
+        try {
+            existingTokenIdStatsCache = await this.queryCacheService.get(tokenIdStatsQueryCache._id)
+        } catch (ex) {}
+
+        if (existingTokenIdStatsCache) {
+            tokenIdStatsQueryCache._rev = existingTokenIdStatsCache._rev
+        }
+
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
+        await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
+
+        this.logForkProgress(forkStatus, `Forking channel ${channel._id} complete`)
+
+
+        
         return channels[0]._id
     }
 

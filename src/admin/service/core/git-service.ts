@@ -154,17 +154,19 @@ class GitService {
 
     public async removeFile(filepath:string) {
 
-        console.log(`Removing file from git repo: ${filepath}`)
+        try {
+            console.log(`Removing file from git repo: ${filepath}`)
 
-        let fs = this.fs
-        let dir = filepath.substring(0, filepath.lastIndexOf("/"))
-        let gitdir = filepath.substring(0, filepath.indexOf("/", 1) + 1) + ".git"
-
-        let filename = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.length )
-
-        await this.fs.promises.unlink(filepath)
-
-        await this.git.remove({ fs, dir, gitdir, filepath: filename })
+            let fs = this.fs
+            let dir = filepath.substring(0, filepath.lastIndexOf("/"))
+            let gitdir = filepath.substring(0, filepath.indexOf("/", 1) + 1) + ".git"
+    
+            let filename = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.length )
+    
+            await this.fs.promises.unlink(filepath)
+    
+            await this.git.remove({ fs, dir, gitdir, filepath: filename })
+        } catch (ex) {}
 
     }
 

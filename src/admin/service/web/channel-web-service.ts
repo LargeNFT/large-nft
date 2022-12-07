@@ -16,6 +16,7 @@ import { ItemService } from "../item-service.js";
 import { ItemWebService } from "./item-web-service.js";
 import { QueryCacheService } from "../../service/core/query-cache-service.js";
 import { SchemaService } from "../../service/core/schema-service.js";
+import { GitService } from "../core/git-service.js";
 
 @injectable()
 class ChannelWebService {
@@ -27,6 +28,7 @@ class ChannelWebService {
         private itemService:ItemService,
         private itemWebService:ItemWebService,
         private queryCacheService:QueryCacheService,
+        private gitService:GitService,
         private schemaService:SchemaService
     ) { }
 
@@ -179,6 +181,9 @@ class ChannelWebService {
         
         await this.channelService.put(channel)
 
+        //Load git
+        await this.gitService.initFS(channel)
+
         //Load the right channel dbs
         await this.schemaService.loadChannel(channel._id)
 
@@ -201,10 +206,10 @@ class ChannelWebService {
         }
 
 
-
-
-
-        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channel._id}`)
+        let queryCache:QueryCache
+        try {
+            queryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channel._id}`)
+        } catch(ex) {}
 
         if (!queryCache) {
             queryCache = new QueryCache()
@@ -219,8 +224,7 @@ class ChannelWebService {
 
         //Update cache
         await this.queryCacheService.put(queryCache)
-        console.log(queryCache)
-        
+
     }
 
 

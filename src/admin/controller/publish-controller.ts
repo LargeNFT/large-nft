@@ -136,7 +136,7 @@ class PublishController {
 
 
             let existingForkResult
-            if (settings.personalAccessToken) {
+            if (settings?.personalAccessToken) {
                 existingForkResult = await this.gitlabService.getExistingFork(channelViewModel.channel)
             }
 

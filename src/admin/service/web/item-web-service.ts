@@ -490,17 +490,21 @@ class ItemWebService {
         await this.itemService.put(command.item)
 
 
-        //Put images in IPFS and git
-        for (let imageCid of command.item.imageIds) {
+        if (command.publish) {
+            //Put images in IPFS and git
+            for (let imageCid of command.item.imageIds) {
+                try {
+                    await this.publishImage(command.channel, await this.imageService.get(imageCid), false )
+                } catch(ex) {}
+            }
+
+            //Put animation
             try {
-                await this.publishImage(command.channel, await this.imageService.get(imageCid), false )
+                await this.publishAnimation(command.channel, await this.animationService.get(command.item.animationId), false)
             } catch(ex) {}
         }
 
-        //Put animation
-        try {
-            await this.publishAnimation(command.channel, await this.animationService.get(command.item.animationId), false)
-        } catch(ex) {}
+
 
 
         if (command.updateQueryCache) {

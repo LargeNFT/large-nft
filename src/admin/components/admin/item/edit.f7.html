@@ -82,7 +82,7 @@
 
 <style>
   #edit-item-editor {
-    min-height: 600px;
+    min-height: 175px;
     height: 100%;
     /* added these styles */
     flex: 1;
@@ -159,7 +159,8 @@
       //Get data
       let item = Object.assign(new Item(), formData)
 
-      item.coverImageAsAnimation = (formData.coverImageAsAnimation === 'true') 
+      item.coverImageAsAnimation = (formData.coverImageAsAnimation[0] != "on") 
+
       item.tokenId = parseInt(formData.tokenId)
 
       //Get content from quill
@@ -233,7 +234,6 @@
 
       //Initialize quill and fill contents
       quillEditorService.buildQuillPostEditor('#edit-item-editor', '#edit-item-toolbar')
-
       quillEditorService.activeEditor.setContents(itemViewModel.item.content)
 
 
@@ -357,16 +357,6 @@
         animationCSSQuillEditor.setText(itemViewModel.item.animationCSS)
       }
       
-
-      //Expand customize box if set
-      if (itemViewModel.item.themes?.length > 0 || itemViewModel.item.coverImageCSS || 
-          itemViewModel.item.animationCSS || itemViewModel.item.coverImageAsAnimation) {
-
-        $f7.accordion.open('.customize-accordion')
-
-
-      }
-
 
       await $update()
       uiService.showSpinner()

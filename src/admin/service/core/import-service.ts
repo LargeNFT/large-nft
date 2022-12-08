@@ -260,8 +260,9 @@ class ImportService {
 
         if (forkType == "existing") {
             channel.contractAddress = contractAddress
-            channel.forkType = "existing"
         }
+
+        channel.forkType = forkType
 
         channel.title = await contract.name()
         channel.symbol = await contract.symbol() 

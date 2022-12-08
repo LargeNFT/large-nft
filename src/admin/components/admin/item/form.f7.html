@@ -1,7 +1,7 @@
 <!--suppress JSAnnotator -->
 <template>
 
-    <div>
+    <div class="row">
 
         <input type="hidden" name="_id" value="${itemViewModel?.item?._id}" />
         <input type="hidden" name="_rev" value="${itemViewModel?.item?._rev}" />
@@ -10,7 +10,8 @@
         <input type="hidden" name="channelId" value="${itemViewModel?.channel?._id}" />
 
 
-        <div class="card">
+        
+        <div class="card col-100">
             <div class="card-content">
 
                 <div class="list">
@@ -67,27 +68,6 @@
                         </li>
 
 
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Item Type</div>
-                                    <div class="item-input-wrap">
-                                        <select name="coverImageAsAnimation" @change="${coverImageAsAnimationOnChange}">
-
-                                            ${itemViewModel.item.coverImageAsAnimation ? $h`
-                                                <option value="false">Multimedia - Show all content.</option>
-                                                <option value="true" selected>Image only - Everything except the image will be ignored.</option>
-                                            ` : $h`
-                                                <option value="false" selected>Multimedia - Show all content.</option>
-                                                <option value="true">Image only - Everything except the image will be ignored.</option>
-                                            `}
-
-                                          </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
 
                         <li class="cover-photo-preview">
 
@@ -99,17 +79,23 @@
 
                             <div class="item-content item-input">
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Cover Image</div>
+                                    <div class="item-title item-label">
+                                        Cover Image
+                                        <div class="item-footer">If there is no image in the content then an SVG cover image will be generated.</div>
+                                    </div>
                                     <div class="item-input-wrap">
 
                                         ${itemViewModel?.images?.length > 0 ? $h`
 
-                                        ${itemViewModel?.images?.map( (image) => $h`
-                                        <img class="cover-image-thumbnail ${ (  (image?.cid == itemViewModel.coverImage?.cid) || (itemViewModel.coverImage == undefined && image.generated == true) )  ? 'selected' : ''}  "
-                                            src="${image.url}" data-id="${image.cid}" @click=${coverImageClick} />
-                                        `)}
+                                            ${itemViewModel?.images?.map( (image) => $h`
+                                                <img class="cover-image-thumbnail ${ (  (image?.cid == itemViewModel.coverImage?.cid) || (itemViewModel.coverImage == undefined && image.generated == true) )  ? 'selected' : ''}  "
+                                                    src="${image?.url}" data-id="${image?.cid}" @click=${coverImageClick} />
+                                            `)}
+
                                         ` : $h`
-                                        <p>No images</p>
+
+                                            <p>No images</p>
+
                                         `}
 
                                         <button class="button button-outline clear-button margin-bottom"
@@ -121,50 +107,135 @@
 
                         </li>
 
+                        <li>
+                            <label class="item-checkbox item-content">
+
+                                <input type="checkbox" checked="${!itemViewModel.item.coverImageAsAnimation}" name="coverImageAsAnimation" @change="${coverImageAsAnimationOnClick}" />
+                                
+                                <i class="icon icon-checkbox"></i>
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                      <div class="item-header"></div>
+                                      Generate Animation HTML
+                                      <div class="item-footer">
+                                        Include full text. Otherwise only the cover image will be shown.
+                                      </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
 
+
+        <div class="card col-100">
+            <div class="card-header">Customize</div>
+            <div class="card-content">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
+                                <!-- "multiple" attribute for multiple select-->
+                                <select name="themes" @change="${themeSelectionChange}" tabindex="2" multiple>
+                                    <optgroup>
+                                        ${themes?.map( (theme) => $h`
+
+                                            ${itemViewModel.item?.themes?.includes(theme._id) ? $h`
+                                                <option value="${theme._id}" selected>${theme.name}</option>
+                                                ` : $h`
+                                                <option value="${theme._id}">${theme.name}</option>
+                                            `}
+
+                                        `)}
+                                    </optgroup>
+                                </select>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">Choose Theme(s)</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="accordion-item">
+                            <a href="" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">Edit Cover Image CSS (SVG)</div>
+                                </div>
+                            </a>
+                            <div class="accordion-item-content">
+                                <div class="editor bg-color-white text-color-black css-editor" id="${coverImageCSSEditorId}" tabindex="3"></div>
+                            </div>
+                        </li>
+
+                        ${showAnimationCss ? $h`
+                            <li class="accordion-item">
+                                <a href="" class="item-link item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">Edit Animation CSS (HTML)</div>
+                                    </div>
+                                </a>
+                                <div class="accordion-item-content">
+                                    <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
+                                </div>
+                            </li>
+                        ` : $h`
+                            <li class="accordion-item" style="display:none;">
+                                <a href="" class="item-link item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">Edit Animation CSS (HTML)</div>
+                                    </div>
+                                </a>
+                                <div class="accordion-item-content">
+                                    <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
+                                </div>
+                            </li>
+
+
+                        `}
+
+
+                    
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
         ${itemViewModel.attributeSelections?.length > 0 ? $h`
-        <div class="card">
+        <div class="card col-100">
             <div class="card-header">Attributes</div>
             <div class="card-content">
                 <div class="list">
                     <ul>
-
                         ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
                         <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">${attributeSelectionViewModel?.traitType}</div>
-                                    <div class="item-input-wrap">
+                            <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
+                                <!-- "multiple" attribute for multiple select-->
+                                <select @change="${valueNameChange}" tabindex="2" data-id="${attributeSelectionViewModel?.id}">
+                                    ${attributeSelectionViewModel?.values?.map( v => $h`
 
-                                        <select @change="${valueNameChange}" class="value-input"
-                                            data-id="${attributeSelectionViewModel?.id}">
+                                        ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
+                                        <option value="${v}" selected>${v}</option>
+                                        ` : $h`
+                                        <option value="${v}">${v}</option>
+                                        `}
 
-                                            ${attributeSelectionViewModel?.values?.map( v => $h`
-
-                                            ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
-                                            <option value="${v}" selected>${v}</option>
-                                            ` : $h`
-                                            <option value="${v}">${v}</option>
-                                            `}
-
-                                            `)}
-
-                                        </select>
-
-
+                                    `)}
+                                </select>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">${attributeSelectionViewModel?.traitType}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </li>
+
+
                         `)}
-
-
-
-
                     </ul>
                 </div>
             </div>
@@ -173,77 +244,7 @@
 
         <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
 
-
-
-
-        <div class="list accordion-list inset">
-            <ul>
-                <li class="accordion-item customize-accordion">
-                    <a href="#" class="item-link item-content">
-                        <div class="item-inner">
-                            <div class="item-title">Customize</div>
-                        </div>
-                    </a>
-                    <div class="accordion-item-content">
-                        <div class="list">
-                            <ul>
-
-                                <li>
-                                    <a href="#" class="item-link smart-select smart-select-init" data-open-in="popup">
-                                        <!-- "multiple" attribute for multiple select-->
-                                        <select name="themes" @change="${themeSelectionChange}" tabindex="2" multiple>
-                                            <optgroup>
-
-                                                ${themes?.map( (theme) => $h`
-
-                                                ${itemViewModel.item?.themes?.includes(theme._id) ? $h`
-                                                <option value="${theme._id}" selected>${theme.name}</option>
-                                                ` : $h`
-                                                <option value="${theme._id}">${theme.name}</option>
-                                                `}
-
-                                                `)}
-
-
-                                            </optgroup>
-                                        </select>
-                                        <div class="item-content">
-                                            <div class="item-inner">
-                                                <div class="item-title">Choose Theme(s)</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-
-
-                                <li>
-                                    <div class="item-content item-input item-input-outline">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Cover Image CSS (SVG)</div>
-                                            <div class="editor bg-color-white text-color-black css-editor"
-                                                id="${coverImageCSSEditorId}" tabindex="3"></div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="item-content item-input item-input-outline">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Animation CSS (HTML)</div>
-                                            <div class="editor bg-color-white text-color-black css-editor"
-                                                id="${animationCSSEditorId}" tabindex="4"></div>
-                                        </div>
-                                    </div>
-                                </li>
-
-
-
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        
 
 
     </div>
@@ -348,7 +349,9 @@
 
             let id = $(e.currentTarget).data('id')
 
+
             attributeSelections.filter(as => as.id == id)[0].value = $(e.currentTarget).val()
+
 
             await $update()
 
@@ -380,10 +383,7 @@
 
         }
 
-        const coverImageAsAnimationOnChange = (e) => {
-
-        }
-
+  
         const titleOnInput = (e) => {
 
             let value = $(e.currentTarget).val();
@@ -394,6 +394,14 @@
 
         }
 
+
+        const coverImageAsAnimationOnClick = (e) => {
+            
+            showAnimationCss = $(e.currentTarget).prop('checked')
+
+            $update()
+
+        }
 
 
         let itemViewModel = props.item
@@ -409,6 +417,8 @@
         let coverImageCSSEditorId = props.cover_image_css_editor_id
         let animationCSSEditorId = props.animation_css_editor_id
 
+
+        let showAnimationCss = !itemViewModel.item.coverImageAsAnimation
 
         if (itemViewModel) {
             setAttributeSelections(itemViewModel.attributeSelections)

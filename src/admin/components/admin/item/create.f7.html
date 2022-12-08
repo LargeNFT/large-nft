@@ -73,7 +73,7 @@
 
 <style>
   #create-item-editor {
-    min-height: 600px;
+    min-height: 175px;
     height: 100%;
     /* added these styles */
     flex: 1;
@@ -159,7 +159,7 @@
       //Get data
       let item = Object.assign(new Item(), formData)
 
-      item.coverImageAsAnimation = (formData.coverImageAsAnimation === 'true') 
+      item.coverImageAsAnimation = (formData.coverImageAsAnimation[0] != "on") 
 
 
       //Get content from quill
@@ -311,6 +311,12 @@
           toolbar: false
         }
       })
+
+
+      coverImageCSSQuillEditor.setText(".svg-h1 {}")
+      animationCSSQuillEditor.setText(".animation-container {}")
+      
+
 
 
       await $update()

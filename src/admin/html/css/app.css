@@ -617,7 +617,7 @@ ul.breadcrumb li a:hover {
 }
 
 .css-editor {
-  min-height: 100px;
+  min-height: 100%;
   width: 100%;
   font-size: 12px;
 }

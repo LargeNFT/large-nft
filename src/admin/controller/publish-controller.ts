@@ -15,6 +15,7 @@ import { ChannelWebService } from "../service/web/channel-web-service.js";
 import { SettingsService } from "../service/core/settings-service.js";
 import { SchemaService } from "../service/core/schema-service.js";
 import { GitlabService } from "../service/core/gitlab-service.js";
+import { Settings } from "../dto/settings.js";
 
 
 @injectable()
@@ -127,14 +128,17 @@ class PublishController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
 
-            let settings
+            let settings:Settings
 
             try {
                 settings = await this.settingsService.get()
             } catch(ex) {}
 
 
-            let existingForkResult = await this.gitlabService.getExistingFork(channelViewModel.channel)
+            let existingForkResult
+            if (settings.personalAccessToken) {
+                existingForkResult = await this.gitlabService.getExistingFork(channelViewModel.channel)
+            }
 
             
             return {

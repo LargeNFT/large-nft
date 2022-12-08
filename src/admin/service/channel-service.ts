@@ -24,6 +24,7 @@ import { QueryCacheService } from "./core/query-cache-service.js";
 import { QueryCache } from "../dto/query-cache.js";
 import { AttributeCount } from "../dto/attribute.js";
 import { AttributeCountService } from "./attribute-count-service.js";
+import { SchemaService } from "./core/schema-service.js";
 
 @injectable()
 class ChannelService {
@@ -34,8 +35,7 @@ class ChannelService {
     private itemService:ItemService,
     private pinningService:PinningService,
     private quillService:QuillService,
-    private themeService:ThemeService,
-    private staticPageService:StaticPageService,
+    private schemaService:SchemaService,
     private queryCacheService:QueryCacheService,
     private attributeCountService:AttributeCountService
 
@@ -100,39 +100,8 @@ class ChannelService {
   }
 
   async delete(channel:Channel): Promise<void> {
-
+    await this.schemaService.dropChannel(channel._id)
     await this.channelRepository.delete(channel)
-
-    //Get all the items
-    let items:Item[] =await this.itemService.listByChannel(channel._id, 100000, 0)
-
-    for (let item of items) {
-      await this.itemService.delete(item)
-    }
-
-
-
-    //Delete themes
-    let themes:Theme[] = await this.themeService.listByChannel(channel._id, 100000, 0)
-
-    for (let theme of themes) {
-      await this.themeService.delete(theme)
-    }
-
-    //Delete static pages
-    let staticPages:StaticPage[] = await this.staticPageService.listByChannel(channel._id, 100000, 0)
-
-    for (let staticPage of staticPages) {
-      await this.staticPageService.delete(staticPage)
-    }
-
-    //
-
-    //Leave images and animations because they might be used by multiple projects. Maybe not ideal. 
-
-
-
-
   }
 
   async countItemsByChannel(channelId:string) : Promise<number> {

@@ -230,9 +230,13 @@
 
           try {
 
-            let ipfsDir = `/export/${channel._id}`
+            let ipfsDir = `/export/${channelViewModel.channel._id}`
 
-            await gitService.deployReaderGit(channelViewModel.channel, await toBuffer(this.ipfsService.ipfs.files.read(`${ipfsDir}/contractMetadata.json`)) )
+            console.log(`${ipfsDir}/contractMetadata.json`)
+
+            let contractMetadata = await toBuffer(ipfsService.ipfs.files.read(`${ipfsDir}/contractMetadata.json`))
+
+            await gitService.deployReaderGit(channelViewModel.channel, contractMetadata )
 
           } catch(ex) {
             console.log(ex)

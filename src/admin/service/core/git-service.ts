@@ -49,6 +49,9 @@ class GitService {
 
     async init(channel:Channel) {
 
+        this.logPublishReaderProgress(`Initializing git for channel ${channel._id}`)
+
+
         if (!this.fs) await this.initFS(channel)
 
         //Init FS
@@ -77,15 +80,33 @@ class GitService {
         let dir = this.getBaseDir(channel)
 
         let exists = await this._dirExists(dir)
-        let gitExists = await this._dirExists(`${dir}/.git`)
+        // let gitExists = await this._dirExists(`${dir}/.git`)
 
+        // console.log(dir, gitExists)
 
         //Create directory structure
         if (!exists) {
             await this._createDirectoryStructure(dir)
         }
 
-        if (!gitExists) {
+
+        let currentBranch
+
+        try {
+            currentBranch = await this.git.currentBranch({
+                fs,
+                dir,
+                fullname: false
+            })
+        } catch(ex) {}
+
+
+
+        // console.log(currentBranch)
+
+
+
+        if (!currentBranch) {
 
             this.logPublishReaderProgress(`Git clone: ${repoURI} to ${dir}`)
 
@@ -136,19 +157,21 @@ class GitService {
 
         console.log(`Saving file to git repo: ${filepath}`)
 
-        let fs = this.fs
-        let dir = filepath.substring(0, filepath.lastIndexOf("/"))
-        let gitdir = filepath.substring(0, filepath.indexOf("/", 1) + 1) + ".git"
+        // let fs = this.fs
+        // let dir = filepath.substring(0, filepath.lastIndexOf("/"))
+        // let gitdir = filepath.substring(0, filepath.indexOf("/", 1) + 1) + ".git"
 
-        let filename = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.length )
+        // let filename = filepath.substring(filepath.lastIndexOf("/") + 1, filepath.length )
 
         await this.fs.promises.writeFile(filepath, content)
 
-        let status = await this.git.status({ fs, dir, gitdir, filepath: filename })    
+        // let status = await this.git.status({ fs, dir, gitdir, filepath: filename })    
 
-        if (status != "unmodified") {
-            await this.git.add({ fs, dir, gitdir, filepath: filename })
-        }
+        // console.log(status)
+
+        // if (status != "unmodified") {
+            // await this.git.add({ fs, dir, gitdir, filepath: filename })
+        // }
 
     }
 
@@ -324,7 +347,7 @@ class GitService {
 
         }
 
-
+        await this.gitAddAll(channel)
         await this.gitCommit(channel)
 
         await this.gitPush(channel, settings.username, settings.personalAccessToken)

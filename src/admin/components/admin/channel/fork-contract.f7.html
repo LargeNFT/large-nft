@@ -32,42 +32,8 @@
           <div class="block-title">Fork Collection From Contract</div>
 
            ${walletService?.address ? $h`
-            
-
-            <div class="block-header">
-              A <em>fork</em> is a copy of an NFT collection. Forking a project allows you to freely experiment with changes without affecting the original project.
-            </div>
-  
-            <div class="list media-list inset">
-              <ul>
-                <li>
-                  <label class="item-radio item-radio-icon-start item-content">
-                    <input type="radio" name="demo-media-radio" checked @change="${radioButtonChange}" value="existing" />
-                    <i class="icon icon-radio" checked></i>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Create new experience around an existing collection.</div>
-                      </div>
-                      <div class="item-text">Collection items will not be editable and Reader will be configured to connect to existing smart contract to view ownership and create transactions.</div>
-                    </div>
-                  </label>
-                </li>
-                <li>
-                  <label class="item-radio item-radio-icon-start item-content">
-                    <input type="radio" name="demo-media-radio" @change="${radioButtonChange}" value="fork" />
-                    <i class="icon icon-radio"></i>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Fork collection.</div>
-                      </div>
-                      <div class="item-text">Collection items can be added, deleted, or edited. Deploy and mint from a new smart contract.</div>
-                    </div>
-                  </label>
-                </li>
-  
-              </ul>
-            </div>
-  
+          
+ 
             <div class="card">
               <div class="card-content card-content-padding">
                 ${!ipfsReady ? $h`
@@ -80,14 +46,50 @@
               </div>
             </div>
   
-            ${ipfsReady & !forking ? $h`
+            ${ipfsReady & !forking & !channelId ? $h`
   
+              <div class="block-header">
+                A <em>fork</em> is a copy of an NFT collection. Forking a project allows you to freely experiment with changes without affecting the original project.
+              </div>
+    
+              <div class="list media-list inset">
+                <ul>
+                  <li>
+                    <label class="item-radio item-radio-icon-start item-content">
+                      <input type="radio" name="demo-media-radio" checked @change="${radioButtonChange}" value="existing" />
+                      <i class="icon icon-radio" checked></i>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Create new experience around an existing collection.</div>
+                        </div>
+                        <div class="item-text">Collection items will not be editable and Reader will be configured to connect to existing smart contract to view ownership and create transactions.</div>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label class="item-radio item-radio-icon-start item-content">
+                      <input type="radio" name="demo-media-radio" @change="${radioButtonChange}" value="fork" />
+                      <i class="icon icon-radio"></i>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Fork collection.</div>
+                        </div>
+                        <div class="item-text">Collection items can be added, deleted, or edited. Deploy and mint from a new smart contract.</div>
+                      </div>
+                    </label>
+                  </li>
+    
+                </ul>
+              </div>
+              
               <div class="block-header">
                 Enter the contract address of the collection to import. Must be standard ERC-721. Limit 10,000 tokens.
               </div>
   
+
               <div class="list media-list inset">
                 <ul>
+
                   <li>
                     <a href="#" class="item-link">
                       <div class="item-content">
@@ -101,22 +103,28 @@
                       </div>
                     </a>
                   </li>
+
+                  <li>
+                    <div class="block">
+                      <div class="row" style="padding-bottom: 15px;">
+  
+                        <div class="col-0 large-30"></div>
+              
+                        <a href="/admin/channel/create-menu" class="button button-outline color-gray col-50 large-30" tabindex="12">
+                          Cancel
+                        </a>
+        
+                        <button type="submit" class="button button-fill col-50 large-30" tabindex="12">
+                          <i class="material-icons">fork_left</i> Create Fork
+                        </button>
+        
+         
+                      </div>
+                    </div>
+
+                  </li>
+
                 </ul>
-              </div>
-  
-              <div class="row block">
-  
-                <div class="col-0 large-30"></div>
-      
-                <a href="/admin/channel/create-menu" class="button button-outline color-gray col-50 large-30" tabindex="12">
-                  Cancel
-                </a>
-
-                <button type="submit" class="button button-fill col-50 large-30" tabindex="12">
-                  <i class="material-icons">fork_left</i> Create Fork
-                </button>
-
- 
               </div>
   
                 
@@ -129,49 +137,76 @@
             ${forking || forkOutput ? $h`
   
               <div class="card">
+
+                ${forking ? $h`
+                  <div class="card-header">
+                      Forking...
+                  </div>  
+    
+                ` : $h`<span />`}
+    
+
                 <div class="card-content">
                     <div class="card-content card-content-padding">
     
-                      ${forking ? $h`
-                        <div class="fork-label">
-                            Forking...
-                        </div>
-        
-                        ${forkStatus? $h`
-                            <div class="fork-status">
-        
-                              <div class="item">
-                                <label>Items:</label> ${forkStatus.items.saved} / ${forkStatus.items.total} 
-                              </div>
-  
-                              <div class="item">
-                                <label>Animations:</label> ${forkStatus.animations.saved} / ${forkStatus.animations.total ? forkStatus.animations.total : "?"} 
-                              </div>
-      
-                              <div class="item">
-                                  <label>Images:</label> ${forkStatus.images.saved} / ${forkStatus.images.total ? forkStatus.images.total : "?"} 
-                              </div>
-  
-                              <div class="item"> 
-                                  <label>Channels:</label> ${forkStatus.channels.saved} / ${forkStatus.channels.total}
-                              </div>
-                
-                            </div>
-                        ` : $h`<span />`}
-        
-                      ` : $h`
-                          <div class="fork-label" style="display:none;"></div>
-                      `}
-        
                       ${forkOutput ? $h`
+
+                        ${forkStatus? $h`
+
+                          <div class="row">
+                            <div class="data-table col-100 large-30">
+                              <table>
+                                <thead>
+                                  <th class="label-cell">Type</th>
+                                  <th class="numeric-cell">Saved</th>
+                                  <th class="numeric-cell">Total</th>
+                                </thead>
+                                <tbody>
+                                  <tr class="${forkStatus.animations.saved == forkStatus.animations.total && forkStatus.animations.total > 0 ? 'complete' : ''}">
+                                    <td class="label-cell">Animations</td>
+                                    <td class="numeric-cell">${forkStatus.animations.saved}</td>
+                                    <td class="numeric-cell">${forkStatus.animations.total ? forkStatus.animations.total : "?"} </td>
+                                  </tr>
+                                  <tr class="${forkStatus.images.saved == forkStatus.images.total && forkStatus.images.total > 0 ? 'complete' : ''}">
+                                    <td class="label-cell">Images</td>
+                                    <td class="numeric-cell">${forkStatus.images.saved}</td>
+                                    <td class="numeric-cell">${forkStatus.images.total ? forkStatus.images.total : "?"}</td>
+                                  </tr>
+                                  <tr class="${forkStatus.items.saved == forkStatus.items.total && forkStatus.items.total > 0 ? 'complete' : ''}">
+                                    <td class="label-cell">Items</td>
+                                    <td class="numeric-cell">${forkStatus.items.saved}</td>
+                                    <td class="numeric-cell">${forkStatus.items.total}</td>
+                                  </tr>
+                                  <tr class="${forkStatus.channels.saved == forkStatus.channels.total && forkStatus.channels.total > 0 ? 'complete' : ''}">
+                                    <td class="label-cell">Channels</td>
+                                    <td class="numeric-cell">${forkStatus.channels.saved}</td>
+                                    <td class="numeric-cell">${forkStatus.channels.total}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+
+
+                        ` : $h`<span />`}
+
+
+                        ${!channelId ? $h`
                           <div class="fork-output-simple" innerHTML="${forkOutput}" id="ipfs-fork-process" ></div>
-                      ` : $h`
-                          <div class="fork-output-simple" style="display:none;"></div>
-                      `}
-  
-                      ${channelId ? $h`
-                        <a class="button button-fill" style="width: 200px; margin-top: 10px;" href="/admin/channel/show/${channelId}">View Collection</a>
+                        ` : $h`
+                        
+                          <div class="block row margin-bottom">
+                            <a href="/admin/channel/show/${channelId}" class="button button-fill color-green" class="button button-fill col-100 large-30" tabindex="12">
+                              View Collection
+                            </a>  
+                          </div>
+                        `}
+
+
                       ` : $h`<span />`}
+  
+
     
                     </div>
                 </div>
@@ -295,6 +330,7 @@
       }
 
       forkStatus = e.detail.forkStatus
+      forking=true
 
       $update()
 

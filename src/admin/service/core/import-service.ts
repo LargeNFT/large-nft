@@ -260,6 +260,7 @@ class ImportService {
 
         if (forkType == "existing") {
             channel.contractAddress = contractAddress
+            channel.forkType = "existing"
         }
 
         channel.title = await contract.name()
@@ -312,6 +313,8 @@ class ImportService {
         
         for (let metadata of tokenMetadata) {
 
+            console.time(`Importing token #${metadata.tokenId}`)
+
             this.logForkProgress(forkStatus, `Importing token #${metadata.tokenId}`)
 
             let item:Item = new Item()
@@ -325,7 +328,6 @@ class ImportService {
 
             let tempImage = document.createElement('img')
 
-            
             if (metadata.image || metadata.image_url) {
 
                 //Fetch and create image
@@ -350,7 +352,6 @@ class ImportService {
 
                 try {
                     await this.imageService.put(image)
-                    // await this.itemWebService.publishImage(channel, image.cid, false)
                 } catch(ex) {} //ignore duplicates
                 
                 item.coverImageId = image._id
@@ -362,7 +363,6 @@ class ImportService {
                 throw new Error("No image in metadata")
             }
 
-
             //Create or save animation
             if (metadata.animation_url) {
 
@@ -371,60 +371,28 @@ class ImportService {
                 //Fetch and create animation
                 animation = await this.animationService.newFromText(new TextDecoder().decode(await this._fetchURI(metadata.animation_url)))
 
+
+                //Save animation
+                try {
+                    await this.animationService.put(animation)
+                } catch(ex) {} //ignore duplicates
+
+                
+                forkStatus.animations.saved++
+                this.logForkProgress(forkStatus, `Importing animation ${animation._id}`)
+
+                item.animationId = animation._id 
+
+
             } else {
-
-                //Generate a new one from the cover image
                 item.coverImageAsAnimation = true 
-
-                if (imageDimensions) {
-
-                    //Insert the image into the Quill content so it shows up if we edit this item.
-                    item.content = {
-                        "ops": [
-                            {
-                                "insert": {
-                                    "ipfsimage": {
-                                        "src": await this.imageService.getUrl(image),
-                                        "cid": image.cid,
-                                        "width": imageDimensions.width,
-                                        "height": imageDimensions.height,
-                                        "style": null
-                                    }
-                                }
-                            },
-                            {
-                                "insert": "\n\n"
-                            }
-                        ]
-                    }
-
-                }
-
-
-                let content = await this.animationService.buildAnimationPage(item)
-
-                animation = await this.animationService.newFromText(content)
-
             }
 
-
-            //Save animation
-            try {
-                await this.animationService.put(animation)
-                // await this.itemWebService.publishAnimation(channel, animation.cid, false)
-            } catch(ex) {} //ignore duplicates
-            
-
-            forkStatus.animations.saved++
-            this.logForkProgress(forkStatus, `Importing animation ${animation._id}`)
-
-
-
+    
             item.tokenId = metadata.tokenId 
             item.title = metadata.name 
             item.channelId = channel._id
             item.attributeSelections = []
-            item.animationId = animation._id 
 
 
             //Build attributes for item
@@ -443,7 +411,12 @@ class ImportService {
             item.originalJSONMetadata = metadata
 
             //Save item
-            await this.itemWebService.put(channel, item, false)
+            await this.itemWebService.put({
+                channel: channel,
+                item: item,
+                updateQueryCache: false,
+                publish: false
+            })
 
             //Update token stats
             tokenIdStatsQueryCache.result.count++
@@ -456,12 +429,11 @@ class ImportService {
                 tokenIdStatsQueryCache.result.max = item.tokenId
             }
 
-
-
-
-
             forkStatus.items.saved++
-            this.logForkProgress(forkStatus, `Importing item ${item._id}`)
+            // this.logForkProgress(forkStatus, `Importing item ${item._id}`)
+
+            console.timeEnd(`Importing token #${metadata.tokenId}`)
+
 
 
         }
@@ -476,6 +448,20 @@ class ImportService {
 
 
         await this.channelService.buildAttributeCounts(channel._id)
+
+
+
+        //Update existing token cache if it exists or create a new one.
+        let existingTokenIdStatsCache 
+
+        try {
+            existingTokenIdStatsCache = await this.queryCacheService.get(tokenIdStatsQueryCache._id)
+        } catch (ex) {}
+
+        if (existingTokenIdStatsCache) {
+            tokenIdStatsQueryCache._rev = existingTokenIdStatsCache._rev
+        }
+
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
@@ -483,7 +469,7 @@ class ImportService {
         forkStatus.channels.saved++
         this.logForkProgress(forkStatus, `Importing channel ${channel._id}`)
 
-        await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
+        // await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
 
         
         return channel._id
@@ -529,10 +515,11 @@ class ImportService {
             let existingAuthor
 
             try {
-                existingAuthor = await this.authorService.get(author._id)
+                existingAuthor = await this.authorService.get(author.walletAddress)
             } catch(ex) {}
 
-            await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))            
+            await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))        
+
 
             forkStatus.authors.saved++
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
@@ -582,7 +569,7 @@ class ImportService {
 
 
 
-        await this.schemaService.loadChannel(channelId)
+        await this.schemaService.loadChannel(channel._id)
 
 
         for (let animation of animations) {
@@ -738,7 +725,12 @@ class ImportService {
 
             let itemObj = Object.assign(new Item(), item)
 
-            await this.itemWebService.put(channel, itemObj, false) 
+            await this.itemWebService.put({
+                channel: channel,
+                item: itemObj,
+                updateQueryCache: false,
+                publish: false
+            }) 
 
 
 
@@ -778,9 +770,25 @@ class ImportService {
         this.logForkProgress(forkStatus, `Building query cache for channel ${channelId}`)    
 
         await this.channelService.buildAttributeCounts(channel._id)
+
+
+
+        //Update existing token cache if it exists or create a new one.
+        let existingTokenIdStatsCache 
+
+        try {
+            existingTokenIdStatsCache = await this.queryCacheService.get(tokenIdStatsQueryCache._id)
+        } catch (ex) {}
+
+        if (existingTokenIdStatsCache) {
+            tokenIdStatsQueryCache._rev = existingTokenIdStatsCache._rev
+        }
+
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
-        await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
+
+
+        // await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
 
 
         return channelId
@@ -820,7 +828,7 @@ class ImportService {
             let existingAuthor
 
             try {
-                existingAuthor = await this.authorService.get(author._id)
+                existingAuthor = await this.authorService.get(author.walletAddress)
             } catch(ex) {}
 
             await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))           
@@ -844,7 +852,7 @@ class ImportService {
 
         await this.channelWebService.put(channel)  
 
-        channelId = channelObj._id
+        channelId = channel._id
 
         forkStatus.channels.saved++
         this.logForkProgress(forkStatus, `Inserted channel ${channel._id}`)
@@ -985,7 +993,13 @@ class ImportService {
                 item._rev = itemObj._rev
             }
 
-            await this.itemWebService.put(channel, Object.assign(new Item(), item), false)  
+
+            await this.itemWebService.put({
+                channel: channel,
+                item: Object.assign(new Item(), item),
+                updateQueryCache: false,
+                publish: false
+            })  
 
 
             //Update token stats
@@ -1037,7 +1051,7 @@ class ImportService {
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
-        await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
+        // await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
 
         this.logForkProgress(forkStatus, `Forking channel ${channel._id} complete`)
 

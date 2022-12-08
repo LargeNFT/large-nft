@@ -14,21 +14,9 @@
     ` : $h``} 
 
 
-    ${itemViewModel.previous ? $h`
-      <div class="fab fab-left-center color-white">
-        <a href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.previous}" id="previous-${itemViewModel.item._id}">
-          <i class="icon f7-icons color-blue">arrow_left</i>
-        </a>
-      </div>
-    ` : $h``}
 
-    ${itemViewModel.next ? $h`
-      <div class="fab fab-right-center color-white">
-        <a  href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.next}" id="next-${itemViewModel.item._id}" data-transition="f7-cover">
-          <i class="icon f7-icons color-blue">arrow_right</i>
-        </a>
-      </div>
-      ` : $h``}
+
+
 
 
 
@@ -80,7 +68,6 @@
               <div class="card-footer item-show-footer">
                 
                   <a class="button button-fill button-small" href="/admin/channel/${itemViewModel.channel._id}/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
-                  <a class="button button-fill button-small" href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">Clone</a>
 
                   ${itemViewModel.canDelete ? $h`
                     <a class="button button-outline button-small color-red" @click="${deleteClick}">
@@ -95,11 +82,42 @@
           </div> 
 
 
+
+          <div class="row block">
+
+            ${itemViewModel.previous ? $h`
+              <a class="button button-outline back-token-button margin-bottom col-50 color-gray" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.previous}">
+                <i class="icon f7-icons color-blue">arrow_left</i>
+              </a>
+            ` : $h`<span />`}
+
+    
+            ${itemViewModel.next ? $h`
+              <a class="button button-fill continue-button margin-bottom col-50" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.next}" data-transition="f7-cover">
+                Continue <i class="f7-icons">arrow_right</i>
+              </a>
+            ` : $h`<span />`}
+
+          </div>
+    
+
+
+
         </div>
 
         <div class="col-100 large-25">
 
           <${TokenNavigator} channel=${itemViewModel.channel._id} token_id=${itemViewModel.item.tokenId} />
+
+          <div class="card">
+            <div class="card-header">Clone</div>
+            <div class="card-content card-content-padding">
+              Create a <a class="link" href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">clone</a> of this item.
+            </div>
+          </div>
+
+
+
 
           <div class="card">
             <div class="card-header">

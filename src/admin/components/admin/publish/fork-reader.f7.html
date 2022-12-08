@@ -243,6 +243,11 @@
       if (forkRepoStatus == "finished") { //TODO
         channelViewModel.channel.publishReaderRepoStatus = "complete"
         await channelService.put(channelViewModel.channel)
+
+        //Grab the URL
+        let forkResult = await gitlabService.getExistingFork(channelViewModel.channel)
+        repoURI = forkResult.http_url_to_repo
+
       }
 
       await $update()

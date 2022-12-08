@@ -457,67 +457,64 @@ class ItemWebService {
 
     }
 
-    async put(channel:Channel, item:Item, updateQueryCache:boolean=true) : Promise<void> {
+    async put(command:PutItemCommand) : Promise<void> {
 
-        console.time("Saving item")
 
         //Get the image cids that we'll be left with.
-        item.imageIds = this.exportService.getImageCidsByItem(item)
+        command.item.imageIds = this.exportService.getImageCidsByItem(command.item)
 
         //If the item exists we need to do some cleanup before saving.
         //Find any images and animations that are being removed and remove them.
-        if (item._rev) {
+        if (command.item._rev) {
 
-            let existing = await this.itemService.get(item._id)
+            let existing = await this.itemService.get(command.item._id)
             
             //Loop through the existing images and find the ones we're removing.
-            let removedImageCids = this.exportService.getImageCidsByItem(existing).filter( cid => !item.imageIds?.includes(cid))
+            let removedImageCids = this.exportService.getImageCidsByItem(existing).filter( cid => !command.item.imageIds?.includes(cid))
 
             //Remove
             for (let removedCid of removedImageCids) {
                 // console.log(`Removing ${removedCid} from images.`)
-                await this.deletePublishedImageByChannel(channel, item, removedCid)
+                await this.deletePublishedImageByChannel(command.channel, command.item, removedCid)
             }
 
             //Remove animation if changed
-            if (item.animationId != existing.animationId) {
-                // console.log(`Removing ${existing.animationId} from animations.`)
-                await this.deletePublishedAnimationByChannel(channel, item, existing.animationId)
+            if (command.item.animationId != existing.animationId) {
+                console.log(`Removing ${existing.animationId} from animations.`)
+                await this.deletePublishedAnimationByChannel(command.channel, command.item, existing.animationId)
             }
 
         }
 
         //Put item  
-        await this.itemService.put(item)
+        await this.itemService.put(command.item)
 
-        console.timeEnd("Saving item")
-
-
-        console.time("Publishing item")
 
         //Put images in IPFS and git
-        for (let imageCid of item.imageIds) {
-            await this.publishImage(channel, await this.imageService.get(imageCid), false )
+        for (let imageCid of command.item.imageIds) {
+            try {
+                await this.publishImage(command.channel, await this.imageService.get(imageCid), false )
+            } catch(ex) {}
         }
 
         //Put animation
-        await this.publishAnimation(channel, await this.animationService.get(item.animationId), false)
+        try {
+            await this.publishAnimation(command.channel, await this.animationService.get(command.item.animationId), false)
+        } catch(ex) {}
 
-        console.timeEnd("Publishing item")
 
+        if (command.updateQueryCache) {
 
-        if (updateQueryCache) {
-
-            let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${item.channelId}`)
+            let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${command.item.channelId}`)
 
             let tokenIdStats = queryCache.result
     
-            if (item.tokenId < tokenIdStats.min) {
-                tokenIdStats.min = item.tokenId
+            if (command.item.tokenId < tokenIdStats.min) {
+                tokenIdStats.min = command.item.tokenId
             }
     
-            if (item.tokenId > tokenIdStats.max) {
-                tokenIdStats.max = item.tokenId
+            if (command.item.tokenId > tokenIdStats.max) {
+                tokenIdStats.max = command.item.tokenId
                 tokenIdStats.count++
             }
     
@@ -529,14 +526,14 @@ class ItemWebService {
     
     
             //Update attribute counts
-            let attributeCounts:AttributeCount[] = await this.itemService.getAttributeInfoBySelections(item.channelId, item.attributeSelections)
+            let attributeCounts:AttributeCount[] = await this.itemService.getAttributeInfoBySelections(command.item.channelId, command.item.attributeSelections)
     
     
             for (let attributeCount of attributeCounts) {
     
                 let ac:AttributeCount
     
-                let attributeCountId = `${item.channelId}-${attributeCount.traitType}-${attributeCount.value}`
+                let attributeCountId = `${command.item.channelId}-${attributeCount.traitType}-${attributeCount.value}`
 
                 try {
                     ac = await this.attributeCountService.get(attributeCountId)
@@ -544,7 +541,7 @@ class ItemWebService {
     
                 if (!ac) {
                     ac = new AttributeCount()
-                    ac.channelId = item.channelId
+                    ac.channelId = command.item.channelId
                     ac.traitType = attributeCount.traitType
                     ac.value = attributeCount.value
                 }
@@ -615,7 +612,10 @@ class ItemWebService {
 
         //Save to get an ID, etc
         let channel = await this.channelService.get(item.channelId)
-        await this.put(channel, itemCopy)
+        await this.put({
+            channel: channel,
+            item: itemCopy
+        })
 
 
         //Build contentHTML for searching
@@ -629,7 +629,10 @@ class ItemWebService {
         await this.saveAnimation(itemCopy)
 
         //Save the result
-        await this.put(channel, itemCopy)
+        await this.put({
+            channel: channel,
+            item: itemCopy
+        })
 
 
         return itemCopy
@@ -643,9 +646,6 @@ class ItemWebService {
         let ipfsDirectory = `/export/${channel._id}`
         let ipfsFilename = `${ipfsDirectory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}` 
 
-        let content = await this.imageService.getImageContent(image)
-
-
         //Check if it's already in IPFS
         let stat
 
@@ -655,7 +655,7 @@ class ItemWebService {
 
         if (!stat?.cid?.toString()) {
 
-            // console.log(`Publishing image ${image._id}`)
+            let content = await this.imageService.getImageContent(image)
 
             //Add to IPFS
             const result = await this.ipfsService.ipfs.add({
@@ -670,8 +670,6 @@ class ItemWebService {
             await this.gitService.writeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, content)
         }
 
-
-        // console.log(`Saved image ${imageCid}`)
 
 
     }
@@ -811,6 +809,17 @@ class ItemWebService {
 
 
 }
+
+
+interface PutItemCommand {
+    channel:Channel
+    item:Item
+    updateQueryCache?:boolean
+    publish?:boolean
+}
+
+
+
 
 export {
     ItemWebService

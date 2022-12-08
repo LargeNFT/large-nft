@@ -242,6 +242,7 @@
         $f7.views.main.router.navigate(`/admin/channel/show/${channel._id}`)
 
       } catch (ex) {
+        console.log(ex)
         $f7.dialog.alert(ex.errors, "There was an error")
       }
 

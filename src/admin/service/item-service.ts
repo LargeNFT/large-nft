@@ -88,8 +88,10 @@ class ItemService {
 
     async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
 
+        console.log(channel.forkType)
+
         //We are publishing an existing collection that we are not editing then export the original metadata
-        if (channel.forkType == "existing" && channel.importSuccess) {
+        if (channel.forkType == "existing") {
             console.log(`Exporting original metadata for token #${item.tokenId}`)
             return item.originalJSONMetadata
         }

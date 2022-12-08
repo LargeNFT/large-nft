@@ -41,7 +41,7 @@
                     <div class="card">
 
                         <div class="card-content">
-                            <div class="card-content card-content-padding">
+                            <form class="card-content card-content-padding" @submit="${formSubmit}" id="export-form">
                                 
                                 <p>
                                     The JSON metadata for the collection and a snapshot of the source database
@@ -66,79 +66,93 @@
                                         </div>
     
                                         ${publishStatus? $h`
-                                            <div class="publish-status">
     
-                                                <h4>
-                                                    NFT Collection Data
-                                                </h4>
-    
-                                                ${publishStatus.images.total > 0 ? $h`
-                                                    <div class="item">
-                                                        <label>Images:</label> ${publishStatus.images.saved} / ${publishStatus.images.total} 
-                                                    </div>    
-                                                ` : $h`<span/>`}
+                                            <div class="row">
+                                                <div class="col-100 margin-top"><strong>NFT Data</strong></div>
+                                                <div class="data-table col-100 large-50">
+                                                  <table>
+                                                    <thead>
+                                                      <th class="label-cell">Type</th>
+                                                      <th class="numeric-cell">Saved</th>
+                                                      <th class="numeric-cell">Total</th>
+                                                    </thead>
+                                                    <tbody>
+                                                      <tr class="${publishStatus.images.saved == publishStatus.images.total && publishStatus.images.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Images</td>
+                                                        <td class="numeric-cell">${publishStatus.images.saved}</td>
+                                                        <td class="numeric-cell">${publishStatus.images.total}</td>
+                                                      </tr>
+                                                      <tr class="${publishStatus.animations.saved == publishStatus.animations.total && publishStatus.animations.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Animations</td>
+                                                        <td class="numeric-cell">${publishStatus.animations.saved}</td>
+                                                        <td class="numeric-cell">${publishStatus.animations.total}</td>
+                                                      </tr>
+                                                      <tr class="${publishStatus.nftMetadata.saved == publishStatus.nftMetadata.total && publishStatus.nftMetadata.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">NFT Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.nftMetadata.saved}</td>
+                                                        <td class="numeric-cell">${publishStatus.nftMetadata.total}</td>
+                                                      </tr>
+                                                    
+                                                    </tbody>
+                                                  </table>
 
-
-                                                ${publishStatus.animations.total > 0 ? $h`
-                                                    <div class="item">
-                                                        <label>Animations:</label> ${publishStatus.animations.saved} / ${publishStatus.animations.total} 
-                                                    </div>
-                                                ` : $h`<span/>`}
-
-
-                                                <div class="item">
-                                                    <label>NFT Metadata:</label> ${publishStatus.nftMetadata.saved} / ${publishStatus.nftMetadata.total} 
                                                 </div>
-        
-                                                <div class="item"> 
-                                                    <label>Contract Metadata:</label> ${publishStatus.contractMetadata.saved} / ${publishStatus.contractMetadata.total}
-                                                </div>
-        
-                                                <h4>
-                                                    Database Backup
-                                                </h4>
-           
-                                                <div class="item">
-                                                    <label>Items:</label> ${publishStatus.backups.items.saved} / ${publishStatus.backups.items.total} 
-                                                </div>
-        
-                                                <div class="item">
-                                                    <label>Images:</label> ${publishStatus.backups.images.saved} / ${publishStatus.backups.images.total} 
-                                                </div>
-    
-
-                                                ${publishStatus.backups.animations.total ? $h`
-                                                    <div class="item">
-                                                        <label>Animations:</label> ${publishStatus.backups.animations.saved} / ${publishStatus.backups.animations.total} 
-                                                    </div>
-                                                ` : $h`<span/>`}
-
-    
-                                                ${publishStatus.backups.themes.total ? $h`
-                                                    <div class="item">
-                                                        <label>Themes:</label> ${publishStatus.backups.themes.saved} / ${publishStatus.backups.themes.total} 
-                                                    </div>
-                                                ` : $h`<span/>`}
-
-    
-                                                ${publishStatus.backups.staticPages.total ? $h`
-                                                    <div class="item">
-                                                        <label>Static Pages:</label> ${publishStatus.backups.staticPages.saved} / ${publishStatus.backups.staticPages.total} 
-                                                    </div>
-                                                ` : $h`<span/>`}
-
-                                                <div class="item">
-                                                    <label>Channels:</label> ${publishStatus.backups.channels.saved} /  ${publishStatus.backups.channels.total}
-                                                </div>
-
-                                                ${publishStatus.backups.authors.total ? $h`
-                                                    <div class="item">
-                                                        <label>Authors:</label> ${publishStatus.backups.authors.saved} /  ${publishStatus.backups.authors.total}
-                                                    </div>    
-                                                ` : $h`<span/>`}
-
-    
                                             </div>
+
+                                            <div class="col-100" style="margin-top: 40px;"><strong>Database Backup</strong></div>
+                                            <div class="row">
+                                                <div class="data-table col-100 large-50">
+                                                    <table>
+                                                        <thead>
+                                                          <th class="label-cell">Type</th>
+                                                          <th class="numeric-cell">Total</th>
+                                                        </thead>
+                                                        <tbody>
+                                                          <tr class="${publishStatus.contractMetadata.saved == publishStatus.contractMetadata.total && publishStatus.contractMetadata.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Contract Metadata</td>
+                                                            <td class="numeric-cell">${publishStatus.contractMetadata.total}</td>
+                                                          </tr>
+                                                          <tr class="${publishStatus.backups.items.saved == publishStatus.backups.items.total && publishStatus.backups.items.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Items</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.items.total}</td>
+                                                          </tr>
+                                                          <tr class="${publishStatus.backups.images.saved == publishStatus.backups.images.total && publishStatus.backups.images.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Image Metadata</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.images.total}</td>
+                                                          </tr>
+                                                          <tr class="${publishStatus.backups.animations.saved == publishStatus.backups.animations.total && publishStatus.backups.animations.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Animations Metadata</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.animations.total}</td>
+                                                          </tr>
+                                                          <tr class="${publishStatus.backups.themes.saved == publishStatus.backups.themes.total && publishStatus.backups.themes.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Themes</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.themes.total}</td>
+                                                          </tr>
+                                                          <tr class="${publishStatus.backups.staticPages.saved == publishStatus.backups.staticPages.total && publishStatus.backups.staticPages.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Static Pages</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.staticPages.total}</td>
+                                                          </tr>
+                                                          <tr class="${publishStatus.backups.channels.saved == publishStatus.backups.channels.total && publishStatus.backups.channels.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Channels</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.channels.total}</td>
+                                                          </tr>
+      
+                                                          ${publishStatus.backups.authors.total ? $h`
+      
+                                                            <tr class="${publishStatus.backups.authors.saved == publishStatus.backups.authors.total && publishStatus.backups.authors.total > 0 ? 'complete' : ''}">
+                                                                <td class="label-cell">Authors</td>
+                                                                <td class="numeric-cell">${publishStatus.backups.authors.total}</td>
+                                                            </tr>
+                                                        ` : $h`<span/>`}
+      
+      
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+    
+                                            <div class="publish-status"></div>
+
                                         ` : $h`<span />`}
     
                                     ` : $h`
@@ -162,15 +176,54 @@
                                     ` : $h`<span />`}
     
     
-                                    ${ipfsReady ? $h`
+                                    ${ipfsReady & !publishing ? $h`
     
+                                        <div class="list margin-top margin-bottom">
+                                            <ul>
+                                                <li>
+                                                    <label class="item-checkbox item-content">
+                                                        <input type="checkbox" checked="true" name="exportMedia" />
+                                                        
+                                                        <i class="icon icon-checkbox"></i>
+                                                        <div class="item-inner">
+                                                            <div class="item-title">
+                                                              <div class="item-header"></div>
+                                                              Export Media
+                                                              <div class="item-footer">
+                                                                Export all images and animations to IPFS and your local git repo.
+                                                              </div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label class="item-checkbox item-content">
+                                                        <input type="checkbox" checked="true" name="exportMetadata" />
+                                                        
+                                                        <i class="icon icon-checkbox"></i>
+                                                        <div class="item-inner">
+                                                            <div class="item-title">
+                                                              <div class="item-header"></div>
+                                                              Export JSON metadata
+                                                              <div class="item-footer">
+                                                                Generate and export JSON metadata for all items.
+                                                              </div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+
                                         ${showRefresh ? $h`
     
                                             <div class="chip chip-outline">
                                                 <div class="chip-label">Success!</div>
                                             </div>
     
-                                            <button class="button button-fill color-gray text-color-white" @click="${copyIPFSClick}" id="export-refresh-button">
+                                            <button type="submit" class="button button-fill color-gray text-color-white" id="export-refresh-button">
                                                 <i class="material-icons">refresh</i> Export Again
                                             </button>
     
@@ -178,7 +231,7 @@
                                         ` : $h`
     
                                             ${!publishing ? $h`
-                                                <button class="button button-fill button-small deploy-button" @click="${copyIPFSClick}">Export</button>
+                                                <button type="submit" class="button button-fill button-small deploy-button" >Export</button>
                                             ` : $h`<span />`}  
     
                                         `}
@@ -193,7 +246,7 @@
                                 `}
 
 
-                            </div>
+                            </form>
                         </div>
 
                     </div>
@@ -331,7 +384,15 @@
             pageUnloaded = true
         })
 
-        const copyIPFSClick = async (e) => {
+        const formSubmit = async (e) => {
+
+            e.preventDefault()
+
+            let formData = $f7.form.convertToData('#export-form')
+
+            let exportMedia = formData.exportMedia[0] == "on"
+            let exportMetadata = formData.exportMetadata[0] == "on"
+
 
             showCurrentCid = false
             publishing = true
@@ -345,7 +406,7 @@
             //Now publish
             try {
                 
-                await publishService.publish(channelViewModel.channel)
+                await publishService.publish(channelViewModel.channel, exportMedia, exportMetadata)
 
                 //Get updated channel
                 channelViewModel.channel = await channelService.get(channelViewModel.channel._id)

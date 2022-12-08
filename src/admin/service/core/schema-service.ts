@@ -16,7 +16,7 @@ import { AttributeCountRepository } from "../../repository/attribute-count-repos
 @injectable()
 class SchemaService {
 
-    loadedChannelId:string
+    // loadedChannelId:string
 
     constructor(
         private authorRepository:AuthorRepository,
@@ -48,7 +48,7 @@ class SchemaService {
 
     async loadChannel(channelId:string) {
 
-        if (channelId == this.loadedChannelId) return
+        console.log(`Loading channel: ${channelId}`)
 
         await this.itemRepository.load(channelId)
         await this.animationRepository.load(channelId)
@@ -57,7 +57,19 @@ class SchemaService {
         await this.staticPageRepository.load(channelId)
         await this.attributeCountRepository.load(channelId)
 
-        this.loadedChannelId = channelId
+
+    }
+
+    async dropChannel(channelId:string) {
+
+        console.log(`Dropping channel: ${channelId}`)
+
+        await this.itemRepository.db.destroy()
+        await this.animationRepository.db.destroy()
+        await this.imageRepository.db.destroy()
+        await this.themeRepository.db.destroy()
+        await this.staticPageRepository.db.destroy()
+        await this.attributeCountRepository.db.destroy()
 
     }
 

@@ -203,7 +203,13 @@
 
         uiService.showSpinner()
 
-        await itemWebService.put(itemViewModel.channel, item)
+       
+        await itemWebService.put({
+                channel: itemViewModel.channel,
+                item: item,
+                updateQueryCache: true,
+                publish: true
+        })
 
         const toast = $f7.toast.show({
           text: 'Item saved',

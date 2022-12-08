@@ -37,7 +37,7 @@ class PublishService {
         @inject("contracts") private contracts,
     ) { }
 
-    async publish(channel: Channel) {
+    async publish(channel: Channel, exportMedia:boolean, exportMetadata:boolean) {
 
         //Export metadata
         this.logPublishProgress(undefined, "Preparing export...")
@@ -57,7 +57,7 @@ class PublishService {
 
         this.logPublishProgress(undefined, "Git initialized. Exporting...")
 
-        let cid: string = await this.export(exportBundle, backup, feeRecipient)
+        let cid: string = await this.export(exportBundle, backup, feeRecipient, exportMedia, exportMetadata)
 
         //Update local cid info
         Object.assign(channel, await this.channelService.get(channel._id))
@@ -69,7 +69,7 @@ class PublishService {
 
     }
 
-    async export(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string, fullExport:boolean = true): Promise<string> {
+    async export(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string, exportMedia:boolean = true, exportMetadata:boolean=true): Promise<string> {
 
         let flush = true
         let ipfsDirectory = this.getIPFSDirectory(exportBundle.channel)
@@ -79,9 +79,9 @@ class PublishService {
 
             contractMetadata: { saved: 0, total: 1 },
             
-            nftMetadata: { saved: 0, total: fullExport ? exportBundle.items.length : 0 },
-            images: { saved: 0, total: fullExport ? exportBundle.images.length : 0 },
-            animations: { saved: 0, total: fullExport ? exportBundle.animations.length : 0},
+            nftMetadata: { saved: 0, total: exportMetadata ? exportBundle.items.length : 0 },
+            images: { saved: 0, total: exportMedia ? exportBundle.images.length : 0 },
+            animations: { saved: 0, total: exportMedia ? exportBundle.animations.length : 0},
         
             backups: {
                 channels: { saved: 0, total: 1 },
@@ -101,7 +101,26 @@ class PublishService {
         let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
 
 
+        if (exportMedia) {
 
+            //Clear 
+            // try {
+            //     await this.ipfsService.ipfs.files.read(ipfsDirectory)
+            //     await this.ipfsService.ipfs.files.rm(ipfsDirectory,  { recursive: true, flush: true})
+            // } catch (ex) { }
+
+
+            //Save images
+            await this._publishImages(publishStatus, ipfsDirectory, gitDirectory, exportBundle.images, true)
+
+            //Save animations
+            await this._publishAnimations(publishStatus, ipfsDirectory, gitDirectory, exportBundle.animations, true)
+
+        }
+
+        if (exportMetadata) {
+            await this._publishNFTMetadata(publishStatus, ipfsDirectory, gitDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
+        }
 
 
         //Save contract metadata
@@ -174,25 +193,8 @@ class PublishService {
 
 
 
-        if (fullExport) {
+        
 
-            //Clear 
-            try {
-                await this.ipfsService.ipfs.files.read(ipfsDirectory)
-                await this.ipfsService.ipfs.files.rm(ipfsDirectory,  { recursive: true, flush: true})
-            } catch (ex) { }
-
-
-            //Save images
-            await this._publishImages(publishStatus, ipfsDirectory, gitDirectory, exportBundle.images, true)
-
-            //Save animations
-            await this._publishAnimations(publishStatus, ipfsDirectory, gitDirectory, exportBundle.animations, true)
-
-        }
-
-
-        await this._publishNFTMetadata(publishStatus, ipfsDirectory, gitDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
 
 
         this.logPublishProgress(publishStatus, `Flushing to IPFS...`)
@@ -289,11 +291,11 @@ class PublishService {
             let stat
 
             try {
-                stat = await this.ipfsService.ipfs.stat(ipfsFilename, { hash: true })
+                stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
             } catch(ex) {}
 
 
-            if (!stat) {
+            if (!stat?.cid.toString()) {
 
                 const result = await this.ipfsService.ipfs.add(animationContent)
 
@@ -340,11 +342,11 @@ class PublishService {
             let stat
 
             try {
-                stat = await this.ipfsService.ipfs.stat(ipfsFilename, { hash: true })
+                stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
             } catch(ex) {}
 
 
-            if (!stat) {
+            if (!stat?.cid.toString()) {
 
                 //Add to IPFS
                 const result = await this.ipfsService.ipfs.add({
@@ -404,12 +406,11 @@ class PublishService {
             let stat
 
             try {
-                stat = await this.ipfsService.ipfs.stat(ipfsFilename, { hash: true })
+                stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
             } catch(ex) {}
 
-            console.log(stat, contentCid)
 
-            if (stat != contentCid) {
+            if (stat?.cid.toString() != contentCid) {
 
                 const result = await this.ipfsService.ipfs.add({
                     content: content

@@ -788,7 +788,9 @@ ul.breadcrumb li a:hover {
 
 
 
-
+.data-table .complete {
+  text-decoration: line-through;
+}
 
   
 .attribute-value {
@@ -1022,8 +1024,7 @@ input[type="text"]:disabled {
 
 @media only screen and (max-width: 1024px) {
   .animation-card {
-    margin-left: 42px;
-    margin-right: calc(42px - var(--scrollbar-width));
+
   }
 }
 

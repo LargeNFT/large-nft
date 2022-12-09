@@ -67,7 +67,7 @@ import Menu from 'framework7/components/menu'
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
-  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup,Accordion,
+  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup, Accordion,
   Popover
 ])
 
@@ -79,27 +79,27 @@ import packageConfig from "../../package.json"
 
 globalThis.version = packageConfig.version
 
-export default async() => {
-                
-    let app = new Framework7({
-        el: '#app', // App root element
-        id: 'large-index', // App bundle ID
-        name: 'Large Home', // App name
-        theme: 'auto', // Automatic theme detection
-  
-        init: false,
+export default async () => {
 
-        //@ts-ignore
-        component: AppComponent,
-        routes: [
-            {
-                path: "/",
-                component: IndexPageComponent
-            }
-        ]
+  let app = new Framework7({
+    el: '#app', // App root element
+    id: 'large-index', // App bundle ID
+    name: 'Large Home', // App name
+    theme: 'auto', // Automatic theme detection
 
-      })
+    init: false,
 
-    app.init()
+    //@ts-ignore
+    component: AppComponent,
+    routes: [
+      {
+        path: "/",
+        component: IndexPageComponent
+      }
+    ]
+
+  })
+
+  app.init()
 
 }

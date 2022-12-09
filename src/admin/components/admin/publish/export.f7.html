@@ -44,9 +44,9 @@
                             <form class="card-content card-content-padding" @submit="${formSubmit}" id="export-form">
                                 
                                 <p>
-                                    The JSON metadata for the collection and a snapshot of the source database
-                                    will be exported to the IPFS node and a local git repository.
+                                    Export the JSON metadata for the collection and a snapshot of the source database to the IPFS node and a local git repository.
                                 </p>
+
 
                                 
                                 ${settings?.personalAccessToken?.length > 0 ? $h`
@@ -249,7 +249,75 @@
                             </form>
                         </div>
 
+                        
+
                     </div>
+
+                    <div class="card">
+                        <div class="card-content card-content-padding">
+
+                            <strong>Troubleshooting</strong>
+
+                            <p>
+                                Large is still alpha software and connecting to external services in a browser application can be tricky. A web security feature named <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" class="external">Cross-Origin Resource Sharing (CORS)</a> can create a few
+                                challenges to overcome depending on your setup. 
+                            </p>
+
+                            <p>
+                                Tip: Open the javascript console to see further details about errors.
+                            </p>
+
+                            <ul>
+                                <li style="margin-top: 20px; margin-bottom: 20px">
+                                    <strong>Problem: Git clone/pull fails.</strong>  
+                                    <ul>
+                                        <li>Large uses <a href="https://isomorphic-git.org/" class="external">isomorphic-git</a> to store and retreive git data directly from your browser.</li>
+                                        <li><a href="https://gitlab.com/gitlab-org/gitlab/-/issues/20590" class="external">GitLab</a> and GitHub do not add CORS headers to their pull/clone requests.</li>
+                                        <li>This means your browser blocks the request, so it fails.</li>
+                                    </ul>
+
+                                    <p><strong>Solution(s):</strong></p>
+                                    <ul>
+                                        <li>Search the web for "Disable CORS" for your browser. It's a complex issue and environment specific.</li>
+                                        <li>
+                                            <a class="external" href="https://github.com/ptoner/isomorphic-git-cors-extension">Install</a> this simple extension for Chrome/Brave. This adds
+                                            the proper headers to GitLab specifically.
+                                        </li>
+                                    </ul>
+
+                                </li>
+
+                                <li style="margin-top: 20px; margin-bottom: 20px"> 
+                                    <strong>Problem: IPFS fails.</strong> 
+                                    <p>There could be many reasons for this to happen depending on your configuration.</p>
+                                    <ul>
+                                        <li>
+                                            CORS problems connecting to external gateways.
+                                            <ul>
+                                                <li>See <a href="https://github.com/ipfs/js-ipfs/blob/master/docs/CORS.md" class="external">IPFS documentation for this issue.</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>Connecting from a website using HTTPS to an HTTP IPFS gateway will fail.</li>
+
+                                        <li>The in-browser node struggles to store large amounts of data or connect to external nodes.</li>
+                                    </ul>
+
+                                    <p><strong>Solution(s):</strong></p>
+                                    <ul>
+                                        <li>If you are using an IPFS node running on localhost you will have better luck also running Large on localhost. <a href="https://gitlab.com/american-space-software/large" class="external">See git README</a> for instructions to run a local copy.
+                                        </li>
+                                        <li>Use an IPFS gateway that supports HTTPS and is set up to add the correct CORS headers.</li>
+                                        <li>This can be tricky. Later we will have better options. <a href="https://discord.gg/yJtjqHvqXm">Join discord</a> and ask questions.</li>
+
+                                    </ul>
+
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+
 
                     ` : $h`
                     <div class="card">

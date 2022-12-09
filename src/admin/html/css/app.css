@@ -607,7 +607,7 @@ ul.breadcrumb li a:hover {
 
 
 .channel-editor {
-  min-height: 300px;
+  min-height: 100px;
   width: 100%;
 }
 

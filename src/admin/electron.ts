@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron')
+
 // const { ipcMain } = require('electron')
 // const path = require('path')
 // const fs = require('fs')
@@ -44,7 +45,7 @@ app.on('ready', async () => {
   console.log('Main window created')
 
   // and load the index.html of the app.
-  await mainWindow.loadFile('../public/index.html')
+  await mainWindow.loadFile('../../public/admin/app.html')
 
 })
 

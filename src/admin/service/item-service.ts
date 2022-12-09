@@ -88,8 +88,6 @@ class ItemService {
 
     async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
 
-        console.log(channel.forkType)
-
         //We are publishing an existing collection that we are not editing then export the original metadata
         if (channel.forkType == "existing") {
             console.log(`Exporting original metadata for token #${item.tokenId}`)
@@ -106,10 +104,12 @@ class ItemService {
         }
 
         if (item.animationId && !item.coverImageAsAnimation) {
+            if (!animationDirectoryCid) throw new Error("Error exporting NFT metadata. Animation directory not found.")
             result.animation_url = `ipfs://${animationDirectoryCid}/${item.animationId}.html`
         }
 
         if (item.coverImageId) {
+            if (!imageDirectoryCid) throw new Error("Error exporting NFT metadata. Image directory not found.")
             result.image = `ipfs://${imageDirectoryCid}/${coverImage.cid}.${coverImage.buffer ? 'jpg' : 'svg'}`
         }
 
@@ -157,8 +157,6 @@ class ItemService {
         let tokenIdStats = queryCache?.result
         return tokenIdStats?.max ? tokenIdStats.max + 1 : 1
     }
-
-
 
     async getAttributeCountByChannel(channelId:string) : Promise<AttributeCount[]> {
         return this.itemRepository.getAttributeCountByChannel(channelId)

@@ -34,13 +34,13 @@ import staticPageEjs from './ejs/pages/static-page.ejs'
 
 import { GenerateService, GenerateViewModel } from "./service/core/generate-service.js"
 import { ProcessConfig } from "./util/process-config.js"
+import { ChannelWebService } from "./service/web/channel-web-service.js"
+import { ItemViewModel } from "./dto/viewmodel/item-view-model.js"
 
 
 let generate = async () => {
 
   let config:any = await ProcessConfig.getConfig() 
-
-  console.log(config)
 
 
   let container = new Container()
@@ -55,6 +55,7 @@ let generate = async () => {
 
   container = await getMainContainer(container, config.baseURL, config.hostname, config.baseDir)
 
+  const PER_PAGE = 35
 
   //Not great to get the impl here. Maybe load should be part of interface. 
   let itemRepository = container.get("ItemRepository")
@@ -65,28 +66,40 @@ let generate = async () => {
   //@ts-ignore
   await staticPageRepository.load()
 
+  //Get data services.
   let itemWebService:ItemWebService = container.get("ItemWebService")
+  let channelWebService:ChannelWebService = container.get("ChannelWebService")
   let generateService:GenerateService = container.get("GenerateService")
 
-  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config)
-
-  //Attribute report
-  await fs.promises.writeFile(`${config.publicPath}/attributeTotals.json`, JSON.stringify(generateViewModel.attributeTotals))
-
-  channelId = generateViewModel.channelViewModel.channel._id
+  //Create public path.
+  await fs.promises.mkdir(`${config.publicPath}`, { recursive: true })
 
 
-  //Write these to files
+  //Look up channel and items.
+  let channelViewModel = await channelWebService.get(0)
+  let itemViewModels:ItemViewModel[] = await itemWebService.list(0, config.maxItems)
+  let itemPages = await itemWebService.buildItemPages(itemViewModels, PER_PAGE)
+
+
+  //Attribute report. Write to file.
+  let attributeTotals = await itemWebService.buildAttributeTotals(channelViewModel.channel)
+  await fs.promises.writeFile(`${config.publicPath}/attributeTotals.json`, JSON.stringify(attributeTotals))
+
+  channelId = channelViewModel.channel._id
+
+
+  //Write item pages to files
   let pageCount = 0
   await fs.promises.mkdir(`${config.publicPath}/itemPages`, { recursive: true })
 
-  for (let itemPage of generateViewModel.itemPages) {
+  for (let itemPage of itemPages) {
     // console.log(`Writing item page: public/itemPages/${pageCount}.json`)
     await fs.promises.writeFile(`${config.publicPath}/itemPages/${pageCount}.json`, JSON.stringify(itemPage))
     pageCount++
   }
 
 
+  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, itemViewModels)
 
 
   //Convert images
@@ -128,15 +141,15 @@ let generate = async () => {
 
 
   let baseViewModel = {
-    channelViewModel: generateViewModel.channelViewModel,
-    attributeReport: generateViewModel.attributeTotals,
+    channelViewModel: channelViewModel,
+    attributeReport: attributeTotals,
     routablePages: generateViewModel.routablePages,
     baseURL: config.baseURL,
     hostname: config.hostname,
     marketplaces: config.marketplaces,
     externalLinks: config.externalLinks,
     base64Version: generateViewModel.base64Version,
-    channelId: generateViewModel.channelViewModel.channel._id,
+    channelId: channelViewModel.channel._id,
     showMintPage: config.showMintPage,
     headContents: headContents,
     bodyContents: bodyContents,
@@ -182,9 +195,9 @@ let generate = async () => {
   fs.mkdirSync(config.publicPath, { recursive: true })
 
   const indexResult = Eta.render(indexEjs, {
-    title: generateViewModel.channelViewModel.channel.title,
+    title: channelViewModel.channel.title,
     firstPageExploreItems: generateViewModel.firstPageExploreItems,
-    firstPost: generateViewModel.itemViewModels[0],
+    firstPost: itemViewModels[0],
     baseViewModel: baseViewModel
   })
 
@@ -195,7 +208,7 @@ let generate = async () => {
   if (config.showMintPage) {
 
     const mintResult = Eta.render(mintEjs, {
-      title: generateViewModel.channelViewModel.channel.title,
+      title: channelViewModel.channel.title,
       baseViewModel: baseViewModel
     })
 
@@ -206,7 +219,7 @@ let generate = async () => {
 
   //Search page
   const searchResult = Eta.render(searchEjs, {
-    title: generateViewModel.channelViewModel.channel.title,
+    title: channelViewModel.channel.title,
     baseViewModel: baseViewModel
   })
 
@@ -215,7 +228,7 @@ let generate = async () => {
 
   //Attribute Report
   const attributesResult = Eta.render(attributesEjs, {
-    title: generateViewModel.channelViewModel.channel.title,
+    title: channelViewModel.channel.title,
     baseViewModel: baseViewModel
   })
 
@@ -223,7 +236,7 @@ let generate = async () => {
 
   //Explore
   const exploreResult = Eta.render(exploreEjs, {
-    title: generateViewModel.channelViewModel.channel.title,
+    title: channelViewModel.channel.title,
     firstPageExploreItems: generateViewModel.firstPageExploreItems,
     baseViewModel: baseViewModel
   })
@@ -233,7 +246,7 @@ let generate = async () => {
 
   //404 page
   const fourOhFourResult = Eta.render(fourOhFourEjs, {
-    title: generateViewModel.channelViewModel.channel.title,
+    title: channelViewModel.channel.title,
     baseViewModel: baseViewModel
   })
 
@@ -241,11 +254,11 @@ let generate = async () => {
 
 
   //Build static pages
-  if (generateViewModel.channelViewModel.staticPagesViewModel?.links?.length > 0) {
-    for (let staticPage of generateViewModel.channelViewModel.staticPagesViewModel?.links) {
+  if (channelViewModel.staticPagesViewModel?.links?.length > 0) {
+    for (let staticPage of channelViewModel.staticPagesViewModel?.links) {
 
       const staticPagesResult = Eta.render(staticPageEjs, {
-        title: generateViewModel.channelViewModel.channel.title,
+        title: channelViewModel.channel.title,
         staticPage: staticPage,
         baseViewModel: baseViewModel
       })
@@ -258,7 +271,7 @@ let generate = async () => {
   //Generate token pages
 
   //Read the template file 
-  for (let itemViewModel of generateViewModel.itemViewModels) {
+  for (let itemViewModel of itemViewModels) {
 
     let rowItemViewModel = itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage)
 

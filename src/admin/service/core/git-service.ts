@@ -342,6 +342,7 @@ class GitService {
 
         } else {
 
+            await this.writeFile(`${dir}/backup/contract/contract.json`, Buffer.from(JSON.stringify({})))
             await this.writeFile(`${dir}/backup/contract/contract-abi.json`, Buffer.from(JSON.stringify({})))
             await this.writeFile(`${dir}/backup/export/contractMetadata.json`, Buffer.from(JSON.stringify({})) )
 

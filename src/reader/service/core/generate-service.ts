@@ -20,18 +20,13 @@ class GenerateService {
     ) { }
 
 
-    async getGenerateViewModel(config): Promise<GenerateViewModel> {
-
-        let itemViewModels: ItemViewModel[] = await this.itemWebService.list(0, config.maxItems)
+    async getGenerateViewModel(config, itemViewModels:ItemViewModel[]): Promise<GenerateViewModel> {
 
         //Get first page of items for explore page
         let itemResults: ItemResults = await this.itemWebService.exploreList({}, 0, PER_PAGE)
 
+
         let generateViewModel: GenerateViewModel = {
-            attributeTotals: await this.channelWebService.buildAttributeTotals(),
-            channelViewModel: await this.channelWebService.get(0),
-            itemViewModels: itemViewModels,
-            itemPages: await this.itemWebService.buildItemPages(itemViewModels, PER_PAGE),
             firstPageExploreItems: itemResults.items,
             svgItems: itemViewModels.filter(i => i.coverImage.generated),
             routablePages: await this.staticPageService.listRoutablePages(),
@@ -54,11 +49,7 @@ class GenerateService {
 
 
 interface GenerateViewModel {
-    attributeTotals: AttributeTotal[],
-    itemViewModels: ItemViewModel[],
-    itemPages: ItemPage[],
     firstPageExploreItems: RowItemViewModel[],
-    channelViewModel: ChannelViewModel,
     svgItems: ItemViewModel[],
     routablePages: StaticPage[],
     base64Version: string,

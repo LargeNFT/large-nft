@@ -2,6 +2,9 @@ import { inject, injectable } from "inversify";
 import { Item } from "../dto/item.js";
 import { RowItemViewModel } from "../dto/item-page.js";
 import { ItemRepository } from "../repository/item-repository.js";
+import { AttributeTotal } from "../dto/attribute-total.js";
+import { AttributeTotalService } from "./attribute-total-service.js";
+import { Channel } from "../dto/channel.js";
 
 @injectable()
 class ItemService {
@@ -9,6 +12,9 @@ class ItemService {
     @inject("ItemRepository")
     private itemRepository:ItemRepository
     
+    @inject("AttributeTotalService")
+    private attributeTotalService:AttributeTotalService
+
     constructor(
     ) { }
 
@@ -45,6 +51,13 @@ class ItemService {
         return this.itemRepository.listByTokenId(startTokenId, limit)
     }
 
+
+    async buildAttributeTotals(channel:Channel) : Promise<AttributeTotal[]> {
+
+        let items:Item[] = await this.all()
+
+        return this.attributeTotalService.buildAttributeTotals(channel, items)
+    }
 
 }
 

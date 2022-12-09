@@ -386,7 +386,7 @@ class ItemWebService {
         const channel = await this.channelService.get()
 
         //Get attribute report
-        const attributeReport:AttributeTotal[] = await this.attributeTotalService.list()
+        const attributeReport:AttributeTotal[] = await this.itemService.buildAttributeTotals(channel)
         
         let items: Item[] = await this.itemService.list(skip, limit)
 
@@ -415,9 +415,35 @@ class ItemWebService {
 
     }
 
+
+
+    async itemPage(pageNumber:number) : Promise<ItemPage> {
+        return this.itemPageService.get(pageNumber)
+    }
+
+    async query(query:string) : Promise<Item[]> {
+
+        await this.schemaService.load(["items", "channels"])
+
+        let results = await this.itemService.query(query)
+
+
+        //Get channel
+        const channel = await this.channelService.get()
+
+        let viewModels: ItemViewModel[] = []
+
+        for (let item of results) {
+            viewModels.push(await this.getSearchViewModel(item, channel))
+        }
+
+
+        return viewModels
+    }
+
     async buildItemPages(itemViewModels:ItemViewModel[], perPage:number) : Promise<ItemPage[]> {
 
-        await this.schemaService.load(["images"])
+        // await this.schemaService.load(["images"])
 
         let result: ItemPage[] = []
 
@@ -450,29 +476,8 @@ class ItemWebService {
         return result
 
     }
-
-    async itemPage(pageNumber:number) : Promise<ItemPage> {
-        return this.itemPageService.get(pageNumber)
-    }
-
-    async query(query:string) : Promise<Item[]> {
-
-        await this.schemaService.load(["items", "channels"])
-
-        let results = await this.itemService.query(query)
-
-
-        //Get channel
-        const channel = await this.channelService.get()
-
-        let viewModels: ItemViewModel[] = []
-
-        for (let item of results) {
-            viewModels.push(await this.getSearchViewModel(item, channel))
-        }
-
-
-        return viewModels
+    async buildAttributeTotals(channel:Channel) : Promise<AttributeTotal[]> {
+        return this.itemService.buildAttributeTotals(channel)
     }
 
     translateRowItemViewModel(item:Item, coverImage:Image) : RowItemViewModel {

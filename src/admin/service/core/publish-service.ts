@@ -251,12 +251,6 @@ class PublishService {
 
     }
 
-
-
-
-
-
-
     private async _getFeeReceipient(exportBundle:ExportBundle) {
 
         let feeRecipient
@@ -441,8 +435,6 @@ class PublishService {
 
 
     }
-
-
 
     async deployContract(channel: Channel) {
 

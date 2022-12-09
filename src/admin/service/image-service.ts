@@ -148,7 +148,7 @@ class ImageService {
 
   public async newFromItem(item:Item) {
 
-    let content = await this.quillService.translateContent(item.content)
+    let content = await this.quillService.translateContentEncodeHtml(item.content)
 
     let themes:Theme[] = []
     
@@ -197,8 +197,11 @@ class ImageService {
   //Grabbing from the 
   private getExcerptByFirstParagraph (excerpt, options) {
 
+    console.log(excerpt)
+
+
     //Strip tags except for <p>
-    excerpt = excerpt.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')
+    // excerpt = excerpt.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')
     
     excerpt = he.unescape(excerpt)
    
@@ -211,6 +214,9 @@ class ImageService {
     }
 
     excerpt = he.encode(excerpt, {allowUnsafeSymbols: true})
+
+    console.log(excerpt)
+
 
     return excerpt
 

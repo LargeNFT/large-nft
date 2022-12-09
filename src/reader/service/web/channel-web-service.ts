@@ -80,14 +80,6 @@ class ChannelWebService {
     }
 
 
-    async buildAttributeTotals() : Promise<AttributeTotal[]> {
-
-        let items:Item[] = await this.itemService.all()
-
-        return this.attributeTotalService.buildAttributeTotals(await this.channelService.get(), items)
-    }
-
-
 }
 
 export {

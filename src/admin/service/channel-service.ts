@@ -63,8 +63,6 @@ class ChannelService {
       //Translate description content
       channel.descriptionHTML = await this.quillService.translateContent(channel.description)
 
-      console.log(channel.descriptionHTML)
-
       //Generate markdown
       channel.descriptionMarkdown = await this.quillService.generateMarkdown(channel.description)
 
@@ -74,8 +72,6 @@ class ChannelService {
 
       //Translate description content
       channel.licenseHTML = await this.quillService.translateContent(channel.license)
-
-      console.log(channel.licenseHTML)
 
       //Generate markdown
       channel.licenseMarkdown = await this.quillService.generateMarkdown(channel.license)

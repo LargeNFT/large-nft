@@ -95,6 +95,36 @@
 
           <${TokenNavigator} channel=${itemViewModel.channel._id} item=${itemViewModel} />
 
+
+
+          <div class="card" >
+            <div class="card-content card-content-padding">
+              <div class="segmented">
+    
+                ${itemViewModel.previous ? $h`
+                  <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.previous}">
+                    <i class="icon f7-icons">arrow_left</i>
+                  </a>
+                ` : $h`
+                  <a class="button button-outline" href="#"></a>
+                `}
+      
+                ${itemViewModel.next ? $h`
+                  <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.next}" data-transition="f7-cover">
+                    <i class="f7-icons">arrow_right</i>
+                  </a>
+                ` : $h`
+                  <a class="button button-outline" href="#"></a>
+                `}
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
           ${itemViewModel.editable ? $h`
             <div class="card">
               <div class="card-header">Clone</div>

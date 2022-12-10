@@ -1176,3 +1176,14 @@ input[type="text"]:disabled {
 #create-new-swiper {
   height: 700px;
 }
+
+.sticky-container {
+  position: relative;
+}
+
+.sticky {
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+  position: -webkit-sticky;
+}

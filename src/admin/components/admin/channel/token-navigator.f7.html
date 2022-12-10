@@ -1,33 +1,11 @@
 <template>
 
     <div class="card" >
-        <form class="card-content card-content-padding" @submit="${goTokenFormSubmit}">
-
-          <div class="segmented">
-
-            ${itemViewModel.previous ? $h`
-              <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.previous}">
-                <i class="icon f7-icons">arrow_left</i>
-              </a>
-            ` : $h`<span />`}
-  
-            <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${itemViewModel.item.tokenId}" min="0"  />
- 
-  
-            ${itemViewModel.next ? $h`
-              <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.next}" data-transition="f7-cover">
-                <i class="f7-icons">arrow_right</i>
-              </a>
-            ` : $h`<span />`}
-
-
-          </div>
-
-
-
-
-
-        </form>
+      <form class="card-content card-content-padding" @submit="${goTokenFormSubmit}">
+        <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="${itemViewModel.item.tokenId}" min="0"  />
+        <span class="paging-label">Enter Token ID</span>
+        <button class="goto-button button button-small button-fill">Go</button>
+      </form>
     </div>
 
 </template>

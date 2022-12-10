@@ -37,30 +37,8 @@
           cover_image_css_editor_id="cover-image-css-editor"
           animation_css_editor_id="animation-css-editor"
           themes=${themes}
+          cancel_link=${cancelLink}
         />
-
-        <div class="row block">
-
-          <div class="col-100 large-75 row">
-
-            <div class="col-40"></div>
-
-
-            <a href="/admin/channel/show/${itemViewModel.channel._id}" class="button button-outline color-gray col-30" tabindex="12">Cancel</a>
-
-
-            ${ipfsReady ? $h`
-              <button type="submit" class="button button-fill col-30" tabindex="12">Save</button>
-            ` : $h`
-              <button class="button button-outline color-lightblue col-30" tabindex="12" disabled>IPFS initializing...</button>
-            `}
-
-          </div>
-
-          <div class="col-0 large-25"></div>
-
-        </div>
-
 
       </form>
 
@@ -125,11 +103,14 @@
     let gitService = ContainerService.getInstance(GitService)
 
     let walletService = ContainerService.getWalletService()
-    let ipfsReady = false
 
 
     let itemViewModel = props.itemViewModel
     let themes = props.themes 
+
+    let ipfsReady = false
+    let cancelLink = `/admin/channel/show/${itemViewModel.channel._id}`
+
 
     let toast
 
@@ -328,6 +309,10 @@
       //Initialize IPFS
       await ipfsService.init()
       ipfsReady = ipfsService.ipfs != undefined
+
+
+      const ipfsReadyEvent = new CustomEvent('ipfs-ready')
+      document.dispatchEvent(ipfsReadyEvent)
 
 
       uiService.hideSpinner()

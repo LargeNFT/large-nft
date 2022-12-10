@@ -6,73 +6,68 @@
 
     <div class="page-content">
 
-      <div class="row">
+      <div class="block block-strong inset col-100 no-margin-bottom">
+        <div class="breadcrumbs ">
+          <div class="breadcrumbs-item">
+            <a href="/" class="link">
+              Home
+            </a>
+          </div>    
+          <div class="breadcrumbs-separator"></div>
+          <div class="breadcrumbs-item">
+            <a href="/admin/channel/show/${itemViewModel.channel._id}" class="link">
+              ${itemViewModel.channel.title}
+            </a>
+          </div>     
+          <div class="breadcrumbs-separator"></div>
+          <div class="breadcrumbs-item">
+            <a href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.item.tokenId}" class="link">
+              ${itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}`}
+            </a>
+          </div> 
+          <div class="breadcrumbs-separator"></div>
+          <div class="breadcrumbs-item breadcrumbs-item-active">
+            Edit Item
+          </div> 
+        </div>
+      </div>
 
-        <div class="col-100 large-66 center">
+      <form class="list media-list" id="edit-item-form" @submit="${formSubmit}">
 
-          <div class="block block-strong inset col-100 no-margin-bottom">
-            <div class="breadcrumbs ">
-              <div class="breadcrumbs-item">
-                <a href="/" class="link">
-                  Home
-                </a>
-              </div>    
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item">
-                <a href="/admin/channel/show/${itemViewModel.channel._id}" class="link">
-                  ${itemViewModel.channel.title}
-                </a>
-              </div>     
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item">
-                <a href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.item.tokenId}" class="link">
-                  ${itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}`}
-                </a>
-              </div> 
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item breadcrumbs-item-active">
-                Edit Item
-              </div> 
-            </div>
-          </div>
+        <${ItemForm} item=${itemViewModel} 
+          editor="edit-item-editor" 
+          toolbar="edit-item-toolbar" 
+          cover_image_css_editor_id="cover-image-edit-css-editor"
+          animation_css_editor_id="animation-edit-css-editor"
+          themes=${themes}
+        />
+
+        <div class="row block">
+
+          <div class="col-100 large-75 row">
+
+            <div class="col-40"></div>
+
+            <a href="/admin/channel/show/${itemViewModel.item.channelId}/${itemViewModel.item.tokenId}" class="button button-outline color-gray col-30" tabindex="12">Cancel</a>
+
+            ${ipfsReady ? $h`
+              <button type="submit" class="button button-fill col-30" tabindex="12">Save</button>
+            ` : $h`
+              <button class="button button-outline color-lightblue col-30" tabindex="12" disabled>IPFS initializing...</button>
+            `}
   
+          </div>
 
-
-
-
-
-
-
-          <form class="list media-list" id="edit-item-form" @submit="${formSubmit}">
-
-            <${ItemForm} item=${itemViewModel} 
-              editor="edit-item-editor" 
-              toolbar="edit-item-toolbar" 
-              cover_image_css_editor_id="cover-image-edit-css-editor"
-              animation_css_editor_id="animation-edit-css-editor"
-              themes=${themes}
-            />
-
-            <div class="row block">
-
-              <div class="col-40"></div>
-
-              <a href="/admin/channel/show/${itemViewModel.item.channelId}/${itemViewModel.item.tokenId}" class="button button-outline color-gray col-30" tabindex="12">Cancel</a>
-
-              ${ipfsReady ? $h`
-                <button type="submit" class="button button-fill col-30" tabindex="12">Save</button>
-              ` : $h`
-                <button class="button button-outline color-lightblue col-30" tabindex="12" disabled>IPFS initializing...</button>
-              `}
-
-
-            </div>
-
-          </form>
+          <div class="col-0 large-25"></div>
 
         </div>
 
-      </div>
+
+
+
+
+
+      </form>
 
     </div>
 

@@ -106,7 +106,7 @@
                   <a class="button button-outline " href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">Clone</a>
 
                   ${itemViewModel.canDelete ? $h`
-                    <a class="button button-fill color-red" @click="${deleteClick}">
+                    <a class="button button-outline" @click="${deleteClick}">
                       <i class="material-icons">delete</i>
                     </a>
                   ` : $h`<span/>`}
@@ -123,17 +123,6 @@
 
 
             </div>          
-
-
-            <div class="card-footer item-show-footer">
-                
-
-
-          
-          </div>
-
-
-
           ` :$h`<span />`}
           
 

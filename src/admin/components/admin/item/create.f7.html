@@ -7,63 +7,62 @@
 
     <div class="page-content">
 
-      <div class="row">
-        <div class="col-100 large-66 center">
-
-          <div class="block block-strong inset col-100 no-margin-bottom">
-            <div class="breadcrumbs ">
-              <div class="breadcrumbs-item">
-                <a href="/" class="link">
-                  Home
-                </a>
-              </div>    
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item">
-                <a href="/admin/channel/show/${itemViewModel.channel._id}" class="link">
-                  ${itemViewModel.channel.title}
-                </a>
-              </div>     
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item breadcrumbs-item-active">
-                Create Item
-              </div> 
-            </div>
-          </div>
-
-
-
-
-          <form class="list media-list" id="create-item-form" @submit="${formSubmit}">
-
-            <${ItemForm} item=${itemViewModel} 
-              themes=${themes}
-              editor="create-item-editor" 
-              toolbar="create-item-toolbar" 
-              cover_image_css_editor_id="cover-image-css-editor"
-              animation_css_editor_id="animation-css-editor"
-              themes=${themes}
-            />
-
-            <div class="row block">
-
-              <div class="col-40"></div>
-
-              <a href="/admin/channel/show/${itemViewModel.channel._id}" class="button button-outline color-gray col-30" tabindex="12">Cancel</a>
-
-
-              ${ipfsReady ? $h`
-                <button type="submit" class="button button-fill col-30" tabindex="12">Save</button>
-              ` : $h`
-                <button class="button button-outline color-lightblue col-30" tabindex="12" disabled>IPFS initializing...</button>
-              `}
-
-            </div>
-
-
-          </form>
-
+      <div class="block block-strong inset col-100 no-margin-bottom">
+        <div class="breadcrumbs ">
+          <div class="breadcrumbs-item">
+            <a href="/" class="link">
+              Home
+            </a>
+          </div>    
+          <div class="breadcrumbs-separator"></div>
+          <div class="breadcrumbs-item">
+            <a href="/admin/channel/show/${itemViewModel.channel._id}" class="link">
+              ${itemViewModel.channel.title}
+            </a>
+          </div>     
+          <div class="breadcrumbs-separator"></div>
+          <div class="breadcrumbs-item breadcrumbs-item-active">
+            Create Item
+          </div> 
         </div>
       </div>
+
+
+      <form class="list media-list" id="create-item-form" @submit="${formSubmit}">
+
+        <${ItemForm} item=${itemViewModel} 
+          themes=${themes}
+          editor="create-item-editor" 
+          toolbar="create-item-toolbar" 
+          cover_image_css_editor_id="cover-image-css-editor"
+          animation_css_editor_id="animation-css-editor"
+          themes=${themes}
+        />
+
+        <div class="row block">
+
+          <div class="col-100 large-75 row">
+
+            <div class="col-40"></div>
+
+
+            <a href="/admin/channel/show/${itemViewModel.channel._id}" class="button button-outline color-gray col-30" tabindex="12">Cancel</a>
+
+
+            ${ipfsReady ? $h`
+              <button type="submit" class="button button-fill col-30" tabindex="12">Save</button>
+            ` : $h`
+              <button class="button button-outline color-lightblue col-30" tabindex="12" disabled>IPFS initializing...</button>
+            `}
+
+          </div>
+
+          <div class="col-0 large-25"></div>
+
+        </div>
+
+
+      </form>
 
 
     </div>

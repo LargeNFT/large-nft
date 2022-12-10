@@ -10,242 +10,240 @@
         <input type="hidden" name="channelId" value="${itemViewModel?.channel?._id}" />
 
 
-        
-        <div class="card col-100">
-            <div class="card-content">
-
-                <div class="list">
-                    <ul>
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Title</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" name="title" placeholder="Title"
-                                            value="${itemViewModel?.item?.title}" id="title-header-input"
-                                            @input="${titleOnInput}" />
+        <div class="col-100 large-75">
+            <div class="card col-100">
+                <div class="card-content">
+    
+                    <div class="list">
+                        <ul>
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Title</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="title" placeholder="Title"
+                                                value="${itemViewModel?.item?.title}" id="title-header-input"
+                                                @input="${titleOnInput}" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner post-area">
-                                    <div class="item-title item-label">Content</div>
-
-                                    <div id="${toolbarId}">
-
-                                        <select class="ql-header">
-                                            <option selected></option>
-                                            <option value="1">Heading</option>
-                                            <option value="2">Subheading</option>
-                                        </select>
-
-
-                                        <!-- Add a bold button -->
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-strike"></button>
-                                        <button class="ql-underline"></button>
-                                        <button class="ql-link"></button>
-                                        <button class="ql-list" value="ordered"></button>
-                                        <button class="ql-list" value="bullet"></button>
-
-
-                                        <!-- Add subscript and superscript buttons -->
-                                        <button class="ql-script" value="sub"></button>
-                                        <button class="ql-script" value="super"></button>
-
-                                        <button class="text-editor-button image-button"><i
-                                                class="material-icons">image</i></button>
-                                        <label><input type="file" class="image-button-input" /></label>
-                                    </div>
-
-                                    <div class="editor bg-color-white text-color-black" id="${editorId}"></div>
-                                </div>
-                            </div>
-                        </li>
-
-
-
-                        <li class="cover-photo-preview">
-
-                            ${itemViewModel?.coverImage ? $h`
-                            <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
-                            ` : $h`
-                            <input type="hidden" name="coverImageId" value="" />
-                            `}
-
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">
-                                        Cover Image
-                                        <div class="item-footer">If there is no image in the content then an SVG cover image will be generated.</div>
-                                    </div>
-                                    <div class="item-input-wrap">
-
-                                        ${itemViewModel?.images?.length > 0 ? $h`
-
-                                            ${itemViewModel?.images?.map( (image) => $h`
-                                                <img class="cover-image-thumbnail ${ (  (image?.cid == itemViewModel.coverImage?.cid) || (itemViewModel.coverImage == undefined && image.generated == true) )  ? 'selected' : ''}  "
-                                                    src="${image?.url}" data-id="${image?.cid}" @click=${coverImageClick} />
-                                            `)}
-
-                                        ` : $h`
-
-                                            <p>No images</p>
-
-                                        `}
-
-                                        <button class="button button-outline clear-button margin-bottom"
-                                            @click="${coverImageClearClick}">Clear</button>
-
+                            </li>
+    
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner post-area">
+                                        <div class="item-title item-label">Content</div>
+    
+                                        <div id="${toolbarId}">
+    
+                                            <select class="ql-header">
+                                                <option selected></option>
+                                                <option value="1">Heading</option>
+                                                <option value="2">Subheading</option>
+                                            </select>
+    
+    
+                                            <!-- Add a bold button -->
+                                            <button class="ql-bold"></button>
+                                            <button class="ql-italic"></button>
+                                            <button class="ql-strike"></button>
+                                            <button class="ql-underline"></button>
+                                            <button class="ql-link"></button>
+                                            <button class="ql-list" value="ordered"></button>
+                                            <button class="ql-list" value="bullet"></button>
+    
+    
+                                            <!-- Add subscript and superscript buttons -->
+                                            <button class="ql-script" value="sub"></button>
+                                            <button class="ql-script" value="super"></button>
+    
+                                            <button class="text-editor-button image-button"><i
+                                                    class="material-icons">image</i></button>
+                                            <label><input type="file" class="image-button-input" /></label>
+                                        </div>
+    
+                                        <div class="editor bg-color-white text-color-black" id="${editorId}"></div>
                                     </div>
                                 </div>
-                            </div>
-
-                        </li>
-
-                        <li>
-                            <label class="item-checkbox item-content">
-
-                                <input type="checkbox" checked="${!itemViewModel.item.coverImageAsAnimation}" name="coverImageAsAnimation" @change="${coverImageAsAnimationOnClick}" />
-                                
-                                <i class="icon icon-checkbox"></i>
-                                <div class="item-inner">
-                                    <div class="item-title">
-                                      <div class="item-header"></div>
-                                      Generate Animation HTML
-                                      <div class="item-footer">
-                                        Include full text. Otherwise only the cover image will be shown.
-                                      </div>
+                            </li>
+    
+    
+    
+                            <li class="cover-photo-preview">
+    
+                                ${itemViewModel?.coverImage ? $h`
+                                <input type="hidden" name="coverImageId" value="${itemViewModel?.coverImage?.cid}" />
+                                ` : $h`
+                                <input type="hidden" name="coverImageId" value="" />
+                                `}
+    
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">
+                                            Cover Image
+                                            <div class="item-footer">If there is no image in the content then an SVG cover image will be generated.</div>
+                                        </div>
+                                        <div class="item-input-wrap">
+    
+                                            ${itemViewModel?.images?.length > 0 ? $h`
+    
+                                                ${itemViewModel?.images?.map( (image) => $h`
+                                                    <img class="cover-image-thumbnail ${ (  (image?.cid == itemViewModel.coverImage?.cid) || (itemViewModel.coverImage == undefined && image.generated == true) )  ? 'selected' : ''}  "
+                                                        src="${image?.url}" data-id="${image?.cid}" @click=${coverImageClick} />
+                                                `)}
+    
+                                            ` : $h`
+    
+                                                <p>No images</p>
+    
+                                            `}
+    
+                                            <button class="button button-outline clear-button margin-bottom"
+                                                @click="${coverImageClearClick}">Clear</button>
+    
+                                        </div>
                                     </div>
                                 </div>
-                            </label>
-                        </li>
-                    </ul>
+    
+                            </li>
+    
+                            <li>
+                                <label class="item-checkbox item-content">
+    
+                                    <input type="checkbox" checked="${!itemViewModel.item.coverImageAsAnimation}" name="coverImageAsAnimation" @change="${coverImageAsAnimationOnClick}" />
+                                    
+                                    <i class="icon icon-checkbox"></i>
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                          <div class="item-header"></div>
+                                          Generate Animation HTML
+                                          <div class="item-footer">
+                                            Include full text. Otherwise only the cover image will be shown.
+                                          </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
 
-        <div class="card col-100">
-            <div class="card-header">Customize</div>
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-                        <li>
-                            <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
-                                <!-- "multiple" attribute for multiple select-->
-                                <select name="themes" @change="${themeSelectionChange}" tabindex="2" multiple>
-                                    <optgroup>
-                                        ${themes?.map( (theme) => $h`
+        <div class="col-100 large-25">
+            <div class="card col-100">
+                <div class="card-header">Customize</div>
+                <div class="card-content">
+                    <div class="list">
+                        <ul>
+                            <li>
+                                <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
+                                    <!-- "multiple" attribute for multiple select-->
+                                    <select name="themes" @change="${themeSelectionChange}" tabindex="2" multiple>
+                                        <optgroup>
+                                            ${themes?.map( (theme) => $h`
 
-                                            ${itemViewModel.item?.themes?.includes(theme._id) ? $h`
-                                                <option value="${theme._id}" selected>${theme.name}</option>
-                                                ` : $h`
-                                                <option value="${theme._id}">${theme.name}</option>
-                                            `}
+                                                ${itemViewModel.item?.themes?.includes(theme._id) ? $h`
+                                                    <option value="${theme._id}" selected>${theme.name}</option>
+                                                    ` : $h`
+                                                    <option value="${theme._id}">${theme.name}</option>
+                                                `}
 
-                                        `)}
-                                    </optgroup>
-                                </select>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title">Choose Theme(s)</div>
+                                            `)}
+                                        </optgroup>
+                                    </select>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title">Choose Theme(s)</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        </li>
+                                </a>
+                            </li>
 
-                        <li class="accordion-item">
-                            <a href="" class="item-link item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Edit Cover Image CSS (SVG)</div>
-                                </div>
-                            </a>
-                            <div class="accordion-item-content">
-                                <div class="editor bg-color-white text-color-black css-editor" id="${coverImageCSSEditorId}" tabindex="3"></div>
-                            </div>
-                        </li>
-
-                        ${showAnimationCss ? $h`
                             <li class="accordion-item">
                                 <a href="" class="item-link item-content">
                                     <div class="item-inner">
-                                        <div class="item-title">Edit Animation CSS (HTML)</div>
+                                        <div class="item-title">Edit Cover Image CSS (SVG)</div>
                                     </div>
                                 </a>
                                 <div class="accordion-item-content">
-                                    <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
+                                    <div class="editor bg-color-white text-color-black css-editor" id="${coverImageCSSEditorId}" tabindex="3"></div>
                                 </div>
                             </li>
-                        ` : $h`
-                            <li class="accordion-item" style="display:none;">
-                                <a href="" class="item-link item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title">Edit Animation CSS (HTML)</div>
+
+                            ${showAnimationCss ? $h`
+                                <li class="accordion-item">
+                                    <a href="" class="item-link item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title">Edit Animation CSS (HTML)</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
+                                    </div>
+                                </li>
+                            ` : $h`
+                                <li class="accordion-item" style="display:none;">
+                                    <a href="" class="item-link item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title">Edit Animation CSS (HTML)</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
+                                    </div>
+                                </li>
+
+
+                            `}
+
+
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            ${itemViewModel.attributeSelections?.length > 0 ? $h`
+            <div class="card col-100">
+                <div class="card-header">Attributes</div>
+                <div class="card-content">
+                    <div class="list">
+                        <ul>
+                            ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
+                            <li>
+                                <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
+                                    <!-- "multiple" attribute for multiple select-->
+                                    <select @change="${valueNameChange}" tabindex="2" data-id="${attributeSelectionViewModel?.id}">
+                                        ${attributeSelectionViewModel?.values?.map( v => $h`
+
+                                            ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
+                                            <option value="${v}" selected>${v}</option>
+                                            ` : $h`
+                                            <option value="${v}">${v}</option>
+                                            `}
+
+                                        `)}
+                                    </select>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-title">${attributeSelectionViewModel?.traitType}</div>
+                                        </div>
                                     </div>
                                 </a>
-                                <div class="accordion-item-content">
-                                    <div class="editor bg-color-white text-color-black css-editor" id="${animationCSSEditorId}" tabindex="4"></div>
-                                </div>
                             </li>
 
 
-                        `}
-
-
-                    
-                    </ul>
+                            `)}
+                        </ul>
+                    </div>
                 </div>
             </div>
+            ` : $h``}
         </div>
-
-
-
-        ${itemViewModel.attributeSelections?.length > 0 ? $h`
-        <div class="card col-100">
-            <div class="card-header">Attributes</div>
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-                        ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
-                        <li>
-                            <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
-                                <!-- "multiple" attribute for multiple select-->
-                                <select @change="${valueNameChange}" tabindex="2" data-id="${attributeSelectionViewModel?.id}">
-                                    ${attributeSelectionViewModel?.values?.map( v => $h`
-
-                                        ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
-                                        <option value="${v}" selected>${v}</option>
-                                        ` : $h`
-                                        <option value="${v}">${v}</option>
-                                        `}
-
-                                    `)}
-                                </select>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title">${attributeSelectionViewModel?.traitType}</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-
-
-                        `)}
-                    </ul>
-                </div>
-            </div>
-        </div>
-        ` : $h``}
-
-        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
-
         
-
+        <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
 
     </div>
 

@@ -109,12 +109,16 @@
 
           <${TokenNavigator} channel=${itemViewModel.channel._id} token_id=${itemViewModel.item.tokenId} />
 
-          <div class="card">
-            <div class="card-header">Clone</div>
-            <div class="card-content card-content-padding">
-              Create a <a class="link" href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">clone</a> of this item.
-            </div>
-          </div>
+          ${itemViewModel.editable ? $h`
+            <div class="card">
+              <div class="card-header">Clone</div>
+              <div class="card-content card-content-padding">
+                Create a <a class="link" href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">clone</a> of this item.
+              </div>
+            </div>          
+          ` :$h`<span />`}
+          
+
 
 
 

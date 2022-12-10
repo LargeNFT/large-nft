@@ -197,18 +197,13 @@
                           for (let item of it.firstPageExploreItems) {
                         %>
       
-                          <li class="flex-card">
+                          <li class="flex-card-small">
                             <a href="<%= link(`t/${item.tokenId}`) %>" class="item-link">
                                 <div class="card" >
                                     <div class="card-content">
                                         <div class="square">
                                             <img src="<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>"/>
                                         </div>
-                                    </div>
-
-
-                                    <div class="card-footer">
-                                        <%=item.title %>
                                     </div>
                                 </div>
                             </a>

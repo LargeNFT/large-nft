@@ -13,8 +13,7 @@ import { Container } from "inversify"
 import excerptHtml from 'excerpt-html'
 import he from 'he'
 
-import pkg from 'convert-svg-to-png';
-const { convert } = pkg;
+
 
 import { getMainContainer } from "./node-inversify.config.js"
 import { ItemWebService } from "./service/web/item-web-service.js"
@@ -37,6 +36,11 @@ import { ProcessConfig } from "./util/process-config.js"
 import { ChannelWebService } from "./service/web/channel-web-service.js"
 import { ItemViewModel } from "./dto/viewmodel/item-view-model.js"
 
+import pkg from 'convert-svg-to-png';
+const { convert } = pkg;
+
+// import sharp from "sharp"
+
 
 let generate = async () => {
 
@@ -51,11 +55,13 @@ let generate = async () => {
 
   container.bind("PouchDB").toConstantValue({})
   container.bind("contracts").toConstantValue([])
+  container.bind("convert-svg-to-png").toConstantValue(convert)
+  // container.bind("sharp").toConstantValue(sharp)
 
 
   container = await getMainContainer(container, config.baseURL, config.hostname, config.baseDir)
 
-  const PER_PAGE = 35
+  const PER_PAGE = 40
 
   //Not great to get the impl here. Maybe load should be part of interface. 
   let itemRepository = container.get("ItemRepository")
@@ -99,33 +105,7 @@ let generate = async () => {
   }
 
 
-  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, itemViewModels)
-
-
-  //Convert images
-  console.log(`Converting ${generateViewModel.svgItems.length} images`)
-  for (let item of generateViewModel.svgItems) {
-
-    await fs.promises.mkdir(`${config.publicPath}/backup/generated/images`, { recursive: true })
-
-    let path = `${config.publicPath}/backup/generated/images/${item.coverImage._id}.png`
-
-    if (!fs.existsSync(path)) {
-
-      console.log(`Converting SVG to PNG: ${path}`)
-
-      let png = await convert(item.coverImage.svg, {
-        height: 1200,
-        width: 1200
-      })
-
-      await fs.promises.writeFile(path, png)
-    } else {
-      console.log(`Skipping ${item.coverImage._id}.png`)
-    }
-
-  }
-
+  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config)
 
   if (!config.externalLinks) {
     config.externalLinks = []
@@ -193,6 +173,9 @@ let generate = async () => {
   //Move SW
   fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
   fs.mkdirSync(config.publicPath, { recursive: true })
+
+  console.log(`Adding ${generateViewModel.firstPageExploreItems.length} items to index.`)
+
 
   const indexResult = Eta.render(indexEjs, {
     title: channelViewModel.channel.title,
@@ -292,6 +275,9 @@ let generate = async () => {
 
     //Write rowItemViewModel
     fs.writeFileSync(`${config.publicPath}/t/${itemViewModel.item.tokenId}/rowItemViewModel.json`, Buffer.from(JSON.stringify(rowItemViewModel)))
+
+    //Generate any images we need
+    await generateService.generateImages(config, itemViewModel)
 
 
     console.timeEnd(`Generating /t/${itemViewModel.item.tokenId}`)

@@ -74,6 +74,8 @@
     "esm": "3.2.25",
     "eta": "1.12.3",
     "convert-svg-to-png": "0.6.4",
+    "sharp": "0.31.2",
+
     "arg": "5.0.2",
     "workbox-window": "6.5.4",
     "he": "1.2.0"

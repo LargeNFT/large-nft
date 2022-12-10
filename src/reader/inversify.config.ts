@@ -113,7 +113,6 @@ import { ComponentStateService } from "./service/core/component-state-service.js
 import { ComponentStateRepository } from "./repository/component-state-repository.js";
 import { ComponentStateRepositoryBrowserImpl } from "./repository/browser/component-state-repository-impl.js";
 import { ComponentState } from "./dto/component-state.js";
-import { GenerateService } from "./service/core/generate-service.js";
 
 
 
@@ -344,7 +343,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ERCEventService>("ERCEventService").to(ERCEventService).inSingletonScope()
 
   container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
-  container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
+  container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
 
 
   //Attach container to window so we can easily access it from the browser console

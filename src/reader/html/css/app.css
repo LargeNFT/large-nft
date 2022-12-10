@@ -640,14 +640,27 @@ ul.breadcrumb li a:hover {
   margin: 0px;
 }
 
+.flex-card-small {
+  flex: 0 0 10%;
+  margin: 0px;
+}
+
 .flex-card .card {
   background: white;
   margin-left: 10px;
   margin-right: 10px;
 }
 
+.flex-card-small .card {
+  background: white;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top:0px;
+  margin-bottom: 0px;
+}
 
-.flex-card img {
+
+.flex-card img, .flex-card-small img {
   max-width: 100%;
   border: none;
 }
@@ -661,6 +674,11 @@ ul.breadcrumb li a:hover {
  
   .flex-card {
     flex: 0 0 50%;
+    margin: 0px;
+  }
+
+  .flex-card-small {
+    flex: 0 0 33%;
     margin: 0px;
   }
 }

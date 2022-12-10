@@ -15,7 +15,7 @@ import he from 'he'
 
 
 
-import { getMainContainer } from "./node-inversify.config.js"
+import { getMainContainer, GetMainContainerCommand } from "./node-inversify.config.js"
 import { ItemWebService } from "./service/web/item-web-service.js"
 
 let channelId
@@ -59,7 +59,15 @@ let generate = async () => {
   // container.bind("sharp").toConstantValue(sharp)
 
 
-  container = await getMainContainer(container, config.baseURL, config.hostname, config.baseDir)
+  let command:GetMainContainerCommand = {
+    customContainer: container,
+    baseDir: config.baseDir,
+    baseURI: config.baseURI,
+    hostname: config.hostname,
+    alchemy: undefined
+  }
+
+  container = await getMainContainer(command)
 
   const PER_PAGE = 40
 

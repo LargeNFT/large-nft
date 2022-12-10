@@ -8,7 +8,7 @@ import arg from 'arg'
 
 import { Container } from "inversify"
 
-import { getMainContainer } from "./node-inversify.config.js"
+import { getMainContainer, GetMainContainerCommand } from "./node-inversify.config.js"
 import { ChannelWebService } from "./service/web/channel-web-service.js"
 
 
@@ -26,6 +26,12 @@ let sync = async () => {
   let config:any = await ProcessConfig.getConfig() 
 
   console.log(config)
+
+
+  if (!config.alchemy) {
+    throw new Error("No ethereum connection configured.")
+  }
+
 
   let contract = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract.json`, 'utf8'))
   let contractAbi = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract-abi.json`, 'utf8'))
@@ -53,11 +59,21 @@ let sync = async () => {
   container.bind("contracts").toConstantValue(contracts())
 
 
+  let command:GetMainContainerCommand = {
+    customContainer: container,
+    baseDir: config.baseDir,
+    baseURI: config.baseURI,
+    hostname: config.hostname,
+    alchemy: config.alchemy
+  }
+
+  container = await getMainContainer(command)
 
 
+  //Verify we have an ethereum connection
+  let walletService:WalletService = container.get("WalletService")
+  await walletService.initProvider()
 
-
-  container = await getMainContainer(container, config.baseURL, config.hostname, config.baseDir)
 
   let channelWebService: ChannelWebService = container.get("ChannelWebService")
 
@@ -70,7 +86,6 @@ let sync = async () => {
   
 
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
-  let walletService:WalletService = container.get("WalletService")
 
 
   const INDEX_RATE = 30*1000 //Every 30 seconds

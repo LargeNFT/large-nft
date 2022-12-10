@@ -64,21 +64,7 @@
 
             </div>
 
-            ${itemViewModel.editable ? $h`
-              <div class="card-footer item-show-footer">
-                
-                  <a class="button button-fill button-small" href="/admin/channel/${itemViewModel.channel._id}/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
 
-                  ${itemViewModel.canDelete ? $h`
-                    <a class="button button-outline button-small color-red" @click="${deleteClick}">
-                      <i class="material-icons">delete</i>
-                    </a>
-                  ` : $h`
-                    Note: Only the last NFT can be deleted.
-                  `}
-              
-              </div>
-            ` : $h``}
           </div> 
 
 
@@ -107,15 +93,47 @@
 
         <div class="col-100 large-25">
 
-          <${TokenNavigator} channel=${itemViewModel.channel._id} token_id=${itemViewModel.item.tokenId} />
+          <${TokenNavigator} channel=${itemViewModel.channel._id} item=${itemViewModel} />
 
           ${itemViewModel.editable ? $h`
             <div class="card">
               <div class="card-header">Clone</div>
               <div class="card-content card-content-padding">
-                Create a <a class="link" href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">clone</a> of this item.
+
+                <div class="segmented col-100">
+
+                  <a class="button button-outline " href="/admin/channel/${itemViewModel.channel._id}/item/edit/${itemViewModel.item._id}" id="edit-${itemViewModel.item._id}">Edit</a>
+                  <a class="button button-outline " href="#" data-id="${itemViewModel.item._id}" @click="${cloneClick}">Clone</a>
+
+                  ${itemViewModel.canDelete ? $h`
+                    <a class="button button-fill color-red" @click="${deleteClick}">
+                      <i class="material-icons">delete</i>
+                    </a>
+                  ` : $h`<span/>`}
+
+                </div>
+
+                ${!itemViewModel.canDelete ? $h`
+                  <p>Note: Only the last NFT can be deleted.</p>
+                ` : $h`<span />`}
+
+
               </div>
+
+
+
             </div>          
+
+
+            <div class="card-footer item-show-footer">
+                
+
+
+          
+          </div>
+
+
+
           ` :$h`<span />`}
           
 

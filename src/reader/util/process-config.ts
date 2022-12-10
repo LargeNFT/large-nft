@@ -70,6 +70,9 @@ class ProcessConfig {
             }
         }
 
+        config.alchemy = theArgs.alchemy
+
+
         return config
 
     }
@@ -79,7 +82,8 @@ class ProcessConfig {
         const args = arg(
         {
             '--dir': String,
-            '--env': String
+            '--env': String,
+            '--alchemy': String
         },
         {
             argv: rawArgs.slice(2),
@@ -87,8 +91,10 @@ class ProcessConfig {
         )
     
         return {
-        dir: args['--dir'] || "",
-        env: args['--env'] || "production"
+            dir: args['--dir'] || "",
+            env: args['--env'] || "production",
+            alchemy: args['--alchemy'] || "",
+
         }
     
     }

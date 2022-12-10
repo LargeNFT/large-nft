@@ -29,13 +29,11 @@ class WalletServiceImpl implements WalletService {
           
       delete this.address
 
-
       if (accounts?.length > 0) {
         await this.initWallet()
       }
 
       this.$f7.views.main.router.refreshPage()
-
 
     })
 

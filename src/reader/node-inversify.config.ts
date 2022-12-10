@@ -51,26 +51,30 @@ import { ReaderSettings } from "./dto/reader-settings.js";
 import { ERCEvent } from "./dto/erc-event.js";
 import { ContractState } from "./dto/contract-state.js";
 import { ComponentState } from "./dto/component-state.js";
-import { providers } from "ethers"
+import { ethers, providers } from "ethers"
 import { GenerateService } from "./service/core/generate-service.js";
 
 
 let container:Container
 
-function getMainContainer(customContainer:Container, baseURI:string, hostname:string, baseDir:string) {
+function getMainContainer(command:GetMainContainerCommand) {
 
   if (container) return container
 
-  container = customContainer
+  container = command.customContainer
   
   container.bind("framework7").toConstantValue({})
-  container.bind("baseURI").toConstantValue(baseURI)
-  container.bind("hostname").toConstantValue(hostname)
+  container.bind("baseURI").toConstantValue(command.baseURI)
+  container.bind("hostname").toConstantValue(command.hostname)
 
-  container.bind("baseDir").toConstantValue(baseDir)
+  container.bind("baseDir").toConstantValue(command.baseDir)
 
   container.bind("provider").toConstantValue(() => {
-    return providers.getDefaultProvider("homestead")
+
+    if (command.alchemy) {
+      return new ethers.providers.AlchemyProvider("mainnet", command.alchemy)
+    }
+
   })
 
 
@@ -171,8 +175,14 @@ function getMainContainer(customContainer:Container, baseURI:string, hostname:st
   return container
 }
 
-
+interface GetMainContainerCommand {
+  customContainer:Container
+  baseURI:string
+  hostname:string
+  baseDir:string
+  alchemy:string
+}
 
 export {
-  getMainContainer, container
+  getMainContainer, container, GetMainContainerCommand
 }

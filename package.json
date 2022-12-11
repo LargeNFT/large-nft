@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.3.3-alpha",
+  "version": "0.3.4-alpha",
   "description": "A decentralized, offline-first content management system for NFT communities.",
   "repository": {
     "type": "git",
@@ -79,6 +79,8 @@
     "arg": "5.0.2",
     "workbox-window": "6.5.4",
     "he": "1.2.0"
+
+    
   },
   "dependencies": {
     "@isomorphic-git/lightning-fs": "4.6.0",

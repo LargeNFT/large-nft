@@ -447,8 +447,13 @@ let getReaderConfigs = () => {
         "util": require.resolve("util/"),
         "assert": require.resolve("assert/"),
         "stream": require.resolve("stream-browserify"),
+        "os": require.resolve("os-browserify/browser"),
+        "http": require.resolve("stream-http"),
+        "https": require.resolve("https-browserify"),
+        "zlib": require.resolve("browserify-zlib"),
         "crypto": require.resolve("crypto-browserify"),
-        "fs": false
+        "dgram": require.resolve("dgram-browserify"),
+        "child_process": false
       }
     },
     plugins: [
@@ -466,9 +471,9 @@ let getReaderConfigs = () => {
         Buffer: ['buffer', 'Buffer'],
       }),
   
-      new webpack.ProvidePlugin({
-        fetch: ['node-fetch', 'default'],
-      }),
+      // new webpack.ProvidePlugin({
+      //   fetch: ['node-fetch', 'default'],
+      // }),
   
       new webpack.DefinePlugin({
         VERSION: VERSION
@@ -534,8 +539,8 @@ let getReaderConfigs = () => {
   }
   
   configs.push(serviceWorkerConfig)
-  configs.push(generateConfig)
   configs.push(browserConfig)
+  configs.push(generateConfig)
   configs.push(syncConfig)
 
   return configs

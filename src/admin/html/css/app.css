@@ -176,6 +176,17 @@
       display: flex;
     }
   }
+
+ 
+  
+  @media only screen and (max-width: 1024px) {
+    .large-only {
+      display: none;
+    }
+    
+  }
+
+
   /* 
   .logo {
     height: var(--f7-navbar-height);

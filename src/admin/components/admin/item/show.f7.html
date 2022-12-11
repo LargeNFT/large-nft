@@ -96,38 +96,38 @@
           <${TokenNavigator} channel=${itemViewModel.channel._id} item=${itemViewModel} />
 
 
+          ${itemViewModel.previous || itemViewModel.next ? $h`
+            
+            <div class="card large-only">
+              <div class="card-content card-content-padding">
+                <div class="segmented">
 
-          <div class="card" >
-            <div class="card-content card-content-padding">
-              <div class="segmented">
-    
-                ${itemViewModel.previous ? $h`
-                  <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.previous}">
-                    <i class="icon f7-icons">arrow_left</i>
-                  </a>
-                ` : $h`
-                  <a class="button button-outline" href="#"></a>
-                `}
-      
-                ${itemViewModel.next ? $h`
-                  <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.next}" data-transition="f7-cover">
-                    <i class="f7-icons">arrow_right</i>
-                  </a>
-                ` : $h`
-                  <a class="button button-outline" href="#"></a>
-                `}
+                  ${itemViewModel.previous ? $h`
+                    <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.previous}">
+                      <i class="icon f7-icons">arrow_left</i>
+                    </a>
+                  ` : $h`
+                    <a class="button button-outline" href="#"></a>
+                  `}
+        
+                  ${itemViewModel.next ? $h`
+                    <a class="button button-outline" href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.next}" data-transition="f7-cover">
+                      <i class="f7-icons">arrow_right</i>
+                    </a>
+                  ` : $h`
+                    <a class="button button-outline" href="#"></a>
+                  `}
+
+                </div>
               </div>
             </div>
-          </div>
 
-
-
-
+          ` : $h`<span />`}
 
 
           ${itemViewModel.editable ? $h`
             <div class="card">
-              <div class="card-header">Clone</div>
+              <div class="card-header">Modify</div>
               <div class="card-content card-content-padding">
 
                 <div class="segmented col-100">
@@ -157,14 +157,11 @@
           
 
 
-
-
-
           <div class="card">
             <div class="card-header">
               <span>
                 <i class="material-icons">person</i>
-                <label>Creator</label>
+                <label>Info</label>
               </span>
             </div>
             <div class="card-content data-table">
@@ -172,10 +169,12 @@
               <table>
                 <tbody>
 
-                  <tr>
-                    <td class="label-cell">Creator:</td> 
-                    <td><a href="/admin/author/show/${itemViewModel?.author?._id}">${itemViewModel?.authorDisplayName}</a></td>
-                  </tr>
+                  ${itemViewModel?.authorDisplayName ? $h`
+                    <tr>
+                      <td class="label-cell">Creator:</td> 
+                      <td><a href="/admin/author/show/${itemViewModel?.author?._id}">${itemViewModel?.authorDisplayName}</a></td>
+                    </tr>  
+                  ` : $h`<span />`}
 
                   <tr>
                     <td class="label-cell">Date:</td> 

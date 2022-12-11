@@ -127,32 +127,30 @@
                 
                 <div class="page-content">
 
+                    <div class="block block-strong inset col-100 no-margin-bottom">
+                        <div class="breadcrumbs ">
+                          <div class="breadcrumbs-item">
+                            <a href="<%=baseURL%>index.html" class="link">
+                              Home
+                            </a>
+                          </div>    
+                          <div class="breadcrumbs-separator"></div>
+                          <div class="breadcrumbs-item">
+                            <a href="<%=baseURL%>explore.html" class="link">
+                              Explore
+                            </a>
+                          </div>     
+                          <div class="breadcrumbs-separator"></div>
+                          <div class="breadcrumbs-item breadcrumbs-item-active">
+                            <%= itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}` %> 
+                          </div> 
+                        </div>
+                    </div>
+
+
                     <div class="row">
 
                         <div class="col-100 large-75">
-                            
-                            <div class="block block-strong inset col-100 no-margin-bottom">
-                                <div class="breadcrumbs ">
-                                  <div class="breadcrumbs-item">
-                                    <a href="<%=baseURL%>index.html" class="link">
-                                      Home
-                                    </a>
-                                  </div>    
-                                  <div class="breadcrumbs-separator"></div>
-                                  <div class="breadcrumbs-item">
-                                    <a href="<%=baseURL%>explore.html" class="link">
-                                      Explore
-                                    </a>
-                                  </div>     
-                                  <div class="breadcrumbs-separator"></div>
-                                  <div class="breadcrumbs-item breadcrumbs-item-active">
-                                    <%= itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}` %> 
-                                  </div> 
-                                </div>
-                            </div>
-
-
-
 
                             <div class="block animation-card col-100">
 
@@ -184,14 +182,51 @@
 
                             </div> 
 
-
-
-
-
                         </div>
 
                         <div class="col-100 large-25 token-sidebar">
                             
+                            <div class="card" >
+                                <form class="card-content card-content-padding" id="token_navigator_form">
+                                  <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="<%= itemViewModel?.item?.tokenId %>" min="0"  />
+                                  <span class="paging-label">Enter Token ID</span>
+                                  <button class="goto-button button button-small button-fill">Go</button>
+                                </form>
+                            </div>
+
+                            <% if (itemViewModel.item.previous || itemViewModel.item.next) { %>
+            
+                                <div class="card large-only">
+                                  <div class="card-content card-content-padding">
+                                    <div class="segmented">
+                    
+                                      <% if (itemViewModel.item.previous) { %>
+                                        <a class="button button-outline" href="<%= itemViewModel.item.tokenId == 1 ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>">
+                                            <i class="icon f7-icons">arrow_left</i>
+                                          </a>
+                                      <% } else { %>
+                                        <a class="button button-outline" href="#"></a>
+                                      <% } %>
+
+
+                                      <% if (itemViewModel.item.next) { %>
+                                        <a class="button button-outline" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="f7-cover">
+                                            <i class="f7-icons">arrow_right</i>
+                                          </a>
+                                      <% } else { %>
+                                        <a class="button button-outline" href="#"></a>
+                                      <% } %>
+                    
+                                    </div>
+                                  </div>
+                                </div>
+                    
+                            <% } %>
+
+
+
+
+
                             <% if (itemViewModel.channel.contractAddress) { %>
                                 <nft-info id="<%= itemViewModel.item.tokenId %>" 
                                           owner="${owner}" 
@@ -199,6 +234,35 @@
                                           contract="<%= itemViewModel.channel.contractAddress %>">
                                 </nft-info>
                             <% } %>
+
+
+
+                            <div class="card">
+                                
+                                <div class="card-header">
+                                    Attributes
+                                </div>
+
+                                <div class="card-content data-table">
+                    
+                                    <% itemViewModel.attributeSelections?.map( (as)=> { %>
+
+                                        <% if (as.attributeTotal?.categoryPercent) { %>
+                                            <div class="button-outline attribute-value">
+                                                <div class="trait-type"><%= as.traitType %></div>
+                                                <div class="value"><%= as.value %></div>
+                                                <div class="category-percent"><%= as.attributeTotal?.categoryPercent  %> have this trait</div>
+                                            </div>                                                
+                                        <% } %>
+
+
+                                    <% }) %>
+
+                                </div>
+
+                            </div>
+
+
 
 
                             <% 
@@ -228,30 +292,6 @@
                                 }
                             %>
 
-                            <div class="card">
-                                
-                                <div class="card-header">
-                                    Attributes
-                                </div>
-
-                                <div class="card-content data-table">
-                    
-                                    <% itemViewModel.attributeSelections?.map( (as)=> { %>
-
-                                        <% if (as.attributeTotal?.categoryPercent) { %>
-                                            <div class="button-outline attribute-value">
-                                                <div class="trait-type"><%= as.traitType %></div>
-                                                <div class="value"><%= as.value %></div>
-                                                <div class="category-percent"><%= as.attributeTotal?.categoryPercent  %> have this trait</div>
-                                            </div>                                                
-                                        <% } %>
-
-
-                                    <% }) %>
-
-                                </div>
-
-                            </div>
 
                             <% if (!itemViewModel.item.coverImageAsAnimation) { %>
                                 <div class="card">
@@ -284,19 +324,39 @@
             
             let tokenService = globalThis.container.get("TokenService")
             let readerSettingsService = globalThis.container.get("ReaderSettingsService")
-
             let baseURI = globalThis.container.get("baseURI")
 
             let owner
 
             $on('pageInit', async () => {
-
+            
                 await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
+                $('#token_navigator_form').on('submit', goTokenFormSubmit)
 
             })          
 
             $on('pageBeforeOut', async () => {
             })
+
+
+
+
+
+            
+            const goTokenFormSubmit = async (e) => {
+          
+                e.preventDefault()
+
+                const val = $(e.currentTarget).children('.goto-input').val()
+
+                try {
+                    $f7.views.main.router.navigate(`${baseURI}t/${parseInt(val.toString())}`)
+                } catch(ex) {
+                    console.log(ex)
+                    $f7.dialog.alert("Invalid Page")
+                }
+
+            }
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`token-${itemViewModel.item._id}`) %>")

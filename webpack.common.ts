@@ -28,8 +28,6 @@ const VERSION = JSON.stringify(packageConfig.version)
 
 export default () => {
 
-
-
   let adminConfigs = getAdminConfigs()
   let readerConfigs = getReaderConfigs()
 
@@ -371,7 +369,9 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/reader/sync.ts",
-    externalsPresets: { node: true },
+    externalsPresets: { 
+      node: true 
+    },
     experiments: {
       outputModule: true
     },
@@ -402,7 +402,12 @@ let getReaderConfigs = () => {
     plugins: [
       new CleanWebpackPlugin({
         dangerouslyAllowCleanPatternsOutsideProject: true
+      }),
+
+      new webpack.ProvidePlugin({
+        fetch: ['node-fetch', 'default'],
       })
+
     ]
   }
 

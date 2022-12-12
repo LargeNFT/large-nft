@@ -21,12 +21,13 @@ let channelId
 
 
 
+
+
 let sync = async () => {
 
   let config:any = await ProcessConfig.getConfig() 
 
   console.log(config)
-
 
   if (!config.alchemy) {
     throw new Error("No ethereum connection configured.")

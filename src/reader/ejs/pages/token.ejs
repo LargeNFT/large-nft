@@ -45,6 +45,14 @@
         return link
     }
     
+    const truncateEthAddress = (address) => {
+        // Captures 0x + 4 characters, then the last 4 characters.
+        const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/
+        const match = address.match(truncateRegex)
+        if (!match) return address
+        return `${match[1]}…${match[2]}`
+    }
+
 
     let coverImageLink = itemViewModel.coverImage ? absoluteLink(`backup/${itemViewModel.coverImage.generated ? 'generated' : 'export'}/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
@@ -110,19 +118,23 @@
                 </token-toolbar>
 
                 
-                <!-- <div class="fab fab-left-center color-white">
-                    <a href="<%= itemViewModel.item.tokenId == 1 ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>">
+                <div class="fab fab-left-center small-only">
+                    <a href="<%= itemViewModel.item.tokenId == 1 ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>"> 
                         <i class="icon f7-icons color-blue">arrow_left</i>
                     </a>
                 </div>
     
                 <% if (itemViewModel.item.tokenId < channelViewModel.channel.itemCount) { %>
-                    <div class="fab fab-right-center color-white">
+                    <div class="fab fab-right-center small-only">
                         <a href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="f7-cover">
                             <i class="icon f7-icons color-blue">arrow_right</i>
                         </a>
                     </div>
-                <% } %> -->
+                <% } %>
+
+
+
+
 
                 
                 <div class="page-content">
@@ -182,6 +194,44 @@
 
                             </div> 
 
+                            <% if (itemViewModel.channel.contractAddress) { %>
+                                <nft-info id="<%= itemViewModel.item.tokenId %>" 
+                                          owner="${owner}" 
+                                          baseurl="<%= baseURL %>" 
+                                          contract="<%= itemViewModel.channel.contractAddress %>">
+                                </nft-info>
+                            <% } %>
+
+
+
+                            <% 
+                            if (marketplaces?.length > 0) {
+                            %>
+                                <div class="card">
+                                    <div class="card-header">
+                                        View on Marketplaces
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="list simple-list">
+                                            <ul>
+                                            
+                                            <% 
+                                                for (let marketplace of marketplaces) { 
+                                            %>  
+                                                <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
+                                            <%
+                                                }
+                                            %>
+                        
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            <%
+                                }
+                            %>
+
+
                         </div>
 
                         <div class="col-100 large-25 token-sidebar">
@@ -227,13 +277,7 @@
 
 
 
-                            <% if (itemViewModel.channel.contractAddress) { %>
-                                <nft-info id="<%= itemViewModel.item.tokenId %>" 
-                                          owner="${owner}" 
-                                          baseurl="<%= baseURL %>" 
-                                          contract="<%= itemViewModel.channel.contractAddress %>">
-                                </nft-info>
-                            <% } %>
+
 
 
 
@@ -264,33 +308,6 @@
 
 
 
-
-                            <% 
-                            if (marketplaces?.length > 0) {
-                            %>
-                                <div class="card">
-                                    <div class="card-header">
-                                        View on Marketplaces
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="list simple-list">
-                                            <ul>
-                                            
-                                            <% 
-                                                for (let marketplace of marketplaces) { 
-                                            %>  
-                                                <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
-                                            <%
-                                                }
-                                            %>
-                        
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            <%
-                                }
-                            %>
 
 
                             <% if (!itemViewModel.item.coverImageAsAnimation) { %>
@@ -328,21 +345,22 @@
 
             let owner
 
+            let hasPrevious = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.previous?.tokenId != undefined) %>`)
+            let hasNext = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.next?.tokenId != undefined) %>`)
+
+
             $on('pageInit', async () => {
             
                 await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
                 $('#token_navigator_form').on('submit', goTokenFormSubmit)
+
+
 
             })          
 
             $on('pageBeforeOut', async () => {
             })
 
-
-
-
-
-            
             const goTokenFormSubmit = async (e) => {
           
                 e.preventDefault()

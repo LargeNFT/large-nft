@@ -773,13 +773,13 @@ html {
 }
 
 
-@media only screen and (max-width: 1024px) {
+/* @media only screen and (max-width: 1024px) {
  
   .token-sidebar {
     margin-top: 75px;
   }
 
-}
+} */
 
 
 .small-only {
@@ -801,9 +801,19 @@ html {
 }
 
 
+.is-hidden {
+  transform: translateY(-100%)
+}
+.is-visible {
+  transform: translateY(0)
+}
 
-.fab-left-center {
 
+.fab-left-center a, .fab-right-center a {
+  background-color: rgb(255, 255, 255, 0.5);
+  font-weight: bold;
+  width: 33px;
+  height: 75px;
 }
 
 .fab-right-center {

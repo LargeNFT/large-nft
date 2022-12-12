@@ -71,8 +71,19 @@ function getMainContainer(command:GetMainContainerCommand) {
 
   container.bind("provider").toConstantValue(() => {
 
+
+
+
     if (command.alchemy) {
-      return new ethers.providers.AlchemyProvider("mainnet", command.alchemy)
+
+      return new ethers.providers.StaticJsonRpcProvider({
+        url: `https://eth-mainnet.alchemyapi.io/v2/${command.alchemy}`,
+        skipFetchSetup: true
+       });
+    
+    
+    
+      // return new ethers.providers.AlchemyProvider("mainnet", command.alchemy)
     }
 
   })

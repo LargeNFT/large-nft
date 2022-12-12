@@ -29,7 +29,8 @@ for (let config of configs) {
         //@ts-ignore
         mode: 'development',
         //@ts-ignore
-        devtool: 'source-map'
+        devtool: 'source-map',
+        watch: true
     }))
 }
 

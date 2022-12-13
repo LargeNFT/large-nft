@@ -371,7 +371,7 @@ let getReaderConfigs = () => {
     entry: "./src/reader/sync.ts",
     externalsPresets: { 
       node: true 
-    },
+    },    
     experiments: {
       outputModule: true
     },

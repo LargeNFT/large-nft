@@ -9,7 +9,6 @@ import * as Eta from 'eta'
 
 import { Container } from "inversify"
 
-// import PouchDB from 'pouchdb-node';
 import excerptHtml from 'excerpt-html'
 import he from 'he'
 

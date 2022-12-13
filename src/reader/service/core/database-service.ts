@@ -1,9 +1,5 @@
-import axios from "axios"
 
 import { inject, injectable } from 'inversify';
-
-import PouchFind from 'pouchdb-find'
-import PouchQuickSearch from 'pouchdb-quick-search'
 
 
 @injectable()
@@ -19,11 +15,6 @@ class DatabaseService {
 
     ) {
 
-        //Enable find plugin
-        this.PouchDB.plugin(PouchFind)
-
-        //Enable quicksearch
-        this.PouchDB.plugin(PouchQuickSearch)
 
         // console.log("replicae")
         // PouchDB.replicate('./pouch/items', 'http://localhost:5984/items', {live: true});
@@ -140,13 +131,13 @@ class DatabaseService {
         let response
 
         if (config.initialRecordsPath) {
-            response = await axios.get(`${this.hostname}${this.baseURI}${config.initialRecordsPath}`)
+            response = await fetch(`${this.hostname}${this.baseURI}${config.initialRecordsPath}`)
         } else {
-            response = await axios.get(`${this.hostname}${this.baseURI}backup/export/backup/${config.name}.json`)
+            response = await fetch(`${this.hostname}${this.baseURI}backup/export/backup/${config.name}.json`)
         }
 
+        let initialRecords = await response.json()
 
-        let initialRecords = response.data
 
         if (initialRecords?.length > 0) {
             console.log(`Loading ${initialRecords?.length} initial records for ${fullName}`);

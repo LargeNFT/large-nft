@@ -4,6 +4,14 @@ import { ethers, providers } from "ethers"
 import Framework7 from 'framework7';
 
 import PouchDB from 'pouchdb-browser';
+import PouchFind from 'pouchdb-find'
+import PouchQuickSearch from 'pouchdb-quick-search'
+
+//Enable find plugin
+PouchDB.plugin(PouchFind)
+
+//Enable quicksearch
+PouchDB.plugin(PouchQuickSearch)
 
 
 // Import additional components
@@ -275,7 +283,10 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind("version").toConstantValue(version)
 
 
+
   container.bind("PouchDB").toConstantValue(PouchDB)
+  container.bind("PouchFind").toConstantValue(PouchFind)
+  container.bind("PouchQuickSearch").toConstantValue(PouchQuickSearch)
 
 
   container.bind("provider").toConstantValue(() => {

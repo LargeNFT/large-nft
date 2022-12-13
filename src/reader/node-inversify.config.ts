@@ -1,6 +1,5 @@
 import { Container } from "inversify";
 
-// import PouchDB from 'pouchdb-node';
 import { AnimationRepository } from "./repository/animation-repository.js";
 import { AttributeTotalRepository } from "./repository/attribute-total-repository.js";
 import { AuthorRepository } from "./repository/author-repository.js";
@@ -48,11 +47,12 @@ import { ChannelWebService } from "./service/web/channel-web-service.js";
 import { ItemWebService } from "./service/web/item-web-service.js";
 import { SearchbarService } from "./service/web/searchbar-service.js";
 import { ReaderSettings } from "./dto/reader-settings.js";
-import { ERCEvent } from "./dto/erc-event.js";
-import { ContractState } from "./dto/contract-state.js";
 import { ComponentState } from "./dto/component-state.js";
 import { ethers, providers } from "ethers"
 import { GenerateService } from "./service/core/generate-service.js";
+import { ERCEventRepositoryNodeImpl } from "./repository/node/erc-event-repository-impl.js";
+import { ContractStateRepositoryNodeImpl } from "./repository/node/contract-state-repository-impl.js";
+
 
 
 let container:Container
@@ -72,8 +72,6 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind("provider").toConstantValue(() => {
 
 
-
-
     if (command.alchemy) {
 
       return new ethers.providers.StaticJsonRpcProvider({
@@ -81,9 +79,6 @@ function getMainContainer(command:GetMainContainerCommand) {
         skipFetchSetup: true
        });
     
-    
-    
-      // return new ethers.providers.AlchemyProvider("mainnet", command.alchemy)
     }
 
   })
@@ -111,30 +106,8 @@ function getMainContainer(command:GetMainContainerCommand) {
     }
   })
 
-  container.bind<ERCEventRepository>("ERCEventRepository").toConstantValue({
-    get: function (_id: string): Promise<ERCEvent> {
-      throw new Error("Function not implemented.");
-    },
-    put: function (ercEvent: ERCEvent): Promise<void> {
-      throw new Error("Function not implemented.");
-    },
-    getByTokenId: function (tokenId: number, limit: number, skip: number): Promise<ERCEvent[]> {
-      throw new Error("Function not implemented.");
-    },
-    list: function (limit: number, skip: number): Promise<ERCEvent[]> {
-      throw new Error("Function not implemented.");
-    }
-  })
-
-
-  container.bind<ContractStateRepository>("ContractStateRepository").toConstantValue({
-    get: function (_id: string): Promise<ContractState> {
-      throw new Error("Function not implemented.");
-    },
-    put: function (contractState: ContractState): Promise<void> {
-      throw new Error("Function not implemented.");
-    }
-  })
+  container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryNodeImpl).inSingletonScope()
+  container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryNodeImpl).inSingletonScope()
 
   container.bind<ComponentStateRepository>("ComponentStateRepository").toConstantValue({
     get: function (_id: string): Promise<ComponentState> {
@@ -146,7 +119,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   })
 
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
-  // container.bind<DatabaseService>("DatabaseService").to(DatabaseService).inSingletonScope()
+  container.bind<DatabaseService>("DatabaseService").to(DatabaseService).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -179,9 +152,6 @@ function getMainContainer(command:GetMainContainerCommand) {
 
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
   container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
-
-  //@ts-ignore
-  container.bind<DatabaseService>("DatabaseService").toConstantValue({})
   
   return container
 }

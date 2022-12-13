@@ -236,7 +236,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2d3f2dd748';
+framework7Component.id = '08b40dbe85';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -350,7 +350,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '96e9deb102';
+framework7Component.id = 'fda0aa0041';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -413,7 +413,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a7a3dcf7be';
+framework7Component.id = '5e18268b5a';
 framework7Component.style = `
 
 
@@ -506,7 +506,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '85a9fce8c4';
+framework7Component.id = '4251f927a3';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -580,7 +580,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a883294b91';
+framework7Component.id = 'e65cdf45ac';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -842,7 +842,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9cc71a8ec7';
+framework7Component.id = '8b42b7e75c';
 framework7Component.style = `
 
 .mint-list-card .card-header {
@@ -1010,7 +1010,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e355dfa8a2';
+framework7Component.id = 'afec1cf616';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1169,7 +1169,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '153349a5fe';
+framework7Component.id = '8993d33a1a';
 framework7Component.style = `
 
 .block-search {
@@ -1393,7 +1393,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5ed2cae52a';
+framework7Component.id = '343233a860';
 framework7Component.style = `
 
   .logo {
@@ -1533,7 +1533,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '405cd8507f';
+framework7Component.id = '5b809e3ddd';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -2317,86 +2317,95 @@ let startApp = async (container, baseURI, version, hostname, routablePages) => {
 /* harmony export */   "getMainContainer": () => (/* binding */ getMainContainer)
 /* harmony export */ });
 /* unused harmony export container */
-/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/web3-provider.js");
-/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ethers */ "./node_modules/ethers/lib.esm/ethers.js");
-/* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
+/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/web3-provider.js");
+/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ethers */ "./node_modules/ethers/lib.esm/ethers.js");
+/* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
 /* harmony import */ var pouchdb_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pouchdb-browser */ "./node_modules/pouchdb-browser/lib/index.es.js");
-/* harmony import */ var framework7_components_dialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! framework7/components/dialog */ "./node_modules/framework7/components/dialog/dialog.js");
-/* harmony import */ var framework7_components_toast__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7/components/toast */ "./node_modules/framework7/components/toast/toast.js");
-/* harmony import */ var framework7_components_preloader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framework7/components/preloader */ "./node_modules/framework7/components/preloader/preloader.js");
-/* harmony import */ var framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! framework7/components/virtual-list */ "./node_modules/framework7/components/virtual-list/virtual-list.js");
-/* harmony import */ var framework7_components_list_index__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! framework7/components/list-index */ "./node_modules/framework7/components/list-index/list-index.js");
-/* harmony import */ var framework7_components_range__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! framework7/components/range */ "./node_modules/framework7/components/range/range.js");
-/* harmony import */ var framework7_components_accordion__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! framework7/components/accordion */ "./node_modules/framework7/components/accordion/accordion.js");
-/* harmony import */ var framework7_components_autocomplete__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! framework7/components/autocomplete */ "./node_modules/framework7/components/autocomplete/autocomplete.js");
-/* harmony import */ var framework7_components_photo_browser__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! framework7/components/photo-browser */ "./node_modules/framework7/components/photo-browser/photo-browser.js");
-/* harmony import */ var framework7_components_swiper__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! framework7/components/swiper */ "./node_modules/framework7/components/swiper/swiper.js");
-/* harmony import */ var framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! framework7/components/infinite-scroll */ "./node_modules/framework7/components/infinite-scroll/infinite-scroll.js");
-/* harmony import */ var framework7_components_card__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! framework7/components/card */ "./node_modules/framework7/components/card/card.js");
-/* harmony import */ var framework7_components_chip__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! framework7/components/chip */ "./node_modules/framework7/components/chip/chip.js");
-/* harmony import */ var framework7_components_form__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! framework7/components/form */ "./node_modules/framework7/components/form/form.js");
-/* harmony import */ var framework7_components_grid__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! framework7/components/grid */ "./node_modules/framework7/components/grid/grid.js");
-/* harmony import */ var framework7_components_searchbar__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! framework7/components/searchbar */ "./node_modules/framework7/components/searchbar/searchbar.js");
-/* harmony import */ var framework7_components_popup__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! framework7/components/popup */ "./node_modules/framework7/components/popup/popup.js");
-/* harmony import */ var framework7_components_panel__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! framework7/components/panel */ "./node_modules/framework7/components/panel/panel.js");
-/* harmony import */ var framework7_components_popover__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! framework7/components/popover */ "./node_modules/framework7/components/popover/popover.js");
-/* harmony import */ var framework7_components_stepper__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! framework7/components/stepper */ "./node_modules/framework7/components/stepper/stepper.js");
-/* harmony import */ var _components_reader_navbar_f7_html__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/reader/navbar.f7.html */ "./src/reader/components/reader/navbar.f7.html");
-/* harmony import */ var _components_reader_token_toolbar_f7_html__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./components/reader/token-toolbar.f7.html */ "./src/reader/components/reader/token-toolbar.f7.html");
-/* harmony import */ var _components_reader_item_nft_info_f7_html__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/reader/item/nft-info.f7.html */ "./src/reader/components/reader/item/nft-info.f7.html");
-/* harmony import */ var _components_reader_item_mint_list_f7_html__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/reader/item/mint-list.f7.html */ "./src/reader/components/reader/item/mint-list.f7.html");
-/* harmony import */ var _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/reader/channel/attribute-filter.f7.html */ "./src/reader/components/reader/channel/attribute-filter.f7.html");
-/* harmony import */ var _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/reader/channel/explore-total-info.f7.html */ "./src/reader/components/reader/channel/explore-total-info.f7.html");
-/* harmony import */ var _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/reader/channel/mint-info.f7.html */ "./src/reader/components/reader/channel/mint-info.f7.html");
-/* harmony import */ var _components_reader_channel_event_info_f7_html__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./components/reader/channel/event-info.f7.html */ "./src/reader/components/reader/channel/event-info.f7.html");
-/* harmony import */ var _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./components/reader/item/search-list.f7.html */ "./src/reader/components/reader/item/search-list.f7.html");
-/* harmony import */ var _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./components/reader/item/infinite-scroll-content.f7.html */ "./src/reader/components/reader/item/infinite-scroll-content.f7.html");
-/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! he */ "./node_modules/he/he.js");
-/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_22___default = /*#__PURE__*/__webpack_require__.n(he__WEBPACK_IMPORTED_MODULE_22__);
-/* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/reader/service/core/wallet-service-impl.ts");
-/* harmony import */ var _repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./repository/browser/channel-repository-impl.js */ "./src/reader/repository/browser/channel-repository-impl.ts");
-/* harmony import */ var _repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./repository/browser/item-repository-impl.js */ "./src/reader/repository/browser/item-repository-impl.ts");
-/* harmony import */ var _repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./repository/browser/author-repository-impl.js */ "./src/reader/repository/browser/author-repository-impl.ts");
-/* harmony import */ var _repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./repository/browser/metadata-repository-impl.js */ "./src/reader/repository/browser/metadata-repository-impl.ts");
-/* harmony import */ var _repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./repository/browser/image-repository-impl.js */ "./src/reader/repository/browser/image-repository-impl.ts");
-/* harmony import */ var _repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./repository/browser/animation-repository-impl.js */ "./src/reader/repository/browser/animation-repository-impl.ts");
-/* harmony import */ var _repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./repository/browser/static-page-repository-impl.js */ "./src/reader/repository/browser/static-page-repository-impl.ts");
-/* harmony import */ var _repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./repository/browser/item-page-repository-impl.js */ "./src/reader/repository/browser/item-page-repository-impl.ts");
-/* harmony import */ var _repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./repository/browser/attribute-total-repository-impl.js */ "./src/reader/repository/browser/attribute-total-repository-impl.ts");
-/* harmony import */ var _repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./repository/browser/reader-settings-repository-impl.js */ "./src/reader/repository/browser/reader-settings-repository-impl.ts");
-/* harmony import */ var _repository_browser_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./repository/browser/erc-event-repository-impl.js */ "./src/reader/repository/browser/erc-event-repository-impl.ts");
-/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
-/* harmony import */ var _service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/web/mint-web-service.js */ "./src/reader/service/web/mint-web-service.ts");
-/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
-/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
-/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
-/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
-/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
-/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
-/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
-/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
-/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
-/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
-/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
-/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
-/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
-/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
-/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
-/* harmony import */ var _repository_browser_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./repository/browser/contract-state-repository-impl.js */ "./src/reader/repository/browser/contract-state-repository-impl.ts");
-/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
-/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/web/event-web-service.js */ "./src/reader/service/web/event-web-service.ts");
-/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
-/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
-/* harmony import */ var _repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./repository/browser/component-state-repository-impl.js */ "./src/reader/repository/browser/component-state-repository-impl.ts");
-/* harmony import */ var _dto_component_state_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./dto/component-state.js */ "./src/reader/dto/component-state.ts");
+/* harmony import */ var pouchdb_find__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pouchdb-find */ "./node_modules/pouchdb-find/lib/index-browser.es.js");
+/* harmony import */ var pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! pouchdb-quick-search */ "./node_modules/pouchdb-quick-search/lib/index.js");
+/* harmony import */ var pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var framework7_components_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framework7/components/dialog */ "./node_modules/framework7/components/dialog/dialog.js");
+/* harmony import */ var framework7_components_toast__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! framework7/components/toast */ "./node_modules/framework7/components/toast/toast.js");
+/* harmony import */ var framework7_components_preloader__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! framework7/components/preloader */ "./node_modules/framework7/components/preloader/preloader.js");
+/* harmony import */ var framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! framework7/components/virtual-list */ "./node_modules/framework7/components/virtual-list/virtual-list.js");
+/* harmony import */ var framework7_components_list_index__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! framework7/components/list-index */ "./node_modules/framework7/components/list-index/list-index.js");
+/* harmony import */ var framework7_components_range__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! framework7/components/range */ "./node_modules/framework7/components/range/range.js");
+/* harmony import */ var framework7_components_accordion__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! framework7/components/accordion */ "./node_modules/framework7/components/accordion/accordion.js");
+/* harmony import */ var framework7_components_autocomplete__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! framework7/components/autocomplete */ "./node_modules/framework7/components/autocomplete/autocomplete.js");
+/* harmony import */ var framework7_components_photo_browser__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! framework7/components/photo-browser */ "./node_modules/framework7/components/photo-browser/photo-browser.js");
+/* harmony import */ var framework7_components_swiper__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! framework7/components/swiper */ "./node_modules/framework7/components/swiper/swiper.js");
+/* harmony import */ var framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! framework7/components/infinite-scroll */ "./node_modules/framework7/components/infinite-scroll/infinite-scroll.js");
+/* harmony import */ var framework7_components_card__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! framework7/components/card */ "./node_modules/framework7/components/card/card.js");
+/* harmony import */ var framework7_components_chip__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! framework7/components/chip */ "./node_modules/framework7/components/chip/chip.js");
+/* harmony import */ var framework7_components_form__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! framework7/components/form */ "./node_modules/framework7/components/form/form.js");
+/* harmony import */ var framework7_components_grid__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! framework7/components/grid */ "./node_modules/framework7/components/grid/grid.js");
+/* harmony import */ var framework7_components_searchbar__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! framework7/components/searchbar */ "./node_modules/framework7/components/searchbar/searchbar.js");
+/* harmony import */ var framework7_components_popup__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! framework7/components/popup */ "./node_modules/framework7/components/popup/popup.js");
+/* harmony import */ var framework7_components_panel__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! framework7/components/panel */ "./node_modules/framework7/components/panel/panel.js");
+/* harmony import */ var framework7_components_popover__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! framework7/components/popover */ "./node_modules/framework7/components/popover/popover.js");
+/* harmony import */ var framework7_components_stepper__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! framework7/components/stepper */ "./node_modules/framework7/components/stepper/stepper.js");
+/* harmony import */ var _components_reader_navbar_f7_html__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/reader/navbar.f7.html */ "./src/reader/components/reader/navbar.f7.html");
+/* harmony import */ var _components_reader_token_toolbar_f7_html__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/reader/token-toolbar.f7.html */ "./src/reader/components/reader/token-toolbar.f7.html");
+/* harmony import */ var _components_reader_item_nft_info_f7_html__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/reader/item/nft-info.f7.html */ "./src/reader/components/reader/item/nft-info.f7.html");
+/* harmony import */ var _components_reader_item_mint_list_f7_html__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/reader/item/mint-list.f7.html */ "./src/reader/components/reader/item/mint-list.f7.html");
+/* harmony import */ var _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/reader/channel/attribute-filter.f7.html */ "./src/reader/components/reader/channel/attribute-filter.f7.html");
+/* harmony import */ var _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./components/reader/channel/explore-total-info.f7.html */ "./src/reader/components/reader/channel/explore-total-info.f7.html");
+/* harmony import */ var _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./components/reader/channel/mint-info.f7.html */ "./src/reader/components/reader/channel/mint-info.f7.html");
+/* harmony import */ var _components_reader_channel_event_info_f7_html__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./components/reader/channel/event-info.f7.html */ "./src/reader/components/reader/channel/event-info.f7.html");
+/* harmony import */ var _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./components/reader/item/search-list.f7.html */ "./src/reader/components/reader/item/search-list.f7.html");
+/* harmony import */ var _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./components/reader/item/infinite-scroll-content.f7.html */ "./src/reader/components/reader/item/infinite-scroll-content.f7.html");
+/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! he */ "./node_modules/he/he.js");
+/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_24___default = /*#__PURE__*/__webpack_require__.n(he__WEBPACK_IMPORTED_MODULE_24__);
+/* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/reader/service/core/wallet-service-impl.ts");
+/* harmony import */ var _repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./repository/browser/channel-repository-impl.js */ "./src/reader/repository/browser/channel-repository-impl.ts");
+/* harmony import */ var _repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./repository/browser/item-repository-impl.js */ "./src/reader/repository/browser/item-repository-impl.ts");
+/* harmony import */ var _repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./repository/browser/author-repository-impl.js */ "./src/reader/repository/browser/author-repository-impl.ts");
+/* harmony import */ var _repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./repository/browser/metadata-repository-impl.js */ "./src/reader/repository/browser/metadata-repository-impl.ts");
+/* harmony import */ var _repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./repository/browser/image-repository-impl.js */ "./src/reader/repository/browser/image-repository-impl.ts");
+/* harmony import */ var _repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./repository/browser/animation-repository-impl.js */ "./src/reader/repository/browser/animation-repository-impl.ts");
+/* harmony import */ var _repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./repository/browser/static-page-repository-impl.js */ "./src/reader/repository/browser/static-page-repository-impl.ts");
+/* harmony import */ var _repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./repository/browser/item-page-repository-impl.js */ "./src/reader/repository/browser/item-page-repository-impl.ts");
+/* harmony import */ var _repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./repository/browser/attribute-total-repository-impl.js */ "./src/reader/repository/browser/attribute-total-repository-impl.ts");
+/* harmony import */ var _repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./repository/browser/reader-settings-repository-impl.js */ "./src/reader/repository/browser/reader-settings-repository-impl.ts");
+/* harmony import */ var _repository_browser_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./repository/browser/erc-event-repository-impl.js */ "./src/reader/repository/browser/erc-event-repository-impl.ts");
+/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
+/* harmony import */ var _service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/web/mint-web-service.js */ "./src/reader/service/web/mint-web-service.ts");
+/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
+/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
+/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
+/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
+/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
+/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
+/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
+/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
+/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
+/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
+/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
+/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
+/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
+/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
+/* harmony import */ var _repository_browser_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./repository/browser/contract-state-repository-impl.js */ "./src/reader/repository/browser/contract-state-repository-impl.ts");
+/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
+/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/web/event-web-service.js */ "./src/reader/service/web/event-web-service.ts");
+/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
+/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
+/* harmony import */ var _repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./repository/browser/component-state-repository-impl.js */ "./src/reader/repository/browser/component-state-repository-impl.ts");
+/* harmony import */ var _dto_component_state_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./dto/component-state.js */ "./src/reader/dto/component-state.ts");
 
 
 
+
+
+//Enable find plugin
+pouchdb_browser__WEBPACK_IMPORTED_MODULE_0__["default"].plugin(pouchdb_find__WEBPACK_IMPORTED_MODULE_1__["default"]);
+//Enable quicksearch
+pouchdb_browser__WEBPACK_IMPORTED_MODULE_0__["default"].plugin((pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_2___default()));
 // Import additional components
 
 
@@ -2419,8 +2428,8 @@ let startApp = async (container, baseURI, version, hostname, routablePages) => {
 
 
 // Install F7 Components using .use() method on Framework7 class:
-framework7__WEBPACK_IMPORTED_MODULE_1__["default"].use([framework7_components_dialog__WEBPACK_IMPORTED_MODULE_2__["default"], framework7_components_toast__WEBPACK_IMPORTED_MODULE_3__["default"], framework7_components_preloader__WEBPACK_IMPORTED_MODULE_4__["default"], framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_5__["default"], framework7_components_list_index__WEBPACK_IMPORTED_MODULE_6__["default"], framework7_components_card__WEBPACK_IMPORTED_MODULE_7__["default"], framework7_components_chip__WEBPACK_IMPORTED_MODULE_8__["default"], framework7_components_form__WEBPACK_IMPORTED_MODULE_9__["default"], framework7_components_grid__WEBPACK_IMPORTED_MODULE_10__["default"],
-    framework7_components_range__WEBPACK_IMPORTED_MODULE_11__["default"], framework7_components_accordion__WEBPACK_IMPORTED_MODULE_12__["default"], framework7_components_searchbar__WEBPACK_IMPORTED_MODULE_13__["default"], framework7_components_autocomplete__WEBPACK_IMPORTED_MODULE_14__["default"], framework7_components_popup__WEBPACK_IMPORTED_MODULE_15__["default"], framework7_components_photo_browser__WEBPACK_IMPORTED_MODULE_16__["default"], framework7_components_swiper__WEBPACK_IMPORTED_MODULE_17__["default"], framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_18__["default"], framework7_components_panel__WEBPACK_IMPORTED_MODULE_19__["default"], framework7_components_popover__WEBPACK_IMPORTED_MODULE_20__["default"], framework7_components_stepper__WEBPACK_IMPORTED_MODULE_21__["default"]]);
+framework7__WEBPACK_IMPORTED_MODULE_3__["default"].use([framework7_components_dialog__WEBPACK_IMPORTED_MODULE_4__["default"], framework7_components_toast__WEBPACK_IMPORTED_MODULE_5__["default"], framework7_components_preloader__WEBPACK_IMPORTED_MODULE_6__["default"], framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_7__["default"], framework7_components_list_index__WEBPACK_IMPORTED_MODULE_8__["default"], framework7_components_card__WEBPACK_IMPORTED_MODULE_9__["default"], framework7_components_chip__WEBPACK_IMPORTED_MODULE_10__["default"], framework7_components_form__WEBPACK_IMPORTED_MODULE_11__["default"], framework7_components_grid__WEBPACK_IMPORTED_MODULE_12__["default"],
+    framework7_components_range__WEBPACK_IMPORTED_MODULE_13__["default"], framework7_components_accordion__WEBPACK_IMPORTED_MODULE_14__["default"], framework7_components_searchbar__WEBPACK_IMPORTED_MODULE_15__["default"], framework7_components_autocomplete__WEBPACK_IMPORTED_MODULE_16__["default"], framework7_components_popup__WEBPACK_IMPORTED_MODULE_17__["default"], framework7_components_photo_browser__WEBPACK_IMPORTED_MODULE_18__["default"], framework7_components_swiper__WEBPACK_IMPORTED_MODULE_19__["default"], framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_20__["default"], framework7_components_panel__WEBPACK_IMPORTED_MODULE_21__["default"], framework7_components_popover__WEBPACK_IMPORTED_MODULE_22__["default"], framework7_components_stepper__WEBPACK_IMPORTED_MODULE_23__["default"]]);
 
 
 
@@ -2479,16 +2488,16 @@ async function getMainContainer(customContainer, baseURI, hostname, version, rou
         return container;
     container = customContainer;
     function framework7() {
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("nav-bar", _components_reader_navbar_f7_html__WEBPACK_IMPORTED_MODULE_23__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("token-toolbar", _components_reader_token_toolbar_f7_html__WEBPACK_IMPORTED_MODULE_24__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("nft-info", _components_reader_item_nft_info_f7_html__WEBPACK_IMPORTED_MODULE_25__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("mint-list", _components_reader_item_mint_list_f7_html__WEBPACK_IMPORTED_MODULE_26__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("attribute-filter", _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_27__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("explore-total-info", _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_28__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("mint-info", _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_29__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("event-info", _components_reader_channel_event_info_f7_html__WEBPACK_IMPORTED_MODULE_30__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("search-list", _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_31__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_1__["default"].registerComponent("infinite-scroll-content", _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_32__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("nav-bar", _components_reader_navbar_f7_html__WEBPACK_IMPORTED_MODULE_25__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("token-toolbar", _components_reader_token_toolbar_f7_html__WEBPACK_IMPORTED_MODULE_26__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("nft-info", _components_reader_item_nft_info_f7_html__WEBPACK_IMPORTED_MODULE_27__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("mint-list", _components_reader_item_mint_list_f7_html__WEBPACK_IMPORTED_MODULE_28__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("attribute-filter", _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_29__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("explore-total-info", _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_30__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("mint-info", _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_31__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("event-info", _components_reader_channel_event_info_f7_html__WEBPACK_IMPORTED_MODULE_32__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("search-list", _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_33__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_3__["default"].registerComponent("infinite-scroll-content", _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_34__["default"]);
         const resolveWithSpinner = (resolve, url) => {
             // let currentUrl = window.location.pathname.split('/').pop()
             //Navigating to same page freezes it. So don't.
@@ -2566,7 +2575,7 @@ async function getMainContainer(customContainer, baseURI, hostname, version, rou
                 await resolveWithSpinner(resolve, '404.html');
             }
         });
-        let app = new framework7__WEBPACK_IMPORTED_MODULE_1__["default"]({
+        let app = new framework7__WEBPACK_IMPORTED_MODULE_3__["default"]({
             el: '#app',
             id: 'large-reader',
             name: 'Large Reader',
@@ -2593,60 +2602,62 @@ async function getMainContainer(customContainer, baseURI, hostname, version, rou
     container.bind("hostname").toConstantValue(hostname);
     container.bind("version").toConstantValue(version);
     container.bind("PouchDB").toConstantValue(pouchdb_browser__WEBPACK_IMPORTED_MODULE_0__["default"]);
+    container.bind("PouchFind").toConstantValue(pouchdb_find__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    container.bind("PouchQuickSearch").toConstantValue((pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_2___default()));
     container.bind("provider").toConstantValue(() => {
         if (typeof window !== "undefined" && window['ethereum']) {
             //@ts-ignore
             window.web3Provider = window.ethereum;
             //@ts-ignore
-            return new ethers__WEBPACK_IMPORTED_MODULE_33__.Web3Provider(window.ethereum);
+            return new ethers__WEBPACK_IMPORTED_MODULE_35__.Web3Provider(window.ethereum);
         }
     });
-    container.bind("WalletService").to(_service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_34__.WalletServiceImpl).inSingletonScope();
-    container.bind("ChannelRepository").to(_repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_35__.ChannelRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ItemRepository").to(_repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_36__.ItemRepositoryBrowserImpl).inSingletonScope();
-    container.bind("AuthorRepository").to(_repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_37__.AuthorRepositoryBrowserImpl).inSingletonScope();
-    container.bind("MetadataRepository").to(_repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_38__.MetadataRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ImageRepository").to(_repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_39__.ImageRepositoryBrowserImpl).inSingletonScope();
-    container.bind("AnimationRepository").to(_repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__.AnimationRepositoryBrowserImpl).inSingletonScope();
-    container.bind("StaticPageRepository").to(_repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__.StaticPageRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ItemPageRepository").to(_repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__.ItemPageRepositoryBrowserImpl).inSingletonScope();
-    container.bind("AttributeTotalRepository").to(_repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__.AttributeTotalRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ReaderSettingsRepository").to(_repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__.ReaderSettingsRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ERCEventRepository").to(_repository_browser_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__.ERCEventRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ContractStateRepository").to(_repository_browser_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__.ContractStateRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ComponentStateRepository").to(_repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__.ComponentStateRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_48__.ChannelWebService).inSingletonScope();
-    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_49__.ItemWebService).inSingletonScope();
-    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_50__.AuthorWebService).inSingletonScope();
-    container.bind("MintWebService").to(_service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_51__.MintWebService).inSingletonScope();
-    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_52__.SearchbarService).inSingletonScope();
-    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_53__.StaticPageService).inSingletonScope();
-    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_54__.ItemPageService).inSingletonScope();
-    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_55__.QueueService).inSingletonScope();
-    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_56__.PagingService).inSingletonScope();
-    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_57__.DatabaseService).inSingletonScope();
-    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_58__.AnimationService).inSingletonScope();
-    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_59__.UiService).inSingletonScope();
-    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_60__.ItemService).inSingletonScope();
-    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_61__.ImageService).inSingletonScope();
-    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_62__.ChannelService).inSingletonScope();
-    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_63__.AuthorService).inSingletonScope();
-    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_64__.TokenService).inSingletonScope();
-    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_65__.SchemaService).inSingletonScope();
-    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_66__.QuillService).inSingletonScope();
-    container.bind("EventWebService").to(_service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_67__.EventWebService).inSingletonScope();
-    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_68__.AttributeTotalService).inSingletonScope();
-    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_69__.ComponentStateService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_70__.ReaderSettingsService).inSingletonScope();
-    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_71__.TransactionIndexerService).inSingletonScope();
-    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_72__.ERCEventService).inSingletonScope();
-    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_73__.ContractStateService).inSingletonScope();
+    container.bind("WalletService").to(_service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_36__.WalletServiceImpl).inSingletonScope();
+    container.bind("ChannelRepository").to(_repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_37__.ChannelRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ItemRepository").to(_repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_38__.ItemRepositoryBrowserImpl).inSingletonScope();
+    container.bind("AuthorRepository").to(_repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_39__.AuthorRepositoryBrowserImpl).inSingletonScope();
+    container.bind("MetadataRepository").to(_repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__.MetadataRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ImageRepository").to(_repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__.ImageRepositoryBrowserImpl).inSingletonScope();
+    container.bind("AnimationRepository").to(_repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__.AnimationRepositoryBrowserImpl).inSingletonScope();
+    container.bind("StaticPageRepository").to(_repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__.StaticPageRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ItemPageRepository").to(_repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__.ItemPageRepositoryBrowserImpl).inSingletonScope();
+    container.bind("AttributeTotalRepository").to(_repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__.AttributeTotalRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ReaderSettingsRepository").to(_repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__.ReaderSettingsRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ERCEventRepository").to(_repository_browser_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__.ERCEventRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ContractStateRepository").to(_repository_browser_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__.ContractStateRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ComponentStateRepository").to(_repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__.ComponentStateRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_50__.ChannelWebService).inSingletonScope();
+    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_51__.ItemWebService).inSingletonScope();
+    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_52__.AuthorWebService).inSingletonScope();
+    container.bind("MintWebService").to(_service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_53__.MintWebService).inSingletonScope();
+    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_54__.SearchbarService).inSingletonScope();
+    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_55__.StaticPageService).inSingletonScope();
+    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_56__.ItemPageService).inSingletonScope();
+    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_57__.QueueService).inSingletonScope();
+    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_58__.PagingService).inSingletonScope();
+    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_59__.DatabaseService).inSingletonScope();
+    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_60__.AnimationService).inSingletonScope();
+    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_61__.UiService).inSingletonScope();
+    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_62__.ItemService).inSingletonScope();
+    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_63__.ImageService).inSingletonScope();
+    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_64__.ChannelService).inSingletonScope();
+    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_65__.AuthorService).inSingletonScope();
+    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_66__.TokenService).inSingletonScope();
+    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_67__.SchemaService).inSingletonScope();
+    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_68__.QuillService).inSingletonScope();
+    container.bind("EventWebService").to(_service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_69__.EventWebService).inSingletonScope();
+    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_70__.AttributeTotalService).inSingletonScope();
+    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_71__.ComponentStateService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_72__.ReaderSettingsService).inSingletonScope();
+    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_73__.TransactionIndexerService).inSingletonScope();
+    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_74__.ERCEventService).inSingletonScope();
+    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_75__.ContractStateService).inSingletonScope();
     container.bind("GenerateService").to({}).inSingletonScope();
     //Attach container to window so we can easily access it from the browser console
     globalThis.container = container;
-    globalThis.ethers = ethers__WEBPACK_IMPORTED_MODULE_74__;
-    globalThis.he = (he__WEBPACK_IMPORTED_MODULE_22___default());
-    globalThis.ComponentState = _dto_component_state_js__WEBPACK_IMPORTED_MODULE_75__.ComponentState;
+    globalThis.ethers = ethers__WEBPACK_IMPORTED_MODULE_76__;
+    globalThis.he = (he__WEBPACK_IMPORTED_MODULE_24___default());
+    globalThis.ComponentState = _dto_component_state_js__WEBPACK_IMPORTED_MODULE_77__.ComponentState;
     return container;
 }
 
@@ -2896,6 +2907,7 @@ let ChannelRepositoryBrowserImpl = class ChannelRepositoryBrowserImpl {
             include_docs: true
         });
         let channel;
+        console.log(channels);
         //Find the first actual channel (skip design)
         for (let c of channels.rows) {
             if (c.doc.dateCreated)
@@ -4035,12 +4047,8 @@ ComponentStateService = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "DatabaseService": () => (/* binding */ DatabaseService)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var pouchdb_find__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pouchdb-find */ "./node_modules/pouchdb-find/lib/index-browser.es.js");
-/* harmony import */ var pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pouchdb-quick-search */ "./node_modules/pouchdb-quick-search/lib/index.js");
-/* harmony import */ var pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4054,9 +4062,6 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 
-
-
-
 let DatabaseService = class DatabaseService {
     baseURI;
     hostname;
@@ -4068,10 +4073,6 @@ let DatabaseService = class DatabaseService {
         this.hostname = hostname;
         this.PouchDB = PouchDB;
         this.channelId = channelId;
-        //Enable find plugin
-        this.PouchDB.plugin(pouchdb_find__WEBPACK_IMPORTED_MODULE_0__["default"]);
-        //Enable quicksearch
-        this.PouchDB.plugin((pouchdb_quick_search__WEBPACK_IMPORTED_MODULE_1___default()));
         // console.log("replicae")
         // PouchDB.replicate('./pouch/items', 'http://localhost:5984/items', {live: true});
     }
@@ -4144,12 +4145,12 @@ let DatabaseService = class DatabaseService {
     async loadInitialRecords(config, fullName) {
         let response;
         if (config.initialRecordsPath) {
-            response = await axios__WEBPACK_IMPORTED_MODULE_2__["default"].get(`${this.hostname}${this.baseURI}${config.initialRecordsPath}`);
+            response = await fetch(`${this.hostname}${this.baseURI}${config.initialRecordsPath}`);
         }
         else {
-            response = await axios__WEBPACK_IMPORTED_MODULE_2__["default"].get(`${this.hostname}${this.baseURI}backup/export/backup/${config.name}.json`);
+            response = await fetch(`${this.hostname}${this.baseURI}backup/export/backup/${config.name}.json`);
         }
-        let initialRecords = response.data;
+        let initialRecords = await response.json();
         if (initialRecords?.length > 0) {
             console.log(`Loading ${initialRecords?.length} initial records for ${fullName}`);
             await this.dbCache[fullName].bulkDocs(initialRecords);
@@ -4157,11 +4158,11 @@ let DatabaseService = class DatabaseService {
     }
 };
 DatabaseService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
-    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)('baseURI')),
-    __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)('hostname')),
-    __param(2, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)('PouchDB')),
-    __param(3, (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)('channelId')),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.injectable)(),
+    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('baseURI')),
+    __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('hostname')),
+    __param(2, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('PouchDB')),
+    __param(3, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('channelId')),
     __metadata("design:paramtypes", [String, String, Object, Function])
 ], DatabaseService);
 
@@ -4634,41 +4635,40 @@ let TransactionIndexerService = class TransactionIndexerService {
     async index() {
         //Update block number
         await this._updateBlockNumber();
-        console.log(this.blockNumber);
-        // if (!this.shouldIndex(this.contractState)) return 
-        // console.log(`
-        //     Block Number: ${this.blockNumber}
-        //     Last Indexed: ${this.contractState.lastIndexedBlock}
-        // `)
-        // let startBlock = this.getStartBlock(this.contractState)
-        // let endBlock = this.getEndBlock()
-        // console.log(`Indexing blocks: ${startBlock} to ${endBlock}`)
-        // const events = await this.contract.queryFilter({
-        //         address: this.contractAddress,
-        //         topics: this.topics
-        //     }, 
-        //     startBlock, 
-        //     endBlock
-        // )
-        // for (let event of events) {
-        //     let e = await this.ercEventService.process(event)
-        //     //See if it already exists. If so we need the _rev
-        //     let existing:ERCEvent
-        //     try {
-        //         existing = await this.ercEventService.get(e._id)
-        //     } catch(ex) {}
-        //     if (existing) {
-        //         e = Object.assign(existing, e)
-        //     }
-        //     try {
-        //         await this.ercEventService.put(e)
-        //         // console.log(`Event: ${JSON.stringify(e)}`)
-        //     } catch(ex) {
-        //         console.log(ex)
-        //     }
-        // }
-        // this.contractState.lastIndexedBlock = endBlock
-        // await this.contractStateService.put(this.contractState)
+        if (!this.shouldIndex(this.contractState))
+            return;
+        console.log(`
+            Block Number: ${this.blockNumber}
+            Last Indexed: ${this.contractState.lastIndexedBlock}
+        `);
+        let startBlock = this.getStartBlock(this.contractState);
+        let endBlock = this.getEndBlock();
+        console.log(`Indexing blocks: ${startBlock} to ${endBlock}`);
+        const events = await this.contract.queryFilter({
+            address: this.contractAddress,
+            topics: this.topics
+        }, startBlock, endBlock);
+        for (let event of events) {
+            let e = await this.ercEventService.process(event);
+            //See if it already exists. If so we need the _rev
+            let existing;
+            try {
+                existing = await this.ercEventService.get(e._id);
+            }
+            catch (ex) { }
+            if (existing) {
+                e = Object.assign(existing, e);
+            }
+            try {
+                await this.ercEventService.put(e);
+                // console.log(`Event: ${JSON.stringify(e)}`)
+            }
+            catch (ex) {
+                console.log(ex);
+            }
+        }
+        this.contractState.lastIndexedBlock = endBlock;
+        await this.contractStateService.put(this.contractState);
     }
     _getFilterTopics(contract) {
         //Grab the ones that have () in them. Because the list is duplicated. 
@@ -5020,7 +5020,7 @@ let ERCEventService = class ERCEventService {
         ercEvent.event = event.event;
         ercEvent.eventSignature = event.eventSignature;
         // ercEvent.transaction = await event.getTransaction()
-        ercEvent._id = pouchdb_collate__WEBPACK_IMPORTED_MODULE_0__.collate.toIndexableString([ercEvent.blockHash, ercEvent.transactionHash, ercEvent.logIndex]);
+        ercEvent._id = (0,pouchdb_collate__WEBPACK_IMPORTED_MODULE_0__.toIndexableString)([ercEvent.blockHash, ercEvent.transactionHash, ercEvent.logIndex]);
         ercEvent.dateCreated = new Date().toJSON();
         //Convert BigNumber args to strings
         ercEvent.args = ercEvent.args.map(a => ethers__WEBPACK_IMPORTED_MODULE_4__.BigNumber.isBigNumber(a) ? a.toString() : a);

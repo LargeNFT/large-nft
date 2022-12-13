@@ -6,8 +6,7 @@ import { ERCEvent } from "../dto/erc-event.js"
 import { BigNumber, Event } from "ethers"
 
 // var pouchCollate = require('pouchdb-collate')
-import { collate } from "pouchdb-collate"
-
+import { toIndexableString } from "pouchdb-collate"
 
 @injectable()
 class ERCEventService {
@@ -58,7 +57,7 @@ class ERCEventService {
         ercEvent.eventSignature = event.eventSignature
         // ercEvent.transaction = await event.getTransaction()
 
-        ercEvent._id = collate.toIndexableString([ercEvent.blockHash, ercEvent.transactionHash, ercEvent.logIndex]) 
+        ercEvent._id = toIndexableString([ercEvent.blockHash, ercEvent.transactionHash, ercEvent.logIndex]) 
         ercEvent.dateCreated = new Date().toJSON()
 
         //Convert BigNumber args to strings

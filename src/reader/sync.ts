@@ -15,19 +15,24 @@ import { ChannelWebService } from "./service/web/channel-web-service.js"
 import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js"
 import { WalletService } from "./service/core/wallet-service.js"
 import { ProcessConfig } from "./util/process-config.js"
+import { SchemaService } from "./service/core/schema-service.js"
+
+
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
+const PouchDB = require('pouchdb-node')
+PouchDB.plugin(require("pouchdb-find"))
+PouchDB.plugin(require('pouchdb-quick-search'))
 
 
 let channelId
 
 
 
-
-
 let sync = async () => {
 
   let config:any = await ProcessConfig.getConfig() 
-
-  console.log(config)
 
   if (!config.alchemy) {
     throw new Error("No ethereum connection configured.")
@@ -45,8 +50,6 @@ let sync = async () => {
     return channelId
   })
 
-  container.bind("PouchDB").toConstantValue({})  
-  // container.bind("PouchDB").toConstantValue(PouchDB)  
 
   function contracts() {
     if (!contract.contractAddress) return []
@@ -58,6 +61,7 @@ let sync = async () => {
   }
 
   container.bind("contracts").toConstantValue(contracts())
+  container.bind("PouchDB").toConstantValue(PouchDB)
 
 
   let command:GetMainContainerCommand = {
@@ -75,14 +79,25 @@ let sync = async () => {
   let walletService:WalletService = container.get("WalletService")
   await walletService.initProvider()
 
+  console.log(`Provider initialized`)
+
 
   let channelWebService: ChannelWebService = container.get("ChannelWebService")
-
+  let schemaService: SchemaService = container.get("SchemaService")
 
   //Get channel
   let channelViewModel = await channelWebService.get(0)
 
   channelId = channelViewModel.channel._id
+
+  fs.mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true })
+  fs.mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true })
+
+  await schemaService.load(["erc-events", "contract-states"])
+
+  console.log(`Schema loaded`)
+
+
 
   
 

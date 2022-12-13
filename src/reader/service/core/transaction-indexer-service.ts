@@ -68,56 +68,54 @@ class TransactionIndexerService {
         //Update block number
         await this._updateBlockNumber()
 
-        console.log(this.blockNumber)
+        if (!this.shouldIndex(this.contractState)) return 
 
-        // if (!this.shouldIndex(this.contractState)) return 
+        console.log(`
+            Block Number: ${this.blockNumber}
+            Last Indexed: ${this.contractState.lastIndexedBlock}
+        `)
 
-        // console.log(`
-        //     Block Number: ${this.blockNumber}
-        //     Last Indexed: ${this.contractState.lastIndexedBlock}
-        // `)
+        let startBlock = this.getStartBlock(this.contractState)
+        let endBlock = this.getEndBlock()
 
-        // let startBlock = this.getStartBlock(this.contractState)
-        // let endBlock = this.getEndBlock()
+        console.log(`Indexing blocks: ${startBlock} to ${endBlock}`)
 
-        // console.log(`Indexing blocks: ${startBlock} to ${endBlock}`)
+        const events = await this.contract.queryFilter({
+                address: this.contractAddress,
+                topics: this.topics
+            }, 
+            startBlock, 
+            endBlock
+        )
 
-        // const events = await this.contract.queryFilter({
-        //         address: this.contractAddress,
-        //         topics: this.topics
-        //     }, 
-        //     startBlock, 
-        //     endBlock
-        // )
+        for (let event of events) {
 
-        // for (let event of events) {
+            let e = await this.ercEventService.process(event)
 
-        //     let e = await this.ercEventService.process(event)
-
-        //     //See if it already exists. If so we need the _rev
-        //     let existing:ERCEvent
-        //     try {
-        //         existing = await this.ercEventService.get(e._id)
-        //     } catch(ex) {}
+            //See if it already exists. If so we need the _rev
+            let existing:ERCEvent
+            try {
+                existing = await this.ercEventService.get(e._id)
+            } catch(ex) {}
             
 
-        //     if (existing) {
-        //         e = Object.assign(existing, e)
-        //     }
+            if (existing) {
+                e = Object.assign(existing, e)
+            }
 
 
-        //     try {
-        //         await this.ercEventService.put(e)
-        //         // console.log(`Event: ${JSON.stringify(e)}`)
-        //     } catch(ex) {
-        //         console.log(ex)
-        //     }
+            try {
+                await this.ercEventService.put(e)
+                // console.log(`Event: ${JSON.stringify(e)}`)
+            } catch(ex) {
+                console.log(ex)
+            }
 
-        // }
+        }
 
-        // this.contractState.lastIndexedBlock = endBlock
+        this.contractState.lastIndexedBlock = endBlock
 
-        // await this.contractStateService.put(this.contractState)
+        await this.contractStateService.put(this.contractState)
 
 
     }

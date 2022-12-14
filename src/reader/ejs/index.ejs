@@ -10,6 +10,7 @@
     let base64Version = it.baseViewModel.base64Version
     let channelId = it.baseViewModel.channelId
     let showMintPage = it.baseViewModel.showMintPage
+    let baseDir = it.baseViewModel.baseDir
 
     const link = (href) => {
         return `${baseURL + href}`
@@ -37,6 +38,7 @@
 
       return link
     }
+
 
 %>
 
@@ -98,6 +100,15 @@
             item_count="<%= channelViewModel.channel.itemCount %>" 
           >
           </token-toolbar>
+
+          <% if (it.firstPost.item) { %>
+            <div class="fab fab-right-center small-only">
+                <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" data-transition="f7-cover">
+                    <i class="icon f7-icons color-blue">arrow_right</i>
+                </a>
+            </div>
+          <% } %>
+
 <!-- 
           <div class="fab fab-right-center color-white">
             <a href="<%= link(`t/1`) %>" data-transition="f7-cover">
@@ -108,229 +119,262 @@
 
           <div class="page-content">
 
-            <div class="row">
+            <div class="swiper" id="swiper-index">
+              <!-- Slides wrapper -->
+              <div class="swiper-wrapper">
+                  <!-- Slides -->
+                  <div class="swiper-slide ">
+                      
+                    <div class="row">
 
-              <div class="col-100 large-75">
-
-
-                <div class="block block-strong inset col-100 no-margin-bottom">
-                  <div class="breadcrumbs ">
-                    <div class="breadcrumbs-item breadcrumbs-item-active">
-                      Home
-                    </div> 
-                  </div>
-                </div>
-
-
-                <div class="card channel-card-show">
-
-                  <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                    style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
-                      <% } %>
-                        >
-
-                        <a href="<%= link('index.html') %>">
-                          <% if (channelViewModel?.channel.coverImageId) { %>
-                            <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
-                          <% } else { %>
-                            <i class="f7-icons avatar">photo</i>
-                          <% } %>
-                        </a>
-
-                  </div>
-
-                  <div class="card-content card-content-padding">
-
-                    <div class="title">
-                      <%= channelViewModel.channel.title %>
-                    </div>
-
-                    <% if(channelViewModel?.authorDisplayName) { %>
-                      <div class="name">
-                        By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
-                          <%= channelViewModel?.authorDisplayName %>
-                        </a>
-                      </div>
-                    <% } %>
-
-                    <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
-                      <%~ channelViewModel.channel?.descriptionHTML %>
-                    </div>
-
-
-                    <ul>
-
-                      <% if(channelViewModel.channel?.contractAddress) { %>
-                        <li>
-                          <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
-                        </li>
-                      <% } %>
-
-                      <% for (let externalLink of externalLinks) { %>
-                        <li>
-                          <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
-                        </li>
-                      <% } %>
-
-                    </ul>
-
-
-                    <div class="start-buttons">
-                      <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
-                    </div>
-
-
-                  </div>
-
-                </div>
-
-
-                <div class="card">
-                  <div class="card-header">Explore</div>
-                  <div class="card-content">
-                    
-                    <div class="list cards-list virtual-list" id="explore-list-index">
-                      <ul class="item-flex">
-
-                        <% 
-                        if (it.firstPageExploreItems?.length > 0) {
-                          for (let item of it.firstPageExploreItems) {
-                        %>
-      
-                          <li class="flex-card-small">
-                            <a href="<%= link(`t/${item.tokenId}`) %>" class="item-link">
-                                <div class="card" >
-                                    <div class="card-content">
-                                        <div class="square">
-                                            <img src="<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>"/>
+                      <div class="col-100 large-75">
+        
+        
+                        <div class="block block-strong inset col-100 no-margin-bottom">
+                          <div class="breadcrumbs ">
+                            <div class="breadcrumbs-item breadcrumbs-item-active">
+                              Home
+                            </div> 
+                          </div>
+                        </div>
+        
+        
+                        <div class="card channel-card-show">
+        
+                          <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                            style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
+                              <% } %>
+                                >
+        
+                                <a href="<%= link('index.html') %>">
+                                  <% if (channelViewModel?.channel.coverImageId) { %>
+                                    <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
+                                  <% } else { %>
+                                    <i class="f7-icons avatar">photo</i>
+                                  <% } %>
+                                </a>
+        
+                          </div>
+        
+                          <div class="card-content card-content-padding">
+        
+                            <div class="title">
+                              <%= channelViewModel.channel.title %>
+                            </div>
+        
+                            <% if(channelViewModel?.authorDisplayName) { %>
+                              <div class="name">
+                                By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
+                                  <%= channelViewModel?.authorDisplayName %>
+                                </a>
+                              </div>
+                            <% } %>
+        
+                            <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
+                              <%~ channelViewModel.channel?.descriptionHTML %>
+                            </div>
+        
+        
+                            <ul>
+        
+                              <% if(channelViewModel.channel?.contractAddress) { %>
+                                <li>
+                                  <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                                </li>
+                              <% } %>
+        
+                              <% for (let externalLink of externalLinks) { %>
+                                <li>
+                                  <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                                </li>
+                              <% } %>
+        
+                            </ul>
+        
+        
+                            <div class="start-buttons">
+                              <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
+                            </div>
+        
+        
+                          </div>
+        
+                        </div>
+        
+        
+                        <div class="card">
+                          <div class="card-header">Explore</div>
+                          <div class="card-content">
+                            
+                            <div class="list cards-list virtual-list" id="explore-list-index">
+                              <ul class="item-flex">
+        
+                                <% 
+                                if (it.firstPageExploreItems?.length > 0) {
+                                  for (let item of it.firstPageExploreItems) {
+                                %>
+              
+                                  <li class="flex-card-small">
+                                    <a href="<%= link(`t/${item.tokenId}`) %>" class="item-link">
+                                        <div class="card" >
+                                            <div class="card-content">
+                                                <div class="square">
+                                                    <img src="<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>"/>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </a>
-                          </li>
-      
+                                    </a>
+                                  </li>
+              
+                                <%
+                                    }
+                                  }                  
+                                %>
+        
+        
+                              </ul>
+                            </div>
+        
+                          </div>
+                          <div class="card-footer"><a href="<%= link('explore.html') %>" class="link">Explore more</a></div>
+                        </div>
+        
+        
+                        <% 
+                          if (channelViewModel.staticPagesViewModel.index?.length > 0) {
+        
+                            for (let staticPage of channelViewModel.staticPagesViewModel.index) {
+                         %>
+        
+                          <div class="card static-page-card">   
+                            <div class="card-content card-content-padding">
+                              <%~ staticPage.contentHTML %>
+                            </div>               
+                          </div>
+        
                         <%
                             }
                           }                  
                         %>
-
-
-                      </ul>
+        
+        
+        
+        
+        
+                        <% if (channelViewModel?.channel.licenseHTML?.length > 0) { %>
+        
+                          <div class="block-title block-title-small">License</div>
+                          <div class="card">
+                            <div class="card-content card-content-padding license">
+                              <%~ channelViewModel?.channel.licenseHTML %>
+                            </div>
+                            
+                          </div>
+        
+                        <% } %>
+        
+        
+        
+                      </div>
+        
+                      <div class="col-100 large-25">                
+        
+                        <div class="list links-list inset">   
+                          <ul>
+                        
+                        <%
+                            for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                        %>
+                              <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
+                        <%
+                          }
+                          
+                        %>
+                            <li><a href="<%= link(`attributes.html`) %>">Attribute Report</a></li>
+        
+                          </ul>
+                        </div>
+        
+        
+                        <% 
+                          if (marketplaces?.length > 0) {
+                        %>
+                        <div class="block-title block-title-medium">Marketplaces</div>
+        
+                        <div class="list simple-list inset">
+                          <ul>
+                          
+                            <% 
+                              for (let marketplace of marketplaces) { 
+                            %>  
+                              <li><a href="<%= marketplaceLink(marketplace) %>" class="external"><%= marketplace.name %></a></li>     
+                            <%
+                              }
+                            %>
+        
+                          </ul>
+                        </div>
+                        <%
+                          }
+                        %>
+        
+        
+                        <% if (showMintPage) { %>
+                          <mint-info
+                            baseurl="<%= baseURL %>"
+                          ></mint-info>
+                        <% } %>
+        
+        
+                        <div class="block-title block-title-medium">Fork Collection</div>
+                        <div class="list links-list inset">   
+                          <ul>
+                              <li>
+                                <a href="<%= link(`large/admin/app.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                                  Fork
+                                </a>
+                              </li>
+                              <li>
+                                <a href="<%= link(`large/admin/app.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                                  Your projects
+                                </a>
+                              </li>
+        
+        
+                          </ul>
+                        </div>
+        
+        
+                      </div>
+                      
                     </div>
 
                   </div>
-                  <div class="card-footer"><a href="<%= link('explore.html') %>" class="link">Explore more</a></div>
-                </div>
 
+                  <div class="swiper-slide" data-url="<%= link(`t/${it.firstPost.item.tokenId}`) %>">
 
-                <% 
-                  if (channelViewModel.staticPagesViewModel.index?.length > 0) {
+                    <%~ includeFile(`${baseDir}/node_modules/large-nft/src/reader/ejs/pages/_token_display.ejs`, {
+                        channelViewModel: channelViewModel,
+                        hostname: hostname,
+                        baseURL: baseURL,
+                        baseDir: baseDir,
+                        marketplaces: marketplaces,
+                        externalLinks: externalLinks,
+                        routablePages: routablePages,
+                        attributeReport: attributeReport,
+                        base64Version: base64Version,
+                        channelId: channelId,
+                        showMintPage: showMintPage,
+                        itemViewModel: it.firstPost
+                    }) %>
 
-                    for (let staticPage of channelViewModel.staticPagesViewModel.index) {
-                 %>
-
-                  <div class="card static-page-card">   
-                    <div class="card-content card-content-padding">
-                      <%~ staticPage.contentHTML %>
-                    </div>               
-                  </div>
-
-                <%
-                    }
-                  }                  
-                %>
-
-
-
-
-
-                <% if (channelViewModel?.channel.licenseHTML?.length > 0) { %>
-
-                  <div class="block-title block-title-small">License</div>
-                  <div class="card">
-                    <div class="card-content card-content-padding license">
-                      <%~ channelViewModel?.channel.licenseHTML %>
-                    </div>
-                    
-                  </div>
-
-                <% } %>
-
-
+                </div> 
 
               </div>
-
-              <div class="col-100 large-25">                
-
-                <div class="list links-list inset">   
-                  <ul>
-                
-                <%
-                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {
-                %>
-                      <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
-                <%
-                  }
-                  
-                %>
-                    <li><a href="<%= link(`attributes.html`) %>">Attribute Report</a></li>
-
-                  </ul>
-                </div>
-
-
-                <% 
-                  if (marketplaces?.length > 0) {
-                %>
-                <div class="block-title block-title-medium">Marketplaces</div>
-
-                <div class="list simple-list inset">
-                  <ul>
-                  
-                    <% 
-                      for (let marketplace of marketplaces) { 
-                    %>  
-                      <li><a href="<%= marketplaceLink(marketplace) %>" class="external"><%= marketplace.name %></a></li>     
-                    <%
-                      }
-                    %>
-
-                  </ul>
-                </div>
-                <%
-                  }
-                %>
-
-
-                <% if (showMintPage) { %>
-                  <mint-info
-                    baseurl="<%= baseURL %>"
-                  ></mint-info>
-                <% } %>
-
-
-                <div class="block-title block-title-medium">Fork Collection</div>
-                <div class="list links-list inset">   
-                  <ul>
-                      <li>
-                        <a href="<%= link(`large/admin/app.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
-                          Fork
-                        </a>
-                      </li>
-                      <li>
-                        <a href="<%= link(`large/admin/app.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
-                          Your projects
-                        </a>
-                      </li>
-
-
-                  </ul>
-                </div>
-
-
-              </div>
-              
             </div>
+
+
+
 
           </div>
 
@@ -353,6 +397,8 @@
 
             let firstPageExploreItems 
 
+            let swiper
+
             const link = (href) => {
               return baseURI + href
             }   
@@ -367,10 +413,41 @@
                 link.classList.add('external')
               }
 
+
+
+              swiper = $f7.swiper.create('#swiper-index', {
+                    initialSlide: 0,
+                    effect: 'fade',
+                    fadeEffect: {
+                        crossFade: true
+                    },
+                    on: {
+                        slideChange() {
+
+                            const swiper = this
+
+                            let slide = swiper.$wrapperEl.children('.swiper-slide').eq(swiper.activeIndex)
+
+                            let url = $(slide).data('url')
+
+                             if (url) {
+                                $f7.views.main.router.navigate(url, {
+                                    animate: false,
+                                    // clearPreviousHistory: true,
+                                    // reloadAll: true
+                                })
+                            }
+
+                        }
+                    }
+                })
+
+
             })
 
             $on('pageBeforeOut', async () => {
-
+              console.log('Destroying swiper #swiper-index')
+              $f7.swiper.destroy('#swiper-index')
             })
 
 

@@ -88,6 +88,8 @@ class TransactionIndexerService {
             endBlock
         )
 
+        console.log(`Found ${events.length} events`)
+
         for (let event of events) {
 
             let e = await this.ercEventService.process(event)
@@ -106,7 +108,7 @@ class TransactionIndexerService {
 
             try {
                 await this.ercEventService.put(e)
-                // console.log(`Event: ${JSON.stringify(e)}`)
+                console.log(`Event: ${JSON.stringify(e)}`)
             } catch(ex) {
                 console.log(ex)
             }

@@ -141,7 +141,8 @@ let generate = async () => {
     headContents: headContents,
     bodyContents: bodyContents,
     excerptHtml: excerptHtml,
-    he: he
+    he: he,
+    baseDir: config.baseDir
   }
 
 
@@ -259,11 +260,27 @@ let generate = async () => {
 
 
   //Generate token pages
+  let minTokenId = Math.min(...itemViewModels.map(i => i.item.tokenId))
+  let maxTokenId = Math.max(...itemViewModels.map(i => i.item.tokenId))
+
 
   //Read the template file 
   for (let itemViewModel of itemViewModels) {
 
     let rowItemViewModel = itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage)
+
+
+    let previous 
+    let next 
+
+    if (itemViewModel.item.tokenId != minTokenId) {
+      previous = itemViewModels.filter( ivm => ivm.item.tokenId == itemViewModel.item.tokenId - 1)[0]
+    }
+
+    if (itemViewModel.item.tokenId != maxTokenId) {
+      next = itemViewModels.filter( ivm => ivm.item.tokenId == itemViewModel.item.tokenId + 1)[0]
+    }
+
 
     //Generate the token page
     console.time(`Generating /t/${itemViewModel.item.tokenId}`)
@@ -271,7 +288,9 @@ let generate = async () => {
     const result = Eta.render(tokenEjs, {
       title: itemViewModel.item.title,
       itemViewModel: itemViewModel,
-      baseViewModel: baseViewModel
+      baseViewModel: baseViewModel,
+      previous: previous,
+      next: next
     })
 
 

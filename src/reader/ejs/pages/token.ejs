@@ -118,20 +118,20 @@
                 >
                 </token-toolbar>
 
-                
+<!--                 
                 <div class="fab fab-left-center small-only">
-                    <a href="<%= !itemViewModel.item.previous ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>"  data-transition="none"> 
+                    <a href="#"> 
                         <i class="icon f7-icons color-blue">arrow_left</i>
                     </a>
                 </div>
     
                 <% if (itemViewModel.item.next) { %>
                     <div class="fab fab-right-center small-only">
-                        <a href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="none">
+                        <a href="#">
                             <i class="icon f7-icons color-blue">arrow_right</i>
                         </a>
                     </div>
-                <% } %>
+                <% } %> -->
 
            
                 <div class="page-content">
@@ -203,10 +203,10 @@
 
                 swiper = $f7.swiper.create('#swiper-<%= itemViewModel.item.tokenId  %>', {
                     initialSlide: 1,
-                    effect: 'fade',
-                    fadeEffect: {
-                        crossFade: true
-                    },
+                    // effect: 'fade',
+                    // fadeEffect: {
+                    //     crossFade: true
+                    // },
                     on: {
                         slideChange() {
 
@@ -231,13 +231,19 @@
                 $('#swiper-<%= itemViewModel.item.tokenId  %>').show()
 
 
-                // $('.fab-left-center').on('click', (e) => {
-                //     swiper.slidePrev(0)
-                // })
+                const prev = (e) => {
+                    swiper.slidePrev(0)
+                }
 
-                // $('.fab-right-center').on('click', (e) => {
-                //     swiper.slideNext(0)
-                // })
+                const next = (e) => {
+                    swiper.slideNext(0)
+                }
+
+                $('.fab-left-center').on('click', prev)
+                $('.fab-right-center').on('click', next)
+
+                $('.back-token-button').on('click', prev)
+                $('.continue-button').on('click', next)
 
             })          
 

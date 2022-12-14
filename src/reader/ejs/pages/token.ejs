@@ -120,14 +120,14 @@
 
                 
                 <div class="fab fab-left-center small-only">
-                    <a href="#"  data-transition="none"> 
+                    <a href="<%= !itemViewModel.item.previous ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>"  data-transition="none"> 
                         <i class="icon f7-icons color-blue">arrow_left</i>
                     </a>
                 </div>
     
                 <% if (itemViewModel.item.next) { %>
                     <div class="fab fab-right-center small-only">
-                        <a href="#" data-transition="none">
+                        <a href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="none">
                             <i class="icon f7-icons color-blue">arrow_right</i>
                         </a>
                     </div>
@@ -140,28 +140,6 @@
                         <div class="swiper-wrapper">
                             <!-- Slides -->
                             <div class="swiper-slide" data-url="<%= itemViewModel.item.previous ? link(`t/${itemViewModel.item.previous.tokenId}`) : link(`index.html`) %>">
-
-                                <% if (itemViewModel.item.previous) { %>
-                                    <%~ includeFile(`${baseDir}/node_modules/large-nft/src/reader/ejs/pages/_token_display.ejs`, {
-                                        channelViewModel: channelViewModel,
-                                        hostname: hostname,
-                                        baseURL: baseURL,
-                                        baseDir: baseDir,
-                                        marketplaces: marketplaces,
-                                        externalLinks: externalLinks,
-                                        routablePages: routablePages,
-                                        attributeReport: attributeReport,
-                                        base64Version: base64Version,
-                                        channelId: channelId,
-                                        showMintPage: showMintPage,
-                                        itemViewModel: previous
-                                    }) %>
-                                <% } else { %>
-
-                                <% } %>
-
-
-
 
                             </div> 
 
@@ -186,21 +164,6 @@
 
                             <% if (itemViewModel.item.next) { %>
                                 <div class="swiper-slide" data-url="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>">
-
-                                    <%~ includeFile(`${baseDir}/node_modules/large-nft/src/reader/ejs/pages/_token_display.ejs`, {
-                                        channelViewModel: channelViewModel,
-                                        hostname: hostname,
-                                        baseURL: baseURL,
-                                        baseDir: baseDir,
-                                        marketplaces: marketplaces,
-                                        externalLinks: externalLinks,
-                                        routablePages: routablePages,
-                                        attributeReport: attributeReport,
-                                        base64Version: base64Version,
-                                        channelId: channelId,
-                                        showMintPage: showMintPage,
-                                        itemViewModel: next
-                                    }) %>
 
                                 </div> 
                             <% } %>
@@ -255,9 +218,9 @@
 
                             if (url) {
                                 $f7.views.main.router.navigate(url, {
-                                    animate: false,
+                                    transition: 'none',
                                     // clearPreviousHistory: true,
-                                    // reloadAll: true
+                                    reloadAll: true
                                 })
                             }
 
@@ -265,20 +228,21 @@
                     }
                 })
 
-                $('.swiper').show()
+                $('#swiper-<%= itemViewModel.item.tokenId  %>').show()
 
 
-                $('.fab-left-center').on('click', (e) => {
-                    swiper.slidePrev()
-                })
+                // $('.fab-left-center').on('click', (e) => {
+                //     swiper.slidePrev(0)
+                // })
 
-                $('.fab-right-center').on('click', (e) => {
-                    swiper.slideNext()
-                })
+                // $('.fab-right-center').on('click', (e) => {
+                //     swiper.slideNext(0)
+                // })
 
             })          
 
             $on('pageBeforeOut', async () => {
+                $('.swiper').hide()
                 console.log('Destroying swiper #swiper-<%= itemViewModel.item.tokenId  %>')
                 $f7.swiper.destroy('#swiper-<%= itemViewModel.item.tokenId  %>')
             })

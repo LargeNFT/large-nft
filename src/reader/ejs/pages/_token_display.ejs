@@ -98,13 +98,13 @@
 
             <div class="row">
 
-                <a class="button button-outline back-token-button margin-bottom col-50 color-gray" href="<%= !itemViewModel.item.previous ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>" >
+                <a class="button button-outline back-token-button margin-bottom col-50 color-gray" href="<%= !itemViewModel.item.previous ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>" data-transition="none">
                     <i class="icon f7-icons color-blue">arrow_left</i>
                 </a>
 
 
                 <% if (itemViewModel.item.next) { %>
-                    <a class="button button-fill continue-button margin-bottom col-50" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>">
+                    <a class="button button-fill continue-button margin-bottom col-50" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="none">
                         Continue <i class="f7-icons">arrow_right</i>
                     </a>
                 <% } %>

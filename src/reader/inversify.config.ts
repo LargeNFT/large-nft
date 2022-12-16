@@ -116,11 +116,14 @@ import { TransactionIndexerService } from "./service/core/transaction-indexer-se
 import { ContractStateService } from "./service/contract-state-service.js";
 import { ERCEventService } from "./service/erc-event-service.js";
 import { EventWebService } from "./service/web/event-web-service.js";
-import { AttributeTotalService } from "./service/attribute-total-service.js";
+import { AttributeTotalService } from "./service/attribute-total-service.js"; 
 import { ComponentStateService } from "./service/core/component-state-service.js";
 import { ComponentStateRepository } from "./repository/component-state-repository.js";
 import { ComponentStateRepositoryBrowserImpl } from "./repository/browser/component-state-repository-impl.js";
 import { ComponentState } from "./dto/component-state.js";
+import { TokenOwnerService } from "./service/token-owner-service.js";
+import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
+import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
 
 
 
@@ -320,7 +323,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryBrowserImpl).inSingletonScope()
   container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
-
+  container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -355,6 +358,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
   container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
   container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
+  container.bind<TokenOwnerService>("TokenOwnerService").to({}).inSingletonScope()
 
 
   //Attach container to window so we can easily access it from the browser console

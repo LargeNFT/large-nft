@@ -5,6 +5,7 @@ import { ERCEvent } from "../../dto/erc-event.js";
 
 import { ContractStateService } from "../contract-state-service.js";
 import { ERCEventService } from "../erc-event-service.js";
+import { TokenOwnerService } from "../token-owner-service.js";
 import { WalletService } from "./wallet-service.js";
 
 
@@ -17,6 +18,9 @@ class TransactionIndexerService {
 
     @inject("ERCEventService")
     private ercEventService:ERCEventService
+
+    @inject("TokenOwnerService")
+    private tokenOwnerService:TokenOwnerService
 
     @inject("WalletService")
     private walletService:WalletService
@@ -33,8 +37,7 @@ class TransactionIndexerService {
 
     constructor() {}
 
-    BLOCK_GAP = 50
-    MAX_BLOCKS_QUERY_SIZE = 1500
+    BLOCK_GAP = 12
 
 
     async init(contract:Contract) {
@@ -63,7 +66,10 @@ class TransactionIndexerService {
 
 
 
-    async index() {
+    async index() : Promise<ERCEvent[]> {
+
+        let results:ERCEvent[] = []
+
 
         //Update block number
         await this._updateBlockNumber()
@@ -90,34 +96,82 @@ class TransactionIndexerService {
 
         console.log(`Found ${events.length} events`)
 
+
+        //Look up the most recent event.
+        let previous:ERCEvent
+
         for (let event of events) {
 
-            let e = await this.ercEventService.process(event)
+            //Translate
+            let ercEvent:ERCEvent = this.ercEventService.translateEventToERCEvent(event)
+
+            //Check if it already exists. Merge details.
+            try {
+                let existing = await this.ercEventService.get(ercEvent._id)
+                ercEvent = Object.assign(existing, ercEvent)
+
+            } catch(ex) {}
+
+
+            let previousEvent:ERCEvent
+            let previousEventByToken:ERCEvent
+
+            //Grab the most recent events if not set.
+            if (ercEvent.tokenId && !ercEvent.previousByToken) {
+                previousEventByToken = await this.ercEventService.getLatestByTokenId(ercEvent.tokenId)
+                ercEvent.previousByToken = previousEventByToken?._id              
+            }
+
+            if (!ercEvent.previous) {
+
+                //If we're inserting a bunch just use the actual previous one.
+                if (previous) {
+                    ercEvent.previous = previous._id
+                } else {
+
+                    //Otherwise grab the actual most recent
+                    let latest = await this.ercEventService.getLatest()
+                    ercEvent.previous = latest?._id
+                }
+
+                if (ercEvent.previous) {
+                    previousEvent = await this.ercEventService.get(ercEvent.previous)
+                }
+            }
+
+            let processResult = await this.ercEventService.process(ercEvent, previousEvent, previousEventByToken)
+            ercEvent = processResult.ercEvent
 
             //See if it already exists. If so we need the _rev
-            let existing:ERCEvent
-            try {
-                existing = await this.ercEventService.get(e._id)
-            } catch(ex) {}
-            
+            ercEvent._rev = await this.ercEventService.getExistingRev(ercEvent._id)
 
-            if (existing) {
-                e = Object.assign(existing, e)
+            //Save
+            await this.ercEventService.put(ercEvent)
+            console.log(`Found ${ercEvent.event} event in transaction ${ercEvent.transactionHash} (block #${ercEvent.blockNumber})`)
+
+            //Save token owners
+            if (processResult.fromTokenOwner) {
+                await this.tokenOwnerService.put(processResult.fromTokenOwner)
+                console.log(`Saving token owner ${processResult.fromTokenOwner.address}`)
+
             }
 
-
-            try {
-                await this.ercEventService.put(e)
-                console.log(`Event: ${JSON.stringify(e)}`)
-            } catch(ex) {
-                console.log(ex)
+            if (processResult.toTokenOwner) {
+                await this.tokenOwnerService.put(processResult.toTokenOwner)
+                console.log(`Saving token owner ${processResult.toTokenOwner.address}`)
             }
+
+            results.push(ercEvent)
+
+            previous = ercEvent
 
         }
 
         this.contractState.lastIndexedBlock = endBlock
 
         await this.contractStateService.put(this.contractState)
+
+        return results
 
 
     }
@@ -200,6 +254,10 @@ class TransactionIndexerService {
 
 
 }
+
+
+
+
 
 
 function sleep(ms) {

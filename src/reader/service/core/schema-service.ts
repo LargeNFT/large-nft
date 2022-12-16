@@ -10,6 +10,7 @@ import { ImageRepository } from "../../repository/image-repository.js"
 import { ItemRepository } from "../../repository/item-repository.js"
 import { ReaderSettingsRepository } from "../../repository/reader-settings-repository.js"
 import { StaticPageRepository } from "../../repository/static-page-repository.js"
+import { TokenOwnerRepository } from "../../repository/token-owner-repository.js"
 
 
 @injectable()
@@ -49,6 +50,9 @@ class SchemaService {
     @inject("ComponentStateRepository")
     private componentStateRepository:ComponentStateRepository
 
+    @inject("TokenOwnerRepository")
+    private tokenOwnerRepository:TokenOwnerRepository
+
     constructor() {
 
     }
@@ -72,6 +76,7 @@ class SchemaService {
         repositories.push(this.ercEventRepository)
         repositories.push(this.attributeTotalRepository)
         repositories.push(this.componentStateRepository)
+        repositories.push(this.tokenOwnerRepository)
 
         for (let db of dbs) {
 

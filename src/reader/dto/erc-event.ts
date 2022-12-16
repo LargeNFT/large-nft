@@ -47,6 +47,26 @@ class ERCEvent {
     @Allow()
     transaction:any
 
+
+    @Allow()
+    isTransfer:boolean
+
+    @Allow()
+    fromAddress:string
+
+    @Allow()
+    toAddress:string
+
+    @Allow()
+    tokenId?:number
+
+    @Allow()
+    previous?:string
+
+    @Allow()
+    previousByToken?:string
+
+
     @Allow()
     lastUpdated?:string 
     

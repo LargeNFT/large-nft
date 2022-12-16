@@ -52,6 +52,9 @@ import { ethers, providers } from "ethers"
 import { GenerateService } from "./service/core/generate-service.js";
 import { ERCEventRepositoryNodeImpl } from "./repository/node/erc-event-repository-impl.js";
 import { ContractStateRepositoryNodeImpl } from "./repository/node/contract-state-repository-impl.js";
+import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
+import { TokenOwnerRepositoryNodeImpl } from "./repository/node/token-owner-repository-impl.js";
+import { TokenOwnerService } from "./service/token-owner-service.js";
 
 
 
@@ -94,6 +97,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryNodeImpl).inSingletonScope()
   container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryNodeImpl).inSingletonScope()
   container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryNodeImpl).inSingletonScope()
+  container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryNodeImpl).inSingletonScope()
 
 
 
@@ -152,7 +156,8 @@ function getMainContainer(command:GetMainContainerCommand) {
 
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
   container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
-  
+  container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
+
   return container
 }
 

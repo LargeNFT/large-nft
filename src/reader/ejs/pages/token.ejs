@@ -140,7 +140,6 @@
                         <div class="swiper-wrapper">
                             <!-- Slides -->
                             <div class="swiper-slide" data-url="<%= itemViewModel.item.previous ? link(`t/${itemViewModel.item.previous.tokenId}`) : link(`index.html`) %>">
-
                             </div> 
 
                             <div class="swiper-slide">
@@ -164,7 +163,6 @@
 
                             <% if (itemViewModel.item.next) { %>
                                 <div class="swiper-slide" data-url="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>">
-
                                 </div> 
                             <% } %>
 
@@ -185,6 +183,8 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
             let tokenService = globalThis.container.get("TokenService")
+            let uiService = globalThis.container.get("UiService")
+
             let readerSettingsService = globalThis.container.get("ReaderSettingsService")
             let baseURI = globalThis.container.get("baseURI")
 
@@ -203,10 +203,7 @@
 
                 swiper = $f7.swiper.create('#swiper-<%= itemViewModel.item.tokenId  %>', {
                     initialSlide: 1,
-                    // effect: 'fade',
-                    // fadeEffect: {
-                    //     crossFade: true
-                    // },
+                    effect: 'fade',
                     on: {
                         slideChange() {
 
@@ -223,7 +220,6 @@
                                     reloadAll: true
                                 })
                             }
-
                         }
                     }
                 })

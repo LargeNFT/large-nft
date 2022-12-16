@@ -1,14 +1,14 @@
 
-# Large
+# Large NFT
 A decentralized, offline-first content management system for NFT communities.
 
 Publish your book, fan-fiction, blog, or art as a forkable NFT collection and sell your work as digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
 Large is open source software that makes it simple to create and publish your digital art and other creative content as an NFT collection on Ethereum and IPFS.  
 
-Each generated **Large Reader** website is a simple HTML/CSS/Javascript app built with Framework7 that includes native theming for iOS, Android, and Desktop.
+Each generated **Large NFT Reader** website is a simple HTML/CSS/Javascript app built with Framework7 that includes native theming for iOS, Android, and Desktop.
 
-The **Large Admin** and each generated **Large Reader** apps are offline-first and can be distributed with any simple CDN or run locally. GitHub and GitLab Pages are integrated and their CI pipelines can be used to keep Ethereum transaction infomation current. Users can also connect their wallets directly to receive real-time data from their own nodes.  
+The **Large NFT Admin** and each generated **Large NFT Reader** apps are offline-first and can be distributed with any simple CDN or run locally. GitHub and GitLab Pages are integrated and their CI pipelines can be used to keep Ethereum transaction infomation current. Users can also connect their wallets directly to receive real-time data from their own nodes.  
 
 Large is open source software and is not a cloud service. Large gives users the tools to easily provide hosted infrastructure themselves and distribute the data in a format that guarantees all members of the community can contribute to keeping the content online for as long as necessary. 
 
@@ -18,8 +18,10 @@ Large is open source software and is not a cloud service. Large gives users the 
 1. Recommended: Fork this repo. 
     * The default CI pipeline will build and deploy a fresh copy.
     * Access through GitLab/GitHub Pages.
+
 2. [Use most recent build](https://american-space-software.gitlab.io/large/)
     * All data is stored in your local browser. We are never able to help you retreive it.
+
 3. Clone repo, install node dependencies, run local static webhost.
 
 
@@ -35,12 +37,12 @@ npm install
 npm run build
 ```
 
-### Development server
+### Dev server
 ```console
 npm run start:dev
 ```
 
-### Creating a development build
+### Creating a dev build
 
 The development build outputs full source maps to better debug certain kinds of issues.
 
@@ -50,18 +52,6 @@ npm run build:dev
 
 The production builds are located in the "public" folder. This repo includes a GitLab compatible script that builds and deploys Large automatically when there are new commits to the master branch. 
 
-
-## Enable CORS to publish to IPFS
-To publish to a hosted IPFS node:
-
-1. Set the Remote IPFS API url in the Large Admin settings.
-    * http://localhost:5001/api/v0 for local.
-2. Configure the local node to set the proper CORS headers. Otherwise the browser will block any requests.
-
-```console
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST", "PUT", "OPTIONS"]'
-```
 
 ## How it Works
 * Create one or more collections with text, images, and mixed-media NFTs.
@@ -157,3 +147,14 @@ These project(s) showcase the basic features of the Large Reader. These projects
 
 
 
+## Enable CORS to publish to IPFS
+To publish to a hosted IPFS node:
+
+1. Set the Remote IPFS API url in the Large Admin settings.
+    * http://localhost:5001/api/v0 for local.
+2. Configure the local node to set the proper CORS headers. Otherwise the browser will block any requests.
+
+```console
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
+ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST", "PUT", "OPTIONS"]'
+```

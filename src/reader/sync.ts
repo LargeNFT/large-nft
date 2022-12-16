@@ -19,6 +19,9 @@ import { SchemaService } from "./service/core/schema-service.js"
 
 
 import { createRequire } from 'module'
+import { ERCEvent } from "./dto/erc-event.js"
+import { TokenOwnerService } from "./service/token-owner-service.js"
+import { ERCEventService } from "./service/erc-event-service.js"
 const require = createRequire(import.meta.url)
 
 const PouchDB = require('pouchdb-node')
@@ -85,6 +88,7 @@ let sync = async () => {
   let channelWebService: ChannelWebService = container.get("ChannelWebService")
   let schemaService: SchemaService = container.get("SchemaService")
 
+
   //Get channel
   let channelViewModel = await channelWebService.get(0)
 
@@ -93,7 +97,7 @@ let sync = async () => {
   fs.mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true })
   fs.mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true })
 
-  await schemaService.load(["erc-events", "contract-states"])
+  await schemaService.load(["erc-events", "contract-states", "token-owners"])
 
   console.log(`Schema loaded`)
 
@@ -102,6 +106,8 @@ let sync = async () => {
   
 
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
+  let tokenOwnerService:TokenOwnerService = container.get("TokenOwnerService")
+  let ercEventService: ERCEventService = container.get("ERCEventService")
 
 
   const INDEX_RATE = 30*1000 //Every 30 seconds
@@ -113,8 +119,71 @@ let sync = async () => {
 
   //Start the transaction indexer
   async function runTransactionIndexer(){
+
       await transactionIndexerService.init(channelContract)
-      await transactionIndexerService.index()
+
+      let events:ERCEvent[]
+
+      try {
+        events = await transactionIndexerService.index()
+      } catch(ex) { console.log(ex) }
+
+
+      console.log(`${events?.length} events processed. Generating JSON.`)
+
+
+      if (!fs.existsSync(`${config.publicPath}/sync/events`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/events`, { recursive: true })
+      }
+
+      if (!fs.existsSync(`${config.publicPath}/sync/tokenEvents`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/tokenEvents`, { recursive: true })
+      }
+
+      if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/tokenOwner`, { recursive: true })
+      }
+
+      if (events?.length > 0) {
+
+        for (let event of events) {
+
+          console.log(`Generating JSON for ${event._id}`)
+
+          fs.writeFileSync(`${config.publicPath}/sync/events/${event._id}.json`, Buffer.from(JSON.stringify(event)))
+
+          //Save id of latest event for token
+          if (event.tokenId) {
+            fs.writeFileSync(`${config.publicPath}/sync/tokenEvents/${event.tokenId}-latest.json`, Buffer.from(JSON.stringify({
+              _id: event._id
+            })))
+          }
+
+          if (event.fromAddress) {
+            let fromTokenOwner = await tokenOwnerService.get(event.fromAddress)
+            fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${fromTokenOwner._id}.json`, Buffer.from(JSON.stringify(fromTokenOwner)))
+          }
+
+          if (event.toAddress) {
+            let toTokenOwner = await tokenOwnerService.get(event.toAddress)
+            fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${toTokenOwner._id}.json`, Buffer.from(JSON.stringify(toTokenOwner)))
+          }
+
+        }
+  
+        let mostRecent:ERCEvent = await ercEventService.getLatest()
+  
+        //Save id of latest event overall
+        fs.writeFileSync(`${config.publicPath}/sync/events/latest.json`, Buffer.from(JSON.stringify({
+          _id: mostRecent._id
+        })))
+
+
+      }
+
+
+
+
       setTimeout(runTransactionIndexer, INDEX_RATE) 
   }
   

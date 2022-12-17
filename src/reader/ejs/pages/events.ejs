@@ -1,0 +1,417 @@
+<% 
+
+    let channelViewModel = it.baseViewModel.channelViewModel 
+    let hostname = it.baseViewModel.hostname
+    let baseURL = it.baseViewModel.baseURL
+    let marketplaces = it.baseViewModel.marketplaces
+    let externalLinks = it.baseViewModel.externalLinks
+    let routablePages = it.baseViewModel.routablePages
+    let attributeReport = it.baseViewModel.attributeReport
+    let base64Version = it.baseViewModel.base64Version
+    let channelId = it.baseViewModel.channelId
+    let showMintPage = it.baseViewModel.showMintPage
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    }    
+
+    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
+
+
+
+    const absoluteLink = (href) => {
+        return `${hostname + baseURL + href}`
+    }   
+
+    const escapeExcerpt = (excerpt) => {
+        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
+        return it.baseViewModel.he.encode(excerpt.toString())
+    }
+%>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    html {
+        visibility: hidden;
+        opacity: 0;
+    }
+    </style>
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <title>
+        Events for <%=channelViewModel.channel.title%>
+    </title>
+
+    <meta property="og:title" content="Events for <%=channelViewModel.channel.title%>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= link(`events.html`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="og:description" content="Events for <%=channelViewModel.channel.title%>" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="<%= link(`events.html`) %>" />
+    <meta property="twitter:title" content="Events for <%=channelViewModel.channel.title%>" />
+    <meta property="twitter:description" content="Events for <%=channelViewModel.channel.title%>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+
+    <%~ it.baseViewModel.headContents %>
+    
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div class="view view-main">
+
+
+
+            <div class="page" data-name="explore">
+
+                <nav-bar
+                    logo="<%=logo%>"
+                    title="Events"
+                    active="Events"
+                    show_mint_page="<%=showMintPage%>"
+                >
+                </nav-bar>
+
+
+                <div class="page-content infinite-scroll-content" id="explore-infinite-scroll">
+
+                    <div class="row">
+            
+                        <div class="fixed-width-content center">
+            
+                            <div class="block block-strong inset col-100 no-margin-bottom">
+                                <div class="breadcrumbs ">
+                                  <div class="breadcrumbs-item">
+                                    <a href="<%=baseURL%>index.html" class="link">
+                                      Home
+                                    </a>
+                                  </div>       
+                                  <div class="breadcrumbs-separator"></div>
+                                  <div class="breadcrumbs-item breadcrumbs-item-active">
+                                    Events
+                                  </div> 
+                                </div>
+                            </div>
+
+
+                            <div class="list cards-list virtual-list" id="events-list">
+                                <ul></ul>
+                            </div>
+                          
+                            <div class="preloader infinite-scroll-preloader"></div>
+  
+                        </div>
+                    </div>
+            
+                </div>
+              
+            
+            </div>
+
+        </div>
+
+    </div>
+
+    <%~ it.baseViewModel.bodyContents %>
+
+    <script type="module" id="page-init-scripts">
+
+        const init = (props, { $, $f7, $h, $on, $update }) => {
+
+            let eventWebService = globalThis.container.get("EventWebService")
+            let componentStateService = globalThis.container.get("ComponentStateService")
+            const ComponentState = globalThis.ComponentState
+
+            let baseURL = '<%= baseURL %>'
+
+            const COMPONENT_NAME = "events"
+
+            let state
+
+            let virtualList
+
+
+            const getWidth = () => {
+                return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            }
+
+            $on('pageInit', async () => {
+
+                //Check for existing component state
+                try {
+                    state = await componentStateService.get(COMPONENT_NAME)
+                } catch(ex) {}
+
+                //Initialize state
+                if (!state) {
+
+                    state = Object.assign(new ComponentState(), {
+                        _id: COMPONENT_NAME,
+                        data: {
+                            hasMoreItems: firstPageExploreItems.length < totalItemCount,
+                            loadingInProgress: false,
+                            itemResults: {
+                                items: firstPageExploreItems,
+                                totalMatches: totalItemCount,
+                                limit: PER_PAGE,
+                                skip: 0
+                            },
+                            virtualListItems: firstPageExploreItems,
+                            attributeParams: undefined,
+                        }
+                    })
+
+                }
+
+
+                await initMain()
+
+                //Dispatch event so we can update attributes
+                let e = new CustomEvent('attribute-options-loaded')
+                e.attributeOptions = attributeOptions
+                e.attributeParams = state.data.attributeParams
+                document.dispatchEvent(e)
+
+
+                let e2 = new CustomEvent('explore-total-info-changed')
+                e2.totalItems = totalItemCount
+                e2.totalMatches = state.data.itemResults.totalMatches
+                document.dispatchEvent(e2)
+
+
+
+            })
+
+            const initMain = async () => {
+
+                $('.infinite-scroll-preloader').show()
+
+                createVirtualList()
+
+
+                if (state.data.itemResults?.items?.length > 0) {
+                    
+                    if (state.data.virtualListItems?.length >= state.data.itemResults.totalMatches) {
+                        state.data.hasMoreItems = false
+                    }
+
+                }
+
+                //Save new state
+                try {
+                    await componentStateService.put(state)
+                } catch(ex) {
+                    console.log(ex)
+                }
+                
+                await $update()
+
+                $f7.preloader.hide()
+                $('.infinite-scroll-preloader').hide()
+
+
+            }
+
+            $on('pageBeforeOut', async () => {
+                window.removeEventListener('resize', resizeListener)
+                $f7.infiniteScroll.destroy('#explore-infinite-scroll')
+            })
+
+            const createVirtualList = () => {
+
+                virtualList = $f7.virtualList.create({
+
+                    el: '#explore-list',
+                    createUl: false,
+                    renderItem(item) {
+                        return getTemplate(item)
+                    },
+                    height: 300,
+                    items: state.data?.virtualListItems,                    
+                    cols: getWidth() >= 1024 ? 5 : 2,
+                    emptyTemplate: `
+                        <li class="item-content">
+                            <div class="item-inner">
+                                No results found.
+                            </div>
+                        </li>
+                        `
+                })
+
+                if (virtualList.items?.length <= state.data.itemResults.totalMatches) {
+                    state.data.hasMoreItems = true
+                    document.getElementById("explore-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
+                } else {
+                    state.data.hasMoreItems = false
+                    $('.infinite-scroll-preloader').hide()
+                }
+
+            }
+
+            async function infiniteScroll(e) {
+
+                // Exit, if loading in progress
+                if (state.data.loadingInProgress || !state.data.hasMoreItems) return
+
+                console.log(`Infinite scrolling...`)
+
+                // Set loading flag
+                state.data.loadingInProgress = true
+                $('.infinite-scroll-preloader').show()
+
+
+                try {
+                    
+                    state.data.itemResults = await itemWebService.exploreList(state.data.attributeParams, state.data.virtualListItems?.length, PER_PAGE)
+
+
+                    if (state.data.virtualListItems?.length >= state.data.itemResults.totalMatches) {
+                        state.data.hasMoreItems = false
+                    }
+
+                    virtualList.appendItems(state.data.itemResults.items)
+
+                    //Save a reference in the state
+                    state.data.virtualListItems = virtualList.items
+
+                } catch (ex) {
+                    console.log(ex)
+                }
+
+                $f7.preloader.hide()
+                $('.infinite-scroll-preloader').hide()
+
+
+                state.data.loadingInProgress = false
+                
+                //Save new state
+                try {
+                    await componentStateService.put(state)
+                } catch(ex) {
+                    console.log(ex)
+                }
+
+            }
+
+            function getTemplate(rowItemViewModel) {
+                
+                let tokenLink = link('t/' + rowItemViewModel.tokenId)
+                let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+                let imageLink = link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+                let title = rowItemViewModel.title
+
+                return `<li class="flex-card">
+                            <a href="${tokenLink}" class="item-link">
+                                <div class="card" >
+                                    <div class="card-content">
+                                        <div class="square">
+                                            <img src="${imageLink}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        ${title}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                `
+            }
+
+            const link = (href) => {
+                return `${baseURL + href}`
+            } 
+
+ 
+            document.addEventListener('explore-attribute-filter-changed', async (e) => {
+
+                //Reset
+                state.data.hasMoreItems = true
+                state.data.loadingInProgress = false
+                state.data.itemResults = undefined
+                state.data.attributeParams = e.attributeParams
+                state.data.virtualListItems = undefined
+
+                //Kill existing list
+                virtualList.destroy()
+
+                //Get first page with 
+                $f7.preloader.show()
+
+                state.data.itemResults = await itemWebService.exploreList(state.data.attributeParams, 0, PER_PAGE)
+                state.data.virtualListItems = state.data.itemResults.items
+
+                //Reset options/counts
+                attributeOptions = await itemWebService.getExploreAttributeOptions(state.data.attributeParams)
+
+
+                //Dispatch event so we can update the explore info
+                let e2 = new CustomEvent('explore-total-info-changed')
+                e2.totalItems = totalItemCount
+                e2.totalMatches = state.data.itemResults.totalMatches
+                document.dispatchEvent(e2)
+
+                //Dispatch event so we can update attribute counts
+                let e3 = new CustomEvent('attribute-options-loaded')
+                e3.attributeOptions = attributeOptions
+                e3.attributeParams = state.data.attributeParams
+                document.dispatchEvent(e3)
+
+
+                //Add to items
+                await initMain()
+
+            })
+
+            document.querySelector('meta[property="og:title"]').setAttribute("content", "Events for <%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`events.html`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="og:description"]').setAttribute("content", "Events for <%=channelViewModel.channel.title%>")
+
+            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`events.html`) %>")
+            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Events <%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Events for <%=channelViewModel.channel.title%>" )
+
+            document.querySelector('title').innerHTML = "Events <%=channelViewModel.channel.title%>"
+
+            $f7.preloader.hide()
+
+            return $render
+
+        }
+
+
+    </script>
+
+    <script type="module" id="page-scripts">
+
+        let baseURL = '<%= baseURL %>'
+        let hostname = '<%= hostname %>'
+        let channelId = '<%= channelId %>'
+        let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
+
+        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
+
+        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )
+
+
+
+    </script>
+
+</body>
+
+</html>

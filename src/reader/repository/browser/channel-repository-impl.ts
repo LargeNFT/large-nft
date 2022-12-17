@@ -46,8 +46,6 @@ class ChannelRepositoryBrowserImpl implements ChannelRepository {
 
         let channel:Channel 
 
-        console.log(channels)
-
         //Find the first actual channel (skip design)
         for (let c of channels.rows) {
             if (c.doc.dateCreated) channel = c.doc

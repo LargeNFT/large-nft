@@ -51,6 +51,7 @@ import TokenToolbar from './components/reader/token-toolbar.f7.html'
 
 import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
+
 import AttributeFilter from './components/reader/channel/attribute-filter.f7.html'
 import ExploreTotalInfo from './components/reader/channel/explore-total-info.f7.html'
 
@@ -122,10 +123,11 @@ import { ComponentStateRepository } from "./repository/component-state-repositor
 import { ComponentStateRepositoryBrowserImpl } from "./repository/browser/component-state-repository-impl.js";
 import { ComponentState } from "./dto/component-state.js";
 import { TokenOwnerService } from "./service/token-owner-service.js";
+import { TransactionService } from "./service/transaction-service.js";
+
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
 import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
-
-
+import { TransactionRepositoryBrowserImpl } from "./repository/browser/transaction-repository-impl.js";
 
 
 let container: Container
@@ -151,6 +153,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
+
 
     const resolveWithSpinner = (resolve, url) => {
       
@@ -324,6 +327,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
+  container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryBrowserImpl).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -358,7 +362,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
   container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
   container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
-  container.bind<TokenOwnerService>("TokenOwnerService").to({}).inSingletonScope()
+  container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
+  container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
 
 
   //Attach container to window so we can easily access it from the browser console

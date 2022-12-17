@@ -2,10 +2,16 @@ import { Contract, ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import { ContractState } from "../../dto/contract-state.js";
 import { ERCEvent } from "../../dto/erc-event.js";
+import { Image } from "../../dto/image.js";
+import { Transaction } from "../../dto/transaction.js";
+import { ItemViewModel } from "../../dto/viewmodel/item-view-model.js";
 
 import { ContractStateService } from "../contract-state-service.js";
 import { ERCEventService } from "../erc-event-service.js";
+import { ImageService } from "../image-service.js";
 import { TokenOwnerService } from "../token-owner-service.js";
+import { TransactionService } from "../transaction-service.js";
+import { ItemWebService } from "../web/item-web-service.js";
 import { WalletService } from "./wallet-service.js";
 
 
@@ -22,8 +28,17 @@ class TransactionIndexerService {
     @inject("TokenOwnerService")
     private tokenOwnerService:TokenOwnerService
 
+    @inject("ItemWebService")
+    private itemWebService:ItemWebService
+    
+    @inject("ImageService")
+    private imageService:ImageService
+
     @inject("WalletService")
     private walletService:WalletService
+
+    @inject("TransactionService")
+    private transactionService:TransactionService
 
 
     blockNumber:number 
@@ -103,7 +118,12 @@ class TransactionIndexerService {
         for (let event of events) {
 
             //Translate
-            let ercEvent:ERCEvent = this.ercEventService.translateEventToERCEvent(event)
+            let ercEvent:ERCEvent = await this.ercEventService.translateEventToERCEvent(event)
+
+            //Grab transaction data
+            let transaction:Transaction = await this.transactionService.get(ercEvent.transactionHash)
+            
+            ercEvent.transaction = transaction
 
             //Check if it already exists. Merge details.
             try {
@@ -112,6 +132,8 @@ class TransactionIndexerService {
 
             } catch(ex) {}
 
+
+            
 
             let previousEvent:ERCEvent
             let previousEventByToken:ERCEvent
@@ -138,6 +160,23 @@ class TransactionIndexerService {
                     previousEvent = await this.ercEventService.get(ercEvent.previous)
                 }
             }
+
+            if (ercEvent.tokenId) {
+
+                //Look up itemViewModel if token.
+                let item = await this.itemWebService.getByTokenId(ercEvent.tokenId)
+
+                let coverImage:Image
+
+                if (item.coverImageId) {
+                    coverImage = await this.imageService.get(item.coverImageId)
+                }
+
+                ercEvent.rowItemViewModel = this.itemWebService.translateRowItemViewModel(item, coverImage)
+
+            }
+
+
 
             let processResult = await this.ercEventService.process(ercEvent, previousEvent, previousEventByToken)
             ercEvent = processResult.ercEvent

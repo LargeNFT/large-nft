@@ -80,22 +80,8 @@ class ERCEventRepositoryNodeImpl implements ERCEventRepository {
         if (response.warning) {
             console.log(response.warning)
         }
+
         return response.docs
-
-
-
-        // let result = await this.db.query('by_token_id', {
-        //     include_docs: true,
-        //     startkey: [tokenId, {},{}],
-        //     endkey: [tokenId, 0, 0],
-        //     descending: true,
-        //     limit: limit,
-        //     skip: skip
-        // })
-
-
-
-        // return result.rows.map( row => row.doc)
 
     }
 

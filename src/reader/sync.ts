@@ -97,7 +97,7 @@ let sync = async () => {
   fs.mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true })
   fs.mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true })
 
-  await schemaService.load(["erc-events", "contract-states", "token-owners"])
+  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions"])
 
   console.log(`Schema loaded`)
 
@@ -150,7 +150,12 @@ let sync = async () => {
 
           console.log(`Generating JSON for ${event._id}`)
 
-          fs.writeFileSync(`${config.publicPath}/sync/events/${event._id}.json`, Buffer.from(JSON.stringify(event)))
+
+          let clonedEvent = JSON.parse(JSON.stringify(event))
+          delete clonedEvent._rev 
+          delete clonedEvent['_rev_tree']
+
+          fs.writeFileSync(`${config.publicPath}/sync/events/${clonedEvent._id}.json`, Buffer.from(JSON.stringify(clonedEvent)))
 
           //Save id of latest event for token
           if (event.tokenId) {

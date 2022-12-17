@@ -189,6 +189,7 @@
 
                 </div>
 
+                <event-info type="home" display="25"></event-info>
 
                 <div class="card">
                   <div class="card-header">Explore</div>
@@ -357,6 +358,7 @@
             const PER_PAGE = 35
 
             let firstPageExploreItems 
+            let latestEvents
 
             let swiper
 
@@ -373,6 +375,8 @@
               for (let link of links) {
                 link.classList.add('external')
               }
+
+              await $update()
 
               // swiper = $f7.swiper.create('#swiper-index', {
               //       initialSlide: 0,

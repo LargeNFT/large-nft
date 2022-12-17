@@ -1,3 +1,5 @@
+// import axios from "axios";
+import axios from "axios";
 import { inject, injectable } from "inversify";
 import { ERCEvent } from "../../dto/erc-event.js";
 
@@ -14,16 +16,25 @@ class EventWebService {
     private ercEventService:ERCEventService
 
     constructor(
+        @inject("baseURI") private baseURI
     ) {}
 
-    async getHomeEventList() : Promise<ERCEvent[]> {
+    async getLatestEvents() : Promise<ERCEvent[]> {
 
         await this.schemaService.load(["erc-events"])
 
-        return this.ercEventService.list(100, 0)
+        let result = await axios.get(`${this.baseURI}sync/events/latest.json`)
+
+        let latest = result.data
+
+        return this.ercEventService.listFrom(25, latest._id)
+
     }
 
 }
+
+
+
 
 export {
     EventWebService

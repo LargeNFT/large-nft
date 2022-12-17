@@ -1,4 +1,7 @@
 import { Allow } from "class-validator"
+import { RowItemViewModel } from "./item-page.js"
+import { Item } from "./item.js"
+import { ItemViewModel } from "./viewmodel/item-view-model.js"
 
 class ERCEvent {
     
@@ -18,6 +21,12 @@ class ERCEvent {
     transactionIndex?:number 
 
     @Allow()
+    transactionHash?:string 
+
+    @Allow()
+    transaction:any
+
+    @Allow()
     removed?:boolean 
 
     @Allow()
@@ -30,9 +39,6 @@ class ERCEvent {
     topics?:string[] 
 
     @Allow()
-    transactionHash?:string 
-
-    @Allow()
     logIndex?:number 
 
     @Allow()
@@ -43,10 +49,6 @@ class ERCEvent {
 
     @Allow()
     eventSignature?:string
-
-    @Allow()
-    transaction:any
-
 
     @Allow()
     isTransfer:boolean
@@ -64,8 +66,10 @@ class ERCEvent {
     previous?:string
 
     @Allow()
-    previousByToken?:string
+    rowItemViewModel?:RowItemViewModel
 
+    @Allow()
+    previousByToken?:string
 
     @Allow()
     lastUpdated?:string 

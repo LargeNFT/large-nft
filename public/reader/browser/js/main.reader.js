@@ -20,7 +20,7 @@ var reader;
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n", "",{"version":3,"sources":["webpack://./src/reader/html/css/app.css"],"names":[],"mappings":"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","sourcesContent":[":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n\r\n\r\n.latest-img {\r\n  height: 100px;\r\n}", "",{"version":3,"sources":["webpack://./src/reader/html/css/app.css"],"names":[],"mappings":"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","sourcesContent":[":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n\r\n\r\n.latest-img {\r\n  height: 100px;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -236,7 +236,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c33b88432b';
+framework7Component.id = 'b3b7e4f571';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -268,23 +268,21 @@ function framework7Component(props, {
   $f7,
   $update
 }) {
-  let walletService = globalThis.container.get("WalletService");
   let eventWebService = globalThis.container.get("EventWebService");
+  let baseURI = globalThis.container.get('baseURI');
+  let type = props.type;
+  let display = props.display;
   let eventList;
-  let baseURL = props.baseurl;
+  const imageLink = rowItemViewModel => {
+    let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg';
+    return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt);
+  };
   const link = href => {
-    return `${baseURL + href}`;
+    return `${baseURI + href}`;
   };
   const load = async () => {
     try {
-      if (!walletService.provider) {
-        await walletService.initProvider();
-      }
-
-      //Might still not have a provider. 
-      if (walletService.provider) {
-        eventList = await eventWebService.getHomeEventList();
-      }
+      eventList = await eventWebService.getLatestEvents();
     } catch (ex) {
       console.log(ex);
     }
@@ -314,6 +312,7 @@ function framework7Component(props, {
           <table>
             <thead>
               <tr>
+                <th class="label-cell" colspan="2">Token</th>
                 <th class="numeric-cell">Block #</th>
                 <th class="label-cell">Event</th>
                 <th class="label-cell">Address</th>
@@ -325,6 +324,16 @@ function framework7Component(props, {
           ${eventList.map(e => $h`
 
                 <tr>
+                  <td class="label-cell">
+
+                    ${e.rowItemViewModel ? $h`
+                      <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
+                    ` : $h`<span />`}
+
+                  </td>
+                  <td class="label-cell">
+                    ${e.rowItemViewModel?.title}
+                  </td>
                   <td class="numeric-cell">${e.blockNumber}</td>
                   <td class="label-cell">${e.event}</td>
                   <td class="label-cell">${e.address}</td>
@@ -337,8 +346,7 @@ function framework7Component(props, {
 
 
         ` : $h`
-          Transaction information unavailable. 
-          <p style="color: darkgray">Note: Use a web browser with wallet support to see Ethereum events.</p>
+          No transactions found.
         `}
 
   
@@ -350,7 +358,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '65a850c749';
+framework7Component.id = '3eaa13cf46';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -413,7 +421,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a685829cab';
+framework7Component.id = 'a06801873a';
 framework7Component.style = `
 
 
@@ -506,7 +514,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '40bd81bf2c';
+framework7Component.id = '38ef77adc1';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -580,7 +588,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4ba03aeda0';
+framework7Component.id = '10c81f8380';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -842,7 +850,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2dd70f5078';
+framework7Component.id = '4e98a64553';
 framework7Component.style = `
 
 .mint-list-card .card-header {
@@ -1010,7 +1018,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '31be5992a7';
+framework7Component.id = 'f806ed8ec6';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1169,7 +1177,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8410882ede';
+framework7Component.id = '8a427ae53b';
 framework7Component.style = `
 
 .block-search {
@@ -1393,7 +1401,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8b3092c76c';
+framework7Component.id = 'fe3044d374';
 framework7Component.style = `
 
   .logo {
@@ -1533,7 +1541,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '656af2f91f';
+framework7Component.id = 'ddb89225cb';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1931,21 +1939,22 @@ class ERCEvent {
     blockNumber;
     blockHash;
     transactionIndex;
+    transactionHash;
+    transaction;
     removed;
     address;
     data;
     topics;
-    transactionHash;
     logIndex;
     args;
     event;
     eventSignature;
-    transaction;
     isTransfer;
     fromAddress;
     toAddress;
     tokenId;
     previous;
+    rowItemViewModel;
     previousByToken;
     lastUpdated;
     dateCreated;
@@ -1972,6 +1981,14 @@ __decorate([
 ], ERCEvent.prototype, "transactionIndex", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ERCEvent.prototype, "transactionHash", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ERCEvent.prototype, "transaction", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Boolean)
 ], ERCEvent.prototype, "removed", void 0);
 __decorate([
@@ -1988,10 +2005,6 @@ __decorate([
 ], ERCEvent.prototype, "topics", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], ERCEvent.prototype, "transactionHash", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Number)
 ], ERCEvent.prototype, "logIndex", void 0);
 __decorate([
@@ -2006,10 +2019,6 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "eventSignature", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Object)
-], ERCEvent.prototype, "transaction", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Boolean)
@@ -2030,6 +2039,10 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "previous", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ERCEvent.prototype, "rowItemViewModel", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -2287,6 +2300,64 @@ __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/dto/transaction.ts":
+/*!***************************************!*\
+  !*** ./src/reader/dto/transaction.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Transaction": () => (/* binding */ Transaction)
+/* harmony export */ });
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/decorator/common/Allow.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+class Transaction {
+    _id;
+    _rev;
+    transactionHash;
+    data;
+    lastUpdated;
+    dateCreated;
+}
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "_id", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "_rev", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "transactionHash", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], Transaction.prototype, "data", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "lastUpdated", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "dateCreated", void 0);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/index.ts":
 /*!*****************************!*\
   !*** ./src/reader/index.ts ***!
@@ -2416,7 +2487,7 @@ let startApp = async (container, baseURI, version, hostname, routablePages) => {
 /* harmony export */ });
 /* unused harmony export container */
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/web3-provider.js");
-/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ethers */ "./node_modules/ethers/lib.esm/ethers.js");
+/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_80__ = __webpack_require__(/*! ethers */ "./node_modules/ethers/lib.esm/ethers.js");
 /* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
 /* harmony import */ var pouchdb_browser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pouchdb-browser */ "./node_modules/pouchdb-browser/lib/index.es.js");
 /* harmony import */ var pouchdb_find__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pouchdb-find */ "./node_modules/pouchdb-find/lib/index-browser.es.js");
@@ -2466,36 +2537,39 @@ let startApp = async (container, baseURI, version, hostname, routablePages) => {
 /* harmony import */ var _repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./repository/browser/attribute-total-repository-impl.js */ "./src/reader/repository/browser/attribute-total-repository-impl.ts");
 /* harmony import */ var _repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./repository/browser/reader-settings-repository-impl.js */ "./src/reader/repository/browser/reader-settings-repository-impl.ts");
 /* harmony import */ var _repository_browser_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./repository/browser/erc-event-repository-impl.js */ "./src/reader/repository/browser/erc-event-repository-impl.ts");
-/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
-/* harmony import */ var _service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/web/mint-web-service.js */ "./src/reader/service/web/mint-web-service.ts");
-/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
-/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
-/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
-/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
-/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
-/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
-/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
-/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
-/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
-/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
-/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
-/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
-/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
-/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
-/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
+/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
+/* harmony import */ var _service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/web/mint-web-service.js */ "./src/reader/service/web/mint-web-service.ts");
+/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
+/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
+/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
+/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
+/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
+/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
+/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
+/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
+/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
+/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
+/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
+/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
+/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
+/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
 /* harmony import */ var _repository_browser_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./repository/browser/contract-state-repository-impl.js */ "./src/reader/repository/browser/contract-state-repository-impl.ts");
-/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
-/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./service/web/event-web-service.js */ "./src/reader/service/web/event-web-service.ts");
-/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
-/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
+/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
+/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./service/web/event-web-service.js */ "./src/reader/service/web/event-web-service.ts");
+/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
+/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
 /* harmony import */ var _repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./repository/browser/component-state-repository-impl.js */ "./src/reader/repository/browser/component-state-repository-impl.ts");
-/* harmony import */ var _dto_component_state_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./dto/component-state.js */ "./src/reader/dto/component-state.ts");
+/* harmony import */ var _dto_component_state_js__WEBPACK_IMPORTED_MODULE_81__ = __webpack_require__(/*! ./dto/component-state.js */ "./src/reader/dto/component-state.ts");
+/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _service_transaction_service_js__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./service/transaction-service.js */ "./src/reader/service/transaction-service.ts");
 /* harmony import */ var _repository_browser_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./repository/browser/token-owner-repository-impl.js */ "./src/reader/repository/browser/token-owner-repository-impl.ts");
+/* harmony import */ var _repository_browser_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./repository/browser/transaction-repository-impl.js */ "./src/reader/repository/browser/transaction-repository-impl.ts");
 
 
 
@@ -2529,6 +2603,9 @@ pouchdb_browser__WEBPACK_IMPORTED_MODULE_0__["default"].plugin((pouchdb_quick_se
 // Install F7 Components using .use() method on Framework7 class:
 framework7__WEBPACK_IMPORTED_MODULE_3__["default"].use([framework7_components_dialog__WEBPACK_IMPORTED_MODULE_4__["default"], framework7_components_toast__WEBPACK_IMPORTED_MODULE_5__["default"], framework7_components_preloader__WEBPACK_IMPORTED_MODULE_6__["default"], framework7_components_virtual_list__WEBPACK_IMPORTED_MODULE_7__["default"], framework7_components_list_index__WEBPACK_IMPORTED_MODULE_8__["default"], framework7_components_card__WEBPACK_IMPORTED_MODULE_9__["default"], framework7_components_chip__WEBPACK_IMPORTED_MODULE_10__["default"], framework7_components_form__WEBPACK_IMPORTED_MODULE_11__["default"], framework7_components_grid__WEBPACK_IMPORTED_MODULE_12__["default"],
     framework7_components_range__WEBPACK_IMPORTED_MODULE_13__["default"], framework7_components_accordion__WEBPACK_IMPORTED_MODULE_14__["default"], framework7_components_searchbar__WEBPACK_IMPORTED_MODULE_15__["default"], framework7_components_autocomplete__WEBPACK_IMPORTED_MODULE_16__["default"], framework7_components_popup__WEBPACK_IMPORTED_MODULE_17__["default"], framework7_components_photo_browser__WEBPACK_IMPORTED_MODULE_18__["default"], framework7_components_swiper__WEBPACK_IMPORTED_MODULE_19__["default"], framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_20__["default"], framework7_components_panel__WEBPACK_IMPORTED_MODULE_21__["default"], framework7_components_popover__WEBPACK_IMPORTED_MODULE_22__["default"], framework7_components_stepper__WEBPACK_IMPORTED_MODULE_23__["default"]]);
+
+
+
 
 
 
@@ -2727,39 +2804,41 @@ async function getMainContainer(customContainer, baseURI, hostname, version, rou
     container.bind("ContractStateRepository").to(_repository_browser_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__.ContractStateRepositoryBrowserImpl).inSingletonScope();
     container.bind("ComponentStateRepository").to(_repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__.ComponentStateRepositoryBrowserImpl).inSingletonScope();
     container.bind("TokenOwnerRepository").to(_repository_browser_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_50__.TokenOwnerRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_51__.ChannelWebService).inSingletonScope();
-    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_52__.ItemWebService).inSingletonScope();
-    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_53__.AuthorWebService).inSingletonScope();
-    container.bind("MintWebService").to(_service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_54__.MintWebService).inSingletonScope();
-    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_55__.SearchbarService).inSingletonScope();
-    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_56__.StaticPageService).inSingletonScope();
-    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_57__.ItemPageService).inSingletonScope();
-    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_58__.QueueService).inSingletonScope();
-    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_59__.PagingService).inSingletonScope();
-    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_60__.DatabaseService).inSingletonScope();
-    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_61__.AnimationService).inSingletonScope();
-    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_62__.UiService).inSingletonScope();
-    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_63__.ItemService).inSingletonScope();
-    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_64__.ImageService).inSingletonScope();
-    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_65__.ChannelService).inSingletonScope();
-    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_66__.AuthorService).inSingletonScope();
-    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_67__.TokenService).inSingletonScope();
-    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_68__.SchemaService).inSingletonScope();
-    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_69__.QuillService).inSingletonScope();
-    container.bind("EventWebService").to(_service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_70__.EventWebService).inSingletonScope();
-    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_71__.AttributeTotalService).inSingletonScope();
-    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_72__.ComponentStateService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_73__.ReaderSettingsService).inSingletonScope();
-    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_74__.TransactionIndexerService).inSingletonScope();
-    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_75__.ERCEventService).inSingletonScope();
-    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_76__.ContractStateService).inSingletonScope();
+    container.bind("TransactionRepository").to(_repository_browser_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_51__.TransactionRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_52__.ChannelWebService).inSingletonScope();
+    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_53__.ItemWebService).inSingletonScope();
+    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_54__.AuthorWebService).inSingletonScope();
+    container.bind("MintWebService").to(_service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_55__.MintWebService).inSingletonScope();
+    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_56__.SearchbarService).inSingletonScope();
+    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_57__.StaticPageService).inSingletonScope();
+    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_58__.ItemPageService).inSingletonScope();
+    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_59__.QueueService).inSingletonScope();
+    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_60__.PagingService).inSingletonScope();
+    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_61__.DatabaseService).inSingletonScope();
+    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_62__.AnimationService).inSingletonScope();
+    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_63__.UiService).inSingletonScope();
+    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_64__.ItemService).inSingletonScope();
+    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_65__.ImageService).inSingletonScope();
+    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_66__.ChannelService).inSingletonScope();
+    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_67__.AuthorService).inSingletonScope();
+    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_68__.TokenService).inSingletonScope();
+    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_69__.SchemaService).inSingletonScope();
+    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_70__.QuillService).inSingletonScope();
+    container.bind("EventWebService").to(_service_web_event_web_service_js__WEBPACK_IMPORTED_MODULE_71__.EventWebService).inSingletonScope();
+    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_72__.AttributeTotalService).inSingletonScope();
+    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_73__.ComponentStateService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_74__.ReaderSettingsService).inSingletonScope();
+    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_75__.TransactionIndexerService).inSingletonScope();
+    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_76__.ERCEventService).inSingletonScope();
+    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_77__.ContractStateService).inSingletonScope();
     container.bind("GenerateService").to({}).inSingletonScope();
-    container.bind("TokenOwnerService").to({}).inSingletonScope();
+    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_78__.TokenOwnerService).inSingletonScope();
+    container.bind("TransactionService").to(_service_transaction_service_js__WEBPACK_IMPORTED_MODULE_79__.TransactionService).inSingletonScope();
     //Attach container to window so we can easily access it from the browser console
     globalThis.container = container;
-    globalThis.ethers = ethers__WEBPACK_IMPORTED_MODULE_77__;
+    globalThis.ethers = ethers__WEBPACK_IMPORTED_MODULE_80__;
     globalThis.he = (he__WEBPACK_IMPORTED_MODULE_24___default());
-    globalThis.ComponentState = _dto_component_state_js__WEBPACK_IMPORTED_MODULE_78__.ComponentState;
+    globalThis.ComponentState = _dto_component_state_js__WEBPACK_IMPORTED_MODULE_81__.ComponentState;
     return container;
 }
 
@@ -3009,7 +3088,6 @@ let ChannelRepositoryBrowserImpl = class ChannelRepositoryBrowserImpl {
             include_docs: true
         });
         let channel;
-        console.log(channels);
         //Find the first actual channel (skip design)
         for (let c of channels.rows) {
             if (c.doc.dateCreated)
@@ -3165,10 +3243,11 @@ ContractStateRepositoryBrowserImpl = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ERCEventRepositoryBrowserImpl": () => (/* binding */ ERCEventRepositoryBrowserImpl)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/erc-event.js */ "./src/reader/dto/erc-event.ts");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dto/erc-event.js */ "./src/reader/dto/erc-event.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
 /* harmony import */ var _erc_event_repository_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../erc-event-repository.js */ "./src/reader/repository/erc-event-repository.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3183,10 +3262,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 let ERCEventRepositoryBrowserImpl = class ERCEventRepositoryBrowserImpl {
     db;
     dbName = "erc-events";
     databaseService;
+    baseURI;
     async load() {
         this.db = await this.databaseService.getDatabase({
             name: this.dbName,
@@ -3196,7 +3277,24 @@ let ERCEventRepositoryBrowserImpl = class ERCEventRepositoryBrowserImpl {
     }
     constructor() { }
     async get(_id) {
-        return Object.assign(new _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_1__.ERCEvent(), await this.db.get(_id));
+        let event;
+        try {
+            event = await this.db.get(_id);
+        }
+        catch (ex) { }
+        if (!event) {
+            try {
+                //Download it.
+                let result = await axios__WEBPACK_IMPORTED_MODULE_1__["default"].get(`${this.baseURI}sync/events/${_id}.json`);
+                event = result.data;
+                //Save it
+                await this.db.put(event);
+            }
+            catch (ex) {
+                console.log(ex);
+            }
+        }
+        return Object.assign(new _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_2__.ERCEvent(), event);
     }
     async put(ercEvent) {
         await this.db.put(ercEvent);
@@ -3225,6 +3323,12 @@ let ERCEventRepositoryBrowserImpl = class ERCEventRepositoryBrowserImpl {
             selector: {
                 "tokenId": {
                     $eq: tokenId
+                },
+                "blockNumber": {
+                    $exists: true
+                },
+                "logIndex": {
+                    $exists: true
                 }
             },
             limit: limit,
@@ -3235,32 +3339,18 @@ let ERCEventRepositoryBrowserImpl = class ERCEventRepositoryBrowserImpl {
             console.log(response.warning);
         }
         return response.docs;
-        // let result = await this.db.query(function (doc, emit) {
-        //     let ids = []
-        //     switch(doc.event) {
-        //         case "Transfer":
-        //         case "Approval":
-        //             ids.push(doc.args[2])
-        //             break
-        //     }
-        //     for (let tokenId of ids) {
-        //         //@ts-ignore
-        //         emit([ parseInt(tokenId), doc.blockNumber, doc.logIndex ])
-        //     }
-        //   }, {
-        //     include_docs: true,
-        //     startkey: [tokenId, 0, 0],
-        //     endkey: [tokenId, {},{}]
-        // })
-        // return result.rows.map( row => row.doc)
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)('DatabaseService'),
-    __metadata("design:type", _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_3__.DatabaseService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.inject)('DatabaseService'),
+    __metadata("design:type", _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_4__.DatabaseService)
 ], ERCEventRepositoryBrowserImpl.prototype, "databaseService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.inject)('baseURI'),
+    __metadata("design:type", Object)
+], ERCEventRepositoryBrowserImpl.prototype, "baseURI", void 0);
 ERCEventRepositoryBrowserImpl = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.injectable)(),
     __metadata("design:paramtypes", [])
 ], ERCEventRepositoryBrowserImpl);
 
@@ -3836,6 +3926,61 @@ TokenOwnerRepositoryBrowserImpl = __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/repository/browser/transaction-repository-impl.ts":
+/*!**********************************************************************!*\
+  !*** ./src/reader/repository/browser/transaction-repository-impl.ts ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionRepositoryBrowserImpl": () => (/* binding */ TransactionRepositoryBrowserImpl)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_transaction_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../dto/transaction.js */ "./src/reader/dto/transaction.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let TransactionRepositoryBrowserImpl = class TransactionRepositoryBrowserImpl {
+    db;
+    dbName = "transactions";
+    databaseService;
+    async load() {
+        this.db = await this.databaseService.getDatabase({
+            name: this.dbName,
+            initialRecords: false,
+        });
+    }
+    async get(_id) {
+        return Object.assign(new _dto_transaction_js__WEBPACK_IMPORTED_MODULE_0__.Transaction(), await this.db.get(_id));
+    }
+    async put(transaction) {
+        await this.db.put(transaction);
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('DatabaseService'),
+    __metadata("design:type", _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__.DatabaseService)
+], TransactionRepositoryBrowserImpl.prototype, "databaseService", void 0);
+TransactionRepositoryBrowserImpl = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)()
+], TransactionRepositoryBrowserImpl);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/repository/erc-event-repository.ts":
 /*!*******************************************************!*\
   !*** ./src/reader/repository/erc-event-repository.ts ***!
@@ -3865,26 +4010,6 @@ let changesets = [
                     fields: ['tokenId', 'blockNumber', 'logIndex']
                 }
             });
-            // await db.put({
-            //     _id: '_design/by_token_id',
-            //     views: {
-            //         by_token_id: {
-            //                 map: function (doc) { 
-            //                     let ids = []
-            //                     switch(doc.event) {
-            //                         case "Transfer":
-            //                         case "Approval":
-            //                             ids.push(doc.args[2])
-            //                             break
-            //                     }
-            //                     for (let tokenId of ids) {
-            //                         //@ts-ignore
-            //                         emit([ parseInt(tokenId), doc.blockNumber, doc.logIndex ])
-            //                     }
-            //                 }.toString(),
-            //         }
-            //     }
-            // })
         }
     }
 ];
@@ -4736,6 +4861,7 @@ let SchemaService = class SchemaService {
     attributeTotalRepository;
     componentStateRepository;
     tokenOwnerRepository;
+    transactionRepository;
     constructor() {
     }
     async load(dbs) {
@@ -4754,6 +4880,7 @@ let SchemaService = class SchemaService {
         repositories.push(this.attributeTotalRepository);
         repositories.push(this.componentStateRepository);
         repositories.push(this.tokenOwnerRepository);
+        repositories.push(this.transactionRepository);
         for (let db of dbs) {
             let repo = repositories.filter(r => r.dbName == db)[0];
             if (!repo)
@@ -4826,6 +4953,10 @@ __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("TokenOwnerRepository"),
     __metadata("design:type", Object)
 ], SchemaService.prototype, "tokenOwnerRepository", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("TransactionRepository"),
+    __metadata("design:type", Object)
+], SchemaService.prototype, "transactionRepository", void 0);
 SchemaService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __metadata("design:paramtypes", [])
@@ -4847,11 +4978,14 @@ SchemaService = __decorate([
 /* harmony export */ });
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/address/lib.esm/index.js");
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 /* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
 /* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
 /* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _image_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../image-service.js */ "./src/reader/service/image-service.ts");
 /* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
+/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4867,11 +5001,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 let TransactionIndexerService = class TransactionIndexerService {
     contractStateService;
     ercEventService;
     tokenOwnerService;
+    itemWebService;
+    imageService;
     walletService;
+    transactionService;
     blockNumber;
     topics;
     contractState;
@@ -4914,7 +5054,10 @@ let TransactionIndexerService = class TransactionIndexerService {
         let previous;
         for (let event of events) {
             //Translate
-            let ercEvent = this.ercEventService.translateEventToERCEvent(event);
+            let ercEvent = await this.ercEventService.translateEventToERCEvent(event);
+            //Grab transaction data
+            let transaction = await this.transactionService.get(ercEvent.transactionHash);
+            ercEvent.transaction = transaction;
             //Check if it already exists. Merge details.
             try {
                 let existing = await this.ercEventService.get(ercEvent._id);
@@ -4941,6 +5084,15 @@ let TransactionIndexerService = class TransactionIndexerService {
                 if (ercEvent.previous) {
                     previousEvent = await this.ercEventService.get(ercEvent.previous);
                 }
+            }
+            if (ercEvent.tokenId) {
+                //Look up itemViewModel if token.
+                let item = await this.itemWebService.getByTokenId(ercEvent.tokenId);
+                let coverImage;
+                if (item.coverImageId) {
+                    coverImage = await this.imageService.get(item.coverImageId);
+                }
+                ercEvent.rowItemViewModel = this.itemWebService.translateRowItemViewModel(item, coverImage);
             }
             let processResult = await this.ercEventService.process(ercEvent, previousEvent, previousEventByToken);
             ercEvent = processResult.ercEvent;
@@ -5037,11 +5189,23 @@ __decorate([
     __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_5__.TokenOwnerService)
 ], TransactionIndexerService.prototype, "tokenOwnerService", void 0);
 __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("ItemWebService"),
+    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_6__.ItemWebService)
+], TransactionIndexerService.prototype, "itemWebService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("ImageService"),
+    __metadata("design:type", _image_service_js__WEBPACK_IMPORTED_MODULE_7__.ImageService)
+], TransactionIndexerService.prototype, "imageService", void 0);
+__decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("WalletService"),
     __metadata("design:type", Object)
 ], TransactionIndexerService.prototype, "walletService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TransactionService"),
+    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_8__.TransactionService)
+], TransactionIndexerService.prototype, "transactionService", void 0);
 TransactionIndexerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_6__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_9__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TransactionIndexerService);
 function sleep(ms) {
@@ -5346,6 +5510,24 @@ let ERCEventService = class ERCEventService {
         result.ercEvent = ercEvent;
         return result;
     }
+    async listFrom(limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let event = await this.get(startId);
+            results.push(event);
+            let previousId = event?.previous;
+            //Get the previous
+            if (previousId) {
+                //See 
+                event = await this.get(event.previous);
+                if (event?._id != previousId)
+                    break;
+            }
+            startId = event._id;
+        }
+        console.log(results);
+        return results;
+    }
     async list(limit, skip) {
         return this.ercEventRepository.list(limit, skip);
     }
@@ -5379,7 +5561,7 @@ let ERCEventService = class ERCEventService {
         }
         return tokenOwner;
     }
-    translateEventToERCEvent(event) {
+    async translateEventToERCEvent(event) {
         let ercEvent = new _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_3__.ERCEvent();
         ercEvent.blockNumber = event.blockNumber;
         ercEvent.blockHash = event.blockHash;
@@ -5925,6 +6107,68 @@ TokenService = __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/service/transaction-service.ts":
+/*!***************************************************!*\
+  !*** ./src/reader/service/transaction-service.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionService": () => (/* binding */ TransactionService)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let TransactionService = class TransactionService {
+    transactionRepository;
+    constructor() { }
+    async get(_id) {
+        return this.transactionRepository.get(_id);
+    }
+    async put(transaction) {
+        if (!transaction._id) {
+            transaction._id = transaction.transactionHash;
+            transaction.dateCreated = new Date().toJSON();
+        }
+        transaction.lastUpdated = new Date().toJSON();
+        //Validate
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.validate)(transaction, {
+            forbidUnknownValues: true,
+            whitelist: true
+        });
+        if (errors.length > 0) {
+            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__.ValidationException(errors);
+        }
+        return this.transactionRepository.put(transaction);
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TransactionRepository"),
+    __metadata("design:type", Object)
+], TransactionService.prototype, "transactionRepository", void 0);
+TransactionService = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
+    __metadata("design:paramtypes", [])
+], TransactionService);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/service/web/author-web-service.ts":
 /*!******************************************************!*\
   !*** ./src/reader/service/web/author-web-service.ts ***!
@@ -6095,10 +6339,11 @@ ChannelWebService = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "EventWebService": () => (/* binding */ EventWebService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _core_schema_service_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
-/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _core_schema_service_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
+/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6108,29 +6353,40 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+// import axios from "axios";
+
 
 
 
 let EventWebService = class EventWebService {
+    baseURI;
     schemaService;
     ercEventService;
-    constructor() { }
-    async getHomeEventList() {
+    constructor(baseURI) {
+        this.baseURI = baseURI;
+    }
+    async getLatestEvents() {
         await this.schemaService.load(["erc-events"]);
-        return this.ercEventService.list(100, 0);
+        let result = await axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(`${this.baseURI}sync/events/latest.json`);
+        let latest = result.data;
+        return this.ercEventService.listFrom(25, latest._id);
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("SchemaService"),
-    __metadata("design:type", _core_schema_service_js__WEBPACK_IMPORTED_MODULE_1__.SchemaService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)("SchemaService"),
+    __metadata("design:type", _core_schema_service_js__WEBPACK_IMPORTED_MODULE_2__.SchemaService)
 ], EventWebService.prototype, "schemaService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("ERCEventService"),
-    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_2__.ERCEventService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)("ERCEventService"),
+    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_3__.ERCEventService)
 ], EventWebService.prototype, "ercEventService", void 0);
 EventWebService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
-    __metadata("design:paramtypes", [])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
+    __param(0, (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)("baseURI")),
+    __metadata("design:paramtypes", [Object])
 ], EventWebService);
 
 
@@ -6203,6 +6459,9 @@ let ItemWebService = class ItemWebService {
         //Get attribute report
         const attributeReport = await this.attributeTotalService.list();
         return this.getViewModel(item, channel, attributeReport);
+    }
+    async getByTokenId(tokenId) {
+        return this.itemService.getByTokenId(tokenId);
     }
     async getViewModel(item, channel, attributeReport) {
         let attributeSelections = [];

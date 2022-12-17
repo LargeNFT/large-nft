@@ -10,6 +10,7 @@
           <table>
             <thead>
               <tr>
+                <th class="label-cell" colspan="2">Token</th>
                 <th class="numeric-cell">Block #</th>
                 <th class="label-cell">Event</th>
                 <th class="label-cell">Address</th>
@@ -21,6 +22,16 @@
           ${eventList.map(e => $h`
 
                 <tr>
+                  <td class="label-cell">
+
+                    ${e.rowItemViewModel ? $h`
+                      <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
+                    ` : $h`<span />`}
+
+                  </td>
+                  <td class="label-cell">
+                    ${e.rowItemViewModel?.title}
+                  </td>
                   <td class="numeric-cell">${e.blockNumber}</td>
                   <td class="label-cell">${e.event}</td>
                   <td class="label-cell">${e.address}</td>
@@ -33,8 +44,7 @@
 
 
         ` : $h`
-          Transaction information unavailable. 
-          <p style="color: darkgray">Note: Use a web browser with wallet support to see Ethereum events.</p>
+          No transactions found.
         `}
 
   
@@ -52,31 +62,28 @@
 
   export default (props, { $, $on, $f7, $update }) => {
 
-    let walletService = globalThis.container.get("WalletService")
     let eventWebService = globalThis.container.get("EventWebService")
+    let baseURI = globalThis.container.get('baseURI')
 
+    let type = props.type
+    let display = props.display
 
     let eventList
 
-    let baseURL = props.baseurl 
+    const imageLink = (rowItemViewModel) => {
+      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+    }
+
 
     const link = (href) => {
-        return `${baseURL + href}`
+        return `${baseURI + href}`
     } 
 
     const load = async () => {
       
       try  {
-
-        if (!walletService.provider) {
-          await walletService.initProvider()
-        }
-
-        //Might still not have a provider. 
-        if (walletService.provider) {
-          eventList = await eventWebService.getHomeEventList()
-        } 
-
+        eventList = await eventWebService.getLatestEvents()
       } catch(ex) {
         console.log(ex)
       }

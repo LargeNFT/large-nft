@@ -5,10 +5,9 @@ import { ERCEventRepository } from "../repository/erc-event-repository.js"
 import { ERCEvent } from "../dto/erc-event.js"
 import { BigNumber, Event } from "ethers"
 
-// var pouchCollate = require('pouchdb-collate')
-import { toIndexableString } from "pouchdb-collate"
 import { TokenOwnerService } from "./token-owner-service.js"
 import { TokenOwner } from "../dto/token-owner.js"
+import { TransactionService } from "./transaction-service.js"
 
 @injectable()
 class ERCEventService {
@@ -18,6 +17,7 @@ class ERCEventService {
 
     @inject("TokenOwnerService")
     private tokenOwnerService:TokenOwnerService
+
 
     constructor() {}
 
@@ -104,6 +104,38 @@ class ERCEventService {
 
     }
 
+
+    async listFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
+
+        let results:ERCEvent[] = []
+
+        while (results?.length < limit && startId) {
+
+            let event:ERCEvent = await this.get(startId)
+
+            results.push(event)
+
+            let previousId = event?.previous
+
+            //Get the previous
+            if (previousId) {
+
+                //See 
+                event = await this.get(event.previous)
+
+                if (event?._id != previousId) break
+
+            }
+
+            startId = event._id
+        }
+
+        console.log(results)
+
+        return results
+
+    }
+
     async list(limit: number, skip: number): Promise<ERCEvent[]> {
         return this.ercEventRepository.list(limit, skip)
     }
@@ -156,7 +188,7 @@ class ERCEventService {
     }
 
 
-    translateEventToERCEvent(event: Event) : ERCEvent {
+    async translateEventToERCEvent(event: Event) : Promise<ERCEvent> {
     
         let ercEvent = new ERCEvent()
     
@@ -193,8 +225,7 @@ class ERCEventService {
     
     
         ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`
-    
-    
+
         return ercEvent
     }
 

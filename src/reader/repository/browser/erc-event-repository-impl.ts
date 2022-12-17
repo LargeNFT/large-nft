@@ -1,3 +1,4 @@
+import axios from "axios"
 import {  inject, injectable } from "inversify"
 import { ERCEvent } from "../../dto/erc-event.js"
 import { Changeset, DatabaseService } from "../../service/core/database-service.js"
@@ -14,6 +15,9 @@ class ERCEventRepositoryBrowserImpl implements ERCEventRepository {
     @inject('DatabaseService')
     private databaseService: DatabaseService
 
+    @inject('baseURI') 
+    private baseURI
+
     async load() {
         this.db = await this.databaseService.getDatabase({
             name: this.dbName,
@@ -26,7 +30,30 @@ class ERCEventRepositoryBrowserImpl implements ERCEventRepository {
 
 
     async get(_id:string): Promise<ERCEvent> {        
-        return Object.assign(new ERCEvent(), await this.db.get(_id))
+
+        let event
+
+        try {
+            event = await this.db.get(_id)
+        } catch(ex) {}
+
+        if (!event) {
+            try {
+                //Download it.
+                let result = await axios.get(`${this.baseURI}sync/events/${_id}.json`)
+                event = result.data
+
+                //Save it
+                await this.db.put(event)
+
+
+            } catch(ex) {
+                console.log(ex)
+            }
+        }
+
+        return Object.assign(new ERCEvent(), event)
+
     }
 
     async put(ercEvent:ERCEvent) {
@@ -66,6 +93,12 @@ class ERCEventRepositoryBrowserImpl implements ERCEventRepository {
             selector: { 
                 "tokenId": { 
                     $eq: tokenId 
+                },
+                "blockNumber": {
+                    $exists: true
+                },
+                "logIndex": {
+                    $exists: true
                 }
             },
             limit: limit,
@@ -76,34 +109,8 @@ class ERCEventRepositoryBrowserImpl implements ERCEventRepository {
         if (response.warning) {
             console.log(response.warning)
         }
+        
         return response.docs
-
-
-        // let result = await this.db.query(function (doc, emit) {
-
-        //     let ids = []
-
-        //     switch(doc.event) {
-        
-        //         case "Transfer":
-        //         case "Approval":
-        //             ids.push(doc.args[2])
-        //             break
-        //     }
-        
-        //     for (let tokenId of ids) {
-        //         //@ts-ignore
-        //         emit([ parseInt(tokenId), doc.blockNumber, doc.logIndex ])
-        //     }
-
-
-        //   }, {
-        //     include_docs: true,
-        //     startkey: [tokenId, 0, 0],
-        //     endkey: [tokenId, {},{}]
-        // })
-
-        // return result.rows.map( row => row.doc)
 
     }
 

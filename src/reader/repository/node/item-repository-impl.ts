@@ -11,6 +11,9 @@ class ItemRepositoryNodeImpl implements ItemRepository {
 
     items:Item[] = []
 
+    dbName:string = "items"
+
+
     constructor(
         @inject('baseDir') private baseDir
     ) {}
@@ -44,7 +47,15 @@ class ItemRepositoryNodeImpl implements ItemRepository {
     }
 
     async getByTokenId(tokenId:number) : Promise<Item> {
-        return
+
+        let matches = this.items.filter( item => item.tokenId == tokenId)
+
+
+        if (matches?.length > 0) {
+            return matches[0]
+        }
+
+        return matches[0]
         
     }
 

@@ -11,6 +11,7 @@ import { ItemRepository } from "../../repository/item-repository.js"
 import { ReaderSettingsRepository } from "../../repository/reader-settings-repository.js"
 import { StaticPageRepository } from "../../repository/static-page-repository.js"
 import { TokenOwnerRepository } from "../../repository/token-owner-repository.js"
+import { TransactionRepository } from "../../repository/transaction-repository.js"
 
 
 @injectable()
@@ -53,6 +54,9 @@ class SchemaService {
     @inject("TokenOwnerRepository")
     private tokenOwnerRepository:TokenOwnerRepository
 
+    @inject("TransactionRepository")
+    private transactionRepository:TransactionRepository
+
     constructor() {
 
     }
@@ -77,6 +81,7 @@ class SchemaService {
         repositories.push(this.attributeTotalRepository)
         repositories.push(this.componentStateRepository)
         repositories.push(this.tokenOwnerRepository)
+        repositories.push(this.transactionRepository)
 
         for (let db of dbs) {
 

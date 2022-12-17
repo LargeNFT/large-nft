@@ -85210,21 +85210,22 @@ class ERCEvent {
     blockNumber;
     blockHash;
     transactionIndex;
+    transactionHash;
+    transaction;
     removed;
     address;
     data;
     topics;
-    transactionHash;
     logIndex;
     args;
     event;
     eventSignature;
-    transaction;
     isTransfer;
     fromAddress;
     toAddress;
     tokenId;
     previous;
+    rowItemViewModel;
     previousByToken;
     lastUpdated;
     dateCreated;
@@ -85251,6 +85252,14 @@ __decorate([
 ], ERCEvent.prototype, "transactionIndex", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ERCEvent.prototype, "transactionHash", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ERCEvent.prototype, "transaction", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Boolean)
 ], ERCEvent.prototype, "removed", void 0);
 __decorate([
@@ -85267,10 +85276,6 @@ __decorate([
 ], ERCEvent.prototype, "topics", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], ERCEvent.prototype, "transactionHash", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Number)
 ], ERCEvent.prototype, "logIndex", void 0);
 __decorate([
@@ -85285,10 +85290,6 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "eventSignature", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Object)
-], ERCEvent.prototype, "transaction", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Boolean)
@@ -85309,6 +85310,10 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "previous", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ERCEvent.prototype, "rowItemViewModel", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -85394,6 +85399,64 @@ __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/dto/transaction.ts":
+/*!***************************************!*\
+  !*** ./src/reader/dto/transaction.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Transaction": () => (/* binding */ Transaction)
+/* harmony export */ });
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/decorator/common/Allow.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+class Transaction {
+    _id;
+    _rev;
+    transactionHash;
+    data;
+    lastUpdated;
+    dateCreated;
+}
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "_id", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "_rev", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "transactionHash", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], Transaction.prototype, "data", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "lastUpdated", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "dateCreated", void 0);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/node-inversify.config.ts":
 /*!*********************************************!*\
   !*** ./src/reader/node-inversify.config.ts ***!
@@ -85413,37 +85476,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _repository_node_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./repository/node/item-page-repository-impl.js */ "./src/reader/repository/node/item-page-repository-impl.ts");
 /* harmony import */ var _repository_node_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./repository/node/item-repository-impl.js */ "./src/reader/repository/node/item-repository-impl.ts");
 /* harmony import */ var _repository_node_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./repository/node/static-page-repository-impl.js */ "./src/reader/repository/node/static-page-repository-impl.ts");
-/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
-/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
-/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
-/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
-/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
-/* harmony import */ var _service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./service/core/image-generator-service.js */ "./src/reader/service/core/image-generator-service.ts");
-/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
-/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
-/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
-/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
-/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
-/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
+/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
+/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
+/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
+/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
+/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var _service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./service/core/image-generator-service.js */ "./src/reader/service/core/image-generator-service.ts");
+/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
+/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
+/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
+/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
+/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
+/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
 /* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/reader/service/core/wallet-service-impl.ts");
-/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
-/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
-/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
-/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
-/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
-/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
-/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
+/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
+/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
+/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
+/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
+/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
+/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
+/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/url-json-rpc-provider.js");
-/* harmony import */ var _service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/core/generate-service.js */ "./src/reader/service/core/generate-service.ts");
-/* harmony import */ var _repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./repository/node/erc-event-repository-impl.js */ "./src/reader/repository/node/erc-event-repository-impl.ts");
-/* harmony import */ var _repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./repository/node/contract-state-repository-impl.js */ "./src/reader/repository/node/contract-state-repository-impl.ts");
+/* harmony import */ var _service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/core/generate-service.js */ "./src/reader/service/core/generate-service.ts");
+/* harmony import */ var _repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./repository/node/erc-event-repository-impl.js */ "./src/reader/repository/node/erc-event-repository-impl.ts");
+/* harmony import */ var _repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./repository/node/contract-state-repository-impl.js */ "./src/reader/repository/node/contract-state-repository-impl.ts");
 /* harmony import */ var _repository_node_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./repository/node/token-owner-repository-impl.js */ "./src/reader/repository/node/token-owner-repository-impl.ts");
-/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _repository_node_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./repository/node/transaction-repository-impl.js */ "./src/reader/repository/node/transaction-repository-impl.ts");
+/* harmony import */ var _service_transaction_service_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/transaction-service.js */ "./src/reader/service/transaction-service.ts");
+
+
 
 
 
@@ -85510,6 +85577,7 @@ function getMainContainer(command) {
     container.bind("ItemPageRepository").to(_repository_node_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_8__.ItemPageRepositoryNodeImpl).inSingletonScope();
     container.bind("AttributeTotalRepository").to(_repository_node_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_9__.AttributeTotalRepositoryNodeImpl).inSingletonScope();
     container.bind("TokenOwnerRepository").to(_repository_node_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_10__.TokenOwnerRepositoryNodeImpl).inSingletonScope();
+    container.bind("TransactionRepository").to(_repository_node_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__.TransactionRepositoryNodeImpl).inSingletonScope();
     container.bind("ReaderSettingsRepository").toConstantValue({
         get: function () {
             throw new Error("Function not implemented.");
@@ -85518,8 +85586,8 @@ function getMainContainer(command) {
             throw new Error("Function not implemented.");
         }
     });
-    container.bind("ERCEventRepository").to(_repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__.ERCEventRepositoryNodeImpl).inSingletonScope();
-    container.bind("ContractStateRepository").to(_repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__.ContractStateRepositoryNodeImpl).inSingletonScope();
+    container.bind("ERCEventRepository").to(_repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__.ERCEventRepositoryNodeImpl).inSingletonScope();
+    container.bind("ContractStateRepository").to(_repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__.ContractStateRepositoryNodeImpl).inSingletonScope();
     container.bind("ComponentStateRepository").toConstantValue({
         get: function (_id) {
             throw new Error("Function not implemented.");
@@ -85528,33 +85596,34 @@ function getMainContainer(command) {
             throw new Error("Function not implemented.");
         }
     });
-    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_13__.SchemaService).inSingletonScope();
-    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_14__.DatabaseService).inSingletonScope();
-    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_15__.ChannelWebService).inSingletonScope();
-    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_16__.ItemWebService).inSingletonScope();
-    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_17__.AuthorWebService).inSingletonScope();
-    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_18__.SearchbarService).inSingletonScope();
-    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_19__.StaticPageService).inSingletonScope();
-    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_20__.ItemPageService).inSingletonScope();
-    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_21__.PagingService).inSingletonScope();
-    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_22__.AnimationService).inSingletonScope();
-    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_23__.ImageService).inSingletonScope();
-    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_24__.ItemService).inSingletonScope();
-    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_25__.ChannelService).inSingletonScope();
-    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_26__.AuthorService).inSingletonScope();
-    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_27__.UiService).inSingletonScope();
-    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_28__.QueueService).inSingletonScope();
-    container.bind("ImageGeneratorService").to(_service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_29__.ImageGeneratorService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_30__.ReaderSettingsService).inSingletonScope();
-    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_31__.TransactionIndexerService).inSingletonScope();
-    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_32__.ContractStateService).inSingletonScope();
-    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_33__.ERCEventService).inSingletonScope();
-    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_34__.AttributeTotalService).inSingletonScope();
-    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_35__.ComponentStateService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_30__.ReaderSettingsService).inSingletonScope();
-    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_36__.QuillService).inSingletonScope();
-    container.bind("GenerateService").to(_service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_37__.GenerateService).inSingletonScope();
-    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_38__.TokenOwnerService).inSingletonScope();
+    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_14__.SchemaService).inSingletonScope();
+    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_15__.DatabaseService).inSingletonScope();
+    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_16__.ChannelWebService).inSingletonScope();
+    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_17__.ItemWebService).inSingletonScope();
+    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_18__.AuthorWebService).inSingletonScope();
+    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_19__.SearchbarService).inSingletonScope();
+    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_20__.StaticPageService).inSingletonScope();
+    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_21__.ItemPageService).inSingletonScope();
+    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_22__.PagingService).inSingletonScope();
+    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_23__.AnimationService).inSingletonScope();
+    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_24__.ImageService).inSingletonScope();
+    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_25__.ItemService).inSingletonScope();
+    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_26__.ChannelService).inSingletonScope();
+    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_27__.AuthorService).inSingletonScope();
+    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_28__.UiService).inSingletonScope();
+    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_29__.QueueService).inSingletonScope();
+    container.bind("ImageGeneratorService").to(_service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_30__.ImageGeneratorService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_31__.ReaderSettingsService).inSingletonScope();
+    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_32__.TransactionIndexerService).inSingletonScope();
+    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_33__.ContractStateService).inSingletonScope();
+    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_34__.ERCEventService).inSingletonScope();
+    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_35__.AttributeTotalService).inSingletonScope();
+    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_36__.ComponentStateService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_31__.ReaderSettingsService).inSingletonScope();
+    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_37__.QuillService).inSingletonScope();
+    container.bind("GenerateService").to(_service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_38__.GenerateService).inSingletonScope();
+    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_39__.TokenOwnerService).inSingletonScope();
+    container.bind("TransactionService").to(_service_transaction_service_js__WEBPACK_IMPORTED_MODULE_40__.TransactionService).inSingletonScope();
     return container;
 }
 
@@ -85591,26 +85660,6 @@ let changesets = [
                     fields: ['tokenId', 'blockNumber', 'logIndex']
                 }
             });
-            // await db.put({
-            //     _id: '_design/by_token_id',
-            //     views: {
-            //         by_token_id: {
-            //                 map: function (doc) { 
-            //                     let ids = []
-            //                     switch(doc.event) {
-            //                         case "Transfer":
-            //                         case "Approval":
-            //                             ids.push(doc.args[2])
-            //                             break
-            //                     }
-            //                     for (let tokenId of ids) {
-            //                         //@ts-ignore
-            //                         emit([ parseInt(tokenId), doc.blockNumber, doc.logIndex ])
-            //                     }
-            //                 }.toString(),
-            //         }
-            //     }
-            // })
         }
     }
 ];
@@ -86000,15 +86049,6 @@ let ERCEventRepositoryNodeImpl = class ERCEventRepositoryNodeImpl {
             console.log(response.warning);
         }
         return response.docs;
-        // let result = await this.db.query('by_token_id', {
-        //     include_docs: true,
-        //     startkey: [tokenId, {},{}],
-        //     endkey: [tokenId, 0, 0],
-        //     descending: true,
-        //     limit: limit,
-        //     skip: skip
-        // })
-        // return result.rows.map( row => row.doc)
     }
 };
 __decorate([
@@ -86176,6 +86216,7 @@ let ItemRepositoryNodeImpl = class ItemRepositoryNodeImpl {
     baseDir;
     static CHUNK_SIZE = _item_repository_js__WEBPACK_IMPORTED_MODULE_1__.CHUNK_SIZE;
     items = [];
+    dbName = "items";
     constructor(baseDir) {
         this.baseDir = baseDir;
     }
@@ -86199,7 +86240,11 @@ let ItemRepositoryNodeImpl = class ItemRepositoryNodeImpl {
         return;
     }
     async getByTokenId(tokenId) {
-        return;
+        let matches = this.items.filter(item => item.tokenId == tokenId);
+        if (matches?.length > 0) {
+            return matches[0];
+        }
+        return matches[0];
     }
     async listByTokenId(startTokenId, limit) {
         return [];
@@ -86361,6 +86406,83 @@ TokenOwnerRepositoryNodeImpl = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TokenOwnerRepositoryNodeImpl);
+
+
+
+/***/ }),
+
+/***/ "./src/reader/repository/node/transaction-repository-impl.ts":
+/*!*******************************************************************!*\
+  !*** ./src/reader/repository/node/transaction-repository-impl.ts ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionRepositoryNodeImpl": () => (/* binding */ TransactionRepositoryNodeImpl)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_transaction_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../dto/transaction.js */ "./src/reader/dto/transaction.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let TransactionRepositoryNodeImpl = class TransactionRepositoryNodeImpl {
+    db;
+    dbName = "transactions";
+    databaseService;
+    walletService;
+    async load() {
+        this.db = await this.databaseService.getDatabase({
+            name: this.dbName,
+            initialRecords: false,
+        });
+    }
+    async get(_id) {
+        let transaction;
+        try {
+            transaction = await this.db.get(_id);
+        }
+        catch (ex) { }
+        if (!transaction) {
+            try {
+                //Download it.
+                transaction = await this.walletService.provider.getTransaction(_id);
+                transaction._id = _id;
+                //Save it
+                await this.db.put(transaction);
+            }
+            catch (ex) {
+                console.log(ex);
+            }
+        }
+        return Object.assign(new _dto_transaction_js__WEBPACK_IMPORTED_MODULE_0__.Transaction(), transaction);
+    }
+    async put(transaction) {
+        await this.db.put(transaction);
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('DatabaseService'),
+    __metadata("design:type", _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__.DatabaseService)
+], TransactionRepositoryNodeImpl.prototype, "databaseService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('WalletService'),
+    __metadata("design:type", Object)
+], TransactionRepositoryNodeImpl.prototype, "walletService", void 0);
+TransactionRepositoryNodeImpl = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)()
+], TransactionRepositoryNodeImpl);
 
 
 
@@ -87379,6 +87501,7 @@ let SchemaService = class SchemaService {
     attributeTotalRepository;
     componentStateRepository;
     tokenOwnerRepository;
+    transactionRepository;
     constructor() {
     }
     async load(dbs) {
@@ -87397,6 +87520,7 @@ let SchemaService = class SchemaService {
         repositories.push(this.attributeTotalRepository);
         repositories.push(this.componentStateRepository);
         repositories.push(this.tokenOwnerRepository);
+        repositories.push(this.transactionRepository);
         for (let db of dbs) {
             let repo = repositories.filter(r => r.dbName == db)[0];
             if (!repo)
@@ -87469,6 +87593,10 @@ __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("TokenOwnerRepository"),
     __metadata("design:type", Object)
 ], SchemaService.prototype, "tokenOwnerRepository", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("TransactionRepository"),
+    __metadata("design:type", Object)
+], SchemaService.prototype, "transactionRepository", void 0);
 SchemaService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __metadata("design:paramtypes", [])
@@ -87490,11 +87618,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/address/lib.esm/index.js");
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 /* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
 /* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
 /* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _image_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../image-service.js */ "./src/reader/service/image-service.ts");
 /* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
+/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -87510,11 +87641,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 let TransactionIndexerService = class TransactionIndexerService {
     contractStateService;
     ercEventService;
     tokenOwnerService;
+    itemWebService;
+    imageService;
     walletService;
+    transactionService;
     blockNumber;
     topics;
     contractState;
@@ -87557,7 +87694,10 @@ let TransactionIndexerService = class TransactionIndexerService {
         let previous;
         for (let event of events) {
             //Translate
-            let ercEvent = this.ercEventService.translateEventToERCEvent(event);
+            let ercEvent = await this.ercEventService.translateEventToERCEvent(event);
+            //Grab transaction data
+            let transaction = await this.transactionService.get(ercEvent.transactionHash);
+            ercEvent.transaction = transaction;
             //Check if it already exists. Merge details.
             try {
                 let existing = await this.ercEventService.get(ercEvent._id);
@@ -87584,6 +87724,15 @@ let TransactionIndexerService = class TransactionIndexerService {
                 if (ercEvent.previous) {
                     previousEvent = await this.ercEventService.get(ercEvent.previous);
                 }
+            }
+            if (ercEvent.tokenId) {
+                //Look up itemViewModel if token.
+                let item = await this.itemWebService.getByTokenId(ercEvent.tokenId);
+                let coverImage;
+                if (item.coverImageId) {
+                    coverImage = await this.imageService.get(item.coverImageId);
+                }
+                ercEvent.rowItemViewModel = this.itemWebService.translateRowItemViewModel(item, coverImage);
             }
             let processResult = await this.ercEventService.process(ercEvent, previousEvent, previousEventByToken);
             ercEvent = processResult.ercEvent;
@@ -87680,11 +87829,23 @@ __decorate([
     __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_5__.TokenOwnerService)
 ], TransactionIndexerService.prototype, "tokenOwnerService", void 0);
 __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("ItemWebService"),
+    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_6__.ItemWebService)
+], TransactionIndexerService.prototype, "itemWebService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("ImageService"),
+    __metadata("design:type", _image_service_js__WEBPACK_IMPORTED_MODULE_7__.ImageService)
+], TransactionIndexerService.prototype, "imageService", void 0);
+__decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("WalletService"),
     __metadata("design:type", Object)
 ], TransactionIndexerService.prototype, "walletService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TransactionService"),
+    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_8__.TransactionService)
+], TransactionIndexerService.prototype, "transactionService", void 0);
 TransactionIndexerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_6__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_9__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TransactionIndexerService);
 function sleep(ms) {
@@ -87989,6 +88150,24 @@ let ERCEventService = class ERCEventService {
         result.ercEvent = ercEvent;
         return result;
     }
+    async listFrom(limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let event = await this.get(startId);
+            results.push(event);
+            let previousId = event?.previous;
+            //Get the previous
+            if (previousId) {
+                //See 
+                event = await this.get(event.previous);
+                if (event?._id != previousId)
+                    break;
+            }
+            startId = event._id;
+        }
+        console.log(results);
+        return results;
+    }
     async list(limit, skip) {
         return this.ercEventRepository.list(limit, skip);
     }
@@ -88022,7 +88201,7 @@ let ERCEventService = class ERCEventService {
         }
         return tokenOwner;
     }
-    translateEventToERCEvent(event) {
+    async translateEventToERCEvent(event) {
         let ercEvent = new _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_3__.ERCEvent();
         ercEvent.blockNumber = event.blockNumber;
         ercEvent.blockHash = event.blockHash;
@@ -88468,6 +88647,68 @@ TokenOwnerService = __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/service/transaction-service.ts":
+/*!***************************************************!*\
+  !*** ./src/reader/service/transaction-service.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionService": () => (/* binding */ TransactionService)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let TransactionService = class TransactionService {
+    transactionRepository;
+    constructor() { }
+    async get(_id) {
+        return this.transactionRepository.get(_id);
+    }
+    async put(transaction) {
+        if (!transaction._id) {
+            transaction._id = transaction.transactionHash;
+            transaction.dateCreated = new Date().toJSON();
+        }
+        transaction.lastUpdated = new Date().toJSON();
+        //Validate
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.validate)(transaction, {
+            forbidUnknownValues: true,
+            whitelist: true
+        });
+        if (errors.length > 0) {
+            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__.ValidationException(errors);
+        }
+        return this.transactionRepository.put(transaction);
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TransactionRepository"),
+    __metadata("design:type", Object)
+], TransactionService.prototype, "transactionRepository", void 0);
+TransactionService = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
+    __metadata("design:paramtypes", [])
+], TransactionService);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/service/web/author-web-service.ts":
 /*!******************************************************!*\
   !*** ./src/reader/service/web/author-web-service.ts ***!
@@ -88694,6 +88935,9 @@ let ItemWebService = class ItemWebService {
         //Get attribute report
         const attributeReport = await this.attributeTotalService.list();
         return this.getViewModel(item, channel, attributeReport);
+    }
+    async getByTokenId(tokenId) {
+        return this.itemService.getByTokenId(tokenId);
     }
     async getViewModel(item, channel, attributeReport) {
         let attributeSelections = [];
@@ -93416,7 +93660,7 @@ module.exports = "<% \n\n    let channelViewModel = it.baseViewModel.channelView
   \**********************************/
 /***/ ((module) => {
 
-module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let baseDir = it.baseViewModel.baseDir\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }   \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n    const absoluteLink = (href) => {\r\n      return `${hostname + baseURL + href}`\r\n    }   \r\n    \r\n    const escapeExcerpt = (excerpt) => {\r\n      excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n      return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n\r\n    const marketplaceLink = (marketplace) => {\r\n\r\n      let link = marketplace.link \r\n\r\n      //Replace contract if we find it \r\n      if (channelViewModel.channel.contractAddress) {\r\n        link = link.replace(\"{contractId}\", channelViewModel.channel.contractAddress)\r\n      }\r\n\r\n      return link\r\n    }\r\n\r\n\r\n%>\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n  <head>\r\n    <style>\r\n      html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n      }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n      content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n      <%= it.title %>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"<%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`index.html`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`index.html`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"<%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n\r\n  </head>\r\n\r\n  <body>\r\n\r\n    <div id=\"app\">\r\n\r\n      <div class=\"view view-main\">\r\n\r\n        <div class=\"page\" data-name=\"home\">\r\n\r\n          <nav-bar\r\n            logo=\"<%=logo%>\"\r\n            title=\"<%=channelViewModel.channel.title%>\"\r\n            show_mint_page=\"<%=showMintPage%>\"\r\n          >\r\n          </nav-bar>\r\n\r\n          <token-toolbar\r\n            token_id=\"0\"\r\n            item_count=\"<%= channelViewModel.channel.itemCount %>\" \r\n          >\r\n          </token-toolbar>\r\n\r\n          <!-- <% if (it.firstPost.item) { %>\r\n            <div class=\"fab fab-right-center small-only\">\r\n                <a href=\"<%= link(`t/${it.firstPost.item.tokenId}`) %>\" data-transition=\"none\">\r\n                    <i class=\"icon f7-icons color-blue\">arrow_right</i>\r\n                </a>\r\n            </div>\r\n          <% } %> -->\r\n\r\n\r\n\r\n          <div class=\"page-content\">\r\n\r\n            <div class=\"row\">\r\n\r\n              <div class=\"col-100 large-75\">\r\n\r\n\r\n                <div class=\"block block-strong inset col-100 no-margin-bottom\">\r\n                  <div class=\"breadcrumbs \">\r\n                    <div class=\"breadcrumbs-item breadcrumbs-item-active\">\r\n                      Home\r\n                    </div> \r\n                  </div>\r\n                </div>\r\n\r\n\r\n                <div class=\"card channel-card-show\">\r\n\r\n                  <div class=\"card-header banner\" id=\"banner\" <% if(channelViewModel?.channel.coverBannerId) { %>\r\n                    style=\"background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')\"\r\n                      <% } %>\r\n                        >\r\n\r\n                        <a href=\"<%= link('index.html') %>\">\r\n                          <% if (channelViewModel?.channel.coverImageId) { %>\r\n                            <img src=\"<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" class=\"avatar\" />\r\n                          <% } else { %>\r\n                            <i class=\"f7-icons avatar\">photo</i>\r\n                          <% } %>\r\n                        </a>\r\n\r\n                  </div>\r\n\r\n                  <div class=\"card-content card-content-padding\">\r\n\r\n                    <div class=\"title\">\r\n                      <%= channelViewModel.channel.title %>\r\n                    </div>\r\n\r\n                    <% if(channelViewModel?.authorDisplayName) { %>\r\n                      <div class=\"name\">\r\n                        By <a href=\"https://etherscan.io/address/<%=channelViewModel?.author._id%>\" class=\"external\">\r\n                          <%= channelViewModel?.authorDisplayName %>\r\n                        </a>\r\n                      </div>\r\n                    <% } %>\r\n\r\n                    <div class=\"description\" id=\"channel-show-description-<%=channelViewModel.channel._id%>\">\r\n                      <%~ channelViewModel.channel?.descriptionHTML %>\r\n                    </div>\r\n\r\n\r\n                    <ul>\r\n\r\n                      <% if(channelViewModel.channel?.contractAddress) { %>\r\n                        <li>\r\n                          <a class=\"link external\" href=\"https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>\">Etherscan</a>\r\n                        </li>\r\n                      <% } %>\r\n\r\n                      <% for (let externalLink of externalLinks) { %>\r\n                        <li>\r\n                          <a class=\"link external\" href=\"<%= externalLink.link %>\"><%= externalLink.name %></a>\r\n                        </li>\r\n                      <% } %>\r\n\r\n                    </ul>\r\n\r\n\r\n                    <div class=\"start-buttons\">\r\n                      <a href=\"<%= link(`t/${it.firstPost.item.tokenId}`) %>\" class=\"button button-fill text-color-white ready-button\" data-transition=\"f7-cover\">Start</a>\r\n                    </div>\r\n\r\n\r\n                  </div>\r\n\r\n                </div>\r\n\r\n\r\n                <div class=\"card\">\r\n                  <div class=\"card-header\">Explore</div>\r\n                  <div class=\"card-content\">\r\n                    \r\n                    <div class=\"list cards-list virtual-list\" id=\"explore-list-index\">\r\n                      <ul class=\"item-flex\">\r\n\r\n                        <% \r\n                        if (it.firstPageExploreItems?.length > 0) {\r\n                          for (let item of it.firstPageExploreItems) {\r\n                        %>\r\n      \r\n                          <li class=\"flex-card-small\">\r\n                            <a href=\"<%= link(`t/${item.tokenId}`) %>\" class=\"item-link\">\r\n                                <div class=\"card\" >\r\n                                    <div class=\"card-content\">\r\n                                        <div class=\"square\">\r\n                                            <img src=\"<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>\"/>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </a>\r\n                          </li>\r\n      \r\n                        <%\r\n                            }\r\n                          }                  \r\n                        %>\r\n\r\n\r\n                      </ul>\r\n                    </div>\r\n\r\n                  </div>\r\n                  <div class=\"card-footer\"><a href=\"<%= link('explore.html') %>\" class=\"link\">Explore more</a></div>\r\n                </div>\r\n\r\n\r\n                <% \r\n                  if (channelViewModel.staticPagesViewModel.index?.length > 0) {\r\n\r\n                    for (let staticPage of channelViewModel.staticPagesViewModel.index) {\r\n                 %>\r\n\r\n                  <div class=\"card static-page-card\">   \r\n                    <div class=\"card-content card-content-padding\">\r\n                      <%~ staticPage.contentHTML %>\r\n                    </div>               \r\n                  </div>\r\n\r\n                <%\r\n                    }\r\n                  }                  \r\n                %>\r\n\r\n\r\n\r\n\r\n\r\n                <% if (channelViewModel?.channel.licenseHTML?.length > 0) { %>\r\n\r\n                  <div class=\"block-title block-title-small\">License</div>\r\n                  <div class=\"card\">\r\n                    <div class=\"card-content card-content-padding license\">\r\n                      <%~ channelViewModel?.channel.licenseHTML %>\r\n                    </div>\r\n                    \r\n                  </div>\r\n\r\n                <% } %>\r\n\r\n\r\n\r\n              </div>\r\n\r\n              <div class=\"col-100 large-25\">                \r\n\r\n                <div class=\"list links-list inset\">   \r\n                  <ul>\r\n                \r\n                <%\r\n                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {\r\n                %>\r\n                      <li><a href=\"<%= link(`${staticPage.slug}.html`) %>\"><%= staticPage.name %></a></li>\r\n                <%\r\n                  }\r\n                  \r\n                %>\r\n                    <li><a href=\"<%= link(`attributes.html`) %>\">Attribute Report</a></li>\r\n\r\n                  </ul>\r\n                </div>\r\n\r\n\r\n                <% \r\n                  if (marketplaces?.length > 0) {\r\n                %>\r\n                <div class=\"block-title block-title-medium\">Marketplaces</div>\r\n\r\n                <div class=\"list simple-list inset\">\r\n                  <ul>\r\n                  \r\n                    <% \r\n                      for (let marketplace of marketplaces) { \r\n                    %>  \r\n                      <li><a href=\"<%= marketplaceLink(marketplace) %>\" class=\"external\"><%= marketplace.name %></a></li>     \r\n                    <%\r\n                      }\r\n                    %>\r\n\r\n                  </ul>\r\n                </div>\r\n                <%\r\n                  }\r\n                %>\r\n\r\n\r\n                <% if (showMintPage) { %>\r\n                  <mint-info\r\n                    baseurl=\"<%= baseURL %>\"\r\n                  ></mint-info>\r\n                <% } %>\r\n\r\n\r\n                <div class=\"block-title block-title-medium\">Fork Collection</div>\r\n                <div class=\"list links-list inset\">   \r\n                  <ul>\r\n                      <li>\r\n                        <a href=\"<%= link(`large/admin/app.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>\" class=\"external\">\r\n                          Fork\r\n                        </a>\r\n                      </li>\r\n                      <li>\r\n                        <a href=\"<%= link(`large/admin/app.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>\" class=\"external\">\r\n                          Your projects\r\n                        </a>\r\n                      </li>\r\n\r\n\r\n                  </ul>\r\n                </div>\r\n\r\n\r\n              </div>\r\n              \r\n            </div>\r\n\r\n          </div>\r\n\r\n        </div>\r\n\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n    \r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n      const init = (props, { $, $f7, $h, $on, $update }) => {\r\n              \r\n            let baseURI = globalThis.container.get(\"baseURI\")\r\n            let itemWebService = globalThis.container.get(\"ItemWebService\")\r\n\r\n            const PER_PAGE = 35\r\n\r\n            let firstPageExploreItems \r\n\r\n            let swiper\r\n\r\n            const link = (href) => {\r\n              return baseURI + href\r\n            }   \r\n\r\n\r\n            $on('pageInit', async () => {\r\n\r\n              //Make links external\r\n              let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')\r\n\r\n              for (let link of links) {\r\n                link.classList.add('external')\r\n              }\r\n\r\n              // swiper = $f7.swiper.create('#swiper-index', {\r\n              //       initialSlide: 0,\r\n              //       effect: 'fade',\r\n              //       fadeEffect: {\r\n              //           crossFade: true\r\n              //       },\r\n              //       on: {\r\n              //           slideChange() {\r\n\r\n              //               const swiper = this\r\n\r\n              //               let slide = swiper.$wrapperEl.children('.swiper-slide').eq(swiper.activeIndex)\r\n\r\n              //               let url = $(slide).data('url')\r\n\r\n              //                if (url) {\r\n              //                   $f7.views.main.router.navigate(url, {\r\n              //                     transition: 'none',\r\n              //                     // clearPreviousHistory: true,\r\n              //                     reloadAll: true\r\n              //                   })\r\n              //               }\r\n\r\n              //           }\r\n              //       }\r\n              //   })\r\n\r\n\r\n            })\r\n\r\n            $on('pageBeforeOut', async () => {\r\n              // console.log('Destroying swiper #swiper-index')\r\n              // $f7.swiper.destroy('#swiper-index')\r\n            })\r\n\r\n\r\n\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"<%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`index.html`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`index.html`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"<%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"<%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render;\r\n\r\n          \r\n\r\n      }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n      let baseURL = '<%= baseURL %>'\r\n      let hostname = '<%= hostname %>'\r\n      let channelId = '<%= channelId %>'\r\n      let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n      let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n      let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n    </script>\r\n\r\n  </body>\r\n\r\n</html>";
+module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let baseDir = it.baseViewModel.baseDir\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }   \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n    const absoluteLink = (href) => {\r\n      return `${hostname + baseURL + href}`\r\n    }   \r\n    \r\n    const escapeExcerpt = (excerpt) => {\r\n      excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n      return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n\r\n    const marketplaceLink = (marketplace) => {\r\n\r\n      let link = marketplace.link \r\n\r\n      //Replace contract if we find it \r\n      if (channelViewModel.channel.contractAddress) {\r\n        link = link.replace(\"{contractId}\", channelViewModel.channel.contractAddress)\r\n      }\r\n\r\n      return link\r\n    }\r\n\r\n\r\n%>\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n  <head>\r\n    <style>\r\n      html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n      }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n      content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n      <%= it.title %>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"<%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`index.html`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`index.html`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"<%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n\r\n  </head>\r\n\r\n  <body>\r\n\r\n    <div id=\"app\">\r\n\r\n      <div class=\"view view-main\">\r\n\r\n        <div class=\"page\" data-name=\"home\">\r\n\r\n          <nav-bar\r\n            logo=\"<%=logo%>\"\r\n            title=\"<%=channelViewModel.channel.title%>\"\r\n            show_mint_page=\"<%=showMintPage%>\"\r\n          >\r\n          </nav-bar>\r\n\r\n          <token-toolbar\r\n            token_id=\"0\"\r\n            item_count=\"<%= channelViewModel.channel.itemCount %>\" \r\n          >\r\n          </token-toolbar>\r\n\r\n          <!-- <% if (it.firstPost.item) { %>\r\n            <div class=\"fab fab-right-center small-only\">\r\n                <a href=\"<%= link(`t/${it.firstPost.item.tokenId}`) %>\" data-transition=\"none\">\r\n                    <i class=\"icon f7-icons color-blue\">arrow_right</i>\r\n                </a>\r\n            </div>\r\n          <% } %> -->\r\n\r\n\r\n\r\n          <div class=\"page-content\">\r\n\r\n            <div class=\"row\">\r\n\r\n              <div class=\"col-100 large-75\">\r\n\r\n\r\n                <div class=\"block block-strong inset col-100 no-margin-bottom\">\r\n                  <div class=\"breadcrumbs \">\r\n                    <div class=\"breadcrumbs-item breadcrumbs-item-active\">\r\n                      Home\r\n                    </div> \r\n                  </div>\r\n                </div>\r\n\r\n\r\n                <div class=\"card channel-card-show\">\r\n\r\n                  <div class=\"card-header banner\" id=\"banner\" <% if(channelViewModel?.channel.coverBannerId) { %>\r\n                    style=\"background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')\"\r\n                      <% } %>\r\n                        >\r\n\r\n                        <a href=\"<%= link('index.html') %>\">\r\n                          <% if (channelViewModel?.channel.coverImageId) { %>\r\n                            <img src=\"<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" class=\"avatar\" />\r\n                          <% } else { %>\r\n                            <i class=\"f7-icons avatar\">photo</i>\r\n                          <% } %>\r\n                        </a>\r\n\r\n                  </div>\r\n\r\n                  <div class=\"card-content card-content-padding\">\r\n\r\n                    <div class=\"title\">\r\n                      <%= channelViewModel.channel.title %>\r\n                    </div>\r\n\r\n                    <% if(channelViewModel?.authorDisplayName) { %>\r\n                      <div class=\"name\">\r\n                        By <a href=\"https://etherscan.io/address/<%=channelViewModel?.author._id%>\" class=\"external\">\r\n                          <%= channelViewModel?.authorDisplayName %>\r\n                        </a>\r\n                      </div>\r\n                    <% } %>\r\n\r\n                    <div class=\"description\" id=\"channel-show-description-<%=channelViewModel.channel._id%>\">\r\n                      <%~ channelViewModel.channel?.descriptionHTML %>\r\n                    </div>\r\n\r\n\r\n                    <ul>\r\n\r\n                      <% if(channelViewModel.channel?.contractAddress) { %>\r\n                        <li>\r\n                          <a class=\"link external\" href=\"https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>\">Etherscan</a>\r\n                        </li>\r\n                      <% } %>\r\n\r\n                      <% for (let externalLink of externalLinks) { %>\r\n                        <li>\r\n                          <a class=\"link external\" href=\"<%= externalLink.link %>\"><%= externalLink.name %></a>\r\n                        </li>\r\n                      <% } %>\r\n\r\n                    </ul>\r\n\r\n\r\n                    <div class=\"start-buttons\">\r\n                      <a href=\"<%= link(`t/${it.firstPost.item.tokenId}`) %>\" class=\"button button-fill text-color-white ready-button\" data-transition=\"f7-cover\">Start</a>\r\n                    </div>\r\n\r\n\r\n                  </div>\r\n\r\n                </div>\r\n\r\n                <event-info type=\"home\" display=\"25\"></event-info>\r\n\r\n                <div class=\"card\">\r\n                  <div class=\"card-header\">Explore</div>\r\n                  <div class=\"card-content\">\r\n                    \r\n                    <div class=\"list cards-list virtual-list\" id=\"explore-list-index\">\r\n                      <ul class=\"item-flex\">\r\n\r\n                        <% \r\n                        if (it.firstPageExploreItems?.length > 0) {\r\n                          for (let item of it.firstPageExploreItems) {\r\n                        %>\r\n      \r\n                          <li class=\"flex-card-small\">\r\n                            <a href=\"<%= link(`t/${item.tokenId}`) %>\" class=\"item-link\">\r\n                                <div class=\"card\" >\r\n                                    <div class=\"card-content\">\r\n                                        <div class=\"square\">\r\n                                            <img src=\"<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>\"/>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </a>\r\n                          </li>\r\n      \r\n                        <%\r\n                            }\r\n                          }                  \r\n                        %>\r\n\r\n\r\n                      </ul>\r\n                    </div>\r\n\r\n                  </div>\r\n                  <div class=\"card-footer\"><a href=\"<%= link('explore.html') %>\" class=\"link\">Explore more</a></div>\r\n                </div>\r\n\r\n\r\n                <% \r\n                  if (channelViewModel.staticPagesViewModel.index?.length > 0) {\r\n\r\n                    for (let staticPage of channelViewModel.staticPagesViewModel.index) {\r\n                 %>\r\n\r\n                  <div class=\"card static-page-card\">   \r\n                    <div class=\"card-content card-content-padding\">\r\n                      <%~ staticPage.contentHTML %>\r\n                    </div>               \r\n                  </div>\r\n\r\n                <%\r\n                    }\r\n                  }                  \r\n                %>\r\n\r\n\r\n\r\n\r\n\r\n                <% if (channelViewModel?.channel.licenseHTML?.length > 0) { %>\r\n\r\n                  <div class=\"block-title block-title-small\">License</div>\r\n                  <div class=\"card\">\r\n                    <div class=\"card-content card-content-padding license\">\r\n                      <%~ channelViewModel?.channel.licenseHTML %>\r\n                    </div>\r\n                    \r\n                  </div>\r\n\r\n                <% } %>\r\n\r\n\r\n\r\n              </div>\r\n\r\n              <div class=\"col-100 large-25\">                \r\n\r\n                <div class=\"list links-list inset\">   \r\n                  <ul>\r\n                \r\n                <%\r\n                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {\r\n                %>\r\n                      <li><a href=\"<%= link(`${staticPage.slug}.html`) %>\"><%= staticPage.name %></a></li>\r\n                <%\r\n                  }\r\n                  \r\n                %>\r\n                    <li><a href=\"<%= link(`attributes.html`) %>\">Attribute Report</a></li>\r\n\r\n                  </ul>\r\n                </div>\r\n\r\n\r\n                <% \r\n                  if (marketplaces?.length > 0) {\r\n                %>\r\n                <div class=\"block-title block-title-medium\">Marketplaces</div>\r\n\r\n                <div class=\"list simple-list inset\">\r\n                  <ul>\r\n                  \r\n                    <% \r\n                      for (let marketplace of marketplaces) { \r\n                    %>  \r\n                      <li><a href=\"<%= marketplaceLink(marketplace) %>\" class=\"external\"><%= marketplace.name %></a></li>     \r\n                    <%\r\n                      }\r\n                    %>\r\n\r\n                  </ul>\r\n                </div>\r\n                <%\r\n                  }\r\n                %>\r\n\r\n\r\n                <% if (showMintPage) { %>\r\n                  <mint-info\r\n                    baseurl=\"<%= baseURL %>\"\r\n                  ></mint-info>\r\n                <% } %>\r\n\r\n\r\n                <div class=\"block-title block-title-medium\">Fork Collection</div>\r\n                <div class=\"list links-list inset\">   \r\n                  <ul>\r\n                      <li>\r\n                        <a href=\"<%= link(`large/admin/app.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>\" class=\"external\">\r\n                          Fork\r\n                        </a>\r\n                      </li>\r\n                      <li>\r\n                        <a href=\"<%= link(`large/admin/app.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>\" class=\"external\">\r\n                          Your projects\r\n                        </a>\r\n                      </li>\r\n\r\n\r\n                  </ul>\r\n                </div>\r\n\r\n\r\n              </div>\r\n              \r\n            </div>\r\n\r\n          </div>\r\n\r\n        </div>\r\n\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n    \r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n      const init = (props, { $, $f7, $h, $on, $update }) => {\r\n              \r\n            let baseURI = globalThis.container.get(\"baseURI\")\r\n            let itemWebService = globalThis.container.get(\"ItemWebService\")\r\n\r\n            const PER_PAGE = 35\r\n\r\n            let firstPageExploreItems \r\n            let latestEvents\r\n\r\n            let swiper\r\n\r\n            const link = (href) => {\r\n              return baseURI + href\r\n            }   \r\n\r\n\r\n            $on('pageInit', async () => {\r\n\r\n              //Make links external\r\n              let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')\r\n\r\n              for (let link of links) {\r\n                link.classList.add('external')\r\n              }\r\n\r\n              await $update()\r\n\r\n              // swiper = $f7.swiper.create('#swiper-index', {\r\n              //       initialSlide: 0,\r\n              //       effect: 'fade',\r\n              //       fadeEffect: {\r\n              //           crossFade: true\r\n              //       },\r\n              //       on: {\r\n              //           slideChange() {\r\n\r\n              //               const swiper = this\r\n\r\n              //               let slide = swiper.$wrapperEl.children('.swiper-slide').eq(swiper.activeIndex)\r\n\r\n              //               let url = $(slide).data('url')\r\n\r\n              //                if (url) {\r\n              //                   $f7.views.main.router.navigate(url, {\r\n              //                     transition: 'none',\r\n              //                     // clearPreviousHistory: true,\r\n              //                     reloadAll: true\r\n              //                   })\r\n              //               }\r\n\r\n              //           }\r\n              //       }\r\n              //   })\r\n\r\n\r\n            })\r\n\r\n            $on('pageBeforeOut', async () => {\r\n              // console.log('Destroying swiper #swiper-index')\r\n              // $f7.swiper.destroy('#swiper-index')\r\n            })\r\n\r\n\r\n\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"<%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`index.html`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`index.html`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"<%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"<%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render;\r\n\r\n          \r\n\r\n      }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n      let baseURL = '<%= baseURL %>'\r\n      let hostname = '<%= hostname %>'\r\n      let channelId = '<%= channelId %>'\r\n      let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n      let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n      let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n    </script>\r\n\r\n  </body>\r\n\r\n</html>";
 
 /***/ }),
 

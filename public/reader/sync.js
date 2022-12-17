@@ -59654,21 +59654,22 @@ class ERCEvent {
     blockNumber;
     blockHash;
     transactionIndex;
+    transactionHash;
+    transaction;
     removed;
     address;
     data;
     topics;
-    transactionHash;
     logIndex;
     args;
     event;
     eventSignature;
-    transaction;
     isTransfer;
     fromAddress;
     toAddress;
     tokenId;
     previous;
+    rowItemViewModel;
     previousByToken;
     lastUpdated;
     dateCreated;
@@ -59695,6 +59696,14 @@ __decorate([
 ], ERCEvent.prototype, "transactionIndex", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ERCEvent.prototype, "transactionHash", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ERCEvent.prototype, "transaction", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Boolean)
 ], ERCEvent.prototype, "removed", void 0);
 __decorate([
@@ -59711,10 +59720,6 @@ __decorate([
 ], ERCEvent.prototype, "topics", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], ERCEvent.prototype, "transactionHash", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Number)
 ], ERCEvent.prototype, "logIndex", void 0);
 __decorate([
@@ -59729,10 +59734,6 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "eventSignature", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Object)
-], ERCEvent.prototype, "transaction", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Boolean)
@@ -59753,6 +59754,10 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "previous", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ERCEvent.prototype, "rowItemViewModel", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -59838,6 +59843,64 @@ __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/dto/transaction.ts":
+/*!***************************************!*\
+  !*** ./src/reader/dto/transaction.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Transaction": () => (/* binding */ Transaction)
+/* harmony export */ });
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/decorator/common/Allow.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+class Transaction {
+    _id;
+    _rev;
+    transactionHash;
+    data;
+    lastUpdated;
+    dateCreated;
+}
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "_id", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "_rev", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "transactionHash", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], Transaction.prototype, "data", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "lastUpdated", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], Transaction.prototype, "dateCreated", void 0);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/node-inversify.config.ts":
 /*!*********************************************!*\
   !*** ./src/reader/node-inversify.config.ts ***!
@@ -59857,37 +59920,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _repository_node_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./repository/node/item-page-repository-impl.js */ "./src/reader/repository/node/item-page-repository-impl.ts");
 /* harmony import */ var _repository_node_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./repository/node/item-repository-impl.js */ "./src/reader/repository/node/item-repository-impl.ts");
 /* harmony import */ var _repository_node_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./repository/node/static-page-repository-impl.js */ "./src/reader/repository/node/static-page-repository-impl.ts");
-/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
-/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
-/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
-/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
-/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
-/* harmony import */ var _service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./service/core/image-generator-service.js */ "./src/reader/service/core/image-generator-service.ts");
-/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
-/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
-/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
-/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
-/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
-/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
+/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
+/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
+/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
+/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
+/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var _service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./service/core/image-generator-service.js */ "./src/reader/service/core/image-generator-service.ts");
+/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
+/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
+/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
+/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
+/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
+/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
 /* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/reader/service/core/wallet-service-impl.ts");
-/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
-/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
-/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
-/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
-/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
-/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
-/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
+/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
+/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
+/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
+/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
+/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
+/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
+/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/url-json-rpc-provider.js");
-/* harmony import */ var _service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/core/generate-service.js */ "./src/reader/service/core/generate-service.ts");
-/* harmony import */ var _repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./repository/node/erc-event-repository-impl.js */ "./src/reader/repository/node/erc-event-repository-impl.ts");
-/* harmony import */ var _repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./repository/node/contract-state-repository-impl.js */ "./src/reader/repository/node/contract-state-repository-impl.ts");
+/* harmony import */ var _service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/core/generate-service.js */ "./src/reader/service/core/generate-service.ts");
+/* harmony import */ var _repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./repository/node/erc-event-repository-impl.js */ "./src/reader/repository/node/erc-event-repository-impl.ts");
+/* harmony import */ var _repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./repository/node/contract-state-repository-impl.js */ "./src/reader/repository/node/contract-state-repository-impl.ts");
 /* harmony import */ var _repository_node_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./repository/node/token-owner-repository-impl.js */ "./src/reader/repository/node/token-owner-repository-impl.ts");
-/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _repository_node_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./repository/node/transaction-repository-impl.js */ "./src/reader/repository/node/transaction-repository-impl.ts");
+/* harmony import */ var _service_transaction_service_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/transaction-service.js */ "./src/reader/service/transaction-service.ts");
+
+
 
 
 
@@ -59954,6 +60021,7 @@ function getMainContainer(command) {
     container.bind("ItemPageRepository").to(_repository_node_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_8__.ItemPageRepositoryNodeImpl).inSingletonScope();
     container.bind("AttributeTotalRepository").to(_repository_node_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_9__.AttributeTotalRepositoryNodeImpl).inSingletonScope();
     container.bind("TokenOwnerRepository").to(_repository_node_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_10__.TokenOwnerRepositoryNodeImpl).inSingletonScope();
+    container.bind("TransactionRepository").to(_repository_node_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__.TransactionRepositoryNodeImpl).inSingletonScope();
     container.bind("ReaderSettingsRepository").toConstantValue({
         get: function () {
             throw new Error("Function not implemented.");
@@ -59962,8 +60030,8 @@ function getMainContainer(command) {
             throw new Error("Function not implemented.");
         }
     });
-    container.bind("ERCEventRepository").to(_repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__.ERCEventRepositoryNodeImpl).inSingletonScope();
-    container.bind("ContractStateRepository").to(_repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__.ContractStateRepositoryNodeImpl).inSingletonScope();
+    container.bind("ERCEventRepository").to(_repository_node_erc_event_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__.ERCEventRepositoryNodeImpl).inSingletonScope();
+    container.bind("ContractStateRepository").to(_repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__.ContractStateRepositoryNodeImpl).inSingletonScope();
     container.bind("ComponentStateRepository").toConstantValue({
         get: function (_id) {
             throw new Error("Function not implemented.");
@@ -59972,33 +60040,34 @@ function getMainContainer(command) {
             throw new Error("Function not implemented.");
         }
     });
-    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_13__.SchemaService).inSingletonScope();
-    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_14__.DatabaseService).inSingletonScope();
-    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_15__.ChannelWebService).inSingletonScope();
-    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_16__.ItemWebService).inSingletonScope();
-    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_17__.AuthorWebService).inSingletonScope();
-    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_18__.SearchbarService).inSingletonScope();
-    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_19__.StaticPageService).inSingletonScope();
-    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_20__.ItemPageService).inSingletonScope();
-    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_21__.PagingService).inSingletonScope();
-    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_22__.AnimationService).inSingletonScope();
-    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_23__.ImageService).inSingletonScope();
-    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_24__.ItemService).inSingletonScope();
-    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_25__.ChannelService).inSingletonScope();
-    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_26__.AuthorService).inSingletonScope();
-    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_27__.UiService).inSingletonScope();
-    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_28__.QueueService).inSingletonScope();
-    container.bind("ImageGeneratorService").to(_service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_29__.ImageGeneratorService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_30__.ReaderSettingsService).inSingletonScope();
-    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_31__.TransactionIndexerService).inSingletonScope();
-    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_32__.ContractStateService).inSingletonScope();
-    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_33__.ERCEventService).inSingletonScope();
-    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_34__.AttributeTotalService).inSingletonScope();
-    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_35__.ComponentStateService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_30__.ReaderSettingsService).inSingletonScope();
-    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_36__.QuillService).inSingletonScope();
-    container.bind("GenerateService").to(_service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_37__.GenerateService).inSingletonScope();
-    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_38__.TokenOwnerService).inSingletonScope();
+    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_14__.SchemaService).inSingletonScope();
+    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_15__.DatabaseService).inSingletonScope();
+    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_16__.ChannelWebService).inSingletonScope();
+    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_17__.ItemWebService).inSingletonScope();
+    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_18__.AuthorWebService).inSingletonScope();
+    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_19__.SearchbarService).inSingletonScope();
+    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_20__.StaticPageService).inSingletonScope();
+    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_21__.ItemPageService).inSingletonScope();
+    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_22__.PagingService).inSingletonScope();
+    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_23__.AnimationService).inSingletonScope();
+    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_24__.ImageService).inSingletonScope();
+    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_25__.ItemService).inSingletonScope();
+    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_26__.ChannelService).inSingletonScope();
+    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_27__.AuthorService).inSingletonScope();
+    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_28__.UiService).inSingletonScope();
+    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_29__.QueueService).inSingletonScope();
+    container.bind("ImageGeneratorService").to(_service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_30__.ImageGeneratorService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_31__.ReaderSettingsService).inSingletonScope();
+    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_32__.TransactionIndexerService).inSingletonScope();
+    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_33__.ContractStateService).inSingletonScope();
+    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_34__.ERCEventService).inSingletonScope();
+    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_35__.AttributeTotalService).inSingletonScope();
+    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_36__.ComponentStateService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_31__.ReaderSettingsService).inSingletonScope();
+    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_37__.QuillService).inSingletonScope();
+    container.bind("GenerateService").to(_service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_38__.GenerateService).inSingletonScope();
+    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_39__.TokenOwnerService).inSingletonScope();
+    container.bind("TransactionService").to(_service_transaction_service_js__WEBPACK_IMPORTED_MODULE_40__.TransactionService).inSingletonScope();
     return container;
 }
 
@@ -60035,26 +60104,6 @@ let changesets = [
                     fields: ['tokenId', 'blockNumber', 'logIndex']
                 }
             });
-            // await db.put({
-            //     _id: '_design/by_token_id',
-            //     views: {
-            //         by_token_id: {
-            //                 map: function (doc) { 
-            //                     let ids = []
-            //                     switch(doc.event) {
-            //                         case "Transfer":
-            //                         case "Approval":
-            //                             ids.push(doc.args[2])
-            //                             break
-            //                     }
-            //                     for (let tokenId of ids) {
-            //                         //@ts-ignore
-            //                         emit([ parseInt(tokenId), doc.blockNumber, doc.logIndex ])
-            //                     }
-            //                 }.toString(),
-            //         }
-            //     }
-            // })
         }
     }
 ];
@@ -60444,15 +60493,6 @@ let ERCEventRepositoryNodeImpl = class ERCEventRepositoryNodeImpl {
             console.log(response.warning);
         }
         return response.docs;
-        // let result = await this.db.query('by_token_id', {
-        //     include_docs: true,
-        //     startkey: [tokenId, {},{}],
-        //     endkey: [tokenId, 0, 0],
-        //     descending: true,
-        //     limit: limit,
-        //     skip: skip
-        // })
-        // return result.rows.map( row => row.doc)
     }
 };
 __decorate([
@@ -60620,6 +60660,7 @@ let ItemRepositoryNodeImpl = class ItemRepositoryNodeImpl {
     baseDir;
     static CHUNK_SIZE = _item_repository_js__WEBPACK_IMPORTED_MODULE_1__.CHUNK_SIZE;
     items = [];
+    dbName = "items";
     constructor(baseDir) {
         this.baseDir = baseDir;
     }
@@ -60643,7 +60684,11 @@ let ItemRepositoryNodeImpl = class ItemRepositoryNodeImpl {
         return;
     }
     async getByTokenId(tokenId) {
-        return;
+        let matches = this.items.filter(item => item.tokenId == tokenId);
+        if (matches?.length > 0) {
+            return matches[0];
+        }
+        return matches[0];
     }
     async listByTokenId(startTokenId, limit) {
         return [];
@@ -60805,6 +60850,83 @@ TokenOwnerRepositoryNodeImpl = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TokenOwnerRepositoryNodeImpl);
+
+
+
+/***/ }),
+
+/***/ "./src/reader/repository/node/transaction-repository-impl.ts":
+/*!*******************************************************************!*\
+  !*** ./src/reader/repository/node/transaction-repository-impl.ts ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionRepositoryNodeImpl": () => (/* binding */ TransactionRepositoryNodeImpl)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_transaction_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../dto/transaction.js */ "./src/reader/dto/transaction.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let TransactionRepositoryNodeImpl = class TransactionRepositoryNodeImpl {
+    db;
+    dbName = "transactions";
+    databaseService;
+    walletService;
+    async load() {
+        this.db = await this.databaseService.getDatabase({
+            name: this.dbName,
+            initialRecords: false,
+        });
+    }
+    async get(_id) {
+        let transaction;
+        try {
+            transaction = await this.db.get(_id);
+        }
+        catch (ex) { }
+        if (!transaction) {
+            try {
+                //Download it.
+                transaction = await this.walletService.provider.getTransaction(_id);
+                transaction._id = _id;
+                //Save it
+                await this.db.put(transaction);
+            }
+            catch (ex) {
+                console.log(ex);
+            }
+        }
+        return Object.assign(new _dto_transaction_js__WEBPACK_IMPORTED_MODULE_0__.Transaction(), transaction);
+    }
+    async put(transaction) {
+        await this.db.put(transaction);
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('DatabaseService'),
+    __metadata("design:type", _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__.DatabaseService)
+], TransactionRepositoryNodeImpl.prototype, "databaseService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)('WalletService'),
+    __metadata("design:type", Object)
+], TransactionRepositoryNodeImpl.prototype, "walletService", void 0);
+TransactionRepositoryNodeImpl = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)()
+], TransactionRepositoryNodeImpl);
 
 
 
@@ -61824,6 +61946,7 @@ let SchemaService = class SchemaService {
     attributeTotalRepository;
     componentStateRepository;
     tokenOwnerRepository;
+    transactionRepository;
     constructor() {
     }
     async load(dbs) {
@@ -61842,6 +61965,7 @@ let SchemaService = class SchemaService {
         repositories.push(this.attributeTotalRepository);
         repositories.push(this.componentStateRepository);
         repositories.push(this.tokenOwnerRepository);
+        repositories.push(this.transactionRepository);
         for (let db of dbs) {
             let repo = repositories.filter(r => r.dbName == db)[0];
             if (!repo)
@@ -61914,6 +62038,10 @@ __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("TokenOwnerRepository"),
     __metadata("design:type", Object)
 ], SchemaService.prototype, "tokenOwnerRepository", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("TransactionRepository"),
+    __metadata("design:type", Object)
+], SchemaService.prototype, "transactionRepository", void 0);
 SchemaService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __metadata("design:paramtypes", [])
@@ -61935,11 +62063,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/address/lib.esm/index.js");
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 /* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
 /* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
 /* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _image_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../image-service.js */ "./src/reader/service/image-service.ts");
 /* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
+/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -61955,11 +62086,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
 let TransactionIndexerService = class TransactionIndexerService {
     contractStateService;
     ercEventService;
     tokenOwnerService;
+    itemWebService;
+    imageService;
     walletService;
+    transactionService;
     blockNumber;
     topics;
     contractState;
@@ -62002,7 +62139,10 @@ let TransactionIndexerService = class TransactionIndexerService {
         let previous;
         for (let event of events) {
             //Translate
-            let ercEvent = this.ercEventService.translateEventToERCEvent(event);
+            let ercEvent = await this.ercEventService.translateEventToERCEvent(event);
+            //Grab transaction data
+            let transaction = await this.transactionService.get(ercEvent.transactionHash);
+            ercEvent.transaction = transaction;
             //Check if it already exists. Merge details.
             try {
                 let existing = await this.ercEventService.get(ercEvent._id);
@@ -62029,6 +62169,15 @@ let TransactionIndexerService = class TransactionIndexerService {
                 if (ercEvent.previous) {
                     previousEvent = await this.ercEventService.get(ercEvent.previous);
                 }
+            }
+            if (ercEvent.tokenId) {
+                //Look up itemViewModel if token.
+                let item = await this.itemWebService.getByTokenId(ercEvent.tokenId);
+                let coverImage;
+                if (item.coverImageId) {
+                    coverImage = await this.imageService.get(item.coverImageId);
+                }
+                ercEvent.rowItemViewModel = this.itemWebService.translateRowItemViewModel(item, coverImage);
             }
             let processResult = await this.ercEventService.process(ercEvent, previousEvent, previousEventByToken);
             ercEvent = processResult.ercEvent;
@@ -62125,11 +62274,23 @@ __decorate([
     __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_5__.TokenOwnerService)
 ], TransactionIndexerService.prototype, "tokenOwnerService", void 0);
 __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("ItemWebService"),
+    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_6__.ItemWebService)
+], TransactionIndexerService.prototype, "itemWebService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("ImageService"),
+    __metadata("design:type", _image_service_js__WEBPACK_IMPORTED_MODULE_7__.ImageService)
+], TransactionIndexerService.prototype, "imageService", void 0);
+__decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("WalletService"),
     __metadata("design:type", Object)
 ], TransactionIndexerService.prototype, "walletService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TransactionService"),
+    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_8__.TransactionService)
+], TransactionIndexerService.prototype, "transactionService", void 0);
 TransactionIndexerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_6__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_9__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TransactionIndexerService);
 function sleep(ms) {
@@ -62434,6 +62595,24 @@ let ERCEventService = class ERCEventService {
         result.ercEvent = ercEvent;
         return result;
     }
+    async listFrom(limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let event = await this.get(startId);
+            results.push(event);
+            let previousId = event?.previous;
+            //Get the previous
+            if (previousId) {
+                //See 
+                event = await this.get(event.previous);
+                if (event?._id != previousId)
+                    break;
+            }
+            startId = event._id;
+        }
+        console.log(results);
+        return results;
+    }
     async list(limit, skip) {
         return this.ercEventRepository.list(limit, skip);
     }
@@ -62467,7 +62646,7 @@ let ERCEventService = class ERCEventService {
         }
         return tokenOwner;
     }
-    translateEventToERCEvent(event) {
+    async translateEventToERCEvent(event) {
         let ercEvent = new _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_3__.ERCEvent();
         ercEvent.blockNumber = event.blockNumber;
         ercEvent.blockHash = event.blockHash;
@@ -62913,6 +63092,68 @@ TokenOwnerService = __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/service/transaction-service.ts":
+/*!***************************************************!*\
+  !*** ./src/reader/service/transaction-service.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TransactionService": () => (/* binding */ TransactionService)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let TransactionService = class TransactionService {
+    transactionRepository;
+    constructor() { }
+    async get(_id) {
+        return this.transactionRepository.get(_id);
+    }
+    async put(transaction) {
+        if (!transaction._id) {
+            transaction._id = transaction.transactionHash;
+            transaction.dateCreated = new Date().toJSON();
+        }
+        transaction.lastUpdated = new Date().toJSON();
+        //Validate
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.validate)(transaction, {
+            forbidUnknownValues: true,
+            whitelist: true
+        });
+        if (errors.length > 0) {
+            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__.ValidationException(errors);
+        }
+        return this.transactionRepository.put(transaction);
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TransactionRepository"),
+    __metadata("design:type", Object)
+], TransactionService.prototype, "transactionRepository", void 0);
+TransactionService = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
+    __metadata("design:paramtypes", [])
+], TransactionService);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/service/web/author-web-service.ts":
 /*!******************************************************!*\
   !*** ./src/reader/service/web/author-web-service.ts ***!
@@ -63139,6 +63380,9 @@ let ItemWebService = class ItemWebService {
         //Get attribute report
         const attributeReport = await this.attributeTotalService.list();
         return this.getViewModel(item, channel, attributeReport);
+    }
+    async getByTokenId(tokenId) {
+        return this.itemService.getByTokenId(tokenId);
     }
     async getViewModel(item, channel, attributeReport) {
         let attributeSelections = [];
@@ -79317,7 +79561,7 @@ let sync = async () => {
     channelId = channelViewModel.channel._id;
     fs__WEBPACK_IMPORTED_MODULE_3___default().mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true });
     fs__WEBPACK_IMPORTED_MODULE_3___default().mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true });
-    await schemaService.load(["erc-events", "contract-states", "token-owners"]);
+    await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions"]);
     console.log(`Schema loaded`);
     let transactionIndexerService = container.get("TransactionIndexerService");
     let tokenOwnerService = container.get("TokenOwnerService");
@@ -79347,7 +79591,10 @@ let sync = async () => {
         if (events?.length > 0) {
             for (let event of events) {
                 console.log(`Generating JSON for ${event._id}`);
-                fs__WEBPACK_IMPORTED_MODULE_3___default().writeFileSync(`${config.publicPath}/sync/events/${event._id}.json`, Buffer.from(JSON.stringify(event)));
+                let clonedEvent = JSON.parse(JSON.stringify(event));
+                delete clonedEvent._rev;
+                delete clonedEvent['_rev_tree'];
+                fs__WEBPACK_IMPORTED_MODULE_3___default().writeFileSync(`${config.publicPath}/sync/events/${clonedEvent._id}.json`, Buffer.from(JSON.stringify(clonedEvent)));
                 //Save id of latest event for token
                 if (event.tokenId) {
                     fs__WEBPACK_IMPORTED_MODULE_3___default().writeFileSync(`${config.publicPath}/sync/tokenEvents/${event.tokenId}-latest.json`, Buffer.from(JSON.stringify({

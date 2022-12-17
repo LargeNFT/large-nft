@@ -32,33 +32,6 @@ let changesets:Changeset[] = [
                 }
             })
 
-
-            // await db.put({
-            //     _id: '_design/by_token_id',
-            //     views: {
-            //         by_token_id: {
-            //                 map: function (doc) { 
-
-            //                     let ids = []
-
-            //                     switch(doc.event) {
-                            
-            //                         case "Transfer":
-            //                         case "Approval":
-            //                             ids.push(doc.args[2])
-            //                             break
-            //                     }
-                            
-            //                     for (let tokenId of ids) {
-            //                         //@ts-ignore
-            //                         emit([ parseInt(tokenId), doc.blockNumber, doc.logIndex ])
-            //                     }
-
-            //                 }.toString(),
-            //         }
-            //     }
-            // })
-
         }
     }
 ]

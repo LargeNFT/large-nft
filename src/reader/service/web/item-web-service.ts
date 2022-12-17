@@ -79,6 +79,12 @@ class ItemWebService {
         return this.getViewModel(item, channel, attributeReport)
     }
 
+    async getByTokenId(tokenId:number) : Promise<Item> {
+
+        return this.itemService.getByTokenId(tokenId)
+
+    }
+
     async getViewModel(item: Item, channel:Channel, attributeReport:AttributeTotal[]): Promise<ItemViewModel> {
 
         let attributeSelections:AttributeSelectionViewModel[] = []

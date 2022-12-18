@@ -186,7 +186,7 @@ let sync = async () => {
 
       }
 
-
+      
 
 
       setTimeout(runTransactionIndexer, INDEX_RATE) 

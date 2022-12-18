@@ -125,12 +125,12 @@ class ERCEventService {
 
                 if (event?._id != previousId) break
 
+            } else {
+                event = undefined
             }
 
-            startId = event._id
+            startId = event?._id
         }
-
-        console.log(results)
 
         return results
 

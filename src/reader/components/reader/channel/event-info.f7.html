@@ -1,55 +1,50 @@
 <template>
 
   <div>
-    <div class="card">
-      <div class="card-header">Ethereum Events</div>
-      <div class="card-content card-content-padding data-table">
 
-        ${eventList ? $h`
+    ${eventList ? $h`
 
-          <table>
-            <thead>
-              <tr>
-                <th class="label-cell" colspan="2">Token</th>
-                <th class="numeric-cell">Block #</th>
-                <th class="label-cell">Event</th>
-                <th class="label-cell">Address</th>
-              </tr>
-            </thead>
+      <table>
+        <thead>
+          <tr>
+            <th class="label-cell" colspan="2">Token</th>
+            <th class="numeric-cell">Block #</th>
+            <th class="label-cell">Event</th>
+            <th class="label-cell">Address</th>
+          </tr>
+        </thead>
 
-            <tbody>
+        <tbody>
 
-          ${eventList.map(e => $h`
+      ${eventList.map(e => $h`
 
-                <tr>
-                  <td class="label-cell">
+            <tr>
+              <td class="label-cell">
 
-                    ${e.rowItemViewModel ? $h`
-                      <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
-                    ` : $h`<span />`}
+                ${e.rowItemViewModel ? $h`
+                  <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
+                ` : $h`<span />`}
 
-                  </td>
-                  <td class="label-cell">
-                    ${e.rowItemViewModel?.title}
-                  </td>
-                  <td class="numeric-cell">${e.blockNumber}</td>
-                  <td class="label-cell">${e.event}</td>
-                  <td class="label-cell">${e.address}</td>
-                </tr>
-          
-          `)}
-            </tbody>
+              </td>
+              <td class="label-cell">
+                ${e.rowItemViewModel?.title}
+              </td>
+              <td class="numeric-cell">${e.blockNumber}</td>
+              <td class="label-cell">${e.event}</td>
+              <td class="label-cell">${e.address}</td>
+            </tr>
+      
+      `)}
+        </tbody>
 
-          </table>
+      </table>
 
+      <input type="hidden" id="next-page-start" value="${nextPageStartId}" />
 
-        ` : $h`
-          No transactions found.
-        `}
+    ` : $h`
+      No transactions found.
+    `}
 
-  
-      </div>
-    </div>
   </div>
 
 </template>
@@ -66,7 +61,11 @@
     let baseURI = globalThis.container.get('baseURI')
 
     let type = props.type
-    let display = props.display
+    let display = parseInt(props.display)
+    let startId = props.start
+
+    let nextPageStartId
+    let previousPageStartId
 
     let eventList
 
@@ -83,10 +82,14 @@
     const load = async () => {
       
       try  {
-        eventList = await eventWebService.getLatestEvents()
-      } catch(ex) {
-        console.log(ex)
-      }
+
+        eventList = await eventWebService.getLatestEvents(display + 1, startId)
+
+        if (eventList.length > display) {
+          nextPageStartId = eventList[display]._id
+        }
+
+      } catch(ex) { console.log(ex) }
       
       $update()
 
@@ -94,6 +97,18 @@
 
     load()
 
+
+
+    document.addEventListener('activity-start-changed', async (e) => {
+
+      startId = e.startId
+
+      await load()
+
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+
+
+    })
 
     return $render
   }

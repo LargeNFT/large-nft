@@ -4,7 +4,6 @@ import { ContractState } from "../../dto/contract-state.js";
 import { ERCEvent } from "../../dto/erc-event.js";
 import { Image } from "../../dto/image.js";
 import { Transaction } from "../../dto/transaction.js";
-import { ItemViewModel } from "../../dto/viewmodel/item-view-model.js";
 
 import { ContractStateService } from "../contract-state-service.js";
 import { ERCEventService } from "../erc-event-service.js";
@@ -132,8 +131,6 @@ class TransactionIndexerService {
 
             } catch(ex) {}
 
-
-            
 
             let previousEvent:ERCEvent
             let previousEventByToken:ERCEvent

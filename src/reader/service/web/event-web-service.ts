@@ -19,15 +19,16 @@ class EventWebService {
         @inject("baseURI") private baseURI
     ) {}
 
-    async getLatestEvents() : Promise<ERCEvent[]> {
+    async getLatestEvents(limit:number, startId?:string) : Promise<ERCEvent[]> {
 
         await this.schemaService.load(["erc-events"])
 
-        let result = await axios.get(`${this.baseURI}sync/events/latest.json`)
+        if (!startId) {
+            let result = await axios.get(`${this.baseURI}sync/events/latest.json`)
+            startId = result.data._id
+        }
 
-        let latest = result.data
-
-        return this.ercEventService.listFrom(25, latest._id)
+        return this.ercEventService.listFrom(limit, startId)
 
     }
 

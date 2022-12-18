@@ -28,7 +28,7 @@ import fourOhFourEjs from './ejs/404.ejs'
 import attributesEjs from './ejs/pages/attributes.ejs'
 import exploreEjs from './ejs/pages/explore.ejs'
 import staticPageEjs from './ejs/pages/static-page.ejs'
-
+import activityEjs from './ejs/pages/activity.ejs'
 
 import { GenerateService, GenerateViewModel } from "./service/core/generate-service.js"
 import { ProcessConfig } from "./util/process-config.js"
@@ -233,6 +233,15 @@ let generate = async () => {
   })
 
   fs.writeFileSync(`${config.publicPath}/explore.html`, exploreResult)
+
+
+  //Events page
+  const activityResult = Eta.render(activityEjs, {
+    title: channelViewModel.channel.title,
+    baseViewModel: baseViewModel
+  })
+
+  fs.writeFileSync(`${config.publicPath}/activity.html`, activityResult)
 
 
   //404 page

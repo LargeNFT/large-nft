@@ -213,6 +213,12 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         }
       },
 
+      {
+        path: `${baseURI}activity.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'activity.html')
+        }
+      },
 
       {
         path: `${baseURI}list-:page.html`,

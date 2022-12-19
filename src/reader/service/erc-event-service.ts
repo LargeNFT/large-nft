@@ -7,7 +7,8 @@ import { BigNumber, Event } from "ethers"
 
 import { TokenOwnerService } from "./token-owner-service.js"
 import { TokenOwner } from "../dto/token-owner.js"
-import { TransactionService } from "./transaction-service.js"
+import { Transaction } from "../dto/transaction.js"
+import { Block } from "../dto/block.js"
 
 @injectable()
 class ERCEventService {
@@ -43,67 +44,7 @@ class ERCEventService {
         return this.ercEventRepository.put(ercEvent)
     }
 
-    async process(ercEvent:ERCEvent, previous:ERCEvent, previousByToken:ERCEvent) : Promise<ProcessResult> {
-
-        let result:ProcessResult = {}
-
-
-        //If it's a specific token
-        if (ercEvent.tokenId) {
-            
-            console.log(`Processing event ${ercEvent.tokenId}`)
-
-            //Update ownership if this is newer
-            let isNewTransfer
-
-            if (previousByToken) {
-                isNewTransfer = ercEvent.isTransfer && ercEvent.blockNumber >= previousByToken.blockNumber && ercEvent.logIndex > previousByToken.logIndex
-                ercEvent.previousByToken = previousByToken._id
-            } else {
-                isNewTransfer = ercEvent.isTransfer
-            }
-             
-            //Look up/create the from address
-            if (ercEvent.fromAddress) {
-                result.fromTokenOwner = await this.getTokenOwner(ercEvent.fromAddress)
-                result.fromTokenOwner.ercEventIds.push(ercEvent._id)
-            }
-
-            //Look up/create the to address
-            if (ercEvent.toAddress) {
-                result.toTokenOwner = await this.getTokenOwner(ercEvent.toAddress)
-                result.toTokenOwner.ercEventIds.push(ercEvent._id)
-            }
-
-            if (isNewTransfer) {
-
-                console.log(`Updating owner of token #${ercEvent.tokenId} from ${ercEvent.fromAddress} to ${ercEvent.toAddress}`)
-
-                //Update previous owner
-                if (result.fromTokenOwner.tokenIds.includes(ercEvent.tokenId)) {
-                    result.fromTokenOwner.tokenIds = Array.from(result.fromTokenOwner.tokenIds)?.filter(id => id != ercEvent.tokenId)
-                    result.fromTokenOwner.count = result.fromTokenOwner.tokenIds.length
-                }
-
-                //Update new owner
-                result.toTokenOwner.tokenIds.push(ercEvent.tokenId)
-                result.toTokenOwner.count = result.toTokenOwner.tokenIds.length
-
-            }
-
-        }
-
-        //Mark the previous event
-        ercEvent.previous = previous?._id
-        result.ercEvent = ercEvent
-
-
-
-        return result
-
-
-    }
-
+ 
 
     async listFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
 
@@ -115,13 +56,13 @@ class ERCEventService {
 
             results.push(event)
 
-            let previousId = event?.previous
+            let previousId = event?.previousId
 
             //Get the previous
             if (previousId) {
 
                 //See 
-                event = await this.get(event.previous)
+                event = await this.get(event.previousId)
 
                 if (event?._id != previousId) break
 
@@ -136,6 +77,38 @@ class ERCEventService {
 
     }
 
+    async listTo(limit:number, startId:string) : Promise<ERCEvent[]> {
+
+        let results:ERCEvent[] = []
+
+        while (results?.length < limit && startId) {
+
+            let event:ERCEvent = await this.get(startId)
+
+            results.push(event)
+
+            let nextId = event?.nextId
+
+            //Get the previous
+            if (nextId) {
+
+                //See 
+                event = await this.get(event.nextId)
+
+                if (event?._id != nextId) break
+
+            } else {
+                event = undefined
+            }
+
+            startId = event?._id
+        }
+
+        return results
+
+    }
+
+
     async list(limit: number, skip: number): Promise<ERCEvent[]> {
         return this.ercEventRepository.list(limit, skip)
     }
@@ -145,7 +118,7 @@ class ERCEventService {
         let l = await this.ercEventRepository.list(1, 0)
 
         if (l?.length >0) {
-            return l[0]
+            return Object.assign(new ERCEvent(), l[0])
         }
 
     }
@@ -155,7 +128,7 @@ class ERCEventService {
         let l = await this.ercEventRepository.getByTokenIdDesc(tokenId, 1, 0)
 
         if (l?.length) {
-            return l[0]
+            return Object.assign(new ERCEvent(), l[0])
         }
 
 
@@ -166,32 +139,11 @@ class ERCEventService {
     }
 
 
-    async getTokenOwner(address: string) {
-    
-        let tokenOwner
-        
-        try {
-            tokenOwner = await this.tokenOwnerService.get(address)
-        } catch (ex) { }
-    
-
-        if (!tokenOwner) {
-            tokenOwner = new TokenOwner()
-            tokenOwner.address = address
-            tokenOwner.tokenIds = []
-            tokenOwner.ercEventIds = []
-            tokenOwner.count = 0
-        }
-
-
-        return tokenOwner
-    }
-
-
-    async translateEventToERCEvent(event: Event) : Promise<ERCEvent> {
+    async translateEventToERCEvent(event: Event, transaction:Transaction, block:Block) : Promise<ERCEvent> {
     
         let ercEvent = new ERCEvent()
     
+        ercEvent.transaction = transaction
         ercEvent.blockNumber = event.blockNumber
         ercEvent.blockHash = event.blockHash
         ercEvent.transactionIndex = event.transactionIndex
@@ -202,14 +154,13 @@ class ERCEventService {
         ercEvent.transactionHash = event.transactionHash
         ercEvent.logIndex = event.logIndex
         //@ts-ignore
-        ercEvent.args = event.args
         ercEvent.event = event.event
         ercEvent.eventSignature = event.eventSignature
         // ercEvent.transaction = await event.getTransaction()
         ercEvent.dateCreated = new Date().toJSON()
     
         //Convert BigNumber args to strings
-        ercEvent.args = ercEvent.args.map(a => BigNumber.isBigNumber(a) ? a.toString() : a)
+        ercEvent.args = event.args.map(a => BigNumber.isBigNumber(a) ? a.toString() : a)
     
         //Check wether it's a transfer and if it's newer than the most recently recorded transfer
         switch(ercEvent.event) {
@@ -225,6 +176,8 @@ class ERCEventService {
     
     
         ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`
+
+        ercEvent.timestamp = block.data.timestamp
 
         return ercEvent
     }
@@ -244,14 +197,6 @@ class ERCEventService {
     
 }
 
-
-
-
-interface ProcessResult {
-    ercEvent?:ERCEvent
-    fromTokenOwner?:TokenOwner
-    toTokenOwner?:TokenOwner
-}
 
 
 

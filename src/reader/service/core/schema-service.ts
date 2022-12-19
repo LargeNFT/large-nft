@@ -2,6 +2,7 @@ import { inject, injectable } from "inversify"
 import { AnimationRepository } from "../../repository/animation-repository.js"
 import { AttributeTotalRepository } from "../../repository/attribute-total-repository.js"
 import { AuthorRepository } from "../../repository/author-repository.js"
+import { BlockRepository } from "../../repository/block-repository.js"
 import { ChannelRepository } from "../../repository/channel-repository.js"
 import { ComponentStateRepository } from "../../repository/component-state-repository.js"
 import { ContractStateRepository } from "../../repository/contract-state-repository.js"
@@ -57,6 +58,9 @@ class SchemaService {
     @inject("TransactionRepository")
     private transactionRepository:TransactionRepository
 
+    @inject("BlockRepository")
+    private blockRepository:BlockRepository
+
     constructor() {
 
     }
@@ -82,6 +86,7 @@ class SchemaService {
         repositories.push(this.componentStateRepository)
         repositories.push(this.tokenOwnerRepository)
         repositories.push(this.transactionRepository)
+        repositories.push(this.blockRepository)
 
         for (let db of dbs) {
 

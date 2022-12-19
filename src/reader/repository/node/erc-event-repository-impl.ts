@@ -57,7 +57,6 @@ class ERCEventRepositoryNodeImpl implements ERCEventRepository {
 
     }
 
-
     async getByTokenIdDesc(tokenId:number, limit:number, skip:number) : Promise<ERCEvent[]> {
 
         let response = await this.db.find({

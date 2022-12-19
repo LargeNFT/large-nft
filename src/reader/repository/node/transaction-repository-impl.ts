@@ -39,9 +39,11 @@ class TransactionRepositoryNodeImpl implements TransactionRepository {
         if (!transaction) {
 
             try {
-                //Download it.
-                transaction = await this.walletService.provider.getTransaction(_id)
 
+                transaction = new Transaction()
+
+                //Download it.
+                transaction.data = await this.walletService.provider.getTransaction(_id)
                 transaction._id = _id
 
                 //Save it

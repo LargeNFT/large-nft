@@ -12,7 +12,7 @@ import { getMainContainer, GetMainContainerCommand } from "./node-inversify.conf
 import { ChannelWebService } from "./service/web/channel-web-service.js"
 
 
-import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js"
+import { ERCIndexResult, TransactionIndexerService } from "./service/core/transaction-indexer-service.js"
 import { WalletService } from "./service/core/wallet-service.js"
 import { ProcessConfig } from "./util/process-config.js"
 import { SchemaService } from "./service/core/schema-service.js"
@@ -97,7 +97,7 @@ let sync = async () => {
   fs.mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true })
   fs.mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true })
 
-  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions"])
+  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions", "blocks"])
 
   console.log(`Schema loaded`)
 
@@ -122,14 +122,14 @@ let sync = async () => {
 
       await transactionIndexerService.init(channelContract)
 
-      let events:ERCEvent[]
+      let indexResult:ERCIndexResult
 
       try {
-        events = await transactionIndexerService.index()
+        indexResult = await transactionIndexerService.index()
       } catch(ex) { console.log(ex) }
 
 
-      console.log(`${events?.length} events processed. Generating JSON.`)
+      console.log(`${indexResult.eventsToUpdate?.length} events processed. Generating JSON.`)
 
 
       if (!fs.existsSync(`${config.publicPath}/sync/events`)) {
@@ -144,52 +144,64 @@ let sync = async () => {
         fs.mkdirSync(`${config.publicPath}/sync/tokenOwner`, { recursive: true })
       }
 
-      if (events?.length > 0) {
 
-        for (let event of events) {
+      console.log(`${indexResult.eventsToUpdate?.length} events to update. Writing files.`)
+      console.log(`${indexResult.tokensToUpdate?.size} tokens to update. Writing files.`)
+      console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
+
+
+
+      //eventsToUpdate is not guaranteed to be sorted in any particular order.
+      if (indexResult.eventsToUpdate?.length > 0) {
+
+        for (let event of indexResult.eventsToUpdate) {
 
           console.log(`Generating JSON for ${event._id}`)
 
-
-          let clonedEvent = JSON.parse(JSON.stringify(event))
-          delete clonedEvent._rev 
-          delete clonedEvent['_rev_tree']
-
-          fs.writeFileSync(`${config.publicPath}/sync/events/${clonedEvent._id}.json`, Buffer.from(JSON.stringify(clonedEvent)))
-
-          //Save id of latest event for token
-          if (event.tokenId) {
-            fs.writeFileSync(`${config.publicPath}/sync/tokenEvents/${event.tokenId}-latest.json`, Buffer.from(JSON.stringify({
-              _id: event._id
-            })))
-          }
-
-          if (event.fromAddress) {
-            let fromTokenOwner = await tokenOwnerService.get(event.fromAddress)
-            fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${fromTokenOwner._id}.json`, Buffer.from(JSON.stringify(fromTokenOwner)))
-          }
-
-          if (event.toAddress) {
-            let toTokenOwner = await tokenOwnerService.get(event.toAddress)
-            fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${toTokenOwner._id}.json`, Buffer.from(JSON.stringify(toTokenOwner)))
-          }
+          //Write to file
+          writeEventToFile(event)
 
         }
   
+        //Write changed tokens to file
+        for (let tokenId of indexResult.tokensToUpdate) {
+          let latestByToken = await ercEventService.getLatestByTokenId(tokenId)
+          fs.writeFileSync(`${config.publicPath}/sync/tokenEvents/${tokenId}-latest.json`, Buffer.from(JSON.stringify({
+            _id: latestByToken._id
+          })))
+        }
+
+        //Write changed owners to file
+        for (let owner of Object.keys(indexResult.ownersToUpdate)) {
+          fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${indexResult.ownersToUpdate[owner]._id}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
+        }
+
+        //Save id of latest event overall
         let mostRecent:ERCEvent = await ercEventService.getLatest()
   
-        //Save id of latest event overall
         fs.writeFileSync(`${config.publicPath}/sync/events/latest.json`, Buffer.from(JSON.stringify({
           _id: mostRecent._id
         })))
 
-
       }
 
-      
+
 
 
       setTimeout(runTransactionIndexer, INDEX_RATE) 
+
+
+
+    function writeEventToFile(event: ERCEvent) {
+      
+      let clonedEvent = JSON.parse(JSON.stringify(event))
+      delete clonedEvent._rev
+      delete clonedEvent['_rev_tree']
+
+      fs.writeFileSync(`${config.publicPath}/sync/events/${clonedEvent._id}.json`, Buffer.from(JSON.stringify(clonedEvent)))
+    }
+
+
   }
   
   runTransactionIndexer()

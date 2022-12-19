@@ -1,7 +1,6 @@
 import { Allow } from "class-validator"
 import { RowItemViewModel } from "./item-page.js"
-import { Item } from "./item.js"
-import { ItemViewModel } from "./viewmodel/item-view-model.js"
+
 
 class ERCEvent {
     
@@ -63,13 +62,23 @@ class ERCEvent {
     tokenId?:number
 
     @Allow()
-    previous?:string
-
-    @Allow()
     rowItemViewModel?:RowItemViewModel
 
     @Allow()
-    previousByToken?:string
+    timestamp?:number
+
+    @Allow()
+    previousId?:string
+
+    @Allow()
+    previousByTokenId?:string
+
+    @Allow()
+    nextId?:string
+
+    @Allow()
+    nextByTokenId?:string
+
 
     @Allow()
     lastUpdated?:string 

@@ -8,9 +8,11 @@
         <thead>
           <tr>
             <th class="label-cell" colspan="2">Token</th>
-            <th class="numeric-cell">Block #</th>
+            <th class="numeric-cell">Timestamp #</th>
             <th class="label-cell">Event</th>
-            <th class="label-cell">Address</th>
+            <th class="label-cell">From</th>
+            <th class="label-cell">To</th>
+
           </tr>
         </thead>
 
@@ -29,9 +31,13 @@
               <td class="label-cell">
                 ${e.rowItemViewModel?.title}
               </td>
-              <td class="numeric-cell">${e.blockNumber}</td>
+              <td class="numeric-cell">
+                <strong>${moment(e.timestamp * 1000).fromNow()}</strong> (block #${e.blockNumber}) 
+              </td>
               <td class="label-cell">${e.event}</td>
-              <td class="label-cell">${e.address}</td>
+              <td class="label-cell">${e.fromAddress ? walletService.truncateEthAddress(e.fromAddress) : ''}</td>
+              <td class="label-cell">${e.toAddress ? walletService.truncateEthAddress(e.toAddress) : ''}</td>
+
             </tr>
       
       `)}
@@ -39,11 +45,20 @@
 
       </table>
 
-      <input type="hidden" id="next-page-start" value="${nextPageStartId}" />
+      ${showNav ? $h`
+        
+        <div class="block row margin-top">
+          <div class="col-50">
+              <a href="${baseURI}activity/?offset=${previousPageStartId}" class="button button-outline color-gray">Previous</a>
+          </div>
+          <div class="col-50">
+              <a href="${baseURI}activity/?offset=${nextPageStartId}" class="button button-fill">Next</a>
+          </div>
+        </div>
 
-    ` : $h`
-      No transactions found.
-    `}
+      ` : $h`<span />`}
+
+    ` : $h`<span />`}
 
   </div>
 
@@ -58,16 +73,22 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let eventWebService = globalThis.container.get("EventWebService")
+    let walletService = globalThis.container.get("WalletService")
+
     let baseURI = globalThis.container.get('baseURI')
+    let moment = globalThis.moment 
 
     let type = props.type
     let display = parseInt(props.display)
     let startId = props.start
+    let showNav = props.show_nav == "true"
 
     let nextPageStartId
     let previousPageStartId
 
     let eventList
+
+    let loading = true
 
     const imageLink = (rowItemViewModel) => {
       let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
@@ -81,21 +102,35 @@
 
     const load = async () => {
       
+      $f7.preloader.show()
+
+      loading = true
+
       try  {
 
-        eventList = await eventWebService.getLatestEvents(display + 1, startId)
-
-        if (eventList.length > display) {
-          nextPageStartId = eventList[display]._id
+        eventList = await eventWebService.listFrom(display, startId)
+        console.log(eventList)
+        if (eventList.length == display) {
+          nextPageStartId = eventList[display-1].previousId
         }
+
+        //If we have a startId we are on page 2+ so we need to set the previous start offset
+        if (startId) {
+          let previousEventList = await eventWebService.listTo(display+1, startId)
+          previousPageStartId = previousEventList[display]._id
+        }
+
 
       } catch(ex) { console.log(ex) }
       
-      $update()
+      loading = false
+
+      await $update()
+
+      $f7.preloader.hide()
+
 
     }
-
-    load()
 
 
 
@@ -105,7 +140,7 @@
 
       await load()
 
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      // window.scrollTo({ top: 0, behavior: 'smooth' })
 
 
     })

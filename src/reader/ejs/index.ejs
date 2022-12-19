@@ -188,16 +188,16 @@
                   </div>
 
                 </div>
-<!-- 
+
                 <div class="card">
                   <div class="card-header">Activity</div>
                   <div class="card-content card-content-padding data-table">
-                    <event-info type="all" display="25"></event-info>            
+                    <event-info type="all" display="15" show_nav="false"></event-info>            
                   </div>
                   <div class="card-footer">
-                    <a href="<%= link('activity.html') %>" class="link">View more</a>
+                    <a href="<%= link('activity') %>" class="link" data-ignore-cache="true" >View All</a>
                   </div>
-                </div> -->
+                </div>
 
 
                 <div class="card">
@@ -377,6 +377,13 @@
 
 
             $on('pageInit', async () => {
+
+
+              let activityStartChangedEvent = new CustomEvent('activity-start-changed')
+              activityStartChangedEvent.startId = $f7.views.main.router.currentRoute?.query?.offset
+
+              document.dispatchEvent(activityStartChangedEvent)
+
 
               //Make links external
               let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')

@@ -110,19 +110,9 @@
                             <div class="card">
                                 <div class="card-header">Activity</div>
                                 <div class="card-content card-content-padding data-table">
-                                    <event-info type="all" display="25" start="${startId}"></event-info>         
+                                    <event-info type="all" display="25" show_nav="true"></event-info>         
                                 </div>
                             </div>
-
-                            <div class="block row">
-                                <div class="col-50">
-                                    <button class="button button-outline color-gray back" id="previous-link">Previous</button>
-                                </div>
-                                <div class="col-50">
-                                    <button class="button button-fill" id="next-link">Next</button>
-                                </div>
-                            </div>
-                            
 
   
                         </div>
@@ -147,22 +137,15 @@
 
             let baseURL = '<%= baseURL %>'
 
-            let startId
 
             $on('pageInit', async () => {
-                
 
-                $('#next-link').on('click', async (e) => {
+                let activityStartChangedEvent = new CustomEvent('activity-start-changed')
+                activityStartChangedEvent.startId = $f7.views.main.router.currentRoute?.query?.offset
 
-                    let activityStartChangedEvent = new CustomEvent('activity-start-changed')
-                    activityStartChangedEvent.startId = $("#next-page-start").val()
+                document.dispatchEvent(activityStartChangedEvent)
 
-                    document.dispatchEvent(activityStartChangedEvent)
-
-                    await $update()
-
-
-                })
+                await $update()
 
             })
 

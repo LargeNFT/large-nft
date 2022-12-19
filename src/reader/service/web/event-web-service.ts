@@ -19,7 +19,7 @@ class EventWebService {
         @inject("baseURI") private baseURI
     ) {}
 
-    async getLatestEvents(limit:number, startId?:string) : Promise<ERCEvent[]> {
+    async listFrom(limit:number, startId?:string) : Promise<ERCEvent[]> {
 
         await this.schemaService.load(["erc-events"])
 
@@ -29,6 +29,14 @@ class EventWebService {
         }
 
         return this.ercEventService.listFrom(limit, startId)
+
+    }
+
+    async listTo(limit:number, startId?:string) : Promise<ERCEvent[]> {
+
+        await this.schemaService.load(["erc-events"])
+
+        return this.ercEventService.listTo(limit, startId)
 
     }
 

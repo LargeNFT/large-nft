@@ -241,7 +241,8 @@ let generate = async () => {
     baseViewModel: baseViewModel
   })
 
-  fs.writeFileSync(`${config.publicPath}/activity.html`, activityResult)
+  fs.mkdirSync(`${config.publicPath}/activity`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/activity/index.html`, activityResult)
 
 
   //404 page

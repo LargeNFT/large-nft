@@ -3,6 +3,7 @@ import { Container } from "inversify";
 import { ethers, providers } from "ethers"
 import Framework7 from 'framework7';
 
+import moment from "moment"
 import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
 import PouchQuickSearch from 'pouchdb-quick-search'
@@ -124,10 +125,14 @@ import { ComponentStateRepositoryBrowserImpl } from "./repository/browser/compon
 import { ComponentState } from "./dto/component-state.js";
 import { TokenOwnerService } from "./service/token-owner-service.js";
 import { TransactionService } from "./service/transaction-service.js";
+import { BlockService } from "./service/block-service.js";
 
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
+import { BlockRepository } from "./repository/block-repository.js";
+
 import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
 import { TransactionRepositoryBrowserImpl } from "./repository/browser/transaction-repository-impl.js";
+import { BlockRepositoryBrowserImpl } from "./repository/browser/block-repository-impl.js";
 
 
 let container: Container
@@ -167,6 +172,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       // console.log(url)
 
       resolve({ componentUrl: `${baseURI}${url}` })
+
 
     }
 
@@ -213,12 +219,15 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         }
       },
 
+
       {
-        path: `${baseURI}activity.html`,
+        path: `${baseURI}activity`,
         async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'activity.html')
+          await resolveWithSpinner(resolve, 'activity/index.html')
         }
       },
+
+
 
       {
         path: `${baseURI}list-:page.html`,
@@ -334,6 +343,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
   container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryBrowserImpl).inSingletonScope()
+  container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryBrowserImpl).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -370,12 +380,14 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
+  container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
 
 
   //Attach container to window so we can easily access it from the browser console
   globalThis.container = container
   globalThis.ethers = ethers
   globalThis.he = he
+  globalThis.moment = moment
   globalThis.ComponentState = ComponentState 
 
   return container

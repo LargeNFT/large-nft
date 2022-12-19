@@ -58,6 +58,9 @@ import { TokenOwnerService } from "./service/token-owner-service.js";
 import { TransactionRepositoryNodeImpl } from "./repository/node/transaction-repository-impl.js";
 import { TransactionRepository } from "./repository/transaction-repository.js";
 import { TransactionService } from "./service/transaction-service.js";
+import { BlockRepository } from "./repository/block-repository.js";
+import { BlockRepositoryNodeImpl } from "./repository/node/block-repository-impl.js";
+import { BlockService } from "./service/block-service.js";
 
 
 
@@ -102,6 +105,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryNodeImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryNodeImpl).inSingletonScope()
   container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryNodeImpl).inSingletonScope()
+  container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryNodeImpl).inSingletonScope()
 
 
 
@@ -162,6 +166,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
+  container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
 
   return container
 }

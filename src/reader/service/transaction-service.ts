@@ -1,8 +1,6 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
-import { ERCEventRepository } from "../repository/erc-event-repository.js"
-import { ERCEvent } from "../dto/erc-event.js"
 import { TransactionRepository } from "../repository/transaction-repository.js"
 import { Transaction } from "../dto/transaction.js"
 

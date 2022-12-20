@@ -1,0 +1,185 @@
+<% 
+
+    let channelViewModel = it.baseViewModel.channelViewModel 
+    let hostname = it.baseViewModel.hostname
+    let baseURL = it.baseViewModel.baseURL
+    let marketplaces = it.baseViewModel.marketplaces
+    let externalLinks = it.baseViewModel.externalLinks
+    let routablePages = it.baseViewModel.routablePages
+    let attributeReport = it.baseViewModel.attributeReport
+    let base64Version = it.baseViewModel.base64Version
+    let channelId = it.baseViewModel.channelId
+    let showMintPage = it.baseViewModel.showMintPage
+    let showActivityPage = it.baseViewModel.showActivityPage
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    }    
+
+    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
+
+
+
+    const absoluteLink = (href) => {
+        return `${hostname + baseURL + href}`
+    }   
+
+    const escapeExcerpt = (excerpt) => {
+        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
+        return it.baseViewModel.he.encode(excerpt.toString())
+    }
+%>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    html {
+        visibility: hidden;
+        opacity: 0;
+    }
+    </style>
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <title>
+        User Activity for <%=channelViewModel.channel.title%>
+    </title>
+
+    <meta property="og:title" content="User Activity for <%=channelViewModel.channel.title%>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= link(`u`) %>" />
+    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="og:description" content="User Activity for <%=channelViewModel.channel.title%>" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="<%= link(`u`) %>" />
+    <meta property="twitter:title" content="User Activity for <%=channelViewModel.channel.title%>" />
+    <meta property="twitter:description" content="User Activity for <%=channelViewModel.channel.title%>" />
+    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+
+    <%~ it.baseViewModel.headContents %>
+    
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div class="view view-main">
+
+            <div class="page" data-name="user-activity">
+
+                <nav-bar
+                    logo="<%=logo%>"
+                    title="User"
+                    active="User"
+                    show_mint_page="<%=showMintPage%>"
+                    show_activity_page="<%=showActivityPage%>"
+                >
+                </nav-bar>
+
+
+                <div class="page-content infinite-scroll-content" id="explore-infinite-scroll">
+
+                    <div class="row">
+            
+                        <div class="fixed-width-content center">
+
+                            <user-info display="1000"></user-info> 
+
+  
+                        </div>
+                    </div>
+            
+                </div>
+              
+            
+            </div>
+
+        </div>
+
+    </div>
+
+    <%~ it.baseViewModel.bodyContents %>
+
+    <script type="module" id="page-init-scripts">
+
+        const init = (props, { $, $f7, $h, $on, $update }) => {
+
+            let eventWebService = globalThis.container.get("EventWebService")
+
+            let baseURL = '<%= baseURL %>'
+
+            $on('pageInit', async () => {
+
+                let activityStartChangedEvent = new CustomEvent('user-address-changed')
+                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
+
+                document.dispatchEvent(activityStartChangedEvent)
+
+                await $update()
+
+            })
+
+            $on('pageReinit', async () => {
+
+                let activityStartChangedEvent = new CustomEvent('user-address-changed')
+                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
+
+                document.dispatchEvent(activityStartChangedEvent)
+
+                await $update()
+
+            })
+
+
+            $on('pageBeforeOut', async () => {
+
+            })
+
+            document.querySelector('meta[property="og:title"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`u`) %>")
+            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="og:description"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
+
+            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`u`) %>")
+            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "User Activity <%=channelViewModel.channel.title%>")
+            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
+            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>" )
+
+            document.querySelector('title').innerHTML = "User Activity <%=channelViewModel.channel.title%>"
+
+            $f7.preloader.hide()
+
+            return $render
+
+        }
+
+
+    </script>
+
+    <script type="module" id="page-scripts">
+
+        let baseURL = '<%= baseURL %>'
+        let hostname = '<%= hostname %>'
+        let channelId = '<%= channelId %>'
+        let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
+
+        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
+
+        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )
+
+
+
+    </script>
+
+</body>
+
+</html>

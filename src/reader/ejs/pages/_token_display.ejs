@@ -12,6 +12,7 @@
     let channelId = it.channelId
     let showMintPage = it.showMintPage
     let itemViewModel = it.itemViewModel
+    let showActivityPage = it.showActivityPage
 
     
     const link = (href) => {
@@ -113,12 +114,13 @@
 
         </div> 
 
-        <% if (itemViewModel.channel.contractAddress) { %>
-            <nft-info id="<%= itemViewModel.item.tokenId %>" 
-                      baseurl="<%= baseURL %>" 
-                      contract="<%= itemViewModel.channel.contractAddress %>">
-            </nft-info>
-        <% } %>
+
+        <div class="card">
+            <div class="card-header">Activity</div>
+            <div class="card-content card-content-padding data-table">
+                <token-event-info display="1000" token="<%= itemViewModel.item.tokenId %>"></token-event-info>         
+            </div>
+        </div>
 
 
 
@@ -194,6 +196,12 @@
 
 
 
+        <% if (itemViewModel.channel.contractAddress) { %>
+            <nft-info id="<%= itemViewModel.item.tokenId %>" 
+                      baseurl="<%= baseURL %>" 
+                      contract="<%= itemViewModel.channel.contractAddress %>">
+            </nft-info>
+        <% } %>
 
 
 

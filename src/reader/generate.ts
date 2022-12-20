@@ -29,6 +29,8 @@ import attributesEjs from './ejs/pages/attributes.ejs'
 import exploreEjs from './ejs/pages/explore.ejs'
 import staticPageEjs from './ejs/pages/static-page.ejs'
 import activityEjs from './ejs/pages/activity.ejs'
+import userEjs from './ejs/pages/user.ejs'
+import leaderboardEjs from './ejs/pages/leaderboard.ejs'
 
 import { GenerateService, GenerateViewModel } from "./service/core/generate-service.js"
 import { ProcessConfig } from "./util/process-config.js"
@@ -138,6 +140,7 @@ let generate = async () => {
     base64Version: generateViewModel.base64Version,
     channelId: channelViewModel.channel._id,
     showMintPage: config.showMintPage,
+    showActivityPage: config.showActivityPage,
     headContents: headContents,
     bodyContents: bodyContents,
     excerptHtml: excerptHtml,
@@ -235,7 +238,7 @@ let generate = async () => {
   fs.writeFileSync(`${config.publicPath}/explore.html`, exploreResult)
 
 
-  //Events page
+  //Activity page
   const activityResult = Eta.render(activityEjs, {
     title: channelViewModel.channel.title,
     baseViewModel: baseViewModel
@@ -243,6 +246,26 @@ let generate = async () => {
 
   fs.mkdirSync(`${config.publicPath}/activity`, { recursive: true })
   fs.writeFileSync(`${config.publicPath}/activity/index.html`, activityResult)
+
+  //Leaderboard page
+  const leaderboardResult = Eta.render(leaderboardEjs, {
+    title: channelViewModel.channel.title,
+    baseViewModel: baseViewModel
+  })
+
+  fs.mkdirSync(`${config.publicPath}/leaderboard`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/leaderboard/index.html`, leaderboardResult)
+
+
+
+  //Token Owner page
+  const userResult = Eta.render(userEjs, {
+    title: channelViewModel.channel.title,
+    baseViewModel: baseViewModel
+  })
+
+  fs.mkdirSync(`${config.publicPath}/u`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/u/index.html`, userResult)
 
 
   //404 page

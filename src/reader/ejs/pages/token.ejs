@@ -11,6 +11,7 @@
     let base64Version = it.baseViewModel.base64Version
     let channelId = it.baseViewModel.channelId
     let showMintPage = it.baseViewModel.showMintPage
+    let showActivityPage = it.baseViewModel.showActivityPage
     let itemViewModel = it.itemViewModel
     let previous = it.previous
     let next = it.next
@@ -109,6 +110,7 @@
                     logo="<%=logo%>"
                     title="<%=channelViewModel.channel.title%>"
                     show_mint_page="<%=showMintPage%>"
+                    show_activity_page="<%=showActivityPage%>"
                 >
                 </nav-bar>
 
@@ -193,13 +195,7 @@
 
             let swiper
 
-
-            $on('pageInit', async () => {
-
-                await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
-                $('#token_navigator_form').on('submit', goTokenFormSubmit)
-
-
+            const initSwiper = () => {
 
                 swiper = $f7.swiper.create('#swiper-<%= itemViewModel.item.tokenId  %>', {
                     initialSlide: 1,
@@ -226,7 +222,6 @@
 
                 $('#swiper-<%= itemViewModel.item.tokenId  %>').show()
 
-
                 const prev = (e) => {
                     swiper.slidePrev(0)
                 }
@@ -241,7 +236,23 @@
                 $('.back-token-button').on('click', prev)
                 $('.continue-button').on('click', next)
 
+                let activityStartChangedEvent = new CustomEvent('token-activity-start-changed')
+                document.dispatchEvent(activityStartChangedEvent)
+
+            }
+
+            $on('pageInit', async () => {
+
+                await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
+                $('#token_navigator_form').on('submit', goTokenFormSubmit)
+
+                initSwiper()
+
             })          
+
+            $on('pageReinit', async () => {
+                initSwiper()
+            })
 
             $on('pageBeforeOut', async () => {
                 $('.swiper').hide()

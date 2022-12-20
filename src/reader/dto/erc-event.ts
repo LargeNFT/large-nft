@@ -53,6 +53,9 @@ class ERCEvent {
     isTransfer:boolean
 
     @Allow()
+    isMint:boolean
+
+    @Allow()
     fromAddress:string
 
     @Allow()

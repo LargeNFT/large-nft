@@ -1,0 +1,142 @@
+<template>
+
+  <div>
+
+    ${eventList ? $h`
+
+      <table class="event-table">
+        <thead>
+          <tr>
+            <th class="label-cell">Event</th>
+            <th class="image-col">Token</th>
+            <th class="token-col">Title</th>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+
+        ${eventList.map(e => $h`
+          <tr class="${getRowClass(e)}">
+            <td class="label-cell">
+              ${e.event} ${e.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
+            </td>
+
+            <td class="image-col">
+
+              ${e.rowItemViewModel ? $h`
+                <a href="${baseURI}t/${e.tokenId}" class="link">
+                  <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
+                </a>
+                  ` : $h`<span />`}
+
+            </td>
+
+            <td class="token-col">
+              ${e.rowItemViewModel?.title}
+            </td>
+
+            <td>
+              <strong>${moment(e.timestamp * 1000).fromNow()}</strong>
+            </td>
+
+            <td>
+              ${e.fromAddress ? $h`
+                <a href="${baseURI}u/?address=${e.fromAddress}">${walletService.truncateEthAddress(e.fromAddress)}</a>
+              ` : $h`<span />`}
+            </td>
+            <td>
+              ${e.toAddress ? $h`
+                <a href="${baseURI}u/?address=${e.toAddress}">${walletService.truncateEthAddress(e.toAddress)}</a>
+              ` : $h`<span />`}
+            </td>
+
+          </tr>
+        
+        `)}
+        </tbody>
+
+      </table>
+
+
+    ` : $h`<span />`}
+
+  </div>
+
+</template>
+
+
+<style>
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let eventWebService = globalThis.container.get("EventWebService")
+    let walletService = globalThis.container.get("WalletService")
+
+    let baseURI = globalThis.container.get('baseURI')
+    let moment = globalThis.moment 
+
+    let display = parseInt(props.display)
+    let startId = props.start
+
+    let nextPageStartId
+    let previousPageStartId
+
+    let eventList = []
+
+    let loading = true
+
+    const imageLink = (rowItemViewModel) => {
+      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+    }
+
+
+    const link = (href) => {
+        return `${baseURI + href}`
+    } 
+
+    const getRowClass = (event) => {
+      if (event.isTransfer) return "event-transfer"
+      if (event.event == "MintEvent") return "event-transfer"
+      return "uncategorized-event"
+    }
+
+    const load = async () => {
+      
+      $f7.preloader.show()
+
+      loading = true
+
+      try  {
+
+        eventList = await eventWebService.listFrom(display, startId)
+      
+      } catch(ex) { console.log(ex) }
+      
+      loading = false
+
+      await $update()
+
+      $f7.preloader.hide()
+
+
+    }
+
+
+
+    document.addEventListener('load-home-events', async (e) => {
+      startId = e.startId
+      await load()
+    })
+
+    return $render
+  }
+
+</script>

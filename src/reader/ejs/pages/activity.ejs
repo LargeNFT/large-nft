@@ -10,6 +10,7 @@
     let base64Version = it.baseViewModel.base64Version
     let channelId = it.baseViewModel.channelId
     let showMintPage = it.baseViewModel.showMintPage
+    let showActivityPage = it.baseViewModel.showActivityPage
 
     const link = (href) => {
         return `${baseURL + href}`
@@ -53,12 +54,12 @@
 
     <meta property="og:title" content="Activity for <%=channelViewModel.channel.title%>" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="<%= link(`activity.html`) %>" />
+    <meta property="og:url" content="<%= link(`activity`) %>" />
     <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
     <meta property="og:description" content="Activity for <%=channelViewModel.channel.title%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= link(`activity.html`) %>" />
+    <meta property="twitter:url" content="<%= link(`activity`) %>" />
     <meta property="twitter:title" content="Activity for <%=channelViewModel.channel.title%>" />
     <meta property="twitter:description" content="Activity for <%=channelViewModel.channel.title%>" />
     <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
@@ -82,6 +83,7 @@
                     title="Activity"
                     active="Activity"
                     show_mint_page="<%=showMintPage%>"
+                    show_activity_page="<%=showActivityPage%>"
                 >
                 </nav-bar>
 
@@ -101,7 +103,7 @@
                                   </div>       
                                   <div class="breadcrumbs-separator"></div>
                                   <div class="breadcrumbs-item breadcrumbs-item-active">
-                                    Events
+                                    Activity
                                   </div> 
                                 </div>
                             </div>
@@ -110,7 +112,7 @@
                             <div class="card">
                                 <div class="card-header">Activity</div>
                                 <div class="card-content card-content-padding data-table">
-                                    <event-info type="all" display="25" show_nav="true"></event-info>         
+                                    <event-info-activity type="all" display="25" show_nav="true"></event-info-activity>         
                                 </div>
                             </div>
 
@@ -140,7 +142,7 @@
 
             $on('pageInit', async () => {
 
-                let activityStartChangedEvent = new CustomEvent('activity-start-changed')
+                let activityStartChangedEvent = new CustomEvent('load-activities-events')
                 activityStartChangedEvent.startId = $f7.views.main.router.currentRoute?.query?.offset
 
                 document.dispatchEvent(activityStartChangedEvent)
@@ -151,15 +153,14 @@
 
 
             $on('pageBeforeOut', async () => {
-
             })
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "Activity for <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`activity.html`) %>")
+            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`activity`) %>")
             document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="og:description"]').setAttribute("content", "Activity for <%=channelViewModel.channel.title%>")
 
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`activity.html`) %>")
+            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`activity`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Activity <%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
             document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Activity for <%=channelViewModel.channel.title%>" )

@@ -72,7 +72,6 @@ class ProcessConfig {
 
         config.alchemy = theArgs.alchemy
 
-
         return config
 
     }

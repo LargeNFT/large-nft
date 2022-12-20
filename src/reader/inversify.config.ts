@@ -57,7 +57,13 @@ import AttributeFilter from './components/reader/channel/attribute-filter.f7.htm
 import ExploreTotalInfo from './components/reader/channel/explore-total-info.f7.html'
 
 import MintInfo from './components/reader/channel/mint-info.f7.html'
-import EventInfo from './components/reader/channel/event-info.f7.html'
+import TokenEventInfo from './components/reader/channel/token-event-info.f7.html'
+import UserInfo from './components/reader/channel/user-info.f7.html'
+import Leaderboard from './components/reader/channel/leaderboard.f7.html'
+
+import EventInfoHome from './components/reader/channel/event-info-home.f7.html'
+import EventInfoActivity from './components/reader/channel/event-info-activity.f7.html'
+import EventInfoUser from './components/reader/channel/event-info-user.f7.html'
 
 import SearchList from './components/reader/item/search-list.f7.html'
 import InfiniteScrollContent from './components/reader/item/infinite-scroll-content.f7.html'
@@ -154,13 +160,20 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
     Framework7.registerComponent("explore-total-info", ExploreTotalInfo)
 
     Framework7.registerComponent("mint-info", MintInfo)
-    Framework7.registerComponent("event-info", EventInfo)
+    
+    Framework7.registerComponent("event-info-home", EventInfoHome)
+    Framework7.registerComponent("event-info-activity", EventInfoActivity)
+    Framework7.registerComponent("event-info-user", EventInfoUser)
+
+    Framework7.registerComponent("token-event-info", TokenEventInfo)
+    Framework7.registerComponent("user-info", UserInfo)
+    Framework7.registerComponent("leaderboard", Leaderboard)
 
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
 
 
-    const resolveWithSpinner = (resolve, url) => {
+    const resolveWithSpinner = (resolve, url, options) => {
       
       // let currentUrl = window.location.pathname.split('/').pop()
 
@@ -171,7 +184,10 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
       // console.log(url)
 
-      resolve({ componentUrl: `${baseURI}${url}` })
+      resolve({ 
+        componentUrl: `${baseURI}${url}`, 
+        options: options
+      })
 
 
     }
@@ -227,7 +243,19 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         }
       },
 
+      {
+        path: `${baseURI}leaderboard`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'leaderboard/index.html')
+        }
+      },
 
+      {
+        path: `${baseURI}u`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/index.html')
+        }
+      },
 
       {
         path: `${baseURI}list-:page.html`,
@@ -235,12 +263,16 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
           await resolveWithSpinner(resolve, 'list-{{page}}.html')
         }
       },
+
       {
         path: `${baseURI}t/:tokenId`,
         async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, `t/{{tokenId}}`)
+          await resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
         }
       }
+
+
+
     ]
 
 

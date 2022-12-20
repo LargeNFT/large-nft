@@ -8,6 +8,7 @@
 
   --scrollbar-width: calc(100vw - 100%);
 
+  --f7-table-selected-row-bg-color: #fffd9f;
 
 }
 
@@ -630,11 +631,6 @@ ul.breadcrumb li a:hover {
 }
 
 
-
-
-
-
-
 .flex-card {
   flex: 0 0 20%;
   margin: 0px;
@@ -859,6 +855,46 @@ html {
 }
 
 
-.latest-img {
-  height: 100px;
+
+.event-table .image-col {
+  width: 50px;
+}
+
+.event-table .token-col {
+  width: 150px;
+}
+
+
+.event-table .latest-img {
+  margin: 5px;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #cccccc;
+}
+
+.event-table, .event-table td, .event-table tr {
+  font-size: 16px;
+}
+
+.event-table tr.event-transfer {
+  background: #add6b8;
+}
+
+.event-table tr.uncategorized-event {
+  background: #f1f1f1;
+}
+
+
+
+.user-info {
+  width: 300px;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  .user-info {
+    width: 100%;
+  }
+
 }

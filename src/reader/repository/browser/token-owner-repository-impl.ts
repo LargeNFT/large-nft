@@ -1,3 +1,4 @@
+import axios from "axios"
 import {  inject, injectable } from "inversify"
 import { TokenOwner } from "../../dto/token-owner.js"
 import { Changeset, DatabaseService } from "../../service/core/database-service.js"
@@ -13,6 +14,10 @@ class TokenOwnerRepositoryBrowserImpl implements TokenOwnerRepository {
     @inject('DatabaseService')
     private databaseService:DatabaseService
 
+    @inject('baseURI') 
+    private baseURI
+
+
     async load() {
         this.db = await this.databaseService.getDatabase({
             name: this.dbName,
@@ -24,49 +29,28 @@ class TokenOwnerRepositoryBrowserImpl implements TokenOwnerRepository {
     constructor() {}
 
 
-    async get(_id:string): Promise<TokenOwner> {        
-        return Object.assign(new TokenOwner(), await this.db.get(_id))
+    async get(_id:string): Promise<TokenOwner> {    
+        
+        try {
+            //Download it.
+            let result = await axios.get(`${this.baseURI}sync/tokenOwner/${_id}.json`)
+            return Object.assign(new TokenOwner(), result.data)
+        } catch(ex) {
+            console.log(ex)
+        }
+
     }
 
     async put(tokenOwner:TokenOwner) {
-        await this.db.put(tokenOwner)
     }
 
     async list(limit: number, skip: number): Promise<TokenOwner[]> {
-
-        let response = await this.db.find({
-            selector: { 
-                "count": { 
-                    $gt: 0 
-                }
-            },
-            limit: limit,
-            skip: skip,
-            sort: [{count: 'desc'}]
-        })
-
-        if (response.warning) {
-            console.log(response.warning)
-        }
-
-        return response.docs
-
+        return
     }
 
 
     async getByTokenId(tokenId:number, limit:number, skip:number) : Promise<TokenOwner> {
-        
-        let result = await this.db.query('by_token_id', {
-            include_docs: true,
-            key: tokenId,
-            limit: limit,
-            skip: skip
-        })
-
-        if (result.rows?.length == 1) {
-            return result.rows[0].doc
-        }
-        
+        return
     }
 
 

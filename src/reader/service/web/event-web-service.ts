@@ -19,6 +19,15 @@ class EventWebService {
         @inject("baseURI") private baseURI
     ) {}
 
+    async get(_id:string) : Promise<ERCEvent> {
+
+        await this.schemaService.load(["erc-events"])
+
+
+        return this.ercEventService.get(_id)
+    }
+
+
     async listFrom(limit:number, startId?:string) : Promise<ERCEvent[]> {
 
         await this.schemaService.load(["erc-events"])
@@ -39,6 +48,29 @@ class EventWebService {
         return this.ercEventService.listTo(limit, startId)
 
     }
+
+
+    async listByTokenFrom(tokenId:number, limit:number, startId?:string) : Promise<ERCEvent[]> {
+
+        await this.schemaService.load(["erc-events"])
+
+        if (!startId) {
+            let result = await axios.get(`${this.baseURI}sync/tokenEvents/${tokenId}-latest.json`)
+            startId = result.data._id
+        }
+
+        return this.ercEventService.listByTokenFrom(limit, startId)
+
+    }
+
+    async listByTokenTo(limit:number, startId?:string) : Promise<ERCEvent[]> {
+
+        await this.schemaService.load(["erc-events"])
+
+        return this.ercEventService.listByTokenTo(limit, startId)
+
+    }
+
 
 }
 

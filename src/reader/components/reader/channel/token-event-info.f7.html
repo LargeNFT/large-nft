@@ -1,0 +1,121 @@
+<template>
+
+  <div>
+
+    ${eventList ? $h`
+
+      <table class="event-table">
+        <thead>
+          <tr>
+            <th class="label-cell">Event</th>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+
+      ${eventList.map(e => $h`
+
+            <tr class="${e.isTransfer ? $h`event-transfer` : $h` `}">
+              <td class="label-cell">
+                ${e.event} ${e.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
+
+              </td>
+              <td>
+                <strong>${moment(e.timestamp * 1000).fromNow()}</strong>
+              </td>
+              <td>
+                ${e.fromAddress ? $h`
+                  <a href="${baseURI}u/?address=${e.fromAddress}">${walletService.truncateEthAddress(e.fromAddress)}</a>
+                ` : $h`<span />`}      
+              </td>          
+              <td>
+                ${e.toAddress ? $h`
+                  <a href="${baseURI}u/?address=${e.toAddress}">${walletService.truncateEthAddress(e.toAddress)}</a>
+                ` : $h`<span />`}
+              </td>
+
+            </tr>
+      
+      `)}
+        </tbody>
+
+      </table>
+
+    ` : $h`<span />`}
+
+  </div>
+
+</template>
+
+
+<style>
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let eventWebService = globalThis.container.get("EventWebService")
+    let walletService = globalThis.container.get("WalletService")
+
+    let baseURI = globalThis.container.get('baseURI')
+    let moment = globalThis.moment 
+
+    let display = parseInt(props.display)
+    let tokenId = props.token
+
+    let showNav = true
+
+
+    let nextPageStartId
+    let previousPageStartId
+
+    let eventList
+
+    let loading = true
+
+    const imageLink = (rowItemViewModel) => {
+      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+    }
+
+
+    const link = (href) => {
+        return `${baseURI + href}`
+    } 
+
+    const load = async () => {
+      
+      $f7.preloader.show()
+
+      loading = true
+
+      try  {
+
+        eventList = await eventWebService.listByTokenFrom(tokenId, display)
+
+      } catch(ex) { console.log(ex) }
+      
+      loading = false
+
+      await $update()
+
+      $f7.preloader.hide()
+
+
+    }
+
+
+
+    document.addEventListener('token-activity-start-changed', async (e) => {
+      await load()
+    })
+
+    return $render
+  }
+
+</script>

@@ -488,6 +488,10 @@ class ItemWebService {
         return this.itemService.buildAttributeTotals(channel)
     }
 
+    async getRowItemViewModelsByTokenIds(filteredIds) : Promise<RowItemViewModel[]> {
+        return this.itemService.getRowItemViewModelsByTokenIds(filteredIds)
+    }
+
     translateRowItemViewModel(item:Item, coverImage:Image) : RowItemViewModel {
 
         let viewModel:RowItemViewModel = {

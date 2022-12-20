@@ -21,6 +21,12 @@ class TokenOwner {
     ercEventIds?:string[]
 
     @Allow()
+    lastActive?:string 
+
+    @Allow()
+    ensName?:string
+
+    @Allow()
     lastUpdated?:string 
     
     @Allow()

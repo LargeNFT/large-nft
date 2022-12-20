@@ -1,0 +1,126 @@
+<template>
+
+  <div>
+
+    <div class="block block-strong inset col-100 no-margin-bottom">
+      <div class="breadcrumbs ">
+        <div class="breadcrumbs-item">
+          <a href="${baseURI}index.html" class="link">
+            Home
+          </a>
+        </div>       
+        <div class="breadcrumbs-separator"></div>
+        <div class="breadcrumbs-item breadcrumbs-item-active">
+          Leaderboard
+        </div> 
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Leaderboard</div>
+      <div class="card-content card-content-padding data-table">
+        
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th class="label-cell">Address</th>
+              <th>ENS Name</th>
+              <th class="numeric-cell">Owned</th>
+              <th>Last Active</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+  
+          ${userList.map(u => $h`
+            <tr>
+              <td class="label-cell">
+                ${u.address}     
+              </td>
+  
+              <td>
+                ${u.ensName}
+              </td>
+  
+              <td class="numeric-cell">
+                ${u.count}
+              </td>
+  
+              <td>
+                ${u.lastActive}
+              </td>
+  
+
+            </tr>
+          
+          `)}
+          </tbody>
+  
+        </table>
+
+
+      </div>
+    </div>
+
+
+  </div>
+
+</template>
+
+
+<style>
+</style>
+
+<script>
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let eventWebService = globalThis.container.get("EventWebService")
+    let itemWebService = globalThis.container.get("ItemWebService")
+
+    let tokenOwnerService = globalThis.container.get("TokenOwnerService")
+
+    let walletService = globalThis.container.get("WalletService")
+
+    let baseURI = globalThis.container.get('baseURI')
+    let moment = globalThis.moment 
+
+
+    let userList
+    let offset
+
+    let loading = true
+
+    const link = (href) => {
+        return `${baseURI + href}`
+    } 
+
+    const load = async () => {
+      
+      $f7.preloader.show()
+
+      loading = true
+
+      try  {
+
+      } catch(ex) { console.log(ex) }
+      
+      loading = false
+
+      await $update()
+
+      $f7.preloader.hide()
+    }
+
+
+    document.addEventListener('load-leaderboard', async (e) => {
+      offset = e.offset
+      await load()
+    })
+
+
+
+    return $render
+  }
+
+</script>

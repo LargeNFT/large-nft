@@ -109,6 +109,69 @@ class ERCEventService {
     }
 
 
+    async listByTokenFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
+
+        let results:ERCEvent[] = []
+
+        while (results?.length < limit && startId) {
+
+            let event:ERCEvent = await this.get(startId)
+
+            results.push(event)
+
+            let previousByTokenId = event?.previousByTokenId
+
+            //Get the previous
+            if (previousByTokenId) {
+
+                //See 
+                event = await this.get(event.previousByTokenId)
+
+                if (event?._id != previousByTokenId) break
+
+            } else {
+                event = undefined
+            }
+
+            startId = event?._id
+        }
+
+        return results
+
+    }
+
+    async listByTokenTo(limit:number, startId:string) : Promise<ERCEvent[]> {
+
+        let results:ERCEvent[] = []
+
+        while (results?.length < limit && startId) {
+
+            let event:ERCEvent = await this.get(startId)
+
+            results.push(event)
+
+            let nextByTokenId = event?.nextByTokenId
+
+            //Get the previous
+            if (nextByTokenId) {
+
+                //See 
+                event = await this.get(event.nextByTokenId)
+
+                if (event?._id != nextByTokenId) break
+
+            } else {
+                event = undefined
+            }
+
+            startId = event?._id
+        }
+
+        return results
+
+    }
+
+
     async list(limit: number, skip: number): Promise<ERCEvent[]> {
         return this.ercEventRepository.list(limit, skip)
     }
@@ -174,6 +237,10 @@ class ERCEventService {
                 break
         }
     
+        if (ercEvent.isTransfer && ercEvent.fromAddress == "0x0000000000000000000000000000000000000000") {
+            ercEvent.isMint = true
+        }
+
     
         ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`
 

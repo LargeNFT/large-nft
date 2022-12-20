@@ -146,6 +146,8 @@ class TransactionIndexerService {
 
                 if (ercEvent.tokenId) {
 
+                    result.tokensToUpdate.add(ercEvent.tokenId)
+
                     //Get item view model
                     let item:Item = await this.itemWebService.getByTokenId(ercEvent.tokenId)
                     let coverImage:Image
@@ -296,16 +298,19 @@ class TransactionIndexerService {
                 // console.log(`Processed ${event.event} event in transaction ${event.transactionHash} (block #${event.blockNumber})`)
                 await this.ercEventService.put(event)
             }
-
     
             //Save token owners
             for (let owner of Object.keys(result.ownersToUpdate)) {
                 console.log(`Saving token owner ${owner}`)
-                await this.tokenOwnerService.put(result.ownersToUpdate[owner])
+
+                let tokenOwner = result.ownersToUpdate[owner]
+
+                tokenOwner.ensName = await this.walletService.provider.lookupAddress(owner)
+
+                await this.tokenOwnerService.put(tokenOwner)
             }
 
         }
-
 
         this.contractState.lastIndexedBlock = endBlock
 

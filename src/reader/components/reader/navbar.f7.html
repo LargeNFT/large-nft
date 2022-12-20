@@ -75,10 +75,11 @@
                             </li>
                           ` : $h`<span />`}
 
-
-
                               
                         ` : $h`<span />`}
+
+
+
 
                       <li>
                         <a href="${baseURI}explore.html" class="item-link popover-close">
@@ -91,6 +92,35 @@
                           </div>
                         </a>
                       </li>
+
+
+                      ${showActivityPage ? $h`
+                        <li>
+                          <a href="${baseURI}activity" class="item-link popover-close">
+                            <div class="item-content">
+                              <div class="item-inner">
+                                  <div class="item-title">
+                                      Activity
+                                  </div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+
+                        <li>
+                          <a href="${baseURI}leaderboard" class="item-link popover-close">
+                            <div class="item-content">
+                              <div class="item-inner">
+                                  <div class="item-title">
+                                      Leaderboard
+                                  </div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+
+
+                      ` : $h`<span />`}
 
                     </ul>
               
@@ -107,16 +137,24 @@
                 Explore
               </a>      
 
-              ${showConnect ? $h`
+              ${showActivityPage ? $h`
+                <a class="button ${active == 'Activity' ? $h`button-active` : $h``}" href="${baseURI}activity" style="width: 150px; display: inline-block;">
+                  Activity
+                </a> 
 
+                <a class="button ${active == 'Leaderboard' ? $h`button-active` : $h``}" href="${baseURI}leaderboard" style="width: 150px; display: inline-block;">
+                  Leaderboard
+                </a> 
+
+              ` : $h`<span />`}
+
+              ${showConnect ? $h`
 
                 ${showMintPage ? $h`
                   <a class="button ${active == 'Mint' ? $h`button-active` : $h``}" href="${baseURI}mint.html" style="width: 150px; display: inline-block;">
                     Mint
                   </a> 
                 ` : $h`<span />`}
-
-
 
                 ${walletAddress != undefined ? $h`
                     <button class="button" style="width: 150px; display: inline-block;">${truncateEthAddress(walletAddress)}</button>
@@ -179,6 +217,7 @@
         let title = props.title
         let active = props.active
         let showMintPage = props.show_mint_page == "true"
+        let showActivityPage = props.show_activity_page == "true"
 
 
         let walletAddress

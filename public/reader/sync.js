@@ -59723,6 +59723,7 @@ class ERCEvent {
     event;
     eventSignature;
     isTransfer;
+    isMint;
     fromAddress;
     toAddress;
     tokenId;
@@ -59801,6 +59802,10 @@ __decorate([
 ], ERCEvent.prototype, "isTransfer", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Boolean)
+], ERCEvent.prototype, "isMint", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "fromAddress", void 0);
 __decorate([
@@ -59876,6 +59881,8 @@ class TokenOwner {
     count;
     tokenIds;
     ercEventIds;
+    lastActive;
+    ensName;
     lastUpdated;
     dateCreated;
 }
@@ -59903,6 +59910,14 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Array)
 ], TokenOwner.prototype, "ercEventIds", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], TokenOwner.prototype, "lastActive", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], TokenOwner.prototype, "ensName", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -62385,6 +62400,7 @@ let TransactionIndexerService = class TransactionIndexerService {
                 //Translate
                 let ercEvent = await this.ercEventService.translateEventToERCEvent(event, transaction, block);
                 if (ercEvent.tokenId) {
+                    result.tokensToUpdate.add(ercEvent.tokenId);
                     //Get item view model
                     let item = await this.itemWebService.getByTokenId(ercEvent.tokenId);
                     let coverImage;
@@ -62489,7 +62505,9 @@ let TransactionIndexerService = class TransactionIndexerService {
             //Save token owners
             for (let owner of Object.keys(result.ownersToUpdate)) {
                 console.log(`Saving token owner ${owner}`);
-                await this.tokenOwnerService.put(result.ownersToUpdate[owner]);
+                let tokenOwner = result.ownersToUpdate[owner];
+                tokenOwner.ensName = await this.walletService.provider.lookupAddress(owner);
+                await this.tokenOwnerService.put(tokenOwner);
             }
         }
         this.contractState.lastIndexedBlock = endBlock;
@@ -62891,6 +62909,46 @@ let ERCEventService = class ERCEventService {
         }
         return results;
     }
+    async listByTokenFrom(limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let event = await this.get(startId);
+            results.push(event);
+            let previousByTokenId = event?.previousByTokenId;
+            //Get the previous
+            if (previousByTokenId) {
+                //See 
+                event = await this.get(event.previousByTokenId);
+                if (event?._id != previousByTokenId)
+                    break;
+            }
+            else {
+                event = undefined;
+            }
+            startId = event?._id;
+        }
+        return results;
+    }
+    async listByTokenTo(limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let event = await this.get(startId);
+            results.push(event);
+            let nextByTokenId = event?.nextByTokenId;
+            //Get the previous
+            if (nextByTokenId) {
+                //See 
+                event = await this.get(event.nextByTokenId);
+                if (event?._id != nextByTokenId)
+                    break;
+            }
+            else {
+                event = undefined;
+            }
+            startId = event?._id;
+        }
+        return results;
+    }
     async list(limit, skip) {
         return this.ercEventRepository.list(limit, skip);
     }
@@ -62937,6 +62995,9 @@ let ERCEventService = class ERCEventService {
                 ercEvent.toAddress = ercEvent.args[1];
                 ercEvent.tokenId = ercEvent.args[2];
                 break;
+        }
+        if (ercEvent.isTransfer && ercEvent.fromAddress == "0x0000000000000000000000000000000000000000") {
+            ercEvent.isMint = true;
         }
         ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`;
         ercEvent.timestamp = block.data.timestamp;
@@ -63900,6 +63961,9 @@ let ItemWebService = class ItemWebService {
     }
     async buildAttributeTotals(channel) {
         return this.itemService.buildAttributeTotals(channel);
+    }
+    async getRowItemViewModelsByTokenIds(filteredIds) {
+        return this.itemService.getRowItemViewModelsByTokenIds(filteredIds);
     }
     translateRowItemViewModel(item, coverImage) {
         let viewModel = {

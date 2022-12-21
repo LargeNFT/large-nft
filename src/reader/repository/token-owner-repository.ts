@@ -16,6 +16,12 @@ let changesets:Changeset[] = [
         id: '0',
         changeset: async (db) => {
 
+            await db.createIndex({
+                index: {
+                    fields: ['count']
+                }
+            })
+
             await db.put({
                 _id: '_design/by_token_id',
                 views: {

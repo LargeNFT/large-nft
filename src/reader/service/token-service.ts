@@ -23,7 +23,7 @@ class TokenService {
 
         let contract:ChannelContract = this.walletService.getContract("Channel")
 
-        //Add event listener for mints if it's not already added. Maybe won't work if we ever add a second listener anywhere but that's tomorrow's problem
+        //Add event listener for mints if it's not already added. Maybe won't work if we ever add a second listener anywhere
         if (this.walletService.provider && this.walletService.provider.listeners()?.length == 0) {
             
             let filter = {

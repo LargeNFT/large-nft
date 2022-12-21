@@ -13,7 +13,7 @@
             <th>Date</th>
             <th>From</th>
             <th>To</th>
-
+            <th>Etherscan</th>
           </tr>
         </thead>
 
@@ -52,6 +52,9 @@
               ${e.toAddress ? $h`
                 <a href="${baseURI}u/?address=${e.toAddress}">${walletService.truncateEthAddress(e.toAddress)}</a>
               ` : $h`<span />`}
+            </td>
+            <td>
+              <a href="https://etherscan.io/tx/${e.transactionHash}" class="link external">View</a>
             </td>
 
           </tr>

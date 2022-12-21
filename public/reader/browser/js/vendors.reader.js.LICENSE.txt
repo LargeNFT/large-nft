@@ -105,3 +105,7 @@ and limitations under the License.
  * Copyright (C) 2016 Oliver Nightingale
  * @license MIT
  */
+
+//! moment.js
+
+//! moment.js locale configuration

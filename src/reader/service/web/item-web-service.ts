@@ -484,6 +484,7 @@ class ItemWebService {
         return result
 
     }
+    
     async buildAttributeTotals(channel:Channel) : Promise<AttributeTotal[]> {
         return this.itemService.buildAttributeTotals(channel)
     }

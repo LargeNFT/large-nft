@@ -5,6 +5,7 @@ import { ContractState } from "../../dto/contract-state.js";
 import { ERCEvent } from "../../dto/erc-event.js";
 import { Image } from "../../dto/image.js";
 import { Item } from "../../dto/item.js";
+import { TokenOwnerPage } from "../../dto/token-owner-page.js";
 import { TokenOwner } from "../../dto/token-owner.js";
 import { Transaction } from "../../dto/transaction.js";
 import { BlockService } from "../block-service.js";
@@ -12,6 +13,7 @@ import { BlockService } from "../block-service.js";
 import { ContractStateService } from "../contract-state-service.js";
 import { ERCEventService } from "../erc-event-service.js";
 import { ImageService } from "../image-service.js";
+import { TokenOwnerPageService } from "../token-owner-page-service.js";
 import { TokenOwnerService } from "../token-owner-service.js";
 import { TransactionService } from "../transaction-service.js";
 import { ItemWebService } from "../web/item-web-service.js";
@@ -46,6 +48,8 @@ class TransactionIndexerService {
     @inject("BlockService")
     private blockService: BlockService
 
+    @inject("TokenOwnerPageService")
+    private tokenOwnerPageService: TokenOwnerPageService
 
     blockNumber: number
 
@@ -316,12 +320,13 @@ class TransactionIndexerService {
 
         //Save contract state
         await this.contractStateService.put(this.contractState)
-    
+
 
         return result
 
 
     }
+
 
 
     private _getFilterTopics(contract: Contract) {

@@ -3,6 +3,7 @@ import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
 import { TokenOwnerRepository } from "../repository/token-owner-repository.js"
 import { TokenOwner } from "../dto/token-owner.js"
+import { LeaderboardRowViewModel, TokenOwnerPage } from "../dto/token-owner-page.js"
 
 @injectable()
 class TokenOwnerService {
@@ -49,12 +50,7 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.getByTokenId(tokenId, limit, skip)
     }
 
-
-
-
 }
-
-
 
 
 export {

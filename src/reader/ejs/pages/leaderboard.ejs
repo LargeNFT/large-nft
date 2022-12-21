@@ -91,7 +91,7 @@
                     <div class="row">
             
                         <div class="fixed-width-content center">
-                            <leaderboard></leaderboard>  
+                            <leader-board></leader-board>  
                         </div>
                     </div>
             
@@ -117,8 +117,9 @@
             $on('pageInit', async () => {
 
                 let loadLeaderboardEvent = new CustomEvent('load-leaderboard')
-                loadLeaderboardEvent.offset = $f7.views.main.router.currentRoute?.query?.offset
+                loadLeaderboardEvent.pageNumber = $f7.views.main.router.currentRoute?.query?.pageNumber
 
+                console.log(loadLeaderboardEvent)
                 document.dispatchEvent(loadLeaderboardEvent)
 
                 await $update()

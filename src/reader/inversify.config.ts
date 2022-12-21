@@ -49,6 +49,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Fo
 
 import Navbar from './components/reader/navbar.f7.html'
 import TokenToolbar from './components/reader/token-toolbar.f7.html'
+import Transaction from './components/reader/transaction.f7.html'
 
 import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
@@ -59,6 +60,8 @@ import ExploreTotalInfo from './components/reader/channel/explore-total-info.f7.
 import MintInfo from './components/reader/channel/mint-info.f7.html'
 import TokenEventInfo from './components/reader/channel/token-event-info.f7.html'
 import UserInfo from './components/reader/channel/user-info.f7.html'
+import UserInfoActivity from './components/reader/channel/user-info-activity.f7.html'
+
 import Leaderboard from './components/reader/channel/leaderboard.f7.html'
 
 import EventInfoHome from './components/reader/channel/event-info-home.f7.html'
@@ -132,11 +135,16 @@ import { ComponentState } from "./dto/component-state.js";
 import { TokenOwnerService } from "./service/token-owner-service.js";
 import { TransactionService } from "./service/transaction-service.js";
 import { BlockService } from "./service/block-service.js";
+import { TokenOwnerPageService } from "./service/token-owner-page-service.js";
 
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
+import { TokenOwnerPageRepository } from "./repository/token-owner-page-repository.js";
+
 import { BlockRepository } from "./repository/block-repository.js";
 
 import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
+import { TokenOwnerPageRepositoryBrowserImpl } from "./repository/browser/token-owner-page-repository-impl.js";
+
 import { TransactionRepositoryBrowserImpl } from "./repository/browser/transaction-repository-impl.js";
 import { BlockRepositoryBrowserImpl } from "./repository/browser/block-repository-impl.js";
 
@@ -167,11 +175,13 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
     Framework7.registerComponent("token-event-info", TokenEventInfo)
     Framework7.registerComponent("user-info", UserInfo)
-    Framework7.registerComponent("leaderboard", Leaderboard)
+    Framework7.registerComponent("user-info-activity", UserInfoActivity)
+
+    Framework7.registerComponent("leader-board", Leaderboard)
+    Framework7.registerComponent("transaction-viewer", Transaction)
 
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
-
 
     const resolveWithSpinner = (resolve, url, options) => {
       
@@ -258,6 +268,14 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       },
 
       {
+        path: `${baseURI}u/activity`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/activity.html')
+        }
+      },
+
+
+      {
         path: `${baseURI}list-:page.html`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'list-{{page}}.html')
@@ -269,7 +287,15 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
         }
-      }
+      },
+
+
+      {
+        path: `${baseURI}transaction`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'transaction/index.html')
+        }
+      },
 
 
 
@@ -367,6 +393,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryBrowserImpl).inSingletonScope()
   container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryBrowserImpl).inSingletonScope()
   container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryBrowserImpl).inSingletonScope()
+  container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryBrowserImpl).inSingletonScope()
+
   container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryBrowserImpl).inSingletonScope()
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").to(ReaderSettingsRepositoryBrowserImpl).inSingletonScope()
 
@@ -411,6 +439,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
   container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
+  container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
+
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
   container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
 

@@ -61,6 +61,9 @@ import { TransactionService } from "./service/transaction-service.js";
 import { BlockRepository } from "./repository/block-repository.js";
 import { BlockRepositoryNodeImpl } from "./repository/node/block-repository-impl.js";
 import { BlockService } from "./service/block-service.js";
+import { TokenOwnerPageRepositoryNodeImpl } from "./repository/node/token-owner-page-repository-impl.js";
+import { TokenOwnerPageRepository } from "./repository/token-owner-page-repository.js";
+import { TokenOwnerPageService } from "./service/token-owner-page-service.js";
 
 
 
@@ -106,6 +109,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryNodeImpl).inSingletonScope()
   container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryNodeImpl).inSingletonScope()
   container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryNodeImpl).inSingletonScope()
+  container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
 
 
 
@@ -167,6 +171,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
   container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
+  container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
 
   return container
 }

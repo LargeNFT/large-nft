@@ -22,6 +22,8 @@ import { createRequire } from 'module'
 import { ERCEvent } from "./dto/erc-event.js"
 import { TokenOwnerService } from "./service/token-owner-service.js"
 import { ERCEventService } from "./service/erc-event-service.js"
+import { TokenOwner } from "./dto/token-owner.js"
+import { TokenOwnerPageService } from "./service/token-owner-page-service.js"
 const require = createRequire(import.meta.url)
 
 const PouchDB = require('pouchdb-node')
@@ -108,7 +110,9 @@ let sync = async () => {
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
   let tokenOwnerService:TokenOwnerService = container.get("TokenOwnerService")
   let ercEventService: ERCEventService = container.get("ERCEventService")
+  let tokenOwnerPageService: TokenOwnerPageService = container.get("TokenOwnerPageService")
 
+  
 
   const INDEX_RATE = 30*1000 //Every 30 seconds
 
@@ -186,6 +190,28 @@ let sync = async () => {
       }
 
 
+
+      //Write token owner pages to files
+
+      //Generate token owner pages for leaderboard
+      let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0)
+
+      let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
+
+
+      let pageCount = 0
+      await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
+
+      for (let tokenOwnerPage of tokenOwnerPages) {
+        // console.log(`Writing item page: public/itemPages/${pageCount}.json`)
+        await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
+        pageCount++
+      }
+
+      await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/total.json`, JSON.stringify({
+        totalPages: tokenOwnerPages.length,
+        totalRecords: tokenOwners.length
+      }))
 
 
       setTimeout(runTransactionIndexer, INDEX_RATE) 

@@ -32,10 +32,10 @@
   
           <tbody>
   
-          ${userList.map(u => $h`
+          ${tokenOwners?.map(u => $h`
             <tr>
               <td class="label-cell">
-                ${u.address}     
+                <a href="${baseURI}u/?address=${u.address}">${u.address ? walletService.truncateEthAddress(u.address) : ' '}</a>
               </td>
   
               <td>
@@ -59,6 +59,23 @@
         </table>
 
 
+        <div class="block margin-top margin-bottom">
+          <div class="row">
+            <div class="col-50">
+                ${pageNumber > 1 ? $h`
+                  <a href="${baseURI}leaderboard/?pageNumber=${pageNumber - 1}" class="button button-outline color-gray">Previous</a>
+                ` : $h` `}
+            </div>
+            <div class="col-50">
+                ${pageNumber < totals?.totalPages - 1 ? $h`
+                  <a href="${baseURI}leaderboard/?pageNumber=${pageNumber + 1}" class="button button-fill">Next</a>
+                ` : $h` `}
+            </div>
+          </div>
+  
+        </div>
+
+
       </div>
     </div>
 
@@ -78,7 +95,8 @@
     let eventWebService = globalThis.container.get("EventWebService")
     let itemWebService = globalThis.container.get("ItemWebService")
 
-    let tokenOwnerService = globalThis.container.get("TokenOwnerService")
+    // let tokenOwnerService = globalThis.container.get("TokenOwnerService")
+    let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
 
     let walletService = globalThis.container.get("WalletService")
 
@@ -86,8 +104,9 @@
     let moment = globalThis.moment 
 
 
-    let userList
-    let offset
+    let tokenOwners
+    let pageNumber
+    let totals 
 
     let loading = true
 
@@ -103,6 +122,10 @@
 
       try  {
 
+        totals = await tokenOwnerPageService.getTotals()
+        let page = await tokenOwnerPageService.get(pageNumber)
+        tokenOwners = page.tokenOwners
+
       } catch(ex) { console.log(ex) }
       
       loading = false
@@ -112,9 +135,8 @@
       $f7.preloader.hide()
     }
 
-
     document.addEventListener('load-leaderboard', async (e) => {
-      offset = e.offset
+      pageNumber = e.pageNumber ? e.pageNumber : 0
       await load()
     })
 

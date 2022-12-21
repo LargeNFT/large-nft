@@ -133,16 +133,16 @@
 
             <div class="large-only segmented">
   
-              <a class="button ${active == 'Explore' ? $h`button-active` : $h``}" href="${baseURI}explore.html" style="width: 150px; display: inline-block;">
+              <a class="button ${active == 'Explore' ? $h`button-active` : $h`button-outline`}" href="${baseURI}explore.html" style="width: 150px; display: inline-block;">
                 Explore
               </a>      
 
               ${showActivityPage ? $h`
-                <a class="button ${active == 'Activity' ? $h`button-active` : $h``}" href="${baseURI}activity" style="width: 150px; display: inline-block;">
+                <a class="button ${active == 'Activity' ? $h`button-active` : $h`button-outline`}" href="${baseURI}activity" style="width: 150px; display: inline-block;">
                   Activity
                 </a> 
 
-                <a class="button ${active == 'Leaderboard' ? $h`button-active` : $h``}" href="${baseURI}leaderboard" style="width: 150px; display: inline-block;">
+                <a class="button ${active == 'Leaderboard' ? $h`button-active` : $h`button-outline`}" href="${baseURI}leaderboard" style="width: 150px; display: inline-block;">
                   Leaderboard
                 </a> 
 
@@ -151,15 +151,15 @@
               ${showConnect ? $h`
 
                 ${showMintPage ? $h`
-                  <a class="button ${active == 'Mint' ? $h`button-active` : $h``}" href="${baseURI}mint.html" style="width: 150px; display: inline-block;">
+                  <a class="button ${active == 'Mint' ? $h`button-active` : $h`button-outline`}" href="${baseURI}mint.html" style="width: 150px; display: inline-block;">
                     Mint
                   </a> 
                 ` : $h`<span />`}
 
                 ${walletAddress != undefined ? $h`
-                    <button class="button" style="width: 150px; display: inline-block;">${truncateEthAddress(walletAddress)}</button>
+                    <a href="${baseURI}u/?address=${walletAddress}" class="button button-outline" style="width: 150px; display: inline-block;">${truncateEthAddress(walletAddress)}</a>
                 ` : $h`
-                    <button class="button" @click="${connectWallet}" style="width: 150px; display: inline-block;">Connect Wallet</button>
+                    <button class="button button-outline" @click="${connectWallet}" style="width: 150px; display: inline-block;">Connect Wallet</button>
                 `} 
      
               ` : $h`<span style="display: none;" />`}

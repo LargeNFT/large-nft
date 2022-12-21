@@ -30,6 +30,9 @@ import exploreEjs from './ejs/pages/explore.ejs'
 import staticPageEjs from './ejs/pages/static-page.ejs'
 import activityEjs from './ejs/pages/activity.ejs'
 import userEjs from './ejs/pages/user.ejs'
+import userActivityEjs from './ejs/pages/user-activity.ejs'
+import transactionEjs from './ejs/pages/transaction.ejs'
+
 import leaderboardEjs from './ejs/pages/leaderboard.ejs'
 
 import { GenerateService, GenerateViewModel } from "./service/core/generate-service.js"
@@ -266,6 +269,26 @@ let generate = async () => {
 
   fs.mkdirSync(`${config.publicPath}/u`, { recursive: true })
   fs.writeFileSync(`${config.publicPath}/u/index.html`, userResult)
+
+  //Token Owner activity page
+  const userActivityResult = Eta.render(userActivityEjs, {
+    title: channelViewModel.channel.title,
+    baseViewModel: baseViewModel
+  })
+
+  fs.mkdirSync(`${config.publicPath}/u`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/u/activity.html`, userActivityResult)
+
+
+  //Transaction page
+  const transactionResult = Eta.render(transactionEjs, {
+    title: channelViewModel.channel.title,
+    baseViewModel: baseViewModel
+  })
+
+  fs.mkdirSync(`${config.publicPath}/transaction`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/transaction/index.html`, transactionResult)
+
 
 
   //404 page

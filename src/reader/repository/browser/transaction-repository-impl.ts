@@ -31,6 +31,34 @@ class TransactionRepositoryBrowserImpl implements TransactionRepository {
         await this.db.put(transaction)
     }
   
+    async putAll(transactions:Transaction[]) : Promise<void> {
+        await this.db.bulkDocs(transactions)
+    }
+
+
+    async list(limit: number, skip: number): Promise<Transaction[]> {
+
+        let response = await this.db.find({
+            selector: { 
+                "blockNumber": { 
+                    $exists: true 
+                },
+                "transactionIndex": { 
+                    $exists: true 
+                }
+            },
+            limit: limit,
+            skip: skip,
+            sort: [{blockNumber: 'desc'}, {transactionIndex: 'desc'}]
+        })
+
+        if (response.warning) {
+            console.log(response.warning)
+        }
+
+        return response.docs
+
+    }
 
 
 }

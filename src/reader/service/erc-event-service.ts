@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
-import { ERCEventRepository } from "../repository/erc-event-repository.js"
+// import { ERCEventRepository } from "../repository/erc-event-repository.js"
 import { ERCEvent } from "../dto/erc-event.js"
 import { BigNumber, Event } from "ethers"
 
@@ -13,200 +13,219 @@ import { Block } from "../dto/block.js"
 @injectable()
 class ERCEventService {
 
-    @inject("ERCEventRepository")
-    private ercEventRepository:ERCEventRepository
+    // @inject("ERCEventRepository")
+    // private ercEventRepository:ERCEventRepository
 
-    @inject("TokenOwnerService")
-    private tokenOwnerService:TokenOwnerService
+    // @inject("TokenOwnerService")
+    // private tokenOwnerService:TokenOwnerService
 
 
     constructor() {}
 
 
-    async get(_id:string): Promise<ERCEvent> {        
-        return this.ercEventRepository.get(_id)
-    }
+    // async get(_id:string): Promise<ERCEvent> {        
+    //     return this.ercEventRepository.get(_id)
+    // }
 
-    async put(ercEvent:ERCEvent) {
+    // async put(ercEvent:ERCEvent) {
 
-        ercEvent.lastUpdated = new Date().toJSON()
+    //     ercEvent.lastUpdated = new Date().toJSON()
 
-        //Validate
-        let errors: ValidationError[] = await validate(ercEvent, {
-            forbidUnknownValues: true,
-            whitelist: true
-        })
+    //     //Validate
+    //     let errors: ValidationError[] = await validate(ercEvent, {
+    //         forbidUnknownValues: true,
+    //         whitelist: true
+    //     })
 
-        if (errors.length > 0) {
-            throw new ValidationException(errors)
-        }
+    //     if (errors.length > 0) {
+    //         throw new ValidationException(errors)
+    //     }
 
-        return this.ercEventRepository.put(ercEvent)
-    }
+    //     return this.ercEventRepository.put(ercEvent)
+    // }
 
- 
+    // /**
+    //  * No validation for speeeeeeeeed
+    //  * @param ercEvents 
+    //  * @returns 
+    //  */
+    // async putAll(ercEvents:ERCEvent[]) {
 
-    async listFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
+    //     //Update lastUpdated
+    //     ercEvents.forEach(e => e.lastUpdated = new Date().toJSON())
 
-        let results:ERCEvent[] = []
+    //     return this.ercEventRepository.putAll(ercEvents)
+    // }
 
-        while (results?.length < limit && startId) {
 
-            let event:ERCEvent = await this.get(startId)
 
-            results.push(event)
+    // async listFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
 
-            let previousId = event?.previousId
+    //     let results:ERCEvent[] = []
 
-            //Get the previous
-            if (previousId) {
+    //     while (results?.length < limit && startId) {
 
-                //See 
-                event = await this.get(event.previousId)
+    //         let event:ERCEvent = await this.get(startId)
 
-                if (event?._id != previousId) break
+    //         results.push(event)
 
-            } else {
-                event = undefined
-            }
+    //         let previousId = event?.previousId
 
-            startId = event?._id
-        }
+    //         //Get the previous
+    //         if (previousId) {
 
-        return results
+    //             //See 
+    //             event = await this.get(event.previousId)
 
-    }
+    //             if (event?._id != previousId) break
 
-    async listTo(limit:number, startId:string) : Promise<ERCEvent[]> {
+    //         } else {
+    //             event = undefined
+    //         }
 
-        let results:ERCEvent[] = []
+    //         startId = event?._id
+    //     }
 
-        while (results?.length < limit && startId) {
+    //     return results
 
-            let event:ERCEvent = await this.get(startId)
+    // }
 
-            results.push(event)
+    // async listTo(limit:number, startId:string) : Promise<ERCEvent[]> {
 
-            let nextId = event?.nextId
+    //     let results:ERCEvent[] = []
 
-            //Get the previous
-            if (nextId) {
+    //     while (results?.length < limit && startId) {
 
-                //See 
-                event = await this.get(event.nextId)
+    //         let event:ERCEvent = await this.get(startId)
 
-                if (event?._id != nextId) break
+    //         results.push(event)
 
-            } else {
-                event = undefined
-            }
+    //         let nextId = event?.nextId
 
-            startId = event?._id
-        }
+    //         //Get the previous
+    //         if (nextId) {
 
-        return results
+    //             //See 
+    //             event = await this.get(event.nextId)
 
-    }
+    //             if (event?._id != nextId) break
 
+    //         } else {
+    //             event = undefined
+    //         }
 
-    async listByTokenFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
+    //         startId = event?._id
+    //     }
 
-        let results:ERCEvent[] = []
+    //     return results
 
-        while (results?.length < limit && startId) {
+    // }
 
-            let event:ERCEvent = await this.get(startId)
 
-            results.push(event)
+    // async listByTokenFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
 
-            let previousByTokenId = event?.previousByTokenId
+    //     let results:ERCEvent[] = []
 
-            //Get the previous
-            if (previousByTokenId) {
+    //     while (results?.length < limit && startId) {
 
-                //See 
-                event = await this.get(event.previousByTokenId)
+    //         let event:ERCEvent = await this.get(startId)
 
-                if (event?._id != previousByTokenId) break
+    //         results.push(event)
 
-            } else {
-                event = undefined
-            }
+    //         let previousByTokenId = event?.previousByTokenId
 
-            startId = event?._id
-        }
+    //         //Get the previous
+    //         if (previousByTokenId) {
 
-        return results
+    //             //See 
+    //             event = await this.get(event.previousByTokenId)
 
-    }
+    //             if (event?._id != previousByTokenId) break
 
-    async listByTokenTo(limit:number, startId:string) : Promise<ERCEvent[]> {
+    //         } else {
+    //             event = undefined
+    //         }
 
-        let results:ERCEvent[] = []
+    //         startId = event?._id
+    //     }
 
-        while (results?.length < limit && startId) {
+    //     return results
 
-            let event:ERCEvent = await this.get(startId)
+    // }
 
-            results.push(event)
+    // async listByTokenTo(limit:number, startId:string) : Promise<ERCEvent[]> {
 
-            let nextByTokenId = event?.nextByTokenId
+    //     let results:ERCEvent[] = []
 
-            //Get the previous
-            if (nextByTokenId) {
+    //     while (results?.length < limit && startId) {
 
-                //See 
-                event = await this.get(event.nextByTokenId)
+    //         let event:ERCEvent = await this.get(startId)
 
-                if (event?._id != nextByTokenId) break
+    //         results.push(event)
 
-            } else {
-                event = undefined
-            }
+    //         let nextByTokenId = event?.nextByTokenId
 
-            startId = event?._id
-        }
+    //         //Get the previous
+    //         if (nextByTokenId) {
 
-        return results
+    //             //See 
+    //             event = await this.get(event.nextByTokenId)
 
-    }
+    //             if (event?._id != nextByTokenId) break
 
+    //         } else {
+    //             event = undefined
+    //         }
 
-    async list(limit: number, skip: number): Promise<ERCEvent[]> {
-        return this.ercEventRepository.list(limit, skip)
-    }
+    //         startId = event?._id
+    //     }
 
-    async getLatest() : Promise<ERCEvent> {
+    //     return results
 
-        let l = await this.ercEventRepository.list(1, 0)
+    // }
 
-        if (l?.length >0) {
-            return Object.assign(new ERCEvent(), l[0])
-        }
 
-    }
+    // async list(limit: number, skip: number): Promise<ERCEvent[]> {
+    //     return this.ercEventRepository.list(limit, skip)
+    // }
 
-    async getLatestByTokenId(tokenId:number) : Promise<ERCEvent> {
+    // async getLatest() : Promise<ERCEvent> {
+    //     let l = await this.ercEventRepository.list(1, 0)
 
-        let l = await this.ercEventRepository.getByTokenIdDesc(tokenId, 1, 0)
+    //     if (l?.length >0) {
+    //         return Object.assign(new ERCEvent(), l[0])
+    //     }
 
-        if (l?.length) {
-            return Object.assign(new ERCEvent(), l[0])
-        }
+    // }
 
+    // async getLatestByTokenId(tokenId:number) : Promise<ERCEvent> {
 
-    }
+    //     let l = await this.ercEventRepository.getByTokenIdDesc(tokenId, 1, 0)
 
-    async getByTokenIdDesc(tokenId:number, limit:number, skip:number) : Promise<ERCEvent[]> {
-        return this.ercEventRepository.getByTokenIdDesc(tokenId, limit, skip)
-    }
+    //     if (l?.length) {
+    //         return Object.assign(new ERCEvent(), l[0])
+    //     }
 
 
-    async translateEventToERCEvent(event: Event, transaction:Transaction, block:Block) : Promise<ERCEvent> {
+    // }
+
+    // async getByTokenIdDesc(tokenId:number, limit:number, skip:number) : Promise<ERCEvent[]> {
+    //     return this.ercEventRepository.getByTokenIdDesc(tokenId, limit, skip)
+    // }
+
+    // async getLatestForAllTokens(): Promise<ERCEvent[]> {
+
+    //     return this.ercEventRepository.getLatestForAllTokens()
+
+    // }
+
+
+
+    async translateEventToERCEvent(event: Event,  block:Block) : Promise<ERCEvent> {
     
         let ercEvent = new ERCEvent()
     
-        ercEvent.transaction = transaction
+        // ercEvent.transaction = transaction
         ercEvent.blockNumber = event.blockNumber
         ercEvent.blockHash = event.blockHash
         ercEvent.transactionIndex = event.transactionIndex
@@ -244,23 +263,23 @@ class ERCEventService {
     
         ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`
 
-        ercEvent.timestamp = block.data.timestamp
+        ercEvent.timestamp = block.timestamp
 
         return ercEvent
     }
 
 
-    async getExistingRev(_id:string) : Promise<string> {
+    // async getExistingRev(_id:string) : Promise<string> {
 
-        //See if it already exists. If so we need the _rev
-        let existing:ERCEvent
-        try {
-            existing = await this.get(_id)
-        } catch(ex) {}
+    //     //See if it already exists. If so we need the _rev
+    //     let existing:ERCEvent
+    //     try {
+    //         existing = await this.get(_id)
+    //     } catch(ex) {}
 
-        if (existing) return existing._rev
+    //     if (existing) return existing._rev
 
-    }
+    // }
     
 }
 

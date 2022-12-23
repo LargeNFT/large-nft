@@ -14,10 +14,6 @@ class BlockRepositoryNodeImpl implements BlockRepository {
     @inject('DatabaseService')
     private databaseService:DatabaseService
 
-    @inject('WalletService')
-    private walletService:WalletService
-
-
     async load() {
         this.db = await this.databaseService.getDatabase({
             name: this.dbName,
@@ -26,38 +22,17 @@ class BlockRepositoryNodeImpl implements BlockRepository {
     }
 
     async get(blockNumber:number): Promise<Block> {
-
-        let block
-
-        try {
-            block = await this.db.get(blockNumber.toString())
-        } catch(ex) {}
-
-        if (!block) {
-
-            try {
-
-                block = new Block()
-
-                //Download it.
-                block.data = await this.walletService.provider.getBlock(blockNumber)
-                block._id = blockNumber.toString()
-
-                //Save it
-                await this.db.put(block)
-
-
-            } catch(ex) {
-                console.log(ex)
-            }
-        }
-
-        return Object.assign(new Block(), block)
+        return Object.assign(new Block(), await this.db.get(blockNumber.toString()))
     }
 
     async put(block: Block): Promise<void> {
         await this.db.put(block)
     }
+
+    async putAll(blocks:Block[]) : Promise<void> {
+        await this.db.bulkDocs(blocks)
+    }
+
 
 }
 

@@ -6,7 +6,7 @@ import { AuthorRepository } from "./repository/author-repository.js";
 import { ChannelRepository } from "./repository/channel-repository.js";
 import { ComponentStateRepository } from "./repository/component-state-repository.js";
 import { ContractStateRepository } from "./repository/contract-state-repository.js";
-import { ERCEventRepository } from "./repository/erc-event-repository.js";
+// import { ERCEventRepository } from "./repository/erc-event-repository.js";
 import { ImageRepository } from "./repository/image-repository.js";
 import { ItemPageRepository } from "./repository/item-page-repository.js";
 import { ItemRepository } from "./repository/item-repository.js";
@@ -50,7 +50,7 @@ import { ReaderSettings } from "./dto/reader-settings.js";
 import { ComponentState } from "./dto/component-state.js";
 import { ethers, providers } from "ethers"
 import { GenerateService } from "./service/core/generate-service.js";
-import { ERCEventRepositoryNodeImpl } from "./repository/node/erc-event-repository-impl.js";
+// import { ERCEventRepositoryNodeImpl } from "./repository/node/erc-event-repository-impl.js";
 import { ContractStateRepositoryNodeImpl } from "./repository/node/contract-state-repository-impl.js";
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
 import { TokenOwnerRepositoryNodeImpl } from "./repository/node/token-owner-repository-impl.js";
@@ -64,6 +64,9 @@ import { BlockService } from "./service/block-service.js";
 import { TokenOwnerPageRepositoryNodeImpl } from "./repository/node/token-owner-page-repository-impl.js";
 import { TokenOwnerPageRepository } from "./repository/token-owner-page-repository.js";
 import { TokenOwnerPageService } from "./service/token-owner-page-service.js";
+import { TokenService } from "./service/token-service.js";
+import { TokenRepository } from "./repository/token-repository.js";
+import { TokenRepositoryNodeImpl } from "./repository/node/token-repository-impl.js";
 
 
 
@@ -110,6 +113,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryNodeImpl).inSingletonScope()
   container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryNodeImpl).inSingletonScope()
   container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
+  container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryNodeImpl).inSingletonScope()
 
 
 
@@ -122,7 +126,7 @@ function getMainContainer(command:GetMainContainerCommand) {
     }
   })
 
-  container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryNodeImpl).inSingletonScope()
+  // container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryNodeImpl).inSingletonScope()
   container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryNodeImpl).inSingletonScope()
 
   container.bind<ComponentStateRepository>("ComponentStateRepository").toConstantValue({
@@ -172,6 +176,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
   container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
+  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
 
   return container
 }

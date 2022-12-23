@@ -32,6 +32,11 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
         await this.db.put(tokenOwner)
     }
 
+    async putAll(tokenOwners:TokenOwner[]) : Promise<void> {
+        await this.db.bulkDocs(tokenOwners)
+    }
+
+
     async list(limit: number, skip: number): Promise<TokenOwner[]> {
 
         let response = await this.db.find({

@@ -3,6 +3,7 @@ import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
 import { BlockRepository } from "../repository/block-repository.js"
 import { Block } from "../dto/block.js"
+import { WalletService } from "./core/wallet-service.js"
 
 
 @injectable()
@@ -11,11 +12,51 @@ class BlockService {
     @inject("BlockRepository")
     private blockRepository:BlockRepository
 
+
+    @inject("WalletService")
+    private walletService:WalletService
+
     constructor() {}
 
 
-    async get(blockNumber:number): Promise<Block> {        
-        return this.blockRepository.get(blockNumber)
+    async get(blockNumber:number): Promise<Block> {    
+        
+        let block
+
+        try {
+            block = await this.blockRepository.get(blockNumber)
+        } catch(ex) {}
+
+
+        if (!block) {
+
+            try {
+
+                block = new Block()
+                block._id = blockNumber.toString()
+
+                //Download it.
+                let data = await this.walletService.provider.getBlock(blockNumber)
+                block.blockNumber = data.blockNumber
+                block.hash = data.hash
+                block.parentHash = data.parentHash
+                block.number = data.number
+                block.timestamp = data.timestamp
+                block.nonce = data.nonce
+                block.difficulty = data.difficulty
+                block.gasLimit = data.gasLimit
+                block.gasUsed = data.gasUsed
+                block.miner = data.miner
+                block.extraData = data.extraData
+                block.baseFeePerGas = data.baseFeePerGas
+
+            } catch(ex) {
+                console.log(ex)
+            }
+        }
+
+        return block
+        
     }
 
     async put(block:Block) {
@@ -39,6 +80,20 @@ class BlockService {
 
         return this.blockRepository.put(block)
     }
+
+    /**
+     * No validation for speeeeeeeeed
+     * @param ercEvents 
+     * @returns 
+     */
+     async putAll(blocks:Block[]) {
+
+        //Update lastUpdated
+        blocks.forEach(e => e.lastUpdated = new Date().toJSON())
+
+        return this.blockRepository.putAll(blocks)
+    }
+
 
 }
 

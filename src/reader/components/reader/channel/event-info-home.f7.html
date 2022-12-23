@@ -2,71 +2,81 @@
 
   <div>
 
-    ${eventList ? $h`
+    ${transactionList?.length > 0 ? $h`
 
-      <table class="event-table">
-        <thead>
-          <tr>
-            <th class="label-cell">Event</th>
-            <th class="image-col">Token</th>
-            <th class="token-col">Title</th>
-            <th>Date</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Etherscan</th>
-
-          </tr>
-        </thead>
-
-        <tbody>
-
-        ${eventList.map(e => $h`
-          <tr class="${getRowClass(e)}">
-            <td class="label-cell">
-              ${e.event} ${e.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
-            </td>
-
-            <td class="image-col">
-
-              ${e.rowItemViewModel ? $h`
-                <a href="${baseURI}t/${e.tokenId}" class="link">
-                  <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
-                </a>
+      <div class="card">
+        <div class="card-header">Activity</div>
+        <div class="card-content card-content-padding data-table">
+  
+          <table class="event-table">
+            <thead>
+              <tr>
+                <th class="label-cell">Event</th>
+                <th class="image-col">Token</th>
+                <th class="token-col">Title</th>
+                <th>Date</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Etherscan</th>
+    
+              </tr>
+            </thead>
+    
+            <tbody>
+    
+            ${transactionList.map(tvm => $h`
+              <tr class="${getRowClass(evm.ercEvent)}">
+                <td class="label-cell">
+                  ${evm.ercEvent.event} ${evm.ercEvent.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
+                </td>
+    
+                <td class="image-col">
+    
+                  ${evm.rowItemViewModel ? $h`
+                    <a href="${baseURI}t/${evm.ercEvent.tokenId}" class="link">
+                      <img src="${imageLink(evm.rowItemViewModel)}" class="latest-img"/> 
+                    </a>
+                      ` : $h`<span />`}
+    
+                </td>
+    
+                <td class="token-col">
+                  ${evm.rowItemViewModel?.title}
+                </td>
+    
+                <td>
+                  <strong>${moment(evm.ercEvent.timestamp * 1000).fromNow()}</strong>
+                </td>
+    
+                <td>
+                  ${evm.ercEvent.fromAddress ? $h`
+                    <a href="${baseURI}u/?address=${evm.ercEvent.fromAddress}">${walletService.truncateEthAddress(evm.ercEvent.fromAddress)}</a>
                   ` : $h`<span />`}
-
-            </td>
-
-            <td class="token-col">
-              ${e.rowItemViewModel?.title}
-            </td>
-
-            <td>
-              <strong>${moment(e.timestamp * 1000).fromNow()}</strong>
-            </td>
-
-            <td>
-              ${e.fromAddress ? $h`
-                <a href="${baseURI}u/?address=${e.fromAddress}">${walletService.truncateEthAddress(e.fromAddress)}</a>
-              ` : $h`<span />`}
-            </td>
-            <td>
-              ${e.toAddress ? $h`
-                <a href="${baseURI}u/?address=${e.toAddress}">${walletService.truncateEthAddress(e.toAddress)}</a>
-              ` : $h`<span />`}
-            </td>
-            <td>
-              <a href="https://etherscan.io/tx/${e.transactionHash}" class="link external">View</a>
-            </td>
-
-          </tr>
-        
-        `)}
-        </tbody>
-
-      </table>
-
+                </td>
+                <td>
+                  ${evm.ercEvent.toAddress ? $h`
+                    <a href="${baseURI}u/?address=${evm.ercEvent.toAddress}">${walletService.truncateEthAddress(evm.ercEvent.toAddress)}</a>
+                  ` : $h`<span />`}
+                </td>
+                <td>
+                  <a href="https://etherscan.io/tx/${evm.ercEvent.transactionHash}" class="link external">View</a>
+                </td>
+    
+              </tr>
+            
+            `)}
+            </tbody>
+    
+          </table>
+  
+        </div>
+        <div class="card-footer">
+          <a href="${link('activity')}" class="link" data-ignore-cache="true" >View All</a>
+        </div>
+      </div>
 
     ` : $h`<span />`}
+
 
   </div>
 
@@ -80,7 +90,7 @@
 
   export default (props, { $, $on, $f7, $update }) => {
 
-    let eventWebService = globalThis.container.get("EventWebService")
+    let transactionWebService = globalThis.container.get("TransactionWebService")
     let walletService = globalThis.container.get("WalletService")
 
     let baseURI = globalThis.container.get('baseURI')
@@ -92,7 +102,7 @@
     let nextPageStartId
     let previousPageStartId
 
-    let eventList = []
+    let transactionList = []
 
     let loading = true
 
@@ -120,7 +130,9 @@
 
       try  {
 
-        eventList = await eventWebService.listFrom(display, startId)
+        transactionList = await transactionWebService.listFrom(display, startId)
+
+        console.log(transactionList)
       
       } catch(ex) { console.log(ex) }
       

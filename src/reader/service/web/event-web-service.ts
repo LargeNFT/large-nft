@@ -1,82 +1,117 @@
+// // import axios from "axios";
 // import axios from "axios";
-import axios from "axios";
-import { inject, injectable } from "inversify";
-import { ERCEvent } from "../../dto/erc-event.js";
+// import { inject, injectable } from "inversify";
+// import { ERCEvent } from "../../dto/erc-event.js";
+// import { RowItemViewModel } from "../../dto/item-page.js";
 
-import { SchemaService } from "../core/schema-service.js";
-import { ERCEventService } from "../erc-event-service.js";
+// import { SchemaService } from "../core/schema-service.js";
+// import { ERCEventService } from "../erc-event-service.js";
+// import { ItemService } from "../item-service.js";
 
-@injectable()
-class EventWebService {
+// @injectable()
+// class EventWebService {
 
-    @inject("SchemaService")
-    private schemaService:SchemaService
+//     @inject("SchemaService")
+//     private schemaService:SchemaService
     
-    @inject("ERCEventService")
-    private ercEventService:ERCEventService
+//     @inject("ERCEventService")
+//     private ercEventService:ERCEventService
 
-    constructor(
-        @inject("baseURI") private baseURI
-    ) {}
+//     @inject("ItemService")
+//     private itemService:ItemService
 
-    async get(_id:string) : Promise<ERCEvent> {
+//     constructor(
+//         @inject("baseURI") private baseURI
+//     ) {}
 
-        await this.schemaService.load(["erc-events"])
+//     async get(_id:string) : Promise<ERCEventViewModel> {
 
+//         await this.schemaService.load(["erc-events"])
 
-        return this.ercEventService.get(_id)
-    }
+//         let ercEvent:ERCEvent = await this.ercEventService.get(_id)
 
+//         return this.translateErcEventToViewModel(ercEvent)
 
-    async listFrom(limit:number, startId?:string) : Promise<ERCEvent[]> {
-
-        await this.schemaService.load(["erc-events"])
-
-        if (!startId) {
-            let result = await axios.get(`${this.baseURI}sync/events/latest.json`)
-            startId = result.data._id
-        }
-
-        return this.ercEventService.listFrom(limit, startId)
-
-    }
-
-    async listTo(limit:number, startId?:string) : Promise<ERCEvent[]> {
-
-        await this.schemaService.load(["erc-events"])
-
-        return this.ercEventService.listTo(limit, startId)
-
-    }
-
-
-    async listByTokenFrom(tokenId:number, limit:number, startId?:string) : Promise<ERCEvent[]> {
-
-        await this.schemaService.load(["erc-events"])
-
-        if (!startId) {
-            let result = await axios.get(`${this.baseURI}sync/tokenEvents/${tokenId}-latest.json`)
-            startId = result.data._id
-        }
-
-        return this.ercEventService.listByTokenFrom(limit, startId)
-
-    }
-
-    async listByTokenTo(limit:number, startId?:string) : Promise<ERCEvent[]> {
-
-        await this.schemaService.load(["erc-events"])
-
-        return this.ercEventService.listByTokenTo(limit, startId)
-
-    }
-
-
-}
+//     }
 
 
 
+//     async listFrom(limit:number, startId?:string) : Promise<ERCEventViewModel[]> {
 
-export {
-    EventWebService
-}
+//         await this.schemaService.load(["erc-events"])
+
+//         if (!startId) {
+//             let result = await axios.get(`${this.baseURI}sync/events/latest.json`)
+//             startId = result.data._id
+//         }
+
+//         return this.translateErcEventsToViewModels(await this.ercEventService.listFrom(limit, startId))
+
+//     }
+
+//     async listTo(limit:number, startId?:string) : Promise<ERCEventViewModel[]> {
+
+//         await this.schemaService.load(["erc-events"])
+
+//         return this.translateErcEventsToViewModels(await this.ercEventService.listTo(limit, startId))
+
+//     }
+
+
+//     async listByTokenFrom(tokenId:number, limit:number, startId?:string) : Promise<ERCEventViewModel[]> {
+
+//         await this.schemaService.load(["erc-events"])
+
+//         if (!startId) {
+//             let result = await axios.get(`${this.baseURI}sync/tokens/${tokenId}.json`)
+//             startId = result.data.latestErcEventId
+//         }
+
+//         return this.translateErcEventsToViewModels(await this.ercEventService.listByTokenFrom(limit, startId))
+
+//     }
+
+//     async listByTokenTo(limit:number, startId?:string) : Promise<ERCEventViewModel[]> {
+
+//         await this.schemaService.load(["erc-events"])
+
+//         return this.translateErcEventsToViewModels(await this.ercEventService.listByTokenTo(limit, startId))
+
+//     }
+
+//     async translateErcEventToViewModel(ercEvent:ERCEvent) : Promise<ERCEventViewModel>{
+
+//         let result:ERCEventViewModel = {
+//             ercEvent: ercEvent,
+//         }
+
+//         if (ercEvent.tokenId) {
+//             let matches= await this.itemService.getRowItemViewModelsByTokenIds([ercEvent.tokenId])
+//             result.rowItemViewModel = matches[0]
+//         }
+    
+//         return result
+//     }
+
+//     async translateErcEventsToViewModels(ercEvents:ERCEvent[]) : Promise<ERCEventViewModel[]> {
+
+//         let results:ERCEventViewModel[] = []
+
+//         for (let event of ercEvents) {
+//             results.push(await this.translateErcEventToViewModel(event))
+//         }
+
+//         return results
+//     }
+
+// }
+
+
+// interface ERCEventViewModel {
+//     ercEvent?:ERCEvent
+//     rowItemViewModel?:RowItemViewModel
+// }
+
+// export {
+//     EventWebService
+// }

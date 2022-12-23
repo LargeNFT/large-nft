@@ -1,88 +1,94 @@
 <template>
 
-  <div>
+  <div class="card">
+    <div class="card-header">Activity</div>
+    <div class="card-content card-content-padding data-table">
 
-    ${eventList ? $h`
+      ${eventList?.length > 0 ? $h`
 
-      <table class="event-table">
-        <thead>
-          <tr>
-            <th class="label-cell">Event</th>
-            <th class="image-col">Token</th>
-            <th class="token-col">Title</th>
-            <th>Date</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Etherscan</th>
-
-          </tr>
-        </thead>
-
-        <tbody>
-
-        ${eventList.map(e => $h`
-          <tr class="${getRowClass(e)}">
-            <td class="label-cell">
-              ${e.event} ${e.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
-            </td>
-
-            <td class="image-col">
-
-              ${e.rowItemViewModel ? $h`
-                <a href="${baseURI}t/${e.tokenId}" class="link">
-                  <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
-                </a>
-                  ` : $h`<span />`}
-
-            </td>
-
-            <td class="token-col">
-              ${e.rowItemViewModel?.title}
-            </td>
-
-            <td>
-              <strong>${moment(e.timestamp * 1000).fromNow()}</strong>
-            </td>
-
-            <td>
-              ${e.fromAddress ? $h`
-                <a href="${baseURI}u/?address=${e.fromAddress}">${walletService.truncateEthAddress(e.fromAddress)}</a>
-              ` : $h`<span />`}
-            </td>
-            <td>
-              ${e.toAddress ? $h`
-                <a href="${baseURI}u/?address=${e.toAddress}">${walletService.truncateEthAddress(e.toAddress)}</a>
-              ` : $h`<span />`}
-            </td>
-            <td>
-              <a href="https://etherscan.io/tx/${e.transactionHash}" class="link external">View</a>
-            </td>
-
-          </tr>
-        
-        `)}
-        </tbody>
-
-      </table>
-
-      <div class="block margin-top">
-        <div class="row">
-          <div class="col-50">
-              ${previousPageStartId ? $h`
-                <a href="${baseURI}activity/?offset=${previousPageStartId}" class="button button-outline color-gray">Previous</a>
-              ` : $h` `}
+        <table class="event-table">
+          <thead>
+            <tr>
+              <th class="label-cell">Event</th>
+              <th class="image-col">Token</th>
+              <th class="token-col">Title</th>
+              <th>Date</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Etherscan</th>
+  
+            </tr>
+          </thead>
+  
+          <tbody>
+  
+          ${eventList.map(evm => $h`
+            <tr class="${getRowClass(evm.ercEvent)}">
+              <td class="label-cell">
+                ${evm.ercEvent.event} ${evm.ercEvent.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
+              </td>
+  
+              <td class="image-col">
+  
+                ${evm.rowItemViewModel ? $h`
+                  <a href="${baseURI}t/${evm.ercEvent.tokenId}" class="link">
+                    <img src="${imageLink(evm.rowItemViewModel)}" class="latest-img"/> 
+                  </a>
+                    ` : $h`<span />`}
+  
+              </td>
+  
+              <td class="token-col">
+                ${evm.rowItemViewModel?.title}
+              </td>
+  
+              <td>
+                <strong>${moment(evm.ercEvent.timestamp * 1000).fromNow()}</strong>
+              </td>
+  
+              <td>
+                ${evm.ercEvent.fromAddress ? $h`
+                  <a href="${baseURI}u/?address=${evm.ercEvent.fromAddress}">${walletService.truncateEthAddress(evm.ercEvent.fromAddress)}</a>
+                ` : $h`<span />`}
+              </td>
+              <td>
+                ${evm.ercEvent.toAddress ? $h`
+                  <a href="${baseURI}u/?address=${evm.ercEvent.toAddress}">${walletService.truncateEthAddress(evm.ercEvent.toAddress)}</a>
+                ` : $h`<span />`}
+              </td>
+              <td>
+                <a href="https://etherscan.io/tx/${evm.ercEvent.transactionHash}" class="link external">View</a>
+              </td>
+  
+            </tr>
+          
+          `)}
+          </tbody>
+  
+        </table>
+  
+        <div class="block margin-top">
+          <div class="row">
+            <div class="col-50">
+                ${previousPageStartId ? $h`
+                  <a href="${baseURI}activity/?offset=${previousPageStartId}" class="button button-outline color-gray">Previous</a>
+                ` : $h` `}
+            </div>
+            <div class="col-50">
+                ${nextPageStartId ? $h`
+                  <a href="${baseURI}activity/?offset=${nextPageStartId}" class="button button-fill">Next</a>
+                ` : $h` `}
+            </div>
           </div>
-          <div class="col-50">
-              ${nextPageStartId ? $h`
-                <a href="${baseURI}activity/?offset=${nextPageStartId}" class="button button-fill">Next</a>
-              ` : $h` `}
-          </div>
+  
         </div>
+  
+      ` : $h`
+        ${loading ? $h`Loading...` : $h`No activity.`}
+        
+      `}
 
-      </div>
-
-    ` : $h`<span />`}
-
+    </div>
   </div>
 
 </template>
@@ -138,13 +144,13 @@
         eventList = await eventWebService.listFrom(display, startId)
         
         if (eventList.length == display) {
-          nextPageStartId = eventList[display-1].previousId
+          nextPageStartId = eventList[display-1].ercEvent.previousId
         }
 
         //If we have a startId we are on page 2+ so we need to set the previous start offset
         if (startId) {
           let previousEventList = await eventWebService.listTo(display+1, startId)
-          previousPageStartId = previousEventList[display]._id
+          previousPageStartId = previousEventList[display].ercEvent._id
         }
 
 
@@ -162,7 +168,6 @@
 
 
     document.addEventListener('load-activities-events', async (e) => {
-      console.log('dd')
       startId = e.startId
       await load()
     })

@@ -1,9 +1,7 @@
-import { ethers } from "ethers"
 import {  inject, injectable } from "inversify"
 import { Transaction } from "../../dto/transaction.js"
 import { DatabaseService } from "../../service/core/database-service.js"
-import { WalletService } from "../../service/core/wallet-service.js"
-import { TransactionRepository } from "../transaction-repository.js"
+import { changesets, TransactionRepository } from "../transaction-repository.js"
 
 
 @injectable()
@@ -15,55 +13,51 @@ class TransactionRepositoryNodeImpl implements TransactionRepository {
     @inject('DatabaseService')
     private databaseService:DatabaseService
 
-    @inject('WalletService')
-    private walletService:WalletService
-
 
     async load() {
         this.db = await this.databaseService.getDatabase({
             name: this.dbName,
             initialRecords: false,
+            changesets: changesets
         })
     }
 
-
-
     async get(_id: string): Promise<Transaction> {
-
-        let transaction
-
-        try {
-            transaction = await this.db.get(_id)
-        } catch(ex) {}
-
-        if (!transaction) {
-
-            try {
-
-                transaction = new Transaction()
-
-                //Download it.
-                transaction.data = await this.walletService.provider.getTransaction(_id)
-                transaction._id = _id
-
-                //Save it
-                await this.db.put(transaction)
-
-
-            } catch(ex) {
-                console.log(ex)
-            }
-        }
-
-        return Object.assign(new Transaction(), transaction)
+        return Object.assign(new Transaction(), await this.db.get(_id))
     }
-
 
     async put(transaction: Transaction): Promise<void> {
         await this.db.put(transaction)
     }
   
+    async putAll(transactions:Transaction[]) : Promise<void> {
+        await this.db.bulkDocs(transactions)
+    }
 
+
+    async list(limit: number, skip: number): Promise<Transaction[]> {
+
+        let response = await this.db.find({
+            selector: { 
+                "blockNumber": { 
+                    $exists: true 
+                },
+                "transactionIndex": { 
+                    $exists: true 
+                }
+            },
+            limit: limit,
+            skip: skip,
+            sort: [{blockNumber: 'desc'}, {transactionIndex: 'desc'}]
+        })
+
+        if (response.warning) {
+            console.log(response.warning)
+        }
+
+        return response.docs
+
+    }
 
 }
 

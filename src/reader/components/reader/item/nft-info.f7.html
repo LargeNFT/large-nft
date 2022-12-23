@@ -87,7 +87,7 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let walletService = globalThis.container.get("WalletService")
-    let tokenService = globalThis.container.get("TokenService")
+    let tokenContractService = globalThis.container.get("TokenContractService")
 
     let id = props.id
     let owner
@@ -119,7 +119,7 @@
         //Might still not have a provider. 
         if (walletService.provider) {
           hasProvider = true
-          ownerAddress = await tokenService.ownerOf(id)
+          ownerAddress = await tokenContractService.ownerOf(id)
           owner = walletService.truncateEthAddress(ownerAddress)
         } 
 

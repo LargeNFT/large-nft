@@ -6,12 +6,13 @@ import { BlockRepository } from "../../repository/block-repository.js"
 import { ChannelRepository } from "../../repository/channel-repository.js"
 import { ComponentStateRepository } from "../../repository/component-state-repository.js"
 import { ContractStateRepository } from "../../repository/contract-state-repository.js"
-import { ERCEventRepository } from "../../repository/erc-event-repository.js"
+// import { ERCEventRepository } from "../../repository/erc-event-repository.js"
 import { ImageRepository } from "../../repository/image-repository.js"
 import { ItemRepository } from "../../repository/item-repository.js"
 import { ReaderSettingsRepository } from "../../repository/reader-settings-repository.js"
 import { StaticPageRepository } from "../../repository/static-page-repository.js"
 import { TokenOwnerRepository } from "../../repository/token-owner-repository.js"
+import { TokenRepository } from "../../repository/token-repository.js"
 import { TransactionRepository } from "../../repository/transaction-repository.js"
 
 
@@ -43,8 +44,8 @@ class SchemaService {
     @inject("ContractStateRepository")
     private contractStateRepository:ContractStateRepository
 
-    @inject("ERCEventRepository")
-    private ercEventRepository:ERCEventRepository
+    // @inject("ERCEventRepository")
+    // private ercEventRepository:ERCEventRepository
 
     @inject("AttributeTotalRepository")
     private attributeTotalRepository:AttributeTotalRepository
@@ -57,6 +58,9 @@ class SchemaService {
 
     @inject("TransactionRepository")
     private transactionRepository:TransactionRepository
+
+    @inject("TokenRepository")
+    private tokenRepository:TokenRepository
 
     @inject("BlockRepository")
     private blockRepository:BlockRepository
@@ -81,12 +85,13 @@ class SchemaService {
         repositories.push(this.readerSettingsRepository)
 
         repositories.push(this.contractStateRepository)
-        repositories.push(this.ercEventRepository)
+        // repositories.push(this.ercEventRepository)
         repositories.push(this.attributeTotalRepository)
         repositories.push(this.componentStateRepository)
         repositories.push(this.tokenOwnerRepository)
         repositories.push(this.transactionRepository)
         repositories.push(this.blockRepository)
+        repositories.push(this.tokenRepository)
 
         for (let db of dbs) {
 

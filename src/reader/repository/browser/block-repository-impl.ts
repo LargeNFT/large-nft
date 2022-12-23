@@ -1,11 +1,11 @@
 import {  inject, injectable } from "inversify"
 import { Block } from "../../dto/block.js"
 import { DatabaseService } from "../../service/core/database-service.js"
-import { TransactionRepository } from "../transaction-repository.js"
+import { BlockRepository } from "../block-repository.js"
 
 
 @injectable()
-class BlockRepositoryBrowserImpl implements TransactionRepository {
+class BlockRepositoryBrowserImpl implements BlockRepository {
 
     db:any
     dbName:string = "blocks"
@@ -22,7 +22,7 @@ class BlockRepositoryBrowserImpl implements TransactionRepository {
 
 
 
-    async get(_id: string): Promise<Block> {
+    async get(_id: number): Promise<Block> {
         return Object.assign(new Block(), await this.db.get(_id))
     }
 
@@ -31,7 +31,9 @@ class BlockRepositoryBrowserImpl implements TransactionRepository {
         await this.db.put(block)
     }
   
-
+    async putAll(blocks:Block[]) : Promise<void> {
+        await this.db.bulkDocs(blocks)
+    }
 
 }
 

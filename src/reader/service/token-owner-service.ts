@@ -40,6 +40,27 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.put(tokenOwner)
     }
 
+    /**
+     * No validation for speeeeeeeeed
+     * @param tokenOwners 
+     * @returns 
+     */
+     async putAll(tokenOwners:TokenOwner[]) {
+
+        //Update lastUpdated
+        tokenOwners.forEach(tokenOwner => {
+
+            if (!tokenOwner._id) {
+                tokenOwner._id = tokenOwner.address
+                tokenOwner.dateCreated = new Date().toJSON()
+            } 
+    
+
+            tokenOwner.lastUpdated = new Date().toJSON()
+        })
+
+        return this.tokenOwnerRepository.putAll(tokenOwners)
+    }
 
 
     async list(limit: number, skip: number): Promise<TokenOwner[]> {

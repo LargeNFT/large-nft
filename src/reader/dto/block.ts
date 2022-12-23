@@ -12,7 +12,37 @@ class Block {
     blockNumber?:string 
 
     @Allow()
-    data:any
+    hash?: string
+
+    @Allow()
+    parentHash?: string
+
+    @Allow()
+    number:number
+
+    @Allow()
+    timestamp: number
+
+    @Allow()
+    nonce?: string
+
+    @Allow()
+    difficulty?: string
+
+    @Allow()
+    gasLimit?: string
+
+    @Allow()
+    gasUsed?: string
+
+    @Allow()
+    miner?: string
+
+    @Allow()
+    extraData?: string
+
+    @Allow()
+    baseFeePerGas?: string
 
     @Allow()
     lastUpdated?:string 

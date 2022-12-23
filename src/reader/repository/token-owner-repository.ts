@@ -5,6 +5,7 @@ import { Changeset } from "../service/core/database-service.js"
 interface TokenOwnerRepository {
     get(_id:string): Promise<TokenOwner>
     put(tokenOwner:TokenOwner) : Promise<void>
+    putAll(tokenOwners:TokenOwner[]) : Promise<void>
     getByTokenId(tokenId:number, limit:number, skip:number): Promise<TokenOwner> 
     list(limit: number, skip: number): Promise<TokenOwner[]> 
 

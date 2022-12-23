@@ -19,42 +19,42 @@
 
         <tbody>
 
-        ${eventList.map(e => $h`
-          <tr class="${getRowClass(e)}">
+        ${eventList.map(evm => $h`
+          <tr class="${getRowClass(evm.ercEvent)}">
             <td class="label-cell">
-              ${e.event} ${e.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
+              ${evm.ercEvent.event} ${evm.ercEvent.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
             </td>
 
             <td class="image-col">
 
-              ${e.rowItemViewModel ? $h`
-                <a href="${baseURI}t/${e.tokenId}" class="link">
-                  <img src="${imageLink(e.rowItemViewModel)}" class="latest-img"/> 
+              ${evm.rowItemViewModel ? $h`
+                <a href="${baseURI}t/${evm.ercEvent.tokenId}" class="link">
+                  <img src="${imageLink(evm.rowItemViewModel)}" class="latest-img"/> 
                 </a>
                   ` : $h`<span />`}
 
             </td>
 
             <td class="token-col">
-              ${e.rowItemViewModel?.title}
+              ${evm.rowItemViewModel?.title}
             </td>
 
             <td>
-              <strong>${moment(e.timestamp * 1000).fromNow()}</strong>
+              <strong>${moment(evm.ercEvent.timestamp * 1000).fromNow()}</strong>
             </td>
 
             <td>
-              ${e.fromAddress ? $h`
-                <a href="${baseURI}u/?address=${e.fromAddress}">${walletService.truncateEthAddress(e.fromAddress)}</a>
+              ${evm.ercEvent.fromAddress ? $h`
+                <a href="${baseURI}u/?address=${evm.ercEvent.fromAddress}">${walletService.truncateEthAddress(evm.ercEvent.fromAddress)}</a>
               ` : $h`<span />`}
             </td>
             <td>
-              ${e.toAddress ? $h`
-                <a href="${baseURI}u/?address=${e.toAddress}">${walletService.truncateEthAddress(e.toAddress)}</a>
+              ${evm.ercEvent.toAddress ? $h`
+                <a href="${baseURI}u/?address=${evm.ercEvent.toAddress}">${walletService.truncateEthAddress(evm.ercEvent.toAddress)}</a>
               ` : $h`<span />`}
             </td>
             <td>
-              <a href="https://etherscan.io/tx/${e.transactionHash}" class="link external">View</a>
+              <a href="https://etherscan.io/tx/${evm.ercEvent.transactionHash}" class="link external">View</a>
             </td>
 
           </tr>

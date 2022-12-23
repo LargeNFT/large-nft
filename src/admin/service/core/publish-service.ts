@@ -95,10 +95,6 @@ class PublishService {
         }
 
         this.logPublishProgress(publishStatus)
-        
-        //Get directory cids
-        let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
-        let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
 
 
         if (exportMedia) {
@@ -117,6 +113,11 @@ class PublishService {
             await this._publishAnimations(publishStatus, ipfsDirectory, gitDirectory, exportBundle.animations, true)
 
         }
+
+        //Get directory cids
+        let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
+        let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
+
 
         if (exportMetadata) {
             await this._publishNFTMetadata(publishStatus, ipfsDirectory, gitDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)

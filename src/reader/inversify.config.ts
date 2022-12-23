@@ -95,7 +95,7 @@ import { StaticPageRepositoryBrowserImpl } from "./repository/browser/static-pag
 import { ItemPageRepositoryBrowserImpl } from "./repository/browser/item-page-repository-impl.js";
 import { AttributeTotalRepositoryBrowserImpl } from "./repository/browser/attribute-total-repository-impl.js";
 import { ReaderSettingsRepositoryBrowserImpl } from "./repository/browser/reader-settings-repository-impl.js";
-import { ERCEventRepositoryBrowserImpl } from "./repository/browser/erc-event-repository-impl.js";
+// import { ERCEventRepositoryBrowserImpl } from "./repository/browser/erc-event-repository-impl.js";
 
 import { ChannelWebService } from "./service/web/channel-web-service.js";
 import { ItemWebService } from "./service/web/item-web-service.js";
@@ -113,12 +113,12 @@ import { ItemService } from "./service/item-service.js";
 import { ImageService } from "./service/image-service.js";
 import { ChannelService } from "./service/channel-service.js";
 import { AuthorService } from "./service/author-service.js";
-import { TokenService } from "./service/token-service.js";
+import { TokenContractService } from "./service/token-contract-service.js";
 import { SchemaService } from "./service/core/schema-service.js";
 import { QuillService } from "./service/core/quill-service.js";
 import { ReaderSettingsService } from "./service/reader-settings-service.js";
 import { StaticPage } from "./dto/static-page.js";
-import { ERCEventRepository } from "./repository/erc-event-repository.js";
+// import { ERCEventRepository } from "./repository/erc-event-repository.js";
 
 import { ContractStateRepository } from "./repository/contract-state-repository.js";
 import { ContractStateRepositoryBrowserImpl } from "./repository/browser/contract-state-repository-impl.js";
@@ -126,7 +126,7 @@ import { ContractStateRepositoryBrowserImpl } from "./repository/browser/contrac
 import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js";
 import { ContractStateService } from "./service/contract-state-service.js";
 import { ERCEventService } from "./service/erc-event-service.js";
-import { EventWebService } from "./service/web/event-web-service.js";
+// import { EventWebService } from "./service/web/event-web-service.js";
 import { AttributeTotalService } from "./service/attribute-total-service.js"; 
 import { ComponentStateService } from "./service/core/component-state-service.js";
 import { ComponentStateRepository } from "./repository/component-state-repository.js";
@@ -141,12 +141,17 @@ import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
 import { TokenOwnerPageRepository } from "./repository/token-owner-page-repository.js";
 
 import { BlockRepository } from "./repository/block-repository.js";
+import { TokenRepository } from "./repository/token-repository.js";
 
 import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
 import { TokenOwnerPageRepositoryBrowserImpl } from "./repository/browser/token-owner-page-repository-impl.js";
 
 import { TransactionRepositoryBrowserImpl } from "./repository/browser/transaction-repository-impl.js";
 import { BlockRepositoryBrowserImpl } from "./repository/browser/block-repository-impl.js";
+import { TokenRepositoryBrowserImpl } from "./repository/browser/token-repository-impl.js";
+
+import { TokenService } from "./service/token-service.js";
+import { TransactionWebService } from "./service/web/transaction-web-service.js";
 
 
 let container: Container
@@ -398,12 +403,13 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryBrowserImpl).inSingletonScope()
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").to(ReaderSettingsRepositoryBrowserImpl).inSingletonScope()
 
-  container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryBrowserImpl).inSingletonScope()
+  // container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryBrowserImpl).inSingletonScope()
   container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
   container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryBrowserImpl).inSingletonScope()
   container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryBrowserImpl).inSingletonScope()
+  container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -414,6 +420,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
   container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()
   container.bind<QueueService>("QueueService").to(QueueService).inSingletonScope()
+  container.bind<TransactionWebService>("TransactionWebService").to(TransactionWebService).inSingletonScope()
 
 
   container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
@@ -425,10 +432,10 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ImageService>("ImageService").to(ImageService).inSingletonScope()
   container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
-  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
+  container.bind<TokenContractService>("TokenContractService").to(TokenContractService).inSingletonScope()
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
-  container.bind<EventWebService>("EventWebService").to(EventWebService).inSingletonScope()
+  // container.bind<EventWebService>("EventWebService").to(EventWebService).inSingletonScope()
   container.bind<AttributeTotalService>("AttributeTotalService").to(AttributeTotalService).inSingletonScope()
   container.bind<ComponentStateService>("ComponentStateService").to(ComponentStateService).inSingletonScope()
 
@@ -443,6 +450,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
   container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
+  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
 
 
   //Attach container to window so we can easily access it from the browser console

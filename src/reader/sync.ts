@@ -24,6 +24,8 @@ import { TokenOwnerService } from "./service/token-owner-service.js"
 import { ERCEventService } from "./service/erc-event-service.js"
 import { TokenOwner } from "./dto/token-owner.js"
 import { TokenOwnerPageService } from "./service/token-owner-page-service.js"
+import { Transaction } from "./dto/transaction.js"
+import { TransactionService } from "./service/transaction-service.js"
 const require = createRequire(import.meta.url)
 
 const PouchDB = require('pouchdb-node')
@@ -99,7 +101,7 @@ let sync = async () => {
   fs.mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true })
   fs.mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true })
 
-  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions", "blocks"])
+  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions", "blocks", "tokens"])
 
   console.log(`Schema loaded`)
 
@@ -109,15 +111,14 @@ let sync = async () => {
 
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
   let tokenOwnerService:TokenOwnerService = container.get("TokenOwnerService")
-  let ercEventService: ERCEventService = container.get("ERCEventService")
+  let transactionService: TransactionService = container.get("TransactionService")
   let tokenOwnerPageService: TokenOwnerPageService = container.get("TokenOwnerPageService")
 
   
 
-  const INDEX_RATE = 30*1000 //Every 30 seconds
+  const INDEX_RATE = 30*1000 //Every 60 seconds
 
   let channelContract = await walletService.getContract("Channel")
-
 
 
 
@@ -133,99 +134,134 @@ let sync = async () => {
       } catch(ex) { console.log(ex) }
 
 
-      console.log(`${indexResult.eventsToUpdate?.length} events processed. Generating JSON.`)
+      // console.log(`${Object.keys(indexResult.eventsToUpdate)?.length} events processed. Generating JSON.`)
 
+      createDirectories()
 
-      if (!fs.existsSync(`${config.publicPath}/sync/events`)) {
-        fs.mkdirSync(`${config.publicPath}/sync/events`, { recursive: true })
-      }
-
-      if (!fs.existsSync(`${config.publicPath}/sync/tokenEvents`)) {
-        fs.mkdirSync(`${config.publicPath}/sync/tokenEvents`, { recursive: true })
-      }
-
-      if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner`)) {
-        fs.mkdirSync(`${config.publicPath}/sync/tokenOwner`, { recursive: true })
-      }
-
-
-      console.log(`${indexResult.eventsToUpdate?.length} events to update. Writing files.`)
-      console.log(`${indexResult.tokensToUpdate?.size} tokens to update. Writing files.`)
+      // console.log(`${Object.keys(indexResult.eventsToUpdate)?.length} events to update. Writing files.`)
+      console.log(`${Object.keys(indexResult.transactionsToUpdate).length} transactions to update. Writing files.`)
+      console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
       console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
 
 
 
       //eventsToUpdate is not guaranteed to be sorted in any particular order.
-      if (indexResult.eventsToUpdate?.length > 0) {
+      // console.log(`Writing ${Object.keys(indexResult.eventsToUpdate)?.length} events to disk`)
 
-        for (let event of indexResult.eventsToUpdate) {
+      if (Object.keys(indexResult.transactionsToUpdate)?.length > 0) {
 
-          console.log(`Generating JSON for ${event._id}`)
+        // for (let _id of Object.keys(indexResult.eventsToUpdate)) {
+        //   writeEventToFile(indexResult.eventsToUpdate[_id])
+        // }
 
-          //Write to file
-          writeEventToFile(event)
-
+        
+        //Write transactions to file
+        console.log(`Writing ${Object.keys(indexResult.transactionsToUpdate).length} transactions to disk`)
+        for (let _id of Object.keys(indexResult.transactionsToUpdate)) {
+          writeTransactionToFile(indexResult.transactionsToUpdate[_id])
         }
-  
+
+
+        console.log(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk`)
+
         //Write changed tokens to file
-        for (let tokenId of indexResult.tokensToUpdate) {
-          let latestByToken = await ercEventService.getLatestByTokenId(tokenId)
-          fs.writeFileSync(`${config.publicPath}/sync/tokenEvents/${tokenId}-latest.json`, Buffer.from(JSON.stringify({
-            _id: latestByToken._id
-          })))
+        for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
+          fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
         }
 
         //Write changed owners to file
+        console.log(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk`)
         for (let owner of Object.keys(indexResult.ownersToUpdate)) {
-          fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${indexResult.ownersToUpdate[owner]._id}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
+          fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
         }
 
         //Save id of latest event overall
-        let mostRecent:ERCEvent = await ercEventService.getLatest()
   
-        fs.writeFileSync(`${config.publicPath}/sync/events/latest.json`, Buffer.from(JSON.stringify({
-          _id: mostRecent._id
-        })))
+        // fs.writeFileSync(`${config.publicPath}/sync/events/latest.json`, Buffer.from(JSON.stringify({
+        //   _id: mostRecent._id
+        // })))
+
+        let mostRecent:Transaction = await transactionService.getLatest()
+
+        if (mostRecent) {
+
+          //Save latest transaction
+          fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
+            _id: mostRecent._id
+          })))
+        }
+
+
 
       }
 
 
-
-      //Write token owner pages to files
-
       //Generate token owner pages for leaderboard
       let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0)
-
       let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
 
-
+      //Write token owner pages to files
       let pageCount = 0
       await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
 
+      console.log(`Writing ${tokenOwnerPages.length} token owner pages to disk`)
       for (let tokenOwnerPage of tokenOwnerPages) {
-        // console.log(`Writing item page: public/itemPages/${pageCount}.json`)
+        // console.log(`Writing token owner page: ${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`)
         await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
         pageCount++
       }
 
+      console.log(`Writing totals to disk`)
       await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/total.json`, JSON.stringify({
         totalPages: tokenOwnerPages.length,
         totalRecords: tokenOwners.length
       }))
 
+      console.log(`Complete...waiting...`)
+
+      //If we're up to date then wait. Otherwise just do it again.
 
       setTimeout(runTransactionIndexer, INDEX_RATE) 
 
 
+      function createDirectories() {
 
-    function writeEventToFile(event: ERCEvent) {
-      
-      let clonedEvent = JSON.parse(JSON.stringify(event))
-      delete clonedEvent._rev
-      delete clonedEvent['_rev_tree']
+        // if (!fs.existsSync(`${config.publicPath}/sync/events`)) {
+        //   fs.mkdirSync(`${config.publicPath}/sync/events`, { recursive: true })
+        // }
 
-      fs.writeFileSync(`${config.publicPath}/sync/events/${clonedEvent._id}.json`, Buffer.from(JSON.stringify(clonedEvent)))
-    }
+        if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
+          fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
+        }
+
+        if (!fs.existsSync(`${config.publicPath}/sync/tokens`)) {
+          fs.mkdirSync(`${config.publicPath}/sync/tokens`, { recursive: true })
+        }
+
+        if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner`)) {
+          fs.mkdirSync(`${config.publicPath}/sync/tokenOwner`, { recursive: true })
+        }
+        
+      }
+
+      // function writeEventToFile(event: ERCEvent) {
+        
+      //   let clonedEvent = JSON.parse(JSON.stringify(event))
+      //   delete clonedEvent._rev
+      //   delete clonedEvent['_rev_tree']
+
+      //   fs.writeFileSync(`${config.publicPath}/sync/events/${clonedEvent._id}.json`, Buffer.from(JSON.stringify(clonedEvent)))
+      // }
+
+
+      function writeTransactionToFile(transaction:Transaction) {
+        
+        let clonedTransaction = JSON.parse(JSON.stringify(transaction))
+        delete clonedTransaction._rev
+        delete clonedTransaction['_rev_tree']
+
+        fs.writeFileSync(`${config.publicPath}/sync/transactions/${clonedTransaction._id}.json`, Buffer.from(JSON.stringify(clonedTransaction)))
+      }
 
 
   }

@@ -44,6 +44,10 @@ class TokenOwnerRepositoryBrowserImpl implements TokenOwnerRepository {
     async put(tokenOwner:TokenOwner) {
     }
 
+    async putAll(tokenOwners:TokenOwner[]) : Promise<void> {
+        return
+    }
+
     async list(limit: number, skip: number): Promise<TokenOwner[]> {
         return
     }

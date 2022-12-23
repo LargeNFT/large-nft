@@ -1,112 +1,60 @@
-import { BigNumber, utils } from "ethers";
-import { inject, injectable } from "inversify";
-import { MetadataRepository } from "../repository/metadata-repository.js";
-import { WalletService } from "./core/wallet-service.js";
+import { inject, injectable } from "inversify"
+import { validate, ValidationError } from "class-validator"
+import { ValidationException } from "../util/validation-exception.js"
+import { Token } from "../dto/token.js"
+import { TokenRepository } from "../repository/token-repository.js"
+
 
 
 @injectable()
 class TokenService {
 
-    @inject("MetadataRepository")
-    private metadataRepository:MetadataRepository
+    @inject("TokenRepository")
+    private tokenRepository:TokenRepository
 
-    @inject("WalletService")
-    private walletService:WalletService
-
-    constructor(
-    ) {}
-
-    private lastMintedTokenId=0
+    constructor() {}
 
 
-    public get channelContract() : ChannelContract {
+    async get(_id:string): Promise<Token> {        
+        return this.tokenRepository.get(_id)
+    }
 
-        let contract:ChannelContract = this.walletService.getContract("Channel")
+    async put(token:Token) {
 
-        //Add event listener for mints if it's not already added. Maybe won't work if we ever add a second listener anywhere
-        if (this.walletService.provider && this.walletService.provider.listeners()?.length == 0) {
-            
-            let filter = {
-                address: contract.address,
-                topics: [
-                    // the name of the event, parnetheses containing the data type of each event, no spaces
-                    utils.id("MintEvent(uint256)")
-                ]
-            }
-            
-            this.walletService.provider.on( filter, async (e) => {
-
-                let tokenId = parseInt(e.data)
-
-                if (tokenId > this.lastMintedTokenId) {
-                    this.lastMintedTokenId = tokenId
-
-                    let mintEvent = new CustomEvent('mint-event')
-
-                    //@ts-ignore
-                    mintEvent.tokenId = tokenId
-              
-                    document.dispatchEvent(mintEvent)
-
-                }
-
-            })
-
+        if (!token._id) {
+            token._id = token.tokenId.toString()
+            token.dateCreated = new Date().toJSON()
         }
 
-        return this.walletService.getContract("Channel")
+        token.lastUpdated = new Date().toJSON()
+
+        //Validate
+        let errors: ValidationError[] = await validate(token, {
+            forbidUnknownValues: true,
+            whitelist: true
+        })
+
+        if (errors.length > 0) {
+            throw new ValidationException(errors)
+        }
+
+        return this.tokenRepository.put(token)
     }
 
-    async getBalance(address) : Promise<number> {
-        if (!address) return 0
-        return parseInt(await this.channelContract.balanceOf(address))
+    /**
+     * No validation for speeeeeeeeed
+     * @param ercEvents 
+     * @returns 
+     */
+     async putAll(tokens:Token[]) {
+
+        //Update lastUpdated
+        tokens.forEach(e => e.lastUpdated = new Date().toJSON())
+
+        return this.tokenRepository.putAll(tokens)
     }
 
-    async getMetadata(tokenId) : Promise<any> {
-        return this.metadataRepository.get(tokenId)      
-    }
 
-    async mint(quantity:number, totalMintCost:string) {
-        await this.channelContract.mint(quantity, { value: totalMintCost })
-    }
-
-    async mintFromStartOrFail(quantity:number, start:number, totalMintCost:string) {
-        await this.channelContract.mintFromStartOrFail(quantity, start, { value: totalMintCost })
-    }
-
-    
-    async mintAsOwner(quantity:number) {
-        await this.channelContract.mint(quantity, {})
-    }
-
-    async ownerOf(tokenId:number)  {
-        return this.channelContract.ownerOf(tokenId)
-    }
-
-    async getTotalMinted() {
-        return this.channelContract.totalMinted()
-    }
-
-    async getTotalSupply() {
-        return this.channelContract.totalSupply()
-    }
-
-    async owner() {
-        return this.channelContract.owner()
-    }
-
-}
-
-interface ChannelContract {
-    mint(quantity:number, options:any)
-    mintFromStartOrFail(quantity:number, start:number,options:any)
-    ownerOf(tokenId:number) : string
-    tokenURI(tokenId:number) : string
-    balanceOf(address) : string
-    totalMinted() : BigNumber
-    totalSupply() : BigNumber
-    owner() : string
-    address:string
 }
 
 
@@ -114,3 +62,4 @@ interface ChannelContract {
 export {
     TokenService
 }
+

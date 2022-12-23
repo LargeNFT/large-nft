@@ -6,14 +6,14 @@ import { ChannelService } from "../channel-service.js";
 import { SchemaService } from "../core/schema-service.js";
 import { WalletService } from "../core/wallet-service.js";
 import { ItemService } from "../item-service.js";
-import { TokenService } from "../token-service.js";
+import { TokenContractService } from "../token-contract-service.js";
 import { ItemWebService } from "./item-web-service.js";
 
 @injectable()
 class MintWebService {
 
-    @inject("TokenService")
-    private tokenService:TokenService
+    @inject("TokenContractService")
+    private tokenContractService:TokenContractService
 
     @inject("ChannelService")
     private channelService:ChannelService
@@ -41,7 +41,7 @@ class MintWebService {
 
         if (channel.contractAddress) {
 
-            let totalMinted:BigNumber = await this.tokenService.getTotalMinted()       
+            let totalMinted:BigNumber = await this.tokenContractService.getTotalMinted()       
 
             let lastMinted = []
 
@@ -54,7 +54,7 @@ class MintWebService {
                     try {
 
                         //@ts-ignore
-                        let owner = await this.tokenService.ownerOf(item.tokenId)
+                        let owner = await this.tokenContractService.ownerOf(item.tokenId)
 
                         lastMinted.push({
                             owner: await this.walletService.truncateEthAddress(owner),
@@ -88,7 +88,7 @@ class MintWebService {
 
         if (channel.contractAddress) {
 
-            let totalMinted:BigNumber = await this.tokenService.getTotalMinted()       
+            let totalMinted:BigNumber = await this.tokenContractService.getTotalMinted()       
 
             return {
                 totalMinted: totalMinted.toNumber(),
@@ -107,15 +107,15 @@ class MintWebService {
         let channel:Channel = await this.channelService.get()
         let totalWei = this.calculateTotalMint(channel, quantity)
 
-        let owner = await this.tokenService.owner()
+        let owner = await this.tokenContractService.owner()
 
         // console.log(owner.toLowerCase(), this.walletService.address.toLowerCase())
 
         if (this.walletService.address.toLowerCase() == owner.toLowerCase()) {
             console.log('Minting as owner')
-            await this.tokenService.mintAsOwner(quantity)
+            await this.tokenContractService.mintAsOwner(quantity)
         } else {
-            await this.tokenService.mint(quantity, totalWei)
+            await this.tokenContractService.mint(quantity, totalWei)
         }
 
         
@@ -128,7 +128,7 @@ class MintWebService {
         
         let totalWei = this.calculateTotalMint(channel, quantity)
 
-        await this.tokenService.mintFromStartOrFail(quantity, start, totalWei)
+        await this.tokenContractService.mintFromStartOrFail(quantity, start, totalWei)
     }
 
     calculateTotalMint(channel, quantity) {

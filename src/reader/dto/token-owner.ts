@@ -18,7 +18,10 @@ class TokenOwner {
     tokenIds?:number[]
 
     @Allow()
-    ercEventIds?:string[]
+    transactionIdsInitiated?:string[]
+
+    @Allow()
+    transactionIds?:string[]
 
     @Allow()
     lastActive?:string 

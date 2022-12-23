@@ -22,8 +22,6 @@ class ERCEvent {
     @Allow()
     transactionHash?:string 
 
-    @Allow()
-    transaction:any
 
     @Allow()
     removed?:boolean 
@@ -65,22 +63,22 @@ class ERCEvent {
     tokenId?:number
 
     @Allow()
-    rowItemViewModel?:RowItemViewModel
+    // rowItemViewModel?:RowItemViewModel
 
     @Allow()
     timestamp?:number
 
-    @Allow()
-    previousId?:string
+    // @Allow()
+    // previousId?:string
 
-    @Allow()
-    previousByTokenId?:string
+    // @Allow()
+    // previousByTokenId?:string
 
-    @Allow()
-    nextId?:string
+    // @Allow()
+    // nextId?:string
 
-    @Allow()
-    nextByTokenId?:string
+    // @Allow()
+    // nextByTokenId?:string
 
 
     @Allow()

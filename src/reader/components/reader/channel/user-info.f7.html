@@ -122,7 +122,7 @@
     let address
     let tokenOwner
 
-    let eventList
+    // let eventList
 
     let loading = true
 
@@ -147,11 +147,11 @@
       try  {
           tokenOwner = await tokenOwnerService.get(address)
 
-          eventList = []
+          // eventList = []
 
-          for (let eventId of tokenOwner.ercEventIds) {
-            eventList.push(await eventWebService.get(eventId))
-          }
+          // for (let eventId of tokenOwner.ercEventIds) {
+          //   eventList.push(await eventWebService.get(eventId))
+          // }
 
           rowItemViewModels = await itemWebService.getRowItemViewModelsByTokenIds(tokenOwner.tokenIds)
           

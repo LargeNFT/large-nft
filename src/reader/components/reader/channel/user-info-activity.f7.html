@@ -96,12 +96,11 @@
 
     let loading = true
 
-    let rowItemViewModels
 
-    const imageLink = (rowItemViewModel) => {
-      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
-    }
+    // const imageLink = (rowItemViewModel) => {
+    //   let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+    //   return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+    // }
 
 
     const link = (href) => {
@@ -149,16 +148,16 @@
 
 
 
-    const getTemplate = (rowItemViewModel) => {
+    // const getTemplate = (rowItemViewModel) => {
                 
-        let tokenLink = link('t/' + rowItemViewModel.tokenId)
-        let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-        let imageLink = link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
-        let title = rowItemViewModel.title
+    //     let tokenLink = link('t/' + rowItemViewModel.tokenId)
+    //     let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+    //     let imageLink = link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+    //     let title = rowItemViewModel.title
 
-        return `
-        `
-    }
+    //     return `
+    //     `
+    // }
 
     return $render
   }

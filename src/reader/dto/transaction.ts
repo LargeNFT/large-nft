@@ -1,8 +1,4 @@
 import { Allow } from "class-validator"
-import { ERCEvent } from "./erc-event.js"
-import { RowItemViewModel } from "./item-page.js"
-import { Item } from "./item.js"
-import { ItemViewModel } from "./viewmodel/item-view-model.js"
 
 class Transaction {
     
@@ -11,7 +7,6 @@ class Transaction {
 
     @Allow()
     _rev?:string 
-
 
 
     
@@ -59,24 +54,6 @@ class Transaction {
 
     @Allow()
     raw: string
-
-    @Allow()
-    ercEvents?:{}
-
-    @Allow()
-    tokenIds?:string[]
-    
-    @Allow()
-    previousId?:string
-
-    @Allow()
-    previousByTokenIds?:{}
-
-    @Allow()
-    nextId?:string
-
-    @Allow()
-    nextByTokenIds?:{}
 
 
     @Allow()

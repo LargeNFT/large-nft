@@ -1,3 +1,4 @@
+import axios from "axios"
 import {  inject, injectable } from "inversify"
 import { Transaction } from "../../dto/transaction.js"
 import { DatabaseService } from "../../service/core/database-service.js"
@@ -12,6 +13,9 @@ class TransactionRepositoryBrowserImpl implements TransactionRepository {
 
     @inject('DatabaseService')
     private databaseService:DatabaseService
+
+    @inject('baseURI') 
+    private baseURI
 
     async load() {
         this.db = await this.databaseService.getDatabase({

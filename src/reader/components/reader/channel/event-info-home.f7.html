@@ -2,7 +2,7 @@
 
   <div>
 
-    ${transactionList?.length > 0 ? $h`
+    ${transactionsViewModel?.transactions?.length > 0 ? $h`
 
       <div class="card">
         <div class="card-header">Activity</div>
@@ -11,58 +11,68 @@
           <table class="event-table">
             <thead>
               <tr>
-                <th class="label-cell">Event</th>
-                <th class="image-col">Token</th>
-                <th class="token-col">Title</th>
-                <th>Date</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Etherscan</th>
-    
+                <th class="label-cell">Transaction</th>
+                <th>Events</th>
               </tr>
             </thead>
     
             <tbody>
     
-            ${transactionList.map(tvm => $h`
-              <tr class="${getRowClass(evm.ercEvent)}">
-                <td class="label-cell">
-                  ${evm.ercEvent.event} ${evm.ercEvent.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
-                </td>
-    
-                <td class="image-col">
-    
-                  ${evm.rowItemViewModel ? $h`
-                    <a href="${baseURI}t/${evm.ercEvent.tokenId}" class="link">
-                      <img src="${imageLink(evm.rowItemViewModel)}" class="latest-img"/> 
-                    </a>
-                      ` : $h`<span />`}
-    
-                </td>
-    
-                <td class="token-col">
-                  ${evm.rowItemViewModel?.title}
-                </td>
-    
+            ${transactionsViewModel.transactions.map(transaction => $h`
+
+              <tr>
                 <td>
-                  <strong>${moment(evm.ercEvent.timestamp * 1000).fromNow()}</strong>
+                  <a href="https://etherscan.io/tx/${transaction.hash}" class="link external">${transaction.hash}</a>
                 </td>
-    
+
                 <td>
-                  ${evm.ercEvent.fromAddress ? $h`
-                    <a href="${baseURI}u/?address=${evm.ercEvent.fromAddress}">${walletService.truncateEthAddress(evm.ercEvent.fromAddress)}</a>
-                  ` : $h`<span />`}
+                  <div class="list media-list">
+                    <ul>
+
+                      ${Object.keys(transaction.ercEvents).map(key => $h`
+                    
+                        <li class="item-content">
+                          <div class="item-media">
+  
+                            ${transaction.ercEvents[key].tokenId ? $h`
+                              <a href="${baseURI}t/${transaction.ercEvents[key].tokenId}" class="link">
+                                <img src="${imageLink(transactionsViewModel.rowItemViewModels[transaction.ercEvents[key].tokenId])}" class="latest-img"/> 
+                              </a>
+                                ` : $h`<span />`}
+  
+                          </div>
+                          <div class="item-inner">
+
+                            <div class="item-title-row">
+                              <div class="item-title">${transaction.ercEvents[key].event} ${transaction.ercEvents[key].isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`} </div>
+                              <div class="item-after"><strong>${moment(transaction.ercEvents[key].timestamp * 1000).fromNow()}</strong></div>
+                            </div>
+                            <div class="item-text">
+                              ${transaction.ercEvents[key].fromAddress ? $h`
+                                <a href="${baseURI}u/?address=${transaction.ercEvents[key].fromAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].fromAddress)}</a>
+                              ` : $h`<span />`}
+
+                              ${transaction.ercEvents[key].toAddress ? $h`
+                                <a href="${baseURI}u/?address=${transaction.ercEvents[key].toAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].toAddress)}</a>
+                              ` : $h`<span />`}
+
+                            </div>
+
+
+                          </div>
+                        </li>
+  
+                      `)}
+
+                    </ul>
+                  </div>
+
                 </td>
-                <td>
-                  ${evm.ercEvent.toAddress ? $h`
-                    <a href="${baseURI}u/?address=${evm.ercEvent.toAddress}">${walletService.truncateEthAddress(evm.ercEvent.toAddress)}</a>
-                  ` : $h`<span />`}
-                </td>
-                <td>
-                  <a href="https://etherscan.io/tx/${evm.ercEvent.transactionHash}" class="link external">View</a>
-                </td>
-    
+
+
               </tr>
+
+
             
             `)}
             </tbody>
@@ -102,7 +112,7 @@
     let nextPageStartId
     let previousPageStartId
 
-    let transactionList = []
+    let transactionsViewModel 
 
     let loading = true
 
@@ -130,9 +140,9 @@
 
       try  {
 
-        transactionList = await transactionWebService.listFrom(display, startId)
+        transactionsViewModel = await transactionWebService.listFrom(display, startId)
 
-        console.log(transactionList)
+        console.log(transactionsViewModel)
       
       } catch(ex) { console.log(ex) }
       

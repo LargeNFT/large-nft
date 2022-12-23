@@ -118,7 +118,6 @@ import { SchemaService } from "./service/core/schema-service.js";
 import { QuillService } from "./service/core/quill-service.js";
 import { ReaderSettingsService } from "./service/reader-settings-service.js";
 import { StaticPage } from "./dto/static-page.js";
-// import { ERCEventRepository } from "./repository/erc-event-repository.js";
 
 import { ContractStateRepository } from "./repository/contract-state-repository.js";
 import { ContractStateRepositoryBrowserImpl } from "./repository/browser/contract-state-repository-impl.js";
@@ -126,7 +125,6 @@ import { ContractStateRepositoryBrowserImpl } from "./repository/browser/contrac
 import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js";
 import { ContractStateService } from "./service/contract-state-service.js";
 import { ERCEventService } from "./service/erc-event-service.js";
-// import { EventWebService } from "./service/web/event-web-service.js";
 import { AttributeTotalService } from "./service/attribute-total-service.js"; 
 import { ComponentStateService } from "./service/core/component-state-service.js";
 import { ComponentStateRepository } from "./repository/component-state-repository.js";
@@ -134,6 +132,8 @@ import { ComponentStateRepositoryBrowserImpl } from "./repository/browser/compon
 import { ComponentState } from "./dto/component-state.js";
 import { TokenOwnerService } from "./service/token-owner-service.js";
 import { TransactionService } from "./service/transaction-service.js";
+import { ProcessedTransactionService } from "./service/processed-transaction-service.js";
+
 import { BlockService } from "./service/block-service.js";
 import { TokenOwnerPageService } from "./service/token-owner-page-service.js";
 
@@ -146,7 +146,12 @@ import { TokenRepository } from "./repository/token-repository.js";
 import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
 import { TokenOwnerPageRepositoryBrowserImpl } from "./repository/browser/token-owner-page-repository-impl.js";
 
+import { TransactionRepository } from "./repository/transaction-repository.js";
 import { TransactionRepositoryBrowserImpl } from "./repository/browser/transaction-repository-impl.js";
+
+import { ProcessedTransactionRepository } from "./repository/processed-transaction-repository.js";
+import { ProcessedTransactionRepositoryBrowserImpl } from "./repository/browser/processed-transaction-repository-impl.js";
+
 import { BlockRepositoryBrowserImpl } from "./repository/browser/block-repository-impl.js";
 import { TokenRepositoryBrowserImpl } from "./repository/browser/token-repository-impl.js";
 
@@ -408,6 +413,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
   container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryBrowserImpl).inSingletonScope()
+  container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryBrowserImpl).inSingletonScope()
+
   container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
 
@@ -435,7 +442,6 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<TokenContractService>("TokenContractService").to(TokenContractService).inSingletonScope()
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
-  // container.bind<EventWebService>("EventWebService").to(EventWebService).inSingletonScope()
   container.bind<AttributeTotalService>("AttributeTotalService").to(AttributeTotalService).inSingletonScope()
   container.bind<ComponentStateService>("ComponentStateService").to(ComponentStateService).inSingletonScope()
 
@@ -449,6 +455,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
 
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
+  container.bind<ProcessedTransactionService>("ProcessedTransactionService").to(ProcessedTransactionService).inSingletonScope()
+
   container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
 

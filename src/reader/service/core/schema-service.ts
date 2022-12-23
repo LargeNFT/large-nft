@@ -9,6 +9,7 @@ import { ContractStateRepository } from "../../repository/contract-state-reposit
 // import { ERCEventRepository } from "../../repository/erc-event-repository.js"
 import { ImageRepository } from "../../repository/image-repository.js"
 import { ItemRepository } from "../../repository/item-repository.js"
+import { ProcessedTransactionRepository } from "../../repository/processed-transaction-repository.js"
 import { ReaderSettingsRepository } from "../../repository/reader-settings-repository.js"
 import { StaticPageRepository } from "../../repository/static-page-repository.js"
 import { TokenOwnerRepository } from "../../repository/token-owner-repository.js"
@@ -59,6 +60,9 @@ class SchemaService {
     @inject("TransactionRepository")
     private transactionRepository:TransactionRepository
 
+    @inject("ProcessedTransactionRepository")
+    private processedTransactionRepository:ProcessedTransactionRepository
+
     @inject("TokenRepository")
     private tokenRepository:TokenRepository
 
@@ -92,6 +96,7 @@ class SchemaService {
         repositories.push(this.transactionRepository)
         repositories.push(this.blockRepository)
         repositories.push(this.tokenRepository)
+        repositories.push(this.processedTransactionRepository)
 
         for (let db of dbs) {
 

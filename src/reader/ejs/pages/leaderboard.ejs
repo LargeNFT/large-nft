@@ -110,8 +110,6 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
-            let eventWebService = globalThis.container.get("EventWebService")
-
             let baseURL = '<%= baseURL %>'
 
             $on('pageInit', async () => {
@@ -119,7 +117,6 @@
                 let loadLeaderboardEvent = new CustomEvent('load-leaderboard')
                 loadLeaderboardEvent.pageNumber = $f7.views.main.router.currentRoute?.query?.pageNumber
 
-                console.log(loadLeaderboardEvent)
                 document.dispatchEvent(loadLeaderboardEvent)
 
                 await $update()

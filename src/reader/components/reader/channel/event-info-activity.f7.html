@@ -101,7 +101,7 @@
 
   export default (props, { $, $on, $f7, $update }) => {
 
-    let eventWebService = globalThis.container.get("EventWebService")
+    let transactionWebService = globalThis.container.get("TransactionWebService")
     let walletService = globalThis.container.get("WalletService")
 
     let baseURI = globalThis.container.get('baseURI')
@@ -141,17 +141,17 @@
 
       try  {
 
-        eventList = await eventWebService.listFrom(display, startId)
+        // eventList = await eventWebService.listFrom(display, startId)
         
-        if (eventList.length == display) {
-          nextPageStartId = eventList[display-1].ercEvent.previousId
-        }
+        // if (eventList.length == display) {
+        //   nextPageStartId = eventList[display-1].ercEvent.previousId
+        // }
 
-        //If we have a startId we are on page 2+ so we need to set the previous start offset
-        if (startId) {
-          let previousEventList = await eventWebService.listTo(display+1, startId)
-          previousPageStartId = previousEventList[display].ercEvent._id
-        }
+        // //If we have a startId we are on page 2+ so we need to set the previous start offset
+        // if (startId) {
+        //   let previousEventList = await eventWebService.listTo(display+1, startId)
+        //   previousPageStartId = previousEventList[display].ercEvent._id
+        // }
 
 
       } catch(ex) { console.log(ex) }

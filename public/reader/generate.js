@@ -85440,6 +85440,91 @@ __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/dto/processed-transaction.ts":
+/*!*************************************************!*\
+  !*** ./src/reader/dto/processed-transaction.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ProcessedTransaction": () => (/* binding */ ProcessedTransaction)
+/* harmony export */ });
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/decorator/common/Allow.js");
+/* harmony import */ var _transaction_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./transaction.js */ "./src/reader/dto/transaction.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+class ProcessedTransaction {
+    _id;
+    _rev;
+    transaction;
+    ercEvents;
+    tokenIds;
+    previousId;
+    previousByTokenIds;
+    nextId;
+    nextByTokenIds;
+    lastUpdated;
+    dateCreated;
+}
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ProcessedTransaction.prototype, "_id", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ProcessedTransaction.prototype, "_rev", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", _transaction_js__WEBPACK_IMPORTED_MODULE_1__.Transaction)
+], ProcessedTransaction.prototype, "transaction", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Array)
+], ProcessedTransaction.prototype, "ercEvents", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Array)
+], ProcessedTransaction.prototype, "tokenIds", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ProcessedTransaction.prototype, "previousId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "previousByTokenIds", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ProcessedTransaction.prototype, "nextId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "nextByTokenIds", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ProcessedTransaction.prototype, "lastUpdated", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], ProcessedTransaction.prototype, "dateCreated", void 0);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/dto/token-owner.ts":
 /*!***************************************!*\
   !*** ./src/reader/dto/token-owner.ts ***!
@@ -85625,12 +85710,6 @@ class Transaction {
     s;
     v;
     raw;
-    ercEvents;
-    tokenIds;
-    previousId;
-    previousByTokenIds;
-    nextId;
-    nextByTokenIds;
     lastUpdated;
     dateCreated;
 }
@@ -85704,30 +85783,6 @@ __decorate([
 ], Transaction.prototype, "raw", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Object)
-], Transaction.prototype, "ercEvents", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Array)
-], Transaction.prototype, "tokenIds", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], Transaction.prototype, "previousId", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Object)
-], Transaction.prototype, "previousByTokenIds", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], Transaction.prototype, "nextId", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Object)
-], Transaction.prototype, "nextByTokenIds", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], Transaction.prototype, "lastUpdated", void 0);
 __decorate([
@@ -85758,44 +85813,46 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _repository_node_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./repository/node/item-page-repository-impl.js */ "./src/reader/repository/node/item-page-repository-impl.ts");
 /* harmony import */ var _repository_node_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./repository/node/item-repository-impl.js */ "./src/reader/repository/node/item-repository-impl.ts");
 /* harmony import */ var _repository_node_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./repository/node/static-page-repository-impl.js */ "./src/reader/repository/node/static-page-repository-impl.ts");
-/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
-/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
-/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
-/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
-/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
-/* harmony import */ var _service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./service/core/image-generator-service.js */ "./src/reader/service/core/image-generator-service.ts");
-/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
-/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
-/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
-/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
-/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
-/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
+/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
+/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
+/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
+/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
+/* harmony import */ var _service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var _service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/core/image-generator-service.js */ "./src/reader/service/core/image-generator-service.ts");
+/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
+/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
+/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
+/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
+/* harmony import */ var _service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./service/core/transaction-indexer-service.js */ "./src/reader/service/core/transaction-indexer-service.ts");
+/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
 /* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/reader/service/core/wallet-service-impl.ts");
-/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
-/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
-/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
-/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
-/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
-/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
-/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
+/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
+/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
+/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
+/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
+/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
+/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
+/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./service/web/searchbar-service.js */ "./src/reader/service/web/searchbar-service.ts");
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/providers/lib.esm/url-json-rpc-provider.js");
-/* harmony import */ var _service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/core/generate-service.js */ "./src/reader/service/core/generate-service.ts");
-/* harmony import */ var _repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./repository/node/contract-state-repository-impl.js */ "./src/reader/repository/node/contract-state-repository-impl.ts");
+/* harmony import */ var _service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/core/generate-service.js */ "./src/reader/service/core/generate-service.ts");
+/* harmony import */ var _repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./repository/node/contract-state-repository-impl.js */ "./src/reader/repository/node/contract-state-repository-impl.ts");
 /* harmony import */ var _repository_node_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./repository/node/token-owner-repository-impl.js */ "./src/reader/repository/node/token-owner-repository-impl.ts");
-/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
 /* harmony import */ var _repository_node_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./repository/node/transaction-repository-impl.js */ "./src/reader/repository/node/transaction-repository-impl.ts");
-/* harmony import */ var _service_transaction_service_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/transaction-service.js */ "./src/reader/service/transaction-service.ts");
-/* harmony import */ var _repository_node_block_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./repository/node/block-repository-impl.js */ "./src/reader/repository/node/block-repository-impl.ts");
-/* harmony import */ var _service_block_service_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/block-service.js */ "./src/reader/service/block-service.ts");
-/* harmony import */ var _repository_node_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./repository/node/token-owner-page-repository-impl.js */ "./src/reader/repository/node/token-owner-page-repository-impl.ts");
-/* harmony import */ var _service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./service/token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
-/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
-/* harmony import */ var _repository_node_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./repository/node/token-repository-impl.js */ "./src/reader/repository/node/token-repository-impl.ts");
+/* harmony import */ var _service_transaction_service_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/transaction-service.js */ "./src/reader/service/transaction-service.ts");
+/* harmony import */ var _repository_node_block_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./repository/node/block-repository-impl.js */ "./src/reader/repository/node/block-repository-impl.ts");
+/* harmony import */ var _service_block_service_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/block-service.js */ "./src/reader/service/block-service.ts");
+/* harmony import */ var _repository_node_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./repository/node/token-owner-page-repository-impl.js */ "./src/reader/repository/node/token-owner-page-repository-impl.ts");
+/* harmony import */ var _service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
+/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
+/* harmony import */ var _repository_node_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./repository/node/token-repository-impl.js */ "./src/reader/repository/node/token-repository-impl.ts");
+/* harmony import */ var _repository_node_processed_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./repository/node/processed-transaction-repository-impl.js */ "./src/reader/repository/node/processed-transaction-repository-impl.ts");
+/* harmony import */ var _service_processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./service/processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
 
 
 
@@ -85843,6 +85900,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 let container;
 function getMainContainer(command) {
     if (container)
@@ -85871,9 +85930,10 @@ function getMainContainer(command) {
     container.bind("AttributeTotalRepository").to(_repository_node_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_9__.AttributeTotalRepositoryNodeImpl).inSingletonScope();
     container.bind("TokenOwnerRepository").to(_repository_node_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_10__.TokenOwnerRepositoryNodeImpl).inSingletonScope();
     container.bind("TransactionRepository").to(_repository_node_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_11__.TransactionRepositoryNodeImpl).inSingletonScope();
-    container.bind("BlockRepository").to(_repository_node_block_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__.BlockRepositoryNodeImpl).inSingletonScope();
-    container.bind("TokenOwnerPageRepository").to(_repository_node_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__.TokenOwnerPageRepositoryNodeImpl).inSingletonScope();
-    container.bind("TokenRepository").to(_repository_node_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_14__.TokenRepositoryNodeImpl).inSingletonScope();
+    container.bind("ProcessedTransactionRepository").to(_repository_node_processed_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_12__.ProcessedTransactionRepositoryNodeImpl).inSingletonScope();
+    container.bind("BlockRepository").to(_repository_node_block_repository_impl_js__WEBPACK_IMPORTED_MODULE_13__.BlockRepositoryNodeImpl).inSingletonScope();
+    container.bind("TokenOwnerPageRepository").to(_repository_node_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_14__.TokenOwnerPageRepositoryNodeImpl).inSingletonScope();
+    container.bind("TokenRepository").to(_repository_node_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_15__.TokenRepositoryNodeImpl).inSingletonScope();
     container.bind("ReaderSettingsRepository").toConstantValue({
         get: function () {
             throw new Error("Function not implemented.");
@@ -85883,7 +85943,7 @@ function getMainContainer(command) {
         }
     });
     // container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryNodeImpl).inSingletonScope()
-    container.bind("ContractStateRepository").to(_repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_15__.ContractStateRepositoryNodeImpl).inSingletonScope();
+    container.bind("ContractStateRepository").to(_repository_node_contract_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_16__.ContractStateRepositoryNodeImpl).inSingletonScope();
     container.bind("ComponentStateRepository").toConstantValue({
         get: function (_id) {
             throw new Error("Function not implemented.");
@@ -85892,37 +85952,38 @@ function getMainContainer(command) {
             throw new Error("Function not implemented.");
         }
     });
-    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_16__.SchemaService).inSingletonScope();
-    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_17__.DatabaseService).inSingletonScope();
-    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_18__.ChannelWebService).inSingletonScope();
-    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_19__.ItemWebService).inSingletonScope();
-    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_20__.AuthorWebService).inSingletonScope();
-    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_21__.SearchbarService).inSingletonScope();
-    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_22__.StaticPageService).inSingletonScope();
-    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_23__.ItemPageService).inSingletonScope();
-    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_24__.PagingService).inSingletonScope();
-    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_25__.AnimationService).inSingletonScope();
-    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_26__.ImageService).inSingletonScope();
-    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_27__.ItemService).inSingletonScope();
-    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_28__.ChannelService).inSingletonScope();
-    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_29__.AuthorService).inSingletonScope();
-    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_30__.UiService).inSingletonScope();
-    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_31__.QueueService).inSingletonScope();
-    container.bind("ImageGeneratorService").to(_service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_32__.ImageGeneratorService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_33__.ReaderSettingsService).inSingletonScope();
-    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_34__.TransactionIndexerService).inSingletonScope();
-    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_35__.ContractStateService).inSingletonScope();
-    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_36__.ERCEventService).inSingletonScope();
-    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_37__.AttributeTotalService).inSingletonScope();
-    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_38__.ComponentStateService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_33__.ReaderSettingsService).inSingletonScope();
-    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_39__.QuillService).inSingletonScope();
-    container.bind("GenerateService").to(_service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_40__.GenerateService).inSingletonScope();
-    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_41__.TokenOwnerService).inSingletonScope();
-    container.bind("TransactionService").to(_service_transaction_service_js__WEBPACK_IMPORTED_MODULE_42__.TransactionService).inSingletonScope();
-    container.bind("BlockService").to(_service_block_service_js__WEBPACK_IMPORTED_MODULE_43__.BlockService).inSingletonScope();
-    container.bind("TokenOwnerPageService").to(_service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_44__.TokenOwnerPageService).inSingletonScope();
-    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_45__.TokenService).inSingletonScope();
+    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_17__.SchemaService).inSingletonScope();
+    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_18__.DatabaseService).inSingletonScope();
+    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_19__.ChannelWebService).inSingletonScope();
+    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_20__.ItemWebService).inSingletonScope();
+    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_21__.AuthorWebService).inSingletonScope();
+    container.bind("SearchbarService").to(_service_web_searchbar_service_js__WEBPACK_IMPORTED_MODULE_22__.SearchbarService).inSingletonScope();
+    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_23__.StaticPageService).inSingletonScope();
+    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_24__.ItemPageService).inSingletonScope();
+    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_25__.PagingService).inSingletonScope();
+    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_26__.AnimationService).inSingletonScope();
+    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_27__.ImageService).inSingletonScope();
+    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_28__.ItemService).inSingletonScope();
+    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_29__.ChannelService).inSingletonScope();
+    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_30__.AuthorService).inSingletonScope();
+    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_31__.UiService).inSingletonScope();
+    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_32__.QueueService).inSingletonScope();
+    container.bind("ImageGeneratorService").to(_service_core_image_generator_service_js__WEBPACK_IMPORTED_MODULE_33__.ImageGeneratorService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_34__.ReaderSettingsService).inSingletonScope();
+    container.bind("TransactionIndexerService").to(_service_core_transaction_indexer_service_js__WEBPACK_IMPORTED_MODULE_35__.TransactionIndexerService).inSingletonScope();
+    container.bind("ContractStateService").to(_service_contract_state_service_js__WEBPACK_IMPORTED_MODULE_36__.ContractStateService).inSingletonScope();
+    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_37__.ERCEventService).inSingletonScope();
+    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_38__.AttributeTotalService).inSingletonScope();
+    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_39__.ComponentStateService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_34__.ReaderSettingsService).inSingletonScope();
+    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_40__.QuillService).inSingletonScope();
+    container.bind("GenerateService").to(_service_core_generate_service_js__WEBPACK_IMPORTED_MODULE_41__.GenerateService).inSingletonScope();
+    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_42__.TokenOwnerService).inSingletonScope();
+    container.bind("TransactionService").to(_service_transaction_service_js__WEBPACK_IMPORTED_MODULE_43__.TransactionService).inSingletonScope();
+    container.bind("ProcessedTransactionService").to(_service_processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_44__.ProcessedTransactionService).inSingletonScope();
+    container.bind("BlockService").to(_service_block_service_js__WEBPACK_IMPORTED_MODULE_45__.BlockService).inSingletonScope();
+    container.bind("TokenOwnerPageService").to(_service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_46__.TokenOwnerPageService).inSingletonScope();
+    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_47__.TokenService).inSingletonScope();
     return container;
 }
 
@@ -86485,6 +86546,86 @@ ItemRepositoryNodeImpl = __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/repository/node/processed-transaction-repository-impl.ts":
+/*!*****************************************************************************!*\
+  !*** ./src/reader/repository/node/processed-transaction-repository-impl.ts ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ProcessedTransactionRepositoryNodeImpl": () => (/* binding */ ProcessedTransactionRepositoryNodeImpl)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_processed_transaction_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/processed-transaction.js */ "./src/reader/dto/processed-transaction.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var _processed_transaction_repository_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../processed-transaction-repository.js */ "./src/reader/repository/processed-transaction-repository.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+let ProcessedTransactionRepositoryNodeImpl = class ProcessedTransactionRepositoryNodeImpl {
+    db;
+    dbName = "processed-transactions";
+    databaseService;
+    async load() {
+        this.db = await this.databaseService.getDatabase({
+            name: this.dbName,
+            initialRecords: false,
+            changesets: _processed_transaction_repository_js__WEBPACK_IMPORTED_MODULE_0__.changesets
+        });
+    }
+    async get(_id) {
+        return Object.assign(new _dto_processed_transaction_js__WEBPACK_IMPORTED_MODULE_1__.ProcessedTransaction(), await this.db.get(_id));
+    }
+    async put(processedTransaction) {
+        await this.db.put(processedTransaction);
+    }
+    async putAll(processedTransactions) {
+        await this.db.bulkDocs(processedTransactions);
+    }
+    async list(limit, skip) {
+        let response = await this.db.find({
+            selector: {
+                "transaction.blockNumber": {
+                    $exists: true
+                },
+                "transaction.transactionIndex": {
+                    $exists: true
+                }
+            },
+            limit: limit,
+            skip: skip,
+            sort: [{ "transaction.blockNumber": 'desc' }, { "transaction.transactionIndex": 'desc' }]
+        });
+        if (response.warning) {
+            console.log(response.warning);
+        }
+        return response.docs;
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)('DatabaseService'),
+    __metadata("design:type", _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_3__.DatabaseService)
+], ProcessedTransactionRepositoryNodeImpl.prototype, "databaseService", void 0);
+ProcessedTransactionRepositoryNodeImpl = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)()
+], ProcessedTransactionRepositoryNodeImpl);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/repository/node/static-page-repository-impl.ts":
 /*!*******************************************************************!*\
   !*** ./src/reader/repository/node/static-page-repository-impl.ts ***!
@@ -86821,6 +86962,33 @@ TransactionRepositoryNodeImpl = __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/repository/processed-transaction-repository.ts":
+/*!*******************************************************************!*\
+  !*** ./src/reader/repository/processed-transaction-repository.ts ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "changesets": () => (/* binding */ changesets)
+/* harmony export */ });
+let changesets = [
+    {
+        id: '0',
+        changeset: async (db) => {
+            await db.createIndex({
+                index: {
+                    fields: ['transaction.blockNumber', 'transaction.transactionIndex'],
+                }
+            });
+        }
+    }
+];
+
+
+
+/***/ }),
+
 /***/ "./src/reader/repository/token-owner-repository.ts":
 /*!*********************************************************!*\
   !*** ./src/reader/repository/token-owner-repository.ts ***!
@@ -87104,8 +87272,9 @@ let BlockService = class BlockService {
     blockRepository;
     walletService;
     constructor() { }
-    async get(blockNumber) {
+    async getOrDownload(blockNumber) {
         let block;
+        //Check if we've already inserted it into pouch
         try {
             block = await this.blockRepository.get(blockNumber);
         }
@@ -87128,6 +87297,7 @@ let BlockService = class BlockService {
                 block.miner = data.miner;
                 block.extraData = data.extraData;
                 block.baseFeePerGas = data.baseFeePerGas;
+                await this.blockRepository.put(block);
             }
             catch (ex) {
                 console.log(ex);
@@ -87975,6 +88145,7 @@ let SchemaService = class SchemaService {
     componentStateRepository;
     tokenOwnerRepository;
     transactionRepository;
+    processedTransactionRepository;
     tokenRepository;
     blockRepository;
     constructor() {
@@ -87998,6 +88169,7 @@ let SchemaService = class SchemaService {
         repositories.push(this.transactionRepository);
         repositories.push(this.blockRepository);
         repositories.push(this.tokenRepository);
+        repositories.push(this.processedTransactionRepository);
         for (let db of dbs) {
             let repo = repositories.filter(r => r.dbName == db)[0];
             if (!repo)
@@ -88071,6 +88243,10 @@ __decorate([
     __metadata("design:type", Object)
 ], SchemaService.prototype, "transactionRepository", void 0);
 __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("ProcessedTransactionRepository"),
+    __metadata("design:type", Object)
+], SchemaService.prototype, "processedTransactionRepository", void 0);
+__decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("TokenRepository"),
     __metadata("design:type", Object)
 ], SchemaService.prototype, "tokenRepository", void 0);
@@ -88098,19 +88274,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TransactionIndexerService": () => (/* binding */ TransactionIndexerService)
 /* harmony export */ });
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/address/lib.esm/index.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
-/* harmony import */ var _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dto/token-owner.js */ "./src/reader/dto/token-owner.ts");
-/* harmony import */ var _dto_token_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/token.js */ "./src/reader/dto/token.ts");
-/* harmony import */ var _block_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../block-service.js */ "./src/reader/service/block-service.ts");
-/* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
-/* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
-/* harmony import */ var _token_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../token-service.js */ "./src/reader/service/token-service.ts");
-/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
-/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
+/* harmony import */ var _dto_processed_transaction_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/processed-transaction.js */ "./src/reader/dto/processed-transaction.ts");
+/* harmony import */ var _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dto/token-owner.js */ "./src/reader/dto/token-owner.ts");
+/* harmony import */ var _dto_token_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dto/token.js */ "./src/reader/dto/token.ts");
+/* harmony import */ var _block_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../block-service.js */ "./src/reader/service/block-service.ts");
+/* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
+/* harmony import */ var _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
+/* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _token_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../token-service.js */ "./src/reader/service/token-service.ts");
+/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
+/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -88133,6 +88311,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 let TransactionIndexerService = class TransactionIndexerService {
     contractStateService;
     ercEventService;
@@ -88141,6 +88321,7 @@ let TransactionIndexerService = class TransactionIndexerService {
     tokenService;
     walletService;
     transactionService;
+    processedTransactionService;
     blockService;
     tokenOwnerPageService;
     blockNumber;
@@ -88165,9 +88346,7 @@ let TransactionIndexerService = class TransactionIndexerService {
     }
     async index() {
         let result = {
-            blocksToUpdate: {},
-            transactionsToUpdate: {},
-            // eventsToUpdate: {},
+            processedTransactionsToUpdate: {},
             ownersToUpdate: {},
             tokensToUpdate: {}
         };
@@ -88181,224 +88360,179 @@ let TransactionIndexerService = class TransactionIndexerService {
         `);
         let startBlock = this.getStartBlock(this.contractState);
         let endBlock = this.getEndBlock();
-        //Update the tokenToLatestEventId map
-        // let latestByToken:ERCEvent[] = await this.ercEventService.getLatestForAllTokens()
-        // latestByToken.forEach(e => tokenToLatestEventId[e.tokenId] = e._id)
         console.log(`Indexing blocks: ${startBlock} to ${endBlock}`);
-        const eventsResult = await this.getEvents(startBlock, endBlock);
-        const events = eventsResult.events;
-        endBlock = eventsResult.endBlock;
-        console.log(`Found ${events.length} events up to block ${endBlock}`);
-        if (events.length > 0) {
-            // let previous: ERCEvent = await this.ercEventService.getLatest()
-            let previousTransaction = await this.transactionService.getLatest();
-            // if (previous) {
-            //     previousTransaction = await this.transactionService.get(previous.transactionHash)
-            //     result.eventsToUpdate[previous._id] = previous
-            // }
-            if (previousTransaction) {
-                result.transactionsToUpdate[previousTransaction._id] = previousTransaction;
-            }
-            let processedCount = 0;
-            for (let event of events) {
-                console.time(`Processesing ${event.blockNumber} / ${event.logIndex} (${processedCount + 1} of ${events.length})`);
-                //Grab block data
-                let block;
-                // console.time(`Getting block #${event.blockNumber}`)
-                if (result.blocksToUpdate[event.blockNumber]) {
-                    block = result.blocksToUpdate[event.blockNumber];
+        try {
+            const eventsResult = await this.getEvents(startBlock, endBlock);
+            const events = eventsResult.events;
+            endBlock = eventsResult.endBlock;
+            console.log(`Found ${events.length} events up to block ${endBlock}`);
+            if (events.length > 0) {
+                let previousTransaction = await this.processedTransactionService.getLatest();
+                let currentTransaction;
+                if (previousTransaction) {
+                    result.processedTransactionsToUpdate[previousTransaction._id] = previousTransaction;
                 }
-                else {
-                    block = await this.blockService.get(event.blockNumber);
-                }
-                // console.timeEnd(`Getting block #${event.blockNumber}`)
-                //Grab transaction data
-                let transaction;
-                // console.time(`Getting transaction #${event.transactionHash}`)
-                //If we already have it then use it
-                if (result.transactionsToUpdate[event.transactionHash]) {
-                    transaction = result.transactionsToUpdate[event.transactionHash];
-                }
-                else {
-                    //Look it up
-                    transaction = await this.transactionService.get(event.transactionHash);
-                }
-                // console.timeEnd(`Getting transaction #${event.transactionHash}`)
-                if (!block || !transaction)
-                    throw new Error("Block and/or transaction not found.");
-                //Translate
-                let ercEvent = await this.ercEventService.translateEventToERCEvent(event, block);
-                if (ercEvent.tokenId) {
-                    //Grab token info
-                    let token;
-                    if (result.tokensToUpdate[ercEvent.tokenId]) {
-                        token = result.tokensToUpdate[ercEvent.tokenId];
+                let processedCount = 0;
+                for (let event of events) {
+                    console.time(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`);
+                    //Grab block data
+                    let block = await this.blockService.getOrDownload(event.blockNumber);
+                    //Look for it locally
+                    if (result.processedTransactionsToUpdate[event.transactionHash]) {
+                        currentTransaction = result.processedTransactionsToUpdate[event.transactionHash];
                     }
                     else {
-                        try {
-                            token = await this.tokenService.get(ercEvent.tokenId.toString());
-                        }
-                        catch (ex) { }
-                        if (!token) {
-                            token = new _dto_token_js__WEBPACK_IMPORTED_MODULE_1__.Token();
-                            token.tokenId = ercEvent.tokenId;
-                        }
+                        currentTransaction = new _dto_processed_transaction_js__WEBPACK_IMPORTED_MODULE_1__.ProcessedTransaction();
+                        currentTransaction.transaction = await this.transactionService.getOrDownload(event.transactionHash);
+                        currentTransaction._id = currentTransaction.transaction.hash;
+                        currentTransaction.dateCreated = new Date().toJSON();
+                        currentTransaction.ercEvents = [];
+                        currentTransaction.nextByTokenIds = {};
+                        currentTransaction.previousByTokenIds = {};
+                        currentTransaction.tokenIds = [];
+                        result.processedTransactionsToUpdate[currentTransaction._id] = currentTransaction;
                     }
-                    result.tokensToUpdate[ercEvent.tokenId] = token;
-                    const getTokenOwner = async (ownerAddress) => {
-                        let tokenOwner = result.ownersToUpdate[ownerAddress];
-                        if (!tokenOwner) {
+                    if (!block || !currentTransaction)
+                        throw new Error("Block and/or transaction not found.");
+                    if (event.transactionHash != currentTransaction._id)
+                        throw new Error("Wrong transaction found.");
+                    //Translate
+                    let ercEvent = await this.ercEventService.translateEventToERCEvent(event, block);
+                    if (ercEvent.tokenId) {
+                        //Grab token info
+                        let token;
+                        if (result.tokensToUpdate[ercEvent.tokenId]) {
+                            token = result.tokensToUpdate[ercEvent.tokenId];
+                        }
+                        else {
                             try {
-                                tokenOwner = await this.tokenOwnerService.get(ercEvent.fromAddress);
+                                token = await this.tokenService.get(ercEvent.tokenId.toString());
                             }
                             catch (ex) { }
+                            if (!token) {
+                                token = new _dto_token_js__WEBPACK_IMPORTED_MODULE_2__.Token();
+                                token.tokenId = ercEvent.tokenId;
+                            }
                         }
-                        if (!tokenOwner) {
-                            tokenOwner = new _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_2__.TokenOwner();
-                            tokenOwner.address = ownerAddress;
-                            tokenOwner.tokenIds = [];
-                            tokenOwner.transactionIds = [];
-                            tokenOwner.transactionIdsInitiated = [];
-                            tokenOwner.count = 0;
+                        result.tokensToUpdate[ercEvent.tokenId] = token;
+                        const getTokenOwner = async (ownerAddress) => {
+                            let tokenOwner = result.ownersToUpdate[ownerAddress];
+                            if (!tokenOwner) {
+                                try {
+                                    tokenOwner = await this.tokenOwnerService.get(ercEvent.fromAddress);
+                                }
+                                catch (ex) { }
+                            }
+                            if (!tokenOwner) {
+                                tokenOwner = new _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_3__.TokenOwner();
+                                tokenOwner.address = ownerAddress;
+                                tokenOwner.tokenIds = [];
+                                tokenOwner.transactionIds = [];
+                                tokenOwner.transactionIdsInitiated = [];
+                                tokenOwner.count = 0;
+                            }
+                            result.ownersToUpdate[ownerAddress] = tokenOwner;
+                            return tokenOwner;
+                        };
+                        let transactionUser;
+                        let fromOwner;
+                        let toOwner;
+                        //Look up/create the from address
+                        if (currentTransaction.transaction.from) {
+                            transactionUser = await getTokenOwner(currentTransaction.transaction.from);
+                            if (!transactionUser.transactionIdsInitiated.includes(currentTransaction.transaction._id)) {
+                                transactionUser.transactionIdsInitiated.push(currentTransaction.transaction._id);
+                            }
                         }
-                        result.ownersToUpdate[ownerAddress] = tokenOwner;
-                        return tokenOwner;
-                    };
-                    let transactionUser;
-                    let fromOwner;
-                    let toOwner;
-                    //Look up/create the from address
-                    if (transaction.from) {
-                        transactionUser = await getTokenOwner(transaction.from);
-                        if (!transactionUser.transactionIdsInitiated.includes(transaction._id)) {
-                            transactionUser.transactionIdsInitiated.push(transaction._id);
+                        //Look up/create the from address
+                        if (ercEvent.fromAddress) {
+                            fromOwner = await getTokenOwner(ercEvent.fromAddress);
+                            if (!fromOwner.transactionIds.includes(currentTransaction.transaction._id)) {
+                                fromOwner.transactionIds.push(currentTransaction.transaction._id);
+                            }
                         }
+                        //Look up/create the to address
+                        if (ercEvent.toAddress) {
+                            toOwner = await getTokenOwner(ercEvent.toAddress);
+                            if (!toOwner.transactionIds.includes(currentTransaction.transaction._id)) {
+                                toOwner.transactionIds.push(currentTransaction.transaction._id);
+                            }
+                        }
+                        if (ercEvent.isTransfer) {
+                            //Update previous owner
+                            if (fromOwner.tokenIds.includes(ercEvent.tokenId)) {
+                                fromOwner.tokenIds = Array.from(fromOwner.tokenIds)?.filter(id => id != ercEvent.tokenId);
+                                fromOwner.count = fromOwner.tokenIds.length;
+                            }
+                            //Update new owner
+                            toOwner.tokenIds.push(ercEvent.tokenId);
+                            toOwner.count = toOwner.tokenIds.length;
+                        }
+                        //Look for previousByTokenId
+                        let previousTransactionByToken;
+                        //Look up previous transaction for this token
+                        if (token.latestTransactionId && token.latestTransactionId != currentTransaction._id) {
+                            //Grab from memory if exists
+                            previousTransactionByToken = result.processedTransactionsToUpdate[token.latestTransactionId];
+                            //Look it up
+                            if (!previousTransactionByToken) {
+                                previousTransactionByToken = await this.processedTransactionService.get(token.latestTransactionId);
+                            }
+                        }
+                        //Point the previous one here
+                        if (previousTransactionByToken) {
+                            //Make sure we update it.
+                            result.processedTransactionsToUpdate[previousTransactionByToken._id] = previousTransactionByToken;
+                            currentTransaction.previousByTokenIds[ercEvent.tokenId] = previousTransactionByToken._id;
+                            previousTransactionByToken.nextByTokenIds[ercEvent.tokenId] = currentTransaction._id;
+                        }
+                        token.latestErcEventId = ercEvent._id;
+                        token.latestTransactionId = currentTransaction._id;
                     }
-                    //Look up/create the from address
-                    if (ercEvent.fromAddress) {
-                        fromOwner = await getTokenOwner(ercEvent.fromAddress);
-                        if (!fromOwner.transactionIds.includes(transaction._id)) {
-                            fromOwner.transactionIds.push(transaction._id);
-                        }
+                    //See if it already exists. If so we need the _rev
+                    // ercEvent._rev = await this.ercEventService.getExistingRev(ercEvent._id)
+                    //Add event to transaction before saving
+                    if (currentTransaction.ercEvents.filter(e => e._id == ercEvent._id)?.length == 0) {
+                        currentTransaction.ercEvents.push(ercEvent);
                     }
-                    //Look up/create the to address
-                    if (ercEvent.toAddress) {
-                        toOwner = await getTokenOwner(ercEvent.toAddress);
-                        if (!toOwner.transactionIds.includes(transaction._id)) {
-                            toOwner.transactionIds.push(transaction._id);
-                        }
+                    //Set previous/next if we already have a previous transaction
+                    if (previousTransaction && previousTransaction._id != currentTransaction._id) {
+                        currentTransaction.previousId = previousTransaction._id;
+                        previousTransaction.nextId = currentTransaction._id;
                     }
-                    if (ercEvent.isTransfer) {
-                        //Update previous owner
-                        if (fromOwner.tokenIds.includes(ercEvent.tokenId)) {
-                            fromOwner.tokenIds = Array.from(fromOwner.tokenIds)?.filter(id => id != ercEvent.tokenId);
-                            fromOwner.count = fromOwner.tokenIds.length;
-                        }
-                        //Update new owner
-                        toOwner.tokenIds.push(ercEvent.tokenId);
-                        toOwner.count = toOwner.tokenIds.length;
-                    }
-                    //Look for previousByTokenId in the eventsToUpdate
-                    // let previousEventByToken: ERCEvent
-                    let previousTransactionByToken;
-                    //Look up previous event for this token
-                    // if (token.latestErcEventId) {
-                    //     //Grab from memory if exists
-                    //     previousEventByToken = result.eventsToUpdate[token.latestErcEventId]
-                    //     //Look it up
-                    //     if (!previousEventByToken) {
-                    //         previousEventByToken = await this.ercEventService.get(token.latestErcEventId)
-                    //         result.eventsToUpdate[previousEventByToken._id] = previousEventByToken
-                    //     }
-                    // } 
-                    //Point the previous one here
-                    // if (previousEventByToken) {
-                    //     ercEvent.previousByTokenId = previousEventByToken._id
-                    //     previousEventByToken.nextByTokenId = ercEvent._id
-                    // }
-                    //Look up previous transaction for this token
-                    if (token.latestTransactionId) {
-                        //Grab from memory if exists
-                        previousTransactionByToken = result.transactionsToUpdate[token.latestTransactionId];
-                        //Look it up
-                        if (!previousTransactionByToken) {
-                            previousTransactionByToken = await this.transactionService.get(token.latestTransactionId);
-                            result.transactionsToUpdate[previousTransactionByToken._id] = previousTransactionByToken;
-                        }
-                    }
-                    //Point the previous one here
-                    if (previousTransactionByToken) {
-                        transaction.previousByTokenIds[ercEvent.tokenId] = previousTransactionByToken._id;
-                        previousTransactionByToken.nextByTokenIds[ercEvent.tokenId] = transaction._id;
-                    }
-                    token.latestErcEventId = ercEvent._id;
-                    token.latestTransactionId = transaction._id;
+                    console.timeEnd(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`);
+                    previousTransaction = currentTransaction;
+                    //Increment the count
+                    processedCount++;
                 }
-                //Set previous/next
-                // if (previous) {
-                //     ercEvent.previousId = previous._id
-                //     previous.nextId = ercEvent._id
-                // }
-                if (previousTransaction && previousTransaction._id != transaction._id) {
-                    transaction.previousId = previousTransaction._id;
-                    previousTransaction.nextId = transaction._id;
+                //Save token owners
+                let tokenOwners = [];
+                for (let owner of Object.keys(result.ownersToUpdate)) {
+                    tokenOwners.push(result.ownersToUpdate[owner]);
                 }
-                //See if it already exists. If so we need the _rev
-                // ercEvent._rev = await this.ercEventService.getExistingRev(ercEvent._id)
-                console.timeEnd(`Processesing ${event.blockNumber} / ${event.logIndex} (${processedCount + 1} of ${events.length})`);
-                //Save this as an event to update
-                // result.eventsToUpdate[ercEvent._id] = ercEvent
-                //Add event to transaction before saving
-                if (!transaction.ercEvents[ercEvent._id]) {
-                    transaction.ercEvents[ercEvent._id] = ercEvent;
+                await this.tokenOwnerService.putAll(tokenOwners);
+                //Save tokens
+                let tokens = [];
+                for (let tokenId of Object.keys(result.tokensToUpdate)) {
+                    tokens.push(result.tokensToUpdate[tokenId]);
                 }
-                result.transactionsToUpdate[transaction._id] = transaction;
-                result.blocksToUpdate[block._id] = block;
-                //Set previous to this event so the next iteration has it.
-                // previous = ercEvent
-                //Increment the count
-                processedCount++;
+                await this.tokenService.putAll(tokens);
+                //Save processed transactions
+                console.log(`Saving ${Object.keys(result.processedTransactionsToUpdate).length} processed transactions`);
+                let transactionsToSave = [];
+                for (let _id of Object.keys(result.processedTransactionsToUpdate)) {
+                    transactionsToSave.push(result.processedTransactionsToUpdate[_id]);
+                }
+                await this.processedTransactionService.putAll(transactionsToSave);
             }
-            //Save events
-            // console.log(`Saving ${Object.keys(result.eventsToUpdate).length} events`)
-            // let eventsToSave = []
-            // for (let _id of Object.keys(result.eventsToUpdate)) {
-            //     eventsToSave.push(result.eventsToUpdate[_id])
-            // }
-            // await this.ercEventService.putAll(eventsToSave)
-            //Save token owners
-            let tokenOwners = [];
-            for (let owner of Object.keys(result.ownersToUpdate)) {
-                // console.log(`Saving token owner ${owner}`)
-                // tokenOwner.ensName = await this.walletService.provider.lookupAddress(owner)
-                tokenOwners.push(result.ownersToUpdate[owner]);
-            }
-            await this.tokenOwnerService.putAll(tokenOwners);
-            //Save tokens
-            let tokens = [];
-            for (let tokenId of Object.keys(result.tokensToUpdate)) {
-                tokens.push(result.tokensToUpdate[tokenId]);
-            }
-            await this.tokenService.putAll(tokens);
-            //Save transactions
-            console.log(`Saving ${Object.keys(result.transactionsToUpdate).length} transactions`);
-            let transactionsToSave = [];
-            for (let _id of Object.keys(result.transactionsToUpdate)) {
-                transactionsToSave.push(result.transactionsToUpdate[_id]);
-            }
-            await this.transactionService.putAll(transactionsToSave);
-            //Save blocks
-            console.log(`Saving ${Object.keys(result.blocksToUpdate).length} blocks`);
-            let blocksToSave = [];
-            for (let _id of Object.keys(result.blocksToUpdate)) {
-                blocksToSave.push(result.blocksToUpdate[_id]);
-            }
-            await this.transactionService.putAll(blocksToSave);
+            this.contractState.lastIndexedBlock = endBlock;
+            //Save contract state
+            console.log(`Saving contract state`);
+            await this.contractStateService.put(this.contractState);
         }
-        this.contractState.lastIndexedBlock = endBlock;
-        //Save contract state
-        console.log(`Saving contract state`);
-        await this.contractStateService.put(this.contractState);
+        catch (ex) {
+            console.log(ex);
+        }
         return result;
     }
     async getEvents(startBlock, endBlock) {
@@ -88420,6 +88554,7 @@ let TransactionIndexerService = class TransactionIndexerService {
                     endBlock = parseInt(startEnd[1]);
                 }
                 else {
+                    endBlock = startBlock; //Make sure to say we didn't do anything.
                     tryAgain = false;
                 }
             }
@@ -88469,7 +88604,7 @@ let TransactionIndexerService = class TransactionIndexerService {
         }
         catch (ex) { }
         if (!contractState) {
-            contractState = Object.assign(new _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_3__.ContractState(), {
+            contractState = Object.assign(new _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_4__.ContractState(), {
                 _id: contractAddress,
                 lastIndexedBlock: 0,
                 dateCreated: new Date().toJSON()
@@ -88507,43 +88642,47 @@ let TransactionIndexerService = class TransactionIndexerService {
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ContractStateService"),
-    __metadata("design:type", _contract_state_service_js__WEBPACK_IMPORTED_MODULE_5__.ContractStateService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ContractStateService"),
+    __metadata("design:type", _contract_state_service_js__WEBPACK_IMPORTED_MODULE_6__.ContractStateService)
 ], TransactionIndexerService.prototype, "contractStateService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ERCEventService"),
-    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_6__.ERCEventService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ERCEventService"),
+    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_7__.ERCEventService)
 ], TransactionIndexerService.prototype, "ercEventService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenOwnerService"),
-    __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_7__.TokenOwnerService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenOwnerService"),
+    __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_8__.TokenOwnerService)
 ], TransactionIndexerService.prototype, "tokenOwnerService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ItemWebService"),
-    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_8__.ItemWebService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ItemWebService"),
+    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_9__.ItemWebService)
 ], TransactionIndexerService.prototype, "itemWebService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenService"),
-    __metadata("design:type", _token_service_js__WEBPACK_IMPORTED_MODULE_9__.TokenService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenService"),
+    __metadata("design:type", _token_service_js__WEBPACK_IMPORTED_MODULE_10__.TokenService)
 ], TransactionIndexerService.prototype, "tokenService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("WalletService"),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("WalletService"),
     __metadata("design:type", Object)
 ], TransactionIndexerService.prototype, "walletService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TransactionService"),
-    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_10__.TransactionService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TransactionService"),
+    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_11__.TransactionService)
 ], TransactionIndexerService.prototype, "transactionService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("BlockService"),
-    __metadata("design:type", _block_service_js__WEBPACK_IMPORTED_MODULE_11__.BlockService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ProcessedTransactionService"),
+    __metadata("design:type", _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_12__.ProcessedTransactionService)
+], TransactionIndexerService.prototype, "processedTransactionService", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("BlockService"),
+    __metadata("design:type", _block_service_js__WEBPACK_IMPORTED_MODULE_13__.BlockService)
 ], TransactionIndexerService.prototype, "blockService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenOwnerPageService"),
-    __metadata("design:type", _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_12__.TokenOwnerPageService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenOwnerPageService"),
+    __metadata("design:type", _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_14__.TokenOwnerPageService)
 ], TransactionIndexerService.prototype, "tokenOwnerPageService", void 0);
 TransactionIndexerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_13__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_15__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TransactionIndexerService);
 function sleep(ms) {
@@ -89138,6 +89277,162 @@ ItemService = __decorate([
 
 /***/ }),
 
+/***/ "./src/reader/service/processed-transaction-service.ts":
+/*!*************************************************************!*\
+  !*** ./src/reader/service/processed-transaction-service.ts ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ProcessedTransactionService": () => (/* binding */ ProcessedTransactionService)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+/* harmony import */ var _dto_transaction_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../dto/transaction.js */ "./src/reader/dto/transaction.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+let ProcessedTransactionService = class ProcessedTransactionService {
+    processedTransactionRepository;
+    constructor() { }
+    async get(_id) {
+        return this.processedTransactionRepository.get(_id);
+    }
+    async put(processedTransaction) {
+        processedTransaction.lastUpdated = new Date().toJSON();
+        //Validate
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.validate)(processedTransaction, {
+            forbidUnknownValues: true,
+            whitelist: true
+        });
+        if (errors.length > 0) {
+            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__.ValidationException(errors);
+        }
+        return this.processedTransactionRepository.put(processedTransaction);
+    }
+    /**
+     * No validation for speeeeeeeeed
+     * @param ercEvents
+     * @returns
+     */
+    async putAll(transactions) {
+        //Update lastUpdated
+        transactions.forEach(e => e.lastUpdated = new Date().toJSON());
+        return this.processedTransactionRepository.putAll(transactions);
+    }
+    async listFrom(limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let processedTransaction = await this.processedTransactionRepository.get(startId);
+            results.push(processedTransaction);
+            let previousId = processedTransaction?.previousId;
+            //Get the previous
+            if (previousId) {
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(previousId);
+                if (processedTransaction?._id != previousId)
+                    break;
+            }
+            else {
+                processedTransaction = undefined;
+            }
+            startId = processedTransaction?._id;
+        }
+        return results;
+    }
+    async listTo(limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let processedTransaction = await this.processedTransactionRepository.get(startId);
+            results.push(processedTransaction);
+            let nextId = processedTransaction?.nextId;
+            //Get the previous
+            if (nextId) {
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(processedTransaction.nextId);
+                if (processedTransaction?._id != nextId)
+                    break;
+            }
+            else {
+                processedTransaction = undefined;
+            }
+            startId = processedTransaction?._id;
+        }
+        return results;
+    }
+    async listByTokenFrom(tokenId, limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let processedTransaction = await this.processedTransactionRepository.get(startId);
+            results.push(processedTransaction);
+            let previousByTokenId = processedTransaction?.previousByTokenIds[tokenId];
+            //Get the previous
+            if (previousByTokenId) {
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.previousByTokenIds[tokenId]);
+                if (processedTransaction?._id != previousByTokenId)
+                    break;
+            }
+            else {
+                processedTransaction = undefined;
+            }
+            startId = processedTransaction?._id;
+        }
+        return results;
+    }
+    async listByTokenTo(tokenId, limit, startId) {
+        let results = [];
+        while (results?.length < limit && startId) {
+            let processedTransaction = await this.processedTransactionRepository.get(startId);
+            results.push(processedTransaction);
+            let nextByTokenId = processedTransaction?.nextByTokenIds[tokenId];
+            //Get the previous
+            if (nextByTokenId) {
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.nextByTokenIds[tokenId]);
+                if (processedTransaction?._id != nextByTokenId)
+                    break;
+            }
+            else {
+                processedTransaction = undefined;
+            }
+            startId = processedTransaction?._id;
+        }
+        return results;
+    }
+    async getLatest() {
+        let l = await this.processedTransactionRepository.list(1, 0);
+        if (l?.length > 0) {
+            return Object.assign(new _dto_transaction_js__WEBPACK_IMPORTED_MODULE_2__.Transaction(), l[0]);
+        }
+    }
+};
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.inject)("ProcessedTransactionRepository"),
+    __metadata("design:type", Object)
+], ProcessedTransactionService.prototype, "processedTransactionRepository", void 0);
+ProcessedTransactionService = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
+    __metadata("design:paramtypes", [])
+], ProcessedTransactionService);
+
+
+
+/***/ }),
+
 /***/ "./src/reader/service/reader-settings-service.ts":
 /*!*******************************************************!*\
   !*** ./src/reader/service/reader-settings-service.ts ***!
@@ -89524,6 +89819,9 @@ let TransactionService = class TransactionService {
     walletService;
     constructor() { }
     async get(_id) {
+        return this.transactionRepository.get(_id);
+    }
+    async getOrDownload(_id) {
         let transaction;
         try {
             transaction = await this.transactionRepository.get(_id);
@@ -89532,9 +89830,9 @@ let TransactionService = class TransactionService {
         if (!transaction) {
             try {
                 transaction = new _dto_transaction_js__WEBPACK_IMPORTED_MODULE_0__.Transaction();
-                transaction._id = _id;
                 //Download it.
                 let data = await this.walletService.provider.getTransaction(_id);
+                transaction._id = data.hash;
                 transaction.data = data.data;
                 transaction.hash = data.hash;
                 transaction.blockHash = data.blockHash;
@@ -89550,9 +89848,7 @@ let TransactionService = class TransactionService {
                 transaction.s = data.s;
                 transaction.v = data.v;
                 transaction.raw = data.raw;
-                transaction.ercEvents = {};
-                transaction.previousByTokenIds = {};
-                transaction.nextByTokenIds = {};
+                await this.transactionRepository.put(transaction);
             }
             catch (ex) {
                 console.log(ex);
@@ -89585,86 +89881,6 @@ let TransactionService = class TransactionService {
         //Update lastUpdated
         transactions.forEach(e => e.lastUpdated = new Date().toJSON());
         return this.transactionRepository.putAll(transactions);
-    }
-    async listFrom(limit, startId) {
-        let results = [];
-        while (results?.length < limit && startId) {
-            let transaction = await this.transactionRepository.get(startId);
-            results.push(transaction);
-            let previousId = transaction?.previousId;
-            //Get the previous
-            if (previousId) {
-                //See 
-                transaction = await this.transactionRepository.get(previousId);
-                if (transaction?._id != previousId)
-                    break;
-            }
-            else {
-                transaction = undefined;
-            }
-            startId = transaction?._id;
-        }
-        return results;
-    }
-    async listTo(limit, startId) {
-        let results = [];
-        while (results?.length < limit && startId) {
-            let transaction = await this.transactionRepository.get(startId);
-            results.push(transaction);
-            let nextId = transaction?.nextId;
-            //Get the previous
-            if (nextId) {
-                //See 
-                transaction = await this.transactionRepository.get(transaction.nextId);
-                if (transaction?._id != nextId)
-                    break;
-            }
-            else {
-                transaction = undefined;
-            }
-            startId = transaction?._id;
-        }
-        return results;
-    }
-    async listByTokenFrom(tokenId, limit, startId) {
-        let results = [];
-        while (results?.length < limit && startId) {
-            let transaction = await this.transactionRepository.get(startId);
-            results.push(transaction);
-            let previousByTokenId = transaction?.previousByTokenIds[tokenId];
-            //Get the previous
-            if (previousByTokenId) {
-                //See 
-                transaction = await this.transactionRepository.get(transaction?.previousByTokenIds[tokenId]);
-                if (transaction?._id != previousByTokenId)
-                    break;
-            }
-            else {
-                transaction = undefined;
-            }
-            startId = transaction?._id;
-        }
-        return results;
-    }
-    async listByTokenTo(tokenId, limit, startId) {
-        let results = [];
-        while (results?.length < limit && startId) {
-            let transaction = await this.transactionRepository.get(startId);
-            results.push(transaction);
-            let nextByTokenId = transaction?.nextByTokenIds[tokenId];
-            //Get the previous
-            if (nextByTokenId) {
-                //See 
-                transaction = await this.transactionRepository.get(transaction?.nextByTokenIds[tokenId]);
-                if (transaction?._id != nextByTokenId)
-                    break;
-            }
-            else {
-                transaction = undefined;
-            }
-            startId = transaction?._id;
-        }
-        return results;
     }
     async getLatest() {
         let l = await this.transactionRepository.list(1, 0);
@@ -94664,7 +94880,7 @@ module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channel
   \*******************************************/
 /***/ ((module) => {
 
-module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        Activity for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`activity`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`activity`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n\r\n\r\n            <div class=\"page\" data-name=\"explore\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"Activity\"\r\n                    active=\"Activity\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content infinite-scroll-content\" id=\"explore-infinite-scroll\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n            \r\n                            <div class=\"block block-strong inset col-100 no-margin-bottom\">\r\n                                <div class=\"breadcrumbs \">\r\n                                  <div class=\"breadcrumbs-item\">\r\n                                    <a href=\"<%=baseURL%>index.html\" class=\"link\">\r\n                                      Home\r\n                                    </a>\r\n                                  </div>       \r\n                                  <div class=\"breadcrumbs-separator\"></div>\r\n                                  <div class=\"breadcrumbs-item breadcrumbs-item-active\">\r\n                                    <a href=\"<%=baseURL%>activity\" class=\"link\">\r\n                                        Activity\r\n                                    </a>\r\n                                    \r\n                                  </div> \r\n                                </div>\r\n                            </div>\r\n\r\n                            <event-info-activity type=\"all\" display=\"25\" show_nav=\"true\"></event-info-activity>         \r\n\r\n\r\n\r\n  \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n            let eventWebService = globalThis.container.get(\"EventWebService\")\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('load-activities-events')\r\n                activityStartChangedEvent.startId = $f7.views.main.router.currentRoute?.query?.offset\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"Activity for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`activity`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"Activity for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`activity`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"Activity <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"Activity for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"Activity <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
+module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        Activity for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`activity`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`activity`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n\r\n\r\n            <div class=\"page\" data-name=\"explore\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"Activity\"\r\n                    active=\"Activity\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content infinite-scroll-content\" id=\"explore-infinite-scroll\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n            \r\n                            <div class=\"block block-strong inset col-100 no-margin-bottom\">\r\n                                <div class=\"breadcrumbs \">\r\n                                  <div class=\"breadcrumbs-item\">\r\n                                    <a href=\"<%=baseURL%>index.html\" class=\"link\">\r\n                                      Home\r\n                                    </a>\r\n                                  </div>       \r\n                                  <div class=\"breadcrumbs-separator\"></div>\r\n                                  <div class=\"breadcrumbs-item breadcrumbs-item-active\">\r\n                                    <a href=\"<%=baseURL%>activity\" class=\"link\">\r\n                                        Activity\r\n                                    </a>\r\n                                    \r\n                                  </div> \r\n                                </div>\r\n                            </div>\r\n\r\n                            <event-info-activity type=\"all\" display=\"25\" show_nav=\"true\"></event-info-activity>         \r\n\r\n\r\n\r\n  \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('load-activities-events')\r\n                activityStartChangedEvent.startId = $f7.views.main.router.currentRoute?.query?.offset\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"Activity for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`activity`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"Activity for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`activity`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"Activity <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"Activity for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"Activity <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
 
 /***/ }),
 
@@ -94694,7 +94910,7 @@ module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channel
   \**********************************************/
 /***/ ((module) => {
 
-module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        Leaderboard for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`leaderboard`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`leaderboard`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n            <div class=\"page\" data-name=\"user-activity\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"Leaderboard\"\r\n                    active=\"Leaderboard\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content infinite-scroll-content\" id=\"explore-infinite-scroll\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n                            <leader-board></leader-board>  \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n            let eventWebService = globalThis.container.get(\"EventWebService\")\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let loadLeaderboardEvent = new CustomEvent('load-leaderboard')\r\n                loadLeaderboardEvent.pageNumber = $f7.views.main.router.currentRoute?.query?.pageNumber\r\n\r\n                console.log(loadLeaderboardEvent)\r\n                document.dispatchEvent(loadLeaderboardEvent)\r\n\r\n                await $update()\r\n\r\n\r\n            })\r\n\r\n            $on('pageReinit', async () => {\r\n\r\n\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"Leaderboard for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`leaderboard`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"Leaderboard for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`leaderboard`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"Leaderboard <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"Leaderboard for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"Leaderboard <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
+module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        Leaderboard for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`leaderboard`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`leaderboard`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"Leaderboard for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n            <div class=\"page\" data-name=\"user-activity\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"Leaderboard\"\r\n                    active=\"Leaderboard\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content infinite-scroll-content\" id=\"explore-infinite-scroll\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n                            <leader-board></leader-board>  \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let loadLeaderboardEvent = new CustomEvent('load-leaderboard')\r\n                loadLeaderboardEvent.pageNumber = $f7.views.main.router.currentRoute?.query?.pageNumber\r\n\r\n                document.dispatchEvent(loadLeaderboardEvent)\r\n\r\n                await $update()\r\n\r\n\r\n            })\r\n\r\n            $on('pageReinit', async () => {\r\n\r\n\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"Leaderboard for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`leaderboard`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"Leaderboard for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`leaderboard`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"Leaderboard <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"Leaderboard for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"Leaderboard <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
 
 /***/ }),
 
@@ -94734,7 +94950,7 @@ module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channel
   \************************************************/
 /***/ ((module) => {
 
-module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        User Activity for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n            <div class=\"page\" data-name=\"user-activity\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"User\"\r\n                    active=\"User\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n                            <user-info-activity></user-info-activity> \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n            let eventWebService = globalThis.container.get(\"EventWebService\")\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n            $on('pageReinit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"User Activity <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"User Activity <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
+module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        User Activity for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n            <div class=\"page\" data-name=\"user-activity\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"User\"\r\n                    active=\"User\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n                            <user-info-activity></user-info-activity> \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n            $on('pageReinit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"User Activity <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"User Activity <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
 
 /***/ }),
 
@@ -94744,7 +94960,7 @@ module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channel
   \***************************************/
 /***/ ((module) => {
 
-module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        User Activity for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n            <div class=\"page\" data-name=\"user-activity\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"User\"\r\n                    active=\"User\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n                            <user-info></user-info> \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n            let eventWebService = globalThis.container.get(\"EventWebService\")\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n            $on('pageReinit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"User Activity <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"User Activity <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
+module.exports = "<% \r\n\r\n    let channelViewModel = it.baseViewModel.channelViewModel \r\n    let hostname = it.baseViewModel.hostname\r\n    let baseURL = it.baseViewModel.baseURL\r\n    let marketplaces = it.baseViewModel.marketplaces\r\n    let externalLinks = it.baseViewModel.externalLinks\r\n    let routablePages = it.baseViewModel.routablePages\r\n    let attributeReport = it.baseViewModel.attributeReport\r\n    let base64Version = it.baseViewModel.base64Version\r\n    let channelId = it.baseViewModel.channelId\r\n    let showMintPage = it.baseViewModel.showMintPage\r\n    let showActivityPage = it.baseViewModel.showActivityPage\r\n\r\n    const link = (href) => {\r\n        return `${baseURL + href}`\r\n    }    \r\n\r\n    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)\r\n\r\n\r\n\r\n    const absoluteLink = (href) => {\r\n        return `${hostname + baseURL + href}`\r\n    }   \r\n\r\n    const escapeExcerpt = (excerpt) => {\r\n        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })\r\n        return it.baseViewModel.he.encode(excerpt.toString())\r\n    }\r\n%>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <style>\r\n    html {\r\n        visibility: hidden;\r\n        opacity: 0;\r\n    }\r\n    </style>\r\n\r\n    <!-- Required meta tags-->\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\"\r\n    content=\"width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <!-- Color theme for statusbar -->\r\n    <title>\r\n        User Activity for <%=channelViewModel.channel.title%>\r\n    </title>\r\n\r\n    <meta property=\"og:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"og:type\" content=\"website\" />\r\n    <meta property=\"og:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"og:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n    <meta property=\"og:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n\r\n    <meta property=\"twitter:card\" content=\"summary_large_image\" />\r\n    <meta property=\"twitter:url\" content=\"<%= link(`u`) %>\" />\r\n    <meta property=\"twitter:title\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:description\" content=\"User Activity for <%=channelViewModel.channel.title%>\" />\r\n    <meta property=\"twitter:image\" content=\"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\" />\r\n\r\n    <%~ it.baseViewModel.headContents %>\r\n    \r\n</head>\r\n\r\n<body>\r\n\r\n    <div id=\"app\">\r\n\r\n        <div class=\"view view-main\">\r\n\r\n            <div class=\"page\" data-name=\"user-activity\">\r\n\r\n                <nav-bar\r\n                    logo=\"<%=logo%>\"\r\n                    title=\"User\"\r\n                    active=\"User\"\r\n                    show_mint_page=\"<%=showMintPage%>\"\r\n                    show_activity_page=\"<%=showActivityPage%>\"\r\n                >\r\n                </nav-bar>\r\n\r\n\r\n                <div class=\"page-content\">\r\n\r\n                    <div class=\"row\">\r\n            \r\n                        <div class=\"fixed-width-content center\">\r\n                            <user-info></user-info> \r\n                        </div>\r\n                    </div>\r\n            \r\n                </div>\r\n              \r\n            \r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n    <%~ it.baseViewModel.bodyContents %>\r\n\r\n    <script type=\"module\" id=\"page-init-scripts\">\r\n\r\n        const init = (props, { $, $f7, $h, $on, $update }) => {\r\n\r\n            let baseURL = '<%= baseURL %>'\r\n\r\n            $on('pageInit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n            $on('pageReinit', async () => {\r\n\r\n                let activityStartChangedEvent = new CustomEvent('user-address-changed')\r\n                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address\r\n\r\n                document.dispatchEvent(activityStartChangedEvent)\r\n\r\n                await $update()\r\n\r\n            })\r\n\r\n\r\n            $on('pageBeforeOut', async () => {\r\n\r\n            })\r\n\r\n            document.querySelector('meta[property=\"og:title\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"og:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"og:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"og:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\")\r\n\r\n            document.querySelector('meta[property=\"twitter:url\"]').setAttribute(\"content\", \"<%= link(`u`) %>\")\r\n            document.querySelector('meta[property=\"twitter:title\"]').setAttribute(\"content\", \"User Activity <%=channelViewModel.channel.title%>\")\r\n            document.querySelector('meta[property=\"twitter:image\"]').setAttribute(\"content\", \"<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>\")\r\n            document.querySelector('meta[property=\"twitter:description\"]').setAttribute(\"content\", \"User Activity for <%=channelViewModel.channel.title%>\" )\r\n\r\n            document.querySelector('title').innerHTML = \"User Activity <%=channelViewModel.channel.title%>\"\r\n\r\n            $f7.preloader.hide()\r\n\r\n            return $render\r\n\r\n        }\r\n\r\n\r\n    </script>\r\n\r\n    <script type=\"module\" id=\"page-scripts\">\r\n\r\n        let baseURL = '<%= baseURL %>'\r\n        let hostname = '<%= hostname %>'\r\n        let channelId = '<%= channelId %>'\r\n        let version = atob('<%= base64Version %>').replace('\"', '').replace('\"', '')\r\n\r\n        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)\r\n\r\n        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )\r\n\r\n\r\n\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>";
 
 /***/ }),
 

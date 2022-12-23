@@ -17,9 +17,11 @@ class TransactionService {
 
     constructor() {}
 
+    async get(_id:string) {
+        return this.transactionRepository.get(_id)
+    }
 
-    async get(_id:string): Promise<Transaction> {        
-
+    async getOrDownload(_id:string): Promise<Transaction> {        
         
         let transaction
 
@@ -32,11 +34,11 @@ class TransactionService {
             try {
 
                 transaction = new Transaction()
-                transaction._id = _id
-
+                
                 //Download it.
                 let data = await this.walletService.provider.getTransaction(_id)
 
+                transaction._id = data.hash
                 transaction.data = data.data
                 transaction.hash = data.hash 
                 transaction.blockHash = data.blockHash
@@ -53,9 +55,7 @@ class TransactionService {
                 transaction.v = data.v
                 transaction.raw = data.raw
 
-                transaction.ercEvents = {}
-                transaction.previousByTokenIds = {}
-                transaction.nextByTokenIds = {}
+                await this.transactionRepository.put(transaction)
 
             } catch(ex) {
                 console.log(ex)
@@ -98,132 +98,6 @@ class TransactionService {
         transactions.forEach(e => e.lastUpdated = new Date().toJSON())
 
         return this.transactionRepository.putAll(transactions)
-    }
-
-
-    async listFrom(limit:number, startId:string) : Promise<Transaction[]> {
-
-        let results:Transaction[] = []
-
-        while (results?.length < limit && startId) {
-
-            let transaction:Transaction = await this.transactionRepository.get(startId)
-
-            results.push(transaction)
-
-            let previousId = transaction?.previousId
-
-            //Get the previous
-            if (previousId) {
-
-                //See 
-                transaction = await this.transactionRepository.get(previousId)
-
-                if (transaction?._id != previousId) break
-
-            } else {
-                transaction = undefined
-            }
-
-            startId = transaction?._id
-        }
-
-        return results
-
-    }
-
-    async listTo(limit:number, startId:string) : Promise<Transaction[]> {
-
-        let results:Transaction[] = []
-
-        while (results?.length < limit && startId) {
-
-            let transaction:Transaction = await this.transactionRepository.get(startId)
-
-            results.push(transaction)
-
-            let nextId = transaction?.nextId
-
-            //Get the previous
-            if (nextId) {
-
-                //See 
-                transaction = await this.transactionRepository.get(transaction.nextId)
-
-                if (transaction?._id != nextId) break
-
-            } else {
-                transaction = undefined
-            }
-
-            startId = transaction?._id
-        }
-
-        return results
-
-    }
-
-
-    async listByTokenFrom(tokenId:number, limit:number, startId:string) : Promise<Transaction[]> {
-
-        let results:Transaction[] = []
-
-        while (results?.length < limit && startId) {
-
-            let transaction:Transaction = await this.transactionRepository.get(startId)
-
-            results.push(transaction)
-
-            let previousByTokenId = transaction?.previousByTokenIds[tokenId]
-
-            //Get the previous
-            if (previousByTokenId) {
-
-                //See 
-                transaction = await this.transactionRepository.get(transaction?.previousByTokenIds[tokenId])
-
-                if (transaction?._id != previousByTokenId) break
-
-            } else {
-                transaction = undefined
-            }
-
-            startId = transaction?._id
-        }
-
-        return results
-
-    }
-
-    async listByTokenTo(tokenId:number, limit:number, startId:string) : Promise<Transaction[]> {
-
-        let results:Transaction[] = []
-
-        while (results?.length < limit && startId) {
-
-            let transaction:Transaction = await this.transactionRepository.get(startId)
-
-            results.push(transaction)
-
-            let nextByTokenId = transaction?.nextByTokenIds[tokenId]
-
-            //Get the previous
-            if (nextByTokenId) {
-
-                //See 
-                transaction = await this.transactionRepository.get(transaction?.nextByTokenIds[tokenId])
-
-                if (transaction?._id != nextByTokenId) break
-
-            } else {
-                transaction = undefined
-            }
-
-            startId = transaction?._id
-        }
-
-        return results
-
     }
 
     async getLatest() : Promise<Transaction> {

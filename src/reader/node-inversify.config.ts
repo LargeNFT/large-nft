@@ -67,6 +67,9 @@ import { TokenOwnerPageService } from "./service/token-owner-page-service.js";
 import { TokenService } from "./service/token-service.js";
 import { TokenRepository } from "./repository/token-repository.js";
 import { TokenRepositoryNodeImpl } from "./repository/node/token-repository-impl.js";
+import { ProcessedTransactionRepository } from "./repository/processed-transaction-repository.js";
+import { ProcessedTransactionRepositoryNodeImpl } from "./repository/node/processed-transaction-repository-impl.js";
+import { ProcessedTransactionService } from "./service/processed-transaction-service.js";
 
 
 
@@ -111,6 +114,8 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryNodeImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryNodeImpl).inSingletonScope()
   container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryNodeImpl).inSingletonScope()
+  container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryNodeImpl).inSingletonScope()
+
   container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryNodeImpl).inSingletonScope()
   container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
   container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryNodeImpl).inSingletonScope()
@@ -173,7 +178,10 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
   container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
+
   container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
+  container.bind<ProcessedTransactionService>("ProcessedTransactionService").to(ProcessedTransactionService).inSingletonScope()
+
   container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()

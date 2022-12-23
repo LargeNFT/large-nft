@@ -19,10 +19,11 @@ class BlockService {
     constructor() {}
 
 
-    async get(blockNumber:number): Promise<Block> {    
+    async getOrDownload(blockNumber:number): Promise<Block> {    
         
         let block
 
+        //Check if we've already inserted it into pouch
         try {
             block = await this.blockRepository.get(blockNumber)
         } catch(ex) {}
@@ -49,6 +50,8 @@ class BlockService {
                 block.miner = data.miner
                 block.extraData = data.extraData
                 block.baseFeePerGas = data.baseFeePerGas
+
+                await this.blockRepository.put(block)
 
             } catch(ex) {
                 console.log(ex)

@@ -18,10 +18,31 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.get(_id)
     }
 
+    async getOrCreate(address:string) {
+
+        let tokenOwner: TokenOwner 
+
+        if (!tokenOwner) {
+            try {
+                tokenOwner = await this.get(address)
+            } catch (ex) { }
+        }
+
+        if (!tokenOwner) {
+            tokenOwner = new TokenOwner()
+            tokenOwner._id = address
+            tokenOwner.tokenIds = []
+            tokenOwner.count = 0
+        }
+
+        return tokenOwner
+
+    }
+
+
     async put(tokenOwner:TokenOwner) {
 
         if (!tokenOwner._id) {
-            tokenOwner._id = tokenOwner.address
             tokenOwner.dateCreated = new Date().toJSON()
         } 
 
@@ -51,7 +72,6 @@ class TokenOwnerService {
         tokenOwners.forEach(tokenOwner => {
 
             if (!tokenOwner._id) {
-                tokenOwner._id = tokenOwner.address
                 tokenOwner.dateCreated = new Date().toJSON()
             } 
     

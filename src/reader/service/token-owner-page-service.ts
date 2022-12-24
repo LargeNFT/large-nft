@@ -34,7 +34,7 @@ class TokenOwnerPageService {
         for (let tokenOwner of tokenOwners) {
 
             viewModels.push({
-                address: tokenOwner.address,
+                _id: tokenOwner._id,
                 ensName: tokenOwner.ensName,
                 lastActive: tokenOwner.lastActive,
                 count: tokenOwner.count

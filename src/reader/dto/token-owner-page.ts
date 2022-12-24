@@ -5,7 +5,7 @@ interface TokenOwnerPage {
 
 
 interface LeaderboardRowViewModel {
-    address?:string
+    _id?:string
     ensName?:string
     count?:number
     lastActive?:string

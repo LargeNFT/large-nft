@@ -59773,18 +59773,10 @@ class ERCEvent {
     eventSignature;
     isTransfer;
     isMint;
+    isBurn;
     fromAddress;
     toAddress;
     tokenId;
-    timestamp;
-    // @Allow()
-    // previousId?:string
-    // @Allow()
-    // previousByTokenId?:string
-    // @Allow()
-    // nextId?:string
-    // @Allow()
-    // nextByTokenId?:string
     lastUpdated;
     dateCreated;
 }
@@ -59854,6 +59846,10 @@ __decorate([
 ], ERCEvent.prototype, "isMint", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Boolean)
+], ERCEvent.prototype, "isBurn", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "fromAddress", void 0);
 __decorate([
@@ -59864,13 +59860,6 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Number)
 ], ERCEvent.prototype, "tokenId", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)()
-    // rowItemViewModel?:RowItemViewModel
-    ,
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Number)
-], ERCEvent.prototype, "timestamp", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -59911,12 +59900,17 @@ class ProcessedTransaction {
     _id;
     _rev;
     transaction;
+    timestamp;
     ercEvents;
     tokenIds;
     previousId;
     previousByTokenIds;
+    previousByTransactionInitiatorId;
+    previousByTokenOwnerId;
     nextId;
     nextByTokenIds;
+    nextByTokenOwnerId;
+    nextByTransactionInitiatorId;
     lastUpdated;
     dateCreated;
 }
@@ -59932,6 +59926,10 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", _transaction_js__WEBPACK_IMPORTED_MODULE_1__.Transaction)
 ], ProcessedTransaction.prototype, "transaction", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Number)
+], ProcessedTransaction.prototype, "timestamp", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Array)
@@ -59950,12 +59948,28 @@ __decorate([
 ], ProcessedTransaction.prototype, "previousByTokenIds", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "previousByTransactionInitiatorId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "previousByTokenOwnerId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ProcessedTransaction.prototype, "nextId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Object)
 ], ProcessedTransaction.prototype, "nextByTokenIds", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "nextByTokenOwnerId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "nextByTransactionInitiatorId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -59993,11 +60007,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 class TokenOwner {
     _id;
     _rev;
-    address;
     count;
     tokenIds;
-    transactionIdsInitiated;
-    transactionIds;
+    latestTransactionInitiatorId;
+    latestTransactionId;
     lastActive;
     ensName;
     lastUpdated;
@@ -60013,10 +60026,6 @@ __decorate([
 ], TokenOwner.prototype, "_rev", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], TokenOwner.prototype, "address", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Number)
 ], TokenOwner.prototype, "count", void 0);
 __decorate([
@@ -60025,12 +60034,12 @@ __decorate([
 ], TokenOwner.prototype, "tokenIds", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Array)
-], TokenOwner.prototype, "transactionIdsInitiated", void 0);
+    __metadata("design:type", String)
+], TokenOwner.prototype, "latestTransactionInitiatorId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Array)
-], TokenOwner.prototype, "transactionIds", void 0);
+    __metadata("design:type", String)
+], TokenOwner.prototype, "latestTransactionId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -62719,21 +62728,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TransactionIndexerService": () => (/* binding */ TransactionIndexerService)
 /* harmony export */ });
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/address/lib.esm/index.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
 /* harmony import */ var _dto_processed_transaction_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/processed-transaction.js */ "./src/reader/dto/processed-transaction.ts");
-/* harmony import */ var _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dto/token-owner.js */ "./src/reader/dto/token-owner.ts");
 /* harmony import */ var _dto_token_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dto/token.js */ "./src/reader/dto/token.ts");
-/* harmony import */ var _block_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../block-service.js */ "./src/reader/service/block-service.ts");
-/* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
-/* harmony import */ var _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
-/* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
-/* harmony import */ var _token_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../token-service.js */ "./src/reader/service/token-service.ts");
-/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
-/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _block_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../block-service.js */ "./src/reader/service/block-service.ts");
+/* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
+/* harmony import */ var _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
+/* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _token_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../token-service.js */ "./src/reader/service/token-service.ts");
+/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
+/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -62743,7 +62751,6 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -62814,6 +62821,9 @@ let TransactionIndexerService = class TransactionIndexerService {
             if (events.length > 0) {
                 let previousTransaction = await this.processedTransactionService.getLatest();
                 let currentTransaction;
+                let transactionUser;
+                let fromOwner;
+                let toOwner;
                 if (previousTransaction) {
                     result.processedTransactionsToUpdate[previousTransaction._id] = previousTransaction;
                 }
@@ -62833,7 +62843,11 @@ let TransactionIndexerService = class TransactionIndexerService {
                         currentTransaction.dateCreated = new Date().toJSON();
                         currentTransaction.ercEvents = [];
                         currentTransaction.nextByTokenIds = {};
+                        currentTransaction.nextByTokenOwnerId = {};
+                        currentTransaction.nextByTransactionInitiatorId = {};
                         currentTransaction.previousByTokenIds = {};
+                        currentTransaction.previousByTokenOwnerId = {};
+                        currentTransaction.previousByTransactionInitiatorId = {};
                         currentTransaction.tokenIds = [];
                         result.processedTransactionsToUpdate[currentTransaction._id] = currentTransaction;
                     }
@@ -62842,7 +62856,58 @@ let TransactionIndexerService = class TransactionIndexerService {
                     if (event.transactionHash != currentTransaction._id)
                         throw new Error("Wrong transaction found.");
                     //Translate
-                    let ercEvent = await this.ercEventService.translateEventToERCEvent(event, block);
+                    let ercEvent = await this.ercEventService.translateEventToERCEvent(event);
+                    currentTransaction.timestamp = block.timestamp;
+                    const getTokenOwner = async (ownerAddress) => {
+                        if (!result.ownersToUpdate[ownerAddress]) {
+                            let tokenOwner = await this.tokenOwnerService.getOrCreate(ownerAddress);
+                            result.ownersToUpdate[ownerAddress] = tokenOwner;
+                        }
+                        return result.ownersToUpdate[ownerAddress];
+                    };
+                    const getPreviousTransaction = async (previousTransactionId, currentTransactionId) => {
+                        let pt;
+                        if (previousTransactionId && previousTransactionId != currentTransactionId) {
+                            //Grab from memory if exists
+                            pt = result.processedTransactionsToUpdate[previousTransactionId];
+                            //Look it up
+                            if (!pt) {
+                                pt = await this.processedTransactionService.get(previousTransactionId);
+                            }
+                        }
+                        return pt;
+                    };
+                    const updatePreviousNextByToken = (tokenId, previousT, currentT) => {
+                        //Point the previous one here
+                        if (previousT) {
+                            //Make sure we update it.
+                            result.processedTransactionsToUpdate[previousT._id] = previousT;
+                            currentT.previousByTokenIds[tokenId] = previousT._id;
+                            previousT.nextByTokenIds[tokenId] = currentT._id;
+                        }
+                    };
+                    const updatePreviousNextByTransactionInitiator = (transactionUserId, previousT, currentT) => {
+                        //Point the previous one here
+                        if (previousT) {
+                            //Make sure we update it.
+                            result.processedTransactionsToUpdate[previousT._id] = previousT;
+                            currentT.previousByTransactionInitiatorId[transactionUserId] = previousT._id;
+                            previousT.nextByTransactionInitiatorId[transactionUserId] = currentT._id;
+                        }
+                    };
+                    const updatePreviousNextByTokenOwner = (tokenOwnerId, previousT, currentT) => {
+                        //Point the previous one here
+                        if (previousT) {
+                            //Make sure we update it.
+                            result.processedTransactionsToUpdate[previousT._id] = previousT;
+                            currentT.previousByTokenOwnerId[tokenOwnerId] = previousT._id;
+                            previousT.nextByTokenOwnerId[tokenOwnerId] = currentT._id;
+                        }
+                    };
+                    //Look up/create the from address
+                    if (currentTransaction.transaction.from?.length > 0) {
+                        transactionUser = await getTokenOwner(currentTransaction.transaction.from);
+                    }
                     if (ercEvent.tokenId) {
                         //Grab token info
                         let token;
@@ -62860,79 +62925,42 @@ let TransactionIndexerService = class TransactionIndexerService {
                             }
                         }
                         result.tokensToUpdate[ercEvent.tokenId] = token;
-                        const getTokenOwner = async (ownerAddress) => {
-                            let tokenOwner = result.ownersToUpdate[ownerAddress];
-                            if (!tokenOwner) {
-                                try {
-                                    tokenOwner = await this.tokenOwnerService.get(ercEvent.fromAddress);
-                                }
-                                catch (ex) { }
-                            }
-                            if (!tokenOwner) {
-                                tokenOwner = new _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_3__.TokenOwner();
-                                tokenOwner.address = ownerAddress;
-                                tokenOwner.tokenIds = [];
-                                tokenOwner.transactionIds = [];
-                                tokenOwner.transactionIdsInitiated = [];
-                                tokenOwner.count = 0;
-                            }
-                            result.ownersToUpdate[ownerAddress] = tokenOwner;
-                            return tokenOwner;
-                        };
-                        let transactionUser;
-                        let fromOwner;
-                        let toOwner;
                         //Look up/create the from address
-                        if (currentTransaction.transaction.from) {
-                            transactionUser = await getTokenOwner(currentTransaction.transaction.from);
-                            if (!transactionUser.transactionIdsInitiated.includes(currentTransaction.transaction._id)) {
-                                transactionUser.transactionIdsInitiated.push(currentTransaction.transaction._id);
-                            }
-                        }
-                        //Look up/create the from address
-                        if (ercEvent.fromAddress) {
+                        if (ercEvent.fromAddress?.length > 0) {
                             fromOwner = await getTokenOwner(ercEvent.fromAddress);
-                            if (!fromOwner.transactionIds.includes(currentTransaction.transaction._id)) {
-                                fromOwner.transactionIds.push(currentTransaction.transaction._id);
-                            }
                         }
                         //Look up/create the to address
-                        if (ercEvent.toAddress) {
+                        if (ercEvent.toAddress?.length > 0) {
                             toOwner = await getTokenOwner(ercEvent.toAddress);
-                            if (!toOwner.transactionIds.includes(currentTransaction.transaction._id)) {
-                                toOwner.transactionIds.push(currentTransaction.transaction._id);
-                            }
                         }
                         if (ercEvent.isTransfer) {
                             //Update previous owner
                             if (fromOwner.tokenIds.includes(ercEvent.tokenId)) {
                                 fromOwner.tokenIds = Array.from(fromOwner.tokenIds)?.filter(id => id != ercEvent.tokenId);
-                                fromOwner.count = fromOwner.tokenIds.length;
                             }
                             //Update new owner
                             toOwner.tokenIds.push(ercEvent.tokenId);
-                            toOwner.count = toOwner.tokenIds.length;
                         }
                         //Look for previousByTokenId
-                        let previousTransactionByToken;
-                        //Look up previous transaction for this token
-                        if (token.latestTransactionId && token.latestTransactionId != currentTransaction._id) {
-                            //Grab from memory if exists
-                            previousTransactionByToken = result.processedTransactionsToUpdate[token.latestTransactionId];
-                            //Look it up
-                            if (!previousTransactionByToken) {
-                                previousTransactionByToken = await this.processedTransactionService.get(token.latestTransactionId);
-                            }
+                        let previousTransactionByToken = await getPreviousTransaction(token.latestTransactionId, currentTransaction._id);
+                        updatePreviousNextByToken(ercEvent.tokenId, previousTransactionByToken, currentTransaction);
+                        //Update previous/next for transaction initiator
+                        let previousTransactionByTransactionInitiator = await getPreviousTransaction(transactionUser.latestTransactionInitiatorId, currentTransaction._id);
+                        updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, currentTransaction);
+                        //Update previous/next for from/to users
+                        if (fromOwner) {
+                            let previousTransactionByFromOwner = await getPreviousTransaction(fromOwner.latestTransactionId, currentTransaction._id);
+                            updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, currentTransaction);
+                            fromOwner.latestTransactionId = currentTransaction._id;
                         }
-                        //Point the previous one here
-                        if (previousTransactionByToken) {
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousTransactionByToken._id] = previousTransactionByToken;
-                            currentTransaction.previousByTokenIds[ercEvent.tokenId] = previousTransactionByToken._id;
-                            previousTransactionByToken.nextByTokenIds[ercEvent.tokenId] = currentTransaction._id;
+                        if (toOwner && toOwner._id != fromOwner._id) {
+                            let previousTransactionByToOwner = await getPreviousTransaction(toOwner.latestTransactionId, currentTransaction._id);
+                            updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, currentTransaction);
+                            toOwner.latestTransactionId = currentTransaction._id;
                         }
                         token.latestErcEventId = ercEvent._id;
                         token.latestTransactionId = currentTransaction._id;
+                        transactionUser.latestTransactionInitiatorId = currentTransaction._id;
                     }
                     //See if it already exists. If so we need the _rev
                     // ercEvent._rev = await this.ercEventService.getExistingRev(ercEvent._id)
@@ -62953,6 +62981,8 @@ let TransactionIndexerService = class TransactionIndexerService {
                 //Save token owners
                 let tokenOwners = [];
                 for (let owner of Object.keys(result.ownersToUpdate)) {
+                    //Update count before saving.
+                    result.ownersToUpdate[owner].count = result.ownersToUpdate[owner].tokenIds?.length;
                     tokenOwners.push(result.ownersToUpdate[owner]);
                 }
                 await this.tokenOwnerService.putAll(tokenOwners);
@@ -63049,7 +63079,7 @@ let TransactionIndexerService = class TransactionIndexerService {
         }
         catch (ex) { }
         if (!contractState) {
-            contractState = Object.assign(new _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_4__.ContractState(), {
+            contractState = Object.assign(new _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_3__.ContractState(), {
                 _id: contractAddress,
                 lastIndexedBlock: 0,
                 dateCreated: new Date().toJSON()
@@ -63087,47 +63117,47 @@ let TransactionIndexerService = class TransactionIndexerService {
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ContractStateService"),
-    __metadata("design:type", _contract_state_service_js__WEBPACK_IMPORTED_MODULE_6__.ContractStateService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ContractStateService"),
+    __metadata("design:type", _contract_state_service_js__WEBPACK_IMPORTED_MODULE_5__.ContractStateService)
 ], TransactionIndexerService.prototype, "contractStateService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ERCEventService"),
-    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_7__.ERCEventService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ERCEventService"),
+    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_6__.ERCEventService)
 ], TransactionIndexerService.prototype, "ercEventService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenOwnerService"),
-    __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_8__.TokenOwnerService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenOwnerService"),
+    __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_7__.TokenOwnerService)
 ], TransactionIndexerService.prototype, "tokenOwnerService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ItemWebService"),
-    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_9__.ItemWebService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ItemWebService"),
+    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_8__.ItemWebService)
 ], TransactionIndexerService.prototype, "itemWebService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenService"),
-    __metadata("design:type", _token_service_js__WEBPACK_IMPORTED_MODULE_10__.TokenService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenService"),
+    __metadata("design:type", _token_service_js__WEBPACK_IMPORTED_MODULE_9__.TokenService)
 ], TransactionIndexerService.prototype, "tokenService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("WalletService"),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("WalletService"),
     __metadata("design:type", Object)
 ], TransactionIndexerService.prototype, "walletService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TransactionService"),
-    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_11__.TransactionService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TransactionService"),
+    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_10__.TransactionService)
 ], TransactionIndexerService.prototype, "transactionService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ProcessedTransactionService"),
-    __metadata("design:type", _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_12__.ProcessedTransactionService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ProcessedTransactionService"),
+    __metadata("design:type", _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_11__.ProcessedTransactionService)
 ], TransactionIndexerService.prototype, "processedTransactionService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("BlockService"),
-    __metadata("design:type", _block_service_js__WEBPACK_IMPORTED_MODULE_13__.BlockService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("BlockService"),
+    __metadata("design:type", _block_service_js__WEBPACK_IMPORTED_MODULE_12__.BlockService)
 ], TransactionIndexerService.prototype, "blockService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenOwnerPageService"),
-    __metadata("design:type", _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_14__.TokenOwnerPageService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenOwnerPageService"),
+    __metadata("design:type", _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_13__.TokenOwnerPageService)
 ], TransactionIndexerService.prototype, "tokenOwnerPageService", void 0);
 TransactionIndexerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_15__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_14__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TransactionIndexerService);
 function sleep(ms) {
@@ -63366,132 +63396,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 let ERCEventService = class ERCEventService {
-    // @inject("ERCEventRepository")
-    // private ercEventRepository:ERCEventRepository
-    // @inject("TokenOwnerService")
-    // private tokenOwnerService:TokenOwnerService
     constructor() { }
-    // async get(_id:string): Promise<ERCEvent> {        
-    //     return this.ercEventRepository.get(_id)
-    // }
-    // async put(ercEvent:ERCEvent) {
-    //     ercEvent.lastUpdated = new Date().toJSON()
-    //     //Validate
-    //     let errors: ValidationError[] = await validate(ercEvent, {
-    //         forbidUnknownValues: true,
-    //         whitelist: true
-    //     })
-    //     if (errors.length > 0) {
-    //         throw new ValidationException(errors)
-    //     }
-    //     return this.ercEventRepository.put(ercEvent)
-    // }
-    // /**
-    //  * No validation for speeeeeeeeed
-    //  * @param ercEvents 
-    //  * @returns 
-    //  */
-    // async putAll(ercEvents:ERCEvent[]) {
-    //     //Update lastUpdated
-    //     ercEvents.forEach(e => e.lastUpdated = new Date().toJSON())
-    //     return this.ercEventRepository.putAll(ercEvents)
-    // }
-    // async listFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let previousId = event?.previousId
-    //         //Get the previous
-    //         if (previousId) {
-    //             //See 
-    //             event = await this.get(event.previousId)
-    //             if (event?._id != previousId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async listTo(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let nextId = event?.nextId
-    //         //Get the previous
-    //         if (nextId) {
-    //             //See 
-    //             event = await this.get(event.nextId)
-    //             if (event?._id != nextId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async listByTokenFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let previousByTokenId = event?.previousByTokenId
-    //         //Get the previous
-    //         if (previousByTokenId) {
-    //             //See 
-    //             event = await this.get(event.previousByTokenId)
-    //             if (event?._id != previousByTokenId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async listByTokenTo(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let nextByTokenId = event?.nextByTokenId
-    //         //Get the previous
-    //         if (nextByTokenId) {
-    //             //See 
-    //             event = await this.get(event.nextByTokenId)
-    //             if (event?._id != nextByTokenId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async list(limit: number, skip: number): Promise<ERCEvent[]> {
-    //     return this.ercEventRepository.list(limit, skip)
-    // }
-    // async getLatest() : Promise<ERCEvent> {
-    //     let l = await this.ercEventRepository.list(1, 0)
-    //     if (l?.length >0) {
-    //         return Object.assign(new ERCEvent(), l[0])
-    //     }
-    // }
-    // async getLatestByTokenId(tokenId:number) : Promise<ERCEvent> {
-    //     let l = await this.ercEventRepository.getByTokenIdDesc(tokenId, 1, 0)
-    //     if (l?.length) {
-    //         return Object.assign(new ERCEvent(), l[0])
-    //     }
-    // }
-    // async getByTokenIdDesc(tokenId:number, limit:number, skip:number) : Promise<ERCEvent[]> {
-    //     return this.ercEventRepository.getByTokenIdDesc(tokenId, limit, skip)
-    // }
-    // async getLatestForAllTokens(): Promise<ERCEvent[]> {
-    //     return this.ercEventRepository.getLatestForAllTokens()
-    // }
-    async translateEventToERCEvent(event, block) {
+    async translateEventToERCEvent(event) {
         let ercEvent = new _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_0__.ERCEvent();
-        // ercEvent.transaction = transaction
         ercEvent.blockNumber = event.blockNumber;
         ercEvent.blockHash = event.blockHash;
         ercEvent.transactionIndex = event.transactionIndex;
@@ -63504,7 +63411,6 @@ let ERCEventService = class ERCEventService {
         //@ts-ignore
         ercEvent.event = event.event;
         ercEvent.eventSignature = event.eventSignature;
-        // ercEvent.transaction = await event.getTransaction()
         ercEvent.dateCreated = new Date().toJSON();
         //Convert BigNumber args to strings
         ercEvent.args = event.args.map(a => ethers__WEBPACK_IMPORTED_MODULE_1__.BigNumber.isBigNumber(a) ? a.toString() : a);
@@ -63521,8 +63427,10 @@ let ERCEventService = class ERCEventService {
         if (ercEvent.isTransfer && ercEvent.fromAddress == "0x0000000000000000000000000000000000000000") {
             ercEvent.isMint = true;
         }
+        if (ercEvent.isTransfer && ercEvent.toAddress == "0x0000000000000000000000000000000000000000") {
+            ercEvent.isBurn = true;
+        }
         ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`;
-        ercEvent.timestamp = block.timestamp;
         return ercEvent;
     }
 };
@@ -64047,7 +63955,7 @@ let TokenOwnerPageService = class TokenOwnerPageService {
         //Create view models
         for (let tokenOwner of tokenOwners) {
             viewModels.push({
-                address: tokenOwner.address,
+                _id: tokenOwner._id,
                 ensName: tokenOwner.ensName,
                 lastActive: tokenOwner.lastActive,
                 count: tokenOwner.count
@@ -64085,10 +63993,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TokenOwnerService": () => (/* binding */ TokenOwnerService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
-/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+/* harmony import */ var _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../dto/token-owner.js */ "./src/reader/dto/token-owner.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -64101,25 +64010,41 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 let TokenOwnerService = class TokenOwnerService {
     tokenOwnerRepository;
     constructor() { }
     async get(_id) {
         return this.tokenOwnerRepository.get(_id);
     }
+    async getOrCreate(address) {
+        let tokenOwner;
+        if (!tokenOwner) {
+            try {
+                tokenOwner = await this.get(address);
+            }
+            catch (ex) { }
+        }
+        if (!tokenOwner) {
+            tokenOwner = new _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_0__.TokenOwner();
+            tokenOwner._id = address;
+            tokenOwner.tokenIds = [];
+            tokenOwner.count = 0;
+        }
+        return tokenOwner;
+    }
     async put(tokenOwner) {
         if (!tokenOwner._id) {
-            tokenOwner._id = tokenOwner.address;
             tokenOwner.dateCreated = new Date().toJSON();
         }
         tokenOwner.lastUpdated = new Date().toJSON();
         //Validate
-        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.validate)(tokenOwner, {
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.validate)(tokenOwner, {
             forbidUnknownValues: true,
             whitelist: true
         });
         if (errors.length > 0) {
-            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__.ValidationException(errors);
+            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_2__.ValidationException(errors);
         }
         return this.tokenOwnerRepository.put(tokenOwner);
     }
@@ -64132,7 +64057,6 @@ let TokenOwnerService = class TokenOwnerService {
         //Update lastUpdated
         tokenOwners.forEach(tokenOwner => {
             if (!tokenOwner._id) {
-                tokenOwner._id = tokenOwner.address;
                 tokenOwner.dateCreated = new Date().toJSON();
             }
             tokenOwner.lastUpdated = new Date().toJSON();
@@ -64147,11 +64071,11 @@ let TokenOwnerService = class TokenOwnerService {
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TokenOwnerRepository"),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.inject)("TokenOwnerRepository"),
     __metadata("design:type", Object)
 ], TokenOwnerService.prototype, "tokenOwnerRepository", void 0);
 TokenOwnerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TokenOwnerService);
 

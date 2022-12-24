@@ -54,6 +54,9 @@ class ERCEvent {
     isMint:boolean
 
     @Allow()
+    isBurn:boolean
+
+    @Allow()
     fromAddress:string
 
     @Allow()
@@ -61,24 +64,6 @@ class ERCEvent {
 
     @Allow()
     tokenId?:number
-
-    @Allow()
-    // rowItemViewModel?:RowItemViewModel
-
-    @Allow()
-    timestamp?:number
-
-    // @Allow()
-    // previousId?:string
-
-    // @Allow()
-    // previousByTokenId?:string
-
-    // @Allow()
-    // nextId?:string
-
-    // @Allow()
-    // nextByTokenId?:string
 
 
     @Allow()

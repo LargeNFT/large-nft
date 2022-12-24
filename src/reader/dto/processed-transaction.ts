@@ -15,6 +15,9 @@ class ProcessedTransaction {
     transaction?:Transaction 
 
     @Allow()
+    timestamp?:number
+
+    @Allow()
     ercEvents?:ERCEvent[]
 
     @Allow()
@@ -27,11 +30,22 @@ class ProcessedTransaction {
     previousByTokenIds?:{}
 
     @Allow()
+    previousByTransactionInitiatorId?:{}
+
+    @Allow()
+    previousByTokenOwnerId?:{}
+
+    @Allow()
     nextId?:string
 
     @Allow()
     nextByTokenIds?:{}
 
+    @Allow()
+    nextByTokenOwnerId?:{}
+
+    @Allow()
+    nextByTransactionInitiatorId?:{}
 
     @Allow()
     lastUpdated?:string 

@@ -35,7 +35,7 @@
           ${tokenOwners?.map(u => $h`
             <tr>
               <td class="label-cell">
-                <a href="${baseURI}u/?address=${u.address}">${u.address ? walletService.truncateEthAddress(u.address) : ' '}</a>
+                <a href="${baseURI}u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
               </td>
   
               <td>
@@ -124,6 +124,8 @@
         totals = await tokenOwnerPageService.getTotals()
         let page = await tokenOwnerPageService.get(pageNumber)
         tokenOwners = page.tokenOwners
+
+        console.log(tokenOwners)
 
       } catch(ex) { console.log(ex) }
       

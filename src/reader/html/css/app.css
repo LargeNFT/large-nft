@@ -854,7 +854,74 @@ html {
   width: 100%;
 }
 
+.event-info-list {
+  padding-inline-start: 0px;
+  list-style-type: none;
+}
 
+.event-info {
+  width: 100%;
+  font-size: 13px;
+  display: flex;
+}
+
+.event-info .image {
+  flex: 0 0 50px;
+  margin-right: 10px;
+}
+
+.event-info .image .f7-icons {
+  width: 50px;
+}
+
+.event-info .image img {
+  width: 50px;
+}
+
+
+.event-info .details {
+  flex: 1;
+}
+
+
+
+.event-info .details .to-label {
+  margin-left: 15px;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  .event-info .details .to-label {
+    margin-left: 0px;
+  }
+
+}
+
+
+/* .event-info .details .badge {
+  float: right;
+} */
+
+.event-info .date {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  color: rgb(56, 56, 56);
+}
+
+.event-info .transfer {
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+
+.event-info .transfer .label {
+  margin-right: 5px;
+}
+
+.event-table .label-cell {
+  width: 150px;
+}
+
+/* 
 
 .event-table .image-col {
   width: 50px;
@@ -882,7 +949,7 @@ html {
 
 .event-table tr.uncategorized-event {
   background: #f1f1f1;
-}
+} */
 
 
 

@@ -9,19 +9,16 @@ class TokenOwner {
     _rev?:string 
 
     @Allow()
-    address?:string 
-
-    @Allow()
     count?:number
 
     @Allow()
     tokenIds?:number[]
 
     @Allow()
-    transactionIdsInitiated?:string[]
+    latestTransactionInitiatorId?:string
 
     @Allow()
-    transactionIds?:string[]
+    latestTransactionId?:string
 
     @Allow()
     lastActive?:string 

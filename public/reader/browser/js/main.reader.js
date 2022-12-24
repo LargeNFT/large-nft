@@ -20,7 +20,7 @@ var reader;
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n  --f7-table-selected-row-bg-color: #fffd9f;\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.event-table .image-col {\r\n  width: 50px;\r\n}\r\n\r\n.event-table .token-col {\r\n  width: 150px;\r\n}\r\n\r\n\r\n.event-table .latest-img {\r\n  margin: 5px;\r\n  width: 50px;\r\n  height: 50px;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.event-table, .event-table td, .event-table tr {\r\n  font-size: 16px;\r\n}\r\n\r\n.event-table tr.event-transfer {\r\n  background: #add6b8;\r\n}\r\n\r\n.event-table tr.uncategorized-event {\r\n  background: #f1f1f1;\r\n}\r\n\r\n\r\n\r\n.user-info {\r\n  width: 300px;\r\n  text-overflow: ellipsis;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .user-info {\r\n    width: 100%;\r\n  }\r\n\r\n}", "",{"version":3,"sources":["webpack://./src/reader/html/css/app.css"],"names":[],"mappings":"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","sourcesContent":[":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n  --f7-table-selected-row-bg-color: #fffd9f;\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.event-table .image-col {\r\n  width: 50px;\r\n}\r\n\r\n.event-table .token-col {\r\n  width: 150px;\r\n}\r\n\r\n\r\n.event-table .latest-img {\r\n  margin: 5px;\r\n  width: 50px;\r\n  height: 50px;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.event-table, .event-table td, .event-table tr {\r\n  font-size: 16px;\r\n}\r\n\r\n.event-table tr.event-transfer {\r\n  background: #add6b8;\r\n}\r\n\r\n.event-table tr.uncategorized-event {\r\n  background: #f1f1f1;\r\n}\r\n\r\n\r\n\r\n.user-info {\r\n  width: 300px;\r\n  text-overflow: ellipsis;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .user-info {\r\n    width: 100%;\r\n  }\r\n\r\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n  --f7-table-selected-row-bg-color: #fffd9f;\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n\r\n.event-info-list {\r\n  padding-inline-start: 0px;\r\n  list-style-type: none;\r\n}\r\n\r\n.event-info {\r\n  width: 100%;\r\n  font-size: 13px;\r\n  display: flex;\r\n}\r\n\r\n.event-info .image {\r\n  flex: 0 0 50px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.event-info .image .f7-icons {\r\n  width: 50px;\r\n}\r\n\r\n.event-info .image img {\r\n  width: 50px;\r\n}\r\n\r\n\r\n.event-info .details {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n.event-info .details .to-label {\r\n  margin-left: 15px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .event-info .details .to-label {\r\n    margin-left: 0px;\r\n  }\r\n\r\n}\r\n\r\n\r\n/* .event-info .details .badge {\r\n  float: right;\r\n} */\r\n\r\n.event-info .date {\r\n  margin-block-start: 0em;\r\n  margin-block-end: 0em;\r\n  color: rgb(56, 56, 56);\r\n}\r\n\r\n.event-info .transfer {\r\n  margin-block-start: 0em;\r\n  margin-block-end: 0em;\r\n}\r\n\r\n.event-info .transfer .label {\r\n  margin-right: 5px;\r\n}\r\n\r\n.event-table .label-cell {\r\n  width: 150px;\r\n}\r\n\r\n/* \r\n\r\n.event-table .image-col {\r\n  width: 50px;\r\n}\r\n\r\n.event-table .token-col {\r\n  width: 150px;\r\n}\r\n\r\n\r\n.event-table .latest-img {\r\n  margin: 5px;\r\n  width: 50px;\r\n  height: 50px;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.event-table, .event-table td, .event-table tr {\r\n  font-size: 16px;\r\n}\r\n\r\n.event-table tr.event-transfer {\r\n  background: #add6b8;\r\n}\r\n\r\n.event-table tr.uncategorized-event {\r\n  background: #f1f1f1;\r\n} */\r\n\r\n\r\n\r\n.user-info {\r\n  width: 300px;\r\n  text-overflow: ellipsis;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .user-info {\r\n    width: 100%;\r\n  }\r\n\r\n}", "",{"version":3,"sources":["webpack://./src/reader/html/css/app.css"],"names":[],"mappings":"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","sourcesContent":[":root {\r\n  --f7-font-size: 19px;\r\n  --f7-list-font-size: 19px;\r\n  --f7-toolbar-height: 75px;\r\n  --f7-range-knob-size: 20px;\r\n  --f7-fab-margin: 2px;\r\n  --f7-fab-size: 45px;\r\n\r\n  --scrollbar-width: calc(100vw - 100%);\r\n\r\n  --f7-table-selected-row-bg-color: #fffd9f;\r\n\r\n}\r\n\r\nhtml {\r\n  overscroll-behavior-y: contain;\r\n}\r\n\r\na {\r\n  font-weight: bold;\r\n}\r\n\r\n.home {\r\n  font-size: 35px;\r\n  font-weight: bold;\r\n  margin: 10px;\r\n}\r\n\r\n.page-content {\r\n  background-color: rgb(238, 240, 243);\r\n}\r\n\r\n.center {\r\n  margin: 0 auto;\r\n}\r\n\r\n.author-header {\r\n  width: 100%;\r\n  font-size: 14px;\r\n}\r\n\r\n.author-header .name {\r\n  margin-bottom: 3px;\r\n}\r\n\r\n.author-avatar {\r\n  margin-top: -4px;\r\n  width: 25px;\r\n  height: 25px;\r\n  font-size: 20px;\r\n  float: left;\r\n  vertical-align: middle;\r\n  border-radius: 50%;\r\n  margin-right: 3px;\r\n}\r\n\r\n.author-avatar img {\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n  border-radius: 50%;\r\n}\r\n\r\n.author .avatar i {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* Style the list */\r\nul.breadcrumb {\r\n  padding: 10px 16px;\r\n  list-style: none;\r\n  background-color: #eee;\r\n}\r\n\r\n/* Display list items side by side */\r\nul.breadcrumb li {\r\n  display: inline;\r\n  font-size: 18px;\r\n}\r\n\r\n/* Add a slash symbol (/) before/behind each list item */\r\nul.breadcrumb li+li:before {\r\n  padding: 8px;\r\n  color: black;\r\n  content: \"/\\00a0\";\r\n}\r\n\r\n/* Add a color to all links inside the list */\r\nul.breadcrumb li a {\r\n  font-weight: bold;\r\n}\r\n\r\n/* Add a color on mouse-over */\r\nul.breadcrumb li a:hover {\r\n  color: #01447e;\r\n  text-decoration: underline;\r\n}\r\n\r\n\r\n\r\n\r\n.card-header label {\r\n  padding-bottom: 3px;\r\n  margin-left: 5px;\r\n  float: left;\r\n  font-weight: bold;\r\n}\r\n\r\n.card-header .material-icons {\r\n  float: left;\r\n}\r\n\r\n\r\n\r\n\r\n.channel-card-show .card-header {\r\n  display: block;\r\n  padding: 10px;\r\n}\r\n\r\n\r\n.channel-card-show .title {\r\n  font-size: 22px;\r\n  font-weight: bold;\r\n  margin-top: 50px;\r\n  text-align: left;\r\n}\r\n\r\n.channel-card-show .name,\r\n.channel-card-show .contract-address {\r\n  text-align: left;\r\n}\r\n\r\n.contract-address strong {\r\n  margin-right: 10px;\r\n}\r\n\r\n.channel-card-show .name a {\r\n  color: var(--f7-theme-color);\r\n  font-weight: bold;\r\n}\r\n\r\n.channel-card-show .date {\r\n  font-size: 13px;\r\n  color: #8e8e93;\r\n}\r\n\r\n\r\n.channel-card-show .excerpt {\r\n  font-size: 17px;\r\n}\r\n\r\n\r\n.channel-card-show .card-content img {\r\n  display: block;\r\n  max-width: 100%;\r\n}\r\n\r\n.channel-card-show .banner {\r\n  height: 200px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-size: cover;\r\n  background-color: #f1f1f1;\r\n}\r\n\r\n.channel-card-show .avatar {\r\n  position: absolute;\r\n  width: 100px;\r\n  height: 100px;\r\n  border-radius: 25%;\r\n  left: 10px;\r\n  bottom: 0;\r\n  margin-bottom: -50px;\r\n  z-index: 10000;\r\n  border: 3px solid #ffffff;\r\n  font-size: 100px;\r\n  background: #ffffff;\r\n  float: left;\r\n}\r\n\r\n.channel-card-show a {\r\n  color: var(--f7-text-color);\r\n}\r\n\r\n.channel-card-show .description {\r\n  font-size: 17px;\r\n  text-align: left;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-card img {\r\n  max-width: 100%;\r\n}\r\n\r\n\r\n\r\n.item-preview {\r\n  width: 100%;\r\n  display: flex;\r\n}\r\n\r\n.item-preview p {\r\n  margin-top: 5px;\r\n}\r\n\r\n.item-card .title {\r\n  color: #000000;\r\n  font-size: 23px;\r\n  font-weight: 700;\r\n}\r\n\r\n.item-preview .right {\r\n  flex: 0 0 150px;\r\n  /* do not grow, do not shrink, start at 250px */\r\n}\r\n\r\n.item-preview .right img {\r\n  max-width: 100%;\r\n}\r\n\r\n.item-preview .left {\r\n  flex: 1;\r\n  /* grow */\r\n}\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.channel-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n}\r\n\r\n.goto-button {\r\n  display: inline-block;\r\n  margin-left: 10px;\r\n  width: 50px;\r\n}\r\n\r\n.paging-label {\r\n  font-size: 15px;\r\n  font-weight: bold;\r\n  margin-left: 10px;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.previous {\r\n  text-align: right;\r\n}\r\n\r\n.next {\r\n  text-align: left;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .previous {\r\n    text-align: center;\r\n  }\r\n\r\n  .next {\r\n    text-align: center;\r\n  }\r\n}\r\n\r\n\r\n.content {\r\n  width: 100%;\r\n}\r\n\r\n.content:after {\r\n  clear: both;\r\n  content: \"\";\r\n  display: block;\r\n}\r\n\r\n.content img {\r\n  max-width: 100%;\r\n  object-fit: cover;\r\n}\r\n\r\n\r\n.menu-dropdown-link.menu-close {\r\n  color: #ffffff;\r\n}\r\n\r\n.item-show-token-id {\r\n  color: rgb(79, 79, 79);\r\n  font-weight: bold;\r\n}\r\n\r\n\r\n.f7-component {\r\n  display: none;\r\n}\r\n\r\n\r\n.square {\r\n  position: relative;\r\n  width: 100%;\r\n}\r\n\r\n.square img {\r\n  position: absolute;\r\n  width: 100%;\r\n  max-width: 100%;\r\n  height: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.square:after {\r\n  content: \"\";\r\n  display: block;\r\n  padding-bottom: 100%;\r\n}\r\n\r\n\r\n.preview-info {\r\n  margin-top: 10px;\r\n}\r\n\r\n.preview-info a{\r\n  font-size: 16px;\r\n}\r\n\r\n\r\n\r\n.cover-image-preview {\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.attribute-row {\r\n  font-size: 16px;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-row strong {\r\n  width: 175px;\r\n  display: inline-block;\r\n  vertical-align: top;\r\n}\r\n\r\n\r\n.attribute-row .material-icons {\r\n  line-height: 16px;\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n}\r\n\r\n\r\n\r\n#customSearchResults {\r\n  margin-top: 65px;\r\n  border-top: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n\r\n.animation-preview {\r\n  margin-left: 5px;\r\n  height: 500px; \r\n  width: 500px;\r\n  max-width: 100%;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n\r\n\r\n.iframe-container {\r\n  overflow: hidden;\r\n  padding-top: 100%;\r\n  position: relative;\r\n}\r\n\r\n\r\n.iframe-container iframe {\r\n  border: 0;\r\n  height: 100%;\r\n  left: 0;\r\n  position: absolute;\r\n  top: 0;\r\n  width: 100%;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected .card {\r\n  padding: 10px;\r\n  border: 1px solid #350097;\r\n  box-shadow:  1px 1px #350097,\r\n       2px 2px #350097,\r\n       3px 3px #350097,\r\n       4px 4px #350097,\r\n       5px 5px #350097;\r\n}\r\n\r\n\r\n\r\n.flex-card.selected:after {\r\n  content: \" \";\r\n  position: absolute;\r\n  left: 50%;\r\n  margin-left: -15px;\r\n  top: 0px;\r\n  border-bottom: none;\r\n  border-right: 15px solid transparent;\r\n  border-left: 15px solid transparent;\r\n  border-top: 15px solid #350097;\r\n}\r\n\r\n\r\n.photo-browser-slide {\r\n  margin-top: var(--f7-navbar-height);\r\n  padding-bottom: var(--f7-navbar-height);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-list-card {\r\n  overflow-y: scroll; \r\n  margin-bottom: 25px;\r\n  cursor: pointer;\r\n}\r\n\r\n\r\n.nft-header-row {\r\n  display: flex;  \r\n}\r\n\r\n.nft-header-row .left {\r\n  flex: 0 0 500px;\r\n}\r\n\r\n.nft-header-row .right {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .nft-header-row {\r\n    display: block;  \r\n  }\r\n  \r\n  .nft-header-row .left {\r\n    width: 100%;\r\n  }\r\n  \r\n  .nft-header-row .right {\r\n    width: 100%;\r\n  }\r\n  \r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.animation-card {\r\n  width: 100%;\r\n}\r\n\r\n.animation-content {\r\n  width: 100%;\r\n  display: flex; \r\n  overflow-y: hidden;\r\n}\r\n\r\n\r\n.animation-content:first-child {\r\n  display: block;\r\n}\r\n\r\n.animation-content.animation-image {\r\n  width: 700px;\r\n  max-width: 100%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.animation-image img {\r\n  width: 100%;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .animation-image, .animation-card {\r\n    width: unset;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n.small-ethereum-icon {\r\n  background-image: url(\"data:image/svg+xml;charset=UTF-8, %3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 256 417' version='1.1' preserveAspectRatio='xMidYMid'%3e%3cg%3e%3cpolygon fill='%23343434' points='127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32'/%3e%3cpolygon fill='%238C8C8C' points='127.962 0 0 212.32 127.962 287.959 127.962 154.158'/%3e%3cpolygon fill='%233C3C3B' points='127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866'/%3e%3cpolygon fill='%238C8C8C' points='127.962 416.9052 127.962 312.1852 0 236.5852'/%3e%3cpolygon fill='%23141414' points='127.9611 287.9577 255.9211 212.3207 127.9611 154.1587'/%3e%3cpolygon fill='%23393939' points='0.0009 212.3208 127.9609 287.9578 127.9609 154.1588'/%3e%3c/g%3e%3c/svg%3e\");\r\n  background-size: 100% 100%;\r\n  height: 24px;\r\n  width: 24px;\r\n}\r\n\r\n.start-buttons {\r\n  margin-top: 15px;\r\n}\r\n\r\n.explore-button, .ready-button {\r\n  width: 250px;\r\n  display: inline-block;\r\n}\r\n\r\n.explore-button {\r\n  margin-right: 15px;\r\n}\r\n\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .explore-button, .ready-button {\r\n    width: 100%;\r\n  }\r\n\r\n  .explore-button {\r\n    margin-right: 0px;\r\n    margin-bottom: 15px;\r\n  }\r\n}\r\n\r\n.license {\r\n  font-size: 11px;\r\n}\r\n\r\n.card-content h1 {\r\n  margin-top: 0;\r\n  font-size: 30px;\r\n\r\n}\r\n.card-content h2 {\r\n  margin-top: 0;\r\n  font-size: 22px;\r\n}\r\n\r\n.static-page-card {\r\n  font-size: 17px;\r\n}\r\n\r\n.static-page-card img {\r\n  border-radius: 25px;\r\n}\r\n\r\n\r\n\r\n\r\n.data-table tr {\r\n  height: 35px;\r\n}\r\n\r\n.data-table .label-cell {\r\n  width: 200px;\r\n}\r\n\r\n\r\n\r\n\r\n.scarcity-report-card.data-table table {\r\n  max-width: 600px;\r\n  margin-bottom: 50px;\r\n}\r\n\r\n.scarcity-report-card.data-table tr {\r\n  height: 15px;\r\n}\r\n\r\n.scarcity-report-card.data-table th {\r\n  font-size: 18px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .label-cell {\r\n  color: #000000;\r\n  font-weight: bold;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table td .label-cell {\r\n  font-weight: normal;\r\n  width: 250px;\r\n}\r\n\r\n.scarcity-report-card.data-table th .numeric-cell {\r\n  font-weight: normal;\r\n}\r\n\r\n\r\n\r\n\r\n\r\n/* .item-card {\r\n  cursor: pointer;\r\n}  */\r\n\r\n\r\n.fixed-width-content {\r\n  width: 1135px;\r\n  max-width: 100%;\r\n}\r\n\r\n.item-flex {\r\n  display: flex; \r\n  flex-flow: row wrap; \r\n  align-content: start;\r\n}\r\n\r\n\r\n.flex-card {\r\n  flex: 0 0 20%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card-small {\r\n  flex: 0 0 10%;\r\n  margin: 0px;\r\n}\r\n\r\n.flex-card .card {\r\n  background: white;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.flex-card-small .card {\r\n  background: white;\r\n  margin-left: 0px;\r\n  margin-right: 0px;\r\n  margin-top:0px;\r\n  margin-bottom: 0px;\r\n}\r\n\r\n\r\n.flex-card img, .flex-card-small img {\r\n  max-width: 100%;\r\n  border: none;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fixed-width-content {\r\n    width: 100%;\r\n    max-width: 100%;\r\n  }\r\n  \r\n \r\n  .flex-card {\r\n    flex: 0 0 50%;\r\n    margin: 0px;\r\n  }\r\n\r\n  .flex-card-small {\r\n    flex: 0 0 33%;\r\n    margin: 0px;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n#mint-button {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.mint-detail strong {\r\n  width: 100px;\r\n  display: inline-block;\r\n}\r\n\r\n.block-mint {\r\n  font-size: 14px;\r\n}\r\n\r\n.exact-tokens-only {\r\n  font-size: 15px;\r\n}\r\n\r\n\r\n.latest-mints {\r\n  font-size: 12px;\r\n}\r\n\r\n.latest-mints img {\r\n  width: 40px;\r\n}\r\n\r\n\r\n#latest-mints-swiper {\r\n  display: none;\r\n}\r\n\r\n#latest-mints-swiper .card-footer {\r\n  font-size: 11px;\r\n}\r\n\r\n.swiper-pagination-bullet {\r\n  height:25px;\r\n  width: 25px;\r\n} \r\n\r\n.swiper-horizontal>.swiper-scrollbar {\r\n  height: 17px;\r\n}\r\n\r\n\r\n\r\nhtml {\r\n  visibility: visible;\r\n  opacity: 1;\r\n}\r\n\r\n\r\n.photo-browser-caption {\r\n  height: 75px;\r\n  pointer-events: all;\r\n}\r\n\r\n.attribute-value {\r\n  width: 125px;\r\n  border: 1px solid rgb(21, 178, 229);\r\n  border-radius: 5px;\r\n  background: rgba(21, 178, 229, 0.06);\r\n  display: inline-block;\r\n  margin: 5px;\r\n  text-align: center;\r\n  vertical-align: top;\r\n}\r\n\r\n.attribute-value .trait-type {\r\n  font-size: 12px;\r\n  color: rgb(21, 178, 229);\r\n}\r\n\r\n.attribute-value .value {\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  color:rgb(53, 56, 64);\r\n}\r\n\r\n.attribute-value .category-percent {\r\n  font-size: 12px;\r\n  color: rgb(112, 122, 131);\r\n}\r\n\r\n\r\n/* @media only screen and (max-width: 1024px) {\r\n \r\n  .token-sidebar {\r\n    margin-top: 75px;\r\n  }\r\n\r\n} */\r\n\r\n\r\n.small-only {\r\n  display: none;\r\n}\r\n\r\n.large-only {\r\n  display: block;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .small-only {\r\n    display: block;\r\n  }\r\n\r\n  .large-only {\r\n    display: none;\r\n  }\r\n}\r\n\r\n\r\n.is-hidden {\r\n  transform: translateY(-100%)\r\n}\r\n.is-visible {\r\n  transform: translateY(0)\r\n}\r\n\r\n\r\n.fab-left-center a, .fab-right-center a {\r\n  background-color: rgb(255, 255, 255, 0.5);\r\n  font-weight: bold;\r\n  width: 33px;\r\n  height: 75px;\r\n}\r\n\r\n.fab-right-center {\r\n  right: calc(25% + 19px) ;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n  .fab-right-center {\r\n    right: calc(var(--f7-fab-margin) + var(--f7-safe-area-right));\r\n  }\r\n}\r\n\r\n\r\n.back-token-button {\r\n  width: 100px;\r\n  margin-top: 30px;\r\n}\r\n\r\n\r\n.continue-button {\r\n  width: 350px;\r\n  margin-top: 30px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .back-token-button {\r\n    width: 30%;\r\n    margin-top: 30px;\r\n  }\r\n\r\n  .continue-button {\r\n    width: 70%;\r\n  }\r\n}\r\n\r\n\r\n\r\n\r\n.filter-button {\r\n  text-align: right;\r\n  width: 100%;\r\n}\r\n\r\n.event-info-list {\r\n  padding-inline-start: 0px;\r\n  list-style-type: none;\r\n}\r\n\r\n.event-info {\r\n  width: 100%;\r\n  font-size: 13px;\r\n  display: flex;\r\n}\r\n\r\n.event-info .image {\r\n  flex: 0 0 50px;\r\n  margin-right: 10px;\r\n}\r\n\r\n.event-info .image .f7-icons {\r\n  width: 50px;\r\n}\r\n\r\n.event-info .image img {\r\n  width: 50px;\r\n}\r\n\r\n\r\n.event-info .details {\r\n  flex: 1;\r\n}\r\n\r\n\r\n\r\n.event-info .details .to-label {\r\n  margin-left: 15px;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .event-info .details .to-label {\r\n    margin-left: 0px;\r\n  }\r\n\r\n}\r\n\r\n\r\n/* .event-info .details .badge {\r\n  float: right;\r\n} */\r\n\r\n.event-info .date {\r\n  margin-block-start: 0em;\r\n  margin-block-end: 0em;\r\n  color: rgb(56, 56, 56);\r\n}\r\n\r\n.event-info .transfer {\r\n  margin-block-start: 0em;\r\n  margin-block-end: 0em;\r\n}\r\n\r\n.event-info .transfer .label {\r\n  margin-right: 5px;\r\n}\r\n\r\n.event-table .label-cell {\r\n  width: 150px;\r\n}\r\n\r\n/* \r\n\r\n.event-table .image-col {\r\n  width: 50px;\r\n}\r\n\r\n.event-table .token-col {\r\n  width: 150px;\r\n}\r\n\r\n\r\n.event-table .latest-img {\r\n  margin: 5px;\r\n  width: 50px;\r\n  height: 50px;\r\n  border: 1px solid #cccccc;\r\n}\r\n\r\n.event-table, .event-table td, .event-table tr {\r\n  font-size: 16px;\r\n}\r\n\r\n.event-table tr.event-transfer {\r\n  background: #add6b8;\r\n}\r\n\r\n.event-table tr.uncategorized-event {\r\n  background: #f1f1f1;\r\n} */\r\n\r\n\r\n\r\n.user-info {\r\n  width: 300px;\r\n  text-overflow: ellipsis;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n\r\n  .user-info {\r\n    width: 100%;\r\n  }\r\n\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -472,6 +472,9 @@ function framework7Component(props, {
     if (event.event == "MintEvent") return "event-transfer";
     return "uncategorized-event";
   };
+  const getIcon = event => {
+    if (event.event == "ApprovalForAll") return "asterisk_circle_fill";
+  };
   const load = async () => {
     $f7.preloader.show();
     loading = true;
@@ -523,51 +526,66 @@ function framework7Component(props, {
             ${transactionsViewModel.transactions.map(transaction => $h`
 
               <tr>
-                <td>
-                  <a href="https://etherscan.io/tx/${transaction.hash}" class="link external">${transaction.hash}</a>
+                <td style="vertical-align: top; padding-top: 15px;">
+                  <a href="https://etherscan.io/tx/${transaction.hash}" class="external">${walletService.truncateEthAddress(transaction._id)}</a>
+                  <div class="date">${moment(transaction.timestamp * 1000).fromNow()}</div>
                 </td>
 
                 <td>
-                  <div class="list media-list">
-                    <ul>
+                  <ul class="event-info-list">
 
-                      ${Object.keys(transaction.ercEvents).map(key => $h`
-                    
-                        <li class="item-content">
-                          <div class="item-media">
-  
+                    ${Object.keys(transaction.ercEvents).map(key => $h`
+                  
+                      <li>
+
+                        <div class="event-info">
+
+                          <div class="image">
                             ${transaction.ercEvents[key].tokenId ? $h`
                               <a href="${baseURI}t/${transaction.ercEvents[key].tokenId}" class="link">
                                 <img src="${imageLink(transactionsViewModel.rowItemViewModels[transaction.ercEvents[key].tokenId])}" class="latest-img"/> 
                               </a>
+                                ` : $h`<i class="f7-icons">${getIcon(transaction.ercEvents[key])}</i>`}    
+                          </div>
+
+                          <div class="details">
+
+                            <strong>${transaction.ercEvents[key].event} ${transaction.ercEvents[key].isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}</strong>
+
+                            ${transaction.ercEvents[key].isTransfer ? $h`
+                              
+                              <div class="transfer">
+
+                                <div style="float: left;">
+                                  <span class="label">From:</span>
+                                  ${transaction.ercEvents[key].fromAddress ? $h`
+                                    <a href="${baseURI}u/?address=${transaction.ercEvents[key].fromAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].fromAddress)}</a>
+                                  ` : $h`<span />`}
+
+                                </div>
+
+  
+                                <span class="label to-label">To:</span>
+                                ${transaction.ercEvents[key].toAddress ? $h`
+                                  <a href="${baseURI}u/?address=${transaction.ercEvents[key].toAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].toAddress)}</a>
                                 ` : $h`<span />`}
   
-                          </div>
-                          <div class="item-inner">
+                              </div>
 
-                            <div class="item-title-row">
-                              <div class="item-title">${transaction.ercEvents[key].event} ${transaction.ercEvents[key].isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`} </div>
-                              <div class="item-after"><strong>${moment(transaction.ercEvents[key].timestamp * 1000).fromNow()}</strong></div>
-                            </div>
-                            <div class="item-text">
-                              ${transaction.ercEvents[key].fromAddress ? $h`
-                                <a href="${baseURI}u/?address=${transaction.ercEvents[key].fromAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].fromAddress)}</a>
-                              ` : $h`<span />`}
-
-                              ${transaction.ercEvents[key].toAddress ? $h`
-                                <a href="${baseURI}u/?address=${transaction.ercEvents[key].toAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].toAddress)}</a>
-                              ` : $h`<span />`}
-
-                            </div>
+                            ` : $h` `}
 
 
                           </div>
-                        </li>
-  
-                      `)}
 
-                    </ul>
-                  </div>
+                        </div>
+
+
+
+                      </li>
+
+                    `)}
+
+                  </ul>
 
                 </td>
 
@@ -596,7 +614,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c448dcaba1';
+framework7Component.id = '59f8e7efe8';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -841,6 +859,7 @@ function framework7Component(props, {
       totals = await tokenOwnerPageService.getTotals();
       let page = await tokenOwnerPageService.get(pageNumber);
       tokenOwners = page.tokenOwners;
+      console.log(tokenOwners);
     } catch (ex) {
       console.log(ex);
     }
@@ -900,7 +919,7 @@ function framework7Component(props, {
           ${tokenOwners?.map(u => $h`
             <tr>
               <td class="label-cell">
-                <a href="${baseURI}u/?address=${u.address}">${u.address ? walletService.truncateEthAddress(u.address) : ' '}</a>
+                <a href="${baseURI}u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
               </td>
   
               <td>
@@ -951,7 +970,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7867c65659';
+framework7Component.id = '8ebc9bf20e';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -3464,18 +3483,10 @@ class ERCEvent {
     eventSignature;
     isTransfer;
     isMint;
+    isBurn;
     fromAddress;
     toAddress;
     tokenId;
-    timestamp;
-    // @Allow()
-    // previousId?:string
-    // @Allow()
-    // previousByTokenId?:string
-    // @Allow()
-    // nextId?:string
-    // @Allow()
-    // nextByTokenId?:string
     lastUpdated;
     dateCreated;
 }
@@ -3545,6 +3556,10 @@ __decorate([
 ], ERCEvent.prototype, "isMint", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Boolean)
+], ERCEvent.prototype, "isBurn", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ERCEvent.prototype, "fromAddress", void 0);
 __decorate([
@@ -3555,13 +3570,6 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Number)
 ], ERCEvent.prototype, "tokenId", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)()
-    // rowItemViewModel?:RowItemViewModel
-    ,
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Number)
-], ERCEvent.prototype, "timestamp", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -3688,12 +3696,17 @@ class ProcessedTransaction {
     _id;
     _rev;
     transaction;
+    timestamp;
     ercEvents;
     tokenIds;
     previousId;
     previousByTokenIds;
+    previousByTransactionInitiatorId;
+    previousByTokenOwnerId;
     nextId;
     nextByTokenIds;
+    nextByTokenOwnerId;
+    nextByTransactionInitiatorId;
     lastUpdated;
     dateCreated;
 }
@@ -3709,6 +3722,10 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", _transaction_js__WEBPACK_IMPORTED_MODULE_1__.Transaction)
 ], ProcessedTransaction.prototype, "transaction", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Number)
+], ProcessedTransaction.prototype, "timestamp", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Array)
@@ -3727,12 +3744,28 @@ __decorate([
 ], ProcessedTransaction.prototype, "previousByTokenIds", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "previousByTransactionInitiatorId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "previousByTokenOwnerId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], ProcessedTransaction.prototype, "nextId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Object)
 ], ProcessedTransaction.prototype, "nextByTokenIds", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "nextByTokenOwnerId", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", Object)
+], ProcessedTransaction.prototype, "nextByTransactionInitiatorId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -3856,11 +3889,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 class TokenOwner {
     _id;
     _rev;
-    address;
     count;
     tokenIds;
-    transactionIdsInitiated;
-    transactionIds;
+    latestTransactionInitiatorId;
+    latestTransactionId;
     lastActive;
     ensName;
     lastUpdated;
@@ -3876,10 +3908,6 @@ __decorate([
 ], TokenOwner.prototype, "_rev", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", String)
-], TokenOwner.prototype, "address", void 0);
-__decorate([
-    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Number)
 ], TokenOwner.prototype, "count", void 0);
 __decorate([
@@ -3888,12 +3916,12 @@ __decorate([
 ], TokenOwner.prototype, "tokenIds", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Array)
-], TokenOwner.prototype, "transactionIdsInitiated", void 0);
+    __metadata("design:type", String)
+], TokenOwner.prototype, "latestTransactionInitiatorId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Array)
-], TokenOwner.prototype, "transactionIds", void 0);
+    __metadata("design:type", String)
+], TokenOwner.prototype, "latestTransactionId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
@@ -7090,21 +7118,20 @@ SchemaService = __decorate([
 /* harmony export */   "TransactionIndexerService": () => (/* binding */ TransactionIndexerService)
 /* harmony export */ });
 /* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/@ethersproject/address/lib.esm/index.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dto/contract-state.js */ "./src/reader/dto/contract-state.ts");
 /* harmony import */ var _dto_processed_transaction_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../dto/processed-transaction.js */ "./src/reader/dto/processed-transaction.ts");
-/* harmony import */ var _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../dto/token-owner.js */ "./src/reader/dto/token-owner.ts");
 /* harmony import */ var _dto_token_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../dto/token.js */ "./src/reader/dto/token.ts");
-/* harmony import */ var _block_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../block-service.js */ "./src/reader/service/block-service.ts");
-/* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
-/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
-/* harmony import */ var _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
-/* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
-/* harmony import */ var _token_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../token-service.js */ "./src/reader/service/token-service.ts");
-/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
-/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _block_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../block-service.js */ "./src/reader/service/block-service.ts");
+/* harmony import */ var _contract_state_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../contract-state-service.js */ "./src/reader/service/contract-state-service.ts");
+/* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
+/* harmony import */ var _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
+/* harmony import */ var _token_owner_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _token_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../token-service.js */ "./src/reader/service/token-service.ts");
+/* harmony import */ var _transaction_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../transaction-service.js */ "./src/reader/service/transaction-service.ts");
+/* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7114,7 +7141,6 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -7185,6 +7211,9 @@ let TransactionIndexerService = class TransactionIndexerService {
             if (events.length > 0) {
                 let previousTransaction = await this.processedTransactionService.getLatest();
                 let currentTransaction;
+                let transactionUser;
+                let fromOwner;
+                let toOwner;
                 if (previousTransaction) {
                     result.processedTransactionsToUpdate[previousTransaction._id] = previousTransaction;
                 }
@@ -7204,7 +7233,11 @@ let TransactionIndexerService = class TransactionIndexerService {
                         currentTransaction.dateCreated = new Date().toJSON();
                         currentTransaction.ercEvents = [];
                         currentTransaction.nextByTokenIds = {};
+                        currentTransaction.nextByTokenOwnerId = {};
+                        currentTransaction.nextByTransactionInitiatorId = {};
                         currentTransaction.previousByTokenIds = {};
+                        currentTransaction.previousByTokenOwnerId = {};
+                        currentTransaction.previousByTransactionInitiatorId = {};
                         currentTransaction.tokenIds = [];
                         result.processedTransactionsToUpdate[currentTransaction._id] = currentTransaction;
                     }
@@ -7213,7 +7246,58 @@ let TransactionIndexerService = class TransactionIndexerService {
                     if (event.transactionHash != currentTransaction._id)
                         throw new Error("Wrong transaction found.");
                     //Translate
-                    let ercEvent = await this.ercEventService.translateEventToERCEvent(event, block);
+                    let ercEvent = await this.ercEventService.translateEventToERCEvent(event);
+                    currentTransaction.timestamp = block.timestamp;
+                    const getTokenOwner = async (ownerAddress) => {
+                        if (!result.ownersToUpdate[ownerAddress]) {
+                            let tokenOwner = await this.tokenOwnerService.getOrCreate(ownerAddress);
+                            result.ownersToUpdate[ownerAddress] = tokenOwner;
+                        }
+                        return result.ownersToUpdate[ownerAddress];
+                    };
+                    const getPreviousTransaction = async (previousTransactionId, currentTransactionId) => {
+                        let pt;
+                        if (previousTransactionId && previousTransactionId != currentTransactionId) {
+                            //Grab from memory if exists
+                            pt = result.processedTransactionsToUpdate[previousTransactionId];
+                            //Look it up
+                            if (!pt) {
+                                pt = await this.processedTransactionService.get(previousTransactionId);
+                            }
+                        }
+                        return pt;
+                    };
+                    const updatePreviousNextByToken = (tokenId, previousT, currentT) => {
+                        //Point the previous one here
+                        if (previousT) {
+                            //Make sure we update it.
+                            result.processedTransactionsToUpdate[previousT._id] = previousT;
+                            currentT.previousByTokenIds[tokenId] = previousT._id;
+                            previousT.nextByTokenIds[tokenId] = currentT._id;
+                        }
+                    };
+                    const updatePreviousNextByTransactionInitiator = (transactionUserId, previousT, currentT) => {
+                        //Point the previous one here
+                        if (previousT) {
+                            //Make sure we update it.
+                            result.processedTransactionsToUpdate[previousT._id] = previousT;
+                            currentT.previousByTransactionInitiatorId[transactionUserId] = previousT._id;
+                            previousT.nextByTransactionInitiatorId[transactionUserId] = currentT._id;
+                        }
+                    };
+                    const updatePreviousNextByTokenOwner = (tokenOwnerId, previousT, currentT) => {
+                        //Point the previous one here
+                        if (previousT) {
+                            //Make sure we update it.
+                            result.processedTransactionsToUpdate[previousT._id] = previousT;
+                            currentT.previousByTokenOwnerId[tokenOwnerId] = previousT._id;
+                            previousT.nextByTokenOwnerId[tokenOwnerId] = currentT._id;
+                        }
+                    };
+                    //Look up/create the from address
+                    if (currentTransaction.transaction.from?.length > 0) {
+                        transactionUser = await getTokenOwner(currentTransaction.transaction.from);
+                    }
                     if (ercEvent.tokenId) {
                         //Grab token info
                         let token;
@@ -7231,79 +7315,42 @@ let TransactionIndexerService = class TransactionIndexerService {
                             }
                         }
                         result.tokensToUpdate[ercEvent.tokenId] = token;
-                        const getTokenOwner = async (ownerAddress) => {
-                            let tokenOwner = result.ownersToUpdate[ownerAddress];
-                            if (!tokenOwner) {
-                                try {
-                                    tokenOwner = await this.tokenOwnerService.get(ercEvent.fromAddress);
-                                }
-                                catch (ex) { }
-                            }
-                            if (!tokenOwner) {
-                                tokenOwner = new _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_3__.TokenOwner();
-                                tokenOwner.address = ownerAddress;
-                                tokenOwner.tokenIds = [];
-                                tokenOwner.transactionIds = [];
-                                tokenOwner.transactionIdsInitiated = [];
-                                tokenOwner.count = 0;
-                            }
-                            result.ownersToUpdate[ownerAddress] = tokenOwner;
-                            return tokenOwner;
-                        };
-                        let transactionUser;
-                        let fromOwner;
-                        let toOwner;
                         //Look up/create the from address
-                        if (currentTransaction.transaction.from) {
-                            transactionUser = await getTokenOwner(currentTransaction.transaction.from);
-                            if (!transactionUser.transactionIdsInitiated.includes(currentTransaction.transaction._id)) {
-                                transactionUser.transactionIdsInitiated.push(currentTransaction.transaction._id);
-                            }
-                        }
-                        //Look up/create the from address
-                        if (ercEvent.fromAddress) {
+                        if (ercEvent.fromAddress?.length > 0) {
                             fromOwner = await getTokenOwner(ercEvent.fromAddress);
-                            if (!fromOwner.transactionIds.includes(currentTransaction.transaction._id)) {
-                                fromOwner.transactionIds.push(currentTransaction.transaction._id);
-                            }
                         }
                         //Look up/create the to address
-                        if (ercEvent.toAddress) {
+                        if (ercEvent.toAddress?.length > 0) {
                             toOwner = await getTokenOwner(ercEvent.toAddress);
-                            if (!toOwner.transactionIds.includes(currentTransaction.transaction._id)) {
-                                toOwner.transactionIds.push(currentTransaction.transaction._id);
-                            }
                         }
                         if (ercEvent.isTransfer) {
                             //Update previous owner
                             if (fromOwner.tokenIds.includes(ercEvent.tokenId)) {
                                 fromOwner.tokenIds = Array.from(fromOwner.tokenIds)?.filter(id => id != ercEvent.tokenId);
-                                fromOwner.count = fromOwner.tokenIds.length;
                             }
                             //Update new owner
                             toOwner.tokenIds.push(ercEvent.tokenId);
-                            toOwner.count = toOwner.tokenIds.length;
                         }
                         //Look for previousByTokenId
-                        let previousTransactionByToken;
-                        //Look up previous transaction for this token
-                        if (token.latestTransactionId && token.latestTransactionId != currentTransaction._id) {
-                            //Grab from memory if exists
-                            previousTransactionByToken = result.processedTransactionsToUpdate[token.latestTransactionId];
-                            //Look it up
-                            if (!previousTransactionByToken) {
-                                previousTransactionByToken = await this.processedTransactionService.get(token.latestTransactionId);
-                            }
+                        let previousTransactionByToken = await getPreviousTransaction(token.latestTransactionId, currentTransaction._id);
+                        updatePreviousNextByToken(ercEvent.tokenId, previousTransactionByToken, currentTransaction);
+                        //Update previous/next for transaction initiator
+                        let previousTransactionByTransactionInitiator = await getPreviousTransaction(transactionUser.latestTransactionInitiatorId, currentTransaction._id);
+                        updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, currentTransaction);
+                        //Update previous/next for from/to users
+                        if (fromOwner) {
+                            let previousTransactionByFromOwner = await getPreviousTransaction(fromOwner.latestTransactionId, currentTransaction._id);
+                            updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, currentTransaction);
+                            fromOwner.latestTransactionId = currentTransaction._id;
                         }
-                        //Point the previous one here
-                        if (previousTransactionByToken) {
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousTransactionByToken._id] = previousTransactionByToken;
-                            currentTransaction.previousByTokenIds[ercEvent.tokenId] = previousTransactionByToken._id;
-                            previousTransactionByToken.nextByTokenIds[ercEvent.tokenId] = currentTransaction._id;
+                        if (toOwner && toOwner._id != fromOwner._id) {
+                            let previousTransactionByToOwner = await getPreviousTransaction(toOwner.latestTransactionId, currentTransaction._id);
+                            updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, currentTransaction);
+                            toOwner.latestTransactionId = currentTransaction._id;
                         }
                         token.latestErcEventId = ercEvent._id;
                         token.latestTransactionId = currentTransaction._id;
+                        transactionUser.latestTransactionInitiatorId = currentTransaction._id;
                     }
                     //See if it already exists. If so we need the _rev
                     // ercEvent._rev = await this.ercEventService.getExistingRev(ercEvent._id)
@@ -7324,6 +7371,8 @@ let TransactionIndexerService = class TransactionIndexerService {
                 //Save token owners
                 let tokenOwners = [];
                 for (let owner of Object.keys(result.ownersToUpdate)) {
+                    //Update count before saving.
+                    result.ownersToUpdate[owner].count = result.ownersToUpdate[owner].tokenIds?.length;
                     tokenOwners.push(result.ownersToUpdate[owner]);
                 }
                 await this.tokenOwnerService.putAll(tokenOwners);
@@ -7420,7 +7469,7 @@ let TransactionIndexerService = class TransactionIndexerService {
         }
         catch (ex) { }
         if (!contractState) {
-            contractState = Object.assign(new _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_4__.ContractState(), {
+            contractState = Object.assign(new _dto_contract_state_js__WEBPACK_IMPORTED_MODULE_3__.ContractState(), {
                 _id: contractAddress,
                 lastIndexedBlock: 0,
                 dateCreated: new Date().toJSON()
@@ -7458,47 +7507,47 @@ let TransactionIndexerService = class TransactionIndexerService {
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ContractStateService"),
-    __metadata("design:type", _contract_state_service_js__WEBPACK_IMPORTED_MODULE_6__.ContractStateService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ContractStateService"),
+    __metadata("design:type", _contract_state_service_js__WEBPACK_IMPORTED_MODULE_5__.ContractStateService)
 ], TransactionIndexerService.prototype, "contractStateService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ERCEventService"),
-    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_7__.ERCEventService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ERCEventService"),
+    __metadata("design:type", _erc_event_service_js__WEBPACK_IMPORTED_MODULE_6__.ERCEventService)
 ], TransactionIndexerService.prototype, "ercEventService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenOwnerService"),
-    __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_8__.TokenOwnerService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenOwnerService"),
+    __metadata("design:type", _token_owner_service_js__WEBPACK_IMPORTED_MODULE_7__.TokenOwnerService)
 ], TransactionIndexerService.prototype, "tokenOwnerService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ItemWebService"),
-    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_9__.ItemWebService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ItemWebService"),
+    __metadata("design:type", _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_8__.ItemWebService)
 ], TransactionIndexerService.prototype, "itemWebService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenService"),
-    __metadata("design:type", _token_service_js__WEBPACK_IMPORTED_MODULE_10__.TokenService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenService"),
+    __metadata("design:type", _token_service_js__WEBPACK_IMPORTED_MODULE_9__.TokenService)
 ], TransactionIndexerService.prototype, "tokenService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("WalletService"),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("WalletService"),
     __metadata("design:type", Object)
 ], TransactionIndexerService.prototype, "walletService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TransactionService"),
-    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_11__.TransactionService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TransactionService"),
+    __metadata("design:type", _transaction_service_js__WEBPACK_IMPORTED_MODULE_10__.TransactionService)
 ], TransactionIndexerService.prototype, "transactionService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("ProcessedTransactionService"),
-    __metadata("design:type", _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_12__.ProcessedTransactionService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("ProcessedTransactionService"),
+    __metadata("design:type", _processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_11__.ProcessedTransactionService)
 ], TransactionIndexerService.prototype, "processedTransactionService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("BlockService"),
-    __metadata("design:type", _block_service_js__WEBPACK_IMPORTED_MODULE_13__.BlockService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("BlockService"),
+    __metadata("design:type", _block_service_js__WEBPACK_IMPORTED_MODULE_12__.BlockService)
 ], TransactionIndexerService.prototype, "blockService", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)("TokenOwnerPageService"),
-    __metadata("design:type", _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_14__.TokenOwnerPageService)
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.inject)("TokenOwnerPageService"),
+    __metadata("design:type", _token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_13__.TokenOwnerPageService)
 ], TransactionIndexerService.prototype, "tokenOwnerPageService", void 0);
 TransactionIndexerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_15__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_14__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TransactionIndexerService);
 function sleep(ms) {
@@ -7737,132 +7786,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 let ERCEventService = class ERCEventService {
-    // @inject("ERCEventRepository")
-    // private ercEventRepository:ERCEventRepository
-    // @inject("TokenOwnerService")
-    // private tokenOwnerService:TokenOwnerService
     constructor() { }
-    // async get(_id:string): Promise<ERCEvent> {        
-    //     return this.ercEventRepository.get(_id)
-    // }
-    // async put(ercEvent:ERCEvent) {
-    //     ercEvent.lastUpdated = new Date().toJSON()
-    //     //Validate
-    //     let errors: ValidationError[] = await validate(ercEvent, {
-    //         forbidUnknownValues: true,
-    //         whitelist: true
-    //     })
-    //     if (errors.length > 0) {
-    //         throw new ValidationException(errors)
-    //     }
-    //     return this.ercEventRepository.put(ercEvent)
-    // }
-    // /**
-    //  * No validation for speeeeeeeeed
-    //  * @param ercEvents 
-    //  * @returns 
-    //  */
-    // async putAll(ercEvents:ERCEvent[]) {
-    //     //Update lastUpdated
-    //     ercEvents.forEach(e => e.lastUpdated = new Date().toJSON())
-    //     return this.ercEventRepository.putAll(ercEvents)
-    // }
-    // async listFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let previousId = event?.previousId
-    //         //Get the previous
-    //         if (previousId) {
-    //             //See 
-    //             event = await this.get(event.previousId)
-    //             if (event?._id != previousId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async listTo(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let nextId = event?.nextId
-    //         //Get the previous
-    //         if (nextId) {
-    //             //See 
-    //             event = await this.get(event.nextId)
-    //             if (event?._id != nextId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async listByTokenFrom(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let previousByTokenId = event?.previousByTokenId
-    //         //Get the previous
-    //         if (previousByTokenId) {
-    //             //See 
-    //             event = await this.get(event.previousByTokenId)
-    //             if (event?._id != previousByTokenId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async listByTokenTo(limit:number, startId:string) : Promise<ERCEvent[]> {
-    //     let results:ERCEvent[] = []
-    //     while (results?.length < limit && startId) {
-    //         let event:ERCEvent = await this.get(startId)
-    //         results.push(event)
-    //         let nextByTokenId = event?.nextByTokenId
-    //         //Get the previous
-    //         if (nextByTokenId) {
-    //             //See 
-    //             event = await this.get(event.nextByTokenId)
-    //             if (event?._id != nextByTokenId) break
-    //         } else {
-    //             event = undefined
-    //         }
-    //         startId = event?._id
-    //     }
-    //     return results
-    // }
-    // async list(limit: number, skip: number): Promise<ERCEvent[]> {
-    //     return this.ercEventRepository.list(limit, skip)
-    // }
-    // async getLatest() : Promise<ERCEvent> {
-    //     let l = await this.ercEventRepository.list(1, 0)
-    //     if (l?.length >0) {
-    //         return Object.assign(new ERCEvent(), l[0])
-    //     }
-    // }
-    // async getLatestByTokenId(tokenId:number) : Promise<ERCEvent> {
-    //     let l = await this.ercEventRepository.getByTokenIdDesc(tokenId, 1, 0)
-    //     if (l?.length) {
-    //         return Object.assign(new ERCEvent(), l[0])
-    //     }
-    // }
-    // async getByTokenIdDesc(tokenId:number, limit:number, skip:number) : Promise<ERCEvent[]> {
-    //     return this.ercEventRepository.getByTokenIdDesc(tokenId, limit, skip)
-    // }
-    // async getLatestForAllTokens(): Promise<ERCEvent[]> {
-    //     return this.ercEventRepository.getLatestForAllTokens()
-    // }
-    async translateEventToERCEvent(event, block) {
+    async translateEventToERCEvent(event) {
         let ercEvent = new _dto_erc_event_js__WEBPACK_IMPORTED_MODULE_0__.ERCEvent();
-        // ercEvent.transaction = transaction
         ercEvent.blockNumber = event.blockNumber;
         ercEvent.blockHash = event.blockHash;
         ercEvent.transactionIndex = event.transactionIndex;
@@ -7875,7 +7801,6 @@ let ERCEventService = class ERCEventService {
         //@ts-ignore
         ercEvent.event = event.event;
         ercEvent.eventSignature = event.eventSignature;
-        // ercEvent.transaction = await event.getTransaction()
         ercEvent.dateCreated = new Date().toJSON();
         //Convert BigNumber args to strings
         ercEvent.args = event.args.map(a => ethers__WEBPACK_IMPORTED_MODULE_1__.BigNumber.isBigNumber(a) ? a.toString() : a);
@@ -7892,8 +7817,10 @@ let ERCEventService = class ERCEventService {
         if (ercEvent.isTransfer && ercEvent.fromAddress == "0x0000000000000000000000000000000000000000") {
             ercEvent.isMint = true;
         }
+        if (ercEvent.isTransfer && ercEvent.toAddress == "0x0000000000000000000000000000000000000000") {
+            ercEvent.isBurn = true;
+        }
         ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`;
-        ercEvent.timestamp = block.timestamp;
         return ercEvent;
     }
 };
@@ -8518,7 +8445,7 @@ let TokenOwnerPageService = class TokenOwnerPageService {
         //Create view models
         for (let tokenOwner of tokenOwners) {
             viewModels.push({
-                address: tokenOwner.address,
+                _id: tokenOwner._id,
                 ensName: tokenOwner.ensName,
                 lastActive: tokenOwner.lastActive,
                 count: tokenOwner.count
@@ -8556,10 +8483,11 @@ TokenOwnerPageService = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "TokenOwnerService": () => (/* binding */ TokenOwnerService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
-/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/reader/util/validation-exception.ts");
+/* harmony import */ var _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../dto/token-owner.js */ "./src/reader/dto/token-owner.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8572,25 +8500,41 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 let TokenOwnerService = class TokenOwnerService {
     tokenOwnerRepository;
     constructor() { }
     async get(_id) {
         return this.tokenOwnerRepository.get(_id);
     }
+    async getOrCreate(address) {
+        let tokenOwner;
+        if (!tokenOwner) {
+            try {
+                tokenOwner = await this.get(address);
+            }
+            catch (ex) { }
+        }
+        if (!tokenOwner) {
+            tokenOwner = new _dto_token_owner_js__WEBPACK_IMPORTED_MODULE_0__.TokenOwner();
+            tokenOwner._id = address;
+            tokenOwner.tokenIds = [];
+            tokenOwner.count = 0;
+        }
+        return tokenOwner;
+    }
     async put(tokenOwner) {
         if (!tokenOwner._id) {
-            tokenOwner._id = tokenOwner.address;
             tokenOwner.dateCreated = new Date().toJSON();
         }
         tokenOwner.lastUpdated = new Date().toJSON();
         //Validate
-        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.validate)(tokenOwner, {
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.validate)(tokenOwner, {
             forbidUnknownValues: true,
             whitelist: true
         });
         if (errors.length > 0) {
-            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_1__.ValidationException(errors);
+            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_2__.ValidationException(errors);
         }
         return this.tokenOwnerRepository.put(tokenOwner);
     }
@@ -8603,7 +8547,6 @@ let TokenOwnerService = class TokenOwnerService {
         //Update lastUpdated
         tokenOwners.forEach(tokenOwner => {
             if (!tokenOwner._id) {
-                tokenOwner._id = tokenOwner.address;
                 tokenOwner.dateCreated = new Date().toJSON();
             }
             tokenOwner.lastUpdated = new Date().toJSON();
@@ -8618,11 +8561,11 @@ let TokenOwnerService = class TokenOwnerService {
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("TokenOwnerRepository"),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.inject)("TokenOwnerRepository"),
     __metadata("design:type", Object)
 ], TokenOwnerService.prototype, "tokenOwnerRepository", void 0);
 TokenOwnerService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TokenOwnerService);
 

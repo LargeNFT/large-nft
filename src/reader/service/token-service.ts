@@ -19,6 +19,23 @@ class TokenService {
         return this.tokenRepository.get(_id)
     }
 
+    async getOrCreate(_id:string) {
+
+        let token
+
+        try {
+            token = await this.get(_id)
+        } catch(ex) {}
+        
+        if (!token) {
+            token = new Token()
+            token._id = _id
+            token.tokenId = _id
+        }
+
+        return token
+    }
+
     async put(token:Token) {
 
         if (!token._id) {

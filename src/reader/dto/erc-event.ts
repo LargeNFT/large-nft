@@ -1,5 +1,4 @@
 import { Allow } from "class-validator"
-import { RowItemViewModel } from "./item-page.js"
 
 
 class ERCEvent {
@@ -10,17 +9,17 @@ class ERCEvent {
     @Allow()
     _rev?:string 
 
-    @Allow()
-    blockNumber?:number 
+    // @Allow()
+    // blockNumber?:number 
 
-    @Allow()
-    blockHash?:string 
+    // @Allow()
+    // blockHash?:string 
 
-    @Allow()
-    transactionIndex?:number 
+    // @Allow()
+    // transactionIndex?:number 
 
-    @Allow()
-    transactionHash?:string 
+    // @Allow()
+    // transactionHash?:string 
 
 
     @Allow()

@@ -114,7 +114,9 @@
 
             $on('pageInit', async () => {
 
-                let activityStartChangedEvent = new CustomEvent('user-address-changed')
+                console.log('pageinit')
+
+                let activityStartChangedEvent = new CustomEvent('user-activity-address-changed')
                 activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
 
                 document.dispatchEvent(activityStartChangedEvent)
@@ -125,7 +127,10 @@
 
             $on('pageReinit', async () => {
 
-                let activityStartChangedEvent = new CustomEvent('user-address-changed')
+                console.log('pagereinit')
+
+
+                let activityStartChangedEvent = new CustomEvent('user-activity-address-changed')
                 activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
 
                 document.dispatchEvent(activityStartChangedEvent)

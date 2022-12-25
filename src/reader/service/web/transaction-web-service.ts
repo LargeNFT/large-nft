@@ -71,15 +71,33 @@ class TransactionWebService {
 
     }
 
-    // async translateTransactionToViewModel(transaction:Transaction) : Promise<TransactionsViewModel>{
 
-    //     let result:TransactionsViewModel = {
-    //         transactions: [transaction],
-    //         rowItemViewModels: await this._getRowItemViewModels(transaction.ercEvents)
-    //     }
 
-    //     return result
-    // }
+
+
+    async listByAddressFrom(address:string, limit:number, startId?:string) : Promise<TransactionsViewModel> {
+
+        await this.schemaService.load(["processed-transactions"])
+
+        if (!startId) {
+            let result = await axios.get(`${this.baseURI}sync/tokenOwner/${address}.json`)
+            startId = result.data.latestTransactionId
+        }
+
+        return this.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressFrom(address, limit, startId))
+
+    }
+
+    async listByAddressTo(address:string, limit:number, startId?:string) : Promise<TransactionsViewModel> {
+
+        await this.schemaService.load(["processed-transactions"])
+
+        return this.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressTo(address, limit, startId))
+
+    }
+
+
+
 
     private async _getRowItemViewModels(ercEvents) {
 

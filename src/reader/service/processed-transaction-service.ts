@@ -56,7 +56,6 @@ class ProcessedTransactionService {
         while (results?.length < limit && startId) {
 
             let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
-
             results.push(processedTransaction)
 
             let previousId = processedTransaction?.previousId
@@ -120,6 +119,8 @@ class ProcessedTransactionService {
 
             let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
 
+            // console.log(processedTransaction)
+
             results.push(processedTransaction)
 
             let previousByTokenId = processedTransaction?.previousByTokenIds[tokenId]
@@ -173,6 +174,141 @@ class ProcessedTransactionService {
         return results
 
     }
+
+    
+
+    async listByAddressInitiatedFrom(address:string, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
+
+        let results:ProcessedTransaction[] = []
+
+        while (results?.length < limit && startId) {
+
+            let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
+
+            results.push(processedTransaction)
+
+            let previousByTransactionInititatorId = processedTransaction?.previousByTransactionInitiatorId[address]
+
+            //Get the previous
+            if (previousByTransactionInititatorId) {
+
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.previousByTransactionInitiatorId[address])
+
+                if (processedTransaction?._id != previousByTransactionInititatorId) break
+
+            } else {
+                processedTransaction = undefined
+            }
+
+            startId = processedTransaction?._id
+        }
+
+        return results
+
+    }
+
+    async listByAddressInitiatedTo(address:string, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
+
+        let results:ProcessedTransaction[] = []
+
+        while (results?.length < limit && startId) {
+
+            let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
+
+            results.push(processedTransaction)
+
+            let nextByTokenId = processedTransaction?.nextByTransactionInitiatorId[address]
+
+            //Get the previous
+            if (nextByTokenId) {
+
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.nextByTransactionInitiatorId[address])
+
+                if (processedTransaction?._id != nextByTokenId) break
+
+            } else {
+                processedTransaction = undefined
+            }
+
+            startId = processedTransaction?._id
+        }
+
+        return results
+
+    }
+
+
+
+
+    async listByAddressFrom(address:string, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
+
+        console.log(startId)
+
+        let results:ProcessedTransaction[] = []
+
+        while (results?.length < limit && startId) {
+
+            let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
+
+            console.log(processedTransaction)
+
+            results.push(processedTransaction)
+
+            let previousByTransactionInititatorId = processedTransaction?.previousByTokenOwnerId[address]
+
+            //Get the previous
+            if (previousByTransactionInititatorId) {
+
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.previousByTokenOwnerId[address])
+
+                if (processedTransaction?._id != previousByTransactionInititatorId) break
+
+            } else {
+                processedTransaction = undefined
+            }
+
+            startId = processedTransaction?._id
+        }
+
+        return results
+
+    }
+
+    async listByAddressTo(address:string, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
+
+        let results:ProcessedTransaction[] = []
+
+        while (results?.length < limit && startId) {
+
+            let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
+
+            results.push(processedTransaction)
+
+            let nextByTokenId = processedTransaction?.nextByTokenOwnerId[address]
+
+            //Get the previous
+            if (nextByTokenId) {
+
+                //See 
+                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.nextByTokenOwnerId[address])
+
+                if (processedTransaction?._id != nextByTokenId) break
+
+            } else {
+                processedTransaction = undefined
+            }
+
+            startId = processedTransaction?._id
+        }
+
+        return results
+
+    }
+
+
 
     async getLatest() : Promise<Transaction> {
         let l = await this.processedTransactionRepository.list(1, 0)

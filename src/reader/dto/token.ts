@@ -11,8 +11,8 @@ class Token {
     @Allow()
     tokenId?:number
 
-    @Allow()
-    latestErcEventId?:string
+    // @Allow()
+    // latestErcEventId?:string
 
     @Allow()
     latestTransactionId?:string

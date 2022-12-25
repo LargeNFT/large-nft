@@ -19,76 +19,7 @@
             <tbody>
     
             ${transactionsViewModel.transactions.map(transaction => $h`
-
-              <tr>
-                <td style="vertical-align: top; padding-top: 15px;">
-                  <a href="https://etherscan.io/tx/${transaction.hash}" class="external">${walletService.truncateEthAddress(transaction._id)}</a>
-                  <div class="date">${moment(transaction.timestamp * 1000).fromNow()}</div>
-                </td>
-
-                <td>
-                  <ul class="event-info-list">
-
-                    ${Object.keys(transaction.ercEvents).map(key => $h`
-                  
-                      <li>
-
-                        <div class="event-info">
-
-                          <div class="image">
-                            ${transaction.ercEvents[key].tokenId ? $h`
-                              <a href="${baseURI}t/${transaction.ercEvents[key].tokenId}" class="link">
-                                <img src="${imageLink(transactionsViewModel.rowItemViewModels[transaction.ercEvents[key].tokenId])}" class="latest-img"/> 
-                              </a>
-                                ` : $h`<i class="f7-icons">${getIcon(transaction.ercEvents[key])}</i>`}    
-                          </div>
-
-                          <div class="details">
-
-                            <strong>${transaction.ercEvents[key].event} ${transaction.ercEvents[key].isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}</strong>
-
-                            ${transaction.ercEvents[key].isTransfer ? $h`
-                              
-                              <div class="transfer">
-
-                                <div style="float: left;">
-                                  <span class="label">From:</span>
-                                  ${transaction.ercEvents[key].fromAddress ? $h`
-                                    <a href="${baseURI}u/?address=${transaction.ercEvents[key].fromAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].fromAddress)}</a>
-                                  ` : $h`<span />`}
-
-                                </div>
-
-  
-                                <span class="label to-label">To:</span>
-                                ${transaction.ercEvents[key].toAddress ? $h`
-                                  <a href="${baseURI}u/?address=${transaction.ercEvents[key].toAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].toAddress)}</a>
-                                ` : $h`<span />`}
-  
-                              </div>
-
-                            ` : $h` `}
-
-
-                          </div>
-
-                        </div>
-
-
-
-                      </li>
-
-                    `)}
-
-                  </ul>
-
-                </td>
-
-
-              </tr>
-
-
-            
+              <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
             `)}
             </tbody>
     
@@ -141,18 +72,9 @@
         return `${baseURI + href}`
     } 
 
-    const getRowClass = (event) => {
-      if (event.isTransfer) return "event-transfer"
-      if (event.event == "MintEvent") return "event-transfer"
-      return "uncategorized-event"
-    }
-
-    const getIcon = (event) => {
-      if (event.event == "ApprovalForAll") return "asterisk_circle_fill"
-    }
 
     const load = async () => {
-      
+
       $f7.preloader.show()
 
       loading = true
@@ -160,8 +82,6 @@
       try  {
 
         transactionsViewModel = await transactionWebService.listFrom(display, startId)
-
-        console.log(transactionsViewModel)
       
       } catch(ex) { console.log(ex) }
       

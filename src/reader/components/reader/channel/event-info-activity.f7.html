@@ -4,70 +4,26 @@
     <div class="card-header">Activity</div>
     <div class="card-content card-content-padding data-table">
 
-      ${eventList?.length > 0 ? $h`
+      ${transactionsViewModel?.transactions?.length > 0 ? $h`
 
         <table class="event-table">
           <thead>
             <tr>
-              <th class="label-cell">Event</th>
-              <th class="image-col">Token</th>
-              <th class="token-col">Title</th>
-              <th>Date</th>
-              <th>From</th>
-              <th>To</th>
-              <th>Etherscan</th>
-  
+              <th class="label-cell">Transaction</th>
+              <th>Events</th>
             </tr>
           </thead>
   
           <tbody>
-  
-          ${eventList.map(evm => $h`
-            <tr class="${getRowClass(evm.ercEvent)}">
-              <td class="label-cell">
-                ${evm.ercEvent.event} ${evm.ercEvent.isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}              
-              </td>
-  
-              <td class="image-col">
-  
-                ${evm.rowItemViewModel ? $h`
-                  <a href="${baseURI}t/${evm.ercEvent.tokenId}" class="link">
-                    <img src="${imageLink(evm.rowItemViewModel)}" class="latest-img"/> 
-                  </a>
-                    ` : $h`<span />`}
-  
-              </td>
-  
-              <td class="token-col">
-                ${evm.rowItemViewModel?.title}
-              </td>
-  
-              <td>
-                <strong>${moment(evm.ercEvent.timestamp * 1000).fromNow()}</strong>
-              </td>
-  
-              <td>
-                ${evm.ercEvent.fromAddress ? $h`
-                  <a href="${baseURI}u/?address=${evm.ercEvent.fromAddress}">${walletService.truncateEthAddress(evm.ercEvent.fromAddress)}</a>
-                ` : $h`<span />`}
-              </td>
-              <td>
-                ${evm.ercEvent.toAddress ? $h`
-                  <a href="${baseURI}u/?address=${evm.ercEvent.toAddress}">${walletService.truncateEthAddress(evm.ercEvent.toAddress)}</a>
-                ` : $h`<span />`}
-              </td>
-              <td>
-                <a href="https://etherscan.io/tx/${evm.ercEvent.transactionHash}" class="link external">View</a>
-              </td>
-  
-            </tr>
-          
-          `)}
+    
+            ${transactionsViewModel.transactions.map(transaction => $h`
+              <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+            `)}
           </tbody>
   
         </table>
   
-        <div class="block margin-top">
+        <div class="block margin-top margin-bottom">
           <div class="row">
             <div class="col-50">
                 ${previousPageStartId ? $h`
@@ -105,7 +61,6 @@
     let walletService = globalThis.container.get("WalletService")
 
     let baseURI = globalThis.container.get('baseURI')
-    let moment = globalThis.moment 
 
     let display = parseInt(props.display)
     let startId = props.start
@@ -113,25 +68,15 @@
     let nextPageStartId
     let previousPageStartId
 
-    let eventList = []
+    let transactionsViewModel 
 
     let loading = true
-
-    const imageLink = (rowItemViewModel) => {
-      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
-    }
 
 
     const link = (href) => {
         return `${baseURI + href}`
     } 
 
-    const getRowClass = (event) => {
-      if (event.isTransfer) return "event-transfer"
-      if (event.event == "MintEvent") return "event-transfer"
-      return "uncategorized-event"
-    }
 
     const load = async () => {
       
@@ -141,18 +86,17 @@
 
       try  {
 
-        // eventList = await eventWebService.listFrom(display, startId)
+        transactionsViewModel = await transactionWebService.listFrom(display, startId)
         
-        // if (eventList.length == display) {
-        //   nextPageStartId = eventList[display-1].ercEvent.previousId
-        // }
+        if (transactionsViewModel.transactions.length == display) {
+          nextPageStartId = transactionsViewModel.transactions[display-1].previousId
+        }
 
-        // //If we have a startId we are on page 2+ so we need to set the previous start offset
-        // if (startId) {
-        //   let previousEventList = await eventWebService.listTo(display+1, startId)
-        //   previousPageStartId = previousEventList[display].ercEvent._id
-        // }
-
+        //If we have a startId we are on page 2+ so we need to set the previous start offset
+        if (startId) {
+          let previousTransactionList = await transactionWebService.listTo(display+1, startId)
+          previousPageStartId = previousTransactionList.transactions[display]._id
+        }
 
       } catch(ex) { console.log(ex) }
       

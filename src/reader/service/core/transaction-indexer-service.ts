@@ -3,18 +3,13 @@ import { inject, injectable } from "inversify";
 import { Block } from "../../dto/block.js";
 import { ContractState } from "../../dto/contract-state.js";
 import { ERCEvent } from "../../dto/erc-event.js";
-import { Image } from "../../dto/image.js";
-import { Item } from "../../dto/item.js";
 import { ProcessedTransaction } from "../../dto/processed-transaction.js";
-import { TokenOwnerPage } from "../../dto/token-owner-page.js";
 import { TokenOwner } from "../../dto/token-owner.js";
 import { Token } from "../../dto/token.js";
-import { Transaction } from "../../dto/transaction.js";
 import { BlockService } from "../block-service.js";
 
 import { ContractStateService } from "../contract-state-service.js";
 import { ERCEventService } from "../erc-event-service.js";
-import { ImageService } from "../image-service.js";
 import { ProcessedTransactionService } from "../processed-transaction-service.js";
 import { TokenOwnerPageService } from "../token-owner-page-service.js";
 import { TokenOwnerService } from "../token-owner-service.js";
@@ -186,6 +181,8 @@ class TransactionIndexerService {
     
                     const getTokenOwner = async (ownerAddress) => {
    
+                        if (!ownerAddress) return
+
                         if (!result.ownersToUpdate[ownerAddress]) {
                             let tokenOwner: TokenOwner = await this.tokenOwnerService.getOrCreate(ownerAddress)
                             result.ownersToUpdate[ownerAddress] = tokenOwner
@@ -194,105 +191,70 @@ class TransactionIndexerService {
                         return result.ownersToUpdate[ownerAddress]
                     }
 
+                    const getToken = async (tokenId) => {
+    
+                        if (!result.tokensToUpdate[ercEvent.tokenId]) {
+                            result.tokensToUpdate[ercEvent.tokenId] = await this.tokenService.getOrCreate(ercEvent.tokenId.toString())
+                        } 
+    
+                        return result.tokensToUpdate[ercEvent.tokenId]
+
+                    }
+
                     const getPreviousTransaction = async (previousTransactionId:string, currentTransactionId:string) => {
 
-                        let pt
+                        if (!previousTransactionId || previousTransactionId == currentTransactionId) return
 
-                        if (previousTransactionId && previousTransactionId != currentTransactionId) {
-    
-                            //Grab from memory if exists
-                            pt = result.processedTransactionsToUpdate[previousTransactionId]
-    
-                            //Look it up
-                            if (!pt) {
-                                pt = await this.processedTransactionService.get(previousTransactionId)
-                            }
+                        if (result.processedTransactionsToUpdate[previousTransactionId]) {
+                            return result.processedTransactionsToUpdate[previousTransactionId]
                         }
 
-                        return pt
+                        return this.processedTransactionService.get(previousTransactionId)
 
                     }
 
                     const updatePreviousNextByToken = (tokenId:number, previousT:ProcessedTransaction, currentT:ProcessedTransaction) => {
 
-                        //Point the previous one here
-                        if (previousT) {
-                           
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousT._id] = previousT
-    
-                            currentT.previousByTokenIds[tokenId] = previousT._id
-                            previousT.nextByTokenIds[tokenId] = currentT._id
-                        }
+                        //Make sure we update it.
+                        result.processedTransactionsToUpdate[previousT._id] = previousT
+
+                        currentT.previousByTokenIds[tokenId] = previousT._id
+                        previousT.nextByTokenIds[tokenId] = currentT._id
 
                     }
 
                     const updatePreviousNextByTransactionInitiator = (transactionUserId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction) => {
 
-                        //Point the previous one here
-                        if (previousT) {
-    
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousT._id] = previousT
-    
-                            currentT.previousByTransactionInitiatorId[transactionUserId] = previousT._id
-                            previousT.nextByTransactionInitiatorId[transactionUserId] = currentT._id
-                        }
+                        //Make sure we update it.
+                        result.processedTransactionsToUpdate[previousT._id] = previousT
+
+                        currentT.previousByTransactionInitiatorId[transactionUserId] = previousT._id
+                        previousT.nextByTransactionInitiatorId[transactionUserId] = currentT._id
 
                     }
 
                     const updatePreviousNextByTokenOwner = (tokenOwnerId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction) => {
 
-                        //Point the previous one here
-                        if (previousT) {
-    
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousT._id] = previousT
-    
-                            currentT.previousByTokenOwnerId[tokenOwnerId] = previousT._id
-                            previousT.nextByTokenOwnerId[tokenOwnerId] = currentT._id
-                        }
+                        //Make sure we update it.
+                        result.processedTransactionsToUpdate[previousT._id] = previousT
+
+                        currentT.previousByTokenOwnerId[tokenOwnerId] = previousT._id
+                        previousT.nextByTokenOwnerId[tokenOwnerId] = currentT._id
 
                     }
 
                     //Look up/create the from address
-                    if (currentTransaction.transaction.from?.length > 0) {
-                        transactionUser = await getTokenOwner(currentTransaction.transaction.from)
-                    }
-
+                    transactionUser = await getTokenOwner(currentTransaction.transaction.from)
 
                     if (ercEvent.tokenId) {
     
                         //Grab token info
-                        let token:Token
-    
-                        if (result.tokensToUpdate[ercEvent.tokenId]) {
-                            token = result.tokensToUpdate[ercEvent.tokenId]
-                        } else {
-                            
-                            try {
-                                token = await this.tokenService.get(ercEvent.tokenId.toString())
-                            } catch(ex) {}
-                            
-                            if (!token) {
-                                token = new Token()
-                                token.tokenId = ercEvent.tokenId
-                            }
-    
-                        }
-    
-                        result.tokensToUpdate[ercEvent.tokenId] = token
+                        let token:Token = await getToken(ercEvent.tokenId.toString())
     
     
                         //Look up/create the from address
-                        if (ercEvent.fromAddress?.length > 0) {
-                            fromOwner = await getTokenOwner(ercEvent.fromAddress)
-                        }
-    
-                        //Look up/create the to address
-                        if (ercEvent.toAddress?.length > 0) {
-                            toOwner = await getTokenOwner(ercEvent.toAddress)
-                        }
+                        fromOwner = await getTokenOwner(ercEvent.fromAddress)
+                        toOwner = await getTokenOwner(ercEvent.toAddress)
     
 
                         if (ercEvent.isTransfer) {
@@ -307,35 +269,63 @@ class TransactionIndexerService {
     
                         }
     
+                        // if (ercEvent.tokenId == 817) {
+                        //     console.log(token.latestTransactionId)
+                        // }
+
+
                         //Look for previousByTokenId
                         let previousTransactionByToken:ProcessedTransaction = await getPreviousTransaction(token.latestTransactionId, currentTransaction._id)
-                        updatePreviousNextByToken(ercEvent.tokenId, previousTransactionByToken, currentTransaction)
-    
+                        
+                        if (previousTransactionByToken) {
+                            updatePreviousNextByToken(ercEvent.tokenId, previousTransactionByToken, currentTransaction)
+                        }
+
+                        token.latestTransactionId = currentTransaction._id
+
+
+
                         //Update previous/next for transaction initiator
                         let previousTransactionByTransactionInitiator = await getPreviousTransaction(transactionUser.latestTransactionInitiatorId, currentTransaction._id)
-                        updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, currentTransaction)
+
+                        if (previousTransactionByTransactionInitiator) {
+                            updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, currentTransaction)
+                        }
+
+                        transactionUser.latestTransactionInitiatorId = currentTransaction._id
+
 
                         //Update previous/next for from/to users
                         if (fromOwner) {
                             let previousTransactionByFromOwner = await getPreviousTransaction(fromOwner.latestTransactionId, currentTransaction._id)
-                            updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, currentTransaction)
+
+                            if (previousTransactionByFromOwner) {
+                                updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, currentTransaction)
+                            }
 
                             fromOwner.latestTransactionId = currentTransaction._id
+
 
                         }
 
                         if (toOwner && toOwner._id != fromOwner._id) {
                             let previousTransactionByToOwner = await getPreviousTransaction(toOwner.latestTransactionId, currentTransaction._id)
-                            updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, currentTransaction)
+
+                            if (previousTransactionByToOwner) {
+                                updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, currentTransaction)
+                            }
 
                             toOwner.latestTransactionId = currentTransaction._id
+
                         }
 
-    
-                        token.latestErcEventId = ercEvent._id
-                        token.latestTransactionId = currentTransaction._id
-    
-                        transactionUser.latestTransactionInitiatorId = currentTransaction._id
+
+                        // if (ercEvent.tokenId == 817) {
+                        //     console.log(previousTransactionByToken?._id)
+                        //     console.log(currentTransaction._id)
+                        //     console.log(token.latestTransactionId)
+                        // }
+
 
                     }
     

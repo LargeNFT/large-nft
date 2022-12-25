@@ -8,7 +8,7 @@
 
   --scrollbar-width: calc(100vw - 100%);
 
-  --f7-table-selected-row-bg-color: #fffd9f;
+  /* --f7-table-selected-row-bg-color: #fffd9f; */
 
 }
 
@@ -876,6 +876,7 @@ html {
 
 .event-info .image img {
   width: 50px;
+  border: 1px solid #cccccc;
 }
 
 

@@ -63,10 +63,11 @@ import UserInfo from './components/reader/channel/user-info.f7.html'
 import UserInfoActivity from './components/reader/channel/user-info-activity.f7.html'
 
 import Leaderboard from './components/reader/channel/leaderboard.f7.html'
+import TransactionRow from './components/reader/channel/transaction-row.f7.html'
 
 import EventInfoHome from './components/reader/channel/event-info-home.f7.html'
 import EventInfoActivity from './components/reader/channel/event-info-activity.f7.html'
-import EventInfoUser from './components/reader/channel/event-info-user.f7.html'
+// import EventInfoUser from './components/reader/channel/event-info-user.f7.html'
 
 import SearchList from './components/reader/item/search-list.f7.html'
 import InfiniteScrollContent from './components/reader/item/infinite-scroll-content.f7.html'
@@ -181,7 +182,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
     
     Framework7.registerComponent("event-info-home", EventInfoHome)
     Framework7.registerComponent("event-info-activity", EventInfoActivity)
-    Framework7.registerComponent("event-info-user", EventInfoUser)
+    // Framework7.registerComponent("event-info-user", EventInfoUser)
 
     Framework7.registerComponent("token-event-info", TokenEventInfo)
     Framework7.registerComponent("user-info", UserInfo)
@@ -189,6 +190,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
     Framework7.registerComponent("leader-board", Leaderboard)
     Framework7.registerComponent("transaction-viewer", Transaction)
+    Framework7.registerComponent("transaction-row", TransactionRow)
 
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)

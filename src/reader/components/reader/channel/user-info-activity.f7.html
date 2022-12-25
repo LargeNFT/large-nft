@@ -61,7 +61,32 @@
     <div class="card">
       <div class="card-header">Activity</div>
       <div class="card-content card-content-padding data-table">
-        <event-info-user></event-info-user>       
+
+        ${transactionsViewModel?.transactions?.length > 0 ? $h`
+
+          <table class="event-table">
+            <thead>
+              <tr>
+                <th class="label-cell">Transaction</th>
+                <th>Events</th>
+              </tr>
+            </thead>
+    
+            <tbody>
+        
+              ${transactionsViewModel.transactions.map(transaction => $h`
+                <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+              `)}
+            </tbody>
+    
+          </table>
+    
+        ` : $h`
+          No activity.
+        `}
+    
+
+
       </div>
     </div>
     
@@ -92,15 +117,9 @@
     let tokenOwner
     let display = parseInt(props.display)
 
-    let eventList
+    let transactionsViewModel
 
     let loading = true
-
-
-    // const imageLink = (rowItemViewModel) => {
-    //   let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-    //   return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
-    // }
 
 
     const link = (href) => {
@@ -108,7 +127,7 @@
     } 
 
     const load = async () => {
-      
+
       $f7.preloader.show()
 
       loading = true
@@ -116,16 +135,9 @@
       try  {
           tokenOwner = await tokenOwnerService.get(address)
 
-          eventList = []
+          transactionsViewModel = await transactionWebService.listByAddressFrom(address)
 
-          for (let eventId of tokenOwner.ercEventIds) {
-            eventList.push(await eventWebService.get(eventId))
-          }
-
-          //Dispatch event with eventList
-          let activityStartChangedEvent = new CustomEvent("load-user-events")
-          activityStartChangedEvent.eventList = eventList 
-          document.dispatchEvent(activityStartChangedEvent)
+          console.log(transactionsViewModel)
 
       } catch(ex) { console.log(ex) }
       
@@ -139,25 +151,17 @@
     }
 
 
-
-    document.addEventListener('user-address-changed', async (e) => {
+    const listener = async (e) => {
       address = e.address
       await load()
-      // window.scrollTo({ top: 0, behavior: 'smooth' })
-    })
+    } 
+
+    console.log(111)
+    document.removeEventListener('user-activity-address-changed', listener)
+    document.addEventListener('user-activity-address-changed', listener)
 
 
 
-    // const getTemplate = (rowItemViewModel) => {
-                
-    //     let tokenLink = link('t/' + rowItemViewModel.tokenId)
-    //     let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-    //     let imageLink = link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
-    //     let title = rowItemViewModel.title
-
-    //     return `
-    //     `
-    // }
 
     return $render
   }

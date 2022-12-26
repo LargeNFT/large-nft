@@ -133,26 +133,16 @@ let sync = async () => {
       try {
         indexResult = await transactionIndexerService.index()
 
-
-        // console.log(`${Object.keys(indexResult.eventsToUpdate)?.length} events processed. Generating JSON.`)
-
         createDirectories()
 
-        // console.log(`${Object.keys(indexResult.eventsToUpdate)?.length} events to update. Writing files.`)
         console.log(`${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to update. Writing files.`)
         console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
         console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
 
 
 
-        //eventsToUpdate is not guaranteed to be sorted in any particular order.
-        // console.log(`Writing ${Object.keys(indexResult.eventsToUpdate)?.length} events to disk`)
-
+        //not guaranteed to be sorted in any particular order.
         if (Object.keys(indexResult.processedTransactionsToUpdate)?.length > 0) {
-
-          // for (let _id of Object.keys(indexResult.eventsToUpdate)) {
-          //   writeEventToFile(indexResult.eventsToUpdate[_id])
-          // }
 
           
           //Write transactions to file
@@ -175,11 +165,6 @@ let sync = async () => {
             fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
           }
 
-          //Save id of latest event overall
-
-          // fs.writeFileSync(`${config.publicPath}/sync/events/latest.json`, Buffer.from(JSON.stringify({
-          //   _id: mostRecent._id
-          // })))
 
           let mostRecent:Transaction = await processedTransactionService.getLatest()
 

@@ -349,6 +349,7 @@ class TransactionIndexerService {
 
                     //Update count before saving.
                     result.ownersToUpdate[owner].count = result.ownersToUpdate[owner].tokenIds?.length
+                    result.ownersToUpdate[owner].tokenIds.sort()
 
                     tokenOwners.push(result.ownersToUpdate[owner])
                 }

@@ -15,7 +15,6 @@ import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
 import { StaticPage } from "./dto/static-page.js"
 import { Container } from "inversify"
-// import { TransactionIndexerService } from "./service/core/transaction-indexer-service"
 import { SchemaService } from "./service/core/schema-service.js"
 
 import axios from "axios"
@@ -114,42 +113,6 @@ let startApp = async (container:Container, baseURI:string, version:string, hostn
     })
     
     app.init()
-
-
-    // let transactionIndexerService:TransactionIndexerService = await container.get("TransactionIndexerService")
-    // let walletService:WalletService = await container.get("WalletService")
-
-
-
-    // const INDEX_RATE = 30*1000 //Every 30 seconds
-
-
-    // //Start the transaction indexer
-    // async function runTransactionIndexer(){
-
-    //     if (!walletService.provider) {
-    //         await walletService.initProvider()
-    //     }
-
-    //     if (walletService.provider) {
-            
-    //         
-
-    //         let contract = await walletService.getContract("Channel")
-
-    //         if (!transactionIndexerService.contract) {
-    //             await transactionIndexerService.init(contract)
-    //         }
-
-    //         await transactionIndexerService.index()
-    //     }
-
-
-
-    //     setTimeout(runTransactionIndexer, INDEX_RATE) 
-    // }
-    
-    // runTransactionIndexer()
 
 
 }

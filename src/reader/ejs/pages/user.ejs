@@ -86,7 +86,7 @@
                 </nav-bar>
 
 
-                <div class="page-content">
+                <div class="page-content infinite-scroll-content" id="user-tokens-infinite-scroll">
 
                     <div class="row">
             
@@ -111,78 +111,60 @@
                                       </div> 
                                     </div>
                                 </div>
-                              
+
+
+
                                 <div class="block-title block-title-large">Account Details</div>
                                 <div class="block-header">${address}</div>
                             
                                 <div class="block">
                             
-                                <div class="user-info">
-                            
-                                    <div class="row">
-                                    <div class="col-50">Etherscan</div>
-                                    <div class="col-50">
-                                        <a href="https://etherscan.io/address/${address}" class="item-link external">${address ? walletService.truncateEthAddress(address) : ' '}</a>
-                                    </div>
-                                    </div>
-                            
-                                    ${tokenOwner?.ensName ? $h`
-                                    <div class="row">
-                                        <div class="col-50">ENS Name</div>
-                                        <div class="col-50">${tokenOwner.ensName}</div>
-                                    </div>  
-                                    ` : $h` `}
-                            
-                                    <div class="row">
-                                    <div class="col-50">Tokens Owned</div>
-                                    <div class="col-50"><strong>${tokenOwner?.count}</strong></div>
-                                    </div>
-                            
-                                </div>
-                            
-                                </div>
-                            
-                                <div class="block">
-                                <p class="segmented">
-                                    <a class="button button-outline button-active" href="#">Owned</a>
-                                    <a class="button button-outline" href="${baseURL}u/activity?address=${address}">Activity</a>
-                                </p>
-                                </div>
-                            
-                                <div class="card">
-                                <div class="card-header">Owned</div>
-                                <div class="card-content card-content-padding data-table">
-                                    
-                                    ${rowItemViewModels?.length > 0 ? $h`
-                                    <div class="list cards-list">
-                                        <ul class="item-flex">
-                            
-                                        ${rowItemViewModels.map( rowItemViewModel => $h`
-                                            <li class="flex-card">
-                                            <a href="${link('t/' + rowItemViewModel.tokenId)}" class="item-link">
-                                                <div class="card" >
-                                                    <div class="card-content">
-                                                        <div class="square">
-                                                            <img src="${imageLink(rowItemViewModel)}"/>
-                                                        </div>
-                                                    </div>
+                                    <div class="user-info">
                                 
-                                                    <div class="card-footer">
-                                                        ${rowItemViewModel.title}
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            </li>
-                                        `)}
-                            
-                                        </ul>
+                                        <div class="row">
+                                            <div class="col-50">Etherscan</div>
+                                            <div class="col-50">
+                                                <a href="https://etherscan.io/address/${address}" class="item-link external">${address ? walletService.truncateEthAddress(address) : ' '}</a>
+                                            </div>
+                                        </div>
+                                
+                                        ${tokenOwner?.ensName ? $h`
+                                            <div class="row">
+                                                <div class="col-50">ENS Name</div>
+                                                <div class="col-50">${tokenOwner?.ensName}</div>
+                                            </div>  
+                                        ` : $h` `}
+                                
+                                        <div class="row">
+                                            <div class="col-50">Tokens Owned</div>
+                                            <div class="col-50"><strong>${tokenOwner?.count ? tokenOwner.count : 0}</strong></div>
+                                        </div>
+                                
                                     </div>
-                                    ` : $h`
-                                        No tokens
-                                    `}
-                            
+                                
                                 </div>
+
+
+                                ${tokenOwner ? $h`
+                                
+                                    <div class="block">
+                                        <p class="segmented">
+                                            <a class="button button-outline button-active" href="#">Owned</a>
+                                            <a class="button button-outline" href="${baseURL}u/activity?address=${address}">Activity</a>
+                                        </p>
+                                    </div>
+                                
+                                ` : $h`
+                                    
+                                `}
+                              
+                                <div class="list cards-list virtual-list" id="user-tokens-list">
+                                    <ul class="item-flex"></ul>
                                 </div>
+                              
+                                <div class="preloader infinite-scroll-preloader"></div>
+
+
 
                             </div>
 
@@ -219,14 +201,26 @@
             let tokenOwnerService = globalThis.container.get("TokenOwnerService")
             let itemWebService = globalThis.container.get("ItemWebService")
             let walletService = globalThis.container.get("WalletService")
-
+            let uiService = globalThis.container.get("UiService")
 
             let baseURL = '<%= baseURL %>'
 
             let address
             let tokenOwner
 
-            let rowItemViewModels
+            let virtualList
+
+            let PER_PAGE = 35
+
+            let hasMoreItems = true
+            let loadingInProgress = false
+
+            let tokenIdChunks
+            let pagesLoaded = 0
+
+            let firstPageItems = []
+
+
 
             const link = (href) => {
               return baseURL + href
@@ -237,7 +231,13 @@
                 return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
             }
 
-
+            const chunk = (arr, size) => {
+                const chunks = []
+                for (let i = 0; i < arr.length; i += size) {
+                    chunks.push(arr.slice(i, i + size))
+                }
+                return chunks
+            }
 
             const loadUser = async () => {
                 
@@ -246,35 +246,159 @@
                 try  {
                     tokenOwner = await tokenOwnerService.get(address)
 
-                    rowItemViewModels = await itemWebService.getRowItemViewModelsByTokenIds(tokenOwner.tokenIds)
+                    if (tokenOwner) {
+
+                        tokenIdChunks = chunk(tokenOwner.tokenIds, PER_PAGE)
+
+                        if (tokenIdChunks?.length > 0) {
+                            firstPageItems = await itemWebService.getRowItemViewModelsByTokenIds(tokenIdChunks[pagesLoaded])
+                            pagesLoaded++
+                        } 
+                    }
+
+                    createVirtualList()
+
                     
-                } catch(ex) { console.log(ex) }
+                } catch(ex) { 
+                    console.log(ex) 
+                }
                 
-                $('.hidden-on-load').removeClass('hidden-on-load')
-
-
                 loading = false
 
                 await $update()
 
             }
 
+            const createVirtualList = () => {
 
+                virtualList = $f7.virtualList.create({
+                    el: '#user-tokens-list',
+                    createUl: false,
+                    renderItem(item) {
+                        return getTemplate(item)
+                    },
+                    height: 287,
+                    items: firstPageItems,                    
+                    cols: getWidth() >= 1024 ? 5 : 2,
+                    emptyTemplate: `
+                        <li class="item-content">
+                            <div class="item-inner">
+                                No results found.
+                            </div>
+                        </li>
+                        `
+                })
+
+
+                if (virtualList.items?.length < tokenOwner.tokenIds?.length) {
+                    hasMoreItems = true
+                    document.getElementById("user-tokens-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
+                } else {
+                    hasMoreItems = false
+                    $('.infinite-scroll-preloader').hide()
+                }
+
+            }
+
+            const resizeListener = (e) => {
+                const viewPortWidth = getWidth()
+
+                virtualList.params.cols = viewPortWidth >= 1024 ? 5 : 2
+                virtualList.update()
+
+                console.log("Resized...")
+
+            }
+
+            const getWidth = () => {
+                return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            }
+
+            const getTemplate = (rowItemViewModel) => {
+                
+                let tokenLink = link('t/' + rowItemViewModel.tokenId)
+                let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+                let imageLink = link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+                let title = rowItemViewModel.title
+
+                return `<li class="flex-card">
+                            <a href="${tokenLink}" class="item-link">
+                                <div class="card" >
+                                    <div class="card-content">
+                                        <div class="square">
+                                            <img src="${imageLink}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        ${title}
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                `
+            }
+
+            async function infiniteScroll(e) {
+
+                // Exit, if loading in progress
+                if (loadingInProgress || !hasMoreItems) return
+
+                console.log(`Infinite scrolling...`)
+
+                // Set loading flag
+                loadingInProgress = true
+                $('.infinite-scroll-preloader').show()
+
+
+                try {
+                    
+                    let items = await itemWebService.getRowItemViewModelsByTokenIds(tokenIdChunks[pagesLoaded])
+                    pagesLoaded++
+
+                    virtualList.appendItems(items)
+
+                    if (virtualList.items?.length == tokenOwner.tokenIds?.length) {
+                        hasMoreItems = false
+                    }
+
+                } catch (ex) {
+                    console.log(ex)
+                }
+
+                $f7.preloader.hide()
+                $('.infinite-scroll-preloader').hide()
+
+
+                loadingInProgress = false
+
+
+            }
+
+    
 
 
             $on('pageInit', async () => {
 
+                window.addEventListener('resize', resizeListener)
+
                 address = $f7.views.main.router.currentRoute?.query?.address
+
+                $('.infinite-scroll-preloader').show()
 
                 await loadUser()
 
+                $('.hidden-on-load').removeClass('hidden-on-load')
                 $('.hide-on-pageinit').hide()
 
                 await $update()
 
             })
 
-
+            $on('pageBeforeOut', async () => {
+                window.removeEventListener('resize', resizeListener)
+                $f7.infiniteScroll.destroy('#user-tokens-infinite-scroll')
+            })
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`u`) %>")

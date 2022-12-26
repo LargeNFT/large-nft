@@ -145,6 +145,7 @@ class TransactionIndexerService {
     
                 for (let event of events) {
                    
+
                     console.time(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`)
     
                     //Grab block data
@@ -268,10 +269,6 @@ class TransactionIndexerService {
                             toOwner.tokenIds.push(ercEvent.tokenId)
     
                         }
-    
-                        // if (ercEvent.tokenId == 817) {
-                        //     console.log(token.latestTransactionId)
-                        // }
 
 
                         //Look for previousByTokenId
@@ -319,24 +316,11 @@ class TransactionIndexerService {
 
                         }
 
-
-                        // if (ercEvent.tokenId == 817) {
-                        //     console.log(previousTransactionByToken?._id)
-                        //     console.log(currentTransaction._id)
-                        //     console.log(token.latestTransactionId)
-                        // }
-
-
                     }
     
-    
-                    //See if it already exists. If so we need the _rev
-                    // ercEvent._rev = await this.ercEventService.getExistingRev(ercEvent._id)
     
                     //Add event to transaction before saving
-                    if (currentTransaction.ercEvents.filter(e => e._id == ercEvent._id)?.length == 0) {
-                        currentTransaction.ercEvents.push(ercEvent)
-                    }
+                    currentTransaction.ercEvents.push(ercEvent)
     
     
                     //Set previous/next if we already have a previous transaction
@@ -344,8 +328,6 @@ class TransactionIndexerService {
                         currentTransaction.previousId = previousTransaction._id
                         previousTransaction.nextId = currentTransaction._id
                     }
-    
-    
     
     
                     console.timeEnd(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`)

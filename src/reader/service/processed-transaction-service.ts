@@ -244,15 +244,11 @@ class ProcessedTransactionService {
 
     async listByAddressFrom(address:string, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
 
-        console.log(startId)
-
         let results:ProcessedTransaction[] = []
 
         while (results?.length < limit && startId) {
 
             let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
-
-            console.log(processedTransaction)
 
             results.push(processedTransaction)
 

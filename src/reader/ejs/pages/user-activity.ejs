@@ -1,28 +1,26 @@
 <% 
+    let channelViewModel=it.baseViewModel.channelViewModel 
+    let hostname=it.baseViewModel.hostname 
+    let baseURL=it.baseViewModel.baseURL 
+    let marketplaces=it.baseViewModel.marketplaces 
+    let externalLinks=it.baseViewModel.externalLinks 
+    let routablePages=it.baseViewModel.routablePages 
+    let attributeReport=it.baseViewModel.attributeReport 
+    let base64Version=it.baseViewModel.base64Version 
+    let channelId=it.baseViewModel.channelId 
+    let showMintPage=it.baseViewModel.showMintPage 
 
-    let channelViewModel = it.baseViewModel.channelViewModel 
-    let hostname = it.baseViewModel.hostname
-    let baseURL = it.baseViewModel.baseURL
-    let marketplaces = it.baseViewModel.marketplaces
-    let externalLinks = it.baseViewModel.externalLinks
-    let routablePages = it.baseViewModel.routablePages
-    let attributeReport = it.baseViewModel.attributeReport
-    let base64Version = it.baseViewModel.base64Version
-    let channelId = it.baseViewModel.channelId
-    let showMintPage = it.baseViewModel.showMintPage
-    let showActivityPage = it.baseViewModel.showActivityPage
-
-    const link = (href) => {
+    let showActivityPage=it.baseViewModel.showActivityPage 
+    
+    const link=(href)=> {
         return `${baseURL + href}`
-    }    
+    }
 
     let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
-
-
     const absoluteLink = (href) => {
         return `${hostname + baseURL + href}`
-    }   
+    }
 
     const escapeExcerpt = (excerpt) => {
         excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
@@ -36,16 +34,16 @@
 
 <head>
     <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
+        html {
+            visibility: hidden;
+            opacity: 0;
+        }
     </style>
 
     <!-- Required meta tags-->
     <meta charset="utf-8">
     <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- Color theme for statusbar -->
     <title>
@@ -55,17 +53,19 @@
     <meta property="og:title" content="User Activity for <%=channelViewModel.channel.title%>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= link(`u`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="og:image"
+        content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
     <meta property="og:description" content="User Activity for <%=channelViewModel.channel.title%>" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<%= link(`u`) %>" />
     <meta property="twitter:title" content="User Activity for <%=channelViewModel.channel.title%>" />
     <meta property="twitter:description" content="User Activity for <%=channelViewModel.channel.title%>" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <meta property="twitter:image"
+        content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%~ it.baseViewModel.headContents %>
-    
+
 </head>
 
 <body>
@@ -76,28 +76,152 @@
 
             <div class="page" data-name="user-activity">
 
-                <nav-bar
-                    logo="<%=logo%>"
-                    title="User"
-                    active="User"
-                    show_mint_page="<%=showMintPage%>"
-                    show_activity_page="<%=showActivityPage%>"
-                >
+                <nav-bar logo="<%=logo%>" title="User" active="User" show_mint_page="<%=showMintPage%>"
+                    show_activity_page="<%=showActivityPage%>">
                 </nav-bar>
 
 
                 <div class="page-content">
 
                     <div class="row">
-            
+
                         <div class="fixed-width-content center">
-                            <user-info-activity></user-info-activity> 
+
+                            <div class="hidden-on-load">
+
+                                <div class="block block-strong inset col-100 no-margin-bottom">
+                                    <div class="breadcrumbs ">
+                                        <div class="breadcrumbs-item">
+                                            <a href="<%= baseURL %>index.html" class="link">
+                                                Home
+                                            </a>
+                                        </div>
+                                        <div class="breadcrumbs-separator"></div>
+                                        <div class="breadcrumbs-item">
+                                            <a href="<%= baseURL %>leaderboard">Leaderboard</a>
+                                        </div>
+                                        <div class="breadcrumbs-separator"></div>
+                                        <div class="breadcrumbs-item breadcrumbs-item-active">
+                                            <a href="<%= baseURL %>u/?address=${address}">${address}</a>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="block-title block-title-large">Account Details</div>
+                                <div class="block-header">
+                                    ${address}
+                                </div>
+    
+                                <div class="block">
+    
+                                    <div class="user-info">
+    
+                                        <div class="row">
+                                            <div class="col-50">Etherscan</div>
+                                            <div class="col-50">
+                                                
+                                                <a href="https://etherscan.io/address/${address}"
+                                                    class="item-link external">${address ?
+                                                    walletService.truncateEthAddress(address) : ' '}</a>
+                                            </div>
+                                        </div>
+    
+                                        ${tokenOwner?.ensName ? $h`
+                                            <div class="row">
+                                                <div class="col-50">ENS Name</div>
+                                                <div class="col-50">${tokenOwner.ensName}</div>
+                                            </div>
+                                        ` : $h` `}
+    
+                                        <div class="row">
+                                            <div class="col-50">Tokens Owned</div>
+                                            <div class="col-50"><strong>${tokenOwner?.count}</strong></div>
+                                        </div>
+    
+                                    </div>
+    
+                                </div>
+    
+    
+                                <div class="block">
+                                    <p class="segmented">
+                                        <a class="button button-outline"
+                                            href="<%= baseURL %>u/?address=${address}">Owned</a>
+                                        <a class="button button-outline button-active" href="#">Activity</a>
+                                    </p>
+                                </div>
+    
+                                ${transactionsViewModel?.transactions?.length > 0 ? $h`
+                    
+                                    <div class="card">
+                                        <div class="card-header">Activity</div>
+                                        <div class="card-content card-content-padding data-table">
+                                    
+                                            <table class="event-table">
+                                            <thead>
+                                                <tr>
+                                                <th class="label-cell">Transaction</th>
+                                                <th>Events</th>
+                                                </tr>
+                                            </thead>
+                                    
+                                            <tbody>
+                                    
+                                            ${transactionsViewModel.transactions.map(transaction => $h`
+                                                <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                                            `)}
+                                            </tbody>
+                                    
+                                            </table>
+                                    
+                                            <div class="block margin-top margin-bottom">
+                                            <div class="row">
+                                                <div class="col-50">
+                                                    ${previousPageStartId ? $h`
+                                                    <a href="${baseURL}u/activity?startId=${previousPageStartId}&address=${address}" class="button button-outline color-gray">Previous</a>
+                                                    ` : $h` `}
+                                                </div>
+                                                <div class="col-50">
+                                                    ${nextPageStartId ? $h`
+                                                    <a href="${baseURL}u/activity?startId=${nextPageStartId}&address=${address}" class="button button-fill">Next</a>
+                                                    ` : $h` `}
+                                                </div>
+                                            </div>
+                                    
+                                            </div>
+    
+    
+                                        </div>
+                                    </div>
+                            
+                                ` : $h`<span />`}
+
+                            </div>
+
+                            
+                            <div class="hide-on-pageinit">
+
+                                <div class="card skeleton-text">
+                                    <div class="card-header">Activity</div>
+                                    <div class="card-content card-content-padding data-table">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
                         </div>
+
+
+
                     </div>
-            
+
                 </div>
-              
-            
+
+
             </div>
 
         </div>
@@ -108,41 +232,88 @@
 
     <script type="module" id="page-init-scripts">
 
+
+
+
         const init = (props, { $, $f7, $h, $on, $update }) => {
+
+            let transactionWebService = globalThis.container.get("TransactionWebService")
+            let tokenOwnerService = globalThis.container.get("TokenOwnerService")
+            let walletService = globalThis.container.get("WalletService")
 
             let baseURL = '<%= baseURL %>'
 
+            let tokenOwner
+            let transactionsViewModel
+
+            let display = 25
+            let address 
+            let startId
+
+            let nextPageStartId
+            let previousPageStartId
+
+            const loadActivity = async () => {
+
+                loading = true
+
+                try  {
+
+                    nextPageStartId = undefined
+                    previousPageStartId = undefined
+
+                    if ($f7.views.main.router.currentRoute?.query?.address) {
+                        address = $f7.views.main.router.currentRoute?.query?.address
+                    }
+
+                    if ($f7.views.main.router.currentRoute?.query?.startId) {
+                        startId = $f7.views.main.router.currentRoute?.query?.startId
+                    }
+
+                    tokenOwner = await tokenOwnerService.get(address)
+
+                    transactionsViewModel = await transactionWebService.listByAddressFrom(address, 25, startId)
+
+                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.previousByTokenOwnerId[address]) {
+                        nextPageStartId = transactionsViewModel.transactions[display-1].previousByTokenOwnerId[address]
+                    }
+
+                    //If we have a startId we are on page 2+ so we need to set the previous start offset
+                    if (startId) {
+                        let previousTransactionList = await transactionWebService.listByAddressTo(address, display+1, startId)
+
+                        if (previousTransactionList.transactions[display]) {
+                            previousPageStartId = previousTransactionList.transactions[display]._id
+                        }
+
+                    }
+
+
+                } catch(ex) { console.log(ex) }
+
+                $('.hidden-on-load').removeClass('hidden-on-load')
+
+
+                loading = false
+
+                await $update()
+
+
+            }
+
+
+
+
             $on('pageInit', async () => {
 
-                console.log('pageinit')
+                await loadActivity()
 
-                let activityStartChangedEvent = new CustomEvent('user-activity-address-changed')
-                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
-
-                document.dispatchEvent(activityStartChangedEvent)
+                $('.hide-on-pageinit').hide()
 
                 await $update()
 
             })
 
-            $on('pageReinit', async () => {
-
-                console.log('pagereinit')
-
-
-                let activityStartChangedEvent = new CustomEvent('user-activity-address-changed')
-                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
-
-                document.dispatchEvent(activityStartChangedEvent)
-
-                await $update()
-
-            })
-
-
-            $on('pageBeforeOut', async () => {
-
-            })
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`u`) %>")
@@ -152,7 +323,7 @@
             document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`u`) %>")
             document.querySelector('meta[property="twitter:title"]').setAttribute("content", "User Activity <%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>" )
+            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
 
             document.querySelector('title').innerHTML = "User Activity <%=channelViewModel.channel.title%>"
 
@@ -174,7 +345,7 @@
 
         let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
 
-        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )
+        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId)
 
 
 

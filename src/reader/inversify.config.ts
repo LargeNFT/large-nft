@@ -58,15 +58,15 @@ import AttributeFilter from './components/reader/channel/attribute-filter.f7.htm
 import ExploreTotalInfo from './components/reader/channel/explore-total-info.f7.html'
 
 import MintInfo from './components/reader/channel/mint-info.f7.html'
-import TokenEventInfo from './components/reader/channel/token-event-info.f7.html'
-import UserInfo from './components/reader/channel/user-info.f7.html'
-import UserInfoActivity from './components/reader/channel/user-info-activity.f7.html'
+// import TokenEventInfo from './components/reader/channel/token-event-info.f7.html'
+// import UserInfo from './components/reader/channel/user-info.f7.html'
+// import UserInfoActivity from './components/reader/channel/user-info-activity.f7.html'
 
-import Leaderboard from './components/reader/channel/leaderboard.f7.html'
+// import Leaderboard from './components/reader/channel/leaderboard.f7.html'
 import TransactionRow from './components/reader/channel/transaction-row.f7.html'
 
-import EventInfoHome from './components/reader/channel/event-info-home.f7.html'
-import EventInfoActivity from './components/reader/channel/event-info-activity.f7.html'
+// import EventInfoHome from './components/reader/channel/event-info-home.f7.html'
+// import EventInfoActivity from './components/reader/channel/event-info-activity.f7.html'
 // import EventInfoUser from './components/reader/channel/event-info-user.f7.html'
 
 import SearchList from './components/reader/item/search-list.f7.html'
@@ -180,15 +180,15 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
     Framework7.registerComponent("mint-info", MintInfo)
     
-    Framework7.registerComponent("event-info-home", EventInfoHome)
-    Framework7.registerComponent("event-info-activity", EventInfoActivity)
+    // Framework7.registerComponent("event-info-home", EventInfoHome)
+    // Framework7.registerComponent("event-info-activity", EventInfoActivity)
     // Framework7.registerComponent("event-info-user", EventInfoUser)
 
-    Framework7.registerComponent("token-event-info", TokenEventInfo)
-    Framework7.registerComponent("user-info", UserInfo)
-    Framework7.registerComponent("user-info-activity", UserInfoActivity)
+    // Framework7.registerComponent("token-event-info", TokenEventInfo)
+    // Framework7.registerComponent("user-info", UserInfo)
+    // Framework7.registerComponent("user-info-activity", UserInfoActivity)
 
-    Framework7.registerComponent("leader-board", Leaderboard)
+    // Framework7.registerComponent("leader-board", Leaderboard)
     Framework7.registerComponent("transaction-viewer", Transaction)
     Framework7.registerComponent("transaction-row", TransactionRow)
 

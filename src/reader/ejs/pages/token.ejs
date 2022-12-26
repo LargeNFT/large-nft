@@ -146,20 +146,235 @@
 
                             <div class="swiper-slide">
                                 
-                                <%~ includeFile(`${baseDir}/node_modules/large-nft/src/reader/ejs/pages/_token_display.ejs`, {
-                                    channelViewModel: channelViewModel,
-                                    hostname: hostname,
-                                    baseURL: baseURL,
-                                    baseDir: baseDir,
-                                    marketplaces: marketplaces,
-                                    externalLinks: externalLinks,
-                                    routablePages: routablePages,
-                                    attributeReport: attributeReport,
-                                    base64Version: base64Version,
-                                    channelId: channelId,
-                                    showMintPage: showMintPage,
-                                    itemViewModel: itemViewModel
-                                }) %>
+                                <div class="block block-strong inset col-100 no-margin-bottom">
+                                    <div class="breadcrumbs ">
+                                      <div class="breadcrumbs-item">
+                                        <a href="<%=baseURL%>index.html" class="link">
+                                          Home
+                                        </a>
+                                      </div>    
+                                      <div class="breadcrumbs-separator"></div>
+                                      <div class="breadcrumbs-item">
+                                        <a href="<%=baseURL%>explore.html" class="link">
+                                          Explore
+                                        </a>
+                                      </div>     
+                                      <div class="breadcrumbs-separator"></div>
+                                      <div class="breadcrumbs-item breadcrumbs-item-active">
+                                        <%= itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}` %> 
+                                      </div> 
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                
+                                    <div class="col-100 large-75">
+                                
+                                        <div class="block animation-card col-100">
+                                
+                                            <div class="animation-content <%= itemViewModel.item.coverImageAsAnimation ? 'animation-image' : ''%>">
+                                
+                                                <% if (itemViewModel.item.coverImageAsAnimation) { %>
+                                                    <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>"  />
+                                                <% } else { %>
+                                                    <%~itemViewModel.animationContentHTML %>
+                                                <% } %>
+                                
+                                            </div>
+                                
+                                
+                                            <div class="row">
+                                
+                                                <a class="button button-outline back-token-button margin-bottom col-50 color-gray" href="#" >
+                                                    <i class="icon f7-icons color-blue">arrow_left</i>
+                                                </a>
+                                
+                                
+                                                <% if (itemViewModel.item.next) { %>
+                                                    <a class="button button-fill continue-button margin-bottom col-50" href="#">
+                                                        Continue <i class="f7-icons">arrow_right</i>
+                                                    </a>
+                                                <% } %>
+                                            </div>
+                                
+                                
+                                        </div> 
+                                
+                                
+                                        <div class="hidden-on-load">
+
+                                            ${transactionsViewModel?.transactions?.length > 0 ? $h`
+                          
+                                              <div class="card">
+                                                <div class="card-header">Activity</div>
+                                                <div class="card-content card-content-padding data-table">
+                                          
+                                                  <table class="event-table">
+                                                    <thead>
+                                                      <tr>
+                                                        <th class="label-cell">Transaction</th>
+                                                        <th>Events</th>
+                                                      </tr>
+                                                    </thead>
+                                            
+                                                    <tbody>
+                                            
+                                                    ${transactionsViewModel.transactions.map(transaction => $h`
+                                                      <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                                                    `)}
+                                                    </tbody>
+                                            
+                                                  </table>
+            
+                                                </div>
+            
+                                              </div>
+                                        
+                                            ` : $h`<span />`}
+                          
+                                        </div>
+            
+                                        <div class="hide-on-pageinit">
+            
+                                            <div class="card skeleton-text">
+                                                <div class="card-header">Activity</div>
+                                                <div class="card-content card-content-padding data-table">
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                                    lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                                </div>
+            
+                                              </div>
+            
+                                        </div>
+                                
+                                
+                                
+                                        <% 
+                                        if (marketplaces?.length > 0) {
+                                        %>
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    View on Marketplaces
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="list simple-list">
+                                                        <ul>
+                                                        
+                                                        <% 
+                                                            for (let marketplace of marketplaces) { 
+                                                        %>  
+                                                            <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
+                                                        <%
+                                                            }
+                                                        %>
+                                    
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <%
+                                            }
+                                        %>
+                                
+                                
+                                    </div>
+                                
+                                    <div class="col-100 large-25 token-sidebar">
+                                        
+                                        <div class="card" >
+                                            <form class="card-content card-content-padding" id="token_navigator_form">
+                                              <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="<%= itemViewModel?.item?.tokenId %>" min="0"  />
+                                              <span class="paging-label">Enter Token ID</span>
+                                              <button class="goto-button button button-small button-fill">Go</button>
+                                            </form>
+                                        </div>
+                                
+                                        <% if (itemViewModel.item.previous || itemViewModel.item.next) { %>
+                                
+                                            <div class="card large-only">
+                                              <div class="card-content card-content-padding">
+                                                <div class="segmented">
+                                
+                                                  <% if (itemViewModel.item.previous) { %>
+                                                    <a class="button button-outline" href="<%= !itemViewModel.item.previous ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>" data-transition="none">
+                                                        <i class="icon f7-icons">arrow_left</i>
+                                                      </a>
+                                                  <% } else { %>
+                                                    <a class="button button-outline" href="#"></a>
+                                                  <% } %>
+                                
+                                
+                                                  <% if (itemViewModel.item.next) { %>
+                                                    <a class="button button-outline" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="none">
+                                                        <i class="f7-icons">arrow_right</i>
+                                                      </a>
+                                                  <% } else { %>
+                                                    <a class="button button-outline" href="#"></a>
+                                                  <% } %>
+                                
+                                                </div>
+                                              </div>
+                                            </div>
+                                
+                                        <% } %>
+                                
+                                
+                                
+                                
+                                        <% if (itemViewModel.channel.contractAddress) { %>
+                                            <nft-info id="<%= itemViewModel.item.tokenId %>" 
+                                                      baseurl="<%= baseURL %>" 
+                                                      contract="<%= itemViewModel.channel.contractAddress %>">
+                                            </nft-info>
+                                        <% } %>
+                                
+                                
+                                
+                                
+                                
+                                        <div class="card">
+                                            
+                                            <div class="card-header">
+                                                Attributes
+                                            </div>
+                                
+                                            <div class="card-content data-table">
+                                
+                                                <% itemViewModel.attributeSelections?.map( (as)=> { %>
+                                
+                                                    <% if (as.attributeTotal?.categoryPercent) { %>
+                                                        <div class="button-outline attribute-value">
+                                                            <div class="trait-type"><%= as.traitType %></div>
+                                                            <div class="value"><%= as.value %></div>
+                                                            <div class="category-percent"><%= as.attributeTotal?.categoryPercent  %> have this trait</div>
+                                                        </div>                                                
+                                                    <% } %>
+                                
+                                
+                                                <% }) %>
+                                
+                                            </div>
+                                
+                                        </div>
+                                
+                                
+                                
+                                
+                                
+                                        <% if (!itemViewModel.item.coverImageAsAnimation) { %>
+                                            <div class="card">
+                                                <div class="card-header">Cover Image</div>
+                                                <div class="card-content">
+                                                    <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>" class="cover-image-preview" />
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                
+                                
+                                
+                                    </div>
+                                
+                                </div>
 
                             </div>
 
@@ -184,6 +399,8 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
+            let transactionWebService = globalThis.container.get("TransactionWebService")
+
             let uiService = globalThis.container.get("UiService")
 
             let readerSettingsService = globalThis.container.get("ReaderSettingsService")
@@ -193,6 +410,8 @@
             let hasNext = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.next?.tokenId != undefined) %>`)
 
             let swiper
+
+            let transactionsViewModel
 
             const initSwiper = () => {
 
@@ -240,12 +459,36 @@
 
             }
 
+            const loadActivity = async () => {
+
+                loading = true
+
+                try  {
+
+                transactionsViewModel = await transactionWebService.listByTokenFrom("<%= itemViewModel.item.tokenId  %>", 1000)
+
+                } catch(ex) { console.log(ex) }
+
+                $('.hidden-on-load').removeClass('hidden-on-load')
+
+                loading = false
+
+                await $update()
+
+
+            }
+
+
             $on('pageInit', async () => {
 
                 await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
                 $('#token_navigator_form').on('submit', goTokenFormSubmit)
 
                 initSwiper()
+
+                await loadActivity()
+
+                $('.hide-on-pageinit').hide()
 
             })          
 

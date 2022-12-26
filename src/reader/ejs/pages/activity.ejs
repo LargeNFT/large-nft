@@ -111,8 +111,68 @@
                                 </div>
                             </div>
 
-                            <event-info-activity type="all" display="25" show_nav="true"></event-info-activity>         
+                            <div class="hidden-on-load">
 
+                                ${transactionsViewModel?.transactions?.length > 0 ? $h`
+              
+                                  <div class="card">
+                                    <div class="card-header">Activity</div>
+                                    <div class="card-content card-content-padding data-table">
+                              
+                                      <table class="event-table">
+                                        <thead>
+                                          <tr>
+                                            <th class="label-cell">Transaction</th>
+                                            <th>Events</th>
+                                          </tr>
+                                        </thead>
+                                
+                                        <tbody>
+                                
+                                        ${transactionsViewModel.transactions.map(transaction => $h`
+                                          <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                                        `)}
+                                        </tbody>
+                                
+                                      </table>
+                              
+                                      <div class="block margin-top margin-bottom">
+                                        <div class="row">
+                                          <div class="col-50">
+                                              ${previousPageStartId ? $h`
+                                                <a href="${baseURL}activity/?startId=${previousPageStartId}" class="button button-outline color-gray">Previous</a>
+                                              ` : $h` `}
+                                          </div>
+                                          <div class="col-50">
+                                              ${nextPageStartId ? $h`
+                                                <a href="${baseURL}activity/?startId=${nextPageStartId}" class="button button-fill">Next</a>
+                                              ` : $h` `}
+                                          </div>
+                                        </div>
+                                
+                                      </div>
+
+
+                                    </div>
+
+                                  </div>
+                            
+                                ` : $h`<span />`}
+              
+                            </div>
+
+                            <div class="hide-on-pageinit">
+
+                                <div class="card skeleton-text">
+                                    <div class="card-header">Activity</div>
+                                    <div class="card-content card-content-padding data-table">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                    </div>
+
+                                  </div>
+
+                            </div>
 
 
   
@@ -134,16 +194,68 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+            let transactionWebService = globalThis.container.get("TransactionWebService")
 
             let baseURL = '<%= baseURL %>'
+
+            let startId 
+            let display = 25
+
+            let nextPageStartId
+            let previousPageStartId
+
+            let transactionsViewModel 
+
+            const link = (href) => {
+              return baseURL + href
+            }   
+
+
+            const loadActivity = async () => {
+                
+                loading = true
+
+                try  {
+
+                    nextPageStartId = undefined
+                    previousPageStartId = undefined
+
+                    startId = $f7.views.main.router.currentRoute?.query?.startId
+
+                    transactionsViewModel = await transactionWebService.listFrom(display, startId)
+                    
+                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.previousId) {
+                        nextPageStartId = transactionsViewModel.transactions[display-1].previousId
+                    }
+
+                    //If we have a startId we are on page 2+ so we need to set the previous start offset
+                    if (startId) {
+                        let previousTransactionList = await transactionWebService.listTo(display+1, startId)
+
+                        if (previousTransactionList.transactions[display]) {
+                          previousPageStartId = previousTransactionList.transactions[display]._id
+                        }
+
+                    }
+
+                } catch(ex) { console.log(ex) }
+                
+                $('.hidden-on-load').removeClass('hidden-on-load')
+
+                loading = false
+
+                await $update()
+
+
+
+            }
 
 
             $on('pageInit', async () => {
 
-                let activityStartChangedEvent = new CustomEvent('load-activities-events')
-                activityStartChangedEvent.startId = $f7.views.main.router.currentRoute?.query?.offset
+                await loadActivity()
 
-                document.dispatchEvent(activityStartChangedEvent)
+                $('.hide-on-pageinit').hide()
 
                 await $update()
 

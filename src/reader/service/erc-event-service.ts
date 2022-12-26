@@ -14,14 +14,14 @@ class ERCEventService {
     
         let ercEvent = new ERCEvent()
     
-        // ercEvent.blockNumber = event.blockNumber
-        // ercEvent.blockHash = event.blockHash
-        // ercEvent.transactionIndex = event.transactionIndex
+        ercEvent.blockNumber = event.blockNumber
+        ercEvent.blockHash = event.blockHash
+        ercEvent.transactionIndex = event.transactionIndex
         ercEvent.removed = event.removed
         ercEvent.address = event.address
         ercEvent.data = event.data
         ercEvent.topics = event.topics
-        // ercEvent.transactionHash = event.transactionHash
+        ercEvent.transactionHash = event.transactionHash
         ercEvent.logIndex = event.logIndex
         //@ts-ignore
         ercEvent.event = event.event
@@ -52,8 +52,7 @@ class ERCEventService {
         }
 
     
-        // ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`
-
+        ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`
 
         return ercEvent
     }

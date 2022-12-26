@@ -91,7 +91,104 @@
                     <div class="row">
             
                         <div class="fixed-width-content center">
-                            <leader-board></leader-board>  
+                            
+                            <div class="hidden-on-load">
+                                <div class="block block-strong inset col-100 no-margin-bottom">
+                                    <div class="breadcrumbs ">
+                                      <div class="breadcrumbs-item">
+                                        <a href="<%= baseURL %>index.html" class="link">
+                                          Home
+                                        </a>
+                                      </div>       
+                                      <div class="breadcrumbs-separator"></div>
+                                      <div class="breadcrumbs-item breadcrumbs-item-active">
+                                        <a href="<%= baseURL %>leaderboard" class="link">
+                                            Leaderboard
+                                        </a>
+                                        
+                                      </div> 
+                                    </div>
+                                </div>
+                            
+                                <div class="card">
+                                    <div class="card-header">Leaderboard</div>
+                                    <div class="card-content card-content-padding data-table">
+                                        
+                                        <table class="leaderboard-table">
+                                            <thead>
+                                                <tr>
+                                                <th class="label-cell">Address</th>
+                                                <th>ENS Name</th>
+                                                <th class="numeric-cell">Owned</th>
+                                                <th>Last Active</th>
+                                                </tr>
+                                            </thead>
+                                    
+                                            <tbody>
+                                    
+                                            ${tokenOwners?.map(u => $h`
+                                                <tr>
+                                                    <td class="label-cell">
+                                                        <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
+                                                    </td>
+                                        
+                                                    <td>
+                                                        ${u.ensName}
+                                                    </td>
+                                        
+                                                    <td class="numeric-cell">
+                                                        ${u.count}
+                                                    </td>
+                                        
+                                                    <td>
+                                                        ${u.lastActive}
+                                                    </td>                                    
+                                                </tr>
+                                            
+                                            `)}
+                                            </tbody>
+                                
+                                        </table>
+                                
+                                
+                                        <div class="block margin-top margin-bottom">
+                                            <div class="row">
+                                                <div class="col-50">
+                                                    ${showPrevious ? $h`
+                                                    <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber - 1}" class="button button-outline color-gray">Previous</a>
+                                                    ` : $h` `}
+                                                </div>
+                                                <div class="col-50">
+                                                    ${showNext ? $h`
+                                                    <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber + 1}" class="button button-fill">Next</a>
+                                                    ` : $h` `}
+                                                </div>
+                                            </div>
+                                
+                                        </div>
+                                
+                                
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="hide-on-pageinit">
+
+                                <div class="card skeleton-text">
+                                    <div class="card-header">Leaderboard</div>
+                                    <div class="card-content card-content-padding data-table">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
                         </div>
                     </div>
             
@@ -110,30 +207,60 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+            let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
+            let walletService = globalThis.container.get("WalletService")
+
+
             let baseURL = '<%= baseURL %>'
+
+            let tokenOwners
+            let pageNumber = 0
+            let totals = {}
+
+            let showNext
+            let showPrevious
+
+            const loadLeaderboard = async () => {
+            
+                loading = true
+
+                try  {
+
+                    if ($f7.views.main.router.currentRoute?.query?.pageNumber) {
+                        pageNumber = parseInt($f7.views.main.router.currentRoute?.query?.pageNumber)
+                    }
+
+                    totals = await tokenOwnerPageService.getTotals()
+                    let page = await tokenOwnerPageService.get(pageNumber)
+                    tokenOwners = page.tokenOwners
+
+                    showNext = pageNumber < totals.totalPages - 1 
+                    showPrevious = pageNumber > 0
+
+                } catch(ex) { console.log(ex) }
+                
+                $('.hidden-on-load').removeClass('hidden-on-load')
+
+
+                loading = false
+
+                await $update()
+
+            }
+
 
             $on('pageInit', async () => {
 
-                let loadLeaderboardEvent = new CustomEvent('load-leaderboard')
-                loadLeaderboardEvent.pageNumber = $f7.views.main.router.currentRoute?.query?.pageNumber
+                await loadLeaderboard()
 
-                document.dispatchEvent(loadLeaderboardEvent)
+                $('.hide-on-pageinit').hide()
+
 
                 await $update()
 
 
             })
 
-            $on('pageReinit', async () => {
-
-
-
-            })
-
-
-            $on('pageBeforeOut', async () => {
-
-            })
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "Leaderboard for <%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`leaderboard`) %>")

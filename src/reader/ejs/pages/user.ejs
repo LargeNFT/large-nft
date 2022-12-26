@@ -91,7 +91,113 @@
                     <div class="row">
             
                         <div class="fixed-width-content center">
-                            <user-info></user-info> 
+
+                            <div class="hidden-on-load">
+
+                                <div class="block block-strong inset col-100 no-margin-bottom">
+                                    <div class="breadcrumbs ">
+                                      <div class="breadcrumbs-item">
+                                        <a href="<%=baseURL%>index.html" class="link">
+                                          Home
+                                        </a>
+                                      </div> 
+                                      <div class="breadcrumbs-separator"></div>
+                                      <div class="breadcrumbs-item">
+                                        <a href="<%=baseURL%>leaderboard">Leaderboard</a>
+                                      </div>       
+                                      <div class="breadcrumbs-separator"></div>
+                                      <div class="breadcrumbs-item breadcrumbs-item-active">
+                                        ${address}
+                                      </div> 
+                                    </div>
+                                </div>
+                              
+                                <div class="block-title block-title-large">Account Details</div>
+                                <div class="block-header">${address}</div>
+                            
+                                <div class="block">
+                            
+                                <div class="user-info">
+                            
+                                    <div class="row">
+                                    <div class="col-50">Etherscan</div>
+                                    <div class="col-50">
+                                        <a href="https://etherscan.io/address/${address}" class="item-link external">${address ? walletService.truncateEthAddress(address) : ' '}</a>
+                                    </div>
+                                    </div>
+                            
+                                    ${tokenOwner?.ensName ? $h`
+                                    <div class="row">
+                                        <div class="col-50">ENS Name</div>
+                                        <div class="col-50">${tokenOwner.ensName}</div>
+                                    </div>  
+                                    ` : $h` `}
+                            
+                                    <div class="row">
+                                    <div class="col-50">Tokens Owned</div>
+                                    <div class="col-50"><strong>${tokenOwner?.count}</strong></div>
+                                    </div>
+                            
+                                </div>
+                            
+                                </div>
+                            
+                                <div class="block">
+                                <p class="segmented">
+                                    <a class="button button-outline button-active" href="#">Owned</a>
+                                    <a class="button button-outline" href="${baseURL}u/activity?address=${address}">Activity</a>
+                                </p>
+                                </div>
+                            
+                                <div class="card">
+                                <div class="card-header">Owned</div>
+                                <div class="card-content card-content-padding data-table">
+                                    
+                                    ${rowItemViewModels?.length > 0 ? $h`
+                                    <div class="list cards-list">
+                                        <ul class="item-flex">
+                            
+                                        ${rowItemViewModels.map( rowItemViewModel => $h`
+                                            <li class="flex-card">
+                                            <a href="${link('t/' + rowItemViewModel.tokenId)}" class="item-link">
+                                                <div class="card" >
+                                                    <div class="card-content">
+                                                        <div class="square">
+                                                            <img src="${imageLink(rowItemViewModel)}"/>
+                                                        </div>
+                                                    </div>
+                                
+                                                    <div class="card-footer">
+                                                        ${rowItemViewModel.title}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            </li>
+                                        `)}
+                            
+                                        </ul>
+                                    </div>
+                                    ` : $h`
+                                        No tokens
+                                    `}
+                            
+                                </div>
+                                </div>
+
+                            </div>
+
+                            <div class="hide-on-pageinit">
+
+                                <div class="card skeleton-text">
+                                    <div class="card-header">User Info</div>
+                                    <div class="card-content card-content-padding data-table">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                    </div>
+
+                                  </div>
+
+                            </div>
                         </div>
                     </div>
             
@@ -110,34 +216,65 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+            let tokenOwnerService = globalThis.container.get("TokenOwnerService")
+            let itemWebService = globalThis.container.get("ItemWebService")
+            let walletService = globalThis.container.get("WalletService")
+
+
             let baseURL = '<%= baseURL %>'
+
+            let address
+            let tokenOwner
+
+            let rowItemViewModels
+
+            const link = (href) => {
+              return baseURL + href
+            }   
+
+            const imageLink = (rowItemViewModel) => {
+                let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+                return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+            }
+
+
+
+            const loadUser = async () => {
+                
+                loading = true
+
+                try  {
+                    tokenOwner = await tokenOwnerService.get(address)
+
+                    rowItemViewModels = await itemWebService.getRowItemViewModelsByTokenIds(tokenOwner.tokenIds)
+                    
+                } catch(ex) { console.log(ex) }
+                
+                $('.hidden-on-load').removeClass('hidden-on-load')
+
+
+                loading = false
+
+                await $update()
+
+            }
+
+
+
 
             $on('pageInit', async () => {
 
-                let activityStartChangedEvent = new CustomEvent('user-address-changed')
-                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
+                address = $f7.views.main.router.currentRoute?.query?.address
 
-                document.dispatchEvent(activityStartChangedEvent)
+                await loadUser()
 
-                await $update()
-
-            })
-
-            $on('pageReinit', async () => {
-
-                let activityStartChangedEvent = new CustomEvent('user-address-changed')
-                activityStartChangedEvent.address = $f7.views.main.router.currentRoute?.query?.address
-
-                document.dispatchEvent(activityStartChangedEvent)
+                $('.hide-on-pageinit').hide()
 
                 await $update()
 
             })
 
 
-            $on('pageBeforeOut', async () => {
-
-            })
 
             document.querySelector('meta[property="og:title"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
             document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`u`) %>")

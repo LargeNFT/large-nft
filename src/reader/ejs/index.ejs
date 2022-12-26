@@ -192,7 +192,56 @@
                 </div>
 
 
-                <event-info-home display="15" show_nav="false"></event-info-home>            
+                <div class="hidden-on-load">
+
+                  ${transactionsViewModel?.transactions?.length > 0 ? $h`
+
+                    <div class="card">
+                      <div class="card-header">Activity</div>
+                      <div class="card-content card-content-padding data-table activity-content">
+                
+                        <table class="event-table">
+                          <thead>
+                            <tr>
+                              <th class="label-cell">Transaction</th>
+                              <th>Events</th>
+                            </tr>
+                          </thead>
+                  
+                          <tbody>
+                  
+                          ${transactionsViewModel.transactions.map(transaction => $h`
+                            <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                          `)}
+                          </tbody>
+                  
+                        </table>
+                
+                      </div>
+                      <div class="card-footer">
+                        <a href="${link('activity')}" class="link" data-ignore-cache="true" >View All</a>
+                      </div>
+                    </div>
+              
+                  ` : $h`<span />`}
+
+
+                </div>
+
+                
+                <div class="hide-on-pageinit">
+
+                  <div class="card skeleton-text">
+                      <div class="card-header">Activity</div>
+                      <div class="card-content card-content-padding data-table">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                          lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                      </div>
+
+                    </div>
+
+                </div>
+
 
 
 
@@ -358,25 +407,54 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
-            let baseURI = globalThis.container.get("baseURI")
+            let transactionWebService = globalThis.container.get("TransactionWebService")
             let itemWebService = globalThis.container.get("ItemWebService")
+
+            let baseURI = globalThis.container.get("baseURI")
 
             const PER_PAGE = 35
 
-            let firstPageExploreItems 
-            let latestEvents
 
-            let swiper
+            let transactionsViewModel 
+
+            let loading = true
+
+
+
+            let firstPageExploreItems 
 
             const link = (href) => {
               return baseURI + href
             }   
 
 
+            const loadActivity = async () => {
+
+              loading = true
+
+              try  {
+
+                transactionsViewModel = await transactionWebService.listFrom(15)
+
+              } catch(ex) { console.log(ex) }
+
+              $('.hidden-on-load').removeClass('hidden-on-load')
+
+              loading = false
+
+              await $update()
+
+
+            }
+
+
+
             $on('pageInit', async () => {
 
-              let activityStartChangedEvent = new CustomEvent('load-home-events')
-              document.dispatchEvent(activityStartChangedEvent)
+              await loadActivity()
+
+              $('.hide-on-pageinit').hide()
+
 
               //Make links external
               let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')

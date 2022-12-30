@@ -7,8 +7,6 @@ class Transaction {
 
     @Allow()
     _rev?:string 
-
-
     
     @Allow()
     hash?:string 
@@ -55,6 +53,9 @@ class Transaction {
     @Allow()
     raw: string
 
+    @Allow()
+    receipt:TransactionReceipt
+
 
     @Allow()
     lastUpdated?:string 
@@ -62,9 +63,16 @@ class Transaction {
     @Allow()
     dateCreated?:string
 
-
-
 }
+
+interface TransactionReceipt {
+    contractAddress?:string
+    cumulativeGasUsed?:string
+    effectiveGasPrice?:string
+    gasUsed?:string
+    logs:[]
+}
+
 
 export {
     Transaction

@@ -36,24 +36,34 @@ class TransactionService {
                 transaction = new Transaction()
                 
                 //Download it.
-                let data = await this.walletService.provider.getTransaction(_id)
+                let transactionData = await this.walletService.provider.getTransaction(_id)
+                let transactionReceiptData = await this.walletService.provider.getTransactionReceipt(_id)
 
-                transaction._id = data.hash
-                transaction.data = data.data
-                transaction.hash = data.hash 
-                transaction.blockHash = data.blockHash
-                transaction.blockNumber = data.blockNumber
-                transaction.transactionIndex = data.transactionIndex
-                transaction.from = data.from
-                transaction.gasLimit = data.gasLimit
-                transaction.gasPrice = data.gasPrice
-                transaction.nonce = data.nonce
-                transaction.value = data.value
-                transaction.networkId = data.networkId
-                transaction.r = data.r
-                transaction.s = data.s
-                transaction.v = data.v
-                transaction.raw = data.raw
+                transaction._id = transactionData.hash
+                transaction.data = transactionData.data
+                transaction.hash = transactionData.hash 
+                transaction.blockHash = transactionData.blockHash
+                transaction.blockNumber = transactionData.blockNumber
+                transaction.transactionIndex = transactionData.transactionIndex
+                transaction.from = transactionData.from
+                transaction.gasLimit = transactionData.gasLimit
+                transaction.gasPrice = transactionData.gasPrice
+                transaction.nonce = transactionData.nonce
+                transaction.value = transactionData.value
+                transaction.networkId = transactionData.networkId
+                transaction.r = transactionData.r
+                transaction.s = transactionData.s
+                transaction.v = transactionData.v
+                transaction.raw = transactionData.raw
+
+                transaction.receipt = {
+                    contractAddress: transactionReceiptData.contractAddress,
+                    cumulativeGasUsed: transactionReceiptData.cumulativeGasUsed,
+                    effectiveGasPrice: transactionReceiptData.effectiveGasPrice,
+                    gasUsed: transactionReceiptData.gasUsed,
+                    logs: transactionReceiptData.logs
+                }
+
 
                 await this.transactionRepository.put(transaction)
 

@@ -154,39 +154,28 @@
                                 ${transactionsViewModel?.transactions?.length > 0 ? $h`
                     
                                     <div class="card">
-                                        <div class="card-header">Activity</div>
-                                        <div class="card-content card-content-padding data-table">
-                                    
-                                            <table class="event-table">
-                                            <thead>
-                                                <tr>
-                                                <th class="label-cell">Transaction</th>
-                                                <th>Events</th>
-                                                </tr>
-                                            </thead>
-                                    
-                                            <tbody>
+                                        <div class="card-header">
+                                            Activity <span class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</span>
+                                        </div>
+                                        <div class="card-content card-content-padding">
                                     
                                             ${transactionsViewModel.transactions.map(transaction => $h`
                                                 <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
                                             `)}
-                                            </tbody>
-                                    
-                                            </table>
                                     
                                             <div class="block margin-top margin-bottom">
-                                            <div class="row">
-                                                <div class="col-50">
-                                                    ${previousPageStartId ? $h`
-                                                    <a href="${baseURL}u/activity?startId=${previousPageStartId}&address=${address}" class="button button-outline color-gray">Previous</a>
-                                                    ` : $h` `}
+                                                <div class="row">
+                                                    <div class="col-50">
+                                                        ${previousPageStartId ? $h`
+                                                        <a href="${baseURL}u/activity?startId=${previousPageStartId}&address=${address}" class="button button-outline color-gray">Previous</a>
+                                                        ` : $h` `}
+                                                    </div>
+                                                    <div class="col-50">
+                                                        ${nextPageStartId ? $h`
+                                                        <a href="${baseURL}u/activity?startId=${nextPageStartId}&address=${address}" class="button button-fill">Next</a>
+                                                        ` : $h` `}
+                                                    </div>
                                                 </div>
-                                                <div class="col-50">
-                                                    ${nextPageStartId ? $h`
-                                                    <a href="${baseURL}u/activity?startId=${nextPageStartId}&address=${address}" class="button button-fill">Next</a>
-                                                    ` : $h` `}
-                                                </div>
-                                            </div>
                                     
                                             </div>
     

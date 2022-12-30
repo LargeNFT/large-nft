@@ -104,7 +104,7 @@
         <div class="view view-main">
 
 
-            <div class="page" data-name="token-<%=itemViewModel.item._id %>">
+            <div class="page" data-name="token-<%=itemViewModel.item.tokenId %>">
 
                 <nav-bar
                     logo="<%=logo%>"
@@ -206,25 +206,14 @@
                                             ${transactionsViewModel?.transactions?.length > 0 ? $h`
                           
                                               <div class="card">
-                                                <div class="card-header">Activity</div>
+                                                <div class="card-header">
+                                                    Activity <span class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</span>
+                                                </div>
                                                 <div class="card-content card-content-padding data-table">
                                           
-                                                  <table class="event-table">
-                                                    <thead>
-                                                      <tr>
-                                                        <th class="label-cell">Transaction</th>
-                                                        <th>Events</th>
-                                                      </tr>
-                                                    </thead>
-                                            
-                                                    <tbody>
-                                            
                                                     ${transactionsViewModel.transactions.map(transaction => $h`
-                                                      <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                                                        <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
                                                     `)}
-                                                    </tbody>
-                                            
-                                                  </table>
             
                                                 </div>
             
@@ -430,7 +419,7 @@
                             if (url) {
                                 $f7.views.main.router.navigate(url, {
                                     transition: 'none',
-                                    // clearPreviousHistory: true,
+                                    history: true,
                                     reloadAll: true
                                 })
                             }
@@ -454,8 +443,8 @@
                 $('.back-token-button').on('click', prev)
                 $('.continue-button').on('click', next)
 
-                let activityStartChangedEvent = new CustomEvent('token-activity-start-changed')
-                document.dispatchEvent(activityStartChangedEvent)
+                // let activityStartChangedEvent = new CustomEvent('token-activity-start-changed')
+                // document.dispatchEvent(activityStartChangedEvent)
 
             }
 
@@ -493,7 +482,14 @@
             })          
 
             $on('pageReinit', async () => {
+
                 initSwiper()
+
+                await loadActivity()
+
+                $('.swiper').show()
+                $('.hide-on-pageinit').hide()
+
             })
 
             $on('pageBeforeOut', async () => {

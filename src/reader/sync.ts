@@ -175,7 +175,8 @@ let sync = async () => {
           
             //Save latest transaction
             fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
-              _id: mostRecent._id
+              _id: mostRecent._id,
+              lastUpdated: new Date().toJSON()
             })))
           }
 

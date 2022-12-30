@@ -256,10 +256,12 @@
                         } 
                     }
 
+
                     createVirtualList()
 
                     
                 } catch(ex) { 
+                    $('.infinite-scroll-preloader').hide()
                     console.log(ex) 
                 }
                 
@@ -394,6 +396,21 @@
                 await $update()
 
             })
+
+
+            $on('pageReinit', async () => {
+
+                address = $f7.views.main.router.currentRoute?.query?.address
+
+                await loadUser()
+
+                $('.hide-on-pageinit').hide()
+
+                await $update()
+
+
+            })
+
 
             $on('pageBeforeOut', async () => {
                 window.removeEventListener('resize', resizeListener)

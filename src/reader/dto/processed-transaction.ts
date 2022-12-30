@@ -1,6 +1,5 @@
 import { Allow } from "class-validator"
 import { ERCEvent } from "./erc-event.js"
-import { Transaction } from "./transaction.js"
 
 
 class ProcessedTransaction {
@@ -12,13 +11,22 @@ class ProcessedTransaction {
     _rev?:string 
     
     @Allow()
-    transaction?:Transaction 
+    blockNumber?:number
+
+    @Allow()
+    transactionIndex?:number
+
+    @Allow()
+    from?:string
 
     @Allow()
     timestamp?:number
 
     @Allow()
     ercEvents?:ERCEvent[]
+
+    @Allow()
+    processedEvents?:ProcessedEvent[]
 
     @Allow()
     tokenIds?:string[]
@@ -56,6 +64,15 @@ class ProcessedTransaction {
 
 }
 
+interface ProcessedEvent {
+    isMint?:boolean
+    isBurn?:boolean
+    tokenIds?:number[]
+    event?:string 
+    namedArgs?:any
+    salePrice?:string
+}
+
 export {
-    ProcessedTransaction
+    ProcessedTransaction, ProcessedEvent
 }

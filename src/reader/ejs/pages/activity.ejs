@@ -116,25 +116,18 @@
                                 ${transactionsViewModel?.transactions?.length > 0 ? $h`
               
                                   <div class="card">
-                                    <div class="card-header">Activity</div>
-                                    <div class="card-content card-content-padding data-table">
+                                    
+                                    <div class="card-header">
+                                        Activity <span class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</span>
+                                    </div>
+
+
+                                    <div class="card-content card-content-padding">
                               
-                                      <table class="event-table">
-                                        <thead>
-                                          <tr>
-                                            <th class="label-cell">Transaction</th>
-                                            <th>Events</th>
-                                          </tr>
-                                        </thead>
+                                      ${transactionsViewModel.transactions.map(transaction => $h`
+                                        <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                                      `)}
                                 
-                                        <tbody>
-                                
-                                        ${transactionsViewModel.transactions.map(transaction => $h`
-                                          <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
-                                        `)}
-                                        </tbody>
-                                
-                                      </table>
                               
                                       <div class="block margin-top margin-bottom">
                                         <div class="row">

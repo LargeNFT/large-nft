@@ -1,69 +1,28 @@
 <template>
 
-  <tr>
-    <td style="vertical-align: top; padding-top: 15px;">
-      <a href="https://etherscan.io/tx/${transaction._id}" class="external">${walletService.truncateEthAddress(transaction._id)}</a>
-      <div class="date">${moment(transaction.timestamp * 1000).fromNow()}</div>
-    </td>
+  <div style="margin-bottom: 15px;">
 
-    <td>
-      <ul class="event-info-list">
+    <div class="transaction-info">
+      <span class="date">${moment(transaction.timestamp * 1000).fromNow()}</span>
+      <a href="https://etherscan.io/tx/${transaction._id}" class="external button button-outline button-small color-gray" target="_blank" style="float: right; margin-top: -3px;">${walletService.truncateEthAddress(transaction._id)}</a>
+    </div>
 
-        ${Object.keys(transaction.ercEvents).map(key => $h`
-      
-          <li>
+    ${transaction.processedEvents?.map(processedEvent => $h`
 
-            <div class="event-info">
+      ${processedEvent.event == "Approval"? $h`
+        <${Approval} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} />
+      ` : $h` `}
 
-              <div class="image">
-                ${transaction.ercEvents[key].tokenId ? $h`
-                  <a href="${baseURI}t/${transaction.ercEvents[key].tokenId}" class="link">
-                    <img src="${imageLink(rowItemViewModels[transaction.ercEvents[key].tokenId])}" class="latest-img"/> 
-                  </a>
-                    ` : $h`<i class="f7-icons">${getIcon(transaction.ercEvents[key])}</i>`}    
-              </div>
+      ${processedEvent.event == "Transfer"? $h`
+        <${Transfer} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} />
+      ` : $h` `}
 
-              <div class="details">
+      ${processedEvent.event == "ApprovalForAll" ? $h`
+        <${ApprovalForAll} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} />
+      ` : $h` `}
+    `)}
 
-                <strong>${transaction.ercEvents[key].event} ${transaction.ercEvents[key].isMint ? $h`<span class="badge">Mint</span>` : $h`<span />`}</strong>
-
-                ${transaction.ercEvents[key].isTransfer ? $h`
-                  
-                  <div class="transfer">
-
-                    <div style="float: left;">
-                      <span class="label">From:</span>
-                      ${transaction.ercEvents[key].fromAddress ? $h`
-                        <a href="${baseURI}u/?address=${transaction.ercEvents[key].fromAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].fromAddress)}</a>
-                      ` : $h`<span />`}
-
-                    </div>
-
-
-                    <span class="label to-label">To:</span>
-                    ${transaction.ercEvents[key].toAddress ? $h`
-                      <a href="${baseURI}u/?address=${transaction.ercEvents[key].toAddress}">${walletService.truncateEthAddress(transaction.ercEvents[key].toAddress)}</a>
-                    ` : $h`<span />`}
-
-                  </div>
-
-                ` : $h` `}
-
-
-              </div>
-
-            </div>
-
-          </li>
-
-        `)}
-
-      </ul>
-
-    </td>
-
-
-  </tr>
+  </div>
 
 </template>
 
@@ -72,6 +31,169 @@
 </style>
 
 <script>
+
+  // create local component
+  const Transfer = (props, { $h }) => {
+
+    let walletService = globalThis.container.get("WalletService")
+
+    const link = (href) => {
+        return `${baseURI + href}`
+    } 
+
+    const imageLink = (rowItemViewModel) => {
+      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+    }
+
+    let transaction = props.transaction
+    let event = props.event
+    let baseURI = props.base_uri
+    let rowItemViewModels = props.row_item_view_models
+
+
+    return () => $h`
+    
+        <div class="event-info">
+
+          <div class="description">
+
+            ${event.isMint ? $h`
+
+                <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">
+                  ${walletService.truncateEthAddress(event.namedArgs.toAddress)}
+                </a> minted <strong>${event.tokenIds?.length}</strong> tokens.
+
+            ` : $h`
+
+                <a href="${baseURI}u/?address=${event.namedArgs.fromAddress}" class="${event.namedArgs.fromAddress == transaction.from ? 'is-from' : ''}">
+                  ${walletService.truncateEthAddress(event.namedArgs.fromAddress)}
+                </a> <span class="f7-icons">arrow_right</span> <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.toAddress)}</a>
+
+            `}
+
+          </div>
+
+
+          <div class="images">
+
+            ${event.tokenIds?.map( tokenId => $h`
+              
+              <a href="${baseURI}t/${tokenId}">
+                <img src="${imageLink(rowItemViewModels[tokenId])}" class="latest-img" /> 
+              </a>
+
+            `)}
+
+          </div>
+
+                  
+        </div>
+
+    `;
+  }
+
+
+  const Approval = (props, { $h }) => {
+
+    let walletService = globalThis.container.get("WalletService")
+
+    const link = (href) => {
+        return `${baseURI + href}`
+    } 
+
+    const imageLink = (rowItemViewModel) => {
+      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+    }
+
+    let transaction = props.transaction
+    let event = props.event
+    let baseURI = props.base_uri
+    let rowItemViewModels = props.row_item_view_models
+
+
+    return () => $h`
+
+        <div class="event-info">
+
+          <div class="image">
+            <a href="${baseURI}t/${event.namedArgs.tokenId}" class="link">
+                <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img"/> 
+            </a>
+          </div>
+
+          <div class="details">
+          
+            ${event.event} 
+
+            <div class="transfer">
+
+              ${event.namedArgs.owner ? $h`
+                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.owner)}</a>
+              ` : $h`<span />`}
+
+              ${event.namedArgs.approved ? $h`
+                <span class="f7-icons">arrow_right</span>
+                <a href="${baseURI}u/?address=${event.namedArgs.approved}" class="${event.namedArgs.approved == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.approved)}</a>
+              ` : $h`<span />`}
+
+            </div>
+
+
+          
+          </div>
+          
+          
+        </div>
+
+    `;
+  }
+
+
+
+  const ApprovalForAll = (props, { $h }) => {
+
+    let walletService = globalThis.container.get("WalletService")
+
+    let transaction = props.transaction
+    let event = props.event
+    let baseURI = props.base_uri
+
+    return () => $h`
+
+        <div class="event-info">
+
+          <div class="image">
+            ${event.namedArgs.approved ? $h`🟢` : $h`🔴`} 
+          </div>
+
+          <div class="details">
+
+            ${event.event} 
+
+            <div class="transfer">
+
+              ${event.namedArgs.owner ? $h`
+                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.owner)}</a>
+              ` : $h`<span />`}
+
+              ${event.namedArgs.operator ? $h`
+                <span class="f7-icons">arrow_right</span>
+                <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs.operator == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.operator)}</a>
+              ` : $h`<span />`}
+
+            </div>
+                      
+            
+          </div>
+        </div>
+
+        
+    `;
+  }
+
+
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -82,23 +204,6 @@
 
     let transaction = props.transaction 
     let rowItemViewModels = props.items
-
-    // console.log(transaction)
-
-    const imageLink = (rowItemViewModel) => {
-      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
-    }
-
-
-    const link = (href) => {
-        return `${baseURI + href}`
-    } 
-
-    const getIcon = (event) => {
-      if (event.event == "ApprovalForAll") return "asterisk_circle_fill"
-    }
-
 
     return $render
   }

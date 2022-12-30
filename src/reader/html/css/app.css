@@ -569,7 +569,9 @@ ul.breadcrumb li a:hover {
 }
 
 
-
+.data-table {
+  overflow-x: unset;
+}
 
 .data-table tr {
   height: 35px;
@@ -860,22 +862,67 @@ html {
 }
 
 .event-info {
+  max-width: 100%;
   width: 100%;
   font-size: 13px;
   display: flex;
 }
 
+.transaction-info {
+  max-width: 100%;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-right: 6px;
+  padding-left: 6px;
+
+  margin-bottom: 5px;
+  background: #f1f1f1;
+  display: block;
+  font-size: 14px;
+  border-top: 1px solid #cccccc;
+}
+
+.transaction-info .date {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.event-info {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: block;
+}
+
+.event-info a {
+  font-weight: normal;
+}
+
+.event-info a.is-from {
+  font-weight: bold;
+}
+
 .event-info .image {
-  flex: 0 0 50px;
+  float: left;
   margin-right: 10px;
+  font-size: 20px;
+  text-align: center;
 }
 
-.event-info .image .f7-icons {
-  width: 50px;
+.event-info .description {
+  width: 100%;
 }
 
-.event-info .image img {
-  width: 50px;
+.event-info .images {
+  width: 100%;
+}
+
+.event-info .images img {
+  display: inline-block;
+}
+
+.event-info .image img, .event-info .images img {
+  width: 40px;
   border: 1px solid #cccccc;
 }
 
@@ -884,19 +931,32 @@ html {
   flex: 1;
 }
 
-
-
-.event-info .details .to-label {
-  margin-left: 15px;
+.event-info .f7-icons {
+  margin-left: 5px;
+  margin-right: 5px;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-@media only screen and (max-width: 1024px) {
+
+.event-info .details a {
+  font-weight: normal;
+}
+
+
+
+.event {
+  width: 100%;
+}
+
+/* @media only screen and (max-width: 1024px) {
 
   .event-info .details .to-label {
     margin-left: 0px;
   }
 
-}
+} */
 
 
 /* .event-info .details .badge {
@@ -953,6 +1013,11 @@ html {
 } */
 
 
+.last-updated {
+  font-size: 13px;
+  color: darkslategray;
+  float: right;
+}
 
 .user-info {
   width: 300px;

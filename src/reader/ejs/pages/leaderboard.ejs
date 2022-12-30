@@ -111,7 +111,10 @@
                                 </div>
                             
                                 <div class="card">
-                                    <div class="card-header">Leaderboard</div>
+                                    <div class="card-header">
+                                        Leaderboard <span class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</span>
+
+                                    </div>
                                     <div class="card-content card-content-padding data-table">
                                         
                                         <table class="leaderboard-table">
@@ -208,6 +211,8 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
             let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
+            let transactionWebService = globalThis.container.get("TransactionWebService")
+
             let walletService = globalThis.container.get("WalletService")
 
 
@@ -216,6 +221,7 @@
             let tokenOwners
             let pageNumber = 0
             let totals = {}
+            let lastUpdated
 
             let showNext
             let showPrevious
@@ -233,6 +239,10 @@
                     totals = await tokenOwnerPageService.getTotals()
                     let page = await tokenOwnerPageService.get(pageNumber)
                     tokenOwners = page.tokenOwners
+
+                    let latest = await transactionWebService.getLatest()
+
+                    lastUpdated = latest.lastUpdated
 
                     showNext = pageNumber < totals.totalPages - 1 
                     showPrevious = pageNumber > 0

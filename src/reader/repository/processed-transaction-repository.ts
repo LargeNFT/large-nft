@@ -18,7 +18,7 @@ let changesets:Changeset[] = [
 
             await db.createIndex({
                 index: {
-                    fields: ['transaction.blockNumber', 'transaction.transactionIndex'],
+                    fields: ['blockNumber', 'transactionIndex'],
                 }
             })
            

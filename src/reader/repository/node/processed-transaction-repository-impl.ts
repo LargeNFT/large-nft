@@ -39,16 +39,16 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
         let response = await this.db.find({
             selector: { 
-                "transaction.blockNumber": { 
+                "blockNumber": { 
                     $exists: true 
                 },
-                "transaction.transactionIndex": { 
+                "transactionIndex": { 
                     $exists: true 
                 }
             },
             limit: limit,
             skip: skip,
-            sort: [{"transaction.blockNumber": 'desc'}, {"transaction.transactionIndex": 'desc'}]
+            sort: [{"blockNumber": 'desc'}, {"transactionIndex": 'desc'}]
         })
 
         if (response.warning) {

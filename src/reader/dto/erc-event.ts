@@ -9,18 +9,6 @@ class ERCEvent {
     @Allow()
     _rev?:string 
 
-    @Allow()
-    blockNumber?:number 
-
-    @Allow()
-    blockHash?:string 
-
-    @Allow()
-    transactionIndex?:number 
-
-    @Allow()
-    transactionHash?:string 
-
 
     @Allow()
     removed?:boolean 
@@ -56,15 +44,8 @@ class ERCEvent {
     isBurn:boolean
 
     @Allow()
-    fromAddress:string
-
-    @Allow()
-    toAddress:string
-
-    @Allow()
-    tokenId?:number
-
-
+    namedArgs:any  
+ 
     @Allow()
     lastUpdated?:string 
     

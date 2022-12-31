@@ -42,53 +42,57 @@
 
             <div class="card-content card-content-padding">
 
-              ${settings?.personalAccessToken?.length > 0 ? $h`
+              ${channelViewModel?.gitProvider?.personalAccessToken?.length > 0 ? $h`
 
-                <form class="list" id="fork-reader" @submit="${createForkSubmit}">
-                  <ul>
-                    <li>
-                      <div class="item-content item-input">
-                        <div class="item-inner">
+                <form id="fork-reader" @submit="${createForkSubmit}">
 
-                          ${forking ? $h`
-                            <div class="forking-label">
-                              Forking...
-                            </div>
+                  ${forking ? $h`
+                    <div class="forking-label">
+                      Forking...
+                    </div>
 
-                            <div class="preloader"></div>
+                    <div class="preloader"></div>
 
-                          ` : $h`
-                            <button href="#" class="button button-fill button-small deploy-button">Create/Connect Fork</button>
-                            <div class="forking-label" style="display:none;"></div>
-                          `}
-
-                          ${repoURI ? $h`
-                          <div class="repo-status">
-                            <p><strong>Git Repo:</strong> ${repoURI}</p>
-                          </div>
-                          ` : $h`<span />`}
-
-                          ${channelViewModel.channel.publishReaderRepoStatus == "complete" ? $h`
-                            <div class="row" style="width: 100%;">
-                              <div class="chip chip-outline">
-                                <div class="chip-label">Success!</div>
-                              </div>
-    
-                              <a href="/admin/publish/${channelViewModel.channel._id}" class="button button-fill color-gray" id="fork-next-button"><i class="material-icons">arrow_left</i> Back to menu </a>
-    
-                            </div>
-                          ` : $h`<span/>`}
+                  ` : $h`
 
 
+                    <div class="forking-label" style="display:none;"></div>
 
-                        </div>
+
+                    ${channelViewModel.channel.publishReaderRepoId ? $h`
+                      <div class="repo-status">
+
+                        <p><strong>Current Repo:</strong> ${channelViewModel.channel.httpUrlToRepo}</p>
+
+                        <p><strong>Configured Provider:</strong> ${channelViewModel?.gitProvider?.name}</p>
+
+                        <p><strong>Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                        <p><strong>Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>
+                        <p><strong>Job Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
                       </div>
-                    </li>
-                  </ul>
+                    ` : $h`<span />`}
+
+
+                    <div class="row block">
+
+                      <div class="col-0 large-30"></div>
+        
+                      <a href="/admin/publish/${channelViewModel.channel._id}" class="button button-outline color-gray col-50 large-30">
+                        Back to menu 
+                      </a>
+
+                      <button type="submit" class="button button-fill col-50 large-30">
+                        Create/Connect Fork
+                      </button>
+        
+                    </div>
+
+                  `}
+
                 </form>
 
               ` : $h`
-                <p>Configure <a href="/admin/settings">Gitlab</a> to deploy the collection reader.</p>
+                <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
               `}
 
 
@@ -148,7 +152,7 @@
   import { PublishService } from "../../../service/core/publish-service"
 
   import { PinningService } from "../../../service/core/pinning-service"
-  import { GitlabService } from "../../../service/core/gitlab-service"
+  import { GitService } from "../../../service/core/git-service"
 
   import { QueueService } from "../../../service/core/queue-service"
 
@@ -164,12 +168,12 @@
     let pinningService = ContainerService.getInstance(PinningService)
     let ipfsService = ContainerService.getInstance(IpfsService)
     let queueService = ContainerService.getInstance(QueueService)
-    let gitlabService = ContainerService.getInstance(GitlabService)
+    let gitService = ContainerService.getInstance(GitService)
+
     let publishService = ContainerService.getInstance(PublishService)
 
     let channelViewModel = props.channelViewModel
     let settings = props.settings
-    let repoURI = props.repoURI
 
     let pageUnloaded = false
 
@@ -177,7 +181,10 @@
     
 
     $on('pageInit', async () => {
+
       pageUnloaded = false
+
+      await $update()
 
       await checkPublishRepoStatus()
     })
@@ -193,11 +200,13 @@
 
       forking = true
 
-      $update()
+      await $update()
+
+      let response
 
       try {
 
-        let response = await gitlabService.createReaderFork(channelViewModel.channel)
+        response = await gitService.createFork(channelViewModel.channel)
 
         channelViewModel.channel.publishReaderRepoId = response.id
         channelViewModel.channel.publishReaderRepoPath = response.path
@@ -206,6 +215,8 @@
         await channelService.put(channelViewModel.channel)
 
       } catch (ex) {
+
+        console.log(ex)
 
         if (ex.toString() == "Error: Request failed with status code 409") {
           $f7.dialog.alert("Git repo already exists with that name.", "There was an error")
@@ -235,18 +246,17 @@
 
       channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
-      let id = channelViewModel.channel.publishReaderRepoId
-      let status = channelViewModel.channel.publishReaderRepoStatus
-
-      let forkRepoStatus = await gitlabService.getForkRepoStatus(channelViewModel.channel)
+      let forkRepoStatus = await gitService.getForkRepoStatus(channelViewModel.channel)
 
       if (forkRepoStatus == "finished") { //TODO
-        channelViewModel.channel.publishReaderRepoStatus = "complete"
-        await channelService.put(channelViewModel.channel)
 
         //Grab the URL
-        let forkResult = await gitlabService.getExistingFork(channelViewModel.channel)
-        repoURI = forkResult.http_url_to_repo
+        let forkResult = await gitService.getExistingFork(channelViewModel.channel)
+
+        channelViewModel.channel.publishReaderRepoStatus = "complete"
+        channelViewModel.channel.httpUrlToRepo = forkResult.httpUrlToRepo
+
+        await channelService.put(channelViewModel.channel)
 
       }
 

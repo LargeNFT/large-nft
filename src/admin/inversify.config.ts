@@ -105,6 +105,7 @@ import InfiniteScroll from 'framework7/components/infinite-scroll'
 import Menu from 'framework7/components/menu'
 import Swiper from 'framework7/components/swiper'
 import { GitService } from './service/core/git-service.js';
+import { GithubService } from './service/core/github-service.js';
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
@@ -210,7 +211,6 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(SchemaService).toSelf().inSingletonScope()
   container.bind(PinningService).toSelf().inSingletonScope()
-  container.bind(GitlabService).toSelf().inSingletonScope()
   container.bind(RoutingService).toSelf().inSingletonScope()
   container.bind(PagingService).toSelf().inSingletonScope()
 
@@ -237,6 +237,8 @@ function getMainContainer(readerConfig:ReaderConfig) {
   container.bind(QueryCacheService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
   container.bind(GitService).toSelf().inSingletonScope()
+  container.bind(GitlabService).toSelf().inSingletonScope()
+  container.bind(GithubService).toSelf().inSingletonScope()
 
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()

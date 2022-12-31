@@ -107,7 +107,9 @@
       loadingInProgress = true
 
       try {
+
         channels = await channelWebService.list(LIMIT, channelsShown)
+
 
         if (channels && channels.length == LIMIT) {
           channelsShown += channels.length
@@ -144,7 +146,6 @@
     })
 
     $on('pageInit', (e, page) => {
-
       channelsShown = 0
       pageCounter = 0
       hasMoreChannels = true

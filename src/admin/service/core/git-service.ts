@@ -7,11 +7,14 @@ import axios from "axios";
 
 import contractABI from '../../../../contracts.json'
 import { GitlabService } from "./gitlab-service.js";
+import { ChannelService } from "../channel-service.js";
+import { ExistingForkInfo, ForkInfo, GitProviderService } from "./git-provider-service.js";
+import { GithubService } from "./github-service.js";
 
 
 
 @injectable()
-class GitService {
+class GitService implements GitProviderService {
 
 
     fs
@@ -23,7 +26,11 @@ class GitService {
         @inject('fs') private getFS:Function,
         @inject('git') public git,
         private settingsService:SettingsService,
-        private authorService:AuthorService
+        private channelService:ChannelService,
+        private authorService:AuthorService,
+        private gitlabService:GitlabService,
+        private githubService:GithubService
+
     ) {}
 
 
@@ -51,29 +58,20 @@ class GitService {
 
         this.logPublishReaderProgress(`Initializing git for channel ${channel._id}`)
 
+        let gitProvider = await this.channelService.getGitProviderCredentials(channel, await this.settingsService.get())
+
 
         if (!this.fs) await this.initFS(channel)
+
+
 
         //Init FS
         let fs = this.fs
 
-        //Make sure we have an author
-        let author
-        let gitUsername
-        try {
-            author = await this.authorService.get(channel.authorId)
-            gitUsername = author.name ? author.name : author._id
-        } catch(ex) {}
-        
-
-        if (!gitUsername) gitUsername = "john"
-
 
         //Get fork URL
-        let existingForkResult = await this.getExistingFork(channel)
+        let existingForkResult:ExistingForkInfo = await this.getExistingFork(channel)
 
-        let repoURI = existingForkResult.http_url_to_repo
-        let defaultBranch = existingForkResult.default_branch 
 
 
         //Check if we already have the repo cloned
@@ -101,22 +99,17 @@ class GitService {
         } catch(ex) {}
 
 
-
-        // console.log(currentBranch)
-
-
-
         if (!currentBranch) {
 
-            this.logPublishReaderProgress(`Git clone: ${repoURI} to ${dir}`)
+            this.logPublishReaderProgress(`Git clone: ${existingForkResult.httpUrlToRepo} to ${dir}`)
 
             this.logPublishReaderProgress(
                 await this.git.clone({
                     fs,
                     http,
                     dir,
-                    url: repoURI,
-                    ref: defaultBranch,
+                    url: existingForkResult.httpUrlToRepo,
+                    ref: existingForkResult.defaultBranch,
                     singleBranch: true
                 })
             )
@@ -127,7 +120,7 @@ class GitService {
                     fs,
                     dir,
                     path: 'user.name',
-                    value: gitUsername
+                    value: gitProvider.username
                 })
             )
 
@@ -140,7 +133,7 @@ class GitService {
                     fs,
                     http,
                     dir,
-                    ref: defaultBranch,
+                    ref: existingForkResult.defaultBranch,
                     singleBranch: true
                 })
             )
@@ -192,7 +185,6 @@ class GitService {
         } catch (ex) {}
 
     }
-
 
     public async gitAddAll(channel:Channel) {
 
@@ -281,9 +273,6 @@ class GitService {
 
     }
 
-
-
-
     public async clearGitRepos() {
 
         //Init FS
@@ -312,10 +301,12 @@ class GitService {
 
     async deployReaderGit(channel:Channel, contractMetadata:any) {
 
-        let settings = await this.settingsService.get()
+        let gitProvider = await this.channelService.getGitProviderCredentials(channel, await this.settingsService.get())
 
-        if (settings.personalAccessToken.length < 1) {
-            throw new Error("Gitlab personal access token not set")
+
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error(`${gitProvider.name} personal access token not set`)
         }
 
         //Init or load repo
@@ -351,42 +342,71 @@ class GitService {
         await this.gitAddAll(channel)
         await this.gitCommit(channel)
 
-        await this.gitPush(channel, settings.username, settings.personalAccessToken)
+        await this.gitPush(channel, gitProvider.username, gitProvider.personalAccessToken)
 
         this.logPublishReaderProgress("Publish complete")
 
     }
 
-
-    private async getExistingFork(channel:Channel) {
+    async getExistingFork(channel:Channel) {
 
         let settings = await this.settingsService.get()
 
-        if (settings.personalAccessToken.length < 1) {
-            throw new Error("Gitlab personal access token not set")
+        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
+
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error(`${gitProvider.name} personal access token not set`)
         }
 
-
-        let url = `${GitlabService.BASE_URL}/projects/${GitlabService.READER_REPO_ID}/forks`
-        
-        let response = await axios.get(url, {
-            headers: {
-                "Authorization": `Bearer ${settings.personalAccessToken}`
-            }
-        })
-
-        // console.log(response)
-
-        let forks = response.data
-
-        let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
-
-        //Search for one with the same path
-        let results = forks.filter( f => f.path == path)
-
-        if (results?.length == 1) return results[0]
+        switch(gitProvider.name) {
+            case "gitlab":
+                return this.gitlabService.getExistingFork(channel)
+            case "github":
+                return this.githubService.getExistingFork(channel)
+        }
 
     }
+
+    async createFork(channel: Channel): Promise<ForkInfo> {
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error(`${gitProvider.name} personal access token not set`)
+        }
+
+        switch(gitProvider.name) {
+            case "gitlab":
+                return this.gitlabService.createFork(channel)
+            case "github":
+                return this.githubService.createFork(channel)
+        }
+
+    }
+
+
+    async getForkRepoStatus(channel: Channel): Promise<string> {
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error(`${gitProvider.name} personal access token not set`)
+        }
+
+        switch(gitProvider.name) {
+            case "gitlab":
+                return this.gitlabService.getForkRepoStatus(channel)
+            case "github":
+                return this.githubService.getForkRepoStatus(channel)
+        }
+
+    }
+
 
 
 }

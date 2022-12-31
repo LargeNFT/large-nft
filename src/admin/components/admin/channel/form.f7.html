@@ -381,6 +381,38 @@
                             </div>
                         </li>
 
+                        <li class="item-content item-input item-input-outline">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Git Provider</div>
+                                <div class="item-input-wrap input-dropdown-wrap">
+                                    <select name="gitProvider" @change="${gitProviderChange}">
+
+                                        ${!channelViewModel.channel.gitProvider || channelViewModel.channel.gitProvider == "default" ? $h`
+                                            <option value="default" selected>Default</option>
+                                        ` : $h`
+                                            <option value="default">Default</option>
+                                        `}
+
+                                        ${channelViewModel.channel.gitProvider == "github" ? $h`
+                                            <option value="github" selected>GitHub</option>
+                                        ` : $h`
+                                            <option value="github">GitHub</option>
+                                        `}
+
+
+                                        ${channelViewModel.channel.gitProvider == "gitlab" ? $h`
+                                            <option value="gitlab" selected>GitLab</option>
+                                        ` : $h`
+                                            <option value="gitlab">GitLab</option>
+                                        `}
+
+
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+
+
                     </ul>
                 </div>
             </div>
@@ -595,6 +627,12 @@
 
             await $update()
 
+        } 
+
+        const gitProviderChange = async (e) => {
+            
+            channelViewModel.channel.gitProvider = $(e.currentTarget).val()
+            await $update()
         } 
 
         let channelViewModel = props.channel

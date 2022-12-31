@@ -134,18 +134,10 @@ class PublishController {
                 settings = await this.settingsService.get()
             } catch(ex) {}
 
-
-            let existingForkResult
-            if (settings?.personalAccessToken) {
-                existingForkResult = await this.gitlabService.getExistingFork(channelViewModel.channel)
-            }
-
             
             return {
                 channelViewModel: channelViewModel,
-                settings: settings,
-                repoURI: existingForkResult?.http_url_to_repo
-
+                settings: settings
             }
 
         }, AdminPublishForkReaderComponent)

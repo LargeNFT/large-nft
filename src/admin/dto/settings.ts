@@ -13,6 +13,12 @@ class Settings {
     ipfsHost?:string
 
     @Allow()
+    defaultGitProvider?:{} 
+
+    @Allow()
+    gitProviders?:{} 
+
+    @Allow()
     username?:string 
 
     @Allow()

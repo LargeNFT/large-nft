@@ -17,6 +17,7 @@ import { ItemWebService } from "./item-web-service.js";
 import { QueryCacheService } from "../../service/core/query-cache-service.js";
 import { SchemaService } from "../../service/core/schema-service.js";
 import { GitService } from "../core/git-service.js";
+import { SettingsService } from "../core/settings-service.js";
 
 @injectable()
 class ChannelWebService {
@@ -29,7 +30,8 @@ class ChannelWebService {
         private itemWebService:ItemWebService,
         private queryCacheService:QueryCacheService,
         private gitService:GitService,
-        private schemaService:SchemaService
+        private schemaService:SchemaService,
+        private settingsService:SettingsService
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -99,6 +101,9 @@ class ChannelWebService {
 
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
 
+        let settings = await this.settingsService.get()
+        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
+
         return {
             channel: channel,
             // themes: themes,
@@ -110,7 +115,8 @@ class ChannelWebService {
             authorPhoto: authorPhoto,
             itemCount: itemCount,
             editable: editable,
-            dateCreated: moment(channel.dateCreated).format("MMM Do YYYY")    
+            dateCreated: moment(channel.dateCreated).format("MMM Do YYYY"),
+            gitProvider: gitProvider
         }
 
     }

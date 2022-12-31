@@ -151,7 +151,6 @@ class ChannelService {
     await this.put(channel)
   }
 
-
   async buildAttributeCounts(channelId:string) {
 
     let attributeCounts:AttributeCount[] = await this.itemService.getAttributeCountByChannel(channelId)
@@ -175,6 +174,24 @@ class ChannelService {
       await this.attributeCountService.put(Object.assign(ac, attributeCount))
     }
 
+
+  }
+
+  async getGitProviderCredentials(channel:Channel, settings:any) {
+
+    //If it's "default" or blank then look at the global default
+    if (!channel.gitProvider || channel.gitProvider == "default") {
+
+      if (settings.defaultGitProvider) {
+        return settings.gitProviders[settings.defaultGitProvider]
+      } else {
+        return settings.gitProviders.github
+      }
+      
+    }
+
+    //Check if the channel has a specific one set.
+    return settings.gitProviders[channel.gitProvider]
 
   }
 

@@ -197,9 +197,6 @@ class ImageService {
   //Grabbing from the 
   private getExcerptByFirstParagraph (excerpt, options) {
 
-    console.log(excerpt)
-
-
     //Strip tags except for <p>
     // excerpt = excerpt.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')
     
@@ -214,9 +211,6 @@ class ImageService {
     }
 
     excerpt = he.encode(excerpt, {allowUnsafeSymbols: true})
-
-    console.log(excerpt)
-
 
     return excerpt
 

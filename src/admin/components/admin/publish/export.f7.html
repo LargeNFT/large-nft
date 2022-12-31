@@ -49,7 +49,7 @@
 
 
                                 
-                                ${settings?.personalAccessToken?.length > 0 ? $h`
+                                ${channelViewModel?.gitProvider?.personalAccessToken?.length > 0 ? $h`
 
                                     ${!ipfsReady ? $h`
                                         <div class="ipfs-label">IPFS Initializing...</div>
@@ -242,7 +242,7 @@
 
 
                                 ` : $h`
-                                    <p>Configure <a href="/admin/settings">Gitlab</a> to begin export.</p>
+                                    <p>Configure a <a href="/admin/settings">git provider</a> to begin export.</p>
                                 `}
 
 
@@ -434,6 +434,7 @@
 
         let showRefresh = false
         
+        let gitProvider
 
         $on('pageInit', async () => {
 
@@ -442,6 +443,7 @@
             //Initialize IPFS
             await ipfsService.init()
             ipfsReady = ipfsService.ipfs != undefined
+
 
             await $update()
 

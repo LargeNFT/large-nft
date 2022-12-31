@@ -98,6 +98,12 @@ class Channel {
     publishedCid?:string
 
     @Allow()
+    gitProvider?:string
+
+    @Allow()
+    httpUrlToRepo?:string
+
+    @Allow()
     publishReaderRepoId?:string
 
     @Allow()

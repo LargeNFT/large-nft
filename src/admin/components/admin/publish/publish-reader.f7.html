@@ -42,73 +42,86 @@
 
                 <div class="card-content card-content-padding">
 
-                  ${settings?.personalAccessToken?.length > 0 ? $h`
+                  ${gitProvider?.personalAccessToken?.length > 0 ? $h`
 
                     ${showPublishReader ? $h`
                       
-                      <form class="list"  @submit="${publishReaderSubmit}">
-                        <ul>
-                          <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
+                      <form @submit="${publishReaderSubmit}">
 
-                                    ${!ipfsReady ? $h`
-                                      <div class="ipfs-label">IPFS Initializing...</div>
-                                    ` : $h`
-                                        <div class="ipfs-label">
-                                            Status: <a href="/admin/connect">IPFS Ready</a>
-                                        </div>
-                                    `}
-
-
-                                    ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
-                                      <div class="repo-status">
-                                        <p><strong>Remote Repository:</strong> ${repoURI}</p> <a href="#" class="link" @click="${clearGitClick}">Clear local cache</a>
-                                        <!-- <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
-                                        <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>  
-                                        <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                               -->
-                                      </div>
-
-                                      ${showPublishReaderStatus && ipfsReady ? $h`
-
-                                        ${channelViewModel.channel.contractAddress ? $h`
-                                          <p>Reader will be configured to connect to: ${channelViewModel.channel.contractAddress}</p>  
-                                        ` : $h`
-                                          <p>Note: Contract is not deployed. The reader will not attempt to connect to Ethereum.</p>  
-                                        `}
-
-                                        ${publishReaderOutput ? $h`
-                                          <div class="publish-output" innerHTML="${publishReaderOutput}"></div>
-                                        ` : $h`
-                                          <div class="publish-output" style="display:none;"></div>
-                                        `}
-
-                                        ${!publishing ? $h`
-                                          <button class="button button-fill button-small deploy-button" type="submit">Publish Reader</button>
-                                        ` : $h`
-                                          <span/>
-                                        `}
-                                        
-                                        
-                                      ` : $h`
-                                        <p style="display:none;"></p>
-                                      `}
-
-                                    ` : $h``}
-
-
-
-                                </div>
+                        ${!ipfsReady ? $h`
+                          <div class="ipfs-label">IPFS Initializing...</div>
+                        ` : $h`
+                            <div class="ipfs-label">
+                                Status: <a href="/admin/connect">IPFS Ready</a>
                             </div>
-                          </li>
-                        </ul>
+                        `}
+
+
+                        ${channelViewModel.channel.publishReaderRepoId > 0 ? $h`
+                          <div class="repo-status">
+                            <p><strong>Remote Repository:</strong> ${repoURI}</p> <a href="#" class="link" @click="${clearGitClick}">Clear local cache</a>
+                            <!-- <p><strong>Gitlab Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                            <p><strong>Gitlab Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>  
+                            <p><strong>Fork Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>                                                                                                                                                               -->
+                          </div>
+
+                          ${showPublishReaderStatus && ipfsReady ? $h`
+
+                            ${channelViewModel.channel.contractAddress ? $h`
+                              <p>Reader will be configured to connect to: ${channelViewModel.channel.contractAddress}</p>  
+                            ` : $h`
+                              <p>Note: Contract is not deployed. The reader will not attempt to connect to Ethereum.</p>  
+                            `}
+
+                            ${publishReaderOutput ? $h`
+                              <div class="publish-output" innerHTML="${publishReaderOutput}"></div>
+                            ` : $h`
+                              <div class="publish-output" style="display:none;"></div>
+                            `}
+
+
+                            
+                            
+                            <div class="row block margin-top">
+
+                              <div class="col-0 large-30"></div>
+                
+                              <a href="/admin/publish/${channelViewModel.channel._id}" class="button button-outline color-gray col-50 large-30">
+                                Back to menu 
+                              </a>
+
+
+                              ${!publishing ? $h`
+                                <button class="button button-fill col-50 large-30" type="submit">Publish Reader</button>
+                              ` : $h`
+
+                                <a href="#" class="button button-outline color-blue col-50 large-30">
+                                  Publishing...
+                                </a>
+                              `}
+        
+                
+                            </div>
+
+
+
+
+
+                          ` : $h`
+                            <p style="display:none;"></p>
+                          `}
+
+                        ` : $h``}
+
+
+
                       </form>                    
                     ` : $h`
                       <p>Collection must be deployed to IPFS and you must fork the Large Reader before publishing.</p>  
                     `}
                     
                   ` : $h`
-                    <p>Configure <a href="/admin/settings">Gitlab</a> to deploy the collection reader.</p>
+                    <p>Configure a <a href="/admin/settings">git provider</a> to deploy the collection reader.</p>
                   `}
 
 
@@ -198,8 +211,8 @@
 
         // console.log(channelViewModel)
 
-        let repoURI
-
+        let repoURI = channelViewModel.channel.httpUrlToRepo
+        let gitProvider 
 
         $on('pageInit', async () => {
 
@@ -207,10 +220,8 @@
           await ipfsService.init()
           ipfsReady = ipfsService.ipfs != undefined
 
-          if (channelViewModel.channel.publishReaderRepoId) {
-            let existingForkResult = await gitlabService.getExistingFork(channelViewModel.channel)
-            repoURI = existingForkResult.http_url_to_repo
-          }
+          gitProvider = await channelService.getGitProviderCredentials(channelViewModel.channel, settings)
+
 
           await $update()
 
@@ -231,8 +242,6 @@
           try {
 
             let ipfsDir = `/export/${channelViewModel.channel._id}`
-
-            console.log(`${ipfsDir}/contractMetadata.json`)
 
             let contractMetadata = await toBuffer(ipfsService.ipfs.files.read(`${ipfsDir}/contractMetadata.json`))
 

@@ -21,6 +21,8 @@ interface ChannelViewModel {
 
     itemCount:number
 
+    gitProvider:{}
+
     editable:boolean
 
     dateCreated:string

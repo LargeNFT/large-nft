@@ -100,7 +100,7 @@ class RoutingService {
         let modelResult:any = await model(routeTo)
 
 
-        // //Attach container to props.
+        //Attach container to props.
         let props = Object.assign({}, modelResult)
         props.container = container
 

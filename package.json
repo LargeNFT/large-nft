@@ -78,8 +78,8 @@
 
     "arg": "5.0.2",
     "workbox-window": "6.5.4",
-    "he": "1.2.0"
-
+    "he": "1.2.0",
+    "@isomorphic-git/cors-proxy": "2.7.1"
     
   },
   "dependencies": {

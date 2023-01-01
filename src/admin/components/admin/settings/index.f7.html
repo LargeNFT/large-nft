@@ -48,8 +48,31 @@
                     </div>
     
                     <div class="card">
+                        <div class="card-header">Git CORS Proxy</div>
+                        <div class="card-content card-content-padding">
+
+                            <p>
+                                Configure a <a href="https://github.com/isomorphic-git/cors-proxy" class="external">proxy</a> to solve CORS issues when pushing to GitHub and GitLab. 
+                            </p>
+
+                            <div class="list">
+                                <ul>
+                                    <li class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">URL</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="gitCorsProxy" value="${settings?.gitCorsProxy}" placeholder="http://localhost:5000" />
+                                                <span class="input-clear-button"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
                         <div class="card-header">Git Settings</div>
-                        
                         <div class="card-content card-content-padding">
 
                             <div class="list">
@@ -87,7 +110,6 @@
                             <br />
     
                         </div>
-    
                     </div>
 
 
@@ -269,6 +291,7 @@
                 _rev: formData._rev,
                 ipfsHost: formData.ipfsHost,
                 defaultGitProvider: formData.gitProvider,
+                gitCorsProxy: formData.gitCorsProxy,
                 gitProviders:{
                     gitlab:{
                         name: "gitlab",

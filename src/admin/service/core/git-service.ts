@@ -99,6 +99,8 @@ class GitService implements GitProviderService {
         } catch(ex) {}
 
 
+        let settings = await this.settingsService.get()
+
         if (!currentBranch) {
 
             this.logPublishReaderProgress(`Git clone: ${existingForkResult.httpUrlToRepo} to ${dir}`)
@@ -108,6 +110,7 @@ class GitService implements GitProviderService {
                     fs,
                     http,
                     dir,
+                    corsProxy: settings.gitCorsProxy,
                     url: existingForkResult.httpUrlToRepo,
                     ref: existingForkResult.defaultBranch,
                     singleBranch: true
@@ -134,7 +137,8 @@ class GitService implements GitProviderService {
                     http,
                     dir,
                     ref: existingForkResult.defaultBranch,
-                    singleBranch: true
+                    singleBranch: true,
+                    corsProxy: settings.gitCorsProxy
                 })
             )
         }
@@ -218,6 +222,9 @@ class GitService implements GitProviderService {
 
     public async gitPush(channel:Channel, username:string, password:string) {
 
+        let settings = await this.settingsService.get()
+
+
         this.logPublishReaderProgress("Git push...")
 
         let fs = this.fs
@@ -229,6 +236,7 @@ class GitService implements GitProviderService {
             dir: dir,
             remote: 'origin',
             ref: this.defaultBranch,
+            corsProxy: settings.gitCorsProxy,
             onAuth: () =>  {
 
                 return {

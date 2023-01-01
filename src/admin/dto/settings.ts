@@ -19,6 +19,9 @@ class Settings {
     gitProviders?:{} 
 
     @Allow()
+    gitCorsProxy?:string
+
+    @Allow()
     username?:string 
 
     @Allow()

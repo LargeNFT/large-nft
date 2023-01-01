@@ -35,7 +35,7 @@
               </div>
             </div>
 
-            ${channelViewModel.itemCount > 0 ? $h`
+            ${showForm ? $h`
               
               <div class="block-title">Publish Reader</div>
               <div class="card">
@@ -130,11 +130,38 @@
               </div>
 
             ` : $h`
-              <div class="card">
-                <div class="card-content card-content-padding">
-                  <p>Add NFTs to the collection before publishing.</p>
-                </div>
-              </div>
+
+                ${!hasItems ? $h`
+                        
+                  <div class="card">
+                    <div class="card-content card-content-padding">
+                        <p>Add NFTs to the collection before publishing.</p>
+                    </div>
+                  </div>
+
+              ` : $h` `}
+
+              ${!gitConfigured ? $h`
+                  
+                  <div class="card">
+                    <div class="card-content card-content-padding">
+                        <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
+                    </div>
+                  </div>
+
+              ` : $h` `}
+
+              ${!gitCorsProxy ? $h`
+                  
+                  <div class="card">
+                    <div class="card-content card-content-padding">
+                        <p>Configure a <a href="/admin/settings">git CORS proxy</a> to deploy the reader.</p>
+                    </div>
+                  </div>
+
+              ` : $h` `}
+
+
               
             `}
 
@@ -209,7 +236,12 @@
         let showPublishReaderStatus = channelViewModel.channel.publishReaderRepoId > 0 && channelViewModel.channel.publishReaderRepoStatus == "complete"
         let showPublishReader = channelViewModel.channel.localCid != undefined
 
-        // console.log(channelViewModel)
+        
+        let hasItems = channelViewModel.itemCount > 0 
+        let gitConfigured = channelViewModel?.gitProvider?.personalAccessToken?.length > 0
+        let gitCorsProxy = settings.gitCorsProxy?.length > 0
+        let showForm = hasItems && gitConfigured && gitCorsProxy 
+
 
         let repoURI = channelViewModel.channel.httpUrlToRepo
         let gitProvider 

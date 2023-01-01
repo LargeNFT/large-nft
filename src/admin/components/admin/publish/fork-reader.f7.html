@@ -10,7 +10,6 @@
 
         <div class="col-100 large-50 center">
 
-
           <div class="block block-strong inset col-100 no-margin-bottom">
             <div class="breadcrumbs ">
               <div class="breadcrumbs-item">
@@ -35,79 +34,98 @@
             </div>
           </div>
 
-          ${channelViewModel.itemCount > 0 ? $h`
+          ${showForm ? $h`
 
-          <div class="block-title">Create Git Repository</div>
-          <div class="card">
-
-            <div class="card-content card-content-padding">
-
-              ${channelViewModel?.gitProvider?.personalAccessToken?.length > 0 ? $h`
-
+            <div class="block-title">Create Git Repository</div>
+            <div class="card">
+  
+              <div class="card-content card-content-padding">
                 <form id="fork-reader" @submit="${createForkSubmit}">
 
                   ${forking ? $h`
                     <div class="forking-label">
                       Forking...
                     </div>
-
+    
                     <div class="preloader"></div>
-
+    
                   ` : $h`
-
-
+    
+    
                     <div class="forking-label" style="display:none;"></div>
-
-
+    
+    
                     ${channelViewModel.channel.publishReaderRepoId ? $h`
                       <div class="repo-status">
-
+    
                         <p><strong>Current Repo:</strong> ${channelViewModel.channel.httpUrlToRepo}</p>
-
+    
                         <p><strong>Configured Provider:</strong> ${channelViewModel?.gitProvider?.name}</p>
-
+    
                         <p><strong>Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
                         <p><strong>Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>
                         <p><strong>Job Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
                       </div>
                     ` : $h`<span />`}
-
-
+    
+    
                     <div class="row block">
-
+    
                       <div class="col-0 large-30"></div>
         
                       <a href="/admin/publish/${channelViewModel.channel._id}" class="button button-outline color-gray col-50 large-30">
                         Back to menu 
                       </a>
-
+    
                       <button type="submit" class="button button-fill col-50 large-30">
                         Create/Connect Fork
                       </button>
         
                     </div>
-
+    
                   `}
-
+    
                 </form>
-
-              ` : $h`
-                <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
-              `}
-
-
-            </div>
-
-          </div>
+              </div>
+  
+            </div>    
 
           ` : $h`
-          <div class="card">
-            <div class="card-content card-content-padding">
-              <p>Add NFTs to the collection before publishing.</p>
-            </div>
-          </div>
 
+              ${!hasItems ? $h`
+                  
+                <div class="card">
+                  <div class="card-content card-content-padding">
+                    <p>Add NFTs to the collection before publishing.</p>
+                  </div>
+                </div>
+
+              ` : $h` `}
+
+              ${!gitConfigured ? $h`
+                
+                <div class="card">
+                  <div class="card-content card-content-padding">
+                    <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
+                  </div>
+                </div>
+
+              ` : $h` `}
+
+              ${!gitCorsProxy ? $h`
+                
+                <div class="card">
+                  <div class="card-content card-content-padding">
+                    <p>Configure a <a href="/admin/settings">git CORS proxy</a> to deploy the reader.</p>
+                  </div>
+                </div>
+
+              ` : $h` `}
+          
           `}
+
+
+
 
         </div>
 
@@ -179,6 +197,12 @@
 
     let forking = false
     
+    let hasItems = channelViewModel.itemCount > 0 
+    let gitConfigured = channelViewModel?.gitProvider?.personalAccessToken?.length > 0
+    let gitCorsProxy = settings.gitCorsProxy?.length > 0
+    let showForm = hasItems && gitConfigured && gitCorsProxy 
+
+
 
     $on('pageInit', async () => {
 

@@ -28,7 +28,7 @@ Large is open source software and is not a cloud service. Large gives users the 
 ### Install dependencies
 ```console
 git clone https://github.com/LargeNFT/large-nft.git
-cd large
+cd large-nft
 npm install
 ```
 

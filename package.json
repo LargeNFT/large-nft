@@ -4,7 +4,7 @@
   "description": "A decentralized, offline-first content management system for NFT communities.",
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/american-space-software/large"
+    "url": "git+https://github.com/LargeNFT/large-nft"
   },
   "scripts": {
     "start:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js serve --config=webpack.dev.ts ",
@@ -17,14 +17,14 @@
   "author": "Large Authors",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/american-space-software/large/issues"
+    "url": "https://github.com/LargeNFT/large-nft/issues"
   },
 
   "type": "module",
 
   "types": "./dist/index.d.ts", 
 
-  "homepage": "https://gitlab.com/american-space-software/large#readme",
+  "homepage": "https://github.com/LargeNFT/large-nft#readme",
   "sideEffects": [
     "**/*.css"
   ],

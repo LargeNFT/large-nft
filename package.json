@@ -7,6 +7,7 @@
     "url": "git+https://github.com/LargeNFT/large-nft"
   },
   "scripts": {
+    "start": "node node_modules/.bin/http-server -a localhost -p 8000 -c-1",
     "start:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js serve --config=webpack.dev.ts ",
     "test": "node --require esm node_modules/.bin/hardhat test",
     "build": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",

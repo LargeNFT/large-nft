@@ -1,56 +1,47 @@
 
 # Large NFT
-A decentralized, offline-first content management system for NFT communities.
+**Large NFT** is the easiest way to self-publish an NFT collection on **Ethereum** and **IPFS**. Large stores content directly in the browser so it can work offline-first and help ensure a community can always keep their NFTs online even if the creator disappears.
 
-Publish your book, fan-fiction, blog, or art as a forkable NFT collection and sell your work as digital collectibles on marketplaces like LooksRare, OpenSea, and more.
+Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
-Large is open source software that makes it simple to create and publish your digital art and other creative content as an NFT collection on Ethereum and IPFS.  
+Fork any NFT collection.
 
-Each generated **Large NFT Reader** website is a simple HTML/CSS/Javascript app built with Framework7 that includes native theming for iOS, Android, and Desktop.
+Quickly generate a full-featured SEO-friendly PWA built with Framework7 to showcase your collection. It includes native theming for iOS, Android, and Desktop.
 
-The **Large NFT Admin** and each generated **Large NFT Reader** apps are offline-first and can be distributed with any simple CDN or run locally. GitHub and GitLab Pages are integrated and their CI pipelines can be used to keep Ethereum transaction infomation current. Users can also connect their wallets directly to receive real-time data from their own nodes.  
+Easily and inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages, or any other simple, static webhost. No server compute required. No database server required.
 
-Large is open source software and is not a cloud service. Large gives users the tools to easily provide hosted infrastructure themselves and distribute the data in a format that guarantees all members of the community can contribute to keeping the content online for as long as necessary. 
+**Large Sync** is a simple Node app that generates live Ethereum transaction data for the reader in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
 
-*Networking in the browser can be tricky and caveats apply. There are commercial technical solutions to most problems.  
+Supports [Alchemy](https://www.alchemy.com/) and local Ethereum nodes. 
 
 ## Installation 
 1. Recommended: Fork this repo. 
-    * The default CI pipeline will build and deploy a fresh copy.
-    * Access through GitLab/GitHub Pages.
+    * The default CI pipeline deploys a copy to GitHub/GitLab Pages.
 
-2. [Use most recent build](https://american-space-software.gitlab.io/large/)
-    * All data is stored in your local browser. We are never able to help you retreive it.
+2. Clone repo, install node dependencies, run local static webhost.
 
-3. Clone repo, install node dependencies, run local static webhost.
 
+### Clone
+```console
+git clone https://github.com/LargeNFT/large-nft.git
+```
 
 ### Install dependencies
 ```console
-git clone https://github.com/LargeNFT/large-nft.git
-cd large-nft
 npm install
 ```
 
-### Production build
+### Run a local HTTP Server
 ```console
-npm run build
+npm run start
 ```
 
-### Dev server
-```console
-npm run start:dev
-```
 
-### Creating a dev build
 
-The development build outputs full source maps to better debug certain kinds of issues.
+### Access in Browser
+Large will be available at [http://localhost:8000](http://localhost:8000) by default.
 
-```console
-npm run build:dev
-```
-
-The production builds are located in the "public" folder. This repo includes a GitLab compatible script that builds and deploys Large automatically when there are new commits to the master branch. 
+![Large Admin](src/admin/html/images/large-start.jpg)
 
 
 ## How it Works
@@ -65,44 +56,44 @@ The production builds are located in the "public" folder. This repo includes a G
 
 The community can easily keep the website online and use it as a starting point for custom fan experiences.
 
-### Create an NFT collection
+### Create an NFT Collection
 Create a collection with the Large admin panel. 
 
 * Choose a name, symbol, description, license, and NFT attributes.
 * Create attribute categories.
     * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
 
-### Create content. 
+### Create Content 
 * Each item has a title, content, and a cover image.
 * If a cover image is not provided an SVG is generated from the text.
 * Choose a theme for each item.
 * Automatically generates HTML animation for display on marketplaces.
 
-### Import and fork existing NFT project
+### SVG and HTML Themes
+A theme allows you to apply CSS formatting to an NFT/item. Create themes and apply them to multiple items. 
+
+### Import and Fork Existing NFT Project
 * Instead of starting your project from scratch, import an existing project that was published to IPFS with Large.
 * Provide the IPFS hash.
 * Remix existing ideas.
 
+---
 
-# Publish
+# Publish to Ethereum, IPFS, and Git
 
-### Export collection to IPFS node.
+### Export collection metadata to IPFS.
 * Connect to browser-based node or configure remote IPFS api.
 * NFT metadata, images, animations, and backup data are exported to IPFS.
+
+### Export to GitHub/GitLab
+* Create a custom fork of the Large Reader.
+* Use personal access token authentication and a CORS proxy to push content directly from your browser to GitHub and GitLab. 
 
 ### Deploy contract
 * Deploy ERC-721 smart contract with minting capability to Ethereum mainnet or other compatible network.
 * Customize smart contract or deploy the default low-gas contract.
     * Based on [ERC721A](https://github.com/chiru-labs/ERC721A)
 
-### Fork reader
-* Creates a custom fork of the [Large Reader](https://gitlab.com/ptoner/large-reader)
-
-### Themes
-A theme allows you to apply CSS formatting to an NFT/item. Create themes and apply them to multiple items. 
-
-### Static Pages.
-Create pages with static content.
 
 # Large Reader 
 Generate a search-engine friendly static website for each collection. It is also a full-featured PWA (Progressive Web App) with a native look and feel on modern devices.
@@ -111,6 +102,7 @@ Generate a search-engine friendly static website for each collection. It is also
 * Users do need a web3 browser to mint and interact with NFTs.
 
 Easily read and enjoy content in a familiar interface.
+
 
 ### Offline-first.
 * Easily distributed on any static webhost. 
@@ -138,6 +130,33 @@ Easily read and enjoy content in a familiar interface.
 * Large Reader ships with a full-featured copy of Large Admin.
 * Fork an existing project. Help keep the files online.
 * Easily create derivitive projects.
+
+The following commands are to be used in the forked repository that you publish from the Large Admin. After pushing the content to your git provider you should checkout the repo and run the following commands.
+
+### Generate reader for localhost
+```console
+npm run generate:dev
+```
+
+### Generate reader for production
+```console
+npm run generate
+```
+
+### Start Large Sync
+```console
+npm run sync
+```
+
+### Start local HTTP server
+```console
+npm run serve
+```
+
+### Access in Browser
+Your Large Reader will be available at [http://localhost:8081](http://localhost:8081) by default.
+
+
 
 
 # Reader Showcase

@@ -1,25 +1,31 @@
 
-# Large NFT
-**Large NFT** is the easiest way to self-publish an NFT collection on **Ethereum** and **IPFS**. Large stores content directly in the browser so it can work offline-first and help ensure a community can always keep their NFTs online even if the creator disappears.
+# Large
+
+The easiest way to self-publish an NFT collection on **Ethereum** and **IPFS**. 
 
 Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
-Fork any NFT collection.
+Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
 
-Quickly generate a full-featured SEO-friendly PWA built with Framework7 to showcase your collection. It includes native theming for iOS, Android, and Desktop.
+Fork any NFT collection to experiment.
+
+Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your collection. It includes native theming for iOS, Android, and Desktop.
 
 Easily and inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages, or any other simple, static webhost. No server compute required. No database server required.
 
-**Large Sync** is a simple Node app that generates live Ethereum transaction data for the reader in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
+## Components
+
+**Large NFT** is a self-hosted web app to help build and publish an NFT collection right in your browser. Create new collections from scratch or fork existing ones. Data is stored right in local browser storage. **Large NFT** can also be whitelabeled and distributed to users. It scales by relying on the user's own hardware instead of cloud servers. So the hardware requirements as your community grows are minimal. 
+
+**Large Reader** is a statically generated, self-hosted PWA that can be deployed to any simple webhost to let users enjoy the collection from any device. Large Reader is optimized for text-based content and has functionality similar to the Kindle. When combined with **Large Sync** it also shows the full transaction history for every token, for every user, and includes a full collection leaderboard. 
+
+**Large Sync** is a simple Node app that generates live Ethereum transaction data for **Large Reader** in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
 
 Supports [Alchemy](https://www.alchemy.com/) and local Ethereum nodes. 
 
+Large is alpha software.
+
 ## Installation 
-1. Recommended: Fork this repo. 
-    * The default CI pipeline deploys a copy to GitHub/GitLab Pages.
-
-2. Clone repo, install node dependencies, run local static webhost.
-
 
 ### Clone
 ```console
@@ -36,12 +42,11 @@ npm install
 npm run start
 ```
 
-
-
 ### Access in Browser
 Large will be available at [http://localhost:8000](http://localhost:8000) by default.
 
 ![Large Admin](src/admin/html/images/large-start.jpg)
+
 
 
 ## How it Works
@@ -150,21 +155,31 @@ npm run sync
 
 ### Start local HTTP server
 ```console
-npm run serve
+npm run sync --  --env dev --alchemy <API key>
 ```
+
+**CLI parameters**
+
+--env 
+
+Valid options are "dev" or "production". Default is "production". This loads either the dev or production settings for hostname and baseURL. 
+
+--alchemy 
+
+Pass a valid API key to connect the sync process to a hosted Ethereum node. 
+
+Note: The first -- in the example is mandatory.
+
 
 ### Access in Browser
 Your Large Reader will be available at [http://localhost:8081](http://localhost:8081) by default.
 
 
-
-
-# Reader Showcase
+# Large Reader Showcase
 These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
 * [Alice's Adventures in Wonderland](https://readalice.com)
 
-
-
+# CORS
 
 ## Enable CORS to publish to IPFS
 To publish to a hosted IPFS node:
@@ -177,3 +192,7 @@ To publish to a hosted IPFS node:
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST", "PUT", "OPTIONS"]'
 ```
+
+## Install CORS Proxy to publish to GitHub/GitLab
+Large publishes directly to your git provider from browser storage. By default both GitHub and GitLab make this difficult because of their CORS setup. To get around this please install and use the [CORS Proxy](https://github.com/isomorphic-git/cors-proxy). You configure the URL on the Large NFT settings page.
+

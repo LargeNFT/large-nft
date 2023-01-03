@@ -34,16 +34,10 @@ Large is alpha software.
 git clone https://github.com/LargeNFT/large-nft.git
 ```
 
-### Install dependencies
-```console
-npm install
-```
-
 ### Run a local HTTP Server
 ```console
 npm run start
 ```
-
 
 # Large NFT
 

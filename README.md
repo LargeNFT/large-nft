@@ -1,7 +1,6 @@
 
 # Large
-
-The easiest way to self-publish any content as an NFT collection on **Ethereum** and **IPFS**. 
+The easiest way to publish your work as an NFT collection on **Ethereum** and **IPFS**. 
 
 Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
@@ -9,9 +8,9 @@ Build a fan site for an existing NFT collection.
 
 Fork any NFT collection to experiment.
 
-Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your collection. Native theming for iOS, Android, and Desktop.
+Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your book or collection. Native theming for iOS, Android, and Desktop.
 
-Easily and inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages, or any other simple, static webhost. No server compute required. No database server required.
+Inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages, or any other simple, static webhost. No server compute required. No database server required.
 
 Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
 
@@ -45,14 +44,15 @@ npm install
 npm run start
 ```
 
+
+# Large NFT
+
 ### Access in Browser
 Large will be available at [http://localhost:8000](http://localhost:8000) by default.
 
 ![Large Admin](src/admin/html/images/large-start.jpg)
 
 
-
-## How it Works
 * Create one or more collections with text, images, and mixed-media NFTs.
 * Content is stored in your browser using [PouchDB](https://pouchdb.com).
 * Generate NFT metadata and publish to IPFS.
@@ -78,7 +78,7 @@ Create a collection with the Large admin panel.
 * Automatically generates HTML animation for display on marketplaces.
 
 ### SVG and HTML Themes
-A theme allows you to apply CSS formatting to an NFT/item. Create themes and apply them to multiple items. 
+Apply custom CSS formatting to an NFT/item. Create themes and apply them to multiple items. 
 
 ### Import and Fork Existing NFT Project
 * Instead of starting your project from scratch, import an existing project that was published to IPFS with Large.
@@ -87,7 +87,7 @@ A theme allows you to apply CSS formatting to an NFT/item. Create themes and app
 
 ---
 
-# Publish to Ethereum, IPFS, and Git
+## Publish to Ethereum, IPFS, and Git
 
 ### Export collection metadata to IPFS.
 * Connect to browser-based node or configure remote IPFS api.
@@ -134,12 +134,8 @@ Easily read and enjoy content in a familiar interface.
 ### Generate Large Reader without deploying a smart contract.
 * It's not required to deploy a contract if you do not want to mint NFTs.
 
-### Fork Project
-* Large Reader ships with a full-featured copy of Large Admin.
-* Fork an existing project. Help keep the files online.
-* Easily create derivitive projects.
 
-The following commands are to be used in the forked repository that you publish from the Large Admin. After pushing the content to your git provider you should checkout the repo and run the following commands.
+The following commands are to be used in the forked repository that you publish from the Large Admin. After pushing the content to your git provider, clone the repo and run the following commands.
 
 ### Generate reader for localhost
 ```console
@@ -150,6 +146,9 @@ npm run generate:dev
 ```console
 npm run generate
 ```
+
+
+# Large Sync
 
 ### Start Large Sync
 ```console

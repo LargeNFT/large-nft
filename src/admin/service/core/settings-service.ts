@@ -12,7 +12,26 @@ class SettingsService {
     ) {}
 
     async get(): Promise<Settings> {
-        return this.settingsRepository.get()
+
+        let settings = await this.settingsRepository.get()
+        if (settings) return settings
+
+
+        return {
+            _id: 'single',
+            defaultGitProvider: 'github',
+            gitProviders:{
+                gitlab:{
+                    name: "gitlab" //username and password added when saved
+                },
+                github: {
+                    name: "github" //username and password added when saved
+                }
+            }
+        }
+
+
+        
     }
 
     async put(settings: Settings) {

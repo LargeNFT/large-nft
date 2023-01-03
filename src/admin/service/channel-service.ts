@@ -25,6 +25,7 @@ import { QueryCache } from "../dto/query-cache.js";
 import { AttributeCount } from "../dto/attribute.js";
 import { AttributeCountService } from "./attribute-count-service.js";
 import { SchemaService } from "./core/schema-service.js";
+import { Settings } from "../dto/settings.js";
 
 @injectable()
 class ChannelService {
@@ -177,7 +178,7 @@ class ChannelService {
 
   }
 
-  async getGitProviderCredentials(channel:Channel, settings:any) {
+  async getGitProviderCredentials(channel:Channel, settings:Settings) {
 
     //If it's "default" or blank then look at the global default
     if (!channel.gitProvider || channel.gitProvider == "default") {
@@ -185,7 +186,7 @@ class ChannelService {
       if (settings.defaultGitProvider) {
         return settings.gitProviders[settings.defaultGitProvider]
       } else {
-        return settings.gitProviders.github
+        return settings.gitProviders['github']
       }
       
     }

@@ -13,7 +13,7 @@ class Settings {
     ipfsHost?:string
 
     @Allow()
-    defaultGitProvider?:{} 
+    defaultGitProvider?:string
 
     @Allow()
     gitProviders?:{} 

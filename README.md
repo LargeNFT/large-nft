@@ -1,17 +1,20 @@
 
 # Large
 
-The easiest way to self-publish an NFT collection on **Ethereum** and **IPFS**. 
+The easiest way to self-publish any content as an NFT collection on **Ethereum** and **IPFS**. 
 
 Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
-Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
+Build a fan site for an existing NFT collection.
 
 Fork any NFT collection to experiment.
 
-Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your collection. It includes native theming for iOS, Android, and Desktop.
+Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your collection. Native theming for iOS, Android, and Desktop.
 
 Easily and inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages, or any other simple, static webhost. No server compute required. No database server required.
+
+Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
+
 
 ## Components
 

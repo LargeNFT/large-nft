@@ -14,6 +14,9 @@ Inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages
 
 Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
 
+### Community
+Join us on [Discord](https://discord.gg/35U29bEj)
+
 
 ## Components
 

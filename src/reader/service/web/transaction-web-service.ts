@@ -169,7 +169,14 @@ class TransactionWebService {
     }
 
     async getLatest() {
-        let result = await axios.get(`${this.baseURI}sync/transactions/latest.json`)
+        let result = await axios.get(`${this.baseURI}sync/transactions/latest.json`, {
+            // query URL without using browser cache
+            headers: {
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache',
+              'Expires': '0',
+            },
+          })
         return result.data
     }
 

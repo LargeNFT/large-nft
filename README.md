@@ -12,10 +12,62 @@ Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your
 
 Inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages, or any other simple, static webhost. No server compute required. No database server required.
 
-Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
+Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. 
+
+# Goals
+
+* Bring the permissionless properties of Ethereum to the rest of the NFT tech stack with a default viewer and marketplace that any user in the community can build on.
+
+* Empower users to experience feelings associated with ownership with their digital artifacts.
+
+* Help make sure users never lose the rights to keep their digital property online. 
+
+* Share and remix existing ideas. 
+
+* What if an NFT creator disappears?
+    * It's inevitable that every creator dies.
+    * It's inevitable that every company dies.
+    * The plan for technical implementation of the software stack should start with those assumptions. 
+    * Decentralization demands it. 
+    * Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
+
+* A single member of the community should be able to keep things going themselves.
+    * What happens to your digital collectibles if you're the last one who cares?
+    * Are you able to keep them online? 
+    * Do you have legal rights to display them?
+    * Permissionless ownership requires permisionless rights to display content.
+    * As an artist do you want the value you built to crumble because no one is there to pay hosting fees?
+
+* What if OpenSea disappears? What if they change their terms? What if every market disappears?
+    * Is it smart to have no backup plan if something drastic were to happen to the largest marketplace providers? A well-made collection should have a home base. 
+
+* An NFT collection should have a default viewer, marketplace, and any user should be able to run it.
+    * Otherwise we lose the permissionless and open source properties of Ethereum.
+
+* If anyone can run the whole stack it has to be designed with similar constraints as Ethereum in the sense that a single user should be able to run the entire thing on a consumer-grade machine. 
+
+* No dependency on app stores. Built for the open and free web. Large NFT and Large Reader are modern PWAs that run directly in the browser with a simple static webhost. Since it's built to work offline-first it can also be wrapped and distributed to app stores if you choose. 
+
+* Distributed through web or IPFS.
+
+* Use git as a critical piece of decentralized, P2P infrastructure.
+
+* Dependencies 
+    * A web browser.
+    * A simple static webhost.
+    * A git provider.
+    * IPFS node.
+
+* When browser networking support improves enough, be able to run the entire stack P2P right in the browser.
+    
+* Any user can run the entire stack for a particular collection. 
+
+
 
 ### Community
 Join us on [Discord](https://discord.gg/35U29bEj)
+
+
 
 
 ## Components
@@ -24,7 +76,7 @@ Join us on [Discord](https://discord.gg/35U29bEj)
 
 **Large Reader** is a statically generated, self-hosted PWA that can be deployed to any simple webhost to let users enjoy the collection from any device. Large Reader is optimized for text-based content and has functionality similar to the Kindle. When combined with **Large Sync** it also shows the full transaction history for every token, for every user, and includes a full collection leaderboard. 
 
-**Large Sync** is a simple Node app that generates live Ethereum transaction data for **Large Reader** in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
+**Large Sync** is a lightweight Node app that generates live Ethereum transaction data for **Large Reader** in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
 
 Supports [Alchemy](https://www.alchemy.com/) and local Ethereum nodes. 
 
@@ -35,6 +87,13 @@ Large is alpha software.
 ### Clone
 ```console
 git clone https://github.com/LargeNFT/large-nft.git
+```
+
+### Install
+Navigate to the new directory and run:
+
+```console
+npm install
 ```
 
 ### Run a local HTTP Server
@@ -134,12 +193,12 @@ Easily read and enjoy content in a familiar interface.
 
 The following commands are to be used in the forked repository that you publish from the Large Admin. After pushing the content to your git provider, clone the repo and run the following commands.
 
-### Generate reader for localhost
+### Generate Reader for localhost
 ```console
 npm run generate:dev
 ```
 
-### Generate reader for production
+### Generate Reader for production
 ```console
 npm run generate
 ```
@@ -157,21 +216,19 @@ npm run sync
 npm run sync --  --env dev --alchemy <API key>
 ```
 
-**CLI parameters**
+## API
 
---env 
+| Option | Default | Description | 
+| ------------- | ------------- | ------------- |
+| --env  | production | This loads either the dev or production settings for hostname and baseURL. Also in dev mode the sync process does not commit or push to the git provider. |
+| --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
+| --branch  | main  | The git branch used to push.
+| --sync-rate  | 30*1000  | Milliseconds between sync attempts. Default is 30 seconds. 
 
-Valid options are "dev" or "production". Default is "production". This loads either the dev or production settings for hostname and baseURL. 
-
---alchemy 
-
-Pass a valid API key to connect the sync process to a hosted Ethereum node. 
-
-Note: The first -- in the example is mandatory.
 
 
 ### Access in Browser
-Your Large Reader will be available at [http://localhost:8081](http://localhost:8081) by default.
+The generated Large Reader web app will be available at [http://localhost:8081](http://localhost:8081) by default.
 
 
 # Large Reader Showcase

@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.4.6-alpha",
+  "version": "0.4.7-alpha",
   "description": "A decentralized, offline-first content management system for NFT communities.",
   "repository": {
     "type": "git",
@@ -144,6 +144,7 @@
     "url": "0.11.0",
     "util": "0.12.4",
     "uuid": "8.3.2",
-    "node-fetch": "3.3.0"
+    "node-fetch": "3.3.0",
+    "simple-git": "3.15.1"
   }
 }

@@ -4,7 +4,6 @@ import "reflect-metadata"
 
 
 import fs from "fs"
-import arg from 'arg'
 
 import { Container } from "inversify"
 
@@ -19,13 +18,10 @@ import { SchemaService } from "./service/core/schema-service.js"
 
 
 import { createRequire } from 'module'
-import { ERCEvent } from "./dto/erc-event.js"
 import { TokenOwnerService } from "./service/token-owner-service.js"
-import { ERCEventService } from "./service/erc-event-service.js"
 import { TokenOwner } from "./dto/token-owner.js"
 import { TokenOwnerPageService } from "./service/token-owner-page-service.js"
 import { Transaction } from "./dto/transaction.js"
-import { TransactionService } from "./service/transaction-service.js"
 import { ProcessedTransactionService } from "./service/processed-transaction-service.js"
 const require = createRequire(import.meta.url)
 
@@ -36,10 +32,24 @@ PouchDB.plugin(require('pouchdb-quick-search'))
 
 let channelId
 
+import { simpleGit, CleanOptions } from 'simple-git'
+
+simpleGit().clean(CleanOptions.FORCE)
+
+const options = {
+  baseDir: process.cwd(),
+  binary: 'git',
+  maxConcurrentProcesses: 6,
+  trimmed: false,
+}
+
+// when setting all options in a single object
+const git = simpleGit(options)
+
 
 
 let sync = async () => {
-
+  
   let config:any = await ProcessConfig.getConfig() 
 
   if (!config.alchemy) {
@@ -117,9 +127,16 @@ let sync = async () => {
 
   
 
-  const INDEX_RATE = 30*1000 //Every 60 seconds
-
   let channelContract = await walletService.getContract("Channel")
+
+
+  //Make sure git is up-to-date before starting
+  if (config.env == "production") {
+    await git.addConfig('pull.ff', 'only')
+    await git.pull("origin", config.branch)
+    //TODO:should probably refactor this to inject different services for dev and production
+  }
+
 
 
 
@@ -130,98 +147,119 @@ let sync = async () => {
 
       let indexResult:ERCIndexResult
 
+
       try {
+
         indexResult = await transactionIndexerService.index()
 
-        createDirectories()
+        if (indexResult) {
 
-        console.log(`${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to update. Writing files.`)
-        console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
-        console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
+          createDirectories()
+
+          console.log(`${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to update. Writing files.`)
+          console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
+          console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
+  
+          //not guaranteed to be sorted in any particular order.
+          if (Object.keys(indexResult.processedTransactionsToUpdate)?.length > 0) {
+  
+            
+            //Write transactions to file
+            console.log(`Writing ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to disk`)
+            for (let _id of Object.keys(indexResult.processedTransactionsToUpdate)) {
+              writeTransactionToFile(indexResult.processedTransactionsToUpdate[_id])
+            }
+  
+  
+            console.log(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk`)
+  
+            //Write changed tokens to file
+            for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
+              fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
+            }
+  
+            //Write changed owners to file
+            console.log(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk`)
+            for (let owner of Object.keys(indexResult.ownersToUpdate)) {
+              fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
+            }
+  
+            let mostRecent:Transaction = await processedTransactionService.getLatest()
+  
+            
+            if (mostRecent) {
+  
+              console.log(`Saving latest transaction: ${mostRecent._id}`)
+            
+              //Save latest transaction
+              fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
+                _id: mostRecent._id,
+                lastUpdated: new Date().toJSON()
+              })))
+            }
+              
+
+            //Generate token owner pages for leaderboard
+            let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0)
+            let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
+
+            //Write token owner pages to files
+            let pageCount = 0
+            await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
+
+            console.log(`Writing ${tokenOwnerPages.length} token owner pages to disk`)
+            for (let tokenOwnerPage of tokenOwnerPages) {
+              // console.log(`Writing token owner page: ${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`)
+              await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
+              pageCount++
+            }
+
+            console.log(`Writing totals to disk`)
+            await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/total.json`, JSON.stringify({
+              totalPages: tokenOwnerPages.length,
+              totalRecords: tokenOwners.length
+            }))
 
 
+            if (config.env == "production") {
 
-        //not guaranteed to be sorted in any particular order.
-        if (Object.keys(indexResult.processedTransactionsToUpdate)?.length > 0) {
+              let commitMessage = `
+                ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions.
+                ${Object.keys(indexResult.tokensToUpdate).length} tokens.
+                ${Object.keys(indexResult.ownersToUpdate).length} token owners.
+                ${tokenOwnerPages.length} token owner pages.
+                Latest transaction: ${mostRecent._id}.
+              `
 
+              await git.add(['*'])
+              await git.commit(commitMessage)
+              await git.push("origin", config.branch)
+  
+              //TODO:should probably refactor this to inject different services for dev and production
+            }
           
-          //Write transactions to file
-          console.log(`Writing ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to disk`)
-          for (let _id of Object.keys(indexResult.processedTransactionsToUpdate)) {
-            writeTransactionToFile(indexResult.processedTransactionsToUpdate[_id])
+
+
+
+
+
+
           }
-
-
-          console.log(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk`)
-
-          //Write changed tokens to file
-          for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
-            fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
-          }
-
-          //Write changed owners to file
-          console.log(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk`)
-          for (let owner of Object.keys(indexResult.ownersToUpdate)) {
-            fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
-          }
-
-
-          let mostRecent:Transaction = await processedTransactionService.getLatest()
-
           
-          if (mostRecent) {
-
-            console.log(`Saving latest transaction: ${mostRecent._id}`)
-          
-            //Save latest transaction
-            fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
-              _id: mostRecent._id,
-              lastUpdated: new Date().toJSON()
-            })))
-          }
+          console.log(`Complete...waiting...`)
+  
+          //If we're up to date then wait. Otherwise just do it again.
+  
+          setTimeout(runTransactionIndexer, config.syncRate) 
 
 
-
+        } else {
+          console.log('No results to process.')
         }
-
-
-        //Generate token owner pages for leaderboard
-        let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0)
-        let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
-
-        //Write token owner pages to files
-        let pageCount = 0
-        await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
-
-        console.log(`Writing ${tokenOwnerPages.length} token owner pages to disk`)
-        for (let tokenOwnerPage of tokenOwnerPages) {
-          // console.log(`Writing token owner page: ${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`)
-          await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
-          pageCount++
-        }
-
-        console.log(`Writing totals to disk`)
-        await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/total.json`, JSON.stringify({
-          totalPages: tokenOwnerPages.length,
-          totalRecords: tokenOwners.length
-        }))
-
-        console.log(`Complete...waiting...`)
-
-        //If we're up to date then wait. Otherwise just do it again.
-
-        setTimeout(runTransactionIndexer, INDEX_RATE) 
-
-
-
 
       } catch(ex) { 
         console.log(ex) 
       }
-
-
-      
-
 
       function createDirectories() {
 
@@ -242,16 +280,6 @@ let sync = async () => {
         }
         
       }
-
-      // function writeEventToFile(event: ERCEvent) {
-        
-      //   let clonedEvent = JSON.parse(JSON.stringify(event))
-      //   delete clonedEvent._rev
-      //   delete clonedEvent['_rev_tree']
-
-      //   fs.writeFileSync(`${config.publicPath}/sync/events/${clonedEvent._id}.json`, Buffer.from(JSON.stringify(clonedEvent)))
-      // }
-
 
       function writeTransactionToFile(transaction:Transaction) {
         

@@ -1,5 +1,11 @@
 
 # Large
+
+[![Npm package version](https://badgen.net/npm/v/large-nft)](https://npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
+
+
+
+
 The easiest way to publish your work as an NFT collection on **Ethereum** and **IPFS**. 
 
 Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
@@ -20,7 +26,7 @@ Large stores and replicates NFT data directly in browser storage to help ensure 
 
 * Empower users to experience feelings associated with ownership with their digital artifacts.
 
-* Help make sure users never lose the rights to keep their digital property online. 
+* Help make sure users never lose the ability and rights to keep their digital property online for display and resale.
 
 * Share and remix existing ideas. 
 
@@ -39,7 +45,7 @@ Large stores and replicates NFT data directly in browser storage to help ensure 
     * As an artist do you want the value you built to crumble because no one is there to pay hosting fees?
 
 * What if OpenSea disappears? What if they change their terms? What if every market disappears?
-    * Is it smart to have no backup plan if something drastic were to happen to the largest marketplace providers? A well-made collection should have a home base. 
+    * Is it smart to have no backup plan if something drastic were to happen to the largest marketplace providers? A well-made collection should have a home base and it should (arguably) provide fee free trading just like the original Cryptopunks market.
 
 * An NFT collection should have a default viewer, marketplace, and any user should be able to run it.
     * Otherwise we lose the permissionless and open source properties of Ethereum.
@@ -58,17 +64,17 @@ Large stores and replicates NFT data directly in browser storage to help ensure 
     * A git provider.
     * IPFS node.
 
-* When browser networking support improves enough, be able to run the entire stack P2P right in the browser.
+
+* Provide reasonable defaults for new NFTs collection and the ability to change and customize.
+
+* To be distributed through IPFS and the web the full stack must run in a web browser.
     
 * Any user can run the entire stack for a particular collection. 
 
-
+* Provide a solid foundation for anyone to build on.
 
 ### Community
 Join us on [Discord](https://discord.gg/35U29bEj)
-
-
-
 
 ## Components
 
@@ -160,7 +166,7 @@ Apply custom CSS formatting to an NFT/item. Create themes and apply them to mult
 
 
 # Large Reader 
-Generate a search-engine friendly static website for each collection. It is also a full-featured PWA (Progressive Web App) with a native look and feel on modern devices.
+Generate a search-engine friendly static website for an NFT collection. It is also a full-featured PWA (Progressive Web App) with a native look and feel on modern devices.
 
 * Users do not need a web3 browser to read the collection.
 * Users do need a web3 browser to mint and interact with NFTs.
@@ -193,18 +199,100 @@ Easily read and enjoy content in a familiar interface.
 
 The following commands are to be used in the forked repository that you publish from the Large Admin. After pushing the content to your git provider, clone the repo and run the following commands.
 
-### Generate Reader for localhost
+## Install
+```console
+npm install
+```
+
+## Config
+Configuration for the generation and sync processes are stored in large-config.json.  
+
+### Example
+Here is an example configuration for a site hosted on GitLab Pages.
+
+```console
+{
+    "hostname": "https://ptoner.gitlab.io",
+    "baseURL": "/bladerunner-punks-reader/",
+
+    "showMintPage": false,
+    "showActivityPage": true,
+    "marketplaces": [
+        {
+            "name": "OpenSea",
+            "link": "https://opensea.io/collection/bladerunner-punks"
+        },
+        {
+            "name": "LooksRare"
+        }
+    ],
+    "externalLinks": [
+        {
+            "name": "Discord",
+            "link": "https://discord.gg/NhuCN5s2Xa"
+        },
+        {
+            "name": "Twitter",
+            "link": "https://twitter.com/BladeRunnerPunk"
+        }
+    ]
+}
+```
+
+
+| Option | Default | Description | 
+| ------------- | ------------- | ------------- |
+| hostname  | http://localhost:8081 | The hostname where the generated Reader will be hosted. When generating the dev version it defaults to localhost. |
+| baseURL  |  / | The path on the host where the generated app is hosted. This is used by the PWA's routing and must match the actual deployment URL. Must end with a /. For example /bladerunner-punks-reader/ 
+| marketplaces  |   | See below
+| externalLinks  |   | See below
+
+
+### Marketplaces
+The marketplaces field is an array of objects, with each object representing a marketplace. The objects in the array should have the following fields:
+
+**name:** a string representing the name of the marketplace. This field is required.
+
+**link (optional):** a string representing the URL of the marketplace's homepage or collections page. This field is optional and does not need to be included in every object. If the name field matches a preconfigured value (such as "LooksRare"), the link field will be set to the corresponding URL.
+
+
+In the example above, the link field for the "OpenSea" marketplace is the URL of the collection page for that marketplace. The link field for the "LooksRare" marketplace is not included. It will default to the preconfigured URL for the "LooksRare" marketplace.
+
+You can add as many objects to the marketplaces array as you like, as long as each object has the required name field.
+
+Currently OpenSea and LooksRare are configured by default.
+
+### External Links
+Configure links to external resources associated with the collection such as Discord or Twitter. 
+
+
+
+### Generate Large Reader for localhost
 ```console
 npm run generate:dev
 ```
 
-### Generate Reader for production
+### Generate Large Reader for localhost
+```console
+npm run start
+```
+
+### Access in Browser
+The generated web app will be available at [http://localhost:8081](http://localhost:8081) by default.
+
+
+
+### Generate Large Reader for production
 ```console
 npm run generate
 ```
 
 
+
 # Large Sync
+**Large Sync** is a Node.js app that reads transaction data from a configured Ethereum node and writes it to the "public" branch so it can be deployed to a web server. If configured it will also commit those changes to a configured git provider. 
+
+Transaction data is also cached locally in PouchDB. 
 
 ### Start Large Sync
 ```console
@@ -227,13 +315,13 @@ npm run sync --  --env dev --alchemy <API key>
 
 
 
-### Access in Browser
-The generated Large Reader web app will be available at [http://localhost:8081](http://localhost:8081) by default.
+
 
 
 # Large Reader Showcase
 These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
 * [Alice's Adventures in Wonderland](https://readalice.com)
+
 
 # CORS
 

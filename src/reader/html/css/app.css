@@ -1036,3 +1036,9 @@ html {
 .hidden-on-load {
   display: none;
 }
+
+
+
+.leaderboard-table .label-cell {
+  width: 200px;
+}

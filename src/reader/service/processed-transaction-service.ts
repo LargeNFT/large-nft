@@ -2,8 +2,9 @@ import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
 import { Transaction } from "../dto/transaction.js"
-import { ProcessedTransaction } from "../dto/processed-transaction.js"
+import { ProcessedEvent, ProcessedTransaction } from "../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../repository/processed-transaction-repository.js"
+import { ItemService } from "./item-service.js"
 
 
 @injectable()
@@ -11,6 +12,9 @@ class ProcessedTransactionService {
 
     @inject("ProcessedTransactionRepository")
     private processedTransactionRepository:ProcessedTransactionRepository
+
+    @inject("ItemService")
+    private itemService:ItemService
 
     constructor() {}
 
@@ -315,12 +319,66 @@ class ProcessedTransactionService {
 
     }
 
+    private async _getRowItemViewModels(processedEvents) {
+
+        let result = {}
+
+        let tokenIds = new Set<number>()
+
+
+        for (let processedEvent of processedEvents) {
+
+            if (processedEvent.tokenIds?.length > 0) {
+
+                for (let tokenId of processedEvent.tokenIds) {
+                    if (!tokenId) continue
+                    tokenIds.add(tokenId)
+                }
+
+            }
+
+        }
+
+        let rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenIds(Array.from(tokenIds))
+
+
+        for (let rivm of rowItemViewModels) {
+            result[rivm.tokenId] = rivm
+        }
+
+        return result
+
+    }
+
+    async translateTransactionsToViewModels(transactions:ProcessedTransaction[], lastUpdated?:string) : Promise<TransactionsViewModel> {
+
+        let processedEvents:ProcessedEvent[] = []
+
+        for (let transaction of transactions) {
+            if (transaction.processedEvents?.length > 0) {
+                processedEvents.push(...transaction.processedEvents)
+            }
+        }
+
+        let results:TransactionsViewModel = {
+            lastUpdated: lastUpdated,
+            transactions: transactions,
+            rowItemViewModels: await this._getRowItemViewModels(processedEvents)
+        }
+
+        return results
+    }
+
 
 }
 
-
+interface TransactionsViewModel {
+    lastUpdated?:string
+    transactions?:ProcessedTransaction[],
+    rowItemViewModels?:{}
+}
 
 export {
-    ProcessedTransactionService
+    ProcessedTransactionService, TransactionsViewModel
 }
 

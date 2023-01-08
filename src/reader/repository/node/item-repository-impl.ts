@@ -43,7 +43,17 @@ class ItemRepositoryNodeImpl implements ItemRepository {
     }
 
     async getRowItemViewModelsByTokenIds(tokenIds:number[]) : Promise<RowItemViewModel[]> {
-        return 
+
+        let items:RowItemViewModel[] = []
+
+        for (let tokenId of tokenIds) {
+            const response = fs.readFileSync(`${this.baseDir}/public/t/${tokenId}/rowItemViewModel.json`, 'utf8')
+            items.push(JSON.parse(response))
+        }
+
+        return items
+
+
     }
 
     async getByTokenId(tokenId:number) : Promise<Item> {

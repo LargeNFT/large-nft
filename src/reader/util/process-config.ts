@@ -71,7 +71,8 @@ class ProcessConfig {
         }
 
         config.alchemy = theArgs.alchemy
-        config.branch = theArgs.branch
+        config.mainBranch = theArgs.mainBranch
+        config.publicBranch = theArgs.publicBranch
         config.syncRate = theArgs.syncRate
         config.env = theArgs.env
 
@@ -86,7 +87,8 @@ class ProcessConfig {
             '--dir': String,
             '--env': String,
             '--alchemy': String,
-            '--branch': String,
+            '--main-branch': String,
+            '--public-branch': String,
             '--sync-rate': String
         },
         {
@@ -98,7 +100,8 @@ class ProcessConfig {
             dir: args['--dir'] || "",
             env: args['--env'] || "production",
             alchemy: args['--alchemy'] || "",
-            branch: args['--branch'] || "main",
+            mainBranch: args['--main-branch'] || "main",
+            publicBranch: args['--public-branch'] || "public",
             syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
         }
     

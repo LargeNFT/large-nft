@@ -6,7 +6,7 @@ import { ProcessedEvent, ProcessedTransaction } from "../../dto/processed-transa
 
 import { SchemaService } from "../core/schema-service.js";
 import { ItemService } from "../item-service.js";
-import { ProcessedTransactionService } from "../processed-transaction-service.js";
+import { ProcessedTransactionService, TransactionsViewModel } from "../processed-transaction-service.js";
 
 @injectable()
 class TransactionWebService {
@@ -17,8 +17,7 @@ class TransactionWebService {
     @inject("ProcessedTransactionService")
     private processedTransactionService:ProcessedTransactionService
 
-    @inject("ItemService")
-    private itemService:ItemService
+
 
     constructor(
         @inject("baseURI") private baseURI
@@ -40,7 +39,7 @@ class TransactionWebService {
             lastUpdated = latest.lastUpdated
         }
 
-        return this.translateTransactionsToViewModels(await this.processedTransactionService.listFrom(limit, startId), lastUpdated)
+        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listFrom(limit, startId), lastUpdated)
 
     }
 
@@ -48,7 +47,7 @@ class TransactionWebService {
 
         await this.schemaService.load(["processed-transactions"])
 
-        return this.translateTransactionsToViewModels(await this.processedTransactionService.listTo(limit, startId))
+        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listTo(limit, startId))
 
     }
 
@@ -68,7 +67,7 @@ class TransactionWebService {
 
         }
 
-        return this.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenFrom(tokenId, limit, startId), lastUpdated)
+        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenFrom(tokenId, limit, startId), lastUpdated)
 
     }
 
@@ -76,7 +75,7 @@ class TransactionWebService {
 
         await this.schemaService.load(["processed-transactions"])
 
-        return this.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenTo(tokenId, limit, startId))
+        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenTo(tokenId, limit, startId))
 
     }
 
@@ -100,7 +99,7 @@ class TransactionWebService {
 
         }
 
-        return this.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressFrom(address, limit, startId), lastUpdated)
+        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressFrom(address, limit, startId), lastUpdated)
 
     }
 
@@ -108,7 +107,7 @@ class TransactionWebService {
 
         await this.schemaService.load(["processed-transactions"])
 
-        return this.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressTo(address, limit, startId))
+        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressTo(address, limit, startId))
 
     }
 
@@ -119,54 +118,9 @@ class TransactionWebService {
 
 
 
-    private async _getRowItemViewModels(processedEvents) {
-
-        let result = {}
-
-        let tokenIds = new Set<number>()
-
-        for (let processedEvent of processedEvents) {
-
-            if (processedEvent.tokenIds?.length) {
-                processedEvent.tokenIds?.forEach( tokenId => {
-                    if (!tokenId) return
-                    tokenIds.add(tokenId)
-                })
-            }
-
-        }
-
-        let rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenIds(Array.from(tokenIds))
-
-        for (let rivm of rowItemViewModels) {
-            result[rivm.tokenId] = rivm
-        }
-
-        return result
-
-    }
+    
 
 
-    async translateTransactionsToViewModels(transactions:ProcessedTransaction[], lastUpdated?:string) : Promise<TransactionsViewModel> {
-
-        let processedEvents:ProcessedEvent[] = []
-
-        for (let transaction of transactions) {
-            if (transaction.processedEvents?.length > 0) {
-                processedEvents.push(...transaction.processedEvents)
-            }
-        }
-
-        let results:TransactionsViewModel = {
-            lastUpdated: lastUpdated,
-            transactions: transactions,
-            rowItemViewModels: await this._getRowItemViewModels(processedEvents)
-        }
-
-
-
-        return results
-    }
 
     async getLatest() {
         let result = await axios.get(`${this.baseURI}sync/transactions/latest.json`, {
@@ -180,6 +134,22 @@ class TransactionWebService {
         return result.data
     }
 
+    async getRecentActivity() {
+
+        let result = await axios.get(`${this.baseURI}sync/transactions/recentActivity.json`, {
+            // query URL without using browser cache
+            headers: {
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache',
+              'Expires': '0',
+            },
+          })
+
+        return result.data
+
+    }
+
+
 }
 
 interface LatestTransactionInfo {
@@ -187,11 +157,7 @@ interface LatestTransactionInfo {
     lastUpdated:string
 }
 
-interface TransactionsViewModel {
-    lastUpdated?:string
-    transactions?:ProcessedTransaction[],
-    rowItemViewModels?:{}
-}
+
 
 export {
     TransactionWebService

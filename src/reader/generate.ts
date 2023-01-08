@@ -46,9 +46,28 @@ const { convert } = pkg;
 // import sharp from "sharp"
 
 
+
+// import { simpleGit, CleanOptions } from 'simple-git'
+
+// simpleGit().clean(CleanOptions.FORCE)
+
+// const options = {
+//   baseDir: process.cwd(),
+//   binary: 'git',
+//   maxConcurrentProcesses: 6,
+//   trimmed: false,
+// }
+
+// // when setting all options in a single object
+// const git = simpleGit(options)
+
+
+
 let generate = async () => {
 
   let config:any = await ProcessConfig.getConfig() 
+
+
 
 
   let container = new Container()
@@ -72,6 +91,12 @@ let generate = async () => {
   }
 
   container = await getMainContainer(command)
+
+
+
+
+
+
 
   const PER_PAGE = 40
 
@@ -366,6 +391,27 @@ let generate = async () => {
 
 
   }
+
+
+  // if (config.env == "production") {
+
+  //   await git.add('.')
+  //   await git.commit("A")
+
+  //   //Switch to the public branch
+  //   await git.checkout(config.publicBranch)
+  
+  //   //Copy public folder from main branch
+  //   await git.checkout([config.mainBranch, '--', 'public'])
+  // }
+
+
+
+
+
+
+
+
 
 }
 

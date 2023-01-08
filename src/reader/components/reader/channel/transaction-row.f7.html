@@ -80,7 +80,7 @@
             ${event.tokenIds?.map( tokenId => $h`
               
               <a href="${baseURI}t/${tokenId}">
-                <img src="${imageLink(rowItemViewModels[tokenId])}" class="latest-img" /> 
+                <img src="${imageLink(rowItemViewModels[tokenId])}" class="latest-img" alt="${rowItemViewModels[tokenId].title}" height="40" width="40" /> 
               </a>
 
             `)}
@@ -119,7 +119,7 @@
 
           <div class="image">
             <a href="${baseURI}t/${event.namedArgs.tokenId}" class="link">
-                <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img"/> 
+                <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.namedArgs.tokenId].title}" /> 
             </a>
           </div>
 

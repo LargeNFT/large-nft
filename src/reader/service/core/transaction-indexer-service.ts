@@ -260,6 +260,8 @@ class TransactionIndexerService {
     
                         //Look up/create the from address
                         transactionUser = await getTokenOwner(currentTransaction.from)
+
+                        transactionUser.lastActive = new Date(currentTransaction.timestamp * 1000).toJSON()
     
                         if (ercEvent.namedArgs.tokenId) {
         
@@ -270,8 +272,8 @@ class TransactionIndexerService {
                             //Look up/create the from address
                             fromOwner = await getTokenOwner(ercEvent.namedArgs.fromAddress)
                             toOwner = await getTokenOwner(ercEvent.namedArgs.toAddress)
-        
-    
+
+
                             if (ercEvent.isTransfer) {
         
                                 //Update previous owner
@@ -329,6 +331,7 @@ class TransactionIndexerService {
                                 toOwner.latestTransactionId = currentTransaction._id
     
                             }
+
     
                         }
         
@@ -337,7 +340,7 @@ class TransactionIndexerService {
                         currentTransaction.ercEvents.push(ercEvent)
         
                         //Detect events from on-chain exchanges
-                        await this.detectExchangeTransactions(transaction)
+                        // await this.detectExchangeTransactions(transaction)
                         
                         //Set previous/next if we already have a previous transaction
                         if (previousTransaction && previousTransaction._id != currentTransaction._id) {
@@ -642,7 +645,7 @@ class TransactionIndexerService {
                 e.namedArgs.toAddress == previousProcessedTransfer.namedArgs.toAddress
             ) {
 
-                previousProcessedTransfer.tokenIds.push(e.namedArgs.tokenId)
+                previousProcessedTransfer.tokenIds.push(parseInt(e.namedArgs.tokenId))
 
             } else {
 
@@ -651,7 +654,7 @@ class TransactionIndexerService {
                     isBurn: e.isBurn,
                     event: e.event,
                     namedArgs: e.namedArgs,
-                    tokenIds: [e.namedArgs.tokenId]
+                    tokenIds: [parseInt(e.namedArgs.tokenId)]
                 }
 
                 currentTransaction.processedEvents.push(processedEvent)

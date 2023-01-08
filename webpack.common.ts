@@ -430,7 +430,7 @@ let getReaderConfigs = () => {
         },
         {
           test: /\.(ttf|woff|woff2)$/,
-          type: 'asset/inline'
+          use: [fileLoader]
         },
         {
           test: /\.f7.html$/,

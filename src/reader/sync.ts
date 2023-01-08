@@ -131,11 +131,13 @@ let sync = async () => {
 
 
   //Make sure git is up-to-date before starting
-  if (config.env == "production") {
-    await git.addConfig('pull.ff', 'only')
-    await git.pull("origin", config.branch)
-    //TODO:should probably refactor this to inject different services for dev and production
-  }
+  // if (config.env == "production") {
+  //   await git.addConfig('pull.ff', 'only')
+
+  //   await git.checkout(config.branch)
+  //   await git.pull("origin", config.branch)
+  //   //TODO:should probably refactor this to inject different services for dev and production
+  // }
 
 
 
@@ -196,6 +198,14 @@ let sync = async () => {
                 _id: mostRecent._id,
                 lastUpdated: new Date().toJSON()
               })))
+
+              //Get list for home page and save it.
+              let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, mostRecent._id), new Date().toJSON())
+
+
+              fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
+
+
             }
               
 
@@ -221,22 +231,22 @@ let sync = async () => {
             }))
 
 
-            if (config.env == "production") {
+            // if (config.env == "production") {
 
-              let commitMessage = `
-                ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions.
-                ${Object.keys(indexResult.tokensToUpdate).length} tokens.
-                ${Object.keys(indexResult.ownersToUpdate).length} token owners.
-                ${tokenOwnerPages.length} token owner pages.
-                Latest transaction: ${mostRecent._id}.
-              `
+            //   let commitMessage = `
+            //     ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions.
+            //     ${Object.keys(indexResult.tokensToUpdate).length} tokens.
+            //     ${Object.keys(indexResult.ownersToUpdate).length} token owners.
+            //     ${tokenOwnerPages.length} token owner pages.
+            //     Latest transaction: ${mostRecent._id}.
+            //   `
 
-              await git.add(['*'])
-              await git.commit(commitMessage)
-              await git.push("origin", config.branch)
+            //   await git.add(['*'])
+            //   await git.commit(commitMessage)
+            //   await git.push("origin", config.branch)
   
-              //TODO:should probably refactor this to inject different services for dev and production
-            }
+            //   //TODO:should probably refactor this to inject different services for dev and production
+            // }
           
 
 

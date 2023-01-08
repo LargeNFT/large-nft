@@ -210,7 +210,7 @@ Configuration for the generation and sync processes are stored in large-config.j
 ### Example
 Here is an example configuration for a site hosted on GitLab Pages.
 
-```console
+```json
 {
     "hostname": "https://ptoner.gitlab.io",
     "baseURL": "/bladerunner-punks-reader/",
@@ -268,8 +268,9 @@ Configure links to external resources associated with the collection such as Dis
 
 
 ### Generate Large Reader for localhost
+Note the -- before passing options. Generates HTML files in ./public folder.
 ```console
-npm run generate:dev
+npm run generate -- --env dev --main-branch main
 ```
 
 ### Generate Large Reader for localhost
@@ -281,10 +282,11 @@ npm run start
 The generated web app will be available at [http://localhost:8081](http://localhost:8081) by default.
 
 
-
 ### Generate Large Reader for production
+Generates HTML files in 'public' branch.
+
 ```console
-npm run generate
+npm run generate -- --main-branch main
 ```
 
 
@@ -295,11 +297,7 @@ npm run generate
 Transaction data is also cached locally in PouchDB. 
 
 ### Start Large Sync
-```console
-npm run sync
-```
-
-### Start local HTTP server
+Note the -- before passing options.
 ```console
 npm run sync --  --env dev --alchemy <API key>
 ```
@@ -308,13 +306,11 @@ npm run sync --  --env dev --alchemy <API key>
 
 | Option | Default | Description | 
 | ------------- | ------------- | ------------- |
-| --env  | production | This loads either the dev or production settings for hostname and baseURL. Also in dev mode the sync process does not commit or push to the git provider. |
+| --env  | production | This loads either the dev or production settings for hostname and baseURL. Also in dev mode nothing is written to the 'public' branch. |
 | --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
-| --branch  | main  | The git branch used to push.
+| --main-branch  | main  | The main branch. 
+| --public-branch  | public  | The public branch. This branch is where the generate and sync tools write their changes.
 | --sync-rate  | 30*1000  | Milliseconds between sync attempts. Default is 30 seconds. 
-
-
-
 
 
 

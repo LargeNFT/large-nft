@@ -120,9 +120,10 @@
                                         <table class="leaderboard-table">
                                             <thead>
                                                 <tr>
-                                                <th class="label-cell">Address</th>
-                                                <th>Last Active</th>
-                                                <th class="numeric-cell">Owned</th>
+                                                    <th class="numeric-cell">Rank</th>
+                                                    <th class="label-cell">Address</th>
+                                                    <th>Last Active</th>
+                                                    <th class="numeric-cell">Owned</th>
                                                 </tr>
                                             </thead>
                                     
@@ -130,6 +131,10 @@
                                     
                                             ${tokenOwners?.map(u => $h`
                                                 <tr>
+                                                    <td class="numeric-cell">
+                                                        ${u.rank}
+                                                    </td>
+
                                                     <td class="label-cell">
 
                                                         ${u.ensName ? $h`
@@ -242,6 +247,7 @@
 
                     totals = await tokenOwnerPageService.getTotals()
                     let page = await tokenOwnerPageService.get(pageNumber)
+
                     tokenOwners = page.tokenOwners
 
                     let latest = await transactionWebService.getLatest()

@@ -106,6 +106,8 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.getByTokenId(tokenId, limit, skip)
     }
 
+
+
 }
 
 

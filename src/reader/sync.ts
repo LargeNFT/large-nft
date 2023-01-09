@@ -33,6 +33,7 @@ PouchDB.plugin(require('pouchdb-quick-search'))
 let channelId
 
 import { simpleGit, CleanOptions } from 'simple-git'
+import { ProcessedTransaction } from "./dto/processed-transaction.js"
 
 simpleGit().clean(CleanOptions.FORCE)
 
@@ -150,9 +151,13 @@ let sync = async () => {
       let indexResult:ERCIndexResult
 
 
+      
+
       try {
 
         indexResult = await transactionIndexerService.index()
+
+        let mostRecent:ProcessedTransaction = await processedTransactionService.getLatest()
 
         if (indexResult) {
 
@@ -199,29 +204,16 @@ let sync = async () => {
 
             }
   
-            let mostRecent:Transaction = await processedTransactionService.getLatest()
-  
-            
-            if (mostRecent) {
-  
-              console.log(`Saving latest transaction: ${mostRecent._id}`)
-            
-              //Save latest transaction
-              fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
-                _id: mostRecent._id,
-                lastUpdated: new Date().toJSON()
-              })))
 
-              //Get list for home page and save it.
-              let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, mostRecent._id), new Date().toJSON())
-              fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
+            //Get list for home page and save it.
+            let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, mostRecent._id), new Date().toJSON())
+            fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
 
 
-            }
-              
 
             //Generate token owner pages for leaderboard
             let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0)
+
             let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
 
             //Write token owner pages to files
@@ -242,27 +234,6 @@ let sync = async () => {
             }))
 
 
-            // if (config.env == "production") {
-
-            //   let commitMessage = `
-            //     ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions.
-            //     ${Object.keys(indexResult.tokensToUpdate).length} tokens.
-            //     ${Object.keys(indexResult.ownersToUpdate).length} token owners.
-            //     ${tokenOwnerPages.length} token owner pages.
-            //     Latest transaction: ${mostRecent._id}.
-            //   `
-
-            //   await git.add(['*'])
-            //   await git.commit(commitMessage)
-            //   await git.push("origin", config.branch)
-  
-            //   //TODO:should probably refactor this to inject different services for dev and production
-            // }
-          
-
-
-
-
 
 
           }
@@ -277,6 +248,16 @@ let sync = async () => {
         } else {
           console.log('No results to process.')
         }
+
+        console.log(`Updating latest info: ${mostRecent._id} / ${new Date().toJSON()}`)
+            
+        //Save latest transaction
+        fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
+          _id: mostRecent._id,
+          lastUpdated: new Date().toJSON()
+        })))
+
+
 
       } catch(ex) { 
         console.log(ex) 
@@ -322,6 +303,27 @@ let sync = async () => {
 
 
 sync()
+
+
+
+
+            // if (config.env == "production") {
+
+            //   let commitMessage = `
+            //     ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions.
+            //     ${Object.keys(indexResult.tokensToUpdate).length} tokens.
+            //     ${Object.keys(indexResult.ownersToUpdate).length} token owners.
+            //     ${tokenOwnerPages.length} token owner pages.
+            //     Latest transaction: ${mostRecent._id}.
+            //   `
+
+            //   await git.add(['*'])
+            //   await git.commit(commitMessage)
+            //   await git.push("origin", config.branch)
+  
+            //   //TODO:should probably refactor this to inject different services for dev and production
+            // }
+          
 
 
 

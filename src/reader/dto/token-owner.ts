@@ -12,6 +12,12 @@ class TokenOwner {
     count?:number
 
     @Allow()
+    rank?:number
+
+    @Allow()
+    overallRank?:number
+
+    @Allow()
     tokenIds?:number[]
 
     @Allow()
@@ -22,7 +28,6 @@ class TokenOwner {
 
     @Allow()
     ensName?:string
-
 
     @Allow()
     lastActive?:string 

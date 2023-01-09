@@ -37,7 +37,8 @@ class TokenOwnerPageService {
                 _id: tokenOwner._id,
                 ensName: tokenOwner.ensName,
                 lastActive: tokenOwner.lastActive,
-                count: tokenOwner.count
+                count: tokenOwner.count,
+                rank: tokenOwner.rank
             })
 
         }
@@ -54,7 +55,6 @@ class TokenOwnerPageService {
 
     }
 
-    
 }
 
 export {

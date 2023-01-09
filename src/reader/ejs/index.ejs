@@ -172,7 +172,7 @@
   
   
                   <div class="start-buttons">
-                    <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start Reading</a>
+                    <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
                   </div>
   
   
@@ -410,6 +410,10 @@
               try  {
 
                 transactionsViewModel = await transactionWebService.getRecentActivity()
+
+                //Last updated won't be right because this only gets written when it actually changes.
+                let latest = await transactionWebService.getLatest()
+                transactionsViewModel.lastUpdated = latest.lastUpdated
 
               } catch(ex) { console.log(ex) }
 

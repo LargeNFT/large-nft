@@ -9,6 +9,7 @@ interface LeaderboardRowViewModel {
     ensName?:string
     count?:number
     lastActive?:string
+    rank?:number
 }
 
 interface TokenOwnerPageTotals {

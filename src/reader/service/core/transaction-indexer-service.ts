@@ -372,14 +372,11 @@ class TransactionIndexerService {
                 }
 
 
-
-
-
    
                 //Save token owners
                 console.log(`Saving ${Object.keys(result.ownersToUpdate).length} updated token owners`)
 
-                let tokenOwners = []
+                let tokenOwnersToUpdate = []
                 for (let owner of Object.keys(result.ownersToUpdate)) {
 
                     let tokenOwner = result.ownersToUpdate[owner]
@@ -392,11 +389,54 @@ class TransactionIndexerService {
 
                     tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id)
 
-                    tokenOwners.push(tokenOwner)
+                    tokenOwnersToUpdate.push(tokenOwner)
                 }
     
-                await this.tokenOwnerService.putAll(tokenOwners)
+                await this.tokenOwnerService.putAll(tokenOwnersToUpdate)
+
     
+
+
+
+                //Update rankings for all owners. Only save if it's changed.
+                let tokenOwners:TokenOwner[] = await this.tokenOwnerService.list(100000, 0)
+
+                let rank = 0
+                let lastRankCount
+
+                let ownersToUpdate = []
+
+                for (let i=0; i < tokenOwners.length; i++) {
+
+                    let owner = tokenOwners[i]
+
+                    if (!lastRankCount || owner.tokenIds?.length < lastRankCount) {
+                        rank++
+                    }
+
+                    //Add any with new rankings to our changeset to save.
+                    if (owner.rank != rank || owner.overallRank != i+1) {
+                        owner.rank = rank
+                        owner.overallRank = i+1
+                        ownersToUpdate.push(owner)
+
+                        result.ownersToUpdate[owner._id] = owner
+
+                    }
+
+                    lastRankCount = owner.tokenIds?.length
+
+                }
+
+                console.log(`Saving ${ownersToUpdate.length} re-ranked token owners`)
+                await this.tokenOwnerService.putAll(ownersToUpdate)
+
+
+
+
+
+
+
 
     
                 //Save processed transactions

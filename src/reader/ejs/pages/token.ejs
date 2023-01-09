@@ -456,6 +456,10 @@
 
                 transactionsViewModel = await transactionWebService.getTokenActivity("<%= itemViewModel.item.tokenId  %>")
 
+                //Last updated won't be right because this only gets written when it actually changes.
+                let latest = await transactionWebService.getLatest()
+                transactionsViewModel.lastUpdated = latest.lastUpdated
+
                 } catch(ex) { console.log(ex) }
 
                 $('.hidden-on-load').removeClass('hidden-on-load')

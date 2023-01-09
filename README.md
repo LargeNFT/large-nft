@@ -1,7 +1,7 @@
 
 # Large
 
-[![Npm package version](https://badgen.net/npm/v/large-nft)](https://npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
+[![npm version](https://badge.fury.io/js/large-nft.svg)](https://badge.fury.io/js/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
 
 

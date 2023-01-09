@@ -454,7 +454,7 @@
 
                 try  {
 
-                transactionsViewModel = await transactionWebService.listByTokenFrom("<%= itemViewModel.item.tokenId  %>", 1000)
+                transactionsViewModel = await transactionWebService.getTokenActivity("<%= itemViewModel.item.tokenId  %>")
 
                 } catch(ex) { console.log(ex) }
 

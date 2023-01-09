@@ -4,9 +4,13 @@ import { ValidationException } from "../util/validation-exception.js"
 import { TokenOwnerRepository } from "../repository/token-owner-repository.js"
 import { TokenOwner } from "../dto/token-owner.js"
 import { LeaderboardRowViewModel, TokenOwnerPage } from "../dto/token-owner-page.js"
+import { WalletService } from "./core/wallet-service.js"
 
 @injectable()
 class TokenOwnerService {
+
+    @inject("WalletService")
+    private walletService:WalletService
 
     @inject("TokenOwnerRepository")
     private tokenOwnerRepository:TokenOwnerRepository
@@ -16,6 +20,17 @@ class TokenOwnerService {
 
     async get(_id:string): Promise<TokenOwner> {        
         return this.tokenOwnerRepository.get(_id)
+    }
+
+    async getDisplayName(_id:string) : Promise<string> {
+
+        if (!_id) return
+
+        let ens = await this.tokenOwnerRepository.getENS(_id)
+
+        if (ens) return ens
+        return this.walletService.truncateEthAddress(_id)
+
     }
 
     async getOrCreate(address:string) {

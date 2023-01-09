@@ -131,18 +131,18 @@
 
             </div>
 
-            <div class="large-only segmented">
+            <div class="large-only">
   
-              <a class="button ${active == 'Explore' ? $h`button-active` : $h`button-outline`}" href="${baseURI}explore.html" style="width: 150px; display: inline-block;">
+              <a class="link ${active == 'Explore' ? $h`link-active` : $h` `}" href="${baseURI}explore.html">
                 Explore
               </a>      
 
               ${showActivityPage ? $h`
-                <a class="button ${active == 'Activity' ? $h`button-active` : $h`button-outline`}" href="${baseURI}activity" style="width: 150px; display: inline-block;">
+                <a class="link ${active == 'Activity' ? $h`link-active` : $h` `}" href="${baseURI}activity">
                   Activity
                 </a> 
 
-                <a class="button ${active == 'Leaderboard' ? $h`button-active` : $h`button-outline`}" href="${baseURI}leaderboard" style="width: 150px; display: inline-block;">
+                <a class="link ${active == 'Leaderboard' ? $h`link-active` : $h` `}" href="${baseURI}leaderboard" >
                   Leaderboard
                 </a> 
 
@@ -151,15 +151,15 @@
               ${showConnect ? $h`
 
                 ${showMintPage ? $h`
-                  <a class="button ${active == 'Mint' ? $h`button-active` : $h`button-outline`}" href="${baseURI}mint.html" style="width: 150px; display: inline-block;">
+                  <a class="link ${active == 'Mint' ? $h`link-active` : $h` `}" href="${baseURI}mint.html" >
                     Mint
                   </a> 
                 ` : $h`<span />`}
 
                 ${walletAddress != undefined ? $h`
-                    <a href="${baseURI}u/?address=${walletAddress}" class="button button-outline" style="width: 150px; display: inline-block;">${truncateEthAddress(walletAddress)}</a>
+                    <a href="${baseURI}u/?address=${walletAddress}" class="link" >${truncateEthAddress(walletAddress)}</a>
                 ` : $h`
-                    <button class="button button-outline" @click="${connectWallet}" style="width: 150px; display: inline-block;">Connect Wallet</button>
+                    <a class="link" @click="${connectWallet}">Connect Wallet</a>
                 `} 
      
               ` : $h`<span style="display: none;" />`}

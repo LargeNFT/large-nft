@@ -28,6 +28,19 @@ class TokenOwnerRepositoryBrowserImpl implements TokenOwnerRepository {
 
     constructor() {}
 
+    async getENS(_id: string): Promise<string> {
+
+        let name
+
+        try {
+            //Download it.
+            let result:any = await axios.get(`${this.baseURI}sync/tokenOwner/ens/${_id}.json`)
+            name = result.data?.name
+        } catch(ex) {}
+
+        return name
+    }
+
 
     async get(_id:string): Promise<TokenOwner> {    
         

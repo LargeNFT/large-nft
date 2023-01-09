@@ -1014,9 +1014,11 @@ html {
 
 
 .last-updated {
+  display: block;
   font-size: 13px;
   color: darkslategray;
-  float: right;
+  width: 100%;
+  text-align: right;
 }
 
 .user-info {
@@ -1037,8 +1039,24 @@ html {
   display: none;
 }
 
-
+.leaderboard-table {
+  max-width: 100%;
+}
 
 .leaderboard-table .label-cell {
-  width: 200px;
+}
+
+
+.leaderboard-table .label-cell .date {
+  display: block;
+  font-size: 11px;
+}
+
+.navbar a.link {
+  font-weight: normal;
+  display: inline;
+}
+
+.navbar a.link-active {
+  font-weight: bold;
 }

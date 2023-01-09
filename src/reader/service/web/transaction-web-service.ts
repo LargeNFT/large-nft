@@ -7,6 +7,7 @@ import { ProcessedEvent, ProcessedTransaction } from "../../dto/processed-transa
 import { SchemaService } from "../core/schema-service.js";
 import { ItemService } from "../item-service.js";
 import { ProcessedTransactionService, TransactionsViewModel } from "../processed-transaction-service.js";
+import { TokenOwnerService } from "../token-owner-service.js";
 
 @injectable()
 class TransactionWebService {
@@ -17,7 +18,11 @@ class TransactionWebService {
     @inject("ProcessedTransactionService")
     private processedTransactionService:ProcessedTransactionService
 
+    @inject("TokenOwnerService")
+    private tokenOwnerService:TokenOwnerService
 
+
+    private _ENSCache = {}
 
     constructor(
         @inject("baseURI") private baseURI
@@ -39,7 +44,11 @@ class TransactionWebService {
             lastUpdated = latest.lastUpdated
         }
 
-        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listFrom(limit, startId), lastUpdated)
+        let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listFrom(limit, startId), lastUpdated)
+
+        await this._cacheENSNames(transactionsViewModel)
+
+        return transactionsViewModel
 
     }
 
@@ -47,7 +56,11 @@ class TransactionWebService {
 
         await this.schemaService.load(["processed-transactions"])
 
-        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listTo(limit, startId))
+        let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listTo(limit, startId))
+
+        await this._cacheENSNames(transactionsViewModel)
+
+        return transactionsViewModel
 
     }
 
@@ -67,7 +80,11 @@ class TransactionWebService {
 
         }
 
-        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenFrom(tokenId, limit, startId), lastUpdated)
+        let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenFrom(tokenId, limit, startId), lastUpdated)
+
+        await this._cacheENSNames(transactionsViewModel)
+
+        return transactionsViewModel
 
     }
 
@@ -75,7 +92,11 @@ class TransactionWebService {
 
         await this.schemaService.load(["processed-transactions"])
 
-        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenTo(tokenId, limit, startId))
+        let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenTo(tokenId, limit, startId))
+
+        await this._cacheENSNames(transactionsViewModel)
+
+        return transactionsViewModel
 
     }
 
@@ -99,7 +120,11 @@ class TransactionWebService {
 
         }
 
-        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressFrom(address, limit, startId), lastUpdated)
+        let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressFrom(address, limit, startId), lastUpdated)
+
+        await this._cacheENSNames(transactionsViewModel)
+
+        return transactionsViewModel
 
     }
 
@@ -107,7 +132,11 @@ class TransactionWebService {
 
         await this.schemaService.load(["processed-transactions"])
 
-        return this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressTo(address, limit, startId))
+        let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressTo(address, limit, startId))
+
+        await this._cacheENSNames(transactionsViewModel)
+
+        return transactionsViewModel
 
     }
 
@@ -134,7 +163,7 @@ class TransactionWebService {
         return result.data
     }
 
-    async getRecentActivity() {
+    async getRecentActivity() : Promise<TransactionsViewModel> {
 
         let result = await axios.get(`${this.baseURI}sync/transactions/recentActivity.json`, {
             // query URL without using browser cache
@@ -145,8 +174,78 @@ class TransactionWebService {
             },
           })
 
-        return result.data
+        let transactionsViewModel:TransactionsViewModel = result.data
 
+        await this._cacheENSNames(transactionsViewModel)
+
+        return transactionsViewModel
+
+    }
+
+
+    async getTokenActivity(tokenId:number) : Promise<TransactionsViewModel> {
+
+        let result = await axios.get(`${this.baseURI}sync/tokens/${tokenId}-activity.json`, {
+            // query URL without using browser cache
+            headers: {
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache',
+              'Expires': '0',
+            },
+          })
+
+          let transactionsViewModel:TransactionsViewModel = result.data
+
+          await this._cacheENSNames(transactionsViewModel)
+  
+          return transactionsViewModel
+    }
+
+    getDisplayName(_id) {
+        return this._ENSCache[_id]
+    }
+
+    private async _cacheDisplayName(_id) {
+
+        if (!this._ENSCache[_id]) {
+            this._ENSCache[_id] = await this.tokenOwnerService.getDisplayName(_id)
+        }
+
+    }
+
+
+    private async _cacheENSNames(transactionsViewModel:TransactionsViewModel) {
+
+        for (let transaction of transactionsViewModel.transactions) {
+
+            for (let processedEvent of transaction.processedEvents) {
+
+                if (processedEvent.namedArgs.fromAddress ) {
+                    await this._cacheDisplayName(processedEvent.namedArgs.fromAddress)
+                }
+
+
+                if (processedEvent.namedArgs.toAddress ) {
+                    await this._cacheDisplayName(processedEvent.namedArgs.toAddress)
+                }
+
+
+                if (processedEvent.namedArgs.owner ) {
+                    await this._cacheDisplayName(processedEvent.namedArgs.owner)
+                }
+
+
+                if (processedEvent.namedArgs.operator ) {
+                    await this._cacheDisplayName(processedEvent.namedArgs.operator)
+                }
+                
+            }
+
+            await this._cacheDisplayName(transaction.from)
+
+        }
+
+        
     }
 
 

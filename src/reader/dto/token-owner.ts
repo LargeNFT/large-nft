@@ -21,10 +21,11 @@ class TokenOwner {
     latestTransactionId?:string
 
     @Allow()
-    lastActive?:string 
+    ensName?:string
+
 
     @Allow()
-    ensName?:string
+    lastActive?:string 
 
     @Allow()
     lastUpdated?:string 

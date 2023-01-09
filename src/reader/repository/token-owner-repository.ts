@@ -7,6 +7,7 @@ interface TokenOwnerRepository {
     put(tokenOwner:TokenOwner) : Promise<void>
     putAll(tokenOwners:TokenOwner[]) : Promise<void>
     getByTokenId(tokenId:number, limit:number, skip:number): Promise<TokenOwner> 
+    getENS(_id:string) : Promise<string>
     list(limit: number, skip: number): Promise<TokenOwner[]> 
 
 }

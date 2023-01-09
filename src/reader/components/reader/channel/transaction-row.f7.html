@@ -36,6 +36,7 @@
   const Transfer = (props, { $h }) => {
 
     let walletService = globalThis.container.get("WalletService")
+    let transactionWebService = globalThis.container.get("TransactionWebService")
 
     const link = (href) => {
         return `${baseURI + href}`
@@ -61,14 +62,14 @@
             ${event.isMint ? $h`
 
                 <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">
-                  ${walletService.truncateEthAddress(event.namedArgs.toAddress)}
+                  ${transactionWebService.getDisplayName(event.namedArgs.toAddress)}
                 </a> minted <strong>${event.tokenIds?.length}</strong> tokens.
 
             ` : $h`
 
                 <a href="${baseURI}u/?address=${event.namedArgs.fromAddress}" class="${event.namedArgs.fromAddress == transaction.from ? 'is-from' : ''}">
-                  ${walletService.truncateEthAddress(event.namedArgs.fromAddress)}
-                </a> <span class="f7-icons">arrow_right</span> <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.toAddress)}</a>
+                  ${transactionWebService.getDisplayName(event.namedArgs.fromAddress)}
+                </a> <span class="f7-icons">arrow_right</span> <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.toAddress)}</a>
 
             `}
 
@@ -97,6 +98,7 @@
   const Approval = (props, { $h }) => {
 
     let walletService = globalThis.container.get("WalletService")
+    let transactionWebService = globalThis.container.get("TransactionWebService")
 
     const link = (href) => {
         return `${baseURI + href}`
@@ -130,12 +132,12 @@
             <div class="transfer">
 
               ${event.namedArgs.owner ? $h`
-                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.owner)}</a>
+                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a>
               ` : $h`<span />`}
 
               ${event.namedArgs.approved ? $h`
                 <span class="f7-icons">arrow_right</span>
-                <a href="${baseURI}u/?address=${event.namedArgs.approved}" class="${event.namedArgs.approved == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.approved)}</a>
+                <a href="${baseURI}u/?address=${event.namedArgs.approved}" class="${event.namedArgs.approved == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.approved)}</a>
               ` : $h`<span />`}
 
             </div>
@@ -155,6 +157,7 @@
   const ApprovalForAll = (props, { $h }) => {
 
     let walletService = globalThis.container.get("WalletService")
+    let transactionWebService = globalThis.container.get("TransactionWebService")
 
     let transaction = props.transaction
     let event = props.event
@@ -175,12 +178,12 @@
             <div class="transfer">
 
               ${event.namedArgs.owner ? $h`
-                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.owner)}</a>
+                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a>
               ` : $h`<span />`}
 
               ${event.namedArgs.operator ? $h`
                 <span class="f7-icons">arrow_right</span>
-                <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs.operator == transaction.from ? 'is-from' : ''}">${walletService.truncateEthAddress(event.namedArgs.operator)}</a>
+                <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs.operator == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.operator)}</a>
               ` : $h`<span />`}
 
             </div>

@@ -112,7 +112,7 @@ let sync = async () => {
   fs.mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true })
   fs.mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true })
 
-  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions", "processed-transactions", "blocks", "tokens"])
+  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions", "processed-transactions", "blocks", "tokens", "ens"])
 
   console.log(`Schema loaded`)
 
@@ -178,12 +178,25 @@ let sync = async () => {
             //Write changed tokens to file
             for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
               fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
+
+              //Write tokens transactions to JSON
+              let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listByTokenFrom(parseInt(tokenId), 1000, indexResult.tokensToUpdate[tokenId].latestTransactionId), new Date().toJSON())
+              fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}-activity.json`, Buffer.from(JSON.stringify(transactionsViewModel)))
+
             }
   
             //Write changed owners to file
             console.log(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk`)
             for (let owner of Object.keys(indexResult.ownersToUpdate)) {
+
+              //Write full profile
               fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
+
+              //Write latest ENS name
+              fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/ens/${owner}.json`, Buffer.from(JSON.stringify({
+                name: indexResult.ownersToUpdate[owner].ensName
+              })))
+
             }
   
             let mostRecent:Transaction = await processedTransactionService.getLatest()
@@ -201,8 +214,6 @@ let sync = async () => {
 
               //Get list for home page and save it.
               let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, mostRecent._id), new Date().toJSON())
-
-
               fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
 
 
@@ -286,7 +297,8 @@ let sync = async () => {
         }
 
         if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner`)) {
-          fs.mkdirSync(`${config.publicPath}/sync/tokenOwner`, { recursive: true })
+          fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/ens`, { recursive: true })
+
         }
         
       }

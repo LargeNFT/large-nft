@@ -155,6 +155,7 @@ import { ProcessedTransactionRepositoryBrowserImpl } from "./repository/browser/
 
 import { BlockRepositoryBrowserImpl } from "./repository/browser/block-repository-impl.js";
 import { TokenRepositoryBrowserImpl } from "./repository/browser/token-repository-impl.js";
+import { ENSRepositoryBrowserImpl } from "./repository/browser/ens-repository-impl.js";
 
 import { TokenService } from "./service/token-service.js";
 import { TransactionWebService } from "./service/web/transaction-web-service.js";
@@ -419,6 +420,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
   container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
+  container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryBrowserImpl).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()

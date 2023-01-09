@@ -23,6 +23,10 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
 
     constructor() {}
 
+    async getENS(_id: string): Promise<string> {
+        throw new Error("Method not implemented.")
+    }
+
 
     async get(_id:string): Promise<TokenOwner> {        
         return Object.assign(new TokenOwner(), await this.db.get(_id))

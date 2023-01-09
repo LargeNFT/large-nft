@@ -70,6 +70,9 @@ import { TokenRepositoryNodeImpl } from "./repository/node/token-repository-impl
 import { ProcessedTransactionRepository } from "./repository/processed-transaction-repository.js";
 import { ProcessedTransactionRepositoryNodeImpl } from "./repository/node/processed-transaction-repository-impl.js";
 import { ProcessedTransactionService } from "./service/processed-transaction-service.js";
+import { ENSService } from "./service/ens-service.js";
+import { ENSRepository } from "./repository/ens-repository.js";
+import { ENSRepositoryNodeImpl } from "./repository/node/ens-repository-impl.js";
 
 
 
@@ -120,6 +123,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
   container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryNodeImpl).inSingletonScope()
 
+  container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryNodeImpl).inSingletonScope()
 
 
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").toConstantValue({
@@ -185,6 +189,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
+  container.bind<ENSService>("ENSService").to(ENSService).inSingletonScope()
 
   return container
 }

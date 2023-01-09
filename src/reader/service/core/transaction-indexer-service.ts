@@ -1,4 +1,4 @@
-import { Contract, ethers } from "ethers";
+import { Contract, ethers, providers } from "ethers";
 import { inject, injectable } from "inversify";
 import { Block } from "../../dto/block.js";
 import { ContractState } from "../../dto/contract-state.js";
@@ -24,6 +24,8 @@ import { WalletService } from "./wallet-service.js";
 import looksRareABI from './abi/looksRareABI.json';
 import nftxABI from './abi/nftxABI.json';
 import openseaSeaportABI from './abi/seaportABI.json';
+import moment from "moment";
+import { ENSService } from "../ens-service.js";
 
 
 @injectable()
@@ -46,6 +48,9 @@ class TransactionIndexerService {
 
     @inject("WalletService")
     private walletService: WalletService
+
+    @inject("ENSService")
+    private ensService: ENSService
 
     @inject("TransactionService")
     private transactionService: TransactionService
@@ -335,6 +340,7 @@ class TransactionIndexerService {
     
                         }
         
+
         
                         //Add event to transaction before saving
                         currentTransaction.ercEvents.push(ercEvent)
@@ -366,6 +372,33 @@ class TransactionIndexerService {
                 }
 
 
+
+
+
+   
+                //Save token owners
+                console.log(`Saving ${Object.keys(result.ownersToUpdate).length} updated token owners`)
+
+                let tokenOwners = []
+                for (let owner of Object.keys(result.ownersToUpdate)) {
+
+                    let tokenOwner = result.ownersToUpdate[owner]
+
+                    //Update count before saving.
+                    tokenOwner.count = tokenOwner.tokenIds?.length
+
+                    //Sort token IDs
+                    tokenOwner.tokenIds.sort()
+
+                    tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id)
+
+                    tokenOwners.push(tokenOwner)
+                }
+    
+                await this.tokenOwnerService.putAll(tokenOwners)
+    
+
+    
                 //Save processed transactions
                 console.log(`Saving ${Object.keys(result.processedTransactionsToUpdate).length} processed transactions`)
                 let transactionsToSave = []
@@ -385,21 +418,6 @@ class TransactionIndexerService {
                 await this.processedTransactionService.putAll(transactionsToSave)
 
 
-   
-                //Save token owners
-                let tokenOwners = []
-                for (let owner of Object.keys(result.ownersToUpdate)) {
-
-                    //Update count before saving.
-                    result.ownersToUpdate[owner].count = result.ownersToUpdate[owner].tokenIds?.length
-                    result.ownersToUpdate[owner].tokenIds.sort()
-
-                    tokenOwners.push(result.ownersToUpdate[owner])
-                }
-    
-                await this.tokenOwnerService.putAll(tokenOwners)
-    
-    
     
                 //Save tokens
                 let tokens = []
@@ -636,6 +654,7 @@ class TransactionIndexerService {
         for (let i = 0; i < currentTransaction.ercEvents?.length; i++) {
 
             let e = currentTransaction.ercEvents[i]
+
 
             //If the same from/to as the last one just add it to the same processed event
             if (

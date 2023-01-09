@@ -121,9 +121,8 @@
                                             <thead>
                                                 <tr>
                                                 <th class="label-cell">Address</th>
-                                                <th>ENS Name</th>
-                                                <th class="numeric-cell">Owned</th>
                                                 <th>Last Active</th>
+                                                <th class="numeric-cell">Owned</th>
                                                 </tr>
                                             </thead>
                                     
@@ -132,47 +131,51 @@
                                             ${tokenOwners?.map(u => $h`
                                                 <tr>
                                                     <td class="label-cell">
-                                                        <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
+
+                                                        ${u.ensName ? $h`
+                                                            <a href="<%= baseURL %>u/?address=${u._id}">${u.ensName}</a>
+                                                        ` : $h`
+                                                            <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
+                                                        `} 
+
                                                     </td>
                                         
                                                     <td>
-                                                        ${u.ensName}
+                                                        ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
                                                     </td>
                                         
                                                     <td class="numeric-cell">
                                                         ${u.count}
                                                     </td>
                                         
-                                                    <td>
-                                                        ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
-                                                    </td>                                    
+                                  
                                                 </tr>
                                             
                                             `)}
                                             </tbody>
                                 
                                         </table>
-                                
-                                
-                                        <div class="block margin-top margin-bottom">
-                                            <div class="row">
-                                                <div class="col-50">
-                                                    ${showPrevious ? $h`
-                                                    <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber - 1}" class="button button-outline color-gray">Previous</a>
-                                                    ` : $h` `}
-                                                </div>
-                                                <div class="col-50">
-                                                    ${showNext ? $h`
-                                                    <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber + 1}" class="button button-fill">Next</a>
-                                                    ` : $h` `}
-                                                </div>
-                                            </div>
-                                
-                                        </div>
-                                
-                                
+                                                                
                                     </div>
                                 </div>
+
+                                <div class="block margin-top margin-bottom">
+                                    <div class="row">
+                                        <div class="col-50">
+                                            ${showPrevious ? $h`
+                                            <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber - 1}" class="button button-outline color-gray">Previous</a>
+                                            ` : $h` `}
+                                        </div>
+                                        <div class="col-50">
+                                            ${showNext ? $h`
+                                            <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber + 1}" class="button button-fill">Next</a>
+                                            ` : $h` `}
+                                        </div>
+                                    </div>
+                        
+                                </div>
+
+
                             </div>
 
 

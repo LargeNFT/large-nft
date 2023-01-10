@@ -2,26 +2,29 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Tests",
+      "name": "mocha",
       "type": "node",
       "request": "launch",
-      "protocol": "inspector",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/ts-mocha",
-      "runtimeArgs": [
+      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "stopOnEntry": false,
+      "args": [
+        "-r", 
+        "ts-node/register",
         "--timeout",
         "999999",
         "-p",
         "${workspaceFolder}/tsconfig.json",
         "${file}",
         "--exit"
-      ],
-      "internalConsoleOptions": "openOnSessionStart",
-      "outFiles": [
-        "${workspaceFolder}/dist/**/*.js"
-      ],
-      "sourceMaps": true,
-      "cwd": "${workspaceFolder}"
+        
+        ], //you can specify paths to specific tests here
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": null,
+      "env": {
+        "NODE_ENV": "testing"
+      }
     },
+
 
     {
       "name": "Debug Truffle Tests",

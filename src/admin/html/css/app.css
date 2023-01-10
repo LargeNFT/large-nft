@@ -45,7 +45,8 @@
     --f7-navbar-bg-color: var(--f7-panel-bg-color);
     --f7-navbar-text-color: #ffffff;
   
-  
+    --f7-toolbar-text-color: #ffffff;
+
     --f7-tabbar-link-active-color: var(--f7-theme-color);
     --f7-tabbar-link-inactive-color: rgba(255, 255, 255, 0.54);
   

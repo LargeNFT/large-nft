@@ -3,9 +3,6 @@
 
 [![npm version](https://badge.fury.io/js/large-nft.svg)](https://badge.fury.io/js/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-
-
-
 The easiest way to publish your work as an NFT collection on **Ethereum** and **IPFS**. 
 
 Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
@@ -16,9 +13,7 @@ Fork any NFT collection to experiment.
 
 Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your book or collection. Native theming for iOS, Android, and Desktop.
 
-Inexpensively scale your community and marketplace on GitHub Pages, GitLab Pages, or any other simple, static webhost. No server compute required. No database server required.
-
-Large stores and replicates NFT data directly in browser storage to help ensure a community can always keep their NFTs online even if the creator (and Large's creators) disappear and takes all of their hardware and software with them. 
+Inexpensively scale a community and marketplace on any simple, static webhost. No database server required.
 
 # Goals
 
@@ -40,7 +35,8 @@ Large stores and replicates NFT data directly in browser storage to help ensure 
 * A single member of the community should be able to keep things going themselves.
     * What happens to your digital collectibles if you're the last one who cares?
     * Are you able to keep them online? 
-    * Do you have legal rights to display them?
+    * Are you able to rebuild the marketplace from scratch?
+    * Do you have legal rights to display the content?
     * Permissionless ownership requires permisionless rights to display content.
     * As an artist do you want the value you built to crumble because no one is there to pay hosting fees?
 
@@ -61,7 +57,8 @@ Large stores and replicates NFT data directly in browser storage to help ensure 
 * Dependencies 
     * A web browser.
     * A simple static webhost.
-    * A git provider.
+        * If we want transaction data then add an Ethereum node + small device to run Large Sync.
+    * A git provider (GitHub/GitLab).
     * IPFS node.
 
 
@@ -78,15 +75,18 @@ Join us on [Discord](https://discord.gg/35U29bEj)
 
 ## Components
 
-**Large NFT** is a self-hosted web app to help build and publish an NFT collection right in your browser. Create new collections from scratch or fork existing ones. Data is stored right in local browser storage. **Large NFT** can also be whitelabeled and distributed to users. It scales by relying on the user's own hardware instead of cloud servers. So the hardware requirements as your community grows are minimal. 
+**Large NFT** is a self-hosted web app to help build and publish an NFT collection right in your browser. Create new collections from scratch or fork existing ones. Data is stored right in local browser storage. Large NFT can also be whitelabeled and distributed to users. It scales by relying on the user's own hardware instead of cloud servers. So the hardware requirements as your community grows are minimal. 
 
-**Large Reader** is a statically generated, self-hosted PWA that can be deployed to any simple webhost to let users enjoy the collection from any device. Large Reader is optimized for text-based content and has functionality similar to the Kindle. When combined with **Large Sync** it also shows the full transaction history for every token, for every user, and includes a full collection leaderboard. 
+**Large Reader** is a statically generated, self-hosted PWA that can be deployed to any simple webhost to let users enjoy the collection from any device. Large Reader is optimized for text-based content and has functionality similar to the Kindle. When combined with Large Sync it also shows the full transaction history for every token, for every user, and includes a full collection leaderboard. 
 
-**Large Sync** is a lightweight Node app that generates live Ethereum transaction data for **Large Reader** in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
+**Large Sync** is a lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
 
 Supports [Alchemy](https://www.alchemy.com/) and local Ethereum nodes. 
 
 Large is alpha software.
+
+
+# Large NFT
 
 ## Installation 
 
@@ -95,25 +95,15 @@ Large is alpha software.
 git clone https://github.com/LargeNFT/large-nft.git
 ```
 
-### Install
-Navigate to the new directory and run:
-
-```console
-npm install
-```
-
 ### Run a local HTTP Server
 ```console
 npm run start
 ```
 
-# Large NFT
-
 ### Access in Browser
 Large will be available at [http://localhost:8000](http://localhost:8000) by default.
 
 ![Large Admin](src/admin/html/images/large-start.jpg)
-
 
 * Create one or more collections with text, images, and mixed-media NFTs.
 * Content is stored in your browser using [PouchDB](https://pouchdb.com).
@@ -126,7 +116,7 @@ Large will be available at [http://localhost:8000](http://localhost:8000) by def
 
 The community can easily keep the website online and use it as a starting point for custom fan experiences.
 
-### Create an NFT Collection
+### Create NFT Collection
 Create a collection with the Large admin panel. 
 
 * Choose a name, symbol, description, license, and NFT attributes.
@@ -147,10 +137,6 @@ Apply custom CSS formatting to an NFT/item. Create themes and apply them to mult
 * Provide the IPFS hash.
 * Remix existing ideas.
 
----
-
-## Publish to Ethereum, IPFS, and Git
-
 ### Export collection metadata to IPFS.
 * Connect to browser-based node or configure remote IPFS api.
 * NFT metadata, images, animations, and backup data are exported to IPFS.
@@ -164,47 +150,40 @@ Apply custom CSS formatting to an NFT/item. Create themes and apply them to mult
 * Customize smart contract or deploy the default low-gas contract.
     * Based on [ERC721A](https://github.com/chiru-labs/ERC721A)
 
+---
 
 # Large Reader 
 Generate a search-engine friendly static website for an NFT collection. It is also a full-featured PWA (Progressive Web App) with a native look and feel on modern devices.
 
-* Users do not need a web3 browser to read the collection.
-* Users do need a web3 browser to mint and interact with NFTs.
-
-Easily read and enjoy content in a familiar interface.
-
+* Users do NOT need a web3 browser to read the collection.
+* Users do NOT need a web3 browser to view transaction data. 
+* Users DO need a web3 browser to mint and interact with NFTs.
 
 ### Offline-first.
 * Easily distributed on any static webhost. 
-* Simple and customizable HTML/CSS/javascript.
 * Wrap with Cordova to distribute to app stores.
+* *Actual offline functionality via service worker will be available in a future release.
 
 ### Free and open source. Fork and customize.
-* Publish a collection to a public or private repo.
-* Includes a full database backup and all associated media. 
-
-### Data lives in browser storage on the user's device.
-* Full-text search of collection contents.
-* Fork collections directly from the generated **Large Reader** app. 
-* This means your community can copy the Large Reader and make their own custom versions easily.
-* Easy to build on. Sync your data with commercial scale CouchDB instances. 
+* No lock-in. Use whatever tools you prefer.
+* Publish to a public or private repo.
 
 ### Mint NFTs.
 * Minting starts at token #1 and increments.
 * Stories are minted in the order they are told.
 
-### Generate Large Reader without deploying a smart contract.
+### Optional smart contract.
 * It's not required to deploy a contract if you do not want to mint NFTs.
 
 
 The following commands are to be used in the forked repository that you publish from the Large Admin. After pushing the content to your git provider, clone the repo and run the following commands.
 
-## Install
+### Install
 ```console
 npm install
 ```
 
-## Config
+### Config
 Configuration for the generation and sync processes are stored in large-config.json.  
 
 ### Example
@@ -289,7 +268,7 @@ Generates HTML files in 'public' branch.
 npm run generate -- --main-branch main
 ```
 
-
+---
 
 # Large Sync
 **Large Sync** is a Node.js app that reads transaction data from a configured Ethereum node and writes it to the "public" branch so it can be deployed to a web server. If configured it will also commit those changes to a configured git provider. 
@@ -336,3 +315,7 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST",
 ## Install CORS Proxy to publish to GitHub/GitLab
 Large publishes directly to your git provider from browser storage. By default both GitHub and GitLab make this difficult because of their CORS setup. To get around this please install and use the [CORS Proxy](https://github.com/isomorphic-git/cors-proxy). You configure the URL on the Large NFT settings page.
 
+
+
+# Tests
+Note that the test suite is currently broken due to incompatibilities with some upgrades that were made to support native ES modules and recent versions of hardhat and mocha. Not ideal.

@@ -153,34 +153,24 @@
     
                                 ${transactionsViewModel?.transactions?.length > 0 ? $h`
                     
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Activity <span class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</span>
-                                        </div>
-                                        <div class="card-content card-content-padding">
-                                    
-                                            ${transactionsViewModel.transactions.map(transaction => $h`
-                                                <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
-                                            `)}
-                                    
-                                            <div class="block margin-top margin-bottom">
-                                                <div class="row">
-                                                    <div class="col-50">
-                                                        ${previousPageStartId ? $h`
-                                                        <a href="${baseURL}u/activity?startId=${previousPageStartId}&address=${address}" class="button button-outline color-gray">Previous</a>
-                                                        ` : $h` `}
-                                                    </div>
-                                                    <div class="col-50">
-                                                        ${nextPageStartId ? $h`
-                                                        <a href="${baseURL}u/activity?startId=${nextPageStartId}&address=${address}" class="button button-fill">Next</a>
-                                                        ` : $h` `}
-                                                    </div>
-                                                </div>
-                                    
+                                    <div class="block-title block-title-medium">Activity</div>
+                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                                    <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                             
+                                    <div class="block margin-top margin-bottom">
+                                        <div class="row">
+                                            <div class="col-50">
+                                                ${previousPageStartId ? $h`
+                                                <a href="${baseURL}u/activity?startId=${previousPageStartId}&address=${address}" class="button button-outline color-gray">Previous</a>
+                                                ` : $h` `}
                                             </div>
-    
-    
+                                            <div class="col-50">
+                                                ${nextPageStartId ? $h`
+                                                <a href="${baseURL}u/activity?startId=${nextPageStartId}&address=${address}" class="button button-fill">Next</a>
+                                                ` : $h` `}
+                                            </div>
                                         </div>
+                            
                                     </div>
                             
                                 ` : $h`<span />`}

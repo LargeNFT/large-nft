@@ -117,7 +117,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
 let container: Container
 
 
-function getMainContainer(readerConfig:ReaderConfig) {
+function getMainContainer(readerConfig:ReaderConfig, version:string) {
 
   if (container) return container
 
@@ -150,7 +150,7 @@ function getMainContainer(readerConfig:ReaderConfig) {
     return c
   }
 
-
+  container.bind("version").toConstantValue(version)
 
   container.bind("provider").toConstantValue(() => {
 

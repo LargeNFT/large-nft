@@ -21,7 +21,7 @@ import { RoutingService } from "./service/core/routing-service.js"
 import AdminChannelShowComponent from './components/admin/channel/show.f7.html'
 
 
-export default async() => {
+export default async(version) => {
                 
     //Check hash to see if we are linking to a Reader
     let search = window.location.hash ? window.location.hash.substring(window.location.hash?.indexOf("?"), window.location.hash.length) : undefined
@@ -36,7 +36,7 @@ export default async() => {
       }
     }
 
-    let container = getMainContainer(readerConfig)
+    let container = getMainContainer(readerConfig, version)
 
     let app:any = container.get("framework7")
     let routingService:RoutingService = container.get(RoutingService)

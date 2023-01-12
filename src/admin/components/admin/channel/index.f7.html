@@ -14,7 +14,7 @@
 
     <div class="toolbar toolbar-bottom" >
       <div class="toolbar-inner" style="display: block; padding: 10px;">
-        Code licensed under <a href="https://github.com/LargeNFT/large-nft/blob/master/LICENSE.md" class="external">MIT</a> | <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a> | <a href="https://twitter.com/large_nft" class="external">Twitter</a>
+        Code licensed under <a href="https://github.com/LargeNFT/large-nft/blob/master/LICENSE.md" class="external">MIT</a> | <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a> | <a href="https://twitter.com/large_nft" class="external">Twitter</a> | ${version}
       </div>
     </div>
 
@@ -80,6 +80,7 @@
     let channelWebService = ContainerService.getInstance(ChannelWebService)
     let imageService = ContainerService.getInstance(ImageService)
     let uiService = ContainerService.getInstance(UiService)
+    let version = ContainerService.getInstance("version")
 
     const LIMIT = 20
 

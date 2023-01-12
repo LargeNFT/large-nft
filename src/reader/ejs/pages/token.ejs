@@ -205,20 +205,10 @@
 
                                             ${transactionsViewModel?.transactions?.length > 0 ? $h`
                           
-                                              <div class="card">
-                                                <div class="card-header">
-                                                    Activity <span class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</span>
-                                                </div>
-                                                <div class="card-content card-content-padding data-table">
-                                          
-                                                    ${transactionsViewModel.transactions.map(transaction => $h`
-                                                        <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
-                                                    `)}
-            
-                                                </div>
-            
-                                              </div>
-                                        
+                                              <div class="block-title block-title-medium">Activity</div>
+                                              <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                                              <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}" token="<%= itemViewModel.item.tokenId %>"></transaction-row>
+                                       
                                             ` : $h`<span />`}
                           
                                         </div>

@@ -573,16 +573,43 @@ ul.breadcrumb li a:hover {
   overflow-x: unset;
 }
 
+.data-table a {
+  font-weight: normal;
+}
+
+.data-table a.is-from {
+  font-weight: bold;
+}
+
 .data-table tr {
   height: 35px;
 }
 
-.data-table .label-cell {
-  width: 200px;
+.data-table .image {
+  width: 45px;
+  text-align: center;
+  font-size: 20px;
 }
 
+.data-table .image img {
+  margin: 5px;
+}
 
+.data-table .date {
+  font-size:11px;
+  margin-top: 1px;
+  margin-bottom: 1px;
 
+}
+
+.data-table .label-cell .title {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.data-table .alt-row {
+  background: #f1f1f1;
+}
 
 .scarcity-report-card.data-table table {
   max-width: 600px;
@@ -1017,7 +1044,8 @@ html {
   display: block;
   font-size: 13px;
   color: darkslategray;
-  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
   text-align: right;
 }
 

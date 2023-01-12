@@ -21,10 +21,6 @@ import { WalletService } from "./wallet-service.js";
 
 
 
-import looksRareABI from './abi/looksRareABI.json';
-import nftxABI from './abi/nftxABI.json';
-import openseaSeaportABI from './abi/seaportABI.json';
-import moment from "moment";
 import { ENSService } from "../ens-service.js";
 
 
@@ -163,15 +159,13 @@ class TransactionIndexerService {
                         //Grab block data
                         let block: Block = await this.blockService.getOrDownload(event.blockNumber)
         
-                        let transaction:Transaction
+                        let transaction:Transaction = await this.transactionService.getOrDownload(event.transactionHash)
 
                         //Look for it locally
                         if (result.processedTransactionsToUpdate[event.transactionHash]) {
                             currentTransaction = result.processedTransactionsToUpdate[event.transactionHash]
                         } else {
-    
-                            transaction = await this.transactionService.getOrDownload(event.transactionHash)
-    
+        
                             currentTransaction = new ProcessedTransaction()
                             currentTransaction._id = transaction.hash    
                             currentTransaction.from = transaction.from
@@ -185,12 +179,12 @@ class TransactionIndexerService {
                             currentTransaction.previousByTokenIds = {}
                             currentTransaction.previousByTokenOwnerId = {}
                             currentTransaction.previousByTransactionInitiatorId = {}
-                            currentTransaction.tokenIds = []
-        
+                            currentTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.utils.getAddress(this.contract.address))
                             result.processedTransactionsToUpdate[currentTransaction._id] = currentTransaction
                         }
         
-                        
+
+
                         if (!block || !currentTransaction) throw new Error("Block and/or transaction not found.")
                         if (event.transactionHash != currentTransaction._id) throw new Error("Wrong transaction found.")
         
@@ -345,8 +339,9 @@ class TransactionIndexerService {
                         //Add event to transaction before saving
                         currentTransaction.ercEvents.push(ercEvent)
         
-                        //Detect events from on-chain exchanges
-                        console.log(JSON.stringify(await this.getEventValue(transaction, ercEvent)))
+
+
+                        
                         
                         //Set previous/next if we already have a previous transaction
                         if (previousTransaction && previousTransaction._id != currentTransaction._id) {
@@ -356,7 +351,13 @@ class TransactionIndexerService {
         
         
                         console.timeEnd(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`)
-        
+                        
+                        if (currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId] > 0) {
+                            console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${currentTransaction.transactionValue?.currency} on ${currentTransaction.transactionValue?.market }`)
+
+                        }
+
+
                         previousTransaction = currentTransaction
         
                         //Increment the count
@@ -494,13 +495,12 @@ class TransactionIndexerService {
 
     }
     
-
-
     private createProcessedEvents(currentTransaction: ProcessedTransaction) {
 
+
         //If it's an "Approve" event then we check the next event and if it's a transfer
-        //then just skip this. Seems like exchanges set approval to 0x000 before transferring
-        //So that the new owner has revoked all token approvals. 
+        //then just skip this. Seems like approval gets set to 0x000 before transferring
+        //so that the new owner has revoked all token approvals. 
     
         //Filter those out
         currentTransaction.ercEvents = currentTransaction.ercEvents?.filter( (e, index) => {
@@ -533,18 +533,17 @@ class TransactionIndexerService {
 
             let e = currentTransaction.ercEvents[i]
 
+            // //If the same from/to as the last one just add it to the same processed event
+            // if (
+            //     e.event == "Transfer" && 
+            //     previousProcessedTransfer && 
+            //     e.namedArgs.fromAddress == previousProcessedTransfer.namedArgs.fromAddress && 
+            //     e.namedArgs.toAddress == previousProcessedTransfer.namedArgs.toAddress
+            // ) {
 
-            //If the same from/to as the last one just add it to the same processed event
-            if (
-                e.event == "Transfer" && 
-                previousProcessedTransfer && 
-                e.namedArgs.fromAddress == previousProcessedTransfer.namedArgs.fromAddress && 
-                e.namedArgs.toAddress == previousProcessedTransfer.namedArgs.toAddress
-            ) {
+            //     previousProcessedTransfer.tokenIds.push(parseInt(e.namedArgs.tokenId))
 
-                previousProcessedTransfer.tokenIds.push(parseInt(e.namedArgs.tokenId))
-
-            } else {
+            // } else {
 
                 let processedEvent:ProcessedEvent = {
                     isMint: e.isMint,
@@ -560,42 +559,11 @@ class TransactionIndexerService {
                     previousProcessedTransfer = processedEvent
                 }
 
-            }
+            // }
 
         }
 
-
-        // let marketContracts = {
-        //     "0x00000000006c3852cbef3e08e8df289169ede581": {
-        //         name: "OpenSea Seaport 1.1",
-                
-        //     }
-        // }
-
-
-        //Identify OpenSea
-
-
-
-        //Identify LooksRare
-
-
-
-
-        //Identify top 10 markets
-
-        //Get sale price in ETH
-
-        //Get sale price in $
-
-
-
-
-
     }
-
-
-
 
     async getEvents(startBlock:number, endBlock:number) : Promise<EventsResult> {
 
@@ -645,7 +613,6 @@ class TransactionIndexerService {
 
     }
 
-
     // async getBlockChunks(startBlock:number, endBlock:number, chunkLimit = 2000) {
 
     //     const totalBlocks = endBlock - startBlock
@@ -670,8 +637,6 @@ class TransactionIndexerService {
     //     return chunks
     // }
 
-
-
     private _getFilterTopics(contract: Contract) {
 
 
@@ -687,8 +652,6 @@ class TransactionIndexerService {
 
         return topics
     }
-
-
 
     /**
      * Gets contract state by address and creates a new record if it doesn't exist.
@@ -746,193 +709,6 @@ class TransactionIndexerService {
     private getEndBlock() {
         return this.blockNumber - this.BLOCK_GAP
     }
-
-
-    async getEventValue(transaction:Transaction, ercEvent: ERCEvent): Promise<any> {
-   
-        
-        try {
-    
-          if (!transaction) {
-            // console.log('no transaction')
-            return
-          }
-
-          // not an erc721 transfer
-          if (!ercEvent.namedArgs.toAddress || !ercEvent.namedArgs.fromAddress || !ercEvent.namedArgs.tokenId) {
-            // console.log('not transfer')
-            return
-          }
-
-          // ignore internal transfers to contract, another transfer event will handle this 
-          // transaction afterward (the one that'll go to the buyer wallet)
-          const code = await this.walletService.provider.getCode(ercEvent.namedArgs.toAddress)
-          if (code !== '0x') {
-            // console.log('internal transfer')
-            return
-          }
-
-          // if there is an NFTX swap involved, ignore this transfer
-          const swaps = transaction.receipt.logs.filter((log2: any) => log2.topics[0].toLowerCase() === '0x7af2bc3f8ec800c569b6555feaf16589d96a9d04a49d1645fd456d75fa0b372b')
-          if (swaps.length) {
-            console.log('nftx swap involved in this transaction, ignoring it')
-            return
-          }
-
-
-          const looksInterface = new ethers.utils.Interface(looksRareABI)
-          const nftxInterface = new ethers.utils.Interface(nftxABI)
-          const seaportInterface = new ethers.utils.Interface(openseaSeaportABI)
-
-
-          // Get transaction
-          const ether = ethers.utils.formatEther(BigNumber.from(transaction.value).toString())
-              
-          // Check if LooksRare & parse the event & get the value
-          let alternateValue = 0
-          const LR = transaction.receipt.logs.map((log: any) => {
-            if (log.address.toLowerCase() === '0x59728544b08ab483533076417fbbb2fd0b17ce3a'.toLowerCase()) {  
-              return looksInterface.parseLog(log)
-            }
-          }).filter((log: any) => (log?.name === 'TakerAsk' || log?.name === 'TakerBid') && log?.args.tokenId == ercEvent.namedArgs.tokenId)
-          
-          const NFTX = transaction.receipt.logs.map((log: any) => {
-            // direct buy from vault
-            if (log.topics[0].toLowerCase() === '0x1cdb5ee3c47e1a706ac452b89698e5e3f2ff4f835ca72dde8936d0f4fcf37d81') {  
-              const relevantData = log.data.substring(2)
-              const relevantDataSlice = relevantData.match(/.{1,64}/g)
-              return BigInt(`0x${relevantDataSlice[1]}`) / BigInt('1000000000000000')
-            } else if (log.topics[0].toLowerCase() === '0x63b13f6307f284441e029836b0c22eb91eb62a7ad555670061157930ce884f4e') {
-              const parsedLog = nftxInterface.parseLog(log)
-              
-              // check that the current transfer is NFTX related
-              if (!parsedLog.args.nftIds.filter(n => BigInt(n).toString() === ercEvent.namedArgs.tokenId).length) {
-                return
-              }
-              
-              // redeem, find corresponding token bought
-              const buys = transaction.receipt.logs.filter((log2: any) => log2.topics[0].toLowerCase() === '0xf7735c8cb2a65788ca663fc8415b7c6a66cd6847d58346d8334e8d52a599d3df')
-                .map( (b:any) => {
-                  const relevantData = b.data.substring(2)
-                  const relevantDataSlice = relevantData.match(/.{1,64}/g)
-                  return BigInt(`0x${relevantDataSlice[1]}`)
-                })
-              if (buys.length) {
-                return buys.reduce((previous, current) => previous + current, BigInt(0)) / BigInt('1000000000000000')
-              } else {
-                // we're still missing the funds, check swap of weth
-                const swaps = transaction.receipt.logs.filter((log2: any) => log2.topics[0].toLowerCase() === '0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822')
-                  .map( (b:any) => {
-                    const relevantData = b.data.substring(2)
-                    const relevantDataSlice = relevantData.match(/.{1,64}/g)
-                    const moneyIn = BigInt(`0x${relevantDataSlice[1]}`)
-                    if (moneyIn > BigInt(0))
-                      return moneyIn / BigInt('1000000000000000')
-                  })
-                if (swaps.length) return swaps[0]
-              }
-            }
-          }).filter(n => n !== undefined)
-    
-          // Check all marketplaces specific events to find an alternate price
-          // in case of sweep, multiple buy, or bid
-    
-          const NLL = transaction.receipt.logs.map((log: any) => {
-            if (log.topics[0].toLowerCase() === '0x975c7be5322a86cddffed1e3e0e55471a764ac2764d25176ceb8e17feef9392c') {
-              const relevantData = log.data.substring(2)
-              if (ercEvent.namedArgs.tokenId !== parseInt(log.topics[1], 16).toString()) {
-                return
-              }
-              return BigInt(`0x${relevantData}`) / BigInt('1000000000000000')
-            }
-          }).filter(n => n !== undefined)
-    
-          const X2Y2 = transaction.receipt.logs.map((log: any, index:number) => {
-            if (log.topics[0].toLowerCase() === '0x3cbb63f144840e5b1b0a38a7c19211d2e89de4d7c5faf8b2d3c1776c302d1d33') {
-              const data = log.data.substring(2)
-              const dataSlices = data.match(/.{1,64}/g)
-              // find the right token
-              if (BigInt(`0x${dataSlices[18]}`).toString() !== ercEvent.namedArgs.tokenId) return
-              let amount = BigInt(`0x${dataSlices[12]}`) / BigInt('1000000000000000')
-              if (amount === BigInt(0)) {
-                amount = BigInt(`0x${dataSlices[26]}`) / BigInt('1000000000000000')
-              }
-              return amount
-            }
-          }).filter(n => n !== undefined)  
-          
-          const OPENSEA_SEAPORT = transaction.receipt.logs.map((log: any) => {
-            if (log.topics[0].toLowerCase() === '0x9d9af8e38d66c62e2c12f0225249fd9d721c54b83f48d9352c97c6cacdcb6f31') {
-              const logDescription = seaportInterface.parseLog(log)
-              const matchingOffers = logDescription.args.offer.filter(
-                o => o.identifier.toString() === ercEvent.namedArgs.tokenId || 
-                o.identifier.toString() === '0')
-              const tokenCount = logDescription.args.offer.length
-              if (matchingOffers.length === 0) {
-                return
-              }
-              let amounts = logDescription.args.consideration.map(c => BigInt(c.amount))
-              // add weth
-              const wethOffers = matchingOffers.map(o => o.token === '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' && o.amount > 0 ? BigInt(o.amount) : BigInt(0))
-              if (wethOffers.length > 0 && wethOffers[0] != BigInt(0)) {
-                console.log('found weth offer, using it as amount')
-                amounts = wethOffers
-              }
-              const amount = amounts.reduce((previous,current) => previous + current, BigInt(0))
-              return amount / BigInt('1000000000000000') / BigInt(tokenCount)
-            }
-          }).filter(n => n !== undefined)      
-
-
-
-
-
-
-
-
-    
-          if (LR.length) {
-            const weiValue = (LR[0]?.args?.price)?.toString()
-            const value = ethers.utils.formatEther(weiValue)
-            alternateValue = parseFloat(value)
-          } else if (NFTX.length) {
-            // find the number of token transferred to adjust amount per token
-            const redeemLog = transaction.receipt.logs.filter((log: any) => log.topics[0].toLowerCase() === '0x63b13f6307f284441e029836b0c22eb91eb62a7ad555670061157930ce884f4e')[0]
-            const parsedLog = nftxInterface.parseLog(redeemLog)
-            const tokenCount = Math.max(parsedLog.args.nftIds.length, 1)
-            alternateValue = parseFloat(NFTX[0].toString())/tokenCount/1000
-          } else if (NLL.length) {
-            alternateValue = parseFloat(NLL[0].toString())/1000
-          } else if (X2Y2.length) {
-            alternateValue = parseFloat(X2Y2[0].toString())/1000
-          } else if (OPENSEA_SEAPORT.length) {
-            alternateValue = parseFloat(OPENSEA_SEAPORT[0].toString())/1000
-          } else {
-
-
-
-
-
-          }
-    
-    
-          return {
-            ether: parseFloat(ether),
-            alternateValue: alternateValue
-          }
-
-    
-        } catch (ex) {
-          console.log(ex)
-        }
-
-
-    }
-
-
-
-    
-
 
 }
 

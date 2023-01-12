@@ -1,9 +1,9 @@
 
-# Large
+# Large NFT
 
 [![npm version](https://badge.fury.io/js/large-nft.svg)](https://badge.fury.io/js/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-The easiest way to publish your work as an NFT collection on **Ethereum** and **IPFS**. 
+The easiest way to self-publish your work as an NFT collection on **Ethereum** and **IPFS**. 
 
 Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
@@ -11,7 +11,7 @@ Build a fan site for an existing NFT collection.
 
 Fork any NFT collection to experiment.
 
-Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your book or collection. Native theming for iOS, Android, and Desktop.
+Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your book or collection. Includes native theming for iOS, Android, and Desktop.
 
 Inexpensively scale a community and marketplace on any simple, static webhost. No database server required.
 
@@ -50,7 +50,7 @@ Inexpensively scale a community and marketplace on any simple, static webhost. N
 
 * No dependency on app stores. Built for the open and free web. Large NFT and Large Reader are modern PWAs that run directly in the browser with a simple static webhost. Since it's built to work offline-first it can also be wrapped and distributed to app stores if you choose. 
 
-* Distributed through web or IPFS.
+* Distributed through web or IPFS. To be distributed through IPFS and the web the full stack must run in a web browser.
 
 * Use git as a critical piece of decentralized, P2P infrastructure.
 
@@ -63,8 +63,6 @@ Inexpensively scale a community and marketplace on any simple, static webhost. N
 
 
 * Provide reasonable defaults for new NFTs collection and the ability to change and customize.
-
-* To be distributed through IPFS and the web the full stack must run in a web browser.
     
 * Any user can run the entire stack for a particular collection. 
 
@@ -291,9 +289,9 @@ npm run sync --  --env dev --alchemy <API key>
 | --public-branch  | public  | The public branch. This branch is where the generate and sync tools write their changes.
 | --sync-rate  | 30*1000  | Milliseconds between sync attempts. Default is 30 seconds. 
 
+---
 
-
-# Large Reader Showcase
+# Showcase
 These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
 * [Alice's Adventures in Wonderland](https://readalice.com)
 

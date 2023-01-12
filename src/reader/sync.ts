@@ -34,6 +34,7 @@ let channelId
 
 import { simpleGit, CleanOptions } from 'simple-git'
 import { ProcessedTransaction } from "./dto/processed-transaction.js"
+import { TransactionService } from "./service/transaction-service.js"
 
 simpleGit().clean(CleanOptions.FORCE)
 
@@ -122,6 +123,8 @@ let sync = async () => {
   
 
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
+  let transactionService:TransactionService = container.get("TransactionService")
+
   let tokenOwnerService:TokenOwnerService = container.get("TokenOwnerService")
   let processedTransactionService: ProcessedTransactionService = container.get("ProcessedTransactionService")
   let tokenOwnerPageService: TokenOwnerPageService = container.get("TokenOwnerPageService")
@@ -131,27 +134,12 @@ let sync = async () => {
   let channelContract = await walletService.getContract("Channel")
 
 
-  //Make sure git is up-to-date before starting
-  // if (config.env == "production") {
-  //   await git.addConfig('pull.ff', 'only')
-
-  //   await git.checkout(config.branch)
-  //   await git.pull("origin", config.branch)
-  //   //TODO:should probably refactor this to inject different services for dev and production
-  // }
-
-
-
-
   //Start the transaction indexer
   async function runTransactionIndexer(){
 
       await transactionIndexerService.init(channelContract)
 
-      let indexResult:ERCIndexResult
-
-
-      
+      let indexResult:ERCIndexResult     
 
       try {
 
@@ -295,7 +283,20 @@ let sync = async () => {
 
 
   }
-  
+
+  let testTransaction = async () => {
+
+    await transactionIndexerService.init(channelContract)
+
+    let transaction:Transaction = await transactionService.getOrDownload("0xa7c508ac37f66ebe328851ef4a54c504bf06c7cc9d32ac419307971a2f640653")
+
+    let value = await transactionService.getTransactionValue(transaction, channelContract.address)
+
+    console.log(value)
+
+  }
+
+  // testTransaction()
   runTransactionIndexer()
 
 }
@@ -303,27 +304,5 @@ let sync = async () => {
 
 
 sync()
-
-
-
-
-            // if (config.env == "production") {
-
-            //   let commitMessage = `
-            //     ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions.
-            //     ${Object.keys(indexResult.tokensToUpdate).length} tokens.
-            //     ${Object.keys(indexResult.ownersToUpdate).length} token owners.
-            //     ${tokenOwnerPages.length} token owner pages.
-            //     Latest transaction: ${mostRecent._id}.
-            //   `
-
-            //   await git.add(['*'])
-            //   await git.commit(commitMessage)
-            //   await git.push("origin", config.branch)
-  
-            //   //TODO:should probably refactor this to inject different services for dev and production
-            // }
-          
-
 
 

@@ -66,6 +66,7 @@ class Transaction {
 }
 
 interface TransactionReceipt {
+    to?:string
     contractAddress?:string
     cumulativeGasUsed?:string
     effectiveGasPrice?:string

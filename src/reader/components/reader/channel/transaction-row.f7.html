@@ -1,34 +1,53 @@
 <template>
+  
+  <div class="data-table card">
+    <table>
+      <thead>
+        <tr>
+          <th class="image"></th>
+          <th class="label-cell medium-only">Item</th>
+          <th>Event</th>
+          <th class="numeric-cell">Price</th>
+          <th class="medium-only">Market</th>
+          <th class="medium-only">From</th>
+          <th class="medium-only">To</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${transactionsViewModel?.transactions.map( (transaction, index) => $h`
 
-  <div style="margin-bottom: 15px;">
+          ${transaction.processedEvents?.map(processedEvent => $h`
 
-    <div class="transaction-info">
-      <span class="date">${moment(transaction.timestamp * 1000).fromNow()}</span>
-      <a href="https://etherscan.io/tx/${transaction._id}" class="external button button-outline button-small color-gray" target="_blank" style="float: right; margin-top: -3px;">${walletService.truncateEthAddress(transaction._id)}</a>
-    </div>
+            ${processedEvent.event == "Approval" && (!tokenId || processedEvent.namedArgs?.tokenId == tokenId) ? $h`
+              <${Approval} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}" />
+            ` : $h` `}
+        
+            ${processedEvent.event == "Transfer" && (!tokenId || processedEvent.namedArgs?.tokenId == tokenId) ? $h`
+              <${Transfer} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}"/>
+            ` : $h` `}
+        
+            ${processedEvent.event == "ApprovalForAll" && (!tokenId || processedEvent.namedArgs?.tokenId == tokenId) ? $h`
+              <${ApprovalForAll} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} index="${index}"/>
+            ` : $h` `}
+        
+          `)}
 
-    ${transaction.processedEvents?.map(processedEvent => $h`
 
-      ${processedEvent.event == "Approval"? $h`
-        <${Approval} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} />
-      ` : $h` `}
-
-      ${processedEvent.event == "Transfer"? $h`
-        <${Transfer} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} />
-      ` : $h` `}
-
-      ${processedEvent.event == "ApprovalForAll" ? $h`
-        <${ApprovalForAll} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} />
-      ` : $h` `}
-
-    `)}
-
+        `)}
+      </tbody>
+    </table>
   </div>
+
+
+
+
+
 
 </template>
 
 
 <style>
+
 </style>
 
 <script>
@@ -52,46 +71,50 @@
     let event = props.event
     let baseURI = props.base_uri
     let rowItemViewModels = props.row_item_view_models
+    let index = props.index
+
 
 
     return () => $h`
     
-        <div class="event-info">
+        <tr class="${index % 2 == 0 ? "alt-row" : ''}">
 
-          <div class="description">
+          <td class="image">
+            <a href="${baseURI}t/${event.namedArgs.tokenId}">
+              <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.namedArgs.tokenId].title}" height="40" width="40" /> 
+            </a>
+          </td>
 
+          <td class="label-cell medium-only">
+
+            <a href="${baseURI}t/${event.namedArgs.tokenId}" class="title">
+              ${rowItemViewModels[event.namedArgs.tokenId].title}            
+            </a>
+
+          </td>
+          <td>
             ${event.isMint ? $h`
-
-                <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">
-                  ${transactionWebService.getDisplayName(event.namedArgs.toAddress)}
-                </a> minted <strong>${event.tokenIds?.length}</strong> tokens.
-
+              <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Mint</a>
             ` : $h`
-
-                <a href="${baseURI}u/?address=${event.namedArgs.fromAddress}" class="${event.namedArgs.fromAddress == transaction.from ? 'is-from' : ''}">
-                  ${transactionWebService.getDisplayName(event.namedArgs.fromAddress)}
-                </a> <span class="f7-icons">arrow_right</span> <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.toAddress)}</a>
-
+              <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a>
             `}
 
-          </div>
+            <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
+          </td>
 
-
-          <div class="images">
-
-            ${event.tokenIds?.map( tokenId => $h`
-              
-              <a href="${baseURI}t/${tokenId}">
-                <img src="${imageLink(rowItemViewModels[tokenId])}" class="latest-img" alt="${rowItemViewModels[tokenId].title}" height="40" width="40" /> 
-              </a>
-
-            `)}
-
-          </div>
-
-                  
-        </div>
-
+          <td class="numeric-cell">${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]} ${transaction.transactionValue?.currency}</td>
+          <td class="medium-only">${transaction.transactionValue?.market}</td>
+          <td class="medium-only">
+            <a href="${baseURI}u/?address=${event.namedArgs.fromAddress}" class="${event.namedArgs.fromAddress == transaction.from ? 'is-from' : ''}">
+                  ${transactionWebService.getDisplayName(event.namedArgs.fromAddress)}
+            </a>  
+          </td>
+          <td class="medium-only">
+            <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">
+              ${transactionWebService.getDisplayName(event.namedArgs.toAddress)}
+            </a>
+          </td>
+        </tr>
     `;
   }
 
@@ -114,42 +137,41 @@
     let event = props.event
     let baseURI = props.base_uri
     let rowItemViewModels = props.row_item_view_models
+    let index = props.index
 
 
     return () => $h`
+      <tr class="${index % 2 == 0 ? "alt-row" : ''}">
 
-        <div class="event-info">
-
-          <div class="image">
-            <a href="${baseURI}t/${event.namedArgs.tokenId}" class="link">
-                <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.namedArgs.tokenId].title}" /> 
+          <td class="image">
+            <a href="${baseURI}t/${event.namedArgs.tokenId}">
+              <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.namedArgs.tokenId].title}" height="40" width="40" /> 
             </a>
-          </div>
+          </td>
 
-          <div class="details">
-          
-            ${event.event} 
+          <td class="label-cell medium-only">
 
-            <div class="transfer">
+            <a href="${baseURI}t/${event.namedArgs.tokenId}" class="title">
+              ${rowItemViewModels[event.namedArgs.tokenId].title}            
+            </a>
 
-              ${event.namedArgs.owner ? $h`
-                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a>
-              ` : $h`<span />`}
+            
+          </td>
+          <td>
+            <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a> <br />
+            
+            <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
+          </td>
 
-              ${event.namedArgs.approved ? $h`
-                <span class="f7-icons">arrow_right</span>
-                <a href="${baseURI}u/?address=${event.namedArgs.approved}" class="${event.namedArgs.approved == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.approved)}</a>
-              ` : $h`<span />`}
-
-            </div>
-
-
-          
-          </div>
-          
-          
-        </div>
-
+          <td class="numeric-cell"></td>
+          <td class="medium-only"></td>
+          <td class="medium-only">
+            <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a> 
+          </td>
+          <td class="medium-only">
+            <a href="${baseURI}u/?address=${event.namedArgs.approved}" class="${event.namedArgs.approved == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.approved)}</a>
+          </td>
+        </tr>
     `;
   }
 
@@ -163,37 +185,33 @@
     let transaction = props.transaction
     let event = props.event
     let baseURI = props.base_uri
+    let index = props.index
 
     return () => $h`
+        <tr class="${index % 2 == 0 ? "alt-row" : ''}">
 
-        <div class="event-info">
+          <td class="image">
+            ${event.namedArgs.approved ? $h`🟢` : $h`🔴`}
+          </td>
 
-          <div class="image">
-            ${event.namedArgs.approved ? $h`🟢` : $h`🔴`} 
-          </div>
-
-          <div class="details">
-
-            ${event.event} 
-
-            <div class="transfer">
-
-              ${event.namedArgs.owner ? $h`
-                <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a>
-              ` : $h`<span />`}
-
-              ${event.namedArgs.operator ? $h`
-                <span class="f7-icons">arrow_right</span>
-                <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs.operator == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.operator)}</a>
-              ` : $h`<span />`}
-
-            </div>
-                      
+          <td class="label-cell medium-only">
             
-          </div>
-        </div>
+          </td>
+          <td>
+             <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a>  <br />
 
-        
+             <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
+          </td>
+
+          <td class="numeric-cell">${transaction.transactionValue?.totalPrice} ${transaction.transactionValue?.currency}</td>
+          <td class="medium-only">${transaction.transactionValue?.market}</td>
+          <td class="medium-only">
+            <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a> 
+          </td>
+          <td class="medium-only">
+            <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs.operator == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.operator)}</a>
+          </td>
+        </tr>
     `;
   }
 
@@ -206,8 +224,9 @@
     let baseURI = globalThis.container.get('baseURI')
     let moment = globalThis.moment 
 
-    let transaction = props.transaction 
+    let transactionsViewModel = props.transactions 
     let rowItemViewModels = props.items
+    let tokenId = props.token
 
     return $render
   }

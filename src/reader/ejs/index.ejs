@@ -185,15 +185,8 @@
                 ${transactionsViewModel?.transactions?.length > 0 ? $h`
   
                   <div class="block-title block-title-medium">Recent Activity</div>
-
-                  <div class="block block-strong inset">
-                    <span class="last-updated" style="height: 40px;">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</span>
-
-                    ${transactionsViewModel.transactions.map(transaction => $h`
-                      <transaction-row transaction="${transaction}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
-                    `)}
-
-                  </div>
+                  <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                  <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
 
                   <div class="block margin-top margin-bottom">
                     <div class="row">

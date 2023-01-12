@@ -32,7 +32,9 @@
   <%= htmlWebpackPlugin.tags.bodyTags %>
 
   <script type="module">
-    admin.default()
+
+    let version = atob('<%= htmlWebpackPlugin.options.base64Version %>').replace('"', '').replace('"', '')
+    admin.default(version)
   </script>
 
 </body>

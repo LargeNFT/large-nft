@@ -251,7 +251,8 @@ let getAdminConfigs = () => {
         title: 'Large',
         // favicon: 'src/html/favicon.ico',
         template: 'src/admin/html/app.html',
-        filename: 'index.html'
+        filename: 'index.html',
+        base64Version: Buffer.from(JSON.stringify(require("./package.json").version)).toString('base64')
       }),
   
       new MiniCssExtractPlugin({

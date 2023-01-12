@@ -29,8 +29,8 @@ class ProcessedTransaction {
     processedEvents?:ProcessedEvent[]
 
     @Allow()
-    tokenIds?:string[]
-    
+    transactionValue?:TransactionValue
+
     @Allow()
     previousId?:string
 
@@ -64,6 +64,14 @@ class ProcessedTransaction {
 
 }
 
+interface TransactionValue {
+    totalPrice: number,
+    tokenPrice: {}
+    currency: string
+    market: string
+    tokenIds: string[]
+}
+
 interface ProcessedEvent {
     isMint?:boolean
     isBurn?:boolean
@@ -74,5 +82,5 @@ interface ProcessedEvent {
 }
 
 export {
-    ProcessedTransaction, ProcessedEvent
+    ProcessedTransaction, ProcessedEvent, TransactionValue
 }

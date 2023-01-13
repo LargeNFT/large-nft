@@ -6,6 +6,7 @@ import { Transaction } from "../dto/transaction.js"
 import { WalletService } from "./core/wallet-service.js"
 import { ParamType } from "ethers/lib/utils.js"
 import { ethers } from "ethers"
+import { TransactionValue } from "../dto/processed-transaction.js"
 
 
 @injectable()
@@ -129,7 +130,7 @@ class TransactionService {
      * @param transaction 
      * @returns 
      */
-    async getTransactionValue(transaction:Transaction, contractAddress:string) {
+    async getTransactionValue(transaction:Transaction, contractAddress:string) : Promise<TransactionValue> {
 
         if (!transaction.receipt.to) return
         const recipient = ethers.utils.getAddress(transaction.receipt.to)
@@ -149,11 +150,14 @@ class TransactionService {
     }
 
 
-    processAggregatorTransaction(markets:Markets, transaction: Transaction, recipient: string, contractAddress: string) {
+    processAggregatorTransaction(markets:Markets, transaction: Transaction, recipient: string, contractAddress: string) : TransactionValue {
 
-        let tokenIds: string[] = []
-        let totalPrice = 0
-        let tokenPrice = {}
+        let result:TransactionValue = {
+            tokenIds: [],
+            totalPrice:0,
+            tokenPrice:{}
+        }
+
 
         // default to eth, see `constants.ts` for other supported currencies
         let currencyAddress = '0x0000000000000000000000000000000000000000'
@@ -170,7 +174,9 @@ class TransactionService {
 
         // Calculate price paid
         let previousTransferTokenId
-        transaction.receipt.logs.forEach((log: any) => {
+        let afterTransferCursorIndex
+
+        transaction.receipt.logs.forEach((log: any, index) => {
 
             // First topic for events is the event signature, 4th is the ID
             // Always true for all standard ERC-721 Transfer events.
@@ -178,7 +184,7 @@ class TransactionService {
             // so we know `data` is empty
             if (log.data === '0x' && log.topics[0] === transferEventSignature) {
                 const tokenId = ethers.BigNumber.from(log.topics[3]).toString()
-                tokenIds.push(tokenId)
+                result.tokenIds.push(parseInt(tokenId))
                 previousTransferTokenId = tokenId
 
             } else {
@@ -192,59 +198,55 @@ class TransactionService {
                     let marketEntry = Object.entries(markets).find( m => m[1].id == salesEventSignature.market)
                     let market = marketEntry[1]
     
-                    const decodedLogData = ethers.utils.defaultAbiCoder.decode(market.logDecoder as ParamType[], log.data) as unknown as DecodedOSLogData
+                    let price = this.decodeSale(market, currency, log, contractAddress)
     
-                    let price = 0
-    
-                    switch (market.id) {
-                        case 'OpenSea (Seaport)':
-                            price =
-                                getSeaportSalePrice(
-                                    decodedLogData,
-                                    contractAddress,
-                                )
-                            break;
-                        case 'X2Y2':
-                            price = parseFloat(ethers.utils.formatUnits(
-                                decodedLogData.amount,
-                                currency.decimals,
-                            ))
-                            break
-                        default:
-                            price = parseFloat(ethers.utils.formatUnits(
-                                decodedLogData.price,
-                                currency.decimals,
-                            ))
-                    }
-                    
-                    totalPrice += price 
+                    result.totalPrice += price 
 
-                    if (previousTransferTokenId) {
-                        tokenPrice[previousTransferTokenId] = tokenPrice[previousTransferTokenId] ? tokenPrice[previousTransferTokenId] + price : price    
+                    //If we're looking forward for OpenSea Seaport we need to track which is the last 
+                    //transfer we did.
+                    if (salesEventSignature.transfer == "after") {
+                        index = afterTransferCursorIndex ? afterTransferCursorIndex : index
                     }
-                    
+
+                    let tokenId
+
+                    switch(salesEventSignature.transfer) {
+
+                        case "before":
+            
+                            if (previousTransferTokenId) {
+                                tokenId = previousTransferTokenId
+                            }
+            
+                        case "after":
+            
+                            //Look forward to the next Transfer event
+                            for (let i=index+1; i < transaction.receipt.logs.length; i++ ) {
+            
+                                let theLog:any = transaction.receipt.logs[i]
+            
+
+                                if (theLog.data === '0x' && theLog.topics[0] === transferEventSignature) {
+                                    tokenId = ethers.BigNumber.from(theLog.topics[3]).toString()
+                                    afterTransferCursorIndex = i
+                                    break
+                                }
+                            }
+            
+                    }
+
+                    result.tokenPrice[tokenId] = {
+                        price: price,
+                        currency: currency.name
+                    } 
                 }
 
             }
-
-
-
         })
 
-        totalPrice = parseFloat(totalPrice.toFixed(10))
-
-        let result = {
-            totalPrice: totalPrice,
-            tokenPrice: tokenPrice,
-            currency: currency.name,
-            market: aggregators[recipient].name,
-            tokenIds: tokenIds
-        }
-
-
-        console.log(`PROCESSING AGGREGATOR ${JSON.stringify(result)}`)
-
-
+        result.totalPrice = parseFloat(result.totalPrice.toFixed(10))
+        result.currency = currency.name
+        result.market = aggregators[recipient].name
 
         return result
 
@@ -252,11 +254,13 @@ class TransactionService {
 
     }
 
-    processMarketplaceTransaction(market:Market, transaction:Transaction, recipient:string, contractAddress:string) {
+    processMarketplaceTransaction(market:Market, transaction:Transaction, recipient:string, contractAddress:string) : TransactionValue {
 
-        let tokenIds: string[] = []
-        let totalPrice = 0
-        let tokenPrice = {}
+        let result:TransactionValue = {
+            tokenIds: [],
+            totalPrice:0,
+            tokenPrice:{}
+        }
 
         // default to eth, see `constants.ts` for other supported currencies
         let currencyAddress = '0x0000000000000000000000000000000000000000'
@@ -273,7 +277,11 @@ class TransactionService {
 
         // Calculate price paid
         let previousTransferTokenId
-        transaction.receipt.logs.forEach((log: any) => {
+        let afterTransferCursorIndex
+        
+        // console.log(transaction.receipt.logs)
+
+        transaction.receipt.logs.forEach((log: any, index:number) => {
 
             // First topic for events is the event signature, 4th is the ID
             // Always true for all standard ERC-721 Transfer events.
@@ -281,7 +289,7 @@ class TransactionService {
             // so we know `data` is empty
             if (log.data === '0x' && log.topics[0] === transferEventSignature) {
                 const tokenId = ethers.BigNumber.from(log.topics[3]).toString()
-                tokenIds.push(tokenId)
+                result.tokenIds.push(parseInt(tokenId))
                 previousTransferTokenId = tokenId
 
             } else {
@@ -292,36 +300,50 @@ class TransactionService {
 
                 if (logAddress == recipient && salesEventSignature) {
     
-                    const decodedLogData = ethers.utils.defaultAbiCoder.decode(market.logDecoder as ParamType[], log.data) as unknown as DecodedOSLogData
-    
-                    let price = 0
-    
-                    switch (market.id) {
-                        case 'OpenSea (Seaport)':
-                            price =
-                                getSeaportSalePrice(
-                                    decodedLogData,
-                                    contractAddress,
-                                )
-                            break;
-                        case 'X2Y2':
-                            price = parseFloat(ethers.utils.formatUnits(
-                                decodedLogData.amount,
-                                currency.decimals,
-                            ))
-                            break
-                        default:
-                            price = parseFloat(ethers.utils.formatUnits(
-                                decodedLogData.price,
-                                currency.decimals,
-                            ))
-                    }
-                    
-                    totalPrice += price 
+                    let price = this.decodeSale(market, currency, log, contractAddress)
 
-                    if (previousTransferTokenId) {
-                        tokenPrice[previousTransferTokenId] = tokenPrice[previousTransferTokenId] ? tokenPrice[previousTransferTokenId] + price : price    
+                    result.totalPrice += price 
+
+                    //If we're looking forward for OpenSea Seaport we need to track which is the last 
+                    //transfer we did.
+                    if (salesEventSignature.transfer == "after") {
+                        index = afterTransferCursorIndex ? Math.max(afterTransferCursorIndex, index) : index
                     }
+
+                    let tokenId
+
+                    switch(salesEventSignature.transfer) {
+
+                        case "before":
+            
+                            if (previousTransferTokenId) {
+                                tokenId = previousTransferTokenId
+                            }
+            
+                        case "after":
+            
+                            //Look forward to the next Transfer event
+                            for (let i=index+1; i < transaction.receipt.logs.length; i++ ) {
+            
+                                let theLog:any = transaction.receipt.logs[i]
+            
+
+                                if (theLog.data === '0x' && theLog.topics[0] === transferEventSignature) {
+                                    tokenId = ethers.BigNumber.from(theLog.topics[3]).toString()
+                                    afterTransferCursorIndex = i
+                                    break
+                                }
+                            }
+            
+                    }
+
+
+                    result.tokenPrice[tokenId] = {
+                        price: price,
+                        currency: currency.name
+                    } 
+
+
                 }
 
             }
@@ -330,25 +352,77 @@ class TransactionService {
 
         })
 
-        totalPrice = parseFloat(totalPrice.toFixed(10))
+        result.totalPrice = parseFloat(result.totalPrice.toFixed(10))
+        result.currency = currency.name
+        result.market = market.name
 
-        return {
-            totalPrice: totalPrice,
-            tokenPrice: tokenPrice,
-            currency: currency.name,
-            market: market.name,
-            tokenIds: tokenIds
-        }
+        return result
 
 
     }
 
 
 
+    decodeSale(market:Market, currency:Currency, log, contractAddress) {
+
+        const decodedLogData = ethers.utils.defaultAbiCoder.decode(market.logDecoder as ParamType[], log.data) as unknown as DecodedOSLogData
+    
+        let price = 0
+
+        switch (market.id) {
+            case 'OpenSea (Seaport)':
+                price =
+                    getSeaportSalePrice(
+                        decodedLogData,
+                        contractAddress,
+                    )
+                break;
+            case 'X2Y2':
+                price = parseFloat(ethers.utils.formatUnits(
+                    decodedLogData.amount,
+                    currency.decimals,
+                ))
+                break
+            default:
+                price = parseFloat(ethers.utils.formatUnits(
+                    decodedLogData.price,
+                    currency.decimals,
+                ))
+        }
+
+        return price
+    
+    }
+
+
+    getTokenForLog(transaction:Transaction, index:number, transfer:string, previousTransferTokenId:number) {
+        
+        switch(transfer) {
+
+            case "before":
+
+                if (previousTransferTokenId) {
+                    return previousTransferTokenId
+                }
+
+            case "after":
+
+                //Look forward to the next Transfer event
+                for (let i=index+1; i < transaction.receipt.logs.length; i++ ) {
+
+                    let theLog:any = transaction.receipt.logs[i]
+
+                    if (theLog.data === '0x' && theLog.topics[0] === transferEventSignature) {
+                        return ethers.BigNumber.from(theLog.topics[3]).toString()
+                    }
+                }
+
+        }
+
+
+    }
+
 }
-
-
-
 
 
 
@@ -654,15 +728,34 @@ export const transferEventSignature =
 
 export const saleEventSignatures = [
     // OrdersMatched (Opensea Wyvern)
-    { signature: '0xc4109843e0b7d514e4c093114b863f8e7d8d9a458c372cd51bfe526b588006c9', market: 'OpenSea (Wyvern)' },
+    { 
+        signature: '0xc4109843e0b7d514e4c093114b863f8e7d8d9a458c372cd51bfe526b588006c9', 
+        market: 'OpenSea (Wyvern)', 
+        transfer: "before"
+    },
     // EvProfit (X2Y2)
-    { signature: '0xe2c49856b032c255ae7e325d18109bc4e22a2804e2e49a017ec0f59f19cd447b', market: 'X2Y2' },
+    { 
+        signature: '0xe2c49856b032c255ae7e325d18109bc4e22a2804e2e49a017ec0f59f19cd447b', 
+        market: 'X2Y2',
+        transfer: "before"
+    },
     // TakerBid (LooksRare)
-    { signature: '0x95fb6205e23ff6bda16a2d1dba56b9ad7c783f67c96fa149785052f47696f2be', market: 'LooksRare' },
+    { signature: '0x95fb6205e23ff6bda16a2d1dba56b9ad7c783f67c96fa149785052f47696f2be', 
+        market: 'LooksRare',
+        transfer: "before"
+    },
     // TakerAsk (LooksRare)
-    { signature: '0x68cd251d4d267c6e2034ff0088b990352b97b2002c0476587d0c4da889c11330', market: 'LooksRare' },
+    { 
+        signature: '0x68cd251d4d267c6e2034ff0088b990352b97b2002c0476587d0c4da889c11330', 
+        market: 'LooksRare',
+        transfer: "before"
+    },
     // OrderFulfilled (Opensea Seaport)
-    { signature: '0x9d9af8e38d66c62e2c12f0225249fd9d721c54b83f48d9352c97c6cacdcb6f31', market: 'OpenSea (Seaport)' },
+    { 
+        signature: '0x9d9af8e38d66c62e2c12f0225249fd9d721c54b83f48d9352c97c6cacdcb6f31', 
+        market: 'OpenSea (Seaport)',
+        transfer: "after"
+    }
 ]
 
 // ------------ OS log types ------------

@@ -64,13 +64,22 @@ class ProcessedTransaction {
 
 }
 
-interface TransactionValue {
-    totalPrice: number,
-    tokenPrice: {}
-    currency: string
-    market: string
-    tokenIds: string[]
+
+interface TokenPrice {
+    [tokenId: string]: {
+        price?:number
+        currency?:string
+    }
 }
+
+interface TransactionValue {
+    totalPrice?: number
+    currency?: string
+    tokenPrice?: TokenPrice,
+    market?: string
+    tokenIds?: number[]
+}
+
 
 interface ProcessedEvent {
     isMint?:boolean

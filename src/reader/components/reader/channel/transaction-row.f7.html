@@ -8,9 +8,7 @@
           <th class="label-cell medium-only">Item</th>
           <th>Event</th>
           <th class="numeric-cell">Price</th>
-          <th class="medium-only">Market</th>
-          <th class="medium-only">From</th>
-          <th class="medium-only">To</th>
+          <th class="medium-only numeric-cell">From/To</th>
         </tr>
       </thead>
       <tbody>
@@ -73,7 +71,7 @@
     let rowItemViewModels = props.row_item_view_models
     let index = props.index
 
-
+    console.log(transaction)
 
     return () => $h`
     
@@ -96,23 +94,28 @@
             ${event.isMint ? $h`
               <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Mint</a>
             ` : $h`
-              <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a>
+
+              ${transaction.transactionValue?.market ? $h`
+                <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Sold</a> on ${transaction.transactionValue?.market}
+              ` : $h`
+                <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a>
+              `}
+              
             `}
 
             <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
           </td>
 
-          <td class="numeric-cell">${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]} ${transaction.transactionValue?.currency}</td>
-          <td class="medium-only">${transaction.transactionValue?.market}</td>
-          <td class="medium-only">
+          <td class="numeric-cell"><strong>${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.price.toFixed(5)}</strong> ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.currency}</td>
+          <td class="medium-only numeric-cell">
             <a href="${baseURI}u/?address=${event.namedArgs.fromAddress}" class="${event.namedArgs.fromAddress == transaction.from ? 'is-from' : ''}">
                   ${transactionWebService.getDisplayName(event.namedArgs.fromAddress)}
-            </a>  
-          </td>
-          <td class="medium-only">
+            </a> <span class="f7-icons">arrow_right</span>
+
             <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">
               ${transactionWebService.getDisplayName(event.namedArgs.toAddress)}
             </a>
+
           </td>
         </tr>
     `;
@@ -164,11 +167,9 @@
           </td>
 
           <td class="numeric-cell"></td>
-          <td class="medium-only"></td>
-          <td class="medium-only">
+          <td class="medium-only numeric-cell">
             <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a> 
-          </td>
-          <td class="medium-only">
+            <span class="f7-icons">arrow_right</span>
             <a href="${baseURI}u/?address=${event.namedArgs.approved}" class="${event.namedArgs.approved == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.approved)}</a>
           </td>
         </tr>
@@ -203,14 +204,13 @@
              <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
           </td>
 
-          <td class="numeric-cell">${transaction.transactionValue?.totalPrice} ${transaction.transactionValue?.currency}</td>
-          <td class="medium-only">${transaction.transactionValue?.market}</td>
-          <td class="medium-only">
+          <td class="numeric-cell"></td>
+          <td class="medium-only numeric-cell">
             <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a> 
-          </td>
-          <td class="medium-only">
+            <span class="f7-icons">arrow_right</span>
             <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs.operator == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.operator)}</a>
           </td>
+
         </tr>
     `;
   }

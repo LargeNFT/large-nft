@@ -288,7 +288,7 @@ let sync = async () => {
 
     await transactionIndexerService.init(channelContract)
 
-    let transaction:Transaction = await transactionService.getOrDownload("0xa7c508ac37f66ebe328851ef4a54c504bf06c7cc9d32ac419307971a2f640653")
+    let transaction:Transaction = await transactionService.getOrDownload("0x4f722673e04d96b6285e449a015413a76ded248e788fa438c661d797112bfaf2")
 
     let value = await transactionService.getTransactionValue(transaction, channelContract.address)
 

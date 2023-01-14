@@ -118,19 +118,24 @@ class TransactionIndexerService {
             Last Indexed: ${this.contractState.lastIndexedBlock}
         `)
 
-        let startBlock = this.getStartBlock(this.contractState)
-        let endBlock = this.getEndBlock()
+        result.startBlock = this.getStartBlock(this.contractState)
+        result.endBlock = this.getEndBlock()
+        result.blockNumber = this.blockNumber
 
-        console.log(`Indexing blocks: ${startBlock} to ${endBlock}`)
+        console.log(`Indexing blocks: ${result.startBlock} to ${result.endBlock}`)
 
         try {
 
-            const eventsResult:EventsResult = await this.getEvents(startBlock, endBlock)
+            const eventsResult:EventsResult = await this.getEvents(result.startBlock, result.endBlock)
 
             const events = eventsResult.events
-            endBlock = eventsResult.endBlock
+            result.endBlock = eventsResult.endBlock
+
+            result.isCurrent = this.blockNumber - this.BLOCK_GAP == result.endBlock
+
+
     
-            console.log(`Found ${events.length} events up to block ${endBlock}`)
+            console.log(`Found ${events.length} events up to block ${result.endBlock}`)
     
     
             if (events.length > 0) {
@@ -475,7 +480,7 @@ class TransactionIndexerService {
     
             }
     
-            this.contractState.lastIndexedBlock = endBlock
+            this.contractState.lastIndexedBlock = result.endBlock
     
             //Save contract state
             console.log(`Saving contract state`)
@@ -495,6 +500,7 @@ class TransactionIndexerService {
 
     }
     
+
     private createProcessedEvents(currentTransaction: ProcessedTransaction) {
 
 
@@ -719,6 +725,10 @@ interface ERCIndexResult {
     ownersToUpdate: {}
     processedTransactionsToUpdate: {}
     tokensToUpdate: {}
+    startBlock?:number
+    endBlock?:number
+    blockNumber?:number
+    isCurrent?:boolean
 }
 
 interface EventsResult {
@@ -727,11 +737,6 @@ interface EventsResult {
 }
 
 
-function sleep(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
 
 export {
     TransactionIndexerService, ERCIndexResult

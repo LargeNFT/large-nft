@@ -1,10 +1,11 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
-import { Transaction } from "../dto/transaction.js"
-import { ProcessedEvent, ProcessedTransaction } from "../dto/processed-transaction.js"
-import { ProcessedTransactionRepository } from "../repository/processed-transaction-repository.js"
+
 import { ItemService } from "./item-service.js"
+import { ProcessedTransactionRepository } from "../../sync/repository/processed-transaction-repository.js"
+import { ProcessedEvent, ProcessedTransaction, SalesReport } from "../../sync/dto/processed-transaction.js"
+import { Transaction } from "../../sync/dto/transaction.js"
 
 
 @injectable()
@@ -368,6 +369,16 @@ class ProcessedTransactionService {
 
         return results
     }
+
+
+
+
+
+
+    async getSalesReport() : Promise<SalesReport> {
+        return this.processedTransactionRepository.getSalesReport()
+    }
+
 
 
 }

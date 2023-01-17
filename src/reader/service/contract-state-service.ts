@@ -1,8 +1,9 @@
 import { inject, injectable } from "inversify";
-import { ContractState } from "../dto/contract-state.js";
-import { ContractStateRepository } from "../repository/contract-state-repository.js";
+
 import { validate, ValidationError } from "class-validator";
 import { ValidationException } from "../util/validation-exception.js";
+import { ContractStateRepository } from "../../sync/repository/contract-state-repository.js";
+import { ContractState } from "../../sync/dto/contract-state.js";
 
 @injectable()
 class ContractStateService {

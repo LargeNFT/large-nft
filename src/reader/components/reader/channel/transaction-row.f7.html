@@ -104,7 +104,18 @@
             <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
           </td>
 
-          <td class="numeric-cell"><strong>${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.price.toFixed(5)}</strong> ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.currency}</td>
+          <td class="numeric-cell">
+            
+            <strong>${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.price.toFixed(5)}</strong> ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.currency} 
+            ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.usdValue ? $h`
+              <br />
+              <span class="dollar-value">$${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.usdValue?.toFixed(2)}</span>
+            ` : $h` `}
+
+
+
+
+           </td>
           <td class="medium-only numeric-cell">
             <a href="${baseURI}u/?address=${event.namedArgs.fromAddress}" class="${event.namedArgs.fromAddress == transaction.from ? 'is-from' : ''}">
                   ${transactionWebService.getDisplayName(event.namedArgs.fromAddress)}

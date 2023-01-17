@@ -1089,3 +1089,7 @@ html {
 .navbar a.link-active {
   font-weight: bold;
 }
+
+.dollar-value {
+  font-size: 12px;
+}

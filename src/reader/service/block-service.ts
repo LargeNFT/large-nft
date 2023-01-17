@@ -1,9 +1,13 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
-import { BlockRepository } from "../repository/block-repository.js"
-import { Block } from "../dto/block.js"
+import { Block } from "../../sync/dto/block.js"
 import { WalletService } from "./core/wallet-service.js"
+
+//@ts-ignore
+import linkETHUSDABI from '../external-abi/link-eth-usd.json' assert { type: "json" }
+import { BigNumber, ethers } from "ethers"
+import { BlockRepository } from "../../sync/repository/block-repository.js"
 
 
 @injectable()
@@ -38,6 +42,8 @@ class BlockService {
 
                 //Download it.
                 let data = await this.walletService.provider.getBlock(blockNumber)
+
+
                 block.blockNumber = data.blockNumber
                 block.hash = data.hash
                 block.parentHash = data.parentHash
@@ -50,6 +56,9 @@ class BlockService {
                 block.miner = data.miner
                 block.extraData = data.extraData
                 block.baseFeePerGas = data.baseFeePerGas
+
+                //Get ETH price at block
+                block.ethUSDPrice = await this.getETHUSDAtBlock(block.number)
 
                 await this.blockRepository.put(block)
 
@@ -95,6 +104,17 @@ class BlockService {
         blocks.forEach(e => e.lastUpdated = new Date().toJSON())
 
         return this.blockRepository.putAll(blocks)
+    }
+
+
+    async getETHUSDAtBlock(blockNumber:number) {
+
+        let ethUsdContract = new ethers.Contract("0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419", linkETHUSDABI, this.walletService.provider)
+
+        let answer:BigNumber = await ethUsdContract.latestAnswer({blockTag: blockNumber})
+        
+        return answer.toNumber() / 10**8 //chainlink returns 8 decimals
+
     }
 
 

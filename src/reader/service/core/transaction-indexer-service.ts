@@ -1,12 +1,7 @@
 import { BigNumber, Contract, ethers, providers } from "ethers";
 import { inject, injectable } from "inversify";
-import { Block } from "../../dto/block.js";
-import { ContractState } from "../../dto/contract-state.js";
-import { ERCEvent } from "../../dto/erc-event.js";
-import { ProcessedEvent, ProcessedTransaction } from "../../dto/processed-transaction.js";
-import { TokenOwner } from "../../dto/token-owner.js";
-import { Token } from "../../dto/token.js";
-import { Transaction } from "../../dto/transaction.js";
+import { Block } from "../../../sync/dto/block.js";
+
 import { BlockService } from "../block-service.js";
 
 import { ContractStateService } from "../contract-state-service.js";
@@ -22,6 +17,12 @@ import { WalletService } from "./wallet-service.js";
 
 
 import { ENSService } from "../ens-service.js";
+import { ContractState } from "../../../sync/dto/contract-state.js";
+import { ProcessedEvent, ProcessedTransaction } from "../../../sync/dto/processed-transaction.js";
+import { TokenOwner } from "../../../sync/dto/token-owner.js";
+import { Transaction } from "../../../sync/dto/transaction.js";
+import { ERCEvent } from "../../../sync/dto/erc-event.js";
+import { Token } from "../../../sync/dto/token.js";
 
 
 @injectable()
@@ -184,11 +185,10 @@ class TransactionIndexerService {
                             currentTransaction.previousByTokenIds = {}
                             currentTransaction.previousByTokenOwnerId = {}
                             currentTransaction.previousByTransactionInitiatorId = {}
-                            currentTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.utils.getAddress(this.contract.address))
+                            currentTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.utils.getAddress(this.contract.address), block.ethUSDPrice)
                             result.processedTransactionsToUpdate[currentTransaction._id] = currentTransaction
                         }
         
-
 
                         if (!block || !currentTransaction) throw new Error("Block and/or transaction not found.")
                         if (event.transactionHash != currentTransaction._id) throw new Error("Wrong transaction found.")
@@ -482,9 +482,6 @@ class TransactionIndexerService {
     
             this.contractState.lastIndexedBlock = result.endBlock
     
-            //Save contract state
-            console.log(`Saving contract state`)
-            await this.contractStateService.put(this.contractState)
 
 
 

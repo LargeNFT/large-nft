@@ -1,12 +1,13 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
-import { TransactionRepository } from "../repository/transaction-repository.js"
-import { Transaction } from "../dto/transaction.js"
+
 import { WalletService } from "./core/wallet-service.js"
 import { ParamType } from "ethers/lib/utils.js"
 import { ethers } from "ethers"
-import { TransactionValue } from "../dto/processed-transaction.js"
+import { TransactionRepository } from "../../sync/repository/transaction-repository.js"
+import { Transaction } from "../../sync/dto/transaction.js"
+import { TransactionValue } from "../../sync/dto/processed-transaction.js"
 
 
 @injectable()
@@ -130,25 +131,25 @@ class TransactionService {
      * @param transaction 
      * @returns 
      */
-    async getTransactionValue(transaction:Transaction, contractAddress:string) : Promise<TransactionValue> {
- 
+    async getTransactionValue(transaction:Transaction, contractAddress:string, ethUSDPrice:number) : Promise<TransactionValue> {
+
         if (!transaction.receipt.to) return
         const recipient = ethers.utils.getAddress(transaction.receipt.to)
 
         if ((recipient in markets)) {
             const market = markets[recipient]
-            return this.processMarketplaceTransaction(market, transaction, recipient, contractAddress)
+            return this.processMarketplaceTransaction(market, transaction, recipient, contractAddress, ethUSDPrice)
         }
         
         if ((recipient in aggregators)) {
-            return this.processAggregatorTransaction(markets, transaction, recipient, contractAddress)
+            return this.processAggregatorTransaction(markets, transaction, recipient, contractAddress, ethUSDPrice)
         }
 
 
     }
 
 
-    processAggregatorTransaction(markets:Markets, transaction: Transaction, recipient: string, contractAddress: string) : TransactionValue {
+    processAggregatorTransaction(markets:Markets, transaction: Transaction, recipient: string, contractAddress: string, ethUSDPrice:number) : TransactionValue {
 
         let result:TransactionValue = {
             tokenIds: [],
@@ -225,9 +226,13 @@ class TransactionService {
                     }
 
                     tokenIds?.forEach( tokenId => {
+
+                        let tokenPrice = tokenIds.length == 1 ? saleResult.price : saleResult.price / tokenIds.length
+
                         result.tokenPrice[tokenId] = {
-                            price: tokenIds.length == 1 ? saleResult.price : saleResult.price / tokenIds.length,
-                            currency: currency.name
+                            price: tokenPrice,
+                            currency: currency.name,
+                            usdValue: this.getUSDValue(currency, tokenPrice, ethUSDPrice)
                         } 
                     })
                 }
@@ -245,7 +250,7 @@ class TransactionService {
 
     }
 
-    processMarketplaceTransaction(market:Market, transaction:Transaction, recipient:string, contractAddress:string) : TransactionValue {
+    processMarketplaceTransaction(market:Market, transaction:Transaction, recipient:string, contractAddress:string, ethUSDPrice:number) : TransactionValue {
         let result:TransactionValue = {
             tokenIds: [],
             totalPrice:0,
@@ -316,9 +321,13 @@ class TransactionService {
                     }
 
                     tokenIds?.forEach( tokenId => {
+
+                        let tokenPrice = tokenIds.length == 1 ? saleResult.price : saleResult.price / tokenIds.length
+
                         result.tokenPrice[tokenId] = {
-                            price: tokenIds.length == 1 ? saleResult.price : saleResult.price / tokenIds.length,
-                            currency: currency.name
+                            price: tokenPrice,
+                            currency: currency.name,
+                            usdValue: this.getUSDValue(currency, tokenPrice, ethUSDPrice)
                         } 
                     })
                 }
@@ -329,6 +338,7 @@ class TransactionService {
 
         result.totalPrice = parseFloat(result.totalPrice.toFixed(10))
         result.currency = currency.name
+        result.usdValue = this.getUSDValue(currency, result.totalPrice, ethUSDPrice)
         result.market = market.name
 
         return result
@@ -411,7 +421,36 @@ class TransactionService {
 
     }
 
+    getUSDValue(currency:Currency, amount:number, ethUSDPrice:number) {
+
+        let usdValue
+
+        switch(currency.name) {
+
+            case "ETH":
+            case "WETH":
+                usdValue =  amount * ethUSDPrice
+                break
+            case "DAI":
+            case "USDC":
+                usdValue =  amount
+                break
+
+        }
+
+
+        return usdValue
+
+
+    }
+
+
+
+
+
+
 }
+
 
 
 

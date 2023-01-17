@@ -1,11 +1,9 @@
 // import axios from "axios";
 import axios from "axios";
 import { inject, injectable } from "inversify";
-import { ProcessedEvent, ProcessedTransaction } from "../../dto/processed-transaction.js";
 
 
 import { SchemaService } from "../core/schema-service.js";
-import { ItemService } from "../item-service.js";
 import { ProcessedTransactionService, TransactionsViewModel } from "../processed-transaction-service.js";
 import { TokenOwnerService } from "../token-owner-service.js";
 

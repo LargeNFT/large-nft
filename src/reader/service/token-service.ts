@@ -1,8 +1,9 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
-import { Token } from "../dto/token.js"
-import { TokenRepository } from "../repository/token-repository.js"
+import { TokenRepository } from "../../sync/repository/token-repository.js"
+import { Token } from "../../sync/dto/token.js"
+
 
 
 

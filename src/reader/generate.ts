@@ -14,7 +14,7 @@ import he from 'he'
 
 
 
-import { getMainContainer, GetMainContainerCommand } from "./node-inversify.config.js"
+import { getMainContainer, GetMainContainerCommand } from "../sync/inversify.config.js"
 import { ItemWebService } from "./service/web/item-web-service.js"
 
 let channelId

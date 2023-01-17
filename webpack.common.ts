@@ -369,7 +369,7 @@ let getReaderConfigs = () => {
   }
 
   let syncConfig = {
-    entry: "./src/reader/sync.ts",
+    entry: "./src/sync/sync.ts",
     externalsPresets: { 
       node: true 
     },    

@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
 import { ValidationException } from "../util/validation-exception.js"
-import { TokenOwnerRepository } from "../repository/token-owner-repository.js"
-import { TokenOwner } from "../dto/token-owner.js"
-import { LeaderboardRowViewModel, TokenOwnerPage } from "../dto/token-owner-page.js"
+
 import { WalletService } from "./core/wallet-service.js"
+import { TokenOwnerRepository } from "../../sync/repository/token-owner-repository.js"
+import { TokenOwner } from "../../sync/dto/token-owner.js"
 
 @injectable()
 class TokenOwnerService {

@@ -121,7 +121,7 @@ import { ReaderSettingsService } from "./service/reader-settings-service.js";
 import { StaticPage } from "./dto/static-page.js";
 
 import { ContractStateRepository } from "./repository/contract-state-repository.js";
-import { ContractStateRepositoryBrowserImpl } from "./repository/browser/contract-state-repository-impl.js";
+import { ContractStateRepositoryBrowserImpl } from "../sync/repository/browser/contract-state-repository-impl.js";
 
 import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js";
 import { ContractStateService } from "./service/contract-state-service.js";
@@ -144,17 +144,19 @@ import { TokenOwnerPageRepository } from "./repository/token-owner-page-reposito
 import { BlockRepository } from "./repository/block-repository.js";
 import { TokenRepository } from "./repository/token-repository.js";
 
-import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
-import { TokenOwnerPageRepositoryBrowserImpl } from "./repository/browser/token-owner-page-repository-impl.js";
+import { TokenOwnerRepositoryBrowserImpl } from "../sync/repository/browser/token-owner-repository-impl.js";
+import { TokenOwnerPageRepositoryBrowserImpl } from "../sync/repository/browser/token-owner-page-repository-impl.js";
+
+
 
 import { TransactionRepository } from "./repository/transaction-repository.js";
-import { TransactionRepositoryBrowserImpl } from "./repository/browser/transaction-repository-impl.js";
+import { TransactionRepositoryBrowserImpl } from "../sync/repository/browser/transaction-repository-impl.js";
 
-import { ProcessedTransactionRepository } from "./repository/processed-transaction-repository.js";
-import { ProcessedTransactionRepositoryBrowserImpl } from "./repository/browser/processed-transaction-repository-impl.js";
+import { ProcessedTransactionRepository } from "../sync/repository/processed-transaction-repository.js";
+import { ProcessedTransactionRepositoryBrowserImpl } from "../sync/repository/browser/processed-transaction-repository-impl.js";
 
-import { BlockRepositoryBrowserImpl } from "./repository/browser/block-repository-impl.js";
-import { TokenRepositoryBrowserImpl } from "./repository/browser/token-repository-impl.js";
+import { BlockRepositoryBrowserImpl } from "../sync/repository/browser/block-repository-impl.js";
+import { TokenRepositoryBrowserImpl } from "../sync/repository/browser/token-repository-impl.js";
 import { ENSRepositoryBrowserImpl } from "./repository/browser/ens-repository-impl.js";
 
 import { TokenService } from "./service/token-service.js";

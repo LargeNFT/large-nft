@@ -1,8 +1,7 @@
 import { inject, injectable } from "inversify"
 // import { ERCEventRepository } from "../repository/erc-event-repository.js"
-import { ERCEvent } from "../dto/erc-event.js"
 import { BigNumber, Event } from "ethers"
-import { Transaction } from "../dto/transaction.js"
+import { ERCEvent } from "../../sync/dto/erc-event.js"
 
 
 @injectable()

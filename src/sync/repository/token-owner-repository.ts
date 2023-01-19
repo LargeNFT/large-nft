@@ -4,9 +4,8 @@ import { TokenOwner } from "../dto/token-owner.js"
 
 interface TokenOwnerRepository {
     get(_id:string): Promise<TokenOwner>
-    put(tokenOwner:TokenOwner) : Promise<void>
-    putAll(tokenOwners:TokenOwner[]) : Promise<void>
-    getByTokenId(tokenId:number, limit:number, skip:number): Promise<TokenOwner> 
+    put(tokenOwner:TokenOwner, options?:any) : Promise<TokenOwner>
+    putAll(tokenOwners:TokenOwner[], options?:any) : Promise<void>
     getENS(_id:string) : Promise<string>
     list(limit: number, skip: number): Promise<TokenOwner[]> 
 

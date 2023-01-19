@@ -75,8 +75,9 @@ let generate = async () => {
   container.bind("channelId").toConstantValue(() => {
     return channelId
   })
+  container.bind('sequelize').toConstantValue({})
 
-  container.bind("PouchDB").toConstantValue({})
+
   container.bind("contracts").toConstantValue([])
   container.bind("convert-svg-to-png").toConstantValue(convert)
   // container.bind("sharp").toConstantValue(sharp)
@@ -182,24 +183,25 @@ let generate = async () => {
   fs.cpSync(`${config.baseDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
   fs.cpSync(`${config.baseDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
 
+
   //Read app.html and index.html from Large and update the paths.
   let indexBuffer = fs.readFileSync(`${config.publicPath}/large/index.html`)
-  let appBuffer = fs.readFileSync(`${config.publicPath}/large/admin/app.html`)
+  // let appBuffer = fs.readFileSync(`${config.publicPath}/large/admin/app.html`)
 
   let indexContents = indexBuffer.toString()
-  let appContents = appBuffer.toString()
+  // let appContents = appBuffer.toString()
 
   indexContents = indexContents.replace("../admin/app/js/runtime.admin.js", `${config.baseURL}large/admin/app/js/runtime.admin.js`)
   indexContents = indexContents.replace("../admin/app/js/vendors.admin.js", `${config.baseURL}large/admin/app/js/vendors.admin.js`)
   indexContents = indexContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
 
-  appContents = appContents.replace("../admin/app/js/runtime.admin.js", `${config.baseURL}large/admin/app/js/runtime.admin.js`)
-  appContents = appContents.replace("../admin/app/js/vendors.admin.js", `${config.baseURL}large/admin/app/js/vendors.admin.js`)
-  appContents = appContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
+  // appContents = appContents.replace("../admin/app/js/runtime.admin.js", `${config.baseURL}large/admin/app/js/runtime.admin.js`)
+  // appContents = appContents.replace("../admin/app/js/vendors.admin.js", `${config.baseURL}large/admin/app/js/vendors.admin.js`)
+  // appContents = appContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
 
 
   fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
-  fs.writeFileSync(`${config.publicPath}/large/admin/app.html`, appContents)
+  // fs.writeFileSync(`${config.publicPath}/large/admin/app.html`, appContents)
 
 
   // <script defer="defer" src="../admin/app/js/runtime.admin.js"></script>

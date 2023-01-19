@@ -11,32 +11,33 @@ import { getMainContainer, GetMainContainerCommand } from "./inversify.config.js
 import { ChannelWebService } from "../reader/service/web/channel-web-service.js"
 
 
-import { ERCIndexResult, TransactionIndexerService } from "../reader/service/core/transaction-indexer-service.js"
+import { ERCIndexResult, TransactionIndexerService } from "./service/transaction-indexer-service.js"
 import { WalletService } from "../reader/service/core/wallet-service.js"
 import { ProcessConfig } from "../reader/util/process-config.js"
-import { SchemaService } from "../reader/service/core/schema-service.js"
+
+//@ts-ignore
 
 
-import { createRequire } from 'module'
-import { TokenOwnerService } from "../reader/service/token-owner-service.js"
 import { TokenOwner } from "./dto/token-owner.js"
 import { TokenOwnerPageService } from "../reader/service/token-owner-page-service.js"
 import { Transaction } from "./dto/transaction.js"
-import { ProcessedTransactionService } from "../reader/service/processed-transaction-service.js"
-const require = createRequire(import.meta.url)
 
-const PouchDB = require('pouchdb-node')
-PouchDB.plugin(require("pouchdb-find"))
-PouchDB.plugin(require('pouchdb-quick-search'))
+
+
+
 
 
 let channelId
 
 // import { simpleGit, CleanOptions } from 'simple-git'
 import { ProcessedTransaction } from "./dto/processed-transaction.js"
-import { TransactionService } from "../reader/service/transaction-service.js"
-import { ContractStateService } from "../reader/service/contract-state-service.js"
-import { BlockService } from "../reader/service/block-service.js"
+import { BlockService } from "./service/block-service.js"
+import { TransactionService } from "./service/transaction-service.js"
+import { ContractStateService } from "./service/contract-state-service.js"
+import { TokenOwnerService } from "./service/token-owner-service.js"
+import { ProcessedTransactionService } from "./service/processed-transaction-service.js"
+import { ContractState } from "./dto/contract-state.js"
+import { Token } from "./dto/token.js"
 
 
 
@@ -49,12 +50,14 @@ let sync = async () => {
   }
 
 
+
   let contract = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract.json`, 'utf8'))
   let contractAbi = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract-abi.json`, 'utf8'))
 
 
-
   let container = new Container()
+
+
 
   container.bind("channelId").toConstantValue(() => {
     return channelId
@@ -71,7 +74,6 @@ let sync = async () => {
   }
 
   container.bind("contracts").toConstantValue(contracts())
-  container.bind("PouchDB").toConstantValue(PouchDB)
 
 
   let command:GetMainContainerCommand = {
@@ -93,7 +95,6 @@ let sync = async () => {
 
 
   let channelWebService: ChannelWebService = container.get("ChannelWebService")
-  let schemaService: SchemaService = container.get("SchemaService")
 
 
   //Get channel
@@ -101,21 +102,26 @@ let sync = async () => {
 
   channelId = channelViewModel.channel._id
 
+  //Init database
+  let sequelizeInit:Function = container.get("sequelize")
+  let sequelize = await sequelizeInit(config.baseDir, channelId)
+
+
+  if (config.clear) {
+
+    console.log('Clearing processed transaction data...')
+
+    await ContractState.drop()
+    await ProcessedTransaction.drop()
+    await TokenOwner.drop()
+    await Token.drop()
+
+    await sequelize.sync()
+
+
+  }
   
-  fs.mkdirSync(`./pouch/${channelId}/erc-events`, { recursive: true })
-  fs.mkdirSync(`./pouch/${channelId}/contract-states`, { recursive: true })
 
-  await schemaService.load(["erc-events", "contract-states", "token-owners", "items", "transactions", "processed-transactions", "blocks", "tokens", "ens"])
-
-
-
-
-
-  console.log(`Schema loaded`)
-
-
-
-  
 
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
   let transactionService:TransactionService = container.get("TransactionService")
@@ -130,6 +136,8 @@ let sync = async () => {
 
   let channelContract = await walletService.getContract("Channel")
 
+
+  
 
   //Start the transaction indexer
   async function runTransactionIndexer(){
@@ -165,8 +173,6 @@ let sync = async () => {
 
         let salesReport = await processedTransactionService.getSalesReport()
 
-
-
         console.log(salesReport)
 
 
@@ -199,9 +205,8 @@ let sync = async () => {
       fs.mkdirSync(`${config.publicPath}/sync/tokens`, { recursive: true })
     }
 
-    if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner`)) {
+    if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner/ens`)) {
       fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/ens`, { recursive: true })
-
     }
 
     console.log(`${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to update. Writing files.`)
@@ -280,6 +285,8 @@ let sync = async () => {
         totalPages: tokenOwnerPages.length,
         totalRecords: tokenOwners.length
       }))
+
+
 
 
 

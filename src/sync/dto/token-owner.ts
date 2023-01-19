@@ -1,42 +1,52 @@
-import { Allow } from "class-validator"
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-class TokenOwner {
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
+
+@Table({
+    tableName: 'token-owner',
+    createdAt: 'dateCreated',
+    updatedAt: 'lastUpdated',
+    paranoid: false,
+})
+class TokenOwner extends Model {
     
-    @Allow()
-    _id?:string
+    @PrimaryKey
+    @Column(DataType.STRING)
+    declare _id?:string
 
-    @Allow()
-    _rev?:string 
+    @Column(DataType.STRING)
+    declare _rev?:string 
 
-    @Allow()
-    count?:number
+    @Column(DataType.BIGINT)
+    declare count?:number
 
-    @Allow()
-    rank?:number
+    @Column(DataType.BIGINT)
+    declare rank?:number
 
-    @Allow()
-    overallRank?:number
+    @Column(DataType.BIGINT)
+    declare overallRank?:number
 
-    @Allow()
-    tokenIds?:number[]
+    @Column(DataType.JSON)
+    declare tokenIds?:number[]
 
-    @Allow()
-    latestTransactionInitiatorId?:string
+    @Column(DataType.STRING)
+    declare latestTransactionInitiatorId?:string
 
-    @Allow()
-    latestTransactionId?:string
+    @Column(DataType.STRING)
+    declare latestTransactionId?:string
 
-    @Allow()
-    ensName?:string
+    @Column(DataType.STRING)
+    declare ensName?:string
 
-    @Allow()
-    lastActive?:string 
+    @Column(DataType.STRING)
+    declare lastActive?:string 
 
-    @Allow()
-    lastUpdated?:string 
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date 
     
-    @Allow()
-    dateCreated?:string
+    @Column(DataType.DATE)
+    declare dateCreated?:Date
 
 }
 

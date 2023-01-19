@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
-import { LeaderboardRowViewModel, TokenOwnerPage, TokenOwnerPageTotals } from "../../sync/dto/token-owner-page.js";
+import { LeaderboardRowViewModel, TokenOwnerPage, TokenOwnerPageTotals } from "../dto/token-owner-page.js";
 import { TokenOwner } from "../../sync/dto/token-owner.js";
-import { TokenOwnerPageRepository } from "../../sync/repository/token-owner-page-repository.js";
+import { TokenOwnerPageRepository } from "../repository/token-owner-page-repository.js";
 
 
 

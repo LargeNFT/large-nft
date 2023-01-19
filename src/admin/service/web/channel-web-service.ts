@@ -127,7 +127,7 @@ class ChannelWebService {
 
         let channels: Channel[] = await this.channelService.list(limit, skip)
 
-        for (let channel of channels) {
+        for (let channel of channels.filter(c => !c.forkType || c.importSuccess)) {
             result.push(await this.getViewModel(channel))
         }
 

@@ -1,16 +1,10 @@
 import { inject, injectable } from "inversify"
-import { BlockRepository } from "../../../sync/repository/block-repository.js"
-import { ContractStateRepository } from "../../../sync/repository/contract-state-repository.js"
-import { ProcessedTransactionRepository } from "../../../sync/repository/processed-transaction-repository.js"
-import { TokenOwnerRepository } from "../../../sync/repository/token-owner-repository.js"
-import { TokenRepository } from "../../../sync/repository/token-repository.js"
-import { TransactionRepository } from "../../../sync/repository/transaction-repository.js"
+
 import { AnimationRepository } from "../../repository/animation-repository.js"
 import { AttributeTotalRepository } from "../../repository/attribute-total-repository.js"
 import { AuthorRepository } from "../../repository/author-repository.js"
 import { ChannelRepository } from "../../repository/channel-repository.js"
-import { ComponentStateRepository } from "../../repository/component-state-repository.js"
-import { ENSRepository } from "../../repository/ens-repository.js"
+
 // import { ERCEventRepository } from "../../repository/erc-event-repository.js"
 import { ImageRepository } from "../../repository/image-repository.js"
 import { ItemRepository } from "../../repository/item-repository.js"
@@ -43,8 +37,8 @@ class SchemaService {
     private readerSettingsRepository:ReaderSettingsRepository
 
 
-    @inject("ContractStateRepository")
-    private contractStateRepository:ContractStateRepository
+    // @inject("ContractStateRepository")
+    // private contractStateRepository:ContractStateRepository
 
     // @inject("ERCEventRepository")
     // private ercEventRepository:ERCEventRepository
@@ -52,26 +46,26 @@ class SchemaService {
     @inject("AttributeTotalRepository")
     private attributeTotalRepository:AttributeTotalRepository
 
-    @inject("ComponentStateRepository")
-    private componentStateRepository:ComponentStateRepository
+    // @inject("ComponentStateRepository")
+    // private componentStateRepository:ComponentStateRepository
 
-    @inject("TokenOwnerRepository")
-    private tokenOwnerRepository:TokenOwnerRepository
+    // @inject("TokenOwnerRepository")
+    // private tokenOwnerRepository:TokenOwnerRepository
 
-    @inject("TransactionRepository")
-    private transactionRepository:TransactionRepository
+    // @inject("TransactionRepository")
+    // private transactionRepository:TransactionRepository
 
-    @inject("ProcessedTransactionRepository")
-    private processedTransactionRepository:ProcessedTransactionRepository
+    // @inject("ProcessedTransactionRepository")
+    // private processedTransactionRepository:ProcessedTransactionRepository
 
-    @inject("TokenRepository")
-    private tokenRepository:TokenRepository
+    // @inject("TokenRepository")
+    // private tokenRepository:TokenRepository
 
-    @inject("ENSRepository")
-    private ensRepository:ENSRepository
+    // @inject("ENSRepository")
+    // private ensRepository:ENSRepository
 
-    @inject("BlockRepository")
-    private blockRepository:BlockRepository
+    // @inject("BlockRepository")
+    // private blockRepository:BlockRepository
 
     constructor() {
 
@@ -92,16 +86,16 @@ class SchemaService {
         repositories.push(this.staticPageRepository)
         repositories.push(this.readerSettingsRepository)
 
-        repositories.push(this.contractStateRepository)
+        // repositories.push(this.contractStateRepository)
         // repositories.push(this.ercEventRepository)
         repositories.push(this.attributeTotalRepository)
-        repositories.push(this.componentStateRepository)
-        repositories.push(this.tokenOwnerRepository)
-        repositories.push(this.transactionRepository)
-        repositories.push(this.blockRepository)
-        repositories.push(this.tokenRepository)
-        repositories.push(this.processedTransactionRepository)
-        repositories.push(this.ensRepository)
+        // repositories.push(this.componentStateRepository)
+        // repositories.push(this.tokenOwnerRepository)
+        // repositories.push(this.transactionRepository)
+        // repositories.push(this.blockRepository)
+        // repositories.push(this.tokenRepository)
+        // repositories.push(this.processedTransactionRepository)
+        // repositories.push(this.ensRepository)
 
         for (let db of dbs) {
 

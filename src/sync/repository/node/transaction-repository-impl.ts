@@ -1,61 +1,36 @@
 import {  inject, injectable } from "inversify"
-import { DatabaseService } from "../../../reader/service/core/database-service.js"
 import { Transaction } from "../../dto/transaction.js"
-import { changesets, TransactionRepository } from "../transaction-repository.js"
+import { TransactionRepository } from "../transaction-repository.js"
 
 
 @injectable()
 class TransactionRepositoryNodeImpl implements TransactionRepository {
 
-    db:any
-    dbName:string = "transactions"
-
-    @inject('DatabaseService')
-    private databaseService:DatabaseService
-
-
-    async load() {
-        this.db = await this.databaseService.getDatabase({
-            name: this.dbName,
-            initialRecords: false,
-            changesets: changesets
-        })
-    }
-
     async get(_id: string): Promise<Transaction> {
-        return Object.assign(new Transaction(), await this.db.get(_id))
+        return Transaction.findByPk(_id)
     }
 
-    async put(transaction: Transaction): Promise<void> {
-        await this.db.put(transaction)
+    async put(transaction: Transaction, options?:any): Promise<Transaction> {
+        return transaction.save(options)
     }
   
-    async putAll(transactions:Transaction[]) : Promise<void> {
-        await this.db.bulkDocs(transactions)
+    async putAll(transactions:Transaction[], options?:any) : Promise<void> {
+        for (let transaction of transactions) {
+            await this.put(transaction,options)
+        }    
     }
 
 
     async list(limit: number, skip: number): Promise<Transaction[]> {
 
-        let response = await this.db.find({
-            selector: { 
-                "blockNumber": { 
-                    $exists: true 
-                },
-                "transactionIndex": { 
-                    $exists: true 
-                }
-            },
+        return Transaction.findAll({
             limit: limit,
-            skip: skip,
-            sort: [{blockNumber: 'desc'}, {transactionIndex: 'desc'}]
+            offset: skip,
+            order: [
+                ['blockNumber', 'DESC'],
+                ['transactionIndex', 'DESC']
+            ]
         })
-
-        if (response.warning) {
-            console.log(response.warning)
-        }
-
-        return response.docs
 
     }
 

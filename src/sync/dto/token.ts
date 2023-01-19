@@ -1,27 +1,37 @@
-import { Allow } from "class-validator"
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-class Token {
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
+
+@Table({
+    tableName: 'token',
+    createdAt: 'dateCreated',
+    updatedAt: 'lastUpdated',
+    paranoid: false,
+})
+class Token extends Model {
     
-    @Allow()
-    _id?:string
+    @PrimaryKey
+    @Column(DataType.STRING)
+    declare _id?:string
 
-    @Allow()
-    _rev?:string 
+    @Column(DataType.STRING)
+    declare _rev?:string 
 
-    @Allow()
-    tokenId?:number
+    @Column(DataType.BIGINT)
+    declare tokenId?:number
 
     // @Allow()
     // latestErcEventId?:string
 
-    @Allow()
-    latestTransactionId?:string
+    @Column(DataType.STRING)
+    declare latestTransactionId?:string
 
-    @Allow()
-    lastUpdated?:string 
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date 
     
-    @Allow()
-    dateCreated?:string
+    @Column(DataType.DATE)
+    declare dateCreated?:Date
 
 
 

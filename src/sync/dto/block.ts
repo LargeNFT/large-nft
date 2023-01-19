@@ -1,59 +1,66 @@
-import { Allow } from "class-validator"
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-class Block {
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
+
+
+
+@Table({
+    tableName: 'block',
+    createdAt: 'dateCreated',
+    updatedAt: 'lastUpdated',
+    paranoid: false,
+})
+class Block extends Model {
     
-    @Allow()
-    _id?:string
+    @PrimaryKey
+    @Column(DataType.STRING)
+    declare _id?:string
 
-    @Allow()
-    _rev?:string 
+    @Column(DataType.STRING)
+    declare _rev?:string 
 
-    @Allow()
-    blockNumber?:string 
+    @Column(DataType.STRING)
+    declare hash?: string
 
-    @Allow()
-    hash?: string
+    @Column(DataType.STRING)
+    declare parentHash?: string
 
-    @Allow()
-    parentHash?: string
+    @Column(DataType.BIGINT)
+    declare number:number
 
-    @Allow()
-    number:number
+    @Column(DataType.DECIMAL)
+    declare ethUSDPrice: number
 
-    @Allow()
-    ethUSDPrice: number
+    @Column(DataType.BIGINT)
+    declare timestamp: number
 
-    @Allow()
-    timestamp: number
+    @Column(DataType.STRING)
+    declare nonce?: string
 
-    @Allow()
-    nonce?: string
+    @Column(DataType.STRING)
+    declare difficulty?: string
 
-    @Allow()
-    difficulty?: string
+    @Column(DataType.JSON)
+    declare gasLimit?: {}
 
-    @Allow()
-    gasLimit?: string
+    @Column(DataType.JSON)
+    declare gasUsed?: {}
 
-    @Allow()
-    gasUsed?: string
+    @Column(DataType.STRING)
+    declare miner?: string
 
-    @Allow()
-    miner?: string
+    @Column(DataType.STRING)
+    declare extraData?: string
 
-    @Allow()
-    extraData?: string
+    @Column(DataType.JSON)
+    declare baseFeePerGas?: {}
 
-    @Allow()
-    baseFeePerGas?: string
-
-    @Allow()
-    lastUpdated?:string 
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date 
     
-    @Allow()
-    dateCreated?:string
-
-
+    @Column(DataType.DATE)
+    declare dateCreated?:Date
 
 }
 

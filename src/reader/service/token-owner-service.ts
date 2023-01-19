@@ -1,10 +1,10 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
-import { ValidationException } from "../util/validation-exception.js"
 
-import { WalletService } from "./core/wallet-service.js"
-import { TokenOwnerRepository } from "../../sync/repository/token-owner-repository.js"
-import { TokenOwner } from "../../sync/dto/token-owner.js"
+import { WalletService } from "../../reader/service/core/wallet-service.js"
+import { ValidationException } from "../../reader/util/validation-exception.js"
+import { TokenOwner } from "../dto/token-owner.js"
+import { TokenOwnerRepository } from "../repository/token-owner-repository.js"
 
 @injectable()
 class TokenOwnerService {
@@ -56,23 +56,6 @@ class TokenOwnerService {
 
 
     async put(tokenOwner:TokenOwner) {
-
-        if (!tokenOwner._id) {
-            tokenOwner.dateCreated = new Date().toJSON()
-        } 
-
-        tokenOwner.lastUpdated = new Date().toJSON()
-
-        //Validate
-        let errors: ValidationError[] = await validate(tokenOwner, {
-            forbidUnknownValues: true,
-            whitelist: true
-        })
-
-        if (errors.length > 0) {
-            throw new ValidationException(errors)
-        }
-
         return this.tokenOwnerRepository.put(tokenOwner)
     }
 
@@ -102,9 +85,7 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.list(limit, skip)
     }
 
-    async getByTokenId(tokenId:number, limit:number, skip:number) : Promise<TokenOwner> {
-        return this.tokenOwnerRepository.getByTokenId(tokenId, limit, skip)
-    }
+
 
 
 

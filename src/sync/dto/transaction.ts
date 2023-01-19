@@ -1,71 +1,85 @@
-import { Allow } from "class-validator"
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-class Transaction {
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index } = require('sequelize-typescript')
+
+
+
+@Table({
+    tableName: 'transaction',
+    createdAt: 'dateCreated',
+    updatedAt: 'lastUpdated',
+    paranoid: false,
+})
+class Transaction extends Model {
     
-    @Allow()
-    _id?:string
+    @PrimaryKey
+    @Column(DataType.STRING)
+    declare _id?:string
 
-    @Allow()
-    _rev?:string 
+    @Column(DataType.STRING)
+    declare _rev?:string 
     
-    @Allow()
-    hash?:string 
+    @Column(DataType.STRING)
+    declare hash?:string 
 
-    @Allow()
-    blockHash: string
+    @Column(DataType.STRING)
+    declare blockHash: string
 
-    @Allow()
-    blockNumber:number
+    @Index('block-number-transaction-index') 
+    @Column(DataType.BIGINT)
+    declare blockNumber?:number
 
-    @Allow()
-    transactionIndex: number
+    @Index('block-number-transaction-index') 
+    @Column(DataType.BIGINT)
+    declare transactionIndex?:number
 
-    @Allow()
-    data: string
+    @Column(DataType.STRING)
+    declare data: string
 
-    @Allow()
-    from: string
+    @Column(DataType.STRING)
+    declare from: string
 
-    @Allow()
-    gasLimit: string
+    @Column(DataType.JSON)
+    declare gasLimit: {}
 
-    @Allow()
-    gasPrice: string
+    @Column(DataType.JSON)
+    declare gasPrice: {}
 
-    @Allow()
-    nonce: number
+    @Column(DataType.BIGINT)
+    declare nonce: number
 
-    @Allow()
-    value: string
+    @Column(DataType.JSON)
+    declare value: {}
 
-    @Allow()
-    networkId: number
+    @Column(DataType.BIGINT)
+    declare networkId: number
 
-    @Allow()
-    r: string
+    @Column(DataType.TEXT)
+    declare r: string
 
-    @Allow()
-    s: string
+    @Column(DataType.TEXT)
+    declare s: string
 
-    @Allow()
-    v: number
+    @Column(DataType.BIGINT)
+    declare v: number
 
-    @Allow()
-    raw: string
+    @Column(DataType.TEXT)
+    declare raw: string
 
-    @Allow()
-    receipt:TransactionReceipt
+    @Column(DataType.JSON)
+    declare receipt:TransactionReceipt
 
-
-    @Allow()
-    lastUpdated?:string 
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date 
     
-    @Allow()
-    dateCreated?:string
+    @Column(DataType.DATE)
+    declare dateCreated?:Date
 
 }
 
 interface TransactionReceipt {
+    
     to?:string
     contractAddress?:string
     cumulativeGasUsed?:string

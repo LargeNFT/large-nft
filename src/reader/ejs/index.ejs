@@ -151,22 +151,27 @@
   
                   <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
                     <%~ channelViewModel.channel?.descriptionHTML %>
+
+
+                    <div class="external-links">
+
+                      <% if(channelViewModel.channel?.contractAddress) { %>
+                        <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                      <% } %>
+  
+                      <% for (let externalLink of externalLinks) { %>
+                          <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                      <% } %>
+                    </div>
+
                   </div>
   
   
                   <ul>
   
-                    <% if(channelViewModel.channel?.contractAddress) { %>
-                      <li>
-                        <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
-                      </li>
-                    <% } %>
+
   
-                    <% for (let externalLink of externalLinks) { %>
-                      <li>
-                        <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
-                      </li>
-                    <% } %>
+
   
                   </ul>
   
@@ -334,12 +339,12 @@
               <div class="list links-list inset">   
                 <ul>
                     <li>
-                      <a href="<%= link(`large/admin/app.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                      <a href="<%= link(`large/index.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
                         Fork
                       </a>
                     </li>
                     <li>
-                      <a href="<%= link(`large/admin/app.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
+                      <a href="<%= link(`large/index.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
                         Your projects
                       </a>
                     </li>
@@ -361,9 +366,6 @@
               <% } %>
 
             </div>
-
-
-            
 
           </div>
 

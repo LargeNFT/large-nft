@@ -1,27 +1,38 @@
-import { MinLength, ArrayNotEmpty, ArrayMinSize ,IsNotEmpty, Allow } from 'class-validator'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-class ContractState {
-    
-    @Allow()
-    _id?:string
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
 
-    @Allow()
-    _rev?:string 
 
-    @Allow()
-    indexRate:number
+@Table({
+    tableName: 'contract-state',
+    createdAt: 'dateCreated',
+    updatedAt: 'lastUpdated',
+    paranoid: false,
+})
+class ContractState extends Model {
     
-    @Allow()
-    startBlock:number 
+    @PrimaryKey
+    @Column(DataType.STRING)
+    declare _id?:string
     
-    @Allow()
-    lastIndexedBlock:number 
+    @Column(DataType.STRING)
+    declare _rev?:string 
 
-    @Allow()
-    lastUpdated?:string 
+    @Column(DataType.BIGINT)
+    declare indexRate:number
     
-    @Allow()
-    dateCreated?:string
+    @Column(DataType.BIGINT)
+    declare startBlock:number 
+    
+    @Column(DataType.BIGINT)
+    declare lastIndexedBlock:number 
+
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date 
+    
+    @Column(DataType.DATE)
+    declare dateCreated?:Date
 }
 
 export {

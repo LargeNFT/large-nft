@@ -353,7 +353,7 @@ let getReaderConfigs = () => {
       ]
     },  
     output: {
-      filename: 'reader/generate.js',
+      filename: 'generate/index.js',
       libraryTarget: "module",
       library: {
         type: "module"
@@ -370,6 +370,7 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/sync/sync.ts",
+    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore'],
     externalsPresets: { 
       node: true 
     },    
@@ -392,7 +393,7 @@ let getReaderConfigs = () => {
       ]
     },  
     output: {
-      filename: 'reader/sync.js',
+      filename: 'sync/index.js',
       libraryTarget: "module",
       library: {
         type: "module"

@@ -1,63 +1,47 @@
-import { truncate } from "fs"
 import {  inject, injectable } from "inversify"
 import moment from "moment"
-import { DatabaseService } from "../../../reader/service/core/database-service.js"
-import { ProcessedTransaction, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
-import { changesets, ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
+import { ProcessedTransaction, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
+import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
+
+
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
+const { Op } = require('sequelize-typescript')
 
 @injectable()
 class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepository {
 
-    db:any
-    dbName:string = "processed-transactions"
-
-    @inject('DatabaseService')
-    private databaseService:DatabaseService
-
-
-    async load() {
-        this.db = await this.databaseService.getDatabase({
-            name: this.dbName,
-            initialRecords: false,
-            changesets: changesets
-        })
-    }
+    @inject("sequelize")
+    private sequelize:Function
 
     async get(_id: string): Promise<ProcessedTransaction> {
-        return Object.assign(new ProcessedTransaction(), await this.db.get(_id))
+        return ProcessedTransaction.findByPk(_id)
     }
 
-    async put(processedTransaction: ProcessedTransaction): Promise<void> {
-        await this.db.put(processedTransaction)
+    async put(processedTransaction: ProcessedTransaction, options?:any): Promise<ProcessedTransaction> {
+        return processedTransaction.save(options)
     }
   
-    async putAll(processedTransactions:ProcessedTransaction[]) : Promise<void> {
-        await this.db.bulkDocs(processedTransactions)
+    async putAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void> {
+
+        for (let processedTransaction of processedTransactions) {
+            await this.put(processedTransaction,options)
+        }
     }
 
 
     async list(limit: number, skip: number): Promise<ProcessedTransaction[]> {
 
-        let response = await this.db.find({
-            selector: { 
-                "blockNumber": { 
-                    $exists: true 
-                },
-                "transactionIndex": { 
-                    $exists: true 
-                }
-            },
+        return ProcessedTransaction.findAll({
             limit: limit,
-            skip: skip,
-            sort: [{"blockNumber": 'desc'}, {"transactionIndex": 'desc'}]
+            offset: skip,
+            order: [
+                ['blockNumber', 'DESC'],
+                ['transactionIndex', 'DESC']
+            ]
         })
-
-        if (response.warning) {
-            console.log(response.warning)
-        }
-
-        return response.docs
 
     }
 
@@ -70,10 +54,10 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         let dayDate:Date = moment().subtract(1, 'day').toDate()
 
 
-        report.totals = await this.getSalesRow()
-        report.yearTotals = await this.getSalesRow( Math.floor(yearDate.getTime() / 1000))
-        report.monthTotals = await this.getSalesRow(Math.floor(monthDate.getTime() / 1000))
-        report.dayTotals = await this.getSalesRow(Math.floor(dayDate.getTime() / 1000))
+        // report.totals = await this.getSalesRow()
+        // report.yearTotals = await this.getSalesRow( Math.floor(yearDate.getTime() / 1000))
+        // report.monthTotals = await this.getSalesRow(Math.floor(monthDate.getTime() / 1000))
+        // report.dayTotals = await this.getSalesRow(Math.floor(dayDate.getTime() / 1000))
 
         return report
 
@@ -84,46 +68,22 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
         let salesRow:SalesRow = {}
 
-        let records = await this.db.find({
-            selector: { 
-                timestamp: { 
-                    $gt: timestamp ? timestamp : 0  
-                }
-            },
-            fields: ['_id'],
-            sort: [{"timestamp": 'desc'}]
+        let events = await ProcessedTransaction.count('_id', { 
+            where: { 
+                "transactionValue.totalPrice": { 
+                    [Op.gt]: 0 
+                } 
+            } 
         })
 
-
-        let options:any = {
-            reduce: true,
-            include_docs: false,
-            // group: true,
-            // keys: records.docs.map(doc => doc._id)
-        }
+        salesRow.ethValue = await ProcessedTransaction.sum('transactionValue.totalPrice')
+        salesRow.averageEthValue = await ProcessedTransaction.avg('transactionValue.totalPrice')
 
 
-        console.log(timestamp, options.keys?.length)
+        salesRow.usdValue = await ProcessedTransaction.sum('transactionValue.usdValue')
+        salesRow.averageUsdValue = await ProcessedTransaction.avg('transactionValue.usdValue')
 
-
-        let ethResult = await this.db.query('eth_value', options)
-
-        if (ethResult.rows?.length > 0) {
-            salesRow.events = ethResult.rows[0].value.count
-            salesRow.ethValue = ethResult.rows[0].value.sum
-            salesRow.averageEthValue = salesRow.ethValue / salesRow.events
-        }
-
-        let usdResult = await this.db.query('usd_value', options)
-
-        if (usdResult.rows?.length > 0) {
-            salesRow.usdValue = usdResult.rows[0].value.sum
-            salesRow.averageUsdValue = salesRow.usdValue / salesRow.events 
-        }
-
-
-
-
+        salesRow.events = events
 
 
         return salesRow

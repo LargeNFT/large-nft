@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Container } from "inversify";
 import { ethers, providers } from "ethers"
 import Framework7 from 'framework7';
@@ -120,47 +119,56 @@ import { QuillService } from "./service/core/quill-service.js";
 import { ReaderSettingsService } from "./service/reader-settings-service.js";
 import { StaticPage } from "./dto/static-page.js";
 
-import { ContractStateRepository } from "./repository/contract-state-repository.js";
-import { ContractStateRepositoryBrowserImpl } from "../sync/repository/browser/contract-state-repository-impl.js";
+// import { ContractStateRepository } from "../sync/repository/contract-state-repository.js";
+// import { ContractStateRepositoryBrowserImpl } from "../sync/repository/browser/contract-state-repository-impl.js";
 
-import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js";
-import { ContractStateService } from "./service/contract-state-service.js";
+// import { TransactionIndexerService } from "./service/core/transaction-indexer-service.js";
+// import { ContractStateService } from "../sync/service/contract-state-service.js";
 import { ERCEventService } from "./service/erc-event-service.js";
 import { AttributeTotalService } from "./service/attribute-total-service.js"; 
 import { ComponentStateService } from "./service/core/component-state-service.js";
 import { ComponentStateRepository } from "./repository/component-state-repository.js";
 import { ComponentStateRepositoryBrowserImpl } from "./repository/browser/component-state-repository-impl.js";
 import { ComponentState } from "./dto/component-state.js";
-import { TokenOwnerService } from "./service/token-owner-service.js";
-import { TransactionService } from "./service/transaction-service.js";
-import { ProcessedTransactionService } from "./service/processed-transaction-service.js";
+// import { TokenOwnerService } from "../sync/service/token-owner-service.js";
+// import { TransactionService } from "../sync/service/transaction-service.js";
+// import { ProcessedTransactionService } from "../sync/service/processed-transaction-service.js";
 
-import { BlockService } from "./service/block-service.js";
+// import { BlockService } from "../sync/service/block-service.js";
 import { TokenOwnerPageService } from "./service/token-owner-page-service.js";
 
-import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
+// import { TokenOwnerRepository } from "../sync/repository/token-owner-repository.js";
 import { TokenOwnerPageRepository } from "./repository/token-owner-page-repository.js";
 
-import { BlockRepository } from "./repository/block-repository.js";
-import { TokenRepository } from "./repository/token-repository.js";
+// import { BlockRepository } from "../sync/repository/block-repository.js";
+// import { TokenRepository } from "../sync/repository/token-repository.js";
 
-import { TokenOwnerRepositoryBrowserImpl } from "../sync/repository/browser/token-owner-repository-impl.js";
-import { TokenOwnerPageRepositoryBrowserImpl } from "../sync/repository/browser/token-owner-page-repository-impl.js";
+// import { TokenOwnerRepositoryBrowserImpl } from "../sync/repository/browser/token-owner-repository-impl.js";
+import { TokenOwnerPageRepositoryBrowserImpl } from "./repository/browser/token-owner-page-repository-impl.js";
 
 
 
-import { TransactionRepository } from "./repository/transaction-repository.js";
-import { TransactionRepositoryBrowserImpl } from "../sync/repository/browser/transaction-repository-impl.js";
+// import { TransactionRepository } from "../sync/repository/transaction-repository.js";
+// import { TransactionRepositoryBrowserImpl } from "../sync/repository/browser/transaction-repository-impl.js";
 
-import { ProcessedTransactionRepository } from "../sync/repository/processed-transaction-repository.js";
-import { ProcessedTransactionRepositoryBrowserImpl } from "../sync/repository/browser/processed-transaction-repository-impl.js";
+// import { ProcessedTransactionRepository } from "../sync/repository/processed-transaction-repository.js";
+// import { ProcessedTransactionRepositoryBrowserImpl } from "../sync/repository/browser/processed-transaction-repository-impl.js";
 
-import { BlockRepositoryBrowserImpl } from "../sync/repository/browser/block-repository-impl.js";
-import { TokenRepositoryBrowserImpl } from "../sync/repository/browser/token-repository-impl.js";
-import { ENSRepositoryBrowserImpl } from "./repository/browser/ens-repository-impl.js";
+// import { BlockRepositoryBrowserImpl } from "../sync/repository/browser/block-repository-impl.js";
+// import { TokenRepositoryBrowserImpl } from "../sync/repository/browser/token-repository-impl.js";
+// import { ENSRepositoryBrowserImpl } from "../sync/repository/browser/ens-repository-impl.js";
 
-import { TokenService } from "./service/token-service.js";
+// import { TokenService } from "../sync/service/token-service.js";
 import { TransactionWebService } from "./service/web/transaction-web-service.js";
+import { ProcessedTransactionService } from "./service/processed-transaction-service.js";
+import { ProcessedTransactionRepository } from "./repository/processed-transaction-repository.js";
+import { ProcessedTransactionRepositoryBrowserImpl } from "./repository/browser/processed-transaction-repository-impl.js";
+import { TokenOwnerService } from "./service/token-owner-service.js";
+import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
+import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
+import { ContractStateRepository } from "../sync/repository/contract-state-repository.js";
+// import { ENSRepository } from "../sync/repository/ens-repository.js";
+// import { GenerateService } from "./service/core/generate-service.js";
 
 
 let container: Container
@@ -198,7 +206,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
 
-    const resolveWithSpinner = (resolve, url, options) => {
+    const resolveWithSpinner = (resolve, url, options?) => {
       
       // let currentUrl = window.location.pathname.split('/').pop()
 
@@ -397,6 +405,11 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
   })
 
+
+  container.bind('sequelize').toConstantValue(async (baseDir, channelId) => {})
+
+  
+
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
   container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryBrowserImpl).inSingletonScope()
@@ -414,15 +427,16 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").to(ReaderSettingsRepositoryBrowserImpl).inSingletonScope()
 
   // container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryBrowserImpl).inSingletonScope()
-  container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryBrowserImpl).inSingletonScope()
+  //@ts-ignore
+  container.bind<ContractStateRepository>("ContractStateRepository").to({}).inSingletonScope()
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
-  container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryBrowserImpl).inSingletonScope()
+  // container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryBrowserImpl).inSingletonScope()
   container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryBrowserImpl).inSingletonScope()
 
-  container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryBrowserImpl).inSingletonScope()
-  container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
-  container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryBrowserImpl).inSingletonScope()
+  // container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryBrowserImpl).inSingletonScope()
+  // container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
+  // container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryBrowserImpl).inSingletonScope()
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -452,19 +466,20 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ComponentStateService>("ComponentStateService").to(ComponentStateService).inSingletonScope()
 
   container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
-  container.bind<TransactionIndexerService>("TransactionIndexerService").to(TransactionIndexerService).inSingletonScope()
+  // container.bind<TransactionIndexerService>("TransactionIndexerService").to(TransactionIndexerService).inSingletonScope()
   container.bind<ERCEventService>("ERCEventService").to(ERCEventService).inSingletonScope()
 
-  container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
+  // container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
+  //@ts-ignore
   container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
 
-  container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
+  // container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
   container.bind<ProcessedTransactionService>("ProcessedTransactionService").to(ProcessedTransactionService).inSingletonScope()
 
-  container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
-  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
+  // container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
+  // container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
 
 
   //Attach container to window so we can easily access it from the browser console

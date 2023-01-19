@@ -24,7 +24,7 @@ import { AnimationService } from "../reader/service/animation-service.js";
 import { AttributeTotalService } from "../reader/service/attribute-total-service.js";
 import { AuthorService } from "../reader/service/author-service.js";
 import { ChannelService } from "../reader/service/channel-service.js";
-import { ContractStateService } from "../reader/service/contract-state-service.js";
+import { ContractStateService } from "../sync/service/contract-state-service.js";
 import { ComponentStateService } from "../reader/service/core/component-state-service.js";
 import { DatabaseService } from "../reader/service/core/database-service.js";
 import { ImageGeneratorService } from "../reader/service/core/image-generator-service.js";
@@ -32,7 +32,7 @@ import { PagingService } from "../reader/service/core/paging-service.js";
 import { QueueService } from "../reader/service/core/queue-service.js";
 import { QuillService } from "../reader/service/core/quill-service.js";
 import { SchemaService } from "../reader/service/core/schema-service.js";
-import { TransactionIndexerService } from "../reader/service/core/transaction-indexer-service.js";
+import { TransactionIndexerService } from "./service/transaction-indexer-service.js";
 import { UiService } from "../reader/service/core/ui-service.js";
 import { WalletService } from "../reader/service/core/wallet-service.js";
 import { WalletServiceImpl } from "../reader/service/core/wallet-service-impl.js";
@@ -54,26 +54,39 @@ import { GenerateService } from "../reader/service/core/generate-service.js";
 import { ContractStateRepositoryNodeImpl } from "./repository/node/contract-state-repository-impl.js";
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
 import { TokenOwnerRepositoryNodeImpl } from "./repository/node/token-owner-repository-impl.js";
-import { TokenOwnerService } from "../reader/service/token-owner-service.js";
+import { TokenOwnerService } from "../sync/service/token-owner-service.js";
 import { TransactionRepositoryNodeImpl } from "./repository/node/transaction-repository-impl.js";
 import { TransactionRepository } from "./repository/transaction-repository.js";
-import { TransactionService } from "../reader/service/transaction-service.js";
+import { TransactionService } from "../sync/service/transaction-service.js";
 import { BlockRepository } from "./repository/block-repository.js";
-import { BlockService } from "../reader/service/block-service.js";
-import { TokenOwnerPageRepositoryNodeImpl } from "./repository/node/token-owner-page-repository-impl.js";
-import { TokenOwnerPageRepository } from "./repository/token-owner-page-repository.js";
+import { BlockService } from "./service/block-service.js";
+import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js";
+import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js";
 import { TokenOwnerPageService } from "../reader/service/token-owner-page-service.js";
-import { TokenService } from "../reader/service/token-service.js";
+import { TokenService } from "../sync/service/token-service.js";
 import { TokenRepository } from "./repository/token-repository.js";
 import { TokenRepositoryNodeImpl } from "./repository/node/token-repository-impl.js";
 import { ProcessedTransactionRepositoryNodeImpl } from "./repository/node/processed-transaction-repository-impl.js";
-import { ProcessedTransactionService } from "../reader/service/processed-transaction-service.js";
-import { ENSService } from "../reader/service/ens-service.js";
-import { ENSRepository } from "../reader/repository/ens-repository.js";
-import { ENSRepositoryNodeImpl } from "../reader/repository/node/ens-repository-impl.js";
+import { ProcessedTransactionService } from "../sync/service/processed-transaction-service.js";
+import { ENSService } from "../sync/service/ens-service.js";
+import { ENSRepository } from "./repository/ens-repository.js";
+import { ENSRepositoryNodeImpl } from "./repository/node/ens-repository-impl.js";
 import { BlockRepositoryNodeImpl } from "./repository/node/block-repository-impl.js";
 import { ProcessedTransactionRepository } from "./repository/processed-transaction-repository.js";
 
+import { Block } from "./dto/block.js";
+import { ContractState } from "./dto/contract-state.js";
+import { ProcessedTransaction } from "./dto/processed-transaction.js";
+import { TokenOwner } from "./dto/token-owner.js";
+import { Token } from "./dto/token.js";
+import { Transaction } from "./dto/transaction.js";
+
+import { createRequire } from 'module'
+import { ENS } from "./dto/ens.js";
+
+
+const require = createRequire(import.meta.url)
+const { Sequelize } = require('sequelize-typescript')
 
 
 let container:Container
@@ -82,13 +95,21 @@ function getMainContainer(command:GetMainContainerCommand) {
 
   if (container) return container
 
+
+  
   container = command.customContainer
   
+  container.bind("PouchDB").toConstantValue({})
   container.bind("framework7").toConstantValue({})
   container.bind("baseURI").toConstantValue(command.baseURI)
   container.bind("hostname").toConstantValue(command.hostname)
 
   container.bind("baseDir").toConstantValue(command.baseDir)
+
+
+
+
+
 
   container.bind("provider").toConstantValue(() => {
 
@@ -105,6 +126,33 @@ function getMainContainer(command:GetMainContainerCommand) {
   })
 
 
+  let sequelize
+
+  container.bind('sequelize').toConstantValue(async (baseDir, channelId) => {
+
+    if (sequelize) {
+      return sequelize
+    }
+
+    //@ts-ignore
+    sequelize = new Sequelize({
+      logging: false,
+      database: channelId,
+      dialect: 'sqlite',
+      storage: `${baseDir}/sync/data.sqlite`,
+      models: [Block, ContractState, ProcessedTransaction, TokenOwner, Token, Transaction, ENS]
+    })
+
+
+    await sequelize.sync()
+
+    await sequelize.authenticate()
+    console.log('Connection has been established successfully.')
+
+    return sequelize
+
+  })
+  
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
   container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryNodeImpl).inSingletonScope()

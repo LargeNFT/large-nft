@@ -1093,3 +1093,15 @@ html {
 .dollar-value {
   font-size: 12px;
 }
+
+
+.external-links a {
+  display: inline-block;
+}
+
+.external-links a:not(:first-child):before {
+  content: " | ";
+  margin-right: 5px;
+  margin-left: 5px;
+
+}

@@ -1,39 +1,29 @@
-import {  inject, injectable } from "inversify"
+import {  injectable } from "inversify"
 import { Token } from "../../dto/token.js"
-import { DatabaseService } from "../../../reader/service/core/database-service.js"
 import { TokenRepository } from "../token-repository.js"
 
 
 @injectable()
 class TokenRepositoryNodeImpl implements TokenRepository {
 
-    db:any
-    dbName:string = "tokens"
-
-    @inject('DatabaseService')
-    private databaseService:DatabaseService
-
-
-    async load() {
-        this.db = await this.databaseService.getDatabase({
-            name: this.dbName,
-            initialRecords: false
-        })
-    }
-
-
-
     async get(_id: string): Promise<Token> {
-        return Object.assign(new Token(), await this.db.get(_id))
+        return Token.findByPk(_id)
     }
 
-
-    async put(token: Token): Promise<void> {
-        await this.db.put(token)
+    async put(token: Token, options?:any): Promise<Token> {
+        return token.save(options)
     }
   
-    async putAll(tokens:Token[]) : Promise<void> {
-        await this.db.bulkDocs(tokens)
+    async putAll(tokens:Token[], options?:any) : Promise<void> {
+
+        // let toInsert = tokens.filter(t => !t.dateCreated)
+        // let toUpdate = tokens.filter(t => t.dateCreated)
+
+        // await Token.bulkCreate(toInsert)
+
+        for (let token of tokens) {
+            await this.put(token, options)
+        }
     }
 
 

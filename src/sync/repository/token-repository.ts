@@ -3,8 +3,8 @@ import { Token } from "../dto/token.js"
 
 interface TokenRepository {
     get(_id:string): Promise<Token>
-    put(token:Token) : Promise<void>
-    putAll(tokens:Token[]) : Promise<void>
+    put(token:Token, options?:any) : Promise<Token>
+    putAll(tokens:Token[], options?:any) : Promise<void>
 }
 
 // let changesets:Changeset[] = [

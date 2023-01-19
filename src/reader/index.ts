@@ -65,12 +65,7 @@ let initReader = async (baseURI:string, hostname:string, version:string, routabl
             return channelId
         })
 
-
-
-
-
         container = await getMainContainer(container, baseURI, hostname, version, routablePages)
-
 
         if (navigator.serviceWorker.controller) {
             startApp(container, baseURI, version, hostname, routablePages)

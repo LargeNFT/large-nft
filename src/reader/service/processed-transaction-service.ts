@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from "class-validator"
-import { ValidationException } from "../util/validation-exception.js"
 
-import { ItemService } from "./item-service.js"
-import { ProcessedTransactionRepository } from "../../sync/repository/processed-transaction-repository.js"
-import { ProcessedEvent, ProcessedTransaction, SalesReport } from "../../sync/dto/processed-transaction.js"
-import { Transaction } from "../../sync/dto/transaction.js"
+
+import { ItemService } from "../../reader/service/item-service.js"
+import { ValidationException } from "../../reader/util/validation-exception.js"
+import { ProcessedEvent, ProcessedTransaction } from "../dto/processed-transaction.js"
+import { ProcessedTransactionRepository } from "../repository/processed-transaction-repository.js"
 
 
 @injectable()
@@ -21,36 +21,6 @@ class ProcessedTransactionService {
 
     async get(_id:string) {
         return this.processedTransactionRepository.get(_id)
-    }
-
-    async put(processedTransaction:ProcessedTransaction) {
-
-        processedTransaction.lastUpdated = new Date().toJSON()
-
-        //Validate
-        let errors: ValidationError[] = await validate(processedTransaction, {
-            forbidUnknownValues: true,
-            whitelist: true
-        })
-
-        if (errors.length > 0) {
-            throw new ValidationException(errors)
-        }
-
-        return this.processedTransactionRepository.put(processedTransaction)
-    }
-
-    /**
-     * No validation for speeeeeeeeed
-     * @param ercEvents 
-     * @returns 
-     */
-     async putAll(transactions:ProcessedTransaction[]) {
-
-        //Update lastUpdated
-        transactions.forEach(e => e.lastUpdated = new Date().toJSON())
-
-        return this.processedTransactionRepository.putAll(transactions)
     }
 
 
@@ -122,9 +92,10 @@ class ProcessedTransactionService {
 
         while (results?.length < limit && startId) {
 
+            console.log(startId)
             let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId)
 
-            // console.log(processedTransaction)
+            console.log(processedTransaction)
 
             results.push(processedTransaction)
 
@@ -311,14 +282,6 @@ class ProcessedTransactionService {
 
 
 
-    async getLatest() : Promise<Transaction> {
-        let l = await this.processedTransactionRepository.list(1, 0)
-
-        if (l?.length >0) {
-            return Object.assign(new Transaction(), l[0])
-        }
-
-    }
 
     private async _getRowItemViewModels(processedEvents) {
 
@@ -373,11 +336,6 @@ class ProcessedTransactionService {
 
 
 
-
-
-    async getSalesReport() : Promise<SalesReport> {
-        return this.processedTransactionRepository.getSalesReport()
-    }
 
 
 

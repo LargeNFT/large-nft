@@ -1,66 +1,79 @@
-import { Allow } from "class-validator"
-import { ERCEvent } from "./erc-event.js"
+
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index } = require('sequelize-typescript')
 
 
-class ProcessedTransaction {
+import { ERCEvent } from './erc-event.js'
+
+@Table({
+    tableName: 'processed-transaction',
+    createdAt: 'dateCreated',
+    updatedAt: 'lastUpdated',
+    paranoid: false,
+})
+class ProcessedTransaction extends Model {
     
-    @Allow()
-    _id?:string
+    @PrimaryKey
+    @Column(DataType.STRING)
+    declare _id?:string
 
-    @Allow()
-    _rev?:string 
+    @Column(DataType.STRING)
+    declare _rev?:string 
     
-    @Allow()
-    blockNumber?:number
+    @Index('block-number-transaction-index-pt') 
+    @Column(DataType.BIGINT)
+    declare blockNumber?:number
 
-    @Allow()
-    transactionIndex?:number
+    @Index('block-number-transaction-index-pt') 
+    @Column(DataType.BIGINT)
+    declare transactionIndex?:number
 
-    @Allow()
-    from?:string
+    @Column(DataType.STRING)
+    declare from?:string
 
-    @Allow()
-    timestamp?:number
+    @Column(DataType.BIGINT)
+    declare timestamp?:number
 
-    @Allow()
-    ercEvents?:ERCEvent[]
+    @Column(DataType.JSON)
+    declare ercEvents?:ERCEvent[]
 
-    @Allow()
-    processedEvents?:ProcessedEvent[]
+    @Column(DataType.JSON)
+    declare processedEvents?:ProcessedEvent[]
 
-    @Allow()
-    transactionValue?:TransactionValue
+    @Column(DataType.JSON)
+    declare transactionValue?:TransactionValue
 
-    @Allow()
-    previousId?:string
+    @Column(DataType.STRING)
+    declare previousId?:string
 
-    @Allow()
-    previousByTokenIds?:{}
+    @Column(DataType.JSON)
+    declare previousByTokenIds?:{}
 
-    @Allow()
-    previousByTransactionInitiatorId?:{}
+    @Column(DataType.JSON)
+    declare previousByTransactionInitiatorId?:{}
 
-    @Allow()
-    previousByTokenOwnerId?:{}
+    @Column(DataType.JSON)
+    declare previousByTokenOwnerId?:{}
 
-    @Allow()
-    nextId?:string
+    @Column(DataType.STRING)
+    declare nextId?:string
 
-    @Allow()
-    nextByTokenIds?:{}
+    @Column(DataType.JSON)
+    declare nextByTokenIds?:{}
 
-    @Allow()
-    nextByTokenOwnerId?:{}
+    @Column(DataType.JSON)
+    declare nextByTokenOwnerId?:{}
 
-    @Allow()
-    nextByTransactionInitiatorId?:{}
+    @Column(DataType.JSON)
+    declare nextByTransactionInitiatorId?:{}
 
-    @Allow()
-    lastUpdated?:string 
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date 
     
-    @Allow()
-    dateCreated?:string
-
+    @Column(DataType.DATE)
+    declare dateCreated?:Date
 
 }
 

@@ -106,6 +106,9 @@ let sync = async () => {
   let sequelizeInit:Function = container.get("sequelize")
   let sequelize = await sequelizeInit(config.baseDir, channelId)
 
+  await sequelize.query("PRAGMA busy_timeout=5000;")
+  await sequelize.query("PRAGMA journal_mode=WAL;")
+
 
   if (config.clear) {
 
@@ -118,9 +121,10 @@ let sync = async () => {
 
     await sequelize.sync()
 
-
   }
   
+
+
 
 
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
@@ -156,6 +160,21 @@ let sync = async () => {
           console.log('No results to process.')
         }
 
+
+        //Writing sales reports
+        if (!fs.existsSync(`${config.publicPath}/sync/sales`)) {
+          fs.mkdirSync(`${config.publicPath}/sync/sales`, { recursive: true })
+        }
+
+        let salesReport = await processedTransactionService.generateSalesReport()
+        fs.writeFileSync(`${config.publicPath}/sync/sales/overall.json`, Buffer.from(JSON.stringify(salesReport)))
+
+
+        //Largest sales
+        let largestSales = await processedTransactionService.generateLargestSales()
+        fs.writeFileSync(`${config.publicPath}/sync/sales/largest.json`, Buffer.from(JSON.stringify(largestSales)))
+
+
         //Save latest transaction
         let mostRecent:ProcessedTransaction = await processedTransactionService.getLatest()
         console.log(`Updating latest info: ${mostRecent._id} / ${new Date().toJSON()}`)
@@ -166,14 +185,13 @@ let sync = async () => {
         })))
 
 
+
         //Save contract state
         console.log(`Saving contract state`)
         await contractStateService.put(transactionIndexerService.contractState)
 
 
-        let salesReport = await processedTransactionService.getSalesReport()
 
-        console.log(salesReport)
 
 
         //If we're current then wait. If not then just do it again.
@@ -209,6 +227,8 @@ let sync = async () => {
       fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/ens`, { recursive: true })
     }
 
+
+
     console.log(`${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to update. Writing files.`)
     console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
     console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
@@ -236,8 +256,15 @@ let sync = async () => {
       for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
         fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
 
+        // console.log(`latest: ${indexResult.tokensToUpdate[tokenId].latestTransactionId}`)
+
         //Write tokens transactions to JSON
-        let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listByTokenFrom(parseInt(tokenId), 1000, indexResult.tokensToUpdate[tokenId].latestTransactionId), new Date().toJSON())
+        let tokenTransactions = await processedTransactionService.listByTokenFrom(parseInt(tokenId), 1000, indexResult.tokensToUpdate[tokenId].latestTransactionId)
+
+        let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(tokenTransactions, new Date().toJSON())
+
+
+
         fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}-activity.json`, Buffer.from(JSON.stringify(transactionsViewModel)))
 
       }

@@ -67,12 +67,9 @@ class TransactionIndexerService {
     contract: Contract
     contractAddress: string
 
-
-
-
     constructor() { }
 
-    BLOCK_GAP = 12
+    BLOCK_CONFIRMATIONS = 12
 
 
     async init(contract: Contract) {
@@ -98,8 +95,6 @@ class TransactionIndexerService {
 
 
     }
-
-
 
     async index(): Promise<ERCIndexResult> {
 
@@ -134,12 +129,9 @@ class TransactionIndexerService {
             const events = eventsResult.events
             result.endBlock = eventsResult.endBlock
 
-            result.isCurrent = this.blockNumber - this.BLOCK_GAP == result.endBlock
+            result.isCurrent = this.blockNumber == result.endBlock
 
-
-    
             console.log(`Found ${events.length} events up to block ${result.endBlock}`)
-    
     
             if (events.length > 0) {
     
@@ -155,14 +147,15 @@ class TransactionIndexerService {
                 }
     
                 let processedCount = 0
-
+                
+                
                 for (let event of events) {
-                    
+
+                    const t1 = await s.transaction()
+
                     try {
 
                         console.time(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`)
-    
-                        const t1 = await s.transaction()
 
                         let block: Block
                         let transaction:Transaction
@@ -177,7 +170,14 @@ class TransactionIndexerService {
                             currentTransaction = result.processedTransactionsToUpdate[event.transactionHash]
                         } else {
         
-                            currentTransaction = new ProcessedTransaction()
+                            try {
+                                currentTransaction = await this.processedTransactionService.get(event.transactionHash)
+                            } catch(ex) {}
+
+                            if (!currentTransaction) {
+                                currentTransaction = new ProcessedTransaction()
+                            }
+
                             currentTransaction._id = transaction.hash    
                             currentTransaction.from = transaction.from
                             currentTransaction.blockNumber = transaction.blockNumber
@@ -228,11 +228,11 @@ class TransactionIndexerService {
     
                             if (!previousTransactionId || previousTransactionId == currentTransactionId) return
     
-                            if (result.processedTransactionsToUpdate[previousTransactionId]) {
-                                return result.processedTransactionsToUpdate[previousTransactionId]
+                            if (!result.processedTransactionsToUpdate[previousTransactionId]) {
+                                result.processedTransactionsToUpdate[previousTransactionId] = await this.processedTransactionService.get(previousTransactionId)
                             }
-    
-                            return this.processedTransactionService.get(previousTransactionId)
+
+                            return result.processedTransactionsToUpdate[previousTransactionId]
     
                         }
     
@@ -364,104 +364,26 @@ class TransactionIndexerService {
                         //Increment the count
                         processedCount++ 
         
+
                         await t1.commit()
 
+
                     } catch(ex) {
+                        await t1.rollback()
                         console.log(ex)
                     }
-                }
 
-                const t1 = await s.transaction()
+                }
 
 
                 //Save token owners
-                console.log(`Saving ${Object.keys(result.ownersToUpdate).length} updated token owners`)
-
-                let tokenOwnersToUpdate = []
-                for (let owner of Object.keys(result.ownersToUpdate)) {
-
-                    let tokenOwner = result.ownersToUpdate[owner]
-
-                    //Update count before saving.
-                    tokenOwner.count = tokenOwner.tokenIds?.length
-
-                    //Sort token IDs
-                    tokenOwner.tokenIds.sort()
-
-                    tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id)
-
-                    tokenOwnersToUpdate.push(tokenOwner)
-                }
-
-                await this.tokenOwnerService.putAll(tokenOwnersToUpdate, { transaction: t1 })
-
-
-                //Update rankings for all owners. Only save if it's changed.
-                let tokenOwners:TokenOwner[] = await this.tokenOwnerService.list(100000, 0)
-
-                let rank = 0
-                let lastRankCount
-
-                let ownersToUpdate = []
-
-                for (let i=0; i < tokenOwners.length; i++) {
-
-                    let owner = tokenOwners[i]
-
-                    if (!lastRankCount || owner.tokenIds?.length < lastRankCount) {
-                        rank++
-                    }
-
-                    //Add any with new rankings to our changeset to save.
-                    if (owner.rank != rank || owner.overallRank != i+1) {
-                        owner.rank = rank
-                        owner.overallRank = i+1
-                        ownersToUpdate.push(owner)
-
-                        result.ownersToUpdate[owner._id] = owner
-
-                    }
-
-                    lastRankCount = owner.tokenIds?.length
-
-                }
-
-                console.log(`Saving ${ownersToUpdate.length} re-ranked token owners`)
-                await this.tokenOwnerService.putAll(ownersToUpdate, { transaction: t1 })
-
-
-
+                await this.saveTokenOwners(result)
 
                 //Save processed transactions
-                console.log(`Saving ${Object.keys(result.processedTransactionsToUpdate).length} processed transactions`)
-                let transactionsToSave = []
-
-                for (let _id of Object.keys(result.processedTransactionsToUpdate)) {
-
-                    //Create processed events
-                    this.createProcessedEvents(result.processedTransactionsToUpdate[_id])
-
-                    if (result.processedTransactionsToUpdate[_id].processedEvents?.length == 0) {
-                        throw new Error(`No processed events found for transaction ${_id}`)
-                    }
-
-                    transactionsToSave.push(result.processedTransactionsToUpdate[_id])
-                }
-
-                await this.processedTransactionService.putAll(transactionsToSave, { transaction: t1 })
-
-
+                await this.saveProcessedTransactions(result)
 
                 //Save tokens
-                let tokens = []
-                for (let tokenId of Object.keys(result.tokensToUpdate)) {
-                    tokens.push(result.tokensToUpdate[tokenId])
-                }
-
-                await this.tokenService.putAll(tokens, { transaction: t1 })
-
-
-                await t1.commit()
+                await this.saveTokens(result)
 
             }
     
@@ -481,7 +403,148 @@ class TransactionIndexerService {
 
 
     }
-    
+
+    private async saveTokens(result: ERCIndexResult) {
+        
+        let s = await this.sequelize()
+
+        let tokens = []
+        
+        for (let tokenId of Object.keys(result.tokensToUpdate)) {
+            tokens.push(result.tokensToUpdate[tokenId])
+        }
+
+        let t1 = await s.transaction()
+
+        try {
+            await this.tokenService.putAll(tokens, { transaction: t1 })
+            await t1.commit()
+        } catch(ex) {   
+            console.log(ex)
+            await t1.rollback()
+        }
+
+    }
+
+    private async saveProcessedTransactions(result: ERCIndexResult) {
+
+        let s = await this.sequelize()
+
+        console.log(`Saving ${Object.keys(result.processedTransactionsToUpdate).length} processed transactions`)
+        let transactionsToSave = []
+
+        for (let _id of Object.keys(result.processedTransactionsToUpdate)) {
+
+            //Create processed events
+            this.createProcessedEvents(result.processedTransactionsToUpdate[_id])
+
+            if (result.processedTransactionsToUpdate[_id].processedEvents?.length == 0) {
+                throw new Error(`No processed events found for transaction ${_id}`)
+            }
+
+            transactionsToSave.push(result.processedTransactionsToUpdate[_id])
+        }
+
+        let t1 = await s.transaction()
+
+        try {
+            await this.processedTransactionService.putAll(transactionsToSave, { transaction: t1 })
+            await t1.commit()
+        } catch(ex) {   
+            console.log(ex)
+            await t1.rollback()
+        }
+        
+    }
+
+    private async saveTokenOwners(result: ERCIndexResult) {
+
+        let s = await this.sequelize()
+
+        console.log(`Saving ${Object.keys(result.ownersToUpdate).length} updated token owners`);
+
+        let tokenOwnersToUpdate = []
+        for (let owner of Object.keys(result.ownersToUpdate)) {
+
+            let tokenOwner = result.ownersToUpdate[owner]
+
+            //Update count before saving.
+            tokenOwner.count = tokenOwner.tokenIds?.length
+
+            //Sort token IDs
+            tokenOwner.tokenIds.sort()
+
+            let t1 = await s.transaction()
+
+            try {
+                tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id, { transaction: t1 })
+                await t1.commit()
+            } catch(ex) {   
+                console.log(ex)
+                await t1.rollback()
+            }
+
+
+            tokenOwnersToUpdate.push(tokenOwner)
+        }
+
+        let t2 = await s.transaction()
+
+
+        try {
+            await this.tokenOwnerService.putAll(tokenOwnersToUpdate, { transaction: t2 })
+            await t2.commit()
+        } catch(ex) {   
+            console.log(ex)
+            await t2.rollback()
+        }
+
+
+        
+
+        //Update rankings for all owners. Only save if it's changed.
+        let tokenOwners:TokenOwner[] = await this.tokenOwnerService.list(100000, 0)
+
+        let rank = 0
+        let lastRankCount
+
+        let ownersToUpdate = []
+
+        for (let i=0; i < tokenOwners.length; i++) {
+
+            let owner = tokenOwners[i]
+
+            if (!lastRankCount || owner.tokenIds?.length < lastRankCount) {
+                rank++
+            }
+
+            //Add any with new rankings to our changeset to save.
+            if (owner.rank != rank || owner.overallRank != i+1) {
+                owner.rank = rank
+                owner.overallRank = i+1
+                ownersToUpdate.push(owner)
+
+                result.ownersToUpdate[owner._id] = owner
+
+            }
+
+            lastRankCount = owner.tokenIds?.length
+
+        }
+
+        console.log(`Saving ${ownersToUpdate.length} re-ranked token owners`)
+
+        t2 = await s.transaction()
+
+        try {
+            await this.tokenOwnerService.putAll(ownersToUpdate, { transaction: t2 })
+            await t2.commit()
+        } catch(ex) {   
+            console.log(ex)
+            await t2.rollback()
+        }
+
+    }
 
     private createProcessedEvents(currentTransaction: ProcessedTransaction) {
 
@@ -521,33 +584,19 @@ class TransactionIndexerService {
 
             let e = currentTransaction.ercEvents[i]
 
-            // //If the same from/to as the last one just add it to the same processed event
-            // if (
-            //     e.event == "Transfer" && 
-            //     previousProcessedTransfer && 
-            //     e.namedArgs.fromAddress == previousProcessedTransfer.namedArgs.fromAddress && 
-            //     e.namedArgs.toAddress == previousProcessedTransfer.namedArgs.toAddress
-            // ) {
+            let processedEvent:ProcessedEvent = {
+                isMint: e.isMint,
+                isBurn: e.isBurn,
+                event: e.event,
+                namedArgs: e.namedArgs,
+                tokenIds: [parseInt(e.namedArgs.tokenId)]
+            }
 
-            //     previousProcessedTransfer.tokenIds.push(parseInt(e.namedArgs.tokenId))
+            currentTransaction.processedEvents.push(processedEvent)
 
-            // } else {
-
-                let processedEvent:ProcessedEvent = {
-                    isMint: e.isMint,
-                    isBurn: e.isBurn,
-                    event: e.event,
-                    namedArgs: e.namedArgs,
-                    tokenIds: [parseInt(e.namedArgs.tokenId)]
-                }
-
-                currentTransaction.processedEvents.push(processedEvent)
-
-                if (e.event == "Transfer") {
-                    previousProcessedTransfer = processedEvent
-                }
-
-            // }
+            if (e.event == "Transfer") {
+                previousProcessedTransfer = processedEvent
+            }
 
         }
 
@@ -601,30 +650,6 @@ class TransactionIndexerService {
 
     }
 
-    // async getBlockChunks(startBlock:number, endBlock:number, chunkLimit = 2000) {
-
-    //     const totalBlocks = endBlock - startBlock
-    //     const chunks = []
-
-    //     if (chunkLimit > 0 && totalBlocks > chunkLimit) {
-    //         const count = Math.ceil(totalBlocks / chunkLimit)
-    //         let startingBlock = startBlock
-
-    //         for (let index = 0; index < count; index++) {
-    //             const startChunkBlock = startingBlock
-    //             const endChunkBlock =
-    //                 index === count - 1 ? endBlock : startingBlock + chunkLimit
-    //             startingBlock = endChunkBlock + 1
-
-    //             chunks.push({ startBlock: startChunkBlock, endBlock: endChunkBlock })
-    //         }
-    //     } else {
-    //         chunks.push({ startBlock: startBlock, endBlock: endBlock })
-    //     }
-
-    //     return chunks
-    // }
-
     private _getFilterTopics(contract: Contract) {
 
 
@@ -657,10 +682,9 @@ class TransactionIndexerService {
 
         if (!contractState) {
 
-            contractState = Object.assign(new ContractState(), {
+            contractState = ContractState.build({
                 _id: contractAddress,
-                lastIndexedBlock: 0,
-                dateCreated: new Date().toJSON()
+                lastIndexedBlock: 0
             })
 
             try {
@@ -676,7 +700,6 @@ class TransactionIndexerService {
         return contractState
     }
 
-
     private async _updateBlockNumber() {
         try {
             this.blockNumber = await this.walletService.provider.getBlockNumber()
@@ -686,16 +709,21 @@ class TransactionIndexerService {
     }
 
     private shouldIndex(contractState: ContractState) {
-        return contractState.lastIndexedBlock + this.BLOCK_GAP < this.blockNumber
+        return contractState.lastIndexedBlock < this.blockNumber
     }
 
     private getStartBlock(contractState: ContractState) {
+
         if (!contractState.lastIndexedBlock) return 0
-        return contractState.lastIndexedBlock + 1
+
+        let block = contractState.lastIndexedBlock - 15
+
+        return block >= 0 ? block : 0
+
     }
 
     private getEndBlock() {
-        return this.blockNumber - this.BLOCK_GAP
+        return this.blockNumber
     }
 
 }

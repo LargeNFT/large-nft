@@ -68,8 +68,38 @@ interface ProcessedEvent {
 }
 
 
+interface SalesReport {
+
+    totals?:SalesRow
+
+    yearTotals?:SalesRow
+    monthTotals?:SalesRow
+    weekTotals?:SalesRow
+    dayTotals?:SalesRow
+
+}
+
+interface SalesRow {
+    
+    events?:number
+
+    ethValue?:number
+    usdValue?:number
+
+    averageEthValue?:number
+    averageUsdValue?:number
+
+}
+
+interface Sale {
+    tokenId?:number
+    transactionId?:string
+    ethValue?:number
+    usdValue:number
+    date:string 
+}
 
 
 export {
-    ProcessedTransaction, ProcessedEvent, TransactionValue
+    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow, Sale
 }

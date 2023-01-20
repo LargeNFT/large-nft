@@ -11,7 +11,10 @@ class TransactionRepositoryNodeImpl implements TransactionRepository {
     }
 
     async put(transaction: Transaction, options?:any): Promise<Transaction> {
-        return transaction.save(options)
+
+        await transaction.save(options)
+        return transaction
+        
     }
   
     async putAll(transactions:Transaction[], options?:any) : Promise<void> {

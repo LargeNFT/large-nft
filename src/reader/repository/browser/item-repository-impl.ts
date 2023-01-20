@@ -122,6 +122,13 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
         return items
     }
 
+    async getRowItemViewModelsByTokenId(tokenId:number) : Promise<RowItemViewModel> {
+
+        const response = await axios.get(`${this.hostname}${this.baseURI}t/${tokenId}/rowItemViewModel.json`)
+        return response.data
+
+    }
+
 
     
     async listByTokenId(startTokenId:number, limit:number) : Promise<Item[]> {

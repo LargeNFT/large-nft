@@ -1,10 +1,11 @@
 // import axios from "axios";
 import axios from "axios";
 import { inject, injectable } from "inversify";
+import { SalesReport } from "../../dto/processed-transaction.js";
 
 
 import { SchemaService } from "../core/schema-service.js";
-import { ProcessedTransactionService, TransactionsViewModel } from "../processed-transaction-service.js";
+import { ProcessedTransactionService, SaleViewModel, TransactionsViewModel } from "../processed-transaction-service.js";
 import { TokenOwnerService } from "../token-owner-service.js";
 
 @injectable()
@@ -202,6 +203,46 @@ class TransactionWebService {
     getDisplayName(_id) {
         return this._ENSCache[_id]
     }
+
+    async getSalesReport(): Promise<SalesReport> {
+        return this.processedTransactionService.getSalesReport()
+    }
+
+    async getLargestSales(): Promise<SaleViewModel[]> {
+
+        let sales = await  this.processedTransactionService.getLargestSales()
+
+        return this.processedTransactionService.translateSalesToViewModels(sales)
+
+    }
+
+
+
+    abbreviateDollars(number, digits) {
+
+        var SI_SYMBOL = ["", "", "M", "G", "T", "P", "E"]
+
+
+        // what tier? (determines SI symbol)
+        var tier = Math.log10(Math.abs(number)) / 3 | 0
+
+        // if zero or thousands, we don't need a suffix
+        if(tier == 0 || tier == 1) {
+          let result = new Intl.NumberFormat('en-US', { currency: "USD", style:"currency" }).format(number)
+          return result
+        }
+
+        // get suffix and determine scale
+        var suffix = SI_SYMBOL[tier]
+        var scale = Math.pow(10, tier * 3)
+
+        // scale the number
+        var scaled = number / scale
+
+        // format number and add suffix
+        return scaled.toFixed(digits) + suffix
+    }
+
 
     private async _cacheDisplayName(_id) {
 

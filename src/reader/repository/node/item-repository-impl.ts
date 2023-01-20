@@ -53,8 +53,15 @@ class ItemRepositoryNodeImpl implements ItemRepository {
 
         return items
 
+    }
+
+    async getRowItemViewModelsByTokenId(tokenId:number) : Promise<RowItemViewModel> {
+
+        const response = fs.readFileSync(`${this.baseDir}/public/t/${tokenId}/rowItemViewModel.json`, 'utf8')
+        return JSON.parse(response)
 
     }
+
 
     async getByTokenId(tokenId:number) : Promise<Item> {
 

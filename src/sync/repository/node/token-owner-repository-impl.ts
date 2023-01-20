@@ -18,8 +18,9 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
 
     async put(tokenOwner:TokenOwner, options?:any) : Promise<TokenOwner> {
 
-        return tokenOwner.save(options)
-
+        await tokenOwner.save(options)
+        return tokenOwner
+        
     }
 
     async putAll(tokenOwners:TokenOwner[], options?:any) : Promise<void> {

@@ -1,17 +1,15 @@
 import {  inject, injectable } from "inversify"
 import moment from "moment"
 
-import { ProcessedTransaction, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
+import {  ProcessedTransaction, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
-
-const { Op } = require('sequelize-typescript')
 
 @injectable()
 class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepository {
+
+
 
     @inject("sequelize")
     private sequelize:Function
@@ -21,7 +19,11 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
     }
 
     async put(processedTransaction: ProcessedTransaction, options?:any): Promise<ProcessedTransaction> {
-        return processedTransaction.save(options)
+        
+        await processedTransaction.save(options)
+        return processedTransaction 
+
+
     }
   
     async putAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void> {
@@ -45,7 +47,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    async getSalesReport(): Promise<SalesReport> {
+    async generateSalesReport(): Promise<SalesReport> {
 
         let report:SalesReport = {}
 
@@ -54,10 +56,10 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         let dayDate:Date = moment().subtract(1, 'day').toDate()
 
 
-        // report.totals = await this.getSalesRow()
-        // report.yearTotals = await this.getSalesRow( Math.floor(yearDate.getTime() / 1000))
-        // report.monthTotals = await this.getSalesRow(Math.floor(monthDate.getTime() / 1000))
-        // report.dayTotals = await this.getSalesRow(Math.floor(dayDate.getTime() / 1000))
+        report.totals = await this.getSalesRow()
+        report.yearTotals = await this.getSalesRow( Math.floor(yearDate.getTime() / 1000))
+        report.monthTotals = await this.getSalesRow(Math.floor(monthDate.getTime() / 1000))
+        report.dayTotals = await this.getSalesRow(Math.floor(dayDate.getTime() / 1000))
 
         return report
 
@@ -68,23 +70,48 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
         let salesRow:SalesRow = {}
 
-        let events = await ProcessedTransaction.count('_id', { 
-            where: { 
-                "transactionValue.totalPrice": { 
-                    [Op.gt]: 0 
-                } 
-            } 
+        if (!timestamp) timestamp = 0
+
+        let s = await this.sequelize()
+
+        const [totalPriceResults, metadata] = await s.query(`
+                select 
+                   COUNT(_id) as events, 
+                   SUM(JSON_EXTRACT(transactionValue, '$.totalPrice')) as ethValue, 
+                   AVG(JSON_EXTRACT(transactionValue, '$.totalPrice')) as averageEthValue 
+                FROM 'processed-transaction' t  
+                WHERE 
+                    JSON_EXTRACT(transactionValue, '$.totalPrice') > 0 AND
+                    t.timestamp > :timestamp
+        `, {
+            replacements: { timestamp: timestamp }
         })
 
-        salesRow.ethValue = await ProcessedTransaction.sum('transactionValue.totalPrice')
-        salesRow.averageEthValue = await ProcessedTransaction.avg('transactionValue.totalPrice')
+        const [usdValueResults, metadata2] = await s.query(`
+                select 
+                   COUNT(_id) as events, 
+                   SUM(JSON_EXTRACT(transactionValue, '$.usdValue')) as usdValue, 
+                   AVG(JSON_EXTRACT(transactionValue, '$.usdValue')) as averageUsdValue 
+                FROM 'processed-transaction' t  
+                WHERE 
+                JSON_EXTRACT(transactionValue, '$.usdValue') > 0 AND
+                t.timestamp > :timestamp        
+        `, {
+            replacements: { timestamp: timestamp }
+        })
 
 
-        salesRow.usdValue = await ProcessedTransaction.sum('transactionValue.usdValue')
-        salesRow.averageUsdValue = await ProcessedTransaction.avg('transactionValue.usdValue')
+        if (totalPriceResults?.length > 0) {
+            salesRow.ethValue = totalPriceResults[0].ethValue
+            salesRow.averageEthValue = totalPriceResults[0].averageEthValue
+            salesRow.events = totalPriceResults[0].events
+        }
 
-        salesRow.events = events
 
+        if (usdValueResults?.length > 0) {
+            salesRow.usdValue = usdValueResults[0].usdValue
+            salesRow.averageUsdValue = usdValueResults[0].averageUsdValue
+        }
 
         return salesRow
 
@@ -100,6 +127,39 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
     }
     getAttributeSalesReport(attributeName: string, attributeValue: string): Promise<SalesReport> {
         throw new Error("Method not implemented.")
+    }
+
+
+
+
+    async generateLargestSales() : Promise<Sale[]> {
+    
+        let s = await this.sequelize()
+
+        const [largestSalesResults, metadata] = await s.query(`
+            select 
+                JSON_EXTRACT(transactionValue, '$.tokenPrice') as tokenPrice,
+                m.key as tokenId,
+                datetime(t.timestamp, 'unixepoch') as date,
+                JSON_EXTRACT(m.value, '$.price') as ethValue,
+                JSON_EXTRACT(m.value, '$.currency') as currency,
+                MAX(JSON_EXTRACT(m.value, '$.usdValue')) as usdValue
+            FROM 'processed-transaction' t, JSON_EACH(tokenPrice) m  
+            WHERE 
+                tokenPrice IS NOT NULL
+            GROUP BY tokenId
+            ORDER BY usdValue desc 
+            LIMIT 15;
+        `)
+
+        //Remove "tokenPrice" field. Just used interally for the query. Maybe can find a better fix.
+        largestSalesResults.forEach( sale => {
+            delete sale.tokenPrice 
+        })
+
+
+        return largestSalesResults
+
     }
 
 }

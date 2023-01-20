@@ -151,29 +151,7 @@
   
                   <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
                     <%~ channelViewModel.channel?.descriptionHTML %>
-
-
-                    <div class="external-links">
-
-                      <% if(channelViewModel.channel?.contractAddress) { %>
-                        <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
-                      <% } %>
-  
-                      <% for (let externalLink of externalLinks) { %>
-                          <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
-                      <% } %>
-                    </div>
-
                   </div>
-  
-  
-                  <ul>
-  
-
-  
-
-  
-                  </ul>
   
   
                   <div class="start-buttons">
@@ -187,6 +165,85 @@
   
               <div class="hidden-on-load">
   
+                <div class="block-title block-title-medium">Overall Stats</div>
+                <div class="block block-strong inset stats">
+  
+                  <div class="row">
+                    <div class="col-100 large-33 margin-bottom">
+                      Last Sale<br />
+                      <strong>0 ETH ($0)</strong>
+                    </div>
+                    <div class="col-100 large-33 margin-bottom">
+                      Number of Sales (Lifetime)<br />
+                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
+                    </div>
+                    <div class="col-100 large-33 margin-bottom">
+                      Total Value of All Sales (Lifetime)<br />
+                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)})</strong>
+                    </div>
+                  </div>
+  
+                  <div class="row margin-top">
+                    <div class="col-100 large-33 margin-bottom">
+                      Value of Sales (24 Hours)<br />
+                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.dayTotals?.ethValue ? salesReport?.dayTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.dayTotals?.usdValue ? salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
+                    </div>
+                    <div class="col-100 large-33 margin-bottom">
+                      Value of Sales (Month)<br />
+                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.monthTotals?.ethValue ? salesReport?.monthTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.monthTotals?.usdValue ? salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
+                    </div>
+                    <div class="col-100 large-33 margin-bottom">
+                      Value of Sales (Year)<br />
+                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.yearTotals?.ethValue ? salesReport?.yearTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.yearTotals?.usdValue ? salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
+                    </div>
+                  </div>
+  
+                  <div class="row margin-top">
+                    <div class="col-100 large-50">
+                      <a class="button button-outline" href="${link('leaderboard')}">Top Owners</a>
+                    </div>
+                    <div class="col-100 large-50">
+                      <a class="button button-outline" href="${link('attributes')}">All Attributes</a>
+                    </div>
+                  </div>
+
+                </div>
+
+
+                ${largestSales?.length > 0 ? $h`
+                  <div class="block-title block-title-medium">Largest Sales</div>
+                  <div class="block block-strong inset largest-sales">
+                    
+                    <div class="row">
+                      ${largestSales?.map( (sale, index) => $h`
+                        <div class="col-50 large-20 margin-bottom">
+
+                          <div class="rank">#${index+1}</div>
+
+                          <div class="square">
+                            <img src="${link(`backup/export/images/${sale.item.coverImageId}.${sale.item.coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.item.tokenId}" height="125" width="125"/>
+                          </div>
+
+                          <div class="sale-info margin-top">
+                            <a href="${link(`t/${sale.item.tokenId}`)}" class="item-link">${sale.item.title}</a><br />
+                            ${new Intl.NumberFormat('en-US').format(sale.sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.sale.usdValue, 2)})
+                            <div class="date">${moment(sale.sale.date).format('LL')}</div>
+
+
+                          </div>
+
+                        </div>
+                      `)}
+                    </div>
+
+                  </div>
+                ` : $h` `}
+
+
+
+
+
+
                 ${transactionsViewModel?.transactions?.length > 0 ? $h`
   
                   <div class="block-title block-title-medium">
@@ -213,23 +270,97 @@
   
   
               </div>
-  
               
               <div class="hide-on-pageinit">
   
                 <div class="card skeleton-text">
-                    <div class="card-header">Activity</div>
+                  <div class="card-header">Overall Stats</div>
+                  <div class="card-content card-content-padding data-table">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                  </div>
+
+                </div>
+
+
+                <div class="card skeleton-text">
+                    <div class="card-header">Recent Activity</div>
                     <div class="card-content card-content-padding data-table">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                         lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
                     </div>
   
-                  </div>
+                </div>
   
               </div>
   
-  <!-- 
-              <div class="card">
+              <div class="block-title block-title-medium">Links</div>
+
+              <div class="block block-strong inset external-links">
+
+                <% 
+                  if (marketplaces?.length > 0) {
+                %>
+                  <p>
+
+                    <label>Marketplaces</label>
+
+                    <% 
+                    for (let marketplace of marketplaces) { 
+                    %>  
+                      <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>    
+                    <%
+                    }
+                    %>
+                    
+                  </p>
+                <%
+                  }
+                %>
+
+                
+
+
+                <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
+
+                  <p>
+
+                    <label>Links</label>
+
+                    <% if(channelViewModel.channel?.contractAddress) { %>
+                      <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                    <% } %>
+
+                    <% for (let externalLink of externalLinks) { %>
+                        <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                    <% } %>
+
+                  </p>
+
+
+
+                <% } %>
+
+                  <p>
+                    <label>Tools</label>
+
+                    <a href="<%= link(`large/index.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
+                      Fork
+                    </a>
+
+                    <a href="<%= link(`large/index.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
+                      Your projects
+                    </a>
+
+
+                  </p>
+
+
+
+              </div>
+
+
+              <!-- <div class="card">
                 <div class="card-header">Explore</div>
                 <div class="card-content">
                   
@@ -264,8 +395,8 @@
   
                 </div>
                 <div class="card-footer"><a href="<%= link('explore.html') %>" class="link">Explore more</a></div>
-              </div> -->
-  
+              </div> 
+   -->
   
               <% 
                 if (channelViewModel.staticPagesViewModel.index?.length > 0) {
@@ -286,47 +417,26 @@
   
   
 
-  
-              <div class="block-title block-title-medium">Links</div>
-              <div class="list links-list inset">   
-                <ul>
-              
               <%
-                  for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+              if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
               %>
-                    <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
-              <%
-                }
+                <div class="block-title block-title-medium">Links</div>
+                <div class="list links-list inset">   
+                  <ul>
                 
-              %>
-                  <li><a href="<%= link(`attributes.html`) %>">Attribute Report</a></li>
-  
-                </ul>
-              </div>
-  
-  
-              <% 
-                if (marketplaces?.length > 0) {
-              %>
-              <div class="block-title block-title-medium">Marketplaces</div>
-  
-              <div class="list simple-list inset">
-                <ul>
-                
-                  <% 
-                    for (let marketplace of marketplaces) { 
-                  %>  
-                    <li><a href="<%= marketplaceLink(marketplace) %>" class="external"><%= marketplace.name %></a></li>     
-                  <%
+                <%
+                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                %>
+                      <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
+                <%
                     }
-                  %>
-  
-                </ul>
-              </div>
+                %> 
+                  </ul>
+                </div>
               <%
-                }
-              %>
-  
+              }
+              %> 
+
   
               <% if (showMintPage) { %>
                 <mint-info
@@ -335,23 +445,7 @@
               <% } %>
   
   
-              <div class="block-title block-title-medium">Fork Collection</div>
-              <div class="list links-list inset">   
-                <ul>
-                    <li>
-                      <a href="<%= link(`large/index.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
-                        Fork
-                      </a>
-                    </li>
-                    <li>
-                      <a href="<%= link(`large/index.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external">
-                        Your projects
-                      </a>
-                    </li>
-  
-  
-                </ul>
-              </div>
+
 
 
               <% if (channelViewModel?.channel.licenseHTML?.length > 13) { %>
@@ -390,6 +484,8 @@
 
 
             let transactionsViewModel 
+            let salesReport
+            let largestSales
 
             let loading = true
 
@@ -400,6 +496,7 @@
             const link = (href) => {
               return baseURI + href
             }   
+
 
 
             const loadActivity = async () => {
@@ -413,6 +510,16 @@
                 //Last updated won't be right because this only gets written when it actually changes.
                 let latest = await transactionWebService.getLatest()
                 transactionsViewModel.lastUpdated = latest.lastUpdated
+
+                await $update()
+
+                salesReport = await transactionWebService.getSalesReport()
+
+                await $update()
+
+                largestSales = await transactionWebService.getLargestSales()
+
+                console.log(largestSales)
 
               } catch(ex) { console.log(ex) }
 

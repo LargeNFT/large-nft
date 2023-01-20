@@ -1,4 +1,4 @@
-import { ProcessedTransaction, SalesReport } from "../dto/processed-transaction.js"
+import { ProcessedTransaction, Sale, SalesReport } from "../dto/processed-transaction.js"
 
 
 interface ProcessedTransactionRepository {
@@ -7,79 +7,15 @@ interface ProcessedTransactionRepository {
     putAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void>
     list(limit: number, skip: number): Promise<ProcessedTransaction[]> 
 
-    getSalesReport() : Promise<SalesReport>
+    generateSalesReport() : Promise<SalesReport>
     getAddressSalesReport(address:string) : Promise<SalesReport>
     getTokenSalesReport(tokenId:number) : Promise<SalesReport>
     getAttributeSalesReport(attributeName:string, attributeValue:string) : Promise<SalesReport>
 
+    generateLargestSales() : Promise<Sale[]>
+
+
 }
-
-// let changesets:Changeset[] = [
-//     {
-//         id: '0',
-//         changeset: async (db) => {
-
-//             await db.createIndex({
-//                 index: {
-//                     fields: ['blockNumber', 'transactionIndex'],
-//                 }
-//             })
-
-//             await db.createIndex({
-//                 index: {
-//                     fields: ['timestamp']
-//                 }
-//             })
-           
-//         }
-//     },
-
-//     // {
-//     //     id: '1',
-//     //     changeset: async (db) => {
-
-//     //         await db.put({
-//     //             _id: '_design/usd_value',
-//     //             views: {
-//     //                 usd_value: {
-//     //                     map: function (doc) {
-//     //                         if (doc.transactionValue?.usdValue > 0) {
-//     //                             //@ts-ignore
-//     //                             emit(doc._id, doc.transactionValue?.usdValue)
-//     //                         }
-
-
-
-//     //                     }.toString(),
-//     //                     reduce: "_stats"
-//     //                 }
-//     //             }
-//     //         })
-
-//     //         await db.put({
-//     //             _id: '_design/eth_value',
-//     //             views: {
-//     //                 eth_value: {
-//     //                     map: function (doc) {
-                            
-//     //                         if (doc.transactionValue?.totalPrice > 0) {
-//     //                             //@ts-ignore
-//     //                             emit(doc._id, doc.transactionValue?.totalPrice)
-//     //                         }
-
-//     //                     }.toString(),
-//     //                     reduce: "_stats"
-//     //                 }
-//     //             }
-//     //         })
-
-
-//     //     }
-
-
-//     // }
-// ]
-
 
 export {
     ProcessedTransactionRepository

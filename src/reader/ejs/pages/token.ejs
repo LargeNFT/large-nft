@@ -228,36 +228,6 @@
             
                                         </div>
                                 
-                                
-                                
-                                        <% 
-                                        if (marketplaces?.length > 0) {
-                                        %>
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    View on Marketplaces
-                                                </div>
-                                                <div class="card-content">
-                                                    <div class="list simple-list">
-                                                        <ul>
-                                                        
-                                                        <% 
-                                                            for (let marketplace of marketplaces) { 
-                                                        %>  
-                                                            <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
-                                                        <%
-                                                            }
-                                                        %>
-                                    
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <%
-                                            }
-                                        %>
-                                
-                                
                                     </div>
                                 
                                     <div class="col-100 large-25 token-sidebar">
@@ -339,8 +309,32 @@
                                         </div>
                                 
                                 
-                                
-                                
+                                        <% 
+                                        if (marketplaces?.length > 0) {
+                                        %>
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    View on Marketplaces
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="list simple-list">
+                                                        <ul>
+                                                        
+                                                        <% 
+                                                            for (let marketplace of marketplaces) { 
+                                                        %>  
+                                                            <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
+                                                        <%
+                                                            }
+                                                        %>
+                                    
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <%
+                                            }
+                                        %>                                
                                 
                                         <% if (!itemViewModel.item.coverImageAsAnimation) { %>
                                             <div class="card">

@@ -12,7 +12,10 @@ class BlockRepositoryNodeImpl implements BlockRepository {
     }
 
     async put(block: Block, options?:any): Promise<Block> {
-        return block.save(options)
+
+        await block.save(options)
+        return block
+
     }
 
     async putAll(blocks:Block[], options?:any) : Promise<void> {

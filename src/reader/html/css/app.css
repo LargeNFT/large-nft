@@ -1094,14 +1094,37 @@ html {
   font-size: 12px;
 }
 
-
-.external-links a {
+.external-links label {
   display: inline-block;
+  width: 130px;
+  font-weight: bold;
 }
 
-.external-links a:not(:first-child):before {
-  content: " | ";
+.external-links a {
+  color: var(--f7-theme-color);
+  display: inline-block;
+  font-weight: normal;
+}
+
+.external-links a:not(:nth-child(2)):before {
+  content: "|";
   margin-right: 5px;
   margin-left: 5px;
+  color: var(--f7-text-color);
+}
 
+.stats .f7-icons {
+  font-size: 19px;
+  font-weight: bold;
+  margin-right: -3px;
+  margin-left: -3px;
+}
+
+.largest-sales .date {
+  color: darkslategray;
+  font-size: 14px;
+}
+
+.largest-sales .rank {
+  font-size: 22px;
 }

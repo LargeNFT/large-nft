@@ -11,7 +11,10 @@ class TokenRepositoryNodeImpl implements TokenRepository {
     }
 
     async put(token: Token, options?:any): Promise<Token> {
-        return token.save(options)
+
+        await token.save(options)
+        return token
+    
     }
   
     async putAll(tokens:Token[], options?:any) : Promise<void> {

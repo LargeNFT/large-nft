@@ -1,5 +1,4 @@
 import { inject, injectable } from "inversify"
-import { validate, ValidationError } from "class-validator"
 
 import { ParamType } from "ethers/lib/utils.js"
 import { ethers } from "ethers"
@@ -7,7 +6,6 @@ import { TransactionRepository } from "../../sync/repository/transaction-reposit
 import { Transaction } from "../../sync/dto/transaction.js"
 import { TransactionValue } from "../../sync/dto/processed-transaction.js"
 import { WalletService } from "../../reader/service/core/wallet-service.js"
-import { ValidationException } from "../../reader/util/validation-exception.js"
 
 
 @injectable()
@@ -324,8 +322,6 @@ class TransactionService {
 
     }
 
-
-
     decodeSale(market:Market, currency:Currency, log, contractAddress) {
 
         const decodedLogData:any = ethers.utils.defaultAbiCoder.decode(market.logDecoder as ParamType[], log.data) as unknown as DecodedOSLogData
@@ -370,7 +366,6 @@ class TransactionService {
         }
     
     }
-
 
     getTokenForLog(transaction:Transaction, index:number, transfer:string, previousTransferTokenId:number) {
         

@@ -46,6 +46,10 @@ class ItemService {
         return this.itemRepository.getRowItemViewModelsByTokenIds(tokenIds)    
     }
 
+    async getRowItemViewModelsByTokenId(tokenId:number) : Promise<RowItemViewModel> {
+        return this.itemRepository.getRowItemViewModelsByTokenId(tokenId)    
+    }
+
 
     async listByTokenId(startTokenId:number, limit:number=10) {
         return this.itemRepository.listByTokenId(startTokenId, limit)

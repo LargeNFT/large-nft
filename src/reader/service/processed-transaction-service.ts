@@ -4,8 +4,9 @@ import { validate, ValidationError } from "class-validator"
 
 import { ItemService } from "../../reader/service/item-service.js"
 import { ValidationException } from "../../reader/util/validation-exception.js"
-import { ProcessedEvent, ProcessedTransaction } from "../dto/processed-transaction.js"
+import { ProcessedEvent, ProcessedTransaction, Sale, SalesReport } from "../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../repository/processed-transaction-repository.js"
+import { RowItemViewModel } from "../dto/item-page.js"
 
 
 @injectable()
@@ -22,7 +23,6 @@ class ProcessedTransactionService {
     async get(_id:string) {
         return this.processedTransactionRepository.get(_id)
     }
-
 
     async listFrom(limit:number, startId:string) : Promise<ProcessedTransaction[]> {
 
@@ -84,7 +84,6 @@ class ProcessedTransactionService {
         return results
 
     }
-
 
     async listByTokenFrom(tokenId:number, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
 
@@ -151,8 +150,6 @@ class ProcessedTransactionService {
 
     }
 
-    
-
     async listByAddressInitiatedFrom(address:string, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
 
         let results:ProcessedTransaction[] = []
@@ -214,9 +211,6 @@ class ProcessedTransactionService {
         return results
 
     }
-
-
-
 
     async listByAddressFrom(address:string, limit:number, startId:string) : Promise<ProcessedTransaction[]> {
 
@@ -280,9 +274,6 @@ class ProcessedTransactionService {
 
     }
 
-
-
-
     private async _getRowItemViewModels(processedEvents) {
 
         let result = {}
@@ -333,11 +324,29 @@ class ProcessedTransactionService {
         return results
     }
 
+    async translateSalesToViewModels(sales:Sale[]) : Promise<SaleViewModel[]> {
+
+        let viewModels:SaleViewModel[] = []
+
+        for (let sale of sales) {
+            viewModels.push({
+                sale: sale,
+                item: await this.itemService.getRowItemViewModelsByTokenId(sale.tokenId)
+            })
+        }
+
+        return viewModels
+    }
 
 
 
+    async getSalesReport(): Promise<SalesReport> {
+        return this.processedTransactionRepository.getSalesReport()
+    }
 
-
+    async getLargestSales() : Promise<Sale[]> {
+        return this.processedTransactionRepository.getLargestSales()
+    }
 
 }
 
@@ -347,7 +356,12 @@ interface TransactionsViewModel {
     rowItemViewModels?:{}
 }
 
+interface SaleViewModel {
+    sale:Sale
+    item:RowItemViewModel
+}
+
 export {
-    ProcessedTransactionService, TransactionsViewModel
+    ProcessedTransactionService, TransactionsViewModel, SaleViewModel
 }
 

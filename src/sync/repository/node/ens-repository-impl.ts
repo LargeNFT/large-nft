@@ -11,7 +11,9 @@ class ENSRepositoryNodeImpl implements ENSRepository {
     }
 
     async put(ens: ENS, options?:any): Promise<ENS> {
-        return ens.save(options)
+
+        await ens.save(options)
+        return ens
     }
   
 }

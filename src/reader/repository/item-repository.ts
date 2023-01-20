@@ -9,6 +9,7 @@ interface ItemRepository {
     getByTokenId(tokenId:number) : Promise<Item>
     getByTokenIds(tokenIds:number[]) : Promise<Item[]>
     getRowItemViewModelsByTokenIds(tokenIds:number[]) : Promise<RowItemViewModel[]>
+    getRowItemViewModelsByTokenId(tokenId:number) : Promise<RowItemViewModel>
     query(query:string) : Promise<Item[]>
     all() : Promise<Item[]>
     listByTokenId(startTokenId:number, limit:number) : Promise<Item[]> 

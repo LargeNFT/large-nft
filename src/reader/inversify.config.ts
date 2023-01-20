@@ -254,12 +254,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         }
       },
 
-      {
-        path: `${baseURI}attributes.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'attributes.html')
-        }
-      },
+
 
       {
         path: `${baseURI}explore.html`,
@@ -280,6 +275,13 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         path: `${baseURI}leaderboard`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'leaderboard/index.html')
+        }
+      },
+
+      {
+        path: `${baseURI}attributes`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attributes/index.html')
         }
       },
 
@@ -406,9 +408,6 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   })
 
 
-  container.bind('sequelize').toConstantValue(async (baseDir, channelId) => {})
-
-  
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 

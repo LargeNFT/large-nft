@@ -1,12 +1,13 @@
 import axios from "axios"
 import {  inject, injectable } from "inversify"
-import { ProcessedTransaction } from "../../dto/processed-transaction.js"
+import { ProcessedTransaction, Sale, SalesReport } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
 
 @injectable()
 class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionRepository {
+
 
     @inject('baseURI') 
     private baseURI
@@ -29,6 +30,42 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
 
 
     }
+
+    async getSalesReport(): Promise<SalesReport> {
+
+        let salesReport
+    
+        try {
+            //Download it.
+            let result = await axios.get(`${this.baseURI}sync/sales/overall.json`)
+            salesReport = result.data
+
+        } catch(ex) {
+            console.log(ex)
+        }
+
+        return salesReport
+
+
+    }
+
+    async getLargestSales(): Promise<Sale[]> {
+
+        let largestSales
+    
+        try {
+            //Download it.
+            let result = await axios.get(`${this.baseURI}sync/sales/largest.json`)
+            largestSales = result.data
+
+        } catch(ex) {
+            console.log(ex)
+        }
+
+        return largestSales
+    }
+
+
 
 }
 

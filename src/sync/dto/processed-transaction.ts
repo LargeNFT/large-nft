@@ -129,7 +129,16 @@ interface SalesRow {
 
 }
 
+interface Sale {
+    tokenId?:number
+    transactionId?:string
+    ethValue?:number
+    usdValue:number
+    date:string 
+}
+
+
 
 export {
-    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow
+    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow, Sale
 }

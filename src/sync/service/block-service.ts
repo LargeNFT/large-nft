@@ -30,7 +30,6 @@ class BlockService {
             block = await this.blockRepository.get(blockNumber)
         } catch(ex) {}
 
-
         if (!block) {
 
             try {
@@ -40,7 +39,6 @@ class BlockService {
 
                 //Download it.
                 let data = await this.walletService.provider.getBlock(blockNumber)
-
 
                 block.blockNumber = data.blockNumber
                 block.hash = data.hash

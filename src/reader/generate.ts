@@ -256,7 +256,8 @@ let generate = async () => {
     baseViewModel: baseViewModel
   })
 
-  fs.writeFileSync(`${config.publicPath}/attributes.html`, attributesResult)
+  fs.mkdirSync(`${config.publicPath}/attributes`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/attributes/index.html`, attributesResult)
 
   //Explore
   const exploreResult = Eta.render(exploreEjs, {

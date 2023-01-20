@@ -11,7 +11,10 @@ class ContractStateRepositoryNodeImpl implements ContractStateRepository {
     }
 
     async put(contractState:ContractState, options?:any) : Promise<ContractState> {
-        return contractState.save(options)
+
+        await contractState.save(options)
+        return contractState
+
     }
 
 

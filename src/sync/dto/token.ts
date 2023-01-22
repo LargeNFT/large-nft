@@ -1,7 +1,7 @@
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 
-const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index } = require('sequelize-typescript')
 
 @Table({
     tableName: 'token',
@@ -18,11 +18,15 @@ class Token extends Model {
     @Column(DataType.STRING)
     declare _rev?:string 
 
+    @Index
     @Column(DataType.BIGINT)
     declare tokenId?:number
 
-    // @Allow()
-    // latestErcEventId?:string
+    @Column(DataType.JSON)
+    declare attributeSelections?:[{
+        traitType: string
+        value: string
+    }]
 
     @Column(DataType.STRING)
     declare latestTransactionId?:string

@@ -344,8 +344,8 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.getSalesReport()
     }
 
-    async getLargestSales() : Promise<Sale[]> {
-        return this.processedTransactionRepository.getLargestSales()
+    async getLargestSales(limit:number) : Promise<Sale[]> {
+        return this.processedTransactionRepository.getLargestSales(limit)
     }
 
 }

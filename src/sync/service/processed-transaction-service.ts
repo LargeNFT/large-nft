@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 
 import { ProcessedTransactionRepository } from "../../sync/repository/processed-transaction-repository.js"
-import { ProcessedEvent, ProcessedTransaction, Sale, SalesReport } from "../../sync/dto/processed-transaction.js"
+import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport } from "../../sync/dto/processed-transaction.js"
 import { ItemService } from "../../reader/service/item-service.js"
 import { RowItemViewModel } from "../../reader/dto/item-page.js"
 
@@ -33,7 +33,6 @@ class ProcessedTransactionService {
      async putAll(transactions:ProcessedTransaction[], options?:any) {
         return this.processedTransactionRepository.putAll(transactions, options)
     }
-
 
     async listFrom(limit:number, startId:string) : Promise<ProcessedTransaction[]> {
 
@@ -156,14 +155,22 @@ class ProcessedTransactionService {
 
 
 
-    async generateSalesReport() : Promise<SalesReport> {
-        return this.processedTransactionRepository.generateSalesReport()
+    async getSalesReport() : Promise<SalesReport> {
+        return this.processedTransactionRepository.getSalesReport()
     }
 
-    async generateLargestSales() : Promise<Sale[]> {
-        return this.processedTransactionRepository.generateLargestSales()
+    async getAttributeSalesReport(): Promise<AttributeSaleReport> {
+        return this.processedTransactionRepository.getAttributeSalesReport()
+
     }
 
+    async getLargestSales(limit:number) : Promise<Sale[]> {
+        return this.processedTransactionRepository.getLargestSales(limit)
+    }
+
+    async getSalesByAttribute(traitType:string, value:string) : Promise<Sale[]> {
+        return this.processedTransactionRepository.getSalesByAttribute(traitType, value)
+    }
 
 }
 

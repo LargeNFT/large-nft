@@ -276,11 +276,9 @@ class TransactionIndexerService {
                             //Grab token info
                             let token:Token = await getToken(ercEvent.namedArgs.tokenId.toString())
         
-        
                             //Look up/create the from address
                             fromOwner = await getTokenOwner(ercEvent.namedArgs.fromAddress)
                             toOwner = await getTokenOwner(ercEvent.namedArgs.toAddress)
-
 
                             if (ercEvent.isTransfer) {
         
@@ -294,7 +292,6 @@ class TransactionIndexerService {
         
                             }
     
-    
                             //Look for previousByTokenId
                             let previousTransactionByToken:ProcessedTransaction = await getPreviousTransaction(token.latestTransactionId, currentTransaction._id)
                             
@@ -303,8 +300,6 @@ class TransactionIndexerService {
                             }
     
                             token.latestTransactionId = currentTransaction._id
-    
-    
     
                             //Update previous/next for transaction initiator
                             let previousTransactionByTransactionInitiator = await getPreviousTransaction(transactionUser.latestTransactionInitiatorId, currentTransaction._id)
@@ -355,7 +350,7 @@ class TransactionIndexerService {
                         console.timeEnd(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`)
                         
                         if (currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId] > 0) {
-                            console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${currentTransaction.transactionValue?.currency} on ${currentTransaction.transactionValue?.market }`)
+                            console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${currentTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(currentTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
                         }
 
 

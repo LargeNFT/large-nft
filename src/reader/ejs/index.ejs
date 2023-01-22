@@ -221,20 +221,30 @@
                           <div class="rank">#${index+1}</div>
 
                           <div class="square">
-                            <img src="${link(`backup/export/images/${sale.item.coverImageId}.${sale.item.coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.item.tokenId}" height="125" width="125"/>
+                            <a href="${link(`t/${sale.item.tokenId}`)}" class="item-link">
+                              <img src="${link(`backup/export/images/${sale.item.coverImageId}.${sale.item.coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.item.tokenId}" height="125" width="125"/>
+                            </a>
                           </div>
 
                           <div class="sale-info margin-top">
                             <a href="${link(`t/${sale.item.tokenId}`)}" class="item-link">${sale.item.title}</a><br />
                             ${new Intl.NumberFormat('en-US').format(sale.sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.sale.usdValue, 2)})
                             <div class="date">${moment(sale.sale.date).format('LL')}</div>
-
-
                           </div>
 
                         </div>
                       `)}
                     </div>
+
+                    <div class="block margin-top margin-bottom">
+                      <div class="row">
+                          <div class="col-50"></div>
+                          <div class="col-50">
+                            <a href="${link('sales')}" class="button button-fill">View Top 100</a>
+                          </div>
+                      </div>
+                    </div>
+
 
                   </div>
                 ` : $h` `}
@@ -517,9 +527,7 @@
 
                 await $update()
 
-                largestSales = await transactionWebService.getLargestSales()
-
-                console.log(largestSales)
+                largestSales = await transactionWebService.getLargestSales(15)
 
               } catch(ex) { console.log(ex) }
 

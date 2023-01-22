@@ -130,7 +130,8 @@ class TransactionService {
         let result:TransactionValue = {
             tokenIds: [],
             totalPrice:0,
-            tokenPrice:{}
+            tokenPrice:{},
+            markets: {}
         }
 
 
@@ -147,7 +148,6 @@ class TransactionService {
         
         const currency = currencies[currencyAddress]
 
-        // Calculate price paid
         let previousTransferTokenIds = []
         let afterTransferCursorIndex
 
@@ -201,6 +201,7 @@ class TransactionService {
                         }
                     }
 
+                    //Grab price info for each token.
                     tokenIds?.forEach( tokenId => {
 
                         let tokenPrice = tokenIds.length == 1 ? saleResult.price : saleResult.price / tokenIds.length
@@ -211,6 +212,22 @@ class TransactionService {
                             usdValue: this.getUSDValue(currency, tokenPrice, ethUSDPrice)
                         } 
                     })
+
+                    //Grab/add info for market.
+                    if (!result.markets[market.name]) {
+                        result.markets[market.name] = {
+                            currencies: {}
+                        }
+                    }
+
+                    let existingMarketPrice = result.markets[market.name].currencies[currency.name]?.price ? result.markets[market.name].currencies[currency.name].price : 0
+                    let existingMarketUsdValue = result.markets[market.name].currencies[currency.name]?.usdValue ? result.markets[market.name].currencies[currency.name].usdValue : 0
+
+                    result.markets[market.name].currencies[currency.name] = {
+                        price: existingMarketPrice + saleResult.price,
+                        usdValue: existingMarketUsdValue + this.getUSDValue(currency, saleResult.price, ethUSDPrice)
+                    }
+
                 }
 
             }
@@ -218,7 +235,8 @@ class TransactionService {
 
         result.totalPrice = parseFloat(result.totalPrice.toFixed(10))
         result.currency = currency.name
-        result.market = aggregators[recipient].name
+        result.aggregator = aggregators[recipient].name
+        result.usdValue = this.getUSDValue(currency, result.totalPrice, ethUSDPrice)
 
         return result
 
@@ -227,10 +245,12 @@ class TransactionService {
     }
 
     processMarketplaceTransaction(market:Market, transaction:Transaction, recipient:string, contractAddress:string, ethUSDPrice:number) : TransactionValue {
+
         let result:TransactionValue = {
             tokenIds: [],
             totalPrice:0,
-            tokenPrice:{}
+            tokenPrice:{},
+            markets: {}
         }
 
         // default to eth, see `constants.ts` for other supported currencies
@@ -315,7 +335,15 @@ class TransactionService {
         result.totalPrice = parseFloat(result.totalPrice.toFixed(10))
         result.currency = currency.name
         result.usdValue = this.getUSDValue(currency, result.totalPrice, ethUSDPrice)
-        result.market = market.name
+        
+        result.markets[market.name] = {
+            currencies: {}
+        }
+
+        result.markets[market.name].currencies[currency.name] = {
+            price: parseFloat(result.totalPrice.toFixed(10)),
+            usdValue: this.getUSDValue(currency, result.totalPrice, ethUSDPrice)
+        }
 
         return result
 

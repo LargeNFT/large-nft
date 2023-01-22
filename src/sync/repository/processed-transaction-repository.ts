@@ -1,4 +1,4 @@
-import { ProcessedTransaction, Sale, SalesReport } from "../dto/processed-transaction.js"
+import { AttributeSaleReport, ProcessedTransaction, Sale, SalesReport } from "../dto/processed-transaction.js"
 
 
 interface ProcessedTransactionRepository {
@@ -7,13 +7,13 @@ interface ProcessedTransactionRepository {
     putAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void>
     list(limit: number, skip: number): Promise<ProcessedTransaction[]> 
 
-    generateSalesReport() : Promise<SalesReport>
+    getSalesReport() : Promise<SalesReport>
     getAddressSalesReport(address:string) : Promise<SalesReport>
     getTokenSalesReport(tokenId:number) : Promise<SalesReport>
-    getAttributeSalesReport(attributeName:string, attributeValue:string) : Promise<SalesReport>
+    getAttributeSalesReport() : Promise<AttributeSaleReport>
 
-    generateLargestSales() : Promise<Sale[]>
-
+    getLargestSales(limit:number) : Promise<Sale[]>
+    getSalesByAttribute(traitType:string, value:string) : Promise<Sale[]>
 
 }
 

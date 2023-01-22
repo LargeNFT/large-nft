@@ -208,9 +208,9 @@ class TransactionWebService {
         return this.processedTransactionService.getSalesReport()
     }
 
-    async getLargestSales(): Promise<SaleViewModel[]> {
+    async getLargestSales(limit:number): Promise<SaleViewModel[]> {
 
-        let sales = await  this.processedTransactionService.getLargestSales()
+        let sales = await  this.processedTransactionService.getLargestSales(limit)
 
         return this.processedTransactionService.translateSalesToViewModels(sales)
 

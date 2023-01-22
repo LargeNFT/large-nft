@@ -1,8 +1,7 @@
 import { inject, injectable } from "inversify"
-import { validate, ValidationError } from "class-validator"
 import { TokenRepository } from "../../sync/repository/token-repository.js"
 import { Token } from "../../sync/dto/token.js"
-import { ValidationException } from "../../reader/util/validation-exception.js"
+import { ItemService } from "../../reader/service/item-service.js"
 
 
 
@@ -12,6 +11,9 @@ class TokenService {
 
     @inject("TokenRepository")
     private tokenRepository:TokenRepository
+
+    @inject("ItemService")
+    private itemService:ItemService
 
     constructor() {}
 
@@ -32,6 +34,12 @@ class TokenService {
             token = new Token()
             token._id = _id
             token.tokenId = _id
+
+            //Look up attributes from item
+            let item = await this.itemService.getByTokenId(token._id)
+
+            token.attributeSelections = item.attributeSelections
+
         }
 
         return token

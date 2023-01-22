@@ -34,6 +34,8 @@ import userActivityEjs from './ejs/pages/user-activity.ejs'
 import transactionEjs from './ejs/pages/transaction.ejs'
 
 import leaderboardEjs from './ejs/pages/leaderboard.ejs'
+import largestSalesEjs from './ejs/pages/sales.ejs'
+
 
 import { GenerateService, GenerateViewModel } from "./service/core/generate-service.js"
 import { ProcessConfig } from "./util/process-config.js"
@@ -186,28 +188,14 @@ let generate = async () => {
 
   //Read app.html and index.html from Large and update the paths.
   let indexBuffer = fs.readFileSync(`${config.publicPath}/large/index.html`)
-  // let appBuffer = fs.readFileSync(`${config.publicPath}/large/admin/app.html`)
 
   let indexContents = indexBuffer.toString()
-  // let appContents = appBuffer.toString()
 
   indexContents = indexContents.replace("../admin/app/js/runtime.admin.js", `${config.baseURL}large/admin/app/js/runtime.admin.js`)
   indexContents = indexContents.replace("../admin/app/js/vendors.admin.js", `${config.baseURL}large/admin/app/js/vendors.admin.js`)
   indexContents = indexContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
 
-  // appContents = appContents.replace("../admin/app/js/runtime.admin.js", `${config.baseURL}large/admin/app/js/runtime.admin.js`)
-  // appContents = appContents.replace("../admin/app/js/vendors.admin.js", `${config.baseURL}large/admin/app/js/vendors.admin.js`)
-  // appContents = appContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
-
-
   fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
-  // fs.writeFileSync(`${config.publicPath}/large/admin/app.html`, appContents)
-
-
-  // <script defer="defer" src="../admin/app/js/runtime.admin.js"></script>
-  // <script defer="defer" src="../admin/app/js/vendors.admin.js"></script>
-  // <script defer="defer" src="../admin/app/js/main.admin.js"></script>
-
 
 
 
@@ -286,6 +274,16 @@ let generate = async () => {
 
   fs.mkdirSync(`${config.publicPath}/leaderboard`, { recursive: true })
   fs.writeFileSync(`${config.publicPath}/leaderboard/index.html`, leaderboardResult)
+
+
+  //Largest Sales page
+  const largestSalesResult = Eta.render(largestSalesEjs, {
+    title: channelViewModel.channel.title,
+    baseViewModel: baseViewModel
+  })
+
+  fs.mkdirSync(`${config.publicPath}/sales`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/sales/index.html`, largestSalesResult)
 
 
 

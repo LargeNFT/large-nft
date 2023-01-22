@@ -38,6 +38,7 @@ import { TokenOwnerService } from "./service/token-owner-service.js"
 import { ProcessedTransactionService } from "./service/processed-transaction-service.js"
 import { ContractState } from "./dto/contract-state.js"
 import { Token } from "./dto/token.js"
+import { SchemaService } from "../reader/service/core/schema-service.js"
 
 
 
@@ -86,6 +87,10 @@ let sync = async () => {
 
   container = await getMainContainer(command)
 
+  //Init item repo
+  let schemaService:SchemaService = container.get("SchemaService")
+
+  await schemaService.load(["items"])
 
   //Verify we have an ethereum connection
   let walletService:WalletService = container.get("WalletService")
@@ -155,24 +160,43 @@ let sync = async () => {
         indexResult = await transactionIndexerService.index()
 
         if (Object.keys(indexResult.processedTransactionsToUpdate).length > 0) {
+         
           await writeResultsToDisk(indexResult)
+
+          //Writing sales reports
+          if (!fs.existsSync(`${config.publicPath}/sync/sales`)) {
+            fs.mkdirSync(`${config.publicPath}/sync/sales`, { recursive: true })
+          }
+
+          console.time(`Generating sales report...`)
+          let salesReport = await processedTransactionService.getSalesReport()
+          fs.writeFileSync(`${config.publicPath}/sync/sales/overall.json`, Buffer.from(JSON.stringify(salesReport)))
+          console.timeEnd(`Generating sales report...`)
+
+
+          //Largest sales
+          console.time(`Generating largest sales...`)
+          let largestSales15 = await processedTransactionService.getLargestSales(15)
+          fs.writeFileSync(`${config.publicPath}/sync/sales/largest-15.json`, Buffer.from(JSON.stringify(largestSales15)))
+
+          let largestSales100 = await processedTransactionService.getLargestSales(100)
+          fs.writeFileSync(`${config.publicPath}/sync/sales/largest-100.json`, Buffer.from(JSON.stringify(largestSales100)))
+
+          console.timeEnd(`Generating largest sales...`)
+
+
+          //Sales by attribute
+          console.time(`Generating attribute stats...`)
+          let attributeSalesReport = await processedTransactionService.getAttributeSalesReport()
+          console.timeEnd(`Generating attribute stats...`)
+
+          // console.log(attributeSalesReport)
+
         } else {
           console.log('No results to process.')
         }
 
 
-        //Writing sales reports
-        if (!fs.existsSync(`${config.publicPath}/sync/sales`)) {
-          fs.mkdirSync(`${config.publicPath}/sync/sales`, { recursive: true })
-        }
-
-        let salesReport = await processedTransactionService.generateSalesReport()
-        fs.writeFileSync(`${config.publicPath}/sync/sales/overall.json`, Buffer.from(JSON.stringify(salesReport)))
-
-
-        //Largest sales
-        let largestSales = await processedTransactionService.generateLargestSales()
-        fs.writeFileSync(`${config.publicPath}/sync/sales/largest.json`, Buffer.from(JSON.stringify(largestSales)))
 
 
         //Save latest transaction
@@ -184,14 +208,9 @@ let sync = async () => {
           lastUpdated: new Date().toJSON()
         })))
 
-
-
         //Save contract state
         console.log(`Saving contract state`)
         await contractStateService.put(transactionIndexerService.contractState)
-
-
-
 
 
         //If we're current then wait. If not then just do it again.
@@ -238,7 +257,7 @@ let sync = async () => {
 
       
       //Write transactions to file
-      console.log(`Writing ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to disk`)
+      console.time(`Writing ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to disk.`)
       for (let _id of Object.keys(indexResult.processedTransactionsToUpdate)) {
 
         let clonedTransaction = JSON.parse(JSON.stringify(indexResult.processedTransactionsToUpdate[_id]))
@@ -248,9 +267,11 @@ let sync = async () => {
         fs.writeFileSync(`${config.publicPath}/sync/transactions/${clonedTransaction._id}.json`, Buffer.from(JSON.stringify(clonedTransaction)))
 
       }
+      console.timeEnd(`Writing ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to disk.`)
 
 
-      console.log(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk`)
+
+      console.time(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
 
       //Write changed tokens to file
       for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
@@ -263,14 +284,15 @@ let sync = async () => {
 
         let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(tokenTransactions, new Date().toJSON())
 
-
-
         fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}-activity.json`, Buffer.from(JSON.stringify(transactionsViewModel)))
 
       }
+      console.timeEnd(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
+
+
 
       //Write changed owners to file
-      console.log(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk`)
+      console.time(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
       for (let owner of Object.keys(indexResult.ownersToUpdate)) {
 
         //Write full profile
@@ -282,12 +304,16 @@ let sync = async () => {
         })))
 
       }
+      console.timeEnd(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
+
 
 
       //Get list for home page and save it.
+      console.time(`Writing recent activity to disk.`)
       let mostRecent:ProcessedTransaction = await processedTransactionService.getLatest()
       let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, mostRecent._id), new Date().toJSON())
       fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
+      console.timeEnd(`Writing recent activity to disk.`)
 
 
 
@@ -300,12 +326,14 @@ let sync = async () => {
       let pageCount = 0
       await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
 
-      console.log(`Writing ${tokenOwnerPages.length} token owner pages to disk`)
+      console.time(`Writing ${tokenOwnerPages.length} token owner pages to disk.`)
       for (let tokenOwnerPage of tokenOwnerPages) {
         // console.log(`Writing token owner page: ${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`)
         await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
         pageCount++
       }
+      console.timeEnd(`Writing ${tokenOwnerPages.length} token owner pages to disk.`)
+
 
       console.log(`Writing totals to disk`)
       await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/total.json`, JSON.stringify({
@@ -328,7 +356,7 @@ let sync = async () => {
 
     await transactionIndexerService.init(channelContract)
 
-    let transaction:Transaction = await transactionService.getOrDownload("0x1c61150f095cf687bb6fe07eb0df25949d94da4951444214470449a071adc935")
+    let transaction:Transaction = await transactionService.getOrDownload("0x82b5401dcc50b5ad4eb659112bf2eae8cbc3fd1274eb246e83927e64c8b38ad0")
 
     let ethUSDPrice:number = await blockService.getETHUSDAtBlock(transaction.blockNumber)
 

@@ -18,12 +18,6 @@ class TokenRepositoryNodeImpl implements TokenRepository {
     }
   
     async putAll(tokens:Token[], options?:any) : Promise<void> {
-
-        // let toInsert = tokens.filter(t => !t.dateCreated)
-        // let toUpdate = tokens.filter(t => t.dateCreated)
-
-        // await Token.bulkCreate(toInsert)
-
         for (let token of tokens) {
             await this.put(token, options)
         }

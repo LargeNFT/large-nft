@@ -49,13 +49,13 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
 
     }
 
-    async getLargestSales(): Promise<Sale[]> {
+    async getLargestSales(limit:number): Promise<Sale[]> {
 
         let largestSales
     
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/sales/largest.json`)
+            let result = await axios.get(`${this.baseURI}sync/sales/largest-${limit}.json`)
             largestSales = result.data
 
         } catch(ex) {

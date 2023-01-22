@@ -33,6 +33,7 @@ class ProcessedTransaction extends Model {
     @Column(DataType.STRING)
     declare from?:string
 
+    @Index
     @Column(DataType.BIGINT)
     declare timestamp?:number
 
@@ -86,12 +87,25 @@ interface TokenPrice {
     }
 }
 
+interface Markets {
+    [market: string]: {
+        currencies: {
+            [currency:string] : {
+                price?:number
+                usdValue?:number
+            }
+        }
+    }
+}
+
+
 interface TransactionValue {
     totalPrice?: number
     usdValue?:number
     currency?: string
     tokenPrice?: TokenPrice,
-    market?: string
+    markets?: Markets
+    aggregator?:string
     tokenIds?: number[]
 }
 
@@ -117,6 +131,22 @@ interface SalesReport {
 
 }
 
+interface AttributeSaleReport {
+
+    totals?:AttributeSalesRow[]
+
+    yearTotals?:AttributeSalesRow[]
+    monthTotals?:AttributeSalesRow[]
+    weekTotals?:AttributeSalesRow[]
+    dayTotals?:AttributeSalesRow[]
+
+}
+
+interface AttributeSalesRow extends SalesRow {
+    traitType?:string
+    value?:string 
+}
+
 interface SalesRow {
     
     events?:number
@@ -140,5 +170,5 @@ interface Sale {
 
 
 export {
-    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow, Sale
+    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport
 }

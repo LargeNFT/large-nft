@@ -4,7 +4,7 @@ import { ProcessedTransaction, Sale, SalesReport } from "../dto/processed-transa
 interface ProcessedTransactionRepository {
     get(_id:string): Promise<ProcessedTransaction> 
     getSalesReport(): Promise<SalesReport> 
-    getLargestSales() : Promise<Sale[]>
+    getLargestSales(limit:number) : Promise<Sale[]>
 }
 
 

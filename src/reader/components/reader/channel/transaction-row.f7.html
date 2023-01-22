@@ -50,6 +50,8 @@
 
 <script>
 
+
+
   // create local component
   const Transfer = (props, { $h }) => {
 
@@ -93,8 +95,9 @@
               <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Mint</a>
             ` : $h`
 
-              ${transaction.transactionValue?.market ? $h`
-                <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Sold</a> on ${transaction.transactionValue?.market}
+              ${Object.keys(transaction.transactionValue?.markets).length > 0 ? $h`
+                <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Sold</a> on ${Array.from(Object.keys(transaction.transactionValue?.markets).map( k => k)).join(", ")} ${transaction.transactionValue?.aggregator ? ' / ' + transaction.transactionValue.aggregator : ''}
+
               ` : $h`
                 <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a>
               `}
@@ -109,7 +112,7 @@
             <strong>${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.price.toFixed(5)}</strong> ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.currency} 
             ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.usdValue ? $h`
               <br />
-              <span class="dollar-value">$${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.usdValue?.toFixed(2)}</span>
+              <span class="dollar-value">${transactionWebService.abbreviateDollars(transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.usdValue, 2)}</span>
             ` : $h` `}
 
 
@@ -129,7 +132,6 @@
         </tr>
     `;
   }
-
 
   const Approval = (props, { $h }) => {
 
@@ -185,8 +187,6 @@
     `;
   }
 
-
-
   const ApprovalForAll = (props, { $h }) => {
 
     let walletService = globalThis.container.get("WalletService")
@@ -223,7 +223,6 @@
         </tr>
     `;
   }
-
 
 
   export default (props, { $, $on, $f7, $update }) => {

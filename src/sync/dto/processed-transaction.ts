@@ -2,13 +2,12 @@
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 
-const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index } = require('sequelize-typescript')
-
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, ForeignKey, BelongsTo, AllowNull } = require('sequelize-typescript')
 
 import { ERCEvent } from './erc-event.js'
 
 @Table({
-    tableName: 'processed-transaction',
+    tableName: 'processed_transaction',
     createdAt: 'dateCreated',
     updatedAt: 'lastUpdated',
     paranoid: false,
@@ -30,12 +29,19 @@ class ProcessedTransaction extends Model {
     @Column(DataType.BIGINT)
     declare transactionIndex?:number
 
+    @Index('transactionFrom-pt') 
     @Column(DataType.STRING)
-    declare from?:string
+    declare transactionFrom?:string
+
+    @Column(DataType.JSON)
+    declare tokenTraders?:string[]
 
     @Index
     @Column(DataType.BIGINT)
     declare timestamp?:number
+
+    @Column(DataType.JSON)
+    declare tokenIds?:number[]
 
     @Column(DataType.JSON)
     declare ercEvents?:ERCEvent[]
@@ -79,12 +85,133 @@ class ProcessedTransaction extends Model {
 }
 
 
+
+
+
+
+
+
+
+interface ProcessedEvent  {
+    blockNumber?:number
+    processedTransactionId?:string 
+    isMint?:boolean
+    isBurn?:boolean
+    tokenId?:number
+    price?:number
+    currency?:string
+    usdValue?:number
+    event?:string 
+    
+    fromAddress?:any
+    toAddress?:any 
+
+
+    lastUpdated?:Date 
+    dateCreated?:Date
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// @Table({
+//     tableName: 'processed_event',
+//     createdAt: 'dateCreated',
+//     updatedAt: 'lastUpdated',
+//     paranoid: false,
+// })
+// class ProcessedEvent extends Model {
+    
+//     @PrimaryKey
+//     @Column(DataType.STRING)
+//     declare _id?:string
+
+//     @Column(DataType.STRING)
+//     declare _rev?:string 
+
+//     // @Index('block-number-pe') 
+//     @Column(DataType.BIGINT)
+//     declare blockNumber?:number
+
+//     @ForeignKey(() => ProcessedTransaction)
+//     @AllowNull(false)	
+//     @Column(DataType.STRING)
+//     declare processedTransactionId?:string 
+
+//     @Column(DataType.BOOLEAN)
+//     declare isMint?:boolean
+
+//     @Column(DataType.BOOLEAN)
+//     declare isBurn?:boolean
+
+//     @Column(DataType.BIGINT)
+//     declare tokenId?:number
+
+//     @Column(DataType.DECIMAL)
+//     declare price?:number
+
+//     @Column(DataType.STRING)
+//     declare currency?:string
+
+//     @Column(DataType.DECIMAL)
+//     declare usdValue?:number
+
+//     @Column(DataType.STRING)
+//     declare event?:string 
+
+//     @Column(DataType.JSON)
+//     declare namedArgs?:any
+
+//     @Column(DataType.DATE)
+//     declare lastUpdated?:Date 
+    
+//     @Column(DataType.DATE)
+//     declare dateCreated?:Date
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 interface TokenPrice {
-    [tokenId: string]: {
-        price?:number
-        currency?:string
-        usdValue?:number
-    }
+    price?:number
+    currency?:string
+    usdValue?:number
+}
+
+interface TokenPrices {
+    [tokenId: string]: TokenPrice
 }
 
 interface Markets {
@@ -103,21 +230,12 @@ interface TransactionValue {
     totalPrice?: number
     usdValue?:number
     currency?: string
-    tokenPrice?: TokenPrice,
+    tokenPrice?: TokenPrices,
     markets?: Markets
     aggregator?:string
     tokenIds?: number[]
 }
 
-
-interface ProcessedEvent {
-    isMint?:boolean
-    isBurn?:boolean
-    tokenIds?:number[]
-    event?:string 
-    namedArgs?:any
-    salePrice?:string
-}
 
 
 interface SalesReport {
@@ -157,6 +275,9 @@ interface SalesRow {
     averageEthValue?:number
     averageUsdValue?:number
 
+    owners?:number
+
+
 }
 
 interface Sale {
@@ -170,5 +291,5 @@ interface Sale {
 
 
 export {
-    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport
+    ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport, TokenPrice, ProcessedEvent
 }

@@ -30,7 +30,7 @@ import { Transaction } from "./dto/transaction.js"
 let channelId
 
 // import { simpleGit, CleanOptions } from 'simple-git'
-import { ProcessedTransaction } from "./dto/processed-transaction.js"
+import { ProcessedEvent, ProcessedTransaction } from "./dto/processed-transaction.js"
 import { BlockService } from "./service/block-service.js"
 import { TransactionService } from "./service/transaction-service.js"
 import { ContractStateService } from "./service/contract-state-service.js"
@@ -106,13 +106,13 @@ let sync = async () => {
   let channelViewModel = await channelWebService.get(0)
 
   channelId = channelViewModel.channel._id
-
   //Init database
   let sequelizeInit:Function = container.get("sequelize")
   let sequelize = await sequelizeInit(config.baseDir, channelId)
 
   await sequelize.query("PRAGMA busy_timeout=5000;")
   await sequelize.query("PRAGMA journal_mode=WAL;")
+  // await sequelize.query("PRAGMA read_uncommitted=true;")
 
 
   if (config.clear) {
@@ -134,7 +134,6 @@ let sync = async () => {
 
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
   let transactionService:TransactionService = container.get("TransactionService")
-  let contractStateService:ContractStateService = container.get("ContractStateService")
   let blockService:BlockService = container.get("BlockService")
 
   let tokenOwnerService:TokenOwnerService = container.get("TokenOwnerService")
@@ -151,17 +150,26 @@ let sync = async () => {
   //Start the transaction indexer
   async function runTransactionIndexer(){
 
-      await transactionIndexerService.init(channelContract)
+      await sequelize.transaction(async (t1) => {
+        await transactionIndexerService.init(channelContract, { transaction: t1 })
+      })
 
       let indexResult:ERCIndexResult     
 
       try {
 
-        indexResult = await transactionIndexerService.index()
+        await sequelize.transaction(async (t1) => {
+          indexResult = await transactionIndexerService.index({ transaction: t1 })
+        })
+        
 
         if (Object.keys(indexResult.processedTransactionsToUpdate).length > 0) {
          
-          await writeResultsToDisk(indexResult)
+          await sequelize.transaction(async (t1) => {
+            await writeResultsToDisk(indexResult, { transaction: t1 })
+          })
+
+
 
           //Writing sales reports
           if (!fs.existsSync(`${config.publicPath}/sync/sales`)) {
@@ -197,8 +205,6 @@ let sync = async () => {
         }
 
 
-
-
         //Save latest transaction
         let mostRecent:ProcessedTransaction = await processedTransactionService.getLatest()
         console.log(`Updating latest info: ${mostRecent._id} / ${new Date().toJSON()}`)
@@ -208,9 +214,6 @@ let sync = async () => {
           lastUpdated: new Date().toJSON()
         })))
 
-        //Save contract state
-        console.log(`Saving contract state`)
-        await contractStateService.put(transactionIndexerService.contractState)
 
 
         //If we're current then wait. If not then just do it again.
@@ -232,7 +235,7 @@ let sync = async () => {
 
   }
 
-  async function writeResultsToDisk(indexResult:ERCIndexResult) {
+  async function writeResultsToDisk(indexResult:ERCIndexResult, options?:any) {
 
     if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
       fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
@@ -277,10 +280,8 @@ let sync = async () => {
       for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
         fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
 
-        // console.log(`latest: ${indexResult.tokensToUpdate[tokenId].latestTransactionId}`)
-
         //Write tokens transactions to JSON
-        let tokenTransactions = await processedTransactionService.listByTokenFrom(parseInt(tokenId), 1000, indexResult.tokensToUpdate[tokenId].latestTransactionId)
+        let tokenTransactions = await processedTransactionService.listByTokenFrom(parseInt(tokenId), 1000, indexResult.tokensToUpdate[tokenId].latestTransactionId, options)
 
         let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(tokenTransactions, new Date().toJSON())
 
@@ -310,15 +311,15 @@ let sync = async () => {
 
       //Get list for home page and save it.
       console.time(`Writing recent activity to disk.`)
-      let mostRecent:ProcessedTransaction = await processedTransactionService.getLatest()
-      let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, mostRecent._id), new Date().toJSON())
+      let mostRecent:ProcessedTransaction = await processedTransactionService.getLatest(options)
+      let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, mostRecent._id, options), new Date().toJSON())
       fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
       console.timeEnd(`Writing recent activity to disk.`)
 
 
 
       //Generate token owner pages for leaderboard
-      let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0)
+      let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0, options)
 
       let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
 

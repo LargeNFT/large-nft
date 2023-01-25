@@ -76,7 +76,7 @@ import { ProcessedTransactionRepository } from "./repository/processed-transacti
 
 import { Block } from "./dto/block.js";
 import { ContractState } from "./dto/contract-state.js";
-import { ProcessedTransaction } from "./dto/processed-transaction.js";
+import { ProcessedEvent, ProcessedTransaction } from "./dto/processed-transaction.js";
 import { TokenOwner } from "./dto/token-owner.js";
 import { Token } from "./dto/token.js";
 import { Transaction } from "./dto/transaction.js";
@@ -140,6 +140,7 @@ function getMainContainer(command:GetMainContainerCommand) {
       database: channelId,
       dialect: 'sqlite',
       storage: `${baseDir}/sync/data.sqlite`,
+      // transactionType: "IMMEDIATE",
       models: [Block, ContractState, ProcessedTransaction, TokenOwner, Token, Transaction, ENS]
     })
 

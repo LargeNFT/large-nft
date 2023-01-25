@@ -12,8 +12,8 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
         throw new Error("Method not implemented.")
     }
 
-    async get(_id:string): Promise<TokenOwner> {        
-        return TokenOwner.findByPk(_id)
+    async get(_id:string, options?:any): Promise<TokenOwner> {        
+        return TokenOwner.findByPk(_id, options)
     }
 
     async put(tokenOwner:TokenOwner, options?:any) : Promise<TokenOwner> {
@@ -32,7 +32,7 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
     }
 
 
-    async list(limit: number, skip: number): Promise<TokenOwner[]> {
+    async list(limit: number, skip: number, options?:any): Promise<TokenOwner[]> {
 
         return TokenOwner.findAll({
             limit: limit,
@@ -40,7 +40,7 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
             order: [
                 ['count', 'DESC']
             ]
-        })
+        }, options)
 
     }
 

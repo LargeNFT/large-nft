@@ -5,15 +5,14 @@ import { Block } from "../dto/block.js";
 import { BlockService } from "./block-service.js";
 
 import { ERCEventService } from "../../reader/service/erc-event-service.js";
-import { TokenOwnerPageService } from "../../reader/service/token-owner-page-service.js";
-import { ItemWebService } from "../../reader/service/web/item-web-service.js";
+
 import { WalletService } from "../../reader/service/core/wallet-service.js";
 
 
 
 import { ENSService } from "../../sync/service/ens-service.js";
 import { ContractState } from "../dto/contract-state.js";
-import { ProcessedEvent, ProcessedTransaction } from "../dto/processed-transaction.js";
+import { ProcessedEvent, ProcessedTransaction, TokenPrice } from "../dto/processed-transaction.js";
 import { TokenOwner } from "../dto/token-owner.js";
 import { Transaction } from "../dto/transaction.js";
 import { ERCEvent } from "../dto/erc-event.js";
@@ -72,20 +71,21 @@ class TransactionIndexerService {
     BLOCK_CONFIRMATIONS = 12
 
 
-    async init(contract: Contract) {
+    async init(contract: Contract, options?:any) {
+
+        let s = await this.sequelize()
+
 
         console.log(`Starting transaction indexer for ${contract.address}`)
 
         this.contractAddress = ethers.utils.getAddress(contract.address)
 
         //Look up contract state
-        this.contractState = await this._getContractState(this.contractAddress)
+        this.contractState = await this._getContractState(this.contractAddress, options)
 
         //Init provider
         if (!this.walletService.provider) {
             await this.walletService.initProvider()
-
-
         }
 
         //Get the event topics for the filter. 
@@ -96,9 +96,7 @@ class TransactionIndexerService {
 
     }
 
-    async index(): Promise<ERCIndexResult> {
-
-        let s = await this.sequelize()
+    async index(options?:any): Promise<ERCIndexResult> {
 
         let result: ERCIndexResult = {
             processedTransactionsToUpdate: {},
@@ -122,6 +120,7 @@ class TransactionIndexerService {
 
         console.log(`Indexing blocks: ${result.startBlock} to ${result.endBlock}`)
 
+
         try {
 
             const eventsResult:EventsResult = await this.getEvents(result.startBlock, result.endBlock)
@@ -132,57 +131,70 @@ class TransactionIndexerService {
             result.isCurrent = this.blockNumber == result.endBlock
 
             console.log(`Found ${events.length} events up to block ${result.endBlock}`)
-    
-            if (events.length > 0) {
-    
-                let previousTransaction: ProcessedTransaction = await this.processedTransactionService.getLatest()
-                let currentTransaction:ProcessedTransaction
-    
-                let transactionUser: TokenOwner
-                let fromOwner: TokenOwner
-                let toOwner: TokenOwner
 
-                if (previousTransaction) {
-                    result.processedTransactionsToUpdate[previousTransaction._id] = previousTransaction
-                }
+            //Remove transactions/events between start/end block numbers then re-insert
+            await this.processedTransactionService.deleteBetweenBlocks(result.startBlock, result.endBlock, options)
+
+            //Group events by transaction hash
+            let groupedEvents:Map<string,any[]> = this.groupBy(events, event => event.transactionHash)
+
+            let previousTransaction: ProcessedTransaction = await this.processedTransactionService.getLatest(result.startBlock, options)
+
+            if (previousTransaction) {
+                console.log(`Previous transaction: ${previousTransaction?._id}`)
+                result.processedTransactionsToUpdate[previousTransaction._id] = previousTransaction
+            }
+
+            let processedCount =0
+
+
+            if (groupedEvents.size > 0) {
+
+                for (let key of groupedEvents.keys()) {
+
+                    let loadedTransactions = {}
+
+                    let currentTransaction:ProcessedTransaction
+                    let transactionUser: TokenOwner
+
+                    let e = groupedEvents.get(key)
+
     
-                let processedCount = 0
-                
-                
-                for (let event of events) {
-
-                    const t1 = await s.transaction()
-
-                    try {
-
+                    for (let event of e) {
+    
+                        let fromOwner: TokenOwner
+                        let toOwner: TokenOwner
+    
                         console.time(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`)
-
+    
                         let block: Block
                         let transaction:Transaction
-
-
+    
+    
                         //Grab block data
-                        block = await this.blockService.getOrDownload(event.blockNumber, { transaction: t1 })
-                        transaction = await this.transactionService.getOrDownload(event.transactionHash, { transaction: t1 })
-
+                        block = await this.blockService.getOrDownload(event.blockNumber,options)
+                        transaction = await this.transactionService.getOrDownload(event.transactionHash, options)
+    
                         //Look for it locally
                         if (result.processedTransactionsToUpdate[event.transactionHash]) {
                             currentTransaction = result.processedTransactionsToUpdate[event.transactionHash]
                         } else {
-        
+    
                             try {
-                                currentTransaction = await this.processedTransactionService.get(event.transactionHash)
+                                currentTransaction = await this.processedTransactionService.get(event.transactionHash, options)
                             } catch(ex) {}
-
+    
                             if (!currentTransaction) {
                                 currentTransaction = new ProcessedTransaction()
                             }
-
+    
                             currentTransaction._id = transaction.hash    
-                            currentTransaction.from = transaction.from
+                            currentTransaction.transactionFrom = transaction.from
                             currentTransaction.blockNumber = transaction.blockNumber
                             currentTransaction.transactionIndex = transaction.transactionIndex
                             currentTransaction.ercEvents = []
+                            currentTransaction.tokenTraders = []
+                            currentTransaction.tokenIds = []
                             currentTransaction.nextByTokenIds = {}
                             currentTransaction.nextByTokenOwnerId = {}
                             currentTransaction.nextByTransactionInitiatorId = {}
@@ -192,206 +204,217 @@ class TransactionIndexerService {
                             currentTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.utils.getAddress(this.contract.address), block.ethUSDPrice)
                             result.processedTransactionsToUpdate[currentTransaction._id] = currentTransaction
                         }
-        
-
+    
+    
                         if (!block || !currentTransaction) throw new Error("Block and/or transaction not found.")
                         if (event.transactionHash != currentTransaction._id) throw new Error("Wrong transaction found.")
-        
+    
                         //Translate
                         let ercEvent: ERCEvent = await this.ercEventService.translateEventToERCEvent(event)
     
                         currentTransaction.timestamp = block.timestamp
-        
-                        const getTokenOwner = async (ownerAddress) => {
-       
-                            if (!ownerAddress) return
     
-                            if (!result.ownersToUpdate[ownerAddress]) {
-                                let tokenOwner: TokenOwner = await this.tokenOwnerService.getOrCreate(ownerAddress)
-                                result.ownersToUpdate[ownerAddress] = tokenOwner
-                            } 
     
-                            return result.ownersToUpdate[ownerAddress]
-                        }
-    
-                        const getToken = async (tokenId) => {
-        
-                            if (!result.tokensToUpdate[ercEvent.namedArgs.tokenId]) {
-                                result.tokensToUpdate[ercEvent.namedArgs.tokenId] = await this.tokenService.getOrCreate(ercEvent.namedArgs.tokenId.toString())
-                            } 
-        
-                            return result.tokensToUpdate[ercEvent.namedArgs.tokenId]
-    
-                        }
-    
-                        const getPreviousTransaction = async (previousTransactionId:string, currentTransactionId:string) => {
-    
-                            if (!previousTransactionId || previousTransactionId == currentTransactionId) return
-    
-                            if (!result.processedTransactionsToUpdate[previousTransactionId]) {
-                                result.processedTransactionsToUpdate[previousTransactionId] = await this.processedTransactionService.get(previousTransactionId)
-                            }
-
-                            return result.processedTransactionsToUpdate[previousTransactionId]
-    
-                        }
-    
-                        const updatePreviousNextByToken = (tokenId:number, previousT:ProcessedTransaction, currentT:ProcessedTransaction) => {
-    
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousT._id] = previousT
-    
-                            currentT.previousByTokenIds[tokenId] = previousT._id
-                            previousT.nextByTokenIds[tokenId] = currentT._id
-    
-                        }
-    
-                        const updatePreviousNextByTransactionInitiator = (transactionUserId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction) => {
-    
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousT._id] = previousT
-    
-                            currentT.previousByTransactionInitiatorId[transactionUserId] = previousT._id
-                            previousT.nextByTransactionInitiatorId[transactionUserId] = currentT._id
-    
-                        }
-    
-                        const updatePreviousNextByTokenOwner = (tokenOwnerId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction) => {
-    
-                            //Make sure we update it.
-                            result.processedTransactionsToUpdate[previousT._id] = previousT
-    
-                            currentT.previousByTokenOwnerId[tokenOwnerId] = previousT._id
-                            previousT.nextByTokenOwnerId[tokenOwnerId] = currentT._id
-    
-                        }
     
                         //Look up/create the from address
-                        transactionUser = await getTokenOwner(currentTransaction.from)
-
+                        transactionUser = await this._getTokenOwner(currentTransaction.transactionFrom, result, options)
+    
                         transactionUser.lastActive = new Date(currentTransaction.timestamp * 1000).toJSON()
     
                         if (ercEvent.namedArgs.tokenId) {
-        
+    
                             //Grab token info
-                            let token:Token = await getToken(ercEvent.namedArgs.tokenId.toString())
-        
+                            let token:Token = await this._getToken(ercEvent.namedArgs.tokenId.toString(), result)
+    
                             //Look up/create the from address
-                            fromOwner = await getTokenOwner(ercEvent.namedArgs.fromAddress)
-                            toOwner = await getTokenOwner(ercEvent.namedArgs.toAddress)
-
+                            fromOwner = await this._getTokenOwner(ercEvent.namedArgs.fromAddress, result, options)
+                            toOwner = await this._getTokenOwner(ercEvent.namedArgs.toAddress, result, options)
+    
                             if (ercEvent.isTransfer) {
-        
+    
                                 //Update previous owner
                                 if (fromOwner.tokenIds.includes(ercEvent.namedArgs.tokenId)) {
                                     fromOwner.tokenIds = Array.from(fromOwner.tokenIds)?.filter(id => id != ercEvent.namedArgs.tokenId)
                                 }
-        
+    
                                 //Update new owner
                                 toOwner.tokenIds.push(ercEvent.namedArgs.tokenId)
-        
+    
                             }
     
                             //Look for previousByTokenId
-                            let previousTransactionByToken:ProcessedTransaction = await getPreviousTransaction(token.latestTransactionId, currentTransaction._id)
-                            
-                            if (previousTransactionByToken) {
-                                updatePreviousNextByToken(ercEvent.namedArgs.tokenId, previousTransactionByToken, currentTransaction)
-                            }
+                            let previousTransactionByToken:ProcessedTransaction = await this.processedTransactionService.getPreviousByTokenId(token.tokenId, currentTransaction.blockNumber, currentTransaction.transactionIndex, options)
     
+                            if (previousTransactionByToken) {
+
+                                if (!result.processedTransactionsToUpdate[previousTransactionByToken._id]) {
+                                    result.processedTransactionsToUpdate[previousTransactionByToken._id] = previousTransactionByToken
+                                }
+
+                                this._updatePreviousNextByToken(ercEvent.namedArgs.tokenId, previousTransactionByToken, currentTransaction, result)
+
+                                loadedTransactions[previousTransactionByToken._id] = previousTransactionByToken
+
+                            }
+
                             token.latestTransactionId = currentTransaction._id
     
-                            //Update previous/next for transaction initiator
-                            let previousTransactionByTransactionInitiator = await getPreviousTransaction(transactionUser.latestTransactionInitiatorId, currentTransaction._id)
-    
+                            //Update previous/next for transaction initiator     
+                            let previousTransactionByTransactionInitiator = await this.processedTransactionService.getPreviousByInitiator(transactionUser._id, currentTransaction.blockNumber, currentTransaction.transactionIndex, options)
+                            
+
+
                             if (previousTransactionByTransactionInitiator) {
-                                updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, currentTransaction)
+
+                                if (!result.processedTransactionsToUpdate[previousTransactionByTransactionInitiator._id]) {
+                                    result.processedTransactionsToUpdate[previousTransactionByTransactionInitiator._id] = previousTransactionByTransactionInitiator
+                                }
+
+                                this._updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, currentTransaction, result)
+
+                                loadedTransactions[previousTransactionByTransactionInitiator._id] = previousTransactionByTransactionInitiator
+
                             }
     
                             transactionUser.latestTransactionInitiatorId = currentTransaction._id
-    
+
+
+
     
                             //Update previous/next for from/to users
                             if (fromOwner) {
-                                let previousTransactionByFromOwner = await getPreviousTransaction(fromOwner.latestTransactionId, currentTransaction._id)
-    
+
+                                let previousTransactionByFromOwner = await this.processedTransactionService.getPreviousByTrader(fromOwner._id, currentTransaction.blockNumber, currentTransaction.transactionIndex, options)    
+
                                 if (previousTransactionByFromOwner) {
-                                    updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, currentTransaction)
+
+                                    if (!result.processedTransactionsToUpdate[previousTransactionByFromOwner._id]) {
+                                        result.processedTransactionsToUpdate[previousTransactionByFromOwner._id] = previousTransactionByFromOwner
+                                    }
+
+                                    this._updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, currentTransaction, result)
+
+                                    loadedTransactions[previousTransactionByFromOwner._id] = previousTransactionByFromOwner
+
+
                                 }
     
                                 fromOwner.latestTransactionId = currentTransaction._id
     
-    
                             }
     
                             if (toOwner && toOwner._id != fromOwner._id) {
-                                let previousTransactionByToOwner = await getPreviousTransaction(toOwner.latestTransactionId, currentTransaction._id)
-    
+
+                                let previousTransactionByToOwner = await this.processedTransactionService.getPreviousByTrader(toOwner._id, currentTransaction.blockNumber, currentTransaction.transactionIndex, options)
+        
+
                                 if (previousTransactionByToOwner) {
-                                    updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, currentTransaction)
+
+                                    if (!result.processedTransactionsToUpdate[previousTransactionByToOwner._id]) {
+                                        result.processedTransactionsToUpdate[previousTransactionByToOwner._id] = previousTransactionByToOwner
+                                    }
+
+                                    this._updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, currentTransaction, result)
+
+                                    loadedTransactions[previousTransactionByToOwner._id] = previousTransactionByToOwner
+
+
                                 }
     
                                 toOwner.latestTransactionId = currentTransaction._id
     
                             }
-
+    
     
                         }
-        
-                        //Add event to transaction before saving
+    
+                        //Add raw event to transaction before saving
                         currentTransaction.ercEvents.push(ercEvent)
-                        
-                        //Set previous/next if we already have a previous transaction
-                        if (previousTransaction && previousTransaction._id != currentTransaction._id) {
-                            currentTransaction.previousId = previousTransaction._id
-                            previousTransaction.nextId = currentTransaction._id
-                        }
-        
+    
+
                         console.timeEnd(`Processesing ${event.blockNumber} / ${event.transactionHash} / ${event.logIndex} (${processedCount + 1} of ${events.length})`)
-                        
+    
                         if (currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId] > 0) {
                             console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${currentTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(currentTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
                         }
-
-
-                        previousTransaction = currentTransaction
+    
         
-                        //Increment the count
-                        processedCount++ 
-        
-
-                        await t1.commit()
-
-
-                    } catch(ex) {
-                        await t1.rollback()
-                        console.log(ex)
+                        processedCount++
+    
                     }
+    
+                    //Set previous/next if we already have a previous transaction
+                    if (previousTransaction && previousTransaction._id != currentTransaction._id) {
+                        currentTransaction.previousId = previousTransaction._id
+                        previousTransaction.nextId = currentTransaction._id
+                    }
+    
+                    
+                    //Create processed events
+                    result.processedTransactionsToUpdate[currentTransaction._id].processedEvents = this.createProcessedEvents(result.processedTransactionsToUpdate[currentTransaction._id])
+
+                    //Grab token ids from transactions and save on transaction
+                    let tokenIds = result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => pe.tokenId)
+
+                    if (tokenIds?.length > 0) {
+                        result.processedTransactionsToUpdate[currentTransaction._id].tokenIds = result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => parseInt(pe.tokenId))?.filter(n => n)
+                    }
+
+                    //Grab token senders
+                    let from = new Set(result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => pe.fromAddress))
+                    let to = new Set(result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => pe.toAddress))
+
+                    let tokenTraders = Array.from(new Set([...from, ...to])).filter(n => n)
+                    
+                    if (tokenTraders?.length > 0) {
+                        result.processedTransactionsToUpdate[currentTransaction._id].tokenTraders.push(...tokenTraders)
+                    }
+
+                    //Save transaction
+                    await this.processedTransactionService.put(currentTransaction, options)
+
+                    if (previousTransaction) {
+                        await this.processedTransactionService.put(previousTransaction, options)
+
+                        // if (previousTransaction._id == "0x3c504a9d130a80a66928b51a49a2208a1c3136c9708ef5108c1497744c00bd3f") {
+                        //     console.log('eeeeee')
+                        //     console.log(JSON.stringify(r))
+                        // }
+
+                    }
+
+                    //Save any transactions we loaded
+                    for (let _id of Object.keys(loadedTransactions)) {
+                        await this.processedTransactionService.put(loadedTransactions[_id], options)
+                    }
+
+
+                    //Set previous to current before looping
+                    previousTransaction = currentTransaction
+
 
                 }
 
+                //Save transactions
+                await this.saveProcessedTransactions(result, options)
 
                 //Save token owners
-                await this.saveTokenOwners(result)
-
-                //Save processed transactions
-                await this.saveProcessedTransactions(result)
+                await this.saveTokenOwners(result,options )
 
                 //Save tokens
-                await this.saveTokens(result)
+                await this.saveTokens(result, options)
 
             }
     
             this.contractState.lastIndexedBlock = result.endBlock
     
-
-
-
+            //Save contract state
+            console.log(`Saving contract state`)
+            await this.contractStateService.put(this.contractState, options)
+            
         } catch(ex) {
             console.log(ex)
         }
-
-
 
 
         return result
@@ -399,62 +422,35 @@ class TransactionIndexerService {
 
     }
 
-    private async saveTokens(result: ERCIndexResult) {
+    private async saveTokens(result: ERCIndexResult, options?:any) {
         
-        let s = await this.sequelize()
-
         let tokens = []
         
         for (let tokenId of Object.keys(result.tokensToUpdate)) {
             tokens.push(result.tokensToUpdate[tokenId])
         }
 
-        let t1 = await s.transaction()
-
-        try {
-            await this.tokenService.putAll(tokens, { transaction: t1 })
-            await t1.commit()
-        } catch(ex) {   
-            console.log(ex)
-            await t1.rollback()
-        }
+        await this.tokenService.putAll(tokens, options)
 
     }
 
-    private async saveProcessedTransactions(result: ERCIndexResult) {
-
-        let s = await this.sequelize()
+    private async saveProcessedTransactions(result: ERCIndexResult, options?:any) {
 
         console.log(`Saving ${Object.keys(result.processedTransactionsToUpdate).length} processed transactions`)
+
         let transactionsToSave = []
 
         for (let _id of Object.keys(result.processedTransactionsToUpdate)) {
-
-            //Create processed events
-            this.createProcessedEvents(result.processedTransactionsToUpdate[_id])
-
-            if (result.processedTransactionsToUpdate[_id].processedEvents?.length == 0) {
-                throw new Error(`No processed events found for transaction ${_id}`)
-            }
-
             transactionsToSave.push(result.processedTransactionsToUpdate[_id])
+
         }
 
-        let t1 = await s.transaction()
-
-        try {
-            await this.processedTransactionService.putAll(transactionsToSave, { transaction: t1 })
-            await t1.commit()
-        } catch(ex) {   
-            console.log(ex)
-            await t1.rollback()
-        }
+        await this.processedTransactionService.putAll(transactionsToSave, options)
         
     }
 
-    private async saveTokenOwners(result: ERCIndexResult) {
+    private async saveTokenOwners(result: ERCIndexResult, options?:any) {
 
-        let s = await this.sequelize()
 
         console.log(`Saving ${Object.keys(result.ownersToUpdate).length} updated token owners`);
 
@@ -469,31 +465,13 @@ class TransactionIndexerService {
             //Sort token IDs
             tokenOwner.tokenIds.sort()
 
-            let t1 = await s.transaction()
-
-            try {
-                tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id, { transaction: t1 })
-                await t1.commit()
-            } catch(ex) {   
-                console.log(ex)
-                await t1.rollback()
-            }
-
+            tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id, options)
 
             tokenOwnersToUpdate.push(tokenOwner)
         }
 
-        let t2 = await s.transaction()
 
-
-        try {
-            await this.tokenOwnerService.putAll(tokenOwnersToUpdate, { transaction: t2 })
-            await t2.commit()
-        } catch(ex) {   
-            console.log(ex)
-            await t2.rollback()
-        }
-
+        await this.tokenOwnerService.putAll(tokenOwnersToUpdate, options)
 
         
 
@@ -529,19 +507,12 @@ class TransactionIndexerService {
 
         console.log(`Saving ${ownersToUpdate.length} re-ranked token owners`)
 
-        t2 = await s.transaction()
 
-        try {
-            await this.tokenOwnerService.putAll(ownersToUpdate, { transaction: t2 })
-            await t2.commit()
-        } catch(ex) {   
-            console.log(ex)
-            await t2.rollback()
-        }
+        await this.tokenOwnerService.putAll(ownersToUpdate, options)
 
     }
 
-    private createProcessedEvents(currentTransaction: ProcessedTransaction) {
+    private createProcessedEvents(currentTransaction: ProcessedTransaction) : ProcessedEvent[] {
 
 
         //If it's an "Approve" event then we check the next event and if it's a transfer
@@ -567,33 +538,47 @@ class TransactionIndexerService {
 
         })
 
-
-
-        currentTransaction.processedEvents = []
-
-
-        //Combine transfers to the same address as a single event with multiple tokens
-        let previousProcessedTransfer:ProcessedEvent
+        let processedEvents:ProcessedEvent[] = []
 
         for (let i = 0; i < currentTransaction.ercEvents?.length; i++) {
 
             let e = currentTransaction.ercEvents[i]
 
-            let processedEvent:ProcessedEvent = {
-                isMint: e.isMint,
-                isBurn: e.isBurn,
-                event: e.event,
-                namedArgs: e.namedArgs,
-                tokenIds: [parseInt(e.namedArgs.tokenId)]
+            let processedEvent:ProcessedEvent = {}
+
+            processedEvent.processedTransactionId = currentTransaction._id
+            processedEvent.blockNumber = currentTransaction.blockNumber
+            processedEvent.isMint = e.isMint
+            processedEvent.isBurn = e.isBurn
+            processedEvent.event = e.event
+
+            if (e.namedArgs.fromAddress) {
+                processedEvent.fromAddress = e.namedArgs.fromAddress
             }
 
-            currentTransaction.processedEvents.push(processedEvent)
-
-            if (e.event == "Transfer") {
-                previousProcessedTransfer = processedEvent
+            if (e.namedArgs.toAddress) {
+                processedEvent.toAddress = e.namedArgs.toAddress
             }
+
+            if (e.namedArgs.tokenId) {
+
+                processedEvent.tokenId = e.namedArgs.tokenId
+
+                let tokenPrice:TokenPrice = currentTransaction.transactionValue?.tokenPrice[e.namedArgs.tokenId]
+
+                if (tokenPrice) {
+                    processedEvent.price = tokenPrice.price
+                    processedEvent.currency = tokenPrice.currency
+                    processedEvent.usdValue = tokenPrice.usdValue
+                }
+
+            }
+
+            processedEvents.push(processedEvent)
 
         }
+
+        return processedEvents
 
     }
 
@@ -666,24 +651,23 @@ class TransactionIndexerService {
      * @param contractAddress 
      * @returns 
      */
-    private async _getContractState(contractAddress: string) {
+    private async _getContractState(contractAddress: string, options?:any) {
 
         let contractState
 
         try {
             contractState = await this.contractStateService.get(contractAddress)
-
         } catch (ex) { }
 
         if (!contractState) {
 
-            contractState = ContractState.build({
-                _id: contractAddress,
-                lastIndexedBlock: 0
-            })
+            contractState = new ContractState()
+
+            contractState._id = contractAddress
+            contractState.lastIndexedBlock = 0
 
             try {
-                await this.contractStateService.put(contractState)
+                await this.contractStateService.put(contractState, options)
 
             } catch (ex) {
                 console.log(JSON.stringify(ex))
@@ -721,7 +705,121 @@ class TransactionIndexerService {
         return this.blockNumber
     }
 
+
+    private async _getTokenOwner(ownerAddress, result:ERCIndexResult, options?:any) {
+       
+        if (!ownerAddress) return
+
+        if (!result.ownersToUpdate[ownerAddress]) {
+            let tokenOwner: TokenOwner = await this.tokenOwnerService.getOrCreate(ownerAddress, options)
+            result.ownersToUpdate[ownerAddress] = tokenOwner
+        } 
+
+        return result.ownersToUpdate[ownerAddress]
+    }
+
+    private async _getToken(tokenId, result:ERCIndexResult) {
+
+        if (!result.tokensToUpdate[tokenId]) {
+            result.tokensToUpdate[tokenId] = await this.tokenService.getOrCreate(tokenId)
+        } 
+
+        return result.tokensToUpdate[tokenId]
+
+    }
+
+
+    private async _updatePreviousNextByToken(tokenId:number, previousT:ProcessedTransaction, currentT:ProcessedTransaction, result:ERCIndexResult) {
+
+        //Make sure we update it.
+        result.processedTransactionsToUpdate[previousT._id] = previousT
+
+        currentT.previousByTokenIds[tokenId] = previousT._id
+        previousT.nextByTokenIds[tokenId] = currentT._id
+
+    }
+
+    private async _updatePreviousNextByTransactionInitiator(transactionUserId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction, result:ERCIndexResult) {
+
+        //Make sure we update it.
+        result.processedTransactionsToUpdate[previousT._id] = previousT
+
+        currentT.previousByTransactionInitiatorId[transactionUserId] = previousT._id
+        previousT.nextByTransactionInitiatorId[transactionUserId] = currentT._id
+
+    }
+
+    private async _updatePreviousNextByTokenOwner(tokenOwnerId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction, result:ERCIndexResult) {
+
+        //Make sure we update it.
+        result.processedTransactionsToUpdate[previousT._id] = previousT
+
+        currentT.previousByTokenOwnerId[tokenOwnerId] = previousT._id
+        previousT.nextByTokenOwnerId[tokenOwnerId] = currentT._id
+
+    }
+
+
+
+    /**
+     * @description
+     * Takes an Array<V>, and a grouping function,
+     * and returns a Map of the array grouped by the grouping function.
+     *
+     * @param list An array of type V.
+     * @param keyGetter A Function that takes the the Array type V as an input, and returns a value of type K.
+     *                  K is generally intended to be a property key of V.
+     *
+     * @returns Map of the array grouped by the grouping function.
+     */
+    groupBy(list, keyGetter) {
+
+        const map = new Map()
+
+        list.forEach((item) => {
+
+            const key = keyGetter(item)
+            const collection = map.get(key)
+            if (!collection) {
+                map.set(key, [item])
+            } else {
+                collection.push(item)
+            }
+        })
+        return map
+    }
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

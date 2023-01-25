@@ -1,49 +1,15 @@
-import { Changeset } from "../../reader/service/core/database-service.js"
 import { TokenOwner } from "../dto/token-owner.js"
 
 
 interface TokenOwnerRepository {
-    get(_id:string): Promise<TokenOwner>
+    get(_id:string, options?:any): Promise<TokenOwner>
     put(tokenOwner:TokenOwner, options?:any) : Promise<TokenOwner>
     putAll(tokenOwners:TokenOwner[], options?:any) : Promise<void>
     getENS(_id:string) : Promise<string>
-    list(limit: number, skip: number): Promise<TokenOwner[]> 
+    list(limit: number, skip: number, options?:any): Promise<TokenOwner[]> 
 
 }
 
-
-let changesets:Changeset[] = [
-    {
-        id: '0',
-        changeset: async (db) => {
-
-            await db.createIndex({
-                index: {
-                    fields: ['count']
-                }
-            })
-
-            await db.put({
-                _id: '_design/by_token_id',
-                views: {
-                    by_token_id: {
-                            map: function (doc) { 
-                          
-                                for (let tokenId of doc.tokenIds) {
-                                    //@ts-ignore
-                                    emit(tokenId)
-                                }
-
-                            }.toString(),
-                    }
-                }
-            })
-
-        }
-    }
-]
-
-
 export {
-    TokenOwnerRepository, changesets
+    TokenOwnerRepository
 }

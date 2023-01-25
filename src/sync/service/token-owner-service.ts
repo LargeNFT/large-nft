@@ -1,10 +1,8 @@
 import { inject, injectable } from "inversify"
-import { validate, ValidationError } from "class-validator"
 
 import { TokenOwnerRepository } from "../../sync/repository/token-owner-repository.js"
 import { TokenOwner } from "../../sync/dto/token-owner.js"
 import { WalletService } from "../../reader/service/core/wallet-service.js"
-import { ValidationException } from "../../reader/util/validation-exception.js"
 
 @injectable()
 class TokenOwnerService {
@@ -18,8 +16,8 @@ class TokenOwnerService {
     constructor() {}
 
 
-    async get(_id:string): Promise<TokenOwner> {        
-        return this.tokenOwnerRepository.get(_id)
+    async get(_id:string, options?:any): Promise<TokenOwner> {        
+        return this.tokenOwnerRepository.get(_id, options)
     }
 
     async getDisplayName(_id:string) : Promise<string> {
@@ -33,13 +31,13 @@ class TokenOwnerService {
 
     }
 
-    async getOrCreate(address:string) {
+    async getOrCreate(address:string, options?:any) {
 
         let tokenOwner: TokenOwner 
 
         if (!tokenOwner) {
             try {
-                tokenOwner = await this.get(address)
+                tokenOwner = await this.get(address, options)
             } catch (ex) { }
         }
 
@@ -69,8 +67,8 @@ class TokenOwnerService {
     }
 
 
-    async list(limit: number, skip: number): Promise<TokenOwner[]> {
-        return this.tokenOwnerRepository.list(limit, skip)
+    async list(limit: number, skip: number, options?:any): Promise<TokenOwner[]> {
+        return this.tokenOwnerRepository.list(limit, skip, options)
     }
 
 

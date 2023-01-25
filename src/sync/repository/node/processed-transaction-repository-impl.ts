@@ -1,15 +1,21 @@
 import {  inject, injectable } from "inversify"
 import moment from "moment"
 
-import {  AttributeSaleReport, AttributeSalesRow, ProcessedTransaction, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
+import {  AttributeSaleReport, AttributeSalesRow, ProcessedEvent, ProcessedTransaction, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
 import { createRequire } from 'module'
+
+
 const require = createRequire(import.meta.url)
+
+const { Op } = require("sequelize")
+
 
 @injectable()
 class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepository {
+
 
     @inject("sequelize")
     private sequelize:Function
@@ -17,15 +23,14 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
     @inject("baseDir")
     private baseDir:string
 
-    async get(_id: string): Promise<ProcessedTransaction> {
-        return ProcessedTransaction.findByPk(_id)
+    async get(_id: string, options?:any): Promise<ProcessedTransaction> {
+        return ProcessedTransaction.findByPk(_id, options)
     }
 
     async put(processedTransaction: ProcessedTransaction, options?:any): Promise<ProcessedTransaction> {
         
         await processedTransaction.save(options)
         return processedTransaction 
-
 
     }
   
@@ -36,8 +41,141 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         }
     }
 
+    async deleteBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<void> {
 
-    async list(limit: number, skip: number): Promise<ProcessedTransaction[]> {
+        //Events
+        // const events = await ProcessedEvent.findAll({
+        //     where: {
+        //         blockNumber: {
+        //             [Op.and]: {
+        //                 [Op.gte]: startBlock,
+        //                 [Op.lte]: endBlock
+        //             }
+        //         }
+        //     }
+        // }, options)
+
+
+        // for (let event of events) {
+        //     await event.destroy(options)
+        // }
+
+
+        //Transactions
+        const transactions = await ProcessedTransaction.findAll({
+            where: {
+                blockNumber: {
+                    [Op.and]: {
+                        [Op.gte]: startBlock,
+                        [Op.lte]: endBlock
+                    }
+                }
+            }
+        }, options)
+
+        for (let transaction of transactions) {
+            await transaction.destroy(options)
+        }
+
+        
+
+        // await s.query(`
+        //     DELETE FROM processed_event
+        //     WHERE blockNumber >= :startBlock AND blockNumber <= :endBlock
+        // `, {
+        //     type: s.QueryTypes.BULKDELETE,
+        //     raw: true,
+        //     replacements: { 
+        //         startBlock: startBlock,
+        //         endBlock: endBlock
+        //     }
+        // }, options)
+
+
+        //Transactions
+        // await s.query(`
+        //     DELETE FROM processed_transaction
+        //     WHERE blockNumber >= :startBlock AND blockNumber <= :endBlock
+        // `, {
+        //     type: s.QueryTypes.BULKDELETE,
+        //     raw: true,
+        //     replacements: { 
+        //         startBlock: startBlock,
+        //         endBlock: endBlock
+        //     }
+        // }, options)
+
+
+    }
+
+    async deleteAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void> {
+
+        //Delete events
+        // const events = await this.getEventsByTransactions(processedTransactions, options)
+
+        // for (let event of events) {
+        //     await event.destroy(options)
+        // }
+
+
+        //Transactions
+        for (let processedTransaction of processedTransactions) {
+            await processedTransaction.destroy(options)
+        }
+    }
+
+    // async getEventsByTransactions(transactions:ProcessedTransaction[], options?:any) : Promise<ProcessedEvent[]> {
+
+    //     return ProcessedEvent.findAll({
+    //         where: {
+    //           processedTransactionId: {
+    //             [Op.in]: transactions.map(t => t._id)
+    //           }
+    //         }
+    //     }, options)
+
+    // }
+
+
+    // async putEvent(event: ProcessedEvent, options?:any): Promise<ProcessedEvent> {
+        
+    //     await event.save(options)
+    //     return event 
+
+    // }
+
+    // async putEvents(events:ProcessedEvent[], options?:any) {
+     
+    //     for (let event of events) {
+    //         await this.putEvent(event,options)
+    //     }
+
+    // }
+
+
+    async getLatest(beforeBlock?:number, options?:any): Promise<ProcessedTransaction> {
+
+        let query:any = {
+            order: [
+                ['blockNumber', 'DESC'],
+                ['transactionIndex', 'DESC']
+            ]
+        }
+
+        if (beforeBlock) {
+            query.where = {
+                blockNumber: {
+                    [Op.lt]: beforeBlock
+                }
+            }
+        }
+
+        return ProcessedTransaction.findOne(query, options)
+
+    }
+
+
+    async list(limit: number, skip: number, options?:any): Promise<ProcessedTransaction[]> {
 
         return ProcessedTransaction.findAll({
             limit: limit,
@@ -46,7 +184,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
                 ['blockNumber', 'DESC'],
                 ['transactionIndex', 'DESC']
             ]
-        })
+        }, options)
 
     }
 
@@ -94,8 +232,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         throw new Error("Method not implemented.")
     }
 
-
-
     private async getSalesRow(timestamp?:number) {
 
         let salesRow:SalesRow = {}
@@ -107,18 +243,15 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         const [queryResults, metadata] = await s.query(`
             select 
 
-            JSON_EXTRACT(transactionValue, '$.tokenPrice') as tokenPrice,
             COUNT(_id) as events, 
         
             SUM(JSON_EXTRACT(transactionValue, '$.totalPrice')) as ethValue, 
             AVG(JSON_EXTRACT(transactionValue, '$.totalPrice')) as averageEthValue,
         
             SUM(JSON_EXTRACT(transactionValue, '$.usdValue')) as usdValue, 
-            AVG(JSON_EXTRACT(transactionValue, '$.usdValue')) as averageUsdValue,
-            
-            m.*
-            
-            FROM 'processed-transaction' t, JSON_EACH(tokenPrice) m  
+            AVG(JSON_EXTRACT(transactionValue, '$.usdValue')) as averageUsdValue
+
+            FROM 'processed_transaction' t 
             
             WHERE 
                 JSON_EXTRACT(transactionValue, '$.totalPrice') > 0 AND
@@ -251,7 +384,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
                     JSON_EXTRACT(a.value, '$.value') as v
                 FROM 'token' t, JSON_EACH(attributeSelections) a
             ) tok on tok.traitType = attr.traitType AND tok.v = attr.v
-            INNER JOIN 'processed-transaction' t, JSON_EACH(tokenPrice) m  on tok.tokenId = m.key
+            INNER JOIN 'processed_transaction' t, JSON_EACH(tokenPrice) m  on tok.tokenId = m.key
             WHERE 
                 JSON_EXTRACT(transactionValue, '$.totalPrice') > 0 AND
                 t.timestamp >= :timestamp
@@ -322,7 +455,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
                 JSON_EXTRACT(m.value, '$.price') as ethValue,
                 JSON_EXTRACT(m.value, '$.currency') as currency,
                 MAX(JSON_EXTRACT(m.value, '$.usdValue')) as usdValue
-            FROM 'processed-transaction' t, JSON_EACH(tokenPrice) m  
+            FROM 'processed_transaction' t, JSON_EACH(tokenPrice) m  
             WHERE 
                 tokenPrice IS NOT NULL
             GROUP BY tokenId
@@ -354,7 +487,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
                 JSON_EXTRACT(m.value, '$.price') as ethValue,
                 JSON_EXTRACT(m.value, '$.currency') as currency,
                 JSON_EXTRACT(m.value, '$.usdValue') as usdValue
-            FROM 'processed-transaction' pt, JSON_EACH(tokenPrice) m  
+            FROM 'processed_transaction' pt, JSON_EACH(tokenPrice) m  
             WHERE 
                 JSON_EXTRACT(transactionValue, '$.totalPrice') > 0 AND 
                 tokenId IN (select 
@@ -378,6 +511,132 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
+    async getPreviousByTokenId(tokenId:number, blockNumber:number, transactionIndex:number, options?:any) : Promise<ProcessedTransaction> {
+
+        let s = await this.sequelize()
+
+        options = Object.assign({}, options)
+
+
+        const result = await s.query(`
+            select 
+                t.*
+            FROM 'processed_transaction' t, json_each(t.tokenIds) tok
+            WHERE 
+                tok.value IS NOT NULL AND
+                tok.value = :tokenId AND
+                (t.blockNumber,t.transactionIndex) < (:blockNumber, :transactionIndex)
+            ORDER BY t.blockNumber desc, t.transactionIndex desc
+            LIMIT 1;
+        `, Object.assign(options, {
+            type: s.QueryTypes.SELECT,
+            model: ProcessedTransaction,
+            mapToModel: true,
+            plain: true,
+            replacements: { 
+                tokenId: tokenId,
+                blockNumber: blockNumber,
+                transactionIndex: transactionIndex
+            }
+        }))
+
+        if (result?._id) {
+            return ProcessedTransaction.findByPk(result._id, options) //map JSON better...
+        }
+
+    }
+
+
+
+    async getPreviousByInitiator(address:string, blockNumber:number, transactionIndex:number, options?:any) : Promise<ProcessedTransaction> {
+
+        let s = await this.sequelize()
+
+        options = Object.assign({}, options)
+
+        const result = await s.query(`
+            select 
+                t.*
+            FROM 'processed_transaction' t
+            WHERE 
+                t.transactionFrom = :address AND
+                (t.blockNumber,t.transactionIndex) < (:blockNumber, :transactionIndex)
+            ORDER BY t.blockNumber desc, t.transactionIndex desc
+            LIMIT 1;
+        `, Object.assign(options, {
+            type: s.QueryTypes.SELECT,
+            model: ProcessedTransaction,
+            mapToModel: true,
+            plain: true,   
+            replacements: { 
+                address: address,
+                blockNumber: blockNumber,
+                transactionIndex: transactionIndex
+            }
+        }))
+
+        if (result?._id) {
+            return ProcessedTransaction.findByPk(result._id, options) //map JSON better...
+        }
+
+    }
+
+    async getPreviousByTrader(address:string, blockNumber:number, transactionIndex:number, options?:any) : Promise<ProcessedTransaction> {
+
+        let s = await this.sequelize()
+
+        options = Object.assign({}, options)
+
+
+        const result = await s.query(`
+            select 
+                t.*
+            FROM 'processed_transaction' t, json_each(t.tokenTraders) tr
+            WHERE
+                tr.value IS NOT NULL AND
+                tr.value = :address AND 
+                (t.blockNumber,t.transactionIndex) < (:blockNumber, :transactionIndex)
+            ORDER BY t.blockNumber desc, t.transactionIndex desc
+            LIMIT 1;
+        `, Object.assign(options, {
+            type: s.QueryTypes.SELECT,
+            model: ProcessedTransaction,
+            mapToModel: true,
+            plain: true,
+            replacements: { 
+                address: address,
+                blockNumber: blockNumber,
+                transactionIndex: transactionIndex
+            }
+        }))
+
+        if (result?._id) {
+            return ProcessedTransaction.findByPk(result._id, options) //map JSON better...
+        }
+
+
+    }
+
+
+    /**
+     * This function parses the JSON fields of ProcessedTransaction when using a raw query. Has a side-effect of marking all the models as changed/dirty as far as sequelize goes. Not great. 
+     * @param result 
+     * @returns 
+     */
+     private _parseJSON(result: any) {
+
+        if (!result) return
+
+        result.tokenTraders = JSON.parse(result.tokenTraders)
+        result.ercEvents = JSON.parse(result.ercEvents)
+        result.processedEvents = JSON.parse(result.processedEvents)
+        result.transactionValue = JSON.parse(result.transactionValue)
+        result.previousByTransactionInitiatorId = JSON.parse(result.previousByTransactionInitiatorId)
+        result.previousByTokenOwnerId = JSON.parse(result.previousByTokenOwnerId)
+        result.nextByTokenIds = JSON.parse(result.nextByTokenIds)
+        result.nextByTokenOwnerId = JSON.parse(result.nextByTokenOwnerId)
+        result.nextByTransactionInitiatorId = JSON.parse(result.nextByTransactionInitiatorId)
+    }
 
 
 }

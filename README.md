@@ -1,7 +1,7 @@
 
 # Large NFT
 
-[![npm version](https://badge.fury.io/js/large-nft.svg)](https://badge.fury.io/js/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
+[![npm version](https://img.shields.io/npm/v/large-nft)](https://img.shields.io/npm/v/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
 The easiest way to self-publish your work as an NFT collection on **Ethereum** and **IPFS**. 
 

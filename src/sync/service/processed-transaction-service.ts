@@ -3,6 +3,10 @@ import { inject, injectable } from "inversify"
 import { ProcessedTransactionRepository } from "../../sync/repository/processed-transaction-repository.js"
 import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport } from "../../sync/dto/processed-transaction.js"
 import { ItemService } from "../../reader/service/item-service.js"
+import { Token } from "../dto/token.js"
+import { TokenService } from "./token-service.js"
+import { TokenOwner } from "../dto/token-owner.js"
+import { TokenOwnerService } from "./token-owner-service.js"
 
 
 @injectable()
@@ -15,6 +19,12 @@ class ProcessedTransactionService {
 
     @inject("ItemService")
     private itemService:ItemService
+
+    @inject("TokenService")
+    private tokenService:TokenService
+
+    @inject("TokenOwnerService")
+    private tokenOwnerService:TokenOwnerService
 
     constructor() {}
 
@@ -177,7 +187,66 @@ class ProcessedTransactionService {
     }
 
     async deleteBetweenBlocks(startBlock: number, endBlock: number, options?:any) {
-        return this.processedTransactionRepository.deleteBetweenBlocks(startBlock, endBlock, options)
+
+        let transactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(startBlock, endBlock, options)
+
+        //Get affected tokens. Reset lastTransactionId
+        const tokenIds = Array.from(new Set(transactions.flatMap(({ tokenIds }) => tokenIds)))
+
+        for (let tokenId of tokenIds) {
+
+            let token:Token = await this.tokenService.get(tokenId, options)
+
+            //Find the transaction for this token before startBlock
+            let previousByToken = await this.processedTransactionRepository.getPreviousByTokenId(tokenId, startBlock, 0, options)
+
+            token.latestTransactionId = previousByToken?._id
+
+            await this.tokenService.put(token, options)
+
+        }
+
+
+        //Get affected initiators. Reset latestTransactionInitiatorId
+        const initiators = Array.from(new Set(transactions.map(t => t.transactionFrom)))
+
+
+        for (let user of initiators) {
+
+            let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
+
+            let previousByInitiator = await this.processedTransactionRepository.getPreviousByInitiator(user, startBlock, 0, options)
+
+            tokenOwner.latestTransactionInitiatorId = previousByInitiator?._id
+
+            await this.tokenOwnerService.put(tokenOwner, options)
+
+        }
+
+
+
+        //Get affected traders. Reset latestTransactionId
+        const tokenTraders = Array.from(new Set(transactions.flatMap(({ tokenTraders }) => tokenTraders)))
+        
+        for (let user of tokenTraders) {
+
+            let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
+
+            let previousByTrader = await this.processedTransactionRepository.getPreviousByTrader(user, startBlock, 0, options)
+
+            tokenOwner.latestTransactionId = previousByTrader?._id
+
+            await this.tokenOwnerService.put(tokenOwner, options)
+
+        }
+
+        //Delete transactions
+        for (let transaction of transactions) {
+            await transaction.destroy(options)
+        }
+
+
+
     }
 
     async deleteAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void> {

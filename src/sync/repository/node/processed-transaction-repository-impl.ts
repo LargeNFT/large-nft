@@ -41,28 +41,12 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         }
     }
 
-    async deleteBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<void> {
-
-        //Events
-        // const events = await ProcessedEvent.findAll({
-        //     where: {
-        //         blockNumber: {
-        //             [Op.and]: {
-        //                 [Op.gte]: startBlock,
-        //                 [Op.lte]: endBlock
-        //             }
-        //         }
-        //     }
-        // }, options)
 
 
-        // for (let event of events) {
-        //     await event.destroy(options)
-        // }
-
+    async findBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<ProcessedTransaction[]> {
 
         //Transactions
-        const transactions = await ProcessedTransaction.findAll({
+        return ProcessedTransaction.findAll({
             where: {
                 blockNumber: {
                     [Op.and]: {
@@ -73,37 +57,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             }
         }, options)
 
-        for (let transaction of transactions) {
-            await transaction.destroy(options)
-        }
 
-        
-
-        // await s.query(`
-        //     DELETE FROM processed_event
-        //     WHERE blockNumber >= :startBlock AND blockNumber <= :endBlock
-        // `, {
-        //     type: s.QueryTypes.BULKDELETE,
-        //     raw: true,
-        //     replacements: { 
-        //         startBlock: startBlock,
-        //         endBlock: endBlock
-        //     }
-        // }, options)
-
-
-        //Transactions
-        // await s.query(`
-        //     DELETE FROM processed_transaction
-        //     WHERE blockNumber >= :startBlock AND blockNumber <= :endBlock
-        // `, {
-        //     type: s.QueryTypes.BULKDELETE,
-        //     raw: true,
-        //     replacements: { 
-        //         startBlock: startBlock,
-        //         endBlock: endBlock
-        //     }
-        // }, options)
 
 
     }
@@ -164,7 +118,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
         if (beforeBlock) {
             query.where = {
-                blockNumber: {
+                'blockNumber': {
                     [Op.lt]: beforeBlock
                 }
             }

@@ -6,7 +6,7 @@ interface ProcessedTransactionRepository {
     getLatest(beforeBlock?:number, options?:any): Promise<ProcessedTransaction>
     put(processedTransaction:ProcessedTransaction, options?:any) : Promise<ProcessedTransaction>
     putAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void>
-    deleteBetweenBlocks(startBlock: number, endBlock: number, options?:any) : Promise<void>
+    findBetweenBlocks(startBlock: number, endBlock: number, options?:any) : Promise<ProcessedTransaction[]>
     deleteAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void>
     
     // getEventsByTransactions(transactions:ProcessedTransaction[], options?:any) : Promise<ProcessedEvent[]>

@@ -6,8 +6,8 @@ import { TokenRepository } from "../token-repository.js"
 @injectable()
 class TokenRepositoryNodeImpl implements TokenRepository {
 
-    async get(_id: string): Promise<Token> {
-        return Token.findByPk(_id)
+    async get(_id: number, options?:any): Promise<Token> {
+        return Token.findByPk(_id, options)
     }
 
     async put(token: Token, options?:any): Promise<Token> {

@@ -140,7 +140,7 @@ function getMainContainer(command:GetMainContainerCommand) {
       database: channelId,
       dialect: 'sqlite',
       storage: `${baseDir}/sync/data.sqlite`,
-      // transactionType: "IMMEDIATE",
+      transactionType: "IMMEDIATE",
       models: [Block, ContractState, ProcessedTransaction, TokenOwner, Token, Transaction, ENS]
     })
 

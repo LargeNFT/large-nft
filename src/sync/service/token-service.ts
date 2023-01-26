@@ -18,11 +18,11 @@ class TokenService {
     constructor() {}
 
 
-    async get(_id:string): Promise<Token> {        
-        return this.tokenRepository.get(_id)
+    async get(_id:number, options?:any): Promise<Token> {        
+        return this.tokenRepository.get(_id, options)
     }
 
-    async getOrCreate(_id:string) {
+    async getOrCreate(_id:number) {
 
         let token
 

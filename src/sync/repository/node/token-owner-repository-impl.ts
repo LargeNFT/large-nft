@@ -18,6 +18,9 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
 
     async put(tokenOwner:TokenOwner, options?:any) : Promise<TokenOwner> {
 
+        // options.logging = console.log
+
+
         await tokenOwner.save(options)
         return tokenOwner
         
@@ -34,13 +37,18 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
 
     async list(limit: number, skip: number, options?:any): Promise<TokenOwner[]> {
 
-        return TokenOwner.findAll({
+        let query = {
+            // logging: console.log,
             limit: limit,
             offset: skip,
             order: [
                 ['count', 'DESC']
             ]
-        }, options)
+        }
+
+        query = Object.assign(query, options)
+
+        return TokenOwner.findAll(query)
 
     }
 

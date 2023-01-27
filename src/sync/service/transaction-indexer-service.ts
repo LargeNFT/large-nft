@@ -121,7 +121,7 @@ class TransactionIndexerService {
         console.log(`Indexing blocks: ${result.startBlock} to ${result.endBlock}`)
 
         //Remove transactions/events between start/end block numbers then re-insert
-        await this.processedTransactionService.deleteBetweenBlocks(result.startBlock, result.endBlock, options)
+        await this.processedTransactionService.deleteBetweenBlocks(result, options)
 
 
 
@@ -238,6 +238,13 @@ class TransactionIndexerService {
                         //Look for previousByTokenId
                         let previousTransactionByToken:ProcessedTransaction = await this._getPreviousTransaction(token.latestTransactionId, currentTransaction._id, result)
                         
+                        // if (currentTransaction._id == "0x7b322d0e46016632bad174ac089a267c73392c1216d1d5fa4f515f3d5d8661cb") {
+                        //     console.log('22222222')
+                        //     // console.log(currentTransaction)
+                        //     console.log(`Last transaction id is ${token.latestTransactionId}`)
+                        //     // console.log(previousTransactionByToken)
+                        // }
+
                         if (previousTransactionByToken) {
                             this._updatePreviousNextByToken(ercEvent.namedArgs.tokenId, previousTransactionByToken, currentTransaction, result)
                         }
@@ -281,6 +288,8 @@ class TransactionIndexerService {
                         }
 
 
+
+
                     }
 
                     //Add raw event to transaction before saving
@@ -321,6 +330,8 @@ class TransactionIndexerService {
                     result.processedTransactionsToUpdate[currentTransaction._id].tokenTraders.push(...tokenTraders)
                 }
 
+
+
                 //Set previous to current before looping
                 previousTransaction = currentTransaction
 
@@ -335,11 +346,14 @@ class TransactionIndexerService {
             //Save transactions
             await this.saveProcessedTransactions(result, options)
 
-            //Save token owners
-            await this.saveTokenOwners(result,options )
-
             //Save tokens
             await this.saveTokens(result, options)
+
+            //Save token owners
+            await this.saveTokenOwners(result,options)
+
+            //Rerank token owners
+            await this.rerankTokenOwners(result, options)
 
         }
 
@@ -407,9 +421,12 @@ class TransactionIndexerService {
         await this.tokenOwnerService.putAll(tokenOwnersToUpdate, options)
 
         
+    }
 
+    private async rerankTokenOwners(result:ERCIndexResult, options?:any) {
+        
         //Update rankings for all owners. Only save if it's changed.
-        let tokenOwners:TokenOwner[] = await this.tokenOwnerService.list(100000, 0)
+        let tokenOwners:TokenOwner[] = await this.tokenOwnerService.list(100000, 0, options)
 
         let rank = 0
         let lastRankCount
@@ -444,6 +461,7 @@ class TransactionIndexerService {
         await this.tokenOwnerService.putAll(ownersToUpdate, options)
 
     }
+
 
     private createProcessedEvents(currentTransaction: ProcessedTransaction) : ProcessedEvent[] {
 
@@ -484,6 +502,7 @@ class TransactionIndexerService {
             processedEvent.isMint = e.isMint
             processedEvent.isBurn = e.isBurn
             processedEvent.event = e.event
+            processedEvent.namedArgs = e.namedArgs
 
             if (e.namedArgs.fromAddress) {
                 processedEvent.fromAddress = e.namedArgs.fromAddress

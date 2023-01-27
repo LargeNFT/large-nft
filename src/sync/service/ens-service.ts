@@ -22,7 +22,7 @@ class ENSService {
         let ens 
         
         try {
-            ens = await this.ensRepository.get(_id)
+            ens = await this.ensRepository.get(_id, options)
         } catch(ex) {}
 
 

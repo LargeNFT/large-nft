@@ -259,13 +259,13 @@ class TransactionWebService {
 
             for (let processedEvent of transaction.processedEvents) {
 
-                if (processedEvent.namedArgs.fromAddress ) {
-                    await this._cacheDisplayName(processedEvent.namedArgs.fromAddress)
+                if (processedEvent.fromAddress ) {
+                    await this._cacheDisplayName(processedEvent.fromAddress)
                 }
 
 
-                if (processedEvent.namedArgs.toAddress ) {
-                    await this._cacheDisplayName(processedEvent.namedArgs.toAddress)
+                if (processedEvent.toAddress ) {
+                    await this._cacheDisplayName(processedEvent.toAddress)
                 }
 
 

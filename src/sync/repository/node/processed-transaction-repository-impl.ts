@@ -45,8 +45,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     async findBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<ProcessedTransaction[]> {
 
-        //Transactions
-        return ProcessedTransaction.findAll({
+        let query = {
             where: {
                 blockNumber: {
                     [Op.and]: {
@@ -55,7 +54,12 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
                     }
                 }
             }
-        }, options)
+        }
+
+        query = Object.assign(query, options)
+
+        //Transactions
+        return ProcessedTransaction.findAll(query)
 
 
 
@@ -124,21 +128,28 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             }
         }
 
-        return ProcessedTransaction.findOne(query, options)
+        query = Object.assign(query, options)
+
+        return ProcessedTransaction.findOne(query)
 
     }
 
 
     async list(limit: number, skip: number, options?:any): Promise<ProcessedTransaction[]> {
 
-        return ProcessedTransaction.findAll({
+        let query = {
             limit: limit,
             offset: skip,
             order: [
                 ['blockNumber', 'DESC'],
                 ['transactionIndex', 'DESC']
             ]
-        }, options)
+        }
+
+        query = Object.assign(query, options)
+
+
+        return ProcessedTransaction.findAll(query)
 
     }
 

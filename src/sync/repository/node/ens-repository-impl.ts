@@ -5,8 +5,8 @@ import { ENSRepository } from "../ens-repository.js"
 @injectable()
 class ENSRepositoryNodeImpl implements ENSRepository {
 
-    async get(_id: string): Promise<ENS> {
-        let ens = await ENS.findByPk(_id)
+    async get(_id: string, options?:any): Promise<ENS> {
+        let ens = await ENS.findByPk(_id, options)
         return ens    
     }
 

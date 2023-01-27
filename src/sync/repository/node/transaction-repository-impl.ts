@@ -24,16 +24,20 @@ class TransactionRepositoryNodeImpl implements TransactionRepository {
     }
 
 
-    async list(limit: number, skip: number): Promise<Transaction[]> {
+    async list(limit: number, skip: number, options?:any): Promise<Transaction[]> {
 
-        return Transaction.findAll({
+        let query = {
             limit: limit,
             offset: skip,
             order: [
                 ['blockNumber', 'DESC'],
                 ['transactionIndex', 'DESC']
             ]
-        })
+        }
+
+        query = Object.assign(query, options)
+
+        return Transaction.findAll(query)
 
     }
 

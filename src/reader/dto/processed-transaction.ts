@@ -61,10 +61,12 @@ interface TransactionValue {
 interface ProcessedEvent {
     isMint?:boolean
     isBurn?:boolean
-    tokenIds?:number[]
+    tokenId?:number[]
     event?:string 
     namedArgs?:any
     salePrice?:string
+    fromAddress?:string
+    toAddress?:string
 }
 
 

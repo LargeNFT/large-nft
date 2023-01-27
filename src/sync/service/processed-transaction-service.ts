@@ -7,6 +7,7 @@ import { Token } from "../dto/token.js"
 import { TokenService } from "./token-service.js"
 import { TokenOwner } from "../dto/token-owner.js"
 import { TokenOwnerService } from "./token-owner-service.js"
+import { ERCIndexResult } from "./transaction-indexer-service.js"
 
 
 @injectable()
@@ -127,15 +128,8 @@ class ProcessedTransactionService {
 
         for (let processedEvent of processedEvents) {
 
-            if (processedEvent.tokenIds?.length > 0) {
-
-                for (let tokenId of processedEvent.tokenIds) {
-                    if (!tokenId) continue
-                    tokenIds.add(tokenId)
-                }
-
-            }
-
+            if (!processedEvent.tokenId) continue
+            tokenIds.add(processedEvent.tokenId)
         }
 
         let rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenIds(Array.from(tokenIds))
@@ -186,9 +180,10 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.getSalesByAttribute(traitType, value)
     }
 
-    async deleteBetweenBlocks(startBlock: number, endBlock: number, options?:any) {
+    async deleteBetweenBlocks(result:ERCIndexResult, options?:any)  {
 
-        let transactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(startBlock, endBlock, options)
+
+        let transactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(result.startBlock, result.endBlock, options)
 
         //Get affected tokens. Reset lastTransactionId
         const tokenIds = Array.from(new Set(transactions.flatMap(({ tokenIds }) => tokenIds)))
@@ -198,11 +193,16 @@ class ProcessedTransactionService {
             let token:Token = await this.tokenService.get(tokenId, options)
 
             //Find the transaction for this token before startBlock
-            let previousByToken = await this.processedTransactionRepository.getPreviousByTokenId(tokenId, startBlock, 0, options)
+            let previousByToken = await this.processedTransactionRepository.getPreviousByTokenId(tokenId, result.startBlock, 0, options)
+
+            // if (tokenId == 2180) {
+            //     console.log('111111')
+            //     console.log(`Setting last transaction id to ${previousByToken?._id}`)
+            // }
 
             token.latestTransactionId = previousByToken?._id
 
-            await this.tokenService.put(token, options)
+            result.tokensToUpdate[token._id] = token
 
         }
 
@@ -215,11 +215,11 @@ class ProcessedTransactionService {
 
             let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
 
-            let previousByInitiator = await this.processedTransactionRepository.getPreviousByInitiator(user, startBlock, 0, options)
+            let previousByInitiator = await this.processedTransactionRepository.getPreviousByInitiator(user, result.startBlock, 0, options)
 
             tokenOwner.latestTransactionInitiatorId = previousByInitiator?._id
 
-            await this.tokenOwnerService.put(tokenOwner, options)
+            result.ownersToUpdate[tokenOwner._id] = tokenOwner
 
         }
 
@@ -232,20 +232,19 @@ class ProcessedTransactionService {
 
             let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
 
-            let previousByTrader = await this.processedTransactionRepository.getPreviousByTrader(user, startBlock, 0, options)
+            let previousByTrader = await this.processedTransactionRepository.getPreviousByTrader(user, result.startBlock, 0, options)
 
             tokenOwner.latestTransactionId = previousByTrader?._id
 
-            await this.tokenOwnerService.put(tokenOwner, options)
+            result.ownersToUpdate[tokenOwner._id] = tokenOwner
 
         }
+
 
         //Delete transactions
         for (let transaction of transactions) {
             await transaction.destroy(options)
         }
-
-
 
     }
 
@@ -280,6 +279,7 @@ interface TransactionsViewModel {
     transactions?:ProcessedTransaction[],
     rowItemViewModels?:{}
 }
+
 
 
 

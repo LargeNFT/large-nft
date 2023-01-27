@@ -16,15 +16,15 @@
 
           ${transaction.processedEvents?.map(processedEvent => $h`
 
-            ${processedEvent.event == "Approval" && (!tokenId || processedEvent.namedArgs?.tokenId == tokenId) ? $h`
+            ${processedEvent.event == "Approval" && (!tokenId || processedEvent?.tokenId == tokenId) ? $h`
               <${Approval} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}" />
             ` : $h` `}
         
-            ${processedEvent.event == "Transfer" && (!tokenId || processedEvent.namedArgs?.tokenId == tokenId) ? $h`
+            ${processedEvent.event == "Transfer" && (!tokenId || processedEvent?.tokenId == tokenId) ? $h`
               <${Transfer} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}"/>
             ` : $h` `}
         
-            ${processedEvent.event == "ApprovalForAll" && (!tokenId || processedEvent.namedArgs?.tokenId == tokenId) ? $h`
+            ${processedEvent.event == "ApprovalForAll" && (!tokenId || processedEvent?.tokenId == tokenId) ? $h`
               <${ApprovalForAll} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} index="${index}"/>
             ` : $h` `}
         
@@ -78,15 +78,15 @@
         <tr class="${index % 2 == 0 ? "alt-row" : ''}">
 
           <td class="image">
-            <a href="${baseURI}t/${event.namedArgs.tokenId}">
-              <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.namedArgs.tokenId].title}" height="40" width="40" /> 
+            <a href="${baseURI}t/${event.tokenId}">
+              <img src="${imageLink(rowItemViewModels[event.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.tokenId].title}" height="40" width="40" /> 
             </a>
           </td>
 
           <td class="label-cell medium-only">
 
-            <a href="${baseURI}t/${event.namedArgs.tokenId}" class="title">
-              ${rowItemViewModels[event.namedArgs.tokenId].title}            
+            <a href="${baseURI}t/${event.tokenId}" class="title">
+              ${rowItemViewModels[event.tokenId].title}            
             </a>
 
           </td>
@@ -95,7 +95,7 @@
               <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Mint</a>
             ` : $h`
 
-              ${Object.keys(transaction.transactionValue?.markets).length > 0 ? $h`
+              ${transaction?.transactionValue?.markets && Object.keys(transaction?.transactionValue?.markets).length > 0 ? $h`
                 <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">Sold</a> on ${Array.from(Object.keys(transaction.transactionValue?.markets).map( k => k)).join(", ")} ${transaction.transactionValue?.aggregator ? ' / ' + transaction.transactionValue.aggregator : ''}
 
               ` : $h`
@@ -109,10 +109,10 @@
 
           <td class="numeric-cell">
             
-            <strong>${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.price.toFixed(5)}</strong> ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.currency} 
-            ${transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.usdValue ? $h`
+            <strong>${transaction.transactionValue?.tokenPrice[event.tokenId]?.price.toFixed(5)}</strong> ${transaction.transactionValue?.tokenPrice[event.tokenId]?.currency} 
+            ${transaction.transactionValue?.tokenPrice[event.tokenId]?.usdValue ? $h`
               <br />
-              <span class="dollar-value">${transactionWebService.abbreviateDollars(transaction.transactionValue?.tokenPrice[event.namedArgs.tokenId]?.usdValue, 2)}</span>
+              <span class="dollar-value">${transactionWebService.abbreviateDollars(transaction.transactionValue?.tokenPrice[event.tokenId]?.usdValue, 2)}</span>
             ` : $h` `}
 
 
@@ -120,12 +120,12 @@
 
            </td>
           <td class="medium-only numeric-cell">
-            <a href="${baseURI}u/?address=${event.namedArgs.fromAddress}" class="${event.namedArgs.fromAddress == transaction.from ? 'is-from' : ''}">
-                  ${transactionWebService.getDisplayName(event.namedArgs.fromAddress)}
+            <a href="${baseURI}u/?address=${event.fromAddress}" class="${event.fromAddress == transaction.from ? 'is-from' : ''}">
+                  ${transactionWebService.getDisplayName(event.fromAddress)}
             </a> <span class="f7-icons">arrow_right</span>
 
-            <a href="${baseURI}u/?address=${event.namedArgs.toAddress}" class="${event.namedArgs.toAddress == transaction.from ? 'is-from' : ''}">
-              ${transactionWebService.getDisplayName(event.namedArgs.toAddress)}
+            <a href="${baseURI}u/?address=${event.toAddress}" class="${event.toAddress == transaction.from ? 'is-from' : ''}">
+              ${transactionWebService.getDisplayName(event.toAddress)}
             </a>
 
           </td>
@@ -158,15 +158,15 @@
       <tr class="${index % 2 == 0 ? "alt-row" : ''}">
 
           <td class="image">
-            <a href="${baseURI}t/${event.namedArgs.tokenId}">
-              <img src="${imageLink(rowItemViewModels[event.namedArgs.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.namedArgs.tokenId].title}" height="40" width="40" /> 
+            <a href="${baseURI}t/${event.tokenId}">
+              <img src="${imageLink(rowItemViewModels[event.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.tokenId].title}" height="40" width="40" /> 
             </a>
           </td>
 
           <td class="label-cell medium-only">
 
-            <a href="${baseURI}t/${event.namedArgs.tokenId}" class="title">
-              ${rowItemViewModels[event.namedArgs.tokenId].title}            
+            <a href="${baseURI}t/${event.tokenId}" class="title">
+              ${rowItemViewModels[event.tokenId].title}            
             </a>
 
             
@@ -235,6 +235,9 @@
     let transactionsViewModel = props.transactions 
     let rowItemViewModels = props.items
     let tokenId = props.token
+
+    console.log(transactionsViewModel)
+    console.log(rowItemViewModels)
 
     return $render
   }

@@ -283,15 +283,8 @@ class ProcessedTransactionService {
 
         for (let processedEvent of processedEvents) {
 
-            if (processedEvent.tokenIds?.length > 0) {
-
-                for (let tokenId of processedEvent.tokenIds) {
-                    if (!tokenId) continue
-                    tokenIds.add(tokenId)
-                }
-
-            }
-
+            if (!processedEvent.tokenId) continue
+            tokenIds.add(processedEvent.tokenId)
         }
 
         let rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenIds(Array.from(tokenIds))

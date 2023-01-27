@@ -93,6 +93,7 @@ class ProcessedTransaction extends Model {
 
 
 interface ProcessedEvent  {
+
     blockNumber?:number
     processedTransactionId?:string 
     isMint?:boolean
@@ -102,6 +103,7 @@ interface ProcessedEvent  {
     currency?:string
     usdValue?:number
     event?:string 
+    namedArgs?:[]
     
     fromAddress?:any
     toAddress?:any 

@@ -13,8 +13,6 @@ import { ERCIndexResult } from "./transaction-indexer-service.js"
 @injectable()
 class ProcessedTransactionService {
 
-
-
     @inject("ProcessedTransactionRepository")
     private processedTransactionRepository:ProcessedTransactionRepository
 
@@ -33,6 +31,22 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.get(_id,options)
     }
 
+    async getViewModel(_id:string, options?:any) : Promise<TransactionViewModel> {
+
+        let transaction = await this.processedTransactionRepository.get(_id, options)
+        if (!transaction) return
+
+
+        let events = await this.processedTransactionRepository.getEventsByTransaction(transaction)
+
+        return {
+            transaction: transaction,
+            events: events
+        }
+
+
+    }
+
     async put(processedTransaction:ProcessedTransaction, options?:any) {
         return this.processedTransactionRepository.put(processedTransaction, options)
     }
@@ -41,10 +55,15 @@ class ProcessedTransactionService {
      * No validation for speeeeeeeeed
      * @param ercEvents 
      * @returns 
-     */
-     async putAll(transactions:ProcessedTransaction[], options?:any) {
+    */
+    async putAll(transactions:ProcessedTransaction[], options?:any) {
         return this.processedTransactionRepository.putAll(transactions, options)
     }
+
+    async putEvents(events:ProcessedEvent[], options?:any) {
+        return this.processedTransactionRepository.putEvents(events, options)
+    }
+
 
     async listFrom(limit:number, startId:string, options?:any) : Promise<ProcessedTransaction[]> {
 
@@ -115,8 +134,32 @@ class ProcessedTransactionService {
 
     }
 
+    async listByTokens(tokenIds:number[], limit:number, options?:any) : Promise<ProcessedTransaction[]> {
+        return this.processedTransactionRepository.listByTokens(tokenIds, options)
+    }
+
+    async listByToken(tokenId:number, limit:number, options?:any) : Promise<ProcessedTransaction[]> {
+        return this.processedTransactionRepository.listByToken(tokenId, options)
+    }
+
     async getLatest(beforeBlock?:number, options?:any) : Promise<ProcessedTransaction> {
+
         return this.processedTransactionRepository.getLatest(beforeBlock, options)
+
+    }
+
+    async getLatestViewModel(beforeBlock?:number, options?:any) : Promise<TransactionViewModel> {
+
+        let transaction = await this.processedTransactionRepository.getLatest(beforeBlock, options)
+        if (!transaction) return
+
+        let events = await this.processedTransactionRepository.getEventsByTransaction(transaction)
+
+        return {
+            transaction: transaction,
+            events: events
+        }
+
     }
 
     private async _getRowItemViewModels(processedEvents) {
@@ -142,26 +185,32 @@ class ProcessedTransactionService {
 
     }
 
-    async translateTransactionsToViewModels(transactions:ProcessedTransaction[], lastUpdated?:string) : Promise<TransactionsViewModel> {
+    async translateTransactionsToViewModels(transactions:ProcessedTransaction[], lastUpdated?:string, options?:any) : Promise<TransactionsViewModel> {
 
-        let processedEvents:ProcessedEvent[] = [] //await this.getEventsByTransactions(transactions)
+        let transactionViewModels:TransactionViewModel[] = []
+
+        let allEvents:ProcessedEvent[] = []
 
         for (let transaction of transactions) {
-            if (transaction.processedEvents?.length > 0) {
-                processedEvents.push(...transaction.processedEvents)
-            }
+
+            let processedEvents:ProcessedEvent[] = await this.processedTransactionRepository.getEventsByTransaction(transaction, options)
+
+            transactionViewModels.push({
+                transaction: transaction,
+                events: processedEvents
+            })
+
+            allEvents.push(...processedEvents)
         }
 
         let results:TransactionsViewModel = {
             lastUpdated: lastUpdated,
-            transactions: transactions,
-            rowItemViewModels: await this._getRowItemViewModels(processedEvents)
+            transactions: transactionViewModels,
+            rowItemViewModels: await this._getRowItemViewModels(allEvents)
         }
 
         return results
     }
-
-
 
     async getSalesReport() : Promise<SalesReport> {
         return this.processedTransactionRepository.getSalesReport()
@@ -182,8 +231,9 @@ class ProcessedTransactionService {
 
     async deleteBetweenBlocks(result:ERCIndexResult, options?:any)  {
 
-
         let transactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(result.startBlock, result.endBlock, options)
+        // let events:ProcessedEvent[] = await this.processedTransactionRepository.findEventsBetweenBlocks(result.startBlock, result.endBlock, options)
+
 
         //Get affected tokens. Reset lastTransactionId
         const tokenIds = Array.from(new Set(transactions.flatMap(({ tokenIds }) => tokenIds)))
@@ -195,17 +245,11 @@ class ProcessedTransactionService {
             //Find the transaction for this token before startBlock
             let previousByToken = await this.processedTransactionRepository.getPreviousByTokenId(tokenId, result.startBlock, 0, options)
 
-            // if (tokenId == 2180) {
-            //     console.log('111111')
-            //     console.log(`Setting last transaction id to ${previousByToken?._id}`)
-            // }
-
             token.latestTransactionId = previousByToken?._id
 
             result.tokensToUpdate[token._id] = token
 
         }
-
 
         //Get affected initiators. Reset latestTransactionInitiatorId
         const initiators = Array.from(new Set(transactions.map(t => t.transactionFrom)))
@@ -224,7 +268,6 @@ class ProcessedTransactionService {
         }
 
 
-
         //Get affected traders. Reset latestTransactionId
         const tokenTraders = Array.from(new Set(transactions.flatMap(({ tokenTraders }) => tokenTraders)))
         
@@ -240,16 +283,21 @@ class ProcessedTransactionService {
 
         }
 
+        // //Delete events
+        // for (let event of events) {
+        //     await event.destroy(options)
+        // }
+
 
         //Delete transactions
         for (let transaction of transactions) {
-            await transaction.destroy(options)
+            await this.processedTransactionRepository.remove(transaction, options)
         }
 
     }
 
-    async deleteAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void> {
-        return this.processedTransactionRepository.deleteAll(processedTransactions, options)
+    async remove(processedTransaction:ProcessedTransaction, options?:any) : Promise<void> {
+        return this.processedTransactionRepository.remove(processedTransaction, options)
     }
 
     async getPreviousByTokenId(tokenId:number,blockNumber:number, transactionIndex:number, options?:any) : Promise<ProcessedTransaction> {
@@ -276,14 +324,18 @@ class ProcessedTransactionService {
 
 interface TransactionsViewModel {
     lastUpdated?:string
-    transactions?:ProcessedTransaction[],
+    transactions?:TransactionViewModel[],
     rowItemViewModels?:{}
+}
+
+interface TransactionViewModel {
+    transaction?:ProcessedTransaction
+    events?:ProcessedEvent[]
 }
 
 
 
-
 export {
-    ProcessedTransactionService, TransactionsViewModel
+    ProcessedTransactionService, TransactionsViewModel, TransactionViewModel
 }
 

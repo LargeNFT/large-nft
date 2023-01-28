@@ -200,8 +200,8 @@
 
                     transactionsViewModel = await transactionWebService.listFrom(display, startId)
                     
-                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.previousId) {
-                        nextPageStartId = transactionsViewModel.transactions[display-1].previousId
+                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.transaction.previousId) {
+                        nextPageStartId = transactionsViewModel.transactions[display-1].transaction.previousId
                     }
 
                     //If we have a startId we are on page 2+ so we need to set the previous start offset
@@ -209,7 +209,7 @@
                         let previousTransactionList = await transactionWebService.listTo(display+1, startId)
 
                         if (previousTransactionList.transactions[display]) {
-                          previousPageStartId = previousTransactionList.transactions[display]._id
+                          previousPageStartId = previousTransactionList.transactions[display].transaction._id
                         }
 
                     }

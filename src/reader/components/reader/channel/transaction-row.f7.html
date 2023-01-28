@@ -14,18 +14,18 @@
       <tbody>
         ${transactionsViewModel?.transactions.map( (transaction, index) => $h`
 
-          ${transaction.processedEvents?.map(processedEvent => $h`
+          ${transaction.events?.map(processedEvent => $h`
 
             ${processedEvent.event == "Approval" && (!tokenId || processedEvent?.tokenId == tokenId) ? $h`
-              <${Approval} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}" />
+              <${Approval} transaction=${transaction.transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}" />
             ` : $h` `}
         
             ${processedEvent.event == "Transfer" && (!tokenId || processedEvent?.tokenId == tokenId) ? $h`
-              <${Transfer} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}"/>
+              <${Transfer} transaction=${transaction.transaction} event=${processedEvent} base_uri=${baseURI} row_item_view_models=${rowItemViewModels} index="${index}"/>
             ` : $h` `}
         
             ${processedEvent.event == "ApprovalForAll" && (!tokenId || processedEvent?.tokenId == tokenId) ? $h`
-              <${ApprovalForAll} transaction=${transaction} event=${processedEvent} base_uri=${baseURI} index="${index}"/>
+              <${ApprovalForAll} transaction=${transaction.transaction} event=${processedEvent} base_uri=${baseURI} index="${index}"/>
             ` : $h` `}
         
           `)}
@@ -235,9 +235,6 @@
     let transactionsViewModel = props.transactions 
     let rowItemViewModels = props.items
     let tokenId = props.token
-
-    console.log(transactionsViewModel)
-    console.log(rowItemViewModels)
 
     return $render
   }

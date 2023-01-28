@@ -46,9 +46,7 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
             ]
         }
 
-        query = Object.assign(query, options)
-
-        return TokenOwner.findAll(query)
+        return TokenOwner.findAll(Object.assign(query, options))
 
     }
 

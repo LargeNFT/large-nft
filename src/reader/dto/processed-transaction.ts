@@ -11,7 +11,7 @@ class ProcessedTransaction {
     declare timestamp?:number
 
     ercEvents?:ERCEvent[]
-
+    transactionFrom?:string
 
     declare processedEvents?:ProcessedEvent[]
 
@@ -67,6 +67,7 @@ interface ProcessedEvent {
     salePrice?:string
     fromAddress?:string
     toAddress?:string
+    transactionFrom?:string
 }
 
 

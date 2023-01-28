@@ -175,6 +175,7 @@ class TransactionWebService {
 
         let transactionsViewModel:TransactionsViewModel = result.data
 
+
         await this._cacheENSNames(transactionsViewModel)
 
         return transactionsViewModel
@@ -257,32 +258,34 @@ class TransactionWebService {
 
         for (let transaction of transactionsViewModel.transactions) {
 
-            for (let processedEvent of transaction.processedEvents) {
+            for (let processedEvent of transaction.events) {
 
                 if (processedEvent.fromAddress ) {
                     await this._cacheDisplayName(processedEvent.fromAddress)
                 }
-
-
+    
+    
                 if (processedEvent.toAddress ) {
                     await this._cacheDisplayName(processedEvent.toAddress)
                 }
-
-
+    
+    
                 if (processedEvent.namedArgs.owner ) {
                     await this._cacheDisplayName(processedEvent.namedArgs.owner)
                 }
-
-
+    
+    
                 if (processedEvent.namedArgs.operator ) {
                     await this._cacheDisplayName(processedEvent.namedArgs.operator)
                 }
                 
             }
 
-            await this._cacheDisplayName(transaction.from)
 
+            await this._cacheDisplayName(transaction.transaction.transactionFrom)
         }
+
+
 
         
     }

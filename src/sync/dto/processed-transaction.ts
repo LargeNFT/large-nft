@@ -2,9 +2,10 @@
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 
-const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, ForeignKey, BelongsTo, AllowNull } = require('sequelize-typescript')
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, ForeignKey, BelongsTo, AllowNull, BelongsToMany } = require('sequelize-typescript')
 
 import { ERCEvent } from './erc-event.js'
+import { Token } from './token.js'
 
 @Table({
     tableName: 'processed_transaction',
@@ -43,11 +44,14 @@ class ProcessedTransaction extends Model {
     @Column(DataType.JSON)
     declare tokenIds?:number[]
 
-    @Column(DataType.JSON)
-    declare ercEvents?:ERCEvent[]
+
+    @BelongsToMany(() => Token, () => ProcessedTransactionToken)
+    declare tokens: Token[]
+
+
 
     @Column(DataType.JSON)
-    declare processedEvents?:ProcessedEvent[]
+    declare ercEvents?:ERCEvent[]
 
     @Column(DataType.JSON)
     declare transactionValue?:TransactionValue
@@ -88,33 +92,109 @@ class ProcessedTransaction extends Model {
 
 
 
-
-
-
-
-interface ProcessedEvent  {
-
-    blockNumber?:number
-    processedTransactionId?:string 
-    isMint?:boolean
-    isBurn?:boolean
-    tokenId?:number
-    price?:number
-    currency?:string
-    usdValue?:number
-    event?:string 
-    namedArgs?:[]
+@Table({
+    tableName: 'processed_event',
+    createdAt: 'dateCreated',
+    updatedAt: 'lastUpdated',
+    paranoid: false,
+})
+class ProcessedEvent extends Model {
     
-    fromAddress?:any
-    toAddress?:any 
+    @PrimaryKey
+    @Column(DataType.STRING)
+    declare _id?:string
+
+    @Column(DataType.STRING)
+    declare _rev?:string 
 
 
-    lastUpdated?:Date 
-    dateCreated?:Date
+    @Index('block-number-transaction-index-pe') 
+    @Column(DataType.BIGINT)
+    declare transactionIndex?:number
+
+    @Index('block-number-transaction-index-pe') 
+    @Column(DataType.BIGINT)
+    declare blockNumber?:number
+
+
+    @ForeignKey(() => ProcessedTransaction)
+    @AllowNull(false)	
+    @Column(DataType.STRING)
+    declare processedTransactionId?:string 
+
+    @BelongsTo(() => ProcessedTransaction)
+    processedTransaction: ProcessedTransaction
+
+
+
+
+
+    @Column(DataType.BIGINT)
+    declare logIndex?:number
+
+    @Column(DataType.BOOLEAN)
+    declare isMint?:boolean
+
+    @Column(DataType.BOOLEAN)
+    declare isBurn?:boolean
+
+    @Column(DataType.JSON)
+    declare namedArgs?:any
+
+
+    @Column(DataType.BIGINT)
+    declare tokenId?:number
+
+    @Column(DataType.STRING)
+    declare fromAddress?:string
+
+    @Column(DataType.STRING)
+    declare toAddress?:string
+    
+    
+
+    @Column(DataType.DECIMAL)
+    declare price?:number
+
+    @Column(DataType.STRING)
+    declare currency?:string
+
+    @Column(DataType.DECIMAL)
+    declare usdValue?:number
+
+    @Column(DataType.STRING)
+    declare event?:string 
+
+
+
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date 
+    
+    @Column(DataType.DATE)
+    declare dateCreated?:Date
+
 }
 
 
 
+
+@Table({
+    tableName: 'processed_transaction_token',
+    paranoid: false,
+})
+class ProcessedTransactionToken extends Model {
+
+  @Index
+  @ForeignKey(() => ProcessedTransaction)
+  @Column
+  declare processedTransactionId: number
+
+  @Index
+  @ForeignKey(() => Token)
+  @Column
+  declare tokenId: number
+
+}
 
 
 
@@ -293,5 +373,5 @@ interface Sale {
 
 
 export {
-    ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport, TokenPrice, ProcessedEvent
+    ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport, TokenPrice, ProcessedEvent, ProcessedTransactionToken
 }

@@ -1,7 +1,8 @@
 import { createRequire } from 'module'
+import { ProcessedTransaction, ProcessedTransactionToken } from './processed-transaction.js'
 const require = createRequire(import.meta.url)
 
-const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index } = require('sequelize-typescript')
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, BelongsToMany } = require('sequelize-typescript')
 
 @Table({
     tableName: 'token',
@@ -27,6 +28,10 @@ class Token extends Model {
         traitType: string
         value: string
     }]
+
+    @BelongsToMany(() => ProcessedTransaction, () => ProcessedTransactionToken)
+    declare processedTransactions: ProcessedTransaction[]
+
 
     @Column(DataType.STRING)
     declare latestTransactionId?:string

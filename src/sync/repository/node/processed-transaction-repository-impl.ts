@@ -1,11 +1,12 @@
 import {  inject, injectable } from "inversify"
 import moment from "moment"
 
-import {  AttributeSaleReport, AttributeSalesRow, ProcessedEvent, ProcessedTransaction, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
+import {  AttributeSaleReport, AttributeSalesRow, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
 import { createRequire } from 'module'
+
 
 
 const require = createRequire(import.meta.url)
@@ -24,12 +25,22 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
     private baseDir:string
 
     async get(_id: string, options?:any): Promise<ProcessedTransaction> {
+
         return ProcessedTransaction.findByPk(_id, options)
     }
 
     async put(processedTransaction: ProcessedTransaction, options?:any): Promise<ProcessedTransaction> {
         
         await processedTransaction.save(options)
+        
+        if (processedTransaction.tokens) {
+            for (let token of processedTransaction.tokens) {
+                await processedTransaction.addToken(token, Object.assign({through: ProcessedTransactionToken}, options))
+            }
+        }
+
+        
+        
         return processedTransaction 
 
     }
@@ -40,8 +51,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             await this.put(processedTransaction,options)
         }
     }
-
-
 
     async findBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<ProcessedTransaction[]> {
 
@@ -66,50 +75,77 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    async deleteAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void> {
+    async findEventsBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<ProcessedEvent[]> {
 
-        //Delete events
-        // const events = await this.getEventsByTransactions(processedTransactions, options)
-
-        // for (let event of events) {
-        //     await event.destroy(options)
-        // }
-
-
-        //Transactions
-        for (let processedTransaction of processedTransactions) {
-            await processedTransaction.destroy(options)
+        let query = {
+            where: {
+                blockNumber: {
+                    [Op.and]: {
+                        [Op.gte]: startBlock,
+                        [Op.lte]: endBlock
+                    }
+                }
+            }
         }
+
+        query = Object.assign(query, options)
+
+        //events
+        return ProcessedEvent.findAll(query)
+
+
+
+
     }
 
-    // async getEventsByTransactions(transactions:ProcessedTransaction[], options?:any) : Promise<ProcessedEvent[]> {
+    async remove(processedTransaction:ProcessedTransaction, options?:any) : Promise<void> {
 
-    //     return ProcessedEvent.findAll({
-    //         where: {
-    //           processedTransactionId: {
-    //             [Op.in]: transactions.map(t => t._id)
-    //           }
-    //         }
-    //     }, options)
+        //Delete events
+        const events = await this.getEventsByTransaction(processedTransaction, options)
 
-    // }
+        for (let event of events) {
+            await event.destroy(options)
+        }
 
 
-    // async putEvent(event: ProcessedEvent, options?:any): Promise<ProcessedEvent> {
+        //Remove relation to tokens
+        if (processedTransaction.tokens) {
+            for (let token of processedTransaction.tokens) {
+                await processedTransaction.removeToken(token, options)
+            }
+
+        }
+
+        await processedTransaction.destroy(options)
+
+    }
+
+    async getEventsByTransaction(transaction:ProcessedTransaction, options?:any) : Promise<ProcessedEvent[]> {
+
+        return ProcessedEvent.findAll({
+            where: {
+              processedTransactionId: {
+                [Op.eq]: transaction._id
+              }
+            }
+        }, options)
+
+    }
+
+    async putEvent(event: ProcessedEvent, options?:any): Promise<ProcessedEvent> {
         
-    //     await event.save(options)
-    //     return event 
+        await event.save(options)
+        return event 
 
-    // }
+    }
 
-    // async putEvents(events:ProcessedEvent[], options?:any) {
+    async putEvents(events:ProcessedEvent[], options?:any) {
      
-    //     for (let event of events) {
-    //         await this.putEvent(event,options)
-    //     }
+        for (let event of events) {
+            await this.putEvent(event,options)
+        }
 
-    // }
-
+    }
 
     async getLatest(beforeBlock?:number, options?:any): Promise<ProcessedTransaction> {
 
@@ -134,7 +170,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-
     async list(limit: number, skip: number, options?:any): Promise<ProcessedTransaction[]> {
 
         let query = {
@@ -146,12 +181,84 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             ]
         }
 
-        query = Object.assign(query, options)
-
-
-        return ProcessedTransaction.findAll(query)
+        return ProcessedTransaction.findAll(Object.assign(query, options))
 
     }
+
+    async listByToken(tokenId:number, options?:any) : Promise<ProcessedTransaction[]>  {
+
+        let s = await this.sequelize()
+
+        let queryOptions = {
+            type: s.QueryTypes.RAW,
+            plain: false,
+            model: ProcessedTransaction,
+            mapToModel: true,
+            replacements: { 
+                tokenId: tokenId
+            }
+        }
+
+        const [queryResults, metadata] = await s.query(`
+            select 
+                *
+            FROM 
+                'processed_transaction' t
+            INNER JOIN 'processed_transaction_token' ptt on t._id = ptt.processedTransactionId
+            WHERE 
+                ptt.tokenId = :tokenId 
+            ORDER BY t.blockNumber desc, t.transactionIndex desc
+        `, Object.assign(queryOptions, options))
+
+
+        let results:ProcessedTransaction[] = []
+
+        for (let result of queryResults) {
+            results.push(await this.get(result._id, options))
+        }
+
+        return results
+
+    }
+
+
+    async listByTokens(tokenIds:number[], options?:any) : Promise<ProcessedTransaction[]>  {
+
+        let s = await this.sequelize()
+
+        let queryOptions = {
+            type: s.QueryTypes.RAW,
+            plain: false,
+            model: ProcessedTransaction,
+            mapToModel: true,
+            replacements: { 
+                tokenIds: tokenIds
+            }
+        }
+
+        const [queryResults, metadata] = await s.query(`
+            select 
+                *
+            FROM 
+                'processed_transaction' t
+            INNER JOIN 'processed_transaction_token' ptt on t._id = ptt.processedTransactionId
+            WHERE 
+                ptt.tokenId IN (:tokenIds)
+            ORDER BY t.blockNumber desc, t.transactionIndex desc
+        `, Object.assign(queryOptions, options))
+
+
+        let results:ProcessedTransaction[] = []
+
+        for (let result of queryResults) {
+            results.push(await this.get(result._id, options))
+        }
+
+        return results
+
+    }
+
+    a
 
     async getSalesReport(): Promise<SalesReport> {
 
@@ -249,76 +356,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         if (!timestamp) timestamp = 0
 
         let s = await this.sequelize()
-
-        // const self = this
-
-        // return new Promise(function(resolve, reject) {
-
-        //     let db = new sqlite3.Database(`${self.baseDir}/sync/data.sqlite`)
-
-        //     // db.run("UPDATE tbl SET name = $name WHERE id = $id", {
-        //     //     $timestamp: timestamp
-        //     // });
-        //     console.log(1)
-
-        //     db.all(`
-    
-        //         select 
-    
-        //             JSON_EXTRACT(transactionValue, '$.tokenPrice') as tokenPrice,
-                    
-        //             COUNT(t._id) as events,
-        //             SUM(JSON_EXTRACT(m.value, '$.price')) as ethValue,
-        //             SUM(JSON_EXTRACT(m.value, '$.usdValue')) as usdValue,
-                    
-        //             AVG(JSON_EXTRACT(m.value, '$.price')) as averageEthValue,
-        //             AVG(JSON_EXTRACT(m.value, '$.usdValue')) as averageUsdValue,
-                
-        //             tok.traitType,
-        //             tok.v
-                    
-        //         FROM (
-        //             select 
-        //                 DISTINCT JSON_EXTRACT(a.value, '$.traitType') traitType, JSON_EXTRACT(a.value, '$.value') v
-        //             FROM 'token' t, JSON_EACH(attributeSelections) a ORDER BY traitType asc, v asc
-        //         ) attr
-        //         INNER JOIN (
-        //             select 
-        //                 t.tokenId as tokenId,
-        //                 JSON_EXTRACT(a.value, '$.traitType') as traitType,
-        //                 JSON_EXTRACT(a.value, '$.value') as v
-        //             FROM 'token' t, JSON_EACH(attributeSelections) a
-        //         ) tok on tok.traitType = attr.traitType AND tok.v = attr.v
-        //         INNER JOIN 'processed-transaction' t, JSON_EACH(tokenPrice) m  on tok.tokenId = m.key
-        //         WHERE 
-        //             JSON_EXTRACT(transactionValue, '$.totalPrice') > 0 AND
-        //             t.timestamp >= ?
-        //         GROUP BY tok.traitType, tok.v
-        //         order by usdValue desc 
-                
-        //     `, [timestamp], (err, rows) => {
-    
-        //         console.log(12)
-
-
-        //         // close the database connection
-        //         db.close()
-
-        //         if (err) {
-        //             reject(err)
-        //         }
-
-        //         resolve(rows)
-
-        //     })
-            
-
-
-        //     return salesRows
-        // })
-
-
-
 
         
         const [queryResults, metadata] = await s.query(`
@@ -581,28 +618,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
 
     }
-
-
-    /**
-     * This function parses the JSON fields of ProcessedTransaction when using a raw query. Has a side-effect of marking all the models as changed/dirty as far as sequelize goes. Not great. 
-     * @param result 
-     * @returns 
-     */
-     private _parseJSON(result: any) {
-
-        if (!result) return
-
-        result.tokenTraders = JSON.parse(result.tokenTraders)
-        result.ercEvents = JSON.parse(result.ercEvents)
-        result.processedEvents = JSON.parse(result.processedEvents)
-        result.transactionValue = JSON.parse(result.transactionValue)
-        result.previousByTransactionInitiatorId = JSON.parse(result.previousByTransactionInitiatorId)
-        result.previousByTokenOwnerId = JSON.parse(result.previousByTokenOwnerId)
-        result.nextByTokenIds = JSON.parse(result.nextByTokenIds)
-        result.nextByTokenOwnerId = JSON.parse(result.nextByTokenOwnerId)
-        result.nextByTransactionInitiatorId = JSON.parse(result.nextByTransactionInitiatorId)
-    }
-
 
 }
 

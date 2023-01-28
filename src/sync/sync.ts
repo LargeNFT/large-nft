@@ -30,12 +30,11 @@ import { Transaction } from "./dto/transaction.js"
 let channelId
 
 // import { simpleGit, CleanOptions } from 'simple-git'
-import { ProcessedEvent, ProcessedTransaction } from "./dto/processed-transaction.js"
+import { ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken } from "./dto/processed-transaction.js"
 import { BlockService } from "./service/block-service.js"
 import { TransactionService } from "./service/transaction-service.js"
-import { ContractStateService } from "./service/contract-state-service.js"
 import { TokenOwnerService } from "./service/token-owner-service.js"
-import { ProcessedTransactionService } from "./service/processed-transaction-service.js"
+import { ProcessedTransactionService, TransactionViewModel } from "./service/processed-transaction-service.js"
 import { ContractState } from "./dto/contract-state.js"
 import { Token } from "./dto/token.js"
 import { SchemaService } from "../reader/service/core/schema-service.js"
@@ -117,17 +116,25 @@ let sync = async () => {
 
   if (config.clear) {
 
-    console.log('Clearing processed transaction data...')
+    console.time('Clearing processed transaction data...')
 
     await ContractState.drop()
+
+    await ProcessedTransactionToken.drop()
+    await ProcessedEvent.drop()
     await ProcessedTransaction.drop()
+
     await TokenOwner.drop()
     await Token.drop()
 
-    await sequelize.sync()
+    console.timeEnd('Clearing processed transaction data...')
+
 
   }
   
+  console.time('Synchronizing database schema...')
+  await sequelize.sync()
+  console.timeEnd('Synchronizing database schema...')
 
 
 
@@ -164,7 +171,7 @@ let sync = async () => {
         
         
 
-        if (Object.keys(indexResult.processedTransactionsToUpdate).length > 0) {
+        if (Object.keys(indexResult.processedTransactionViewModels).length > 0) {
 
           await sequelize.transaction(async (t1) => {
             await writeResultsToDisk(indexResult, { transaction: t1 })
@@ -176,10 +183,10 @@ let sync = async () => {
 
 
         //Save latest transaction
-        console.log(`Updating latest info: ${indexResult.mostRecentTransaction?._id} / ${new Date().toJSON()}`)
+        console.log(`Updating latest info: ${indexResult.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
             
         fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
-          _id: indexResult.mostRecentTransaction?._id,
+          _id: indexResult.mostRecentTransaction?.transaction._id,
           lastUpdated: new Date().toJSON()
         })))
 
@@ -222,38 +229,42 @@ let sync = async () => {
       fs.mkdirSync(`${config.publicPath}/sync/sales`, { recursive: true })
     }
 
-    console.log(`${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to update. Writing files.`)
+    console.log(`${Object.keys(indexResult.processedTransactionViewModels).length} transactions to update. Writing files.`)
     console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
     console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
 
 
     //Write transactions to file
-    console.time(`Writing ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to disk.`)
-    for (let _id of Object.keys(indexResult.processedTransactionsToUpdate)) {
+    console.time(`Writing ${Object.keys(indexResult.processedTransactionViewModels).length} transactions to disk.`)
+    for (let _id of Object.keys(indexResult.processedTransactionViewModels)) {
 
-      let clonedTransaction = JSON.parse(JSON.stringify(indexResult.processedTransactionsToUpdate[_id]))
-      delete clonedTransaction._rev
-      delete clonedTransaction['_rev_tree']
+      //Get transaction
+      let transaction:TransactionViewModel = indexResult.processedTransactionViewModels[_id]
 
-      fs.writeFileSync(`${config.publicPath}/sync/transactions/${clonedTransaction._id}.json`, Buffer.from(JSON.stringify(clonedTransaction)))
+      fs.writeFileSync(`${config.publicPath}/sync/transactions/${transaction.transaction._id}.json`, Buffer.from(JSON.stringify(transaction)))
 
     }
-    console.timeEnd(`Writing ${Object.keys(indexResult.processedTransactionsToUpdate).length} transactions to disk.`)
+    console.timeEnd(`Writing ${Object.keys(indexResult.processedTransactionViewModels).length} transactions to disk.`)
 
 
 
     console.time(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
 
     //Write changed tokens to file
+
+
     for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
+
       fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
 
-      //Write tokens transactions to JSON
-      let tokenTransactions = await processedTransactionService.listByTokenFrom(parseInt(tokenId), 1000, indexResult.tokensToUpdate[tokenId].latestTransactionId, options)
+      // //Write tokens transactions to JSON
+      // let tokenTransactions = await processedTransactionService.listByToken( parseInt(tokenId), options)
 
-      let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(tokenTransactions, new Date().toJSON())
+      // // console.log(`Token #${tokenId} with ${tokenTransactions.length} transactions.`)
 
-      fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}-activity.json`, Buffer.from(JSON.stringify(transactionsViewModel)))
+      // let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(tokenTransactions, new Date().toJSON())
+
+      // fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}-activity.json`, Buffer.from(JSON.stringify(transactionsViewModel)))
 
     }
     console.timeEnd(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
@@ -282,13 +293,14 @@ let sync = async () => {
     
     
 
-    let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, indexResult.mostRecentTransaction._id, options), new Date().toJSON())
+    let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, indexResult.mostRecentTransaction.transaction._id, options), new Date().toJSON())
     fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
     console.timeEnd(`Writing recent activity to disk.`)
 
 
 
     //Generate token owner pages for leaderboard
+
     let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0, options)
 
     let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)

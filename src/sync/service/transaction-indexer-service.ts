@@ -21,7 +21,7 @@ import { ContractStateService } from "./contract-state-service.js";
 import { TokenOwnerService } from "./token-owner-service.js";
 import { TokenService } from "./token-service.js";
 import { TransactionService } from "./transaction-service.js";
-import { ProcessedTransactionService } from "./processed-transaction-service.js";
+import { ProcessedTransactionService, TransactionViewModel } from "./processed-transaction-service.js";
 
 
 @injectable()
@@ -99,7 +99,7 @@ class TransactionIndexerService {
     async index(options?:any): Promise<ERCIndexResult> {
 
         let result: ERCIndexResult = {
-            processedTransactionsToUpdate: {},
+            processedTransactionViewModels: {},
             ownersToUpdate: {},
             tokensToUpdate: {}
         }
@@ -125,7 +125,7 @@ class TransactionIndexerService {
 
 
 
-        let previousTransaction: ProcessedTransaction = await this.processedTransactionService.getLatest(result.startBlock, options)
+        let previousTransaction: TransactionViewModel = await this.processedTransactionService.getLatestViewModel(result.startBlock, options)
 
         result.mostRecentTransaction = previousTransaction
 
@@ -144,8 +144,8 @@ class TransactionIndexerService {
 
 
         if (previousTransaction) {
-            console.log(`Previous transaction: ${previousTransaction?._id}`)
-            result.processedTransactionsToUpdate[previousTransaction._id] = previousTransaction
+            console.log(`Previous transaction: ${previousTransaction.transaction._id}`)
+            result.processedTransactionViewModels[previousTransaction.transaction._id] = previousTransaction
         }
 
         let processedCount =0
@@ -155,7 +155,7 @@ class TransactionIndexerService {
 
             for (let key of groupedEvents.keys()) {
 
-                let currentTransaction:ProcessedTransaction
+                // let currentTransaction:TransactionViewModel = {}
                 let transactionUser: TokenOwner
 
                 let e = groupedEvents.get(key)
@@ -172,24 +172,22 @@ class TransactionIndexerService {
                 transaction = await this.transactionService.getOrDownload(key, options)
                 block = await this.blockService.getOrDownload(transaction.blockNumber,options)
 
+                let processedTransaction = new ProcessedTransaction()
 
-                currentTransaction = new ProcessedTransaction()
-                currentTransaction._id = transaction.hash    
-                currentTransaction.transactionFrom = transaction.from
-                currentTransaction.blockNumber = transaction.blockNumber
-                currentTransaction.transactionIndex = transaction.transactionIndex
-                currentTransaction.ercEvents = []
-                currentTransaction.tokenTraders = []
-                currentTransaction.tokenIds = []
-                currentTransaction.nextByTokenIds = {}
-                currentTransaction.nextByTokenOwnerId = {}
-                currentTransaction.nextByTransactionInitiatorId = {}
-                currentTransaction.previousByTokenIds = {}
-                currentTransaction.previousByTokenOwnerId = {}
-                currentTransaction.previousByTransactionInitiatorId = {}
-                currentTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.utils.getAddress(this.contract.address), block.ethUSDPrice)
-
-                result.processedTransactionsToUpdate[currentTransaction._id] = currentTransaction
+                processedTransaction._id = transaction.hash    
+                processedTransaction.transactionFrom = transaction.from
+                processedTransaction.blockNumber = transaction.blockNumber
+                processedTransaction.transactionIndex = transaction.transactionIndex
+                processedTransaction.ercEvents = []
+                processedTransaction.tokenTraders = []
+                processedTransaction.tokenIds = []
+                processedTransaction.nextByTokenIds = {}
+                processedTransaction.nextByTokenOwnerId = {}
+                processedTransaction.nextByTransactionInitiatorId = {}
+                processedTransaction.previousByTokenIds = {}
+                processedTransaction.previousByTokenOwnerId = {}
+                processedTransaction.previousByTransactionInitiatorId = {}
+                processedTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.utils.getAddress(this.contract.address), block.ethUSDPrice)
 
 
                 for (let event of e) {
@@ -198,20 +196,20 @@ class TransactionIndexerService {
                     let toOwner: TokenOwner
 
 
-                    if (!block || !currentTransaction) throw new Error("Block and/or transaction not found.")
-                    if (event.transactionHash != currentTransaction._id) throw new Error("Wrong transaction found.")
+                    if (!block || !processedTransaction) throw new Error("Block and/or transaction not found.")
+                    if (event.transactionHash != processedTransaction._id) throw new Error("Wrong transaction found.")
 
                     //Translate
                     let ercEvent: ERCEvent = await this.ercEventService.translateEventToERCEvent(event)
 
-                    currentTransaction.timestamp = block.timestamp
+                    processedTransaction.timestamp = block.timestamp
 
 
 
                     //Look up/create the from address
-                    transactionUser = await this._getTokenOwner(currentTransaction.transactionFrom, result, options)
+                    transactionUser = await this._getTokenOwner(processedTransaction.transactionFrom, result, options)
 
-                    transactionUser.lastActive = new Date(currentTransaction.timestamp * 1000).toJSON()
+                    transactionUser.lastActive = new Date(processedTransaction.timestamp * 1000).toJSON()
 
                     if (ercEvent.namedArgs.tokenId) {
 
@@ -236,54 +234,50 @@ class TransactionIndexerService {
 
 
                         //Look for previousByTokenId
-                        let previousTransactionByToken:ProcessedTransaction = await this._getPreviousTransaction(token.latestTransactionId, currentTransaction._id, result)
-                        
-                        // if (currentTransaction._id == "0x7b322d0e46016632bad174ac089a267c73392c1216d1d5fa4f515f3d5d8661cb") {
-                        //     console.log('22222222')
-                        //     // console.log(currentTransaction)
-                        //     console.log(`Last transaction id is ${token.latestTransactionId}`)
-                        //     // console.log(previousTransactionByToken)
-                        // }
+                        let previousTransactionByToken:TransactionViewModel = await this._getPreviousTransaction(token.latestTransactionId, processedTransaction._id, result)
+
 
                         if (previousTransactionByToken) {
-                            this._updatePreviousNextByToken(ercEvent.namedArgs.tokenId, previousTransactionByToken, currentTransaction, result)
+                            this._updatePreviousNextByToken(ercEvent.namedArgs.tokenId, previousTransactionByToken, processedTransaction, result)
                         }
 
-                        token.latestTransactionId = currentTransaction._id
+                        token.latestTransactionId = processedTransaction._id
 
 
 
                         //Update previous/next for transaction initiator
-                        let previousTransactionByTransactionInitiator = await this._getPreviousTransaction(transactionUser.latestTransactionInitiatorId, currentTransaction._id, result)
+                        let previousTransactionByTransactionInitiator:TransactionViewModel = await this._getPreviousTransaction(transactionUser.latestTransactionInitiatorId, processedTransaction._id, result, options)
 
                         if (previousTransactionByTransactionInitiator) {
-                            this._updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, currentTransaction, result)
+                            this._updatePreviousNextByTransactionInitiator(transactionUser._id, previousTransactionByTransactionInitiator, processedTransaction, result)
                         }
 
-                        transactionUser.latestTransactionInitiatorId = currentTransaction._id
+                        transactionUser.latestTransactionInitiatorId = processedTransaction._id
 
 
                         //Update previous/next for from/to users
                         if (fromOwner) {
-                            let previousTransactionByFromOwner = await this._getPreviousTransaction(fromOwner.latestTransactionId, currentTransaction._id, result)
+
+                            let previousTransactionByFromOwner:TransactionViewModel = await this._getPreviousTransaction(fromOwner.latestTransactionId, processedTransaction._id, result, options)
 
                             if (previousTransactionByFromOwner) {
-                                this._updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, currentTransaction, result)
+                                this._updatePreviousNextByTokenOwner(fromOwner._id, previousTransactionByFromOwner, processedTransaction, result)
                             }
 
-                            fromOwner.latestTransactionId = currentTransaction._id
+                            fromOwner.latestTransactionId = processedTransaction._id
 
 
                         }
 
                         if (toOwner && toOwner._id != fromOwner._id) {
-                            let previousTransactionByToOwner = await this._getPreviousTransaction(toOwner.latestTransactionId, currentTransaction._id, result)
+
+                            let previousTransactionByToOwner:TransactionViewModel = await this._getPreviousTransaction(toOwner.latestTransactionId, processedTransaction._id, result, options)
 
                             if (previousTransactionByToOwner) {
-                                this._updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, currentTransaction, result)
+                                this._updatePreviousNextByTokenOwner(toOwner._id, previousTransactionByToOwner, processedTransaction, result)
                             }
 
-                            toOwner.latestTransactionId = currentTransaction._id
+                            toOwner.latestTransactionId = processedTransaction._id
 
                         }
 
@@ -293,10 +287,10 @@ class TransactionIndexerService {
                     }
 
                     //Add raw event to transaction before saving
-                    currentTransaction.ercEvents.push(ercEvent)
+                    processedTransaction.ercEvents.push(ercEvent)
     
-                    if (currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId] > 0) {
-                        console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${currentTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${currentTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(currentTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
+                    if (processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId] > 0) {
+                        console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${processedTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(processedTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
                     }
 
     
@@ -304,38 +298,46 @@ class TransactionIndexerService {
                 }
 
                 //Set previous/next if we already have a previous transaction
-                if (previousTransaction && previousTransaction._id != currentTransaction._id) {
-                    currentTransaction.previousId = previousTransaction._id
-                    previousTransaction.nextId = currentTransaction._id
+                if (previousTransaction && previousTransaction.transaction._id != processedTransaction._id) {
+                    processedTransaction.previousId = previousTransaction.transaction._id
+                    previousTransaction.transaction.nextId = processedTransaction._id
                 }
 
                 
                 //Create processed events
-                result.processedTransactionsToUpdate[currentTransaction._id].processedEvents = this.createProcessedEvents(result.processedTransactionsToUpdate[currentTransaction._id])
+                let processedEvents:ProcessedEvent[] = this.createProcessedEvents(processedTransaction)
+
+
 
                 //Grab token ids from transactions and save on transaction
-                let tokenIds = result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => pe.tokenId)
+                let tokenIds = processedEvents?.map(pe => pe.tokenId)
 
                 if (tokenIds?.length > 0) {
-                    result.processedTransactionsToUpdate[currentTransaction._id].tokenIds = result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => parseInt(pe.tokenId))?.filter(n => n)
+                    processedTransaction.tokenIds = Array.from(new Set(processedEvents?.map(pe => pe.tokenId)?.filter(n => n)))
+                    processedTransaction.tokens = processedTransaction.tokenIds?.map( t => result.tokensToUpdate[t] )
                 }
 
                 //Grab token senders
-                let from = new Set(result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => pe.fromAddress))
-                let to = new Set(result.processedTransactionsToUpdate[currentTransaction._id].processedEvents?.map(pe => pe.toAddress))
+                let from = new Set(processedEvents?.map(pe => pe.fromAddress))
+                let to = new Set(processedEvents?.map(pe => pe.toAddress))
 
                 let tokenTraders = Array.from(new Set([...from, ...to])).filter(n => n)
                 
                 if (tokenTraders?.length > 0) {
-                    result.processedTransactionsToUpdate[currentTransaction._id].tokenTraders.push(...tokenTraders)
+                    processedTransaction.tokenTraders.push(...tokenTraders)
                 }
 
 
+                result.processedTransactionViewModels[processedTransaction._id] = {
+                    events: processedEvents,
+                    transaction: processedTransaction
+                }
+
 
                 //Set previous to current before looping
-                previousTransaction = currentTransaction
+                previousTransaction = result.processedTransactionViewModels[processedTransaction._id]
 
-                result.mostRecentTransaction = currentTransaction
+                result.mostRecentTransaction = result.processedTransactionViewModels[processedTransaction._id]
 
                 console.timeEnd(`Processesing / ${key} / (${processedCount + 1} of ${groupedEvents.size})`)
 
@@ -343,17 +345,19 @@ class TransactionIndexerService {
 
             }
 
-            //Save transactions
-            await this.saveProcessedTransactions(result, options)
-
             //Save tokens
             await this.saveTokens(result, options)
+
+            //Save transactions
+            await this.saveProcessedTransactions(result, options)
 
             //Save token owners
             await this.saveTokenOwners(result,options)
 
             //Rerank token owners
             await this.rerankTokenOwners(result, options)
+
+
 
         }
 
@@ -363,6 +367,13 @@ class TransactionIndexerService {
         console.log(`Saving contract state`)
         await this.contractStateService.put(this.contractState, options)
         
+
+        //If we only grabbed the previous transaction then remove it from the results so we don't re-write it.
+        if (Object.keys(result.processedTransactionViewModels).length == 1 && result.processedTransactionViewModels[previousTransaction.transaction._id]) {
+            result.processedTransactionViewModels = {}
+        }
+
+
 
         return result
 
@@ -383,17 +394,26 @@ class TransactionIndexerService {
 
     private async saveProcessedTransactions(result: ERCIndexResult, options?:any) {
 
-        console.log(`Saving ${Object.keys(result.processedTransactionsToUpdate).length} processed transactions`)
+        console.log(`Saving ${Object.keys(result.processedTransactionViewModels).length} processed transactions`)
 
         let transactionsToSave = []
+        let eventsToSave = []
 
-        for (let _id of Object.keys(result.processedTransactionsToUpdate)) {
-            transactionsToSave.push(result.processedTransactionsToUpdate[_id])
+        for (let _id of Object.keys(result.processedTransactionViewModels)) {
+            transactionsToSave.push(result.processedTransactionViewModels[_id].transaction)
+
+            eventsToSave.push(...result.processedTransactionViewModels[_id].events)
 
         }
 
+
+        //Save transactions
         await this.processedTransactionService.putAll(transactionsToSave, options)
         
+        //Save events
+        await this.processedTransactionService.putEvents(eventsToSave, options)
+
+
     }
 
     private async saveTokenOwners(result: ERCIndexResult, options?:any) {
@@ -495,10 +515,13 @@ class TransactionIndexerService {
 
             let e = currentTransaction.ercEvents[i]
 
-            let processedEvent:ProcessedEvent = {}
+            let processedEvent:ProcessedEvent = new ProcessedEvent()
 
             processedEvent.processedTransactionId = currentTransaction._id
             processedEvent.blockNumber = currentTransaction.blockNumber
+            processedEvent.transactionIndex = currentTransaction.transactionIndex
+            processedEvent.logIndex = e.logIndex
+            processedEvent._id = `${processedEvent.processedTransactionId}-${processedEvent.logIndex}`
             processedEvent.isMint = e.isMint
             processedEvent.isBurn = e.isBurn
             processedEvent.event = e.event
@@ -514,7 +537,7 @@ class TransactionIndexerService {
 
             if (e.namedArgs.tokenId) {
 
-                processedEvent.tokenId = e.namedArgs.tokenId
+                processedEvent.tokenId = parseInt(e.namedArgs.tokenId)
 
                 let tokenPrice:TokenPrice = currentTransaction.transactionValue?.tokenPrice[e.namedArgs.tokenId]
 
@@ -681,45 +704,47 @@ class TransactionIndexerService {
     }
 
 
-    private async _updatePreviousNextByToken(tokenId:number, previousT:ProcessedTransaction, currentT:ProcessedTransaction, result:ERCIndexResult) {
+    private async _updatePreviousNextByToken(tokenId:number, previousT:TransactionViewModel, currentT:ProcessedTransaction, result:ERCIndexResult) {
+
 
         //Make sure we update it.
-        result.processedTransactionsToUpdate[previousT._id] = previousT
+        result.processedTransactionViewModels[previousT.transaction._id] = previousT
 
-        currentT.previousByTokenIds[tokenId] = previousT._id
-        previousT.nextByTokenIds[tokenId] = currentT._id
+        currentT.previousByTokenIds[tokenId] = previousT.transaction._id
+        previousT.transaction.nextByTokenIds[tokenId] = currentT._id
 
     }
 
-    private async _updatePreviousNextByTransactionInitiator(transactionUserId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction, result:ERCIndexResult) {
+    private async _updatePreviousNextByTransactionInitiator(transactionUserId:string, previousT:TransactionViewModel, currentT:ProcessedTransaction, result:ERCIndexResult) {
 
         //Make sure we update it.
-        result.processedTransactionsToUpdate[previousT._id] = previousT
+        result.processedTransactionViewModels[previousT.transaction._id] = previousT
 
-        currentT.previousByTransactionInitiatorId[transactionUserId] = previousT._id
-        previousT.nextByTransactionInitiatorId[transactionUserId] = currentT._id
+        currentT.previousByTransactionInitiatorId[transactionUserId] = previousT.transaction._id
+        previousT.transaction.nextByTransactionInitiatorId[transactionUserId] = currentT._id
+
 
     }
 
-    private async _updatePreviousNextByTokenOwner(tokenOwnerId:string, previousT:ProcessedTransaction, currentT:ProcessedTransaction, result:ERCIndexResult) {
+    private async _updatePreviousNextByTokenOwner(tokenOwnerId:string, previousT:TransactionViewModel, currentT:ProcessedTransaction, result:ERCIndexResult) {
 
         //Make sure we update it.
-        result.processedTransactionsToUpdate[previousT._id] = previousT
+        result.processedTransactionViewModels[previousT.transaction._id] = previousT
 
-        currentT.previousByTokenOwnerId[tokenOwnerId] = previousT._id
-        previousT.nextByTokenOwnerId[tokenOwnerId] = currentT._id
+        currentT.previousByTokenOwnerId[tokenOwnerId] = previousT.transaction._id
+        previousT.transaction.nextByTokenOwnerId[tokenOwnerId] = currentT._id
 
     }
 
-    private async _getPreviousTransaction(previousTransactionId:string, currentTransactionId:string, result:ERCIndexResult) {
+    private async _getPreviousTransaction(previousTransactionId:string, currentTransactionId:string, result:ERCIndexResult, options?:any) : Promise<TransactionViewModel> {
     
         if (!previousTransactionId || previousTransactionId == currentTransactionId) return
 
-        if (!result.processedTransactionsToUpdate[previousTransactionId]) {
-            result.processedTransactionsToUpdate[previousTransactionId] = await this.processedTransactionService.get(previousTransactionId)
+        if (!result.processedTransactionViewModels[previousTransactionId]) {
+            result.processedTransactionViewModels[previousTransactionId] = await this.processedTransactionService.getViewModel(previousTransactionId, options)
         }
 
-        return result.processedTransactionsToUpdate[previousTransactionId]
+        return result.processedTransactionViewModels[previousTransactionId]
 
     }
 
@@ -788,9 +813,9 @@ class TransactionIndexerService {
 
 interface ERCIndexResult {
     ownersToUpdate: {}
-    processedTransactionsToUpdate: {}
+    processedTransactionViewModels: {}
     tokensToUpdate: {}
-    mostRecentTransaction?:ProcessedTransaction
+    mostRecentTransaction?:TransactionViewModel
     startBlock?:number
     endBlock?:number
     blockNumber?:number

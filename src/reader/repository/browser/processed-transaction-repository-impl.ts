@@ -1,6 +1,7 @@
 import axios from "axios"
 import {  inject, injectable } from "inversify"
 import { ProcessedTransaction, Sale, SalesReport } from "../../dto/processed-transaction.js"
+import { TransactionsViewModel, TransactionViewModel } from "../../service/processed-transaction-service.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
@@ -12,7 +13,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
     @inject('baseURI') 
     private baseURI
 
-    async get(_id: string): Promise<ProcessedTransaction> {
+    async get(_id: string): Promise<TransactionViewModel> {
 
         let processedTransaction
     
@@ -26,7 +27,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
             console.log(ex)
         }
 
-        return Object.assign(new ProcessedTransaction(), processedTransaction)
+        return processedTransaction
 
 
     }

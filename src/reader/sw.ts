@@ -74,7 +74,9 @@ self.addEventListener('fetch', event => {
 
     if (url.pathname.startsWith(`${baseURI}backup`)) process = false
     if (url.pathname.startsWith(`${baseURI}large`)) process = false
+    if (url.pathname.startsWith(`${baseURI}sync`)) process = false
     if (url.pathname.startsWith(`${baseURI}t/`) && url.pathname.endsWith(`.json`)) process = false
+
 
     // if (url.pathname.startsWith(`${baseURL}/index`)) process = true
     // if (url.pathname.startsWith(`${baseURL}/mint`)) process = true

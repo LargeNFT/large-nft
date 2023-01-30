@@ -1,8 +1,9 @@
 import { createRequire } from 'module'
 import { ProcessedTransaction, ProcessedTransactionToken } from './processed-transaction.js'
+import { TokenOwner } from './token-owner.js'
 const require = createRequire(import.meta.url)
 
-const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, BelongsToMany } = require('sequelize-typescript')
+const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, ForeignKey, BelongsTo, AllowNull, BelongsToMany } = require('sequelize-typescript')
 
 @Table({
     tableName: 'token',
@@ -33,6 +34,20 @@ class Token extends Model {
     declare processedTransactions: ProcessedTransaction[]
 
 
+
+
+    @ForeignKey(() => TokenOwner)
+    @Column(DataType.STRING)
+    declare currentOwnerId?:string 
+
+    @BelongsTo(() => TokenOwner)
+    currentOwner: TokenOwner
+
+    @Column(DataType.JSON)
+    declare ownershipHistory?:OwnershipHistory[]
+
+
+
     @Column(DataType.STRING)
     declare latestTransactionId?:string
 
@@ -45,6 +60,15 @@ class Token extends Model {
 
 
 }
+
+interface OwnershipHistory {
+    owner:string,
+    blockNumber:number
+    transactionIndex:number
+    transactionHash:string
+    timestamp:number
+}
+
 
 export {
     Token

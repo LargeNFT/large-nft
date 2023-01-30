@@ -124,8 +124,8 @@ let sync = async () => {
     await ProcessedEvent.drop()
     await ProcessedTransaction.drop()
 
-    await TokenOwner.drop()
     await Token.drop()
+    await TokenOwner.drop()
 
     console.timeEnd('Clearing processed transaction data...')
 
@@ -229,6 +229,11 @@ let sync = async () => {
       fs.mkdirSync(`${config.publicPath}/sync/sales`, { recursive: true })
     }
 
+
+    if (!fs.existsSync(`${config.publicPath}/sync/attributes`)) {
+      fs.mkdirSync(`${config.publicPath}/sync/attributes`, { recursive: true })
+    }
+
     console.log(`${Object.keys(indexResult.processedTransactionViewModels).length} transactions to update. Writing files.`)
     console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
     console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
@@ -251,24 +256,11 @@ let sync = async () => {
     console.time(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
 
     //Write changed tokens to file
-
-
     for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
-
       fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
-
-      // //Write tokens transactions to JSON
-      // let tokenTransactions = await processedTransactionService.listByToken( parseInt(tokenId), options)
-
-      // // console.log(`Token #${tokenId} with ${tokenTransactions.length} transactions.`)
-
-      // let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(tokenTransactions, new Date().toJSON())
-
-      // fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}-activity.json`, Buffer.from(JSON.stringify(transactionsViewModel)))
-
     }
-    console.timeEnd(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
 
+    console.timeEnd(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
 
 
     //Write changed owners to file
@@ -353,6 +345,25 @@ let sync = async () => {
     //Sales by attribute
     console.time(`Generating attribute stats...`)
     let attributeSalesReport = await processedTransactionService.getAttributeSalesReport()
+
+    //Write attributes to files
+    for (let key of Object.keys(attributeSalesReport.owners)) {
+
+      let totals = attributeSalesReport.totals.filter( total => `${total.traitType}::::${total.value}` == key)
+
+      fs.writeFileSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}.json`, Buffer.from(JSON.stringify({
+        key: key,
+        totals: totals?.length > 0 ? totals[0] : undefined,
+        owners: attributeSalesReport.owners[key],
+        largestSales: attributeSalesReport.largestSales[key]
+      })))
+
+    }
+
+    fs.writeFileSync(`${config.publicPath}/sync/attributes/totals.json`, Buffer.from(JSON.stringify(attributeSalesReport.totals)))
+
+
+
     console.timeEnd(`Generating attribute stats...`)
   
   }

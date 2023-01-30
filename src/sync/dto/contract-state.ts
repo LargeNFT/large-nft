@@ -5,7 +5,7 @@ const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKe
 
 
 @Table({
-    tableName: 'contract-state',
+    tableName: 'contract_state',
     createdAt: 'dateCreated',
     updatedAt: 'lastUpdated',
     paranoid: false,

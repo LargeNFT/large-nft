@@ -96,59 +96,93 @@
 
           <div class="page-content">
 
-            <div class="row">
+            <div class="fixed-width-content center">
 
-              <div class="col-100 large-75 center">
-                
+              <div class="hidden-on-load">
+
                 <div class="block-title block-title-medium">Attribute Report</div>
                 <div class="card scarcity-report-card data-table">
-
+  
                   <div class="card-content">
+
+                      <table class="attributes-table">
+
                         <% for (let traitType of traitTypes) { 
                           let attributeTotals = attributeReport.filter( at => at.traitType == traitType)
                         %>      
-                        <table>
                           <thead>
                             <tr>
                               <th class="label-cell"><%= traitType %></th>
                               <th class="numeric-cell">Count</th>
                               <th class="numeric-cell">Percent</th>
+                              <th class="numeric-cell">Sales</th>
+                              <th>Total Sales</th>
+                              <th>Average</th>
                             </tr>
                           </thead>
-
+  
                           <tbody>
-
+  
                           <%
                           for (let at of attributeTotals) {    
                           %>      
                             <tr>
-                              <td class="label-cell"><%= at.value %></td> 
+                              <td class="label-cell"><a href="<%= baseURL %>attribute/?attributeKey=<%= `${traitType}::::${at.value}` %>"><%= at.value %></a></td> 
                               <td class="numeric-cell"><%= at.count %></td>
                               <td class="numeric-cell"><%= at.categoryPercent %></td>
+                              <td class="numeric-cell">${attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.events  || 0}</td>
+                              <td>
 
+                                <strong>${attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.ethValue.toFixed(5) || 0}</strong> ETH
+                                <br />
+                                <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.usdValue, 2)}</span>
+
+                              </td>
+                              <td>
+
+
+                                <strong>${attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.averageEthValue.toFixed(5) || 0}</strong> ETH
+                                <br />
+                                <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.averageUsdValue, 2)}</span>
+
+                              </td>
                             </tr>
                           <% 
                           }
                           %>
-
+  
                           </tbody>
-                        </table>
-
+                        
+  
                         <%
                           } 
                         %>
-
-
+                      </table>
+  
                   </div>
                 </div>
-
+  
             
                 <div class="block">
                   <br />
                 </div>
 
               </div>
-              
+
+              <div class="hide-on-pageinit">
+
+                  <div class="card skeleton-text">
+                      <div class="card-header">Attributes</div>
+                      <div class="card-content card-content-padding data-table">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                          lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                      </div>
+
+                  </div>
+
+              </div>
+
+            
             </div>
 
           </div>
@@ -166,14 +200,63 @@
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
             let itemWebService = globalThis.container.get("ItemWebService")
+            let transactionWebService = globalThis.container.get("TransactionWebService")
+
+            let loading
+            let attributesOverall
+
+            const loadOverallSales = async () => {
+                
+                loading = true
+
+                try  {
+
+                    attributesOverall = await transactionWebService.getAttributesOverall()
+
+
+                    let latest = await transactionWebService.getLatest()
+                    lastUpdated = latest.lastUpdated
+
+
+                    console.log(attributesOverall)
+
+    
+                } catch(ex) { 
+                    console.log(ex) 
+                }
+                
+                loading = false
+
+                await $update()
+
+            }
+
 
 
             $on('pageInit', async () => {
 
+              $('.infinite-scroll-preloader').show()
+
+              await loadOverallSales()
+
+              $('.hidden-on-load').removeClass('hidden-on-load')
+              $('.hide-on-pageinit').hide()
+
+              await $update()
+
             })
 
-            $on('pageBeforeOut', async () => {
+
+            $on('pageReinit', async () => {
+
+              await loadOverallSales()
+
+              $('.hide-on-pageinit').hide()
+
+              await $update()
+
             })
+
 
           
             document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%> Attribute Report")

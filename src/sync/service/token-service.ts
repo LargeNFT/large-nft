@@ -34,6 +34,7 @@ class TokenService {
             token = new Token()
             token._id = _id
             token.tokenId = _id
+            token.ownershipHistory = []
 
             //Look up attributes from item
             let item = await this.itemService.getByTokenId(token._id)

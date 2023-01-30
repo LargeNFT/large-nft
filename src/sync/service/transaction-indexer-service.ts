@@ -195,7 +195,6 @@ class TransactionIndexerService {
                     let fromOwner: TokenOwner
                     let toOwner: TokenOwner
 
-
                     if (!block || !processedTransaction) throw new Error("Block and/or transaction not found.")
                     if (event.transactionHash != processedTransaction._id) throw new Error("Wrong transaction found.")
 
@@ -203,8 +202,6 @@ class TransactionIndexerService {
                     let ercEvent: ERCEvent = await this.ercEventService.translateEventToERCEvent(event)
 
                     processedTransaction.timestamp = block.timestamp
-
-
 
                     //Look up/create the from address
                     transactionUser = await this._getTokenOwner(processedTransaction.transactionFrom, result, options)
@@ -229,6 +226,15 @@ class TransactionIndexerService {
 
                             //Update new owner
                             toOwner.tokenIds.push(ercEvent.namedArgs.tokenId)
+
+                            token.currentOwnerId = toOwner._id
+                            token.ownershipHistory.push({
+                                blockNumber: transaction.blockNumber,
+                                owner: toOwner._id,
+                                transactionHash: transaction._id,
+                                transactionIndex: transaction.transactionIndex,
+                                timestamp: block.timestamp
+                            })
 
                         }
 
@@ -293,8 +299,6 @@ class TransactionIndexerService {
                         console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${processedTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(processedTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
                     }
 
-    
-
                 }
 
                 //Set previous/next if we already have a previous transaction
@@ -345,14 +349,16 @@ class TransactionIndexerService {
 
             }
 
+
+            //Save token owners
+            await this.saveTokenOwners(result,options)
+
             //Save tokens
             await this.saveTokens(result, options)
 
             //Save transactions
             await this.saveProcessedTransactions(result, options)
 
-            //Save token owners
-            await this.saveTokenOwners(result,options)
 
             //Rerank token owners
             await this.rerankTokenOwners(result, options)

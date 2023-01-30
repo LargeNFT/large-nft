@@ -1,10 +1,8 @@
 import { inject, injectable } from "inversify"
-import { validate, ValidationError } from "class-validator"
 
 
 import { ItemService } from "../../reader/service/item-service.js"
-import { ValidationException } from "../../reader/util/validation-exception.js"
-import { ProcessedEvent, ProcessedTransaction, Sale, SalesReport } from "../dto/processed-transaction.js"
+import { ProcessedEvent, ProcessedTransaction, Sale, SalesReport, AttributeSaleReport, AttributeOverallSales } from "../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../repository/processed-transaction-repository.js"
 import { RowItemViewModel } from "../dto/item-page.js"
 
@@ -332,9 +330,19 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.getSalesReport()
     }
 
+    async getAttributeSalesReport(traitType:string, value:string): Promise<AttributeSaleReport> {
+        return this.processedTransactionRepository.getAttributeSalesReport(traitType, value)
+    }
+    
+    async getAttributesOverall(): Promise<AttributeOverallSales> {
+        return this.processedTransactionRepository.getAttributesOverall()
+    }
+    
     async getLargestSales(limit:number) : Promise<Sale[]> {
         return this.processedTransactionRepository.getLargestSales(limit)
     }
+
+
 
 }
 
@@ -353,6 +361,7 @@ interface SaleViewModel {
     sale:Sale
     item:RowItemViewModel
 }
+
 
 export {
     ProcessedTransactionService, TransactionsViewModel, SaleViewModel, TransactionViewModel

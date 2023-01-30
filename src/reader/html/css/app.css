@@ -1128,3 +1128,9 @@ html {
 .largest-sales .rank {
   font-size: 22px;
 }
+
+.attributes-table {
+  width: 100%;
+  min-width: 100%;
+  font-size: 18px;
+}

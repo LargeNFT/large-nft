@@ -26,6 +26,7 @@ interface ProcessedTransactionRepository {
     getTokenSalesReport(tokenId:number) : Promise<SalesReport>
     getAttributeSalesReport() : Promise<AttributeSaleReport>
 
+    
     getLargestSales(limit:number) : Promise<Sale[]>
     getSalesByAttribute(traitType:string, value:string) : Promise<Sale[]>
 

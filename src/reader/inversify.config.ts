@@ -156,15 +156,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
     Framework7.registerComponent("mint-info", MintInfo)
     
-    // Framework7.registerComponent("event-info-home", EventInfoHome)
-    // Framework7.registerComponent("event-info-activity", EventInfoActivity)
-    // Framework7.registerComponent("event-info-user", EventInfoUser)
 
-    // Framework7.registerComponent("token-event-info", TokenEventInfo)
-    // Framework7.registerComponent("user-info", UserInfo)
-    // Framework7.registerComponent("user-info-activity", UserInfoActivity)
-
-    // Framework7.registerComponent("leader-board", Leaderboard)
     Framework7.registerComponent("transaction-viewer", Transaction)
     Framework7.registerComponent("transaction-row", TransactionRow)
 
@@ -258,6 +250,14 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       },
 
       {
+        path: `${baseURI}attribute`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attribute/index.html')
+        }
+      },
+
+
+      {
         path: `${baseURI}u`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'u/index.html')
@@ -270,7 +270,6 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
           await resolveWithSpinner(resolve, 'u/activity.html')
         }
       },
-
 
       {
         path: `${baseURI}list-:page.html`,
@@ -397,17 +396,13 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryBrowserImpl).inSingletonScope()
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").to(ReaderSettingsRepositoryBrowserImpl).inSingletonScope()
 
-  // container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryBrowserImpl).inSingletonScope()
   //@ts-ignore
   container.bind<ContractStateRepository>("ContractStateRepository").to({}).inSingletonScope()
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
-  // container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryBrowserImpl).inSingletonScope()
   container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryBrowserImpl).inSingletonScope()
 
-  // container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryBrowserImpl).inSingletonScope()
-  // container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
-  // container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryBrowserImpl).inSingletonScope()
+
 
 
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
@@ -437,20 +432,14 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ComponentStateService>("ComponentStateService").to(ComponentStateService).inSingletonScope()
 
   container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
-  // container.bind<TransactionIndexerService>("TransactionIndexerService").to(TransactionIndexerService).inSingletonScope()
   container.bind<ERCEventService>("ERCEventService").to(ERCEventService).inSingletonScope()
 
-  // container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
   //@ts-ignore
   container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
 
-  // container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
   container.bind<ProcessedTransactionService>("ProcessedTransactionService").to(ProcessedTransactionService).inSingletonScope()
-
-  // container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
-  // container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
 
 
   //Attach container to window so we can easily access it from the browser console

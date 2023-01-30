@@ -1,7 +1,9 @@
 // import axios from "axios";
 import axios from "axios";
 import { inject, injectable } from "inversify";
-import { SalesReport } from "../../dto/processed-transaction.js";
+import { AttributeOverallSales, AttributeSaleReport, SalesReport } from "../../dto/processed-transaction.js";
+import { LeaderboardRowViewModel } from "../../dto/token-owner-page.js";
+import { TokenOwner } from "../../dto/token-owner.js";
 
 
 import { SchemaService } from "../core/schema-service.js";
@@ -21,15 +23,12 @@ class TransactionWebService {
     private tokenOwnerService:TokenOwnerService
 
 
+
     private _ENSCache = {}
 
     constructor(
         @inject("baseURI") private baseURI
     ) {}
-
-
-
-
 
     async listFrom(limit:number, startId?:string) : Promise<TransactionsViewModel> {
 
@@ -62,7 +61,6 @@ class TransactionWebService {
         return transactionsViewModel
 
     }
-
 
     async listByTokenFrom(tokenId:number, limit:number, startId?:string) : Promise<TransactionsViewModel> {
 
@@ -98,10 +96,6 @@ class TransactionWebService {
         return transactionsViewModel
 
     }
-
-
-
-
 
     async listByAddressFrom(address:string, limit:number, startId?:string) : Promise<TransactionsViewModel> {
 
@@ -139,17 +133,6 @@ class TransactionWebService {
 
     }
 
-
-
-
-
-
-
-
-    
-
-
-
     async getLatest() {
         let result = await axios.get(`${this.baseURI}sync/transactions/latest.json`, {
             // query URL without using browser cache
@@ -182,7 +165,6 @@ class TransactionWebService {
 
     }
 
-
     async getTokenActivity(tokenId:number) : Promise<TransactionsViewModel> {
 
         let result = await axios.get(`${this.baseURI}sync/tokens/${tokenId}-activity.json`, {
@@ -209,6 +191,22 @@ class TransactionWebService {
         return this.processedTransactionService.getSalesReport()
     }
 
+    async getAttributeSalesReport(traitType:string, value:string): Promise<AttributeSaleReport> {
+
+        let report = await this.processedTransactionService.getAttributeSalesReport(traitType, value)
+
+        //@ts-ignore
+        report.largestSalesViewModels = await this.processedTransactionService.translateSalesToViewModels(report.largestSales)
+        delete report.largestSales
+
+        return report
+    }
+
+    async getAttributesOverall(): Promise<AttributeOverallSales> {
+        return this.processedTransactionService.getAttributesOverall()
+    }
+
+
     async getLargestSales(limit:number): Promise<SaleViewModel[]> {
 
         let sales = await  this.processedTransactionService.getLargestSales(limit)
@@ -217,9 +215,9 @@ class TransactionWebService {
 
     }
 
-
-
     abbreviateDollars(number, digits) {
+
+        if (!number) return "$0"
 
         var SI_SYMBOL = ["", "", "M", "G", "T", "P", "E"]
 
@@ -241,9 +239,8 @@ class TransactionWebService {
         var scaled = number / scale
 
         // format number and add suffix
-        return scaled.toFixed(digits) + suffix
+        return new Intl.NumberFormat('en-US', { currency: "USD", style:"currency" }).format(scaled) + suffix
     }
-
 
     private async _cacheDisplayName(_id) {
 
@@ -252,7 +249,6 @@ class TransactionWebService {
         }
 
     }
-
 
     private async _cacheENSNames(transactionsViewModel:TransactionsViewModel) {
 
@@ -289,7 +285,6 @@ class TransactionWebService {
 
         
     }
-
 
 }
 

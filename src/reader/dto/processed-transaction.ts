@@ -1,4 +1,6 @@
 import { ERCEvent } from "../../sync/dto/erc-event.js"
+import { SaleViewModel } from "../service/processed-transaction-service.js"
+import { LeaderboardRowViewModel } from "./token-owner-page.js"
 
 
 class ProcessedTransaction {
@@ -102,7 +104,46 @@ interface Sale {
     date:string 
 }
 
+interface OwnersByAttribute {
+    owner: string 
+    count: number
+}
+
+interface AttributeSaleReport {
+
+    totals?:AttributeSalesRow[]
+
+    owners: [{
+        owner: string
+        count: number
+    }]
+
+    ownersViewModels: LeaderboardRowViewModel[]
+
+    largestSales: {
+        [key: string]: Sale[]
+    }
+
+    largestSalesViewModels: SaleViewModel[]
+}
+
+interface AttributeSalesRow extends SalesRow {
+    traitType?:string
+    value?:string 
+}
+
+
+interface AttributeOverallSales {
+    events?:number
+
+    ethValue?:number
+    usdValue?:number
+
+    averageEthValue?:number
+    averageUsdValue?:number
+}
+
 
 export {
-    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow, Sale
+    ProcessedTransaction, ProcessedEvent, TransactionValue, SalesReport, SalesRow, Sale, AttributeSaleReport, AttributeOverallSales
 }

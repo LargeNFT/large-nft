@@ -335,16 +335,19 @@ interface AttributeSaleReport {
 
     totals?:AttributeSalesRow[]
 
-    yearTotals?:AttributeSalesRow[]
-    monthTotals?:AttributeSalesRow[]
-    weekTotals?:AttributeSalesRow[]
-    dayTotals?:AttributeSalesRow[]
+    owners: []
+
+    largestSales: {
+        [key: string]: Sale[]
+    }
 
 }
 
 interface AttributeSalesRow extends SalesRow {
     traitType?:string
     value?:string 
+
+
 }
 
 interface SalesRow {
@@ -371,7 +374,13 @@ interface Sale {
 }
 
 
+interface OwnersByAttribute {
+    owner: string 
+    count: number
+    ensName:string
+    lastActive:Date
+}
 
 export {
-    ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport, TokenPrice, ProcessedEvent, ProcessedTransactionToken
+    ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport, TokenPrice, ProcessedEvent, ProcessedTransactionToken, OwnersByAttribute
 }

@@ -218,7 +218,6 @@ class ProcessedTransactionService {
 
     async getAttributeSalesReport(): Promise<AttributeSaleReport> {
         return this.processedTransactionRepository.getAttributeSalesReport()
-
     }
 
     async getLargestSales(limit:number) : Promise<Sale[]> {
@@ -232,10 +231,9 @@ class ProcessedTransactionService {
     async deleteBetweenBlocks(result:ERCIndexResult, options?:any)  {
 
         let transactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(result.startBlock, result.endBlock, options)
-        // let events:ProcessedEvent[] = await this.processedTransactionRepository.findEventsBetweenBlocks(result.startBlock, result.endBlock, options)
 
 
-        //Get affected tokens. Reset lastTransactionId
+        //Get affected tokens. Reset lastTransactionId and owner
         const tokenIds = Array.from(new Set(transactions.flatMap(({ tokenIds }) => tokenIds)))
 
         for (let tokenId of tokenIds) {
@@ -246,6 +244,14 @@ class ProcessedTransactionService {
             let previousByToken = await this.processedTransactionRepository.getPreviousByTokenId(tokenId, result.startBlock, 0, options)
 
             token.latestTransactionId = previousByToken?._id
+
+            //Remove ownership history after start block
+            token.ownershipHistory = token.ownershipHistory?.filter(oh => oh.blockNumber < result.startBlock)
+            
+            //Set current owner to the last one before the start block
+            if (token.ownershipHistory?.length > 0) {
+                token.currentOwnerId = token.ownershipHistory[token.ownershipHistory.length-1].owner
+            }
 
             result.tokensToUpdate[token._id] = token
 
@@ -283,10 +289,7 @@ class ProcessedTransactionService {
 
         }
 
-        // //Delete events
-        // for (let event of events) {
-        //     await event.destroy(options)
-        // }
+
 
 
         //Delete transactions
@@ -312,13 +315,21 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.getPreviousByTrader(address, blockNumber, transactionIndex, options)
     }
 
-    // async putEvents(events:ProcessedEvent[], options?:any) {
-    //     return this.processedTransactionRepository.putEvents(events, options)
-    // }
 
-    // async getEventsByTransactions(transactions:ProcessedTransaction[], options?:any) : Promise<ProcessedEvent[]> {
-    //     return this.processedTransactionRepository.getEventsByTransactions(transactions, options)
-    // }
+    attributeKeyToInteger(key:string) {
+        let hash = 0, i, chr;
+
+      if (key.length === 0) return hash
+
+      for (i = 0; i < key.length; i++) {
+
+        chr = key.charCodeAt(i)
+        hash = ((hash << 5) - hash) + chr
+        hash |= 0 // Convert to 32bit integer
+      }
+      
+      return hash
+    }
 
 }
 

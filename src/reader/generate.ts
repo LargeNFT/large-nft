@@ -26,6 +26,7 @@ import searchEjs from './ejs/search.ejs'
 import fourOhFourEjs from './ejs/404.ejs'
 
 import attributesEjs from './ejs/pages/attributes.ejs'
+import attributeEjs from './ejs/pages/attribute.ejs'
 import exploreEjs from './ejs/pages/explore.ejs'
 import staticPageEjs from './ejs/pages/static-page.ejs'
 import activityEjs from './ejs/pages/activity.ejs'
@@ -44,24 +45,6 @@ import { ItemViewModel } from "./dto/viewmodel/item-view-model.js"
 
 import pkg from 'convert-svg-to-png';
 const { convert } = pkg;
-
-// import sharp from "sharp"
-
-
-
-// import { simpleGit, CleanOptions } from 'simple-git'
-
-// simpleGit().clean(CleanOptions.FORCE)
-
-// const options = {
-//   baseDir: process.cwd(),
-//   binary: 'git',
-//   maxConcurrentProcesses: 6,
-//   trimmed: false,
-// }
-
-// // when setting all options in a single object
-// const git = simpleGit(options)
 
 
 
@@ -82,7 +65,6 @@ let generate = async () => {
 
   container.bind("contracts").toConstantValue([])
   container.bind("convert-svg-to-png").toConstantValue(convert)
-  // container.bind("sharp").toConstantValue(sharp)
 
 
   let command:GetMainContainerCommand = {
@@ -246,6 +228,19 @@ let generate = async () => {
 
   fs.mkdirSync(`${config.publicPath}/attributes`, { recursive: true })
   fs.writeFileSync(`${config.publicPath}/attributes/index.html`, attributesResult)
+
+  //Attribute page
+  const attributeResult = Eta.render(attributeEjs, {
+    title: channelViewModel.channel.title,
+    baseViewModel: baseViewModel
+  })
+
+  fs.mkdirSync(`${config.publicPath}/attribute`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/attribute/index.html`, attributeResult)
+
+
+
+
 
   //Explore
   const exploreResult = Eta.render(exploreEjs, {

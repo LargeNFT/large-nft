@@ -1,7 +1,7 @@
 import {  inject, injectable } from "inversify"
 import moment from "moment"
 
-import {  AttributeSaleReport, AttributeSalesRow, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
+import {  AttributeSaleReport, AttributeSalesRow, OwnersByAttribute, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
@@ -258,7 +258,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    a
+    
 
     async getSalesReport(): Promise<SalesReport> {
 
@@ -278,19 +278,21 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    async getAttributeSalesReport(): Promise<AttributeSaleReport> {
+    async getAttributeSalesReport(options?:any): Promise<AttributeSaleReport> {
 
-        let report:AttributeSaleReport = {}
+        let report:AttributeSaleReport = {
+            owners: [],
+            largestSales: {}
+        }
 
+        report.totals = await this.getAttributeSalesRows(0, options)
 
-        let yearDate:Date = moment().subtract(1, 'years').toDate()
-        let monthDate:Date = moment().subtract(1, 'month').toDate()
-        let dayDate:Date = moment().subtract(1, 'day').toDate()
-
-        report.totals = await this.getAttributeSalesRows()
-        // report.yearTotals = await this.getAttributeSalesRow( Math.floor(yearDate.getTime() / 1000) )
-        // report.monthTotals = await this.getAttributeSalesRow(  Math.floor(monthDate.getTime() / 1000))
-        // report.dayTotals = await this.getAttributeSalesRow(  Math.floor(dayDate.getTime() / 1000) )
+        let attributes = await this.getAttributes()
+        
+        for (let attribute of attributes) {
+            report.owners[`${attribute.traitType}::::${attribute.v}`] = await this.getOwnersByAttribute(attribute.traitType, attribute.v, options)
+            report.largestSales[`${attribute.traitType}::::${attribute.v}`] = await this.getLargestSalesByAttribute(attribute.traitType, attribute.v, 50, options)
+        }
 
 
         return report
@@ -349,11 +351,10 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    private async getAttributeSalesRows(timestamp?:number) : Promise<AttributeSalesRow[]> {
+    private async getAttributeSalesRows(timestamp:number, options?:any) : Promise<AttributeSalesRow[]> {
 
         let salesRows:AttributeSalesRow[] = []
 
-        if (!timestamp) timestamp = 0
 
         let s = await this.sequelize()
 
@@ -418,7 +419,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
     
                 salesRow.usdValue = result.usdValue
                 salesRow.averageUsdValue = result.averageUsdValue
-    
+
                 salesRows.push(salesRow)
             }
 
@@ -428,7 +429,75 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    private async getAttributes() : Promise<[]> {
+    private async getOwnersByAttribute(traitType:string, value:string, options?:any) : Promise<OwnersByAttribute[]>{
+
+        let s = await this.sequelize()
+
+        
+        const [queryResults, metadata] = await s.query(`
+            SELECT 
+                JSON_EXTRACT(a.value, "$.traitType") as traitType,
+                JSON_EXTRACT(a.value, "$.value") as v,
+                t.currentOwnerId,
+                COUNT (t.tokenId) as c,
+                toko.ensName,
+                toko.lastActive
+            FROM token t, JSON_EACH(attributeSelections) a
+            INNER JOIN token_owner toko on t.currentOwnerId = toko._id
+            WHERE traitType = :traitType AND v = :value
+            GROUP BY currentOwnerId
+            ORDER BY c desc
+            LIMIT 15 
+        `, Object.assign({
+            raw: true,
+            nest: false,
+            plain: false,
+            replacements: { 
+                traitType: traitType,
+                value: value
+            }
+        }, options))
+
+        let owners = queryResults?.map( r => {
+            return {
+                _id: r.currentOwnerId,
+                count: r.c,
+                lastActive: r.lastActive,
+                ensName: r.ensName
+            }
+        })
+
+
+
+        let rank = 0
+        let lastRankCount
+
+
+        for (let i=0; i < owners.length; i++) {
+
+            let owner = owners[i]
+
+            if (!lastRankCount || owner.count < lastRankCount) {
+                rank++
+            }
+
+            //Add any with new rankings to our changeset to save.
+            if (owner.rank != rank || owner.overallRank != i+1) {
+                owner.rank = rank
+                owner.overallRank = i+1
+            }
+
+            lastRankCount = owner.count
+
+        }
+
+        return owners
+
+    }
+
+
+
+    private async getAttributes() : Promise<any[]> {
 
         let s = await this.sequelize()
 
@@ -476,6 +545,49 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         return largestSalesResults
 
     }
+
+    async getLargestSalesByAttribute(traitType:string, value: string, limit:number, options?:any) : Promise<Sale[]> {
+    
+        let s = await this.sequelize()
+
+        const [largestSalesResults, metadata] = await s.query(`
+            select 
+                JSON_EXTRACT(transactionValue, '$.tokenPrice') as tokenPrice,
+                m.key as tokenId,
+                datetime(t.timestamp, 'unixepoch') as date,
+                JSON_EXTRACT(m.value, '$.price') as ethValue,
+                JSON_EXTRACT(m.value, '$.currency') as currency,
+                MAX(JSON_EXTRACT(m.value, '$.usdValue')) as usdValue
+            FROM 'processed_transaction' t, JSON_EACH(tokenPrice) m  
+            WHERE 
+                tokenPrice IS NOT NULL AND
+                tokenId IN (select 
+                    t.tokenId
+                FROM 'token' t, JSON_EACH(attributeSelections) a
+                WHERE
+                    JSON_EXTRACT(a.value, '$.traitType') = :traitType AND JSON_EXTRACT(a.value, '$.value') = :value
+            )
+            GROUP BY tokenId
+            ORDER BY usdValue desc 
+            LIMIT :limit ;
+        `, Object.assign({
+            replacements: { 
+                limit: limit,
+                traitType: traitType,
+                value: value
+            }
+        }, options))
+
+        //Remove "tokenPrice" field. Just used interally for the query. Maybe can find a better fix.
+        largestSalesResults.forEach( sale => {
+            delete sale.tokenPrice 
+        })
+
+
+        return largestSalesResults
+
+    }
+
 
     async getSalesByAttribute(traitType: string, value: string): Promise<Sale[]> {
 
@@ -628,7 +740,6 @@ interface SalesRowInput {
         value:string
     }
 }
-
 
 
 export {

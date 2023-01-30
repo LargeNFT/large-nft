@@ -4,7 +4,7 @@ const require = createRequire(import.meta.url)
 const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
 
 @Table({
-    tableName: 'token-owner',
+    tableName: 'token_owner',
     createdAt: 'dateCreated',
     updatedAt: 'lastUpdated',
     paranoid: false,

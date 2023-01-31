@@ -304,70 +304,7 @@
   
               </div>
   
-              <div class="block-title block-title-medium">Links</div>
 
-              <div class="block block-strong inset external-links">
-
-                <% 
-                  if (marketplaces?.length > 0) {
-                %>
-                  <p>
-
-                    <label>Marketplaces</label>
-
-                    <% 
-                    for (let marketplace of marketplaces) { 
-                    %>  
-                      <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>    
-                    <%
-                    }
-                    %>
-                    
-                  </p>
-                <%
-                  }
-                %>
-
-                
-
-
-                <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
-
-                  <p>
-
-                    <label>Links</label>
-
-                    <% if(channelViewModel.channel?.contractAddress) { %>
-                      <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
-                    <% } %>
-
-                    <% for (let externalLink of externalLinks) { %>
-                        <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
-                    <% } %>
-
-                  </p>
-
-
-
-                <% } %>
-
-                  <p>
-                    <label>Tools</label>
-
-                    <a href="<%= link(`large/index.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
-                      Fork
-                    </a>
-
-                    <a href="<%= link(`large/index.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
-                      Your projects
-                    </a>
-
-
-                  </p>
-
-
-
-              </div>
 
 
               <!-- <div class="card">
@@ -455,6 +392,73 @@
               <% } %>
   
   
+
+              <div class="block-title block-title-medium">Links</div>
+
+              <div class="block block-strong inset external-links">
+
+                <% 
+                  if (marketplaces?.length > 0) {
+                %>
+                  <p>
+
+                    <label>Marketplaces</label>
+
+                    <% 
+                    for (let marketplace of marketplaces) { 
+                    %>  
+                      <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>    
+                    <%
+                    }
+                    %>
+                    
+                  </p>
+                <%
+                  }
+                %>
+
+                
+
+
+                <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
+
+                  <p>
+
+                    <label>Links</label>
+
+                    <% if(channelViewModel.channel?.contractAddress) { %>
+                      <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                    <% } %>
+
+                    <% for (let externalLink of externalLinks) { %>
+                        <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                    <% } %>
+
+                  </p>
+
+
+
+                <% } %>
+
+                  <p>
+                    <label>Tools</label>
+
+                    <a href="<%= link(`large/index.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
+                      Fork
+                    </a>
+
+                    <a href="<%= link(`large/index.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
+                      Your projects
+                    </a>
+
+
+                  </p>
+
+
+
+              </div>
+
+
 
 
 

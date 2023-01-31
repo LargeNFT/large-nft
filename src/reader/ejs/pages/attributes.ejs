@@ -130,20 +130,20 @@
                               <td class="label-cell"><a href="<%= baseURL %>attribute/?attributeKey=<%= `${traitType}::::${at.value}` %>"><%= at.value %></a></td> 
                               <td class="numeric-cell"><%= at.count %></td>
                               <td class="numeric-cell"><%= at.categoryPercent %></td>
-                              <td class="numeric-cell">${attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.events  || 0}</td>
+                              <td class="numeric-cell">${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.events  || 0}</td>
                               <td>
 
-                                <strong>${attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.ethValue.toFixed(5) || 0}</strong> ETH
+                                <strong>${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.ethValue.toFixed(5) || 0}</strong> ETH
                                 <br />
-                                <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.usdValue, 2)}</span>
+                                <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.usdValue, 2)}</span>
 
                               </td>
                               <td>
 
 
-                                <strong>${attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.averageEthValue.toFixed(5) || 0}</strong> ETH
+                                <strong>${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.averageEthValue.toFixed(5) || 0}</strong> ETH
                                 <br />
-                                <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == '<%= traitType %>' && row.value == '<%= at.value %>')?.averageUsdValue, 2)}</span>
+                                <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.averageUsdValue, 2)}</span>
 
                               </td>
                             </tr>

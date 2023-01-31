@@ -52,7 +52,7 @@
     "html-loader": "4.1.0",
     "html-webpack-plugin": "5.5.0",
     "http-server": "14.1.0",
-    "ipfs": "0.65.0",
+    "ipfs": "0.66.0",
     "jsdom": "19.0.0",
     "mini-css-extract-plugin": "2.6.0",
     "reflect-metadata": "0.1.13",
@@ -101,8 +101,10 @@
     "dgram-browserify": "0.0.13",
     "ethers": "5.7.2",
     "excerpt-html": "1.2.2",
-    "framework7": "7.0.8",
+
+    "framework7": "7.1.2",
     "framework7-icons": "5.0.5",
+    
     "highlight.js": "11.5.1",
     "hotkeys-js": "3.9.0",
     "html-truncate": "1.2.2",

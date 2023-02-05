@@ -13,7 +13,7 @@ Fork any NFT collection to experiment.
 
 Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your book or collection. Includes native theming for iOS, Android, and Desktop.
 
-Inexpensively scale a community and marketplace on any simple, static webhost. No database server required.
+Inexpensively scale a community and marketplace on any simple, static webhost.
 
 # Goals
 

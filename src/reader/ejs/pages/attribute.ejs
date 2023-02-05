@@ -233,6 +233,9 @@
                                   </div>
 
                             </div>
+
+                            <%~ include("footer", {baseURL: baseURL}) %>
+
                         </div>
                     </div>
             
@@ -289,10 +292,6 @@
                     let latest = await transactionWebService.getLatest()
 
                     lastUpdated = latest.lastUpdated
-
-
-                    console.log(owners)
-
     
                 } catch(ex) { 
                     console.log(ex) 

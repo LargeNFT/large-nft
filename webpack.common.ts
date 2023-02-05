@@ -41,113 +41,12 @@ export default () => {
 
 let getAdminConfigs = () => {
 
-
   const fileLoader = {
     loader: 'file-loader',
     options: {
       name: 'admin/[folder]/[name].[ext]'
     }
   }
-
-
-  //The build for the landing site
-  // let indexConfig = {
-  //   entry: './src/admin/index.ts',
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /\.tsx?$/,
-  //         exclude: '/node_modules/',
-  //         loader: 'ts-loader',
-  //       },
-  //       {
-  //         test: /\.css$/,
-  //         use: ['style-loader', 'css-loader']
-  //       },
-  //       {
-  //         test: /\.(png|jpe?g|gif|svg|eot|mp4)$/,
-  //         use: [fileLoader],
-  //       },
-
-        
-  //       {
-  //         test: /\.(ttf|woff|woff2)$/,
-  //         use: {
-  //           loader: 'url-loader',
-  //           options: {
-  //             name: '[folder]/[name]'
-  //           }
-  //         },
-  //       },
-  //       {
-  //         test: /\.f7.html$/,
-  //         use: ['framework7-loader'],
-  //       },
-  //       {
-  //         test: /\.iframe$/i,
-  //         loader: "html-loader",
-  //       }
-  //     ],
-  //   },
-  //   resolve: {
-  //     extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
-  //     alias: {
-  //       buffer: 'buffer',
-  //       process: 'process/browser.js',
-  //       fs: 'memfs'
-  //     },
-  //     fallback: { 
-  //       "path": require.resolve("path-browserify"),
-  //       "util": require.resolve("util/"),
-  //       "assert": require.resolve("assert/"),
-  //       "stream": require.resolve("stream-browserify"),
-  //       "os": require.resolve("os-browserify/browser"),
-  //       "http": require.resolve("stream-http"),
-  //       "https": require.resolve("https-browserify"),
-  //       "zlib": require.resolve("browserify-zlib"),
-  //       "crypto": require.resolve("crypto-browserify"),
-  //       "dgram": require.resolve("dgram-browserify"),
-  //       "child_process": false
-  //     }
-  //   },
-  //   output: {
-  //     filename: 'admin/index/js/[name].index.js',
-  //     library: "index",
-  //     path: path.resolve(__dirname, 'public'),
-  //   },
-
-  //   plugins: [
-
-  //     new webpack.ProvidePlugin({
-  //       process: 'process/browser.js',
-  //     }),
-  
-  //     new webpack.ProvidePlugin({
-  //       Buffer: ['buffer', 'Buffer'],
-  //     }),
-  
-  //     new webpack.DefinePlugin({
-  //       VERSION: JSON.stringify(require("./package.json").version)
-  //     }),
-  
-  //     //Admin index page
-  //     new HtmlWebpackPlugin({
-  //       inject: false,
-  //       title: 'Large',
-  //       // favicon: 'src/html/favicon.ico',
-  //       template: 'src/admin/html/index.html',
-  //       filename: 'index.html'
-  //     }),
-  
-  //     new MiniCssExtractPlugin({
-  //       filename: "[name].css",
-  //       chunkFilename: "[id].css"
-  //     }),
-  
-  //     new HTMLInlineCSSWebpackPlugin(),
-  
-  //   ]
-  // }
 
   //Build config for the main admin application.
   let appConfig = {
@@ -267,9 +166,8 @@ let getAdminConfigs = () => {
         apply: (compiler) => {
   
           compiler.hooks.environment.tap('BuildContractsPlugin', (params) => {
-            let contractJSON = {
-  
-            }
+            
+            let contractJSON = {}
   
             let contracts = ['Channel']
   

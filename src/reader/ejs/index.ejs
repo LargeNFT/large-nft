@@ -103,15 +103,6 @@
           >
           </token-toolbar>
 
-          <!-- <% if (it.firstPost.item) { %>
-            <div class="fab fab-right-center small-only">
-                <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" data-transition="none">
-                    <i class="icon f7-icons color-blue">arrow_right</i>
-                </a>
-            </div>
-          <% } %> -->
-
-
 
           <div class="page-content">
 
@@ -305,46 +296,6 @@
               </div>
   
 
-
-
-              <!-- <div class="card">
-                <div class="card-header">Explore</div>
-                <div class="card-content">
-                  
-                  <div class="list cards-list virtual-list" id="explore-list-index">
-                    <ul class="item-flex">
-  
-                      <% 
-                      if (it.firstPageExploreItems?.length > 0) {
-                        for (let item of it.firstPageExploreItems) {
-                      %>
-    
-                        <li class="flex-card-small">
-                          <a href="<%= link(`t/${item.tokenId}`) %>" class="item-link">
-                              <div class="card" >
-                                  <div class="card-content">
-                                      <div class="square">
-                                          <img src="<%= link(`backup/export/images/${item.coverImageId}.${item.coverImageGenerated ? 'svg' : 'jpg'}`) %>" alt="<%= item.tokenId %>" height="125" width="125"/>
-                                      </div>
-                                  </div>
-                              </div>
-                          </a>
-                        </li>
-    
-                      <%
-                          }
-                        }                  
-                      %>
-  
-  
-                    </ul>
-                  </div>
-  
-                </div>
-                <div class="card-footer"><a href="<%= link('explore.html') %>" class="link">Explore more</a></div>
-              </div> 
-   -->
-  
               <% 
                 if (channelViewModel.staticPagesViewModel.index?.length > 0) {
   
@@ -390,11 +341,9 @@
                   baseurl="<%= baseURL %>"
                 ></mint-info>
               <% } %>
-  
-  
+
 
               <div class="block-title block-title-medium">Links</div>
-
               <div class="block block-strong inset external-links">
 
                 <% 
@@ -459,9 +408,6 @@
               </div>
 
 
-
-
-
               <% if (channelViewModel?.channel.licenseHTML?.length > 13) { %>
   
                 <div class="block-title block-title-small">License</div>
@@ -472,6 +418,10 @@
                 </div>
   
               <% } %>
+
+
+              <%~ include("footer", {baseURL: baseURL}) %>
+
 
             </div>
 
@@ -593,6 +543,7 @@
 
 
     </script>
+
 
     <script type="module" id="page-scripts">
 

@@ -24,7 +24,7 @@ class GenerateService {
     ) { }
 
 
-    async getGenerateViewModel(config): Promise<GenerateViewModel> {
+    async getGenerateViewModel(config, additionalStaticPages?:StaticPage[]): Promise<GenerateViewModel> {
 
         //Get first page of items for explore page
         let itemResults: ItemResults = await this.itemWebService.exploreList({}, 0, PER_PAGE)
@@ -32,7 +32,7 @@ class GenerateService {
 
         let generateViewModel: GenerateViewModel = {
             firstPageExploreItems: itemResults.items,
-            routablePages: await this.staticPageService.listRoutablePages(),
+            routablePages: await this.staticPageService.listRoutablePages(additionalStaticPages),
             base64Version: Buffer.from(JSON.stringify(config.VERSION)).toString('base64'),
             headContents: `
                 <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js"></script>

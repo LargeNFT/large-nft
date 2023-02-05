@@ -1,18 +1,17 @@
 import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author.js";
 import { Channel } from "../../dto/channel.js";
-import { Item } from "../../dto/item.js";
-import { AttributeTotal } from "../../dto/attribute-total.js";
+import { StaticPage } from "../../dto/static-page.js";
+
 
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model.js";
-import { CHUNK_SIZE, ItemRepository } from "../../repository/item-repository.js";
+import { CHUNK_SIZE } from "../../repository/item-repository.js";
 import { AuthorService } from "../author-service.js";
 import { ChannelService } from "../channel-service.js";
 import { PagingService } from "../core/paging-service.js";
 import { WalletService } from "../core/wallet-service.js";
 import { ItemService } from "../item-service.js";
 import { StaticPageService } from "../static-page-service.js";
-import { AttributeTotalService } from "../attribute-total-service.js";
 
 @injectable()
 class ChannelWebService {
@@ -35,16 +34,13 @@ class ChannelWebService {
     @inject("StaticPageService")
     private staticPageService:StaticPageService
 
-    @inject("AttributeTotalService")
-    private attributeTotalService:AttributeTotalService
-
     constructor() {}
 
-    async get(offset:number) : Promise<ChannelViewModel> {
-        return this.getViewModel(await this.channelService.get(), offset)
+    async get(offset:number, additionalStaticPages?:StaticPage[]) : Promise<ChannelViewModel> {
+        return this.getViewModel(await this.channelService.get(), offset, additionalStaticPages)
     }
 
-    async getViewModel(channel:Channel, offset:number) : Promise<ChannelViewModel> {
+    async getViewModel(channel:Channel, offset:number, additionalStaticPages?:StaticPage[]) : Promise<ChannelViewModel> {
  
         let author:Author
 
@@ -59,13 +55,24 @@ class ChannelWebService {
         // let items = await this.itemWebService.list(offset)
 
         
-        let locations = ["navbar", "links", "index"]
+        let locations = ["navbar", "links", "index", "none"]
 
         let staticPagesViewModel = {}
 
         for (let location of locations) {
             staticPagesViewModel[location] = await this.staticPageService.listByLocation(location, 0)
         }
+
+
+        if (additionalStaticPages?.length > 0) {
+            for (let staticPage of additionalStaticPages) {
+                for (let location of staticPage?.locations) {
+                    staticPagesViewModel[location].push(staticPage)
+                }
+            }
+        }
+
+        
 
         return {
             channelContractAbbrev: channel.contractAddress ? this.walletService.truncateEthAddress(channel.contractAddress) : undefined,

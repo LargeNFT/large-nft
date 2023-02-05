@@ -20,10 +20,11 @@ class StaticPageService {
     return this.staticPageRepository.listByLocation(location, skip)
   }
 
-  async listRoutablePages(): Promise<StaticPage[]> {
+  async listRoutablePages(additionalStaticPages?:StaticPage[]): Promise<StaticPage[]> {
 
     let results = []
 
+    results = results.concat(additionalStaticPages)
     results = results.concat(await this.staticPageRepository.listByLocation("navbar", 0))
     results = results.concat(await this.staticPageRepository.listByLocation("links", 0))
 
@@ -31,11 +32,14 @@ class StaticPageService {
     results = JSON.parse(JSON.stringify(results))
 
     //Strip the content.
-    for (let staticPage of results) {
-      delete staticPage.content
-      delete staticPage.contentHTML
-      delete staticPage.contentMarkdown
+    if (results?.length > 0) {
+      for (let staticPage of results) {
+        delete staticPage?.content
+        delete staticPage?.contentHTML
+        delete staticPage?.contentMarkdown
+      }
     }
+
     
     return results 
   }

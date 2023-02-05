@@ -1,7 +1,7 @@
-import { injectable } from "inversify";
-import { ModelView } from "../util/model-view.js";
-import { routeMap } from "../util/route-map.js";
-import { RouteTo } from '../service/core/routing-service.js';
+import { inject, injectable } from "inversify"
+import { ModelView } from "../util/model-view.js"
+import { routeMap } from "../util/route-map.js"
+import { RouteTo } from '../service/core/routing-service.js'
 
 import AdminChannelIndexComponent from '../components/admin/channel/index.f7.html'
 
@@ -19,14 +19,15 @@ import AdminChannelForkReaderComponent from '../components/admin/channel/fork-re
 import AdminChannelUpgradeComponent from '../components/admin/channel/upgrade.f7.html'
 
 
-import { ChannelWebService } from "../service/web/channel-web-service.js";
-import { ItemWebService } from "../service/web/item-web-service.js";
-import { ItemRepository } from "../repository/item-repository.js";
-import { SchemaService } from "../service/core/schema-service.js";
-import { Theme } from "../dto/theme.js";
-import { ThemeService } from "../service/theme-service.js";
-import { StaticPage } from "../dto/static-page.js";
-import { StaticPageService } from "../service/static-page-service.js";
+import { ChannelWebService } from "../service/web/channel-web-service.js"
+import { ItemWebService } from "../service/web/item-web-service.js"
+import { ItemRepository } from "../repository/item-repository.js"
+import { SchemaService } from "../service/core/schema-service.js"
+import { Theme } from "../dto/theme.js"
+import { ThemeService } from "../service/theme-service.js"
+import { StaticPage } from "../dto/static-page.js"
+import { StaticPageService } from "../service/static-page-service.js"
+import axios from "axios"
 
 
 @injectable()
@@ -37,12 +38,18 @@ class ChannelController {
         private itemWebService:ItemWebService,
         private schemaService:SchemaService,
         private themeService:ThemeService,
-        private staticPageService:StaticPageService
+        private staticPageService:StaticPageService,
+        @inject('footer-text') private footerText:string
     ) {}
 
     @routeMap("/")
     async app() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
+
+
+            return {
+                footerText: this.footerText
+            }
 
         }, AdminChannelIndexComponent)
     }
@@ -77,6 +84,7 @@ class ChannelController {
         return new ModelView(async (routeTo:RouteTo) => {
 
             return {
+                footerText: this.footerText,
                 contractAddress: routeTo.query.contractAddress
             }
 
@@ -86,6 +94,10 @@ class ChannelController {
     @routeMap("/admin/channel/fork-reader")
     async forkReader() : Promise<ModelView> {
         return new ModelView(async (routeTo:RouteTo) => {
+
+            return {
+                footerText: this.footerText
+            }
 
         }, AdminChannelForkReaderComponent)
     }

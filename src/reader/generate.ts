@@ -44,6 +44,7 @@ import { ChannelWebService } from "./service/web/channel-web-service.js"
 import { ItemViewModel } from "./dto/viewmodel/item-view-model.js"
 
 import pkg from 'convert-svg-to-png';
+import { StaticPage } from "./dto/static-page.js"
 const { convert } = pkg;
 
 
@@ -51,9 +52,6 @@ const { convert } = pkg;
 let generate = async () => {
 
   let config:any = await ProcessConfig.getConfig() 
-
-
-
 
   let container = new Container()
 
@@ -103,10 +101,23 @@ let generate = async () => {
   await fs.promises.mkdir(`${config.publicPath}`, { recursive: true })
 
 
+
+  //Load any additional static pages.
+  let additionalStaticPages:StaticPage[] 
+
+  if (config.additionalStaticPages) {
+    try {
+      let contents = await fs.promises.readFile(config.additionalStaticPages)
+      additionalStaticPages = JSON.parse(contents.toString())
+    } catch(ex) {}
+  }
+
+
   //Look up channel and items.
-  let channelViewModel = await channelWebService.get(0)
+  let channelViewModel = await channelWebService.get(0, additionalStaticPages)
   let itemViewModels:ItemViewModel[] = await itemWebService.list(0, config.maxItems)
   let itemPages = await itemWebService.buildItemPages(itemViewModels, PER_PAGE)
+
 
 
   //Attribute report. Write to file.
@@ -127,7 +138,8 @@ let generate = async () => {
   }
 
 
-  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config)
+  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, additionalStaticPages)
+
 
   if (!config.externalLinks) {
     config.externalLinks = []
@@ -140,6 +152,20 @@ let generate = async () => {
         <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js"></script>
     `
   let bodyContents = ``
+
+
+
+
+  let footer
+
+  try {
+    footer = await fs.promises.readFile(config.footer)
+  } catch(ex) {}
+
+
+
+  Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : ""))
+
 
 
   let baseViewModel = {
@@ -322,6 +348,8 @@ let generate = async () => {
 
 
   //Build static pages
+
+  //links
   if (channelViewModel.staticPagesViewModel?.links?.length > 0) {
     for (let staticPage of channelViewModel.staticPagesViewModel?.links) {
 
@@ -334,6 +362,23 @@ let generate = async () => {
       fs.writeFileSync(`${config.publicPath}/${staticPage.slug}.html`, staticPagesResult)
     }
   }
+
+  //"none"
+  if (channelViewModel.staticPagesViewModel?.none?.length > 0) {
+    for (let staticPage of channelViewModel.staticPagesViewModel?.none) {
+
+      const staticPagesResult = Eta.render(staticPageEjs, {
+        title: channelViewModel.channel.title,
+        staticPage: staticPage,
+        baseViewModel: baseViewModel
+      })
+
+      fs.writeFileSync(`${config.publicPath}/${staticPage.slug}.html`, staticPagesResult)
+    }
+  }
+
+
+
 
 
   //Generate token pages
@@ -387,27 +432,6 @@ let generate = async () => {
 
 
   }
-
-
-  // if (config.env == "production") {
-
-  //   await git.add('.')
-  //   await git.commit("A")
-
-  //   //Switch to the public branch
-  //   await git.checkout(config.publicBranch)
-  
-  //   //Copy public folder from main branch
-  //   await git.checkout([config.mainBranch, '--', 'public'])
-  // }
-
-
-
-
-
-
-
-
 
 }
 

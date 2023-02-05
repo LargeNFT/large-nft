@@ -200,7 +200,6 @@
                                 
                                         </div> 
                                 
-                                
                                         <div class="hidden-on-load">
 
                                             ${transactionsViewModel?.transactions?.length > 0 ? $h`
@@ -227,7 +226,9 @@
                                               </div>
             
                                         </div>
-                                
+
+                                        <%~ include("footer", {baseURL: baseURL}) %>          
+
                                     </div>
                                 
                                     <div class="col-100 large-25 token-sidebar">
@@ -296,7 +297,7 @@
                                                     <% if (as.attributeTotal?.categoryPercent) { %>
                                                         <div class="button-outline attribute-value">
                                                             <div class="trait-type"><%= as.traitType %></div>
-                                                            <div class="value"><%= as.value %></div>
+                                                            <div class="value"><a href="${link('attribute/?attributeKey=<%=as.traitType%>::::<%=as.value%>')}"><%= as.value %></a></div>
                                                             <div class="category-percent"><%= as.attributeTotal?.categoryPercent  %> have this trait</div>
                                                         </div>                                                
                                                     <% } %>
@@ -351,6 +352,8 @@
                                 
                                 </div>
 
+
+
                             </div>
 
                             <% if (itemViewModel.item.next) { %>
@@ -360,6 +363,11 @@
 
                         </div>
                     </div>
+
+
+                    
+
+
                 </div>
 
             </div>
@@ -387,6 +395,11 @@
             let swiper
 
             let transactionsViewModel
+
+            const link = (href) => {
+              return baseURI + href
+            }   
+
 
             const initSwiper = () => {
 

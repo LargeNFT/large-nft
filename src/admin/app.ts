@@ -18,7 +18,6 @@ import './html/css/app.css'
 
 import { RoutingService } from "./service/core/routing-service.js"
 
-import AdminChannelShowComponent from './components/admin/channel/show.f7.html'
 
 
 export default async(version) => {

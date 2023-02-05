@@ -1,0 +1,57 @@
+<template>
+
+  <div class="toolbar toolbar-bottom">
+    <div class="toolbar-inner" style="display: block; padding: 10px;">
+
+      <span class="footer-link">
+        Code licensed under <a href="https://github.com/LargeNFT/large-nft/blob/master/LICENSE.md" class="external">MIT</a>
+      </span>
+
+      <span class="footer-link">
+        <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a>
+      </span>
+
+      <span class="footer-link">
+        <a href="https://twitter.com/large_nft" class="external">Twitter</a>
+      </span>
+
+      <span class="footer-link"><a href="https://www.npmjs.com/package/large-nft/v/${version}" class="external">${version}</a></span>
+      
+      <span class='footer-link'><a href='privacy'>Privacy Policy</a></span><span class='footer-link'><a href='terms'>Terms</a></span><span class='footer-link'><a href='disclaimer'>Disclaimer</a></span>
+    </div>
+  </div>
+
+
+</template>
+ 
+<style>
+
+
+</style>
+
+
+<script>
+
+  import { ContainerService } from "../../service/core/container-service"
+
+  export default (props, { $on, $f7, $update }) => {
+
+        let version = ContainerService.getInstance("version")
+
+
+        return $render
+    }
+</script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

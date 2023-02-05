@@ -61,6 +61,7 @@
     --f7-card-header-font-size: 17px;
     --f7-card-header-font-weight: bold;
 
+
   }
 
   html {
@@ -1198,4 +1199,17 @@ input[type="text"]:disabled {
   position: sticky;
   top: 0;
   position: -webkit-sticky;
+}
+
+
+.footer-link  {
+  margin-right: 5px;
+  margin-left: 5px;
+  color: #FFFFFF;
+  display: inline-block;
+}
+
+.fab-right-bottom {
+  margin-bottom: 60px;
+  margin-right: 5px;
 }

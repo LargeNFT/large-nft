@@ -83,6 +83,8 @@ import { Transaction } from "./dto/transaction.js";
 
 import { createRequire } from 'module'
 import { ENS } from "./dto/ens.js";
+import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js";
+import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js";
 
 
 const require = createRequire(import.meta.url)
@@ -169,7 +171,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryNodeImpl).inSingletonScope()
 
   container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryNodeImpl).inSingletonScope()
-  // container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
+  container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
   container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryNodeImpl).inSingletonScope()
 
   container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryNodeImpl).inSingletonScope()

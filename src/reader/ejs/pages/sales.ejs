@@ -35,6 +35,10 @@
 <html lang="en">
 
 <head>
+
+    <%~ include("headStart", {baseURL: baseURL}) %>
+
+
     <style>
     html {
         visibility: hidden;
@@ -64,7 +68,7 @@
     <meta property="twitter:description" content="Largest Sales for <%=channelViewModel.channel.title%>" />
     <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
-    <%~ it.baseViewModel.headContents %>
+    <%~ it.baseViewModel.headEndContents %>
     
 </head>
 

@@ -59,6 +59,11 @@
 
     let coverImageLink = itemViewModel.coverImage ? absoluteLink(`backup/${itemViewModel.coverImage.generated ? 'generated' : 'export'}/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
+    const getAttributeKey = (as) => {
+        return encodeURIComponent(`${as.traitType}::::${as.value}`)
+    }
+
+
 %>
 
 
@@ -66,6 +71,10 @@
 <html lang="en">
 
 <head>
+
+    <%~ include("headStart", {baseURL: baseURL}) %>
+
+
     <style>
     html {
         visibility: hidden;
@@ -93,7 +102,7 @@
     <meta property="twitter:description" content="<%= escapeExcerpt(itemViewModel.contentHTML) %>" />
     <meta property="twitter:image" content="<%= coverImageLink %>" />
     
-    <%~ it.baseViewModel.headContents %>
+    <%~ it.baseViewModel.headEndContents %>
 
 </head>
 
@@ -274,15 +283,54 @@
                                 
                                 
                                         <% if (itemViewModel.channel.contractAddress) { %>
-                                            <nft-info id="<%= itemViewModel.item.tokenId %>" 
-                                                      baseurl="<%= baseURL %>" 
-                                                      contract="<%= itemViewModel.channel.contractAddress %>">
-                                            </nft-info>
+
+                                            <div class="hidden-on-load">
+                                                <div class="card">
+                                                    <div class="card-content card-content-padding">
+                                                        ${token?.currentOwnerId ? $h`
+
+                                                            Owned by <a href="${link(`u/?address=${token?.currentOwnerId}`)}">
+                                                                ${transactionWebService.getDisplayName(token?.currentOwnerId)}
+                                                            </a>
+                                                        ` : $h`
+                                                            NFT has not been <a href="${link(`mint.html`)}">minted</a> yet.
+                                                        `}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                          
+                                            <div class="data-table card">
+                                        
+                                                <div class="card-header">
+                                                    Token Info
+                                                </div>
+                                            
+                                                <div class="card-content">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="label-cell">Contract Address</td>
+                                                                <td><a href="https://etherscan.io/token/<%= itemViewModel.channel.contractAddress %>" class="external">${contractAddress}</a></td>
+                                                            </tr>
+                                                    
+                                                            <tr>
+                                                                <td class="label-cell">Token ID</td>
+                                                                <td>#<%= itemViewModel?.item?.tokenId %></td>
+                                                            </tr>
+                                                
+                                                            <tr>
+                                                                <td class="label-cell">Metadata</td>
+                                                                <td><a href="${metadataURL}" class="external">View</a></td>
+                                                            </tr>                                        
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
                                         <% } %>
                                 
-                                
-                                
-                                
+
                                 
                                         <div class="card">
                                             
@@ -297,7 +345,7 @@
                                                     <% if (as.attributeTotal?.categoryPercent) { %>
                                                         <div class="button-outline attribute-value">
                                                             <div class="trait-type"><%= as.traitType %></div>
-                                                            <div class="value"><a href="${link('attribute/?attributeKey=<%=as.traitType%>::::<%=as.value%>')}"><%= as.value %></a></div>
+                                                            <div class="value"><a href="${link(`attribute/?attributeKey=<%= getAttributeKey(as) %>`)}"><%= as.value %></a></div>
                                                             <div class="category-percent"><%= as.attributeTotal?.categoryPercent  %> have this trait</div>
                                                         </div>                                                
                                                     <% } %>
@@ -383,10 +431,13 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
             let transactionWebService = globalThis.container.get("TransactionWebService")
+            let walletService = globalThis.container.get("WalletService")
 
             let uiService = globalThis.container.get("UiService")
 
             let readerSettingsService = globalThis.container.get("ReaderSettingsService")
+            let tokenService = globalThis.container.get("TokenService")
+
             let baseURI = globalThis.container.get("baseURI")
 
             let hasPrevious = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.previous?.tokenId != undefined) %>`)
@@ -395,6 +446,14 @@
             let swiper
 
             let transactionsViewModel
+
+            let token
+
+            let metadataURL = `${baseURI}backup/export/metadata/<%= itemViewModel.item.tokenId  %>.json`
+
+
+            let contractAddress = walletService.truncateEthAddress('<%= itemViewModel.channel.contractAddress %>')
+
 
             const link = (href) => {
               return baseURI + href
@@ -458,6 +517,9 @@
                     // //Last updated won't be right because this only gets written when it actually changes.
                     // let latest = await transactionWebService.getLatest()
                     // transactionsViewModel.lastUpdated = latest.lastUpdated
+
+                    token = await tokenService.get("<%= itemViewModel.item.tokenId  %>")
+
 
                 } catch(ex) { console.log(ex) }
 

@@ -147,7 +147,14 @@ let generate = async () => {
   }
 
 
-  let headContents = `
+
+
+
+
+
+
+
+  let headEndContents = `
         <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js"></script>
         <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js"></script>
         <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js"></script>
@@ -157,6 +164,23 @@ let generate = async () => {
 
 
 
+
+  //Template hooks.
+  //TODO: This idea needs work and this mechanism is likely temporary.
+
+  /** Hook: headStart */
+  let headStartContents
+
+  try {
+    headStartContents = await fs.promises.readFile(config.headStart)
+  } catch(ex) {}
+
+  Eta.templates.define("headStart", Eta.compile(headStartContents ? headStartContents?.toString() : ''))
+
+
+
+  //Load the default footer or use a configured template.
+  /** Hook: footer */
   let footer
 
   try {
@@ -164,6 +188,8 @@ let generate = async () => {
   } catch(ex) {}
 
   Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
+
+
 
 
 
@@ -179,7 +205,7 @@ let generate = async () => {
     channelId: channelViewModel.channel._id,
     showMintPage: config.showMintPage,
     showActivityPage: config.showActivityPage,
-    headContents: headContents,
+    headEndContents: headEndContents,
     bodyContents: bodyContents,
     excerptHtml: excerptHtml,
     he: he,
@@ -210,12 +236,12 @@ let generate = async () => {
   fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
   fs.mkdirSync(config.publicPath, { recursive: true })
 
-  console.log(`Adding ${generateViewModel.firstPageExploreItems.length} items to index.`)
+  // console.log(`Adding ${generateViewModel.firstPageExploreItems.length} items to index.`)
 
 
   const indexResult = Eta.render(indexEjs, {
     title: channelViewModel.channel.title,
-    firstPageExploreItems: generateViewModel.firstPageExploreItems,
+    // firstPageExploreItems: generateViewModel.firstPageExploreItems,
     firstPost: itemViewModels[0],
     baseViewModel: baseViewModel
   })
@@ -389,7 +415,6 @@ let generate = async () => {
   for (let itemViewModel of itemViewModels) {
 
     let rowItemViewModel = itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage)
-
 
     let previous 
     let next 

@@ -195,6 +195,8 @@ class TransactionWebService {
 
         let report = await this.processedTransactionService.getAttributeSalesReport(traitType, value)
 
+        if (!report) return
+
         //@ts-ignore
         report.largestSalesViewModels = await this.processedTransactionService.translateSalesToViewModels(report.largestSales)
         delete report.largestSales

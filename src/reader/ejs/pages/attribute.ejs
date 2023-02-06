@@ -35,6 +35,10 @@
 <html lang="en">
 
 <head>
+
+    <%~ include("headStart", {baseURL: baseURL}) %>
+
+
     <style>
     html {
         visibility: hidden;
@@ -64,7 +68,7 @@
     <meta property="twitter:description" content="Attribute Report for <%=channelViewModel.channel.title%>" />
     <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
-    <%~ it.baseViewModel.headContents %>
+    <%~ it.baseViewModel.headEndContents %>
     
 </head>
 
@@ -86,7 +90,7 @@
                 </nav-bar>
 
 
-                <div class="page-content">
+                <div class="page-content infinite-scroll-content" id="attribute-tokens-infinite-scroll">
 
                     <div class="row">
             
@@ -217,6 +221,12 @@
                                     </div>
                                 </div>
 
+                                <div class="block-title block-title-medium">All Tokens</div>
+                                <div class="list cards-list virtual-list" id="attribute-tokens-list">
+                                    <ul class="item-flex"></ul>
+                                </div>
+                              
+                                <div class="preloader infinite-scroll-preloader"></div>
 
                             
                             </div>
@@ -233,6 +243,8 @@
                                   </div>
 
                             </div>
+
+                            <br /><br />
 
                             <%~ include("footer", {baseURL: baseURL}) %>
 
@@ -256,6 +268,8 @@
 
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let processedTransactionService = globalThis.container.get("ProcessedTransactionService")
+            let itemWebService = globalThis.container.get("ItemWebService")
+
             let walletService = globalThis.container.get("WalletService")
 
             let baseURL = '<%= baseURL %>'
@@ -266,6 +280,20 @@
             let salesReport
             let largestSales
             let owners
+
+
+
+            let virtualList
+
+            let PER_PAGE = 35
+
+            let hasMoreItems = true
+            let loadingInProgress = false
+            let firstPageItems
+
+            let totalTokens
+            let attributeParams = {}
+
 
             let lastUpdated
 
@@ -286,14 +314,28 @@
 
                     salesReport = await transactionWebService.getAttributeSalesReport(traitType, value)
 
-                    largestSales = salesReport.largestSalesViewModels
-                    owners = salesReport.owners
+                    largestSales = salesReport?.largestSalesViewModels
+                    owners = salesReport?.owners
 
                     let latest = await transactionWebService.getLatest()
-
                     lastUpdated = latest.lastUpdated
     
+
+
+                    attributeParams[traitType] = value
+
+
+                    let result = await itemWebService.exploreList(attributeParams, 0, PER_PAGE)
+                    firstPageItems = result.items
+                    totalTokens = result.totalMatches
+
+
+
+                    createVirtualList()
+
+
                 } catch(ex) { 
+                    $('.infinite-scroll-preloader').hide()
                     console.log(ex) 
                 }
                 
@@ -304,7 +346,138 @@
             }
 
 
+
+
+            const createVirtualList = () => {
+
+                virtualList = $f7.virtualList.create({
+                    el: '#attribute-tokens-list',
+                    createUl: false,
+                    renderItem(item) {
+                        return getTemplate(item)
+                    },
+                    height: 287,
+                    items: firstPageItems,                    
+                    cols: getWidth() >= 1024 ? 5 : 2,
+                    emptyTemplate: `
+                        <li class="item-content">
+                            <div class="item-inner">
+                                No results found.
+                            </div>
+                        </li>
+                        `
+                })
+
+
+                if (virtualList.items?.length < totalTokens) {
+                    hasMoreItems = true
+                    document.getElementById("attribute-tokens-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
+                } else {
+                    hasMoreItems = false
+                    $('.infinite-scroll-preloader').hide()
+                }
+
+            }
+
+            const resizeListener = (e) => {
+
+                const viewPortWidth = getWidth()
+
+                virtualList.params.cols = viewPortWidth >= 1024 ? 5 : 2
+                virtualList.update()
+
+                console.log("Resized...")
+
+            }
+
+            const getWidth = () => {
+                return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+            }
+
+            const getTemplate = (rowItemViewModel) => {
+
+                let tokenLink = link('t/' + rowItemViewModel.tokenId)
+                let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
+                let imageLink = link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+                let title = rowItemViewModel.title
+
+                return `<li class="flex-card">
+                        <a href="${tokenLink}" class="item-link">
+                            <div class="card" >
+                                <div class="card-content">
+                                    <div class="square">
+                                        <img src="${imageLink}"/>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer">
+                                    ${title}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+            `
+            
+            }
+
+            async function infiniteScroll(e) {
+
+                // Exit, if loading in progress
+                if (loadingInProgress || !hasMoreItems) return
+
+                console.log(`Infinite scrolling...`)
+
+                // Set loading flag
+                loadingInProgress = true
+                $('.infinite-scroll-preloader').show()
+
+
+                try {
+                    
+                    let result = await itemWebService.exploreList(attributeParams, virtualList.items?.length, PER_PAGE)
+
+
+                    let items = result.items
+
+                    virtualList.appendItems(items)
+
+                    if (virtualList.items?.length == totalTokens) {
+                        hasMoreItems = false
+                    }
+
+                } catch (ex) {
+                    console.log(ex)
+                }
+
+                $f7.preloader.hide()
+                $('.infinite-scroll-preloader').hide()
+
+
+                loadingInProgress = false
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             $on('pageInit', async () => {
+
+                window.addEventListener('resize', resizeListener)
+
 
                 attributeKey = $f7.views.main.router.currentRoute?.query?.attributeKey
 

@@ -41,6 +41,10 @@
 <html lang="en">
 
   <head>
+
+    <%~ include("headStart", {baseURL: baseURL}) %>
+
+
     <style>
       html {
         visibility: hidden;
@@ -70,7 +74,7 @@
     <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
     <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
-    <%~ it.baseViewModel.headContents %>
+    <%~ it.baseViewModel.headEndContents %>
     
 
   </head>
@@ -127,7 +131,7 @@
                           for (let at of attributeTotals) {    
                           %>      
                             <tr>
-                              <td class="label-cell"><a href="<%= baseURL %>attribute/?attributeKey=<%= `${traitType}::::${at.value}` %>"><%= at.value %></a></td> 
+                              <td class="label-cell"><a href="<%= baseURL %>attribute/?attributeKey=<%= encodeURIComponent(`${traitType}::::${at.value}`) %>"><%= at.value %></a></td> 
                               <td class="numeric-cell"><%= at.count %></td>
                               <td class="numeric-cell"><%= at.categoryPercent %></td>
                               <td class="numeric-cell">${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.events  || 0}</td>
@@ -182,7 +186,7 @@
 
               </div>
 
-                            <%~ include("footer", {baseURL: baseURL}) %>
+              <%~ include("footer", {baseURL: baseURL}) %>
 
 
             </div>

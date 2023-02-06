@@ -47,6 +47,10 @@
 <html lang="en">
 
   <head>
+
+    <%~ include("headStart", {baseURL: baseURL}) %>
+
+
     <style>
       html {
         visibility: hidden;
@@ -76,7 +80,7 @@
     <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
     <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
-    <%~ it.baseViewModel.headContents %>
+    <%~ it.baseViewModel.headEndContents %>
     
 
   </head>
@@ -153,6 +157,13 @@
                 </div>
   
               </div>
+
+              <% if (showMintPage) { %>
+                <mint-info
+                  baseurl="<%= baseURL %>"
+                ></mint-info>
+              <% } %>
+
   
               <div class="hidden-on-load">
   
@@ -335,15 +346,8 @@
               }
               %> 
 
-  
-              <% if (showMintPage) { %>
-                <mint-info
-                  baseurl="<%= baseURL %>"
-                ></mint-info>
-              <% } %>
 
 
-              <div class="block-title block-title-medium">Links</div>
               <div class="block block-strong inset external-links">
 
                 <% 

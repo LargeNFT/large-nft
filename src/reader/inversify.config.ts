@@ -50,7 +50,7 @@ import Navbar from './components/reader/navbar.f7.html'
 import TokenToolbar from './components/reader/token-toolbar.f7.html'
 import Transaction from './components/reader/transaction.f7.html'
 
-import NftInfo from './components/reader/item/nft-info.f7.html'
+// import NftInfo from './components/reader/item/nft-info.f7.html'
 import MintList from './components/reader/item/mint-list.f7.html'
 
 import AttributeFilter from './components/reader/channel/attribute-filter.f7.html'
@@ -70,6 +70,8 @@ import he from 'he'
 import { WalletService } from "./service/core/wallet-service.js";
 import { WalletServiceImpl } from "./service/core/wallet-service-impl.js";
 import { ChannelRepository } from "./repository/channel-repository.js";
+import { TokenRepository } from "./repository/token-repository.js";
+
 import { ItemRepository } from "./repository/item-repository.js";
 import { AuthorRepository } from "./repository/author-repository.js";
 import { MetadataRepository } from "./repository/metadata-repository.js";
@@ -89,6 +91,7 @@ import { StaticPageRepositoryBrowserImpl } from "./repository/browser/static-pag
 import { ItemPageRepositoryBrowserImpl } from "./repository/browser/item-page-repository-impl.js";
 import { AttributeTotalRepositoryBrowserImpl } from "./repository/browser/attribute-total-repository-impl.js";
 import { ReaderSettingsRepositoryBrowserImpl } from "./repository/browser/reader-settings-repository-impl.js";
+import { TokenRepositoryBrowserImpl } from "./repository/browser/token-repository-impl.js";
 
 import { ChannelWebService } from "./service/web/channel-web-service.js";
 import { ItemWebService } from "./service/web/item-web-service.js";
@@ -134,6 +137,7 @@ import { TokenOwnerService } from "./service/token-owner-service.js";
 import { TokenOwnerRepositoryBrowserImpl } from "./repository/browser/token-owner-repository-impl.js";
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
 import { ContractStateRepository } from "../sync/repository/contract-state-repository.js";
+import { TokenService } from "./service/token-service.js";
 
 
 let container: Container
@@ -149,7 +153,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
     Framework7.registerComponent("nav-bar", Navbar)
     Framework7.registerComponent("token-toolbar", TokenToolbar)
 
-    Framework7.registerComponent("nft-info", NftInfo)
+    // Framework7.registerComponent("nft-info", NftInfo)
     Framework7.registerComponent("mint-list", MintList)
     Framework7.registerComponent("attribute-filter", AttributeFilter)
     Framework7.registerComponent("explore-total-info", ExploreTotalInfo)
@@ -400,6 +404,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind<ContractStateRepository>("ContractStateRepository").to({}).inSingletonScope()
   container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
   container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
+  container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
+
   container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryBrowserImpl).inSingletonScope()
 
 
@@ -437,6 +443,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   //@ts-ignore
   container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
+  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
+
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
 
   container.bind<ProcessedTransactionService>("ProcessedTransactionService").to(ProcessedTransactionService).inSingletonScope()

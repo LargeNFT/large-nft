@@ -1,3 +1,4 @@
+import { TokenOwnerSalesReport } from "../../sync/dto/processed-transaction.js"
 
 interface TokenOwnerPage {
     tokenOwners?:LeaderboardRowViewModel[]
@@ -10,6 +11,7 @@ interface LeaderboardRowViewModel {
     count?:number
     lastActive?:string
     rank?:number
+    salesReport:TokenOwnerSalesReport
 }
 
 interface TokenOwnerPageTotals {

@@ -1135,3 +1135,8 @@ html {
   font-size: 18px;
 }
 
+.footer-link  {
+  margin-right: 5px;
+  margin-left: 5px;
+  display: inline-block;
+}

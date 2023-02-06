@@ -19,7 +19,7 @@ import { ProcessConfig } from "../reader/util/process-config.js"
 
 
 import { TokenOwner } from "./dto/token-owner.js"
-import { TokenOwnerPageService } from "../reader/service/token-owner-page-service.js"
+import { TokenOwnerPageService } from "../sync/service/token-owner-page-service.js"
 import { Transaction } from "./dto/transaction.js"
 
 

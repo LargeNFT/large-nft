@@ -24,7 +24,10 @@ class StaticPageService {
 
     let results = []
 
-    results = results.concat(additionalStaticPages)
+    if (additionalStaticPages?.length > 0) {
+      results.push(...additionalStaticPages)
+    }
+    
     results = results.concat(await this.staticPageRepository.listByLocation("navbar", 0))
     results = results.concat(await this.staticPageRepository.listByLocation("links", 0))
 

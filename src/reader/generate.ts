@@ -24,6 +24,7 @@ import indexEjs from './ejs/index.ejs'
 import mintEjs from './ejs/mint.ejs'
 import searchEjs from './ejs/search.ejs'
 import fourOhFourEjs from './ejs/404.ejs'
+import footerEjs from './ejs/footer.ejs'
 
 import attributesEjs from './ejs/pages/attributes.ejs'
 import attributeEjs from './ejs/pages/attribute.ejs'
@@ -162,9 +163,7 @@ let generate = async () => {
     footer = await fs.promises.readFile(config.footer)
   } catch(ex) {}
 
-
-
-  Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : ""))
+  Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
 
 
 

@@ -212,7 +212,11 @@ Here is an example configuration for a site hosted on GitLab Pages.
             "name": "Twitter",
             "link": "https://twitter.com/BladeRunnerPunk"
         }
-    ]
+    ],
+
+    "headStart": "src/headStart.ejs",
+    "footer": "src/footer.ejs",
+
 }
 ```
 
@@ -221,6 +225,8 @@ Here is an example configuration for a site hosted on GitLab Pages.
 | ------------- | ------------- | ------------- |
 | hostname  | http://localhost:8081 | The hostname where the generated Reader will be hosted. When generating the dev version it defaults to localhost. |
 | baseURL  |  / | The path on the host where the generated app is hosted. This is used by the PWA's routing and must match the actual deployment URL. Must end with a /. For example /bladerunner-punks-reader/ 
+| headStart  |   | Path to eta template to insert at the beginning of the <head> tag on every page.
+| footer  |   | Path to eta template to insert at the beginning of the <head> tag on every page.
 | marketplaces  |   | See below
 | externalLinks  |   | See below
 

@@ -71,7 +71,9 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.list(limit, skip, options)
     }
 
-
+    async rerank(options?:any) : Promise<void> {
+        return this.tokenOwnerRepository.rerank(options)
+    }
 
 
 

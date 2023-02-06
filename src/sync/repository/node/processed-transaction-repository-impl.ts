@@ -1,7 +1,7 @@
 import {  inject, injectable } from "inversify"
 import moment from "moment"
 
-import {  AttributeSaleReport, AttributeSalesRow, OwnersByAttribute, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, Sale, SalesReport, SalesRow } from "../../dto/processed-transaction.js"
+import {  AttributeSaleReport, AttributeSalesRow, OwnersByAttribute, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, Sale, SalesReport, SalesRow, TokenOwnerSalesReport } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
@@ -16,7 +16,6 @@ const { Op } = require("sequelize")
 
 @injectable()
 class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepository {
-
 
     @inject("sequelize")
     private sequelize:Function
@@ -38,8 +37,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
                 await processedTransaction.addToken(token, Object.assign({through: ProcessedTransactionToken}, options))
             }
         }
-
-        
         
         return processedTransaction 
 
@@ -221,7 +218,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-
     async listByTokens(tokenIds:number[], options?:any) : Promise<ProcessedTransaction[]>  {
 
         let s = await this.sequelize()
@@ -258,8 +254,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    
-
     async getSalesReport(): Promise<SalesReport> {
 
         let report:SalesReport = {}
@@ -294,6 +288,16 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             report.largestSales[`${attribute.traitType}::::${attribute.v}`] = await this.getLargestSalesByAttribute(attribute.traitType, attribute.v, 50, options)
         }
 
+
+        return report
+    }
+
+    async getTokenOwnerSalesReport(_id:string): Promise<TokenOwnerSalesReport> {
+
+        let report:TokenOwnerSalesReport = {}
+
+        report.buys = await this.getTokenOwnerBuysSalesRow(_id)
+        report.sales = await this.getTokenOwnerSalesSalesRow(_id)
 
         return report
     }
@@ -429,6 +433,92 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
+    private async getTokenOwnerBuysSalesRow(_id:string) {
+
+        let salesRow:SalesRow = {}
+
+        let s = await this.sequelize()
+        
+        const [queryResults, metadata] = await s.query(`
+            select 
+
+            COUNT(_id) as events, 
+        
+            SUM(price) as ethValue, 
+            AVG(price) as averageEthValue,
+        
+            SUM(usdValue) as usdValue, 
+            AVG(usdValue) as averageUsdValue
+
+            FROM 'processed_event' pe 
+            
+            WHERE 
+                price > 0 AND
+                toAddress = :_id
+                
+        `, {
+            replacements: { 
+                _id: _id
+            }
+        })
+
+
+        if (queryResults?.length > 0) {
+            salesRow.ethValue = queryResults[0].ethValue || 0
+            salesRow.averageEthValue = queryResults[0].averageEthValue || 0
+            salesRow.events = queryResults[0].events || 0
+
+            salesRow.usdValue = queryResults[0].usdValue || 0
+            salesRow.averageUsdValue = queryResults[0].averageUsdValue || 0
+        }
+
+        return salesRow
+
+    }
+
+    private async getTokenOwnerSalesSalesRow(_id:string) {
+
+        let salesRow:SalesRow = {}
+
+        let s = await this.sequelize()
+        
+        const [queryResults, metadata] = await s.query(`
+            select 
+
+            COUNT(_id) as events, 
+        
+            SUM(price) as ethValue, 
+            AVG(price) as averageEthValue,
+        
+            SUM(usdValue) as usdValue, 
+            AVG(usdValue) as averageUsdValue
+
+            FROM 'processed_event' pe 
+            
+            WHERE 
+                price > 0 AND
+                fromAddress = :_id
+                
+        `, {
+            replacements: { 
+                _id: _id
+            }
+        })
+
+
+        if (queryResults?.length > 0) {
+            salesRow.ethValue = queryResults[0].ethValue || 0
+            salesRow.averageEthValue = queryResults[0].averageEthValue || 0
+            salesRow.events = queryResults[0].events || 0
+
+            salesRow.usdValue = queryResults[0].usdValue || 0
+            salesRow.averageUsdValue = queryResults[0].averageUsdValue || 0
+        }
+
+        return salesRow
+
+    }
+
     private async getOwnersByAttribute(traitType:string, value:string, options?:any) : Promise<OwnersByAttribute[]>{
 
         let s = await this.sequelize()
@@ -494,8 +584,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         return owners
 
     }
-
-
 
     private async getAttributes() : Promise<any[]> {
 
@@ -588,7 +676,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-
     async getSalesByAttribute(traitType: string, value: string): Promise<Sale[]> {
 
         let s = await this.sequelize()
@@ -659,8 +746,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         }
 
     }
-
-
 
     async getPreviousByInitiator(address:string, blockNumber:number, transactionIndex:number, options?:any) : Promise<ProcessedTransaction> {
 

@@ -7,7 +7,7 @@ interface TokenOwnerRepository {
     putAll(tokenOwners:TokenOwner[], options?:any) : Promise<void>
     getENS(_id:string) : Promise<string>
     list(limit: number, skip: number, options?:any): Promise<TokenOwner[]> 
-
+    rerank(options?:any) : Promise<void>
 }
 
 export {

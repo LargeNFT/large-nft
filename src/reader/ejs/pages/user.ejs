@@ -154,6 +154,49 @@
 
                                 ${tokenOwner ? $h`
                                 
+                                    <div class="block-title block-title-medium">Sales</div>
+                                    <div class="block block-strong inset stats">
+                            
+                                        <div class="row">
+                                            <div class="col-100 large-33 margin-bottom">
+                                              Average Sale<br />
+                                              <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.averageEthValue ? tokenOwner.salesReport?.sales?.averageEthValue : 0)} ETH (${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.sales?.averageUsdValue ? tokenOwner.salesReport?.sales?.averageUsdValue : 0, 2)})</strong>
+                                            </div>
+                                            <div class="col-100 large-33 margin-bottom">
+                                              Number of Sales (Lifetime)<br />
+                                              <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.events ? tokenOwner.salesReport?.sales?.events : 0)}</strong>
+                                            </div>
+                                            <div class="col-100 large-33 margin-bottom">
+                                              Total Value of All Sales (Lifetime)<br />
+                                              <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.ethValue ? tokenOwner.salesReport?.sales?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.sales?.usdValue ? tokenOwner.salesReport?.sales?.usdValue : 0, 2)})</strong>
+                                            </div>
+                                        </div>                                        
+                                    
+                                    </div>
+
+
+                                    <div class="block-title block-title-medium">Buys</div>
+                                    <div class="block block-strong inset stats">
+                            
+                                        <div class="row">
+                                            <div class="col-100 large-33 margin-bottom">
+                                              Average Buy<br />
+                                              <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.averageEthValue ? tokenOwner.salesReport?.buys?.averageEthValue : 0)} ETH (${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.buys?.averageUsdValue ? tokenOwner.salesReport?.buys?.averageUsdValue : 0, 2)})</strong>
+                                            </div>
+                                            <div class="col-100 large-33 margin-bottom">
+                                              Number of Buys (Lifetime)<br />
+                                              <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.events ? tokenOwner.salesReport?.buys?.events : 0)}</strong>
+                                            </div>
+                                            <div class="col-100 large-33 margin-bottom">
+                                              Total Value of All Buys (Lifetime)<br />
+                                              <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.ethValue ? tokenOwner.salesReport?.buys?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.buys?.usdValue ? tokenOwner.salesReport?.buys?.usdValue : 0, 2)})</strong>
+                                            </div>
+                                        </div>                                        
+                                    
+                                    </div>
+
+
+
                                     <div class="block">
                                         <p class="segmented">
                                             <a class="button button-outline button-active" href="#">Owned</a>
@@ -171,8 +214,7 @@
                               
                                 <div class="preloader infinite-scroll-preloader"></div>
 
-
-
+                                
                             </div>
 
                             <div class="hide-on-pageinit">
@@ -188,7 +230,12 @@
 
                             </div>
 
-                                          <%~ include("footer", {baseURL: baseURL}) %>
+                            <br /><br />
+
+
+                            <%~ include("footer", {baseURL: baseURL}) %>
+
+
 
                         </div>
                     </div>
@@ -212,6 +259,7 @@
             let itemWebService = globalThis.container.get("ItemWebService")
             let walletService = globalThis.container.get("WalletService")
             let uiService = globalThis.container.get("UiService")
+            let transactionWebService = globalThis.container.get("TransactionWebService")
 
             let baseURL = '<%= baseURL %>'
 
@@ -255,6 +303,8 @@
 
                 try  {
                     tokenOwner = await tokenOwnerService.get(address)
+
+                    console.log(tokenOwner)
 
                     if (tokenOwner) {
 

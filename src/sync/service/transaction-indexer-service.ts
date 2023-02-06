@@ -210,8 +210,10 @@ class TransactionIndexerService {
 
                     if (ercEvent.namedArgs.tokenId) {
 
+                        let tokenId = parseInt(ercEvent.namedArgs.tokenId)
+
                         //Grab token info
-                        let token:Token = await this._getToken(ercEvent.namedArgs.tokenId.toString(), result)
+                        let token:Token = await this._getToken(tokenId.toString(), result)
 
                         //Look up/create the from address
                         fromOwner = await this._getTokenOwner(ercEvent.namedArgs.fromAddress, result, options)
@@ -220,12 +222,13 @@ class TransactionIndexerService {
                         if (ercEvent.isTransfer) {
 
                             //Update previous owner
-                            if (fromOwner.tokenIds.includes(ercEvent.namedArgs.tokenId)) {
-                                fromOwner.tokenIds = Array.from(fromOwner.tokenIds)?.filter(id => id != ercEvent.namedArgs.tokenId)
+                            if (fromOwner.tokenIds.includes(tokenId)) {
+                                fromOwner.tokenIds = fromOwner.tokenIds?.filter(id => id != tokenId)
                             }
 
                             //Update new owner
-                            toOwner.tokenIds.push(ercEvent.namedArgs.tokenId)
+                            toOwner.tokenIds.push(tokenId)
+
 
                             token.currentOwnerId = toOwner._id
                             token.ownershipHistory.push({
@@ -244,7 +247,7 @@ class TransactionIndexerService {
 
 
                         if (previousTransactionByToken) {
-                            this._updatePreviousNextByToken(ercEvent.namedArgs.tokenId, previousTransactionByToken, processedTransaction, result)
+                            this._updatePreviousNextByToken(tokenId, previousTransactionByToken, processedTransaction, result)
                         }
 
                         token.latestTransactionId = processedTransaction._id
@@ -359,9 +362,8 @@ class TransactionIndexerService {
             //Save transactions
             await this.saveProcessedTransactions(result, options)
 
-
             //Rerank token owners
-            await this.rerankTokenOwners(result, options)
+            await this.tokenOwnerService.rerank(options)
 
 
 
@@ -447,45 +449,6 @@ class TransactionIndexerService {
         await this.tokenOwnerService.putAll(tokenOwnersToUpdate, options)
 
         
-    }
-
-    private async rerankTokenOwners(result:ERCIndexResult, options?:any) {
-        
-        //Update rankings for all owners. Only save if it's changed.
-        let tokenOwners:TokenOwner[] = await this.tokenOwnerService.list(100000, 0, options)
-
-        let rank = 0
-        let lastRankCount
-
-        let ownersToUpdate = []
-
-        for (let i=0; i < tokenOwners.length; i++) {
-
-            let owner = tokenOwners[i]
-
-            if (!lastRankCount || owner.tokenIds?.length < lastRankCount) {
-                rank++
-            }
-
-            //Add any with new rankings to our changeset to save.
-            if (owner.rank != rank || owner.overallRank != i+1) {
-                owner.rank = rank
-                owner.overallRank = i+1
-                ownersToUpdate.push(owner)
-
-                result.ownersToUpdate[owner._id] = owner
-
-            }
-
-            lastRankCount = owner.tokenIds?.length
-
-        }
-
-        console.log(`Saving ${ownersToUpdate.length} re-ranked token owners`)
-
-
-        await this.tokenOwnerService.putAll(ownersToUpdate, options)
-
     }
 
 

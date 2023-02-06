@@ -171,7 +171,7 @@ let sync = async () => {
         
         
 
-        if (Object.keys(indexResult.processedTransactionViewModels).length > 0) {
+        if (Object.keys(indexResult?.processedTransactionViewModels).length > 0) {
 
           await sequelize.transaction(async (t1) => {
             await writeResultsToDisk(indexResult, { transaction: t1 })
@@ -267,12 +267,20 @@ let sync = async () => {
     console.time(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
     for (let owner of Object.keys(indexResult.ownersToUpdate)) {
 
+      //Refetch because ranks could get updated
+      let tokenOwner = await tokenOwnerService.get(indexResult.ownersToUpdate[owner]._id)
+      let cloned = JSON.parse(JSON.stringify(tokenOwner))
+
+  
+      //Generate sales report
+      cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(owner)
+
       //Write full profile
-      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(indexResult.ownersToUpdate[owner])))
+      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(cloned)))
 
       //Write latest ENS name
       fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/ens/${owner}.json`, Buffer.from(JSON.stringify({
-        name: indexResult.ownersToUpdate[owner].ensName
+        name: cloned.ensName
       })))
 
     }

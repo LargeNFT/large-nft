@@ -6,6 +6,10 @@ import { TokenOwnerRepository } from "../token-owner-repository.js"
 @injectable()
 class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
   
+
+    @inject("sequelize")
+    private sequelize:Function
+
     constructor() {}
 
     async getENS(_id: string): Promise<string> {
@@ -17,10 +21,6 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
     }
 
     async put(tokenOwner:TokenOwner, options?:any) : Promise<TokenOwner> {
-
-        // options.logging = console.log
-
-
         await tokenOwner.save(options)
         return tokenOwner
         
@@ -38,7 +38,6 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
     async list(limit: number, skip: number, options?:any): Promise<TokenOwner[]> {
 
         let query = {
-            // logging: console.log,
             limit: limit,
             offset: skip,
             order: [
@@ -51,6 +50,33 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
     }
 
 
+    async rerank(options?:any) : Promise<void> {
+
+        let s = await this.sequelize()
+
+        
+        const [queryResults, metadata] = await s.query(`
+            WITH ranks AS (
+                select 
+                    _id,
+                    RANK() OVER(ORDER BY count DESC) as overallRank,
+                    DENSE_RANK() OVER(ORDER BY count DESC) as rank
+                from token_owner
+            )
+            
+            UPDATE 'token_owner'
+            SET ('overallRank', 'rank')  = (
+                select 
+                    overallRank, rank
+                from ranks WHERE ranks._id = token_owner._id
+            )
+        `, Object.assign({
+            raw: true,
+            nest: false,
+            plain: false
+        }, options))
+
+    }
 
 }
 

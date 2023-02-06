@@ -1,4 +1,4 @@
-import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport } from "../dto/processed-transaction.js"
+import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport, TokenOwnerSalesReport } from "../dto/processed-transaction.js"
 
 
 interface ProcessedTransactionRepository {
@@ -29,6 +29,7 @@ interface ProcessedTransactionRepository {
     
     getLargestSales(limit:number) : Promise<Sale[]>
     getSalesByAttribute(traitType:string, value:string) : Promise<Sale[]>
+    getTokenOwnerSalesReport(_id:string) : Promise<TokenOwnerSalesReport>
 
     getPreviousByTokenId(tokenId:number, blockNumber:number, transactionIndex:number, options?:any) : Promise<ProcessedTransaction> 
     getPreviousByInitiator(address:string, blockNumber:number, transactionIndex:number, options?:any) : Promise<ProcessedTransaction> 

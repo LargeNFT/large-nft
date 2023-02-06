@@ -343,11 +343,17 @@ interface AttributeSaleReport {
 
 }
 
+
+interface TokenOwnerSalesReport {
+    sales?:SalesRow
+    buys?:SalesRow
+}
+
+
+
 interface AttributeSalesRow extends SalesRow {
     traitType?:string
     value?:string 
-
-
 }
 
 interface SalesRow {
@@ -382,5 +388,6 @@ interface OwnersByAttribute {
 }
 
 export {
-    ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, AttributeSaleReport, TokenPrice, ProcessedEvent, ProcessedTransactionToken, OwnersByAttribute
+    ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, 
+    AttributeSaleReport, TokenPrice, ProcessedEvent, ProcessedTransactionToken, OwnersByAttribute, TokenOwnerSalesReport
 }

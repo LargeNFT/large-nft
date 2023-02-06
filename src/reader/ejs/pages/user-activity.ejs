@@ -257,8 +257,9 @@
 
                     transactionsViewModel = await transactionWebService.listByAddressFrom(address, 25, startId)
 
-                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.previousByTokenOwnerId[address]) {
-                        nextPageStartId = transactionsViewModel.transactions[display-1].previousByTokenOwnerId[address]
+
+                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.transaction.previousByTokenOwnerId[address]) {
+                        nextPageStartId = transactionsViewModel.transactions[display-1].transaction.previousByTokenOwnerId[address]
                     }
 
                     //If we have a startId we are on page 2+ so we need to set the previous start offset
@@ -266,7 +267,7 @@
                         let previousTransactionList = await transactionWebService.listByAddressTo(address, display+1, startId)
 
                         if (previousTransactionList.transactions[display]) {
-                            previousPageStartId = previousTransactionList.transactions[display]._id
+                            previousPageStartId = previousTransactionList.transactions[display]?.transaction._id
                         }
 
                     }

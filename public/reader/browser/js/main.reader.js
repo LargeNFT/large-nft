@@ -278,7 +278,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '035fa2accd';
+framework7Component.id = '4097ef39fb';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -348,7 +348,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '97d008c569';
+framework7Component.id = 'a55922db77';
 framework7Component.style = `
 
 
@@ -440,7 +440,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd192d040e0';
+framework7Component.id = 'e8cc09ef7c';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -690,7 +690,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '680b697d17';
+framework7Component.id = '946c304fa9';
 framework7Component.style = `
 
 `;
@@ -765,7 +765,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e011908d63';
+framework7Component.id = 'c3af1c1ad3';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1026,7 +1026,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'dfe5c5f75a';
+framework7Component.id = 'a6e8be25ec';
 framework7Component.style = `
 
 .mint-list-card .card-header {
@@ -1194,7 +1194,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2e9bdb4ed5';
+framework7Component.id = 'b1e4b77451';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1353,7 +1353,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c40f44ed06';
+framework7Component.id = '8ca6165fb2';
 framework7Component.style = `
 
 .block-search {
@@ -1616,7 +1616,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '65cd3fb731';
+framework7Component.id = '150aadbd01';
 framework7Component.style = `
 
   .logo {
@@ -1756,7 +1756,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1c3e1a2299';
+framework7Component.id = 'a96dbc08b7';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1826,7 +1826,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a753bbda7e';
+framework7Component.id = 'e36b27e40a';
 framework7Component.style = `
 
 

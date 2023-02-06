@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 
 import { ProcessedTransactionRepository } from "../../sync/repository/processed-transaction-repository.js"
-import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport } from "../../sync/dto/processed-transaction.js"
+import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport, TokenOwnerSalesReport } from "../../sync/dto/processed-transaction.js"
 import { ItemService } from "../../reader/service/item-service.js"
 import { Token } from "../dto/token.js"
 import { TokenService } from "./token-service.js"
@@ -227,6 +227,11 @@ class ProcessedTransactionService {
     async getSalesByAttribute(traitType:string, value:string) : Promise<Sale[]> {
         return this.processedTransactionRepository.getSalesByAttribute(traitType, value)
     }
+
+    async getTokenOwnerSalesReport(_id:string) : Promise<TokenOwnerSalesReport> {
+        return this.processedTransactionRepository.getTokenOwnerSalesReport(_id)
+    }
+
 
     async deleteBetweenBlocks(result:ERCIndexResult, options?:any)  {
 

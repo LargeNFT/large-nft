@@ -275,9 +275,9 @@ npm run generate
 ---
 
 # Large Sync
-**Large Sync** is a Node.js app that reads transaction data from a configured Ethereum node and writes it to the "public" branch so it can be deployed to a web server. If configured it will also commit those changes to a configured git provider. 
+**Large Sync** is a Node.js app that reads and processes Ethereum NFT transactions to create historical reports for display in Large Reader.
 
-Transaction data is also cached locally in PouchDB. 
+Transaction data is cached and processed locally in SQLite and written to the ./public/sync folder. 
 
 ### Start Large Sync
 Note the -- before passing options.

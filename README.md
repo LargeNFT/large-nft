@@ -253,7 +253,7 @@ Configure links to external resources associated with the collection such as Dis
 ### Generate Large Reader for localhost
 Note the -- before passing options. Generates HTML files in ./public folder.
 ```console
-npm run generate -- --env dev --main-branch main
+npm run generate:dev
 ```
 
 ### Generate Large Reader for localhost
@@ -269,7 +269,7 @@ The generated web app will be available at [http://localhost:8081](http://localh
 Generates HTML files in 'public' branch.
 
 ```console
-npm run generate -- --main-branch main
+npm run generate
 ```
 
 ---

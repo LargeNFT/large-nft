@@ -219,13 +219,8 @@
 
                     attributesOverall = await transactionWebService.getAttributesOverall()
 
-
                     let latest = await transactionWebService.getLatest()
                     lastUpdated = latest.lastUpdated
-
-
-                    console.log(attributesOverall)
-
     
                 } catch(ex) { 
                     console.log(ex) 

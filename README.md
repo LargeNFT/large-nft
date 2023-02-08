@@ -291,6 +291,8 @@ Large Sync is a Node.js app that reads and processes Ethereum NFT transactions t
     * Aggregators
         * Genie
 * Pricing in ETH and USD.
+    * Uses on-chain pricing from the Chainlink ETH/USD price feed.
+    * No configuration needed.
 * Aggregate reports for sales.
     * ETH sales (total + average)
     * USD sales (total + average)

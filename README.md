@@ -275,7 +275,26 @@ npm run generate
 ---
 
 # Large Sync
-**Large Sync** is a Node.js app that reads and processes Ethereum NFT transactions to create historical reports for display in Large Reader.
+Large Sync is a Node.js app that reads and processes Ethereum NFT transactions to create historical reports for display in Large Reader.
+
+* Full transaction history.
+    * By token.
+    * By wallet.
+    * By attribute.
+* Identify marketplace and aggregator sales on-chain.
+    * Marketplaces
+        * OpenSea (Wyvern)
+        * OpenSea (Seaport)
+        * LooksRare
+        * X2Y2
+        * Blur
+    * Aggregators
+        * Genie
+* Pricing in ETH and USD.
+* Aggregate reports for sales.
+    * ETH sales (total + average)
+    * USD sales (total + average)
+
 
 Transaction data is cached and processed locally in SQLite and written to the ./public/sync folder. 
 

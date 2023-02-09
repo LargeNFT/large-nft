@@ -60,8 +60,9 @@ let start = async () => {
       root: `${config.baseDir}/public`
     })
   
+    const port = process.env.PORT ? parseInt(process.env.port) : 8081
 
-    fastify.listen({ port: 8081 }, (err, address) => {
+    fastify.listen({ port: port }, (err, address) => {
       if (err) throw err
       // Server is now listening on ${address}
     })

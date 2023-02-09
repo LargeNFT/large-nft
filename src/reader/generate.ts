@@ -4,7 +4,6 @@ import "reflect-metadata"
 
 
 import fs from "fs"
-import arg from 'arg'
 import * as Eta from 'eta'
 
 import { Container } from "inversify"
@@ -47,7 +46,6 @@ import { ItemViewModel } from "./dto/viewmodel/item-view-model.js"
 import pkg from 'convert-svg-to-png';
 import { StaticPage } from "./dto/static-page.js"
 const { convert } = pkg;
-
 
 
 let generate = async () => {
@@ -454,12 +452,15 @@ let generate = async () => {
 
     console.timeEnd(`Generating /t/${itemViewModel.item.tokenId}`)
 
-
   }
+
+  console.log("Generation complete")
 
 }
 
-
-
 generate()
+
+export {
+  generate
+}
 

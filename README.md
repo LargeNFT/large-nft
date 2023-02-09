@@ -317,6 +317,25 @@ npm run sync --  --env dev --alchemy <API key>
 
 ---
 
+## Start Large Reader + Sync + Web Server
+
+If you don't need to separate the generation and sync'ing components you can run the following commands to generate, start the sync, and run a simple static web server. All CLI arguments are passed to both the underlying "generate" and "sync" commands so all of the above parameters are supported. If you do not pass an Alchemy key the sync process will not start.
+
+These commands are run in the Large Reader repo you created for your specific NFT collection.
+
+Note the -- before passing options.
+```console
+npm run start -- --alchemy <API key>
+```
+
+To start with the dev (localhost) configuration use
+```console
+npm run start:dev -- --alchemy <API key>
+```
+
+The generated web app will be available at [http://localhost:8081](http://localhost:8081) by default.
+
+
 # Showcase
 These project(s) showcase the basic features of the Large Reader. These projects are CC0 licensed and can be forked to start your own version of the project.
 * [Alice's Adventures in Wonderland](https://readalice.com)

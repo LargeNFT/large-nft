@@ -49,8 +49,6 @@ let sync = async () => {
     throw new Error("No ethereum connection configured.")
   }
 
-
-
   let contract = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract.json`, 'utf8'))
   let contractAbi = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract-abi.json`, 'utf8'))
 
@@ -185,6 +183,10 @@ let sync = async () => {
         //Save latest transaction
         console.log(`Updating latest info: ${indexResult.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
             
+        if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
+          fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
+        }
+
         fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
           _id: indexResult.mostRecentTransaction?.transaction._id,
           lastUpdated: new Date().toJSON()
@@ -407,3 +409,6 @@ let sync = async () => {
 sync()
 
 
+export {
+  sync
+}

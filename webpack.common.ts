@@ -225,8 +225,7 @@ let getReaderConfigs = () => {
     entry: "./src/reader/generate.ts",
     externalsPresets: { node: true },
     externals: {
-      'convert-svg-to-png': 'convert-svg-to-png',
-      'sharp': 'sharp'
+      'convert-svg-to-png': 'convert-svg-to-png'
     },
     experiments: {
       outputModule: true
@@ -310,6 +309,52 @@ let getReaderConfigs = () => {
 
     ]
   }
+
+  let startConfig = {
+    entry: "./src/reader/start.ts",
+    externals: ['fastify', '@fastify/static'],
+    externalsPresets: { 
+      node: true 
+    },    
+    experiments: {
+      outputModule: true
+    },
+    resolve: {
+      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensionAlias: {
+        ".js": [".js", ".ts"]
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: '/node_modules/',
+          loader: 'ts-loader'
+        }
+      ]
+    },  
+    output: {
+      filename: 'start.js',
+      libraryTarget: "module",
+      library: {
+        type: "module"
+      },
+      chunkFormat: 'module',
+      path: path.resolve(__dirname, 'public'),
+    },
+    plugins: [
+      new CleanWebpackPlugin({
+        dangerouslyAllowCleanPatternsOutsideProject: true
+      }),
+
+      new webpack.ProvidePlugin({
+        fetch: ['node-fetch', 'default'],
+      })
+
+    ]
+  }
+
 
   let browserConfig = {
     entry: "./src/reader/index.ts",
@@ -447,6 +492,7 @@ let getReaderConfigs = () => {
   configs.push(browserConfig)
   configs.push(generateConfig)
   configs.push(syncConfig)
+  configs.push(startConfig)
 
   return configs
 

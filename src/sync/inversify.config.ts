@@ -6,7 +6,6 @@ import { AuthorRepository } from "../reader/repository/author-repository.js";
 import { ChannelRepository } from "../reader/repository/channel-repository.js";
 import { ComponentStateRepository } from "../reader/repository/component-state-repository.js";
 import { ContractStateRepository } from "./repository/contract-state-repository.js";
-// import { ERCEventRepository } from "./repository/erc-event-repository.js";
 import { ImageRepository } from "../reader/repository/image-repository.js";
 import { ItemPageRepository } from "../reader/repository/item-page-repository.js";
 import { ItemRepository } from "../reader/repository/item-repository.js";
@@ -50,7 +49,6 @@ import { ReaderSettings } from "../reader/dto/reader-settings.js";
 import { ComponentState } from "../reader/dto/component-state.js";
 import { ethers, providers } from "ethers"
 import { GenerateService } from "../reader/service/core/generate-service.js";
-// import { ERCEventRepositoryNodeImpl } from "./repository/node/erc-event-repository-impl.js";
 import { ContractStateRepositoryNodeImpl } from "./repository/node/contract-state-repository-impl.js";
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
 import { TokenOwnerRepositoryNodeImpl } from "./repository/node/token-owner-repository-impl.js";
@@ -60,8 +58,7 @@ import { TransactionRepository } from "./repository/transaction-repository.js";
 import { TransactionService } from "../sync/service/transaction-service.js";
 import { BlockRepository } from "./repository/block-repository.js";
 import { BlockService } from "./service/block-service.js";
-// import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js";
-// import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js";
+
 import { TokenOwnerPageService } from "../sync/service/token-owner-page-service.js";
 import { TokenService } from "../sync/service/token-service.js";
 import { TokenRepository } from "./repository/token-repository.js";
@@ -85,6 +82,7 @@ import { createRequire } from 'module'
 import { ENS } from "./dto/ens.js";
 import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js";
 import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js";
+import { SpawnService } from "./service/spawn-service.js";
 
 
 const require = createRequire(import.meta.url)
@@ -241,6 +239,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
   container.bind<ENSService>("ENSService").to(ENSService).inSingletonScope()
+  container.bind<SpawnService>("SpawnService").to(SpawnService).inSingletonScope()
 
   return container
 }

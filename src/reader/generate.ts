@@ -45,6 +45,7 @@ import { ItemViewModel } from "./dto/viewmodel/item-view-model.js"
 
 import pkg from 'convert-svg-to-png';
 import { StaticPage } from "./dto/static-page.js"
+import { SpawnService } from "../sync/service/spawn-service.js"
 const { convert } = pkg;
 
 
@@ -94,7 +95,9 @@ let generate = async () => {
   //Get data services.
   let itemWebService:ItemWebService = container.get("ItemWebService")
   let channelWebService:ChannelWebService = container.get("ChannelWebService")
+  let spawnService:SpawnService = container.get("SpawnService")
   let generateService:GenerateService = container.get("GenerateService")
+
 
   //Create public path.
   await fs.promises.mkdir(`${config.publicPath}`, { recursive: true })
@@ -453,6 +456,8 @@ let generate = async () => {
     console.timeEnd(`Generating /t/${itemViewModel.item.tokenId}`)
 
   }
+
+  await spawnService.spawnGenerateAfter(config.baseDir)
 
   console.log("Generation complete")
 

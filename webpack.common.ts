@@ -355,6 +355,49 @@ let getReaderConfigs = () => {
     ]
   }
 
+  let syncPushConfig = {
+    entry: "./src/sync/sync-push.ts",
+    externalsPresets: { 
+      node: true 
+    },    
+    experiments: {
+      outputModule: true
+    },
+    resolve: {
+      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensionAlias: {
+        ".js": [".js", ".ts"]
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: '/node_modules/',
+          loader: 'ts-loader'
+        }
+      ]
+    },  
+    output: {
+      filename: 'sync/sync-push.js',
+      libraryTarget: "module",
+      library: {
+        type: "module"
+      },
+      chunkFormat: 'module',
+      path: path.resolve(__dirname, 'public'),
+    },
+    plugins: [
+      new CleanWebpackPlugin({
+        dangerouslyAllowCleanPatternsOutsideProject: true
+      }),
+
+      new webpack.ProvidePlugin({
+        fetch: ['node-fetch', 'default'],
+      })
+
+    ]
+  }
 
   let browserConfig = {
     entry: "./src/reader/index.ts",
@@ -493,6 +536,7 @@ let getReaderConfigs = () => {
   configs.push(generateConfig)
   configs.push(syncConfig)
   configs.push(startConfig)
+  configs.push(syncPushConfig)
 
   return configs
 

@@ -2,8 +2,8 @@ import "core-js/stable/index.js"
 import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
-const exec = require('child_process').exec
-import { spawn } from "child_process"
+import { getMainContainer, GetMainContainerCommand } from "../sync/inversify.config.js"
+
 
 
 import Fastify from 'fastify'
@@ -12,64 +12,49 @@ const fastify = Fastify({
 })
 
 import { ProcessConfig } from "./util/process-config.js"
+import { SpawnService } from "../sync/service/spawn-service.js"
+import { Container } from "inversify"
 
 let start = async () => {
 
-  let config:any = await ProcessConfig.getConfig()
-    
+  let config:any = await ProcessConfig.getConfig() 
+
+  let container = new Container()
   
+  let command:GetMainContainerCommand = {
+    customContainer: container,
+    baseDir: config.baseDir,
+    baseURI: config.baseURI,
+    hostname: config.hostname,
+    alchemy: config.alchemy
+  }
+  
+  
+  container = await getMainContainer(command)
+
+
+  let spawnService:SpawnService = await container.get("SpawnService")
+
+
+
   console.log('Generating reader...')
   
-  
   // Generate HTML
-  let generateProcess = spawn(`npm run generate`, ["--", ...process.argv?.slice(2)], { shell: true })
-  
-  generateProcess.stdout.on('data', (data) => {
-    process.stdout.write(data.toString())
-  })
+  await spawnService.spawnGenerateAndSync(config.baseDir)
     
-  generateProcess.stderr.on('data', (data) => {
-    process.stderr.write(data.toString())
-  })
-    
-  generateProcess.on('close', (code) => {
+  console.log(`${config.baseDir}/public`)
   
-    console.log(`Generate process exited with code ${code}`)
-  
-  
-    //Start sync
-    let syncProcess = spawn(`npm run sync`, ["--", ...process.argv?.slice(2)], { shell: true })
-  
-    syncProcess.stdout.on('data', (data) => {
-      process.stdout.write(data.toString())
-    })
-      
-    syncProcess.stderr.on('data', (data) => {
-      process.stderr.write(data.toString())
-    })
-      
-    syncProcess.on('close', (code) => {
-      console.log(`Sync process exited with code ${code}`);
-    })
-  
-  
-    console.log(`${config.baseDir}/public`)
-  
-    //Start web server
-    fastify.register(require('@fastify/static'), {
-      root: `${config.baseDir}/public`
-    })
-  
-    const port = process.env.PORT ? parseInt(process.env.port) : 8081
-
-    fastify.listen({ port: port }, (err, address) => {
-      if (err) throw err
-      // Server is now listening on ${address}
-    })
-
-
+  //Start web server
+  fastify.register(require('@fastify/static'), {
+    root: `${config.baseDir}/public`
   })
 
+  const port = process.env.PORT ? parseInt(process.env.port) : 8081
+
+  fastify.listen({ port: port }, (err, address) => {
+    if (err) throw err
+    // Server is now listening on ${address}
+  })
 
 }
 

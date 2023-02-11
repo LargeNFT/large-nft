@@ -207,10 +207,6 @@ let sync = async () => {
         console.log(ex) 
       }
 
-
-
-
-
   }
 
   async function writeResultsToDisk(indexResult:ERCIndexResult, options?:any) {

@@ -196,10 +196,20 @@ let sync = async () => {
 
         //If we're current then wait. If not then just do it again.
         if (indexResult?.isCurrent) {
-          setTimeout(runTransactionIndexer, config.syncRate) 
-          console.log(`Complete...waiting...`)
+
+          if (config.syncRate > 0) {
+
+            setTimeout(runTransactionIndexer, config.syncRate) 
+            console.log(`Complete...waiting...`)
+
+          } else {
+
+            //Just end.
+            console.log(`Sync complete.`)
+          }
+
         } else {
-          console.log(`Complete...`)
+          console.log(`Batch complete. Starting new batch.`)
           runTransactionIndexer()
         }
 

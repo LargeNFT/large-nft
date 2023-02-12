@@ -9,7 +9,11 @@ import { SpawnService } from "./service/spawn-service.js"
 import { simpleGit, CleanOptions } from 'simple-git'
 
 
-
+/**
+ * Starts a process that monitors the configured git repo(s) to generate, sync, and push the results to git. 
+ * Then it calls the "deploy" script that allows the public folder to be distributed to a static web host.
+ * The sync tasks stay running to monitor Ethereum for changes.
+ */
 let syncPush = async () => {
 
     let config:any = await ProcessConfig.getSyncPushConfig() 
@@ -31,7 +35,9 @@ let syncPush = async () => {
 
       const syncDirectory = path.resolve(config.baseDir, repo)
   
-      await spawnService.spawnSync(syncDirectory)
+
+      //TODO only generate if there's been a version change.
+      // await spawnService.spawnGenerate(syncDirectory)
 
     }
 
@@ -39,14 +45,17 @@ let syncPush = async () => {
 
     async function runLoop(){
 
-      console.log('Starting push loop')
+      console.log('Starting sync/push/deploy loop')
 
       for (let repo of config.repos) {
 
         const syncDirectory = path.resolve(config.baseDir, repo)
-    
-        const git = simpleGit(syncDirectory)
 
+        //Sync
+        await spawnService.spawnSync(syncDirectory)
+
+        //Push
+        const git = simpleGit(syncDirectory)
 
         try {
   
@@ -64,6 +73,8 @@ let syncPush = async () => {
                 await git.commit('Committing changes')
                 await git.push('origin', branch)
   
+                //Deploy
+                await spawnService.spawnDeploy(syncDirectory)
   
             } else {
                 console.log(`No changes in ${syncDirectory}`)

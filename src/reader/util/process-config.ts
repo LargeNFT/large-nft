@@ -87,8 +87,10 @@ class ProcessConfig {
             '--env': String,
             '--alchemy': String,
             '--sync-rate': String,
+            '--sync-push-rate': String,
             '--sync-dir': String,
-            '--clear': String
+            '--clear': String,
+            '--generate': String
         },
         {
             argv: rawArgs.slice(2),
@@ -127,6 +129,8 @@ class ProcessConfig {
         config.VERSION = packageConfig.version
         config.baseDir = baseDir
         config.syncRate = theArgs.syncRate
+        config.syncPushRate = theArgs.syncPushRate
+        config.generate = theArgs.generate
 
         return config
         
@@ -139,8 +143,10 @@ class ProcessConfig {
         {
             '--sync-dir': String,
             '--sync-rate': String,
+            '--sync-push-rate': String,
             '--alchemy': String,
-            '--clear': String
+            '--clear': String,
+            '--generate': String
         },
         {
             argv: rawArgs.slice(2),
@@ -151,7 +157,9 @@ class ProcessConfig {
             syncDir: args['--sync-dir'] || "",
             alchemy: args['--alchemy'] || "",
             syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
-            clear:  args['--clear'] == "true"
+            syncPushRate: args['--sync-push-rate'] ? parseInt(args['--sync-push-rate'] ) : 30*1000,
+            clear:  args['--clear'] == "true",
+            generate:  args['--generate'] == "true"
         }
     
     }
@@ -171,48 +179,48 @@ class ProcessConfig {
 
 
 
-    static getDeployConfig(config?:any) {
+    // static getDeployConfig(config?:any) {
 
-        let theArgs = ProcessConfig.parseDeployArgsIntoOptions(process.argv)
+    //     let theArgs = ProcessConfig.parseDeployArgsIntoOptions(process.argv)
 
-        let baseDir = theArgs.dir ? theArgs.dir : process.env.INIT_CWD
+    //     let baseDir = theArgs.dir ? theArgs.dir : process.env.INIT_CWD
       
-        if (!baseDir) baseDir = "."
+    //     if (!baseDir) baseDir = "."
       
 
-        //A config object can be passed in. If not we will load large-config.json from the baseDir
-        if (!config) {
-            config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
-        }
+    //     //A config object can be passed in. If not we will load large-config.json from the baseDir
+    //     if (!config) {
+    //         config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
+    //     }
 
-        config.VERSION = packageConfig.version
-        config.baseDir = baseDir
+    //     config.VERSION = packageConfig.version
+    //     config.baseDir = baseDir
         
-        return config
+    //     return config
         
-    }
+    // }
 
 
-    static parseDeployArgsIntoOptions(rawArgs) {
+    // static parseDeployArgsIntoOptions(rawArgs) {
 
-        const args = arg(
-        {
-            '--dir': String,
-            '--sync-dir': String,
-            '--sync-rate': String,
-            '--alchemy': String,
-            '--clear': String
-        },
-        {
-            argv: rawArgs.slice(2),
-        }
-        )
+    //     const args = arg(
+    //     {
+    //         '--dir': String,
+    //         '--sync-dir': String,
+    //         '--sync-rate': String,
+    //         '--alchemy': String,
+    //         '--clear': String
+    //     },
+    //     {
+    //         argv: rawArgs.slice(2),
+    //     }
+    //     )
     
-        return {
-            dir: args['--dir'] || "",
-        }
+    //     return {
+    //         dir: args['--dir'] || "",
+    //     }
     
-    }
+    // }
 
 
 

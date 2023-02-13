@@ -35,9 +35,13 @@ let syncPush = async () => {
 
       const syncDirectory = path.resolve(config.baseDir, repo)
   
+      if (config.generate) {
+        await spawnService.spawnGenerate(syncDirectory)
+      }
 
-      //TODO only generate if there's been a version change.
-      // await spawnService.spawnGenerate(syncDirectory)
+      //Rsync before starting
+      await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
+
 
     }
 
@@ -69,13 +73,17 @@ let syncPush = async () => {
                 
                 console.log(`Files have been changed in ${syncDirectory}`)
                 
-                await git.add('./')
-                await git.commit('Committing changes')
-                await git.push('origin', branch)
+                // await git.add('./')
+                // await git.commit('Committing changes')
+                // await git.push('origin', branch)
   
-                //Deploy
-                await spawnService.spawnDeploy(syncDirectory)
-  
+                let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
+
+                for (let changedFile of changedFiles) {
+                  await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFile, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
+                }
+
+
             } else {
                 console.log(`No changes in ${syncDirectory}`)
             }
@@ -86,7 +94,8 @@ let syncPush = async () => {
   
       }
 
-      setTimeout(runLoop, config.syncRate) 
+
+      setTimeout(runLoop, config.syncPushRate) 
 
     }
 

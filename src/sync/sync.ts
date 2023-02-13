@@ -167,9 +167,8 @@ let sync = async () => {
           indexResult = await transactionIndexerService.index({ transaction: t1 })
         })
         
-        
 
-        if (Object.keys(indexResult?.processedTransactionViewModels).length > 0) {
+        if (indexResult?.processedTransactionViewModels && Object.keys(indexResult?.processedTransactionViewModels).length > 0) {
 
           await sequelize.transaction(async (t1) => {
             await writeResultsToDisk(indexResult, { transaction: t1 })
@@ -181,14 +180,14 @@ let sync = async () => {
 
 
         //Save latest transaction
-        console.log(`Updating latest info: ${indexResult.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
+        console.log(`Updating latest info: ${indexResult?.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
             
         if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
           fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
         }
 
         fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
-          _id: indexResult.mostRecentTransaction?.transaction._id,
+          _id: indexResult?.mostRecentTransaction?.transaction._id,
           lastUpdated: new Date().toJSON()
         })))
 

@@ -36,11 +36,25 @@ let syncPush = async () => {
       const syncDirectory = path.resolve(config.baseDir, repo)
   
       if (config.generate) {
-        await spawnService.spawnGenerate(syncDirectory)
+        await spawnService.spawnGenerateAndSync(syncDirectory)
       }
 
-      //Rsync before starting
-      await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
+
+      //Push changes to git.
+      const git = simpleGit(syncDirectory)
+
+      let status = await git.status()
+
+      if (!status.isClean()) {
+        await git.add('./')
+        await git.commit('Committing changes')
+        await git.push('origin', status.current)
+
+        //sync before starting
+        await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
+
+      }
+
 
 
     }
@@ -64,25 +78,18 @@ let syncPush = async () => {
         try {
   
             let status = await git.status()
-  
-            let branch = status.current
-  
-            let isClean = status.isClean()
-  
-            if (!isClean) {
+      
+            if (!status.isClean()) {
                 
                 console.log(`Files have been changed in ${syncDirectory}`)
                 
-                // await git.add('./')
-                // await git.commit('Committing changes')
-                // await git.push('origin', branch)
+                await git.add('./')
+                await git.commit('Committing changes')
+                await git.push('origin', status.current)
   
                 let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
 
-                for (let changedFile of changedFiles) {
-                  await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFile, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
-                }
-
+                await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
 
             } else {
                 console.log(`No changes in ${syncDirectory}`)

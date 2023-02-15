@@ -155,7 +155,9 @@ class SpawnService {
 
         return new Promise(function(resolve, reject) {
 
-            let rsyncProcess = spawn(`gsutil -m rsync $* -r ${dir}/public gs://${bucketName}/${destinationDir}/public`, [], { shell: true, cwd: dir })
+            let rsyncProcess = spawn(`gsutil -m cp -R -J * gs://${bucketName}/${destinationDir}`, [], { shell: true, cwd: `${dir}/public` })
+
+            // let rsyncProcess = spawn(`gsutil -h content-encoding:gzip -m rsync $* -r ${dir}/public gs://${bucketName}`, [], { shell: true, cwd: dir })
   
             rsyncProcess.stdout.on('data', (data) => {
               process.stdout.write(data.toString())
@@ -166,7 +168,7 @@ class SpawnService {
             })
     
             rsyncProcess.on('close', (code) => {
-                console.log(`Google rsync process exited with code ${code}`)
+                console.log(`Google cp process exited with code ${code}`)
                 resolve(rsyncProcess)
             })
 
@@ -175,25 +177,55 @@ class SpawnService {
     }
 
 
-    async spawnGoogleCloudCopy(dir:string, filepath:string, bucketName:string, destinationDir:string): Promise<ChildProcess> {        
+    async spawnGoogleCloudCopy(dir:string, filepaths:string[], bucketName:string, destinationDir:string): Promise<void> {        
 
-        return new Promise(function(resolve, reject) {
+        let commands = []
 
-            let rsyncProcess = spawn(`gsutil -m cp ${filepath} gs://${bucketName}/${destinationDir}/${filepath}`, [], { shell: true, cwd: dir })
-  
-            rsyncProcess.stdout.on('data', (data) => {
-              process.stdout.write(data.toString())
-            })
-              
-            rsyncProcess.stderr.on('data', (data) => {
-              process.stderr.write(data.toString())
-            })
+        for (let filepath of filepaths) {
+            filepath = filepath.replace("public/", "")
+            commands.push(`gsutil -m cp -J ${filepath} gs://${bucketName}/${destinationDir}/${filepath}`)
+        }
+
+        let chunks = []
+
+        const chunkSize = 100
+
+        for (let i = 0; i < commands.length; i += chunkSize) {
+            chunks.push(commands.slice(i, i + chunkSize))
+        }
+
+        const runCommand = async (cmd) => {
+
+            return new Promise(function(resolve, reject) {
     
-            rsyncProcess.on('close', (code) => {
-                resolve(rsyncProcess)
+                let p = spawn(cmd, [], { shell: true, cwd: `${dir}/public` })
+    
+                p.stdout.on('data', (data) => {
+                    process.stdout.write(data.toString())
+                })
+                
+                p.stderr.on('data', (data) => {
+                    process.stderr.write(data.toString())
+                })
+    
+                p.on('close', (code) => {
+                    resolve(p)
+                })
             })
 
-        })
+        }
+
+        for (let chunk of chunks) {
+
+            let cmd = ""
+
+            for (let command of chunk) {
+                cmd += `${command} & `
+            }
+
+            await runCommand(cmd)
+
+        }
 
     }
 

@@ -155,9 +155,7 @@ class SpawnService {
 
         return new Promise(function(resolve, reject) {
 
-            let rsyncProcess = spawn(`gsutil -m cp -R -J * gs://${bucketName}/${destinationDir}`, [], { shell: true, cwd: `${dir}/public` })
-
-            // let rsyncProcess = spawn(`gsutil -h content-encoding:gzip -m rsync $* -r ${dir}/public gs://${bucketName}`, [], { shell: true, cwd: dir })
+            let rsyncProcess = spawn(`gsutil -m cp -R -J * gs://${bucketName}/${destinationDir}/public`, [], { shell: true, cwd: `${dir}/public` })
   
             rsyncProcess.stdout.on('data', (data) => {
               process.stdout.write(data.toString())
@@ -183,7 +181,7 @@ class SpawnService {
 
         for (let filepath of filepaths) {
             filepath = filepath.replace("public/", "")
-            commands.push(`gsutil -m cp -J ${filepath} gs://${bucketName}/${destinationDir}/${filepath}`)
+            commands.push(`gsutil -m cp -J ${filepath} gs://${bucketName}/${destinationDir}/public/${filepath}`)
         }
 
         let chunks = []

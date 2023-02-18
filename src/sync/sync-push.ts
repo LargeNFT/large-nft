@@ -22,7 +22,7 @@ let syncPush = async () => {
       throw new Error("No configuration found.")
     }
 
-    if (!config?.repos || config.repos.length == 0) {
+    if (!config?.readers || config.readers.length == 0) {
       throw new Error("No repositories configured.")
     }
 
@@ -31,9 +31,9 @@ let syncPush = async () => {
   
     console.log('Starting Sync/Push...')
     
-    for (let repo of config.repos) {
+    for (let reader of config.readers) {
 
-      const syncDirectory = path.resolve(config.baseDir, repo)
+      const syncDirectory = path.resolve(config.baseDir, reader.repo)
   
       if (config.generate) {
         await spawnService.spawnGenerateAndSync(syncDirectory)
@@ -51,7 +51,7 @@ let syncPush = async () => {
         await git.push('origin', status.current)
 
         //sync before starting
-        await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
+        await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, reader.slug)
 
       }
 
@@ -65,9 +65,9 @@ let syncPush = async () => {
 
       console.log('Starting sync/push/deploy loop')
 
-      for (let repo of config.repos) {
+      for (let reader of config.readers) {
 
-        const syncDirectory = path.resolve(config.baseDir, repo)
+        const syncDirectory = path.resolve(config.baseDir, reader.repo)
 
         //Sync
         await spawnService.spawnSync(syncDirectory)
@@ -89,7 +89,7 @@ let syncPush = async () => {
   
                 let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
 
-                await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, path.basename(syncDirectory))
+                await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, reader.slug)
 
             } else {
                 console.log(`No changes in ${syncDirectory}`)

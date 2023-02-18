@@ -114,7 +114,9 @@ class ProcessConfig {
 
         let theArgs = ProcessConfig.parseSyncPushArgsIntoOptions(process.argv)
 
-        let baseDir = theArgs.syncDir
+        let baseDir = theArgs.syncDir ? theArgs.syncDir : process.env.INIT_CWD      
+        if (!baseDir) baseDir = "."
+
       
         if (!baseDir) {
             throw new Error("No base directory configured. Use --dir flag on CLI.")

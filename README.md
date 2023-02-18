@@ -68,6 +68,8 @@ Inexpensively scale a community and marketplace on any simple, static webhost.
 
 * Provide a solid foundation for anyone to build on.
 
+**Large NFT is alpha software and the API still changes frequently.**
+
 ### Community
 Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 

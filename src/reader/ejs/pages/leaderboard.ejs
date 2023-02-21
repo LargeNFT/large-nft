@@ -114,22 +114,22 @@
                                     </div>
                                 </div>
                             
-                                <div class="card">
+                                <div class="card data-table">
                                     <div class="card-header">
                                         Leaderboard <span class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</span>
 
                                     </div>
-                                    <div class="card-content data-table">
+                                    <div class="card-content">
                                         
                                         <table class="leaderboard-table">
                                             <thead>
                                                 <tr>
-                                                    <th class="numeric-cell">Rank</th>
-                                                    <th class="label-cell">Address</th>
-                                                    <th>Last Active</th>
+                                                    <th class="label-cell">Rank</th>
+                                                    <th class="address-cell">Address</th>
                                                     <th class="numeric-cell">Owned</th>
                                                     <th class="numeric-cell">Buys</th>
                                                     <th class="numeric-cell">Sales</th>
+                                                    <th class="text-cell">Last Active</th>
 
                                                 </tr>
                                             </thead>
@@ -138,11 +138,11 @@
                                     
                                             ${tokenOwners?.map(u => $h`
                                                 <tr>
-                                                    <td class="numeric-cell">
+                                                    <td class="label-cell">
                                                         ${u.rank}
                                                     </td>
 
-                                                    <td class="label-cell">
+                                                    <td class="address-cell">
 
                                                         ${u.ensName ? $h`
                                                             <a href="<%= baseURL %>u/?address=${u._id}">${u.ensName}</a>
@@ -151,10 +151,7 @@
                                                         `} 
 
                                                     </td>
-                                        
-                                                    <td>
-                                                        ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
-                                                    </td>
+                                    
                                         
                                                     <td class="numeric-cell">
                                                         ${u.count}
@@ -169,6 +166,11 @@
                                                         <strong>${new Intl.NumberFormat('en-US').format(u.salesReport?.sales?.ethValue ? u.salesReport?.sales?.ethValue : 0)}</strong> ETH <br />
                                                         ${transactionWebService.abbreviateDollars(u.salesReport?.sales?.usdValue ? u.salesReport?.sales?.usdValue : 0, 2)}
                                                     </td>
+
+                                                    <td class="text-cell">
+                                                        ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
+                                                    </td>
+
 
                                                 </tr>
                                             

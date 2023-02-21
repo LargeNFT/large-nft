@@ -171,41 +171,45 @@
                 <div class="block block-strong inset stats">
   
                   <div class="row">
-                    <div class="col-100 large-33 margin-bottom">
+                    <div class="col-50 large-33 margin-bottom">
                       Average Sale<br />
                       <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)})</strong>
                     </div>
-                    <div class="col-100 large-33 margin-bottom">
+                    <div class="col-50 large-33 margin-bottom">
                       Number of Sales (Lifetime)<br />
                       <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
                     </div>
-                    <div class="col-100 large-33 margin-bottom">
+                    <div class="col-50 large-33 margin-bottom">
                       Total Value of All Sales (Lifetime)<br />
                       <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)})</strong>
                     </div>
                   </div>
   
                   <div class="row margin-top">
-                    <div class="col-100 large-33 margin-bottom">
+
+                    <div class="col-50 large-33 margin-bottom">
                       Value of Sales (24 Hours)<br />
                       <strong>${new Intl.NumberFormat('en-US').format(salesReport?.dayTotals?.ethValue ? salesReport?.dayTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.dayTotals?.usdValue ? salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
                     </div>
-                    <div class="col-100 large-33 margin-bottom">
+
+                    <div class="col-50 large-33 margin-bottom">
                       Value of Sales (Month)<br />
                       <strong>${new Intl.NumberFormat('en-US').format(salesReport?.monthTotals?.ethValue ? salesReport?.monthTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.monthTotals?.usdValue ? salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
                     </div>
-                    <div class="col-100 large-33 margin-bottom">
+
+                    <div class="col-50 large-33 margin-bottom">
                       Value of Sales (Year)<br />
                       <strong>${new Intl.NumberFormat('en-US').format(salesReport?.yearTotals?.ethValue ? salesReport?.yearTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.yearTotals?.usdValue ? salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
                     </div>
+
                   </div>
   
                   <div class="row margin-top">
                     <div class="col-100 large-50">
-                      <a class="button button-outline" href="${link('leaderboard')}">Top Owners</a>
+                      <a class="button button-outline margin-bottom" href="${link('leaderboard')}">Top Owners</a>
                     </div>
                     <div class="col-100 large-50">
-                      <a class="button button-outline" href="${link('attributes')}">All Attributes</a>
+                      <a class="button button-outline margin-bottom" href="${link('attributes')}">All Attributes</a>
                     </div>
                   </div>
 

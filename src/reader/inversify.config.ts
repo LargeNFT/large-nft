@@ -233,11 +233,27 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       },
 
       {
+        path: `${baseURI}activity/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'activity/index.html')
+        }
+      },
+
+
+      {
         path: `${baseURI}leaderboard`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'leaderboard/index.html')
         }
       },
+
+      {
+        path: `${baseURI}leaderboard/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'leaderboard/index.html')
+        }
+      },
+
 
       {
         path: `${baseURI}sales`,
@@ -247,11 +263,28 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       },
 
       {
+        path: `${baseURI}sales/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'sales/index.html')
+        }
+      },
+
+
+
+      {
         path: `${baseURI}attributes`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'attributes/index.html')
         }
       },
+
+      {
+        path: `${baseURI}attributes/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attributes/index.html')
+        }
+      },
+
 
       {
         path: `${baseURI}attribute`,
@@ -262,6 +295,15 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
 
       {
+        path: `${baseURI}attribute/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attribute/index.html')
+        }
+      },
+
+
+
+      {
         path: `${baseURI}u`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'u/index.html')
@@ -269,11 +311,27 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       },
 
       {
+        path: `${baseURI}u/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/index.html')
+        }
+      },
+
+
+      {
         path: `${baseURI}u/activity`,
         async async({ resolve, reject }) {
           await resolveWithSpinner(resolve, 'u/activity.html')
         }
       },
+
+      {
+        path: `${baseURI}u/activity/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/activity.html')
+        }
+      },
+
 
       {
         path: `${baseURI}list-:page.html`,
@@ -291,13 +349,11 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
 
       {
-        path: `${baseURI}transaction`,
+        path: `${baseURI}t/:tokenId/index.html`,
         async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'transaction/index.html')
+          await resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
         }
-      },
-
-
+      }
 
     ]
 

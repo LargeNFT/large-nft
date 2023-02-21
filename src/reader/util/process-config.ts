@@ -25,8 +25,8 @@ class ProcessConfig {
 
         if (theArgs.env == "dev") {
 
-            config.hostname = baseConfig.hostname
-            config.baseURL = baseConfig.baseURL
+            config.hostname = config?.env?.dev?.hostname || baseConfig.hostname
+            config.baseURL = config?.env?.dev?.baseURL || baseConfig.baseURL
             config.maxItems = baseConfig.maxItems
 
         } else {
@@ -133,6 +133,7 @@ class ProcessConfig {
         config.syncRate = theArgs.syncRate
         config.syncPushRate = theArgs.syncPushRate
         config.generate = theArgs.generate
+        config.env = theArgs.env
 
         return config
         
@@ -144,6 +145,7 @@ class ProcessConfig {
         const args = arg(
         {
             '--sync-dir': String,
+            '--env': String,
             '--sync-rate': String,
             '--sync-push-rate': String,
             '--alchemy': String,
@@ -157,6 +159,7 @@ class ProcessConfig {
     
         return {
             syncDir: args['--sync-dir'] || "",
+            env: args['--env'] || "production",
             alchemy: args['--alchemy'] || "",
             syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
             syncPushRate: args['--sync-push-rate'] ? parseInt(args['--sync-push-rate'] ) : 30*1000,

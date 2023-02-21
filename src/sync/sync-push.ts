@@ -33,29 +33,30 @@ let syncPush = async () => {
     
     for (let reader of config.readers) {
 
-      const syncDirectory = path.resolve(config.baseDir, reader.repo)
+      const syncDirectory = path.resolve(config.syncDir, reader.repo)
   
       if (config.generate) {
         await spawnService.spawnGenerateAndSync(syncDirectory)
       }
 
+      if (config.env == "production") {
 
-      //Push changes to git.
-      const git = simpleGit(syncDirectory)
+        //Push changes to git.
+        const git = simpleGit(syncDirectory)
 
-      let status = await git.status()
+        let status = await git.status()
 
-      if (!status.isClean()) {
-        await git.add('./')
-        await git.commit('Committing changes')
-        await git.push('origin', status.current)
+        if (!status.isClean()) {
+          await git.add('./')
+          await git.commit('Committing changes')
+          await git.push('origin', status.current)
 
-        //sync before starting
-        await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, reader.slug)
+          //sync before starting
+          await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, reader.slug)
+        
+        }
 
       }
-
-
 
     }
 
@@ -67,37 +68,37 @@ let syncPush = async () => {
 
       for (let reader of config.readers) {
 
-        const syncDirectory = path.resolve(config.baseDir, reader.repo)
+        const syncDirectory = path.resolve(config.syncDir, reader.repo)
 
         //Sync
         await spawnService.spawnSync(syncDirectory)
 
-        //Push
-        const git = simpleGit(syncDirectory)
+          //Push
+          const git = simpleGit(syncDirectory)
 
-        try {
-  
-            let status = await git.status()
-      
-            if (!status.isClean()) {
-                
-                console.log(`Files have been changed in ${syncDirectory}`)
-                
-                await git.add('./')
-                await git.commit('Committing changes')
-                await git.push('origin', status.current)
-  
-                let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
+          try {
+    
+              let status = await git.status()
+        
+              if (!status.isClean()) {
+                  
+                  console.log(`Files have been changed in ${syncDirectory}`)
+                  
+                  await git.add('./')
+                  await git.commit('Committing changes')
+                  await git.push('origin', status.current)
+    
+                  let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
 
-                await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, reader.slug)
+                  await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, reader.slug)
 
-            } else {
-                console.log(`No changes in ${syncDirectory}`)
-            }
-  
-        } catch(ex) {
-            console.error(`Error checking git status in ${syncDirectory}:`, ex)
-        }
+              } else {
+                  console.log(`No changes in ${syncDirectory}`)
+              }
+    
+          } catch(ex) {
+              console.error(`Error checking git status in ${syncDirectory}:`, ex)
+          }
   
       }
 
@@ -106,8 +107,11 @@ let syncPush = async () => {
 
     }
 
+    if (config.env == "production") {
+      runLoop()
+    }
 
-    runLoop()
+
 
 
 }

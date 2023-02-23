@@ -56,29 +56,29 @@ class ProcessedTransaction extends Model {
     @Column(DataType.JSON)
     declare transactionValue?:TransactionValue
 
-    @Column(DataType.STRING)
-    declare previousId?:string
+    // @Column(DataType.STRING)
+    // declare previousId?:string
 
-    @Column(DataType.JSON)
-    declare previousByTokenIds?:{}
+    // @Column(DataType.JSON)
+    // declare previousByTokenIds?:{}
 
-    @Column(DataType.JSON)
-    declare previousByTransactionInitiatorId?:{}
+    // @Column(DataType.JSON)
+    // declare previousByTransactionInitiatorId?:{}
 
-    @Column(DataType.JSON)
-    declare previousByTokenOwnerId?:{}
+    // @Column(DataType.JSON)
+    // declare previousByTokenOwnerId?:{}
 
-    @Column(DataType.STRING)
-    declare nextId?:string
+    // @Column(DataType.STRING)
+    // declare nextId?:string
 
-    @Column(DataType.JSON)
-    declare nextByTokenIds?:{}
+    // @Column(DataType.JSON)
+    // declare nextByTokenIds?:{}
 
-    @Column(DataType.JSON)
-    declare nextByTokenOwnerId?:{}
+    // @Column(DataType.JSON)
+    // declare nextByTokenOwnerId?:{}
 
-    @Column(DataType.JSON)
-    declare nextByTransactionInitiatorId?:{}
+    // @Column(DataType.JSON)
+    // declare nextByTransactionInitiatorId?:{}
 
     @Column(DataType.DATE)
     declare lastUpdated?:Date 

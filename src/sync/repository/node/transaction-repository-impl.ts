@@ -2,6 +2,10 @@ import {  inject, injectable } from "inversify"
 import { Transaction } from "../../dto/transaction.js"
 import { TransactionRepository } from "../transaction-repository.js"
 
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
+const { Op } = require("sequelize")
 
 @injectable()
 class TransactionRepositoryNodeImpl implements TransactionRepository {
@@ -23,6 +27,9 @@ class TransactionRepositoryNodeImpl implements TransactionRepository {
         }    
     }
 
+    async remove(transaction:Transaction, options?:any) : Promise<void> {
+        await transaction.destroy(options)
+    }
 
     async list(limit: number, skip: number, options?:any): Promise<Transaction[]> {
 
@@ -42,6 +49,25 @@ class TransactionRepositoryNodeImpl implements TransactionRepository {
     }
 
     
+    async findBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<Transaction[]> {
+
+        let query = {
+            where: {
+                blockNumber: {
+                    [Op.and]: {
+                        [Op.gte]: startBlock,
+                        [Op.lte]: endBlock
+                    }
+                }
+            }
+        }
+
+        query = Object.assign(query, options)
+
+        return Transaction.findAll(query)
+
+    }
+
 
 
 }

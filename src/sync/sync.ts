@@ -34,7 +34,7 @@ import { ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken } from 
 import { BlockService } from "./service/block-service.js"
 import { TransactionService } from "./service/transaction-service.js"
 import { TokenOwnerService } from "./service/token-owner-service.js"
-import { ProcessedTransactionService, TransactionViewModel } from "./service/processed-transaction-service.js"
+import { ProcessedTransactionService, ProcessedTransactionsPage, TransactionsViewModel, TransactionViewModel } from "./service/processed-transaction-service.js"
 import { ContractState } from "./dto/contract-state.js"
 import { Token } from "./dto/token.js"
 import { SchemaService } from "../reader/service/core/schema-service.js"
@@ -149,6 +149,11 @@ let sync = async () => {
 
   let channelContract = await walletService.getContract("Channel")
 
+  let indexResult:ERCIndexResult = {
+    processedTransactionViewModels: {},
+    ownersToUpdate: {},
+    tokensToUpdate: {}
+  }     
 
   
 
@@ -159,42 +164,31 @@ let sync = async () => {
         await transactionIndexerService.init(channelContract, { transaction: t1 })
       })
 
-      let indexResult:ERCIndexResult     
 
       try {
 
         await sequelize.transaction(async (t1) => {
-          indexResult = await transactionIndexerService.index({ transaction: t1 })
+          indexResult = await transactionIndexerService.index(indexResult, { transaction: t1 })
         })
         
 
-        if (indexResult?.processedTransactionViewModels && Object.keys(indexResult?.processedTransactionViewModels).length > 0) {
-
-          await sequelize.transaction(async (t1) => {
-            await writeResultsToDisk(indexResult, { transaction: t1 })
-          })
-
-        } else {
-          console.log('No results to process.')
-        }
-
-
-        //Save latest transaction
-        console.log(`Updating latest info: ${indexResult?.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
-            
-        if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
-          fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
-        }
-
-        fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
-          _id: indexResult?.mostRecentTransaction?.transaction._id,
-          lastUpdated: new Date().toJSON()
-        })))
-
-
-
         //If we're current then wait. If not then just do it again.
         if (indexResult?.isCurrent) {
+
+
+          //Once we're current flush the results to disk.
+          if (indexResult?.processedTransactionViewModels && Object.keys(indexResult?.processedTransactionViewModels).length > 0) {
+
+            await sequelize.transaction(async (t1) => {
+              await writeResultsToDisk(indexResult, { transaction: t1 })
+            })
+  
+          } else {
+            console.log('No results to process.')
+          }
+
+          await updateLatestInfo(indexResult)
+
 
           if (config.syncRate > 0) {
 
@@ -226,10 +220,6 @@ let sync = async () => {
 
     if (!fs.existsSync(`${config.publicPath}/sync/tokens`)) {
       fs.mkdirSync(`${config.publicPath}/sync/tokens`, { recursive: true })
-    }
-
-    if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner/ens`)) {
-      fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/ens`, { recursive: true })
     }
 
     if (!fs.existsSync(`${config.publicPath}/sync/sales`)) {
@@ -264,7 +254,32 @@ let sync = async () => {
 
     //Write changed tokens to file
     for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
-      fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
+
+      //Remove activity if it exists.
+      if (fs.existsSync(`${config.publicPath}/sync/tokens/${tokenId}/activity`)) {
+        fs.rmSync(`${config.publicPath}/sync/tokens/${tokenId}/activity`, { recursive: true })
+      } 
+
+      //Remake activity directory
+      fs.mkdirSync(`${config.publicPath}/sync/tokens/${tokenId}/activity`, { recursive: true })
+
+
+      //Save token
+      fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}/token.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
+
+      //Get transaction pages
+      let transactionsViewModel:TransactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listByToken(parseInt(tokenId), 10000, options), new Date().toJSON())
+
+      //Save each one
+      let transactionPages:ProcessedTransactionsPage[] = await processedTransactionService.buildTransactionPages(transactionsViewModel, 25)
+
+      
+      let i=0
+      for (let transactionPage of transactionPages) {
+        fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}/activity/${i}.json`, Buffer.from(JSON.stringify(transactionPage)))
+        i++
+      }
+
     }
 
     console.timeEnd(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
@@ -279,16 +294,27 @@ let sync = async () => {
       let cloned = JSON.parse(JSON.stringify(tokenOwner))
 
   
+
+      //Remove activity if it exists.
+      if (fs.existsSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`)) {
+        fs.rmSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`, { recursive: true })
+      } 
+
+      //Remake activity directory
+      fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`, { recursive: true })
+
+
       //Generate sales report
       cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(owner)
 
       //Write full profile
-      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}.json`, Buffer.from(JSON.stringify(cloned)))
+      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokenOwner.json`, Buffer.from(JSON.stringify(cloned)))
 
       //Write latest ENS name
-      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/ens/${owner}.json`, Buffer.from(JSON.stringify({
+      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
         name: cloned.ensName
       })))
+      
 
     }
     console.timeEnd(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
@@ -300,7 +326,7 @@ let sync = async () => {
     
     
 
-    let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listFrom(15, indexResult.mostRecentTransaction.transaction._id, options), new Date().toJSON())
+    let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.list(15, 0, options), new Date().toJSON())
     fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
     console.timeEnd(`Writing recent activity to disk.`)
 
@@ -383,6 +409,21 @@ let sync = async () => {
   
   }
 
+  async function updateLatestInfo(indexResult:ERCIndexResult) {
+
+        //Save latest transaction
+        console.log(`Updating latest info: ${indexResult?.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
+            
+        if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
+          fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
+        }
+
+        fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
+          _id: indexResult?.mostRecentTransaction?.transaction._id,
+          lastUpdated: new Date().toJSON()
+        })))
+
+  }
 
   let testTransaction = async () => {
 

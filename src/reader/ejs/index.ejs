@@ -116,13 +116,13 @@
               <div class="card channel-card-show">
 
                 <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                  style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
+                  style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
                     <% } %>
                       >
   
                       <a href="<%= link('index.html') %>">
                         <% if (channelViewModel?.channel.coverImageId) { %>
-                          <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" alt="Primary avatar" class="avatar" />
+                          <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
                         <% } else { %>
                           <i class="f7-icons avatar">photo</i>
                         <% } %>
@@ -396,22 +396,6 @@
 
 
                 <% } %>
-
-                  <p>
-                    <label>Tools</label>
-
-                    <a href="<%= link(`large/index.html#!/admin/channel/fork-reader?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
-                      Fork
-                    </a>
-
-                    <a href="<%= link(`large/index.html#!/?title=${encodeURI(channelViewModel.channel.title)}`) %>" class="external link">
-                      Your projects
-                    </a>
-
-
-                  </p>
-
-
 
               </div>
 

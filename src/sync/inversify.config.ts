@@ -84,6 +84,8 @@ import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-
 import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js";
 import { SpawnService } from "./service/spawn-service.js";
 
+import sharp from "sharp"
+
 
 const require = createRequire(import.meta.url)
 const { Sequelize } = require('sequelize-typescript')
@@ -105,6 +107,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind("hostname").toConstantValue(command.hostname)
 
   container.bind("baseDir").toConstantValue(command.baseDir)
+  container.bind("sharp").toConstantValue(sharp)
 
 
 

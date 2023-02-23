@@ -12,7 +12,10 @@ class TokenRepositoryNodeImpl implements TokenRepository {
 
     async put(token: Token, options?:any): Promise<Token> {
 
-        await token.save(options)
+        if (token.changed()) {
+            await token.save(options)
+        }
+        
         return token
     
     }

@@ -139,7 +139,6 @@ import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
 import { ContractStateRepository } from "../sync/repository/contract-state-repository.js";
 import { TokenService } from "./service/token-service.js";
 
-
 let container: Container
 
 async function getMainContainer(customContainer:Container, baseURI:string, hostname:string, version:string, routablePages:StaticPage[]) {

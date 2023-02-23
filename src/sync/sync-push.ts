@@ -29,7 +29,7 @@ let syncPush = async () => {
 
     let spawnService:SpawnService = new SpawnService()
   
-    console.log('Starting Sync/Push...')
+    console.log(`Starting Sync/Push to env: ${config.env}`)
     
     for (let reader of config.readers) {
 

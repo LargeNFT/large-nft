@@ -28,10 +28,7 @@
                   ${walletAddress != undefined ? $h`
                     🟢
                   ` : $h`
-                    
-                      <span @click=${connectWallet}>
-                        🔴
-                      </span>
+                    🔴
                   `} 
 
                 ` : $h`<span />`}
@@ -78,6 +75,21 @@
                               
                         ` : $h`<span />`}
 
+
+
+
+                      <li>
+                        <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?title=Back to Collection" class="item-link external popover-close">
+                          <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                  Fork
+                                </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+  
 
 
 
@@ -133,6 +145,10 @@
 
             <div class="large-only">
   
+              <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?title=Back to Collection" class="external link">
+                Fork
+              </a>
+
               <a class="link ${active == 'Explore' ? $h`link-active` : $h` `}" href="${baseURI}explore.html">
                 Explore
               </a>      

@@ -12,7 +12,6 @@ import excerptHtml from 'excerpt-html'
 import he from 'he'
 
 
-
 import { getMainContainer, GetMainContainerCommand } from "../sync/inversify.config.js"
 import { ItemWebService } from "./service/web/item-web-service.js"
 
@@ -156,9 +155,9 @@ let generate = async () => {
 
 
   let headEndContents = `
-        <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js"></script>
-        <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js"></script>
-        <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js"></script>
+  <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js"></script>
+  <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js"></script>
+  <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js"></script>
     `
   let bodyContents = ``
 
@@ -456,6 +455,15 @@ let generate = async () => {
     console.timeEnd(`Generating /t/${itemViewModel.item.tokenId}`)
 
   }
+
+
+  //Generate webp version of channel cover image
+  await generateService.generateWebp(config, `${config.baseDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId)
+  await generateService.generateWebp(config, `${config.baseDir}/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
+
+
+  //Generate  webp version of channel profile pic
+
 
   await spawnService.spawnGenerateAfter(config.baseDir)
 

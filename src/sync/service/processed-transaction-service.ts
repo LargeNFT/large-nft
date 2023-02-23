@@ -1,13 +1,17 @@
 import { inject, injectable } from "inversify"
 
 import { ProcessedTransactionRepository } from "../../sync/repository/processed-transaction-repository.js"
-import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport, TokenOwnerSalesReport } from "../../sync/dto/processed-transaction.js"
+import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport, TokenOwnerSalesReport, TransactionValue } from "../../sync/dto/processed-transaction.js"
 import { ItemService } from "../../reader/service/item-service.js"
 import { Token } from "../dto/token.js"
 import { TokenService } from "./token-service.js"
 import { TokenOwner } from "../dto/token-owner.js"
 import { TokenOwnerService } from "./token-owner-service.js"
 import { ERCIndexResult } from "./transaction-indexer-service.js"
+import { Block } from "../dto/block.js"
+import { BlockService } from "./block-service.js"
+import { Transaction } from "../dto/transaction.js"
+import { TransactionService } from "./transaction-service.js"
 
 
 @injectable()
@@ -15,6 +19,12 @@ class ProcessedTransactionService {
 
     @inject("ProcessedTransactionRepository")
     private processedTransactionRepository:ProcessedTransactionRepository
+
+    @inject("BlockService")
+    private blockService:BlockService
+
+    @inject("TransactionService")
+    private transactionService:TransactionService
 
     @inject("ItemService")
     private itemService:ItemService
@@ -65,74 +75,10 @@ class ProcessedTransactionService {
     }
 
 
-    async listFrom(limit:number, startId:string, options?:any) : Promise<ProcessedTransaction[]> {
-
-        let results:ProcessedTransaction[] = []
-
-        while (results?.length < limit && startId) {
-
-            let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId, options)
-
-            results.push(processedTransaction)
-
-            let previousId = processedTransaction?.previousId
-
-            //Get the previous
-            if (previousId) {
-
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(previousId, options)
-
-                if (processedTransaction?._id != previousId) break
-
-            } else {
-                processedTransaction = undefined
-            }
-
-            startId = processedTransaction?._id
-        }
-
-        return results
-
+    async list(limit: number, skip: number, options?:any) : Promise<ProcessedTransaction[]> {
+        return this.processedTransactionRepository.list(limit, skip, options)
     }
 
-    async listByTokenFrom(tokenId:number, limit:number, startId:string, options?:any) : Promise<ProcessedTransaction[]> {
-
-        let results:ProcessedTransaction[] = []
-
-        while (results?.length < limit && startId) {
-            
-            let processedTransaction:ProcessedTransaction = await this.processedTransactionRepository.get(startId, options)
-
-            if (!processedTransaction) {
-                throw new Error(`Transaction not found ${startId}`)
-            }
-
-            results.push(processedTransaction)
-
-            let previousByTokenId = processedTransaction?.previousByTokenIds[tokenId]
-
-            //Get the previous
-            if (previousByTokenId) {
-
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.previousByTokenIds[tokenId], options)
-
-                if (processedTransaction?._id != previousByTokenId) break
-
-            } else {
-                processedTransaction = undefined
-            }
-
-            startId = processedTransaction?._id
-        }
-
-
-
-
-        return results
-
-    }
 
     async listByTokens(tokenIds:number[], limit:number, options?:any) : Promise<ProcessedTransaction[]> {
         return this.processedTransactionRepository.listByTokens(tokenIds, options)
@@ -196,7 +142,18 @@ class ProcessedTransactionService {
             let processedEvents:ProcessedEvent[] = await this.processedTransactionRepository.getEventsByTransaction(transaction, options)
 
             transactionViewModels.push({
-                transaction: transaction,
+                transaction: {
+                    _id: transaction._id,
+                    _rev: transaction._rev,
+                    blockNumber: transaction.blockNumber,
+                    transactionIndex: transaction.transactionIndex,
+                    transactionFrom: transaction.transactionFrom,
+                    tokenTraders: transaction.tokenTraders,
+                    timestamp: transaction.timestamp,
+                    tokenIds: transaction.tokenIds,
+                    transactionValue: transaction.transactionValue,
+                    previousId: transaction.previousId
+                },
                 events: processedEvents
             })
 
@@ -233,22 +190,19 @@ class ProcessedTransactionService {
     }
 
 
-    async deleteBetweenBlocks(result:ERCIndexResult, options?:any)  {
+    async deleteBetweenBlocks(result:ERCIndexResult, blockConfirmations:number, options?:any)  {
 
-        let transactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(result.startBlock, result.endBlock, options)
+        console.log(`Deleting between block #${result.startBlock} - ${result.endBlock}`)
 
+        let processedTransactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(result.startBlock, result.endBlock, options)
+ 
 
         //Get affected tokens. Reset lastTransactionId and owner
-        const tokenIds = Array.from(new Set(transactions.flatMap(({ tokenIds }) => tokenIds)))
+        const tokenIds = Array.from(new Set(processedTransactions.flatMap(({ tokenIds }) => tokenIds)))
 
         for (let tokenId of tokenIds) {
 
             let token:Token = await this.tokenService.get(tokenId, options)
-
-            //Find the transaction for this token before startBlock
-            let previousByToken = await this.processedTransactionRepository.getPreviousByTokenId(tokenId, result.startBlock, 0, options)
-
-            token.latestTransactionId = previousByToken?._id
 
             //Remove ownership history after start block
             token.ownershipHistory = token.ownershipHistory?.filter(oh => oh.blockNumber < result.startBlock)
@@ -262,45 +216,52 @@ class ProcessedTransactionService {
 
         }
 
-        //Get affected initiators. Reset latestTransactionInitiatorId
-        const initiators = Array.from(new Set(transactions.map(t => t.transactionFrom)))
 
+        //Not sure if this part with the users accomplishes anything. I don't think it hurts. Leaving for now.
+
+
+        //Get affected initiators. Add to list to get updated.
+        const initiators = Array.from(new Set(processedTransactions.map(t => t.transactionFrom)))
 
         for (let user of initiators) {
-
             let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
-
-            let previousByInitiator = await this.processedTransactionRepository.getPreviousByInitiator(user, result.startBlock, 0, options)
-
-            tokenOwner.latestTransactionInitiatorId = previousByInitiator?._id
-
             result.ownersToUpdate[tokenOwner._id] = tokenOwner
-
         }
-
 
         //Get affected traders. Reset latestTransactionId
-        const tokenTraders = Array.from(new Set(transactions.flatMap(({ tokenTraders }) => tokenTraders)))
+        const tokenTraders = Array.from(new Set(processedTransactions.flatMap(({ tokenTraders }) => tokenTraders)))
         
         for (let user of tokenTraders) {
-
             let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
-
-            let previousByTrader = await this.processedTransactionRepository.getPreviousByTrader(user, result.startBlock, 0, options)
-
-            tokenOwner.latestTransactionId = previousByTrader?._id
-
             result.ownersToUpdate[tokenOwner._id] = tokenOwner
-
         }
-
-
 
 
         //Delete transactions
-        for (let transaction of transactions) {
+        for (let transaction of processedTransactions) {
             await this.processedTransactionRepository.remove(transaction, options)
+
+            //Remove from results so we don't retain it.
+            delete result.processedTransactionViewModels[transaction._id]
         }
+
+
+
+        //Delete any actual blocks or underlying transactions that are more than blockConfirmations old
+        let blocks:Block[] = await this.blockService.findBetweenBlocks(result.endBlock - blockConfirmations, result.endBlock, options)
+        let transactions:Transaction[] = await this.transactionService.findBetweenBlocks(result.endBlock - blockConfirmations, result.endBlock, options)
+        
+        
+        for (let block of blocks) {
+            console.log(`Clearing block #${block._id}`)
+            await this.blockService.remove(block, options)
+        }
+
+        for (let transaction of transactions) {
+            console.log(`Clearing transaction #${transaction._id}`)
+            await this.transactionService.remove(transaction, options)
+        }
+
 
     }
 
@@ -321,6 +282,33 @@ class ProcessedTransactionService {
     }
 
 
+    async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number) : Promise<ProcessedTransactionsPage[]> {
+
+        let result: ProcessedTransactionsPage[] = []
+
+        //Break into rows
+        for (let i = 0; i < transactionsViewModel.transactions.length; i += perPage) {
+
+            let allEvents:ProcessedEvent[] = []
+
+            let processedTransactions = transactionsViewModel.transactions.slice(i, i + perPage)
+
+            for (let transaction of processedTransactions) {
+                allEvents.push(...transaction.events)
+            }
+
+            result.push({
+                processedTransactions: processedTransactions,
+                rowItemViewModels: await this._getRowItemViewModels(allEvents)
+            })
+        }
+
+        return result
+
+    }
+
+
+
     attributeKeyToInteger(key:string) {
         let hash = 0, i, chr;
 
@@ -338,20 +326,42 @@ class ProcessedTransactionService {
 
 }
 
+
+
+interface ProcessedTransactionsPage {
+    lastUpdated?:string
+    processedTransactions?:TransactionViewModel[]
+    rowItemViewModels?:{}
+}
+
 interface TransactionsViewModel {
     lastUpdated?:string
     transactions?:TransactionViewModel[],
     rowItemViewModels?:{}
 }
 
+interface ProcessedTransactionViewModel {
+    _id?:string
+    _rev?:string 
+    blockNumber?:number
+    transactionIndex?:number
+    transactionFrom?:string
+    tokenTraders?:string[]
+    timestamp?:number
+    tokenIds?:number[]
+    transactionValue?:TransactionValue
+    previousId?:string
+}
+
+
 interface TransactionViewModel {
-    transaction?:ProcessedTransaction
+    transaction?:ProcessedTransactionViewModel
     events?:ProcessedEvent[]
 }
 
 
 
 export {
-    ProcessedTransactionService, TransactionsViewModel, TransactionViewModel
+    ProcessedTransactionService, TransactionsViewModel, TransactionViewModel, ProcessedTransactionsPage
 }
 

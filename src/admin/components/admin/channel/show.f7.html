@@ -127,7 +127,7 @@
 
         virtualList.params.cols = viewPortWidth >= 1024 ? COLS_LARGE : COLS_SMALL
         virtualList.params.height = viewPortWidth >= 1024 ? HEIGHT_LARGE : HEIGHT_SMALL
-        virtualList.update()
+        virtualList?.update()
 
         console.log("Resized...")
 

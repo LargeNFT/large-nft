@@ -19,8 +19,7 @@ class GenerateService {
         @inject("ItemWebService") private itemWebService: ItemWebService,
         @inject("StaticPageService") private staticPageService: StaticPageService,
         @inject("convert-svg-to-png") private convert,
-        // @inject("sharp") private sharp
-
+        @inject("sharp") private sharp
     ) { }
 
 
@@ -51,20 +50,21 @@ class GenerateService {
 
         await fs.promises.mkdir(`${config.publicPath}/backup/generated/images/50x50`, { recursive: true })
 
-        let imagePath 
-
         //For now just the one
         if (item.coverImage.generated) {
-            //Create PNG from SVG
-            imagePath = await this.generatePNGFromSVG(config, item)
+
+            //Create PNG from SVG to show on Twitter/Discord preview
+            await this.generatePNGFromSVG(config, item)
+
         } else {
-            imagePath = `${config.baseDir}/backup/export/images/${item.coverImage._id}.jpg` 
+
+            let imagePath = `${config.baseDir}/backup/export/images/${item.coverImage._id}.jpg` 
+
+            //Generate thumbnail
+            await this.generateWebp(config, imagePath, item.coverImage._id, 50)
+
         }
 
-        // //Generate a small thumbnail
-        // await this.sharp(imagePath)
-        //     .resize(50)
-        //     .toFile(`${config.publicPath}/backup/generated/images/50x50/${item.coverImage._id}.jpg`)
 
     }
 
@@ -90,6 +90,35 @@ class GenerateService {
         return path
 
     }
+
+    async generateWebp(config, imagePath, imageId, size?) {
+
+        let filename = `${config.publicPath}/backup/generated/images${size ? `/${size}x${size}/` : '/'}${imageId}.webp`
+
+        if (!fs.existsSync(filename)) {
+    
+            console.log(`Creating webp at: ${filename}`)    
+
+            if (size) {
+                //Generate and resize
+                await this.sharp(imagePath)
+                .resize(size)
+                .toFile(filename)
+            } else {
+                //Generate and resize
+                await this.sharp(imagePath)
+                .toFile(filename)
+            }
+
+        } else {
+
+          console.log(`Skipping thumbnail ${imageId}.png`)
+
+        }
+
+
+    }
+
 
     async generateCollage(config, items:ItemViewModel[]) {
 

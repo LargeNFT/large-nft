@@ -38,12 +38,7 @@ let start = async () => {
 
 
   console.log('Generating reader...')
-  
-  // Generate HTML
-  await spawnService.spawnGenerateAndSync(config.baseDir)
     
-  console.log(`${config.baseDir}/public`)
-  
   //Start web server
   fastify.register(require('@fastify/static'), {
     root: `${config.baseDir}/public`
@@ -55,6 +50,10 @@ let start = async () => {
     if (err) throw err
     // Server is now listening on ${address}
   })
+
+  // Generate HTML
+  await spawnService.spawnGenerateAndSync(config.baseDir)
+    
 
 }
 

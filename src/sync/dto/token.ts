@@ -48,8 +48,8 @@ class Token extends Model {
 
 
 
-    @Column(DataType.STRING)
-    declare latestTransactionId?:string
+    // @Column(DataType.STRING)
+    // declare latestTransactionId?:string
 
     @Column(DataType.DATE)
     declare lastUpdated?:Date 

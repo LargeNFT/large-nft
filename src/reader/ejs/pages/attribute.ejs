@@ -170,12 +170,12 @@
                                 ` : $h` `}
 
 
-                                <div class="card">
+                                <div class="card data-table">
                                     <div class="card-header">
                                         Leaderboard <span class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</span>
 
                                     </div>
-                                    <div class="card-content data-table">
+                                    <div class="card-content">
               
                                         <table class="leaderboard-table">
                                             <thead>
@@ -383,8 +383,10 @@
 
                 const viewPortWidth = getWidth()
 
-                virtualList.params.cols = viewPortWidth >= 1024 ? 5 : 2
-                virtualList.update()
+                if (virtualList) {
+                    virtualList.params.cols = viewPortWidth >= 1024 ? 5 : 2
+                    virtualList?.update()
+                }
 
                 console.log("Resized...")
 
@@ -457,18 +459,6 @@
 
 
             }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

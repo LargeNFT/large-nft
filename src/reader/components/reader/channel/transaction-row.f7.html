@@ -63,8 +63,12 @@
     } 
 
     const imageLink = (rowItemViewModel) => {
-      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+
+      if (rowItemViewModel.coverImageGenerated) {
+        return link('backup/export/images/' + rowItemViewModel.coverImageId + ".svg")
+      }
+
+      return link('backup/generated/images/50x50/' + rowItemViewModel.coverImageId + ".webp")
     }
 
     let transaction = props.transaction
@@ -79,7 +83,7 @@
 
           <td class="image">
             <a href="${baseURI}t/${event.tokenId}">
-              <img src="${imageLink(rowItemViewModels[event.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.tokenId].title}" height="40" width="40" /> 
+              <img src="${imageLink(rowItemViewModels[event.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.tokenId].title}" height="50" width="50" /> 
             </a>
           </td>
 

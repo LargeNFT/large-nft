@@ -30,14 +30,16 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     async put(processedTransaction: ProcessedTransaction, options?:any): Promise<ProcessedTransaction> {
         
-        await processedTransaction.save(options)
+        if (processedTransaction.changed()) {
+            await processedTransaction.save(options)
         
-        if (processedTransaction.tokens) {
-            for (let token of processedTransaction.tokens) {
-                await processedTransaction.addToken(token, Object.assign({through: ProcessedTransactionToken}, options))
+            if (processedTransaction.tokens) {
+                for (let token of processedTransaction.tokens) {
+                    await processedTransaction.addToken(token, Object.assign({through: ProcessedTransactionToken}, options))
+                }
             }
         }
-        
+
         return processedTransaction 
 
     }

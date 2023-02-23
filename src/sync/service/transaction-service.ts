@@ -35,6 +35,9 @@ class TransactionService {
 
             try {
 
+                console.log(`Downloading transaction #${_id}`)
+
+
                 transaction = new Transaction()
                 
                 //Download it.
@@ -82,6 +85,10 @@ class TransactionService {
         return this.transactionRepository.put(transaction, options)
     }
 
+    async remove(transaction:Transaction, options?:any) : Promise<void> {
+        return this.transactionRepository.remove(transaction, options)
+    }
+
     /**
      * No validation for speeeeeeeeed
      * @param ercEvents 
@@ -90,6 +97,11 @@ class TransactionService {
      async putAll(transactions:Transaction[], options?:any) {
         return this.transactionRepository.putAll(transactions,options)
     }
+
+    async findBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<Transaction[]> {
+        return this.transactionRepository.findBetweenBlocks(startBlock, endBlock, options)
+    }
+
 
     async getLatest() : Promise<Transaction> {
         let l = await this.transactionRepository.list(1, 0)

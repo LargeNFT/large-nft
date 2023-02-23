@@ -30,11 +30,11 @@ class TokenOwner extends Model {
     @Column(DataType.JSON)
     declare tokenIds?:number[]
 
-    @Column(DataType.STRING)
-    declare latestTransactionInitiatorId?:string
+    // @Column(DataType.STRING)
+    // declare latestTransactionInitiatorId?:string
 
-    @Column(DataType.STRING)
-    declare latestTransactionId?:string
+    // @Column(DataType.STRING)
+    // declare latestTransactionId?:string
 
     @Column(DataType.STRING)
     declare ensName?:string

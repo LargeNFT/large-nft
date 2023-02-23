@@ -225,7 +225,8 @@ let getReaderConfigs = () => {
     entry: "./src/reader/generate.ts",
     externalsPresets: { node: true },
     externals: {
-      'convert-svg-to-png': 'convert-svg-to-png'
+      'convert-svg-to-png': 'convert-svg-to-png',
+      'sharp': 'sharp'
     },
     experiments: {
       outputModule: true
@@ -267,7 +268,7 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/sync/sync.ts",
-    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore'],
+    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp'],
     externalsPresets: { 
       node: true 
     },    
@@ -312,7 +313,7 @@ let getReaderConfigs = () => {
 
   let startConfig = {
     entry: "./src/reader/start.ts",
-    externals: ['fastify', '@fastify/static'],
+    externals: ['fastify', '@fastify/static', 'sharp'],
     externalsPresets: { 
       node: true 
     },    

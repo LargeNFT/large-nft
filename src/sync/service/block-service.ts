@@ -27,8 +27,10 @@ class BlockService {
 
         //Check if we've already inserted it into pouch
         try {
-            block = await this.blockRepository.get(blockNumber)
-        } catch(ex) {}
+            block = await this.blockRepository.get(blockNumber, options)
+        } catch(ex) {
+            console.log(ex)
+        }
 
         if (!block) {
 
@@ -36,6 +38,8 @@ class BlockService {
 
                 block = new Block()
                 block._id = blockNumber.toString()
+
+                console.log(`Downloading block #${blockNumber}`)
 
                 //Download it.
                 let data = await this.walletService.provider.getBlock(blockNumber)
@@ -71,6 +75,11 @@ class BlockService {
         return this.blockRepository.put(block, options)
     }
 
+    async remove(block:Block, options?:any) : Promise<void> {
+        return this.blockRepository.remove(block, options)
+    }
+
+
     /**
      * No validation for speeeeeeeeed
      * @param ercEvents 
@@ -78,6 +87,10 @@ class BlockService {
      */
      async putAll(blocks:Block[], options?:any) {
         return this.blockRepository.putAll(blocks, options)
+    }
+
+    async findBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<Block[]> {
+        return this.blockRepository.findBetweenBlocks(startBlock, endBlock, options)
     }
 
 

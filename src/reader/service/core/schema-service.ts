@@ -4,6 +4,7 @@ import { AnimationRepository } from "../../repository/animation-repository.js"
 import { AttributeTotalRepository } from "../../repository/attribute-total-repository.js"
 import { AuthorRepository } from "../../repository/author-repository.js"
 import { ChannelRepository } from "../../repository/channel-repository.js"
+import { ComponentStateRepository } from "../../repository/component-state-repository.js"
 
 // import { ERCEventRepository } from "../../repository/erc-event-repository.js"
 import { ImageRepository } from "../../repository/image-repository.js"
@@ -46,8 +47,8 @@ class SchemaService {
     @inject("AttributeTotalRepository")
     private attributeTotalRepository:AttributeTotalRepository
 
-    // @inject("ComponentStateRepository")
-    // private componentStateRepository:ComponentStateRepository
+    @inject("ComponentStateRepository")
+    private componentStateRepository:ComponentStateRepository
 
     // @inject("TokenOwnerRepository")
     // private tokenOwnerRepository:TokenOwnerRepository
@@ -89,7 +90,7 @@ class SchemaService {
         // repositories.push(this.contractStateRepository)
         // repositories.push(this.ercEventRepository)
         repositories.push(this.attributeTotalRepository)
-        // repositories.push(this.componentStateRepository)
+        repositories.push(this.componentStateRepository)
         // repositories.push(this.tokenOwnerRepository)
         // repositories.push(this.transactionRepository)
         // repositories.push(this.blockRepository)

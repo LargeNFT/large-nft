@@ -216,8 +216,8 @@ Here is an example configuration for a site hosted on GitLab Pages.
         }
     ],
 
-    "headStart": "src/headStart.ejs",
-    "footer": "src/footer.ejs",
+    "headStart": "src/headStart.ejs", //Reference an ejs template you created at a relative path.
+    "footer": "src/footer.ejs", //Reference an ejs template you created at a relative path
 
 }
 ```
@@ -227,6 +227,8 @@ Here is an example configuration for a site hosted on GitLab Pages.
 | ------------- | ------------- | ------------- |
 | hostname  | http://localhost:8081 | The hostname where the generated Reader will be hosted. When generating the dev version it defaults to localhost. |
 | baseURL  |  / | The path on the host where the generated app is hosted. This is used by the PWA's routing and must match the actual deployment URL. Must end with a /. For example /bladerunner-punks-reader/ 
+| env.dev.hostname  |  | Override the hostname when using the --env dev flag |
+| env.dev.baseURL  |  | Override the baseURL when using the --env dev flag |
 | headStart  |   | Path to eta template to insert at the beginning of the <head> tag on every page.
 | footer  |   | Path to eta template to insert at the beginning of the <head> tag on every page.
 | marketplaces  |   | See below

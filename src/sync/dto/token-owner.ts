@@ -1,4 +1,5 @@
 import { createRequire } from 'module'
+import { TransactionsViewModel, TransactionViewModel } from '../service/processed-transaction-service.js'
 const require = createRequire(import.meta.url)
 
 const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
@@ -29,12 +30,9 @@ class TokenOwner extends Model {
 
     @Column(DataType.JSON)
     declare tokenIds?:number[]
-
-    // @Column(DataType.STRING)
-    // declare latestTransactionInitiatorId?:string
-
-    // @Column(DataType.STRING)
-    // declare latestTransactionId?:string
+    
+    @Column(DataType.JSON)
+    declare transactionsViewModel?:TransactionsViewModel
 
     @Column(DataType.STRING)
     declare ensName?:string

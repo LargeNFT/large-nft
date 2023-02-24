@@ -1,4 +1,5 @@
 import { createRequire } from 'module'
+import { TransactionsViewModel, TransactionViewModel } from '../service/processed-transaction-service.js'
 import { ProcessedTransaction, ProcessedTransactionToken } from './processed-transaction.js'
 import { TokenOwner } from './token-owner.js'
 const require = createRequire(import.meta.url)
@@ -34,8 +35,6 @@ class Token extends Model {
     declare processedTransactions: ProcessedTransaction[]
 
 
-
-
     @ForeignKey(() => TokenOwner)
     @Column(DataType.STRING)
     declare currentOwnerId?:string 
@@ -43,13 +42,12 @@ class Token extends Model {
     @BelongsTo(() => TokenOwner)
     currentOwner: TokenOwner
 
+    // @Column(DataType.JSON)
+    // declare ownershipHistory?:OwnershipHistory[]
+
     @Column(DataType.JSON)
-    declare ownershipHistory?:OwnershipHistory[]
+    declare transactionsViewModel?:TransactionsViewModel
 
-
-
-    // @Column(DataType.STRING)
-    // declare latestTransactionId?:string
 
     @Column(DataType.DATE)
     declare lastUpdated?:Date 

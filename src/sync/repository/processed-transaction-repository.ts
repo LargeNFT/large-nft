@@ -3,6 +3,7 @@ import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesR
 
 interface ProcessedTransactionRepository {
     get(_id:string, options?:any): Promise<ProcessedTransaction>
+    getByIds(_ids:string[], options?:any) : Promise<ProcessedTransaction[]>
     getLatest(beforeBlock?:number, options?:any): Promise<ProcessedTransaction>
     put(processedTransaction:ProcessedTransaction, options?:any) : Promise<ProcessedTransaction>
     putAll(processedTransactions:ProcessedTransaction[], options?:any) : Promise<void>
@@ -14,12 +15,14 @@ interface ProcessedTransactionRepository {
     remove(processedTransaction:ProcessedTransaction, options?:any) : Promise<void>
 
     getEventsByTransaction(transaction:ProcessedTransaction, options?:any) : Promise<ProcessedEvent[]> 
+    getEventsByTokens(tokenIds:number[], options?:any) : Promise<ProcessedEvent[]> 
     // getEventsByTransactions(transactions:ProcessedTransaction[], options?:any) : Promise<ProcessedEvent[]>
     // putEvents(events:ProcessedEvent[], options?:any)
     
     list(limit: number, skip: number, options?:any): Promise<ProcessedTransaction[]> 
     listByTokens(tokenIds:number[], options?:any) : Promise<ProcessedTransaction[]> 
     listByToken(tokenId:number, options?:any) : Promise<ProcessedTransaction[]>
+    listByTrader(owner:string, options?:any) : Promise<ProcessedTransaction[]>
 
     getSalesReport() : Promise<SalesReport>
     getAddressSalesReport(address:string) : Promise<SalesReport>

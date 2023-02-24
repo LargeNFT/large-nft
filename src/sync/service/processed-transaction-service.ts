@@ -41,6 +41,10 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.get(_id,options)
     }
 
+    async getByIds(_ids:string[], options?:any) : Promise<ProcessedTransaction[]> {
+        return this.processedTransactionRepository.getByIds(_ids, options)
+    }
+
     async getViewModel(_id:string, options?:any) : Promise<TransactionViewModel> {
 
         let transaction = await this.processedTransactionRepository.get(_id, options)
@@ -50,8 +54,8 @@ class ProcessedTransactionService {
         let events = await this.processedTransactionRepository.getEventsByTransaction(transaction)
 
         return {
-            transaction: transaction,
-            events: events
+            transaction: this._translateProcessedTransactionToViewModel(transaction),
+            events: events.map( e => this._translateProcessedEventToViewModel(e))
         }
 
 
@@ -88,6 +92,10 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.listByToken(tokenId, options)
     }
 
+    async listByTrader(owner:string, options?:any) : Promise<ProcessedTransaction[]> {
+        return this.processedTransactionRepository.listByTrader(owner, options)
+    }
+
     async getLatest(beforeBlock?:number, options?:any) : Promise<ProcessedTransaction> {
 
         return this.processedTransactionRepository.getLatest(beforeBlock, options)
@@ -102,13 +110,13 @@ class ProcessedTransactionService {
         let events = await this.processedTransactionRepository.getEventsByTransaction(transaction)
 
         return {
-            transaction: transaction,
-            events: events
+            transaction: this._translateProcessedTransactionToViewModel(transaction),
+            events: events.map( e => this._translateProcessedEventToViewModel(e))
         }
 
     }
 
-    private async _getRowItemViewModels(processedEvents) {
+    public async getRowItemViewModels(processedEvents) {
 
         let result = {}
 
@@ -142,19 +150,8 @@ class ProcessedTransactionService {
             let processedEvents:ProcessedEvent[] = await this.processedTransactionRepository.getEventsByTransaction(transaction, options)
 
             transactionViewModels.push({
-                transaction: {
-                    _id: transaction._id,
-                    _rev: transaction._rev,
-                    blockNumber: transaction.blockNumber,
-                    transactionIndex: transaction.transactionIndex,
-                    transactionFrom: transaction.transactionFrom,
-                    tokenTraders: transaction.tokenTraders,
-                    timestamp: transaction.timestamp,
-                    tokenIds: transaction.tokenIds,
-                    transactionValue: transaction.transactionValue,
-                    previousId: transaction.previousId
-                },
-                events: processedEvents
+                transaction: this._translateProcessedTransactionToViewModel(transaction),
+                events: processedEvents.map( e => this._translateProcessedEventToViewModel(e))
             })
 
             allEvents.push(...processedEvents)
@@ -163,11 +160,49 @@ class ProcessedTransactionService {
         let results:TransactionsViewModel = {
             lastUpdated: lastUpdated,
             transactions: transactionViewModels,
-            rowItemViewModels: await this._getRowItemViewModels(allEvents)
+            rowItemViewModels: await this.getRowItemViewModels(allEvents)
         }
 
         return results
     }
+
+    translateTransactionViewModel(transaction:ProcessedTransaction, events:ProcessedEvent[]) : TransactionViewModel {
+
+        return {
+            transaction: this._translateProcessedTransactionToViewModel(transaction),
+            events: events.map(event => this._translateProcessedEventToViewModel(event))
+        }
+
+
+    }
+
+    private _translateProcessedTransactionToViewModel(transaction:ProcessedTransaction) : ProcessedTransactionViewModel {
+        return {
+            _id: transaction._id,
+            blockNumber: transaction.blockNumber,
+            transactionFrom: transaction.transactionFrom,
+            tokenTraders: transaction.tokenTraderIds,
+            timestamp: transaction.timestamp,
+            tokenIds: transaction.tokenIds,
+            transactionValue: transaction.transactionValue
+        }
+    }
+
+    private _translateProcessedEventToViewModel(event:ProcessedEvent) : ProcessedEventViewModel {
+        return {
+            isMint: event.isMint,
+            isBurn: event.isBurn,
+            namedArgs: event.namedArgs,
+            tokenId: event.tokenId,
+            fromAddress: event.fromAddress,
+            toAddress: event.toAddress,
+            price: event.price,
+            currency: event.currency,
+            usdValue: event.usdValue,
+            event: event.event
+        }
+    }
+
 
     async getSalesReport() : Promise<SalesReport> {
         return this.processedTransactionRepository.getSalesReport()
@@ -202,38 +237,58 @@ class ProcessedTransactionService {
 
         for (let tokenId of tokenIds) {
 
-            let token:Token = await this.tokenService.get(tokenId, options)
-
-            //Remove ownership history after start block
-            token.ownershipHistory = token.ownershipHistory?.filter(oh => oh.blockNumber < result.startBlock)
-            
-            //Set current owner to the last one before the start block
-            if (token.ownershipHistory?.length > 0) {
-                token.currentOwnerId = token.ownershipHistory[token.ownershipHistory.length-1].owner
+            if (!result.tokensToUpdate[tokenId]) {
+                result.tokensToUpdate[tokenId] = await this.tokenService.get(tokenId, options)
             }
 
-            result.tokensToUpdate[token._id] = token
+            let token = result.tokensToUpdate[tokenId]
+
+            //Remove ownership history after start block
+            // token.ownershipHistory = token.ownershipHistory?.filter(oh => oh.blockNumber < result.startBlock)
+            
+            //Remove transactions after start block
+            token.transactionsViewModel.transactions = token.transactionsViewModel?.transactions.filter( tvm => tvm.transaction.blockNumber < result.startBlock)
+
+
+            //Clone the view models and reverse them so we can find the previous owner.
+            let clonedViewModel = JSON.parse(JSON.stringify(token.transactionsViewModel))
+
+            clonedViewModel.transactions.reverse()
+
+            //Set current owner to the last one before the start block
+            let found = false
+
+            for (let viewModel of clonedViewModel.transactions) {
+
+                for (let event of viewModel.events) {
+                    if (event.toAddress) {
+                        token.currentOwnerId = event.toAddress
+                        found = true
+                        break
+                    }
+                }
+
+                if (found) break
+
+            }
 
         }
 
 
-        //Not sure if this part with the users accomplishes anything. I don't think it hurts. Leaving for now.
-
-
-        //Get affected initiators. Add to list to get updated.
-        const initiators = Array.from(new Set(processedTransactions.map(t => t.transactionFrom)))
-
-        for (let user of initiators) {
-            let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
-            result.ownersToUpdate[tokenOwner._id] = tokenOwner
-        }
+ 
 
         //Get affected traders. Reset latestTransactionId
-        const tokenTraders = Array.from(new Set(processedTransactions.flatMap(({ tokenTraders }) => tokenTraders)))
+        const tokenTraders = Array.from(new Set(processedTransactions.flatMap(({ tokenTraderIds }) => tokenTraderIds)))
         
         for (let user of tokenTraders) {
-            let tokenOwner:TokenOwner = await this.tokenOwnerService.get(user, options)
-            result.ownersToUpdate[tokenOwner._id] = tokenOwner
+
+            if (!result.ownersToUpdate[user]) {
+                result.ownersToUpdate[user] = await this.tokenOwnerService.get(user, options)
+            }
+
+            //Remove transactions after start block
+            result.ownersToUpdate[user].transactionsViewModel.transactions = result.ownersToUpdate[user].transactionsViewModel?.transactions.filter( tvm => tvm.transaction.blockNumber < result.startBlock)
+
         }
 
 
@@ -282,30 +337,73 @@ class ProcessedTransactionService {
     }
 
 
-    async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number) : Promise<ProcessedTransactionsPage[]> {
+    // async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number) : Promise<ProcessedTransactionsPage[]> {
 
-        let result: ProcessedTransactionsPage[] = []
+    //     let result: ProcessedTransactionsPage[] = []
 
-        //Break into rows
-        for (let i = 0; i < transactionsViewModel.transactions.length; i += perPage) {
+    //     //Break into rows
+    //     for (let i = 0; i < transactionsViewModel.transactions.length; i += perPage) {
 
-            let allEvents:ProcessedEvent[] = []
+    //         let allEvents:ProcessedEventViewModel[] = []
 
-            let processedTransactions = transactionsViewModel.transactions.slice(i, i + perPage)
+    //         let processedTransactions = transactionsViewModel.transactions.slice(i, i + perPage)
 
-            for (let transaction of processedTransactions) {
-                allEvents.push(...transaction.events)
-            }
+    //         for (let transaction of processedTransactions) {
+    //             allEvents.push(...transaction.events)
+    //         }
 
-            result.push({
-                processedTransactions: processedTransactions,
-                rowItemViewModels: await this._getRowItemViewModels(allEvents)
-            })
-        }
+    //         result.push({
+    //             processedTransactions: processedTransactions,
+    //             rowItemViewModels: await this._getRowItemViewModels(allEvents)
+    //         })
+    //     }
 
-        return result
+    //     return result
 
-    }
+    // }
+
+    // async getTransactionsByToken(tokenIds:number[], lastUpdated:string, options?:any) {
+
+    //     let allTokenTransactions = await this.listByTokens(tokenIds, options)
+    //     let allTokenEvents = await this.processedTransactionRepository.getEventsByTokens(tokenIds)
+
+    //     let transactionsByToken = {}
+    
+
+    //     //Add transactions to view models
+    //     for (let transaction of allTokenTransactions) {
+            
+    //         for (let tokenId of transaction.tokenIds) {
+    
+    //             if (!transactionsByToken[tokenId]) {
+    //               transactionsByToken[tokenId] = {
+    //                 lastUpdated: lastUpdated,
+    //                 transactions: [],
+    //                 rowItemViewModels: []
+    //               }
+    //             }
+          
+
+
+    //             transactionsByToken[tokenId].transactions.push({
+    //                 transaction: this._translateProcessedTransactionToViewModel(transaction),
+    //                 events: events
+    //             })
+                        
+    //         }
+
+    //     }
+
+
+
+    //     for (let tokenId of Object.keys(transactionsByToken)) {
+    //         transactionsByToken[tokenId].rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenId(parseInt(tokenId))
+    //     }
+
+    //     return transactionsByToken
+       
+
+    // }
 
 
 
@@ -353,10 +451,22 @@ interface ProcessedTransactionViewModel {
     previousId?:string
 }
 
+interface ProcessedEventViewModel {
+    isMint: boolean
+    isBurn: boolean
+    namedArgs: any
+    tokenId: number
+    fromAddress: string
+    toAddress: string
+    price: number
+    currency: string
+    usdValue: number
+    event: string
+}
 
 interface TransactionViewModel {
     transaction?:ProcessedTransactionViewModel
-    events?:ProcessedEvent[]
+    events?:ProcessedEventViewModel[]
 }
 
 

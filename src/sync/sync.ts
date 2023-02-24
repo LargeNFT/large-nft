@@ -30,7 +30,7 @@ import { Transaction } from "./dto/transaction.js"
 let channelId
 
 // import { simpleGit, CleanOptions } from 'simple-git'
-import { ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken } from "./dto/processed-transaction.js"
+import { ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, ProcessedTransactionTrader } from "./dto/processed-transaction.js"
 import { BlockService } from "./service/block-service.js"
 import { TransactionService } from "./service/transaction-service.js"
 import { TokenOwnerService } from "./service/token-owner-service.js"
@@ -38,6 +38,7 @@ import { ProcessedTransactionService, ProcessedTransactionsPage, TransactionsVie
 import { ContractState } from "./dto/contract-state.js"
 import { Token } from "./dto/token.js"
 import { SchemaService } from "../reader/service/core/schema-service.js"
+import { ContractStateService } from "./service/contract-state-service.js"
 
 
 
@@ -119,6 +120,7 @@ let sync = async () => {
     await ContractState.drop()
 
     await ProcessedTransactionToken.drop()
+    await ProcessedTransactionTrader.drop()
     await ProcessedEvent.drop()
     await ProcessedTransaction.drop()
 
@@ -144,7 +146,7 @@ let sync = async () => {
   let tokenOwnerService:TokenOwnerService = container.get("TokenOwnerService")
   let processedTransactionService: ProcessedTransactionService = container.get("ProcessedTransactionService")
   let tokenOwnerPageService: TokenOwnerPageService = container.get("TokenOwnerPageService")
-
+  let contractStateService:ContractStateService = container.get("ContractStateService")
   
 
   let channelContract = await walletService.getContract("Channel")
@@ -155,15 +157,12 @@ let sync = async () => {
     tokensToUpdate: {}
   }     
 
-  
+  await sequelize.transaction(async (t1) => {
+    await transactionIndexerService.init(channelContract, { transaction: t1 })
+  })
 
   //Start the transaction indexer
   async function runTransactionIndexer(){
-
-      await sequelize.transaction(async (t1) => {
-        await transactionIndexerService.init(channelContract, { transaction: t1 })
-      })
-
 
       try {
 
@@ -175,19 +174,30 @@ let sync = async () => {
         //If we're current then wait. If not then just do it again.
         if (indexResult?.isCurrent) {
 
-
           //Once we're current flush the results to disk.
           if (indexResult?.processedTransactionViewModels && Object.keys(indexResult?.processedTransactionViewModels).length > 0) {
 
             await sequelize.transaction(async (t1) => {
               await writeResultsToDisk(indexResult, { transaction: t1 })
             })
-  
+
+            //Clear results
+            indexResult = {
+              processedTransactionViewModels: {},
+              ownersToUpdate: {},
+              tokensToUpdate: {}
+            }     
+
           } else {
             console.log('No results to process.')
           }
 
+
           await updateLatestInfo(indexResult)
+
+          //Save contract state
+          console.log(`Saving contract state`)
+          await contractStateService.put(transactionIndexerService.contractState)
 
 
           if (config.syncRate > 0) {
@@ -252,33 +262,18 @@ let sync = async () => {
 
     console.time(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
 
+
+
     //Write changed tokens to file
     for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
 
       //Remove activity if it exists.
-      if (fs.existsSync(`${config.publicPath}/sync/tokens/${tokenId}/activity`)) {
-        fs.rmSync(`${config.publicPath}/sync/tokens/${tokenId}/activity`, { recursive: true })
+      if (!fs.existsSync(`${config.publicPath}/sync/tokens/${tokenId}`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/tokens/${tokenId}`, { recursive: true })
       } 
-
-      //Remake activity directory
-      fs.mkdirSync(`${config.publicPath}/sync/tokens/${tokenId}/activity`, { recursive: true })
-
 
       //Save token
       fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}/token.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
-
-      //Get transaction pages
-      let transactionsViewModel:TransactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.listByToken(parseInt(tokenId), 10000, options), new Date().toJSON())
-
-      //Save each one
-      let transactionPages:ProcessedTransactionsPage[] = await processedTransactionService.buildTransactionPages(transactionsViewModel, 25)
-
-      
-      let i=0
-      for (let transactionPage of transactionPages) {
-        fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}/activity/${i}.json`, Buffer.from(JSON.stringify(transactionPage)))
-        i++
-      }
 
     }
 
@@ -296,13 +291,9 @@ let sync = async () => {
   
 
       //Remove activity if it exists.
-      if (fs.existsSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`)) {
-        fs.rmSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`, { recursive: true })
+      if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner/${owner}`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}`, { recursive: true })
       } 
-
-      //Remake activity directory
-      fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`, { recursive: true })
-
 
       //Generate sales report
       cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(owner)
@@ -314,9 +305,8 @@ let sync = async () => {
       fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
         name: cloned.ensName
       })))
-      
-
     }
+
     console.timeEnd(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
 
 
@@ -423,6 +413,8 @@ let sync = async () => {
           lastUpdated: new Date().toJSON()
         })))
 
+
+        
   }
 
   let testTransaction = async () => {

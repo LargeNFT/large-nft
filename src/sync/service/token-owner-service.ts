@@ -46,6 +46,11 @@ class TokenOwnerService {
             tokenOwner._id = address
             tokenOwner.tokenIds = []
             tokenOwner.count = 0
+            tokenOwner.transactionsViewModel = {
+                transactions: [],
+                rowItemViewModels: {}
+            }
+
         }
 
         return tokenOwner

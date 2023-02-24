@@ -1,7 +1,7 @@
 import {  inject, injectable } from "inversify"
 import moment from "moment"
 
-import {  AttributeSaleReport, AttributeSalesRow, OwnersByAttribute, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, Sale, SalesReport, SalesRow, TokenOwnerSalesReport } from "../../dto/processed-transaction.js"
+import {  AttributeSaleReport, AttributeSalesRow, OwnersByAttribute, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, ProcessedTransactionTrader, Sale, SalesReport, SalesRow, TokenOwnerSalesReport } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
 
@@ -28,9 +28,36 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         return ProcessedTransaction.findByPk(_id, options)
     }
 
+    async getEvent(_id: string, options?:any): Promise<ProcessedEvent> {
+        return ProcessedEvent.findByPk(_id, options)
+    }
+
+    async getByIds(_ids:string[], options?:any) : Promise<ProcessedTransaction[]> {
+
+        let query = {
+            where: {
+                _id: {
+                    [Op.in]: _ids
+                }
+            },
+            order: [
+                ['blockNumber', 'DESC'],
+                ['transactionIndex', 'DESC']
+            ]
+        }
+
+        query = Object.assign(query, options)
+
+        //Transactions
+        return ProcessedTransaction.findAll(query)
+
+
+    }
+
     async put(processedTransaction: ProcessedTransaction, options?:any): Promise<ProcessedTransaction> {
         
         if (processedTransaction.changed()) {
+
             await processedTransaction.save(options)
         
             if (processedTransaction.tokens) {
@@ -38,6 +65,13 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
                     await processedTransaction.addToken(token, Object.assign({through: ProcessedTransactionToken}, options))
                 }
             }
+
+            if (processedTransaction.tokenTraders) {
+                for (let tokenTrader of processedTransaction.tokenTraders) {
+                    await processedTransaction.addTokenTrader(tokenTrader, Object.assign({through: ProcessedTransactionTrader}, options))
+                }
+            }
+
         }
 
         return processedTransaction 
@@ -112,8 +146,14 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             for (let token of processedTransaction.tokens) {
                 await processedTransaction.removeToken(token, options)
             }
-
         }
+
+        if (processedTransaction.tokenTraders) {
+            for (let tokenTrader of processedTransaction.tokenTraders) {
+                await processedTransaction.removeTokenTrader(tokenTrader, options)
+            }
+        }
+
 
         await processedTransaction.destroy(options)
 
@@ -130,6 +170,46 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         }, options)
 
     }
+
+
+    async getEventsByTokens(tokenIds:number[], options?:any) : Promise<ProcessedEvent[]>  {
+
+        let s = await this.sequelize()
+
+        let queryOptions = {
+            type: s.QueryTypes.RAW,
+            plain: false,
+            model: ProcessedTransaction,
+            mapToModel: true,
+            replacements: { 
+                tokenIds: tokenIds
+            }
+        }
+
+        const [queryResults, metadata] = await s.query(`
+            select 
+                pe._id
+            FROM 
+                'processed_event' pe
+            WHERE 
+                pe.tokenId IN (:tokenIds)
+            ORDER BY pe.blockNumber desc, pe.transactionIndex desc
+        `, Object.assign(queryOptions, options))
+
+
+        let results:ProcessedEvent[] = []
+
+        for (let result of queryResults) {
+            results.push(await this.getEvent(result._id, options))
+        }
+
+        return results
+
+    }
+
+
+
+
 
     async putEvent(event: ProcessedEvent, options?:any): Promise<ProcessedEvent> {
         
@@ -255,6 +335,43 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         return results
 
     }
+
+    async listByTrader(owner:string, options?:any) : Promise<ProcessedTransaction[]>  {
+
+        let s = await this.sequelize()
+
+        let queryOptions = {
+            type: s.QueryTypes.RAW,
+            plain: false,
+            model: ProcessedTransaction,
+            mapToModel: true,
+            replacements: { 
+                owner: owner
+            }
+        }
+
+        const [queryResults, metadata] = await s.query(`
+            select 
+                *
+            FROM 
+                'processed_transaction' t
+            INNER JOIN 'processed_transaction_trader' ptt on t._id = ptt.processedTransactionId
+            WHERE 
+                ptt.tokenOwnerId = :owner 
+            ORDER BY t.blockNumber desc, t.transactionIndex desc
+        `, Object.assign(queryOptions, options))
+
+
+        let results:ProcessedTransaction[] = []
+
+        for (let result of queryResults) {
+            results.push(await this.get(result._id, options))
+        }
+
+        return results
+
+    }
+
 
     async getSalesReport(): Promise<SalesReport> {
 

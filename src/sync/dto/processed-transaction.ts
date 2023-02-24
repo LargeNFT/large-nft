@@ -5,6 +5,7 @@ const require = createRequire(import.meta.url)
 const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, ForeignKey, BelongsTo, AllowNull, BelongsToMany } = require('sequelize-typescript')
 
 import { ERCEvent } from './erc-event.js'
+import { TokenOwner } from './token-owner.js'
 import { Token } from './token.js'
 
 @Table({
@@ -35,7 +36,7 @@ class ProcessedTransaction extends Model {
     declare transactionFrom?:string
 
     @Column(DataType.JSON)
-    declare tokenTraders?:string[]
+    declare tokenTraderIds?:string[]
 
     @Index
     @Column(DataType.BIGINT)
@@ -48,6 +49,9 @@ class ProcessedTransaction extends Model {
     @BelongsToMany(() => Token, () => ProcessedTransactionToken)
     declare tokens: Token[]
 
+    @BelongsToMany(() => TokenOwner, () => ProcessedTransactionTrader)
+    declare tokenTraders: TokenOwner[]
+
 
 
     @Column(DataType.JSON)
@@ -56,30 +60,7 @@ class ProcessedTransaction extends Model {
     @Column(DataType.JSON)
     declare transactionValue?:TransactionValue
 
-    // @Column(DataType.STRING)
-    // declare previousId?:string
-
-    // @Column(DataType.JSON)
-    // declare previousByTokenIds?:{}
-
-    // @Column(DataType.JSON)
-    // declare previousByTransactionInitiatorId?:{}
-
-    // @Column(DataType.JSON)
-    // declare previousByTokenOwnerId?:{}
-
-    // @Column(DataType.STRING)
-    // declare nextId?:string
-
-    // @Column(DataType.JSON)
-    // declare nextByTokenIds?:{}
-
-    // @Column(DataType.JSON)
-    // declare nextByTokenOwnerId?:{}
-
-    // @Column(DataType.JSON)
-    // declare nextByTransactionInitiatorId?:{}
-
+    
     @Column(DataType.DATE)
     declare lastUpdated?:Date 
     
@@ -198,79 +179,23 @@ class ProcessedTransactionToken extends Model {
 
 
 
+@Table({
+    tableName: 'processed_transaction_trader',
+    paranoid: false,
+})
+class ProcessedTransactionTrader extends Model {
 
+  @Index
+  @ForeignKey(() => ProcessedTransaction)
+  @Column
+  declare processedTransactionId: number
 
+  @Index
+  @ForeignKey(() => TokenOwner)
+  @Column
+  declare tokenOwnerId: string
 
-
-
-
-
-// @Table({
-//     tableName: 'processed_event',
-//     createdAt: 'dateCreated',
-//     updatedAt: 'lastUpdated',
-//     paranoid: false,
-// })
-// class ProcessedEvent extends Model {
-    
-//     @PrimaryKey
-//     @Column(DataType.STRING)
-//     declare _id?:string
-
-//     @Column(DataType.STRING)
-//     declare _rev?:string 
-
-//     // @Index('block-number-pe') 
-//     @Column(DataType.BIGINT)
-//     declare blockNumber?:number
-
-//     @ForeignKey(() => ProcessedTransaction)
-//     @AllowNull(false)	
-//     @Column(DataType.STRING)
-//     declare processedTransactionId?:string 
-
-//     @Column(DataType.BOOLEAN)
-//     declare isMint?:boolean
-
-//     @Column(DataType.BOOLEAN)
-//     declare isBurn?:boolean
-
-//     @Column(DataType.BIGINT)
-//     declare tokenId?:number
-
-//     @Column(DataType.DECIMAL)
-//     declare price?:number
-
-//     @Column(DataType.STRING)
-//     declare currency?:string
-
-//     @Column(DataType.DECIMAL)
-//     declare usdValue?:number
-
-//     @Column(DataType.STRING)
-//     declare event?:string 
-
-//     @Column(DataType.JSON)
-//     declare namedArgs?:any
-
-//     @Column(DataType.DATE)
-//     declare lastUpdated?:Date 
-    
-//     @Column(DataType.DATE)
-//     declare dateCreated?:Date
-
-// }
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -389,5 +314,5 @@ interface OwnersByAttribute {
 
 export {
     ProcessedTransaction, TransactionValue, SalesReport, SalesRow, Sale, AttributeSalesRow, 
-    AttributeSaleReport, TokenPrice, ProcessedEvent, ProcessedTransactionToken, OwnersByAttribute, TokenOwnerSalesReport
+    AttributeSaleReport, TokenPrice, ProcessedEvent, ProcessedTransactionToken, OwnersByAttribute, TokenOwnerSalesReport, ProcessedTransactionTrader
 }

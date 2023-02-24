@@ -35,6 +35,10 @@ class TokenService {
             token._id = _id
             token.tokenId = _id
             token.ownershipHistory = []
+            token.transactionsViewModel = {
+                transactions: [],
+                rowItemViewModels: {}
+            }
 
             //Look up attributes from item
             let item = await this.itemService.getByTokenId(token._id)

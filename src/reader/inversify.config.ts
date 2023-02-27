@@ -320,14 +320,14 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       {
         path: `${baseURI}u/activity`,
         async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'u/activity.html')
+          await resolveWithSpinner(resolve, 'u/activity/index.html')
         }
       },
 
       {
         path: `${baseURI}u/activity/index.html`,
         async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'u/activity.html')
+          await resolveWithSpinner(resolve, 'u/activity/index.html')
         }
       },
 

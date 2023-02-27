@@ -397,7 +397,7 @@
                                 
                                     </div>
                                 
-                                    <div class="block">
+                                    <div class="large-75 col-100">
                                         <%~ include("footer", {baseURL: baseURL}) %>          
                                     </div>
 
@@ -516,13 +516,22 @@
 
                 try  {
 
-                    transactionsViewModel = await transactionWebService.listByTokenFrom("<%= itemViewModel.item.tokenId  %>", 1000)
+
+                    // transactionsViewModel = await transactionWebService.listByTokenFrom("<%= itemViewModel.item.tokenId  %>", 1000)
 
                     // //Last updated won't be right because this only gets written when it actually changes.
                     // let latest = await transactionWebService.getLatest()
                     // transactionsViewModel.lastUpdated = latest.lastUpdated
 
                     token = await tokenService.get("<%= itemViewModel.item.tokenId  %>")
+
+
+                    transactionsViewModel = token.transactionsViewModel
+
+                    await transactionWebService.cacheENSNames(transactionsViewModel)
+
+                    //Reverse order
+                    transactionsViewModel?.transactions?.reverse()
 
 
                 } catch(ex) { console.log(ex) }

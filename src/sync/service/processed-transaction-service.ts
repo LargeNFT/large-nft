@@ -96,6 +96,11 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.listByTrader(owner, options)
     }
 
+    async listIds(options?:any) : Promise<string[]> {
+        return this.processedTransactionRepository.listIds(options)
+    }
+
+
     async getLatest(beforeBlock?:number, options?:any) : Promise<ProcessedTransaction> {
 
         return this.processedTransactionRepository.getLatest(beforeBlock, options)
@@ -337,30 +342,34 @@ class ProcessedTransactionService {
     }
 
 
-    // async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number) : Promise<ProcessedTransactionsPage[]> {
+    async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number) : Promise<ProcessedTransactionsPage[]> {
 
-    //     let result: ProcessedTransactionsPage[] = []
+        let result: ProcessedTransactionsPage[] = []
 
-    //     //Break into rows
-    //     for (let i = 0; i < transactionsViewModel.transactions.length; i += perPage) {
 
-    //         let allEvents:ProcessedEventViewModel[] = []
+        //Reverse order of transactions
+        transactionsViewModel?.transactions?.reverse()
 
-    //         let processedTransactions = transactionsViewModel.transactions.slice(i, i + perPage)
+        //Break into rows
+        for (let i = 0; i < transactionsViewModel.transactions.length; i += perPage) {
 
-    //         for (let transaction of processedTransactions) {
-    //             allEvents.push(...transaction.events)
-    //         }
+            let allEvents:ProcessedEventViewModel[] = []
 
-    //         result.push({
-    //             processedTransactions: processedTransactions,
-    //             rowItemViewModels: await this._getRowItemViewModels(allEvents)
-    //         })
-    //     }
+            let processedTransactions = transactionsViewModel.transactions.slice(i, i + perPage)
 
-    //     return result
+            for (let transaction of processedTransactions) {
+                allEvents.push(...transaction.events)
+            }
 
-    // }
+            result.push({
+                transactions: processedTransactions,
+                rowItemViewModels: await this.getRowItemViewModels(allEvents)
+            })
+        }
+
+        return result
+
+    }
 
     // async getTransactionsByToken(tokenIds:number[], lastUpdated:string, options?:any) {
 
@@ -428,7 +437,7 @@ class ProcessedTransactionService {
 
 interface ProcessedTransactionsPage {
     lastUpdated?:string
-    processedTransactions?:TransactionViewModel[]
+    transactions?:TransactionViewModel[]
     rowItemViewModels?:{}
 }
 

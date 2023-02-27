@@ -28,6 +28,9 @@ class TokenOwner extends Model {
     @Column(DataType.BIGINT)
     declare overallRank?:number
 
+    @Column(DataType.BIGINT)
+    declare transactionCount?:number
+
     @Column(DataType.JSON)
     declare tokenIds?:number[]
     

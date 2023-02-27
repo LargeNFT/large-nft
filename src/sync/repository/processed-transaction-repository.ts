@@ -23,6 +23,7 @@ interface ProcessedTransactionRepository {
     listByTokens(tokenIds:number[], options?:any) : Promise<ProcessedTransaction[]> 
     listByToken(tokenId:number, options?:any) : Promise<ProcessedTransaction[]>
     listByTrader(owner:string, options?:any) : Promise<ProcessedTransaction[]>
+    listIds(options?:any) : Promise<string[]>
 
     getSalesReport() : Promise<SalesReport>
     getAddressSalesReport(address:string) : Promise<SalesReport>

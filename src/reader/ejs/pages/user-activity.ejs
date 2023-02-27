@@ -141,6 +141,12 @@
                                             <div class="col-50">Tokens Owned</div>
                                             <div class="col-50"><strong>${tokenOwner?.count}</strong></div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-50">Transactions</div>
+                                            <div class="col-50"><strong>${tokenOwner?.transactionCount}</strong></div>
+                                        </div>
+
     
                                     </div>
     
@@ -166,13 +172,13 @@
                                     <div class="block margin-top margin-bottom">
                                         <div class="row">
                                             <div class="col-50">
-                                                ${previousPageStartId ? $h`
-                                                <a href="${baseURL}u/activity?startId=${previousPageStartId}&address=${address}" class="button button-outline color-gray">Previous</a>
+                                                ${previousPage ? $h`
+                                                <a href="${baseURL}u/activity?page=${previousPage}&address=${address}" class="button button-outline color-gray">Previous</a>
                                                 ` : $h` `}
                                             </div>
                                             <div class="col-50">
-                                                ${nextPageStartId ? $h`
-                                                <a href="${baseURL}u/activity?startId=${nextPageStartId}&address=${address}" class="button button-fill">Next</a>
+                                                ${nextPage ? $h`
+                                                <a href="${baseURL}u/activity?page=${nextPage}&address=${address}" class="button button-fill">Next</a>
                                                 ` : $h` `}
                                             </div>
                                         </div>
@@ -198,7 +204,7 @@
                             </div>
 
 
-                                          <%~ include("footer", {baseURL: baseURL}) %>
+                            <%~ include("footer", {baseURL: baseURL}) %>
 
                         </div>
 
@@ -235,10 +241,10 @@
 
             let display = 25
             let address 
-            let startId
+            let page
 
-            let nextPageStartId
-            let previousPageStartId
+            let nextPage
+            let previousPage
 
             const loadActivity = async () => {
 
@@ -246,35 +252,39 @@
 
                 try  {
 
-                    nextPageStartId = undefined
-                    previousPageStartId = undefined
+                    nextPage = undefined
+                    previousPage = undefined
 
                     if ($f7.views.main.router.currentRoute?.query?.address) {
                         address = $f7.views.main.router.currentRoute?.query?.address
                     }
 
-                    if ($f7.views.main.router.currentRoute?.query?.startId) {
-                        startId = $f7.views.main.router.currentRoute?.query?.startId
+                    if ($f7.views.main.router.currentRoute?.query?.page) {
+                        page = $f7.views.main.router.currentRoute?.query?.page
+
+                        if (page) {
+                            page = parseInt(page)
+                        } 
                     }
+
+                    if (!page) {
+                        page = 1
+                    }
+
 
                     tokenOwner = await tokenOwnerService.get(address)
 
-                    transactionsViewModel = await transactionWebService.listByAddressFrom(address, 25, startId)
+                    transactionsViewModel = await transactionWebService.listByAddress(address, page)
 
 
-                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.transaction.previousByTokenOwnerId[address]) {
-                        nextPageStartId = transactionsViewModel.transactions[display-1].transaction.previousByTokenOwnerId[address]
+                    if (page > 1) {
+                        previousPage = page - 1
+                    } 
+
+                    if (page + 1 < tokenOwner.totalTransactionPages) {
+                        nextPage = page + 1
                     }
 
-                    //If we have a startId we are on page 2+ so we need to set the previous start offset
-                    if (startId) {
-                        let previousTransactionList = await transactionWebService.listByAddressTo(address, display+1, startId)
-
-                        if (previousTransactionList.transactions[display]) {
-                            previousPageStartId = previousTransactionList.transactions[display]?.transaction._id
-                        }
-
-                    }
 
 
                 } catch(ex) { console.log(ex) }

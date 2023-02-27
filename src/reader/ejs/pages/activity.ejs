@@ -115,24 +115,27 @@
 
                         <div class="hidden-on-load">
 
+
                             ${transactionsViewModel?.transactions?.length > 0 ? $h`
-          
+
                               <div class="block-title block-title-medium">
-                                <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
-                                Activity
+                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                                    Activity
                               </div>
+
+
                               <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
 
                               <div class="block margin-top margin-bottom">
                                 <div class="row">
                                   <div class="col-50">
-                                      ${previousPageStartId ? $h`
-                                        <a href="${baseURL}activity/?startId=${previousPageStartId}" class="button button-outline color-gray">Previous</a>
+                                      ${previousPage ? $h`
+                                        <a href="${baseURL}activity/?page=${previousPage}" class="button button-outline color-gray">Previous</a>
                                       ` : $h` `}
                                   </div>
                                   <div class="col-50">
-                                      ${nextPageStartId ? $h`
-                                        <a href="${baseURL}activity/?startId=${nextPageStartId}" class="button button-fill">Next</a>
+                                      ${nextPage ? $h`
+                                        <a href="${baseURL}activity/?page=${nextPage}" class="button button-fill">Next</a>
                                       ` : $h` `}
                                   </div>
                                 </div>
@@ -140,7 +143,13 @@
                               </div>
 
                         
-                            ` : $h`<span />`}
+                            ` : $h`
+                            
+                              <div class="block">
+                                No more transactions
+                              </div>
+                            
+                            `}
           
                         </div>
 
@@ -180,11 +189,12 @@
 
             let baseURL = '<%= baseURL %>'
 
-            let startId 
             let display = 25
 
-            let nextPageStartId
-            let previousPageStartId
+            let page
+
+            let nextPage
+            let previousPage
 
             let transactionsViewModel 
 
@@ -199,29 +209,47 @@
 
                 try  {
 
-                    nextPageStartId = undefined
-                    previousPageStartId = undefined
+                    nextPage = undefined
+                    previousPage = undefined
 
-                    startId = $f7.views.main.router.currentRoute?.query?.startId
 
-                    transactionsViewModel = await transactionWebService.listFrom(display, startId)
-                    
-                    if (transactionsViewModel.transactions.length == display && transactionsViewModel?.transactions[display-1]?.transaction.previousId) {
-                        nextPageStartId = transactionsViewModel.transactions[display-1].transaction.previousId
+                    if ($f7.views.main.router.currentRoute?.query?.page) {
+                        page = $f7.views.main.router.currentRoute?.query?.page
+
+                        if (page) {
+                            page = parseInt(page)
+                        } 
                     }
 
-                    //If we have a startId we are on page 2+ so we need to set the previous start offset
-                    if (startId) {
-                        let previousTransactionList = await transactionWebService.listTo(display+1, startId)
+                    if (!page) {
+                        page = 1
+                    }
 
-                        if (previousTransactionList.transactions[display]) {
-                          previousPageStartId = previousTransactionList.transactions[display].transaction._id
+
+                    if (page > 1) {
+                        previousPage = page - 1
+                    } 
+
+                    nextPage = page + 1
+
+
+
+                    try {
+                        transactionsViewModel = await transactionWebService.list(page)
+
+                        if (transactionsViewModel.transactions?.length < display) {
+                            delete previousPage
                         }
 
-                    }
+                    } catch(ex) {   }
+                    
+
+
+
 
                 } catch(ex) { console.log(ex) }
-                
+
+               
                 $('.hidden-on-load').removeClass('hidden-on-load')
 
                 loading = false

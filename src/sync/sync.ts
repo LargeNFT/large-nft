@@ -181,6 +181,8 @@ let sync = async () => {
               await writeResultsToDisk(indexResult, { transaction: t1 })
             })
 
+            await updateLatestInfo(indexResult)
+
             //Clear results
             indexResult = {
               processedTransactionViewModels: {},
@@ -189,11 +191,14 @@ let sync = async () => {
             }     
 
           } else {
+
+            await updateLatestInfo(indexResult)
+
+
             console.log('No results to process.')
           }
 
 
-          await updateLatestInfo(indexResult)
 
           //Save contract state
           console.log(`Saving contract state`)
@@ -224,22 +229,7 @@ let sync = async () => {
 
   async function writeResultsToDisk(indexResult:ERCIndexResult, options?:any) {
 
-    if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
-      fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
-    }
-
-    if (!fs.existsSync(`${config.publicPath}/sync/tokens`)) {
-      fs.mkdirSync(`${config.publicPath}/sync/tokens`, { recursive: true })
-    }
-
-    if (!fs.existsSync(`${config.publicPath}/sync/sales`)) {
-      fs.mkdirSync(`${config.publicPath}/sync/sales`, { recursive: true })
-    }
-
-
-    if (!fs.existsSync(`${config.publicPath}/sync/attributes`)) {
-      fs.mkdirSync(`${config.publicPath}/sync/attributes`, { recursive: true })
-    }
+    await createDirectories(config)
 
     console.log(`${Object.keys(indexResult.processedTransactionViewModels).length} transactions to update. Writing files.`)
     console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
@@ -247,114 +237,59 @@ let sync = async () => {
 
 
     //Write transactions to file
-    console.time(`Writing ${Object.keys(indexResult.processedTransactionViewModels).length} transactions to disk.`)
-    for (let _id of Object.keys(indexResult.processedTransactionViewModels)) {
-
-      //Get transaction
-      let transaction:TransactionViewModel = indexResult.processedTransactionViewModels[_id]
-
-      fs.writeFileSync(`${config.publicPath}/sync/transactions/${transaction.transaction._id}.json`, Buffer.from(JSON.stringify(transaction)))
-
-    }
-    console.timeEnd(`Writing ${Object.keys(indexResult.processedTransactionViewModels).length} transactions to disk.`)
-
-
-
-    console.time(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
-
-
-
-    //Write changed tokens to file
-    for (let tokenId of Object.keys(indexResult.tokensToUpdate)  ) {
-
-      //Remove activity if it exists.
-      if (!fs.existsSync(`${config.publicPath}/sync/tokens/${tokenId}`)) {
-        fs.mkdirSync(`${config.publicPath}/sync/tokens/${tokenId}`, { recursive: true })
-      } 
-
-      //Save token
-      fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}/token.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
-
-    }
-
-    console.timeEnd(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
-
-
-    //Write changed owners to file
-    console.time(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
-    for (let owner of Object.keys(indexResult.ownersToUpdate)) {
-
-      //Refetch because ranks could get updated
-      let tokenOwner = await tokenOwnerService.get(indexResult.ownersToUpdate[owner]._id)
-      let cloned = JSON.parse(JSON.stringify(tokenOwner))
-
-  
-
-      //Remove activity if it exists.
-      if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner/${owner}`)) {
-        fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}`, { recursive: true })
-      } 
-
-      //Generate sales report
-      cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(owner)
-
-      //Write full profile
-      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokenOwner.json`, Buffer.from(JSON.stringify(cloned)))
-
-      //Write latest ENS name
-      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
-        name: cloned.ensName
-      })))
-    }
-
-    console.timeEnd(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
-
-
+    await writeTransactionsToDisk(indexResult)
+    await writeTokensToDisk(indexResult)
+    await writeTokenOwnersToDisk(indexResult)
+    await writeActivityFeedToDisk(indexResult, options)
 
     //Get list for home page and save it.
-    console.time(`Writing recent activity to disk.`)
-    
-    
+    await writeRecentActivityToDisk(options)
 
+
+    //Generate token owner pages for leaderboard
+    await writeTokenOwnerPagesToDisk(indexResult, options)
+
+    //Sales reports
+    await writeSalesReportsToDisk()
+  
+  }
+
+  async function writeActivityFeedToDisk(indexResult, options?:any) {
+
+    console.time(`Writing activity feed to disk.`)
+
+
+    let allTransactionIds:string[] = await processedTransactionService.listIds()
+
+    let chunks = []
+
+    const chunkSize = 25
+
+    for (let i = 0; i < allTransactionIds.length; i += chunkSize) {
+        chunks.push(allTransactionIds.slice(i, i + chunkSize))
+    }
+
+    let i=1
+    for (let chunk of chunks) {
+      fs.writeFileSync(`${config.publicPath}/sync/transactions/activity/${i}.json`, Buffer.from(JSON.stringify(chunk)))
+      i++
+    }
+
+    console.timeEnd(`Writing activity feed to disk.`)
+
+  }
+
+
+  async function writeRecentActivityToDisk(options: any) {
+
+    console.time(`Writing recent activity to disk.`)
     let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.list(15, 0, options), new Date().toJSON())
     fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
     console.timeEnd(`Writing recent activity to disk.`)
 
+  }
 
-
-    //Generate token owner pages for leaderboard
-
-    let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0, options)
-
-    let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
-
-    //Write token owner pages to files
-    let pageCount = 0
-    await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
-
-    console.time(`Writing ${tokenOwnerPages.length} token owner pages to disk.`)
-    for (let tokenOwnerPage of tokenOwnerPages) {
-      // console.log(`Writing token owner page: ${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`)
-      await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
-      pageCount++
-    }
-    console.timeEnd(`Writing ${tokenOwnerPages.length} token owner pages to disk.`)
-
-
-    console.log(`Writing totals to disk`)
-    await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/total.json`, JSON.stringify({
-      totalPages: tokenOwnerPages.length,
-      totalRecords: tokenOwners.length
-    }))
-
-
-
-
-
-
-
-    //Writing sales reports
-
+  async function writeSalesReportsToDisk() {
 
     console.time(`Generating sales report...`)
     let salesReport = await processedTransactionService.getSalesReport()
@@ -369,7 +304,6 @@ let sync = async () => {
 
     let largestSales100 = await processedTransactionService.getLargestSales(100)
     fs.writeFileSync(`${config.publicPath}/sync/sales/largest-100.json`, Buffer.from(JSON.stringify(largestSales100)))
-
     console.timeEnd(`Generating largest sales...`)
 
 
@@ -392,26 +326,143 @@ let sync = async () => {
     }
 
     fs.writeFileSync(`${config.publicPath}/sync/attributes/totals.json`, Buffer.from(JSON.stringify(attributeSalesReport.totals)))
-
-
-
     console.timeEnd(`Generating attribute stats...`)
-  
+
+
+  }
+
+  async function writeTokenOwnerPagesToDisk(indexResult: ERCIndexResult, options) {
+
+    console.time(`Writing token owner pages to disk.`)
+
+    let tokenOwners:TokenOwner[] = await tokenOwnerService.list(100000, 0, options)
+
+    let tokenOwnerPages = await tokenOwnerPageService.buildTokenOwnerPages(tokenOwners, 100)
+
+    //Write token owner pages to files
+    let pageCount = 0
+    await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
+
+    for (let tokenOwnerPage of tokenOwnerPages) {
+      // console.log(`Writing token owner page: ${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`)
+      await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
+      pageCount++
+    }
+
+    await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/total.json`, JSON.stringify({
+      totalPages: tokenOwnerPages.length,
+      totalRecords: tokenOwners.length
+    }))
+
+    console.timeEnd(`Writing token owner pages to disk.`)
+
+
+  }
+
+  async function writeTokenOwnersToDisk(indexResult: ERCIndexResult) {
+
+    console.time(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
+
+    for (let owner of Object.keys(indexResult.ownersToUpdate)) {
+
+      let tokenOwner = indexResult.ownersToUpdate[owner]
+
+      let refetchedOwner = await tokenOwnerService.get(indexResult.ownersToUpdate[owner]._id)
+      tokenOwner.rank = refetchedOwner.rank
+      tokenOwner.overallRank = refetchedOwner.overallRank
+
+      //Refetch because ranks could get updated
+      // let tokenOwner = await tokenOwnerService.get(indexResult.ownersToUpdate[owner]._id)
+      let cloned = JSON.parse(JSON.stringify(tokenOwner))
+
+      //Create activity folder
+      if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`, { recursive: true })
+      }
+
+
+      //Generate sales report
+      cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(owner)
+
+      let transactionPages: ProcessedTransactionsPage[] = await processedTransactionService.buildTransactionPages(cloned.transactionsViewModel, 25)
+
+
+      //Remove before saving
+      delete cloned.transactionsViewModel
+
+      //Write latest ENS name
+      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
+        name: cloned.ensName
+      })))
+
+      //Write activity
+      let i = 1
+      for (let page of transactionPages) {
+        fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity/${i}.json`, Buffer.from(JSON.stringify(page)))
+        i++
+      }
+
+      cloned.totalTransactionPages = transactionPages?.length
+
+      //Write full profile
+      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokenOwner.json`, Buffer.from(JSON.stringify(cloned)))
+
+
+    }
+
+    console.timeEnd(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
+
+  }
+
+  async function writeTokensToDisk(indexResult: ERCIndexResult) {
+
+    console.time(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
+
+    //Write changed tokens to file
+    for (let tokenId of Object.keys(indexResult.tokensToUpdate)) {
+
+      //Remove activity if it exists.
+      if (!fs.existsSync(`${config.publicPath}/sync/tokens/${tokenId}`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/tokens/${tokenId}`, { recursive: true })
+      }
+
+      //Save token
+      fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}/token.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))
+
+    }
+
+    console.timeEnd(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
+
+  }
+
+  async function writeTransactionsToDisk(indexResult: ERCIndexResult) {
+
+    console.time(`Writing ${Object.keys(indexResult.processedTransactionViewModels).length} transactions to disk.`)
+    for (let _id of Object.keys(indexResult.processedTransactionViewModels)) {
+
+      //Get transaction
+      let transaction: TransactionViewModel = indexResult.processedTransactionViewModels[_id]
+
+      fs.writeFileSync(`${config.publicPath}/sync/transactions/${transaction.transaction._id}.json`, Buffer.from(JSON.stringify(transaction)))
+
+    }
+    console.timeEnd(`Writing ${Object.keys(indexResult.processedTransactionViewModels).length} transactions to disk.`)
+
   }
 
   async function updateLatestInfo(indexResult:ERCIndexResult) {
 
-        //Save latest transaction
-        console.log(`Updating latest info: ${indexResult?.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
-            
-        if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
-          fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
-        }
+    //Save latest transaction
+    console.log(`Updating latest info: ${indexResult?.mostRecentTransaction?.transaction._id} / ${new Date().toJSON()}`)
+        
+    if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
+      fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
+    }
 
-        fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
-          _id: indexResult?.mostRecentTransaction?.transaction._id,
-          lastUpdated: new Date().toJSON()
-        })))
+    fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
+      _id: indexResult?.mostRecentTransaction?.transaction._id,
+      lastUpdated: new Date().toJSON()
+    })))
 
 
         
@@ -444,9 +495,42 @@ let sync = async () => {
 
 
 
+async function createDirectories(config: any) {
+  if (!fs.existsSync(`${config.publicPath}/sync/transactions/activity`)) {
+    fs.mkdirSync(`${config.publicPath}/sync/transactions/activity`, { recursive: true })
+  }
+
+  if (!fs.existsSync(`${config.publicPath}/sync/tokens`)) {
+    fs.mkdirSync(`${config.publicPath}/sync/tokens`, { recursive: true })
+  }
+
+  if (!fs.existsSync(`${config.publicPath}/sync/sales`)) {
+    fs.mkdirSync(`${config.publicPath}/sync/sales`, { recursive: true })
+  }
+
+  if (!fs.existsSync(`${config.publicPath}/sync/attributes`)) {
+    fs.mkdirSync(`${config.publicPath}/sync/attributes`, { recursive: true })
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 sync()
 
 
 export {
   sync
 }
+

@@ -6,13 +6,13 @@ import { TokenRepository } from "../repository/token-repository.js"
 class TokenService {
 
     @inject("TokenRepository")
-    private tokenOwnerRepository:TokenRepository
+    private tokenRepository:TokenRepository
 
     constructor() {}
 
 
     async get(_id:string): Promise<Token> {        
-        return this.tokenOwnerRepository.get(_id)
+        return this.tokenRepository.get(_id)
     }
 
 

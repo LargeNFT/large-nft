@@ -271,7 +271,7 @@ class TransactionIndexerService {
                         events: transactionViewModel.events.filter( e => e.tokenId == tokenId)
                     })
 
-                    result.tokensToUpdate[tokenId].transactionsViewModel.rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenId(tokenId)
+                    result.tokensToUpdate[tokenId].transactionsViewModel.rowItemViewModels[tokenId] = await this.itemService.getRowItemViewModelsByTokenId(tokenId)
 
                 }
 
@@ -387,6 +387,7 @@ class TransactionIndexerService {
 
             //Update count before saving.
             tokenOwner.count = tokenOwner.tokenIds?.length
+            tokenOwner.transactionCount = tokenOwner.transactionsViewModel?.transactions?.length
 
             //Sort token IDs
             tokenOwner.tokenIds.sort()

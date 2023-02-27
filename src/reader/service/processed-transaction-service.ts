@@ -18,258 +18,258 @@ class ProcessedTransactionService {
 
     constructor() {}
 
-    async get(_id:string) {
+    async get(_id:string) : Promise<TransactionViewModel> {
         return this.processedTransactionRepository.get(_id)
     }
 
-    async listFrom(limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listFrom(limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
-            results.push(processedTransaction)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         results.push(processedTransaction)
 
-            let previousId = processedTransaction?.transaction.previousId
+    //         let previousId = processedTransaction?.transaction.previousId
 
-            //Get the previous
-            if (previousId) {
+    //         //Get the previous
+    //         if (previousId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(previousId)
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(previousId)
 
-                if (processedTransaction?.transaction._id != previousId) break
+    //             if (processedTransaction?.transaction._id != previousId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    async listTo(limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listTo(limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
 
-            results.push(processedTransaction)
+    //         results.push(processedTransaction)
 
-            let nextId = processedTransaction?.transaction.nextId
+    //         let nextId = processedTransaction?.transaction.nextId
 
-            //Get the previous
-            if (nextId) {
+    //         //Get the previous
+    //         if (nextId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction.transaction.nextId)
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(processedTransaction.transaction.nextId)
 
-                if (processedTransaction?.transaction._id != nextId) break
+    //             if (processedTransaction?.transaction._id != nextId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    async listByTokenFrom(tokenId:number, limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listByTokenFrom(tokenId:number, limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
 
-            results.push(processedTransaction)
+    //         results.push(processedTransaction)
 
-            let previousByTokenId = processedTransaction?.transaction.previousByTokenIds[tokenId]
+    //         let previousByTokenId = processedTransaction?.transaction.previousByTokenIds[tokenId]
 
-            //Get the previous
-            if (previousByTokenId) {
+    //         //Get the previous
+    //         if (previousByTokenId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.previousByTokenIds[tokenId])
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.previousByTokenIds[tokenId])
 
-                if (processedTransaction?.transaction._id != previousByTokenId) break
+    //             if (processedTransaction?.transaction._id != previousByTokenId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    async listByTokenTo(tokenId:number, limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listByTokenTo(tokenId:number, limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
 
-            results.push(processedTransaction)
+    //         results.push(processedTransaction)
 
-            let nextByTokenId = processedTransaction?.transaction.nextByTokenIds[tokenId]
+    //         let nextByTokenId = processedTransaction?.transaction.nextByTokenIds[tokenId]
 
-            //Get the previous
-            if (nextByTokenId) {
+    //         //Get the previous
+    //         if (nextByTokenId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.nextByTokenIds[tokenId])
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.nextByTokenIds[tokenId])
 
-                if (processedTransaction?.transaction._id != nextByTokenId) break
+    //             if (processedTransaction?.transaction._id != nextByTokenId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    async listByAddressInitiatedFrom(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listByAddressInitiatedFrom(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
 
-            results.push(processedTransaction)
+    //         results.push(processedTransaction)
 
-            let previousByTransactionInititatorId = processedTransaction?.transaction.previousByTransactionInitiatorId[address]
+    //         let previousByTransactionInititatorId = processedTransaction?.transaction.previousByTransactionInitiatorId[address]
 
-            //Get the previous
-            if (previousByTransactionInititatorId) {
+    //         //Get the previous
+    //         if (previousByTransactionInititatorId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.previousByTransactionInitiatorId[address])
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.previousByTransactionInitiatorId[address])
 
-                if (processedTransaction?.transaction._id != previousByTransactionInititatorId) break
+    //             if (processedTransaction?.transaction._id != previousByTransactionInititatorId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    async listByAddressInitiatedTo(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listByAddressInitiatedTo(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
 
-            results.push(processedTransaction)
+    //         results.push(processedTransaction)
 
-            let nextByTokenId = processedTransaction?.transaction.nextByTransactionInitiatorId[address]
+    //         let nextByTokenId = processedTransaction?.transaction.nextByTransactionInitiatorId[address]
 
-            //Get the previous
-            if (nextByTokenId) {
+    //         //Get the previous
+    //         if (nextByTokenId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.nextByTransactionInitiatorId[address])
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.nextByTransactionInitiatorId[address])
 
-                if (processedTransaction?.transaction._id != nextByTokenId) break
+    //             if (processedTransaction?.transaction._id != nextByTokenId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    async listByAddressFrom(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listByAddressFrom(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
 
-            results.push(processedTransaction)
+    //         results.push(processedTransaction)
 
-            let previousByTransactionInititatorId = processedTransaction?.transaction.previousByTokenOwnerId[address]
+    //         let previousByTransactionInititatorId = processedTransaction?.transaction.previousByTokenOwnerId[address]
 
-            //Get the previous
-            if (previousByTransactionInititatorId) {
+    //         //Get the previous
+    //         if (previousByTransactionInititatorId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.previousByTokenOwnerId[address])
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.previousByTokenOwnerId[address])
 
-                if (processedTransaction?.transaction._id != previousByTransactionInititatorId) break
+    //             if (processedTransaction?.transaction._id != previousByTransactionInititatorId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    async listByAddressTo(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
+    // async listByAddressTo(address:string, limit:number, startId:string) : Promise<TransactionViewModel[]> {
 
-        let results:TransactionViewModel[] = []
+    //     let results:TransactionViewModel[] = []
 
-        while (results?.length < limit && startId) {
+    //     while (results?.length < limit && startId) {
 
-            let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
+    //         let processedTransaction:TransactionViewModel = await this.processedTransactionRepository.get(startId)
 
-            results.push(processedTransaction)
+    //         results.push(processedTransaction)
 
-            let nextByTokenId = processedTransaction?.transaction.nextByTokenOwnerId[address]
+    //         let nextByTokenId = processedTransaction?.transaction.nextByTokenOwnerId[address]
 
-            //Get the previous
-            if (nextByTokenId) {
+    //         //Get the previous
+    //         if (nextByTokenId) {
 
-                //See 
-                processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.nextByTokenOwnerId[address])
+    //             //See 
+    //             processedTransaction = await this.processedTransactionRepository.get(processedTransaction?.transaction.nextByTokenOwnerId[address])
 
-                if (processedTransaction?.transaction._id != nextByTokenId) break
+    //             if (processedTransaction?.transaction._id != nextByTokenId) break
 
-            } else {
-                processedTransaction = undefined
-            }
+    //         } else {
+    //             processedTransaction = undefined
+    //         }
 
-            startId = processedTransaction?.transaction._id
-        }
+    //         startId = processedTransaction?.transaction._id
+    //     }
 
-        return results
+    //     return results
 
-    }
+    // }
 
-    private async _getRowItemViewModels(processedEvents) {
+    async getRowItemViewModels(processedEvents) {
 
         let result = {}
 
@@ -293,24 +293,24 @@ class ProcessedTransactionService {
 
     }
 
-    async translateTransactionsToViewModels(transactions:TransactionViewModel[], lastUpdated?:string) : Promise<TransactionsViewModel> {
+    // async translateTransactionsToViewModels(transactions:TransactionViewModel[], lastUpdated?:string) : Promise<TransactionsViewModel> {
 
-        let processedEvents:ProcessedEvent[] = []
+    //     let processedEvents:ProcessedEvent[] = []
 
-        for (let transaction of transactions) {
-            if (transaction.events?.length > 0) {
-                processedEvents.push(...transaction.events)
-            }
-        }
+    //     for (let transaction of transactions) {
+    //         if (transaction.events?.length > 0) {
+    //             processedEvents.push(...transaction.events)
+    //         }
+    //     }
 
-        let results:TransactionsViewModel = {
-            lastUpdated: lastUpdated,
-            transactions: transactions,
-            rowItemViewModels: await this._getRowItemViewModels(processedEvents)
-        }
+    //     let results:TransactionsViewModel = {
+    //         lastUpdated: lastUpdated,
+    //         transactions: transactions,
+    //         rowItemViewModels: await this.getRowItemViewModels(processedEvents)
+    //     }
 
-        return results
-    }
+    //     return results
+    // }
 
     async translateSalesToViewModels(sales:Sale[]) : Promise<SaleViewModel[]> {
 
@@ -352,10 +352,59 @@ interface TransactionsViewModel {
     rowItemViewModels?:{}
 }
 
-interface TransactionViewModel {
-    transaction?:ProcessedTransaction
-    events?:ProcessedEvent[]
+interface TransactionValue {
+    totalPrice?: number
+    usdValue?:number
+    currency?: string
+    tokenPrice?: any,
+    markets?: any
+    aggregator?:string
+    tokenIds?: number[]
 }
+
+
+interface ProcessedTransactionViewModel {
+    _id?:string
+    _rev?:string 
+    blockNumber?:number
+    transactionIndex?:number
+    transactionFrom?:string
+    tokenTraders?:string[]
+    timestamp?:number
+    tokenIds?:number[]
+    transactionValue?:TransactionValue
+    previousId?:string
+}
+
+interface ProcessedEventViewModel {
+    isMint: boolean
+    isBurn: boolean
+    namedArgs: any
+    tokenId: number
+    fromAddress: string
+    toAddress: string
+    price: number
+    currency: string
+    usdValue: number
+    event: string
+}
+
+interface TransactionViewModel {
+    transaction?:ProcessedTransactionViewModel
+    events?:ProcessedEventViewModel[]
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface SaleViewModel {
     sale:Sale

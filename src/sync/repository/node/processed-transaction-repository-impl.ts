@@ -372,6 +372,30 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
+    async listIds(options?:any) : Promise<string[]>  {
+
+        let s = await this.sequelize()
+
+        let queryOptions = {
+            type: s.QueryTypes.RAW,
+            plain: false,
+            mapToModel: false,
+            replacements: { 
+            }
+        }
+
+        const [queryResults, metadata] = await s.query(`
+            select 
+                t._id
+            FROM 
+                'processed_transaction' t
+            ORDER BY t.blockNumber desc, t.transactionIndex desc
+        `, Object.assign(queryOptions, options))
+
+        return queryResults.map( qr => qr._id)
+
+    }
+
 
     async getSalesReport(): Promise<SalesReport> {
 

@@ -348,8 +348,8 @@ let generate = async () => {
     baseViewModel: baseViewModel
   })
 
-  fs.mkdirSync(`${config.publicPath}/u`, { recursive: true })
-  fs.writeFileSync(`${config.publicPath}/u/activity.html`, userActivityResult)
+  fs.mkdirSync(`${config.publicPath}/u/activity`, { recursive: true })
+  fs.writeFileSync(`${config.publicPath}/u/activity/index.html`, userActivityResult)
 
 
   //Transaction page

@@ -52,7 +52,7 @@ let start = async () => {
   })
 
   // Generate HTML
-  await spawnService.spawnSync(config.baseDir)
+  await spawnService.spawnGenerateAndSync(config.baseDir)
     
 
 }

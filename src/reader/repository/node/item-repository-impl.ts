@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify"
 import { Item } from "../../dto/item.js"
 import fs from "fs"
 import { ItemRepository, CHUNK_SIZE } from "../item-repository.js"
-import { RowItemViewModel } from "../../dto/item-page.js"
+import { ItemPage, RowItemViewModel } from "../../dto/item-page.js"
 
 @injectable()
 class ItemRepositoryNodeImpl implements ItemRepository {
@@ -17,6 +17,10 @@ class ItemRepositoryNodeImpl implements ItemRepository {
     constructor(
         @inject('baseDir') private baseDir
     ) {}
+
+    async getRowItemViewModelsByAttribute(traitType: string, value: string, pageNumber: number): Promise<ItemPage> {
+        throw new Error("Method not implemented.")
+    }
 
     async load() {
         this.items = JSON.parse(fs.readFileSync(`${this.baseDir}/backup/export/backup/items.json`, 'utf8'))

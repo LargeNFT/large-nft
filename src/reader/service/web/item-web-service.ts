@@ -429,6 +429,11 @@ class ItemWebService {
         return this.itemPageService.get(pageNumber)
     }
 
+    async attributeItemPage(traitType:string, value: string, pageNumber:number) : Promise<ItemPage> {
+        return this.itemService.getRowItemViewModelsByAttribute(traitType, value, pageNumber)
+    }
+
+
     async query(query:string) : Promise<Item[]> {
 
         await this.schemaService.load(["items", "channels"])

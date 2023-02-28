@@ -1,5 +1,6 @@
 
 import { createRequire } from 'module'
+import { RowItemViewModel } from '../../reader/dto/item-page.js'
 const require = createRequire(import.meta.url)
 
 const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, ForeignKey, BelongsTo, AllowNull, BelongsToMany } = require('sequelize-typescript')
@@ -265,7 +266,6 @@ interface AttributeSaleReport {
     largestSales: {
         [key: string]: Sale[]
     }
-
 }
 
 

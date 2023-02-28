@@ -3,7 +3,11 @@ import { Item } from "../../dto/item.js"
 import { ItemRepository, CHUNK_SIZE } from "./../item-repository.js"
 import { Changeset, DatabaseService } from "../../service/core/database-service.js"
 import axios from "axios"
-import { RowItemViewModel } from "../../dto/item-page.js"
+import { ItemPage, RowItemViewModel } from "../../dto/item-page.js"
+
+
+
+import sanitize from "sanitize-filename"
 
 
 @injectable()
@@ -108,6 +112,19 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
             return []
         }
     }
+
+
+    async getRowItemViewModelsByAttribute(traitType:string, value:string, pageNumber:number) : Promise<ItemPage> {
+
+        let itemPage:ItemPage
+
+        const response = await axios.get(`${this.hostname}${this.baseURI}attributes/items/${sanitize(traitType)}/${sanitize(value)}/${pageNumber}.json`)
+        
+        itemPage = response.data
+
+        return itemPage
+    }
+
 
 
     async getRowItemViewModelsByTokenIds(tokenIds:number[]) : Promise<RowItemViewModel[]> {

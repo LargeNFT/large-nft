@@ -127,6 +127,11 @@ let sync = async () => {
     await Token.drop()
     await TokenOwner.drop()
 
+
+    if (fs.existsSync(`${config.publicPath}/sync`)) {
+      fs.rmSync(`${config.publicPath}/sync`, { recursive: true })
+    }
+
     console.timeEnd('Clearing processed transaction data...')
 
 
@@ -239,7 +244,7 @@ let sync = async () => {
     //Write transactions to file
     await writeTransactionsToDisk(indexResult)
     await writeTokensToDisk(indexResult)
-    await writeTokenOwnersToDisk(indexResult)
+    await writeTokenOwnersToDisk(indexResult, options)
     await writeActivityFeedToDisk(indexResult, options)
 
     //Get list for home page and save it.
@@ -247,7 +252,7 @@ let sync = async () => {
 
 
     //Generate token owner pages for leaderboard
-    await writeTokenOwnerPagesToDisk(indexResult, options)
+    await writeTokenOwnerPagesToDisk(options)
 
     //Sales reports
     await writeSalesReportsToDisk()
@@ -259,19 +264,19 @@ let sync = async () => {
     console.time(`Writing activity feed to disk.`)
 
 
-    let allTransactionIds:string[] = await processedTransactionService.listIds()
+    //Grab 10 pages worth of activity
+    let transactions:ProcessedTransaction[] = await processedTransactionService.list(25 * 10, 0, options)
 
-    let chunks = []
+    //Reverse them
 
-    const chunkSize = 25
+    let transactionsViewModel = await processedTransactionService.translateTransactionsToViewModels(transactions)
 
-    for (let i = 0; i < allTransactionIds.length; i += chunkSize) {
-        chunks.push(allTransactionIds.slice(i, i + chunkSize))
-    }
+    let transactionPages: ProcessedTransactionsPage[] = await processedTransactionService.buildTransactionPages(transactionsViewModel, 25)
+
 
     let i=1
-    for (let chunk of chunks) {
-      fs.writeFileSync(`${config.publicPath}/sync/transactions/activity/${i}.json`, Buffer.from(JSON.stringify(chunk)))
+    for (let page of transactionPages) {
+      fs.writeFileSync(`${config.publicPath}/sync/transactions/activity/${i}.json`, Buffer.from(JSON.stringify(page)))
       i++
     }
 
@@ -311,12 +316,16 @@ let sync = async () => {
     console.time(`Generating attribute stats...`)
     let attributeSalesReport = await processedTransactionService.getAttributeSalesReport()
 
+    
     //Write attributes to files
     for (let key of Object.keys(attributeSalesReport.owners)) {
 
       let totals = attributeSalesReport.totals.filter( total => `${total.traitType}::::${total.value}` == key)
 
-      fs.writeFileSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}.json`, Buffer.from(JSON.stringify({
+      fs.mkdirSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}`)
+
+      //Write attribute file
+      fs.writeFileSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}/attribute.json`, Buffer.from(JSON.stringify({
         key: key,
         totals: totals?.length > 0 ? totals[0] : undefined,
         owners: attributeSalesReport.owners[key],
@@ -331,7 +340,7 @@ let sync = async () => {
 
   }
 
-  async function writeTokenOwnerPagesToDisk(indexResult: ERCIndexResult, options) {
+  async function writeTokenOwnerPagesToDisk(options?:any) {
 
     console.time(`Writing token owner pages to disk.`)
 
@@ -359,7 +368,7 @@ let sync = async () => {
 
   }
 
-  async function writeTokenOwnersToDisk(indexResult: ERCIndexResult) {
+  async function writeTokenOwnersToDisk(indexResult: ERCIndexResult, options?:any) {
 
     console.time(`Writing ${Object.keys(indexResult.ownersToUpdate).length} updated token owners to disk.`)
 
@@ -368,6 +377,7 @@ let sync = async () => {
       let tokenOwner = indexResult.ownersToUpdate[owner]
 
       let refetchedOwner = await tokenOwnerService.get(indexResult.ownersToUpdate[owner]._id)
+
       tokenOwner.rank = refetchedOwner.rank
       tokenOwner.overallRank = refetchedOwner.overallRank
 
@@ -380,15 +390,17 @@ let sync = async () => {
         fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`, { recursive: true })
       }
 
+      //Reverse order of transactions
+      cloned.transactionsViewModel?.transactions?.reverse()
 
-      //Generate sales report
-      cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(owner)
 
       let transactionPages: ProcessedTransactionsPage[] = await processedTransactionService.buildTransactionPages(cloned.transactionsViewModel, 25)
 
 
-      //Remove before saving
+      //Remove transactions before writing to JSON
       delete cloned.transactionsViewModel
+
+      cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(cloned._id)
 
       //Write latest ENS name
       fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
@@ -407,6 +419,11 @@ let sync = async () => {
       //Write full profile
       fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokenOwner.json`, Buffer.from(JSON.stringify(cloned)))
 
+      
+      //Update sales report in database
+      refetchedOwner.salesReport = cloned.salesReport
+
+      await tokenOwnerService.put(refetchedOwner, options)
 
     }
 

@@ -3,15 +3,14 @@ import { inject, injectable } from "inversify"
 import { ProcessedTransactionRepository } from "../../sync/repository/processed-transaction-repository.js"
 import { AttributeSaleReport, ProcessedEvent, ProcessedTransaction, Sale, SalesReport, TokenOwnerSalesReport, TransactionValue } from "../../sync/dto/processed-transaction.js"
 import { ItemService } from "../../reader/service/item-service.js"
-import { Token } from "../dto/token.js"
 import { TokenService } from "./token-service.js"
-import { TokenOwner } from "../dto/token-owner.js"
 import { TokenOwnerService } from "./token-owner-service.js"
 import { ERCIndexResult } from "./transaction-indexer-service.js"
 import { Block } from "../dto/block.js"
 import { BlockService } from "./block-service.js"
 import { Transaction } from "../dto/transaction.js"
 import { TransactionService } from "./transaction-service.js"
+
 
 
 @injectable()
@@ -96,8 +95,8 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.listByTrader(owner, options)
     }
 
-    async listIds(options?:any) : Promise<string[]> {
-        return this.processedTransactionRepository.listIds(options)
+    async listIds(limit:number, options?:any) : Promise<string[]> {
+        return this.processedTransactionRepository.listIds(limit, options)
     }
 
 
@@ -213,8 +212,29 @@ class ProcessedTransactionService {
         return this.processedTransactionRepository.getSalesReport()
     }
 
-    async getAttributeSalesReport(): Promise<AttributeSaleReport> {
-        return this.processedTransactionRepository.getAttributeSalesReport()
+    async getAttributeSalesReport(options?:any): Promise<AttributeSaleReport> {
+    
+        let report:AttributeSaleReport = {
+            owners: [],
+            largestSales: {}
+        }
+
+        report.totals = await this.processedTransactionRepository.getAttributeSalesRows(0, options)
+
+        let attributes = await this.processedTransactionRepository.getAttributes()
+        
+        for (let attribute of attributes) {
+            report.owners[`${attribute.traitType}::::${attribute.v}`] = await this.processedTransactionRepository.getOwnersByAttribute(attribute.traitType, attribute.v, options)
+            report.largestSales[`${attribute.traitType}::::${attribute.v}`] = await this.processedTransactionRepository.getLargestSalesByAttribute(attribute.traitType, attribute.v, 50, options)
+        }
+
+
+        return report
+
+
+
+
+
     }
 
     async getLargestSales(limit:number) : Promise<Sale[]> {
@@ -345,10 +365,6 @@ class ProcessedTransactionService {
     async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number) : Promise<ProcessedTransactionsPage[]> {
 
         let result: ProcessedTransactionsPage[] = []
-
-
-        //Reverse order of transactions
-        transactionsViewModel?.transactions?.reverse()
 
         //Break into rows
         for (let i = 0; i < transactionsViewModel.transactions.length; i += perPage) {

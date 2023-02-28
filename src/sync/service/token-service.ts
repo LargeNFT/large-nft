@@ -69,6 +69,13 @@ class TokenService {
     }
 
 
+
+    async getTokenIdsByAttribute(traitType: string, value: string, options?: any): Promise<number[]> {
+        return this.tokenRepository.getTokenIdsByAttribute(traitType, value, options)
+    }
+
+
+
 }
 
 

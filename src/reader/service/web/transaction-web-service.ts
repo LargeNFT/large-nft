@@ -2,8 +2,6 @@
 import axios from "axios";
 import { inject, injectable } from "inversify";
 import { AttributeOverallSales, AttributeSaleReport, SalesReport } from "../../dto/processed-transaction.js";
-import { LeaderboardRowViewModel } from "../../dto/token-owner-page.js";
-import { TokenOwner } from "../../dto/token-owner.js";
 
 
 import { SchemaService } from "../core/schema-service.js";
@@ -37,23 +35,11 @@ class TransactionWebService {
 
         let result = await axios.get(`${this.baseURI}sync/transactions/activity/${page}.json`)
 
-        let transactionIds = result.data
+        console.log(result)
 
-        let transactionsViewModel:TransactionsViewModel = {
-            transactions: [],
-            lastUpdated: latest.lastUpdated
-        }
+        let transactionsViewModel = result.data
 
-        let allEvents = []
-
-        for (let id of transactionIds) {
-            let transactionViewModel = await this.processedTransactionService.get(id)
-
-            transactionsViewModel.transactions.push(transactionViewModel)
-            allEvents.push(...transactionViewModel.events)
-        }
-
-        transactionsViewModel.rowItemViewModels = await this.processedTransactionService.getRowItemViewModels(allEvents)
+        transactionsViewModel.lastUpdated = latest.lastUpdated
 
         await this.cacheENSNames(transactionsViewModel)
 
@@ -61,55 +47,6 @@ class TransactionWebService {
 
     }
 
-    // async listTo(limit:number, startId?:string) : Promise<TransactionsViewModel> {
-
-    //     await this.schemaService.load(["processed-transactions"])
-
-    //     let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listTo(limit, startId))
-
-    //     await this.cacheENSNames(transactionsViewModel)
-
-    //     return transactionsViewModel
-
-    // }
-
-    // async listByTokenFrom(tokenId:number, limit:number, startId?:string) : Promise<TransactionsViewModel> {
-
-    //     await this.schemaService.load(["processed-transactions"])
-
-    //     let lastUpdated
-    //     let result
-
-    //     if (!startId) {
-    //         result = await axios.get(`${this.baseURI}sync/tokens/${tokenId}/token.json`)
-
-    //         let latest = await this.getLatest()
-    //         lastUpdated = latest.lastUpdated
-
-    //     }
-
-    //     let transactionsViewModel = result.data?.transactionsViewModel
-
-
-    //     // let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenFrom(tokenId, limit, startId), lastUpdated)
-
-    //     await this._cacheENSNames(transactionsViewModel)
-
-    //     return transactionsViewModel
-
-    // }
-
-    // async listByTokenTo(tokenId:number, limit:number, startId?:string) : Promise<TransactionsViewModel> {
-
-    //     await this.schemaService.load(["processed-transactions"])
-
-    //     let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByTokenTo(tokenId, limit, startId))
-
-    //     await this.cacheENSNames(transactionsViewModel)
-
-    //     return transactionsViewModel
-
-    // }
 
     async listByAddress(address:string, page:number) : Promise<TransactionsViewModel> {
         
@@ -128,17 +65,6 @@ class TransactionWebService {
 
     }
 
-    // async listByAddressTo(address:string, limit:number, startId?:string) : Promise<TransactionsViewModel> {
-
-    //     await this.schemaService.load(["processed-transactions"])
-
-    //     let transactionsViewModel = await this.processedTransactionService.translateTransactionsToViewModels(await this.processedTransactionService.listByAddressTo(address, limit, startId))
-
-    //     await this.cacheENSNames(transactionsViewModel)
-
-    //     return transactionsViewModel
-
-    // }
 
     async getLatest() {
         let result = await axios.get(`${this.baseURI}sync/transactions/latest.json`, {
@@ -172,23 +98,6 @@ class TransactionWebService {
 
     }
 
-    // async getTokenActivity(tokenId:number) : Promise<TransactionsViewModel> {
-
-    //     let result = await axios.get(`${this.baseURI}sync/tokens/${tokenId}-activity.json`, {
-    //         // query URL without using browser cache
-    //         headers: {
-    //           'Cache-Control': 'no-cache',
-    //           'Pragma': 'no-cache',
-    //           'Expires': '0',
-    //         },
-    //       })
-
-    //       let transactionsViewModel:TransactionsViewModel = result.data
-
-    //       await this._cacheENSNames(transactionsViewModel)
-  
-    //       return transactionsViewModel
-    // }
 
     getDisplayName(_id) {
         return this._ENSCache[_id]

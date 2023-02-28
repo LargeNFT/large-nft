@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { Item } from "../dto/item.js";
-import { RowItemViewModel } from "../dto/item-page.js";
+import { ItemPage, RowItemViewModel } from "../dto/item-page.js";
 import { ItemRepository } from "../repository/item-repository.js";
 import { AttributeTotal } from "../dto/attribute-total.js";
 import { AttributeTotalService } from "./attribute-total-service.js";
@@ -42,6 +42,10 @@ class ItemService {
         return this.itemRepository.getByTokenIds(tokenIds)
     }
 
+    async getRowItemViewModelsByAttribute(traitType:string, value:string, pageNumber:number) : Promise<ItemPage> {
+        return this.itemRepository.getRowItemViewModelsByAttribute(traitType, value, pageNumber)
+    }
+
     async getRowItemViewModelsByTokenIds(tokenIds:number[]) : Promise<RowItemViewModel[]> {
         return this.itemRepository.getRowItemViewModelsByTokenIds(tokenIds)    
     }
@@ -62,6 +66,8 @@ class ItemService {
 
         return this.attributeTotalService.buildAttributeTotals(channel, items)
     }
+
+
 
 }
 

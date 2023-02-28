@@ -56,7 +56,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
     
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/attributes/${this.attributeKeyToInteger(`${traitType}::::${value}`)}.json`)
+            let result = await axios.get(`${this.baseURI}sync/attributes/${this.attributeKeyToInteger(`${traitType}::::${value}`)}/attribute.json`)
             attributeSalesReport = result.data
 
         } catch(ex) {

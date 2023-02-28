@@ -45,7 +45,15 @@ import { ItemViewModel } from "./dto/viewmodel/item-view-model.js"
 import pkg from 'convert-svg-to-png';
 import { StaticPage } from "./dto/static-page.js"
 import { SpawnService } from "../sync/service/spawn-service.js"
+import { ItemService } from "./service/item-service.js"
+
+
 const { convert } = pkg;
+
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
+const sanitize = require("sanitize-filename")
 
 
 let generate = async () => {
@@ -93,6 +101,7 @@ let generate = async () => {
 
   //Get data services.
   let itemWebService:ItemWebService = container.get("ItemWebService")
+  let itemService:ItemService = container.get("ItemService")
   let channelWebService:ChannelWebService = container.get("ChannelWebService")
   let spawnService:SpawnService = container.get("SpawnService")
   let generateService:GenerateService = container.get("GenerateService")
@@ -125,6 +134,19 @@ let generate = async () => {
   let attributeTotals = await itemWebService.buildAttributeTotals(channelViewModel.channel)
   await fs.promises.writeFile(`${config.publicPath}/attributeTotals.json`, JSON.stringify(attributeTotals))
 
+  //Write row items for each attribute
+  for (let attributeTotal of attributeTotals) {
+
+    let rowItemViewModels = await itemService.getRowItemViewModelsByTokenIds(attributeTotal.tokenIds)
+
+    await writeAttributeRowItems(
+      attributeTotal.traitType, 
+      attributeTotal.value, 
+      rowItemViewModels,  
+      `${config.publicPath}/attributes/items`)
+  }
+
+
   channelId = channelViewModel.channel._id
 
 
@@ -137,6 +159,8 @@ let generate = async () => {
     await fs.promises.writeFile(`${config.publicPath}/itemPages/${pageCount}.json`, JSON.stringify(itemPage))
     pageCount++
   }
+
+
 
 
   let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, additionalStaticPages)
@@ -280,6 +304,11 @@ let generate = async () => {
   fs.mkdirSync(`${config.publicPath}/attributes`, { recursive: true })
   fs.writeFileSync(`${config.publicPath}/attributes/index.html`, attributesResult)
 
+
+
+
+
+
   //Attribute page
   const attributeResult = Eta.render(attributeEjs, {
     title: channelViewModel.channel.title,
@@ -288,7 +317,6 @@ let generate = async () => {
 
   fs.mkdirSync(`${config.publicPath}/attribute`, { recursive: true })
   fs.writeFileSync(`${config.publicPath}/attribute/index.html`, attributeResult)
-
 
 
 
@@ -470,6 +498,39 @@ let generate = async () => {
   console.log("Generation complete")
 
 }
+
+
+async function writeAttributeRowItems(traitType:string, value:string, rowItemViewModels:any[], filepath:string) {
+
+  let dir = `${filepath}/${sanitize(traitType)}/${sanitize(value)}`
+
+  fs.mkdirSync(dir, { recursive: true })
+
+  //Write rowItemViewModels in pages 
+  let perPage = 35
+
+  let chunks = []
+
+  //Break into rows
+  for (let i = 0; i < rowItemViewModels.length; i += perPage) {
+    let chunk = rowItemViewModels.slice(i, i + perPage)
+    chunks.push(chunk)
+  }
+
+  let i = 1
+  for (let chunk of chunks) {
+
+    fs.writeFileSync(`${dir}/${i}.json`, Buffer.from(JSON.stringify({
+      items: chunk,
+      totalMatches: rowItemViewModels.length
+    })))
+
+    i++
+
+  }
+
+}
+
 
 generate()
 

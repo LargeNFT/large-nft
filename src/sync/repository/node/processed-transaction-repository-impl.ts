@@ -372,7 +372,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    async listIds(options?:any) : Promise<string[]>  {
+    async listIds(limit:number, options?:any) : Promise<string[]>  {
 
         let s = await this.sequelize()
 
@@ -381,6 +381,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             plain: false,
             mapToModel: false,
             replacements: { 
+                limit: limit
             }
         }
 
@@ -390,6 +391,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
             FROM 
                 'processed_transaction' t
             ORDER BY t.blockNumber desc, t.transactionIndex desc
+            LIMIT :limit
         `, Object.assign(queryOptions, options))
 
         return queryResults.map( qr => qr._id)
@@ -415,25 +417,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    async getAttributeSalesReport(options?:any): Promise<AttributeSaleReport> {
 
-        let report:AttributeSaleReport = {
-            owners: [],
-            largestSales: {}
-        }
-
-        report.totals = await this.getAttributeSalesRows(0, options)
-
-        let attributes = await this.getAttributes()
-        
-        for (let attribute of attributes) {
-            report.owners[`${attribute.traitType}::::${attribute.v}`] = await this.getOwnersByAttribute(attribute.traitType, attribute.v, options)
-            report.largestSales[`${attribute.traitType}::::${attribute.v}`] = await this.getLargestSalesByAttribute(attribute.traitType, attribute.v, 50, options)
-        }
-
-
-        return report
-    }
 
     async getTokenOwnerSalesReport(_id:string): Promise<TokenOwnerSalesReport> {
 
@@ -498,7 +482,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    private async getAttributeSalesRows(timestamp:number, options?:any) : Promise<AttributeSalesRow[]> {
+    async getAttributeSalesRows(timestamp:number, options?:any) : Promise<AttributeSalesRow[]> {
 
         let salesRows:AttributeSalesRow[] = []
 
@@ -662,7 +646,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    private async getOwnersByAttribute(traitType:string, value:string, options?:any) : Promise<OwnersByAttribute[]>{
+    async getOwnersByAttribute(traitType:string, value:string, options?:any) : Promise<OwnersByAttribute[]>{
 
         let s = await this.sequelize()
 
@@ -728,7 +712,7 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-    private async getAttributes() : Promise<any[]> {
+    async getAttributes(options?:any) : Promise<any[]> {
 
         let s = await this.sequelize()
 

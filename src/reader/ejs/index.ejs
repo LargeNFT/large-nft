@@ -158,6 +158,27 @@
   
               </div>
 
+
+              <%
+              if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
+              %>
+                <div class="list links-list inset">   
+                  <ul>
+                
+                <%
+                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                %>
+                      <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
+                <%
+                    }
+                %> 
+                  </ul>
+                </div>
+              <%
+              }
+              %> 
+
+
               <% if (showMintPage) { %>
                 <mint-info
                   baseurl="<%= baseURL %>"
@@ -330,25 +351,6 @@
   
   
 
-              <%
-              if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
-              %>
-                <div class="block-title block-title-medium">Links</div>
-                <div class="list links-list inset">   
-                  <ul>
-                
-                <%
-                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {
-                %>
-                      <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
-                <%
-                    }
-                %> 
-                  </ul>
-                </div>
-              <%
-              }
-              %> 
 
 
 

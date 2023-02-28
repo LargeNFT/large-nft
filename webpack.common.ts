@@ -268,7 +268,7 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/sync/sync.ts",
-    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp'],
+    externals: ['sqlite3', 'tedious', 'sharp'],
     externalsPresets: { 
       node: true 
     },    

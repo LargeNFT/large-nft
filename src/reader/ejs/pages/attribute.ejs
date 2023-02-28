@@ -221,8 +221,8 @@
                                     </div>
                                 </div>
 
-                                <div class="block-title block-title-medium">All Tokens</div>
-                                <div class="list cards-list virtual-list" id="attribute-tokens-list">
+                                <div class="block-title block-title-medium">All Tokens (${totalTokens})</div>
+                                <div class="block list cards-list virtual-list" id="attribute-tokens-list">
                                     <ul class="item-flex"></ul>
                                 </div>
                               
@@ -285,7 +285,7 @@
 
             let virtualList
 
-            let PER_PAGE = 35
+            let page = 1
 
             let hasMoreItems = true
             let loadingInProgress = false
@@ -314,18 +314,19 @@
 
                     salesReport = await transactionWebService.getAttributeSalesReport(traitType, value)
 
+
                     largestSales = salesReport?.largestSalesViewModels
                     owners = salesReport?.owners
 
                     let latest = await transactionWebService.getLatest()
                     lastUpdated = latest.lastUpdated
-    
 
 
                     attributeParams[traitType] = value
 
 
-                    let result = await itemWebService.exploreList(attributeParams, 0, PER_PAGE)
+                    let result = await itemWebService.attributeItemPage(traitType, value, page)
+
                     firstPageItems = result.items
                     totalTokens = result.totalMatches
 
@@ -436,7 +437,13 @@
 
                 try {
                     
-                    let result = await itemWebService.exploreList(attributeParams, virtualList.items?.length, PER_PAGE)
+                    page++
+
+                    let result = await itemWebService.attributeItemPage(traitType, value, page)
+
+                    // firstPageItems = result.items
+
+                    // let result = await itemWebService.exploreList(attributeParams, virtualList.items?.length, PER_PAGE)
 
 
                     let items = result.items

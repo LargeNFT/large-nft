@@ -8,7 +8,7 @@ import { ProcessedTransactionService } from "./processed-transaction-service.js"
 @injectable()
 class TokenOwnerPageService {
 
-    
+
     @inject("ProcessedTransactionService")
     private processedTransactionService:ProcessedTransactionService
 
@@ -31,7 +31,7 @@ class TokenOwnerPageService {
                 lastActive: tokenOwner.lastActive,
                 count: tokenOwner.count,
                 rank: tokenOwner.rank,
-                salesReport: await this.processedTransactionService.getTokenOwnerSalesReport(tokenOwner._id)
+                salesReport: tokenOwner.salesReport
             })
 
         }

@@ -570,7 +570,7 @@ class TransactionIndexerService {
                 console.log(JSON.stringify(ex))
             }
         } else {
-            console.log(`Contract state exists`)
+            // console.log(`Contract state exists`)
         }
 
         return contractState

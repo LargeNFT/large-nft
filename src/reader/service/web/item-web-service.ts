@@ -433,6 +433,9 @@ class ItemWebService {
         return this.itemService.getRowItemViewModelsByAttribute(traitType, value, pageNumber)
     }
 
+    async ownerItemPage(address:string, pageNumber:number) : Promise<ItemPage> {
+        return this.itemService.getRowItemViewModelsByOwner(address, pageNumber)
+    }
 
     async query(query:string) : Promise<Item[]> {
 

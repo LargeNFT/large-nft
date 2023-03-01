@@ -18,6 +18,10 @@ class ItemRepositoryNodeImpl implements ItemRepository {
         @inject('baseDir') private baseDir
     ) {}
 
+    async getRowItemViewModelsByOwner(address: string, pageNumber: number): Promise<ItemPage> {
+        throw new Error("Method not implemented.")
+    }
+
     async getRowItemViewModelsByAttribute(traitType: string, value: string, pageNumber: number): Promise<ItemPage> {
         throw new Error("Method not implemented.")
     }

@@ -278,15 +278,14 @@
 
             let virtualList
 
-            let PER_PAGE = 35
-
             let hasMoreItems = true
             let loadingInProgress = false
 
-            let tokenIdChunks
-            let pagesLoaded = 0
+            let page = 1
 
-            let firstPageItems = []
+            let firstPageItems
+            let totalTokens
+
 
 
 
@@ -299,13 +298,6 @@
                 return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
             }
 
-            const chunk = (arr, size) => {
-                const chunks = []
-                for (let i = 0; i < arr.length; i += size) {
-                    chunks.push(arr.slice(i, i + size))
-                }
-                return chunks
-            }
 
             const loadUser = async () => {
                 
@@ -316,12 +308,11 @@
 
                     if (tokenOwner) {
 
-                        tokenIdChunks = chunk(tokenOwner.tokenIds, PER_PAGE)
+                        let result = await itemWebService.ownerItemPage(address, page)
 
-                        if (tokenIdChunks?.length > 0) {
-                            firstPageItems = await itemWebService.getRowItemViewModelsByTokenIds(tokenIdChunks[pagesLoaded])
-                            pagesLoaded++
-                        } 
+                        firstPageItems = result.items
+                        totalTokens = result.totalMatches
+
                     }
 
 
@@ -360,7 +351,7 @@
                 })
 
 
-                if (virtualList.items?.length < tokenOwner.tokenIds?.length) {
+                if (virtualList.items?.length < totalTokens) {
                     hasMoreItems = true
                     document.getElementById("user-tokens-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
                 } else {
@@ -426,9 +417,11 @@
 
                 try {
                     
-                    let items = await itemWebService.getRowItemViewModelsByTokenIds(tokenIdChunks[pagesLoaded])
-                    pagesLoaded++
+                    page++
 
+                    let result = await itemWebService.ownerItemPage(address, page)
+
+                    let items = result.items
                     virtualList.appendItems(items)
 
                     if (virtualList.items?.length == tokenOwner.tokenIds?.length) {

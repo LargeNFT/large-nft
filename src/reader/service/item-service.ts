@@ -46,6 +46,10 @@ class ItemService {
         return this.itemRepository.getRowItemViewModelsByAttribute(traitType, value, pageNumber)
     }
 
+    async getRowItemViewModelsByOwner(address:string, pageNumber:number) : Promise<ItemPage> {
+        return this.itemRepository.getRowItemViewModelsByOwner(address, pageNumber)
+    }
+
     async getRowItemViewModelsByTokenIds(tokenIds:number[]) : Promise<RowItemViewModel[]> {
         return this.itemRepository.getRowItemViewModelsByTokenIds(tokenIds)    
     }

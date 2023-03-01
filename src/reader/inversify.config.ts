@@ -172,7 +172,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
       //Navigating to same page freezes it. So don't.
       // if (url != currentUrl)  {
-      //   app.preloader.show()
+        app.preloader.show()
       // } 
 
       // console.log(url)
@@ -181,6 +181,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         componentUrl: `${baseURI}${url}`, 
         options: options
       })
+
+      app.preloader.hide()
 
 
     }

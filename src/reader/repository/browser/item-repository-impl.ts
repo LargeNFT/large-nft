@@ -7,8 +7,6 @@ import { ItemPage, RowItemViewModel } from "../../dto/item-page.js"
 
 
 
-import sanitize from "sanitize-filename"
-
 
 @injectable()
 class ItemRepositoryBrowserImpl implements ItemRepository {
@@ -118,14 +116,23 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
 
         let itemPage:ItemPage
 
-        const response = await axios.get(`${this.hostname}${this.baseURI}attributes/items/${sanitize(traitType)}/${sanitize(value)}/${pageNumber}.json`)
+        const response = await axios.get(`${this.hostname}${this.baseURI}attributes/items/${encodeURIComponent(traitType)}/${encodeURIComponent(value)}/${pageNumber}.json`)
         
         itemPage = response.data
 
         return itemPage
     }
 
+    async getRowItemViewModelsByOwner(address:string, pageNumber:number) : Promise<ItemPage> {
 
+        let itemPage:ItemPage
+
+        const response = await axios.get(`${this.hostname}${this.baseURI}sync/tokenOwner/${address}/tokens/${pageNumber}.json`)
+        
+        itemPage = response.data
+
+        return itemPage
+    }
 
     async getRowItemViewModelsByTokenIds(tokenIds:number[]) : Promise<RowItemViewModel[]> {
 

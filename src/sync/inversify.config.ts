@@ -151,7 +151,7 @@ function getMainContainer(command:GetMainContainerCommand) {
     await sequelize.sync()
 
     await sequelize.authenticate()
-    console.log('Connection has been established successfully.')
+    // console.log('Connection has been established successfully.')
 
     return sequelize
 

@@ -369,8 +369,7 @@
                         `
                 })
 
-
-                if (virtualList.items?.length <= totalTokens) {
+                if (virtualList.items?.length < totalTokens) {
                     hasMoreItems = true
                     document.getElementById("attribute-tokens-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
                 } else {
@@ -455,6 +454,7 @@
                     }
 
                 } catch (ex) {
+                    hasMoreItems = false
                     console.log(ex)
                 }
 

@@ -109,7 +109,7 @@ class SpawnService {
     // }
 
 
-    async spawnSync(dir:string, args?:[]): Promise<ChildProcess> {       
+    async spawnSync(dir:string, args?:string[]): Promise<ChildProcess> {       
         
 
         return new Promise(function(resolve, reject) {

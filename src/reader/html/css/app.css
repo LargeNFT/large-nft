@@ -9,11 +9,11 @@
   --scrollbar-width: calc(100vw - 100%);
 
   /* --f7-table-selected-row-bg-color: #fffd9f; */
-
 }
 
 html {
   overscroll-behavior-y: contain;
+  font-display: swap;
 }
 
 a {

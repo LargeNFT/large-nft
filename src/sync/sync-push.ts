@@ -37,6 +37,8 @@ let syncPush = async () => {
   
       if (config.generate) {
         await spawnService.spawnGenerateAndSync(syncDirectory)
+      } else {
+        await spawnService.spawnSync(syncDirectory)
       }
 
       if (config.env == "production") {
@@ -71,7 +73,17 @@ let syncPush = async () => {
         const syncDirectory = path.resolve(config.syncDir, reader.repo)
 
         //Sync
-        await spawnService.spawnSync(syncDirectory)
+
+        //Remove clear
+        let args = process.argv?.slice(2)
+
+        let indexOfClear = args.indexOf("--clear")
+
+        if (indexOfClear > -1) {
+          args.splice(indexOfClear, 2) 
+        }
+
+        await spawnService.spawnSync(syncDirectory, args)
 
           //Push
           const git = simpleGit(syncDirectory)

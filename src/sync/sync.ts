@@ -39,6 +39,7 @@ import { ContractState } from "./dto/contract-state.js"
 import { Token } from "./dto/token.js"
 import { SchemaService } from "../reader/service/core/schema-service.js"
 import { ContractStateService } from "./service/contract-state-service.js"
+import { ItemService } from "../reader/service/item-service.js"
 
 
 
@@ -94,7 +95,7 @@ let sync = async () => {
   let walletService:WalletService = container.get("WalletService")
   await walletService.initProvider()
 
-  console.log(`Provider initialized`)
+  // console.log(`Provider initialized`)
 
 
   let channelWebService: ChannelWebService = container.get("ChannelWebService")
@@ -152,7 +153,7 @@ let sync = async () => {
   let processedTransactionService: ProcessedTransactionService = container.get("ProcessedTransactionService")
   let tokenOwnerPageService: TokenOwnerPageService = container.get("TokenOwnerPageService")
   let contractStateService:ContractStateService = container.get("ContractStateService")
-  
+  let itemService:ItemService = container.get("ItemService")
 
   let channelContract = await walletService.getContract("Channel")
 
@@ -376,12 +377,12 @@ let sync = async () => {
 
       let tokenOwner = indexResult.ownersToUpdate[owner]
 
+      //Refetch because ranks could get updated
       let refetchedOwner = await tokenOwnerService.get(indexResult.ownersToUpdate[owner]._id)
 
       tokenOwner.rank = refetchedOwner.rank
       tokenOwner.overallRank = refetchedOwner.overallRank
 
-      //Refetch because ranks could get updated
       // let tokenOwner = await tokenOwnerService.get(indexResult.ownersToUpdate[owner]._id)
       let cloned = JSON.parse(JSON.stringify(tokenOwner))
 
@@ -389,6 +390,12 @@ let sync = async () => {
       if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`)) {
         fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}/activity`, { recursive: true })
       }
+
+      if (!fs.existsSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokens`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokens`, { recursive: true })
+      }
+
+
 
       //Reverse order of transactions
       cloned.transactionsViewModel?.transactions?.reverse()
@@ -419,7 +426,19 @@ let sync = async () => {
       //Write full profile
       fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokenOwner.json`, Buffer.from(JSON.stringify(cloned)))
 
+      //Get token rowItemViewModels
+      let tokenIds = cloned.tokenIds.map( a => parseInt(a) )
       
+      tokenIds.sort( (a,b) => a - b)
+
+      let rowItemViewModels = await itemService.getRowItemViewModelsByTokenIds(tokenIds)
+
+
+      //Write pages full of rowItemViewModels for the tokens they own.
+      await writeTokenOwnerRowItems(rowItemViewModels, `${config.publicPath}/sync/tokenOwner/${owner}/tokens`)
+
+
+
       //Update sales report in database
       refetchedOwner.salesReport = cloned.salesReport
 
@@ -466,6 +485,38 @@ let sync = async () => {
     console.timeEnd(`Writing ${Object.keys(indexResult.processedTransactionViewModels).length} transactions to disk.`)
 
   }
+
+
+  async function writeTokenOwnerRowItems(rowItemViewModels:any[], filepath:string) {
+  
+    fs.mkdirSync(filepath, { recursive: true })
+  
+    //Write rowItemViewModels in pages 
+    let perPage = 35
+  
+    let chunks = []
+  
+    //Break into rows
+    for (let i = 0; i < rowItemViewModels.length; i += perPage) {
+      let chunk = rowItemViewModels.slice(i, i + perPage)
+      chunks.push(chunk)
+    }
+  
+    let i = 1
+    for (let chunk of chunks) {
+  
+      fs.writeFileSync(`${filepath}/${i}.json`, Buffer.from(JSON.stringify({
+        items: chunk,
+        totalMatches: rowItemViewModels.length
+      })))
+  
+      i++
+  
+    }
+  
+  }
+  
+
 
   async function updateLatestInfo(indexResult:ERCIndexResult) {
 

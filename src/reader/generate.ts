@@ -50,10 +50,6 @@ import { ItemService } from "./service/item-service.js"
 
 const { convert } = pkg;
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
-
-const sanitize = require("sanitize-filename")
 
 
 let generate = async () => {
@@ -134,17 +130,6 @@ let generate = async () => {
   let attributeTotals = await itemWebService.buildAttributeTotals(channelViewModel.channel)
   await fs.promises.writeFile(`${config.publicPath}/attributeTotals.json`, JSON.stringify(attributeTotals))
 
-  //Write row items for each attribute
-  for (let attributeTotal of attributeTotals) {
-
-    let rowItemViewModels = await itemService.getRowItemViewModelsByTokenIds(attributeTotal.tokenIds)
-
-    await writeAttributeRowItems(
-      attributeTotal.traitType, 
-      attributeTotal.value, 
-      rowItemViewModels,  
-      `${config.publicPath}/attributes/items`)
-  }
 
 
   channelId = channelViewModel.channel._id
@@ -490,6 +475,22 @@ let generate = async () => {
   await generateService.generateWebp(config, `${config.baseDir}/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
 
 
+
+  //Write row items for each attribute
+  for (let attributeTotal of attributeTotals) {
+
+    let rowItemViewModels = await itemService.getRowItemViewModelsByTokenIds(attributeTotal.tokenIds)
+
+    await writeAttributeRowItems(
+      attributeTotal.traitType, 
+      attributeTotal.value, 
+      rowItemViewModels,  
+      `${config.publicPath}/attributes/items`)
+  }
+
+
+
+
   //Generate  webp version of channel profile pic
 
 
@@ -502,7 +503,7 @@ let generate = async () => {
 
 async function writeAttributeRowItems(traitType:string, value:string, rowItemViewModels:any[], filepath:string) {
 
-  let dir = `${filepath}/${sanitize(traitType)}/${sanitize(value)}`
+  let dir = `${filepath}/${encodeURIComponent(traitType)}/${encodeURIComponent(value)}`
 
   fs.mkdirSync(dir, { recursive: true })
 

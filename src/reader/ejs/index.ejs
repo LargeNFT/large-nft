@@ -112,82 +112,133 @@
 
             <div class="fixed-width-content center">
 
-
-              <div class="card channel-card-show">
-
-                <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                  style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
-                    <% } %>
-                      >
-  
-                      <a href="<%= link('index.html') %>">
-                        <% if (channelViewModel?.channel.coverImageId) { %>
-                          <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
-                        <% } else { %>
-                          <i class="f7-icons avatar">photo</i>
-                        <% } %>
-                      </a>
-  
-                </div>
-  
-                <div class="card-content card-content-padding">
-  
-                  <div class="title">
-                    <%= channelViewModel.channel.title %>
-                  </div>
-  
-                  <% if(channelViewModel?.authorDisplayName) { %>
-                    <div class="name">
-                      By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
-                        <%= channelViewModel?.authorDisplayName %>
-                      </a>
-                    </div>
-                  <% } %>
-  
-                  <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
-                    <%~ channelViewModel.channel?.descriptionHTML %>
-                  </div>
-  
-  
-                  <div class="start-buttons">
-                    <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
-                  </div>
-  
-  
-                </div>
-  
-              </div>
-
-
-              <%
-              if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
-              %>
-                <div class="list links-list inset">   
-                  <ul>
-                
-                <%
-                    for (let staticPage of channelViewModel.staticPagesViewModel.links) {
-                %>
-                      <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
-                <%
-                    }
-                %> 
-                  </ul>
-                </div>
-              <%
-              }
-              %> 
-
-
-              <% if (showMintPage) { %>
-                <mint-info
-                  baseurl="<%= baseURL %>"
-                ></mint-info>
-              <% } %>
-
   
               <div class="hidden-on-load">
   
+                <div class="card channel-card-show">
+
+                  <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                    style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
+                      <% } %>
+                        >
+    
+                        <a href="<%= link('index.html') %>">
+                          <% if (channelViewModel?.channel.coverImageId) { %>
+                            <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
+                          <% } else { %>
+                            <i class="f7-icons avatar">photo</i>
+                          <% } %>
+                        </a>
+    
+                  </div>
+    
+                  <div class="card-content card-content-padding">
+    
+                    <div class="title">
+                      <%= channelViewModel.channel.title %>
+                    </div>
+    
+                    <% if(channelViewModel?.authorDisplayName) { %>
+                      <div class="name">
+                        By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
+                          <%= channelViewModel?.authorDisplayName %>
+                        </a>
+                      </div>
+                    <% } %>
+    
+                    <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
+                      <%~ channelViewModel.channel?.descriptionHTML %>
+                    </div>
+    
+    
+                    <div class="start-buttons">
+                      <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
+                    </div>
+    
+    
+                  </div>
+    
+                </div>
+  
+  
+                <%
+                if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
+                %>
+                  <div class="list links-list inset">   
+                    <ul>
+                  
+                  <%
+                      for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                  %>
+                        <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
+                  <%
+                      }
+                  %> 
+                    </ul>
+                  </div>
+                <%
+                }
+                %> 
+  
+  
+                <% if (showMintPage) { %>
+                  <mint-info
+                    baseurl="<%= baseURL %>"
+                  ></mint-info>
+                <% } %>
+
+
+
+                <div class="block block-strong inset external-links">
+
+                  <% 
+                    if (marketplaces?.length > 0) {
+                  %>
+                    <p>
+  
+                      <label>Marketplaces</label>
+  
+                      <% 
+                      for (let marketplace of marketplaces) { 
+                      %>  
+                        <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>    
+                      <%
+                      }
+                      %>
+                      
+                    </p>
+                  <%
+                    }
+                  %>
+  
+                  
+  
+  
+                  <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
+  
+                    <p>
+  
+                      <label>Links</label>
+  
+                      <% if(channelViewModel.channel?.contractAddress) { %>
+                        <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                      <% } %>
+  
+                      <% for (let externalLink of externalLinks) { %>
+                          <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                      <% } %>
+  
+                    </p>
+  
+  
+  
+                  <% } %>
+  
+                </div>
+  
+
+
+
                 <div class="block-title block-title-medium">Overall Stats</div>
                 <div class="block block-strong inset stats">
   
@@ -315,6 +366,36 @@
                   <div class="card-content card-content-padding data-table">
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
                       lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+
+                  </div>
+
+                </div>
+
+
+                <div class="card skeleton-text">
+                  <div class="card-header">Overall Stats</div>
+                  <div class="card-content card-content-padding data-table">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                  </div>
+
+                </div>
+
+
+                <div class="card skeleton-text">
+                  <div class="card-header">Overall Stats</div>
+                  <div class="card-content card-content-padding data-table">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
                   </div>
 
                 </div>
@@ -350,56 +431,6 @@
               %>
   
   
-
-
-
-
-              <div class="block block-strong inset external-links">
-
-                <% 
-                  if (marketplaces?.length > 0) {
-                %>
-                  <p>
-
-                    <label>Marketplaces</label>
-
-                    <% 
-                    for (let marketplace of marketplaces) { 
-                    %>  
-                      <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>    
-                    <%
-                    }
-                    %>
-                    
-                  </p>
-                <%
-                  }
-                %>
-
-                
-
-
-                <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
-
-                  <p>
-
-                    <label>Links</label>
-
-                    <% if(channelViewModel.channel?.contractAddress) { %>
-                      <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
-                    <% } %>
-
-                    <% for (let externalLink of externalLinks) { %>
-                        <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
-                    <% } %>
-
-                  </p>
-
-
-
-                <% } %>
-
-              </div>
 
 
               <% if (channelViewModel?.channel.licenseHTML?.length > 13) { %>

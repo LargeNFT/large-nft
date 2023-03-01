@@ -14,6 +14,7 @@ interface ItemRepository {
     query(query:string) : Promise<Item[]>
     all() : Promise<Item[]>
     listByTokenId(startTokenId:number, limit:number) : Promise<Item[]> 
+    getRowItemViewModelsByOwner(address:string, pageNumber:number) : Promise<ItemPage> 
 
 }
 

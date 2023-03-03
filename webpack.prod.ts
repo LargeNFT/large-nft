@@ -10,7 +10,8 @@ let mainConfigs = []
 for (let config of configs) {
 
     mainConfigs.push(merge(config, {
-        mode: 'production'
+        mode: 'production',
+        devtool: 'source-map'
     }))
 
 }

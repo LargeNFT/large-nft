@@ -114,9 +114,13 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
 
     async getRowItemViewModelsByAttribute(traitType:string, value:string, pageNumber:number) : Promise<ItemPage> {
 
+        const escape = (s) => {
+            return s.replace(/[^a-z0-9]/gi, '_').toLowerCase()
+        }
+
         let itemPage:ItemPage
 
-        const response = await axios.get(`${this.hostname}${this.baseURI}attributes/items/${encodeURIComponent(traitType)}/${encodeURIComponent(value)}/${pageNumber}.json`)
+        const response = await axios.get(`${this.hostname}${this.baseURI}attributes/items/${escape(traitType)}/${escape(value)}/${pageNumber}.json`)
         
         itemPage = response.data
 

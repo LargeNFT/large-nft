@@ -3,21 +3,22 @@
 <template>
   <div id="app">
 
+
     <!-- Status bar overlay for fullscreen mode-->
     <div class="statusbar"></div>
 
     <div class="view view-main" >
+
+      <${Toolbar} />
+
     </div>
+
+
 
   </div>
 
 </template>
 
-<style>
-
-
-
-</style>
 
 <script>
 
@@ -26,6 +27,9 @@
   import { UiService } from "../../service/core/ui-service"
   import { WalletService } from "../../service/core/wallet-service"
   import { SchemaService } from "../../service/core/schema-service"
+
+  import Toolbar from "../../components/admin/toolbar.f7.html"
+
 
   export default (props, { $on, $f7ready, $f7, $f7router, $update }) => {
 
@@ -67,8 +71,6 @@
             }
 
           }
-
-
 
           await $update()
       }

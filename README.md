@@ -3,17 +3,13 @@
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-The easiest way to self-publish your work as an NFT collection on **Ethereum** and **IPFS**. 
+The complete Ethereum NFT toolkit that anyone can run.
 
-Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
+The easiest way to self-publish your work as an NFT collection on **Ethereum** and **IPFS**. Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
-Build a fan site for an existing NFT collection.
+Build a fan site for an existing NFT collection. Fork any NFT collection to experiment.
 
-Fork any NFT collection to experiment.
-
-Generate a full-featured SEO-friendly PWA built with Framework7 to showcase your book or collection. Includes native theming for iOS, Android, and Desktop.
-
-Inexpensively scale a community and marketplace on any simple, static webhost.
+Run on your own hardware or with popular cloud providers. 
 
 # Goals
 
@@ -75,15 +71,28 @@ Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 
 ## Components
 
-**Large NFT** is a self-hosted web app to help build and publish an NFT collection right in your browser. Create new collections from scratch or fork existing ones. Data is stored right in local browser storage. Large NFT can also be whitelabeled and distributed to users. It scales by relying on the user's own hardware instead of cloud servers. So the hardware requirements as your community grows are minimal. 
+**Large NFT** 
 
-**Large Reader** is a statically generated, self-hosted PWA that can be deployed to any simple webhost to let users enjoy the collection from any device. Large Reader is optimized for text-based content and has functionality similar to the Kindle. When combined with Large Sync it also shows the full transaction history for every token, for every user, and includes a full collection leaderboard. 
+* A self-hosted web app to build and publish NFT collections right in your browser.
+* Create new collections from scratch or fork existing ones.
+* Data is stored right in local browser storage.
+* Can be whitelabeled.
+* Scale on your user's own hardware instead of cloud servers, so the hardware requirements as your community grows are minimal.
 
-**Large Sync** is a lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule. The sync is designed to run both in the browser and in Node. Because it is lightweight it can also be run on a schedule on the free-tier of the popular free webhosts. So users can get the latest data from the webhost or download and process it themselves from their own Ethereum node.
 
-Supports [Alchemy](https://www.alchemy.com/) and local Ethereum nodes. 
+**Large Reader** 
 
-Large is alpha software.
+* Generate a self-hosted PWA and deploy to any simple webhost.
+* Optimized for text-based content and has functionality similar to the Kindle apps.
+* Combine with Large Sync to display the full transaction history for every token, for every user, and a full collection leaderboard.
+
+**Large Sync** 
+
+* A lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule.
+* The sync is designed to run both in the browser* and in Node.
+* Supports <a href="https://www.alchemy.com/">Alchemy</a> and local Ethereum nodes.
+* *Browser support coming later. Currently not practical.
+
 
 
 # Large NFT

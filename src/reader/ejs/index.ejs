@@ -112,54 +112,52 @@
 
             <div class="fixed-width-content center">
 
-  
-              <div class="hidden-on-load">
-  
-                <div class="card channel-card-show">
+              <div class="card channel-card-show">
 
-                  <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                    style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
-                      <% } %>
-                        >
-    
-                        <a href="<%= link('index.html') %>">
-                          <% if (channelViewModel?.channel.coverImageId) { %>
-                            <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
-                          <% } else { %>
-                            <i class="f7-icons avatar">photo</i>
-                          <% } %>
-                        </a>
-    
-                  </div>
-    
-                  <div class="card-content card-content-padding">
-    
-                    <div class="title">
-                      <%= channelViewModel.channel.title %>
-                    </div>
-    
-                    <% if(channelViewModel?.authorDisplayName) { %>
-                      <div class="name">
-                        By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
-                          <%= channelViewModel?.authorDisplayName %>
-                        </a>
-                      </div>
+                <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                  style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
                     <% } %>
-    
-                    <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
-                      <%~ channelViewModel.channel?.descriptionHTML %>
-                    </div>
-    
-    
-                    <div class="start-buttons">
-                      <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
-                    </div>
-    
-    
-                  </div>
-    
+                      >
+  
+                      <a href="<%= link('index.html') %>">
+                        <% if (channelViewModel?.channel.coverImageId) { %>
+                          <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
+                        <% } else { %>
+                          <i class="f7-icons avatar">photo</i>
+                        <% } %>
+                      </a>
+  
                 </div>
   
+                <div class="card-content card-content-padding">
+  
+                  <div class="title">
+                    <%= channelViewModel.channel.title %>
+                  </div>
+  
+                  <% if(channelViewModel?.authorDisplayName) { %>
+                    <div class="name">
+                      By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
+                        <%= channelViewModel?.authorDisplayName %>
+                      </a>
+                    </div>
+                  <% } %>
+  
+                  <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
+                    <%~ channelViewModel.channel?.descriptionHTML %>
+                  </div>
+  
+  
+                  <div class="start-buttons">
+                    <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
+                  </div>
+  
+  
+                </div>
+  
+              </div>
+  
+              <div class="hidden-on-load">
   
                 <%
                 if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {

@@ -1,23 +1,33 @@
 <template>
 
   <div class="toolbar toolbar-bottom">
+
     <div class="toolbar-inner" style="display: block; padding: 10px;">
 
-      <span class="footer-link">
-        Code licensed under <a href="https://github.com/LargeNFT/large-nft/blob/master/LICENSE.md" class="external">MIT</a>
-      </span>
-
-      <span class="footer-link">
-        <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a>
-      </span>
-
-      <span class="footer-link">
-        <a href="https://twitter.com/large_nft" class="external">Twitter</a>
-      </span>
-
-      <span class="footer-link"><a href="https://www.npmjs.com/package/large-nft/v/${version}" class="external">${version}</a></span>
       
-      <span class='footer-link'><a href='privacy'>Privacy Policy</a></span><span class='footer-link'><a href='terms'>Terms</a></span><span class='footer-link'><a href='disclaimer'>Disclaimer</a></span>
+      ${footerTemplate ? $h`
+        
+        <div innerHTML='${footerTemplate}'></div>
+      
+      ` : $h`
+        <span class="footer-link">
+          Code licensed under <a href="https://github.com/LargeNFT/large-nft/blob/master/LICENSE.md" class="external">MIT</a>
+        </span>
+
+        <span class="footer-link">
+          <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a>
+        </span>
+
+        <span class="footer-link">
+          <a href="https://twitter.com/large_nft" class="external">Twitter</a>
+        </span>
+
+        <span class="footer-link"><a href="https://www.npmjs.com/package/large-nft/v/${version}" class="external">${version}</a></span>
+      
+      `}
+
+
+      
     </div>
   </div>
 
@@ -38,6 +48,17 @@
 
         let version = ContainerService.getInstance("version")
 
+        const clone = document.getElementById("footer-template")?.content?.cloneNode(true)
+
+        let footerTemplate 
+
+        if (clone) {
+
+          const serializer = new XMLSerializer()
+
+          footerTemplate = serializer.serializeToString(clone)
+
+        }
 
         return $render
     }

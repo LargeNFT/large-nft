@@ -199,6 +199,13 @@ let generate = async () => {
   Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
 
 
+  //Footer for the admin
+  let adminFooter
+
+  try {
+    adminFooter = await fs.promises.readFile(config.adminFooter)
+  } catch(ex) {}
+
 
 
 
@@ -236,6 +243,28 @@ let generate = async () => {
   indexContents = indexContents.replace("../admin/app/js/runtime.admin.js", `${config.baseURL}large/admin/app/js/runtime.admin.js`)
   indexContents = indexContents.replace("../admin/app/js/vendors.admin.js", `${config.baseURL}large/admin/app/js/vendors.admin.js`)
   indexContents = indexContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
+
+
+  //Inject admin footer template. Not great. Doesn't really support EJS.
+  if (adminFooter?.length > 0) {
+
+    let footerTemplate = Eta.render(adminFooter.toString(), { 
+      baseURL: config.baseURL,
+      version: config.VERSION
+    })
+
+    indexContents = indexContents.replace(`<div id="app"></div>`, `
+    
+    <div id="app"></div>
+
+    <template id="footer-template">
+    ${footerTemplate}
+    </template>
+    
+    `)
+
+  }
+
 
   fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
 
@@ -503,7 +532,12 @@ let generate = async () => {
 
 async function writeAttributeRowItems(traitType:string, value:string, rowItemViewModels:any[], filepath:string) {
 
-  let dir = `${filepath}/${encodeURIComponent(traitType)}/${encodeURIComponent(value)}`
+  const escape = (s) => {
+    return s.replace(/[^a-z0-9]/gi, '_').toLowerCase()
+  }
+
+
+  let dir = `${filepath}/${escape(traitType)}/${escape(value)}`
 
   fs.mkdirSync(dir, { recursive: true })
 

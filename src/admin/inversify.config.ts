@@ -172,12 +172,7 @@ function getMainContainer(readerConfig:ReaderConfig, version:string) {
   container.bind("framework7").toConstantValue(framework7())
   container.bind("readerConfig").toConstantValue(readerConfig)
   container.bind("pouch-prefix").toConstantValue("./pouch/")
-
-  console.log("HERERERERR")
-  console.log(globalThis.footerText)
-
   container.bind("footer-text").toConstantValue(globalThis.footerText)
-
 
 
   let fs

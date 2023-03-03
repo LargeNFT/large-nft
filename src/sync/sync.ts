@@ -323,7 +323,9 @@ let sync = async () => {
 
       let totals = attributeSalesReport.totals.filter( total => `${total.traitType}::::${total.value}` == key)
 
-      fs.mkdirSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}`)
+      if (!fs.existsSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}`)) {
+        fs.mkdirSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}`)
+      }
 
       //Write attribute file
       fs.writeFileSync(`${config.publicPath}/sync/attributes/${processedTransactionService.attributeKeyToInteger(key)}/attribute.json`, Buffer.from(JSON.stringify({

@@ -444,20 +444,15 @@
 
     </script>
 
-    <script type="module" id="page-scripts">
-
-        let baseURL = '<%= baseURL %>'
-        let hostname = '<%= hostname %>'
-        let channelId = '<%= channelId %>'
-        let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
-
-        let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
-
-        let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )
-
-
-
-    </script>
+    <%~ 
+        include("_init", {
+            hostname: hostname,
+            baseURL: baseURL,
+            routablePages: routablePages,
+            base64Version: base64Version,
+            channelId: channelId
+        }) 
+    %>
 
 </body>
 

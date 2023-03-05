@@ -19,6 +19,8 @@ let channelId
 
 import tokenEjs from './ejs/pages/token.ejs'
 import indexEjs from './ejs/index.ejs'
+import _initEjs from './ejs/_init.ejs'
+
 import mintEjs from './ejs/mint.ejs'
 import searchEjs from './ejs/search.ejs'
 import fourOhFourEjs from './ejs/404.ejs'
@@ -172,6 +174,10 @@ let generate = async () => {
 
 
 
+  //Load init eta template
+  Eta.templates.define("_init", Eta.compile(_initEjs))
+
+
 
 
   //Template hooks.
@@ -187,6 +193,15 @@ let generate = async () => {
   Eta.templates.define("headStart", Eta.compile(headStartContents ? headStartContents?.toString() : ''))
 
 
+  //Customize logo
+  let logo
+
+  try {
+    logo = await fs.promises.readFile(config.logo)
+  } catch(ex) {}
+
+  Eta.templates.define("logo", Eta.compile(logo ? logo?.toString() : ''))
+
 
   //Load the default footer or use a configured template.
   /** Hook: footer */
@@ -197,6 +212,10 @@ let generate = async () => {
   } catch(ex) {}
 
   Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
+
+
+
+
 
 
   //Footer for the admin
@@ -245,7 +264,7 @@ let generate = async () => {
   indexContents = indexContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
 
 
-  //Inject admin footer template. Not great. Doesn't really support EJS.
+  //Inject admin footer template.
   if (adminFooter?.length > 0) {
 
     let footerTemplate = Eta.render(adminFooter.toString(), { 

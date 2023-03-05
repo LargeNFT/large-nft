@@ -238,8 +238,12 @@ Here is an example configuration for a site hosted on GitLab Pages.
 | baseURL  |  / | The path on the host where the generated app is hosted. This is used by the PWA's routing and must match the actual deployment URL. Must end with a /. For example /bladerunner-punks-reader/ 
 | env.dev.hostname  |  | Override the hostname when using the --env dev flag |
 | env.dev.baseURL  |  | Override the baseURL when using the --env dev flag |
-| headStart  |   | Path to eta template to insert at the beginning of the <head> tag on every page.
-| footer  |   | Path to eta template to insert at the beginning of the <head> tag on every page.
+| headStart  |   | Path to [ETA](https://eta.js.org/) template to insert at the beginning of the <head> tag on every page.
+| logo  |   | Path to [ETA](https://eta.js.org/) template to insert into home link in generated Reader navbar.
+| footer  |   | Path to [ETA](https://eta.js.org/) template to insert in footer on tag on every reader page.
+| adminFooter  |   | Path to [ETA](https://eta.js.org/) template to insert in footer on tag on every page of the bundled copy of Large NFT.
+
+
 | marketplaces  |   | See below
 | externalLinks  |   | See below
 

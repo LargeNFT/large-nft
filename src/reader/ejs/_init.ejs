@@ -1,0 +1,23 @@
+<% 
+
+    let hostname = it.hostname
+    let baseURL = it.baseURL
+    let routablePages = it.routablePages
+    let base64Version = it.base64Version
+    let channelId = it.channelId
+
+%>
+
+
+<script type="module" id="page-scripts">
+
+    let baseURL = '<%= baseURL %>'
+    let hostname = '<%= hostname %>'
+    let channelId = '<%= channelId %>'
+    let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
+
+    let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
+
+    let app = reader.initReader(baseURL, hostname, version, routablePages, channelId )
+
+</script>

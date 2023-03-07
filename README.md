@@ -239,7 +239,7 @@ Here is an example configuration for a site hosted on GitLab Pages.
 | env.dev.hostname  |  | Override the hostname when using the --env dev flag |
 | env.dev.baseURL  |  | Override the baseURL when using the --env dev flag |
 | headStart  |   | Path to [ETA](https://eta.js.org/) template to insert at the beginning of the <head> tag on every page.
-| logo  |   | Path to [ETA](https://eta.js.org/) template to insert into home link in generated Reader navbar.
+| logo  |   | Path to image to use in top left navigation in Reader for the home link.
 | footer  |   | Path to [ETA](https://eta.js.org/) template to insert in footer on tag on every reader page.
 | adminFooter  |   | Path to [ETA](https://eta.js.org/) template to insert in footer on tag on every page of the bundled copy of Large NFT.
 

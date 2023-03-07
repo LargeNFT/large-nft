@@ -16,6 +16,33 @@ html {
   font-display: swap;
 }
 
+
+
+
+
+.logo {
+  font-size: 35px;
+}
+
+.logo img {
+  margin-top: 10px;
+  height: 50px;
+  max-height: 100%;
+  border-radius: 25%;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  .logo img {
+    margin-top: 5px;
+    height: 35px;
+  }
+
+}
+
+
+
+
 a {
   font-weight: bold;
 }
@@ -1081,6 +1108,13 @@ html {
   font-size: 11px;
 }
 
+
+.ios .navbar .right .small-only {
+  margin-top: 10px;
+  margin-left: 20px;
+  text-align: right;
+}
+
 .navbar a.link {
   font-weight: normal;
   display: inline;
@@ -1090,6 +1124,8 @@ html {
 .navbar a.link-active {
   font-weight: bold;
 }
+
+
 
 .dollar-value {
   font-size: 14px;
@@ -1107,12 +1143,12 @@ html {
   font-weight: normal;
 }
 
-.external-links a:not(:nth-child(2)):before {
+/* .external-links a:not(:nth-child(2)):before {
   content: "|";
   margin-right: 5px;
   margin-left: 5px;
   color: var(--f7-text-color);
-}
+} */
 
 .stats .f7-icons {
   font-size: 19px;
@@ -1153,4 +1189,17 @@ html {
 
 .leaderboard-table .numeric-cell {
   width: 100px;
+}
+
+.stats .dollars {
+  font-size: 16px;
+  display: block;
+
+}
+
+@media only screen and (max-width: 1024px) {
+  .stats .price {
+    text-align: right;
+  }
+
 }

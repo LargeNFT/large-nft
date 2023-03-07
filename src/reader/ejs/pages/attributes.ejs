@@ -91,9 +91,10 @@
 
           <nav-bar
               logo="<%=logo%>"
-              title="<%=channelViewModel.channel.title%>"
+              title="Attributes"
               show_mint_page="<%=showMintPage%>"
               show_activity_page="<%=showActivityPage%>"
+              breadcrumbs="${breadcrumbs}"
           >
           </nav-bar>
 
@@ -104,8 +105,8 @@
 
               <div class="hidden-on-load">
 
-                <div class="block-title block-title-medium">Attribute Report</div>
-                <div class="card scarcity-report-card data-table">
+                <div class="block-title block-title-medium large-only">Attributes</div>
+                <div class="card scarcity-report-card data-table margin-top">
   
                   <div class="card-content">
 
@@ -210,6 +211,13 @@
 
             let loading
             let attributesOverall
+
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Attributes"
+            }]
 
             const loadOverallSales = async () => {
                 

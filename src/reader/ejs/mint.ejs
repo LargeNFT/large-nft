@@ -91,6 +91,7 @@
               active="Mint"
               show_mint_page="<%=showMintPage%>"
               show_activity_page="<%=showActivityPage%>"
+              breadcrumbs="${breadcrumbs}"
           >
           </nav-bar>
 
@@ -99,21 +100,6 @@
             <div class="row">
     
                 <div class="fixed-width-content center">
-
-                    <div class="block block-strong inset col-100 no-margin-bottom">
-                      <div class="breadcrumbs ">
-                        <div class="breadcrumbs-item">
-                          <a href="<%=baseURL%>index.html" class="link">
-                            Home
-                          </a>
-                        </div>       
-                        <div class="breadcrumbs-separator"></div>
-                        <div class="breadcrumbs-item breadcrumbs-item-active">
-                          Mint
-                        </div> 
-                      </div>
-                    </div>
-
 
                     <div class="card channel-card-show">
 
@@ -145,15 +131,7 @@
                             By <%= channelViewModel?.authorDisplayName %>
                           </div>
                         <% } %>
-    
-                        <% if(channelViewModel.channel?.contractAddress) { %>
-                          <div class="contract-address">
-                            <strong>Contract Address:</strong>
-                            <%= channelViewModel?.channelContractAbbrev %>
-                          </div>
-                        <% } %>
-    
-    
+        
                       </div>
     
                     </div>
@@ -207,6 +185,13 @@
         let mintingViewModel 
 
         let lastMinted 
+
+        let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Mint"
+        }]
 
         const resizeListener = (e) => {
           const viewPortWidth = getWidth()

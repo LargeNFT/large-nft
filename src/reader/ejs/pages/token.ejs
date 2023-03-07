@@ -120,6 +120,7 @@
                     title="<%=channelViewModel.channel.title%>"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
 
@@ -128,22 +129,6 @@
                     item_count="<%= channelViewModel.channel.itemCount %>" 
                 >
                 </token-toolbar>
-
-<!--                 
-                <div class="fab fab-left-center small-only">
-                    <a href="#"> 
-                        <i class="icon f7-icons color-blue">arrow_left</i>
-                    </a>
-                </div>
-    
-                <% if (itemViewModel.item.next) { %>
-                    <div class="fab fab-right-center small-only">
-                        <a href="#">
-                            <i class="icon f7-icons color-blue">arrow_right</i>
-                        </a>
-                    </div>
-                <% } %> -->
-
            
                 <div class="page-content">
                     <div class="swiper" id="swiper-<%= itemViewModel.item.tokenId  %>" style="display:none;">
@@ -154,27 +139,7 @@
                             </div> 
 
                             <div class="swiper-slide">
-                                
-                                <div class="block block-strong inset col-100 no-margin-bottom">
-                                    <div class="breadcrumbs ">
-                                      <div class="breadcrumbs-item">
-                                        <a href="<%=baseURL%>index.html" class="link">
-                                          Home
-                                        </a>
-                                      </div>    
-                                      <div class="breadcrumbs-separator"></div>
-                                      <div class="breadcrumbs-item">
-                                        <a href="<%=baseURL%>explore.html" class="link">
-                                          Explore
-                                        </a>
-                                      </div>     
-                                      <div class="breadcrumbs-separator"></div>
-                                      <div class="breadcrumbs-item breadcrumbs-item-active">
-                                        <%= itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}` %> 
-                                      </div> 
-                                    </div>
-                                </div>
-                                
+                                                                
                                 <div class="row">
                                 
                                     <div class="col-100 large-75">
@@ -443,6 +408,22 @@
             let tokenService = globalThis.container.get("TokenService")
 
             let baseURI = globalThis.container.get("baseURI")
+
+            let title = `<%~ itemViewModel.item.title %>`
+            let tokenId = `<%~ itemViewModel.item.tokenId %>`
+            
+
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Explore",
+                path: "explore.html"
+            },{
+                
+                text: title ? title : `#${tokenId}`
+            }]
+
 
             let hasPrevious = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.previous?.tokenId != undefined) %>`)
             let hasNext = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.next?.tokenId != undefined) %>`)

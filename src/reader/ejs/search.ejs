@@ -80,6 +80,7 @@
               title="Search"
               show_mint_page="<%=showMintPage%>"
               show_activity_page="<%=showActivityPage%>"
+              breadcrumbs="${breadcrumbs}"
 
           >
           </nav-bar>
@@ -120,6 +121,12 @@
 
         let results = []
 
+        let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Search"
+        }]
 
         $on('pageInit', async () => {
           console.log('init')

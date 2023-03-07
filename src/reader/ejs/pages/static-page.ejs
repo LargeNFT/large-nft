@@ -84,6 +84,7 @@
                     title="<%=staticPage.name%>"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
 
@@ -116,8 +117,16 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
             let owner
+
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "<%=staticPage.name%>"
+            }]
             
             $on('pageInit', async () => {
+
             })          
 
             $on('pageBeforeOut', async () => {

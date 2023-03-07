@@ -86,6 +86,7 @@
                     active="Attribute Report"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
 
@@ -98,42 +99,46 @@
 
                             <div class="hidden-on-load">
 
-                                <div class="block block-strong inset col-100 no-margin-bottom">
-                                    <div class="breadcrumbs ">
-                                      <div class="breadcrumbs-item">
-                                        <a href="<%=baseURL%>index.html" class="link">
-                                          Home
-                                        </a>
-                                      </div> 
-                                      <div class="breadcrumbs-separator"></div>
-                                      <div class="breadcrumbs-item">
-                                        <a href="<%=baseURL%>attributes">Attributes</a>
-                                      </div>       
-                                      <div class="breadcrumbs-separator"></div>
-                                      <div class="breadcrumbs-item breadcrumbs-item-active">
-                                        ${traitType} / ${value}
-                                      </div> 
-                                    </div>
-                                </div>
-
-
-
                                 <div class="block-title block-title-large">${traitType} / ${value}</div>
                             
                                 <div class="block block-strong inset stats">
                             
                                     <div class="row">
-                                        <div class="col-100 large-33 margin-bottom">
-                                          Average Sale<br />
-                                          <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)})</strong>
+
+                                        <div class="col-100 large-33 margin-bottom row">
+
+                                            <div class="col-50 large-100">
+                                                Number of Sales
+                                            </div>
+                    
+                                            <div class="col-50 large-100 price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
+                                            </div>
+
                                         </div>
-                                        <div class="col-100 large-33 margin-bottom">
-                                          Number of Sales (Lifetime)<br />
-                                          <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
+
+                                        <div class="col-100 large-33 margin-bottom row">
+
+                                            <div class="col-50 large-100">
+                                                Average Sale
+                                            </div>
+                    
+                                            <div class="col-50 large-100 price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)}</span>
+                                            </div>
+
                                         </div>
-                                        <div class="col-100 large-33 margin-bottom">
-                                          Total Value of All Sales (Lifetime)<br />
-                                          <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)})</strong>
+
+                                        <div class="col-100 large-33 margin-bottom row">
+
+                                            <div class="col-50 large-100">
+                                                Total Value of All Sales
+                                            </div>
+                    
+                                            <div class="col-50 large-100 price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)}</span>
+                                            </div>
+
                                         </div>
                                     </div>
                                 
@@ -297,6 +302,15 @@
 
             let lastUpdated
 
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Attributes",
+                path: "attributes"
+            }]
+
+
 
             const link = (href) => {
               return baseURL + href
@@ -324,6 +338,9 @@
 
                     attributeParams[traitType] = value
 
+                    breadcrumbs.push({
+                        text: `${traitType} / ${value}`
+                    })
 
                     let result = await itemWebService.attributeItemPage(traitType, value, page)
 

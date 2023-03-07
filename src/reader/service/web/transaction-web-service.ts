@@ -35,8 +35,6 @@ class TransactionWebService {
 
         let result = await axios.get(`${this.baseURI}sync/transactions/activity/${page}.json`)
 
-        console.log(result)
-
         let transactionsViewModel = result.data
 
         transactionsViewModel.lastUpdated = latest.lastUpdated
@@ -174,23 +172,27 @@ class TransactionWebService {
 
             for (let processedEvent of transaction.events) {
 
-                if (processedEvent.fromAddress ) {
+                if (processedEvent.fromAddress?.length > 0 ) {
                     await this._cacheDisplayName(processedEvent.fromAddress)
                 }
     
     
-                if (processedEvent.toAddress ) {
+                if (processedEvent.toAddress?.length > 0 ) {
                     await this._cacheDisplayName(processedEvent.toAddress)
                 }
     
     
-                if (processedEvent.namedArgs.owner ) {
+                if (processedEvent.namedArgs.owner?.length > 0 ) {
                     await this._cacheDisplayName(processedEvent.namedArgs.owner)
                 }
     
     
-                if (processedEvent.namedArgs.operator ) {
+                if (processedEvent.namedArgs.operator?.length > 0 ) {
                     await this._cacheDisplayName(processedEvent.namedArgs.operator)
+                }
+
+                if (processedEvent.namedArgs.approved?.length > 0 ) {
+                    await this._cacheDisplayName(processedEvent.namedArgs.approved)
                 }
                 
             }

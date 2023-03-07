@@ -98,6 +98,7 @@
             title="<%=channelViewModel.channel.title%>"
             show_mint_page="<%=showMintPage%>"
             show_activity_page="<%=showActivityPage%>"
+            breadcrumbs="${breadcrumbs}"
           >
           </nav-bar>
 
@@ -160,25 +161,6 @@
   
               <div class="hidden-on-load">
   
-                <%
-                if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
-                %>
-                  <div class="list links-list inset">   
-                    <ul>
-                  
-                  <%
-                      for (let staticPage of channelViewModel.staticPagesViewModel.links) {
-                  %>
-                        <li><a href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a></li>
-                  <%
-                      }
-                  %> 
-                    </ul>
-                  </div>
-                <%
-                }
-                %> 
-  
   
                 <% if (showMintPage) { %>
                   <mint-info
@@ -187,52 +169,117 @@
                 <% } %>
 
 
+                <div class="block-title block-title-medium">Links</div>
+                <div class="list inset">   
 
-                <div class="block block-strong inset external-links">
+                  <div class="list-group">
+                    <ul>
 
-                  <% 
-                    if (marketplaces?.length > 0) {
-                  %>
-                    <p>
+                      <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
   
-                      <label>Marketplaces</label>
+    
+                        <% if(channelViewModel.channel?.contractAddress) { %>
   
+                          <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title">
+                                  <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        <% } %>
+    
+                        <% for (let externalLink of externalLinks) { %>
+  
+                          <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title">
+                                  <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+  
+                        <% } %>
+
+
+                        <%
+                        if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
+                        %>
+                          
+                          <%
+                              for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                          %>
+    
+                                <li>
+                                  <div class="item-content">
+                                    <div class="item-inner">
+                                      <div class="item-title">
+                                        <a class="link" href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+    
+                          <%
+                              }
+                          %> 
+    
+                        <%
+                        }
+                        %> 
+
+
+    
+                    <% } %>
+
+                    </ul>
+
+
+
+                  </div>
+
+                  <div class="list-group">
+                    <ul>
+
                       <% 
-                      for (let marketplace of marketplaces) { 
-                      %>  
-                        <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>    
-                      <%
-                      }
+                      if (marketplaces?.length > 0) {
                       %>
-                      
-                    </p>
-                  <%
-                    }
-                  %>
+    
+                      <li class="item-divider">Marketplaces</li>
+
+    
+                        <% 
+                        for (let marketplace of marketplaces) { 
+                        %>  
   
-                  
+                          <li>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title">
+                                  <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
   
-  
-                  <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
-  
-                    <p>
-  
-                      <label>Links</label>
-  
-                      <% if(channelViewModel.channel?.contractAddress) { %>
-                        <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
-                      <% } %>
-  
-                      <% for (let externalLink of externalLinks) { %>
-                          <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
-                      <% } %>
-  
-                    </p>
-  
-  
-  
-                  <% } %>
-  
+                              
+                        <%
+                        }
+                        %>
+                        
+                    <%
+                      }
+                    %>
+
+                    </ul>
+                  </div>
+
+
+
                 </div>
   
 
@@ -242,35 +289,78 @@
                 <div class="block block-strong inset stats">
   
                   <div class="row">
-                    <div class="col-50 large-33 margin-bottom">
-                      Average Sale<br />
-                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)})</strong>
+
+                    <div class="col-100 large-33 margin-bottom row">
+
+                      <div class="col-50 large-100">
+                        Number of Sales (Lifetime)
+                      </div>
+
+                      
+                      <div class="col-50 large-100 price">
+                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
+                      </div>
                     </div>
-                    <div class="col-50 large-33 margin-bottom">
-                      Number of Sales (Lifetime)<br />
-                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
+
+                    <div class="col-100 large-33 margin-bottom row">
+
+                      <div class="col-50 large-100">
+                        Average Sale
+                      </div>
+
+                      <div class="col-50 large-100 price">
+                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)}</span>
+                      </div>
+                      
+
                     </div>
-                    <div class="col-50 large-33 margin-bottom">
-                      Total Value of All Sales (Lifetime)<br />
-                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)})</strong>
+
+                    <div class="col-100 large-33 margin-bottom row">
+
+                      <div class="col-50 large-100">
+                        Total Value of All Sales (Lifetime)
+                      </div>
+                      
+                      <div class="col-50 large-100 price">
+                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)}</span>
+                      </div>
                     </div>
                   </div>
   
                   <div class="row margin-top">
 
-                    <div class="col-50 large-33 margin-bottom">
-                      Value of Sales (24 Hours)<br />
-                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.dayTotals?.ethValue ? salesReport?.dayTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.dayTotals?.usdValue ? salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
+                    <div class="col-100 large-33 margin-bottom row">
+                      
+                      <div class="col-50 large-100">
+                        Value of Sales (24 Hours)
+                      </div>
+
+                      <div class="col-50 large-100 price">
+                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.dayTotals?.ethValue ? salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.dayTotals?.usdValue ? salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                      </div>
                     </div>
 
-                    <div class="col-50 large-33 margin-bottom">
-                      Value of Sales (Month)<br />
-                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.monthTotals?.ethValue ? salesReport?.monthTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.monthTotals?.usdValue ? salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
+                    <div class="col-100 large-33 margin-bottom row">
+
+                      <div class="col-50 large-100">
+                        Value of Sales (Month)
+                      </div>
+
+                      
+                      <div class="col-50 large-100 price">
+                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.monthTotals?.ethValue ? salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.monthTotals?.usdValue ? salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                      </div>
                     </div>
 
-                    <div class="col-50 large-33 margin-bottom">
-                      Value of Sales (Year)<br />
-                      <strong>${new Intl.NumberFormat('en-US').format(salesReport?.yearTotals?.ethValue ? salesReport?.yearTotals?.ethValue : 0)} ETH (${transactionWebService.abbreviateDollars(salesReport?.yearTotals?.usdValue ? salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)})</strong>
+                    <div class="col-100 large-33 margin-bottom row">
+                      
+                      <div class="col-50 large-100">
+                        Value of Sales (Year)
+                      </div>
+
+                      <div class="col-50 large-100 price">
+                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.yearTotals?.ethValue ? salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.yearTotals?.usdValue ? salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                      </div>
                     </div>
 
                   </div>
@@ -467,6 +557,8 @@
             let itemWebService = globalThis.container.get("ItemWebService")
 
             let baseURI = globalThis.container.get("baseURI")
+
+            let breadcrumbs
 
             const PER_PAGE = 35
 

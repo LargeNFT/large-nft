@@ -47,6 +47,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Fo
 
 
 import Navbar from './components/reader/navbar.f7.html'
+
 import TokenToolbar from './components/reader/token-toolbar.f7.html'
 import Transaction from './components/reader/transaction.f7.html'
 
@@ -150,6 +151,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   function framework7() {
 
     Framework7.registerComponent("nav-bar", Navbar)
+
     Framework7.registerComponent("token-toolbar", TokenToolbar)
 
     // Framework7.registerComponent("nft-info", NftInfo)
@@ -399,6 +401,10 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       },
       
       navbar: {
+        hideOnPageScroll: true
+      },
+
+      subnavbar: {
         hideOnPageScroll: true
       },
 

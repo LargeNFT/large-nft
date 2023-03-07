@@ -19,7 +19,7 @@ let channelId
 
 import tokenEjs from './ejs/pages/token.ejs'
 import indexEjs from './ejs/index.ejs'
-import _initEjs from './ejs/_init.ejs'
+import _initEjs from './ejs/template/_init.ejs'
 
 import mintEjs from './ejs/mint.ejs'
 import searchEjs from './ejs/search.ejs'
@@ -193,14 +193,8 @@ let generate = async () => {
   Eta.templates.define("headStart", Eta.compile(headStartContents ? headStartContents?.toString() : ''))
 
 
-  //Customize logo
-  let logo
 
-  try {
-    logo = await fs.promises.readFile(config.logo)
-  } catch(ex) {}
 
-  Eta.templates.define("logo", Eta.compile(logo ? logo?.toString() : ''))
 
 
   //Load the default footer or use a configured template.

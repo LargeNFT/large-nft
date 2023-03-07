@@ -173,6 +173,15 @@ let sync = async () => {
       try {
 
         await sequelize.transaction(async (t1) => {
+          
+          if (!indexResult) {
+            indexResult = {
+              processedTransactionViewModels: {},
+              ownersToUpdate: {},
+              tokensToUpdate: {}
+            }   
+          }
+          
           indexResult = await transactionIndexerService.index(indexResult, { transaction: t1 })
         })
         

@@ -86,6 +86,7 @@
                     active="Leaderboard"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
 
@@ -97,28 +98,13 @@
                         <div class="fixed-width-content center">
                             
                             <div class="hidden-on-load">
-                                <div class="block block-strong inset col-100 no-margin-bottom">
-                                    <div class="breadcrumbs ">
-                                      <div class="breadcrumbs-item">
-                                        <a href="<%= baseURL %>index.html" class="link">
-                                          Home
-                                        </a>
-                                      </div>       
-                                      <div class="breadcrumbs-separator"></div>
-                                      <div class="breadcrumbs-item breadcrumbs-item-active">
-                                        <a href="<%= baseURL %>leaderboard" class="link">
-                                            Leaderboard
-                                        </a>
-                                        
-                                      </div> 
-                                    </div>
-                                </div>
                             
-                                <div class="card data-table">
-                                    <div class="card-header">
-                                        Leaderboard <span class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</span>
+                                <div class="block-title block-title-medium">
+                                    <div class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</div>
+                                    <span class="large-only">Leaderboard</span>
+                                </div>
 
-                                    </div>
+                                <div class="card data-table">
                                     <div class="card-content">
                                         
                                         <table class="leaderboard-table">
@@ -243,6 +229,15 @@
 
             let baseURL = '<%= baseURL %>'
 
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Leaderboard",
+                path: "leaderboard"
+            }]
+
+
             let tokenOwners
             let pageNumber = 0
             let totals = {}
@@ -260,6 +255,10 @@
                     if ($f7.views.main.router.currentRoute?.query?.pageNumber) {
                         pageNumber = parseInt($f7.views.main.router.currentRoute?.query?.pageNumber)
                     }
+
+                    breadcrumbs.push({
+                        text: `Page ${pageNumber + 1}`
+                    })
 
                     totals = await tokenOwnerPageService.getTotals()
                     let page = await tokenOwnerPageService.get(pageNumber)

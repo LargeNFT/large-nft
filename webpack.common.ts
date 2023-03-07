@@ -128,9 +128,9 @@ let getAdminConfigs = () => {
     },
     plugins: [
   
-      new CleanWebpackPlugin({
-        dangerouslyAllowCleanPatternsOutsideProject: true
-      }),
+      // new CleanWebpackPlugin({
+      //   // dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
   
       new webpack.ProvidePlugin({
         process: 'process/browser.js',
@@ -260,15 +260,15 @@ let getReaderConfigs = () => {
       path: path.resolve(__dirname, 'public'),
     },
     plugins: [
-      new CleanWebpackPlugin({
-        dangerouslyAllowCleanPatternsOutsideProject: true
-      })
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // })
     ]
   }
 
   let syncConfig = {
     entry: "./src/sync/sync.ts",
-    externals: ['sqlite3', 'tedious', 'sharp'],
+    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp'],
     externalsPresets: { 
       node: true 
     },    
@@ -300,9 +300,9 @@ let getReaderConfigs = () => {
       path: path.resolve(__dirname, 'public'),
     },
     plugins: [
-      new CleanWebpackPlugin({
-        dangerouslyAllowCleanPatternsOutsideProject: true
-      }),
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
 
       new webpack.ProvidePlugin({
         fetch: ['node-fetch', 'default'],
@@ -345,9 +345,9 @@ let getReaderConfigs = () => {
       path: path.resolve(__dirname, 'public'),
     },
     plugins: [
-      new CleanWebpackPlugin({
-        dangerouslyAllowCleanPatternsOutsideProject: true
-      }),
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
 
       new webpack.ProvidePlugin({
         fetch: ['node-fetch', 'default'],
@@ -389,9 +389,9 @@ let getReaderConfigs = () => {
       path: path.resolve(__dirname, 'public'),
     },
     plugins: [
-      new CleanWebpackPlugin({
-        dangerouslyAllowCleanPatternsOutsideProject: true
-      }),
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
 
       new webpack.ProvidePlugin({
         fetch: ['node-fetch', 'default'],
@@ -454,9 +454,9 @@ let getReaderConfigs = () => {
     },
     plugins: [
 
-      new CleanWebpackPlugin({
-        dangerouslyAllowCleanPatternsOutsideProject: true
-      }),
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
   
   
       new webpack.ProvidePlugin({
@@ -524,9 +524,9 @@ let getReaderConfigs = () => {
     },
     plugins: [
   
-      new CleanWebpackPlugin({
-        dangerouslyAllowCleanPatternsOutsideProject: true
-      }),
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
 
       new webpack.DefinePlugin({
         VERSION: VERSION

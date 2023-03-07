@@ -88,6 +88,7 @@
                     active="Explore"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
 
@@ -97,22 +98,7 @@
                     <div class="row">
             
                         <div class="fixed-width-content center">
-            
-                            <div class="block block-strong inset col-100 no-margin-bottom">
-                                <div class="breadcrumbs ">
-                                  <div class="breadcrumbs-item">
-                                    <a href="<%=baseURL%>index.html" class="link">
-                                      Home
-                                    </a>
-                                  </div>       
-                                  <div class="breadcrumbs-separator"></div>
-                                  <div class="breadcrumbs-item breadcrumbs-item-active">
-                                    Explore
-                                  </div> 
-                                </div>
-                            </div>
-
-
+ 
                             <div class="block">
                                 <attribute-filter 
                                     baseurl="<%= baseURL %>"
@@ -160,6 +146,13 @@
 
             const PER_PAGE = firstPageExploreItems.length //35
             const COMPONENT_NAME = "explore"
+
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Explore"
+            }]
 
             let state
 

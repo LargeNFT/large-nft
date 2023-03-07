@@ -88,6 +88,7 @@
                     active="Activity"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
 
@@ -96,23 +97,6 @@
 
                     <div class="fixed-width-content center">
             
-                        <div class="block block-strong inset col-100 no-margin-bottom">
-                            <div class="breadcrumbs ">
-                              <div class="breadcrumbs-item">
-                                <a href="<%=baseURL%>index.html" class="link">
-                                  Home
-                                </a>
-                              </div>       
-                              <div class="breadcrumbs-separator"></div>
-                              <div class="breadcrumbs-item breadcrumbs-item-active">
-                                <a href="<%=baseURL%>activity" class="link">
-                                    Activity
-                                </a>
-                                
-                              </div> 
-                            </div>
-                        </div>
-
                         <div class="hidden-on-load">
 
 
@@ -120,7 +104,7 @@
 
                               <div class="block-title block-title-medium">
                                     <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
-                                    Activity
+                                    <span class="large-only">Activity</span>
                               </div>
 
 
@@ -189,9 +173,19 @@
 
             let baseURL = '<%= baseURL %>'
 
+
+
             let display = 25
 
-            let page
+            let page = 1
+
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Activity",
+                path: "activity"
+            }]
 
             let nextPage
             let previousPage
@@ -225,6 +219,10 @@
                         page = 1
                     }
 
+
+                    breadcrumbs.push({
+                        text: `Page ${page}`
+                    })
 
                     if (page > 1) {
                         previousPage = page - 1

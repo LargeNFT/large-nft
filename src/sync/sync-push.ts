@@ -51,7 +51,7 @@ let syncPush = async () => {
         if (!status.isClean()) {
           await git.add('./')
           await git.commit('Committing changes')
-          await git.push('origin', status.current)
+          // await git.push('origin', status.current)
 
           //sync before starting
           await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, reader.slug)
@@ -98,7 +98,7 @@ let syncPush = async () => {
                   
                   await git.add('./')
                   await git.commit('Committing changes')
-                  await git.push('origin', status.current)
+                  // await git.push('origin', status.current)
     
                   let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
 

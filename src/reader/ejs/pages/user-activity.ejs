@@ -80,8 +80,14 @@
 
             <div class="page" data-name="user-activity">
 
-                <nav-bar logo="<%=logo%>" title="User" active="User" show_mint_page="<%=showMintPage%>"
-                    show_activity_page="<%=showActivityPage%>">
+                <nav-bar 
+                    logo="<%=logo%>" 
+                    title="User" 
+                    active="User" 
+                    show_mint_page="<%=showMintPage%>"
+                    show_activity_page="<%=showActivityPage%>"
+                    breadcrumbs="${breadcrumbs}"
+                >
                 </nav-bar>
 
 
@@ -92,24 +98,6 @@
                         <div class="fixed-width-content center">
 
                             <div class="hidden-on-load">
-
-                                <div class="block block-strong inset col-100 no-margin-bottom">
-                                    <div class="breadcrumbs ">
-                                        <div class="breadcrumbs-item">
-                                            <a href="<%= baseURL %>index.html" class="link">
-                                                Home
-                                            </a>
-                                        </div>
-                                        <div class="breadcrumbs-separator"></div>
-                                        <div class="breadcrumbs-item">
-                                            <a href="<%= baseURL %>leaderboard">Leaderboard</a>
-                                        </div>
-                                        <div class="breadcrumbs-separator"></div>
-                                        <div class="breadcrumbs-item breadcrumbs-item-active">
-                                            <a href="<%= baseURL %>u/?address=${address}">${address}</a>
-                                        </div>
-                                    </div>
-                                </div>
     
                                 <div class="block-title block-title-large">Account Details</div>
                                 <div class="block-header">
@@ -246,6 +234,15 @@
             let nextPage
             let previousPage
 
+            
+            let breadcrumbs = [{
+                text: "Home",
+                path: "index.html"
+            }, {
+                text: "Leaderboard",
+                path: "leaderboard"
+            }]
+
             const loadActivity = async () => {
 
                 loading = true
@@ -272,10 +269,21 @@
                     }
 
 
+
+
                     tokenOwner = await tokenOwnerService.get(address)
 
                     transactionsViewModel = await transactionWebService.listByAddress(address, page)
 
+
+                    breadcrumbs.push({
+                        text: address,
+                        path: `u?address=${address}`
+                    })
+
+                    breadcrumbs.push({
+                        text: `Page ${page}`
+                    })
 
                     if (page > 1) {
                         previousPage = page - 1

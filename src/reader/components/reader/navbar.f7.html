@@ -4,19 +4,7 @@
         <div class="navbar-bg"></div>
 
         <div class="navbar-inner sliding">
-        
-          <div class="left">
-            <a href="${baseURI}index.html">
-
-              ${logo ? $h`
-                <img src="${logo}" />
-              ` : $h`
-                <i class="f7-icons">house</i>
-              `}
-
-            </a>
-          </div>
-        
+                
           <div class="title">
             ${title}
           </div>
@@ -178,41 +166,52 @@
             </div>
             
           </div>
+
+
+
+          ${breadcrumbs ? $h`
+                  
+            <div class="subnavbar">
+              <div class="subnavbar-inner">
+        
+                <div class="breadcrumbs ">
+  
+                  ${breadcrumbs.map( b => $h`
+                    <div class="breadcrumbs-item">
+
+                      ${b.path ? $h`
+                        <a href="${baseURI}${b.path}" class="link">
+                          ${b.text}
+                        </a>
+                      ` : $h`${b.text}`}
+
+
+                    </div>  
+
+                    ${b.path ? $h`
+                      <div class="breadcrumbs-separator"></div>
+                    ` : $h`<span />`}
+
+                    
+                  `)}
+
+                </div>
+        
+              </div>
+            </div>
+
+
+            ` : $h`<span />`}
+
+
+
           
         </div>
         
     </div>
 
-
-
-
 </template>
  
-<style>
-
-  .logo {
-    font-size: 35px;
-  }
-
- .logo img {
-  margin-top: 10px;
-  height: 50px;
-  max-height: 100%;
-  border-radius: 25%;
- }
-
- @media only screen and (max-width: 1024px) {
-  
-    .logo img {
-      margin-top: 5px;
-      height: 35px;
-    }
-
-  }
-
-
-
-</style>
 
 
 <script>
@@ -229,7 +228,8 @@
         let active = props.active
         let showMintPage = props.show_mint_page == "true"
         let showActivityPage = props.show_activity_page == "true"
-
+        let breadcrumbs = props.breadcrumbs
+        
         let walletAddress
         let showConnect = true
 

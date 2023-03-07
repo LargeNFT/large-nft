@@ -38,13 +38,7 @@
       </table>
     </div>
 
-
   </div>
-
-
-
-
-
 
 </template>
 
@@ -126,9 +120,6 @@
               <span class="dollar-value">${transactionWebService.abbreviateDollars(transaction.transactionValue?.tokenPrice[event.tokenId]?.usdValue, 2)}</span>
             ` : $h` `}
 
-
-
-
            </td>
           <td class="numeric-cell medium-only">
             <a href="${baseURI}u/?address=${event.fromAddress}" class="${event.fromAddress == transaction.from ? 'is-from' : ''}">
@@ -153,9 +144,14 @@
         return `${baseURI + href}`
     } 
 
+
     const imageLink = (rowItemViewModel) => {
-      let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
-      return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
+
+      if (rowItemViewModel.coverImageGenerated) {
+        return link('backup/export/images/' + rowItemViewModel.coverImageId + ".svg")
+      }
+
+      return link('backup/generated/images/50x50/' + rowItemViewModel.coverImageId + ".webp")
     }
 
     let transaction = props.transaction
@@ -163,8 +159,11 @@
     let baseURI = props.base_uri
     let rowItemViewModels = props.row_item_view_models
     let index = props.index
-
-
+    
+    let owner = event?.namedArgs?.owner
+    let approved = event?.namedArgs?.approved
+    let from = transaction?.from
+    
     return () => $h`
       <tr class="${index % 2 == 0 ? "alt-row" : ''}">
 
@@ -190,9 +189,7 @@
 
           <td class="numeric-cell"></td>
           <td class="medium-only numeric-cell">
-            <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a> 
-            <span class="f7-icons">arrow_right</span>
-            <a href="${baseURI}u/?address=${event.namedArgs.approved}" class="${event.namedArgs.approved == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.approved)}</a>
+            <a href="#">${approved}</a>
           </td>
         </tr>
     `;
@@ -228,7 +225,7 @@
           <td class="medium-only numeric-cell">
             <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a> 
             <span class="f7-icons">arrow_right</span>
-            <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs.operator == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.operator)}</a>
+            <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs?.operator == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.operator)}</a>
           </td>
 
         </tr>

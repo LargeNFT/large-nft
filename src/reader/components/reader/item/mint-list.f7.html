@@ -12,7 +12,6 @@
             <ul>
               <li>NFTs are minted in sequential order.</li>
               <li>From the beginning of the story to the end.</li>
-              <li>View which NFTs will be minted next in the list below.</li>
               <li>Limited supply!</li>
             </ul>
           </div>
@@ -71,7 +70,7 @@
                 </div>
               </li>
 
-              <li>
+              <li style="display:none;">
                 <label class="item-checkbox item-content">
 
                     <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
@@ -103,7 +102,7 @@
 
           </form>
 
-          <div class="card mint-list-card">
+          <div class="card mint-list-card"  style="display:none">
             <div class="card-header">Next Up</div>
             <div class="card-content">
 
@@ -144,6 +143,8 @@
 
 
 <style>
+
+
 
 .mint-list-card .card-header {
   font-size: 27px;

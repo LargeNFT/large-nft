@@ -404,9 +404,9 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         hideOnPageScroll: true
       },
 
-      subnavbar: {
-        hideOnPageScroll: true
-      },
+      // subnavbar: {
+      //   hideOnPageScroll: true
+      // },
 
       toolbar: {
         hideOnPageScroll: true

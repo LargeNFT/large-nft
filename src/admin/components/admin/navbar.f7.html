@@ -17,7 +17,7 @@
             <div class="subnavbar">
               <div class="subnavbar-inner">
                 <div class="subnavbar-title">
-                  <a href="${getBaseURI()}" class="link external">
+                  <a href="${readerConfig.path}" class="link external">
                     <i class="icon icon-back"></i> ${readerConfig.title}
                   </a>
                 </div>
@@ -57,10 +57,11 @@
 
     export default (props, { $on, $f7, $update }) => {
     
-        let readerConfig = ContainerService.getInstance("readerConfig")
+        // let readerConfig = ContainerService.getInstance("readerConfig")
         let walletService = ContainerService.getWalletService()
 
-        let readerTitle
+        let readerConfig = props.reader_config
+
 
 
         const getBaseURI = () => {

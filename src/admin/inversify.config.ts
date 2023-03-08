@@ -117,7 +117,7 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
 let container: Container
 
 
-function getMainContainer(readerConfig:ReaderConfig, version:string) {
+function getMainContainer(version:string) {
 
   if (container) return container
 
@@ -170,7 +170,7 @@ function getMainContainer(readerConfig:ReaderConfig, version:string) {
   container.bind("contracts").toConstantValue(contracts())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
-  container.bind("readerConfig").toConstantValue(readerConfig)
+  // container.bind("readerConfig").toConstantValue(readerConfig)
   container.bind("pouch-prefix").toConstantValue("./pouch/")
   container.bind("footer-text").toConstantValue(globalThis.footerText)
 

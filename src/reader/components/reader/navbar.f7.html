@@ -62,7 +62,7 @@
 
 
                       <li>
-                        <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?title=Back to Collection" class="item-link external popover-close">
+                        <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}" class="item-link external popover-close">
                           <div class="item-content">
                             <div class="item-inner">
                                 <div class="item-title">
@@ -128,7 +128,7 @@
 
             <div class="large-only">
   
-              <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?title=Back to Collection" class="external link">
+              <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}" class="external link">
                 Fork
               </a>
 
@@ -222,7 +222,8 @@
         let walletService = globalThis.container.get("WalletService")
         let uiService = globalThis.container.get("UiService")
         let baseURI = globalThis.container.get("baseURI")
-        
+        let hostname = globalThis.container.get("hostname")
+
         let logo = props.logo
         let title = props.title
         let active = props.active

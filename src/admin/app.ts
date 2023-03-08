@@ -22,20 +22,7 @@ import { RoutingService } from "./service/core/routing-service.js"
 
 export default async(version) => {
                 
-    //Check hash to see if we are linking to a Reader
-    let search = window.location.hash ? window.location.hash.substring(window.location.hash?.indexOf("?"), window.location.hash.length) : undefined
-
-    const urlParams = new URLSearchParams(search)
-
-    let readerConfig
-
-    if (urlParams.get('title')) {
-      readerConfig = {
-        title: urlParams.get('title')
-      }
-    }
-
-    let container = getMainContainer(readerConfig, version)
+    let container = getMainContainer(version)
 
     let app:any = container.get("framework7")
     let routingService:RoutingService = container.get(RoutingService)

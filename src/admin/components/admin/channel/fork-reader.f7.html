@@ -3,7 +3,7 @@
 
   <div class="page" data-name="admin-fork-contract">
 
-    <${Navbar} />
+    <${Navbar} reader_config=${readerConfig} />
 
     <div class="page-content">
 
@@ -73,7 +73,7 @@
               ${!channelId ? $h`
                 <div class="block block-strong inset fork-block">
   
-                  <p>Forking <a href="${getBaseURI()}" class="external">${channel.title}</a></p>
+                  <p>Forking <a href="${readerConfig.path}" class="external">${channel.title}</a></p>
     
                   <div class="repo-name">
     
@@ -312,6 +312,27 @@
 
     let forkType = "existing"
 
+    let readerTitle
+
+
+
+    //Check hash to see if we are linking to a Reader
+    let search = window.location.hash ? window.location.hash.substring(window.location.hash?.indexOf("?"), window.location.hash.length) : undefined
+
+    const urlParams = new URLSearchParams(search)
+
+    let readerConfig
+
+    if (urlParams.get('path')) {
+
+      //Get the title
+      readerConfig = {
+        path: decodeURIComponent(urlParams.get('path'))
+      }
+    }
+
+
+
     const truncateEthAddress = (address) => {
       return walletService.truncateEthAddress(address)
     }
@@ -327,13 +348,13 @@
 
 
     const getChannel = async () => {
-      let response = await axios.get(`${getBaseURI()}backup/export/backup/channels.json`)
+      let response = await axios.get(`${readerConfig.path}backup/export/backup/channels.json`)
       let channels = response.data
       return channels[0]
     }
 
     const getAuthor = async () => {
-      let response = await axios.get(`${getBaseURI()}backup/export/backup/authors.json`)
+      let response = await axios.get(`${readerConfig.path}backup/export/backup/authors.json`)
       let authors = response.data
       return authors[0]
     }
@@ -342,7 +363,7 @@
       
       try {
 
-        let response = await axios.get(`${getBaseURI()}backup/contract/contract.json`)
+        let response = await axios.get(`${readerConfig.path}backup/contract/contract.json`)
         let contract = response.data
         return contract
 
@@ -362,7 +383,7 @@
 
       contractInfo = await getContractInfo()
 
-      customName = channel.title
+      readerConfig.title = channel.title
 
       await $update()
 

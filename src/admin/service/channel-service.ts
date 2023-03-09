@@ -170,7 +170,7 @@ class ChannelService {
         ac = new AttributeCount()
       } 
       
-      console.log(ac)
+      // console.log(ac)
 
       await this.attributeCountService.put(Object.assign(ac, attributeCount))
     }

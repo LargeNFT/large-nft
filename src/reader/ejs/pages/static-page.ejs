@@ -12,13 +12,12 @@
     let showMintPage = it.baseViewModel.showMintPage
     let staticPage = it.staticPage
     let showActivityPage = it.baseViewModel.showActivityPage
+    let logo = it.baseViewModel.logo
 
 
     const link = (href) => {
         return `${baseURL + href}`
     }    
-
-    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
 
     const absoluteLink = (href) => {
@@ -80,7 +79,8 @@
             <div class="page" data-name="static-page-<%=staticPage._id %>">
 
                 <nav-bar
-                    logo="<%=logo%>"
+                    logo="${logo}"
+                    large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
                     title="<%=staticPage.name%>"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
@@ -117,6 +117,8 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
             let owner
+
+            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
             let breadcrumbs = [{
                 text: "Home",

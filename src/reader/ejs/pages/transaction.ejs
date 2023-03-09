@@ -11,14 +11,11 @@
     let channelId = it.baseViewModel.channelId
     let showMintPage = it.baseViewModel.showMintPage
     let showActivityPage = it.baseViewModel.showActivityPage
+    let logo = it.baseViewModel.logo
 
     const link = (href) => {
         return `${baseURL + href}`
     }    
-
-    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
-
-
 
     const absoluteLink = (href) => {
         return `${hostname + baseURL + href}`
@@ -81,7 +78,8 @@
             <div class="page" data-name="transaction">
 
                 <nav-bar
-                    logo="<%=logo%>"
+                    logo="${logo}"
+                    large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
                     title="Transaction"
                     active="Transaction"
                     show_mint_page="<%=showMintPage%>"
@@ -113,6 +111,9 @@
     <script type="module" id="page-init-scripts">
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
+
+            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+
 
             // let eventWebService = globalThis.container.get("EventWebService")
 

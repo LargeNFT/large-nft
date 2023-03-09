@@ -11,6 +11,7 @@
     let channelId = it.baseViewModel.channelId
     let showMintPage = it.baseViewModel.showMintPage
     let showActivityPage = it.baseViewModel.showActivityPage
+    let logo = it.baseViewModel.logo
 
 
   
@@ -19,7 +20,6 @@
         return `${baseURL + href}`
     }   
 
-    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
 
     const absoluteLink = (href) => {
@@ -86,7 +86,8 @@
         <div class="page" data-name="mint">
 
           <nav-bar
-              logo="<%=logo%>"
+              logo="${logo}"
+              large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
               title="Mint"
               active="Mint"
               show_mint_page="<%=showMintPage%>"
@@ -185,6 +186,8 @@
         let mintingViewModel 
 
         let lastMinted 
+
+        let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
         let breadcrumbs = [{
                 text: "Home",

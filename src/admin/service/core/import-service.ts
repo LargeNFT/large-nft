@@ -441,9 +441,7 @@ class ImportService {
 
 
         
-        channel.importSuccess = true
 
-        await this.channelWebService.put(channel)
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)
 
@@ -466,6 +464,8 @@ class ImportService {
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
+        channel.importSuccess = true
+        await this.channelWebService.put(channel)
 
         forkStatus.channels.saved++
         this.logForkProgress(forkStatus, `Importing channel ${channel._id}`)
@@ -755,7 +755,8 @@ class ImportService {
 
         
 
-        // await this.channelWebService.put(channel) 
+
+        // console.log(channel)
 
 
         this.logForkProgress(forkStatus, `
@@ -788,6 +789,8 @@ class ImportService {
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
 
+        channel.importSuccess = true
+        await this.channelWebService.put(channel) 
 
         // await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
 
@@ -1020,7 +1023,6 @@ class ImportService {
 
         }
 
-        // await this.channelWebService.put(channel) 
 
 
         this.logForkProgress(forkStatus, `
@@ -1051,6 +1053,9 @@ class ImportService {
 
         await this.queryCacheService.put(tokenIdStatsQueryCache)
 
+
+        channel.importSuccess = true
+        await this.channelWebService.put(channel) 
 
         // await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)
 
@@ -1107,7 +1112,6 @@ class ImportService {
 
         let tokenURI = await contract.tokenURI(tokenId)
 
-        console.log(tokenURI)
 
         let metadata = JSON.parse(new TextDecoder().decode(await this._fetchURI(tokenURI)))
 
@@ -1175,7 +1179,7 @@ class ImportService {
     private logForkProgress(forkStatus:ForkStatus, message?: string) {
 
         if (message) {
-            console.log(message)
+            // console.log(message)
         }
         
 

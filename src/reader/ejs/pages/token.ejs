@@ -15,12 +15,11 @@
     let itemViewModel = it.itemViewModel
     let previous = it.previous
     let next = it.next
+    let logo = it.baseViewModel.logo
 
     const link = (href) => {
         return `${baseURL + href}`
     }    
-
-    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
     const absoluteLink = (href) => {
         return `${hostname + baseURL + href}`
@@ -116,7 +115,8 @@
             <div class="page" data-name="token-<%=itemViewModel.item.tokenId %>">
 
                 <nav-bar
-                    logo="<%=logo%>"
+                    logo="${logo}"
+                    large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
                     title="<%=channelViewModel.channel.title%>"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
@@ -408,6 +408,9 @@
             let tokenService = globalThis.container.get("TokenService")
 
             let baseURI = globalThis.container.get("baseURI")
+
+            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+
 
             let title = `<%~ itemViewModel.item.title %>`
             let tokenId = `<%~ itemViewModel.item.tokenId %>`

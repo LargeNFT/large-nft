@@ -178,7 +178,7 @@ class ChannelWebService {
             let updated = Object.assign(new Item(), item)
             await this.itemService.put(updated)
 
-            console.log(updated)
+            // console.log(updated)
 
         }
     }

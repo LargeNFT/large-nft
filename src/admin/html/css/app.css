@@ -693,7 +693,7 @@ ul.breadcrumb li a:hover {
   flex-flow: row wrap; 
   align-content: start;
 }
-
+/* 
 .flex-card {
   flex: 0 0 20%;
   margin: 0px;
@@ -710,7 +710,49 @@ ul.breadcrumb li a:hover {
 .flex-card img {
   max-width: 100%;
   border: none;
+} */
+
+
+.flex-card {
+  flex: 0 0 20%;
+  margin: 0px;
 }
+
+
+.flex-card .card {
+  background: white;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.flex-card img {
+  max-width: 100%;
+  border: none;
+}
+
+@media only screen and (max-width: 1024px) {
+
+  .flex-card {
+    flex: 0 0 50%;
+    margin: 0px;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .square {
   position: relative;
@@ -736,13 +778,7 @@ ul.breadcrumb li a:hover {
     width: 100%;
     max-width: 100%;
   }
-  
- 
-  .flex-card {
-    flex: 0 0 50%;
-    margin: 0px;
-    height: 250px;
-  }
+
 }
 
 

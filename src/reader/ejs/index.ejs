@@ -12,12 +12,12 @@
     let showMintPage = it.baseViewModel.showMintPage
     let baseDir = it.baseViewModel.baseDir
     let showActivityPage = it.baseViewModel.showActivityPage
+    let logo = it.baseViewModel.logo
 
     const link = (href) => {
         return `${baseURL + href}`
     }   
 
-    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
     const absoluteLink = (href) => {
       return `${hostname + baseURL + href}`
@@ -94,7 +94,8 @@
         <div class="page" data-name="home">
 
           <nav-bar
-            logo="<%=logo%>"
+            logo="${logo}"
+            large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
             title="<%=channelViewModel.channel.title%>"
             show_mint_page="<%=showMintPage%>"
             show_activity_page="<%=showActivityPage%>"
@@ -559,6 +560,7 @@
             let baseURI = globalThis.container.get("baseURI")
 
             let breadcrumbs
+            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
             const PER_PAGE = 35
 

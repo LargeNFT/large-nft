@@ -11,6 +11,7 @@
     let channelId = it.baseViewModel.channelId
     let showMintPage = it.baseViewModel.showMintPage
     let showActivityPage = it.baseViewModel.showActivityPage
+    let logo = it.baseViewModel.logo
 
     let traitTypes = Array.from(new Set(attributeReport.map( at => at.traitType)))
 
@@ -19,7 +20,6 @@
         return `${baseURL + href}`
     }   
 
-    let logo = link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`)
 
 
 
@@ -90,7 +90,8 @@
         <div class="page" data-name="home">
 
           <nav-bar
-              logo="<%=logo%>"
+              logo="${logo}"
+              large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
               title="Attributes"
               show_mint_page="<%=showMintPage%>"
               show_activity_page="<%=showActivityPage%>"
@@ -211,6 +212,8 @@
 
             let loading
             let attributesOverall
+
+            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
             let breadcrumbs = [{
                 text: "Home",

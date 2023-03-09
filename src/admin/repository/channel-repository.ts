@@ -42,6 +42,8 @@ class ChannelRepository {
 
     async list(limit: number, skip: number): Promise<Channel[]> {
 
+        // console.log(await this.db.allDocs({include_docs: true}))
+
         let response = await this.db.find({
             selector: { "dateCreated": { $exists: true } },
             sort: [{ 'dateCreated': 'desc' }],

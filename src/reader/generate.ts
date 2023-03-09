@@ -48,6 +48,7 @@ import pkg from 'convert-svg-to-png';
 import { StaticPage } from "./dto/static-page.js"
 import { SpawnService } from "../sync/service/spawn-service.js"
 import { ItemService } from "./service/item-service.js"
+import path from "path"
 
 
 const { convert } = pkg;
@@ -238,7 +239,9 @@ let generate = async () => {
     bodyContents: bodyContents,
     excerptHtml: excerptHtml,
     he: he,
-    baseDir: config.baseDir
+    baseDir: config.baseDir,
+    logo: config.logo,
+    largeURL: config.largeURL
   }
 
 
@@ -275,6 +278,19 @@ let generate = async () => {
     </template>
     
     `)
+
+  }
+
+  //Copy logo
+  if (config.logo?.src) {
+
+    //Get ext 
+    let logoExt = config.logo?.src.split('.').pop()
+
+    //Logo location
+    let logoPath = path.resolve(config.baseDir, config.logo.src)
+
+    fs.cpSync(`${logoPath}`, `${config.publicPath}/logo.${logoExt}`, { recursive: true })
 
   }
 

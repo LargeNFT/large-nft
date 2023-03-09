@@ -5,6 +5,16 @@
 
         <div class="navbar-inner sliding">
                 
+          ${logo?.src?.length > 0 ? $h`
+
+            <div class="left">
+              <a href="${logo?.link}" class="logo external">
+                <img src="${baseURI}logo.${logo?.src.split('.').pop()}" />
+              </a>
+            </div>
+
+          ` : $h`<span />`}
+
           <div class="title">
             ${title}
           </div>
@@ -62,7 +72,7 @@
 
 
                       <li>
-                        <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}" class="item-link external popover-close">
+                        <a href="${forkLink}" class="item-link external popover-close">
                           <div class="item-content">
                             <div class="item-inner">
                                 <div class="item-title">
@@ -128,7 +138,7 @@
 
             <div class="large-only">
   
-              <a href="${baseURI}large/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}" class="external link">
+              <a href="${forkLink}" class="external link">
                 Fork
               </a>
 
@@ -227,12 +237,21 @@
         let logo = props.logo
         let title = props.title
         let active = props.active
+        let largeURL = props.large_url
         let showMintPage = props.show_mint_page == "true"
         let showActivityPage = props.show_activity_page == "true"
         let breadcrumbs = props.breadcrumbs
         
         let walletAddress
         let showConnect = true
+
+        let forkLink
+
+        if (largeURL?.length > 0) {
+          forkLink = `${largeURL}/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}`
+        } else {
+          forkLink = `${baseURI}large/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}`
+        }
 
 
         const truncateEthAddress = (address) => {

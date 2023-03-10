@@ -1,5 +1,5 @@
 //@ts-nocheck
-import path, { dirname } from 'path'
+import path, { dirname, resolve } from 'path'
 import webpack from 'webpack'
 import fs from 'fs'
 
@@ -109,7 +109,7 @@ let getAdminConfigs = () => {
       }
     },
     output: {
-      filename: 'admin/app/js/[name].admin.js',
+      filename: `admin/app/js/[name]-${VERSION.replace('"', '').replace('"', '')}.admin.js`,
       library: "admin",
       path: path.resolve(__dirname, 'public'),
     },
@@ -128,9 +128,14 @@ let getAdminConfigs = () => {
     },
     plugins: [
   
-      // new CleanWebpackPlugin({
-      //   // dangerouslyAllowCleanPatternsOutsideProject: true
-      // }),
+      new CleanWebpackPlugin({
+        dry: false,
+
+        cleanOnceBeforeBuildPatterns: [
+          resolve('public/admin/app/js/**')
+        ],
+
+      }),
   
       new webpack.ProvidePlugin({
         process: 'process/browser.js',
@@ -454,9 +459,14 @@ let getReaderConfigs = () => {
     },
     plugins: [
 
-      // new CleanWebpackPlugin({
-      //   dangerouslyAllowCleanPatternsOutsideProject: true
-      // }),
+      new CleanWebpackPlugin({
+        dry: false,
+
+        cleanOnceBeforeBuildPatterns: [
+          resolve('public/reader/browser/js/**')
+        ],
+
+      }),
   
   
       new webpack.ProvidePlugin({
@@ -485,7 +495,7 @@ let getReaderConfigs = () => {
     ],
     output: {
       library: "reader",
-      filename: 'reader/browser/js/[name].reader.js',
+      filename: `reader/browser/js/[name]-${VERSION.replace('"', '').replace('"', '')}.reader.js`,
       path: path.resolve(__dirname, 'public')
     },
     optimization: {
@@ -524,9 +534,14 @@ let getReaderConfigs = () => {
     },
     plugins: [
   
-      // new CleanWebpackPlugin({
-      //   dangerouslyAllowCleanPatternsOutsideProject: true
-      // }),
+      new CleanWebpackPlugin({
+        dry: false,
+
+        cleanOnceBeforeBuildPatterns: [
+          resolve('public/reader/browser/sw*')
+        ],
+
+      }),
 
       new webpack.DefinePlugin({
         VERSION: VERSION

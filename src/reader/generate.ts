@@ -167,9 +167,9 @@ let generate = async () => {
 
 
   let headEndContents = `
-  <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js"></script>
-  <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js"></script>
-  <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js"></script>
+  <script defer src="${config.baseURL}large/reader/browser/js/runtime-${config.VERSION}.reader.js"></script>
+  <script defer src="${config.baseURL}large/reader/browser/js/vendors-${config.VERSION}.reader.js"></script>
+  <script defer src="${config.baseURL}large/reader/browser/js/main-${config.VERSION}.reader.js"></script>
     `
   let bodyContents = ``
 
@@ -247,7 +247,10 @@ let generate = async () => {
 
 
   console.log("Copying backup and Large Admin...")
+
   fs.cpSync(`${config.baseDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
+
+  fs.rmSync(`${config.publicPath}/large`, { recursive: true })
   fs.cpSync(`${config.baseDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
 
 
@@ -256,9 +259,9 @@ let generate = async () => {
 
   let indexContents = indexBuffer.toString()
 
-  indexContents = indexContents.replace("../admin/app/js/runtime.admin.js", `${config.baseURL}large/admin/app/js/runtime.admin.js`)
-  indexContents = indexContents.replace("../admin/app/js/vendors.admin.js", `${config.baseURL}large/admin/app/js/vendors.admin.js`)
-  indexContents = indexContents.replace("../admin/app/js/main.admin.js", `${config.baseURL}large/admin/app/js/main.admin.js`)
+  indexContents = indexContents.replace(`../admin/app/js/runtime-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/runtime-${config.VERSION}.admin.js`)
+  indexContents = indexContents.replace(`../admin/app/js/vendors-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/vendors-${config.VERSION}.admin.js`)
+  indexContents = indexContents.replace(`../admin/app/js/main-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/main-${config.VERSION}.admin.js`)
 
 
   //Inject admin footer template.

@@ -189,7 +189,23 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
     }
 
-    const routes = [
+
+    const routes = []
+
+    //Map the base route without a slash if it's longer than just a slash
+    if (baseURI != "/" && baseURI.endsWith("/")) {
+
+      routes.push({
+        path: `${baseURI.substring(0, baseURI.length -1)}`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'index.html')
+        }
+      })
+
+    }
+
+
+    routes.push(...[
       {
         path: `${baseURI}`,
         async async({ resolve, reject }) {
@@ -358,7 +374,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
         }
       }
 
-    ]
+    ])
 
 
     if (routablePages?.length > 0) {

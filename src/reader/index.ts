@@ -25,11 +25,13 @@ import './html/css/app.css'
 
 let initReader = async (baseURI:string, hostname:string, version:string, routablePages:StaticPage[],  channelId:string) => {
 
+
     if ('serviceWorker' in navigator) {
 
         const wb = new Workbox(`${hostname}${baseURI}sw-${version}.js?baseURI=${baseURI}`, {
             scope: `${hostname}${baseURI}`
         })
+
 
         let contract
         let contractABI

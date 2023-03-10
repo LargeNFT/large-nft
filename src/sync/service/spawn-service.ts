@@ -90,9 +90,14 @@ class SpawnService {
 
         await this.runProcess(spawn(`gsutil -m cp -R -Z * gs://${bucketName}/${destinationDir}/public`, [], { shell: true, cwd: `${dir}/public` }))
 
+        //Cache images for a year
         await this.runProcess(spawn(`gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, no-transform" gs://${bucketName}/${destinationDir}/public/**.webp`, [], { shell: true, cwd: `${dir}/public` }))
         await this.runProcess(spawn(`gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, no-transform" gs://${bucketName}/${destinationDir}/public/**.jpg`, [], { shell: true, cwd: `${dir}/public` }))
         await this.runProcess(spawn(`gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, no-transform" gs://${bucketName}/${destinationDir}/public/**.svg`, [], { shell: true, cwd: `${dir}/public` }))
+
+        //Cache javascript for a year
+        await this.runProcess(spawn(`gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, no-transform" gs://${bucketName}/${destinationDir}/public/**.js`, [], { shell: true, cwd: `${dir}/public` }))
+
 
     }
 

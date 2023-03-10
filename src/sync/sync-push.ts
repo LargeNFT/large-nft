@@ -22,7 +22,7 @@ let syncPush = async () => {
       throw new Error("No configuration found.")
     }
 
-    if (!config?.readers || config.readers.length == 0) {
+    if (!config?.readers || Object.keys(config.readers)?.length == 0) {
       throw new Error("No repositories configured.")
     }
 
@@ -31,7 +31,9 @@ let syncPush = async () => {
   
     console.log(`Starting Sync/Push to env: ${config.env}`)
     
-    for (let reader of config.readers) {
+    for (let slug of Object.keys(config.readers)) {
+
+      let reader = config.readers[slug]
 
       const syncDirectory = path.resolve(config.syncDir, reader.repo)
   
@@ -54,13 +56,16 @@ let syncPush = async () => {
           // await git.push('origin', status.current)
 
           //sync before starting
-          await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, reader.slug)
+          await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, slug)
         
         }
 
       }
 
+
     }
+
+
 
 
 
@@ -68,7 +73,9 @@ let syncPush = async () => {
 
       console.log('Starting sync/push/deploy loop')
 
-      for (let reader of config.readers) {
+      for (let slug of Object.keys(config.readers)) {
+
+        let reader = config.readers[slug]
 
         const syncDirectory = path.resolve(config.syncDir, reader.repo)
 
@@ -102,7 +109,7 @@ let syncPush = async () => {
     
                   let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
 
-                  await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, reader.slug)
+                  await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, slug)
 
               } else {
                   console.log(`No changes in ${syncDirectory}`)

@@ -13,7 +13,11 @@ class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {
     constructor() {}
 
     async getENS(_id: string): Promise<string> {
-        throw new Error("Method not implemented.")
+        
+        //This is just to match the interface. Probably rethink the entire getENS method at some point.
+        let tokenOwner = await this.get(_id)
+        return tokenOwner?.ensName
+
     }
 
     async get(_id:string, options?:any): Promise<TokenOwner> {        

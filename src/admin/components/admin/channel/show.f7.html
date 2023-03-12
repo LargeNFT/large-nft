@@ -36,8 +36,7 @@
             </div>
           </div>
 
-
-          <${ChannelCard} channel_view_model=${channelViewModel} />
+          <channel-card channel_view_model=${channelViewModel}></channel-card>
 
           <div class="block">
             <p class="segmented">
@@ -55,7 +54,7 @@
             <ul class="item-flex"></ul>
           </div>
     
-          <div class="preloader infinite-scroll-preloader" id="channel-item-list-preloader"></div>
+          <div class="preloader infinite-scroll-preloader"></div>
         </div>
       </div>
 
@@ -202,7 +201,7 @@
       if (virtualList.items?.length < totalItemCount) {
           document.getElementById("item-list-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
       } else {
-          $('#channel-item-list-preloader').hide()
+        $('.infinite-scroll-preloader').hide()
       }
 
     }
@@ -216,7 +215,8 @@
       $f7.virtualList.destroy('#item-list')
       virtualList = undefined
 
-      $('#channel-item-list-preloader').hide()
+      $('.infinite-scroll-preloader').hide()
+
     }
 
     async function infiniteScroll(e) {

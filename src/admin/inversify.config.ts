@@ -77,6 +77,9 @@ import { ExportService } from './service/core/export-service.js';
 import { TokenMetadataCacheRepository } from './repository/token-metadata-cache-repository.js';
 import { QueryCacheRepository } from './repository/query-cache-repository.js';
 
+import ChannelCard from './components/admin/channel/channel-card.f7.html'
+
+
 //Init framework7
 import Framework7 from 'framework7';
 
@@ -112,6 +115,9 @@ Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
   Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup,Accordion,
   Popover, Swiper
 ])
+
+Framework7.registerComponent("channel-card", ChannelCard)
+
 
 
 let container: Container

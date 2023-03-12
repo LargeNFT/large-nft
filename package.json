@@ -1,7 +1,7 @@
 {
   "name": "large-nft",
-  "version": "0.6.16",
-  "description": "A decentralized, offline-first content management system for NFT communities.",
+  "version": "0.6.18",
+  "description": "The complete Ethereum NFT toolkit that anyone can run.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LargeNFT/large-nft"

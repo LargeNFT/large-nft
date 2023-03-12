@@ -23,23 +23,24 @@ import axios from "axios"
 import './html/css/app.css'
 
 
-let initReader = async (baseURI:string, hostname:string, version:string, routablePages:StaticPage[],  channelId:string) => {
+let initReader = async (baseURI:string, hostname:string, version:string, routablePages:StaticPage[], channelId:string, contract?:any, contractABI?:any) => {
 
-
+    
     if ('serviceWorker' in navigator) {
 
         const wb = new Workbox(`${hostname}${baseURI}sw-${version}.js?baseURI=${baseURI}`, {
             scope: `${hostname}${baseURI}`
         })
 
-
         let contract
         let contractABI
     
+
         let contractResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract.json`, { responseType: 'json'})
         let contractABIResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract-abi.json`, { responseType: 'json'})
     
-    
+
+
         if (contractResponse.status === 200) {
             contract = contractResponse.data
         }
@@ -68,6 +69,7 @@ let initReader = async (baseURI:string, hostname:string, version:string, routabl
 
         container = await getMainContainer(container, baseURI, hostname, version, routablePages)
 
+
         if (navigator.serviceWorker.controller) {
             startApp(container, baseURI, version, hostname, routablePages)
         } else {
@@ -92,6 +94,8 @@ let startApp = async (container:Container, baseURI:string, version:string, hostn
 
     //Get URL
     let internalUrl = window.location.toString().replace(`${hostname}`, '')
+
+    console.log(`internal URL ${internalUrl}`)
 
     const mainView = app.views.create('.view-main', {
         url: internalUrl

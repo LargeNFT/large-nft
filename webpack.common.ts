@@ -130,7 +130,7 @@ let getAdminConfigs = () => {
   
       new CleanWebpackPlugin({
         dry: false,
-
+        dangerouslyAllowCleanPatternsOutsideProject: true,
         cleanOnceBeforeBuildPatterns: [
           resolve('public/admin/app/js/**')
         ],
@@ -461,7 +461,7 @@ let getReaderConfigs = () => {
 
       new CleanWebpackPlugin({
         dry: false,
-
+        dangerouslyAllowCleanPatternsOutsideProject: true,
         cleanOnceBeforeBuildPatterns: [
           resolve('public/reader/browser/js/**')
         ],
@@ -536,7 +536,7 @@ let getReaderConfigs = () => {
   
       new CleanWebpackPlugin({
         dry: false,
-
+        dangerouslyAllowCleanPatternsOutsideProject: true,
         cleanOnceBeforeBuildPatterns: [
           resolve('public/reader/browser/sw*')
         ],

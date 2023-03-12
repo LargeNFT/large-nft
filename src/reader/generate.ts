@@ -222,6 +222,18 @@ let generate = async () => {
 
 
 
+  // let contract
+  // let contractABI
+
+  // try {
+
+  //   contract = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract.json`, 'utf8'))
+  //   contractABI = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract-abi.json`, 'utf8'))
+
+  // } catch(ex) {}
+
+
+
 
   let baseViewModel = {
     channelViewModel: channelViewModel,
@@ -241,7 +253,9 @@ let generate = async () => {
     he: he,
     baseDir: config.baseDir,
     logo: config.logo,
-    largeURL: config.largeURL
+    largeURL: config.largeURL,
+    // contract: contract,
+    // contractABI: contractABI
   }
 
 
@@ -250,7 +264,10 @@ let generate = async () => {
 
   fs.cpSync(`${config.baseDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
 
-  fs.rmSync(`${config.publicPath}/large`, { recursive: true })
+  if (fs.existsSync(`${config.publicPath}/large`)) {
+    fs.rmSync(`${config.publicPath}/large`, { recursive: true })
+  }
+
   fs.cpSync(`${config.baseDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
 
 

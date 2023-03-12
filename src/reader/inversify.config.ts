@@ -401,7 +401,6 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       }
     })
 
-
     let app = new Framework7({
       el: '#app', // App root element
       id: 'large-reader', // App bundle ID

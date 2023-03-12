@@ -38,29 +38,35 @@ let syncPush = async () => {
       const syncDirectory = path.resolve(config.syncDir, reader.repo)
   
       if (config.generate) {
+        
         await spawnService.spawnGenerateAndSync(syncDirectory)
+
+        if (config.env == "production") {
+          await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, slug)
+        }
+
       } else {
         await spawnService.spawnSync(syncDirectory)
       }
 
-      if (config.env == "production") {
+      // if (config.env == "production") {
 
-        //Push changes to git.
-        const git = simpleGit(syncDirectory)
+      //   //Push changes to git.
+      //   const git = simpleGit(syncDirectory)
 
-        let status = await git.status()
+      //   let status = await git.status()
 
-        if (!status.isClean()) {
-          await git.add('./')
-          await git.commit('Committing changes')
-          // await git.push('origin', status.current)
+      //   if (!status.isClean()) {
+      //     await git.add('./')
+      //     await git.commit('Committing changes')
+      //     // await git.push('origin', status.current)
 
-          //sync before starting
-          await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, slug)
+      //     //sync before starting
+      //     await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, slug)
         
-        }
+      //   }
 
-      }
+      // }
 
 
     }

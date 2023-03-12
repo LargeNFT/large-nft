@@ -101,8 +101,19 @@ class ChannelWebService {
 
         let itemCount = await this.channelService.countItemsByChannel(channel._id)
 
-        let settings = await this.settingsService.get()
-        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
+        let settings
+
+        try {
+            settings = await this.settingsService.get()
+        } catch(ex) {}
+
+
+        let gitProvider
+
+        try {
+            gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
+        } catch(ex) {}
+
 
         return {
             channel: channel,

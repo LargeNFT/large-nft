@@ -39,7 +39,7 @@ class TransactionWebService {
 
         transactionsViewModel.lastUpdated = latest.lastUpdated
 
-        await this.cacheENSNames(transactionsViewModel)
+        // await this.cacheENSNames(transactionsViewModel)
 
         return transactionsViewModel
 
@@ -89,8 +89,10 @@ class TransactionWebService {
 
         let transactionsViewModel:TransactionsViewModel = result.data
 
+        console.log(transactionsViewModel)
 
-        await this.cacheENSNames(transactionsViewModel)
+
+        // await this.cacheENSNames(transactionsViewModel)
 
         return transactionsViewModel
 

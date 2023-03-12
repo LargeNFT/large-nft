@@ -48,7 +48,7 @@ class SchemaService {
 
     async loadChannel(channelId:string) {
 
-        console.log(`Loading channel: ${channelId}`)
+        console.time(`Loading channel: ${channelId}`)
 
         await this.itemRepository.load(channelId)
         await this.animationRepository.load(channelId)
@@ -57,6 +57,7 @@ class SchemaService {
         await this.staticPageRepository.load(channelId)
         await this.attributeCountRepository.load(channelId)
 
+        console.timeEnd(`Loading channel: ${channelId}`)
 
     }
 

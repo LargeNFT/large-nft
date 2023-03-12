@@ -143,6 +143,41 @@ class ProcessedTransactionService {
 
     }
 
+    public async getEnsFromEvents(processedEvents) {
+
+        let ens = {}
+
+        for (let processedEvent of processedEvents) {
+
+            if (processedEvent.fromAddress?.length > 0 ) {
+                ens[processedEvent.fromAddress] = await this.tokenOwnerService.getDisplayName(processedEvent.fromAddress)
+            }
+
+            if (processedEvent.toAddress?.length > 0 ) {
+                ens[processedEvent.toAddress] = await this.tokenOwnerService.getDisplayName(processedEvent.toAddress)
+            }
+
+            if (processedEvent.namedArgs.owner?.length > 0 ) {
+                ens[processedEvent.namedArgs.owner] = await this.tokenOwnerService.getDisplayName(processedEvent.namedArgs.owner)
+            }
+
+
+            if (processedEvent.namedArgs.operator?.length > 0 ) {
+                ens[processedEvent.namedArgs.operator] = await this.tokenOwnerService.getDisplayName(processedEvent.namedArgs.operator)
+            }
+
+            if (processedEvent.namedArgs.approved?.length > 0 ) {
+                ens[processedEvent.namedArgs.approved] = await this.tokenOwnerService.getDisplayName(processedEvent.namedArgs.approved)
+            }            
+
+        }
+
+        return ens
+        
+
+    }
+
+
     async translateTransactionsToViewModels(transactions:ProcessedTransaction[], lastUpdated?:string, options?:any) : Promise<TransactionsViewModel> {
 
         let transactionViewModels:TransactionViewModel[] = []
@@ -164,7 +199,8 @@ class ProcessedTransactionService {
         let results:TransactionsViewModel = {
             lastUpdated: lastUpdated,
             transactions: transactionViewModels,
-            rowItemViewModels: await this.getRowItemViewModels(allEvents)
+            rowItemViewModels: await this.getRowItemViewModels(allEvents),
+            ens: await this.getEnsFromEvents(allEvents)
         }
 
         return results
@@ -379,7 +415,8 @@ class ProcessedTransactionService {
 
             result.push({
                 transactions: processedTransactions,
-                rowItemViewModels: await this.getRowItemViewModels(allEvents)
+                rowItemViewModels: await this.getRowItemViewModels(allEvents),
+                ens: await this.getEnsFromEvents(allEvents)
             })
         }
 
@@ -455,12 +492,14 @@ interface ProcessedTransactionsPage {
     lastUpdated?:string
     transactions?:TransactionViewModel[]
     rowItemViewModels?:{}
+    ens:{}
 }
 
 interface TransactionsViewModel {
     lastUpdated?:string
     transactions?:TransactionViewModel[],
     rowItemViewModels?:{}
+    ens?:{}
 }
 
 interface ProcessedTransactionViewModel {

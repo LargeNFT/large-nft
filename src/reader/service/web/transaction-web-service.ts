@@ -5,6 +5,7 @@ import { AttributeOverallSales, AttributeSaleReport, SalesReport } from "../../d
 
 
 import { SchemaService } from "../core/schema-service.js";
+import { ItemService } from "../item-service.js";
 import { ProcessedTransactionService, SaleViewModel, TransactionsViewModel } from "../processed-transaction-service.js";
 import { TokenOwnerService } from "../token-owner-service.js";
 
@@ -20,7 +21,8 @@ class TransactionWebService {
     @inject("TokenOwnerService")
     private tokenOwnerService:TokenOwnerService
 
-
+    @inject("ItemService")
+    private itemService:ItemService
 
     private _ENSCache = {}
 
@@ -89,8 +91,6 @@ class TransactionWebService {
 
         let transactionsViewModel:TransactionsViewModel = result.data
 
-        console.log(transactionsViewModel)
-
 
         // await this.cacheENSNames(transactionsViewModel)
 
@@ -109,15 +109,15 @@ class TransactionWebService {
 
     async getAttributeSalesReport(traitType:string, value:string): Promise<AttributeSaleReport> {
 
-        let report = await this.processedTransactionService.getAttributeSalesReport(traitType, value)
+        return this.processedTransactionService.getAttributeSalesReport(traitType, value)
 
-        if (!report) return
+        // console.log(report)
 
-        //@ts-ignore
-        report.largestSalesViewModels = await this.processedTransactionService.translateSalesToViewModels(report.largestSales)
-        delete report.largestSales
+        // if (!report) return
 
-        return report
+        // //@ts-ignore
+        // report.largestSalesViewModels = await this.processedTransactionService.translateSalesToViewModels(report.largestSales)
+        // delete report.largestSales
     }
 
     async getAttributesOverall(): Promise<AttributeOverallSales> {
@@ -125,11 +125,11 @@ class TransactionWebService {
     }
 
 
-    async getLargestSales(limit:number): Promise<SaleViewModel[]> {
+    async getLargestSales(limit:number) {
 
         let sales = await  this.processedTransactionService.getLargestSales(limit)
 
-        return this.processedTransactionService.translateSalesToViewModels(sales)
+        return sales
 
     }
 

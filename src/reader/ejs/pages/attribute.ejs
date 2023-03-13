@@ -156,15 +156,15 @@
                                                     <div class="rank">#${index+1}</div>
                         
                                                     <div class="square">
-                                                        <a href="${link(`t/${sale.item.tokenId}`)}" class="item-link">
-                                                        <img src="${link(`backup/export/images/${sale.item.coverImageId}.${sale.item.coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.item.tokenId}" height="125" width="125"/>
+                                                        <a href="${link(`t/${sale.tokenId}`)}" class="item-link">
+                                                        <img src="${link(`backup/export/images/${salesReport.rowItemViewModels[sale.tokenId].coverImageId}.${salesReport.rowItemViewModels[sale.tokenId].coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.tokenId}" height="125" width="125"/>
                                                         </a>
                                                     </div>
                             
                                                     <div class="sale-info margin-top">
-                                                        <a href="${link(`t/${sale.item.tokenId}`)}" class="item-link">${sale.item.title}</a><br />
-                                                        ${new Intl.NumberFormat('en-US').format(sale.sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.sale.usdValue, 2)})
-                                                        <div class="date">${moment(sale.sale.date).format('LL')}</div>
+                                                        <a href="${link(`t/${sale.tokenId}`)}" class="item-link">${salesReport.rowItemViewModels[sale.tokenId].title}</a><br />
+                                                        ${new Intl.NumberFormat('en-US').format(sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.usdValue, 2)})
+                                                        <div class="date">${moment(sale.date).format('LL')}</div>
                                                     </div>
                         
                                                 </div>
@@ -330,9 +330,9 @@
 
                     salesReport = await transactionWebService.getAttributeSalesReport(traitType, value)
 
-
-                    largestSales = salesReport?.largestSalesViewModels
+                    largestSales = salesReport?.largestSales
                     owners = salesReport?.owners
+
 
                     let latest = await transactionWebService.getLatest()
                     lastUpdated = latest.lastUpdated

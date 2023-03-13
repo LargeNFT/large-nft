@@ -20,13 +20,17 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.get(_id, options)
     }
 
+    async getByIds(_ids:string[], options?:any) : Promise<TokenOwner[]> {
+        return this.tokenOwnerRepository.getByIds(_ids, options)
+    }
+
     async getDisplayName(_id:string) : Promise<string> {
 
         if (!_id) return
 
-        let ens = await this.tokenOwnerRepository.getENS(_id)
+        let tokenOwner = await this.tokenOwnerRepository.get(_id)
 
-        if (ens) return ens
+        if (tokenOwner?.ensName) return tokenOwner?.ensName
         return this.walletService.truncateEthAddress(_id)
 
     }

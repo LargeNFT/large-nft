@@ -341,7 +341,8 @@ let sync = async () => {
         key: key,
         totals: totals?.length > 0 ? totals[0] : undefined,
         owners: attributeSalesReport.owners[key],
-        largestSales: attributeSalesReport.largestSales[key]
+        largestSales: attributeSalesReport.largestSales[key],
+        rowItemViewModels: attributeSalesReport.rowItemViewModels[key]
       })))
 
     }
@@ -412,7 +413,7 @@ let sync = async () => {
       cloned.transactionsViewModel?.transactions?.reverse()
 
 
-      let transactionPages: ProcessedTransactionsPage[] = await processedTransactionService.buildTransactionPages(cloned.transactionsViewModel, 25)
+      let transactionPages: ProcessedTransactionsPage[] = await processedTransactionService.buildTransactionPages(cloned.transactionsViewModel, 25, options)
 
 
       //Remove transactions before writing to JSON

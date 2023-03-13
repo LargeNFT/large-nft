@@ -10,6 +10,7 @@ import { Block } from "../dto/block.js"
 import { BlockService } from "./block-service.js"
 import { Transaction } from "../dto/transaction.js"
 import { TransactionService } from "./transaction-service.js"
+import { WalletService } from "../../reader/service/core/wallet-service.js"
 
 
 
@@ -33,6 +34,10 @@ class ProcessedTransactionService {
 
     @inject("TokenOwnerService")
     private tokenOwnerService:TokenOwnerService
+
+
+    @inject("WalletService")
+    private walletService:WalletService
 
     constructor() {}
 
@@ -143,33 +148,41 @@ class ProcessedTransactionService {
 
     }
 
-    public async getEnsFromEvents(processedEvents) {
+    public async getEnsFromEvents(processedEvents, options) {
 
         let ens = {}
 
+        let addresses = []
+        
         for (let processedEvent of processedEvents) {
 
-            if (processedEvent.fromAddress?.length > 0 ) {
-                ens[processedEvent.fromAddress] = await this.tokenOwnerService.getDisplayName(processedEvent.fromAddress)
+            if (processedEvent.fromAddress?.length > 0 && addresses.includes(processedEvent.fromAddress) ) {
+                addresses.push(processedEvent.fromAddress)
             }
 
-            if (processedEvent.toAddress?.length > 0 ) {
-                ens[processedEvent.toAddress] = await this.tokenOwnerService.getDisplayName(processedEvent.toAddress)
+            if (processedEvent.toAddress?.length > 0  && addresses.includes(processedEvent.toAddress)) {
+                addresses.push(processedEvent.toAddress)
             }
 
-            if (processedEvent.namedArgs.owner?.length > 0 ) {
-                ens[processedEvent.namedArgs.owner] = await this.tokenOwnerService.getDisplayName(processedEvent.namedArgs.owner)
+            if (processedEvent.namedArgs.owner?.length > 0  && addresses.includes(processedEvent.namedArgs.owner) ) {
+                addresses.push(processedEvent.namedArgs.owner)
             }
 
 
-            if (processedEvent.namedArgs.operator?.length > 0 ) {
-                ens[processedEvent.namedArgs.operator] = await this.tokenOwnerService.getDisplayName(processedEvent.namedArgs.operator)
+            if (processedEvent.namedArgs.operator?.length > 0  && addresses.includes(processedEvent.namedArgs.operator) ) {
+                addresses.push(processedEvent.namedArgs.operator)
             }
 
-            if (processedEvent.namedArgs.approved?.length > 0 ) {
-                ens[processedEvent.namedArgs.approved] = await this.tokenOwnerService.getDisplayName(processedEvent.namedArgs.approved)
+            if (processedEvent.namedArgs.approved?.length > 0  && addresses.includes(processedEvent.namedArgs.approved)) {
+                addresses.push(processedEvent.namedArgs.approved)
             }            
 
+        }
+
+        let tokenOwners = await this.tokenOwnerService.getByIds(addresses, options)
+
+        for (let tokenOwner of tokenOwners) {
+            ens[tokenOwner._id] = tokenOwner.ensName ? tokenOwner.ensName : this.walletService.truncateEthAddress(tokenOwner._id)
         }
 
         return ens
@@ -200,7 +213,7 @@ class ProcessedTransactionService {
             lastUpdated: lastUpdated,
             transactions: transactionViewModels,
             rowItemViewModels: await this.getRowItemViewModels(allEvents),
-            ens: await this.getEnsFromEvents(allEvents)
+            ens: await this.getEnsFromEvents(allEvents, options)
         }
 
         return results
@@ -252,7 +265,8 @@ class ProcessedTransactionService {
     
         let report:AttributeSaleReport = {
             owners: [],
-            largestSales: {}
+            largestSales: {},
+            rowItemViewModels: {}
         }
 
         report.totals = await this.processedTransactionRepository.getAttributeSalesRows(0, options)
@@ -260,8 +274,20 @@ class ProcessedTransactionService {
         let attributes = await this.processedTransactionRepository.getAttributes()
         
         for (let attribute of attributes) {
+
             report.owners[`${attribute.traitType}::::${attribute.v}`] = await this.processedTransactionRepository.getOwnersByAttribute(attribute.traitType, attribute.v, options)
             report.largestSales[`${attribute.traitType}::::${attribute.v}`] = await this.processedTransactionRepository.getLargestSalesByAttribute(attribute.traitType, attribute.v, 50, options)
+            
+            let tokenIds = report.largestSales[`${attribute.traitType}::::${attribute.v}`].map(s => s.tokenId)
+            let rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenIds(tokenIds)
+
+            report.rowItemViewModels[`${attribute.traitType}::::${attribute.v}`] = {}
+
+            for (let rowItemViewModel of rowItemViewModels) {
+                report.rowItemViewModels[`${attribute.traitType}::::${attribute.v}`][rowItemViewModel.tokenId] = rowItemViewModel
+            }
+
+
         }
 
 
@@ -273,8 +299,30 @@ class ProcessedTransactionService {
 
     }
 
-    async getLargestSales(limit:number) : Promise<Sale[]> {
-        return this.processedTransactionRepository.getLargestSales(limit)
+    async getLargestSales(limit:number) {
+
+        let sales = await this.processedTransactionRepository.getLargestSales(limit)
+
+        let tokenIds = sales?.map( s => s.tokenId)
+
+        let result:any = {
+            sales: sales
+        }
+
+        if (tokenIds?.length > 0) {
+            
+            result.rowItemViewModels = {}
+
+            let rowItemViewModels = await this.itemService.getRowItemViewModelsByTokenIds(tokenIds)
+
+            for (let rowItemViewModel of rowItemViewModels) {
+                result.rowItemViewModels[rowItemViewModel.tokenId] = rowItemViewModel
+            }
+
+        }
+
+        return result
+
     }
 
     async getSalesByAttribute(traitType:string, value:string) : Promise<Sale[]> {
@@ -398,7 +446,7 @@ class ProcessedTransactionService {
     }
 
 
-    async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number) : Promise<ProcessedTransactionsPage[]> {
+    async buildTransactionPages(transactionsViewModel:TransactionsViewModel, perPage:number, options?:any) : Promise<ProcessedTransactionsPage[]> {
 
         let result: ProcessedTransactionsPage[] = []
 
@@ -416,7 +464,7 @@ class ProcessedTransactionService {
             result.push({
                 transactions: processedTransactions,
                 rowItemViewModels: await this.getRowItemViewModels(allEvents),
-                ens: await this.getEnsFromEvents(allEvents)
+                ens: await this.getEnsFromEvents(allEvents, options)
             })
         }
 

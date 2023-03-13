@@ -266,6 +266,8 @@ interface AttributeSaleReport {
     largestSales: {
         [key: string]: Sale[]
     }
+
+    rowItemViewModels: {}
 }
 
 

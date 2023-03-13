@@ -123,11 +123,11 @@
            </td>
           <td class="numeric-cell medium-only">
             <a href="${baseURI}u/?address=${event.fromAddress}" class="${event.fromAddress == transaction.from ? 'is-from' : ''}">
-                  ${transactionWebService.getDisplayName(event.fromAddress)}
+                  ${getDisplayAddress(event.fromAddress)}
             </a> <span class="f7-icons">arrow_right</span>
 
             <a href="${baseURI}u/?address=${event.toAddress}" class="${event.toAddress == transaction.from ? 'is-from' : ''}">
-              ${transactionWebService.getDisplayName(event.toAddress)}
+              ${getDisplayAddress(event.toAddress)}
             </a>
 
           </td>
@@ -223,15 +223,24 @@
 
           <td class="numeric-cell"></td>
           <td class="medium-only numeric-cell">
-            <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.owner)}</a> 
+            <a href="${baseURI}u/?address=${event.namedArgs.owner}" class="${event.namedArgs.owner == transaction.from ? 'is-from' : ''}">${getDisplayAddress(event.namedArgs.owner)}</a> 
             <span class="f7-icons">arrow_right</span>
-            <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs?.operator == transaction.from ? 'is-from' : ''}">${transactionWebService.getDisplayName(event.namedArgs.operator)}</a>
+            <a href="${baseURI}u/?address=${event.namedArgs.operator}" class="${event.namedArgs?.operator == transaction.from ? 'is-from' : ''}">${getDisplayAddress(event.namedArgs.operator)}</a>
           </td>
 
         </tr>
     `;
   }
 
+  const getDisplayAddress = (address) => {
+    let walletService = globalThis.container.get("WalletService")
+
+
+    if (transactionsViewModel?.ens && transactionsViewModel.ens[address]) return transactionsViewModel.ens[address]
+    return walletService.truncateEthAddress(address) 
+  }
+
+  let transactionsViewModel
 
   export default (props, { $, $on, $f7, $update }) => {
 
@@ -240,7 +249,9 @@
     let baseURI = globalThis.container.get('baseURI')
     let moment = globalThis.moment 
 
-    let transactionsViewModel = props.transactions 
+    transactionsViewModel = props.transactions 
+
+
     let rowItemViewModels = props.items
     let tokenId = props.token
 

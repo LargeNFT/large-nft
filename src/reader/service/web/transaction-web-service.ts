@@ -4,16 +4,12 @@ import { inject, injectable } from "inversify";
 import { AttributeOverallSales, AttributeSaleReport, SalesReport } from "../../dto/processed-transaction.js";
 
 
-import { SchemaService } from "../core/schema-service.js";
-import { ItemService } from "../item-service.js";
 import { ProcessedTransactionService, SaleViewModel, TransactionsViewModel } from "../processed-transaction-service.js";
 import { TokenOwnerService } from "../token-owner-service.js";
 
 @injectable()
 class TransactionWebService {
 
-    @inject("SchemaService")
-    private schemaService:SchemaService
     
     @inject("ProcessedTransactionService")
     private processedTransactionService:ProcessedTransactionService
@@ -21,8 +17,7 @@ class TransactionWebService {
     @inject("TokenOwnerService")
     private tokenOwnerService:TokenOwnerService
 
-    @inject("ItemService")
-    private itemService:ItemService
+
 
     private _ENSCache = {}
 
@@ -54,12 +49,8 @@ class TransactionWebService {
 
         let transactionsViewModel = result.data
 
-
         let latest = await this.getLatest()
         transactionsViewModel.lastUpdated = latest.lastUpdated
-
-
-        await this.cacheENSNames(transactionsViewModel)
 
         return transactionsViewModel
 
@@ -168,45 +159,45 @@ class TransactionWebService {
 
     }
 
-    async cacheENSNames(transactionsViewModel:TransactionsViewModel) {
+    // async cacheENSNames(transactionsViewModel:TransactionsViewModel) {
 
-        for (let transaction of transactionsViewModel.transactions) {
+    //     for (let transaction of transactionsViewModel.transactions) {
 
-            for (let processedEvent of transaction.events) {
+    //         for (let processedEvent of transaction.events) {
 
-                if (processedEvent.fromAddress?.length > 0 ) {
-                    await this._cacheDisplayName(processedEvent.fromAddress)
-                }
+    //             if (processedEvent.fromAddress?.length > 0 ) {
+    //                 await this._cacheDisplayName(processedEvent.fromAddress)
+    //             }
     
     
-                if (processedEvent.toAddress?.length > 0 ) {
-                    await this._cacheDisplayName(processedEvent.toAddress)
-                }
+    //             if (processedEvent.toAddress?.length > 0 ) {
+    //                 await this._cacheDisplayName(processedEvent.toAddress)
+    //             }
     
     
-                if (processedEvent.namedArgs.owner?.length > 0 ) {
-                    await this._cacheDisplayName(processedEvent.namedArgs.owner)
-                }
+    //             if (processedEvent.namedArgs.owner?.length > 0 ) {
+    //                 await this._cacheDisplayName(processedEvent.namedArgs.owner)
+    //             }
     
     
-                if (processedEvent.namedArgs.operator?.length > 0 ) {
-                    await this._cacheDisplayName(processedEvent.namedArgs.operator)
-                }
+    //             if (processedEvent.namedArgs.operator?.length > 0 ) {
+    //                 await this._cacheDisplayName(processedEvent.namedArgs.operator)
+    //             }
 
-                if (processedEvent.namedArgs.approved?.length > 0 ) {
-                    await this._cacheDisplayName(processedEvent.namedArgs.approved)
-                }
+    //             if (processedEvent.namedArgs.approved?.length > 0 ) {
+    //                 await this._cacheDisplayName(processedEvent.namedArgs.approved)
+    //             }
                 
-            }
+    //         }
 
 
-            await this._cacheDisplayName(transaction.transaction.transactionFrom)
-        }
+    //         await this._cacheDisplayName(transaction.transaction.transactionFrom)
+    //     }
 
 
 
         
-    }
+    // }
 
 }
 

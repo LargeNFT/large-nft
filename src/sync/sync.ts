@@ -421,10 +421,10 @@ let sync = async () => {
 
       cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(cloned._id)
 
-      //Write latest ENS name
-      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
-        name: cloned.ensName
-      })))
+      // //Write latest ENS name
+      // fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
+      //   name: cloned.ensName
+      // })))
 
       //Write activity
       let i = 1

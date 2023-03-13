@@ -156,24 +156,24 @@ class ProcessedTransactionService {
         
         for (let processedEvent of processedEvents) {
 
-            if (processedEvent.fromAddress?.length > 0 && addresses.includes(processedEvent.fromAddress) ) {
+            if (processedEvent.fromAddress?.length > 0 && !addresses.includes(processedEvent.fromAddress) ) {
                 addresses.push(processedEvent.fromAddress)
             }
 
-            if (processedEvent.toAddress?.length > 0  && addresses.includes(processedEvent.toAddress)) {
+            if (processedEvent.toAddress?.length > 0  && !addresses.includes(processedEvent.toAddress)) {
                 addresses.push(processedEvent.toAddress)
             }
 
-            if (processedEvent.namedArgs.owner?.length > 0  && addresses.includes(processedEvent.namedArgs.owner) ) {
+            if (processedEvent.namedArgs.owner?.length > 0  && !addresses.includes(processedEvent.namedArgs.owner) ) {
                 addresses.push(processedEvent.namedArgs.owner)
             }
 
 
-            if (processedEvent.namedArgs.operator?.length > 0  && addresses.includes(processedEvent.namedArgs.operator) ) {
+            if (processedEvent.namedArgs.operator?.length > 0  && !addresses.includes(processedEvent.namedArgs.operator) ) {
                 addresses.push(processedEvent.namedArgs.operator)
             }
 
-            if (processedEvent.namedArgs.approved?.length > 0  && addresses.includes(processedEvent.namedArgs.approved)) {
+            if (processedEvent.namedArgs.approved?.length > 0  && !addresses.includes(processedEvent.namedArgs.approved)) {
                 addresses.push(processedEvent.namedArgs.approved)
             }            
 
@@ -460,6 +460,9 @@ class ProcessedTransactionService {
             for (let transaction of processedTransactions) {
                 allEvents.push(...transaction.events)
             }
+
+            // console.log(await this.getEnsFromEvents(allEvents, options))
+
 
             result.push({
                 transactions: processedTransactions,

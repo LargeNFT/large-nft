@@ -207,8 +207,6 @@
                 try  {
                     largestSales = await transactionWebService.getLargestSales(100)
 
-                    console.log(largestSales)
-
                     let latest = await transactionWebService.getLatest()
 
                     lastUpdated = latest.lastUpdated

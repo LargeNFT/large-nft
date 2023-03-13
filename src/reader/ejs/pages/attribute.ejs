@@ -143,36 +143,10 @@
                                 
                                 </div>
 
-
-
-                                ${largestSales?.length > 0 ? $h`
+                                ${largestSales && largestSales?.sales?.length > 0 ? $h`
                                     <div class="block-title block-title-medium">Largest Sales</div>
-                                    <div class="block block-strong inset largest-sales">
-                                        
-                                        <div class="row">
-                                            ${largestSales?.map( (sale, index) => $h`
-                                                <div class="col-50 large-20 margin-bottom">
-                        
-                                                    <div class="rank">#${index+1}</div>
-                        
-                                                    <div class="square">
-                                                        <a href="${link(`t/${sale.tokenId}`)}" class="item-link">
-                                                        <img src="${link(`backup/export/images/${salesReport.rowItemViewModels[sale.tokenId].coverImageId}.${salesReport.rowItemViewModels[sale.tokenId].coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.tokenId}" height="125" width="125"/>
-                                                        </a>
-                                                    </div>
-                            
-                                                    <div class="sale-info margin-top">
-                                                        <a href="${link(`t/${sale.tokenId}`)}" class="item-link">${salesReport.rowItemViewModels[sale.tokenId].title}</a><br />
-                                                        ${new Intl.NumberFormat('en-US').format(sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.usdValue, 2)})
-                                                        <div class="date">${moment(sale.date).format('LL')}</div>
-                                                    </div>
-                        
-                                                </div>
-                                            `)}
-                                        </div>
-                                    </div>
+                                    <largest-sales largest_sales="${largestSales}"></largest-sales>
                                 ` : $h` `}
-
 
                                 <div class="card data-table">
                                     <div class="card-header">
@@ -330,7 +304,13 @@
 
                     salesReport = await transactionWebService.getAttributeSalesReport(traitType, value)
 
-                    largestSales = salesReport?.largestSales
+                    largestSales = {
+                        sales: salesReport?.largestSales,
+                        rowItemViewModels: salesReport.rowItemViewModels
+                    }
+
+
+
                     owners = salesReport?.owners
 
 

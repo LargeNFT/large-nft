@@ -35,6 +35,7 @@ Run on your own hardware or with popular cloud providers.
     * Do you have legal rights to display the content?
     * Permissionless ownership requires permisionless rights to display content.
     * As an artist do you want the value you built to crumble because no one is there to pay hosting fees?
+    * Can you take your NFTs to space?
 
 * What if OpenSea disappears? What if they change their terms? What if every market disappears?
     * Is it smart to have no backup plan if something drastic were to happen to the largest marketplace providers? A well-made collection should have a home base and it should (arguably) provide fee free trading just like the original Cryptopunks market.

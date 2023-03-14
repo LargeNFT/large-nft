@@ -131,17 +131,16 @@ class TransactionIndexerService {
 
         result.isCurrent = this.blockNumber == result.endBlock
 
-        console.log(`Found ${events.length} events up to block ${result.endBlock}`)
-
-
         //Group events by transaction hash
         let groupedEvents:Map<string,any[]> = this.groupBy(events, event => event.transactionHash)
-
 
         let processedCount =0
 
 
         if (groupedEvents.size > 0) {
+
+            console.log(`Found ${events.length} events up to block ${result.endBlock}`)
+
 
             for (let key of groupedEvents.keys()) {
 
@@ -265,8 +264,8 @@ class TransactionIndexerService {
                 //Add transaction to affected tokens
                 for (let tokenId of tokenIds) {
 
-                    //Remove events unrelated to token
-                    result.tokensToUpdate[tokenId].transactionsViewModel.transactions.push({
+                    //Remove events unrelated to token. Add to start of transaction array.
+                    result.tokensToUpdate[tokenId].transactionsViewModel.transactions.unshift({
                         transaction: transactionViewModel.transaction,
                         events: transactionViewModel.events.filter( e => e.tokenId == tokenId)
                     })

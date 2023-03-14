@@ -336,7 +336,7 @@ class ProcessedTransactionService {
 
     async deleteBetweenBlocks(result:ERCIndexResult, blockConfirmations:number, options?:any)  {
 
-        console.log(`Deleting between block #${result.startBlock} - ${result.endBlock}`)
+        // console.log(`Deleting between block #${result.startBlock} - ${result.endBlock}`)
 
         let processedTransactions:ProcessedTransaction[] = await this.processedTransactionRepository.findBetweenBlocks(result.startBlock, result.endBlock, options)
  

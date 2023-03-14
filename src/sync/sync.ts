@@ -138,9 +138,9 @@ let sync = async () => {
 
   }
   
-  console.time('Synchronizing database schema...')
+  // console.time('Synchronizing database schema...')
   await sequelize.sync()
-  console.timeEnd('Synchronizing database schema...')
+  // console.timeEnd('Synchronizing database schema...')
 
 
 
@@ -216,7 +216,7 @@ let sync = async () => {
 
 
           //Save contract state
-          console.log(`Saving contract state`)
+          // console.log(`Saving contract state`)
           await contractStateService.put(transactionIndexerService.contractState)
 
 
@@ -421,10 +421,6 @@ let sync = async () => {
 
       cloned.salesReport = await processedTransactionService.getTokenOwnerSalesReport(cloned._id)
 
-      // //Write latest ENS name
-      // fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
-      //   name: cloned.ensName
-      // })))
 
       //Write activity
       let i = 1

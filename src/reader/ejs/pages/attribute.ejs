@@ -26,6 +26,9 @@
         excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
         return it.baseViewModel.he.encode(excerpt.toString())
     }
+
+    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+
 %>
 
 
@@ -54,17 +57,19 @@
         Attribute Report for <%=channelViewModel.channel.title%>
     </title>
 
-    <meta property="og:title" content="Attribute Report for <%=channelViewModel.channel.title%>" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="<%= link(`attribute`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
-    <meta property="og:description" content="Attribute Report for <%=channelViewModel.channel.title%>" />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= link(`attribute`) %>" />
-    <meta property="twitter:title" content="Attribute Report for <%=channelViewModel.channel.title%>" />
-    <meta property="twitter:description" content="Attribute Report for <%=channelViewModel.channel.title%>" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+    <%~ 
+      include("_meta_tags", {
+        title: `Attribute Report for '${channelViewModel.channel.title}' NFTs`,
+        url: 'attribute',
+        imageUrl: coverImageLink,
+        descriptionHTML: `Attribute Report for '${channelViewModel.channel.title}' NFTs`,
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
+
+
 
     <%~ it.baseViewModel.headEndContents %>
     
@@ -502,16 +507,17 @@
 
             })
 
+            <%~ 
+                include("_meta_tags_js", {
+                    title: `Attribute Report for '${channelViewModel.channel.title}' NFTs`,
+                    url: 'attribute',
+                    imageUrl: coverImageLink,
+                    descriptionHTML: `Attribute Report for '${channelViewModel.channel.title}' NFTs`,
+                    hostname: hostname,
+                    baseURL: baseURL
+                }) 
+            %>
 
-            document.querySelector('meta[property="og:title"]').setAttribute("content", "Attribute Reportfor <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`attribute`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "Attribute Report for <%=channelViewModel.channel.title%>")
-
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`attribute`) %>")
-            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Attribute Report <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Attribute Report for <%=channelViewModel.channel.title%>" )
 
             document.querySelector('title').innerHTML = "Attribute Report <%=channelViewModel.channel.title%>"
 

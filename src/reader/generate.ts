@@ -20,6 +20,10 @@ let channelId
 import tokenEjs from './ejs/pages/token.ejs'
 import indexEjs from './ejs/index.ejs'
 import _initEjs from './ejs/template/_init.ejs'
+import _metaTagsEjs from './ejs/template/_meta_tags.ejs'
+import _metaTagsJsEjs from './ejs/template/_meta_tags_js.ejs'
+
+
 
 import mintEjs from './ejs/mint.ejs'
 import searchEjs from './ejs/search.ejs'
@@ -177,6 +181,8 @@ let generate = async () => {
 
   //Load init eta template
   Eta.templates.define("_init", Eta.compile(_initEjs))
+  Eta.templates.define("_meta_tags", Eta.compile(_metaTagsEjs))
+  Eta.templates.define("_meta_tags_js", Eta.compile(_metaTagsJsEjs))
 
 
 
@@ -253,7 +259,8 @@ let generate = async () => {
     he: he,
     baseDir: config.baseDir,
     logo: config.logo,
-    largeURL: config.largeURL,
+    largeURL: config.largeURL
+
     // contract: contract,
     // contractABI: contractABI
   }

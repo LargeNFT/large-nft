@@ -25,6 +25,9 @@
         excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
         return it.baseViewModel.he.encode(excerpt.toString())
     }
+
+    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+
 %>
 
 
@@ -52,6 +55,18 @@
     <title>
         Transaction for <%=channelViewModel.channel.title%>
     </title>
+
+
+    <%~ 
+      include("_meta_tags", {
+        title: `Transaction for ${channelViewModel.channel.title}`,
+        url: 'transaction',
+        imageUrl: coverImageLink,
+        descriptionHTML: `Transaction for ${channelViewModel.channel.title}`,
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
 
     <meta property="og:title" content="Transaction for <%=channelViewModel.channel.title%>" />
     <meta property="og:type" content="website" />
@@ -146,16 +161,18 @@
 
             })
 
-            document.querySelector('meta[property="og:title"]').setAttribute("content", "Transaction for <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`transaction`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "Transaction for <%=channelViewModel.channel.title%>")
+            <%~ 
+                include("_meta_tags_js", {
+                    title: `Transaction for ${channelViewModel.channel.title}`,
+                    url: 'transaction',
+                    imageUrl: coverImageLink,
+                    descriptionHTML: `Transaction for ${channelViewModel.channel.title}`,
+                    hostname: hostname,
+                    baseURL: baseURL
+                }) 
+            %>
 
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`transaction`) %>")
-            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Transaction <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Transaction for <%=channelViewModel.channel.title%>" )
-
+            
             document.querySelector('title').innerHTML = "Transaction <%=channelViewModel.channel.title%>"
 
             $f7.preloader.hide()

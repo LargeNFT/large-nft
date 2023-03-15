@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author.js";
 import { Channel } from "../../dto/channel.js";
+import { Image } from "../../dto/image.js";
 import { StaticPage } from "../../dto/static-page.js";
 
 
@@ -10,6 +11,7 @@ import { AuthorService } from "../author-service.js";
 import { ChannelService } from "../channel-service.js";
 import { PagingService } from "../core/paging-service.js";
 import { WalletService } from "../core/wallet-service.js";
+import { ImageService } from "../image-service.js";
 import { ItemService } from "../item-service.js";
 import { StaticPageService } from "../static-page-service.js";
 
@@ -21,6 +23,9 @@ class ChannelWebService {
 
     @inject("AuthorService")
     private authorService:AuthorService
+
+    @inject("ImageService")
+    private imageService:ImageService
 
     @inject("PagingService")
     private pagingService:PagingService
@@ -43,6 +48,7 @@ class ChannelWebService {
     async getViewModel(channel:Channel, offset:number, additionalStaticPages?:StaticPage[]) : Promise<ChannelViewModel> {
  
         let author:Author
+        let coverImage:Image
 
         if (channel.authorId) {            
             author = await this.authorService.get(channel.authorId)
@@ -72,7 +78,10 @@ class ChannelWebService {
             }
         }
 
-        
+
+        if (channel.coverImageId) {
+            coverImage = await this.imageService.get(channel.coverImageId)
+        }
 
         return {
             channelContractAbbrev: channel.contractAddress ? this.walletService.truncateEthAddress(channel.contractAddress) : undefined,
@@ -81,7 +90,8 @@ class ChannelWebService {
             author: author,
             authorDisplayName: this.authorService.getDisplayName(author),
             itemCount: itemCount,
-            pagingViewModel: pagingViewModel
+            pagingViewModel: pagingViewModel,
+            coverImage: coverImage
         }
 
     }

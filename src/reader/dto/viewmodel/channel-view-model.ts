@@ -1,6 +1,7 @@
 import { PagingViewModel } from "../../service/core/paging-service.js";
 import { Author } from "../author.js";
 import { Channel } from "../channel.js";
+import { Image } from "../image.js";
 
 
 interface ChannelViewModel {
@@ -19,6 +20,8 @@ interface ChannelViewModel {
 
     //Get static pages
     staticPagesViewModel: any
+
+    coverImage:Image
 
 }
 

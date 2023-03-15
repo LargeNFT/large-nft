@@ -40,6 +40,8 @@
       return link
     }
 
+    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+
 
 %>
 
@@ -68,17 +70,20 @@
       <%= it.title %>
     </title>
 
-    <meta property="og:title" content="<%=channelViewModel.channel.title%>" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="<%= link(`index.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
-    <meta property="og:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= link(`index.html`) %>" />
-    <meta property="twitter:title" content="<%=channelViewModel.channel.title%>" />
-    <meta property="twitter:description" content="<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+
+    <%~ 
+      include("_meta_tags", {
+        title: channelViewModel.channel.title,
+        url: 'index.html',
+        imageUrl: coverImageLink,
+        descriptionHTML: escapeExcerpt(channelViewModel.channel.descriptionHTML),
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
+
+
 
     <%~ it.baseViewModel.headEndContents %>
     
@@ -606,17 +611,16 @@
             })
 
 
-
-
-            document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`index.html`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>")
-
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`index.html`) %>")
-            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(channelViewModel.channel.descriptionHTML)%>" )
+            <%~ 
+              include("_meta_tags_js", {
+                title: channelViewModel.channel.title,
+                url: 'index.html',
+                imageUrl: coverImageLink,
+                descriptionHTML: escapeExcerpt(channelViewModel.channel.descriptionHTML),
+                hostname: hostname,
+                baseURL: baseURL
+              }) 
+            %>
 
             document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"
 

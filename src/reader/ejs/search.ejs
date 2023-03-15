@@ -22,6 +22,8 @@
       return `${hostname + baseURL + href}`
     }   
 
+    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+
 
 %>
 
@@ -50,17 +52,17 @@
       <%= it.title %>
     </title>
 
-    <meta property="og:title" content="Search '<%=channelViewModel.channel.title%>'" />
-    <meta property="og:type" content="" />
-    <meta property="og:url" content="<%= link(`search.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
-    <meta property="og:description" content="Search '<%=channelViewModel.channel.title%>' NFTs" />
+    <%~ 
+      include("_meta_tags", {
+        title: channelViewModel.channel.title,
+        url: 'search.html',
+        imageUrl: coverImageLink,
+        descriptionHTML: `Search '${channelViewModel.channel.title}' NFTs`,
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= link(`search.html`) %>" />
-    <meta property="twitter:title" content="Search '<%=channelViewModel.channel.title%>'" />
-    <meta property="twitter:description" content="Search '<%=channelViewModel.channel.title%>' NFTs" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%~ it.baseViewModel.headEndContents %>
 
@@ -158,15 +160,16 @@
         }
 
 
-        document.querySelector('meta[property="og:title"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>'")
-        document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`search.html`) %>")
-        document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-        document.querySelector('meta[property="og:description"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>' NFTs")
-
-        document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`search.html`) %>")
-        document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>'")
-        document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-        document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Search '<%=channelViewModel.channel.title%>' NFTs" )
+        <%~ 
+          include("_meta_tags_js", {
+            title: channelViewModel.channel.title,
+            url: 'search.html',
+            imageUrl: coverImageLink,
+            descriptionHTML: `Search '${channelViewModel.channel.title}' NFTs`,
+            hostname: hostname,
+            baseURL: baseURL
+          }) 
+        %>
 
         document.querySelector('title').innerHTML = "Search '<%=channelViewModel.channel.title%>' NFTs."
 

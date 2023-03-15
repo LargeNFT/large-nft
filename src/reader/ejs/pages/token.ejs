@@ -89,18 +89,18 @@
     <!-- Color theme for statusbar -->
     <title><%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %></title>
 
-    <meta property="og:title" content="<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="" />
-    <meta property="og:image" content="<%= coverImageLink %>" />
-    <meta property="og:description" content="<%= escapeExcerpt(itemViewModel.contentHTML)%>" />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="" />
-    <meta property="twitter:title" content="<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>" />
-    <meta property="twitter:description" content="<%= escapeExcerpt(itemViewModel.contentHTML) %>" />
-    <meta property="twitter:image" content="<%= coverImageLink %>" />
-    
+    <%~ 
+      include("_meta_tags", {
+        title: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
+        url: `t/${itemViewModel.item.tokenId}`,
+        imageUrl: coverImageLink,
+        descriptionHTML: escapeExcerpt(itemViewModel.contentHTML),
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
+
     <%~ it.baseViewModel.headEndContents %>
 
 </head>
@@ -489,8 +489,6 @@
                 $('.back-token-button').on('click', prev)
                 $('.continue-button').on('click', next)
 
-                // let activityStartChangedEvent = new CustomEvent('token-activity-start-changed')
-                // document.dispatchEvent(activityStartChangedEvent)
 
             }
 
@@ -501,11 +499,6 @@
                 try  {
 
 
-                    // transactionsViewModel = await transactionWebService.listByTokenFrom("<%= itemViewModel.item.tokenId  %>", 1000)
-
-                    // //Last updated won't be right because this only gets written when it actually changes.
-                    // let latest = await transactionWebService.getLatest()
-                    // transactionsViewModel.lastUpdated = latest.lastUpdated
 
                     token = await tokenService.get("<%= itemViewModel.item.tokenId  %>")
 
@@ -575,15 +568,17 @@
 
             }
 
-            document.querySelector('meta[property="og:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`token-${itemViewModel.item._id}`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= coverImageLink %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.contentHTML)%>")
+            <%~ 
+                include("_meta_tags_js", {
+                    title: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
+                    url: `t/${itemViewModel.item.tokenId}`,
+                    imageUrl: coverImageLink,
+                    descriptionHTML: escapeExcerpt(itemViewModel.contentHTML),
+                    hostname: hostname,
+                    baseURL: baseURL
+                }) 
+            %>
 
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`token-${itemViewModel.item._id}`) %>")
-            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= coverImageLink %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%= escapeExcerpt(itemViewModel.contentHTML)%>" )
 
             document.querySelector('title').innerHTML = "<%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %>"
 

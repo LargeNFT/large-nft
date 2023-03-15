@@ -32,6 +32,9 @@
       return it.baseViewModel.he.encode(excerpt.toString())
     }
 
+    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+
+
 %>
 
 <!DOCTYPE html>
@@ -59,17 +62,20 @@
       <%= it.title %>
     </title>
 
-    <meta property="og:title" content="Mint '<%=channelViewModel.channel.title%>'" />
-    <meta property="og:type" content="" />
-    <meta property="og:url" content="<%= link(`mint.html`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
-    <meta property="og:description" content="Mint '<%=channelViewModel.channel.title%>' NFTs" />
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= link(`mint.html`) %>" />
-    <meta property="twitter:title" content="Mint '<%=channelViewModel.channel.title%>'" />
-    <meta property="twitter:description" content="Mint '<%=channelViewModel.channel.title%>' NFTs" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+
+    <%~ 
+      include("_meta_tags", {
+        title: channelViewModel.channel.title,
+        url: 'mint.html',
+        imageUrl: coverImageLink,
+        descriptionHTML: `Mint '${channelViewModel.channel.title}' NFTs`,
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
+
+    
 
     <%~ it.baseViewModel.headEndContents %>
     
@@ -493,16 +499,16 @@
 
         })
 
-
-        document.querySelector('meta[property="og:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
-        document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
-        document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-        document.querySelector('meta[property="og:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs")
-
-        document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`mint.html`) %>")
-        document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>'")
-        document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-        document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Mint '<%=channelViewModel.channel.title%>' NFTs" )
+        <%~ 
+          include("_meta_tags_js", {
+            title: channelViewModel.channel.title,
+            url: 'mint.html',
+            imageUrl: coverImageLink,
+            descriptionHTML: `Mint '${channelViewModel.channel.title}' NFTs`,
+            hostname: hostname,
+            baseURL: baseURL
+          }) 
+        %>
 
         document.querySelector('title').innerHTML = "Mint '<%=channelViewModel.channel.title%>' NFTs."
 

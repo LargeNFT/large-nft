@@ -25,6 +25,10 @@
         excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
         return it.baseViewModel.he.encode(excerpt.toString())
     }
+
+    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+
+
 %>
 
 
@@ -53,17 +57,17 @@
         Largest Sales for <%=channelViewModel.channel.title%>
     </title>
 
-    <meta property="og:title" content="Largest Sales for <%=channelViewModel.channel.title%>" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="<%= link(`largest-sales`) %>" />
-    <meta property="og:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
-    <meta property="og:description" content="Largest Sales for <%=channelViewModel.channel.title%>" />
+    <%~ 
+      include("_meta_tags", {
+        title: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
+        url: 'largest-sales',
+        imageUrl: coverImageLink,
+        descriptionHTML: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= link(`largest-sales`) %>" />
-    <meta property="twitter:title" content="Largest Sales for <%=channelViewModel.channel.title%>" />
-    <meta property="twitter:description" content="Largest Sales for <%=channelViewModel.channel.title%>" />
-    <meta property="twitter:image" content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
 
     <%~ it.baseViewModel.headEndContents %>
     
@@ -234,16 +238,16 @@
 
             })
 
-
-            document.querySelector('meta[property="og:title"]').setAttribute("content", "Largest Sales for <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`largest-sales`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "Largest Sales for <%=channelViewModel.channel.title%>")
-
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`largest-sales`) %>")
-            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "Largest Sales <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "Largest Sales for <%=channelViewModel.channel.title%>" )
+            <%~ 
+                include("_meta_tags_js", {
+                    title: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
+                    url: 'largest-sales',
+                    imageUrl: coverImageLink,
+                    descriptionHTML: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
+                    hostname: hostname,
+                    baseURL: baseURL
+                }) 
+            %>
 
             document.querySelector('title').innerHTML = "Largest Sales <%=channelViewModel.channel.title%>"
 

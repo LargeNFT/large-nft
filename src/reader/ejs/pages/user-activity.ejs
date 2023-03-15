@@ -25,6 +25,9 @@
         excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
         return it.baseViewModel.he.encode(excerpt.toString())
     }
+
+    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+
 %>
 
 
@@ -53,19 +56,18 @@
         User Activity for <%=channelViewModel.channel.title%>
     </title>
 
-    <meta property="og:title" content="User Activity for <%=channelViewModel.channel.title%>" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="<%= link(`u`) %>" />
-    <meta property="og:image"
-        content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
-    <meta property="og:description" content="User Activity for <%=channelViewModel.channel.title%>" />
+    <%~ 
+      include("_meta_tags", {
+        title: `User Activity for ${channelViewModel.channel.title}`,
+        url: 'u/activity',
+        imageUrl: coverImageLink,
+        descriptionHTML: `User Activity for ${channelViewModel.channel.title}`,
+        hostname: hostname,
+        baseURL: baseURL
+      }) 
+    %>
 
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= link(`u`) %>" />
-    <meta property="twitter:title" content="User Activity for <%=channelViewModel.channel.title%>" />
-    <meta property="twitter:description" content="User Activity for <%=channelViewModel.channel.title%>" />
-    <meta property="twitter:image"
-        content="<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" />
+
 
     <%~ it.baseViewModel.headEndContents %>
 
@@ -322,15 +324,16 @@
             })
 
 
-            document.querySelector('meta[property="og:title"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= link(`u`) %>")
-            document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="og:description"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
-
-            document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= link(`u`) %>")
-            document.querySelector('meta[property="twitter:title"]').setAttribute("content", "User Activity <%=channelViewModel.channel.title%>")
-            document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= absoluteLink(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>")
-            document.querySelector('meta[property="twitter:description"]').setAttribute("content", "User Activity for <%=channelViewModel.channel.title%>")
+            <%~ 
+                include("_meta_tags_js", {
+                    title: `User Activity for ${channelViewModel.channel.title}`,
+                    url: 'u/activity',
+                    imageUrl: coverImageLink,
+                    descriptionHTML: `User Activity for ${channelViewModel.channel.title}`,
+                    hostname: hostname,
+                    baseURL: baseURL
+                }) 
+            %>
 
             document.querySelector('title').innerHTML = "User Activity <%=channelViewModel.channel.title%>"
 

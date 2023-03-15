@@ -63,7 +63,9 @@
 
     const imageLink = (rowItemViewModel) => {
 
-      if (rowItemViewModel.coverImageGenerated) {
+      if (!rowItemViewModel) return
+
+      if (rowItemViewModel?.coverImageGenerated) {
         return link('backup/export/images/' + rowItemViewModel.coverImageId + ".svg")
       }
 
@@ -84,14 +86,14 @@
 
           <td class="image">
             <a href="${baseURI}t/${event.tokenId}">
-              <img src="${imageLink(rowItemViewModels[event.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.tokenId].title}" height="50" width="50" /> 
+              <img src="${imageLink(rowItemViewModels[event.tokenId])}" class="latest-img" alt="${rowItemViewModels[event.tokenId]?.title}" height="50" width="50" /> 
             </a>
           </td>
 
           <td class="label-cell medium-only">
 
             <a href="${baseURI}t/${event.tokenId}" class="title">
-              ${rowItemViewModels[event.tokenId].title}            
+              ${rowItemViewModels[event.tokenId]?.title}            
             </a>
 
           </td>
@@ -242,6 +244,12 @@
 
   let transactionsViewModel
 
+  let handlerBody 
+
+  let handler = async (e) => {
+      return handlerBody(e)
+  }
+
   export default (props, { $, $on, $f7, $update }) => {
 
     let walletService = globalThis.container.get("WalletService")
@@ -254,6 +262,17 @@
 
     let rowItemViewModels = props.items
     let tokenId = props.token
+
+
+    handlerBody = async (e) => {
+      transactionsViewModel = e.transactionsViewModel
+      await $update()
+    }
+
+    // handle event
+    document.removeEventListener('transactions-updated', handler)
+    document.addEventListener('transactions-updated', handler)
+
 
     return $render
   }

@@ -23,10 +23,6 @@
       return `${hostname + baseURL + href}`
     }   
     
-    const escapeExcerpt = (excerpt) => {
-      excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
-      return it.baseViewModel.he.encode(excerpt.toString())
-    }
 
     const marketplaceLink = (marketplace) => {
 
@@ -60,26 +56,20 @@
       }
     </style>
 
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar -->
+
     <title>
       <%= it.title %>
     </title>
-
-
 
     <%~ 
       include("_meta_tags", {
         title: channelViewModel.channel.title,
         url: 'index.html',
         imageUrl: coverImageLink,
-        descriptionHTML: escapeExcerpt(channelViewModel.channel.descriptionHTML),
+        descriptionHTML: channelViewModel.channel.descriptionHTML,
         hostname: hostname,
-        baseURL: baseURL
+        baseURL: baseURL,
+        excerptHtml: it.baseViewModel.excerptHtml
       }) 
     %>
 
@@ -616,9 +606,10 @@
                 title: channelViewModel.channel.title,
                 url: 'index.html',
                 imageUrl: coverImageLink,
-                descriptionHTML: escapeExcerpt(channelViewModel.channel.descriptionHTML),
+                descriptionHTML: channelViewModel.channel.descriptionHTML,
                 hostname: hostname,
-                baseURL: baseURL
+                baseURL: baseURL,
+                excerptHtml: it.baseViewModel.excerptHtml
               }) 
             %>
 

@@ -1,11 +1,26 @@
-<meta property="og:title" content="<%=it.title%>" />
+<%
+
+    const escapeExcerpt = (excerpt) => {
+        excerpt = it.excerptHtml(excerpt, { pruneLength: 500 })
+        excerpt = excerpt.replaceAll('"', '&quot;')
+        return excerpt
+    }
+
+%>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta property="og:title" content="<%~it.title%>" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="<%= it.url %>" />
 <meta property="og:image" content="<%= it.imageUrl %>" />
-<meta property="og:description" content="<%= it.descriptionHTML%>" />
+<meta property="og:description" content="<%~ escapeExcerpt(it.descriptionHTML) %>" />
 
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content="<%= it.url %>" />
-<meta property="twitter:title" content="<%=it.title%>" />
-<meta property="twitter:description" content="<%= it.descriptionHTML%>" />
+<meta property="twitter:title" content="<%~it.title%>" />
+<meta property="twitter:description" content="<%~ escapeExcerpt(it.descriptionHTML) %>" />
 <meta property="twitter:image" content="<%= it.imageUrl %>" />

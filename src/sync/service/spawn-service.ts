@@ -108,7 +108,7 @@ class SpawnService {
 
         for (let filepath of filepaths) {
             filepath = filepath.replace("public/", "")
-            commands.push(`gsutil -m cp -Z ${filepath} gs://${bucketName}/${destinationDir}/public/${filepath}`)
+            commands.push(`gsutil cp -Z ${filepath} gs://${bucketName}/${destinationDir}/public/${filepath}`)
         }
 
         let chunks = []

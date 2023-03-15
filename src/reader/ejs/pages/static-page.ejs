@@ -24,10 +24,6 @@
         return `${hostname + baseURL + href}`
     }   
 
-    const escapeExcerpt = (excerpt) => {
-        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
-        return it.baseViewModel.he.encode(excerpt.toString())
-    }
 
     let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
@@ -49,12 +45,7 @@
     }
     </style>
 
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar -->
+
     <title>
         <%= staticPage.name %>
     </title>
@@ -65,9 +56,10 @@
         title: staticPage.name,
         url: `${staticPage.slug}.html`,
         imageUrl: coverImageLink,
-        descriptionHTML: escapeExcerpt(staticPage.contentHTML),
+        descriptionHTML: staticPage.contentHTML,
         hostname: hostname,
-        baseURL: baseURL
+        baseURL: baseURL,
+        excerptHtml: it.baseViewModel.excerptHtml
       }) 
     %>
 
@@ -143,9 +135,10 @@
                     title: staticPage.name,
                     url: `${staticPage.slug}.html`,
                     imageUrl: coverImageLink,
-                    descriptionHTML: escapeExcerpt(staticPage.contentHTML),
+                    descriptionHTML: staticPage.contentHTML,
                     hostname: hostname,
-                    baseURL: baseURL
+                    baseURL: baseURL,
+                    excerptHtml: it.baseViewModel.excerptHtml
                 }) 
             %>
 

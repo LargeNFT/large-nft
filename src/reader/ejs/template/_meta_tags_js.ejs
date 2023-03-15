@@ -1,9 +1,20 @@
-document.querySelector('meta[property="og:title"]').setAttribute("content", "<%=it.title%>")
+<%
+
+    const escapeExcerpt = (excerpt) => {
+        excerpt = it.excerptHtml(excerpt, { pruneLength: 500 })
+        excerpt = excerpt.replaceAll('"', '&quot;')
+        return excerpt
+    }
+
+%>
+
+
+document.querySelector('meta[property="og:title"]').setAttribute("content", "<%~it.title%>")
 document.querySelector('meta[property="og:url"]').setAttribute("content", "<%= it.url %>")
 document.querySelector('meta[property="og:image"]').setAttribute("content", "<%= it.imageUrl %>")
-document.querySelector('meta[property="og:description"]').setAttribute("content", "<%=  it.descriptionHTML %>")
+document.querySelector('meta[property="og:description"]').setAttribute("content", "<%~  escapeExcerpt(it.descriptionHTML) %>")
 
 document.querySelector('meta[property="twitter:url"]').setAttribute("content", "<%= it.url %>")
-document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%=it.title%>")
+document.querySelector('meta[property="twitter:title"]').setAttribute("content", "<%~it.title%>")
 document.querySelector('meta[property="twitter:image"]').setAttribute("content", "<%= it.imageUrl %>")
-document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%=  it.descriptionHTML %>" )
+document.querySelector('meta[property="twitter:description"]').setAttribute("content", "<%~  escapeExcerpt(it.descriptionHTML) %>" )

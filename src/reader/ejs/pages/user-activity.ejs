@@ -46,12 +46,6 @@
         }
     </style>
 
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar -->
     <title>
         User Activity for <%=channelViewModel.channel.title%>
     </title>
@@ -63,7 +57,8 @@
         imageUrl: coverImageLink,
         descriptionHTML: `User Activity for ${channelViewModel.channel.title}`,
         hostname: hostname,
-        baseURL: baseURL
+        baseURL: baseURL,
+        excerptHtml: it.baseViewModel.excerptHtml
       }) 
     %>
 
@@ -324,6 +319,20 @@
             })
 
 
+            $on('pageReinit', async () => {
+
+                await loadActivity()
+
+                //Dispatch event so we can refresh list
+                let ev = new CustomEvent('transactions-updated')
+                ev.transactionsViewModel = transactionsViewModel
+                document.dispatchEvent(ev)
+
+                $('.hide-on-pageinit').hide()
+
+            })
+
+
             <%~ 
                 include("_meta_tags_js", {
                     title: `User Activity for ${channelViewModel.channel.title}`,
@@ -331,7 +340,8 @@
                     imageUrl: coverImageLink,
                     descriptionHTML: `User Activity for ${channelViewModel.channel.title}`,
                     hostname: hostname,
-                    baseURL: baseURL
+                    baseURL: baseURL,
+                    excerptHtml: it.baseViewModel.excerptHtml
                 }) 
             %>
 

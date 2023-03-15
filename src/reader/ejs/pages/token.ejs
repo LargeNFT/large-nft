@@ -25,10 +25,6 @@
         return `${hostname + baseURL + href}`
     }   
 
-    const escapeExcerpt = (excerpt) => {
-        excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
-        return it.baseViewModel.he.encode(excerpt.toString())
-    }
 
     const marketplaceAssetLink = (marketplace, tokenId) => {
 
@@ -81,12 +77,7 @@
     }
     </style>
 
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar -->
+
     <title><%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %></title>
 
 
@@ -95,9 +86,10 @@
         title: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
         url: `t/${itemViewModel.item.tokenId}`,
         imageUrl: coverImageLink,
-        descriptionHTML: escapeExcerpt(itemViewModel.contentHTML),
+        descriptionHTML: itemViewModel.contentHTML,
         hostname: hostname,
-        baseURL: baseURL
+        baseURL: baseURL,
+        excerptHtml: it.baseViewModel.excerptHtml
       }) 
     %>
 
@@ -498,18 +490,9 @@
 
                 try  {
 
-
-
                     token = await tokenService.get("<%= itemViewModel.item.tokenId  %>")
 
-
                     transactionsViewModel = token.transactionsViewModel
-
-                    await transactionWebService.cacheENSNames(transactionsViewModel)
-
-                    //Reverse order
-                    transactionsViewModel?.transactions?.reverse()
-
 
                 } catch(ex) { console.log(ex) }
 
@@ -542,6 +525,12 @@
 
                 await loadActivity()
 
+                //Dispatch event so we can refresh list
+                let ev = new CustomEvent('transactions-updated')
+                ev.transactionsViewModel = transactionsViewModel
+                document.dispatchEvent(ev)
+
+
                 $('.swiper').show()
                 $('.hide-on-pageinit').hide()
 
@@ -573,9 +562,10 @@
                     title: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
                     url: `t/${itemViewModel.item.tokenId}`,
                     imageUrl: coverImageLink,
-                    descriptionHTML: escapeExcerpt(itemViewModel.contentHTML),
+                    descriptionHTML: itemViewModel.contentHTML,
                     hostname: hostname,
-                    baseURL: baseURL
+                    baseURL: baseURL,
+                    excerptHtml: it.baseViewModel.excerptHtml
                 }) 
             %>
 

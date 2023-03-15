@@ -47,12 +47,7 @@
     }
     </style>
 
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar -->
+
     <title>
         Largest Sales for <%=channelViewModel.channel.title%>
     </title>
@@ -64,7 +59,8 @@
         imageUrl: coverImageLink,
         descriptionHTML: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
         hostname: hostname,
-        baseURL: baseURL
+        baseURL: baseURL,
+        excerptHtml: it.baseViewModel.excerptHtml
       }) 
     %>
 
@@ -245,7 +241,8 @@
                     imageUrl: coverImageLink,
                     descriptionHTML: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
                     hostname: hostname,
-                    baseURL: baseURL
+                    baseURL: baseURL,
+                    excerptHtml: it.baseViewModel.excerptHtml
                 }) 
             %>
 

@@ -91,18 +91,24 @@
 
 <script>
 
+
+  let attributeOptions 
+  let filters = []
+  let attributeParams = {}
+
+  let handlerBody
+
+  let handler = async (e) => {
+    return handlerBody(e)
+  }
+
+
   export default (props, { $, $on, $f7, $update }) => {
 
+    filters = []
+    attributeParams = {}
 
-    let attributeOptions 
-
-
-    let filters = []
-    let attributeParams = {}
-
-
-
-    document.addEventListener('attribute-options-loaded', async (e) => {
+    handlerBody = async (e) => {
 
       attributeOptions = e.attributeOptions
 
@@ -112,7 +118,11 @@
       }
 
       await $update()
-    })
+    }
+
+
+    document.removeEventListener('attribute-options-loaded', handler)
+    document.addEventListener('attribute-options-loaded', handler)
 
 
     const attributeChange = (e) => {

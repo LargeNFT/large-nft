@@ -53,6 +53,11 @@ let syncPush = async () => {
           await git.commit('Committing changes')
           // await git.push('origin', status.current)
 
+          // let changedFiles = [...status.not_added, ...status.created, ...status.deleted, ...status.modified, ...status.staged]
+
+          // await spawnService.spawnGoogleCloudCopy(syncDirectory, changedFiles, config.deploy.googleCloud.bucketName, slug)
+
+
           //sync before starting
           await spawnService.spawnGoogleCloudSync(syncDirectory, config.deploy.googleCloud.bucketName, slug)
 

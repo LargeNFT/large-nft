@@ -1,8 +1,6 @@
 import { inject, injectable } from "inversify"
-import { validate, ValidationError } from "class-validator"
 
 import { WalletService } from "../../reader/service/core/wallet-service.js"
-import { ValidationException } from "../../reader/util/validation-exception.js"
 import { TokenOwner } from "../dto/token-owner.js"
 import { TokenOwnerRepository } from "../repository/token-owner-repository.js"
 

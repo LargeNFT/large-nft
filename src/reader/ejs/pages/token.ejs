@@ -89,7 +89,8 @@
         descriptionHTML: itemViewModel.contentHTML,
         hostname: hostname,
         baseURL: baseURL,
-        excerptHtml: it.baseViewModel.excerptHtml
+        excerptHtml: it.baseViewModel.excerptHtml,
+        he: it.baseViewModel.he
       }) 
     %>
 
@@ -244,10 +245,7 @@
                                                 <div class="card">
                                                     <div class="card-content card-content-padding">
                                                         ${token?.currentOwnerId ? $h`
-
-                                                            Owned by <a href="${link(`u/?address=${token?.currentOwnerId}`)}">
-                                                                ${transactionWebService.getDisplayName(token?.currentOwnerId)}
-                                                            </a>
+                                                            Owned by <a href="${link(`u/?address=${token?.currentOwnerId}`)}">${tokenOwnerDisplay}</a>
                                                         ` : $h`
                                                             NFT has not been <a href="${link(`mint.html`)}">minted</a> yet.
                                                         `}
@@ -398,6 +396,7 @@
 
             let readerSettingsService = globalThis.container.get("ReaderSettingsService")
             let tokenService = globalThis.container.get("TokenService")
+            let tokenOwnerService = globalThis.container.get("TokenOwnerService")
 
             let baseURI = globalThis.container.get("baseURI")
 
@@ -428,12 +427,14 @@
             let transactionsViewModel
 
             let token
+            let tokenOwnerDisplay
 
             let metadataURL = `${baseURI}backup/export/metadata/<%= itemViewModel.item.tokenId  %>.json`
 
 
             let contractAddress = walletService.truncateEthAddress('<%= itemViewModel.channel.contractAddress %>')
 
+            
 
             const link = (href) => {
               return baseURI + href
@@ -491,6 +492,7 @@
                 try  {
 
                     token = await tokenService.get("<%= itemViewModel.item.tokenId  %>")
+                    tokenOwnerDisplay = await tokenOwnerService.getDisplayName(token?.currentOwnerId)
 
                     transactionsViewModel = token.transactionsViewModel
 
@@ -565,7 +567,8 @@
                     descriptionHTML: itemViewModel.contentHTML,
                     hostname: hostname,
                     baseURL: baseURL,
-                    excerptHtml: it.baseViewModel.excerptHtml
+                    excerptHtml: it.baseViewModel.excerptHtml,
+                    he: it.baseViewModel.he
                 }) 
             %>
 

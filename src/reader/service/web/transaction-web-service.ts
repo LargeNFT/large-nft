@@ -90,25 +90,16 @@ class TransactionWebService {
     }
 
 
-    getDisplayName(_id) {
-        return this._ENSCache[_id]
-    }
+    // getDisplayName(_id) {
+    //     return this.tokenOwnerService.getDisplayName(_id)
+    // }
 
     async getSalesReport(): Promise<SalesReport> {
         return this.processedTransactionService.getSalesReport()
     }
 
     async getAttributeSalesReport(traitType:string, value:string): Promise<AttributeSaleReport> {
-
         return this.processedTransactionService.getAttributeSalesReport(traitType, value)
-
-        // console.log(report)
-
-        // if (!report) return
-
-        // //@ts-ignore
-        // report.largestSalesViewModels = await this.processedTransactionService.translateSalesToViewModels(report.largestSales)
-        // delete report.largestSales
     }
 
     async getAttributesOverall(): Promise<AttributeOverallSales> {
@@ -151,13 +142,13 @@ class TransactionWebService {
         return new Intl.NumberFormat('en-US', { currency: "USD", style:"currency" }).format(scaled) + suffix
     }
 
-    private async _cacheDisplayName(_id) {
+    // private async _cacheDisplayName(_id) {
 
-        if (!this._ENSCache[_id]) {
-            this._ENSCache[_id] = await this.tokenOwnerService.getDisplayName(_id)
-        }
+    //     if (!this._ENSCache[_id]) {
+    //         this._ENSCache[_id] = await this.tokenOwnerService.getDisplayName(_id)
+    //     }
 
-    }
+    // }
 
     // async cacheENSNames(transactionsViewModel:TransactionsViewModel) {
 

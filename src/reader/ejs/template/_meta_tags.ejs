@@ -1,8 +1,13 @@
 <%
 
     const escapeExcerpt = (excerpt) => {
-        excerpt = it.excerptHtml(excerpt, { pruneLength: 500 })
-        excerpt = excerpt.replaceAll('"', '&quot;')
+
+        excerpt = excerpt.replace(/<(?![br]\s*\/?)[^>]+>/g, '')
+
+        excerpt = excerpt.replaceAll('<br />', '&#x0A;')
+        excerpt = excerpt.replaceAll('<br/>', '&#x0A;')
+        excerpt = excerpt.replaceAll('<br>', '&#x0A;')
+
         return excerpt
     }
 

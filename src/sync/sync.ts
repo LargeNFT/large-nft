@@ -434,6 +434,12 @@ let sync = async () => {
       //Write full profile
       fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/tokenOwner.json`, Buffer.from(JSON.stringify(cloned)))
 
+      //Write latest ENS name
+      fs.writeFileSync(`${config.publicPath}/sync/tokenOwner/${owner}/ens.json`, Buffer.from(JSON.stringify({
+        name: cloned.ensName
+      })))
+
+
       //Get token rowItemViewModels
       let tokenIds = cloned.tokenIds.map( a => parseInt(a) )
       

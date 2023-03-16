@@ -1179,6 +1179,7 @@ html {
   margin-right: 5px;
   margin-left: 5px;
   display: inline-block;
+  font-size: 12px;
 }
 
 .address-cell {

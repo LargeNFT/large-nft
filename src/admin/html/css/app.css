@@ -1249,3 +1249,7 @@ input[type="text"]:disabled {
   margin-bottom: 60px;
   margin-right: 5px;
 }
+
+.welcome {
+  font-size: 1em;
+}

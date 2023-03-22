@@ -219,13 +219,15 @@ class TransactionIndexerService {
 
                         if (ercEvent.isTransfer) {
 
-                            //Update previous owner
-                            if (fromOwner.tokenIds.includes(tokenId)) {
-                                fromOwner.tokenIds = fromOwner.tokenIds?.filter(id => id != tokenId)
-                            }
+                            // //Update previous owner
+                            // if (fromOwner.tokenIds.includes(tokenId)) {
+                            //     fromOwner.tokenIds = fromOwner.tokenIds?.filter(id => id != tokenId)
+                            // }
 
-                            //Update new owner
-                            toOwner.tokenIds.push(tokenId)
+                            // //Update new owner
+                            // if (!toOwner.tokenIds.includes(tokenId)) {
+                            //     toOwner.tokenIds.push(tokenId)
+                            // }
 
                             token.currentOwnerId = toOwner._id
 
@@ -251,6 +253,8 @@ class TransactionIndexerService {
 
 
                 let transactionViewModel:TransactionViewModel = this.processedTransactionService.translateTransactionViewModel(processedTransaction, processedEvents)
+
+
 
 
                 //Grab token ids from transactions and save on transaction
@@ -296,6 +300,9 @@ class TransactionIndexerService {
                     })
 
                     result.ownersToUpdate[owner].transactionsViewModel.rowItemViewModels = await this.processedTransactionService.getRowItemViewModels(transactionViewModel.events)
+
+                    //Set token ids
+                    this.tokenOwnerService.setTokenIds(result.ownersToUpdate[owner])
 
                 }
 
@@ -590,7 +597,7 @@ class TransactionIndexerService {
     private getStartBlock(contractState: ContractState) {
         if (!contractState.lastIndexedBlock) return 0
 
-        let block = contractState.lastIndexedBlock - 15
+        let block = contractState.lastIndexedBlock - this.BLOCK_CONFIRMATIONS
 
         return block >= 0 ? block : 0
 

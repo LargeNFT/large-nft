@@ -84,6 +84,38 @@ class TokenOwnerService {
         return this.tokenOwnerRepository.rerank(options)
     }
 
+    async setTokenIds(tokenOwner:TokenOwner) {
+
+        tokenOwner.tokenIds = []
+
+        for (let transaction of tokenOwner.transactionsViewModel.transactions) {
+            
+            //Look through events
+            for (let event of transaction.events) {
+
+                if (event.toAddress && event.tokenId) {
+
+                    if (event.toAddress == tokenOwner._id) {
+
+                        //Add
+                        tokenOwner.tokenIds.push(event.tokenId)
+
+                    } else {
+
+                        //Remove
+                        if (tokenOwner.tokenIds.includes(event.tokenId)) {
+                            tokenOwner.tokenIds.splice( tokenOwner.tokenIds.indexOf(event.tokenId), 1 )
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
 
 
 }

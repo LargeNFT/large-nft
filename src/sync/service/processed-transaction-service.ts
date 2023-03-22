@@ -398,6 +398,9 @@ class ProcessedTransactionService {
             //Remove transactions after start block
             result.ownersToUpdate[user].transactionsViewModel.transactions = result.ownersToUpdate[user].transactionsViewModel?.transactions.filter( tvm => tvm.transaction.blockNumber < result.startBlock)
 
+            //Figure out which tokens they own 
+            await this.tokenOwnerService.setTokenIds(result.ownersToUpdate[user])
+
         }
 
 

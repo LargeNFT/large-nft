@@ -6,7 +6,6 @@ import { AuthorRepository } from "../../repository/author-repository.js"
 import { ChannelRepository } from "../../repository/channel-repository.js"
 import { ComponentStateRepository } from "../../repository/component-state-repository.js"
 
-// import { ERCEventRepository } from "../../repository/erc-event-repository.js"
 import { ImageRepository } from "../../repository/image-repository.js"
 import { ItemRepository } from "../../repository/item-repository.js"
 import { ReaderSettingsRepository } from "../../repository/reader-settings-repository.js"
@@ -41,11 +40,7 @@ class SchemaService {
     @inject("RowItemViewModelRepository")
     private rowItemViewModelRepository:RowItemViewModelRepository
 
-    // @inject("ContractStateRepository")
-    // private contractStateRepository:ContractStateRepository
 
-    // @inject("ERCEventRepository")
-    // private ercEventRepository:ERCEventRepository
 
     @inject("AttributeTotalRepository")
     private attributeTotalRepository:AttributeTotalRepository
@@ -53,23 +48,6 @@ class SchemaService {
     @inject("ComponentStateRepository")
     private componentStateRepository:ComponentStateRepository
 
-    // @inject("TokenOwnerRepository")
-    // private tokenOwnerRepository:TokenOwnerRepository
-
-    // @inject("TransactionRepository")
-    // private transactionRepository:TransactionRepository
-
-    // @inject("ProcessedTransactionRepository")
-    // private processedTransactionRepository:ProcessedTransactionRepository
-
-    // @inject("TokenRepository")
-    // private tokenRepository:TokenRepository
-
-    // @inject("ENSRepository")
-    // private ensRepository:ENSRepository
-
-    // @inject("BlockRepository")
-    // private blockRepository:BlockRepository
 
     constructor() {
 
@@ -90,17 +68,9 @@ class SchemaService {
         repositories.push(this.staticPageRepository)
         repositories.push(this.readerSettingsRepository)
 
-        // repositories.push(this.contractStateRepository)
-        // repositories.push(this.ercEventRepository)
         repositories.push(this.attributeTotalRepository)
         repositories.push(this.componentStateRepository)
         repositories.push(this.rowItemViewModelRepository)
-        // repositories.push(this.tokenOwnerRepository)
-        // repositories.push(this.transactionRepository)
-        // repositories.push(this.blockRepository)
-        // repositories.push(this.tokenRepository)
-        // repositories.push(this.processedTransactionRepository)
-        // repositories.push(this.ensRepository)
 
         for (let db of dbs) {
 
@@ -119,22 +89,7 @@ class SchemaService {
     async loadWallet(walletAddress:string) {
 
         console.log(`Loading wallet: ${walletAddress}`)
-
-
-
-
-        //Open and cache databases
-        // await this.authorRepository.load(walletAddress)
-        // await this.channelRepository.load(walletAddress)
-        // await this.imageRepository.load(walletAddress)
-        // await this.itemRepository.load(walletAddress)
-        // await this.pinningApiRepository.load(walletAddress)
-        // await this.gitlabRepository.load(walletAddress)
-        // await this.animationRepository.load(walletAddress)
-        // await this.themeRepository.load(walletAddress)
-        // await this.staticPageRepository.load(walletAddress)
-        // await this.ipfsHostRepository.load(walletAddress)
-
+        
     }
 
 

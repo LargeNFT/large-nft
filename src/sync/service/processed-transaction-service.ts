@@ -181,6 +181,7 @@ class ProcessedTransactionService {
 
         let tokenOwners = await this.tokenOwnerService.getByIds(addresses, options)
 
+
         for (let tokenOwner of tokenOwners) {
             ens[tokenOwner._id] = tokenOwner.ensName ? tokenOwner.ensName : this.walletService.truncateEthAddress(tokenOwner._id)
         }

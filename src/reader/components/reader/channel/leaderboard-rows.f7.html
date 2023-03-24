@@ -11,9 +11,9 @@
             <td class="address-cell">
 
                 ${u.ensName ? $h`
-                    <a href="<%= baseURL %>u/?address=${u._id}">${u.ensName}</a>
+                    <a href="${baseURI}u/?address=${u._id}">${u.ensName}</a>
                 ` : $h`
-                    <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
+                    <a href="${baseURI}u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
                 `} 
 
             </td>
@@ -54,6 +54,9 @@
 
     let transactionWebService = globalThis.container.get("TransactionWebService")
     let walletService = globalThis.container.get("WalletService")
+
+    let baseURI = globalThis.container.get("baseURI")
+
 
     let tokenOwners = props.token_owners
 

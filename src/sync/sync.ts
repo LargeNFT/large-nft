@@ -253,7 +253,7 @@ let sync = async () => {
 
     //Write transactions to file
     await writeTransactionsToDisk(indexResult)
-    await writeTokensToDisk(indexResult)
+    await writeTokensToDisk(indexResult, options)
     await writeTokenOwnersToDisk(indexResult, options)
     await writeActivityFeedToDisk(indexResult, options)
 
@@ -478,7 +478,7 @@ let sync = async () => {
 
   }
 
-  async function writeTokensToDisk(indexResult: ERCIndexResult) {
+  async function writeTokensToDisk(indexResult: ERCIndexResult, options?:any) {
 
     console.time(`Writing ${Object.keys(indexResult.tokensToUpdate).length} updated tokens to disk.`)
 
@@ -489,6 +489,15 @@ let sync = async () => {
       if (!fs.existsSync(`${config.publicPath}/sync/tokens/${tokenId}`)) {
         fs.mkdirSync(`${config.publicPath}/sync/tokens/${tokenId}`, { recursive: true })
       }
+
+
+      //Grab ENS
+      let allEvents = [] 
+      
+      indexResult.tokensToUpdate[tokenId].transactionsViewModel.transactions.map( t => allEvents.push(...t.events))
+
+      indexResult.tokensToUpdate[tokenId].transactionsViewModel.ens = await processedTransactionService.getEnsFromEvents(allEvents, options)
+
 
       //Save token
       fs.writeFileSync(`${config.publicPath}/sync/tokens/${tokenId}/token.json`, Buffer.from(JSON.stringify(indexResult.tokensToUpdate[tokenId])))

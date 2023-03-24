@@ -79,7 +79,7 @@ class SchemaService {
 
         const repositories = []
 
-        // repositories.push(this.itemRepository)
+        repositories.push(this.itemRepository)
         repositories.push(this.channelRepository)
         repositories.push(this.authorRepository)
         repositories.push(this.imageRepository)

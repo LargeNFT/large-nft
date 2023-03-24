@@ -10,6 +10,10 @@ class TokenOwnerPageRepositoryNodeImpl implements TokenOwnerPageRepository {
         @inject('baseDir') private baseDir
     ) {}
 
+    async getHome(): Promise<TokenOwnerPage> {
+        return JSON.parse(fs.readFileSync(`${this.baseDir}/public/sync/tokenOwner/pages/home.json`, 'utf8'))
+    }
+
     async getTotals(): Promise<TokenOwnerPageTotals> {
         return JSON.parse(fs.readFileSync(`${this.baseDir}/public/sync/tokenOwner/pages/total.json`, 'utf8'))
 

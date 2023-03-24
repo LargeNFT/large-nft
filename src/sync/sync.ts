@@ -251,14 +251,13 @@ let sync = async () => {
     console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
 
 
+
+
     //Write transactions to file
     await writeTransactionsToDisk(indexResult)
     await writeTokensToDisk(indexResult)
     await writeTokenOwnersToDisk(indexResult, options)
     await writeActivityFeedToDisk(indexResult, options)
-
-    //Get list for home page and save it.
-    await writeRecentActivityToDisk(options)
 
 
     //Generate token owner pages for leaderboard
@@ -266,7 +265,35 @@ let sync = async () => {
 
     //Sales reports
     await writeSalesReportsToDisk()
+
+    //Write home page model
+    await writeHomeToDisk(options)
   
+  }
+
+
+  async function writeHomeToDisk(options?:any) { 
+
+    let homeViewModel:any = {}
+
+    homeViewModel.recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.list(15, 0, options), new Date().toJSON())
+    homeViewModel.largestSales = await processedTransactionService.getLargestSales(15)
+
+    //Write top 10 to put on homepage
+    let top10:TokenOwner[] = await tokenOwnerService.list(10, 0, options)
+
+    if (top10?.length > 0) {
+      let top10Pages = await tokenOwnerPageService.buildTokenOwnerPages(top10, 10)
+      homeViewModel.leaderboard = top10Pages[0]
+    } 
+
+    homeViewModel.salesReport = await processedTransactionService.getSalesReport()
+
+
+    await fs.promises.writeFile(`${config.publicPath}/sync/home.json`, Buffer.from(JSON.stringify(homeViewModel)))
+
+
+
   }
 
   async function writeActivityFeedToDisk(indexResult, options?:any) {
@@ -295,14 +322,7 @@ let sync = async () => {
   }
 
 
-  async function writeRecentActivityToDisk(options: any) {
 
-    console.time(`Writing recent activity to disk.`)
-    let recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.list(15, 0, options), new Date().toJSON())
-    fs.writeFileSync(`${config.publicPath}/sync/transactions/recentActivity.json`, Buffer.from(JSON.stringify(recent)))
-    console.timeEnd(`Writing recent activity to disk.`)
-
-  }
 
   async function writeSalesReportsToDisk() {
 
@@ -314,9 +334,6 @@ let sync = async () => {
 
     //Largest sales
     console.time(`Generating largest sales...`)
-    let largestSales15 = await processedTransactionService.getLargestSales(15)
-    fs.writeFileSync(`${config.publicPath}/sync/sales/largest-15.json`, Buffer.from(JSON.stringify(largestSales15)))
-
     let largestSales100 = await processedTransactionService.getLargestSales(100)
     fs.writeFileSync(`${config.publicPath}/sync/sales/largest-100.json`, Buffer.from(JSON.stringify(largestSales100)))
     console.timeEnd(`Generating largest sales...`)
@@ -366,7 +383,6 @@ let sync = async () => {
     await fs.promises.mkdir(`${config.publicPath}/sync/tokenOwner/pages`, { recursive: true })
 
     for (let tokenOwnerPage of tokenOwnerPages) {
-      // console.log(`Writing token owner page: ${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`)
       await fs.promises.writeFile(`${config.publicPath}/sync/tokenOwner/pages/${pageCount}.json`, JSON.stringify(tokenOwnerPage))
       pageCount++
     }

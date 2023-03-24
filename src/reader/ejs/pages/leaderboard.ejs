@@ -101,66 +101,32 @@
                                     <span class="large-only">Leaderboard</span>
                                 </div>
 
+
                                 <div class="card data-table">
                                     <div class="card-content">
                                         
-                                        <table class="leaderboard-table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="label-cell">Rank</th>
-                                                    <th class="address-cell">Address</th>
-                                                    <th class="numeric-cell">Owned</th>
-                                                    <th class="numeric-cell">Buys</th>
-                                                    <th class="numeric-cell">Sales</th>
-                                                    <th class="text-cell">Last Active</th>
-
-                                                </tr>
-                                            </thead>
-                                    
-                                            <tbody>
-                                    
-                                            ${tokenOwners?.map(u => $h`
-                                                <tr>
-                                                    <td class="label-cell">
-                                                        ${u.rank}
-                                                    </td>
-
-                                                    <td class="address-cell">
-
-                                                        ${u.ensName ? $h`
-                                                            <a href="<%= baseURL %>u/?address=${u._id}">${u.ensName}</a>
-                                                        ` : $h`
-                                                            <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
-                                                        `} 
-
-                                                    </td>
-                                    
-                                        
-                                                    <td class="numeric-cell">
-                                                        ${u.count}
-                                                    </td>
-                                        
-                                                    <td class="numeric-cell">
-                                                        <strong>${new Intl.NumberFormat('en-US').format(u.salesReport?.buys?.ethValue ? u.salesReport?.buys?.ethValue : 0)}</strong> ETH <br />
-                                                        ${transactionWebService.abbreviateDollars(u.salesReport?.buys?.usdValue ? u.salesReport?.buys?.usdValue : 0, 2)}
-                                                    </td>
-                                  
-                                                    <td class="numeric-cell">
-                                                        <strong>${new Intl.NumberFormat('en-US').format(u.salesReport?.sales?.ethValue ? u.salesReport?.sales?.ethValue : 0)}</strong> ETH <br />
-                                                        ${transactionWebService.abbreviateDollars(u.salesReport?.sales?.usdValue ? u.salesReport?.sales?.usdValue : 0, 2)}
-                                                    </td>
-
-                                                    <td class="text-cell">
-                                                        ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
-                                                    </td>
-
-
-                                                </tr>
+                                        ${tokenOwners?.length > 0 ? $h`
                                             
-                                            `)}
-                                            </tbody>
-                                
-                                        </table>
+                                            <table class="leaderboard-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="label-cell">Rank</th>
+                                                        <th class="address-cell">Address</th>
+                                                        <th class="numeric-cell">Owned</th>
+                                                        <th class="numeric-cell">Buys</th>
+                                                        <th class="numeric-cell">Sales</th>
+                                                        <th class="text-cell">Last Active</th>
+    
+                                                    </tr>
+                                                </thead>
+                                        
+                                                <leaderboard-rows token_owners="${tokenOwners}"></leaderboard-rows>
+    
+                                    
+                                            </table>
+                                    
+                                            
+                                        ` : $h`<span  />`}
                                                                 
                                     </div>
                                 </div>

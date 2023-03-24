@@ -11,6 +11,11 @@ class TokenOwnerPageRepositoryBrowserImpl implements TokenOwnerPageRepository {
         @inject("hostname") private hostname
     ) {}
 
+    async getHome(): Promise<TokenOwnerPage> {
+        const response = await axios.get(`${this.hostname}${this.baseURI}sync/tokenOwner/pages/home.json`)    
+        return response.data
+    }
+
     async getTotals(): Promise<TokenOwnerPageTotals> {
         const response = await axios.get(`${this.hostname}${this.baseURI}sync/tokenOwner/pages/total.json`)    
         return response.data

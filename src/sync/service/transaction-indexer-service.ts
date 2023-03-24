@@ -218,19 +218,7 @@ class TransactionIndexerService {
                         toOwner = await this._getTokenOwner(ercEvent.namedArgs.toAddress, result, options)
 
                         if (ercEvent.isTransfer) {
-
-                            // //Update previous owner
-                            // if (fromOwner.tokenIds.includes(tokenId)) {
-                            //     fromOwner.tokenIds = fromOwner.tokenIds?.filter(id => id != tokenId)
-                            // }
-
-                            // //Update new owner
-                            // if (!toOwner.tokenIds.includes(tokenId)) {
-                            //     toOwner.tokenIds.push(tokenId)
-                            // }
-
                             token.currentOwnerId = toOwner._id
-
                         }
 
                     }

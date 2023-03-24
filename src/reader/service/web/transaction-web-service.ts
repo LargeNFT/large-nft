@@ -14,16 +14,16 @@ class TransactionWebService {
     @inject("ProcessedTransactionService")
     private processedTransactionService:ProcessedTransactionService
 
-    @inject("TokenOwnerService")
-    private tokenOwnerService:TokenOwnerService
-
-
-
-    private _ENSCache = {}
 
     constructor(
         @inject("baseURI") private baseURI
     ) {}
+
+    async getHomeViewModel() {
+        let result = await axios.get(`${this.baseURI}sync/home.json`)
+        return result.data
+    }
+
 
     async list(page?:number) : Promise<TransactionsViewModel> {
 
@@ -35,8 +35,6 @@ class TransactionWebService {
         let transactionsViewModel = result.data
 
         transactionsViewModel.lastUpdated = latest.lastUpdated
-
-        // await this.cacheENSNames(transactionsViewModel)
 
         return transactionsViewModel
 
@@ -83,16 +81,10 @@ class TransactionWebService {
         let transactionsViewModel:TransactionsViewModel = result.data
 
 
-        // await this.cacheENSNames(transactionsViewModel)
-
         return transactionsViewModel
 
     }
 
-
-    // getDisplayName(_id) {
-    //     return this.tokenOwnerService.getDisplayName(_id)
-    // }
 
     async getSalesReport(): Promise<SalesReport> {
         return this.processedTransactionService.getSalesReport()
@@ -142,53 +134,6 @@ class TransactionWebService {
         return new Intl.NumberFormat('en-US', { currency: "USD", style:"currency" }).format(scaled) + suffix
     }
 
-    // private async _cacheDisplayName(_id) {
-
-    //     if (!this._ENSCache[_id]) {
-    //         this._ENSCache[_id] = await this.tokenOwnerService.getDisplayName(_id)
-    //     }
-
-    // }
-
-    // async cacheENSNames(transactionsViewModel:TransactionsViewModel) {
-
-    //     for (let transaction of transactionsViewModel.transactions) {
-
-    //         for (let processedEvent of transaction.events) {
-
-    //             if (processedEvent.fromAddress?.length > 0 ) {
-    //                 await this._cacheDisplayName(processedEvent.fromAddress)
-    //             }
-    
-    
-    //             if (processedEvent.toAddress?.length > 0 ) {
-    //                 await this._cacheDisplayName(processedEvent.toAddress)
-    //             }
-    
-    
-    //             if (processedEvent.namedArgs.owner?.length > 0 ) {
-    //                 await this._cacheDisplayName(processedEvent.namedArgs.owner)
-    //             }
-    
-    
-    //             if (processedEvent.namedArgs.operator?.length > 0 ) {
-    //                 await this._cacheDisplayName(processedEvent.namedArgs.operator)
-    //             }
-
-    //             if (processedEvent.namedArgs.approved?.length > 0 ) {
-    //                 await this._cacheDisplayName(processedEvent.namedArgs.approved)
-    //             }
-                
-    //         }
-
-
-    //         await this._cacheDisplayName(transaction.transaction.transactionFrom)
-    //     }
-
-
-
-        
-    // }
 
 }
 

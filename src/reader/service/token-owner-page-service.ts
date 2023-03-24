@@ -13,6 +13,10 @@ class TokenOwnerPageService {
     constructor(
     ) { }
 
+    async getHome(): Promise<TokenOwnerPage> {
+        return this.tokenOwnerPageRepository.getHome()
+    }
+
     async get(pageNumber: number): Promise<TokenOwnerPage> {
         return this.tokenOwnerPageRepository.get(pageNumber)
     }

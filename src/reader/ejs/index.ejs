@@ -290,7 +290,7 @@
 
                       
                       <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.events ? homeViewModel?.salesReport?.totals?.events : 0)}</strong>
                       </div>
                     </div>
 
@@ -301,7 +301,7 @@
                       </div>
 
                       <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)}</span>
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.averageEthValue ? homeViewModel?.salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.averageUsdValue ? homeViewModel?.salesReport?.totals?.averageUsdValue : 0, 2)}</span>
                       </div>
                       
 
@@ -314,7 +314,7 @@
                       </div>
                       
                       <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)}</span>
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.ethValue ? homeViewModel?.salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.usdValue ? homeViewModel?.salesReport?.totals?.usdValue : 0, 2)}</span>
                       </div>
                     </div>
                   </div>
@@ -328,7 +328,7 @@
                       </div>
 
                       <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.dayTotals?.ethValue ? salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.dayTotals?.usdValue ? salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.dayTotals?.ethValue ? homeViewModel?.salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.dayTotals?.usdValue ? homeViewModel?.salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
                       </div>
                     </div>
 
@@ -340,7 +340,7 @@
 
                       
                       <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.monthTotals?.ethValue ? salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.monthTotals?.usdValue ? salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.monthTotals?.ethValue ? homeViewModel?.salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.monthTotals?.usdValue ? homeViewModel?.salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
                       </div>
                     </div>
 
@@ -351,7 +351,7 @@
                       </div>
 
                       <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(salesReport?.yearTotals?.ethValue ? salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.yearTotals?.usdValue ? salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.yearTotals?.ethValue ? homeViewModel?.salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.yearTotals?.usdValue ? homeViewModel?.salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
                       </div>
                     </div>
 
@@ -368,11 +368,50 @@
 
                 </div>
 
+                ${homeViewModel?.leaderboard?.tokenOwners?.length > 0 ? $h`
+                  
+                  <div class="block-title block-title-medium">Leaderboard</div>
+                  <div class="card data-table">
+                    <div class="card-content">
+                        
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th class="label-cell">Rank</th>
+                                    <th class="address-cell">Address</th>
+                                    <th class="numeric-cell">Owned</th>
+                                    <th class="numeric-cell">Buys</th>
+                                    <th class="numeric-cell">Sales</th>
+                                    <th class="text-cell">Last Active</th>
+  
+                                </tr>
+                            </thead>
+                    
+                            <leaderboard-rows token_owners="${homeViewModel?.leaderboard?.tokenOwners}"></leaderboard-rows>
+  
+                        </table>
+                                                
+                    </div>
+                  </div>
 
-                ${largestSales && largestSales?.sales?.length > 0 ? $h`
+                  
+                  <div class="block margin-top margin-bottom">
+                    <div class="row">
+                        <div class="col-50"></div>
+                        <div class="col-50">
+                          <a href="${link('leaderboard')}" class="button button-fill">View Leaderboard</a>
+                        </div>
+                    </div>
+                  </div>
+                  
+                ` : $h`<span />`}
+
+
+
+                ${homeViewModel?.largestSales && homeViewModel.largestSales?.sales?.length > 0 ? $h`
                   <div class="block-title block-title-medium">Largest Sales</div>
 
-                  <largest-sales largest_sales="${largestSales}"></largest-sales>
+                  <largest-sales largest_sales="${homeViewModel?.largestSales}"></largest-sales>
 
 
                   <div class="block margin-top margin-bottom">
@@ -387,15 +426,15 @@
                 ` : $h` `}
 
 
-                ${transactionsViewModel?.transactions?.length > 0 ? $h`
+                ${homeViewModel?.recent?.transactions?.length > 0 ? $h`
   
                   <div class="block-title block-title-medium">
-                    <div class="last-updated">Updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                    <div class="last-updated">Updated: ${moment(homeViewModel?.recent.lastUpdated).fromNow()}</div>
                     Recent Activity
                   </div>
                   
 
-                  <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                  <transaction-row transactions="${homeViewModel.recent}" items="${homeViewModel?.recent.rowItemViewModels}"></transaction-row>
 
                   <div class="block margin-top margin-bottom">
                     <div class="row">
@@ -521,6 +560,7 @@
               
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let itemWebService = globalThis.container.get("ItemWebService")
+            let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
 
             let baseURI = globalThis.container.get("baseURI")
 
@@ -529,14 +569,9 @@
 
             const PER_PAGE = 35
 
-
-            let transactionsViewModel 
-            let salesReport
-            let largestSales
+            let homeViewModel
 
             let loading = true
-
-
 
             let firstPageExploreItems 
 
@@ -552,19 +587,16 @@
 
               try  {
 
-                transactionsViewModel = await transactionWebService.getRecentActivity()
+                homeViewModel = await transactionWebService.getHomeViewModel()
 
                 //Last updated won't be right because this only gets written when it actually changes.
                 let latest = await transactionWebService.getLatest()
-                transactionsViewModel.lastUpdated = latest.lastUpdated
+                homeViewModel.largestSales.lastUpdated = latest.lastUpdated
+
 
                 await $update()
 
-                salesReport = await transactionWebService.getSalesReport()
-
-                await $update()
-
-                largestSales = await transactionWebService.getLargestSales(15)
+                
 
               } catch(ex) { console.log(ex) }
 

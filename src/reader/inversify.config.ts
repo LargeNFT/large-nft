@@ -61,6 +61,7 @@ import MintInfo from './components/reader/channel/mint-info.f7.html'
 import LargestSales from './components/reader/channel/largest-sales.f7.html'
 
 import TransactionRow from './components/reader/channel/transaction-row.f7.html'
+import LeaderboardRows from './components/reader/channel/leaderboard-rows.f7.html'
 
 
 
@@ -166,6 +167,9 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
     Framework7.registerComponent("transaction-viewer", Transaction)
     Framework7.registerComponent("transaction-row", TransactionRow)
+
+    Framework7.registerComponent("leaderboard-rows", LeaderboardRows)
+
 
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)

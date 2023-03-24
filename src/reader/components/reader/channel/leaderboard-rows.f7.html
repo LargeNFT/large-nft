@@ -1,0 +1,63 @@
+<template>
+  
+  <tbody>
+                                    
+    ${tokenOwners?.map(u => $h`
+        <tr>
+            <td class="label-cell">
+                ${u.rank}
+            </td>
+
+            <td class="address-cell">
+
+                ${u.ensName ? $h`
+                    <a href="<%= baseURL %>u/?address=${u._id}">${u.ensName}</a>
+                ` : $h`
+                    <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
+                `} 
+
+            </td>
+
+
+            <td class="numeric-cell">
+                ${u.count}
+            </td>
+
+            <td class="numeric-cell">
+                <strong>${new Intl.NumberFormat('en-US').format(u.salesReport?.buys?.ethValue ? u.salesReport?.buys?.ethValue : 0)}</strong> ETH <br />
+                ${transactionWebService.abbreviateDollars(u.salesReport?.buys?.usdValue ? u.salesReport?.buys?.usdValue : 0, 2)}
+            </td>
+
+            <td class="numeric-cell">
+                <strong>${new Intl.NumberFormat('en-US').format(u.salesReport?.sales?.ethValue ? u.salesReport?.sales?.ethValue : 0)}</strong> ETH <br />
+                ${transactionWebService.abbreviateDollars(u.salesReport?.sales?.usdValue ? u.salesReport?.sales?.usdValue : 0, 2)}
+            </td>
+
+            <td class="text-cell">
+                ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
+            </td>
+
+
+        </tr>
+    
+    `)}
+    </tbody>
+
+</template>
+
+
+
+<script>
+
+
+  export default (props, { $, $on, $f7, $update }) => {
+
+    let transactionWebService = globalThis.container.get("TransactionWebService")
+    let walletService = globalThis.container.get("WalletService")
+
+    let tokenOwners = props.token_owners
+
+    return $render
+  }
+
+</script>

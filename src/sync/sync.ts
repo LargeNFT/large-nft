@@ -251,8 +251,6 @@ let sync = async () => {
     console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
 
 
-
-
     //Write transactions to file
     await writeTransactionsToDisk(indexResult)
     await writeTokensToDisk(indexResult)

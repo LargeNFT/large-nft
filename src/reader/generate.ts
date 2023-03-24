@@ -509,6 +509,17 @@ let generate = async () => {
   let maxTokenId = Math.max(...itemViewModels.map(i => i.item.tokenId))
 
 
+
+  let rowItemViewModels = []
+
+  //Write all row item view models
+  for (let itemViewModel of itemViewModels) {
+    rowItemViewModels.push(itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage))
+  }
+
+  fs.writeFileSync(`${config.publicPath}/t/all.json`, Buffer.from(JSON.stringify(rowItemViewModels)))
+
+  
   //Read the template file 
   for (let itemViewModel of itemViewModels) {
 
@@ -517,20 +528,20 @@ let generate = async () => {
     let previous 
     let next 
 
-    if (itemViewModel.item.tokenId != minTokenId) {
-      previous = itemViewModels.filter( ivm => ivm.item.tokenId == itemViewModel.item.tokenId - 1)[0]
+    if (rowItemViewModel.tokenId != minTokenId) {
+      previous = itemViewModels.filter( ivm => ivm.item.tokenId == rowItemViewModel.tokenId - 1)[0]
     }
 
-    if (itemViewModel.item.tokenId != maxTokenId) {
-      next = itemViewModels.filter( ivm => ivm.item.tokenId == itemViewModel.item.tokenId + 1)[0]
+    if (rowItemViewModel.tokenId != maxTokenId) {
+      next = itemViewModels.filter( ivm => ivm.item.tokenId == rowItemViewModel.tokenId + 1)[0]
     }
 
 
     //Generate the token page
-    console.time(`Generating /t/${itemViewModel.item.tokenId}`)
+    console.time(`Generating /t/${rowItemViewModel.tokenId}`)
 
     const result = Eta.render(tokenEjs, {
-      title: itemViewModel.item.title,
+      title: rowItemViewModel.title,
       itemViewModel: itemViewModel,
       baseViewModel: baseViewModel,
       previous: previous,
@@ -538,21 +549,23 @@ let generate = async () => {
     })
 
 
-    fs.mkdirSync(`${config.publicPath}/t/${itemViewModel.item.tokenId}`, { recursive: true })
+    fs.mkdirSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}`, { recursive: true })
 
     //Write the HTML page
-    fs.writeFileSync(`${config.publicPath}/t/${itemViewModel.item.tokenId}/index.html`, result)
+    fs.writeFileSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}/index.html`, result)
 
     //Write rowItemViewModel
-    fs.writeFileSync(`${config.publicPath}/t/${itemViewModel.item.tokenId}/rowItemViewModel.json`, Buffer.from(JSON.stringify(rowItemViewModel)))
+    fs.writeFileSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}/rowItemViewModel.json`, Buffer.from(JSON.stringify(rowItemViewModel)))
 
     //Generate any images we need
     await generateService.generateImages(config, itemViewModel)
 
 
-    console.timeEnd(`Generating /t/${itemViewModel.item.tokenId}`)
+    console.timeEnd(`Generating /t/${rowItemViewModel.tokenId}`)
 
   }
+
+
 
 
   //Generate webp version of channel cover image

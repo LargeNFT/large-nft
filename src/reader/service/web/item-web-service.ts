@@ -310,7 +310,7 @@ class ItemWebService {
 
     async exploreList(params:any, skip: number, limit?:number): Promise<ItemResults> {
 
-        await this.schemaService.load(["channels", "authors", "attribute-totals"])
+        await this.schemaService.load(["channels", "authors", "attribute-totals", "row-item-view-models"])
         
 
         if (params && Object.keys(params)?.length > 0) {
@@ -338,7 +338,7 @@ class ItemWebService {
 
     async exploreQuery(params:any,  skip: number, limit?:number): Promise<ItemResults> {
 
-        await this.schemaService.load([ "channels", "authors", "attribute-totals"])
+        await this.schemaService.load([ "channels", "authors", "attribute-totals", "row-item-view-models"])
         
         let attributeTotals:AttributeTotal[] = await this.attributeTotalService.list()
 
@@ -348,7 +348,7 @@ class ItemWebService {
         let totalMatches = filteredIds.length
         filteredIds = filteredIds.slice(skip, skip + limit)
 
-        let viewModels:RowItemViewModel[] = await this.itemService.getRowItemViewModelsByTokenIds(filteredIds)
+        let viewModels:RowItemViewModel[] = await this.itemService.searchTokenIds(filteredIds)
 
         return {
             items: viewModels,

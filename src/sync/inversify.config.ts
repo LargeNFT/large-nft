@@ -85,6 +85,8 @@ import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/toke
 import { SpawnService } from "./service/spawn-service.js";
 
 import sharp from "sharp"
+import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js";
+import { RowItemViewModel } from "../reader/dto/item-page.js";
 
 
 const require = createRequire(import.meta.url)
@@ -198,6 +200,22 @@ function getMainContainer(command:GetMainContainerCommand) {
       throw new Error("Function not implemented.");
     }
   })
+
+  container.bind<RowItemViewModelRepository>("RowItemViewModelRepository").toConstantValue({
+    load: function () {
+      throw new Error("Function not implemented.");
+    },
+    get: function (_id: string): Promise<RowItemViewModel> {
+      throw new Error("Function not implemented.");
+    },
+    put: function (item: RowItemViewModel) {
+      throw new Error("Function not implemented.");
+    },
+    getByTokenIds: function (ids: number[]): Promise<RowItemViewModel[]> {
+      throw new Error("Function not implemented.");
+    }
+  })
+
 
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
   container.bind<DatabaseService>("DatabaseService").to(DatabaseService).inSingletonScope()

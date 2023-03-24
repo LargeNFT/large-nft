@@ -5,12 +5,17 @@ import { ItemRepository } from "../repository/item-repository.js";
 import { AttributeTotal } from "../dto/attribute-total.js";
 import { AttributeTotalService } from "./attribute-total-service.js";
 import { Channel } from "../dto/channel.js";
+import { RowItemViewModelRepository } from "../repository/row-item-view-model-repository.js";
 
 @injectable()
 class ItemService {
 
     @inject("ItemRepository")
     private itemRepository:ItemRepository
+
+    @inject("RowItemViewModelRepository")
+    private rowItemViewModelRepository:RowItemViewModelRepository
+    
     
     @inject("AttributeTotalService")
     private attributeTotalService:AttributeTotalService
@@ -71,6 +76,10 @@ class ItemService {
         return this.attributeTotalService.buildAttributeTotals(channel, items)
     }
 
+
+    async searchTokenIds(tokenIds:number[]) {
+        return this.rowItemViewModelRepository.getByTokenIds(tokenIds)
+    } 
 
 
 }

@@ -10,6 +10,7 @@ import { ComponentStateRepository } from "../../repository/component-state-repos
 import { ImageRepository } from "../../repository/image-repository.js"
 import { ItemRepository } from "../../repository/item-repository.js"
 import { ReaderSettingsRepository } from "../../repository/reader-settings-repository.js"
+import { RowItemViewModelRepository } from "../../repository/row-item-view-model-repository.js"
 import { StaticPageRepository } from "../../repository/static-page-repository.js"
 
 
@@ -37,6 +38,8 @@ class SchemaService {
     @inject("ReaderSettingsRepository")
     private readerSettingsRepository:ReaderSettingsRepository
 
+    @inject("RowItemViewModelRepository")
+    private rowItemViewModelRepository:RowItemViewModelRepository
 
     // @inject("ContractStateRepository")
     // private contractStateRepository:ContractStateRepository
@@ -76,7 +79,7 @@ class SchemaService {
 
         const repositories = []
 
-        repositories.push(this.itemRepository)
+        // repositories.push(this.itemRepository)
         repositories.push(this.channelRepository)
         repositories.push(this.authorRepository)
         repositories.push(this.imageRepository)
@@ -91,6 +94,7 @@ class SchemaService {
         // repositories.push(this.ercEventRepository)
         repositories.push(this.attributeTotalRepository)
         repositories.push(this.componentStateRepository)
+        repositories.push(this.rowItemViewModelRepository)
         // repositories.push(this.tokenOwnerRepository)
         // repositories.push(this.transactionRepository)
         // repositories.push(this.blockRepository)

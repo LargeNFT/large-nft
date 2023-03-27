@@ -6,7 +6,7 @@ import { Container } from "inversify";
 import { providers } from "ethers"
 
 
-import { HardhatWalletServiceImpl } from "../test/util/hardhat-wallet-service.js";
+import { HardhatWalletServiceImpl } from "./util/hardhat-wallet-service.js";
 import { AuthorService } from "../src/admin/service/author-service.js";
 import { ChannelService } from "../src/admin/service/channel-service.js";
 import { ChannelWebService } from "../src/admin/service/web/channel-web-service.js";

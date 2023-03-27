@@ -1,4 +1,4 @@
-import { getContainer } from "./inversify.config"
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 
@@ -9,30 +9,20 @@ import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
 import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
 
-//@ts-ignore
-contract('AnimationService', async () => {
+describe('AnimationService', async () => {
 
-    let service: AnimationService
-    let ipfsService: IpfsService
-    let schemaService:SchemaService
+    let service
+    let ipfsService
+    let schemaService
 
 
     before("", async () => {
-        console.log(3)
-
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
 
         let container = await getContainer()
         
         service = container.get(AnimationService)
         ipfsService = container.get(IpfsService)
         schemaService = container.get(SchemaService)
-
-        console.log(4)
 
         await schemaService.load()
 

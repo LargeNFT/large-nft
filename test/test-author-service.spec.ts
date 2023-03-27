@@ -1,4 +1,4 @@
-import { cleanup, getContainer } from "./inversify.config"
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 

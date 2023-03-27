@@ -63,18 +63,8 @@ let getAdminConfigs = () => {
           use: ['style-loader', 'css-loader']
         },
         {
-          test: /\.(png|jpe?g|gif|svg|eot)$/,
-          use: [fileLoader],
-        },
-        
-        {
-          test: /\.(ttf|woff|woff2)$/,
-          use: {
-            loader: 'url-loader',
-            options: {
-              name: '[folder]/[name]'
-            }
-          },
+          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
+          type: 'asset/resource',
         },
         {
           test: /\.f7.html$/,
@@ -217,14 +207,6 @@ let getAdminConfigs = () => {
 }
 
 let getReaderConfigs = () => {
-
-
-  const fileLoader = {
-    loader: 'file-loader',
-    options: {
-      name: 'reader/[folder]/[name].[ext]'
-    }
-  }
 
   let generateConfig = {
     entry: "./src/reader/generate.ts",
@@ -405,8 +387,6 @@ let getReaderConfigs = () => {
     ]
   }
 
-
-
   let browserConfig = {
     entry: "./src/reader/index.ts",
     module: {
@@ -421,12 +401,8 @@ let getReaderConfigs = () => {
           use: ['style-loader', 'css-loader']
         },
         {
-          test: /\.(png|jpe?g|gif|svg|eot)$/,
-          use: [fileLoader]
-        },
-        {
-          test: /\.(ttf|woff|woff2)$/,
-          use: [fileLoader]
+          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
+          type: 'asset/resource',
         },
         {
           test: /\.f7.html$/,

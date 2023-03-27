@@ -4,10 +4,10 @@ import { getContainer, cleanup } from "./inversify.config"
 import assert from 'assert'
 import fs from 'fs'
 
-import { PDFService } from "../src/service/core/pdf-service"
+import { PDFService } from "../src/admin/service/core/pdf-service"
 
-import { IpfsService } from "../src/service/core/ipfs-service"
-import { SchemaService } from "../src/service/core/schema-service"
+import { IpfsService } from "../src/admin/service/core/ipfs-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
 
 
 let user0

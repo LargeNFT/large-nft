@@ -229,9 +229,9 @@ class TransactionIndexerService {
                     //Add raw event to transaction before saving
                     processedTransaction.ercEvents.push(ercEvent)
     
-                    if (processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId] > 0) {
-                        console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId]} ${processedTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(processedTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
-                    }
+                    // if (processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId].price > 0) {
+                    //     console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId].price} ${processedTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(processedTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
+                    // }
 
                 }
 

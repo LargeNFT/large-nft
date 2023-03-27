@@ -1,12 +1,11 @@
-//@ts-nocheck
 import { cleanup, getContainer } from "./inversify.config"
 
 import assert from 'assert'
 
-import { AuthorService } from "../src/service/author-service"
-import { Author } from "../src/dto/author"
+import { AuthorService } from "../src/admin/service/author-service"
+import { Author } from "../src/admin/dto/author"
 
-import { SchemaService } from "../src/service/core/schema-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
 
 
 let user0

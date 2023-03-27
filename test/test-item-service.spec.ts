@@ -3,19 +3,19 @@ import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 
-import { ItemService } from "../src/service/item-service"
-import { Item } from "../src/dto/item"
-import { Author } from "../src/dto/author"
+import { ItemService } from "../src/admin/service/item-service"
+import { Item } from "../src/admin/dto/item"
+import { Author } from "../src/admin/dto/author"
 
-import { Channel } from "../src/dto/channel"
-import { ChannelService } from "../src/service/channel-service"
+import { Channel } from "../src/admin/dto/channel"
+import { ChannelService } from "../src/admin/service/channel-service"
 
-import { ImageService } from "../src/service/image-service"
-import { SchemaService } from "../src/service/core/schema-service"
-import { AuthorService } from "../src/service/author-service"
-import { AnimationService } from "../src/service/animation-service"
-import { ItemWebService } from "../src/service/web/item-web-service";
-import { ChannelWebService } from "../src/service/web/channel-web-service"
+import { ImageService } from "../src/admin/service/image-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
+import { AuthorService } from "../src/admin/service/author-service"
+import { AnimationService } from "../src/admin/service/animation-service"
+import { ItemWebService } from "../src/admin/service/web/item-web-service";
+import { ChannelWebService } from "../src/admin/service/web/channel-web-service"
 
 let user0
 let user1

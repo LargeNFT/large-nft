@@ -1,26 +1,16 @@
-import { getContainer, cleanup } from "./inversify.config"
+import { getContainer } from "./inversify.config"
 
 import assert from 'assert'
 
-import { Animation } from "../src/dto/animation.js"
-import { AnimationService } from "../src/service/animation-service.js"
+import { Animation } from "../src/admin/dto/animation.js"
+import { AnimationService } from "../src/admin/service/animation-service.js"
 
-import { IpfsService } from "../src/service/core/ipfs-service.js"
-import { SchemaService } from "../src/service/core/schema-service.js"
+import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
-
-
-let user0
-let user1
-let user2
-let user3
-let user4
-
-
-let id1
 
 //@ts-ignore
-contract('AnimationService', async (accounts) => {
+contract('AnimationService', async () => {
 
     let service: AnimationService
     let ipfsService: IpfsService

@@ -5,11 +5,11 @@ import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 
-import { PinningApi } from "../src/dto/pinning-api"
+import { PinningApi } from "../src/admin/dto/pinning-api"
 
-import { IpfsService } from "../src/service/core/ipfs-service"
-import { PinningService } from "../src/service/core/pinning-service"
-import { SchemaService } from "../src/service/core/schema-service"
+import { IpfsService } from "../src/admin/service/core/ipfs-service"
+import { PinningService } from "../src/admin/service/core/pinning-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
 
 
 

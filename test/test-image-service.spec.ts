@@ -3,11 +3,11 @@ import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 
-import { Image } from "../src/dto/image"
-import { ImageService } from "../src/service/image-service"
+import { Image } from "../src/admin/dto/image"
+import { ImageService } from "../src/admin/service/image-service"
 
-import { IpfsService } from "../src/service/core/ipfs-service"
-import { SchemaService } from "../src/service/core/schema-service"
+import { IpfsService } from "../src/admin/service/core/ipfs-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
 
 
 let user0

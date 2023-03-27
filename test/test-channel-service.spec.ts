@@ -5,17 +5,17 @@ import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 
-import { ChannelService } from "../src/service/channel-service"
-import { ItemService } from "../src/service/item-service"
+import { ChannelService } from "../src/admin/service/channel-service"
+import { ItemService } from "../src/admin/service/item-service"
 
-import { Channel } from "../src/dto/channel"
-import { Item } from "../src/dto/item"
+import { Channel } from "../src/admin/dto/channel"
+import { Item } from "../src/admin/dto/item"
 
-import { ImageService } from "../src/service/image-service"
-import { IpfsService } from "../src/service/core/ipfs-service"
+import { ImageService } from "../src/admin/service/image-service"
+import { IpfsService } from "../src/admin/service/core/ipfs-service"
 
-import { SchemaService } from "../src/service/core/schema-service"
-import { PinningService } from "../src/service/core/pinning-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
+import { PinningService } from "../src/admin/service/core/pinning-service"
 
 
 const toBuffer = require('it-to-buffer')

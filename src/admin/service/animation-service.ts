@@ -16,7 +16,7 @@ import { Theme } from "../dto/theme.js"
 const { forEach: each } = Array.prototype;
 
 
-import juice from "juice/client"
+import juice from "juice"
 
 
 @injectable()

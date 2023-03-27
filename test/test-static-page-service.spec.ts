@@ -3,10 +3,10 @@ import { cleanup, getContainer } from "./inversify.config"
 
 import assert from 'assert'
 
-import { StaticPageService } from "../src/service/static-page-service"
-import { StaticPage } from "../src/dto/static-page"
+import { StaticPageService } from "../src/admin/service/static-page-service"
+import { StaticPage } from "../src/admin/dto/static-page"
 
-import { SchemaService } from "../src/service/core/schema-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
 
 
 let user0

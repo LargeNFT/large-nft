@@ -3,10 +3,10 @@ import { cleanup, getContainer } from "./inversify.config"
 
 import assert from 'assert'
 
-import { ThemeService } from "../src/service/theme-service"
-import { Theme } from "../src/dto/theme"
+import { ThemeService } from "../src/admin/service/theme-service"
+import { Theme } from "../src/admin/dto/theme"
 
-import { SchemaService } from "../src/service/core/schema-service"
+import { SchemaService } from "../src/admin/service/core/schema-service"
 
 
 let user0

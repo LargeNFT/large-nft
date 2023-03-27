@@ -5,26 +5,26 @@ import { getContainer, cleanup } from "./inversify.config"
 
 import assert from 'assert'
 
-import { ChannelService } from "../src/service/channel-service"
-import { PublishService } from "../src/service/core/publish-service"
-import { AuthorService } from "../src/service/author-service"
+import { ChannelService } from "../src/admin/service/channel-service"
+import { PublishService } from "../src/admin/service/core/publish-service"
+import { AuthorService } from "../src/admin/service/author-service"
 
-import { Channel } from "../src/dto/channel"
-import { Item } from "../src/dto/item"
-import { Author } from "../src/dto/author"
+import { Channel } from "../src/admin/dto/channel"
+import { Item } from "../src/admin/dto/item"
+import { Author } from "../src/admin/dto/author"
 
-import { ExportBundle } from "../src/dto/export-bundle"
+import { ExportBundle } from "../src/admin/dto/export-bundle"
 
-import { IpfsService } from "../src/service/core/ipfs-service"
+import { IpfsService } from "../src/admin/service/core/ipfs-service"
 
-import { SchemaService } from "../src/service/core/schema-service"
-import { ItemService } from "../src/service/item-service";
-import { ImageService } from "../src/service/image-service";
-import { AnimationService } from "../src/service/animation-service";
+import { SchemaService } from "../src/admin/service/core/schema-service"
+import { ItemService } from "../src/admin/service/item-service";
+import { ImageService } from "../src/admin/service/image-service";
+import { AnimationService } from "../src/admin/service/animation-service";
 
 import Hash from 'ipfs-only-hash'
-import { ItemWebService } from "../src/service/web/item-web-service";
-import { ChannelWebService } from "../src/service/web/channel-web-service"
+import { ItemWebService } from "../src/admin/service/web/item-web-service";
+import { ChannelWebService } from "../src/admin/service/web/channel-web-service"
 
 
 const ChannelContract = artifacts.require("Channel")

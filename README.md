@@ -3,7 +3,7 @@
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-The complete Ethereum NFT toolkit that anyone can run.
+**The Complete Ethereum NFT Toolkit**
 
 The easiest way to self-publish your work as an NFT collection on **Ethereum** and **IPFS**. Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
 
@@ -379,4 +379,4 @@ Large publishes directly to your git provider from browser storage. By default b
 
 
 # Tests
-Note that the test suite is currently broken due to incompatibilities with some upgrades that were made to support native ES modules and recent versions of hardhat and mocha. Not ideal.
+Need more tests.

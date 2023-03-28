@@ -1,4 +1,6 @@
 import { injectable } from "inversify";
+
+
 import moment from "moment";
 import he from 'he'
 
@@ -30,8 +32,9 @@ import { ExportService } from "../core/export-service.js";
 import { GitService } from "../core/git-service.js";
 import { IpfsService } from "../core/ipfs-service.js";
 
+import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
 
-const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
+// const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 const parser = new DOMParser()
 
 @injectable()

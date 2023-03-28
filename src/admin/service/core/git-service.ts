@@ -5,7 +5,8 @@ import { AuthorService } from "../author-service.js";
 import { SettingsService } from "./settings-service.js";
 import axios from "axios";
 
-import contractABI from '../../../../contracts.json'
+//@ts-ignore
+import contractABI from '../../../../contracts.json' assert { type: "json" }
 import { GitlabService } from "./gitlab-service.js";
 import { ChannelService } from "../channel-service.js";
 import { ExistingForkInfo, ForkInfo, GitProviderService } from "./git-provider-service.js";

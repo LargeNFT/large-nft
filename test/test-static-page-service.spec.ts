@@ -1,37 +1,23 @@
-//@ts-nocheck
-import { cleanup, getContainer } from "./inversify.config"
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 
-import { StaticPageService } from "../src/admin/service/static-page-service"
-import { StaticPage } from "../src/admin/dto/static-page"
+import { StaticPageService } from "../src/admin/service/static-page-service.js"
+import { StaticPage } from "../src/admin/dto/static-page.js"
 
-import { SchemaService } from "../src/admin/service/core/schema-service"
-
-
-let user0
-let user1
-let user2
-let user3
-let user4
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
 
 let id1
 let id2
 let id3
 
-contract('StaticPageService', async (accounts) => {
+describe('StaticPageService', async () => {
 
     let service: StaticPageService
     let schemaService:SchemaService
 
     before("", async () => {
-
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
 
         let container = await getContainer()
         

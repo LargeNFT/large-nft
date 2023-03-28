@@ -1,38 +1,35 @@
-//@ts-nocheck
-require("dotenv").config();
+import { getContainer } from "./inversify.config.js"
 
-import { getContainer, cleanup } from "./inversify.config"
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
 import assert from 'assert'
 
-import { ChannelService } from "../src/admin/service/channel-service"
-import { ImportService } from "../src/admin/service/core/import-service"
-import { AuthorService } from "../src/admin/service/author-service"
+import { ChannelService } from "../src/admin/service/channel-service.js"
+import { ImportService } from "../src/admin/service/core/import-service.js"
+import { AuthorService } from "../src/admin/service/author-service.js"
 
-import { Channel } from "../src/admin/dto/channel"
-import { Item } from "../src/admin/dto/item"
-import { Author } from "../src/admin/dto/author"
+import { Channel } from "../src/admin/dto/channel.js"
+import { Item } from "../src/admin/dto/item.js"
+import { Author } from "../src/admin/dto/author.js"
 
-import { ExportBundle } from "../src/admin/dto/export-bundle"
+import { ExportBundle } from "../src/admin/dto/export-bundle.js"
 
-import { IpfsService } from "../src/admin/service/core/ipfs-service"
+import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
 
-import { SchemaService } from "../src/admin/service/core/schema-service"
-import { ItemService } from "../src/admin/service/item-service";
-import { ImageService } from "../src/admin/service/image-service";
-import { AnimationService } from "../src/admin/service/animation-service";
-import { PublishService } from "../src/admin/service/core/publish-service";
-import { ItemWebService } from "../src/admin/service/web/item-web-service";
-import { ChannelWebService } from "../src/admin/service/web/channel-web-service"
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
+import { ItemService } from "../src/admin/service/item-service.js";
+import { ImageService } from "../src/admin/service/image-service.js";
+import { AnimationService } from "../src/admin/service/animation-service.js";
+import { PublishService } from "../src/admin/service/core/publish-service.js";
+import { ItemWebService } from "../src/admin/service/web/item-web-service.js";
+import { ChannelWebService } from "../src/admin/service/web/channel-web-service.js"
 
 var MockAdapter = require("axios-mock-adapter")
 import axios from "axios"
 
 let user0
-let user1
-let user2
-let user3
-let user4
+
 
 
 let service: ImportService
@@ -58,17 +55,10 @@ let exportBundle:ExportBundle
 let image1, image2, item1, item2, item3, animation
 
 
-contract('ImportService', async (accounts) => {
-
+describe('ImportService', async () => {
 
     before("", async () => {
 
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
-        
         let container = await getContainer()
         
         service = container.get(ImportService)
@@ -101,7 +91,6 @@ contract('ImportService', async (accounts) => {
 
 
 
-
         //Create category with attributes
         channel = Object.assign(new Channel(), {
             title: "The Sound of Music",
@@ -126,6 +115,7 @@ contract('ImportService', async (accounts) => {
         }) 
 
         await channelWebService.put(channel)
+        //@ts-ignore
         await schemaService.loadChannel(channel._id)
 
 
@@ -226,11 +216,11 @@ contract('ImportService', async (accounts) => {
     it("should import a channel from an export", async () => {
 
         //Arrange
-        await publishService.publish(channel)
+        await publishService.publish(channel, false, false)
 
         originalCid = channel.localCid
 
-        let channelId = await service.importFromIPFS(originalCid)
+        let channelId = await service.importFromIPFS(originalCid, "existing")
 
         let importedChannel = await channelService.get(channelId)
 

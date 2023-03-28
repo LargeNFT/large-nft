@@ -1,37 +1,21 @@
-//@ts-nocheck
-import { cleanup, getContainer } from "./inversify.config"
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 
-import { ThemeService } from "../src/admin/service/theme-service"
-import { Theme } from "../src/admin/dto/theme"
+import { ThemeService } from "../src/admin/service/theme-service.js"
+import { Theme } from "../src/admin/dto/theme.js"
 
-import { SchemaService } from "../src/admin/service/core/schema-service"
-
-
-let user0
-let user1
-let user2
-let user3
-let user4
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
 
 let id1
-let id2
-let id3
 
-contract('ThemeService', async (accounts) => {
+describe('ThemeService', async () => {
 
     let service: ThemeService
     let schemaService:SchemaService
 
     before("", async () => {
-
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
 
         let container = await getContainer()
         

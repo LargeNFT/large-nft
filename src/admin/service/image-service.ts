@@ -1,4 +1,5 @@
 
+
 import { injectable } from "inversify"
 import { Image } from "../dto/image.js"
 import { ValidationException } from "../util/validation-exception.js"
@@ -14,7 +15,10 @@ import { Item } from "../dto/item.js"
 import { Theme } from "../dto/theme.js"
 import { ThemeService } from "./theme-service.js"
 
-const truncate = require('html-truncate')
+import truncate from "html-truncate"
+
+// const truncate = require('html-truncate')
+
 import svgToMiniDataURI from 'mini-svg-data-uri'
 
 

@@ -1,40 +1,36 @@
-//@ts-nocheck
-require("dotenv").config();
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-import { getContainer, cleanup } from "./inversify.config"
+
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 
-import { ChannelService } from "../src/admin/service/channel-service"
-import { ItemService } from "../src/admin/service/item-service"
+import { ChannelService } from "../src/admin/service/channel-service.js"
+import { ItemService } from "../src/admin/service/item-service.js"
 
-import { Channel } from "../src/admin/dto/channel"
-import { Item } from "../src/admin/dto/item"
+import { Channel } from "../src/admin/dto/channel.js"
+import { Item } from "../src/admin/dto/item.js"
 
-import { ImageService } from "../src/admin/service/image-service"
-import { IpfsService } from "../src/admin/service/core/ipfs-service"
+import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
 
-import { SchemaService } from "../src/admin/service/core/schema-service"
-import { PinningService } from "../src/admin/service/core/pinning-service"
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
+import { PinningService } from "../src/admin/service/core/pinning-service.js"
 
-
-const toBuffer = require('it-to-buffer')
+import toBuffer from "it-to-buffer"
 
 
 //Need a simulated quill js
 initEditor()
 import Quill from "quill"
-import { AuthorService } from "../src/service/author-service"
-import { Author } from "../src/dto/author"
+import { AuthorService } from "../src/admin/service/author-service.js"
+import { Author } from "../src/admin/dto/author.js"
+import { ethers } from "ethers";
 
 let editor
 
 
 let user0
-let user1
-let user2
-let user3
-let user4
 
 
 let id1
@@ -43,8 +39,7 @@ let id3
 
 let service: ChannelService
 let itemService:ItemService
-let imageService:ImageService
-let authorService:AuthorService
+
 let ipfsService:IpfsService
 let schemaService:SchemaService
 let pinningService:PinningService
@@ -52,30 +47,21 @@ let pinningService:PinningService
 let apiKey = process.env.PINATA_API_KEY
 let secretApiKey = process.env.PINATA_SECRET_API_KEY
 
-contract('ChannelService', async (accounts) => {
-
+describe('ChannelService', async () => {
 
     before("", async () => {
+        
+        user0 = "xyz"
 
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
-        
         let container = await getContainer()
-        
 
         service = container.get(ChannelService)
         itemService = container.get(ItemService)
-        authorService = container.get(AuthorService)
-        imageService = container.get(ImageService)
         ipfsService = container.get(IpfsService)
         schemaService = container.get(SchemaService)
         pinningService = container.get(PinningService)
 
         await schemaService.load()
-
 
     })
 
@@ -100,8 +86,8 @@ contract('ChannelService', async (accounts) => {
                 title: "The Sound of Music",
                 link: "google.com",
                 symbol: "SOM",
-                mintPrice: web3.utils.toWei( "0.08" , 'ether'),
-                authorId: 3,
+                mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+                authorId: "3",
                 category: ['Gazebos']
             })
             assert.fail("Did not throw exception")
@@ -112,7 +98,7 @@ contract('ChannelService', async (accounts) => {
     })
 
     it("should get an empty list of channels", async () => {
-        let channels:Channel[] = await service.list(10)
+        let channels:Channel[] = await service.list(10, 0)
         assert.strictEqual(channels.length, 0 )
     })
 
@@ -123,7 +109,7 @@ contract('ChannelService', async (accounts) => {
             title: "The Sound of Music",
             link: "google.com",
             symbol: "SOM",
-            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
             authorId: 3,
             category: ['Gazebos'],
             sellerFeeBasisPoints: 100,
@@ -171,7 +157,7 @@ contract('ChannelService', async (accounts) => {
             title: "Titanic",
             link: "alexa.com",
             symbol: "SOM",
-            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
             authorId: 3,
             category: ['Sunk']
         }))
@@ -181,7 +167,7 @@ contract('ChannelService', async (accounts) => {
             title: "Batman",
             link: "pontoon.com",
             symbol: "SOM",
-            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
             authorId: 3,
             category: ['Not Sunk']
         }))
@@ -254,6 +240,7 @@ contract('ChannelService', async (accounts) => {
     it("should get the last revision for a document even if it's deleted", async () => {
 
         let latestId1 = await service.getLatestRevision(id1)
+        //@ts-ignore
         assert.strictEqual(latestId1._deleted, true )
 
     })
@@ -286,7 +273,7 @@ contract('ChannelService', async (accounts) => {
             await service.put(Object.assign(new Channel(), {
                 title: (i).toString() + " it has to be longer ",
                 symbol: "SOM",
-                mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+                mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
                 link: "alexa.com",
                 authorId: 3,
                 category: ['Sunk']

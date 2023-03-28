@@ -1,8 +1,4 @@
-import { ethers } from 'ethers';
 import { inject, injectable } from 'inversify';
-
-import PouchDB from 'pouchdb-browser';
-import PouchFind from 'pouchdb-find'
 
 
 @injectable()
@@ -11,51 +7,9 @@ class DatabaseService {
     dbCache = {}
 
     constructor(
-        @inject("pouch-prefix") private pouchPrefix:string
-    ) {
-        //Enable find plugin
-        PouchDB.plugin(PouchFind)
-
-        // console.log("Trying to replicate...")
-        // // PouchDB.replicate(`./pouch/0x842439CbB838069d087904F87fa9762069b1aB55-item`, 'http://localhost:5984/items', {live: true});
-
-
-        // const remote = new PouchDB('http://localhost:5984/items')
-        // const local = new PouchDB(`./pouch/0x842439CbB838069d087904F87fa9762069b1aB55-item`)
-
-
-        // const rep = local.replicate.to(remote, {
-        //     live: true,
-        //     retry: true
-        //   }).on('change', function (info) {
-        //     // handle change
-        //     console.log(info)
-        //   }).on('paused', function (err) {
-        //     // replication paused (e.g. replication up to date, user went offline)
-        //     console.log(err)
-
-        //   }).on('active', function () {
-        //     // replicate resumed (e.g. new changes replicating, user went back online)
-        //     console.log('active')
-
-        //   }).on('denied', function (err) {
-        //     // a document failed to replicate (e.g. due to permissions)
-        //     console.log(err)
-
-        //   }).on('complete', function (info) {
-        //     // handle complete
-        //     console.log(info)
-
-        //   }).on('error', function (err) {
-        //     // handle error
-        //     console.log(err)
-        //   });
-
-        //   console.log(rep)
-
-
-    }
-
+        @inject("pouch-prefix") private pouchPrefix:string,
+        @inject('PouchDB') private PouchDB
+    ) {}
 
     async getDatabase(name:string, changesets?:Changeset[]) {
 
@@ -67,7 +21,7 @@ class DatabaseService {
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 
         //Create or open database
-        this.dbCache[fullName] = new PouchDB(fullName, { auto_compaction: true })
+        this.dbCache[fullName] = new this.PouchDB(fullName, { auto_compaction: true })
 
         const details = await this.dbCache[fullName].info()
 

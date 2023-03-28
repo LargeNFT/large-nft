@@ -1,34 +1,34 @@
 //@ts-nocheck
-import { getContainer, cleanup } from "./inversify.config"
+
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 
-import { ItemService } from "../src/admin/service/item-service"
-import { Item } from "../src/admin/dto/item"
-import { Author } from "../src/admin/dto/author"
+import { ItemService } from "../src/admin/service/item-service.js"
+import { Item } from "../src/admin/dto/item.js"
+import { Author } from "../src/admin/dto/author.js"
 
-import { Channel } from "../src/admin/dto/channel"
-import { ChannelService } from "../src/admin/service/channel-service"
+import { Channel } from "../src/admin/dto/channel.js"
+import { ChannelService } from "../src/admin/service/channel-service.js"
 
-import { ImageService } from "../src/admin/service/image-service"
-import { SchemaService } from "../src/admin/service/core/schema-service"
-import { AuthorService } from "../src/admin/service/author-service"
-import { AnimationService } from "../src/admin/service/animation-service"
-import { ItemWebService } from "../src/admin/service/web/item-web-service";
-import { ChannelWebService } from "../src/admin/service/web/channel-web-service"
+import { ImageService } from "../src/admin/service/image-service.js"
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
+import { AuthorService } from "../src/admin/service/author-service.js"
+import { AnimationService } from "../src/admin/service/animation-service.js"
+import { ItemWebService } from "../src/admin/service/web/item-web-service.js";
+import { ChannelWebService } from "../src/admin/service/web/channel-web-service.js"
+import { ethers } from "ethers"
+import { AttributeInfo } from "../src/admin/repository/item-repository"
 
 let user0
-let user1
-let user2
-let user3
-let user4
+
 
 
 let id1
 let id2
 let id3
 
-contract('ItemService', async (accounts) => {
+describe('ItemService', async () => {
 
     let service: ItemService
     let channelService:ChannelService
@@ -44,12 +44,6 @@ contract('ItemService', async (accounts) => {
     let channel2:Channel
 
     before("", async () => {
-
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
 
         let container = await getContainer()
         
@@ -69,7 +63,7 @@ contract('ItemService', async (accounts) => {
             title: "The Sound of Music",
             link: "google.com",
             symbol: "SOM",
-            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
             authorId:3,
             category: ['Gazebos']
         })
@@ -78,7 +72,7 @@ contract('ItemService', async (accounts) => {
             title: "Titanic",
             link: "alexa.com",
             symbol: "SOM",
-            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
             authorId:3,
             category: ['Sunk']
         })
@@ -86,6 +80,7 @@ contract('ItemService', async (accounts) => {
         await channelWebService.put(channel1)
         await channelWebService.put(channel2)
 
+        //@ts-ignore
         await schemaService.loadChannel(channel1._id)
 
     })
@@ -108,11 +103,11 @@ contract('ItemService', async (accounts) => {
         
         try {
             await service.put({
-                channel: channel1,
+                channelId: channel1._id,
                 title: "The Sound of Music",
                 link: "google.com",
                 description: "Singing in the mountains",
-                authorId: 3,
+                authorId: "3",
                 category: ['Gazebos']
             })
             assert.fail("Did not throw exception")
@@ -123,6 +118,7 @@ contract('ItemService', async (accounts) => {
     })
 
     it("should get an empty list of items", async () => {
+        //@ts-ignore
         let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
         assert.strictEqual(items.length, 0 )
     })
@@ -196,7 +192,7 @@ contract('ItemService', async (accounts) => {
             category: ['Gazebos', 'Ants']
         }))
 
-
+        //@ts-ignore
         let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
 
         assert.equal(items.length, 3)
@@ -228,6 +224,7 @@ contract('ItemService', async (accounts) => {
         await service.put(item3)
 
         //Act
+        //@ts-ignore
         let items:Item[] = await service.listByChannel(channel1._id, 10, 0)
 
         //assert
@@ -240,6 +237,7 @@ contract('ItemService', async (accounts) => {
 
     it("should add items to a second channel and query both", async () => {
 
+        //@ts-ignore
         await schemaService.loadChannel(channel2._id)
 
 
@@ -358,12 +356,12 @@ contract('ItemService', async (accounts) => {
 
         //Arrange
         //Upload pretend image data
-        let image:Image = await imageService.newFromBuffer(Buffer.from("pretend that this is image data4343243werwer"))
+        let image = await imageService.newFromBuffer(Buffer.from("pretend that this is image data4343243werwer"))
 
 
 
         //Create animation
-        let animation:Animation = await animationService.newFromText("Hel343lo")
+        let animation = await animationService.newFromText("Hel343lo")
         await animationService.put(animation)
 
 
@@ -379,7 +377,7 @@ contract('ItemService', async (accounts) => {
         attributeChannel = Object.assign(new Channel(), {
             title: "The Sound of Music",
             symbol: "SOM",
-            mintPrice: web3.utils.toWei( "0.08" , 'ether'),
+            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether'),
             link: "google.com",
             authorId: author._id,
             category: ['Gazebos'],
@@ -395,7 +393,7 @@ contract('ItemService', async (accounts) => {
                     values:['Have them', 'None', 'Nice']
                 },
             ],
-            coverImageId: image.cid.toString()
+            coverImageId: image?.cid?.toString()
         }) 
 
         await channelWebService.put(attributeChannel)
@@ -446,7 +444,7 @@ contract('ItemService', async (accounts) => {
 
     it("should return counts of specific attributes", async () => {
 
-        let attributeInfo:AttributeInfo[] = await service.getAttributeInfoBySelections(attributeChannel._id, [{ traitType: "Hair", value: "Curly"}])
+        let attributeInfo = await service.getAttributeInfoBySelections(attributeChannel._id, [{ traitType: "Hair", value: "Curly"}])
 
         assert.strictEqual(attributeInfo[0].traitType, "Hair")
         assert.strictEqual(attributeInfo[0].value, "Curly")

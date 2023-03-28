@@ -1,23 +1,16 @@
-//@ts-nocheck
-import { getContainer, cleanup } from "./inversify.config"
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 import fs from 'fs'
 
-import { PDFService } from "../src/admin/service/core/pdf-service"
+import { PDFService } from "../src/admin/service/core/pdf-service.js"
 
-import { IpfsService } from "../src/admin/service/core/ipfs-service"
-import { SchemaService } from "../src/admin/service/core/schema-service"
-
-
-let user0
-let user1
-let user2
-let user3
-let user4
+import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
 
-contract('PDFService', async (accounts) => {
+
+describe('PDFService', async () => {
 
     let service: PDFService
     let ipfsService: IpfsService
@@ -25,12 +18,6 @@ contract('PDFService', async (accounts) => {
 
 
     before("", async () => {
-
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
 
         let container = await getContainer()
         
@@ -51,7 +38,7 @@ contract('PDFService', async (accounts) => {
     it("should get a PDF from a valid file", async () => {
 
         //Arrange
-        const data = new Uint8Array(fs.readFileSync('./util/alice.pdf'))
+        const data = new Uint8Array(fs.readFileSync('./test/util/alice.pdf'))
 
 
         // const arrayBuffer = Uint8Array.from(window.atob(pdfBase64), c => c.charCodeAt(0))

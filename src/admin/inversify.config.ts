@@ -110,6 +110,14 @@ import Swiper from 'framework7/components/swiper'
 import { GitService } from './service/core/git-service.js';
 import { GithubService } from './service/core/github-service.js';
 
+import PouchDB from 'pouchdb-browser';
+import PouchFind from 'pouchdb-find'
+
+//Enable find plugin
+PouchDB.plugin(PouchFind)
+
+
+
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
   Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup,Accordion,
@@ -177,7 +185,10 @@ function getMainContainer(version:string) {
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
   // container.bind("readerConfig").toConstantValue(readerConfig)
+  
+  container.bind("PouchDB").toConstantValue(PouchDB)
   container.bind("pouch-prefix").toConstantValue("./pouch/")
+
   container.bind("footer-text").toConstantValue(globalThis.footerText)
 
 

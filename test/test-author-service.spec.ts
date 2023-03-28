@@ -2,35 +2,25 @@ import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 
-import { AuthorService } from "../src/admin/service/author-service"
-import { Author } from "../src/admin/dto/author"
+import { AuthorService } from "../src/admin/service/author-service.js"
+import { Author } from "../src/admin/dto/author.js"
 
-import { SchemaService } from "../src/admin/service/core/schema-service"
-
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
 let user0
-let user1
-let user2
-let user3
-let user4
-
 
 let id1
 let id2
 let id3
 
-contract('AuthorService', async (accounts) => {
+describe('AuthorService', async () => {
 
     let service: AuthorService
     let schemaService:SchemaService
 
     before("", async () => {
 
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
+        user0 = "xyz"
 
         let container = await getContainer()
         
@@ -64,7 +54,7 @@ contract('AuthorService', async (accounts) => {
                 name: "Bob",
                 description: "Really is bob",
                 url: "https://bobshouse.com",
-                coverPhotoId: 6
+                coverPhotoId: "6"
             })
             assert.fail("Did not throw exception")
         } catch(ex) {
@@ -82,7 +72,7 @@ contract('AuthorService', async (accounts) => {
             name: "Bob",
             description: "Really is bob",
             url: "https://bobshouse.com",
-            coverPhotoId: 6
+            coverPhotoId: "6"
         })
 
         //Act

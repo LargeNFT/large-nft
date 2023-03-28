@@ -1,5 +1,8 @@
 import { injectable } from 'inversify'
 
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
 import { UploadService } from './upload-service.js'
 
 const pdf = require('pdf-parse');

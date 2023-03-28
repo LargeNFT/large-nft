@@ -1,26 +1,15 @@
-//@ts-nocheck
-import { getContainer, cleanup } from "./inversify.config"
+import { getContainer } from "./inversify.config.js"
 
 import assert from 'assert'
 
-import { Image } from "../src/admin/dto/image"
-import { ImageService } from "../src/admin/service/image-service"
+import { Image } from "../src/admin/dto/image.js"
+import { ImageService } from "../src/admin/service/image-service.js"
 
-import { IpfsService } from "../src/admin/service/core/ipfs-service"
-import { SchemaService } from "../src/admin/service/core/schema-service"
-
-
-let user0
-let user1
-let user2
-let user3
-let user4
+import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
+import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
 
-let id1
-
-
-contract('ImageService', async (accounts) => {
+describe('ImageService', async () => {
 
     let service: ImageService
     let ipfsService: IpfsService
@@ -29,18 +18,11 @@ contract('ImageService', async (accounts) => {
 
     before("", async () => {
 
-        user0 = accounts[0]
-        user1 = accounts[1]
-        user2 = accounts[2]
-        user3 = accounts[3]
-        user4 = accounts[4]
-
         let container = await getContainer()
         
         service = container.get(ImageService)
         ipfsService = container.get(IpfsService)
         schemaService = container.get(SchemaService)
-
 
         await schemaService.load()
 
@@ -65,6 +47,7 @@ contract('ImageService', async (accounts) => {
         
         try {
             await service.put({
+                //@ts-ignore
                 url: "xyz",
                 cid: "xyz",
                 title: "xyz",

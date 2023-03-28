@@ -9,6 +9,7 @@ import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
 import { SchemaService } from "../src/admin/service/core/schema-service.js"
 
 
+
 describe('AnimationService', async () => {
 
     let service

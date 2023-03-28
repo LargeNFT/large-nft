@@ -66,9 +66,24 @@ import { QueryCacheRepository } from "../src/admin/repository/query-cache-reposi
 import { AttributeCountRepository } from '../src/admin/repository/attribute-count-repository.js'
 import { AttributeCountService } from '../src/admin/service/attribute-count-service.js'
 
+
+import hre from "hardhat"
+
+
+import PouchDB from 'pouchdb-node';
+import PouchFind from 'pouchdb-find'
+
+// //Enable find plugin
+PouchDB.plugin(PouchFind)
+
+
+
 let container:Container
 
-import c from '../contracts.json'
+//@ts-ignore
+import c from '../contracts.json' assert { type: "json" }
+
+
 
 
 async function getContainer() {
@@ -80,7 +95,10 @@ async function getContainer() {
     function provider() {
 
         //@ts-ignore
-        return new providers.Web3Provider(web3.currentProvider)  
+        const ethers = hre.ethers
+
+        //@ts-ignore
+        return new providers.Web3Provider(ethers.provider)  
     }
 
     function ipfsOptions() {
@@ -98,6 +116,9 @@ async function getContainer() {
 
     container.bind("provider").toConstantValue(provider())
     container.bind("pouch-prefix").toConstantValue("./test/pouch/")
+
+    container.bind("PouchDB").toConstantValue(PouchDB)
+
     container.bind("fs").toConstantValue(() => {
         return fs
     })
@@ -192,8 +213,13 @@ async function getContainer() {
 }
 
 const cleanup = async () => {
+    
     fs.rmSync('./test/pouch', { recursive: true, force: true })
     fs.rmSync('./test/test-repo', { recursive: true, force: true })
+
+    fs.mkdirSync('./test/pouch', { recursive: true })
+    fs.mkdirSync('./test/test-repo', { recursive: true })
+
 }
 
 

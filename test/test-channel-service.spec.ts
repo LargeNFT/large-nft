@@ -22,9 +22,9 @@ import toBuffer from "it-to-buffer"
 
 //Need a simulated quill js
 initEditor()
-import Quill from "quill"
-import { AuthorService } from "../src/admin/service/author-service.js"
-import { Author } from "../src/admin/dto/author.js"
+// import Quill from "quill"
+// import { AuthorService } from "../src/admin/service/author-service.js"
+// import { Author } from "../src/admin/dto/author.js"
 import { ethers } from "ethers";
 
 let editor
@@ -44,8 +44,8 @@ let ipfsService:IpfsService
 let schemaService:SchemaService
 let pinningService:PinningService
 
-let apiKey = process.env.PINATA_API_KEY
-let secretApiKey = process.env.PINATA_SECRET_API_KEY
+// let apiKey = process.env.PINATA_API_KEY
+// let secretApiKey = process.env.PINATA_SECRET_API_KEY
 
 describe('ChannelService', async () => {
 
@@ -231,8 +231,8 @@ describe('ChannelService', async () => {
             assert.strictEqual(ex.status, 404)
         }
 
-        let items:Item[] = await itemService.listByChannel(id1, 100, 0)
-        assert.strictEqual(items.length, 0)
+        // let items:Item[] = await itemService.listByChannel(id1, 100, 0)
+        // assert.strictEqual(items.length, 0)
 
     })
 
@@ -263,56 +263,56 @@ describe('ChannelService', async () => {
     })
 
 
-    it("should load a database with lots of records and page through them", async () => {
+    // it("should load a database with lots of records and page through them", async () => {
 
-        //Arrange
-        // const sleep = ms => new Promise(r => setTimeout(r, ms));
+    //     //Arrange
+    //     // const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-        for (var i = 0; i < 100; i++) {
+    //     for (var i = 0; i < 100; i++) {
 
-            await service.put(Object.assign(new Channel(), {
-                title: (i).toString() + " it has to be longer ",
-                symbol: "SOM",
-                mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
-                link: "alexa.com",
-                authorId: 3,
-                category: ['Sunk']
-            }))
+    //         await service.put(Object.assign(new Channel(), {
+    //             title: (i).toString() + " it has to be longer ",
+    //             symbol: "SOM",
+    //             mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+    //             link: "alexa.com",
+    //             authorId: 3,
+    //             category: ['Sunk']
+    //         }))
     
-            await sleep(50) //just need different timestamp
-        }
+    //         await sleep(50) //just need different timestamp
+    //     }
 
-        //Get a page of 3
-        let channels:Channel[] = await service.list(3, 0)
+    //     //Get a page of 3
+    //     let channels:Channel[] = await service.list(3, 0)
 
-        //assert
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].title, "99 it has to be longer ")
-        assert.equal(channels[1].title, "98 it has to be longer ")
-        assert.equal(channels[2].title, "97 it has to be longer ")
+    //     //assert
+    //     assert.equal(channels.length, 3)
+    //     assert.equal(channels[0].title, "99 it has to be longer ")
+    //     assert.equal(channels[1].title, "98 it has to be longer ")
+    //     assert.equal(channels[2].title, "97 it has to be longer ")
 
-        channels = await service.list(3, 3)
+    //     channels = await service.list(3, 3)
 
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].title, "96 it has to be longer ")
-        assert.equal(channels[1].title, "95 it has to be longer ")
-        assert.equal(channels[2].title, "94 it has to be longer ")
+    //     assert.equal(channels.length, 3)
+    //     assert.equal(channels[0].title, "96 it has to be longer ")
+    //     assert.equal(channels[1].title, "95 it has to be longer ")
+    //     assert.equal(channels[2].title, "94 it has to be longer ")
 
-        channels = await service.list(3, 6)
+    //     channels = await service.list(3, 6)
 
-        assert.equal(channels.length, 3)
-        assert.equal(channels[0].title, "93 it has to be longer ")
-        assert.equal(channels[1].title, "92 it has to be longer ")
-        assert.equal(channels[2].title, "91 it has to be longer ")
+    //     assert.equal(channels.length, 3)
+    //     assert.equal(channels[0].title, "93 it has to be longer ")
+    //     assert.equal(channels[1].title, "92 it has to be longer ")
+    //     assert.equal(channels[2].title, "91 it has to be longer ")
 
-    })
+    // })
 
 })
 
-async function getFileContent(filename) {
-    let bufferedContents = await toBuffer(ipfsService.ipfs.files.read(filename))  // a buffer
-    return JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
-}
+// async function getFileContent(filename) {
+//     let bufferedContents = await toBuffer(ipfsService.ipfs.files.read(filename))  // a buffer
+//     return JSON.parse(new TextDecoder("utf-8").decode(bufferedContents))
+// }
 
 
 

@@ -1,7 +1,6 @@
 import { inject, injectable } from "inversify"
 import { validate, ValidationError } from 'class-validator';
 import { Channel } from "../dto/channel.js"
-import { Item } from "../dto/item.js"
 
 import { ValidationException } from "../util/validation-exception.js";
 import { v4 as uuidv4 } from 'uuid';
@@ -16,10 +15,7 @@ import { ChannelRepository } from "../repository/channel-repository.js";
 import { PinningService } from "./core/pinning-service.js";
 import { PinningApi } from "../dto/pinning-api.js";
 import { QuillService } from "./quill-service.js";
-import { Theme } from "../dto/theme.js";
-import { ThemeService } from "./theme-service.js";
-import { StaticPageService } from "./static-page-service.js";
-import { StaticPage } from "../dto/static-page.js";
+
 import { QueryCacheService } from "./core/query-cache-service.js";
 import { QueryCache } from "../dto/query-cache.js";
 import { AttributeCount } from "../dto/attribute.js";

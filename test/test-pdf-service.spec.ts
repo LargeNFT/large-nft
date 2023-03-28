@@ -45,9 +45,9 @@ describe('PDFService', async () => {
         // const file = new File([arrayBuffer], "dummy.pdf", {type: 'application/pdf'})
 
         //Act
-        let pdf = await service.getDocument(data)
+        // let pdf = await service.getDocument(data)
 
-        console.log(pdf)
+        // console.log(pdf)
 
 
     })

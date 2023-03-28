@@ -82,6 +82,10 @@ let container:Container
 
 //@ts-ignore
 import c from '../contracts.json' assert { type: "json" }
+import { GitlabService } from "../src/admin/service/core/gitlab-service.js";
+import { GithubService } from "../src/admin/service/core/github-service.js";
+import { Channel } from "../src/admin/dto/channel.js";
+import { ExistingForkInfo, ForkInfo } from "../src/admin/service/core/git-provider-service.js";
 
 
 
@@ -126,12 +130,37 @@ async function getContainer() {
     container.bind("git").toConstantValue({})
 
 
+    //@ts-ignore
+    container.bind(GitService).toConstantValue({
+
+        //@ts-ignore
+        init: function (channel: Channel): Promise<void> {
+        },
+
+        //@ts-ignore
+        initFS: function(channel: Channel) : Promise<void> {
+
+        },
+
+        //@ts-ignore
+        getBaseDir: function(channel:Channel) : Promise<void> {
+            
+        },
+
+        //@ts-ignore
+        writeFile: function(file) : Promise<void> {
+            
+        }
+    })
+
+
     container.bind(DatabaseService).toSelf().inSingletonScope()
     container.bind(SchemaService).toSelf().inSingletonScope()
 
     container.bind<WalletService>(TYPES.WalletService).to(HardhatWalletServiceImpl).inSingletonScope();
 
-
+    container.bind(GitlabService).toSelf().inSingletonScope()
+    container.bind(GithubService).toSelf().inSingletonScope()
 
     container.bind(ImageService).toSelf().inSingletonScope()
     container.bind(AuthorService).toSelf().inSingletonScope()
@@ -155,7 +184,7 @@ async function getContainer() {
     container.bind(AttributeCountService).toSelf().inSingletonScope()
     container.bind(ChannelWebService).toSelf().inSingletonScope()
     container.bind(ItemWebService).toSelf().inSingletonScope()
-    container.bind(GitService).toSelf().inSingletonScope()
+    // container.bind(GitService).toSelf().inSingletonScope()
 
 
     container.bind(ChannelRepository).toSelf().inSingletonScope()

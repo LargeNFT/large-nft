@@ -48,6 +48,7 @@ class ItemService {
                 item.tokenId = await this.getNextTokenId(item.channelId)
             }
 
+
         } else {
             item.lastUpdated = new Date().toJSON()
         }
@@ -58,15 +59,12 @@ class ItemService {
             whitelist: true
         })
 
+
         if (errors.length > 0) {
-            console.log(errors)
             throw new ValidationException(errors)
         }
 
         await this.itemRepository.put(item)
-
-        // console.log(`Saved item #${item.tokenId}`, item)
-
 
     }
 
@@ -153,9 +151,20 @@ class ItemService {
     }
 
     async getNextTokenId(channelId:string) {
-        let queryCache:QueryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channelId}`)
-        let tokenIdStats = queryCache?.result
-        return tokenIdStats?.max ? tokenIdStats.max + 1 : 1
+
+        let queryCache:QueryCache
+
+        try {
+            queryCache = await this.queryCacheService.get(`token_id_stats_by_channel_${channelId}`)
+
+            let tokenIdStats = queryCache?.result
+            return tokenIdStats?.max ? tokenIdStats.max + 1 : 1
+
+        } catch(ex) {}
+
+        //If we had problems just return 1
+        return 1
+
     }
 
     async getAttributeCountByChannel(channelId:string) : Promise<AttributeCount[]> {

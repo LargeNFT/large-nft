@@ -18,10 +18,6 @@ import { AnimationService } from "../src/admin/service/animation-service.js"
 import { ItemWebService } from "../src/admin/service/web/item-web-service.js";
 import { ChannelWebService } from "../src/admin/service/web/channel-web-service.js"
 import { ethers } from "ethers"
-import { AttributeInfo } from "../src/admin/repository/item-repository"
-
-let user0
-
 
 
 let id1
@@ -368,14 +364,14 @@ describe('ItemService', async () => {
         //Add author
         let author:Author = Object.assign(new Author(), {
             name: "Bob",
-            walletAddress: user0
+            walletAddress: "xyze"
         })
 
 
 
         //Create category with attributes
         attributeChannel = Object.assign(new Channel(), {
-            title: "The Sound of Music",
+            title: "The Sound of Music322",
             symbol: "SOM",
             mintPrice: ethers.utils.parseUnits( "0.08" , 'ether'),
             link: "google.com",
@@ -401,6 +397,7 @@ describe('ItemService', async () => {
         await schemaService.loadChannel(attributeChannel._id)
 
         await imageService.put(image)
+
         await authorService.put(author)
 
         let item:Item = Object.assign(new Item(), {

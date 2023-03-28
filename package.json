@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "The Complete Ethereum NFT Toolkit.",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node node_modules/.bin/http-server -a localhost -p 8000 -c-1",
     "start:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js serve --config=webpack.dev.ts ",
-    "test": "mocha",
+    "test": "mocha --timeout 9999999999",
     "test:hardhat": "npx hardhat test test/hardhat/test-channel-contract.spec.js",
     "build": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",
     "build:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",

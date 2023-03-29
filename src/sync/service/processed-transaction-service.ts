@@ -291,7 +291,6 @@ class ProcessedTransactionService {
 
         }
 
-
         return report
 
 

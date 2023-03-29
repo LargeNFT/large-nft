@@ -37,6 +37,15 @@ class WalletServiceImpl implements WalletService {
 
     })
 
+    globalThis.ethereum?.on('networkChanged', async (networkId) => {
+      this.ethersContracts = {}
+      this.provider = this.getProvider()
+
+      await this.initWallet()
+
+    })
+
+
   }
 
   async initWallet() {

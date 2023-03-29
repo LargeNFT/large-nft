@@ -98,111 +98,122 @@
 
                                 <div class="block-title block-title-large">${traitType} / ${value}</div>
                             
-                                <div class="block block-strong inset stats">
+                                ${totalTokens > 0 ? $h`
+                                    
+                                    <div class="block block-strong inset stats">
                             
-                                    <div class="row">
-
-                                        <div class="col-100 large-33 margin-bottom row">
-
-                                            <div class="col-50 large-100">
-                                                Number of Sales
-                                            </div>
-                    
-                                            <div class="col-50 large-100 price">
-                                                <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-100 large-33 margin-bottom row">
-
-                                            <div class="col-50 large-100">
-                                                Average Sale
-                                            </div>
-                    
-                                            <div class="col-50 large-100 price">
-                                                <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)}</span>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-100 large-33 margin-bottom row">
-
-                                            <div class="col-50 large-100">
-                                                Total Value of All Sales
-                                            </div>
-                    
-                                            <div class="col-50 large-100 price">
-                                                <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)}</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                
-                                </div>
-
-                                ${largestSales && largestSales?.sales?.length > 0 ? $h`
-                                    <div class="block-title block-title-medium">Largest Sales</div>
-                                    <largest-sales largest_sales="${largestSales}"></largest-sales>
-                                ` : $h` `}
-
-                                <div class="card data-table">
-                                    <div class="card-header">
-                                        Leaderboard <span class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</span>
-
-                                    </div>
-                                    <div class="card-content">
-              
-                                        <table class="leaderboard-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Rank</th>
-                                                    <th class="label-cell">Address</th>
-                                                    <th>Last Active</th>
-                                                    <th class="numeric-cell">Owned</th>
-                                                </tr>
-                                            </thead>
-                                    
-                                            <tbody>
-                                    
-                                            ${owners?.map(u => $h`
-                                                <tr>
-                                                    <th>${u.rank}</th>
-                                                    <td class="label-cell">
+                                        <div class="row">
     
-                                                        ${u.ensName ? $h`
-                                                            <a href="<%= baseURL %>u/?address=${u._id}">${u.ensName}</a>
-                                                        ` : $h`
-                                                            <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
-                                                        `} 
+                                            <div class="col-100 large-33 margin-bottom row">
     
-                                                    </td>
+                                                <div class="col-50 large-100">
+                                                    Number of Sales
+                                                </div>
+                        
+                                                <div class="col-50 large-100 price">
+                                                    <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.events ? salesReport?.totals?.events : 0)}</strong>
+                                                </div>
+    
+                                            </div>
+    
+                                            <div class="col-100 large-33 margin-bottom row">
+    
+                                                <div class="col-50 large-100">
+                                                    Average Sale
+                                                </div>
+                        
+                                                <div class="col-50 large-100 price">
+                                                    <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.averageEthValue ? salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.averageUsdValue ? salesReport?.totals?.averageUsdValue : 0, 2)}</span>
+                                                </div>
+    
+                                            </div>
+    
+                                            <div class="col-100 large-33 margin-bottom row">
+    
+                                                <div class="col-50 large-100">
+                                                    Total Value of All Sales
+                                                </div>
+                        
+                                                <div class="col-50 large-100 price">
+                                                    <strong>${new Intl.NumberFormat('en-US').format(salesReport?.totals?.ethValue ? salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(salesReport?.totals?.usdValue ? salesReport?.totals?.usdValue : 0, 2)}</span>
+                                                </div>
+    
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+    
+                                    ${largestSales && largestSales?.sales?.length > 0 ? $h`
+    
+                                        <div class="block-title block-title-medium">Largest Sales</div>
+                                        <largest-sales largest_sales="${largestSales}"></largest-sales>
                                         
-                                                    <td>
-                                                        ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
-                                                    </td>
+                                    ` : $h` `}
+    
+                                    <div class="card data-table">
+                                        <div class="card-header">
+                                            Leaderboard <span class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</span>
+    
+                                        </div>
+                                        <div class="card-content">
+                  
+                                            <table class="leaderboard-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Rank</th>
+                                                        <th class="label-cell">Address</th>
+                                                        <th>Last Active</th>
+                                                        <th class="numeric-cell">Owned</th>
+                                                    </tr>
+                                                </thead>
                                         
-                                                    <td class="numeric-cell">
-                                                        ${u.count}
-                                                    </td>
+                                                <tbody>
                                         
-                                                </tr>
+                                                ${owners?.map(u => $h`
+                                                    <tr>
+                                                        <th>${u.rank}</th>
+                                                        <td class="label-cell">
+        
+                                                            ${u.ensName ? $h`
+                                                                <a href="<%= baseURL %>u/?address=${u._id}">${u.ensName}</a>
+                                                            ` : $h`
+                                                                <a href="<%= baseURL %>u/?address=${u._id}">${u._id ? walletService.truncateEthAddress(u._id) : ' '}</a>
+                                                            `} 
+        
+                                                        </td>
                                             
-                                            `)}
-                                            </tbody>
-                                
-                                        </table>
-
-
+                                                        <td>
+                                                            ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
+                                                        </td>
+                                            
+                                                        <td class="numeric-cell">
+                                                            ${u.count}
+                                                        </td>
+                                            
+                                                    </tr>
+                                                
+                                                `)}
+                                                </tbody>
+                                    
+                                            </table>
+    
+    
+                                        </div>
                                     </div>
-                                </div>
+    
+                                    <div class="block-title block-title-medium">Minted Tokens (${totalTokens})</div>
+                                    <div class="block list cards-list virtual-list" id="attribute-tokens-list">
+                                        <ul class="item-flex"></ul>
+                                    </div>
+                                  
+                                    <div class="preloader infinite-scroll-preloader"></div>
 
-                                <div class="block-title block-title-medium">All Tokens (${totalTokens})</div>
-                                <div class="block list cards-list virtual-list" id="attribute-tokens-list">
-                                    <ul class="item-flex"></ul>
-                                </div>
-                              
-                                <div class="preloader infinite-scroll-preloader"></div>
+
+                                ` : $h`
+                                    <div class="block block-strong inset">
+                                        No tokens minted yet.
+                                    </div>
+                                `}
 
                             
                             </div>
@@ -327,7 +338,7 @@
                     firstPageItems = result.items
                     totalTokens = result.totalMatches
 
-
+                    await $update()
 
                     createVirtualList()
 

@@ -223,15 +223,8 @@ class TransactionIndexerService {
 
                     }
 
-                    
-
-
                     //Add raw event to transaction before saving
                     processedTransaction.ercEvents.push(ercEvent)
-    
-                    // if (processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId].price > 0) {
-                    //     console.log(`Sale of #${ercEvent.namedArgs.tokenId} for ${processedTransaction.transactionValue?.tokenPrice[ercEvent.namedArgs.tokenId].price} ${processedTransaction.transactionValue?.currency} on ${ Array.from(Object.keys(processedTransaction.transactionValue?.markets).map( k => k)).join(", ") }`)
-                    // }
 
                 }
 
@@ -241,8 +234,6 @@ class TransactionIndexerService {
 
 
                 let transactionViewModel:TransactionViewModel = this.processedTransactionService.translateTransactionViewModel(processedTransaction, processedEvents)
-
-
 
 
                 //Grab token ids from transactions and save on transaction

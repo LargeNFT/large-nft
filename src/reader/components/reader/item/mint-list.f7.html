@@ -256,25 +256,41 @@
 
     $f7.preloader.show()
 
-    mintWebService.getMintingViewModel().then (m => {
-      
-      mintingViewModel = m 
-      mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
+    const populate = async () => {
 
-      return updateTotal()
+      await walletService.connect()
 
-    } ).then( () => {
+      try {
 
-      let e = new CustomEvent('mint-view-model-loaded')
-      e.mintingViewModel = mintingViewModel
-      document.dispatchEvent(e)
+        mintingViewModel = await mintWebService.getMintingViewModel()
 
-      $f7.preloader.hide()
+        mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
 
-    })
+        await updateTotal()
+
+        let e = new CustomEvent('mint-view-model-loaded')
+        e.mintingViewModel = mintingViewModel
+        document.dispatchEvent(e)
+
+        $f7.preloader.hide()
 
 
-    document.addEventListener('mint-event', async (e) => {
+      } catch(ex) {
+
+        $f7.dialog.confirm("Problem connecting to contract on Ethereum Mainnet. Is your wallet connected to the right network?", "Problem connecting to network", populate, () => {
+          $f7.views.main.router.navigate(`/`)
+        })
+
+        $f7.preloader.hide()
+
+      }
+
+    }
+
+    populate()
+
+
+    let mintEventHandler = async (e) => {
 
       if (e.tokenId > mintingViewModel?.totalMinted) {
         mintingViewModel = await mintWebService.getMintingViewModel()
@@ -287,7 +303,10 @@
         document.dispatchEvent(e)
       }
 
-    })
+    }
+
+    document.removeEventListener('mint-event', mintEventHandler)
+    document.addEventListener('mint-event', mintEventHandler)
 
 
     return $render

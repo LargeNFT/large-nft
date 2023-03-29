@@ -11,7 +11,22 @@
         
           <div class="title"></div>
 
-          <${HeaderRight} wallet_address="${walletService?.address}" show_connect="${walletService?.provider}" />
+          <div class="right">
+
+            ${showConnect ? $h`
+                ${walletAddress != undefined ? $h`
+                    <a href="/admin/author/show/${walletAddress}" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
+                  ` : $h`
+                    <button class="button button-outline button-fill" @click=${connectWallet}>Connect Wallet</button>
+                  `}
+            ` : $h`<span />`}
+    
+            <a href="/admin/settings" class="button button-fill" id="settings-button" >
+                <i class="material-icons">settings</i>
+            </a>
+    
+          </div>
+
 
           ${readerConfig?.path ? $h`
             <div class="subnavbar">
@@ -24,8 +39,6 @@
               </div>
             </div>
           ` : ''}
-
-
 
 
         </div>
@@ -45,31 +58,43 @@
    max-width: 100%;
  }
 
+ #settings-button {
+  margin-left: 3px;
+ }
+
 </style>
 
 
 <script>
 
-    import HeaderRight from "./header-right.f7.html"
 
     import { ContainerService } from "../../service/core/container-service"
 
 
     export default (props, { $on, $f7, $update }) => {
     
-        // let readerConfig = ContainerService.getInstance("readerConfig")
         let walletService = ContainerService.getWalletService()
+
+        let walletAddress = walletService.address
+        let showConnect = walletService.provider != undefined
 
         let readerConfig = props.reader_config
 
+        // Captures 0x + 4 characters, then the last 4 characters.
+        const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/
+            
+        const truncateEthAddress = (address) => {
+            const match = address.match(truncateRegex)
+            if (!match) return address
+            return `${match[1]}…${match[2]}`
+        }
 
 
-        // const getBaseURI = () => {
-        //   let baseURI = window.location.pathname
 
-        //   //Get what's before admin
-        //   return baseURI.substring(0, baseURI.indexOf('large/'))
-        // }
+        const connectWallet = async (e) => {
+            document.dispatchEvent(new CustomEvent('connect-wallet'))
+        }
+
 
         return $render
     }

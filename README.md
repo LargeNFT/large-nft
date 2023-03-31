@@ -13,13 +13,25 @@ Run on your own hardware or with popular cloud providers.
 
 # Goals
 
-* Bring the permissionless properties of Ethereum to the rest of the NFT tech stack with a default viewer and marketplace that any user in the community can build on.
+* Make it easy for any user to host the digital infrastructure for an NFT collection to ensure owners can be self-reliant.
 
-* Empower users to experience feelings associated with ownership with their digital artifacts.
+* Bring the permissionless properties of Ethereum to the rest of the NFT tech stack with a default viewer and marketplace that any user in the community can run.
 
-* Help make sure users never lose the ability and rights to keep their digital property online for display and resale.
+    * Free and open source code.
+    * Tools to build and launch an NFT collection.
+    * Tools to launch a fan experience for an existing NFT collection.
+    * Tools to launch a custom marketplace for any NFT collection. (future release)
 
-* Share and remix existing ideas. 
+* Create and publish NFTs.
+    * Build an NFT collection from scratch.
+    * Build a fan experience for an existing NFT collection.
+
+* Share and remix existing ideas.
+    * If you can't fork it it's not web3.
+
+* Feel like an owner.
+    * Empower users to experience feelings associated with ownership with their digital artifacts.
+    * Help make sure users never lose the ability and rights to keep their digital property online for display and resale.
 
 * What if an NFT creator disappears?
     * It's inevitable that every creator dies.
@@ -49,8 +61,6 @@ Run on your own hardware or with popular cloud providers.
 
 * Distributed through web or IPFS. To be distributed through IPFS and the web the full stack must run in a web browser.
 
-* Use git as a critical piece of decentralized, P2P infrastructure.
-
 * Dependencies 
     * A web browser.
     * A simple static webhost.
@@ -58,6 +68,9 @@ Run on your own hardware or with popular cloud providers.
     * A git provider (GitHub/GitLab).
     * IPFS node.
 
+
+
+* Built with JavaScript so it can run in the browser and on any device.
 
 * Provide reasonable defaults for new NFTs collection and the ability to change and customize.
     

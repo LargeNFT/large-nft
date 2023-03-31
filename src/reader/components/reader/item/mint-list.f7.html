@@ -173,6 +173,7 @@
     let mintWebService = globalThis.container.get("MintWebService")
     let walletService = globalThis.container.get("WalletService")
     let queueService = globalThis.container.get("QueueService")
+    let baseURI = globalThis.container.get("baseURI")
 
 
     let mintingViewModel
@@ -278,7 +279,7 @@
       } catch(ex) {
 
         $f7.dialog.confirm("Problem connecting to contract on Ethereum Mainnet. Is your wallet connected to the right network?", "Problem connecting to network", populate, () => {
-          $f7.views.main.router.navigate(`/`)
+          $f7.views.main.router.navigate(baseURI)
         })
 
         $f7.preloader.hide()

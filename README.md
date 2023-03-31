@@ -5,9 +5,7 @@
 
 **The Complete Ethereum NFT Toolkit**
 
-The easiest way to self-publish your work as an NFT collection on **Ethereum** and **IPFS**. Publish a book, fan-fiction, blog, or art as a forkable NFT collection and sell digital collectibles on marketplaces like LooksRare, OpenSea, and more.
-
-Build a fan site for an existing NFT collection. Fork any NFT collection to experiment.
+An offline-first NFT toolkit to publish a book, fan-fiction, blog, or art as digital collectibles and sell on marketplaces like LooksRare, OpenSea, and more.
 
 Run on your own hardware or with popular cloud providers. 
 

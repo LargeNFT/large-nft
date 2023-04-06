@@ -17,6 +17,7 @@ Run on your own hardware or with popular cloud providers.
 
     * Free and open source code.
     * Tools to build and launch an NFT collection.
+        * Use the built-in contract or provide your own. (customization in future release)
     * Tools to launch a fan experience for an existing NFT collection.
     * Tools to launch a custom marketplace for any NFT collection. (future release)
 
@@ -340,6 +341,7 @@ npm run sync --  --env dev --alchemy <API key>
 | Option | Default | Description | 
 | ------------- | ------------- | ------------- |
 | --env  | production | This loads either the dev or production settings for hostname and baseURL. Also in dev mode nothing is written to the 'public' branch. |
+| --channel-dir  | . | The root directory of the channel to sync/generate. |
 | --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
 | --sync-rate  | 30*1000  | Milliseconds between sync attempts. Default is 30 seconds. If set to zero the process will end once synchronized.
 | --clear | false  | Set to "true" to clear all processed data and re-start sync from block 0. Does not delete downloaded data. To clear the database entirely delete the ./sync/data.sqlite file in your project folder. 

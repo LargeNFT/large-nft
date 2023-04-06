@@ -7,11 +7,11 @@ import { ItemPageRepository } from "../item-page-repository.js"
 class ItemPageRepositoryNodeImpl implements ItemPageRepository {
 
     constructor(
-        @inject('baseDir') private baseDir
+        @inject('channelDir') private channelDir
     ) {}
 
     async get(pageNumber:number): Promise<ItemPage> {                
-        return JSON.parse(fs.readFileSync(`${this.baseDir}/public/itemPages/${pageNumber}.json`, 'utf8'))
+        return JSON.parse(fs.readFileSync(`${this.channelDir}/public/itemPages/${pageNumber}.json`, 'utf8'))
     }
 
 }

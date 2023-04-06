@@ -78,28 +78,24 @@ import { TokenOwner } from "./dto/token-owner.js";
 import { Token } from "./dto/token.js";
 import { Transaction } from "./dto/transaction.js";
 
-import { createRequire } from 'module'
-import { ENS } from "./dto/ens.js";
-import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js";
-import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js";
-import { SpawnService } from "./service/spawn-service.js";
+import { ENS } from "./dto/ens.js"
+import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js"
+import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js"
+import { SpawnService } from "./service/spawn-service.js"
 
 import sharp from "sharp"
-import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js";
-import { RowItemViewModel } from "../reader/dto/item-page.js";
+import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js"
+import { RowItemViewModel } from "../reader/dto/item-page.js"
 
-
+import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 const { Sequelize } = require('sequelize-typescript')
-
 
 let container:Container
 
 function getMainContainer(command:GetMainContainerCommand) {
 
   if (container) return container
-
-
   
   container = command.customContainer
   
@@ -108,13 +104,8 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind("baseURI").toConstantValue(command.baseURI)
   container.bind("hostname").toConstantValue(command.hostname)
 
-  container.bind("baseDir").toConstantValue(command.baseDir)
+  container.bind("channelDir").toConstantValue(command.channelDir)
   container.bind("sharp").toConstantValue(sharp)
-
-
-
-
-
 
   container.bind("provider").toConstantValue(() => {
 
@@ -133,7 +124,7 @@ function getMainContainer(command:GetMainContainerCommand) {
 
   let sequelize
 
-  container.bind('sequelize').toConstantValue(async (baseDir, channelId) => {
+  container.bind('sequelize').toConstantValue(async (channelDir, channelId) => {
 
     if (sequelize) {
       return sequelize
@@ -144,11 +135,10 @@ function getMainContainer(command:GetMainContainerCommand) {
       logging: false,
       database: channelId,
       dialect: 'sqlite',
-      storage: `${baseDir}/sync/data.sqlite`,
+      storage: `${channelDir}/sync/data.sqlite`,
       transactionType: "IMMEDIATE",
       models: [Block, ContractState, ProcessedTransaction, ProcessedEvent, ProcessedTransactionToken, ProcessedTransactionTrader, TokenOwner, Token, Transaction, ENS]
     })
-
 
     await sequelize.sync()
 
@@ -269,7 +259,8 @@ interface GetMainContainerCommand {
   customContainer:Container
   baseURI:string
   hostname:string
-  baseDir:string
+  channelDir:string
+  runDir:string
   alchemy:string
 }
 

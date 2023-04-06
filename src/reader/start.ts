@@ -23,7 +23,8 @@ let start = async () => {
   
   let command:GetMainContainerCommand = {
     customContainer: container,
-    baseDir: config.baseDir,
+    channelDir: config.channelDir,
+    runDir: config.runDir,    
     baseURI: config.baseURI,
     hostname: config.hostname,
     alchemy: config.alchemy
@@ -41,7 +42,7 @@ let start = async () => {
     
   //Start web server
   fastify.register(require('@fastify/static'), {
-    root: `${config.baseDir}/public`
+    root: `${config.runDir}/public`
   })
 
   const port = process.env.PORT ? parseInt(process.env.port) : 8081
@@ -52,7 +53,7 @@ let start = async () => {
   })
 
   // Generate HTML
-  await spawnService.spawnGenerateAndSync(config.baseDir)
+  await spawnService.spawnGenerateAndSyncScripts(config.channelDir)
     
 
 }

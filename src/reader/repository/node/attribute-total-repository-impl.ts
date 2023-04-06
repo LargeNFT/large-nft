@@ -9,7 +9,7 @@ import fs from "fs"
 class AttributeTotalRepositoryNodeImpl implements AttributeTotalRepository {
 
     constructor(
-        @inject('baseDir') private baseDir
+        @inject('channelDir') private channelDir
     ) {}
     
     async get(_id:string): Promise<AttributeTotal> {      
@@ -28,7 +28,7 @@ class AttributeTotalRepositoryNodeImpl implements AttributeTotalRepository {
     }
 
     async list() : Promise<AttributeTotal[]> {
-        let result = fs.readFileSync(`${this.baseDir}/public/attributeTotals.json`, 'utf8')          
+        let result = fs.readFileSync(`${this.channelDir}/public/attributeTotals.json`, 'utf8')          
         return JSON.parse(result)
     }
 

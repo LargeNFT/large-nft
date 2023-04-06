@@ -24,25 +24,15 @@
         
         <div class="float-right">
 
-          <div class="menu-item menu-item-dropdown">
-            <div class="menu-item-content icon-only">
-              <div class="menu-item-content">
-                <i class="material-icons">more_vert</i>
-              </div>
-            </div>
-            <div class="menu-dropdown menu-dropdown-right">
-              <div class="menu-dropdown-content">
+          <div class="segmented">
 
-                ${showEdit ? $h`
-                  <a class="menu-dropdown-link menu-close" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
-                  <!-- <a class="menu-dropdown-link menu-close" href="/admin/channel/upgrade/${channelViewModel.channel._id}">Upgrade</a> -->
-                ` : $h`<span />`}
-                
-                <a class="menu-dropdown-link menu-close" @click="${deleteCollectionClick}">Delete</a>
-                
-              </div>
-            </div>
+            ${showEdit ? $h`
+              <a class="button button-active" href="/admin/channel/edit/${channelViewModel.channel._id}">Edit</a>
+            ` : $h`<span />`}
+
+            <a class="button" @click="${deleteCollectionClick}">Delete</a>
           </div>
+
         </div>
                         
         <div class="title">${channelViewModel?.channel?.title}</div>

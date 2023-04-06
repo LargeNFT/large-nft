@@ -7,11 +7,11 @@ import { AuthorRepository } from "../author-repository.js"
 class AuthorRepositoryNodeImpl implements AuthorRepository {
 
     constructor(
-        @inject('baseDir') private baseDir
+        @inject('channelDir') private channelDir
     ) {}
     async get(_id:string): Promise<Author> {        
         
-        const authors = JSON.parse(fs.readFileSync(`${this.baseDir}/backup/export/backup/authors.json`, 'utf8'))
+        const authors = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/authors.json`, 'utf8'))
         
         let author:Author = authors.filter( author => author._id == _id)[0]
 

@@ -105,7 +105,6 @@ import Stepper from 'framework7/components/stepper'
 import SmartSelect from 'framework7/components/smart-select'
 import Grid from 'framework7/components/grid'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
-import Menu from 'framework7/components/menu'
 import Swiper from 'framework7/components/swiper'
 import { GitService } from './service/core/git-service.js';
 import { GithubService } from './service/core/github-service.js';
@@ -120,7 +119,7 @@ PouchDB.plugin(PouchFind)
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
-  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Menu, Popup,Accordion,
+  Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Popup,Accordion,
   Popover, Swiper
 ])
 
@@ -151,7 +150,14 @@ function getMainContainer(version:string) {
       component: AppComponent,
       navbar: {
         hideOnPageScroll: true
+      },
+
+      colors: {
+        // specify primary color theme
+        primary: '#FCB827'
       }
+
+
     })
     
 
@@ -180,11 +186,9 @@ function getMainContainer(version:string) {
 
   })
 
-  // container.bind('sketch').toConstantValue(sketch())
   container.bind("contracts").toConstantValue(contracts())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
-  // container.bind("readerConfig").toConstantValue(readerConfig)
   
   container.bind("PouchDB").toConstantValue(PouchDB)
   container.bind("pouch-prefix").toConstantValue("./pouch/")

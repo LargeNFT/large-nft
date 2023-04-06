@@ -15,7 +15,6 @@ import { ERCIndexResult, TransactionIndexerService } from "./service/transaction
 import { WalletService } from "../reader/service/core/wallet-service.js"
 import { ProcessConfig } from "../reader/util/process-config.js"
 
-//@ts-ignore
 
 
 import { TokenOwner } from "./dto/token-owner.js"
@@ -25,11 +24,8 @@ import { Transaction } from "./dto/transaction.js"
 
 
 
-
-
 let channelId
 
-// import { simpleGit, CleanOptions } from 'simple-git'
 import { ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, ProcessedTransactionTrader } from "./dto/processed-transaction.js"
 import { BlockService } from "./service/block-service.js"
 import { TransactionService } from "./service/transaction-service.js"
@@ -51,8 +47,8 @@ let sync = async () => {
     throw new Error("No ethereum connection configured.")
   }
 
-  let contract = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract.json`, 'utf8'))
-  let contractAbi = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract-abi.json`, 'utf8'))
+  let contract = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract.json`, 'utf8'))
+  let contractAbi = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract-abi.json`, 'utf8'))
 
 
   let container = new Container()
@@ -78,11 +74,13 @@ let sync = async () => {
 
   let command:GetMainContainerCommand = {
     customContainer: container,
-    baseDir: config.baseDir,
+    channelDir: config.channelDir,
+    runDir: config.runDir,
     baseURI: config.baseURI,
     hostname: config.hostname,
     alchemy: config.alchemy
   }
+
 
   container = await getMainContainer(command)
 
@@ -105,9 +103,10 @@ let sync = async () => {
   let channelViewModel = await channelWebService.get(0)
 
   channelId = channelViewModel.channel._id
+
   //Init database
   let sequelizeInit:Function = container.get("sequelize")
-  let sequelize = await sequelizeInit(config.baseDir, channelId)
+  let sequelize = await sequelizeInit(config.channelDir, channelId)
 
   await sequelize.query("PRAGMA busy_timeout=5000;")
   await sequelize.query("PRAGMA journal_mode=WAL;")

@@ -255,7 +255,7 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/sync/sync.ts",
-    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp'],
+    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp', 'mariadb'],
     externalsPresets: { 
       node: true 
     },    
@@ -343,8 +343,8 @@ let getReaderConfigs = () => {
     ]
   }
 
-  let syncPushConfig = {
-    entry: "./src/sync/sync-push.ts",
+  let syncLibraryConfig = {
+    entry: "./src/sync/sync-library.ts",
     externalsPresets: { 
       node: true 
     },    
@@ -367,7 +367,7 @@ let getReaderConfigs = () => {
       ]
     },  
     output: {
-      filename: 'sync/sync-push.js',
+      filename: 'sync/sync-library.js',
       libraryTarget: "module",
       library: {
         type: "module"
@@ -530,7 +530,7 @@ let getReaderConfigs = () => {
   configs.push(generateConfig)
   configs.push(syncConfig)
   configs.push(startConfig)
-  configs.push(syncPushConfig)
+  configs.push(syncLibraryConfig)
 
   return configs
 

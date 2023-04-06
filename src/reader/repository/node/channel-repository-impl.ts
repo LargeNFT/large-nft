@@ -8,17 +8,17 @@ import { ChannelRepository } from "./../channel-repository.js"
 class ChannelRepositoryNodeImpl implements ChannelRepository {
     
     constructor(
-        @inject('baseDir') private baseDir
+        @inject('channelDir') private channelDir
     ) {}
 
     async get(): Promise<Channel> {        
         
-        const channels = JSON.parse(fs.readFileSync(`${this.baseDir}/backup/export/backup/channels.json`, 'utf8'))
+        const channels = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/channels.json`, 'utf8'))
         let channel:Channel = channels[0]
 
 
         try {
-            const contract = JSON.parse(fs.readFileSync(`${this.baseDir}/backup/contract/contract.json`, 'utf8'))
+            const contract = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/contract/contract.json`, 'utf8'))
 
             if (contract?.contractAddress) {
                 channel.contractAddress = contract.contractAddress

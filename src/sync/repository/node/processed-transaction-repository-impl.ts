@@ -20,9 +20,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
     @inject("sequelize")
     private sequelize:Function
 
-    @inject("baseDir")
-    private baseDir:string
-
     async get(_id: string, options?:any): Promise<ProcessedTransaction> {
 
         return ProcessedTransaction.findByPk(_id, options)

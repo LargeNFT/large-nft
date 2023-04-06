@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.8.4",
+  "version": "0.10.0",
   "description": "The Complete Ethereum NFT Toolkit.",
   "repository": {
     "type": "git",
@@ -129,8 +129,10 @@
     "dgram-browserify": "0.0.13",
     "ethers": "5.7.2",
     "excerpt-html": "1.2.2",
+
     "framework7": "7.1.5",
     "framework7-icons": "5.0.5",
+    
     "highlight.js": "11.7.0",
     "hotkeys-js": "3.10.1",
     "html-truncate": "1.2.2",
@@ -168,9 +170,10 @@
     "quill-image-drop-and-paste": "1.2.14",
     "quill-paste-smart": "1.4.10",
     "reflect-metadata": "0.1.13",
+
     "sequelize": "6.30.0",
     "sequelize-typescript": "2.1.5",
-    "simple-git": "3.17.0",
+
     "sqlite3": "5.1.6",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",

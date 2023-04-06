@@ -15,7 +15,7 @@ class ItemRepositoryNodeImpl implements ItemRepository {
 
 
     constructor(
-        @inject('baseDir') private baseDir
+        @inject('channelDir') private channelDir
     ) {}
 
     async getRowItemViewModelsByOwner(address: string, pageNumber: number): Promise<ItemPage> {
@@ -27,7 +27,7 @@ class ItemRepositoryNodeImpl implements ItemRepository {
     }
 
     async load() {
-        this.items = JSON.parse(fs.readFileSync(`${this.baseDir}/backup/export/backup/items.json`, 'utf8'))
+        this.items = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/items.json`, 'utf8'))
     }
 
     async get(_id: string): Promise<Item> {        
@@ -55,7 +55,7 @@ class ItemRepositoryNodeImpl implements ItemRepository {
         let items:RowItemViewModel[] = []
 
         for (let tokenId of tokenIds) {
-            const response = fs.readFileSync(`${this.baseDir}/public/t/${tokenId}/rowItemViewModel.json`, 'utf8')
+            const response = fs.readFileSync(`${this.channelDir}/public/t/${tokenId}/rowItemViewModel.json`, 'utf8')
             items.push(JSON.parse(response))
         }
 
@@ -65,7 +65,7 @@ class ItemRepositoryNodeImpl implements ItemRepository {
 
     async getRowItemViewModelsByTokenId(tokenId:number) : Promise<RowItemViewModel> {
 
-        const response = fs.readFileSync(`${this.baseDir}/public/t/${tokenId}/rowItemViewModel.json`, 'utf8')
+        const response = fs.readFileSync(`${this.channelDir}/public/t/${tokenId}/rowItemViewModel.json`, 'utf8')
         return JSON.parse(response)
 
     }

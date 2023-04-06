@@ -77,7 +77,8 @@ let generate = async () => {
 
   let command:GetMainContainerCommand = {
     customContainer: container,
-    baseDir: config.baseDir,
+    channelDir: config.channelDir,
+    runDir: config.runDir,    
     baseURI: config.baseURI,
     hostname: config.hostname,
     alchemy: undefined
@@ -228,19 +229,6 @@ let generate = async () => {
 
 
 
-  // let contract
-  // let contractABI
-
-  // try {
-
-  //   contract = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract.json`, 'utf8'))
-  //   contractABI = JSON.parse(fs.readFileSync(`${config.baseDir}/backup/contract/contract-abi.json`, 'utf8'))
-
-  // } catch(ex) {}
-
-
-
-
   let baseViewModel = {
     channelViewModel: channelViewModel,
     attributeReport: attributeTotals,
@@ -257,77 +245,85 @@ let generate = async () => {
     bodyContents: bodyContents,
     excerptHtml: excerptHtml,
     he: he,
-    baseDir: config.baseDir,
     logo: config.logo,
     largeURL: config.largeURL
-
-    // contract: contract,
-    // contractABI: contractABI
   }
 
 
 
-  console.log("Copying backup and Large Admin...")
+  console.time("Copying backup...")
+  fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
+  console.timeEnd("Copying backup...")
 
-  fs.cpSync(`${config.baseDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
 
-  if (fs.existsSync(`${config.publicPath}/large`)) {
-    fs.rmSync(`${config.publicPath}/large`, { recursive: true })
+
+  if (!config.skipAdmin) {
+
+    console.time("Copying Large NFT Admin...")
+
+    if (fs.existsSync(`${config.publicPath}/large`)) {
+      fs.rmSync(`${config.publicPath}/large`, { recursive: true })
+    }
+
+    fs.cpSync(`${config.runDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
+
+
+    //Read app.html and index.html from Large and update the paths.
+    let indexBuffer = fs.readFileSync(`${config.publicPath}/large/index.html`)
+
+    let indexContents = indexBuffer.toString()
+
+    indexContents = indexContents.replace(`../admin/app/js/runtime-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/runtime-${config.VERSION}.admin.js`)
+    indexContents = indexContents.replace(`../admin/app/js/vendors-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/vendors-${config.VERSION}.admin.js`)
+    indexContents = indexContents.replace(`../admin/app/js/main-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/main-${config.VERSION}.admin.js`)
+
+
+    //Inject admin footer template.
+    if (adminFooter?.length > 0) {
+
+      let footerTemplate = Eta.render(adminFooter.toString(), { 
+        baseURL: config.baseURL,
+        version: config.VERSION
+      })
+
+      indexContents = indexContents.replace(`<div id="app"></div>`, `
+      
+      <div id="app"></div>
+
+      <template id="footer-template">
+      ${footerTemplate}
+      </template>
+      
+      `)
+
+    }
+
+    //Copy logo
+    if (config.logo?.src) {
+
+      //Get ext 
+      let logoExt = config.logo?.src.split('.').pop()
+
+      //Logo location
+      let logoPath = path.resolve(config.channelDir, config.logo.src)
+
+      fs.cpSync(`${logoPath}`, `${config.publicPath}/logo.${logoExt}`, { recursive: true })
+
+    }
+
+
+    fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
+
+    //Move SW
+    fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
+
+    console.timeEnd("Copying Large NFT Admin...")
+
+
   }
 
-  fs.cpSync(`${config.baseDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
 
 
-  //Read app.html and index.html from Large and update the paths.
-  let indexBuffer = fs.readFileSync(`${config.publicPath}/large/index.html`)
-
-  let indexContents = indexBuffer.toString()
-
-  indexContents = indexContents.replace(`../admin/app/js/runtime-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/runtime-${config.VERSION}.admin.js`)
-  indexContents = indexContents.replace(`../admin/app/js/vendors-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/vendors-${config.VERSION}.admin.js`)
-  indexContents = indexContents.replace(`../admin/app/js/main-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/main-${config.VERSION}.admin.js`)
-
-
-  //Inject admin footer template.
-  if (adminFooter?.length > 0) {
-
-    let footerTemplate = Eta.render(adminFooter.toString(), { 
-      baseURL: config.baseURL,
-      version: config.VERSION
-    })
-
-    indexContents = indexContents.replace(`<div id="app"></div>`, `
-    
-    <div id="app"></div>
-
-    <template id="footer-template">
-    ${footerTemplate}
-    </template>
-    
-    `)
-
-  }
-
-  //Copy logo
-  if (config.logo?.src) {
-
-    //Get ext 
-    let logoExt = config.logo?.src.split('.').pop()
-
-    //Logo location
-    let logoPath = path.resolve(config.baseDir, config.logo.src)
-
-    fs.cpSync(`${logoPath}`, `${config.publicPath}/logo.${logoExt}`, { recursive: true })
-
-  }
-
-
-  fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
-
-
-
-  //Move SW
-  fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
   fs.mkdirSync(config.publicPath, { recursive: true })
 
   // console.log(`Adding ${generateViewModel.firstPageExploreItems.length} items to index.`)
@@ -569,8 +565,8 @@ let generate = async () => {
 
 
   //Generate webp version of channel cover image
-  await generateService.generateWebp(config, `${config.baseDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId)
-  await generateService.generateWebp(config, `${config.baseDir}/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
+  await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId)
+  await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
 
 
 
@@ -592,7 +588,6 @@ let generate = async () => {
   //Generate  webp version of channel profile pic
 
 
-  await spawnService.spawnGenerateAfter(config.baseDir)
 
   console.log("Generation complete")
 

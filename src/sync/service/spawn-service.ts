@@ -29,62 +29,91 @@ class SpawnService {
     }
 
 
-    async spawnGenerate(dir:string, args?:[]) {        
+
+
+    async spawnGenerateScript(dir:string, args?:string[]) {        
 
         let theArgs = ["--"]
 
         if (args) {
             theArgs.push(...args)
-        } else {
-            theArgs.push(...process.argv?.slice(2))
-        }
+        } 
+            
+        theArgs.push(...process.argv?.slice(2))
 
         await this.runProcess(spawn(`npm run generate`, theArgs, { shell: true, cwd: dir }))
 
     }
 
-
-    async spawnGenerateAfter(dir:string, args?:[]) {        
-
-        let theArgs = ["--"]
-
-        if (args) {
-            theArgs.push(...args)
-        } else {
-            theArgs.push(...process.argv?.slice(2))
-        }
-
-        await this.runProcess(spawn(`npm run generate:after`, theArgs, { shell: true, cwd: dir }))
-
-    }
-
-
-    async spawnSync(dir:string, args?:string[]) {       
+    async spawnSyncScript(dir:string, args?:string[]) {       
         
 
         let theArgs = ["--"]
 
         if (args) {
             theArgs.push(...args)
-        } else {
-            theArgs.push(...process.argv?.slice(2))
-        }
+        } 
+            
+        theArgs.push(...process.argv?.slice(2))
 
         await this.runProcess(spawn(`npm run sync`, theArgs, { shell: true, cwd: dir }))
 
 
     }
 
-    async spawnGenerateAndSync(dir:string, args?:[]) {
 
-        // Generate HTML
-        await this.spawnGenerate(dir, args)
-        return this.spawnSync(dir, args)
+    async spawnGenerate(runDir: string, channelDir:string, args?:string[]) {        
+
+        let theArgs = []
+
+        if (args) {
+            theArgs.push(...args)
+        } 
+            
+        theArgs.push(...process.argv?.slice(2))
+        
+        theArgs.push("--channel-dir")
+        theArgs.push(channelDir)
+
+        await this.runProcess(spawn(`node ${runDir}/node_modules/large-nft/public/generate/index.js`, theArgs, { shell: true, cwd: runDir }))
+
+    }
+
+    async spawnSync(runDir: string, channelDir:string, args?:string[]) {       
+    
+        let theArgs = []
+
+        if (args) {
+            theArgs.push(...args)
+        } 
+            
+        theArgs.push(...process.argv?.slice(2))
+
+        theArgs.push("--channel-dir")
+        theArgs.push(channelDir)
+
+        await this.runProcess(spawn(`node ${runDir}/node_modules/large-nft/public/sync/index.js`, theArgs, { shell: true, cwd: runDir }))
+
 
     }
 
 
+    
+    async spawnGenerateAndSyncScripts(dir:string, args?:string[]) {
 
+        // Generate HTML
+        await this.spawnGenerateScript(dir, args)
+        await this.spawnSyncScript(dir, args)
+
+    }
+
+    async spawnGenerateAndSync(runDir: string, channelDir:string, args?:string[]) {
+
+        // Generate HTML
+        await this.spawnGenerate(runDir, channelDir, args)
+        await this.spawnSync(runDir, channelDir, args)
+
+    }
 
     async spawnGoogleCloudSync(dir:string, bucketName:string, destinationDir:string, args?:[]){        
 

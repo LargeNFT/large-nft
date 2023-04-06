@@ -9,11 +9,11 @@ class StaticPageRepositoryNodeImpl implements StaticPageRepository {
     staticPages:StaticPage[] = []
 
     constructor(
-        @inject('baseDir') private baseDir
+        @inject('channelDir') private channelDir
     ) {}
 
     async load() {
-        this.staticPages = JSON.parse(fs.readFileSync(`${this.baseDir}/backup/export/backup/static-pages.json`, 'utf8'))
+        this.staticPages = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/static-pages.json`, 'utf8'))
     }
 
 

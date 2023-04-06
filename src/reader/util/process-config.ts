@@ -10,18 +10,16 @@ class ProcessConfig {
 
         let theArgs = ProcessConfig.parseArgumentsIntoOptions(process.argv)
 
-        let baseDir = theArgs.dir ? theArgs.dir : process.env.INIT_CWD
-      
-        if (!baseDir) baseDir = "."
-
         //A config object can be passed in. If not we will load large-config.json from the baseDir
         if (!config) {
-            config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
+            config = JSON.parse(fs.readFileSync(`${theArgs.channelDir ? theArgs.channelDir : "."}/large-config.json`, 'utf8'))
         }
 
-        config.publicPath = `${baseDir}/public`
+        config.channelDir = theArgs.channelDir
+        config.runDir = process.env.INIT_CWD ? process.env.INIT_CWD : config.channelDir
+
+        config.publicPath = `${config.channelDir}/public`
         config.VERSION = packageConfig.version
-        config.baseDir = baseDir
 
         if (theArgs.env == "dev") {
 
@@ -74,6 +72,7 @@ class ProcessConfig {
         config.syncRate = theArgs.syncRate
         config.env = theArgs.env
         config.clear = theArgs.clear
+        config.skipAdmin = theArgs.skipAdmin
 
         return config
 
@@ -83,14 +82,15 @@ class ProcessConfig {
 
         const args = arg(
         {
-            '--dir': String,
             '--env': String,
             '--alchemy': String,
             '--sync-rate': String,
             '--sync-push-rate': String,
             '--sync-dir': String,
+            '--channel-dir': String,
             '--clear': String,
-            '--generate': String
+            '--generate': String,
+            '--skip-admin': String
         },
         {
             argv: rawArgs.slice(2),
@@ -98,13 +98,13 @@ class ProcessConfig {
         )
     
         return {
-            dir: args['--dir'] || "",
             env: args['--env'] || "production",
             alchemy: args['--alchemy'] || "",
             syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
             syncDir: args['--sync-dir'] || "",
+            channelDir: args['--channel-dir'] || ".",
             clear:  args['--clear'] == "true",
-            
+            skipAdmin: args['--skip-admin'] == "true"
         }
     
     }

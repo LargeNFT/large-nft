@@ -13,7 +13,7 @@
     let showActivityPage = it.baseViewModel.showActivityPage
     let logo = it.baseViewModel.logo
 
-    let traitTypes = Array.from(new Set(attributeReport.map( at => at.traitType)))
+    let traitTypes = Array.from(new Set(attributeReport?.map( at => at.traitType)))
 
 
     const link = (href) => {

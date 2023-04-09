@@ -274,6 +274,10 @@ let getReaderConfigs = () => {
           test: /\.tsx?$/,
           exclude: '/node_modules/',
           loader: 'ts-loader'
+        },
+        {
+          test: /\.ejs?$/,
+          type: 'asset/source'
         }
       ]
     },  
@@ -319,6 +323,10 @@ let getReaderConfigs = () => {
           test: /\.tsx?$/,
           exclude: '/node_modules/',
           loader: 'ts-loader'
+        },
+        {
+          test: /\.ejs?$/,
+          type: 'asset/source'
         }
       ]
     },  

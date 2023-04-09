@@ -110,16 +110,16 @@ class ProcessConfig {
     }
     
 
-    static getSyncPushConfig(config?:any) {
+    static getSyncLibraryConfig(config?:any) {
 
-        let theArgs = ProcessConfig.parseSyncPushArgsIntoOptions(process.argv)
+        let theArgs = ProcessConfig.parseSyncLibraryArgsIntoOptions(process.argv)
 
         let baseDir = theArgs.syncDir ? theArgs.syncDir : process.env.INIT_CWD      
         if (!baseDir) baseDir = "."
 
       
         if (!baseDir) {
-            throw new Error("No base directory configured. Use --dir flag on CLI.")
+            throw new Error("No base directory configured. Use --sync-dir flag on CLI.")
         }
 
 
@@ -140,7 +140,7 @@ class ProcessConfig {
     }
 
 
-    static parseSyncPushArgsIntoOptions(rawArgs) {
+    static parseSyncLibraryArgsIntoOptions(rawArgs) {
 
         const args = arg(
         {

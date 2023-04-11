@@ -37,6 +37,7 @@ import transactionEjs from '../../ejs/pages/transaction.ejs'
 
 import leaderboardEjs from '../../ejs/pages/leaderboard.ejs'
 import largestSalesEjs from '../../ejs/pages/sales.ejs'
+import { SyncStatusService } from "../../../library/service/sync-status-service.js";
 
 
 
@@ -51,6 +52,8 @@ class GenerateService {
         @inject("ItemService") private itemService: ItemService,
         @inject("ItemWebService") private itemWebService: ItemWebService,
         @inject("StaticPageService") private staticPageService: StaticPageService,
+        @inject("SyncStatusService") private syncStatusService: SyncStatusService,
+
         @inject("ItemRepository") private itemRepository: ItemRepository,
         @inject("StaticPageRepository") private staticPageRepository:StaticPageRepository,
         @inject("convert-svg-to-png") private convert,
@@ -556,6 +559,7 @@ class GenerateService {
         Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
     }
     
+
 }
 
 
@@ -567,6 +571,8 @@ interface GenerateViewModel {
     headContents: string,
     bodyContents: string
 }
+
+
 
 export {
     GenerateService, GenerateViewModel

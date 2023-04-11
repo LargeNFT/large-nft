@@ -110,7 +110,6 @@ let sync = async () => {
 
   await sequelize.query("PRAGMA busy_timeout=5000;")
   await sequelize.query("PRAGMA journal_mode=WAL;")
-  // await sequelize.query("PRAGMA read_uncommitted=true;")
 
 
   if (config.clear) {
@@ -231,7 +230,12 @@ let sync = async () => {
           }
 
         } else {
-          console.log(`Batch complete. Starting new batch.`)
+
+          if (indexResult) {
+            console.log(`Batch complete. Indexed to block #${indexResult.endBlock} of #${indexResult.blockNumber}`)
+          } else {
+            console.log(`Batch complete.`)
+          }
           runTransactionIndexer()
         }
 

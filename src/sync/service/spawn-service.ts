@@ -83,14 +83,6 @@ class SpawnService {
 
     }
 
-    async spawnGenerateAndSync(runDir: string, channelDir:string, args?:string[]) {
-
-        // Generate HTML
-        await this.spawnGenerate(runDir, channelDir, args)
-        await this.spawnSync(runDir, channelDir, args)
-
-    }
-
 
 }
 

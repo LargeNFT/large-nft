@@ -47,7 +47,7 @@ import { ItemWebService } from "../reader/service/web/item-web-service.js";
 import { SearchbarService } from "../reader/service/web/searchbar-service.js";
 import { ReaderSettings } from "../reader/dto/reader-settings.js";
 import { ComponentState } from "../reader/dto/component-state.js";
-import { ethers, providers } from "ethers"
+import { ethers } from "ethers"
 import { GenerateService } from "../reader/service/core/generate-service.js";
 import { ContractStateRepositoryNodeImpl } from "./repository/node/contract-state-repository-impl.js";
 import { TokenOwnerRepository } from "./repository/token-owner-repository.js";
@@ -88,6 +88,10 @@ import { RowItemViewModelRepository } from "../reader/repository/row-item-view-m
 import { RowItemViewModel } from "../reader/dto/item-page.js"
 
 import { createRequire } from 'module'
+import { SyncStatusService } from "../library/service/sync-status-service.js";
+import { SyncStatusRepository } from "../library/repository/sync-status-repository.js";
+import { SyncStatusRepositoryNodeImpl } from "../library/repository/node/sync-status-repository-impl.js";
+
 const require = createRequire(import.meta.url)
 const { Sequelize } = require('sequelize-typescript')
 
@@ -148,7 +152,8 @@ function getMainContainer(command:GetMainContainerCommand) {
     return sequelize
 
   })
-  
+
+
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
   container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryNodeImpl).inSingletonScope()
@@ -168,6 +173,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryNodeImpl).inSingletonScope()
 
   container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryNodeImpl).inSingletonScope()
+  container.bind<SyncStatusRepository>("SyncStatusRepository").to(SyncStatusRepositoryNodeImpl).inSingletonScope()
 
 
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").toConstantValue({
@@ -251,6 +257,9 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
   container.bind<ENSService>("ENSService").to(ENSService).inSingletonScope()
   container.bind<SpawnService>("SpawnService").to(SpawnService).inSingletonScope()
+  container.bind<SyncStatusService>("SyncStatusService").to(SyncStatusService).inSingletonScope()
+
+
 
   return container
 }

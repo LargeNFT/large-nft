@@ -352,7 +352,7 @@ let getReaderConfigs = () => {
   }
 
   let syncLibraryConfig = {
-    entry: "./src/sync/sync-library.ts",
+    entry: "./src/library/sync-library.ts",
     externalsPresets: { 
       node: true 
     },    
@@ -371,6 +371,10 @@ let getReaderConfigs = () => {
           test: /\.tsx?$/,
           exclude: '/node_modules/',
           loader: 'ts-loader'
+        },
+        {
+          test: /\.ejs?$/,
+          type: 'asset/source'
         }
       ]
     },  

@@ -105,7 +105,7 @@ class TransactionIndexerService {
         //Update block number
         await this._updateBlockNumber()
 
-        if (!this.shouldIndex(this.contractState)) return
+        // if (!this.shouldIndex(this.contractState)) return
 
         console.log(`
             Block Number: ${this.blockNumber}

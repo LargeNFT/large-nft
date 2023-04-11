@@ -92,14 +92,11 @@ let generate = async () => {
   let channelViewModel = await channelWebService.get(0, additionalStaticPages)
   channelId = channelViewModel.channel._id
 
+
   let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, additionalStaticPages)
 
-
   await generateService.generateItemPages(config, generateViewModel.itemViewModels)
-
   await generateService.defineEtaTemplates(config)
-
-
 
   let baseViewModel = {
     channelViewModel: channelViewModel,
@@ -124,8 +121,6 @@ let generate = async () => {
     logo: config.logo,
     largeURL: config.largeURL
   }
-
-
 
   console.time("Copying backup...")
   fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
@@ -219,15 +214,10 @@ let generate = async () => {
 
   await generateService.generateAttributeItems(config, baseViewModel.attributeReport)
 
-  //Generate  webp version of channel profile pic
 
   console.log("Generation complete")
 
 }
-
-
-
-
 
 
 

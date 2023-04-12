@@ -58,7 +58,6 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   container = new Container()
 
   let sequelize
-  let queue
 
   //Load plugins
   let pluginModules = []
@@ -69,6 +68,8 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
     pluginModules.push(module)
   }
 
+
+  container.bind("pluginModules").toConstantValue(pluginModules)
   container.bind("baseURI").toConstantValue(command.baseURI)
   container.bind("hostname").toConstantValue(command.hostname)
   container.bind("channelDir").toConstantValue(command.channelDir)
@@ -113,46 +114,6 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   
 
  
-
-  container.bind('queue').toConstantValue(async (baseDir) => {
-
-    if (queue) return queue
-
-    queue = new Queue(function (input, cb) {  
-
-      try {
-        
-        let promises = []
-  
-        for (let module of pluginModules) {
-          promises.push(module.filesChanged(input))
-        }
-  
-        Promise.all(promises).then((values) => {
-          cb(null, {})
-        })
-  
-      } catch(ex) {
-        cb(ex, null)
-      }
-  
-  
-    }, {
-      store: {
-        maxRetries: 10, 
-        retryDelay: 5000,
-        type: 'sql',
-        dialect: 'sqlite',
-        path: `${baseDir}/data/queue.sqlite`
-      }
-    })
-
-    return queue
-
-
-  })
-
-
   
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
 

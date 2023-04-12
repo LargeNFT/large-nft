@@ -17,9 +17,12 @@ class SyncStatus extends Model {
     @Column(DataType.STRING)
     declare _id?:string
 
-    @Column(DataType.JSON)
-    declare fileStatus?:FileStatus 
-    
+    @Column(DataType.DATE)
+    declare lastModified?:Date
+
+    @Column(DataType.DATE)
+    declare lastUpdated?:Date
+
     @Column(DataType.DATE)
     declare dateCreated?:Date
 

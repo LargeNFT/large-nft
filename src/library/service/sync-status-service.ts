@@ -13,6 +13,9 @@ class SyncStatusService {
     @inject("SyncStatusRepository")
     private syncStatusRepository: SyncStatusRepository
 
+    @inject('pluginModules')
+    private pluginModules:any[]
+
     constructor() { }
 
     async get(_id: string, options?: any): Promise<SyncStatus> {
@@ -79,9 +82,8 @@ class SyncStatusService {
 
         if (!syncStatus) {
 
-            syncStatus = Object.assign(new SyncStatus, {
-                _id: channelKey,
-                fileStatus: {}
+            syncStatus = Object.assign(new SyncStatus(), {
+                _id: channelKey
             })
 
         }
@@ -90,15 +92,7 @@ class SyncStatusService {
 
     }
 
-    async updateSyncStatus(syncStatus:SyncStatus, publicPath:string, options?: any): Promise<void> {
-
-      syncStatus.fileStatus = await this.getFileStatus(publicPath)
-
-      await this.put(syncStatus, options)
-
-    }
-
-    async getChangedFiles(dir, savedFileStatus: FileStatus, options?: any) {
+    async getChangedFiles(dir, sinceDate:Date) {
 
         let currentFileStatus: FileStatus = await this.getFileStatus(dir)
 
@@ -106,10 +100,9 @@ class SyncStatusService {
 
         for (let filepath of Object.keys(currentFileStatus)) {
 
-            let lastModifiedSaved = savedFileStatus[filepath]?.lastModified
             let lastModifiedCurrent = currentFileStatus[filepath].lastModified
 
-            if (!lastModifiedSaved || lastModifiedCurrent > lastModifiedSaved) {
+            if (!sinceDate || lastModifiedCurrent > sinceDate) {
                 changedFiles.push(filepath)
             }
 
@@ -119,7 +112,21 @@ class SyncStatusService {
 
     }
 
+    async handleChangedFiles(slug:string, publicPath:string, lastModified:Date) {
 
+        let changedFiles = await this.getChangedFiles(publicPath, lastModified)
+
+        for (let pluginModule of this.pluginModules) {
+
+            await pluginModule.handledChangedFiles({
+                slug: slug,
+                publicPath:publicPath,
+                changedFiles:changedFiles
+            })
+            
+        }
+
+    }
 
 }
 

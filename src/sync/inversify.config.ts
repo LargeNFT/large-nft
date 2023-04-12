@@ -103,6 +103,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   
   container = command.customContainer
   
+  container.bind("pluginModules").toConstantValue([])
   container.bind("PouchDB").toConstantValue({})
   container.bind("framework7").toConstantValue({})
   container.bind("baseURI").toConstantValue(command.baseURI)

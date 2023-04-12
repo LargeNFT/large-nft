@@ -2,6 +2,7 @@ import "core-js/stable/index.js"
 import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
+import fs from "fs"
 import path from "path"
 
 import { ProcessConfig } from "../reader/util/process-config.js"
@@ -12,6 +13,7 @@ import { FileStatus, SyncStatus } from "./dto/sync-status.js"
 
 import { getMainContainer, GetMainContainerCommand } from "./inversify.config.js"
 import { SyncStatusService } from "./service/sync-status-service.js"
+
 
 
 /**
@@ -45,7 +47,10 @@ let syncLibrary = async () => {
   let spawnService: SpawnService = container.get("SpawnService")
   let syncStatusService: SyncStatusService = container.get("SyncStatusService")
 
-  let queue = container.get("queue")
+
+  if (!fs.existsSync(`${process.env.INIT_CWD}/data`)) {
+    fs.mkdirSync(`${process.env.INIT_CWD}/data`)
+  }
 
   //Init database
   let sequelizeInit:Function = container.get("sequelize")
@@ -68,6 +73,7 @@ let syncLibrary = async () => {
 
     let publicPath = `${syncDirectory}/public`
 
+
     await sequelize.transaction(async (t1) => {
 
       let options = { transaction: t1 }
@@ -75,27 +81,26 @@ let syncLibrary = async () => {
       //Get current sync status
       let syncStatus:SyncStatus = await syncStatusService.getOrCreate(slug, options)
 
-      //Get snapshot of file info
-      let currentFileStatus: FileStatus = await syncStatusService.getFileStatus(publicPath)
-
       if (config.generate) {
-  
+
         //Don't copy the admin because the library will have its own.
         args.push("--skip-admin")
         args.push("true")
-  
+
         await spawnService.spawnGenerate(process.env.INIT_CWD, syncDirectory, args)
-  
+
       } 
-  
+
       await spawnService.spawnSync(process.env.INIT_CWD, syncDirectory, args)
 
       //Save new sync status
+      await syncStatusService.handleChangedFiles(slug, publicPath, syncStatus?.lastModified)
+  
 
-      console.time(`Updating sync status for '${slug}'...`)
-      let changedFiles = await syncStatusService.getChangedFiles(publicPath, currentFileStatus, options)
-      await syncStatusService.updateSyncStatus(syncStatus, publicPath, options)
-      console.timeEnd(`Updating sync status for '${slug}'...`)
+
+      syncStatus.lastModified = new Date()
+
+      await syncStatusService.put(syncStatus, options)
 
 
     })
@@ -105,7 +110,7 @@ let syncLibrary = async () => {
 
   async function runLoop() {
 
-    console.log('Starting Sync Library loop')
+    console.time('Syncing...')
 
     for (let slug of Object.keys(config.readers)) {
 
@@ -126,33 +131,35 @@ let syncLibrary = async () => {
 
       let publicPath = `${syncDirectory}/public`
 
-
       await sequelize.transaction(async (t1) => {
 
         let options = { transaction: t1 }
-
+  
         let syncStatus:SyncStatus = await syncStatusService.getOrCreate(slug, options)
 
-        //Get snapshot of file info
-        let currentFileStatus: FileStatus = await syncStatusService.getFileStatus(publicPath)
-
         await spawnService.spawnSync(process.env.INIT_CWD, syncDirectory, args)
-
-
+  
+  
         //Save new sync status
-        console.time(`Updating sync status for '${slug}'...`)
-        let changedFiles = await syncStatusService.getChangedFiles(publicPath, currentFileStatus, options)
+        await syncStatusService.handleChangedFiles(slug, publicPath, syncStatus?.lastModified)
 
-        await syncStatusService.updateSyncStatus(syncStatus, publicPath, options)
-        console.timeEnd(`Updating sync status for '${slug}'...`)
 
+        syncStatus.lastModified = new Date()
+  
+        await syncStatusService.put(syncStatus, options)
+  
       })
-
+  
+  
     }
+
+    console.timeEnd('Syncing...')
 
     setTimeout(runLoop, config.syncPushRate)
 
   }
+
+
 
   if (config.env == "production") {
     runLoop()

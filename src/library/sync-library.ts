@@ -60,6 +60,13 @@ let syncLibrary = async () => {
   await sequelize.query("PRAGMA journal_mode=WAL;")
 
 
+  if (config.clear) {
+    await SyncStatus.drop()
+  }
+
+  await sequelize.sync()
+
+
   console.log(`Starting Sync Library to env: ${config.env}`)
 
 
@@ -82,16 +89,11 @@ let syncLibrary = async () => {
       let syncStatus:SyncStatus = await syncStatusService.getOrCreate(slug, options)
 
       if (config.generate) {
-
-        //Don't copy the admin because the library will have its own.
-        args.push("--skip-admin")
-        args.push("true")
-
         await spawnService.spawnGenerate(process.env.INIT_CWD, syncDirectory, args)
-
       } 
 
       await spawnService.spawnSync(process.env.INIT_CWD, syncDirectory, args)
+
 
       //Save new sync status
       await syncStatusService.handleChangedFiles(slug, publicPath, syncStatus?.lastModified)

@@ -127,79 +127,74 @@ let generate = async () => {
   console.timeEnd("Copying backup...")
 
 
+  //Copy logo
+  if (config.logo?.src) {
 
-  if (!config.skipAdmin) {
+    //Get ext 
+    let logoExt = config.logo?.src.split('.').pop()
 
-    console.time("Copying Large NFT Admin...")
+    //Logo location
+    let logoPath = path.resolve(config.channelDir, config.logo.src)
 
-    if (fs.existsSync(`${config.publicPath}/large`)) {
-      fs.rmSync(`${config.publicPath}/large`, { recursive: true })
-    }
-
-    fs.cpSync(`${config.runDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
-
-
-    //Read app.html and index.html from Large and update the paths.
-    let indexBuffer = fs.readFileSync(`${config.publicPath}/large/index.html`)
-
-    let indexContents = indexBuffer.toString()
-
-    indexContents = indexContents.replace(`../admin/app/js/runtime-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/runtime-${config.VERSION}.admin.js`)
-    indexContents = indexContents.replace(`../admin/app/js/vendors-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/vendors-${config.VERSION}.admin.js`)
-    indexContents = indexContents.replace(`../admin/app/js/main-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/main-${config.VERSION}.admin.js`)
-
-
-    //Footer for the admin
-    let adminFooter
-
-    try {
-      adminFooter = await fs.promises.readFile(config.adminFooter)
-    } catch(ex) {}
-
-
-    //Inject admin footer template.
-    if (adminFooter?.length > 0) {
-
-      let footerTemplate = Eta.render(adminFooter.toString(), { 
-        baseURL: config.baseURL,
-        version: config.VERSION
-      })
-
-      indexContents = indexContents.replace(`<div id="app"></div>`, `
-      
-      <div id="app"></div>
-
-      <template id="footer-template">
-      ${footerTemplate}
-      </template>
-      
-      `)
-
-    }
-
-    //Copy logo
-    if (config.logo?.src) {
-
-      //Get ext 
-      let logoExt = config.logo?.src.split('.').pop()
-
-      //Logo location
-      let logoPath = path.resolve(config.channelDir, config.logo.src)
-
-      fs.cpSync(`${logoPath}`, `${config.publicPath}/logo.${logoExt}`, { recursive: true })
-
-    }
-
-
-    fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
-
-    //Move SW
-    fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
-
-    console.timeEnd("Copying Large NFT Admin...")
-
+    fs.cpSync(`${logoPath}`, `${config.publicPath}/logo.${logoExt}`, { recursive: true })
 
   }
+
+
+  console.time("Copying Large NFT Admin...")
+
+  if (fs.existsSync(`${config.publicPath}/large`)) {
+    fs.rmSync(`${config.publicPath}/large`, { recursive: true })
+  }
+
+  fs.cpSync(`${config.runDir}/node_modules/large-nft/public`, `${config.publicPath}/large`, { recursive: true })
+
+
+  //Read app.html and index.html from Large and update the paths.
+  let indexBuffer = fs.readFileSync(`${config.publicPath}/large/index.html`)
+
+  let indexContents = indexBuffer.toString()
+
+  indexContents = indexContents.replace(`../admin/app/js/runtime-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/runtime-${config.VERSION}.admin.js`)
+  indexContents = indexContents.replace(`../admin/app/js/vendors-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/vendors-${config.VERSION}.admin.js`)
+  indexContents = indexContents.replace(`../admin/app/js/main-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/main-${config.VERSION}.admin.js`)
+
+
+  //Footer for the admin
+  let adminFooter
+
+  try {
+    adminFooter = await fs.promises.readFile(config.adminFooter)
+  } catch(ex) {}
+
+
+  //Inject admin footer template.
+  if (adminFooter?.length > 0) {
+
+    let footerTemplate = Eta.render(adminFooter.toString(), { 
+      baseURL: config.baseURL,
+      version: config.VERSION
+    })
+
+    indexContents = indexContents.replace(`<div id="app"></div>`, `
+    
+    <div id="app"></div>
+
+    <template id="footer-template">
+    ${footerTemplate}
+    </template>
+    
+    `)
+
+  }
+
+  fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
+
+  console.timeEnd("Copying Large NFT Admin...")
+
+  //Move SW
+  fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
+
 
 
   fs.mkdirSync(config.publicPath, { recursive: true })

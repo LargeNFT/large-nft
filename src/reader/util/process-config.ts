@@ -72,7 +72,6 @@ class ProcessConfig {
         config.syncRate = theArgs.syncRate
         config.env = theArgs.env
         config.clear = theArgs.clear
-        config.skipAdmin = theArgs.skipAdmin
 
         return config
 
@@ -89,8 +88,7 @@ class ProcessConfig {
             '--sync-dir': String,
             '--channel-dir': String,
             '--clear': String,
-            '--generate': String,
-            '--skip-admin': String
+            '--generate': String
         },
         {
             argv: rawArgs.slice(2),
@@ -103,8 +101,7 @@ class ProcessConfig {
             syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
             syncDir: args['--sync-dir'] || "",
             channelDir: args['--channel-dir'] || ".",
-            clear:  args['--clear'] == "true",
-            skipAdmin: args['--skip-admin'] == "true"
+            clear:  args['--clear'] == "true"
         }
     
     }
@@ -134,6 +131,7 @@ class ProcessConfig {
         config.syncPushRate = theArgs.syncPushRate
         config.generate = theArgs.generate
         config.env = theArgs.env
+        config.clear = theArgs.clear
 
         return config
         

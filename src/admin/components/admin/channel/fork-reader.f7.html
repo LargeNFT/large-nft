@@ -171,7 +171,7 @@
                           <div class="item-inner">
                             <div class="item-title item-label">Large URL</div>
                             <div class="item-input-wrap">
-                              <input type="text" id="largeURL" placeholder="Enter URL" value="" required />
+                              <input type="text" id="libraryURL" placeholder="Enter URL" value="" required />
                               <span class="input-clear-button"></span>
                             </div>
                           </div>
@@ -406,7 +406,7 @@
 
       e.preventDefault()
 
-      readerConfig.path = $('#largeURL').val()
+      readerConfig.path = $('#libraryURL').val()
 
       await loadCollection()
 

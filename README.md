@@ -123,7 +123,17 @@ npm run start
 ```
 
 ### Access in Browser
-Large will be available at [http://localhost:8000](http://localhost:8000) by default.
+Large will be available at [http://localhost:8000/large](http://localhost:8000/large) by default.
+
+
+### Run a local dev Server
+```console
+npm run start:dev
+```
+
+### Access in Browser
+Large will be available at [http://localhost:9081/large](http://localhost:9081/large) by default.
+
 
 ![Large Admin](src/admin/html/images/large-start.jpg)
 

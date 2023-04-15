@@ -88,9 +88,9 @@ import { RowItemViewModelRepository } from "../reader/repository/row-item-view-m
 import { RowItemViewModel } from "../reader/dto/item-page.js"
 
 import { createRequire } from 'module'
-import { SyncStatusService } from "../library/service/sync-status-service.js";
-import { SyncStatusRepository } from "../library/repository/sync-status-repository.js";
-import { SyncStatusRepositoryNodeImpl } from "../library/repository/node/sync-status-repository-impl.js";
+import { SyncStatusService } from "../sync-library/service/sync-status-service.js";
+import { SyncStatusRepository } from "../sync-library/repository/sync-status-repository.js";
+import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sync-status-repository-impl.js";
 
 const require = createRequire(import.meta.url)
 const { Sequelize } = require('sequelize-typescript')

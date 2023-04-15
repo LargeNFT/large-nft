@@ -1,203 +1,556 @@
 import { Container } from "inversify";
-import { createRequire } from "module";
-import { SyncStatus } from "./dto/sync-status.js";
-import { SyncStatusRepositoryNodeImpl } from "./repository/node/sync-status-repository-impl.js";
-import { SyncStatusRepository } from "./repository/sync-status-repository.js";
-import { SyncStatusService } from "./service/sync-status-service.js";
+import { ethers, providers } from "ethers"
+import Framework7 from 'framework7';
 
-import Queue from 'better-queue'
-import { SpawnService } from "../sync/service/spawn-service.js";
-import { GenerateService } from "../reader/service/core/generate-service.js";
-import { ItemService } from "../reader/service/item-service.js";
-import { ItemWebService } from "../reader/service/web/item-web-service.js";
-import { StaticPageService } from "../reader/service/static-page-service.js";
-import { ItemRepository } from "../reader/repository/item-repository.js";
-import { ItemRepositoryNodeImpl } from "../reader/repository/node/item-repository-impl.js";
-import { StaticPageRepository } from "../reader/repository/static-page-repository.js";
-import { StaticPageRepositoryNodeImpl } from "../reader/repository/node/static-page-repository-impl.js";
-import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js";
-import { RowItemViewModel } from "../reader/dto/item-page.js";
-import { AttributeTotalService } from "../reader/service/attribute-total-service.js";
-import { AttributeTotalRepository } from "../reader/repository/attribute-total-repository.js";
-import { AttributeTotalRepositoryNodeImpl } from "../reader/repository/node/attribute-total-repository-impl.js";
-import { ChannelService } from "../reader/service/channel-service.js";
-import { ChannelRepository } from "../reader/repository/channel-repository.js";
-import { ChannelRepositoryNodeImpl } from "../reader/repository/node/channel-repository-impl.js";
-import { AuthorService } from "../reader/service/author-service.js";
-import { AuthorRepository } from "../reader/repository/author-repository.js";
-import { AuthorRepositoryNodeImpl } from "../reader/repository/node/author-repository-impl.js";
+import moment from "moment"
+import PouchDB from 'pouchdb-browser';
+import PouchFind from 'pouchdb-find'
+import PouchQuickSearch from 'pouchdb-quick-search'
+
+//Enable find plugin
+PouchDB.plugin(PouchFind)
+
+//Enable quicksearch
+PouchDB.plugin(PouchQuickSearch)
+
+
+// Import additional components
+import Dialog from 'framework7/components/dialog';
+import Toast from 'framework7/components/toast';
+import Preloader from 'framework7/components/preloader';
+import VirtualList from 'framework7/components/virtual-list'
+import ListIndex from 'framework7/components/list-index'
+import Range from 'framework7/components/range'
+import Accordion from 'framework7/components/accordion'
+import Autocomplete from 'framework7/components/autocomplete'
+import PhotoBrowser from 'framework7/components/photo-browser'
+import Swiper from 'framework7/components/swiper'
+import InfiniteScroll from 'framework7/components/infinite-scroll'
+import Card from 'framework7/components/card'
+import Chip from 'framework7/components/chip'
+import Form from 'framework7/components/form'
+import Grid from 'framework7/components/grid'
+import Searchbar from 'framework7/components/searchbar'
+import Popup from 'framework7/components/popup'
+import Panel from 'framework7/components/panel'
+import Popover from 'framework7/components/popover'
+import Stepper from 'framework7/components/stepper'
+
+
+
+
+// Install F7 Components using .use() method on Framework7 class:
+Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
+  Range, Accordion, Searchbar, Autocomplete, Popup, PhotoBrowser, Swiper, InfiniteScroll, Panel, Popover, Stepper])
+
+
+
+
+import Navbar from '../reader/components/reader/navbar.f7.html'
+
+import TokenToolbar from '../reader/components/reader/token-toolbar.f7.html'
+import Transaction from '../reader/components/reader/transaction.f7.html'
+
+// import NftInfo from './components/reader/item/nft-info.f7.html'
+import MintList from '../reader/components/reader/item/mint-list.f7.html'
+
+import AttributeFilter from '../reader/components/reader/channel/attribute-filter.f7.html'
+import ExploreTotalInfo from '../reader/components/reader/channel/explore-total-info.f7.html'
+
+import MintInfo from '../reader/components/reader/channel/mint-info.f7.html'
+import LargestSales from '../reader/components/reader/channel/largest-sales.f7.html'
+
+import TransactionRow from '../reader/components/reader/channel/transaction-row.f7.html'
+import LeaderboardRows from '../reader/components/reader/channel/leaderboard-rows.f7.html'
+
+
+
+import SearchList from '../reader/components/reader/item/search-list.f7.html'
+import InfiniteScrollContent from '../reader/components/reader/item/infinite-scroll-content.f7.html'
+
+import he from 'he'
+
 import { WalletService } from "../reader/service/core/wallet-service.js";
 import { WalletServiceImpl } from "../reader/service/core/wallet-service-impl.js";
-import { ethers } from "ethers";
-import { ImageService } from "../reader/service/image-service.js";
+import { ChannelRepository } from "../reader/repository/channel-repository.js";
+import { TokenRepository } from "../reader/repository/token-repository.js";
+
+import { ItemRepository } from "../reader/repository/item-repository.js";
+import { AuthorRepository } from "../reader/repository/author-repository.js";
+import { MetadataRepository } from "../reader/repository/metadata-repository.js";
 import { ImageRepository } from "../reader/repository/image-repository.js";
-import { ImageRepositoryNodeImpl } from "../reader/repository/node/image-repository-impl.js";
-import { SchemaService } from "../reader/service/core/schema-service.js";
 import { AnimationRepository } from "../reader/repository/animation-repository.js";
-import { AnimationRepositoryNodeImpl } from "../reader/repository/node/animation-repository-impl.js";
-import { ReaderSettingsRepository } from "../reader/repository/reader-settings-repository.js";
-import { ReaderSettings } from "../reader/dto/reader-settings.js";
-import { ComponentStateRepository } from "../reader/repository/component-state-repository.js";
-import { ComponentState } from "../reader/dto/component-state.js";
-import { QuillService } from "../reader/service/core/quill-service.js";
-import { AnimationService } from "../reader/service/animation-service.js";
-import { ItemPageService } from "../reader/service/item-page-service.js";
+import { StaticPageRepository } from "../reader/repository/static-page-repository.js";
 import { ItemPageRepository } from "../reader/repository/item-page-repository.js";
-import { ItemPageRepositoryNodeImpl } from "../reader/repository/node/item-page-repository-impl.js";
+import { AttributeTotalRepository } from "../reader/repository/attribute-total-repository.js";
+import { ReaderSettingsRepository } from "../reader/repository/reader-settings-repository.js";
+import { ChannelRepositoryBrowserImpl } from "../reader/repository/browser/channel-repository-impl.js";
+import { ItemRepositoryBrowserImpl } from "../reader/repository/browser/item-repository-impl.js";
+import { AuthorRepositoryBrowserImpl } from "../reader/repository/browser/author-repository-impl.js";
+import { MetadataRepositoryBrowserImpl } from "../reader/repository/browser/metadata-repository-impl.js";
+import { ImageRepositoryBrowserImpl } from "../reader/repository/browser/image-repository-impl.js";
+import { AnimationRepositoryBrowserImpl } from "../reader/repository/browser/animation-repository-impl.js";
+import { StaticPageRepositoryBrowserImpl } from "../reader/repository/browser/static-page-repository-impl.js";
+import { ItemPageRepositoryBrowserImpl } from "../reader/repository/browser/item-page-repository-impl.js";
+import { AttributeTotalRepositoryBrowserImpl } from "../reader/repository/browser/attribute-total-repository-impl.js";
+import { ReaderSettingsRepositoryBrowserImpl } from "../reader/repository/browser/reader-settings-repository-impl.js";
+import { TokenRepositoryBrowserImpl } from "../reader/repository/browser/token-repository-impl.js";
+
+import { ChannelWebService } from "../reader/service/web/channel-web-service.js";
+import { ItemWebService } from "../reader/service/web/item-web-service.js";
+import { AuthorWebService } from "../reader/service/web/author-web-service.js";
+import { MintWebService } from "../reader/service/web/mint-web-service.js";
+import { SearchbarService } from "../reader/service/web/searchbar-service.js";
+import { StaticPageService } from "../reader/service/static-page-service.js";
+import { ItemPageService } from "../reader/service/item-page-service.js";
+import { QueueService } from "../reader/service/core/queue-service.js";
+import { PagingService } from "../reader/service/core/paging-service.js";
+import { DatabaseService } from "../reader/service/core/database-service.js";
+import { AnimationService } from "../reader/service/animation-service.js";
+import { UiService } from "../reader/service/core/ui-service.js";
+import { ItemService } from "../reader/service/item-service.js";
+import { ImageService } from "../reader/service/image-service.js";
+import { ChannelService } from "../reader/service/channel-service.js";
+import { AuthorService } from "../reader/service/author-service.js";
+import { TokenContractService } from "../reader/service/token-contract-service.js";
+import { SchemaService } from "../reader/service/core/schema-service.js";
+import { QuillService } from "../reader/service/core/quill-service.js";
+import { ReaderSettingsService } from "../reader/service/reader-settings-service.js";
+import { StaticPage } from "../reader/dto/static-page.js";
 
 
-const require = createRequire(import.meta.url)
-const { Sequelize } = require('sequelize-typescript')
+import { ERCEventService } from "../reader/service/erc-event-service.js";
+import { AttributeTotalService } from "../reader/service/attribute-total-service.js"; 
+import { ComponentStateService } from "../reader/service/core/component-state-service.js";
+import { ComponentStateRepository } from "../reader/repository/component-state-repository.js";
+import { ComponentStateRepositoryBrowserImpl } from "../reader/repository/browser/component-state-repository-impl.js";
+import { ComponentState } from "../reader/dto/component-state.js";
 
-let container:Container
 
-async function getMainContainer(config, command:GetMainContainerCommand) {
+import { TokenOwnerPageService } from "../reader/service/token-owner-page-service.js";
+import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js";
+import { TokenOwnerPageRepositoryBrowserImpl } from "../reader/repository/browser/token-owner-page-repository-impl.js";
+
+
+import { TransactionWebService } from "../reader/service/web/transaction-web-service.js";
+import { ProcessedTransactionService } from "../reader/service/processed-transaction-service.js";
+import { ProcessedTransactionRepository } from "../reader/repository/processed-transaction-repository.js";
+import { ProcessedTransactionRepositoryBrowserImpl } from "../reader/repository/browser/processed-transaction-repository-impl.js";
+import { TokenOwnerService } from "../reader/service/token-owner-service.js";
+import { TokenOwnerRepositoryBrowserImpl } from "../reader/repository/browser/token-owner-repository-impl.js";
+import { TokenOwnerRepository } from "../reader/repository/token-owner-repository.js";
+import { ContractStateRepository } from "../sync/repository/contract-state-repository.js";
+import { TokenService } from "../reader/service/token-service.js";
+import { RowItemViewModelRepositoryBrowserImpl } from "../reader/repository/browser/row-item-view-model-repository-impl.js";
+import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js";
+
+let container: Container
+
+async function getMainContainer(customContainer:Container, baseURI:string, hostname:string, version:string, routablePages:StaticPage[]) {
 
   if (container) return container
-  
-  container = new Container()
 
-  let sequelize
+  container = customContainer
 
-  //Load plugins
-  let pluginModules = []
-  for (let plugin of config.plugins) {
-    let module = await import(/*webpackIgnore: true*/`${config.baseDir}/plugins/${plugin}`)
-    module.default()
+  function framework7() {
 
-    pluginModules.push(module)
+    Framework7.registerComponent("nav-bar", Navbar)
+
+    Framework7.registerComponent("token-toolbar", TokenToolbar)
+
+    // Framework7.registerComponent("nft-info", NftInfo)
+    Framework7.registerComponent("mint-list", MintList)
+    Framework7.registerComponent("attribute-filter", AttributeFilter)
+    Framework7.registerComponent("explore-total-info", ExploreTotalInfo)
+
+    Framework7.registerComponent("mint-info", MintInfo)
+    Framework7.registerComponent("largest-sales", LargestSales)
+
+
+    Framework7.registerComponent("transaction-viewer", Transaction)
+    Framework7.registerComponent("transaction-row", TransactionRow)
+
+    Framework7.registerComponent("leaderboard-rows", LeaderboardRows)
+
+
+    Framework7.registerComponent("search-list", SearchList)
+    Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
+
+    const resolveWithSpinner = (resolve, url, options?) => {
+      
+      // let currentUrl = window.location.pathname.split('/').pop()
+
+      //Navigating to same page freezes it. So don't.
+      // if (url != currentUrl)  {
+        app.preloader.show()
+      // } 
+
+      // console.log(url)
+
+      resolve({ 
+        componentUrl: `${baseURI}${url}`, 
+        options: options
+      })
+
+      app.preloader.hide()
+
+
+    }
+
+
+    const routes = []
+
+    //Map the base route without a slash if it's longer than just a slash
+    if (baseURI != "/" && baseURI.endsWith("/")) {
+
+      routes.push({
+        path: `${baseURI.substring(0, baseURI.length -1)}`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'index.html')
+        }
+      })
+
+    }
+
+
+    routes.push(...[
+      {
+        path: `${baseURI}`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'index.html')
+        }
+      },
+      {
+        path: `${baseURI}index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}mint.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'mint.html')
+        }
+      },
+
+      {
+        path: `${baseURI}search.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'search.html')
+        }
+      },
+
+
+
+      {
+        path: `${baseURI}explore.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'explore.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}activity`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'activity/index.html')
+        }
+      },
+
+      {
+        path: `${baseURI}activity/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'activity/index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}leaderboard`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'leaderboard/index.html')
+        }
+      },
+
+      {
+        path: `${baseURI}leaderboard/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'leaderboard/index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}sales`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'sales/index.html')
+        }
+      },
+
+      {
+        path: `${baseURI}sales/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'sales/index.html')
+        }
+      },
+
+
+
+      {
+        path: `${baseURI}attributes`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attributes/index.html')
+        }
+      },
+
+      {
+        path: `${baseURI}attributes/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attributes/index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}attribute`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attribute/index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}attribute/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'attribute/index.html')
+        }
+      },
+
+
+
+      {
+        path: `${baseURI}u`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/index.html')
+        }
+      },
+
+      {
+        path: `${baseURI}u/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}u/activity`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/activity/index.html')
+        }
+      },
+
+      {
+        path: `${baseURI}u/activity/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'u/activity/index.html')
+        }
+      },
+
+
+      {
+        path: `${baseURI}list-:page.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, 'list-{{page}}.html')
+        }
+      },
+
+      {
+        path: `${baseURI}t/:tokenId`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
+        }
+      },
+
+
+      {
+        path: `${baseURI}t/:tokenId/index.html`,
+        async async({ resolve, reject }) {
+          await resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
+        }
+      }
+
+    ])
+
+
+    if (routablePages?.length > 0) {
+
+      for (let routablePage of routablePages) {
+        
+        routes.push({
+          path: `${baseURI}${routablePage.slug}.html`,
+          async async({ resolve, reject }) {
+            await resolveWithSpinner(resolve, `${routablePage.slug}.html`)
+          }
+        })
+
+      }
+
+    }
+
+    routes.push({
+      path: '(.*)',
+      //@ts-ignore
+      async async({ resolve, reject, to }) {
+        console.log(`404 error: ${to.path}`)
+        await resolveWithSpinner(resolve, '404.html')
+      }
+    })
+
+    let app = new Framework7({
+      el: '#app', // App root element
+      id: 'large-reader', // App bundle ID
+      name: 'Large Reader', // App name
+      theme: 'auto', // Automatic theme detection
+      init: false,
+      
+      view: {
+        browserHistory: true,
+        browserHistorySeparator: "",
+        browserHistoryOnLoad: false,
+        browserHistoryInitialMatch: false
+      },
+      
+      navbar: {
+        hideOnPageScroll: true
+      },
+
+      // subnavbar: {
+      //   hideOnPageScroll: true
+      // },
+
+      toolbar: {
+        hideOnPageScroll: true
+      },
+
+      routes: routes
+    })
+
+    return app
   }
 
 
-  container.bind("pluginModules").toConstantValue(pluginModules)
-  container.bind("baseURI").toConstantValue(command.baseURI)
-  container.bind("hostname").toConstantValue(command.hostname)
-  container.bind("channelDir").toConstantValue(command.channelDir)
-  container.bind("framework7").toConstantValue({})
+  container.bind("framework7").toConstantValue(framework7())
+  container.bind("baseURI").toConstantValue(baseURI)
+  container.bind("hostname").toConstantValue(hostname)
+  container.bind("version").toConstantValue(version)
+
+
+
+  container.bind("PouchDB").toConstantValue(PouchDB)
+  container.bind("PouchFind").toConstantValue(PouchFind)
+  container.bind("PouchQuickSearch").toConstantValue(PouchQuickSearch)
+
 
   container.bind("provider").toConstantValue(() => {
 
-    if (command.alchemy) {
+    if (typeof window !== "undefined" && window['ethereum']) {
 
-      return new ethers.providers.StaticJsonRpcProvider({
-        url: `https://eth-mainnet.alchemyapi.io/v2/${command.alchemy}`,
-        skipFetchSetup: true
-       });
-    
+      //@ts-ignore
+      window.web3Provider = window.ethereum
+
+      //@ts-ignore
+      return new providers.Web3Provider(window.ethereum)
+
     }
 
   })
 
-  container.bind('sequelize').toConstantValue(async (baseDir) => {
-
-    if (sequelize) {
-      return sequelize
-    }
-  
-    //@ts-ignore
-    sequelize = new Sequelize({
-      logging: false,
-      database: "library",
-      dialect: 'sqlite',
-      storage: `${baseDir}/data/library.sqlite`,
-      models: [SyncStatus]
-    })
-  
-    await sequelize.sync()
-  
-    await sequelize.authenticate()
-    // console.log('Connection has been established successfully.')
-  
-    return sequelize
-  
-  })
-  
-
- 
-  
-  container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
-
-  container.bind<SyncStatusRepository>("SyncStatusRepository").to(SyncStatusRepositoryNodeImpl).inSingletonScope()
-  container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryNodeImpl).inSingletonScope()
-  container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryNodeImpl).inSingletonScope()
-  container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryNodeImpl).inSingletonScope()
-
-
-  container.bind<SpawnService>("SpawnService").to(SpawnService).inSingletonScope()
-  container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
-
-  container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
-  container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
-  container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
-  container.bind<SyncStatusService>("SyncStatusService").to(SyncStatusService).inSingletonScope()
-  container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
-  container.bind<ImageService>("ImageService").to(ImageService).inSingletonScope()
-  container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
-  container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
-  container.bind<AnimationService>("AnimationService").to(AnimationService).inSingletonScope()
-  container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()
 
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
-  container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryNodeImpl).inSingletonScope()
-  container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryNodeImpl).inSingletonScope()
-  container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryNodeImpl).inSingletonScope()
-  container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryNodeImpl).inSingletonScope()
-
+  container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryBrowserImpl).inSingletonScope()
+  container.bind<ItemRepository>("ItemRepository").to(ItemRepositoryBrowserImpl).inSingletonScope()
+  container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryBrowserImpl).inSingletonScope()
+  container.bind<MetadataRepository>("MetadataRepository").to(MetadataRepositoryBrowserImpl).inSingletonScope()
   
-  container.bind('convert-svg-to-png').toConstantValue({})
-  container.bind('sharp').toConstantValue({})
-  container.bind('contracts').toConstantValue({})
+  container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryBrowserImpl).inSingletonScope()
+  container.bind<AnimationRepository>("AnimationRepository").to(AnimationRepositoryBrowserImpl).inSingletonScope()
+  container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryBrowserImpl).inSingletonScope()
+  container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryBrowserImpl).inSingletonScope()
+  container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryBrowserImpl).inSingletonScope()
 
-  container.bind<RowItemViewModelRepository>("RowItemViewModelRepository").toConstantValue({
-    load: function () {
-      throw new Error("Function not implemented.");
-    },
-    get: function (_id: string): Promise<RowItemViewModel> {
-      throw new Error("Function not implemented.");
-    },
-    put: function (item: RowItemViewModel) {
-      throw new Error("Function not implemented.");
-    },
-    getByTokenIds: function (ids: number[]): Promise<RowItemViewModel[]> {
-      throw new Error("Function not implemented.");
-    }
-  })
+  container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryBrowserImpl).inSingletonScope()
+  container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").to(ReaderSettingsRepositoryBrowserImpl).inSingletonScope()
 
-  container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").toConstantValue({
-    get: function (): Promise<ReaderSettings> {
-      throw new Error("Function not implemented.");
-    },
-    put: function (readerSettings: ReaderSettings): Promise<void> {
-      throw new Error("Function not implemented.");
-    }
-  })
+  //@ts-ignore
+  container.bind<ContractStateRepository>("ContractStateRepository").to({}).inSingletonScope()
+  container.bind<ComponentStateRepository>("ComponentStateRepository").to(ComponentStateRepositoryBrowserImpl).inSingletonScope()
+  container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryBrowserImpl).inSingletonScope()
+  container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryBrowserImpl).inSingletonScope()
 
-  container.bind<ComponentStateRepository>("ComponentStateRepository").toConstantValue({
-    get: function (_id: string): Promise<ComponentState> {
-      throw new Error("Function not implemented.");
-    },
-    put: function (componentState: ComponentState): Promise<void> {
-      throw new Error("Function not implemented.");
-    }
-  })
+  container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryBrowserImpl).inSingletonScope()
+  container.bind<RowItemViewModelRepository>("RowItemViewModelRepository").to(RowItemViewModelRepositoryBrowserImpl).inSingletonScope()
 
+
+  container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
+  container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
+  container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
+  container.bind<MintWebService>("MintWebService").to(MintWebService).inSingletonScope()
+  container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
+  container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
+  container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()
+  container.bind<QueueService>("QueueService").to(QueueService).inSingletonScope()
+  container.bind<TransactionWebService>("TransactionWebService").to(TransactionWebService).inSingletonScope()
+
+
+  container.bind<PagingService>("PagingService").to(PagingService).inSingletonScope()
+  container.bind<DatabaseService>("DatabaseService").to(DatabaseService).inSingletonScope()
+  container.bind<AnimationService>("AnimationService").to(AnimationService).inSingletonScope()
+
+  container.bind<UiService>("UiService").to(UiService).inSingletonScope()
+  container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
+  container.bind<ImageService>("ImageService").to(ImageService).inSingletonScope()
+  container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
+  container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
+  container.bind<TokenContractService>("TokenContractService").to(TokenContractService).inSingletonScope()
+  container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()
+  container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
   container.bind<AttributeTotalService>("AttributeTotalService").to(AttributeTotalService).inSingletonScope()
-  container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryNodeImpl).inSingletonScope()
+  container.bind<ComponentStateService>("ComponentStateService").to(ComponentStateService).inSingletonScope()
 
+  container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
+  container.bind<ERCEventService>("ERCEventService").to(ERCEventService).inSingletonScope()
+
+  //@ts-ignore
+  container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
+  container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
+  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
+
+  container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
+
+  container.bind<ProcessedTransactionService>("ProcessedTransactionService").to(ProcessedTransactionService).inSingletonScope()
+
+
+  //Attach container to window so we can easily access it from the browser console
+  globalThis.container = container
+  globalThis.ethers = ethers
+  globalThis.he = he
+  globalThis.moment = moment
+  globalThis.ComponentState = ComponentState 
 
   return container
 }
 
-interface GetMainContainerCommand {
-  baseURI:string
-  hostname:string
-  channelDir:string
-  runDir:string
-  alchemy:string
-}
+
 
 export {
-  getMainContainer, container, GetMainContainerCommand
+  getMainContainer, container
 }
+
+
+
+

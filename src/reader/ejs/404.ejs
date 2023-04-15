@@ -45,6 +45,10 @@
 <html>
 
   <head>
+
+    <%~ include("headStart", {baseURL: baseURL}) %>
+
+
     <style>
       html {
         visibility: hidden;
@@ -63,7 +67,7 @@
     </title>
 
 
-    <%~ it.baseViewModel.headContents %>
+    <%~ it.baseViewModel.headEndContents %>
     
 
   </head>
@@ -78,6 +82,7 @@
 
           <nav-bar
             logo="${logo}"
+            library_url="<%=it.baseViewModel.libraryURL ? it.baseViewModel.libraryURL : ''%>"
             large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
             title="<%=channelViewModel.channel.title%>"
             show_mint_page="<%=showMintPage%>"
@@ -150,15 +155,16 @@
 
     </script>
 
-  <%~ 
-    include("_init", {
-      hostname: hostname,
-      baseURL: baseURL,
-      routablePages: routablePages,
-      base64Version: base64Version,
-      channelId: channelId
-    }) 
-  %>
+    <%~ 
+      include("_init", {
+        hostname: hostname,
+        baseURL: baseURL,
+        libraryURL: it.baseViewModel.libraryURL,
+        routablePages: routablePages,
+        base64Version: base64Version,
+        channelId: channelId
+      }) 
+    %>
 
   </body>
 

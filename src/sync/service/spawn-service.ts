@@ -56,7 +56,7 @@ class SpawnService {
         args.push("--channel-dir")
         args.push(channelDir)
 
-        await this.runProcess(spawn(`node ${runDir}/node_modules/large-nft/public/generate/index.js`, args, { shell: true, cwd: runDir }))
+        await this.runProcess(spawn(`node ${runDir}/node_modules/large-nft/public/large/generate/index.js`, args, { shell: true, cwd: runDir }))
 
         // this.eventEmitter.emit("channel-generate", runDir, channelDir, args)
 
@@ -67,7 +67,7 @@ class SpawnService {
         args.push("--channel-dir")
         args.push(channelDir)
 
-        await this.runProcess(spawn(`node ${runDir}/node_modules/large-nft/public/sync/index.js`, args, { shell: true, cwd: runDir }))
+        await this.runProcess(spawn(`node ${runDir}/node_modules/large-nft/public/large/sync/index.js`, args, { shell: true, cwd: runDir }))
 
         // this.eventEmitter.emit("channel-sync", runDir, channelDir, args)
 

@@ -41,13 +41,6 @@ export default () => {
 
 let getAdminConfigs = () => {
 
-  const fileLoader = {
-    loader: 'file-loader',
-    options: {
-      name: 'admin/[folder]/[name].[ext]'
-    }
-  }
-
   //Build config for the main admin application.
   let appConfig = {
     entry: './src/admin/app.ts',
@@ -99,7 +92,7 @@ let getAdminConfigs = () => {
       }
     },
     output: {
-      filename: `admin/app/js/[name]-${VERSION.replace('"', '').replace('"', '')}.admin.js`,
+      filename: `large/admin/app/js/[name]-${VERSION.replace('"', '').replace('"', '')}.admin.js`,
       library: "admin",
       path: path.resolve(__dirname, 'public'),
     },
@@ -122,7 +115,7 @@ let getAdminConfigs = () => {
         dry: false,
         dangerouslyAllowCleanPatternsOutsideProject: true,
         cleanOnceBeforeBuildPatterns: [
-          resolve('public/admin/app/js/**')
+          resolve('public/large/admin/app/js/**')
         ],
 
       }),
@@ -145,7 +138,7 @@ let getAdminConfigs = () => {
         title: 'Large',
         // favicon: 'src/html/favicon.ico',
         template: 'src/admin/html/app.html',
-        filename: 'index.html',
+        filename: 'large/index.html',
         base64Version: Buffer.from(JSON.stringify(require("./package.json").version)).toString('base64')
       }),
   
@@ -209,7 +202,7 @@ let getAdminConfigs = () => {
 let getReaderConfigs = () => {
 
   let generateConfig = {
-    entry: "./src/reader/generate.ts",
+    entry: "./src/generate/index.ts",
     externalsPresets: { node: true },
     externals: {
       'convert-svg-to-png': 'convert-svg-to-png',
@@ -238,7 +231,7 @@ let getReaderConfigs = () => {
       ]
     },  
     output: {
-      filename: 'generate/index.js',
+      filename: 'large/generate/index.js',
       libraryTarget: "module",
       library: {
         type: "module"
@@ -282,7 +275,7 @@ let getReaderConfigs = () => {
       ]
     },  
     output: {
-      filename: 'sync/index.js',
+      filename: 'large/sync/index.js',
       libraryTarget: "module",
       library: {
         type: "module"
@@ -331,7 +324,7 @@ let getReaderConfigs = () => {
       ]
     },  
     output: {
-      filename: 'start.js',
+      filename: 'large/start.js',
       libraryTarget: "module",
       library: {
         type: "module"
@@ -352,7 +345,7 @@ let getReaderConfigs = () => {
   }
 
   let syncLibraryConfig = {
-    entry: "./src/library/sync-library.ts",
+    entry: "./src/sync-library/index.ts",
     externalsPresets: { 
       node: true 
     },    
@@ -379,7 +372,7 @@ let getReaderConfigs = () => {
       ]
     },  
     output: {
-      filename: 'sync/sync-library.js',
+      filename: 'large/sync/sync-library.js',
       libraryTarget: "module",
       library: {
         type: "module"
@@ -451,7 +444,7 @@ let getReaderConfigs = () => {
         dry: false,
         dangerouslyAllowCleanPatternsOutsideProject: true,
         cleanOnceBeforeBuildPatterns: [
-          resolve('public/reader/browser/js/**')
+          resolve('public/large/reader/browser/js/**')
         ],
 
       }),
@@ -483,7 +476,7 @@ let getReaderConfigs = () => {
     ],
     output: {
       library: "reader",
-      filename: `reader/browser/js/[name]-${VERSION.replace('"', '').replace('"', '')}.reader.js`,
+      filename: `large/reader/browser/js/[name]-${VERSION.replace('"', '').replace('"', '')}.reader.js`,
       path: path.resolve(__dirname, 'public')
     },
     optimization: {
@@ -503,7 +496,7 @@ let getReaderConfigs = () => {
 
   }
 
-  let swFilename = `reader/browser/sw-${VERSION.replace('"', '').replace('"', '')}.js`
+  let swFilename = `large/reader/browser/sw-${VERSION.replace('"', '').replace('"', '')}.js`
   
   let serviceWorkerConfig = {
     entry: './src/reader/sw.ts',
@@ -526,7 +519,7 @@ let getReaderConfigs = () => {
         dry: false,
         dangerouslyAllowCleanPatternsOutsideProject: true,
         cleanOnceBeforeBuildPatterns: [
-          resolve('public/reader/browser/sw*')
+          resolve('public/large/reader/browser/sw*')
         ],
 
       }),
@@ -537,12 +530,156 @@ let getReaderConfigs = () => {
     ]
   }
   
+
+
+  let libraryConfig = {
+    entry: "./src/library/index.ts",
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: '/node_modules/',
+          loader: 'ts-loader'
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader']
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
+          type: 'asset/resource',
+        },
+        {
+          test: /\.f7.html$/,
+          use: ['framework7-loader']
+        }
+      ]
+    },
+    resolve: {
+      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensionAlias: {
+        ".js": [".js", ".ts"]
+      },
+      alias: {
+        buffer: 'buffer',
+        process: 'process/browser.js'
+      },
+      fallback: {
+        "path": require.resolve("path-browserify"),
+        "util": require.resolve("util/"),
+        "assert": require.resolve("assert/"),
+        "stream": require.resolve("stream-browserify"),
+        "os": require.resolve("os-browserify/browser"),
+        "http": require.resolve("stream-http"),
+        "https": require.resolve("https-browserify"),
+        "zlib": require.resolve("browserify-zlib"),
+        "crypto": require.resolve("crypto-browserify"),
+        "dgram": require.resolve("dgram-browserify"),
+        "child_process": false
+      }
+    },
+    plugins: [
+
+      new CleanWebpackPlugin({
+        dry: false,
+        dangerouslyAllowCleanPatternsOutsideProject: true,
+        cleanOnceBeforeBuildPatterns: [
+          resolve('public/large/library/browser/js/**')
+        ],
+
+      }),
+  
+  
+      new webpack.ProvidePlugin({
+        process: 'process/browser.js',
+      }),
+  
+      new webpack.ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+      }),
+  
+      // new webpack.ProvidePlugin({
+      //   fetch: ['node-fetch', 'default'],
+      // }),
+  
+      new webpack.DefinePlugin({
+        VERSION: VERSION
+      }),
+  
+      new MiniCssExtractPlugin({
+        filename: "[name].css",
+        chunkFilename: "[id].css"
+      }),
+  
+      new HTMLInlineCSSWebpackPlugin()
+  
+    ],
+    output: {
+      library: "library",
+      filename: `large/library/browser/js/[name]-${VERSION.replace('"', '').replace('"', '')}.library.js`,
+      path: path.resolve(__dirname, 'public')
+    },
+    optimization: {
+      usedExports: true,
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all'
+          },
+
+        }
+      }
+    },
+
+  }
+
+  let librarySwFilename = `r/library-sw-${VERSION.replace('"', '').replace('"', '')}.js`
+
+  let libraryServiceWorkerConfig = {
+    entry: './src/library/sw.ts',
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: '/node_modules/',
+          loader: 'ts-loader',
+        }
+      ],
+    },
+    output: {
+      filename: librarySwFilename,
+      path: path.resolve(__dirname, 'public')
+    },
+    plugins: [
+  
+      new CleanWebpackPlugin({
+        dry: false,
+        dangerouslyAllowCleanPatternsOutsideProject: true,
+        cleanOnceBeforeBuildPatterns: [
+          resolve('public/r/library-sw*')
+        ],
+
+      }),
+
+      new webpack.DefinePlugin({
+        VERSION: VERSION
+      })
+    ]
+  }
+  
+
+
+  configs.push(libraryConfig)
   configs.push(serviceWorkerConfig)
   configs.push(browserConfig)
   configs.push(generateConfig)
   configs.push(syncConfig)
   configs.push(startConfig)
   configs.push(syncLibraryConfig)
+  configs.push(libraryServiceWorkerConfig)
 
   return configs
 

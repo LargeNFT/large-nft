@@ -37,7 +37,7 @@ import transactionEjs from '../../ejs/pages/transaction.ejs'
 
 import leaderboardEjs from '../../ejs/pages/leaderboard.ejs'
 import largestSalesEjs from '../../ejs/pages/sales.ejs'
-import { SyncStatusService } from "../../../library/service/sync-status-service.js";
+import { SyncStatusService } from "../../../sync-library/service/sync-status-service.js";
 
 
 
@@ -68,19 +68,17 @@ class GenerateService {
     }
 
 
-    async getGenerateViewModel(config, additionalStaticPages?:StaticPage[]): Promise<GenerateViewModel> {
+    async getGenerateViewModel(config, itemViewModels:ItemViewModel[], additionalStaticPages?:StaticPage[]): Promise<GenerateViewModel> {
 
         //Get first page of items for explore page
         let itemResults: ItemResults = await this.itemWebService.exploreList({}, 0, PER_PAGE)
-
-        let itemViewModels:ItemViewModel[] = await this.itemWebService.list(0, config.maxItems)
 
         let generateViewModel: GenerateViewModel = {
             itemViewModels: itemViewModels,
             firstPageExploreItems: itemResults.items,
             routablePages: await this.staticPageService.listRoutablePages(additionalStaticPages),
             base64Version: Buffer.from(JSON.stringify(config.VERSION)).toString('base64'),
-            headContents: `
+            headEndContents: `
                 <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js"></script>
                 <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js"></script>
                 <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js"></script>
@@ -88,6 +86,30 @@ class GenerateService {
             bodyContents: ``
 
         }
+
+        if (config.libraryURL) {
+
+          generateViewModel.headEndContents = `
+            <script defer src="${config.libraryURL}/large/library/browser/js/runtime-${config.VERSION}.library.js"></script>
+            <script defer src="${config.libraryURL}/large/library/browser/js/vendors-${config.VERSION}.library.js"></script>
+            <script defer src="${config.libraryURL}/large/library/browser/js/main-${config.VERSION}.library.js"></script>
+          `
+        
+          generateViewModel.bodyContents = ``
+
+
+        } else {
+
+          generateViewModel.headEndContents = `
+            <script defer src="${config.baseURL}large/reader/browser/js/runtime-${config.VERSION}.reader.js"></script>
+            <script defer src="${config.baseURL}large/reader/browser/js/vendors-${config.VERSION}.reader.js"></script>
+            <script defer src="${config.baseURL}large/reader/browser/js/main-${config.VERSION}.reader.js"></script>
+            `
+          
+          generateViewModel.bodyContents = ``
+        }
+
+
 
         return generateViewModel
 
@@ -105,7 +127,7 @@ class GenerateService {
 
         } else {
 
-            let imagePath = `${config.baseDir}/backup/export/images/${item.coverImage._id}.jpg` 
+            let imagePath = `${config.publicPath}/backup/export/images/${item.coverImage._id}.jpg` 
 
             //Generate thumbnail
             await this.generateWebp(config, imagePath, item.coverImage._id, 50)
@@ -400,6 +422,7 @@ class GenerateService {
           rowItemViewModels.push(this.itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage))
         }
       
+
         fs.writeFileSync(`${config.publicPath}/t/all.json`, Buffer.from(JSON.stringify(rowItemViewModels)))
       
         
@@ -568,7 +591,7 @@ interface GenerateViewModel {
     firstPageExploreItems: RowItemViewModel[],
     routablePages: StaticPage[],
     base64Version: string,
-    headContents: string,
+    headEndContents: string,
     bodyContents: string
 }
 

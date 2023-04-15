@@ -25,6 +25,9 @@ class ProcessConfig {
 
             config.hostname = config?.env?.dev?.hostname || baseConfig.hostname
             config.baseURL = config?.env?.dev?.baseURL || baseConfig.baseURL
+            config.libraryURL = config?.env?.dev?.libraryURL 
+            config.largeURL = config?.env?.dev?.largeURL 
+
             config.maxItems = baseConfig.maxItems
 
         } else {
@@ -43,6 +46,7 @@ class ProcessConfig {
             if (!config.maxItems) {
                 config.maxItems = baseConfig.maxItems
             }
+
         }
 
         //Create marketplace config from base config + anything set in config
@@ -84,7 +88,6 @@ class ProcessConfig {
             '--env': String,
             '--alchemy': String,
             '--sync-rate': String,
-            '--sync-push-rate': String,
             '--sync-dir': String,
             '--channel-dir': String,
             '--clear': String,
@@ -127,8 +130,6 @@ class ProcessConfig {
 
         config.VERSION = packageConfig.version
         config.baseDir = baseDir
-        config.syncRate = theArgs.syncRate
-        config.syncPushRate = theArgs.syncPushRate
         config.generate = theArgs.generate
         config.env = theArgs.env
         config.clear = theArgs.clear
@@ -144,8 +145,6 @@ class ProcessConfig {
         {
             '--sync-dir': String,
             '--env': String,
-            '--sync-rate': String,
-            '--sync-push-rate': String,
             '--alchemy': String,
             '--clear': String,
             '--generate': String
@@ -159,8 +158,6 @@ class ProcessConfig {
             syncDir: args['--sync-dir'] || "",
             env: args['--env'] || "production",
             alchemy: args['--alchemy'] || "",
-            syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
-            syncPushRate: args['--sync-push-rate'] ? parseInt(args['--sync-push-rate'] ) : 30*1000,
             clear:  args['--clear'] == "true",
             generate:  args['--generate'] == "true"
         }

@@ -31,8 +31,13 @@
   
         //Replace contract if we find it 
         if (channelViewModel.channel.contractAddress) {
-          link = link.replace("{contractId}", channelViewModel.channel.contractAddress)
+          link = link.replace("{contractId}", channelViewModel.channel.contractAddress )
+          link = link.replace("{contractIdLowercase}", channelViewModel.channel.contractAddress.toLowerCase() )
+
         }
+
+
+
   
         if (tokenId) {
           link = link.replace("{tokenId}", tokenId)

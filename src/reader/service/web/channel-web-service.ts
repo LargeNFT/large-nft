@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author.js";
 import { Channel } from "../../dto/channel.js";
@@ -82,6 +83,7 @@ class ChannelWebService {
         if (channel.coverImageId) {
             coverImage = await this.imageService.get(channel.coverImageId)
         }
+
 
         return {
             channelContractAbbrev: channel.contractAddress ? this.walletService.truncateEthAddress(channel.contractAddress) : undefined,

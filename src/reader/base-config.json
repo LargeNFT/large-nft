@@ -8,6 +8,10 @@
             "assetLink": "https://opensea.io/assets/ethereum/{contractId}/{tokenId}" 
         },
         {
+            "name": "Blur",
+            "assetLink": "https://blur.io/asset/{contractIdLowercase}/{tokenId}" 
+        },
+        {
             "name": "LooksRare",
             "link": "https://looksrare.org/collections/{contractId}",
             "assetLink": "https://looksrare.org/collections/{contractId}/{tokenId}"

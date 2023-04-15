@@ -259,16 +259,19 @@ Here is an example configuration for a site hosted on GitLab Pages.
 | ------------- | ------------- | ------------- |
 | hostname  | http://localhost:8081 | The hostname where the generated Reader will be hosted. When generating the dev version it defaults to localhost. |
 | baseURL  |  / | The path on the host where the generated app is hosted. This is used by the PWA's routing and must match the actual deployment URL. Must end with a /. For example /bladerunner-punks-reader/ 
-| env.dev.hostname  |  | Override the hostname when using the --env dev flag |
-| env.dev.baseURL  |  | Override the baseURL when using the --env dev flag |
 | headStart  |   | Path to [ETA](https://eta.js.org/) template to insert at the beginning of the <head> tag on every page.
 | logo  |   | Path to image to use in top left navigation in Reader for the home link.
 | footer  |   | Path to [ETA](https://eta.js.org/) template to insert in footer on tag on every reader page.
 | adminFooter  |   | Path to [ETA](https://eta.js.org/) template to insert in footer on tag on every page of the bundled copy of Large NFT.
-
-
 | marketplaces  |   | See below
 | externalLinks  |   | See below
+| libraryURL  |   | The root url where the library will be deployed. Only used when run in library mode.
+| largeURL  |   | Configure an external Large instance to link to instead of the built-in copy.
+| env.dev.hostname  |  | Override the hostname when using the --env dev flag |
+| env.dev.baseURL  |  | Override the baseURL when using the --env dev flag |
+| env.dev.libraryURL  |  | Override the libraryURL when using the --env dev flag |
+| env.dev.largeURL  |  | Override the largeURL when using the --env dev flag |
+
 
 
 ### Marketplaces
@@ -283,7 +286,7 @@ In the example above, the link field for the "OpenSea" marketplace is the URL of
 
 You can add as many objects to the marketplaces array as you like, as long as each object has the required name field.
 
-Currently OpenSea and LooksRare are configured by default.
+Currently OpenSea, Blur, and LooksRare are configured by default.
 
 ### External Links
 Configure links to external resources associated with the collection such as Discord or Twitter. 

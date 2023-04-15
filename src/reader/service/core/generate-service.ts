@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import fs from "fs"
 import * as Eta from 'eta'
+import { ethers } from "ethers"
 
 
 import { ItemResults, RowItemViewModel } from "../../dto/item-page.js";
@@ -37,7 +38,6 @@ import transactionEjs from '../../ejs/pages/transaction.ejs'
 
 import leaderboardEjs from '../../ejs/pages/leaderboard.ejs'
 import largestSalesEjs from '../../ejs/pages/sales.ejs'
-import { SyncStatusService } from "../../../sync-library/service/sync-status-service.js";
 
 
 
@@ -52,8 +52,6 @@ class GenerateService {
         @inject("ItemService") private itemService: ItemService,
         @inject("ItemWebService") private itemWebService: ItemWebService,
         @inject("StaticPageService") private staticPageService: StaticPageService,
-        @inject("SyncStatusService") private syncStatusService: SyncStatusService,
-
         @inject("ItemRepository") private itemRepository: ItemRepository,
         @inject("StaticPageRepository") private staticPageRepository:StaticPageRepository,
         @inject("convert-svg-to-png") private convert,
@@ -78,13 +76,8 @@ class GenerateService {
             firstPageExploreItems: itemResults.items,
             routablePages: await this.staticPageService.listRoutablePages(additionalStaticPages),
             base64Version: Buffer.from(JSON.stringify(config.VERSION)).toString('base64'),
-            headEndContents: `
-                <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js"></script>
-                <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js"></script>
-                <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js"></script>
-            `,
-            bodyContents: ``
-
+            bodyContents: ``,
+            headEndContents: ``
         }
 
         if (config.libraryURL) {
@@ -94,9 +87,6 @@ class GenerateService {
             <script defer src="${config.libraryURL}/large/library/browser/js/vendors-${config.VERSION}.library.js"></script>
             <script defer src="${config.libraryURL}/large/library/browser/js/main-${config.VERSION}.library.js"></script>
           `
-        
-          generateViewModel.bodyContents = ``
-
 
         } else {
 
@@ -105,8 +95,6 @@ class GenerateService {
             <script defer src="${config.baseURL}large/reader/browser/js/vendors-${config.VERSION}.reader.js"></script>
             <script defer src="${config.baseURL}large/reader/browser/js/main-${config.VERSION}.reader.js"></script>
             `
-          
-          generateViewModel.bodyContents = ``
         }
 
 
@@ -451,7 +439,8 @@ class GenerateService {
             itemViewModel: itemViewModel,
             baseViewModel: baseViewModel,
             previous: previous,
-            next: next
+            next: next,
+            ethers: ethers
           })
       
       

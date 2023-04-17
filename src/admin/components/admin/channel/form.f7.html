@@ -9,13 +9,13 @@
         <input type="hidden" name="contractAddress" value="${channelViewModel?.channel?.contractAddress}" />
 
 
-        <div class="card">
+        <div class="card card-strong">
             <div class="card-content">
                 <div class="list">
                     <ul>
 
                         <li>
-                            <div class="item-content item-input item-input-outline">
+                            <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Title</div>
                                     <div class="item-input-wrap">
@@ -30,7 +30,7 @@
                         </li>
 
                         <li>
-                            <div class="item-content item-input item-input-outline">
+                            <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Symbol</div>
                                     <div class="item-input-wrap">
@@ -49,7 +49,7 @@
                         </li>
 
                         <li>
-                            <div class="item-content item-input item-input-outline">
+                            <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Description</div>
 
@@ -77,6 +77,34 @@
                             </div>
                         </li>
 
+
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Language</div>
+                                <!-- additional "input-dropdown-wrap" class -->
+                                <div class="item-input-wrap input-dropdown-wrap">
+                                    <select name="language" tabindex="9">
+                                        ${languages.map( language => $h`
+                                            ${channelViewModel?.channel?.language == language ? $h`
+                                                <option value="${language}" selected >${language}</option>
+                                            ` : $h`
+                                                <option value="${language}">${language}</option>
+                                            `}
+                                        `)}
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card card-strong">
+            <div class="card-content">
+                <div class="list">
+                    <ul>
                         <li>
                             <div class="item-content item-input">
                                 <div class="item-inner">
@@ -123,138 +151,68 @@
                                 </div>
                             </div>
                         </li>
-
-                        <!-- <li>
-                            <div class="item-content item-input item-input-outline">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Category</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" name="category" placeholder="Category" id="category" tabindex="6" value="${channelViewModel?.channel?.category}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li> -->
-
-
-                        <!-- <li>
-                            <div class="item-content item-input item-input-outline">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">External Link</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" name="link" placeholder="External Link" tabindex="8" value="${channelViewModel?.channel?.link}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li> -->
-
-                        <li class="item-content item-input item-input-outline">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Language</div>
-                                <!-- additional "input-dropdown-wrap" class -->
-                                <div class="item-input-wrap input-dropdown-wrap">
-                                    <select name="language" tabindex="9">
-                                        ${languages.map( language => $h`
-                                            ${channelViewModel?.channel?.language == language ? $h`
-                                                <option value="${language}" selected >${language}</option>
-                                            ` : $h`
-                                                <option value="${language}">${language}</option>
-                                            `}
-                                        `)}
-                                    </select>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
+            </div>
+        </div>
+
+
+        <div class="card card-strong">
+            <div class="card-header">Attribute Types (eg Shirt, Size, Hat)</div>
+            <div class="card-content card-content-padding">
+
+                <p>
+                    Add attributes to give specific items special properties. Items can be sorted and filtered by attribute and each attribute type 
+                    gets a token owner leaderboard. 
+                </p>   
+
+
+
+                ${attributeOptions?.length > 0 ? $h`
+                                            
+                    <ul>
+
+                        ${attributeOptions?.map( (ao) => $h`
+                            <li>
+                                <span style="width: 100px; margin-right: 10px;">${ao.traitType}</span>
+
+                                ${channelViewModel.editable ? $h`
+                                    <a class="link" href="#" data-id="${ao.id}" @click="${editCategory}">Edit</a> | <a class="link" href="#" data-id="${ao.id}" @click="${deleteOptionClick}">Delete</a>
+                                ` : $h` `} 
+
+                                <p>
+                                    ${ao.values?.map( (v,index) => $h`
+
+                                        <div class="chip chip-outline">
+                                            <div class="chip-label">${v}</div>
+                                        </div>
+
+                                    `)}
+                                </p>
+                            </li>
+                        `)}
+
+                    </ul>
+
+                ` : $h`
+                    No attributes exist.
+                `}
+
+                <a class="button button-outline add-category-button popup-open" @click="${addCategoryClick}" tabindex="10">Add Attribute Type</a>
+
+                <input type="hidden" name="attributeOptions" value="${JSON.stringify(attributeOptions)}" />
+
+
 
             </div>
         </div>
 
-        <div class="card">
+        <div class="card card-strong">
             <div class="card-content">
                 <div class="list">
                     <ul>
                         <li>
                             <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Attribute Categories (eg Shirt, Size, Hat)</div>
-                                    <div>
-                
-                                        <p>Add attributes to give specific items special properties. Items can be sorted and filtered by
-                                            attribute.</p>
-                
-                                        <div>
-                                            <div class="category-name-label">Category Name</div>
-                                            <div class="options-label">Option Values</div>
-                                        </div>
-                
-
-                                        ${channelViewModel.editable ? $h`
-
-                                            ${attributeOptions?.map( (ao) => $h`
-                
-                                                <div id="category-${ao.id}">
-                        
-                                                    <div class="category-name-input">
-                                                        <input type="text" placeholder="Category Name" @change="${categoryNameChange}" data-id="${ao.id}" value="${ao.traitType}" />
-                                                    </div>
-                        
-                                                    <div class="options-input">
-                                                        <input type="text" placeholder="Enter options" @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" value="${ao.values}" />
-                                                    </div>
-                        
-                                                    <a @click="${deleteOptionClick}" data-id="${ao.id}"><i class="material-icons">delete</i></a>
-                        
-                                                </div>
-                                            `)}
-
-                                            <div class="row">
-                                                <div class="col-30">
-                                                    <a class="button button-outline add-category-button" @click="${addCategoryClick}" tabindex="10">Add Category</a>
-                                                </div>
-                                                <div class="col-70"></div>
-                                            </div>
-
-                                        ` : $h`
-                                            ${attributeOptions?.map( (ao) => $h`
-                    
-                                                <div id="category-${ao.id}">
-                        
-                                                    <div class="category-name-input">
-                                                        <input type="text" placeholder="Category Name" @change="${categoryNameChange}" data-id="${ao.id}" value="${ao.traitType}" disabled />
-                                                    </div>
-                        
-                                                    <div class="options-input">
-                                                        <input type="text" placeholder="Enter options" @change="${optionsChange}" data-id="${ao.id}" id="options-input-${ao.id}" value="${ao.values}" disabled />
-                                                    </div>
-                                                
-                                                </div>
-                                            `)}
-                                        `}
-
-                                        
-
-                
-                                        <input type="hidden" name="attributeOptions" value="${JSON.stringify(attributeOptions)}" />
-                
-
-                
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="card">
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-                        <li>
-                            <div class="item-content item-input item-input-outline">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Mint Price in ETH</div>
                                     <div class="item-input-wrap">
@@ -285,7 +243,7 @@
                         ` : $h``}
                 
                         <li>
-                            <div class="item-content item-input item-input-outline">
+                            <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">Marketplace Creator Fee %</div>
                                     <div class="item-input-wrap">
@@ -322,11 +280,11 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card card-strong">
             <div class="card-content">
                 <div class="list">
                     <ul>
-                        <li class="item-content item-input item-input-outline">
+                        <li class="item-content item-input">
                             <div class="item-inner">
                                 <div class="item-title item-label">Features and Licensing</div>
                                 <div class="item-input-wrap input-dropdown-wrap">
@@ -361,7 +319,7 @@
 
 
                         <li class="license-editor">
-                            <div class="item-content item-input item-input-outline">
+                            <div class="item-content item-input">
                                 <div class="item-inner">
                                     <div class="item-title item-label">License</div>
 
@@ -375,17 +333,17 @@
 
                                     </div>
 
-                                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="3"></div>
+                                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="13"></div>
 
                                 </div>
                             </div>
                         </li>
 
-                        <li class="item-content item-input item-input-outline">
+                        <li class="item-content item-input">
                             <div class="item-inner">
                                 <div class="item-title item-label">Git Provider</div>
                                 <div class="item-input-wrap input-dropdown-wrap">
-                                    <select name="gitProvider" @change="${gitProviderChange}">
+                                    <select name="gitProvider" @change="${gitProviderChange}" tabindex="14">
 
                                         ${!channelViewModel.channel.gitProvider || channelViewModel.channel.gitProvider == "default" ? $h`
                                             <option value="default" selected>Default</option>
@@ -414,6 +372,58 @@
 
 
                     </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="popup edit-category-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit Attribute Type</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        
+                        <form @submit="${addAttributeSubmit}" id="save-attribute-form">
+                            <input type="hidden" name="id" />
+
+                            <div class="list list-strong">
+                    
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Trait Type</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="traitType" placeholder="Enter trait type" required  minlength="3" tabindex="20" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                        
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Options</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" placeholder="Enter options" name="values" id="options-input"  tabindex="21" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -464,7 +474,6 @@
         let imageService = ContainerService.getInstance(ImageService)
 
 
-
         const setMintPrice = (value) => {
 
             //Reset
@@ -496,43 +505,6 @@
 
         }
 
-        const addCategoryClick = async (e) => {
-
-            let ao = {
-                id: uuidv4()
-            }
-
-            attributeOptions.push(ao)
-
-            await $update()
-
-            let optionsInputElement = document.getElementById(`options-input-${ao.id}`)
-
-            new Tagify(optionsInputElement)
-
-        }
-
-        const categoryNameChange = async (e) => {
-
-            let id = $(e.currentTarget).data('id')
-
-            attributeOptions.filter(ao => ao.id == id)[0].traitType = $(e.currentTarget).val()
-
-            await $update()
-
-
-        }
-
-        const optionsChange = async (e) => {
-
-            let id = $(e.currentTarget).data('id')
-
-            attributeOptions.filter(ao => ao.id == id)[0].values = JSON.parse(e.currentTarget.value).map(v => v["value"])
-
-            await $update()
-
-        }
-
         const mintPriceChange = async (e) => {
 
             setMintPrice(e.currentTarget.value)
@@ -544,18 +516,6 @@
         const royaltyChange = async (e) => {
             setRoyalty(e.currentTarget.value)
             await $update()
-        }
-
-        const deleteOptionClick = async (e) => {
-
-            let id = $(e.currentTarget).data('id')
-
-            attributeOptions = attributeOptions.filter(ao => ao.id != id)
-
-            await $update()
-
-            // $(`#category-${index}`).remove() 
-
         }
 
         const handleCoverImageBrowseClick = async (e) => {
@@ -634,6 +594,137 @@
             await $update()
         } 
 
+
+
+
+        const editCategory = async function (e) {
+
+            e.preventDefault()
+
+            let id = $(e.target).data('id')
+
+            let category = attributeOptions.find((ao) => ao.id == id)
+
+            $f7.form.fillFromData('#save-attribute-form', category)
+
+            await $update()
+
+            $f7.popup.open('.edit-category-popup')
+
+        }
+
+        const addCategoryClick = async (e) => {
+            
+            let category = {
+                id: uuidv4(),
+                traitType: '',
+                values: []
+            }
+
+            $f7.form.fillFromData('#save-attribute-form', category)
+
+            await $update()
+
+
+            $f7.popup.open('.edit-category-popup')
+            
+        }
+
+        const deleteOptionClick = async (e) => {
+
+            e.preventDefault()
+
+            let id = $(e.currentTarget).data('id')
+
+            attributeOptions = attributeOptions.filter(ao => ao.id != id)
+
+            await $update()
+
+        }
+
+        // const addOption = async (e) => {
+
+        //     e.preventDefault()
+
+        //     let data = $f7.form.convertToData('#add-option-form')
+
+        //     editingCategory?.values?.push(data.value)
+
+        //     $f7.form.fillFromData('#add-option-form', { value: ''})
+
+
+        //     await $update()
+        // }
+
+        // const optionsChange = async (e) => {
+
+        //     let id = $(e.currentTarget).data('id')
+        //     if (!id) return
+
+        //     attributeOptions.find(ao => ao.id == id).values = JSON.parse(e.currentTarget.value).map(v => v["value"])
+
+        //     await $update()
+
+        // }
+
+        // const categoryNameChange = async (e) => {
+
+        //     let id = $(e.currentTarget).data('id')
+        //     if (!id) return
+
+        //     attributeOptions.find(ao => ao.id == id).traitType = $(e.currentTarget).val()
+
+        //     await $update()
+
+        // }
+
+        const addAttributeSubmit = async (e) => {
+
+            e.preventDefault()
+
+            $f7.popup.close('.edit-category-popup')
+
+
+        }
+
+        $(document).on('popup:closed', '.edit-category-popup', async (e)=> {
+
+            let data = $f7.form.convertToData('#save-attribute-form')
+
+            let category = {
+                id: data.id,
+                traitType: data.traitType,
+                values: JSON.parse(data.values).map(v => v["value"])
+            }
+
+
+            let existing = attributeOptions.find(ao => ao.id == category.id)
+
+            if (existing) {
+                Object.assign(existing, category)
+            } else {
+                attributeOptions.push(category)
+            }
+
+            await $update()
+        })
+
+
+        $(document).on('popup:open', '.edit-category-popup', async (e)=> {
+            
+            new Tagify(document.getElementById(`options-input`))
+            $('input[name="traitType"]').focus()
+
+        })
+
+        $(document).on('focus', 'input[name="values"]', async (e)=> {
+            
+          console.log('focus')
+
+        })
+
+
+
         let channelViewModel = props.channel
 
         let descriptionToolbarId = props.description_toolbar
@@ -643,7 +734,6 @@
         let licenseEditorId = props.license_editor
 
         let showCC0Link = !channelViewModel.channel.disableForks
-
 
         let attributeOptions = []
 
@@ -662,12 +752,6 @@
 
         }
 
-
-        // $(document).on('copyleft-updated', async (e) => {
-        //     copyleft = e.detail.copyleft
-        //     console.log(copyleft)
-        //     await $update()
-        // })
 
 
 

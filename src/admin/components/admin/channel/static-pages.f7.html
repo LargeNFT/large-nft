@@ -2,12 +2,12 @@
 
   <div class="page" data-name="channel-show-themes">
 
-    <${Navbar} />
+    <${Navbar} breadcrumbs=${breadcrumbs} />
 
 
     ${showEdit ? $h`
     <div class="fab fab-extended fab-right-bottom">
-      <a href="/admin/item/create/${channelViewModel.channel._id}" class="text-color-black">
+      <a href="/admin/item/create/${channelViewModel.channel._id}">
         <i class="material-icons">create</i>
         <div class="fab-text">Create Item</div>
       </a>
@@ -15,165 +15,142 @@
     ` : $h``}
 
 
-    <div class="page-content">
+    <div class="page-content hide-toolbar-on-scroll">
 
-      <div class="row">
-        <div class="col-100 large-66 center">
+      <channel-card channel_view_model=${channelViewModel}></channel-card>
 
-          <div class="block block-strong inset">
-            <div class="breadcrumbs ">
-              <div class="breadcrumbs-item">
-                <a href="/" class="link">
-                  Home
-                </a>
-              </div>
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item breadcrumbs-item-active">
-                <a href="#" class="link">
-                  ${channelViewModel.channel.title}
-                </a>
-              </div>
-            </div>
-          </div>
+      <div class="block">
+        <p class="segmented">
+          <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}">Items</a>
+          <a class="button button-outline" href="/admin/channel/themes/${channelViewModel.channel._id}">Themes</a>
+          <a class="button button-outline button-active" href="#">Static Pages</a>
+        </p>
+      </div>
 
 
-          <channel-card channel_view_model=${channelViewModel}></channel-card>
+      <div class="card">
+        <div class="card-header">Static Pages</div>
+        <div class="card-content">
+          <div class="list">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div>
 
-          <div class="block">
-            <p class="segmented">
-              <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}">Items</a>
-              <a class="button button-outline" href="/admin/channel/themes/${channelViewModel.channel._id}">Themes</a>
-              <a class="button button-outline button-active" href="#">Static Pages</a>
-            </p>
-          </div>
+                      <p>
+                        Create content that is displayed in the Large Reader alongside your collection. These are not mintable as NFTs.
+                      </p>
 
+                      <p>
+                        <strong>Example:</strong> About Us, Contact Us, etc.
+                      </p>
 
-          <div class="card">
-            <div class="card-content">
-              <div class="list">
-                <ul>
-                  <li>
-                    <div class="item-content item-input">
-                      <div class="item-inner">
-                        <div class="item-title item-label">Static Pages</div>
-                        <div>
+                      <ul class="static-page-list"
+                        style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
+                        ${staticPages?.map( (staticPage) => $h`
+                          <li>
+                            <span class="static-page-name">${staticPage.name}</span>
+                            <a class="link static-page-link" href="#" data-id="${staticPage._id}" @click="${editClick}">Edit</a>
+                            <a class="link static-page-link" href="#" data-id="${staticPage._id}" @click="${deleteClick}">Delete</a>
+                          </li>
+                        `)}
+                      </ul>
 
-                          <p>
-                            Create content that is displayed in the Large Reader alongside your collection. These are not mintable as NFTs.
-                          </p>
-
-                          <p>
-                            <strong>Example:</strong> About Us, Contact Us, etc.
-                          </p>
-
-                          <ul class="static-page-list"
-                            style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
-                            ${staticPages?.map( (staticPage) => $h`
-                              <li>
-                                <span class="static-page-name">${staticPage.name}</span>
-                                <a class="link static-page-link" href="#" data-id="${staticPage._id}" @click="${editClick}">Edit</a>
-                                <a class="link static-page-link" href="#" data-id="${staticPage._id}" @click="${deleteClick}">Delete</a>
-                              </li>
-                            `)}
-                          </ul>
-
-                          <div class="row">
-                            <div class="col-30">
-                              <a class="button button-outline add-theme-button popup-open"
-                                data-popup=".add-static-page-popup" tabindex="10">Add Static Page</a>
-                            </div>
-                            <div class="col-70"></div>
-                          </div>
-
+                      <div class="row">
+                        <div class="col-30">
+                          <a class="button button-outline add-theme-button popup-open"
+                            data-popup=".add-static-page-popup" tabindex="10">Add Static Page</a>
                         </div>
+                        <div class="col-70"></div>
                       </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
 
-
-
-          <div class="popup add-static-page-popup popup-tablet-fullscreen">
-            <div class="view">
-              <div class="page">
-                <div class="navbar">
-                  <div class="navbar-bg"></div>
-                  <div class="navbar-inner">
-                    <div class="title">Add Static Page</div>
-                    <div class="right">
-                      <!-- Link to close popup -->
-                      <a class="link popup-close">Close</a>
                     </div>
                   </div>
                 </div>
-                <div class="page-content">
-                  <form id="add-static-page-form" @submit="${addFormSubmit}">
-                    <${StaticPageForm} static_page_content_editor_id="add-static-page-content-editor"
-                      static_page_content_toolbar_id="add-static-page-content-toolbar"
-                      image_button_input_id="add-static-page-image-button-input"
-                      image_button_id="add-static-page-image-button" />
-
-                    <div class="row block">
-
-                      <div class="col-70"></div>
-
-                      <button type="submit" class="button button-fill col-30" tabindex="12">
-                        Add
-                      </button>
-
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
-
-          <div class="popup edit-static-page-popup popup-tablet-fullscreen">
-            <div class="view">
-              <div class="page">
-                <div class="navbar">
-                  <div class="navbar-bg"></div>
-                  <div class="navbar-inner">
-                    <div class="title">Edit Static Page</div>
-                    <div class="right">
-                      <!-- Link to close popup -->
-                      <a class="link popup-close">Close</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="page-content">
-                  <form id="edit-static-page-form" @submit="${editFormSubmit}">
-
-                    <${StaticPageForm} static_page_content_editor_id="edit-static-page-content-editor"
-                      static_page_content_toolbar_id="edit-static-page-content-toolbar"
-                      image_button_input_id="edit-static-page-image-button-input"
-                      image_button_id="edit-static-page-image-button" static_page="${editingStaticPage}" />
-
-                    <div class="row block">
-
-                      <div class="col-70"></div>
-
-                      <button type="submit" class="button button-fill col-30" tabindex="12">
-                        Save Changes
-                      </button>
-
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
         </div>
       </div>
 
 
+
+      <div class="popup add-static-page-popup popup-tablet-fullscreen">
+        <div class="view">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="title">Add Static Page</div>
+                <div class="right">
+                  <!-- Link to close popup -->
+                  <a class="link popup-close">Close</a>
+                </div>
+              </div>
+            </div>
+            <div class="page-content">
+              <form id="add-static-page-form" @submit="${addFormSubmit}">
+                <${StaticPageForm} static_page_content_editor_id="add-static-page-content-editor"
+                  static_page_content_toolbar_id="add-static-page-content-toolbar"
+                  image_button_input_id="add-static-page-image-button-input"
+                  image_button_id="add-static-page-image-button" />
+
+                <div class="block save-row">
+
+                  <div class="large-only"></div>
+
+                  <button type="submit" class="button button-fill" tabindex="12">
+                    Add Static Page
+                  </button>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="popup edit-static-page-popup popup-tablet-fullscreen">
+        <div class="view">
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner">
+                <div class="title">Edit Static Page</div>
+                <div class="right">
+                  <!-- Link to close popup -->
+                  <a class="link popup-close">Close</a>
+                </div>
+              </div>
+            </div>
+            <div class="page-content">
+              <form id="edit-static-page-form" @submit="${editFormSubmit}">
+
+                <${StaticPageForm} static_page_content_editor_id="edit-static-page-content-editor"
+                  static_page_content_toolbar_id="edit-static-page-content-toolbar"
+                  image_button_input_id="edit-static-page-image-button-input"
+                  image_button_id="edit-static-page-image-button" static_page="${editingStaticPage}" />
+
+                <div class="block save-row">
+
+                  <div class="large-only"></div>
+
+                  <button type="submit" class="button button-fill" tabindex="12">
+                    Save Changes
+                  </button>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="block">
+        <br />
+      </div>
 
 
     </div>
@@ -225,7 +202,15 @@
     let editingStaticPage
     let staticPageContentEditor
 
-
+    let breadcrumbs = [{
+        text: "Home",
+        path: "/"
+    }, {
+        text: channelViewModel.channel.title,
+        path: `/admin/channel/show/${channelViewModel.channel._id}`
+    }, {
+      text: 'Static Pages'
+    }]
 
 
     const updateStaticPagesList = async () => {

@@ -6,7 +6,6 @@ import { ChannelRepository } from "../../repository/channel-repository.js";
 import { SettingsRepository } from "../../repository/settings-repository.js";
 import { ImageRepository } from "../../repository/image-repository.js";
 import { ItemRepository } from "../../repository/item-repository.js";
-import { PinningApiRepository } from "../../repository/pinning-api-repository.js";
 import { StaticPageRepository } from "../../repository/static-page-repository.js";
 import { ThemeRepository } from "../../repository/theme-repository.js";
 import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository.js";
@@ -23,7 +22,6 @@ class SchemaService {
         private channelRepository:ChannelRepository,
         private imageRepository:ImageRepository,
         private itemRepository:ItemRepository,
-        private pinningApiRepository:PinningApiRepository,
         private settingsRepository:SettingsRepository,
         private animationRepository:AnimationRepository,
         private themeRepository:ThemeRepository,
@@ -40,6 +38,7 @@ class SchemaService {
         //Open and cache databases
         await this.authorRepository.load()
         await this.channelRepository.load()
+        await this.imageRepository.load()
         await this.settingsRepository.load()
         await this.tokenMetadataCacheRepository.load()
         await this.queryCacheRepository.load()

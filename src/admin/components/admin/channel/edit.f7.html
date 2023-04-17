@@ -3,63 +3,40 @@
 
   <div class="page" data-name="admin-edit-channel">
 
-    <${Navbar} />
+    <${Navbar} breadcrumbs=${breadcrumbs} />
 
-    <div class="page-content">
+    <div class="page-content hide-toolbar-on-scroll">
 
-      <div class="row">
-        <div class="col-100 large-66 center">
+      <form id="edit-channel-form" @submit="${formSubmit}">
 
-          <div class="block block-strong inset col-100 no-margin-bottom">
-            <div class="breadcrumbs ">
-              <div class="breadcrumbs-item">
-                <a href="/" class="link">
-                  Home
-                </a>
-              </div>    
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item">
-                <a href="/admin/channel/show/${channelViewModel.channel._id}" class="link">
-                  ${channelViewModel.channel.title}
-                </a>
-              </div>     
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item breadcrumbs-item-active">
-                Edit Collection
-              </div> 
-            </div>
-          </div>
+        <div class="block-title block-title-medium">Edit Collection</div>
+
+
+        <${ChannelForm} 
+          channel=${channelViewModel} 
+          description_editor="edit-channel-description-editor"
+          description_toolbar="edit-channel-description-toolbar" 
+          license_editor="edit-channel-license-editor"
+          license_toolbar="edit-channel-license-toolbar"  
+        />
 
 
 
-          <form id="edit-channel-form" @submit="${formSubmit}"  class="margin-left">
+        <div class="block cancel-save-row">
+      
+          <div class="large-only"></div>
 
-            <div class="block-title block-title-medium">Edit Collection</div>
+          <a href="/admin/channel/show/${channelViewModel.channel._id}" class="button button-outline color-gray" tabindex="30">
+            Cancel
+          </a>
 
+          <button type="submit" class="button button-fill" tabindex="31" id="saveButton">
+            Save
+          </button>
 
-            <${ChannelForm} 
-              channel=${channelViewModel} 
-              description_editor="edit-channel-description-editor"
-              description_toolbar="edit-channel-description-toolbar" 
-              license_editor="edit-channel-license-editor"
-              license_toolbar="edit-channel-license-toolbar"  
-            />
-
-            <div class="row block">
-          
-              <div class="col-0 large-30"></div>
-
-              <a href="/admin/channel/show/${channelViewModel.channel._id}" class="button button-outline color-gray col-50 large-30" tabindex="12">Cancel</a>
-
-              <button type="submit" class="button button-fill col-50 large-30" tabindex="13" id="saveButton">
-                Save
-              </button>
-
-            </div>
-
-          </form>
         </div>
-      </div>
+
+      </form>
 
     </div>
   </div>
@@ -123,6 +100,17 @@
     hljs.configure({
       languages: ['css']
     })
+
+    let breadcrumbs = [{
+        text: "Home",
+        path: "/"
+    }, {
+      text: channelViewModel.channel.title,
+      path: `/admin/channel/show/${channelViewModel.channel._id}`
+    }, {
+      text: 'Edit Collection'
+    }]
+
 
     const formSubmit = async (e) => {
 

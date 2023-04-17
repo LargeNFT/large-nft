@@ -2,252 +2,235 @@
 
     <div class="page" data-name="admin-settings">
 
-        <${Navbar} />
+        <${Navbar} breadcrumbs=${breadcrumbs} />
 
-        <div class="page-content">
-            <div class="row">
-                
-                <form id="edit-settings-form" @submit="${formSubmit}" class="col-100 large-66 center">
-                
-                    <div class="block block-strong inset col-100 no-margin-bottom">
-                        <div class="breadcrumbs ">
-                          <div class="breadcrumbs-item">
-                            <a href="/" class="link">
-                              Home
-                            </a>
-                          </div>    
-                          <div class="breadcrumbs-separator"></div>
-                          <div class="breadcrumbs-item breadcrumbs-item-active">
-                            Settings
-                          </div> 
-                        </div>
-                    </div>
+        <div class="page-content hide-toolbar-on-scroll">
 
+            <form id="edit-settings-form" @submit="${formSubmit}">
+            
+                <input type="hidden" name="_id" value="${settings?._id}" />
+                <input type="hidden" name="_rev" value="${settings?._rev}" />
 
-                    <input type="hidden" name="_id" value="${settings?._id}" />
-                    <input type="hidden" name="_rev" value="${settings?._rev}" />
-
-                    <div class="block-title block-title-medium">Settings</div>
-                    <div class="card">
-                        <div class="card-header">Remote IPFS API</div>
-                        <div class="card-content">
-                            <div class="list">
-                                <ul>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">URL</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" name="ipfsHost" value="${settings?.ipfsHost}" placeholder="http://localhost:5001/api/v0" />
-                                                <span class="input-clear-button"></span>
-                                            </div>
+                <div class="block-title block-title-medium">Settings</div>
+                <div class="card">
+                    <div class="card-header">Remote IPFS API</div>
+                    <div class="card-content">
+                        <div class="list">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">URL</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="ipfsHost" value="${settings?.ipfsHost}" placeholder="http://localhost:5001/api/v0" />
+                                            <span class="input-clear-button"></span>
                                         </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-    
-                    <div class="card">
-                        <div class="card-header">Git CORS Proxy</div>
-                        <div class="card-content card-content-padding">
+                </div>
 
-                            <p>
-                                Configure a <a href="https://github.com/isomorphic-git/cors-proxy" class="external">proxy</a> to solve CORS issues when pushing to GitHub and GitLab. 
-                            </p>
+                <div class="card">
+                    <div class="card-header">Git CORS Proxy</div>
+                    <div class="card-content card-content-padding">
 
-                            <div class="list">
-                                <ul>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">URL</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" name="gitCorsProxy" value="${settings?.gitCorsProxy}" placeholder="http://localhost:5000" />
-                                                <span class="input-clear-button"></span>
-                                            </div>
+                        <p>
+                            Configure a <a href="https://github.com/isomorphic-git/cors-proxy" class="external">proxy</a> to solve CORS issues when pushing to GitHub and GitLab. 
+                        </p>
+
+                        <div class="list">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">URL</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="gitCorsProxy" value="${settings?.gitCorsProxy}" placeholder="http://localhost:5000" />
+                                            <span class="input-clear-button"></span>
                                         </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
+                </div>
 
-                    <div class="card">
-                        <div class="card-header">Git Settings</div>
-                        <div class="card-content card-content-padding">
+                <div class="card">
+                    <div class="card-header">Git Settings</div>
+                    <div class="card-content card-content-padding">
 
-                            <div class="list">
-    
-                                <ul>
-                                    <li>
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Default Git Provider</div>
-                                                <div class="item-input-wrap">
-                                                    <select @change="${providerChange}" class="value-input" name="gitProvider">     
-                                                        
-                                                        ${!settings?.defaultGitProvider || settings?.defaultGitProvider == "github" ? $h`
-                                                            <option value="github" selected>GitHub</option>
-                                                        ` : $h`
-                                                            <option value="github">GitHub</option>
-                                                        `}
-
-
-                                                        ${settings?.defaultGitProvider == "gitlab" ? $h`
-                                                            <option value="gitlab" selected>GitLab</option>
-                                                        ` : $h`
-                                                            <option value="gitlab">GitLab</option>
-                                                        `}
-
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    
-                                </ul>
-                            </div>
-
-                            <br />
-    
-                        </div>
-                    </div>
-
-
-                    <div class="card">
-                        <div class="card-header">Configure GitHub</div>
-                        <div class="card-content card-content-padding">
-
-                            <strong>GitHub Instructions</strong>
-
-                            <ol>
-                                <li>Create a <a href="http://github.com" class="external" target="_blank">GitHub</a> account.</li>
-                                <li>Create a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external" target="_blank">"Personal access token"</a> and 
-                                    save it below.</li>
-                                <li>If you are logged into GitHub <a href="https://github.com/settings/personal-access-tokens/new" class="external" target="_blank">this link</a> will
-                                    take you directly to the create form. </li>
-    
-                            </ol>
-
-                            <p>Give the token a name and select an expiration date.</p>
+                        <div class="list">
 
                             <ul>
-                                <li>Select "All Repositories" under "Repository Access".</li>
-                                <li>Under "Repository Permissions" chooose:</li>
-                                <li>"Administration" - read and write access.</li>
-                                <li>"Content" - read and write access.</li>
-                            </ul>  
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Default Git Provider</div>
+                                            <div class="item-input-wrap">
+                                                <select @change="${providerChange}" class="value-input" name="gitProvider">     
+                                                    
+                                                    ${!settings?.defaultGitProvider || settings?.defaultGitProvider == "github" ? $h`
+                                                        <option value="github" selected>GitHub</option>
+                                                    ` : $h`
+                                                        <option value="github">GitHub</option>
+                                                    `}
 
-    
-    
-                            <div class="list">
-    
-                                <ul>
-                                    <li>
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Username (NOT email)</div>
-                                                <div class="item-input-wrap">
-                                                    <input type="text" name="gitHubUsername" placeholder="Username"
-                                                        value="${settings.gitProviders?.github?.username}"  />
-                                                </div>
+
+                                                    ${settings?.defaultGitProvider == "gitlab" ? $h`
+                                                        <option value="gitlab" selected>GitLab</option>
+                                                    ` : $h`
+                                                        <option value="gitlab">GitLab</option>
+                                                    `}
+
+                                                </select>
                                             </div>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Personal Access Token</div>
-                                                <div class="item-input-wrap">
-                                                    <input type="text" name="gitHubPersonalAccessToken" placeholder="Personal access token"
-                                                        value="${settings.gitProviders?.github?.personalAccessToken}"  />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    
-                                </ul>
-                            </div>
-
-
+                                    </div>
+                                </li>
+                                
+                            </ul>
                         </div>
+
+                        <br />
+
                     </div>
+                </div>
 
-                    <div class="card">
-                        <div class="card-header">Configure GitLab</div>
-                        <div class="card-content card-content-padding">
 
-                            <strong>GitLab Instructions</strong>
+                <div class="card">
+                    <div class="card-header">Configure GitHub</div>
+                    <div class="card-content card-content-padding">
 
-                            <ol>
-                                <li>Create a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account.</li>
-                                <li>Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
-                                    save it below.</li>
-                                <li>If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
-                                    take you directly to the create form. </li>
-    
-                            </ol>
-    
-        
-                            <p>Give the token a name and select an expiration date. Under "Select scopes" check the boxes beside:</p>
-                            
+                        <strong>GitHub Instructions</strong>
+
+                        <ol>
+                            <li>Create a <a href="http://github.com" class="external" target="_blank">GitHub</a> account.</li>
+                            <li>Create a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external" target="_blank">"Personal access token"</a> and 
+                                save it below.</li>
+                            <li>If you are logged into GitHub <a href="https://github.com/settings/personal-access-tokens/new" class="external" target="_blank">this link</a> will
+                                take you directly to the create form. </li>
+
+                        </ol>
+
+                        <p>Give the token a name and select an expiration date.</p>
+
+                        <ul>
+                            <li>Select "All Repositories" under "Repository Access".</li>
+                            <li>Under "Repository Permissions" chooose:</li>
+                            <li>"Administration" - read and write access.</li>
+                            <li>"Content" - read and write access.</li>
+                        </ul>  
+
+
+
+                        <div class="list">
+
                             <ul>
-                                <li>api</li>
-                                <li>read_api</li>
-                                <li>read_repository</li>
-                                <li>write_repository</li>
-                            </ul>  
-    
-    
-                            <div class="list">
-    
-                                <ul>
-                                    <li>
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Username (NOT email)</div>
-                                                <div class="item-input-wrap">
-                                                    <input type="text" name="gitLabUsername" placeholder="Username"
-                                                        value="${settings.gitProviders?.gitlab?.username}"  />
-                                                </div>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Username (NOT email)</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="gitHubUsername" placeholder="Username"
+                                                    value="${settings.gitProviders?.github?.username}"  />
                                             </div>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Personal Access Token</div>
-                                                <div class="item-input-wrap">
-                                                    <input type="text" name="gitLabPersonalAccessToken" placeholder="Personal access token"
-                                                        value="${settings.gitProviders?.gitlab?.personalAccessToken}"  />
-                                                </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Personal Access Token</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="gitHubPersonalAccessToken" placeholder="Personal access token"
+                                                    value="${settings.gitProviders?.github?.personalAccessToken}"  />
                                             </div>
                                         </div>
-                                    </li>
-                                    
-                                </ul>
-                            </div>
-
+                                    </div>
+                                </li>
+                                
+                            </ul>
                         </div>
+
+
                     </div>
+                </div>
 
+                <div class="card">
+                    <div class="card-header">Configure GitLab</div>
+                    <div class="card-content card-content-padding">
 
+                        <strong>GitLab Instructions</strong>
 
-                    <div class="row block">
-          
-                        <div class="col-0 large-30"></div>
-          
-                        <a href="/" class="button button-outline color-gray col-50 large-30" tabindex="12">Cancel</a>
-          
-                        <button type="submit" class="button button-fill col-50 large-30" tabindex="13" id="saveButton">
-                          Save
-                        </button>
-          
-                      </div>
+                        <ol>
+                            <li>Create a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account.</li>
+                            <li>Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
+                                save it below.</li>
+                            <li>If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
+                                take you directly to the create form. </li>
 
+                        </ol>
 
     
-                </form>
-            </div>
+                        <p>Give the token a name and select an expiration date. Under "Select scopes" check the boxes beside:</p>
+                        
+                        <ul>
+                            <li>api</li>
+                            <li>read_api</li>
+                            <li>read_repository</li>
+                            <li>write_repository</li>
+                        </ul>  
+
+
+                        <div class="list">
+
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Username (NOT email)</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="gitLabUsername" placeholder="Username"
+                                                    value="${settings.gitProviders?.gitlab?.username}"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Personal Access Token</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="gitLabPersonalAccessToken" placeholder="Personal access token"
+                                                    value="${settings.gitProviders?.gitlab?.personalAccessToken}"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="block cancel-save-row">
+      
+                    <div class="large-only"></div>
+      
+                    <a href="/" class="button button-outline color-gray" tabindex="30">
+                      Cancel
+                    </a>
+
+                    <button type="submit" class="button button-fill" tabindex="31" id="saveButton">
+                      Save
+                    </button>
+      
+                </div>
+
+
+            </form>
+
 
         </div>
 
@@ -279,6 +262,13 @@
         let ipfsService = ContainerService.getInstance(IpfsService)
 
         let settings = props.settings
+
+        let breadcrumbs = [{
+            text: "Home",
+            path: "/"
+        }, {
+            text: 'Settings'
+        }]
 
         const formSubmit = async (e) => {
 

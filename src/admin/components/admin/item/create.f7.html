@@ -3,30 +3,9 @@
 
   <div class="page" data-name="admin-create-item">
 
-    <${Navbar} />
+    <${Navbar} breadcrumbs=${breadcrumbs} />
 
-    <div class="page-content">
-
-      <div class="block block-strong inset col-100 no-margin-bottom">
-        <div class="breadcrumbs ">
-          <div class="breadcrumbs-item">
-            <a href="/" class="link">
-              Home
-            </a>
-          </div>    
-          <div class="breadcrumbs-separator"></div>
-          <div class="breadcrumbs-item">
-            <a href="/admin/channel/show/${itemViewModel.channel._id}" class="link">
-              ${itemViewModel.channel.title}
-            </a>
-          </div>     
-          <div class="breadcrumbs-separator"></div>
-          <div class="breadcrumbs-item breadcrumbs-item-active">
-            Create Item
-          </div> 
-        </div>
-      </div>
-
+    <div class="page-content hide-toolbar-on-scroll">
 
       <form class="list media-list" id="create-item-form" @submit="${formSubmit}">
 
@@ -111,6 +90,16 @@
     let ipfsReady = false
     let cancelLink = `/admin/channel/show/${itemViewModel.channel._id}`
 
+
+    let breadcrumbs = [{
+        text: "Home",
+        path: "/"
+    }, {
+        text: itemViewModel.channel.title,
+        path: `/admin/channel/show/${itemViewModel.channel._id}`
+    }, {
+        text: 'Create Item'
+    }]
 
     let toast
 

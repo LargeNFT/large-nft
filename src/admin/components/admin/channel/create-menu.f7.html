@@ -3,131 +3,104 @@
 
   <div class="page" data-name="admin-create-menu">
 
-    <${Navbar} />
+    <${Navbar} breadcrumbs=${breadcrumbs} />
 
-    <div class="page-content">
+    <div class="page-content hide-toolbar-on-scroll">
 
-      <div class="row">
-        <div class="col-100 large-66 center">
-
-
-          <div class="block block-strong inset col-100 no-margin-bottom">
-            <div class="breadcrumbs ">
-              <div class="breadcrumbs-item">
-                <a href="/" class="link">
-                  Home
-                </a>
-              </div>    
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item breadcrumbs-item-active">
-                Create & Import
-              </div> 
-            </div>
-          </div>
-
-
-          
-
-          <div class="block-title block-title-medium">Create New</div>
-          <div class="list media-list inset">
-            <ul>
-              <li>
-                <a href="/admin/channel/create" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <i class="material-icons">create</i>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Create New Collection</div>
-                      </div>
+      <div class="block-title block-title-medium">Create New</div>
+      <div class="list media-list inset">
+        <ul>
+          <li>
+            <a href="/admin/channel/create" class="item-link">
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="material-icons">create</i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">Create New Collection</div>
                   </div>
+              </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="block-title block-title-medium">Fork Existing</div>
+      <div class="list media-list inset">
+        <ul>
+          <li>
+            <a href="/admin/channel/fork" class="item-link">
+              <div class="item-content">
+                <div class="item-media">
+                  <i class="material-icons">fork_left</i>
+                </div>
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="item-title">From IPFS Hash</div>
                   </div>
-                </a>
-              </li>
-            </ul>
-          </div>
+                </div>
+              </div>
+            </a>
+          </li>
 
 
-          <div class="block-title block-title-medium">Fork Existing</div>
-          <div class="list media-list inset">
-            <ul>
+            ${walletService?.address ? $h`
               <li>
-                <a href="/admin/channel/fork" class="item-link">
+                <a href="/admin/channel/fork-contract" class="item-link">
                   <div class="item-content">
                     <div class="item-media">
                       <i class="material-icons">fork_left</i>
                     </div>
                     <div class="item-inner">
                       <div class="item-title-row">
-                        <div class="item-title">From IPFS Hash</div>
+                        <div class="item-title">From Contract</div>
                       </div>
                     </div>
                   </div>
                 </a>
               </li>
-
-
-                ${walletService?.address ? $h`
-                  <li>
-                    <a href="/admin/channel/fork-contract" class="item-link">
-                      <div class="item-content">
-                        <div class="item-media">
-                          <i class="material-icons">fork_left</i>
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">From Contract</div>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                ` : $h`
-                  <li>
-                    <a class="item-link">
-                      <div class="item-content">
-                        <div class="item-media">
-                          <i class="material-icons">fork_left</i>
-                        </div>
-                        <div class="item-inner">
-                          <div class="item-title-row">
-                            <div class="item-title">From Contract </div>
-                          </div>
-                          <div class="item-text">Requires browser with wallet support.</div>
-
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                `}
-
-                <li>
-                  <a href="/admin/channel/fork-reader" class="item-link">
-                    <div class="item-content">
-                      <div class="item-media">
-                        <i class="material-icons">fork_left</i>
-                      </div>
-                      <div class="item-inner">
-                        <div class="item-title-row">
-                          <div class="item-title">From Reader</div>
-                        </div>
-                      </div>
+            ` : $h`
+              <li>
+                <a class="item-link">
+                  <div class="item-content">
+                    <div class="item-media">
+                      <i class="material-icons">fork_left</i>
                     </div>
-                  </a>
-                </li>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">From Contract </div>
+                      </div>
+                      <div class="item-text">Requires browser with wallet support.</div>
+
+                    </div>
+                  </div>
+                </a>
+              </li>
+            `}
+
+            <li>
+              <a href="/admin/channel/fork-reader" class="item-link">
+                <div class="item-content">
+                  <div class="item-media">
+                    <i class="material-icons">fork_left</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">From Reader</div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </li>
 
 
-              
+          
 
-            </ul>
-          </div>
-
-
-        </div>
+        </ul>
       </div>
-
-
 
     </div>
   </div>
@@ -150,6 +123,13 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let walletService
+
+    let breadcrumbs = [{
+        text: "Home",
+        path: "/"
+    }, {
+      text: 'Create & Import'
+    }]
 
 
     $on('pageInit', async () => {

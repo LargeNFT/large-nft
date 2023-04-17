@@ -3,125 +3,92 @@
 
   <div class="page" data-name="admin-create-channel">
 
-    <${Navbar} />
+    <${Navbar} breadcrumbs=${breadcrumbs} />
 
-    <div class="page-content">
+    <div class="page-content hide-toolbar-on-scroll">
 
-      <div class="row">
-        <div class="col-100 large-66 center">
+        <!-- Slider container -->
+        <div class="swiper" id="create-new-swiper">
 
-          <div class="block block-strong inset no-margin-bottom">
-            <div class="breadcrumbs ">
-              <div class="breadcrumbs-item">
-                <a href="/" class="link">
-                  Home
-                </a>
-              </div>    
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item">
-                <a class="link" href="/admin/channel/create-menu">Create & Import</a>
-              </div> 
-              <div class="breadcrumbs-separator"></div>
-              <div class="breadcrumbs-item breadcrumbs-item-active">
-                Create Collection
-              </div> 
-            </div>
-          </div>
+          <!-- Slides wrapper -->
+          <div class="swiper-wrapper">
+              <!-- Slides -->
+              <div class="swiper-slide">
+                
+                <div class="block-title block-title-medium no-margin-bottom margin-top">Choose your features and licensing</div>
 
-          <!-- Slider container -->
-          <div class="swiper" id="create-new-swiper" style="background: rgb(238, 240, 243);">
+                <div class="block split-row">
 
-            <!-- Slides wrapper -->
-            <div class="swiper-wrapper">
-                <!-- Slides -->
-                <div class="swiper-slide">
-                  
-                  <div class="block-title no-margin-bottom margin-top">Choose your features and licensing</div>
+                  <div class="block copyright-block no-margin-bottom">
 
-                  <div class="row block">
+                    <strong>Copyright</strong>
 
-                    <div class="col-100 large-50">
+                    <ul>
+                      <li>Use your own licensing terms.</li>
+                      <li>Restrict who can host the content (DMCA).</li>
+                    </ul>
 
-                      <div class="block copyright-block">
+                    <button class="button color-red button-outline" @click="${copyrightClick}">Disable forking</button>
+                    
+                  </div>
 
-                        <strong>Copyright</strong>
+                  <div class="block copyleft-block">
 
-                        <ul>
-                          <li>Use your own licensing terms.</li>
-                          <li>Restrict who can host the content (DMCA).</li>
-                        </ul>
+                    <strong>Copyleft</strong>
 
-                        <button class="button color-red button-outline" @click="${copyrightClick}">Disable forking</button>
-                        
-                      </div>
+                    <ul>
+                      <li>Free as in speech.</li>
+                      <li>Allow sharing, remixes, and derivatives.</li>
+                      <li>Anyone can host the content.</li>
+                      <li><a href="https://creativecommons.org/share-your-work/public-domain/cc0/"></a>CC0 Content</li>
+                    </ul>
 
-                    </div>
-
-                    <div class="col-100 large-50">
-
-                      <div class="block copyleft-block">
-
-                        <strong>Copyleft</strong>
-
-                        <ul>
-                          <li>Free as in speech.</li>
-                          <li>Allow sharing, remixes, and derivatives.</li>
-                          <li>Anyone can host the content.</li>
-                          <li><a href="https://creativecommons.org/share-your-work/public-domain/cc0/"></a>CC0 Content</li>
-                        </ul>
-
-                        <button class="button button-fill" @click="${copyleftClick}">Enable all features</button>
-
-                      </div>
-                      
-                    </div>
+                    <button class="button button-fill" @click="${copyleftClick}">Enable all features</button>
 
                   </div>
 
                 </div>
 
-                <div class="swiper-slide">
+              </div>
 
-                  <form id="create-channel-form" @submit="${formSubmit}" class="margin-left">
-        
-                    <div class="block-title block-title-medium">Create Collection</div>
+              <div class="swiper-slide">
+
+                <form id="create-channel-form" @submit="${formSubmit}">
+      
+                  <div class="block-title block-title-medium">Create Collection</div>
 
 
-                    <${ChannelForm} 
-                      channel=${channelViewModel} 
-                      description_editor="create-channel-description-editor"
-                      description_toolbar="create-channel-description-toolbar" 
-                      license_editor="create-channel-license-editor"
-                      license_toolbar="create-channel-license-toolbar" 
-                    />
-        
-                    <div class="row block">
-        
-                      <div class="col-0 large-30"></div>
-        
-                      <a href="/admin/channel/create-menu" class="button button-outline color-gray col-50 large-30" tabindex="12">
-                        Cancel
-                      </a>
+                  <${ChannelForm} 
+                    channel=${channelViewModel} 
+                    description_editor="create-channel-description-editor"
+                    description_toolbar="create-channel-description-toolbar" 
+                    license_editor="create-channel-license-editor"
+                    license_toolbar="create-channel-license-toolbar" 
+                  />
+      
+                  <div class="block cancel-save-row">
+      
+                    <div class="large-only"></div>
+      
+                    <a href="/admin/channel/create-menu" class="button button-outline color-gray" tabindex="30">
+                      Cancel
+                    </a>
 
-                      <button type="submit" class="button button-fill col-50 large-30" tabindex="13" id="saveButton">
-                        Save
-                      </button>
-        
-                    </div>
-        
-                  </form>
-        
-                </div>
+                    <button type="submit" class="button button-fill" tabindex="31" id="saveButton">
+                      Save
+                    </button>
+      
+                  </div>
+      
+                </form>
+      
+              </div>
 
-                <!-- Pagination, if required -->
-                <div class="swiper-pagination"></div>
-            </div>
-
+              <!-- Pagination, if required -->
+              <div class="swiper-pagination"></div>
           </div>
 
-
         </div>
-      </div>
 
     </div>
   </div>
@@ -174,6 +141,16 @@
     let walletService = ContainerService.getWalletService()
 
     let licenseQuillEditor
+
+    let breadcrumbs = [{
+        text: "Home",
+        path: "/"
+    }, {
+      text: 'Create & Import',
+      path: '/admin/channel/create-menu'
+    }, {
+      text: 'Create Collection'
+    }]
 
     let swiper
 
@@ -257,8 +234,10 @@
       //Make sure quill is configured
       await quillEditorService.init()
 
-      //Categories
-      let categoryTagify = new Tagify(document.getElementById('category'))
+
+
+      // //Categories
+      // let categoryTagify = new Tagify(document.getElementById('category'))
 
       //Description
       quillEditorService.buildQuillPostEditor("#create-channel-description-editor", "#create-channel-description-toolbar")

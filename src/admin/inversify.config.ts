@@ -139,6 +139,7 @@ function getMainContainer(version:string) {
   function framework7() {
 
     let app = new Framework7({
+
       el: '#app', // App root element
       id: 'large', // App bundle ID
       name: 'Large', // App name
@@ -153,10 +154,10 @@ function getMainContainer(version:string) {
       },
 
       colors: {
-        // specify primary color theme
-        primary: '#FCB827'
-      }
 
+      },
+
+      darkMode: 'auto'
 
     })
     

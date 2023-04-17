@@ -2,91 +2,90 @@
 <template>
     <div class="page" data-name="profile-edit">
 
-        <${Navbar} />
+        <${Navbar} breadcrumbs=${breadcrumbs} active="profile" />
 
 
-        <div class="page-content">
+        <div class="page-content hide-toolbar-on-scroll">
 
-            <div class="row">
+            <div class="block-title block-title-medium">Edit Profile</div>
+            <form id="edit-author-form" @submit="${formSubmit}">
 
-                <div class="col-100 large-66 center">
+                <input type="hidden" name="_id" value="${authorViewModel.author._id}" />
+                <input type="hidden" name="_rev" value="${authorViewModel.author._rev}" />
 
-                    <div class="block-title">Edit Profile</div>
-                    <form id="edit-author-form" class="block list " @submit="${formSubmit}">
+                <input type="hidden" name="walletAddress" value="${authorViewModel.author.walletAddress}" />
 
-                        <input type="hidden" name="_id" value="${authorViewModel.author._id}" />
-                        <input type="hidden" name="_rev" value="${authorViewModel.author._rev}" />
-
-                        <input type="hidden" name="walletAddress" value="${authorViewModel.author.walletAddress}" />
-
-                        <ul>
-
-                            <li>
-                                <div class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Avatar</div>
-                                        <div class="item-input-wrap">
-
-                                            ${authorViewModel.authorPhoto ? $h`
-                                            <img class="author-photo-preview"
-                                                src="${authorViewModel.authorPhoto.url}" />
-                                            ` : $h`
-                                            <i class="material-icons author-photo-preview">image</i>
-                                            `}
-
-                                            <input type="button" class="button button-fill browse-file" value="Browse"
-                                                @click="${handleAuthorPhotoBrowseClick}" tabindex="4" />
-                                            <input type="hidden" name="coverPhotoId"
-                                                value="${authorViewModel?.authorPhoto?.cid}" />
-                                            <input type="file" id="author-photo-browse" style="display: none"
-                                                @change="${handleAuthorPhotoChange}" />
-
+                <div class="card">
+                    <div class="card-content">
+                        <div class="list">
+                            <ul>
+        
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Avatar</div>
+                                            <div class="item-input-wrap">
+            
+                                                ${authorViewModel.authorPhoto ? $h`
+                                                <img class="author-photo-preview"
+                                                    src="${authorViewModel.authorPhoto.url}" />
+                                                ` : $h`
+                                                <i class="material-icons author-photo-preview">image</i>
+                                                `}
+            
+                                                <input type="button" class="button button-fill browse-file" value="Browse"
+                                                    @click="${handleAuthorPhotoBrowseClick}" tabindex="1" />
+                                                <input type="hidden" name="coverPhotoId"
+                                                    value="${authorViewModel?.authorPhoto?.cid}" />
+                                                <input type="file" id="author-photo-browse" style="display: none"
+                                                    @change="${handleAuthorPhotoChange}" />
+            
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Name</div>
-                                        <div class="item-input-wrap">
-                                            <input type="text" name="name" value="${authorViewModel.author.name}" placeholder="Enter your name" tabindex="1" />
+                                </li>
+            
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Name</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="name" value="${authorViewModel.author.name}" placeholder="Enter your name" tabindex="2" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Description</div>
-                                        <div class="item-input-wrap">
-                                            <textarea name="description" placeholder="Enter a short bio" tabindex="2">${authorViewModel.author.description}</textarea>
+                                </li>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Description</div>
+                                            <div class="item-input-wrap">
+                                                <textarea name="description" placeholder="Enter a short bio" tabindex="3">${authorViewModel.author.description}</textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-
-                        </ul>
-
-
-                        <div class="row block">
-          
-                            <div class="col-0 large-30"></div>
-              
-                            <a href="/" class="button button-outline color-gray col-50 large-30" tabindex="12">Cancel</a>
-              
-                            <button type="submit" class="button button-fill col-50 large-30" tabindex="13">
-                              Save
-                            </button>
-              
-                          </div>
-
-
-                    </form>
-
+                                </li>
+            
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+
+                <div class="block cancel-save-row">
+
+                    <div class="large-only"></div>
+
+                    <a href="/admin/author/show/${authorViewModel.author.walletAddress}" class="button button-outline color-gray" tabindex="4">Cancel</a>
+      
+                    <button type="submit" class="button button-fill" tabindex="5">
+                      Save
+                    </button>
+      
+                </div>
+
+
+            </form>
 
         </div>
 
@@ -122,8 +121,23 @@
         let uploadService = ContainerService.getInstance(UploadService)
         let imageService = ContainerService.getInstance(ImageService)
         let authorService = ContainerService.getInstance(AuthorService)
+        let walletService = ContainerService.getWalletService()
+
+
 
         let authorViewModel = props.authorViewModel
+
+        let breadcrumbs = [{
+            text: "Home",
+            path: "/"
+        }, {
+            text: walletService.truncateEthAddress(authorViewModel.author.walletAddress),
+            path: `/admin/author/show/${authorViewModel.author.walletAddress}`
+        },
+        {
+            text: 'Edit Profile'
+        }]
+
 
         const formSubmit = async (e) => {
 

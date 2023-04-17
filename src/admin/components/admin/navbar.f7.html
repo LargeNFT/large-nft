@@ -5,40 +5,122 @@
 
         <div class="navbar-inner sliding">
         
-          <div class="left">
-            <a href="/" class="logo">Large</a>
+          <div class="title">
+            <a href="/">Large</a>
           </div>
-        
-          <div class="title"></div>
 
           <div class="right">
 
-            ${showConnect ? $h`
+            <div class="small-only">
+
+              <a href="#" class="link popover-open" data-popover=".popover-menu">
+                <i class="f7-icons">menu</i>
+              </a> 
+
+              <div class="popover popover-menu">
+                <div class="popover-angle"></div>
+                <div class="popover-inner">                    
+                  <div class="list">
+                    <ul>
+
+                      <li>
+                        <div class="item-content">
+                          <div class="item-inner">
+                              <div class="item-title">
+                                  ${walletAddress != undefined ? $h`
+                                    <a href="/admin/author/show/${walletAddress}" class="link popover-close">${truncateEthAddress(walletAddress)}</a>
+                                ` : $h`
+                                    <a class="popover-close" href="#" @click=${connectWallet}>Connect Wallet</a>
+                                `} 
+                              </div>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <a href="/admin/settings" class="item-link popover-close">
+                          <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    Settings
+                                </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+
+                    </ul>
+              
+                  </div>
+      
+                </div>
+              </div>
+
+            </div>
+
+            <div class="large-only">
+              
+              ${showConnect ? $h`
                 ${walletAddress != undefined ? $h`
-                    <a href="/admin/author/show/${walletAddress}" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
-                  ` : $h`
-                    <button class="button button-outline button-fill" @click=${connectWallet}>Connect Wallet</button>
-                  `}
-            ` : $h`<span />`}
-    
-            <a href="/admin/settings" class="button button-fill" id="settings-button" >
-                <i class="material-icons">settings</i>
-            </a>
+                      <a href="/admin/author/show/${walletAddress}" class="link ${active == 'profile' ? $h`link-active` : $h` `}">${truncateEthAddress(walletAddress)}</a>
+                    ` : $h`
+                      <a class="link" href="#" @click=${connectWallet}>Connect Wallet</button>
+                    `}
+              ` : $h`<span />`}
+
+              <a class="link ${active == 'settings' ? $h`link-active` : $h` `}" href="/admin/settings" >
+                Settings
+              </a> 
+
+            </div>
+
     
           </div>
 
 
-          ${readerConfig?.path ? $h`
+          ${breadcrumbs ? $h`
+                  
             <div class="subnavbar">
               <div class="subnavbar-inner">
-                <div class="subnavbar-title">
-                  <a href="${readerConfig.path}" class="link external">
-                    <i class="icon icon-back"></i> ${readerConfig.title}
-                  </a>
+        
+                ${readerConfig?.path ? $h`
+                  <div class="subnavbar-title">
+                    <a href="${readerConfig.path}" class="link external">
+                      <i class="icon icon-back"></i> ${readerConfig.title}
+                    </a>
+                  </div>
+                ` : ''}
+
+                
+                <div class="breadcrumbs ">
+  
+                  ${breadcrumbs.map( (b, index) => $h`
+                    <div class="breadcrumbs-item ${index == breadcrumbs.length - 1 ? 'breadcrumbs-item-active' : ''}">
+
+                      ${b.path ? $h`
+                        <a href="${b.path}" class="link" >
+                          ${b.text}
+                        </a>
+                      ` : $h`${b.text}`}
+
+
+                    </div>  
+
+                    ${b.path && index != breadcrumbs.length - 1 ? $h`
+                      <div class="breadcrumbs-separator"></div>
+                    ` : $h` `}
+
+                    
+                  `)}
+
                 </div>
+        
               </div>
             </div>
-          ` : ''}
+
+
+            ` : $h`<span />`}
+
 
 
         </div>
@@ -48,19 +130,6 @@
  
 <style>
 
- .logo {
-   font-size: 32px;
-   font-weight: 700;
-   margin: 10px;
- }
-
- .searchbar {
-   max-width: 100%;
- }
-
- #settings-button {
-  margin-left: 3px;
- }
 
 </style>
 
@@ -78,7 +147,10 @@
         let walletAddress = walletService.address
         let showConnect = walletService.provider != undefined
 
+        let active = props.active
+
         let readerConfig = props.reader_config
+        let breadcrumbs = props.breadcrumbs
 
         // Captures 0x + 4 characters, then the last 4 characters.
         const truncateRegex = /^(0x[a-zA-Z0-9]{4})[a-zA-Z0-9]+([a-zA-Z0-9]{4})$/

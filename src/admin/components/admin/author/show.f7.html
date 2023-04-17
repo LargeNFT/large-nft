@@ -2,56 +2,49 @@
 <template>
     <div class="page" data-name="profile-show">
 
-        <${Navbar} />
+        <${Navbar} breadcrumbs=${breadcrumbs} active="profile" />
 
+        <div class="page-content hide-toolbar-on-scroll">
 
-        <div class="page-content">
+            ${authorViewModel.author._id ? $h`
 
-            <div class="row">
-                <div class="col-100 large-66 center">
+                <div class="block row">
+                    <div class="col-20">
 
-                    ${authorViewModel.author._id ? $h`
+                        ${authorViewModel.authorPhoto ? $h`
+                            <img src="${authorViewModel.authorPhoto.url}" class="profile-pic-main" />
+                        ` : $h`
+                            <i class="material-icons" id="profile-pic-not-found">person</i>
+                        `}
 
-                    <div class="block row">
-                        <div class="col-20">
-
-                            ${authorViewModel.authorPhoto ? $h`
-                                <img src="${authorViewModel.authorPhoto.url}" class="profile-pic-main" />
-                            ` : $h`
-                                <i class="material-icons" id="profile-pic-not-found">person</i>
-                            `}
-
-                        </div>
-
-                        <div class="col-80">
-
-                            <div class="profile-name">
-                                ${authorViewModel.authorDisplayName}
-                            </div>
-
-                            <div class="profile-address">
-                                ${authorViewModel.author._id}
-                            </div>
-
-                            <p>${authorViewModel.author.description}</p>
-
-                            <div class="row">
-                                <a href="/admin/author/edit/${authorViewModel.author.walletAddress}"
-                                    class="button button-outline button-small button-round col-20">Edit</a>
-                            </div>
-
-                        </div>
                     </div>
 
-                    ` : $h`
-                        <div class="block">
-                            Create your Large <a href="/admin/author/edit/${authorViewModel.author.walletAddress}">author profile</a>. 
+                    <div class="col-80">
+
+                        <div class="profile-name">
+                            ${authorViewModel.authorDisplayName}
                         </div>
-                    `}
 
+                        <div class="profile-address">
+                            ${authorViewModel.author._id}
+                        </div>
 
+                        <p>${authorViewModel.author.description}</p>
+
+                        <div class="row">
+                            <a href="/admin/author/edit/${authorViewModel.author.walletAddress}"
+                                class="button button-outline button-small button-round col-20">Edit</a>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+
+                ` : $h`
+                    <div class="block">
+                        Create your Large <a href="/admin/author/edit/${authorViewModel.author.walletAddress}">author profile</a>. 
+                    </div>
+                `}
+
 
         </div>
 
@@ -108,6 +101,14 @@
     export default (props, { $, $on, $f7, $update }) => {
 
         let authorViewModel = props.authorViewModel
+
+        let breadcrumbs = [{
+            text: "Home",
+            path: "/"
+        }, {
+            text: 'Author Profile'
+        }]
+
 
         return $render
     }

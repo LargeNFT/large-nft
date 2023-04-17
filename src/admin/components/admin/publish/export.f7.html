@@ -3,354 +3,323 @@
 
     <div class="page" data-name="publish">
 
-        <${Navbar} />
+        <${Navbar} breadcrumbs=${breadcrumbs}  />
 
-        <div class="page-content">
-            <div class="row">
+        <div class="page-content hide-toolbar-on-scroll">
 
-                <div class="col-100 large-50 center">
+            ${showForm ? $h`
 
-                    <div class="block block-strong inset col-100 no-margin-bottom">
-                        <div class="breadcrumbs ">
-                          <div class="breadcrumbs-item">
-                            <a href="/" class="link">
-                              Home
-                            </a>
-                          </div>    
-                          <div class="breadcrumbs-separator"></div>
-                          <div class="breadcrumbs-item">
-                            <a href="/admin/channel/show/${channelViewModel.channel._id}" class="link">
-                              ${channelViewModel.channel.title}
-                            </a>
-                          </div>     
-                          <div class="breadcrumbs-separator"></div>
-                          <div class="breadcrumbs-item">
-                            <a class="link" href="/admin/publish/${channelViewModel.channel._id}">Publish</a>
-                          </div> 
-                          <div class="breadcrumbs-separator"></div>
-                          <div class="breadcrumbs-item breadcrumbs-item-active">
-                            Export To IPFS
-                          </div> 
-                        </div>
-                    </div>
+                <div class="block-title">Export</div>
+                <div class="card">
+
+                    <div class="card-content">
+                        <form class="card-content card-content-padding" @submit="${formSubmit}" id="export-form">
+                            
+                            <p>
+                                Export the JSON metadata for the collection and a snapshot of the source database to the IPFS node and a local git repository.
+                            </p>
 
 
-                    ${showForm ? $h`
+                            
+                            ${channelViewModel?.gitProvider?.personalAccessToken?.length > 0 ? $h`
 
-                        <div class="block-title">Export</div>
-                        <div class="card">
-
-                            <div class="card-content">
-                                <form class="card-content card-content-padding" @submit="${formSubmit}" id="export-form">
-                                    
-                                    <p>
-                                        Export the JSON metadata for the collection and a snapshot of the source database to the IPFS node and a local git repository.
-                                    </p>
+                                ${!ipfsReady ? $h`
+                                    <div class="ipfs-label">IPFS Initializing...</div>
+                                ` : $h`
+                                    <div class="ipfs-label">
+                                        Status: <a href="/admin/connect">IPFS Ready</a>
+                                    </div>
+                                `}
 
 
-                                    
-                                    ${channelViewModel?.gitProvider?.personalAccessToken?.length > 0 ? $h`
+                                ${publishing ? $h`
+                                    <div class="publish-label">
+                                        Exporting...
+                                    </div>
 
-                                        ${!ipfsReady ? $h`
-                                            <div class="ipfs-label">IPFS Initializing...</div>
-                                        ` : $h`
-                                            <div class="ipfs-label">
-                                                Status: <a href="/admin/connect">IPFS Ready</a>
+                                    ${publishStatus? $h`
+
+                                        <div class="row">
+                                            <div class="col-100 margin-top"><strong>NFT Data</strong></div>
+                                            <div class="data-table col-100 large-50">
+                                            <table>
+                                                <thead>
+                                                <th class="label-cell">Type</th>
+                                                <th class="numeric-cell">Saved</th>
+                                                <th class="numeric-cell">Total</th>
+                                                </thead>
+                                                <tbody>
+                                                <tr class="${publishStatus.images.saved == publishStatus.images.total && publishStatus.images.total > 0 ? 'complete' : ''}">
+                                                    <td class="label-cell">Images</td>
+                                                    <td class="numeric-cell">${publishStatus.images.saved}</td>
+                                                    <td class="numeric-cell">${publishStatus.images.total}</td>
+                                                </tr>
+                                                <tr class="${publishStatus.animations.saved == publishStatus.animations.total && publishStatus.animations.total > 0 ? 'complete' : ''}">
+                                                    <td class="label-cell">Animations</td>
+                                                    <td class="numeric-cell">${publishStatus.animations.saved}</td>
+                                                    <td class="numeric-cell">${publishStatus.animations.total}</td>
+                                                </tr>
+                                                <tr class="${publishStatus.nftMetadata.saved == publishStatus.nftMetadata.total && publishStatus.nftMetadata.total > 0 ? 'complete' : ''}">
+                                                    <td class="label-cell">NFT Metadata</td>
+                                                    <td class="numeric-cell">${publishStatus.nftMetadata.saved}</td>
+                                                    <td class="numeric-cell">${publishStatus.nftMetadata.total}</td>
+                                                </tr>
+                                                
+                                                </tbody>
+                                            </table>
+
                                             </div>
-                                        `}
+                                        </div>
+
+                                        <div class="col-100" style="margin-top: 40px;"><strong>Database Backup</strong></div>
+                                        <div class="row">
+                                            <div class="data-table col-100 large-50">
+                                                <table>
+                                                    <thead>
+                                                    <th class="label-cell">Type</th>
+                                                    <th class="numeric-cell">Total</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="${publishStatus.contractMetadata.saved == publishStatus.contractMetadata.total && publishStatus.contractMetadata.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Contract Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.contractMetadata.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.items.saved == publishStatus.backups.items.total && publishStatus.backups.items.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Items</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.items.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.images.saved == publishStatus.backups.images.total && publishStatus.backups.images.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Image Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.images.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.animations.saved == publishStatus.backups.animations.total && publishStatus.backups.animations.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Animations Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.animations.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.themes.saved == publishStatus.backups.themes.total && publishStatus.backups.themes.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Themes</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.themes.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.staticPages.saved == publishStatus.backups.staticPages.total && publishStatus.backups.staticPages.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Static Pages</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.staticPages.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.channels.saved == publishStatus.backups.channels.total && publishStatus.backups.channels.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Channels</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.channels.total}</td>
+                                                    </tr>
+
+                                                    ${publishStatus.backups.authors.total ? $h`
+
+                                                        <tr class="${publishStatus.backups.authors.saved == publishStatus.backups.authors.total && publishStatus.backups.authors.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Authors</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.authors.total}</td>
+                                                        </tr>
+                                                    ` : $h`<span/>`}
 
 
-                                        ${publishing ? $h`
-                                            <div class="publish-label">
-                                                Exporting...
+                                                    </tbody>
+                                                </table>
                                             </div>
-        
-                                            ${publishStatus? $h`
-        
-                                                <div class="row">
-                                                    <div class="col-100 margin-top"><strong>NFT Data</strong></div>
-                                                    <div class="data-table col-100 large-50">
-                                                    <table>
-                                                        <thead>
-                                                        <th class="label-cell">Type</th>
-                                                        <th class="numeric-cell">Saved</th>
-                                                        <th class="numeric-cell">Total</th>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr class="${publishStatus.images.saved == publishStatus.images.total && publishStatus.images.total > 0 ? 'complete' : ''}">
-                                                            <td class="label-cell">Images</td>
-                                                            <td class="numeric-cell">${publishStatus.images.saved}</td>
-                                                            <td class="numeric-cell">${publishStatus.images.total}</td>
-                                                        </tr>
-                                                        <tr class="${publishStatus.animations.saved == publishStatus.animations.total && publishStatus.animations.total > 0 ? 'complete' : ''}">
-                                                            <td class="label-cell">Animations</td>
-                                                            <td class="numeric-cell">${publishStatus.animations.saved}</td>
-                                                            <td class="numeric-cell">${publishStatus.animations.total}</td>
-                                                        </tr>
-                                                        <tr class="${publishStatus.nftMetadata.saved == publishStatus.nftMetadata.total && publishStatus.nftMetadata.total > 0 ? 'complete' : ''}">
-                                                            <td class="label-cell">NFT Metadata</td>
-                                                            <td class="numeric-cell">${publishStatus.nftMetadata.saved}</td>
-                                                            <td class="numeric-cell">${publishStatus.nftMetadata.total}</td>
-                                                        </tr>
-                                                        
-                                                        </tbody>
-                                                    </table>
+                                        </div>
 
+                                        <div class="publish-status"></div>
+
+                                    ` : $h`<span />`}
+
+                                ` : $h`
+                                    <div class="publish-label" style="display:none;"></div>
+                                `}
+
+                                ${publishOutput ? $h`
+                                    <div class="publish-output" innerHTML="${publishOutput}" id="ipfs-publish-process" ></div>
+                                ` : $h`
+                                    <div class="publish-output" style="display:none;"></div>
+                                `}
+
+
+                                ${showCurrentCid ? $h`
+
+                                    <div class="pin-status">
+                                        <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}</p>
+                                        <p><strong>Date Exported:</strong> ${channelViewModel.channel.localPubDate}</p>
+                                    </div>
+
+                                ` : $h`<span />`}
+
+
+                                ${ipfsReady & !publishing ? $h`
+
+                                    <div class="list margin-top margin-bottom">
+                                        <ul>
+                                            <li>
+                                                <label class="item-checkbox item-content">
+                                                    <input type="checkbox" checked="true" name="exportMedia" />
+                                                    
+                                                    <i class="icon icon-checkbox"></i>
+                                                    <div class="item-inner">
+                                                        <div class="item-title">
+                                                        <div class="item-header"></div>
+                                                        Export Media
+                                                        <div class="item-footer">
+                                                            Export all images and animations to IPFS and your local git repo.
+                                                        </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="col-100" style="margin-top: 40px;"><strong>Database Backup</strong></div>
-                                                <div class="row">
-                                                    <div class="data-table col-100 large-50">
-                                                        <table>
-                                                            <thead>
-                                                            <th class="label-cell">Type</th>
-                                                            <th class="numeric-cell">Total</th>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr class="${publishStatus.contractMetadata.saved == publishStatus.contractMetadata.total && publishStatus.contractMetadata.total > 0 ? 'complete' : ''}">
-                                                                <td class="label-cell">Contract Metadata</td>
-                                                                <td class="numeric-cell">${publishStatus.contractMetadata.total}</td>
-                                                            </tr>
-                                                            <tr class="${publishStatus.backups.items.saved == publishStatus.backups.items.total && publishStatus.backups.items.total > 0 ? 'complete' : ''}">
-                                                                <td class="label-cell">Items</td>
-                                                                <td class="numeric-cell">${publishStatus.backups.items.total}</td>
-                                                            </tr>
-                                                            <tr class="${publishStatus.backups.images.saved == publishStatus.backups.images.total && publishStatus.backups.images.total > 0 ? 'complete' : ''}">
-                                                                <td class="label-cell">Image Metadata</td>
-                                                                <td class="numeric-cell">${publishStatus.backups.images.total}</td>
-                                                            </tr>
-                                                            <tr class="${publishStatus.backups.animations.saved == publishStatus.backups.animations.total && publishStatus.backups.animations.total > 0 ? 'complete' : ''}">
-                                                                <td class="label-cell">Animations Metadata</td>
-                                                                <td class="numeric-cell">${publishStatus.backups.animations.total}</td>
-                                                            </tr>
-                                                            <tr class="${publishStatus.backups.themes.saved == publishStatus.backups.themes.total && publishStatus.backups.themes.total > 0 ? 'complete' : ''}">
-                                                                <td class="label-cell">Themes</td>
-                                                                <td class="numeric-cell">${publishStatus.backups.themes.total}</td>
-                                                            </tr>
-                                                            <tr class="${publishStatus.backups.staticPages.saved == publishStatus.backups.staticPages.total && publishStatus.backups.staticPages.total > 0 ? 'complete' : ''}">
-                                                                <td class="label-cell">Static Pages</td>
-                                                                <td class="numeric-cell">${publishStatus.backups.staticPages.total}</td>
-                                                            </tr>
-                                                            <tr class="${publishStatus.backups.channels.saved == publishStatus.backups.channels.total && publishStatus.backups.channels.total > 0 ? 'complete' : ''}">
-                                                                <td class="label-cell">Channels</td>
-                                                                <td class="numeric-cell">${publishStatus.backups.channels.total}</td>
-                                                            </tr>
-        
-                                                            ${publishStatus.backups.authors.total ? $h`
-        
-                                                                <tr class="${publishStatus.backups.authors.saved == publishStatus.backups.authors.total && publishStatus.backups.authors.total > 0 ? 'complete' : ''}">
-                                                                    <td class="label-cell">Authors</td>
-                                                                    <td class="numeric-cell">${publishStatus.backups.authors.total}</td>
-                                                                </tr>
-                                                            ` : $h`<span/>`}
-        
-        
-                                                            </tbody>
-                                                        </table>
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="item-checkbox item-content">
+                                                    <input type="checkbox" checked="true" name="exportMetadata" />
+                                                    
+                                                    <i class="icon icon-checkbox"></i>
+                                                    <div class="item-inner">
+                                                        <div class="item-title">
+                                                        <div class="item-header"></div>
+                                                        Export JSON metadata
+                                                        <div class="item-footer">
+                                                            Generate and export JSON metadata for all items.
+                                                        </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-        
-                                                <div class="publish-status"></div>
-
-                                            ` : $h`<span />`}
-        
-                                        ` : $h`
-                                            <div class="publish-label" style="display:none;"></div>
-                                        `}
-        
-                                        ${publishOutput ? $h`
-                                            <div class="publish-output" innerHTML="${publishOutput}" id="ipfs-publish-process" ></div>
-                                        ` : $h`
-                                            <div class="publish-output" style="display:none;"></div>
-                                        `}
-        
-        
-                                        ${showCurrentCid ? $h`
-        
-                                            <div class="pin-status">
-                                                <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}</p>
-                                                <p><strong>Date Exported:</strong> ${channelViewModel.channel.localPubDate}</p>
-                                            </div>
-        
-                                        ` : $h`<span />`}
-        
-        
-                                        ${ipfsReady & !publishing ? $h`
-        
-                                            <div class="list margin-top margin-bottom">
-                                                <ul>
-                                                    <li>
-                                                        <label class="item-checkbox item-content">
-                                                            <input type="checkbox" checked="true" name="exportMedia" />
-                                                            
-                                                            <i class="icon icon-checkbox"></i>
-                                                            <div class="item-inner">
-                                                                <div class="item-title">
-                                                                <div class="item-header"></div>
-                                                                Export Media
-                                                                <div class="item-footer">
-                                                                    Export all images and animations to IPFS and your local git repo.
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label class="item-checkbox item-content">
-                                                            <input type="checkbox" checked="true" name="exportMetadata" />
-                                                            
-                                                            <i class="icon icon-checkbox"></i>
-                                                            <div class="item-inner">
-                                                                <div class="item-title">
-                                                                <div class="item-header"></div>
-                                                                Export JSON metadata
-                                                                <div class="item-footer">
-                                                                    Generate and export JSON metadata for all items.
-                                                                </div>
-                                                                </div>
-                                                            </div>
-                                                        </label>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
 
 
 
-                                            ${showRefresh ? $h`
-        
-                                                <div class="chip chip-outline">
-                                                    <div class="chip-label">Success!</div>
-                                                </div>
-        
-                                                <button type="submit" class="button button-fill color-gray text-color-white" id="export-refresh-button">
-                                                    <i class="material-icons">refresh</i> Export Again
-                                                </button>
-        
-        
-                                            ` : $h`
-        
-                                                ${!publishing ? $h`
-                                                    <button type="submit" class="button button-fill button-small deploy-button" >Export</button>
-                                                ` : $h`<span />`}  
-        
-                                            `}
-                                            
-                                        ` : $h`
-                                            <p></p>
-                                        `}
+                                    ${showRefresh ? $h`
+
+                                        <div class="chip chip-outline">
+                                            <div class="chip-label">Success!</div>
+                                        </div>
+
+                                        <button type="submit" class="button button-fill color-gray text-color-white" id="export-refresh-button">
+                                            <i class="material-icons">refresh</i> Export Again
+                                        </button>
 
 
                                     ` : $h`
-                                        <p>Configure a <a href="/admin/settings">git provider</a> to begin export.</p>
+
+                                        ${!publishing ? $h`
+                                            <button type="submit" class="button button-fill button-small deploy-button" >Export</button>
+                                        ` : $h`<span />`}  
+
                                     `}
+                                    
+                                ` : $h`
+                                    <p></p>
+                                `}
 
 
-                                </form>
-                            </div>
-                        </div>
+                            ` : $h`
+                                <p>Configure a <a href="/admin/settings">git provider</a> to begin export.</p>
+                            `}
 
-                        <div class="card">
-                            <div class="card-content card-content-padding">
 
-                                <strong>Troubleshooting</strong>
+                        </form>
+                    </div>
+                </div>
 
-                                <p>
-                                    Large is still alpha software and connecting to external services in a browser application can be tricky. A web security feature named <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" class="external">Cross-Origin Resource Sharing (CORS)</a> can create a few
-                                    challenges to overcome depending on your setup. 
-                                </p>
+                <div class="card">
+                    <div class="card-content card-content-padding">
 
-                                <p>
-                                    Tip: Open the javascript console to see further details about errors.
-                                </p>
+                        <strong>Troubleshooting</strong>
 
+                        <p>
+                            Large is still alpha software and connecting to external services in a browser application can be tricky. A web security feature named <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" class="external">Cross-Origin Resource Sharing (CORS)</a> can create a few
+                            challenges to overcome depending on your setup. 
+                        </p>
+
+                        <p>
+                            Tip: Open the javascript console to see further details about errors.
+                        </p>
+
+                        <ul>
+                            <li style="margin-top: 20px; margin-bottom: 20px">
+                                <strong>Problem: Git clone/pull fails.</strong>  
                                 <ul>
-                                    <li style="margin-top: 20px; margin-bottom: 20px">
-                                        <strong>Problem: Git clone/pull fails.</strong>  
-                                        <ul>
-                                            <li>Large uses <a href="https://isomorphic-git.org/" class="external">isomorphic-git</a> to store and retreive git data directly from your browser.</li>
-                                            <li><a href="https://gitlab.com/gitlab-org/gitlab/-/issues/20590" class="external">GitLab</a> and GitHub do not add CORS headers to their pull/clone requests.</li>
-                                            <li>This means your browser blocks the request, so it fails.</li>
-                                        </ul>
+                                    <li>Large uses <a href="https://isomorphic-git.org/" class="external">isomorphic-git</a> to store and retreive git data directly from your browser.</li>
+                                    <li><a href="https://gitlab.com/gitlab-org/gitlab/-/issues/20590" class="external">GitLab</a> and GitHub do not add CORS headers to their pull/clone requests.</li>
+                                    <li>This means your browser blocks the request, so it fails.</li>
+                                </ul>
 
-                                        <p><strong>Solution(s):</strong></p>
-                                        <ul>
-                                            <li>Search the web for "Disable CORS" for your browser. It's a complex issue and environment specific.</li>
-                                            <li>
-                                                <a class="external" href="https://github.com/ptoner/isomorphic-git-cors-extension">Install</a> this simple extension for Chrome/Brave. This adds
-                                                the proper headers to GitLab specifically.
-                                            </li>
-                                        </ul>
-
-                                    </li>
-
-                                    <li style="margin-top: 20px; margin-bottom: 20px"> 
-                                        <strong>Problem: IPFS fails.</strong> 
-                                        <p>There could be many reasons for this to happen depending on your configuration.</p>
-                                        <ul>
-                                            <li>
-                                                CORS problems connecting to external gateways.
-                                                <ul>
-                                                    <li>See <a href="https://github.com/ipfs/js-ipfs/blob/master/docs/CORS.md" class="external">IPFS documentation for this issue.</a></li>
-                                                </ul>
-                                            </li>
-                                            <li>Connecting from a website using HTTPS to an HTTP IPFS gateway will fail.</li>
-
-                                            <li>The in-browser node struggles to store large amounts of data or connect to external nodes.</li>
-                                        </ul>
-
-                                        <p><strong>Solution(s):</strong></p>
-                                        <ul>
-                                            <li>If you are using an IPFS node running on localhost you will have better luck also running Large on localhost. <a href="https://gitlab.com/american-space-software/large" class="external">See git README</a> for instructions to run a local copy.
-                                            </li>
-                                            <li>Use an IPFS gateway that supports HTTPS and is set up to add the correct CORS headers.</li>
-                                            <li>This can be tricky. Later we will have better options. <a href="https://discord.gg/yJtjqHvqXm">Join discord</a> and ask questions.</li>
-
-                                        </ul>
-
+                                <p><strong>Solution(s):</strong></p>
+                                <ul>
+                                    <li>Search the web for "Disable CORS" for your browser. It's a complex issue and environment specific.</li>
+                                    <li>
+                                        <a class="external" href="https://github.com/ptoner/isomorphic-git-cors-extension">Install</a> this simple extension for Chrome/Brave. This adds
+                                        the proper headers to GitLab specifically.
                                     </li>
                                 </ul>
 
-                            </div>
-                        </div>
+                            </li>
 
-                    ` : $h`
+                            <li style="margin-top: 20px; margin-bottom: 20px"> 
+                                <strong>Problem: IPFS fails.</strong> 
+                                <p>There could be many reasons for this to happen depending on your configuration.</p>
+                                <ul>
+                                    <li>
+                                        CORS problems connecting to external gateways.
+                                        <ul>
+                                            <li>See <a href="https://github.com/ipfs/js-ipfs/blob/master/docs/CORS.md" class="external">IPFS documentation for this issue.</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>Connecting from a website using HTTPS to an HTTP IPFS gateway will fail.</li>
 
-                        ${!hasItems ? $h`
-                    
-                            <div class="card">
-                            <div class="card-content card-content-padding">
-                                <p>Add NFTs to the collection before publishing.</p>
-                            </div>
-                            </div>
-            
-                        ` : $h` `}
-            
-                        ${!gitConfigured ? $h`
-                            
-                            <div class="card">
-                            <div class="card-content card-content-padding">
-                                <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
-                            </div>
-                            </div>
-            
-                        ` : $h` `}
-            
-                        ${!gitCorsProxy ? $h`
-                            
-                            <div class="card">
-                            <div class="card-content card-content-padding">
-                                <p>Configure a <a href="/admin/settings">git CORS proxy</a> to deploy the reader.</p>
-                            </div>
-                            </div>
-            
-                        ` : $h` `}
+                                    <li>The in-browser node struggles to store large amounts of data or connect to external nodes.</li>
+                                </ul>
 
-                    `}
+                                <p><strong>Solution(s):</strong></p>
+                                <ul>
+                                    <li>If you are using an IPFS node running on localhost you will have better luck also running Large on localhost. <a href="https://gitlab.com/american-space-software/large" class="external">See git README</a> for instructions to run a local copy.
+                                    </li>
+                                    <li>Use an IPFS gateway that supports HTTPS and is set up to add the correct CORS headers.</li>
+                                    <li>This can be tricky. Later we will have better options. <a href="https://discord.gg/yJtjqHvqXm">Join discord</a> and ask questions.</li>
 
+                                </ul>
+
+                            </li>
+                        </ul>
+
+                    </div>
                 </div>
 
-            </div>
+            ` : $h`
+
+                ${!hasItems ? $h`
+            
+                    <div class="card">
+                    <div class="card-content card-content-padding">
+                        <p>Add NFTs to the collection before publishing.</p>
+                    </div>
+                    </div>
+    
+                ` : $h` `}
+    
+                ${!gitConfigured ? $h`
+                    
+                    <div class="card">
+                    <div class="card-content card-content-padding">
+                        <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
+                    </div>
+                    </div>
+    
+                ` : $h` `}
+    
+                ${!gitCorsProxy ? $h`
+                    
+                    <div class="card">
+                    <div class="card-content card-content-padding">
+                        <p>Configure a <a href="/admin/settings">git CORS proxy</a> to deploy the reader.</p>
+                    </div>
+                    </div>
+    
+                ` : $h` `}
+
+            `}
+
         </div>
 
     </div>
@@ -459,7 +428,20 @@
         let gitCorsProxy = settings?.gitCorsProxy?.length > 0
         let showForm = hasItems && gitConfigured && gitCorsProxy 
 
-        
+        let breadcrumbs = [{
+            text: "Home",
+            path: "/"
+        },{
+            text: channelViewModel.channel.title,
+            path: `/admin/channel/show/${channelViewModel.channel._id}`
+        }, {
+            text: 'Publish',
+            path: `/admin/publish/${channelViewModel.channel._id}`
+        }, {
+            text: 'Export'
+        }]
+
+
         let gitProvider
 
         $on('pageInit', async () => {

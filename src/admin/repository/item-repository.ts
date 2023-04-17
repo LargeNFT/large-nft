@@ -2,7 +2,6 @@ import { injectable } from "inversify"
 import { Item } from "../dto/item.js"
 import { Changeset, DatabaseService } from "../service/core/database-service.js"
 import { AttributeCount, AttributeSelection } from "../dto/attribute.js"
-import { emit } from "process"
 
 import { changesets } from "./changesets/item-changeset.js"
 
@@ -18,9 +17,7 @@ class ItemRepository {
 
     constructor(
         private databaseService: DatabaseService
-    ) { 
-
-    }
+    ) { }
 
     async load(channelId:string) {
         this.db = await this.databaseService.getDatabase(`${channelId}-item`, this.changesets)

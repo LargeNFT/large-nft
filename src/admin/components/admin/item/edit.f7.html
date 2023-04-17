@@ -2,35 +2,9 @@
 
   <div class="page" data-name="admin-edit-post">
 
-    <${Navbar} />
+    <${Navbar} breadcrumbs=${breadcrumbs} />
 
-    <div class="page-content">
-
-      <div class="block block-strong inset col-100 no-margin-bottom">
-        <div class="breadcrumbs ">
-          <div class="breadcrumbs-item">
-            <a href="/" class="link">
-              Home
-            </a>
-          </div>    
-          <div class="breadcrumbs-separator"></div>
-          <div class="breadcrumbs-item">
-            <a href="/admin/channel/show/${itemViewModel.channel._id}" class="link">
-              ${itemViewModel.channel.title}
-            </a>
-          </div>     
-          <div class="breadcrumbs-separator"></div>
-          <div class="breadcrumbs-item">
-            <a href="/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.item.tokenId}" class="link">
-              ${itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}`}
-            </a>
-          </div> 
-          <div class="breadcrumbs-separator"></div>
-          <div class="breadcrumbs-item breadcrumbs-item-active">
-            Edit Item
-          </div> 
-        </div>
-      </div>
+    <div class="page-content hide-toolbar-on-scroll">
 
       <form class="list media-list" id="edit-item-form" @submit="${formSubmit}">
 
@@ -118,6 +92,18 @@
       languages: ['css']
     })
 
+    let breadcrumbs = [{
+        text: "Home",
+        path: "/"
+    }, {
+        text: itemViewModel.channel.title,
+        path: `/admin/channel/show/${itemViewModel.channel._id}`
+    }, {
+        text: itemViewModel.item.title ? itemViewModel.item.title : `#${itemViewModel.item.tokenId}`,
+        path: `/admin/channel/show/${itemViewModel.channel._id}/${itemViewModel.item.tokenId}`
+    },{
+      text: "Edit Item"
+    }]
 
     const formSubmit = async (e) => {
 
@@ -261,6 +247,7 @@
         $update()
 
       })
+
 
 
       $('.image-button').off('click')

@@ -9,12 +9,14 @@ import { AuthorWebService } from "../service/web/author-web-service.js";
 import AdminAuthorShowComponent from '../components/admin/author/show.f7.html'
 import AdminAuthorEditComponent from '../components/admin/author/edit.f7.html'
 import { Author } from "../dto/author.js";
+import { SchemaService } from "../service/core/schema-service.js";
 
 @injectable()
 class AuthorController {
 
     constructor(
         private authorWebService:AuthorWebService,
+        private schemaService:SchemaService
     ) {}
 
     @routeMap("/admin/author/show/:id")
@@ -22,13 +24,16 @@ class AuthorController {
 
         return new ModelView(async (routeTo:RouteTo) => {
 
+            await this.schemaService.load()
+
+
             let authorViewModel
 
             try {
               authorViewModel = await this.authorWebService.get(routeTo.params.id)
-            } catch(ex) {} //might be missing
-
-            console.log(authorViewModel)
+            } catch(ex) {
+              console.log(ex)
+            } //might be missing
 
 
             //If it doesn't exist create an empty one
@@ -52,6 +57,9 @@ class AuthorController {
     async edit() : Promise<ModelView> {
 
         return new ModelView(async (routeTo:RouteTo) => {
+
+            await this.schemaService.load()
+
 
             let authorViewModel
 

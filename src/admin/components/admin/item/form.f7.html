@@ -1,7 +1,7 @@
 <!--suppress JSAnnotator -->
 <template>
 
-    <div class="row">
+    <div class="item-show">
 
         <input type="hidden" name="_id" value="${itemViewModel?.item?._id}" />
         <input type="hidden" name="_rev" value="${itemViewModel?.item?._rev}" />
@@ -9,9 +9,8 @@
         <input type="hidden" name="tokenId" value="${itemViewModel?.item?.tokenId}" />
         <input type="hidden" name="channelId" value="${itemViewModel?.channel?._id}" />
 
-
-        <div class="col-100 large-75">
-            <div class="card col-100">
+        <div class="left">
+            <div class="card">
                 <div class="card-content">
     
                     <div class="list">
@@ -108,7 +107,7 @@
                             </li>    
                             <li>
                                 <label class="item-checkbox item-content">
-
+    
                                     <input type="checkbox" checked="${!itemViewModel.item.coverImageAsAnimation}" name="coverImageAsAnimation" @change="${coverImageAsAnimationOnClick}" />
                                     
                                     <i class="icon icon-checkbox"></i>
@@ -128,82 +127,13 @@
                 </div>
             </div>
 
-        </div>
-
-
-        <div class="col-100 large-25">
-
-            <div class="col-100 sticky row">
-
-                <div class="card col-100">
-                    <div class="card-content card-content-padding" style="background: #f1f1f1;">
-                        <div class="segmented">
-       
-                            <a href="${cancelLink}" class="button button-outline color-gray" tabindex="12">Cancel</a>
-                
-                            ${ipfsReady ? $h`
-                              <button type="submit" class="button button-fill" tabindex="12">Save</button>
-                            ` : $h`
-                              <button class="button button-outline color-lightblue" tabindex="12" disabled>IPFS initializing...</button>
-                            `}
-                
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            ${itemViewModel.attributeSelections?.length > 0 ? $h`
-            <div class="card col-100">
-                <div class="card-header">Attributes</div>
-                <div class="card-content">
-                    <div class="list">
-                        <ul>
-                            ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
-                            <li>
-                                <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
-                                    <!-- "multiple" attribute for multiple select-->
-                                    <select @change="${valueNameChange}" tabindex="2" data-id="${attributeSelectionViewModel?.id}">
-                                        ${attributeSelectionViewModel?.values?.map( v => $h`
-
-                                            ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
-                                            <option value="${v}" selected>${v}</option>
-                                            ` : $h`
-                                            <option value="${v}">${v}</option>
-                                            `}
-
-                                        `)}
-                                    </select>
-                                    <div class="item-content">
-                                        <div class="item-inner">
-                                            <div class="item-title">${attributeSelectionViewModel?.traitType}</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-
-
-                            `)}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            ` : $h``}
-
-
-
-
-        </div>
-
-        <div class="col-100 large-75">
-            <div class="card col-100">
+            <div class="card">
                 <div class="card-header">Customize</div>
                 <div class="card-content">
                     <div class="list">
                         <ul>
                             <li>
-                                <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
+                                <a href="#" class="item-link smart-select smart-select-init" data-open-in="popup">
                                     <!-- "multiple" attribute for multiple select-->
                                     <select name="themes" @change="${themeSelectionChange}" tabindex="2" multiple>
                                         <optgroup>
@@ -271,6 +201,69 @@
             </div>
         </div>
 
+
+        <div class="right">
+
+            <div class="sticky">
+
+                <div class="card">
+                    <div class="card-content card-content-padding" style="background: #f1f1f1;">
+                        <div class="segmented">
+       
+                            <a href="${cancelLink}" class="button button-outline color-gray" tabindex="12">Cancel</a>
+                
+                            ${ipfsReady ? $h`
+                              <button type="submit" class="button button-fill" tabindex="12">Save</button>
+                            ` : $h`
+                              <button class="button button-outline color-lightblue" tabindex="12" disabled>IPFS initializing...</button>
+                            `}
+                
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            ${itemViewModel.attributeSelections?.length > 0 ? $h`
+                <div class="card">
+                    <div class="card-header">Attributes</div>
+                    <div class="card-content">
+                        <div class="list">
+                            <ul>
+                                ${itemViewModel.attributeSelections?.map( (attributeSelectionViewModel) => $h`
+                                <li>
+                                    <a href="#" class="item-link smart-select smart-select-init" data-open-in="popover">
+                                        <!-- "multiple" attribute for multiple select-->
+                                        <select @change="${valueNameChange}" tabindex="2" data-id="${attributeSelectionViewModel?.id}">
+                                            ${attributeSelectionViewModel?.values?.map( v => $h`
+
+                                                ${attributeSelectionViewModel?.value?.toString() == v.toString() ? $h`
+                                                <option value="${v}" selected>${v}</option>
+                                                ` : $h`
+                                                <option value="${v}">${v}</option>
+                                                `}
+
+                                            `)}
+                                        </select>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">${attributeSelectionViewModel?.traitType}</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+
+
+                                `)}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            ` : $h``}
+
+
+
+
+        </div>
 
 
 

@@ -91,82 +91,77 @@
 
                 <div class="page-content infinite-scroll-content" id="explore-infinite-scroll">
 
-                    <div class="row">
-            
-                        <div class="fixed-width-content center">
+                    <div class="fixed-width-content center">
                             
-                            <div class="hidden-on-load">
-                            
-                                <div class="block-title block-title-medium">
-                                    <div class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</div>
-                                    <span class="large-only">Leaderboard</span>
-                                </div>
-
-
-                                <div class="card data-table">
-                                    <div class="card-content">
-                                        
-                                        ${tokenOwners?.length > 0 ? $h`
-                                            
-                                            <table class="leaderboard-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="label-cell">Rank</th>
-                                                        <th class="address-cell">Address</th>
-                                                        <th class="numeric-cell">Owned</th>
-                                                        <th class="numeric-cell">Buys</th>
-                                                        <th class="numeric-cell">Sales</th>
-                                                        <th class="text-cell">Last Active</th>
-    
-                                                    </tr>
-                                                </thead>
-                                        
-                                                <leaderboard-rows token_owners="${tokenOwners}"></leaderboard-rows>
-    
-                                    
-                                            </table>
-                                    
-                                            
-                                        ` : $h`<span  />`}
-                                                                
-                                    </div>
-                                </div>
-
-                                <div class="block margin-top margin-bottom">
-                                    <div class="row">
-                                        <div class="col-50">
-                                            ${showPrevious ? $h`
-                                            <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber - 1}" class="button button-outline color-gray">Previous</a>
-                                            ` : $h` `}
-                                        </div>
-                                        <div class="col-50">
-                                            ${showNext ? $h`
-                                            <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber + 1}" class="button button-fill">Next</a>
-                                            ` : $h` `}
-                                        </div>
-                                    </div>
+                        <div class="hidden-on-load">
                         
-                                </div>
-
-
+                            <div class="block-title block-title-medium">
+                                <div class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</div>
+                                <span class="large-only">Leaderboard</span>
                             </div>
 
 
-                            <div class="hide-on-pageinit">
+                            <div class="card data-table">
+                                <div class="card-content">
+                                    
+                                    ${tokenOwners?.length > 0 ? $h`
+                                        
+                                        <table class="leaderboard-table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="label-cell">Rank</th>
+                                                    <th class="address-cell">Address</th>
+                                                    <th class="numeric-cell">Owned</th>
+                                                    <th class="numeric-cell">Buys</th>
+                                                    <th class="numeric-cell">Sales</th>
+                                                    <th class="text-cell">Last Active</th>
 
-                                <div class="card skeleton-text">
-                                    <div class="card-header">Leaderboard</div>
-                                    <div class="card-content card-content-padding data-table">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                                    </div>
+                                                </tr>
+                                            </thead>
+                                    
+                                            <leaderboard-rows token_owners="${tokenOwners}"></leaderboard-rows>
 
+                                
+                                        </table>
+                                
+                                        
+                                    ` : $h`<span  />`}
+                                                            
                                 </div>
-
                             </div>
 
-                            <%~ include("footer", {baseURL: baseURL}) %>
+
+                            <div class="block split-row-both">
+                                <div>
+                                    ${showPrevious ? $h`
+                                        <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber - 1}" class="button button-outline color-gray">Previous</a>
+                                        ` : $h` `}
+                                </div>
+                                <div>
+                                    ${showNext ? $h`
+                                        <a href="<%= baseURL %>leaderboard/?pageNumber=${pageNumber + 1}" class="button button-fill">Next</a>
+                                        ` : $h` `}
+                                </div>
+                        
+                            </div>
+
                         </div>
+
+
+                        <div class="hide-on-pageinit">
+
+                            <div class="card skeleton-text">
+                                <div class="card-header">Leaderboard</div>
+                                <div class="card-content card-content-padding data-table">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                    lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <%~ include("footer", {baseURL: baseURL}) %>
                     </div>
             
                 </div>

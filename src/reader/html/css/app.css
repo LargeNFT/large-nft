@@ -878,7 +878,7 @@ html {
   }
 }
 
-
+/* 
 .back-token-button {
   width: 100px;
   margin-top: 30px;
@@ -900,7 +900,7 @@ html {
   .continue-button {
     width: 70%;
   }
-}
+} */
 
 
 
@@ -1082,7 +1082,27 @@ html {
   text-overflow: ellipsis;
 }
 
+
+
+
+.item-show {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  gap: 10px;
+}
+
+.user-info .row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 10px;
+}
+
 @media only screen and (max-width: 1024px) {
+
+  .item-show {
+    display: grid;
+    grid-template-columns: 100%;
+  }
 
   .user-info {
     width: 100%;
@@ -1160,6 +1180,54 @@ html {
   margin-left: -3px;
 }
 
+.stats {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  gap: 10px;
+}
+
+.stats-row div {
+  width: 100%;
+}
+
+.split-row, .split-row-both {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 10px;
+  margin-right: 10px;
+}
+
+.save-row {
+  display: grid;
+  grid-template-columns: 67% 33%;
+}
+
+
+@media only screen and (max-width: 1024px) {
+
+  .split-row {
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 10px;
+  }
+
+  .stats {
+    grid-template-columns: 100%;
+  }
+
+  .stats .price {
+    text-align: right;
+  }
+
+  .save-row {
+    display: grid;
+    grid-template-columns: 100%;
+  }
+
+
+}
+
+
 .largest-sales .date {
   color: darkslategray;
   font-size: 14px;
@@ -1201,9 +1269,3 @@ html {
 
 }
 
-@media only screen and (max-width: 1024px) {
-  .stats .price {
-    text-align: right;
-  }
-
-}

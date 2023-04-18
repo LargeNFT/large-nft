@@ -108,18 +108,16 @@
 
                               <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
 
-                              <div class="block margin-top margin-bottom">
-                                <div class="row">
-                                  <div class="col-50">
-                                      ${previousPage ? $h`
-                                        <a href="${baseURL}activity/?page=${previousPage}" class="button button-outline color-gray">Previous</a>
-                                      ` : $h` `}
-                                  </div>
-                                  <div class="col-50">
-                                      ${nextPage ? $h`
-                                        <a href="${baseURL}activity/?page=${nextPage}" class="button button-fill">Next</a>
-                                      ` : $h` `}
-                                  </div>
+                              <div class="block split-row-both">
+                                <div>
+                                    ${previousPage ? $h`
+                                      <a href="${baseURL}activity/?page=${previousPage}" class="button button-outline color-gray">Previous</a>
+                                    ` : $h` `}
+                                </div>
+                                <div>
+                                    ${nextPage ? $h`
+                                      <a href="${baseURL}activity/?page=${nextPage}" class="button button-fill">Next</a>
+                                    ` : $h` `}
                                 </div>
                         
                               </div>
@@ -239,14 +237,14 @@
                     try {
                         transactionsViewModel = await transactionWebService.list(page)
 
-                        if (transactionsViewModel.transactions?.length < display) {
-                            previousPage = undefined
-                        }
+                        // if (transactionsViewModel.transactions?.length < display) {
+                        //     previousPage = undefined
+                        // }
 
                     } catch(ex) {   }
                     
 
-
+                    console.log(transactionsViewModel)
 
 
                 } catch(ex) { console.log(ex) }

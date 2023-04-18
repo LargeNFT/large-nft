@@ -273,100 +273,89 @@
                     </ul>
                   </div>
 
-
-
                 </div>
   
                 <div class="block-title block-title-medium">Overall Stats</div>
                 <div class="block block-strong inset stats">
   
-                  <div class="row">
+                  <div class="stats-row margin-bottom">
 
-                    <div class="col-100 large-33 margin-bottom row">
-
-                      <div class="col-50 large-100">
-                        Number of Sales (Lifetime)
-                      </div>
-
-                      
-                      <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.events ? homeViewModel?.salesReport?.totals?.events : 0)}</strong>
-                      </div>
+                    <div>
+                      Number of Sales (Lifetime)
                     </div>
 
-                    <div class="col-100 large-33 margin-bottom row">
+                    <div class="price">
+                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.events ? homeViewModel?.salesReport?.totals?.events : 0)}</strong>
+                    </div>
+                  </div>
 
-                      <div class="col-50 large-100">
-                        Average Sale
-                      </div>
+                  <div class="stats-row margin-bottom">
 
-                      <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.averageEthValue ? homeViewModel?.salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.averageUsdValue ? homeViewModel?.salesReport?.totals?.averageUsdValue : 0, 2)}</span>
-                      </div>
-                      
-
+                    <div>
+                      Average Sale
                     </div>
 
-                    <div class="col-100 large-33 margin-bottom row">
+                    <div class="price">
+                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.averageEthValue ? homeViewModel?.salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.averageUsdValue ? homeViewModel?.salesReport?.totals?.averageUsdValue : 0, 2)}</span>
+                    </div>
+                    
 
-                      <div class="col-50 large-100">
-                        Total Value of All Sales (Lifetime)
-                      </div>
+                  </div>
+
+                  <div class="stats-row margin-bottom">
+
+                    <div>
+                      Total Value of All Sales (Lifetime)
+                    </div>
+                    
+                    <div class="price">
+                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.ethValue ? homeViewModel?.salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.usdValue ? homeViewModel?.salesReport?.totals?.usdValue : 0, 2)}</span>
+                    </div>
+                  </div>
+
+                  <div class="stats-row margin-bottom">
                       
-                      <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.ethValue ? homeViewModel?.salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.usdValue ? homeViewModel?.salesReport?.totals?.usdValue : 0, 2)}</span>
-                      </div>
+                    <div>
+                      Value of Sales (24 Hours)
+                    </div>
+
+                    <div class="price">
+                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.dayTotals?.ethValue ? homeViewModel?.salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.dayTotals?.usdValue ? homeViewModel?.salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                    </div>
+                  </div>
+
+                  <div class="stats-row margin-bottom">
+
+                    <div>
+                      Value of Sales (Month)
+                    </div>
+
+                    
+                    <div class="col-50 large-100 price">
+                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.monthTotals?.ethValue ? homeViewModel?.salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.monthTotals?.usdValue ? homeViewModel?.salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                    </div>
+                  </div>
+
+                  <div class="stats-row margin-bottom">
+                    
+                    <div>
+                      Value of Sales (Year)
+                    </div>
+
+                    <div class="price">
+                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.yearTotals?.ethValue ? homeViewModel?.salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.yearTotals?.usdValue ? homeViewModel?.salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
                     </div>
                   </div>
   
-                  <div class="row margin-top">
 
-                    <div class="col-100 large-33 margin-bottom row">
-                      
-                      <div class="col-50 large-100">
-                        Value of Sales (24 Hours)
-                      </div>
-
-                      <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.dayTotals?.ethValue ? homeViewModel?.salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.dayTotals?.usdValue ? homeViewModel?.salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
-                      </div>
-                    </div>
-
-                    <div class="col-100 large-33 margin-bottom row">
-
-                      <div class="col-50 large-100">
-                        Value of Sales (Month)
-                      </div>
-
-                      
-                      <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.monthTotals?.ethValue ? homeViewModel?.salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.monthTotals?.usdValue ? homeViewModel?.salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
-                      </div>
-                    </div>
-
-                    <div class="col-100 large-33 margin-bottom row">
-                      
-                      <div class="col-50 large-100">
-                        Value of Sales (Year)
-                      </div>
-
-                      <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.yearTotals?.ethValue ? homeViewModel?.salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.yearTotals?.usdValue ? homeViewModel?.salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
-                      </div>
-                    </div>
-
-                  </div>
-  
-                  <div class="row margin-top">
-                    <div class="col-100 large-50">
-                      <a class="button button-outline margin-bottom" href="${link('leaderboard')}">Top Owners</a>
-                    </div>
-                    <div class="col-100 large-50">
-                      <a class="button button-outline margin-bottom" href="${link('attributes')}">All Attributes</a>
-                    </div>
-                  </div>
 
                 </div>
+
+                <div class="block split-row-both">
+                  <a class="button button-outline margin-bottom" href="${link('leaderboard')}">Top Owners</a>
+                  <a class="button button-outline margin-bottom" href="${link('attributes')}">All Attributes</a>
+                </div>
+
 
                 ${homeViewModel?.leaderboard?.tokenOwners?.length > 0 ? $h`
                   
@@ -395,13 +384,9 @@
                   </div>
 
                   
-                  <div class="block margin-top margin-bottom">
-                    <div class="row">
-                        <div class="col-50"></div>
-                        <div class="col-50">
-                          <a href="${link('leaderboard')}" class="button button-fill">View Leaderboard</a>
-                        </div>
-                    </div>
+                  <div class="block save-row">
+                    <div class="large-only"></div>
+                    <a href="${link('leaderboard')}" class="button button-fill">View Leaderboard</a>
                   </div>
                   
                 ` : $h`<span />`}
@@ -414,13 +399,9 @@
                   <largest-sales largest_sales="${homeViewModel?.largestSales}"></largest-sales>
 
 
-                  <div class="block margin-top margin-bottom">
-                    <div class="row">
-                        <div class="col-50"></div>
-                        <div class="col-50">
-                          <a href="${link('sales')}" class="button button-fill">View Top 100</a>
-                        </div>
-                    </div>
+                  <div class="block save-row">
+                    <div class="large-only"></div>
+                    <a href="${link('sales')}" class="button button-fill">View Top 100</a>
                   </div>
 
                 ` : $h` `}
@@ -436,17 +417,10 @@
 
                   <transaction-row transactions="${homeViewModel.recent}" items="${homeViewModel?.recent.rowItemViewModels}"></transaction-row>
 
-                  <div class="block margin-top margin-bottom">
-                    <div class="row">
-                        <div class="col-50"></div>
-                        <div class="col-50">
-                          <a href="${link('activity')}" class="button button-fill">View All</a>
-                        </div>
-                    </div>
-        
+                  <div class="block save-row">
+                    <div class="large-only"></div>
+                    <a href="${link('activity')}" class="button button-fill">View All</a>
                   </div>
-
-
             
                 ` : $h`<span />`}
   

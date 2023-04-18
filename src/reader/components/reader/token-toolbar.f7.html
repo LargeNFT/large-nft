@@ -3,31 +3,36 @@
   <div class="toolbar toolbar-bottom">
     <div class="toolbar-inner">
 
-        <div class="row" style="width: 100%; margin-bottom: -20px;">
+        <div style="width: 100%; margin-bottom: -20px;">
 
-            ${currentPage && tokenId == 0 ? $h`
-                <a href="${link(`t/${currentPage}`)}" class="button button-outline back-to-page">
-                    Back to page ${currentPage}
-                </a>
-            ` : $h`<span />`}
-
-
-            <div class="range-slider range-slider-init" 
-                @range:change=${rangeChange}
-                data-label="true"
-                >
+            <div style="display: flex;">
             
-                <!-- range input -->
-                <input type="range" 
-                    min="0" 
-                    max="${itemCount}"
-                    step="1" 
-                    value="${tokenId}" 
-                    @change="${rangeSliderChange}"
-            />
+                ${currentPage && tokenId == 0 ? $h`
+                    <a href="${link(`t/${currentPage}`)}" class="button button-outline back-to-page">
+                        Back to page ${currentPage}
+                    </a>
+                ` : $h`<span />`}
+    
+    
+                <div class="range-slider range-slider-init" 
+                    @range:change=${rangeChange}
+                    data-label="true"
+                    >
+                
+                    <!-- range input -->
+                    <input type="range" 
+                        min="0" 
+                        max="${itemCount}"
+                        step="1" 
+                        value="${tokenId}" 
+                        @change="${rangeSliderChange}"
+                />
+                </div>
+
+
             </div>
 
-            <div class="page-number col-100">
+            <div class="page-number" style="width: 100%;">
                 Page <strong>${tokenId}</strong> of ${itemCount}
             </div>
 

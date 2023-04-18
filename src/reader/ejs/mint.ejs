@@ -96,59 +96,55 @@
 
           <div class="page-content infinite-scroll-content" id="mint-list-infinite-scroll">
 
-            <div class="row">
-    
-                <div class="fixed-width-content center">
+            <div class="fixed-width-content center">
 
-                    <div class="card channel-card-show">
+              <div class="card channel-card-show">
 
-                      <div class="card-header banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                        style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
-                          <% } %>
-                            >
-    
-                            <a href="<%= link('index.html') %>">
+                <div class="card-header banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                  style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
+                    <% } %>
+                      >
 
-                              <% if (channelViewModel?.channel.coverImageId) { %>
-                                <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
-                              <% } else { %>
-                                <i class="f7-icons avatar">photo</i>
-                              <% } %>
+                      <a href="<%= link('index.html') %>">
 
-                            </a>
-    
-                      </div> 
-    
-                      <div class="card-content card-content-padding">
-    
-                        <div class="title">
-                          <a href="<%= link('index.html') %>"><%= channelViewModel.channel.title %></a>
-                        </div>
-    
-                        <% if(channelViewModel?.authorDisplayName) { %>
-                          <div class="name">
-                            By <%= channelViewModel?.authorDisplayName %>
-                          </div>
+                        <% if (channelViewModel?.channel.coverImageId) { %>
+                          <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
+                        <% } else { %>
+                          <i class="f7-icons avatar">photo</i>
                         <% } %>
-        
-                      </div>
-    
+
+                      </a>
+
+                </div> 
+
+                <div class="card-content card-content-padding">
+
+                  <div class="title">
+                    <a href="<%= link('index.html') %>"><%= channelViewModel.channel.title %></a>
+                  </div>
+
+                  <% if(channelViewModel?.authorDisplayName) { %>
+                    <div class="name">
+                      By <%= channelViewModel?.authorDisplayName %>
                     </div>
-                    
-                    <mint-list 
-                      baseurl="<%= baseURL %>"
-                      last_minted="${lastMinted}"
-                    >
-
-                    </mint-list>
-
-
-                                  <%~ include("footer", {baseURL: baseURL}) %>
-
-
+                  <% } %>
+  
                 </div>
 
-            </div>
+              </div>
+              
+              <mint-list 
+                baseurl="<%= baseURL %>"
+                last_minted="${lastMinted}"
+              >
+
+              </mint-list>
+
+
+              <%~ include("footer", {baseURL: baseURL}) %>
+
+
+          </div>
     
           </div>
 

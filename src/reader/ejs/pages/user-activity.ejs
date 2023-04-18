@@ -92,110 +92,106 @@
 
                 <div class="page-content">
 
-                    <div class="row">
+                    <div class="fixed-width-content center">
 
-                        <div class="fixed-width-content center">
+                        <div class="hidden-on-load">
 
-                            <div class="hidden-on-load">
-    
-                                <div class="block-title block-title-large">Account Details</div>
-                                <div class="block-header">
-                                    ${address}
-                                </div>
-    
-                                <div class="block">
-    
-                                    <div class="user-info">
-    
-                                        <div class="row">
-                                            <div class="col-50">Etherscan</div>
-                                            <div class="col-50">
-                                                
-                                                <a href="https://etherscan.io/address/${address}"
-                                                    class="item-link external">${address ?
-                                                    walletService.truncateEthAddress(address) : ' '}</a>
-                                            </div>
-                                        </div>
-    
-                                        ${tokenOwner?.ensName ? $h`
-                                            <div class="row">
-                                                <div class="col-50">ENS Name</div>
-                                                <div class="col-50">${tokenOwner.ensName}</div>
-                                            </div>
-                                        ` : $h` `}
-    
-                                        <div class="row">
-                                            <div class="col-50">Tokens Owned</div>
-                                            <div class="col-50"><strong>${tokenOwner?.count}</strong></div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-50">Transactions</div>
-                                            <div class="col-50"><strong>${tokenOwner?.transactionCount}</strong></div>
-                                        </div>
-
-    
-                                    </div>
-    
-                                </div>
-    
-    
-                                <div class="block">
-                                    <p class="segmented">
-                                        <a class="button button-outline"
-                                            href="<%= baseURL %>u/?address=${address}">Owned</a>
-                                        <a class="button button-outline button-active" href="#">Activity</a>
-                                    </p>
-                                </div>
-    
-                                ${transactionsViewModel?.transactions?.length > 0 ? $h`
-                    
-                                    <div class="block-title block-title-medium">
-                                        <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
-                                        Activity
-                                    </div>
-                                    <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
-                             
-                                    <div class="block margin-top margin-bottom">
-                                        <div class="row">
-                                            <div class="col-50">
-                                                ${previousPage ? $h`
-                                                <a href="${baseURL}u/activity?page=${previousPage}&address=${address}" class="button button-outline color-gray">Previous</a>
-                                                ` : $h` `}
-                                            </div>
-                                            <div class="col-50">
-                                                ${nextPage ? $h`
-                                                <a href="${baseURL}u/activity?page=${nextPage}&address=${address}" class="button button-fill">Next</a>
-                                                ` : $h` `}
-                                            </div>
-                                        </div>
-                            
-                                    </div>
-                            
-                                ` : $h`<span />`}
-
+                            <div class="block-title block-title-large">Account Details</div>
+                            <div class="block-header">
+                                ${address}
                             </div>
 
-                            
-                            <div class="hide-on-pageinit">
+                            <div class="block">
 
-                                <div class="card skeleton-text">
-                                    <div class="card-header">Activity</div>
-                                    <div class="card-content card-content-padding data-table">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                <div class="user-info">
+
+                                    <div class="row">
+                                        <div>Etherscan</div>
+                                        <div >
+                                            <a href="https://etherscan.io/address/${address}" class="item-link external">${address ? walletService.truncateEthAddress(address) : ' '}</a>
+                                        </div>
                                     </div>
+                            
+                                    ${tokenOwner?.ensName ? $h`
+                                        <div>
+                                            <div>ENS Name</div>
+                                            <div>${tokenOwner?.ensName}</div>
+                                        </div>  
+                                    ` : $h` `}
+                            
+                                    <div class="row">
+                                        <div>Tokens Owned</div>
+                                        <div><strong>${tokenOwner?.count ? tokenOwner.count : 0}</strong></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div>Transactions</div>
+                                        <div><strong>${tokenOwner?.transactionCount}</strong></div>
+                                    </div>
+
+                            
+                                    <div class="row">
+                                        <div>Rank</div>
+                                        <div><strong>#${tokenOwner?.rank}</strong> (#${tokenOwner?.overallRank} overall)</div>
+                                    </div>
+
 
                                 </div>
 
                             </div>
 
 
-                            <%~ include("footer", {baseURL: baseURL}) %>
+                            <div class="block">
+                                <p class="segmented">
+                                    <a class="button button-outline"
+                                        href="<%= baseURL %>u/?address=${address}">Owned</a>
+                                    <a class="button button-outline button-active" href="#">Activity</a>
+                                </p>
+                            </div>
+
+                            ${transactionsViewModel?.transactions?.length > 0 ? $h`
+                
+                                <div class="block-title block-title-medium">
+                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                                    Activity
+                                </div>
+                                <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                         
+                                <div class="block split-row-both">
+                                    <div>
+                                        ${previousPage ? $h`
+                                            <a href="${baseURL}u/activity?page=${previousPage}&address=${address}" class="button button-outline color-gray">Previous</a>
+                                            ` : $h` `}
+                                    </div>
+                                    <div>
+                                        ${nextPage ? $h`
+                                            <a href="${baseURL}u/activity?page=${nextPage}&address=${address}" class="button button-fill">Next</a>
+                                            ` : $h` `}
+                                    </div>
+                            
+                                </div>
+
+    
+                            ` : $h`<span />`}
+
+                        </div>
+
+                        
+                        <div class="hide-on-pageinit">
+
+                            <div class="card skeleton-text">
+                                <div class="card-header">Activity</div>
+                                <div class="card-content card-content-padding data-table">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                    lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                </div>
+
+                            </div>
 
                         </div>
 
 
+                        <%~ include("footer", {baseURL: baseURL}) %>
 
                     </div>
 

@@ -63,9 +63,6 @@ import { QueryCacheService } from './service/core/query-cache-service.js';
 import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
 
-import git from "isomorphic-git"
-import FS from '@isomorphic-git/lightning-fs';
-
 
 import { ThemeService } from './service/theme-service.js';
 import { ThemeRepository } from './repository/theme-repository.js';
@@ -197,23 +194,23 @@ function getMainContainer(version:string) {
   container.bind("footer-text").toConstantValue(globalThis.footerText)
 
 
-  let fs
+  // let fs
     
-  //@ts-ignore
-  container.bind("fs").toConstantValue(async () => {
+  // //@ts-ignore
+  // container.bind("fs").toConstantValue(async () => {
   
-    if (fs) return fs
+  //   if (fs) return fs
   
-    fs = new FS()
+  //   fs = new FS()
 
-    await fs.init("large-fs")
+  //   await fs.init("large-fs")
 
-    return fs
-  })
+  //   return fs
+  // })
    
 
 
-  container.bind("git").toConstantValue(git)
+  // container.bind("git").toConstantValue(git)
 
 
 

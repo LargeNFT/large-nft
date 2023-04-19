@@ -198,9 +198,6 @@ class ChannelWebService {
         
         await this.channelService.put(channel)
 
-        //Load git
-        await this.gitService.initFS(channel)
-
         //Load the right channel dbs
         await this.schemaService.loadChannel(channel._id)
 

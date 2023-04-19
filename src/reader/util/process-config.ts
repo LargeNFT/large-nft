@@ -133,6 +133,7 @@ class ProcessConfig {
         config.generate = theArgs.generate
         config.env = theArgs.env
         config.clear = theArgs.clear
+        config.syncPushRate = theArgs.syncPushRate
 
         return config
         
@@ -147,7 +148,8 @@ class ProcessConfig {
             '--env': String,
             '--alchemy': String,
             '--clear': String,
-            '--generate': String
+            '--generate': String,
+            '--sync-push-rate': String
         },
         {
             argv: rawArgs.slice(2),
@@ -159,7 +161,8 @@ class ProcessConfig {
             env: args['--env'] || "production",
             alchemy: args['--alchemy'] || "",
             clear:  args['--clear'] == "true",
-            generate:  args['--generate'] == "true"
+            generate:  args['--generate'] == "true",
+            syncPushRate: args['--sync-push-rate'] ? parseInt(args['--sync-push-rate'] ) : 30*1000,
         }
     
     }

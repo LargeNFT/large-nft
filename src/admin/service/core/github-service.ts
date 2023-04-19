@@ -138,6 +138,109 @@ class GithubService implements GitProviderService {
 
     }
 
+
+    async commit(channel:Channel, actions:any[], personalAccessToken:string) {
+
+        // this.logPublishReaderProgress(`Commiting reader data for ${channel.title}: ${actions.length} actions`)
+
+        // let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
+
+        // const res = await axios.post(url, {
+        //     branch: "master",
+        //     commit_message: `Commiting reader data for ${channel.title}`,
+        //     actions: actions,
+        // } , {
+        //     headers: {
+        //         "Authorization": `Bearer ${personalAccessToken}`
+        //     }
+        // })
+
+        // //Clear actions
+        // actions.length = 0
+    }
+
+
+
+    async deleteReaderBackup(channel:Channel, gitProvider) {
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+        
+
+        this.logPublishProgress(`Deleting existing files from repo...`)
+
+
+        // let treeLink = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=backup&pagination=keyset`
+        // let linkHeaders
+        // let actions = []
+
+        // do {
+
+        //     //Get list of current files in backup folder
+        //     let results = await axios.get(treeLink, {
+        //         headers: {
+        //             "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+        //         }
+        //     })
+
+        //     //Skip directories because gitlab chokes on them.
+        //     let resultActions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
+        //         return {
+        //             action: 'delete',
+        //             file_path: result.path
+        //         }
+        //     })
+
+        //     actions.push(...resultActions)
+
+        //     linkHeaders = parse(results.headers["link"])
+
+        //     treeLink = linkHeaders?.next?.url
+
+        // } while(treeLink)
+
+
+        // if (actions?.length > 0) {
+
+        //     this.logPublishReaderProgress(`Deleting ${actions.length} files from repo...`)
+
+        //     let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
+
+        //     await axios.post(url, {
+        //         branch: "master",
+        //         commit_message: `Deleting existing reader for ${channel.title}`,
+        //         actions: actions
+        //     } , {
+        //         headers: {
+        //             "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+        //         }
+        //     })
+
+        // }
+
+    }
+
+    private logPublishProgress(message:string) {
+    
+        console.log(message)
+    
+        if (typeof window !== "undefined" && typeof window.document !== "undefined") {
+          // browser
+          const imageSelectedEvent = new CustomEvent('publish-progress', {
+            detail: { message: message }
+          })
+      
+          document.dispatchEvent(imageSelectedEvent)
+    
+        }
+    
+    }
+
+
+
+
+
 }
 
 

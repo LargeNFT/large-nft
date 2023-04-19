@@ -7,156 +7,174 @@
   
       <div class="page-content hide-toolbar-on-scroll">
 
-        ${channelViewModel.itemCount > 0 ? $h`
+        <div class="fixed-width-content center">
           
-          <div class="block-title block-title-medium">Git</div>
-          <div class="block list media-list">
-            <ul>
-              <li>
-                <a href="/admin/publish/fork-reader/${channelViewModel.channel._id}" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <span class="material-icons">fork_left</span>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Create Git Repository</div>
-                      </div>
-                      <div class="item-text">
-                        Create a remote git repository for the collection.
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="block-title block-title-medium">IPFS</div>
-
-          <div class="block list media-list">
-            <ul>
-              <li>
-                <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <span class="material-icons">import_export</span>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Export</div>
-                      </div>
-                      <div class="item-text">
-                        Export collection data to IPFS and the local git repo.
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-
-              <!-- <li>
-                <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <span class="material-icons">cloud_upload</span>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Publish to Pinning Service</div>
-                      </div>
-                      <div class="item-text">
-                        When you are ready to publish your collection and deploy your NFT contract, upload the NFT metadata to commercial hosting 
-                        to help make it widely available. This will help make it discoverable by marketplaces like OpenSea and LooksRare.
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </li> -->
-
-            </ul>
-          </div>
-
-
-          <div class="block-title block-title-medium">Contract (optional)</div>
-
-          ${walletService?.address ? $h`
-            
+          ${channelViewModel.itemCount > 0 ? $h`
+          
+            <div class="block-title block-title-medium">Configure Git</div>
             <div class="block list media-list">
               <ul>
                 <li>
-                  <a href="/admin/publish/contract/${channelViewModel.channel._id}" class="item-link">
+                  <a href="/admin/publish/fork-reader/${channelViewModel.channel._id}" class="item-link">
                     <div class="item-content">
                       <div class="item-media">
-                        <span class="material-icons">gavel</span>
+                        <span class="material-icons">fork_left</span>
                       </div>
-
                       <div class="item-inner">
                         <div class="item-title-row">
-                          <div class="item-title">Deploy Contract</div>
+                          <div class="item-title">Create/Connect Git Repository</div>
                         </div>
+                        <div class="item-subtitle">Create a remote git repository for the collection.</div>
+  
                         <div class="item-text">
-                          Deploy contract to connected network. Will publish the last IPFS hash from the first step. You can publish the 
-                          latest database without deploying the contract. 
+                          
+                            ${channelViewModel?.gitProvider ? $h`
+                              <strong>Provider:</strong>  ${channelViewModel?.gitProvider.name} <br />
+                            ` : $h` `}
+  
+                            ${channelViewModel.channel.httpUrlToRepo ? $h`
+                              <strong>Repository:</strong>  ${channelViewModel.channel.httpUrlToRepo}
+                            ` : $h` `}
+  
                         </div>
                       </div>
-
                     </div>
                   </a>
                 </li>
               </ul>
             </div>
-
-          ` : $h`
-            <div class="block-header">
-              Note: Use a web browser with wallet support to deploy an ERC-721 smart contract.
+  
+            <div class="block-title block-title-medium">Export</div>
+  
+            <div class="block list media-list">
+              <ul>
+                <li>
+                  <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <span class="material-icons">import_export</span>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Export to IPFS and Git</div>
+                        </div>
+                        <div class="item-text">
+                          Export collection data to IPFS and the configured git repo.
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+  
+                <!-- <li>
+                  <a href="/admin/publish/pinata/${channelViewModel.channel._id}" class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <span class="material-icons">cloud_upload</span>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Publish to Pinning Service</div>
+                        </div>
+                        <div class="item-text">
+                          When you are ready to publish your collection and deploy your NFT contract, upload the NFT metadata to commercial hosting 
+                          to help make it widely available. This will help make it discoverable by marketplaces like OpenSea and LooksRare.
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </li> -->
+  
+              </ul>
             </div>
+  
+  
+            <div class="block-title block-title-medium">Contract (optional)</div>
+  
+            ${walletService?.address ? $h`
+              
+              <div class="block list media-list">
+                <ul>
+                  <li>
+                    <a href="/admin/publish/contract/${channelViewModel.channel._id}" class="item-link">
+                      <div class="item-content">
+                        <div class="item-media">
+                          <span class="material-icons">gavel</span>
+                        </div>
+  
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">Deploy Contract</div>
+                          </div>
+                          <div class="item-text">
+                            Deploy contract to connected network. Will publish the last IPFS hash from the first step. You can publish the 
+                            latest database without deploying the contract. 
+                          </div>
+                        </div>
+  
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+  
+            ` : $h`
+              <div class="block-header">
+                Note: Use a web browser with wallet support to deploy an ERC-721 smart contract.
+              </div>
+            `}
+  
+            
+  
+  
+  
+            <div class="block-title block-title-medium">Large Reader</div>
+            <div class="block list media-list">
+              <ul>
+  
+                <li>
+                  <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <span class="material-icons">upload</span>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Push exported collection to Git</div>
+                        </div>
+                        <div class="item-text">
+                          Push data from local git repository to remote provider. This will also kickstart a GitLab CI build to generate
+                          the Large Reader website for the collection.
+                        </div>
+                      </div>
+  
+                    </div>
+                  </a>
+                </li>
+  
+              </ul>
+            </div>
+  
+  
+  
+  
+  
+  
+  
+          ` : $h`
+            <div class="card">
+              <div class="card-content card-content-padding">
+                <p>Add NFTs to the collection before publishing.</p>
+              </div>
+            </div>
+            
           `}
 
-          
+
+        </div>
 
 
-
-          <div class="block-title block-title-medium">Large Reader</div>
-          <div class="block list media-list">
-            <ul>
-
-              <li>
-                <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <span class="material-icons">upload</span>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Push exported collection to Git</div>
-                      </div>
-                      <div class="item-text">
-                        Push data from local git repository to remote provider. This will also kickstart a GitLab CI build to generate
-                        the Large Reader website for the collection.
-                      </div>
-                    </div>
-
-                  </div>
-                </a>
-              </li>
-
-            </ul>
-          </div>
-
-
-
-
-
-
-
-        ` : $h`
-          <div class="card">
-            <div class="card-content card-content-padding">
-              <p>Add NFTs to the collection before publishing.</p>
-            </div>
-          </div>
-          
-        `}
+        
 
 
       </div>

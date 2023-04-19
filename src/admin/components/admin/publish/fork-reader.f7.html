@@ -7,96 +7,105 @@
 
     <div class="page-content hide-toolbar-on-scroll">
 
-      ${showForm ? $h`
+      <div class="fixed-width-content center">
 
-        <div class="block-title">Create Git Repository</div>
-        <div class="card">
+        ${showForm ? $h`
 
-          <div class="card-content card-content-padding">
-            <form id="fork-reader" @submit="${createForkSubmit}">
-
-              ${forking ? $h`
-                <div class="forking-label">
-                  Forking...
-                </div>
-
-                <div class="preloader"></div>
-
-              ` : $h`
-
-
-                <div class="forking-label" style="display:none;"></div>
-
-
-                ${channelViewModel.channel.publishReaderRepoId ? $h`
-                  <div class="repo-status">
-
-                    <p><strong>Current Repo:</strong> ${channelViewModel.channel.httpUrlToRepo}</p>
-
-                    <p><strong>Configured Provider:</strong> ${channelViewModel?.gitProvider?.name}</p>
-
-                    <p><strong>Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
-                    <p><strong>Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>
-                    <p><strong>Job Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
+          <div class="block-title">Create/Connect Git Repository</div>
+          <div class="card">
+  
+            <div class="card-content card-content-padding">
+              <form id="fork-reader" @submit="${createForkSubmit}">
+  
+                ${forking ? $h`
+                  <div class="forking-label">
+                    Forking...
                   </div>
-                ` : $h`<span />`}
-
-
-
-                <div class="block cancel-save-row">
+  
+                  <div class="preloader"></div>
+  
+                ` : $h`
+  
+  
+                  <div class="forking-label" style="display:none;"></div>
+  
+  
+                  ${channelViewModel.channel.publishReaderRepoId ? $h`
+                    <div class="repo-status">
+  
+                      <p><strong>Current Repo:</strong> ${channelViewModel.channel.httpUrlToRepo ? $h`
+                        <a href="${channelViewModel.channel.httpUrlToRepo}" class="link external" target="_blank">${channelViewModel.channel.httpUrlToRepo}</a>
+                        ` : $h` `}</p>
+  
+                      <p><strong>Configured Provider:</strong> ${channelViewModel?.gitProvider?.name}</p>
+  
+                      <p><strong>Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                      <p><strong>Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>
+                      <p><strong>Job Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
+                    </div>
+                  ` : $h`<span />`}
+  
+  
+  
+                  <div class="block cancel-save-row">
+        
+                    <div class="large-only"></div>
       
-                  <div class="large-only"></div>
-    
-                  <a href="/admin/publish/${channelViewModel.channel._id}" class="button button-outline color-gray" tabindex="30">
-                    Back to menu
-                  </a>
-
-                  <button type="submit" class="button button-fill" tabindex="31">
-                    Create/Connect Fork
-                  </button>
-    
+                    <a href="/admin/publish/${channelViewModel.channel._id}" class="button button-outline color-gray" tabindex="30">
+                      Back to menu
+                    </a>
+  
+                    <button type="submit" class="button button-fill" tabindex="31">
+                      Create/Connect Fork
+                    </button>
+      
+                  </div>
+  
+                `}
+  
+              </form>
+            </div>
+  
+          </div>    
+  
+        ` : $h`
+  
+            ${!hasItems ? $h`
+                
+              <div class="card">
+                <div class="card-content card-content-padding">
+                  <p>Add NFTs to the collection before publishing.</p>
                 </div>
-
-              `}
-
-            </form>
-          </div>
-
-        </div>    
-
-      ` : $h`
-
-          ${!hasItems ? $h`
+              </div>
+  
+            ` : $h` `}
+  
+            ${!gitConfigured ? $h`
               
-            <div class="card">
-              <div class="card-content card-content-padding">
-                <p>Add NFTs to the collection before publishing.</p>
+              <div class="card">
+                <div class="card-content card-content-padding">
+                  <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
+                </div>
               </div>
-            </div>
-
-          ` : $h` `}
-
-          ${!gitConfigured ? $h`
-            
-            <div class="card">
-              <div class="card-content card-content-padding">
-                <p>Configure a <a href="/admin/settings">git provider</a> to deploy the reader.</p>
+  
+            ` : $h` `}
+  
+            ${!gitCorsProxy ? $h`
+              
+              <div class="card">
+                <div class="card-content card-content-padding">
+                  <p>Configure a <a href="/admin/settings">git CORS proxy</a> to deploy the reader.</p>
+                </div>
               </div>
-            </div>
+  
+            ` : $h` `}
+        
+        `}
 
-          ` : $h` `}
+      </div>
 
-          ${!gitCorsProxy ? $h`
-            
-            <div class="card">
-              <div class="card-content card-content-padding">
-                <p>Configure a <a href="/admin/settings">git CORS proxy</a> to deploy the reader.</p>
-              </div>
-            </div>
 
-          ` : $h` `}
       
-      `}
 
     </div>
 

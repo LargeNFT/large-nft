@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "description": "The Complete Ethereum NFT Toolkit",
   "repository": {
     "type": "git",
@@ -109,7 +109,6 @@
   },
   "dependencies": {
 
-    "@isomorphic-git/lightning-fs": "4.6.0",
     "@pinata/ipfs-gateway-tools": "1.3.0",
 
     "@svgdotjs/svg.js": "3.1.2",
@@ -142,7 +141,6 @@
     "ipfs-http-client": "60.0.0",
     "ipfs-only-hash": "4.0.0",
     "is-svg": "5.0.0",
-    "isomorphic-git": "1.23.0",
     "it-to-buffer": "3.0.1",
     "juice": "9.0.0",
     "level-js": "6.1.0",

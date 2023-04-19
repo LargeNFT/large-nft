@@ -505,6 +505,7 @@ ul.breadcrumb li a:hover {
 
 .animation-card {
   width: 100%;
+  color: #000000;
 }
 
 .animation-content {
@@ -1173,6 +1174,12 @@ html {
   color: var(--f7-text-color);
 } */
 
+.sales-row {
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  gap: 10px;
+}
+
 .stats .f7-icons {
   font-size: 19px;
   font-weight: bold;
@@ -1204,6 +1211,12 @@ html {
 
 
 @media only screen and (max-width: 1024px) {
+
+  .sales-row {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 10px;
+  }
 
   .split-row {
     display: grid;

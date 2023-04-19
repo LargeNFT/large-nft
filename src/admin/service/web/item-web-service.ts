@@ -672,9 +672,9 @@ class ItemWebService {
             //Move to MFS directory in IPFS
             await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
 
-            //Add to git
-            let gitDirectory = this.gitService.getBaseDir(channel)
-            await this.gitService.writeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, content)
+            // //Add to git
+            // let gitDirectory = this.gitService.getBaseDir(channel)
+            // await this.gitService.writeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`, content)
         }
 
 
@@ -705,8 +705,8 @@ class ItemWebService {
 
 
             //Remove from git
-            let gitDirectory = this.gitService.getBaseDir(channel)
-            await this.gitService.removeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`)
+            // let gitDirectory = this.gitService.getBaseDir(channel)
+            // await this.gitService.removeFile(`${gitDirectory}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`)
 
         } catch(ex) {}
 
@@ -741,9 +741,9 @@ class ItemWebService {
             //Move to MFS directory in IPFS
             await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
     
-            //Add to git
-            let gitDirectory = this.gitService.getBaseDir(channel)
-            await this.gitService.writeFile(`${gitDirectory}/backup/export/animations/${animation.cid}.html`, animation.content)
+            // //Add to git
+            // let gitDirectory = this.gitService.getBaseDir(channel)
+            // await this.gitService.writeFile(`${gitDirectory}/backup/export/animations/${animation.cid}.html`, animation.content)
 
         }
 
@@ -773,9 +773,9 @@ class ItemWebService {
 
 
 
-            //Remove from git
-            let gitDirectory = this.gitService.getBaseDir(channel)
-            await this.gitService.removeFile(`${gitDirectory}/backup/export/animations/${animation.cid}.html`)
+            // //Remove from git
+            // let gitDirectory = this.gitService.getBaseDir(channel)
+            // await this.gitService.removeFile(`${gitDirectory}/backup/export/animations/${animation.cid}.html`)
 
         } catch(ex) {}
 
@@ -793,9 +793,9 @@ class ItemWebService {
         await this._safeDelete(ipfsFilename)
 
 
-        //Remove from git
-        let gitDirectory = this.gitService.getBaseDir(channel)
-        await this.gitService.removeFile(`${gitDirectory}/backup/export/metadata/${item.tokenId}.json`)
+        // //Remove from git
+        // let gitDirectory = this.gitService.getBaseDir(channel)
+        // await this.gitService.removeFile(`${gitDirectory}/backup/export/metadata/${item.tokenId}.json`)
     }
 
 

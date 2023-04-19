@@ -565,9 +565,10 @@
 
                 //Last updated won't be right because this only gets written when it actually changes.
                 let latest = await transactionWebService.getLatest()
+                
                 homeViewModel.largestSales.lastUpdated = latest.lastUpdated
 
-
+    
                 await $update()
 
                 

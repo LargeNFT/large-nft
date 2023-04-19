@@ -3,10 +3,10 @@
 
     <div class="page" data-name="connect">
 
-        <${Navbar} />
+        <${Navbar} breadcrumbs=${breadcrumbs}  />
 
 
-        <div class="page-content">
+        <div class="page-content hide-toolbar-on-scroll">
 
             <div class="row">
                 <div class="col-100 tablet-50 center">
@@ -102,6 +102,12 @@
 
         let subscribed
 
+        let breadcrumbs = [{
+            text: "Home",
+            path: "/"
+        },{
+          text: 'IPFS'
+        }]
 
         const addPeerClick = async(e) => {
 

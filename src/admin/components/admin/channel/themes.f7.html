@@ -17,121 +17,128 @@
 
     <div class="page-content hide-toolbar-on-scroll">
 
-      <channel-card channel_view_model=${channelViewModel}></channel-card>
+      <div class="fixed-width-content center">
 
-      <div class="block">
-        <p class="segmented">
-          <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}">Items</a>
-          <a class="button button-outline button-active" href="#">Themes</a>
-          <a class="button button-outline" href="/admin/channel/static-pages/${channelViewModel.channel._id}">Static
-            Pages</a>
-        </p>
-      </div>
+        <channel-card channel_view_model=${channelViewModel}></channel-card>
 
-      <div class="card">
-        <div class="card-header">Themes</div>
-        <div class="card-content">
-          <div class="list">
-            <ul>
-              <li>
-                <div class="item-content item-input">
-                  <div class="item-inner">
-                    <div>
-
-                      <p>A theme allows you to apply CSS formatting to an item. Create themes and then apply them to
-                        individual items.</p>
-
-                      <ul class="theme-list" style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
-                        ${themes?.map( (theme) => $h`
-                        <li>
-                          <span class="theme-name">${theme.name}</span>
-                          <a class="link theme-link" href="#" data-id="${theme._id}" @click="${editTheme}">Edit</a>
-                          <a class="link theme-link" href="#" data-id="${theme._id}" @click="${deleteTheme}">Delete</a>
-                        </li>
-                        `)}
-                      </ul>
-
-                      <a class="button button-outline add-theme-button popup-open" data-popup=".add-theme-popup" tabindex="10">Add Theme</a>
-
+        <div class="block">
+          <p class="segmented">
+            <a class="button button-outline" href="/admin/channel/show/${channelViewModel.channel._id}">Items</a>
+            <a class="button button-outline button-active" href="#">Themes</a>
+            <a class="button button-outline" href="/admin/channel/static-pages/${channelViewModel.channel._id}">Static
+              Pages</a>
+          </p>
+        </div>
+  
+        <div class="card">
+          <div class="card-header">Themes</div>
+          <div class="card-content">
+            <div class="list">
+              <ul>
+                <li>
+                  <div class="item-content item-input">
+                    <div class="item-inner">
+                      <div>
+  
+                        <p>A theme allows you to apply CSS formatting to an item. Create themes and then apply them to
+                          individual items.</p>
+  
+                        <ul class="theme-list" style="padding-left: 0; padding-bottom: 10px; padding-top: 10px; margin-bottom: 15px;">
+                          ${themes?.map( (theme) => $h`
+                          <li>
+                            <span class="theme-name">${theme.name}</span>
+                            <a class="link theme-link" href="#" data-id="${theme._id}" @click="${editTheme}">Edit</a>
+                            <a class="link theme-link" href="#" data-id="${theme._id}" @click="${deleteTheme}">Delete</a>
+                          </li>
+                          `)}
+                        </ul>
+  
+                        <a class="button button-outline add-theme-button popup-open" data-popup=".add-theme-popup" tabindex="10">Add Theme</a>
+  
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-
-
-      <div class="block">
-        <br />
-      </div>
-
-
-      <div class="popup add-theme-popup">
-        <div class="view">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-bg"></div>
-              <div class="navbar-inner">
-                <div class="title">Add Theme</div>
-                <div class="right">
-                  <!-- Link to close popup -->
-                  <a class="link popup-close">Close</a>
+  
+  
+        <div class="block">
+          <br />
+        </div>
+  
+  
+        <div class="popup add-theme-popup">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title">Add Theme</div>
+                  <div class="right">
+                    <!-- Link to close popup -->
+                    <a class="link popup-close">Close</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="page-content">
-              <form id="add-theme-form" @submit="${addThemeFormSubmit}">
-                <${ThemeForm} cover_image_css_editor_id="add-theme-cover-image-editor"
-                  animation_css_editor_id="add-theme-animation-editor" />
-
-                <div class="block save-row">
-
-                  <div class="large-only"></div>
-
-                  <button type="submit" class="button button-fill" tabindex="12">Add Theme</button>
-
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="popup edit-theme-popup">
-        <div class="view">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-bg"></div>
-              <div class="navbar-inner">
-                <div class="title">Edit Theme</div>
-                <div class="right">
-                  <!-- Link to close popup -->
-                  <a class="link popup-close">Close</a>
-                </div>
+              <div class="page-content">
+                <form id="add-theme-form" @submit="${addThemeFormSubmit}">
+                  <${ThemeForm} cover_image_css_editor_id="add-theme-cover-image-editor"
+                    animation_css_editor_id="add-theme-animation-editor" />
+  
+                  <div class="block save-row">
+  
+                    <div class="large-only"></div>
+  
+                    <button type="submit" class="button button-fill" tabindex="12">Add Theme</button>
+  
+                  </div>
+                </form>
               </div>
             </div>
-            <div class="page-content">
-              <form id="edit-theme-form" @submit="${editThemeFormSubmit}">
-
-                <${ThemeForm} cover_image_css_editor_id="edit-theme-cover-image-editor"
-                  animation_css_editor_id="edit-theme-animation-editor" theme="${editingTheme}" />
-
-                <div class="block save-row">
-
-                  <div class="large-only"></div>
-
-                  <button type="submit" class="button button-fill" tabindex="12">
-                    Save Changes
-                  </button>
-
+          </div>
+        </div>
+  
+        <div class="popup edit-theme-popup">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title">Edit Theme</div>
+                  <div class="right">
+                    <!-- Link to close popup -->
+                    <a class="link popup-close">Close</a>
+                  </div>
                 </div>
-              </form>
+              </div>
+              <div class="page-content">
+                <form id="edit-theme-form" @submit="${editThemeFormSubmit}">
+  
+                  <${ThemeForm} cover_image_css_editor_id="edit-theme-cover-image-editor"
+                    animation_css_editor_id="edit-theme-animation-editor" theme="${editingTheme}" />
+  
+                  <div class="block save-row">
+  
+                    <div class="large-only"></div>
+  
+                    <button type="submit" class="button button-fill" tabindex="12">
+                      Save Changes
+                    </button>
+  
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+
+
       </div>
+
+
 
     </div>
 

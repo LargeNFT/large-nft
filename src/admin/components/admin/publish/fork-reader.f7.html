@@ -89,17 +89,8 @@
               </div>
   
             ` : $h` `}
-  
-            ${!gitCorsProxy ? $h`
-              
-              <div class="card">
-                <div class="card-content card-content-padding">
-                  <p>Configure a <a href="/admin/settings">git CORS proxy</a> to deploy the reader.</p>
-                </div>
-              </div>
-  
-            ` : $h` `}
-        
+
+    
         `}
 
       </div>
@@ -176,8 +167,7 @@
     
     let hasItems = channelViewModel.itemCount > 0 
     let gitConfigured = channelViewModel?.gitProvider?.personalAccessToken?.length > 0
-    let gitCorsProxy = settings?.gitCorsProxy?.length > 0
-    let showForm = hasItems && gitConfigured && gitCorsProxy 
+    let showForm = hasItems && gitConfigured 
 
     let breadcrumbs = [{
             text: "Home",

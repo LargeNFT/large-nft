@@ -76,6 +76,14 @@ class PublishService {
         let flush = true
         let ipfsDirectory = this.getIPFSDirectory(exportBundle.channel)
 
+        //Clear 
+        try {
+            await this.ipfsService.ipfs.files.read(ipfsDirectory)
+            await this.ipfsService.ipfs.files.rm(ipfsDirectory,  { recursive: true, flush: true})
+        } catch (ex) { }
+
+
+
         let gitActions = []
 
         let publishStatus:PublishStatus = {
@@ -131,27 +139,32 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/contractMetadata.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(contractMetadata)))
+            content: Buffer.from(JSON.stringify(contractMetadata)).toString('base64'),
+            encoding: 'base64'
+
         })
 
 
         //Only copy contract info to git. IPFS doesn't know about it.
-        if (exportBundle.channel.contractAddress) {
+        if (channel.contractAddress) {
                     
             gitActions.push({
                 action: "create",
                 file_path: "/backup/contract/contract.json",
-                content: new TextDecoder().decode(Buffer.from(JSON.stringify({ 
-                    contractAddress: exportBundle.channel.contractAddress,
-                    ipfsCid: exportBundle.channel.localCid
-                })))
+                content: Buffer.from(JSON.stringify({ 
+                    contractAddress: channel.contractAddress,
+                    ipfsCid: channel.localCid
+                })).toString('base64'),
+
+                encoding: 'base64'
             })
 
             //Also the ABI
             gitActions.push({
                 action: "create",
                 file_path: "/backup/contract/contract-abi.json",
-                content: new TextDecoder().decode(Buffer.from(JSON.stringify(contractABI)))
+                content: Buffer.from(JSON.stringify(contractABI)).toString('base64'),
+                encoding: 'base64'
             })
 
 
@@ -159,13 +172,15 @@ class PublishService {
             gitActions.push({
                 action: "create",
                 file_path: "/backup/contract/contract.json",
-                content: new TextDecoder().decode(Buffer.from(JSON.stringify({}))) //empty file
+                content: Buffer.from(JSON.stringify({})).toString('base64'),
+                encoding: 'base64'
             })
 
             gitActions.push({
                 action: "create",
                 file_path: "/backup/contract/contract-abi.json",
-                content: new TextDecoder().decode(Buffer.from(JSON.stringify({}))) //empty file
+                content: Buffer.from(JSON.stringify({})).toString('base64'),
+                encoding: 'base64'
             })
         }
 
@@ -193,7 +208,8 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/channels.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(backup.channels)))
+            content: Buffer.from(JSON.stringify(backup.channels)).toString('base64'),
+            encoding: 'base64'
         })
         
         publishStatus.backups.channels.saved = 1
@@ -205,7 +221,8 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/authors.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(backup.authors)))
+            content: Buffer.from(JSON.stringify(backup.authors)).toString('base64'),
+            encoding: 'base64'
         })
         
         publishStatus.backups.authors.saved = 1
@@ -217,7 +234,8 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/items.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(backup.items)))
+            content: Buffer.from(JSON.stringify(backup.items)).toString('base64'),
+            encoding: 'base64'
         })
         
         publishStatus.backups.items.saved = backup.items.length
@@ -228,7 +246,8 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/images.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(backup.images)))
+            content: Buffer.from(JSON.stringify(backup.images)).toString('base64'),
+            encoding: 'base64'
         })
         
         publishStatus.backups.images.saved = backup.images.length
@@ -240,7 +259,8 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/animations.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(backup.animations)))
+            content: Buffer.from(JSON.stringify(backup.animations)).toString('base64'),
+            encoding: 'base64'
         })
                 
         publishStatus.backups.animations.saved = backup.animations.length
@@ -252,7 +272,8 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/themes.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(backup.themes)))
+            content: Buffer.from(JSON.stringify(backup.themes)).toString('base64'),
+            encoding: 'base64'
         })
         
         publishStatus.backups.themes.saved = backup.themes.length
@@ -264,7 +285,8 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/static-pages.json`,
-            content: new TextDecoder().decode(Buffer.from(JSON.stringify(backup.staticPages)))
+            content: Buffer.from(JSON.stringify(backup.staticPages)).toString('base64'),
+            encoding: 'base64'
         })
         
         
@@ -293,7 +315,32 @@ class PublishService {
 
     }
 
+    async exportContract(channel:Channel) : Promise<void> {
 
+        let gitActions = []
+
+        gitActions.push({
+            action: "create",
+            file_path: "/backup/contract/contract.json",
+            content: Buffer.from(JSON.stringify({ 
+                contractAddress: channel.contractAddress,
+                ipfsCid: channel.localCid
+            })).toString('base64'),
+            encoding: 'base64'
+        })
+
+        //Also the ABI
+        gitActions.push({
+            action: "create",
+            file_path: "/backup/contract/contract-abi.json",
+            content: Buffer.from(JSON.stringify(contractABI)).toString('base64'),
+            encoding: 'base64'
+        })
+
+        await this.gitService.deployReaderContract(channel, gitActions)
+
+
+    }
 
     getIPFSDirectory(channel:Channel) {
         return `/export/${channel._id}`
@@ -396,7 +443,9 @@ class PublishService {
             gitActions.push({
                 action: "create",
                 file_path: `/backup/export/animations/${animation.cid}.html`,
-                content: new TextDecoder("utf-8").decode(Buffer.from(animationContent.content)) 
+                content: Buffer.from(animationContent.content).toString('base64'),
+                encoding: 'base64'
+
             })
 
 

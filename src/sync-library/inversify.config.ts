@@ -5,7 +5,6 @@ import { SyncStatusRepositoryNodeImpl } from "./repository/node/sync-status-repo
 import { SyncStatusRepository } from "./repository/sync-status-repository.js";
 import { SyncStatusService } from "./service/sync-status-service.js";
 
-import Queue from 'better-queue'
 import { SpawnService } from "../sync/service/spawn-service.js";
 import { GenerateService } from "../reader/service/core/generate-service.js";
 import { ItemService } from "../reader/service/item-service.js";

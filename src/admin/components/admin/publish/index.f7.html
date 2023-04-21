@@ -8,7 +8,7 @@
       <div class="page-content hide-toolbar-on-scroll">
 
         <div class="fixed-width-content center">
-          
+
           ${channelViewModel.itemCount > 0 ? $h`
           
             <div class="block-title block-title-medium">Configure Git</div>
@@ -123,42 +123,7 @@
                 Note: Use a web browser with wallet support to deploy an ERC-721 smart contract.
               </div>
             `}
-  
-            
-  
-  
-  
-            <div class="block-title block-title-medium">Large Reader</div>
-            <div class="block list media-list">
-              <ul>
-  
-                <li>
-                  <a href="/admin/publish/publish-reader/${channelViewModel.channel._id}" class="item-link">
-                    <div class="item-content">
-                      <div class="item-media">
-                        <span class="material-icons">upload</span>
-                      </div>
-                      <div class="item-inner">
-                        <div class="item-title-row">
-                          <div class="item-title">Push exported collection to Git</div>
-                        </div>
-                        <div class="item-text">
-                          Push data from local git repository to remote provider. This will also kickstart a GitLab CI build to generate
-                          the Large Reader website for the collection.
-                        </div>
-                      </div>
-  
-                    </div>
-                  </a>
-                </li>
-  
-              </ul>
-            </div>
-  
-  
-  
-  
-  
+
   
   
           ` : $h`

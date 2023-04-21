@@ -1,5 +1,5 @@
 import axios from "axios";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 
 import { Channel } from "../../dto/channel.js";
 import { ExistingForkInfo, ForkInfo, GitProviderService } from './git-provider-service.js';
@@ -14,12 +14,12 @@ class GithubService implements GitProviderService {
     static READER_REPO_OWNER = "LargeNFT"
     static READER_REPO = "large-reader"
 
-    
-    constructor(
-        private settingsService:SettingsService,
-    ) {}
 
-    async createFork(channel:Channel) : Promise<ForkInfo> {
+    constructor(
+        private settingsService: SettingsService,
+    ) { }
+
+    async createFork(channel: Channel): Promise<ForkInfo> {
 
         //Look for an existing fork and just return it.
         let existingFork = await this.getExistingFork(channel)
@@ -48,7 +48,7 @@ class GithubService implements GitProviderService {
 
         let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
-        
+
         //Create a new one
         let response = await axios.post(url, {
             name: path,
@@ -65,7 +65,7 @@ class GithubService implements GitProviderService {
         }
     }
 
-    public async getExistingFork(channel:Channel) : Promise<ExistingForkInfo> {
+    public async getExistingFork(channel: Channel): Promise<ExistingForkInfo> {
 
 
         let settings = await this.settingsService.get()
@@ -79,7 +79,7 @@ class GithubService implements GitProviderService {
 
 
         let url = `${GithubService.BASE_URL}/repos/${GithubService.READER_REPO_OWNER}/${GithubService.READER_REPO}/forks`
-        
+
         let response = await axios.get(url, {
             headers: {
                 "Authorization": `Bearer ${gitProvider.personalAccessToken}`
@@ -93,7 +93,7 @@ class GithubService implements GitProviderService {
         let name = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
         //Search for one with the same path
-        let results = forks.filter( f => f.name == name && f.owner.login == gitProvider.username)
+        let results = forks.filter(f => f.name == name && f.owner.login == gitProvider.username)
 
 
         if (results?.length == 1) {
@@ -106,7 +106,7 @@ class GithubService implements GitProviderService {
         }
     }
 
-    async getForkRepoStatus(channel:Channel) : Promise<string> {
+    async getForkRepoStatus(channel: Channel): Promise<string> {
 
         let settings = await this.settingsService.get()
 
@@ -121,7 +121,7 @@ class GithubService implements GitProviderService {
 
         if (existingFork) {
             return "finished"
-        } 
+        }
 
         return "pending"
 
@@ -138,111 +138,208 @@ class GithubService implements GitProviderService {
 
     }
 
+    async commit(channel, actions, gitProvider) {
 
-    async commit(channel:Channel, actions:any[], personalAccessToken:string) {
+        this.logPublishProgress(`Pushing ${actions.length} files to repo...`)
 
-        // this.logPublishReaderProgress(`Commiting reader data for ${channel.title}: ${actions.length} actions`)
+        const currentCommit = await this.getMostRecentCommit(channel, gitProvider)
 
-        // let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
+        let tree = actions.map(action => {
+            return {
+              path: action.file_path.slice(1), //remove first /
+              mode: '100644',
+              type: 'blob',
+              content: atob(action.content),
+            }
+        })
 
-        // const res = await axios.post(url, {
-        //     branch: "master",
-        //     commit_message: `Commiting reader data for ${channel.title}`,
-        //     actions: actions,
-        // } , {
-        //     headers: {
-        //         "Authorization": `Bearer ${personalAccessToken}`
-        //     }
-        // })
+        const newTreeSha = await this.createTree(currentCommit.commit.tree.sha, tree, channel, gitProvider)
 
-        // //Clear actions
-        // actions.length = 0
+        await this.createCommit(currentCommit.sha, newTreeSha, channel, `Commiting files from Large`, gitProvider)
+
+        this.logPublishProgress(`Successfully pushed ${actions.length} files to repo...`)
+
+
+    }
+
+      
+    private async createCommit(currentCommitSha, newTreeSha, channel, message, gitProvider) {
+
+        //Create a new commit with this tree
+        const createCommitResult = await axios.post(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/commits`, {
+            message: message,
+            parents: [currentCommitSha],
+            tree: newTreeSha
+        }, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+
+        //Update the branch reference to the new commit
+        const updateRefResult = await axios.patch(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/refs/heads/master`, {
+            sha: createCommitResult.data.sha
+        }, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+
+
+    }
+    
+    private async createTree(baseTreeSha, newTree, channel, gitProvider) {
+
+        let parameters = {
+            tree: newTree,
+            base_tree: baseTreeSha
+        }
+
+        const createTreeResult = await axios.post(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/trees`, parameters, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+
+        return createTreeResult.data.sha
+
     }
 
 
-
-    async deleteReaderBackup(channel:Channel, gitProvider) {
+    async deleteReaderBackup(channel: Channel, gitProvider) {
 
         if (gitProvider.personalAccessToken.length < 1) {
             throw new Error("Gitlab personal access token not set")
         }
-        
 
         this.logPublishProgress(`Deleting existing files from repo...`)
 
+        await this.deleteDirectory(channel, gitProvider, "backup")
 
-        // let treeLink = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=backup&pagination=keyset`
-        // let linkHeaders
-        // let actions = []
+        this.logPublishProgress(`Successfully deleted existing backup...`)
 
-        // do {
-
-        //     //Get list of current files in backup folder
-        //     let results = await axios.get(treeLink, {
-        //         headers: {
-        //             "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-        //         }
-        //     })
-
-        //     //Skip directories because gitlab chokes on them.
-        //     let resultActions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
-        //         return {
-        //             action: 'delete',
-        //             file_path: result.path
-        //         }
-        //     })
-
-        //     actions.push(...resultActions)
-
-        //     linkHeaders = parse(results.headers["link"])
-
-        //     treeLink = linkHeaders?.next?.url
-
-        // } while(treeLink)
-
-
-        // if (actions?.length > 0) {
-
-        //     this.logPublishReaderProgress(`Deleting ${actions.length} files from repo...`)
-
-        //     let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
-
-        //     await axios.post(url, {
-        //         branch: "master",
-        //         commit_message: `Deleting existing reader for ${channel.title}`,
-        //         actions: actions
-        //     } , {
-        //         headers: {
-        //             "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-        //         }
-        //     })
-
-        // }
 
     }
 
-    private logPublishProgress(message:string) {
-    
+    async getMostRecentCommit(channel, gitProvider) {
+
+        //Get the most recent commit
+        let currentCommitResult = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/commits/master`, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+        return currentCommitResult.data
+    }
+
+    async deleteDirectory(channel, gitProvider, directoryPath) {
+
+        const currentCommit = await this.getMostRecentCommit(channel, gitProvider)
+
+        //Get the sha of the tree referenced by the latest commit
+        const treeSha = currentCommit.commit.tree.sha
+
+        //Get that tree
+        let treeResult = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/trees/${treeSha}`, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+        let tree = treeResult.data.tree
+
+
+        //Filter to the backup folder
+        let theDirSha = tree.find(r => r.path == directoryPath)?.sha
+
+        //If it exists, remove it.
+        if (theDirSha) {
+
+            //Get the tree for the backup folder
+            let theDirResult = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/trees/${theDirSha}`, {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                },
+                params: { recursive: true }
+            })
+
+            let theDirTree = theDirResult.data.tree
+
+
+            let theTree = theDirTree
+                .filter(({ type }) => type === "blob")
+                .map((blob) => {
+
+                    return {
+                        path: `${directoryPath}/${blob.path}`,
+                        mode: blob.mode,
+                        type: blob.type,
+                        sha: null
+                    }
+                })
+
+
+            const newTreeSha = await this.createTree(treeSha, theTree, channel, gitProvider)
+
+            await this.createCommit(currentCommit.sha, newTreeSha, channel, `Deleting ${directoryPath}`, gitProvider)
+
+        }
+    }
+
+
+
+    async deleteContractBackup(channel: Channel, gitProvider) {
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        this.logPublishProgress(`Deleting existing contract files from repo...`)
+
+
+        await this.deleteDirectory(channel, gitProvider, "backup/contract")
+
+    }
+
+
+
+
+    private logPublishProgress(message: string) {
+
         console.log(message)
-    
+
         if (typeof window !== "undefined" && typeof window.document !== "undefined") {
-          // browser
-          const imageSelectedEvent = new CustomEvent('publish-progress', {
-            detail: { message: message }
-          })
-      
-          document.dispatchEvent(imageSelectedEvent)
+            // browser
+            const imageSelectedEvent = new CustomEvent('publish-progress', {
+                detail: { message: message }
+            })
+
+            document.dispatchEvent(imageSelectedEvent)
+
+        }
+
+    }
+
+
+    chunkIt(gitActions: any[], perChunk: number) {
+
+        let chunks = []
     
+        //Break into rows
+        for (let i = 0; i < gitActions.length; i += perChunk) {
+            let chunk = gitActions.slice(i, i + perChunk)
+            chunks.push(chunk)
         }
     
+        return chunks
     }
-
-
-
-
+    
 
 }
-
 
 
 

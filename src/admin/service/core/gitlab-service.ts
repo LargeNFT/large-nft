@@ -133,27 +133,30 @@ class GitlabService implements GitProviderService {
 
 
 
-    async commit(channel:Channel, actions:any[], personalAccessToken:string) {
+    async commit(channel:Channel, actions:any[], gitProvider) {
 
-        console.log(actions)
+        let chunks = this.chunkIt(actions, 500)
+
+        for (let chunk of chunks) {
+
+            this.logPublishProgress(`Commiting reader data for ${channel.title} to GitLab: ${chunk.length} actions`)
+
+            let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
+    
+            const res = await axios.post(url, {
+                branch: "master",
+                commit_message: `Commiting reader data for ${channel.title}`,
+                actions: chunk,
+            } , {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+
+        }
 
 
-        this.logPublishProgress(`Commiting reader data for ${channel.title}: ${actions.length} actions`)
 
-        let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
-
-        const res = await axios.post(url, {
-            branch: "master",
-            commit_message: `Commiting reader data for ${channel.title}`,
-            actions: actions,
-        } , {
-            headers: {
-                "Authorization": `Bearer ${personalAccessToken}`
-            }
-        })
-
-        //Clear actions
-        actions.length = 0
     }
 
 
@@ -220,6 +223,44 @@ class GitlabService implements GitProviderService {
 
     }
 
+    async deleteContractBackup(channel:Channel, gitProvider) {
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        this.logPublishProgress(`Deleting existing contract files from repo...`)
+
+        let actions = [{
+            action: 'delete',
+            file_path: "/backup/contract/contract.json"
+        },{
+            action: 'delete',
+            file_path: "/backup/contract/contract-abi.json"
+        }]
+
+
+        if (actions?.length > 0) {
+
+            this.logPublishProgress(`Deleting ${actions.length} files from repo...`)
+
+            let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
+
+            await axios.post(url, {
+                branch: "master",
+                commit_message: `Deleting existing contract files for ${channel.title}`,
+                actions: actions
+            } , {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+
+        }
+
+    }
+
+
     private logPublishProgress(message:string) {
     
         console.log(message)
@@ -239,7 +280,19 @@ class GitlabService implements GitProviderService {
 
 
 
+    chunkIt(gitActions: any[], perChunk: number) {
 
+        let chunks = []
+    
+        //Break into rows
+        for (let i = 0; i < gitActions.length; i += perChunk) {
+            let chunk = gitActions.slice(i, i + perChunk)
+            chunks.push(chunk)
+        }
+    
+        return chunks
+    }
+    
 
 
 

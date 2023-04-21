@@ -32,30 +32,6 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header">Git CORS Proxy</div>
-                    <div class="card-content card-content-padding">
-
-                        <p>
-                            Configure a <a href="https://github.com/isomorphic-git/cors-proxy" class="external">proxy</a> to solve CORS issues when pushing to GitHub and GitLab. 
-                        </p>
-
-                        <div class="list">
-                            <ul>
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">URL</div>
-                                        <div class="item-input-wrap">
-                                            <input type="text" name="gitCorsProxy" value="${settings?.gitCorsProxy}" placeholder="http://localhost:5000" />
-                                            <span class="input-clear-button"></span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
                     <div class="card-header">Git Settings</div>
                     <div class="card-content card-content-padding">
 
@@ -105,20 +81,16 @@
 
                         <ol>
                             <li>Create a <a href="http://github.com" class="external" target="_blank">GitHub</a> account.</li>
-                            <li>Create a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external" target="_blank">"Personal access token"</a> and 
+                            <li>Create a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external" target="_blank">"Personal access token (classic)"</a> and 
                                 save it below.</li>
-                            <li>If you are logged into GitHub <a href="https://github.com/settings/personal-access-tokens/new" class="external" target="_blank">this link</a> will
-                                take you directly to the create form. </li>
+                            <li>If you are logged into GitHub <a href="https://github.com/settings/tokens" class="external" target="_blank">this link</a> will take you directly to the create form. </li>
 
                         </ol>
 
                         <p>Give the token a name and select an expiration date.</p>
 
                         <ul>
-                            <li>Select "All Repositories" under "Repository Access".</li>
-                            <li>Under "Repository Permissions" chooose:</li>
-                            <li>"Administration" - read and write access.</li>
-                            <li>"Contents" - read and write access.</li>
+                            <li>Check the "repo" permission. </li>
                         </ul>  
 
 

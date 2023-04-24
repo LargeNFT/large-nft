@@ -192,11 +192,11 @@
 
 
             let breadcrumbs = [{
-                text: "Home",
-                path: "index.html"
+                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                path: baseURL
             }, {
                 text: "Leaderboard",
-                path: "leaderboard"
+                path: `${baseURL}leaderboard`
             }]
 
 

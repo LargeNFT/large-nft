@@ -139,9 +139,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/contractMetadata.json`,
-            content: Buffer.from(JSON.stringify(contractMetadata)).toString('base64'),
-            encoding: 'base64'
-
+            content: Buffer.from(JSON.stringify(contractMetadata))
         })
 
 
@@ -154,17 +152,15 @@ class PublishService {
                 content: Buffer.from(JSON.stringify({ 
                     contractAddress: channel.contractAddress,
                     ipfsCid: channel.localCid
-                })).toString('base64'),
+                }))
 
-                encoding: 'base64'
             })
 
             //Also the ABI
             gitActions.push({
                 action: "create",
                 file_path: "/backup/contract/contract-abi.json",
-                content: Buffer.from(JSON.stringify(contractABI)).toString('base64'),
-                encoding: 'base64'
+                content: Buffer.from(JSON.stringify(contractABI))
             })
 
 
@@ -172,20 +168,26 @@ class PublishService {
             gitActions.push({
                 action: "create",
                 file_path: "/backup/contract/contract.json",
-                content: Buffer.from(JSON.stringify({})).toString('base64'),
-                encoding: 'base64'
+                content: Buffer.from(JSON.stringify({}))
             })
 
             gitActions.push({
                 action: "create",
                 file_path: "/backup/contract/contract-abi.json",
-                content: Buffer.from(JSON.stringify({})).toString('base64'),
-                encoding: 'base64'
+                content: Buffer.from(JSON.stringify({}))
             })
         }
 
 
-
+        //Copy a large-config.json to GitHub
+        gitActions.push({
+            action: "create",
+            file_path: "/large-config.json",
+            content: Buffer.from(JSON.stringify({
+                "showMintPage": channel.contractAddress?.length > 0,
+                "showActivityPage": channel.contractAddress?.length > 0
+            } ))
+        })
 
 
         //Adding and then copying otherwise the CID does not match what we'd expect. 
@@ -208,8 +210,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/channels.json`,
-            content: Buffer.from(JSON.stringify(backup.channels)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(backup.channels))
         })
         
         publishStatus.backups.channels.saved = 1
@@ -221,8 +222,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/authors.json`,
-            content: Buffer.from(JSON.stringify(backup.authors)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(backup.authors))
         })
         
         publishStatus.backups.authors.saved = 1
@@ -234,8 +234,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/items.json`,
-            content: Buffer.from(JSON.stringify(backup.items)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(backup.items))
         })
         
         publishStatus.backups.items.saved = backup.items.length
@@ -246,8 +245,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/images.json`,
-            content: Buffer.from(JSON.stringify(backup.images)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(backup.images))
         })
         
         publishStatus.backups.images.saved = backup.images.length
@@ -259,8 +257,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/animations.json`,
-            content: Buffer.from(JSON.stringify(backup.animations)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(backup.animations))
         })
                 
         publishStatus.backups.animations.saved = backup.animations.length
@@ -272,8 +269,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/themes.json`,
-            content: Buffer.from(JSON.stringify(backup.themes)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(backup.themes))
         })
         
         publishStatus.backups.themes.saved = backup.themes.length
@@ -285,8 +281,7 @@ class PublishService {
         gitActions.push({
             action: "create",
             file_path: `/backup/export/backup/static-pages.json`,
-            content: Buffer.from(JSON.stringify(backup.staticPages)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(backup.staticPages))
         })
         
         
@@ -325,16 +320,14 @@ class PublishService {
             content: Buffer.from(JSON.stringify({ 
                 contractAddress: channel.contractAddress,
                 ipfsCid: channel.localCid
-            })).toString('base64'),
-            encoding: 'base64'
+            }))
         })
 
         //Also the ABI
         gitActions.push({
             action: "create",
             file_path: "/backup/contract/contract-abi.json",
-            content: Buffer.from(JSON.stringify(contractABI)).toString('base64'),
-            encoding: 'base64'
+            content: Buffer.from(JSON.stringify(contractABI))
         })
 
         await this.gitService.deployReaderContract(channel, gitActions)
@@ -443,9 +436,7 @@ class PublishService {
             gitActions.push({
                 action: "create",
                 file_path: `/backup/export/animations/${animation.cid}.html`,
-                content: Buffer.from(animationContent.content).toString('base64'),
-                encoding: 'base64'
-
+                content: Buffer.from(animationContent.content)
             })
 
 
@@ -501,12 +492,20 @@ class PublishService {
                 this.logPublishProgress(publishStatus, `${ipfsFilename} already exists. Skipping...`)
             }
 
+
+            let content 
+
+            if (image.buffer) {
+                content = image.buffer 
+            } else if (image.svg) {
+                content = Buffer.from(image.svg)
+            }
+
             //Add to git. 
             gitActions.push({
                 action: "create",
                 file_path: `/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,
-                content: Buffer.from(await this.imageService.getImageContent(image)).toString('base64'),
-                encoding: 'base64'
+                content: content
             })
 
 
@@ -575,8 +574,7 @@ class PublishService {
             gitActions.push({
                 action: "create",
                 file_path: `/backup/export/metadata/${nft.tokenId}.json`,
-                content: Buffer.from(JSON.stringify(nftMetadata)).toString('base64'),
-                encoding: 'base64'
+                content: Buffer.from(JSON.stringify(nftMetadata))
             })
 
 

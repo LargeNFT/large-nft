@@ -65,7 +65,6 @@ class GenerateService {
         await this.staticPageRepository.load()
     }
 
-
     async getGenerateViewModel(config, itemViewModels:ItemViewModel[], additionalStaticPages?:StaticPage[]): Promise<GenerateViewModel> {
 
         //Get first page of items for explore page
@@ -176,7 +175,6 @@ class GenerateService {
 
     }
 
-
     async generateCollage(config, items:ItemViewModel[]) {
 
         // const PER_ROW = 100
@@ -226,7 +224,6 @@ class GenerateService {
         //         .toFile('combined.jpg');
 
     }
-
 
     async generatePages(config, channelViewModel, generateViewModel, baseViewModel) {
 

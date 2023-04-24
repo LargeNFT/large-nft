@@ -135,6 +135,12 @@ class GitlabService implements GitProviderService {
 
     async commit(channel:Channel, actions:any[], gitProvider) {
 
+        for (let action of actions) {
+            action.encoding = "base64"
+            action.content = action.content.toString('base64')
+        }
+
+
         let chunks = this.chunkIt(actions, 500)
 
         for (let chunk of chunks) {

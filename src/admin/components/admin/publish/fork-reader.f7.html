@@ -204,6 +204,10 @@
 
       await $update()
 
+      let elem = document.getElementsByClassName('content-card-padding')[0]
+      $f7.preloader.showIn(elem)
+
+
       let response
 
       try {
@@ -217,6 +221,8 @@
         await channelService.put(channelViewModel.channel)
 
       } catch (ex) {
+
+        $f7.preloader.hideIn(elem)
 
         console.log(ex)
 
@@ -259,6 +265,10 @@
         channelViewModel.channel.httpUrlToRepo = forkResult.httpUrlToRepo
 
         await channelService.put(channelViewModel.channel)
+
+        let elem = document.getElementsByClassName('content-card-padding')[0]
+        $f7.preloader.hideIn(elem)
+
 
       }
 

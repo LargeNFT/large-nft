@@ -184,8 +184,8 @@
         let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
         let breadcrumbs = [{
-                text: "Home",
-                path: "index.html"
+                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                path: baseURL
             }, {
                 text: "Mint"
         }]

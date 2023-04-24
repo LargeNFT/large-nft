@@ -61,7 +61,7 @@ class GitService implements GitProviderService {
 
                 await this.githubService.deleteReaderBackup(channel, gitProvider)
 
-                await new Promise(resolve => setTimeout(resolve, 10000))
+                // await new Promise(resolve => setTimeout(resolve, 10000))
 
                 await this.githubService.commit(channel, gitActions, gitProvider)
 

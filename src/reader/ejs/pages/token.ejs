@@ -410,11 +410,11 @@
             
 
             let breadcrumbs = [{
-                text: "Home",
-                path: "index.html"
+                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                path: baseURI
             }, {
                 text: "Explore",
-                path: "explore.html"
+                path: `${baseURI}explore.html`
             },{
                 text: title ? title : `#${tokenId}`
             }]

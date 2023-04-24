@@ -6,14 +6,13 @@ import { ExistingForkInfo, ForkInfo, GitProviderService } from './git-provider-s
 
 import { SettingsService } from './settings-service.js';
 
-
 @injectable()
 class GithubService implements GitProviderService {
 
     static BASE_URL = 'https://api.github.com'
+    static GRAPHQL_URL = 'https://api.github.com/graphql'
     static READER_REPO_OWNER = "LargeNFT"
     static READER_REPO = "large-reader"
-
 
     constructor(
         private settingsService: SettingsService,
@@ -125,16 +124,6 @@ class GithubService implements GitProviderService {
 
         return "pending"
 
-        // let url = `${GithubService.BASE_URL}/projects/${channel.publishReaderRepoId}`
-
-        // let response = await axios.get(url, {
-        //     headers: {
-        //         "Authorization": `Bearer ${gitProvider.personalAccessToken}`,
-        //         "X-GitHub-Api-Version": "2022-11-28"
-        //     }
-        // })
-
-        // return response.data.import_status
 
     }
 
@@ -142,27 +131,90 @@ class GithubService implements GitProviderService {
 
         this.logPublishProgress(`Pushing ${actions.length} files to repo...`)
 
-        const currentCommit = await this.getMostRecentCommit(channel, gitProvider)
 
-        let tree = actions.map(action => {
+        const query = `
+            query GetBranch{
+                repository (name: "${channel.publishReaderRepoPath}", owner: "${gitProvider.username}") {
+                    ref (qualifiedName: "master") {
+                        target {
+                            ... on Commit {
+                                history(first: 1) {
+                                    nodes {
+                                        oid
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `
+
+        const getOidResult = await axios.post(GithubService.GRAPHQL_URL, JSON.stringify({ query: query }), {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            },
+        })
+
+        let oid = getOidResult.data.data.repository.ref.target.history.nodes[0].oid
+
+
+        const additions = actions.map((a) => {
             return {
-              path: action.file_path.slice(1), //remove first /
-              mode: '100644',
-              type: 'blob',
-              content: atob(action.content),
+                path: a.file_path.slice(1),
+                contents: Buffer.from(a.content).toString('base64')
             }
         })
 
-        const newTreeSha = await this.createTree(currentCommit.commit.tree.sha, tree, channel, gitProvider)
 
-        await this.createCommit(currentCommit.sha, newTreeSha, channel, `Commiting files from Large`, gitProvider)
+        const mutation = `
+            mutation createCommit($additions: [FileAddition!]!, $oid: GitObjectID!) {
+                createCommitOnBranch (input: {
+                    branch : {
+                        repositoryNameWithOwner: "${gitProvider.username}/${channel.publishReaderRepoPath}"
+                        branchName: "master"
+                    }
+                    message: {
+                        headline: "feat: Commit through Graphql"
+                    }
+                    fileChanges: {
+                        additions: $additions
+                    }
+                    expectedHeadOid: $oid
+                    }) {
+                    commit {
+                        commitUrl
+                    }
+                }
+            }
+        `;
+
+        const variables = {
+            oid: oid,
+            additions: additions
+        }
+
+        const createCommitResult = await axios.post(
+            GithubService.GRAPHQL_URL,
+            {
+                query: mutation,
+                variables: variables
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            }
+        )
 
         this.logPublishProgress(`Successfully pushed ${actions.length} files to repo...`)
 
 
     }
 
-      
+
     private async createCommit(currentCommitSha, newTreeSha, channel, message, gitProvider) {
 
         //Create a new commit with this tree
@@ -189,7 +241,7 @@ class GithubService implements GitProviderService {
 
 
     }
-    
+
     private async createTree(baseTreeSha, newTree, channel, gitProvider) {
 
         let parameters = {
@@ -199,7 +251,8 @@ class GithubService implements GitProviderService {
 
         const createTreeResult = await axios.post(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/trees`, parameters, {
             headers: {
-                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`,
+                "Accept": "application/vnd.github+json"
             }
         })
 
@@ -207,6 +260,23 @@ class GithubService implements GitProviderService {
         return createTreeResult.data.sha
 
     }
+
+    private async createBlob(content, channel, gitProvider) {
+
+        const createBlobResult = await axios.post(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/blobs`, {
+            content: content.toString('base64'),
+            encoding: 'base64'
+        }, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+
+        return createBlobResult.data.sha
+
+    }
+
 
 
     async deleteReaderBackup(channel: Channel, gitProvider) {
@@ -328,16 +398,16 @@ class GithubService implements GitProviderService {
     chunkIt(gitActions: any[], perChunk: number) {
 
         let chunks = []
-    
+
         //Break into rows
         for (let i = 0; i < gitActions.length; i += perChunk) {
             let chunk = gitActions.slice(i, i + perChunk)
             chunks.push(chunk)
         }
-    
+
         return chunks
     }
-    
+
 
 }
 

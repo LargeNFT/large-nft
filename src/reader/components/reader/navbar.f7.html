@@ -5,15 +5,12 @@
 
         <div class="navbar-inner sliding">
                 
-          ${logo?.src?.length > 0 ? $h`
+          <div class="left">
+            <a href="/">
+              <i class="f7-icons">house</i>
+            </a>
+          </div>
 
-            <div class="left">
-              <a href="${logo?.link}" class="logo external">
-                <img src="${baseURI}logo.${logo?.src.split('.').pop()}" />
-              </a>
-            </div>
-
-          ` : $h`<span />`}
 
           <div class="title">
             ${title}
@@ -190,7 +187,7 @@
                     <div class="breadcrumbs-item">
 
                       ${b.path ? $h`
-                        <a href="${baseURI}${b.path}" class="link">
+                        <a href="${b.path}" class="link">
                           ${b.text}
                         </a>
                       ` : $h`${b.text}`}
@@ -234,6 +231,7 @@
         let baseURI = globalThis.container.get("baseURI")
         let hostname = globalThis.container.get("hostname")
 
+        let symbol = props.symbol
         let logo = props.logo
         let title = props.title
         let active = props.active
@@ -243,7 +241,6 @@
         let showActivityPage = props.show_activity_page == "true"
         let breadcrumbs = props.breadcrumbs
         
-
         let walletAddress
         let showConnect = true
 

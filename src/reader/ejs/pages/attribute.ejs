@@ -289,11 +289,11 @@
             let lastUpdated
 
             let breadcrumbs = [{
-                text: "Home",
-                path: "index.html"
+                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                path: baseURL
             }, {
                 text: "Attributes",
-                path: "attributes"
+                path: `${baseURL}attributes`
             }]
 
 

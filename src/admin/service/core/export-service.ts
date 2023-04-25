@@ -74,6 +74,17 @@ class ExportService {
         delete channel.publishReaderRepoId
         delete channel.publishReaderRepoPath
         delete channel.publishReaderRepoStatus
+
+
+        delete channel.productionHostname
+        delete channel.productionBaseURI
+        delete channel.showMintPage
+        delete channel.showActivityPage
+        delete channel.marketplaces
+        delete channel.externalLinks
+
+
+
         delete channel.importSuccess
         delete channel.lastUpdated
         delete channel._rev

@@ -58,6 +58,18 @@ class TokenRepositoryNodeImpl implements TokenRepository {
     }
 
 
+    async getLatest(options?:any): Promise<Token> {
+
+        let s = await this.sequelize()
+
+
+        const maxIdToken = await Token.findOne({
+            attributes: [[s.fn('max', s.col('_id')), 'max_id']],
+        }, options)
+          
+        return this.get(maxIdToken?.get('max_id', options))
+    }
+
 }
 
 

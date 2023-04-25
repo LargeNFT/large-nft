@@ -2,374 +2,122 @@
 <template>
 
     <div>
-        <input type="hidden" name="_id"  value="${channelViewModel?.channel?._id}" />
+        <input type="hidden" name="_id" value="${channelViewModel?.channel?._id}" />
         <input type="hidden" name="_rev" value="${channelViewModel?.channel?._rev}" />
         <input type="hidden" name="dateCreated" value="${channelViewModel?.channel?.dateCreated}" />
         <input type="hidden" name="authorId" value="${channelViewModel?.channel?.authorId}" />
         <input type="hidden" name="contractAddress" value="${channelViewModel?.channel?.contractAddress}" />
 
-
-        <div class="card card-strong">
+        <div class="card">
             <div class="card-content">
-                <div class="list">
-                    <ul>
-
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Title</div>
-                                    <div class="item-input-wrap">
-                                        ${channelViewModel.editable ? $h`
-                                            <input type="text" name="title" placeholder="Collection title" value="${channelViewModel?.channel?.title}" required  minlength="3" tabindex="1" />
-                                        ` : $h`
-                                            <input type="text" name="title" placeholder="Collection title" value="${channelViewModel?.channel?.title}" required  minlength="3" tabindex="1" disabled />
-                                        `}
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Symbol</div>
-                                    <div class="item-input-wrap">
-
-                                        ${channelViewModel.editable ? $h`
-                                            <input type="text" name="symbol" placeholder="Symbol (eg BAYC)" value="${channelViewModel?.channel?.symbol}" tabindex="2" required />
-                                        ` : $h`
-                                            <input type="text" name="symbol" placeholder="Symbol (eg BAYC)" value="${channelViewModel?.channel?.symbol}" tabindex="2" required disabled />
-                                        `}
-
-
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Description</div>
-
-                                    <div id="${descriptionToolbarId}">
-
-                                        <select class="ql-header">
-                                            <option selected></option>
-                                            <option value="1">Heading</option>
-                                            <option value="2">Subheading</option>
-                                            <option value="3">Normal</option>
-                                        </select>
-
-
-                                        <!-- Add a bold button -->
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-strike"></button>
-                                        <button class="ql-underline"></button>
-
-                                    </div>
-
-                                    <div class="editor bg-color-white text-color-black channel-editor" id="${descriptionEditorId}" tabindex="3"></div>
-
-                                </div>
-                            </div>
-                        </li>
-
-
-                        <li class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Language</div>
-                                <!-- additional "input-dropdown-wrap" class -->
-                                <div class="item-input-wrap input-dropdown-wrap">
-                                    <select name="language" tabindex="9">
-                                        ${languages.map( language => $h`
-                                            ${channelViewModel?.channel?.language == language ? $h`
-                                                <option value="${language}" selected >${language}</option>
-                                            ` : $h`
-                                                <option value="${language}">${language}</option>
-                                            `}
-                                        `)}
-                                    </select>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="card card-strong">
-            <div class="card-content">
-                <div class="list">
+                <div class="list media-list">
                     <ul>
                         <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Collection Avatar</div>
-                                    <div class="item-input-wrap">
-
-                                        ${channelViewModel.coverImage ? $h`
-                                        <img class="avatar-preview" src="${channelViewModel?.coverImage.url}" />
-
-                                        ` : $h`
-                                        <i class="material-icons avatar-preview">image</i>
-                                        `}
-
-                                        <input type="button" class="button button-fill browse-file" value="Browse"
-                                            @click="${handleCoverImageBrowseClick}" tabindex="4" />
-                                        <input type="hidden" name="coverImageId" value="${channelViewModel?.coverImage?.cid}" />
-                                        <input type="file" id="cover-image-browse" style="display: none"
-                                            @change="${handleCoverImageChange}" />
-
-                                    </div>
+                            <a class="item-link" data-popup=".edit-basics-popup" class="popup-open">
+                              <div class="item-content">
+                                <div class="item-media">                                    
+                                    <i class="f7-icons">pencil</i>
                                 </div>
-                            </div>
+                                <div class="item-inner">
+                                  <div class="item-title-row">
+                                    <div class="item-title">Basic Info</div>
+                                  </div>
+                                  <div class="item-subtitle">Name, symbol, description, etc.</div>
+                                </div>
+                              </div>
+                            </a>
                         </li>
 
                         <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Collection Banner</div>
-                                    <div class="item-input-wrap">
-
-                                        ${channelViewModel?.coverBanner ? $h`
-                                        <img class="cover-banner-preview" src="${channelViewModel?.coverBanner.url}" />
-                                        ` : $h`
-                                        <i class="material-icons cover-banner-preview">image</i>
-                                        `}
-
-                                        <input type="button" class="button button-fill browse-file" value="Browse"
-                                            @click="${handleBannerBrowseClick}" tabindex="5" />
-                                        <input type="hidden" name="coverBannerId" value="${channelViewModel?.coverBanner?.cid}" />
-
-                                        <input type="file" id="banner-browse" style="display: none" @change="${handleBannerChange}" />
-
-                                    </div>
+                            <a class="item-link" data-popup=".edit-images-popup" class="popup-open">
+                              <div class="item-content">
+                                <div class="item-media">                                    
+                                    <i class="f7-icons">photo</i>
                                 </div>
-                            </div>
+                                <div class="item-inner">
+                                  <div class="item-title-row">
+                                    <div class="item-title">Cover Image & Banner</div>
+                                  </div>
+                                  <div class="item-subtitle">Add a cover image and banner.</div>
+                                </div>
+                              </div>
+                            </a>
                         </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
 
-
-        <div class="card card-strong">
-            <div class="card-header">Attribute Types (eg Shirt, Size, Hat)</div>
-            <div class="card-content card-content-padding">
-
-                <p>
-                    Add attributes to give specific items special properties. Items can be sorted and filtered by attribute and each attribute type 
-                    gets a token owner leaderboard. 
-                </p>   
-
-
-
-                ${attributeOptions?.length > 0 ? $h`
-                                            
-                    <ul>
-
-                        ${attributeOptions?.map( (ao) => $h`
-                            <li>
-                                <span style="width: 100px; margin-right: 10px;">${ao.traitType}</span>
-
-                                ${channelViewModel.editable ? $h`
-                                    <a class="link" href="#" data-id="${ao.id}" @click="${editCategory}">Edit</a> | <a class="link" href="#" data-id="${ao.id}" @click="${deleteOptionClick}">Delete</a>
-                                ` : $h` `} 
-
-                                <p>
-                                    ${ao.values?.map( (v,index) => $h`
-
-                                        <div class="chip chip-outline">
-                                            <div class="chip-label">${v}</div>
-                                        </div>
-
-                                    `)}
-                                </p>
-                            </li>
-                        `)}
-
-                    </ul>
-
-                ` : $h`
-                    No attributes exist.
-                `}
-
-                <a class="button button-outline add-category-button popup-open" @click="${addCategoryClick}" tabindex="10">Add Attribute Type</a>
-
-                <input type="hidden" name="attributeOptions" value="${JSON.stringify(attributeOptions)}" />
-
-
-
-            </div>
-        </div>
-
-        <div class="card card-strong">
-            <div class="card-content">
-                <div class="list">
-                    <ul>
                         <li>
-                            <div class="item-content item-input">
+                            <a class="item-link" data-popup=".edit-attributes-popup" class="popup-open">
+                              <div class="item-content">
+                                <div class="item-media">                                    
+                                    <i class="f7-icons">line_horizontal_3_decrease</i>
+                                </div>
                                 <div class="item-inner">
-                                    <div class="item-title item-label">Mint Price in ETH</div>
-                                    <div class="item-input-wrap">
-
-                                        ${channelViewModel.editable ? $h`
-                                            <input type="number" placeholder="Enter price for one piece (eg 0.08)" @change="${mintPriceChange}" 
-                                            step="any" tabindex="11" value="${channelViewModel?.channel?.mintPrice}" />
-                                        ` : $h`
-                                            <input type="number" placeholder="Enter price for one piece (eg 0.08)" @change="${mintPriceChange}" 
-                                            step="any" tabindex="11" value="${channelViewModel?.channel?.mintPrice}" disabled />
-                                        `}
-
-                                        <input type="hidden" name="mintPrice" value="${mintPrice}" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                
-                        ${mintPrice ? $h`
-                        <li tabindex="-1">
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-text"> You will receive <strong>${mintPrice}</strong> ETH (${mintPriceWei} wei) for
-                                        each mint.</div>
-                                </div>
-                            </div>
-                        </li>
-                        ` : $h``}
-                
-                        <li>
-                            <div class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Marketplace Creator Fee %</div>
-                                    <div class="item-input-wrap">
-
-                                        ${channelViewModel.editable ? $h`
-                                            <input type="number" name="royaltyPercent" placeholder="Royalty %" @change="${royaltyChange}" step="any"  tabindex="12" value="${channelViewModel?.channel?.royaltyPercent}" />
-                                        ` : $h`
-                                            <input type="number" name="royaltyPercent" placeholder="Royalty %" @change="${royaltyChange}" step="any"  tabindex="12" value="${channelViewModel?.channel?.royaltyPercent}" disabled />
-                                        `}
-
-                                        <input type="hidden" name="sellerFeeBasisPoints" value="${channelViewModel?.channel?.sellerFeeBasisPoints}" />
-                
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                
-                
-                        ${channelViewModel?.channel?.royaltyPercent ? $h`
-                        <li tabindex="-1">
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-text">
-                                        You will receive a <strong>${channelViewModel?.channel?.royaltyPercent}%</strong> for each sale on OpenSea, etc. Confirm this
-                                        value when you set up your
-                                        collection on the marketplace. This just presets it for you.
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        ` : $h``}
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="card card-strong">
-            <div class="card-content">
-                <div class="list">
-                    <ul>
-                        <li class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Features and Licensing</div>
-                                <div class="item-input-wrap input-dropdown-wrap">
-                                    <select name="disableForks" @change="${disableForksChange}">
-
-                                        ${!channelViewModel.channel.disableForks ? $h`
-                                            <option value="false" selected>Copyleft / CC0</option>
-                                            <option value="true">Copyright</option>
-                                        ` : $h`
-                                            <option value="false">Copyleft / CC0</option>
-                                            <option value="true" selected>Copyright</option>
-                                        `}
-
-
-                                    </select>
-                                </div>
-                            </div>
-                        </li>
-
-                        ${!channelViewModel.channel.disableForks ? $h`
-
-                            <li>
-                                <div class="item-content">
-                                  <div class="item-inner">
-                                    <div class="item-text">Use Creative Commons <a href="https://creativecommons.org/choose/zero/" class="external" target="_blank">CC0 tool</a> to generate licensing text.</div>
+                                  <div class="item-title-row">
+                                    <div class="item-title">Attributes</div>
+                                  </div>
+                                  <div class="item-subtitle">
+                                    Add attributes to give specific items special properties. Items can be sorted and filtered by attribute and each attribute type gets a token owner leaderboard.
                                   </div>
                                 </div>
-                              </li>
+                              </div>
+                            </a>
+                        </li>
 
-                        ` : $h`<span />`}
 
-
-
-                        <li class="license-editor">
-                            <div class="item-content item-input">
+                        <li>
+                            <a class="item-link" data-popup=".edit-mint-info-popup" class="popup-open">
+                              <div class="item-content">
+                                <div class="item-media">                                    
+                                    <i class="f7-icons">hammer</i>
+                                </div>
                                 <div class="item-inner">
-                                    <div class="item-title item-label">License</div>
-
-                                    <div id="${licenseToolbarId}">
-
-                                        <!-- Add a bold button -->
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-strike"></button>
-                                        <button class="ql-underline"></button>
-
-                                    </div>
-
-                                    <div class="editor bg-color-white text-color-black channel-editor" id="${licenseEditorId}" tabindex="13"></div>
-
+                                  <div class="item-title-row">
+                                    <div class="item-title">Mint Info</div>
+                                  </div>
+                                  <div class="item-subtitle">
+                                    Set mint price and default royalty %.
+                                  </div>
                                 </div>
-                            </div>
+                              </div>
+                            </a>
                         </li>
 
-                        <li class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Git Provider</div>
-                                <div class="item-input-wrap input-dropdown-wrap">
-                                    <select name="gitProvider" @change="${gitProviderChange}" tabindex="14">
 
-                                        ${!channelViewModel.channel.gitProvider || channelViewModel.channel.gitProvider == "default" ? $h`
-                                            <option value="default" selected>Default</option>
-                                        ` : $h`
-                                            <option value="default">Default</option>
-                                        `}
-
-                                        ${channelViewModel.channel.gitProvider == "github" ? $h`
-                                            <option value="github" selected>GitHub</option>
-                                        ` : $h`
-                                            <option value="github">GitHub</option>
-                                        `}
-
-
-                                        ${channelViewModel.channel.gitProvider == "gitlab" ? $h`
-                                            <option value="gitlab" selected>GitLab</option>
-                                        ` : $h`
-                                            <option value="gitlab">GitLab</option>
-                                        `}
-
-
-                                    </select>
+                        <li>
+                            <a class="item-link" data-popup=".edit-licensing-popup" class="popup-open">
+                              <div class="item-content">
+                                <div class="item-media">                                    
+                                    <i class="f7-icons">doc_text</i>
                                 </div>
-                            </div>
+                                <div class="item-inner">
+                                  <div class="item-title-row">
+                                    <div class="item-title">Features & Licensing</div>
+                                  </div>
+                                  <div class="item-subtitle">
+                                    Add copyleft or copyright information.
+                                  </div>
+                                </div>
+                              </div>
+                            </a>
                         </li>
 
+
+                        <li>
+                            <a class="item-link" data-popup=".edit-production-config-popup" class="popup-open">
+                              <div class="item-content">
+                                <div class="item-media">                                    
+                                    <i class="f7-icons">gear</i>
+                                </div>
+                                <div class="item-inner">
+                                  <div class="item-title-row">
+                                    <div class="item-title">Configure Large Reader</div>
+                                  </div>
+                                  <div class="item-subtitle">
+                                    Configure production deployment details and set up marketplaces and external links like Twitter and Discord.
+                                  </div>
+                                </div>
+                              </div>
+                            </a>
+                        </li>
 
                     </ul>
                 </div>
@@ -387,34 +135,36 @@
                             <div class="right">
                                 <!-- Link to close popup -->
                                 <a class="link popup-close">Close</a>
-                              </div>
+                            </div>
                         </div>
                     </div>
                     <div class="page-content">
-                        
+
                         <form @submit="${addAttributeSubmit}" id="save-attribute-form">
                             <input type="hidden" name="id" />
 
                             <div class="list list-strong">
-                    
+
                                 <ul>
                                     <li>
                                         <div class="item-content item-input">
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Trait Type</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="text" name="traitType" placeholder="Enter trait type" required  minlength="3" tabindex="20" />
+                                                    <input type="text" name="traitType" placeholder="Enter trait type"
+                                                        required minlength="3" tabindex="20" />
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                        
+
                                     <li>
                                         <div class="item-content item-input">
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Options</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="text" placeholder="Enter options" name="values" id="options-input"  tabindex="21" />
+                                                    <input type="text" placeholder="Enter options" name="values"
+                                                        id="options-input" tabindex="21" />
                                                 </div>
                                             </div>
                                         </div>
@@ -428,6 +178,742 @@
             </div>
         </div>
 
+        <div class="popup edit-external-links-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit External Link</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+
+                        <form @submit="${addExternalLinkSubmit}" id="save-external-links-form">
+
+                            <input type="hidden" name="id" />
+
+                            <div class="list list-strong">
+
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Name</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="name" placeholder="Enter link text" required minlength="3" tabindex="60" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Link</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" placeholder="http://some-url.com" name="link" tabindex="61" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup edit-marketplaces-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit Marketplaces</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+
+                        <form @submit="${addMarketplaceSubmit}" id="save-marketplaces-form">
+
+                            <input type="hidden" name="id" />
+
+                            <div class="list list-strong">
+
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Name</div>
+                                                <div class="item-input-wrap">
+
+                                                    <select name="name">
+                                                        <option value="OpenSea">OpenSea</option>
+                                                        <option value="OpenSea">LooksRare</option>
+                                                        <option value="OpenSea">Blur</option>
+                                                    </select>
+
+                                                    <input type="text" name="name" placeholder="Enter collection link" required minlength="3" tabindex="60" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Link</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" placeholder="http://some-url.com" name="link" tabindex="61" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="popup edit-basics-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit Basic Info</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        <div class="list">
+                            <ul>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Title</div>
+                                            <div class="item-input-wrap">
+                                                ${channelViewModel.editable ? $h`
+                                                <input type="text" name="title" placeholder="Collection title"
+                                                    value="${channelViewModel?.channel?.title}" required minlength="3"
+                                                    tabindex="1" />
+                                                ` : $h`
+                                                <input type="text" name="title" placeholder="Collection title"
+                                                    value="${channelViewModel?.channel?.title}" required minlength="3"
+                                                    tabindex="1" disabled />
+                                                `}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Symbol</div>
+                                            <div class="item-input-wrap">
+
+                                                ${channelViewModel.editable ? $h`
+                                                <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
+                                                    value="${channelViewModel?.channel?.symbol}" tabindex="2"
+                                                    required />
+                                                ` : $h`
+                                                <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
+                                                    value="${channelViewModel?.channel?.symbol}" tabindex="2" required
+                                                    disabled />
+                                                `}
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Description</div>
+
+                                            <div id="${descriptionToolbarId}">
+
+                                                <select class="ql-header">
+                                                    <option selected></option>
+                                                    <option value="1">Heading</option>
+                                                    <option value="2">Subheading</option>
+                                                    <option value="3">Normal</option>
+                                                </select>
+
+
+                                                <!-- Add a bold button -->
+                                                <button class="ql-bold"></button>
+                                                <button class="ql-italic"></button>
+                                                <button class="ql-strike"></button>
+                                                <button class="ql-underline"></button>
+
+                                            </div>
+
+                                            <div class="editor bg-color-white text-color-black channel-editor"
+                                                id="${descriptionEditorId}" tabindex="3"></div>
+
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Language</div>
+                                        <!-- additional "input-dropdown-wrap" class -->
+                                        <div class="item-input-wrap input-dropdown-wrap">
+                                            <select name="language" tabindex="9">
+                                                ${languages.map( language => $h`
+                                                ${channelViewModel?.channel?.language == language ? $h`
+                                                <option value="${language}" selected>${language}</option>
+                                                ` : $h`
+                                                <option value="${language}">${language}</option>
+                                                `}
+                                                `)}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup edit-images-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit Cover Image & Banner</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        <div class="list">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Collection Avatar</div>
+                                            <div class="item-input-wrap">
+
+                                                ${channelViewModel.coverImage ? $h`
+                                                <img class="avatar-preview" src="${channelViewModel?.coverImage.url}" />
+
+                                                ` : $h`
+                                                <i class="material-icons avatar-preview">image</i>
+                                                `}
+
+                                                <input type="button" class="button button-fill browse-file"
+                                                    value="Browse" @click="${handleCoverImageBrowseClick}"
+                                                    tabindex="4" />
+                                                <input type="hidden" name="coverImageId"
+                                                    value="${channelViewModel?.coverImage?.cid}" />
+                                                <input type="file" id="cover-image-browse" style="display: none"
+                                                    @change="${handleCoverImageChange}" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Collection Banner</div>
+                                            <div class="item-input-wrap">
+
+                                                ${channelViewModel?.coverBanner ? $h`
+                                                <img class="cover-banner-preview"
+                                                    src="${channelViewModel?.coverBanner.url}" />
+                                                ` : $h`
+                                                <i class="material-icons cover-banner-preview">image</i>
+                                                `}
+
+                                                <input type="button" class="button button-fill browse-file"
+                                                    value="Browse" @click="${handleBannerBrowseClick}" tabindex="5" />
+                                                <input type="hidden" name="coverBannerId"
+                                                    value="${channelViewModel?.coverBanner?.cid}" />
+
+                                                <input type="file" id="banner-browse" style="display: none"
+                                                    @change="${handleBannerChange}" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup edit-attributes-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit Attributes</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+
+                        <div class="block">
+
+                            ${attributeOptions?.length > 0 ? $h`
+
+                                <ul>
+        
+                                    ${attributeOptions?.map( (ao) => $h`
+                                    <li>
+                                        <span style="width: 100px; margin-right: 10px;">${ao.traitType}</span>
+        
+                                        ${channelViewModel.editable ? $h`
+                                        <a class="link" href="#" data-id="${ao.id}" @click="${editCategory}">Edit</a> | <a
+                                            class="link" href="#" data-id="${ao.id}" @click="${deleteOptionClick}">Delete</a>
+                                        ` : $h` `}
+        
+                                        <p>
+                                            ${ao.values?.map( (v,index) => $h`
+        
+                                        <div class="chip chip-outline">
+                                            <div class="chip-label">${v}</div>
+                                        </div>
+        
+                                        `)}
+                                        </p>
+                                    </li>
+                                    `)}
+        
+                                </ul>
+    
+                            ` : $h`
+                                No attributes exist.
+                            `}
+        
+                            ${channelViewModel.editable ? $h`
+                                <a class="button button-outline add-category-button" @click="${addCategoryClick}" tabindex="10">Add Attribute Type</a>
+                            ` : $h` `}
+
+                            
+    
+                            <input type="hidden" name="attributeOptions" value="${JSON.stringify(attributeOptions)}" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup edit-mint-info-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit Mint Info</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        <div class="list">
+                            <ul>
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Mint Price in ETH</div>
+                                            <div class="item-input-wrap">
+
+                                                ${channelViewModel.editable ? $h`
+                                                <input type="number" placeholder="Enter price for one piece (eg 0.08)"
+                                                    @change="${mintPriceChange}" step="any" tabindex="11"
+                                                    value="${channelViewModel?.channel?.mintPrice}" />
+                                                ` : $h`
+                                                <input type="number" placeholder="Enter price for one piece (eg 0.08)"
+                                                    @change="${mintPriceChange}" step="any" tabindex="11"
+                                                    value="${channelViewModel?.channel?.mintPrice}" disabled />
+                                                `}
+
+                                                <input type="hidden" name="mintPrice" value="${mintPrice}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                ${mintPrice ? $h`
+                                <li tabindex="-1">
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-text"> You will receive <strong>${mintPrice}</strong> ETH
+                                                (${mintPriceWei} wei) for
+                                                each mint.</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                ` : $h``}
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Marketplace Creator Fee %</div>
+                                            <div class="item-input-wrap">
+
+                                                ${channelViewModel.editable ? $h`
+                                                <input type="number" name="royaltyPercent" placeholder="Royalty %"
+                                                    @change="${royaltyChange}" step="any" tabindex="12"
+                                                    value="${channelViewModel?.channel?.royaltyPercent}" />
+                                                ` : $h`
+                                                <input type="number" name="royaltyPercent" placeholder="Royalty %"
+                                                    @change="${royaltyChange}" step="any" tabindex="12"
+                                                    value="${channelViewModel?.channel?.royaltyPercent}" disabled />
+                                                `}
+
+                                                <input type="hidden" name="sellerFeeBasisPoints"
+                                                    value="${channelViewModel?.channel?.sellerFeeBasisPoints}" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                                ${channelViewModel?.channel?.royaltyPercent ? $h`
+                                <li tabindex="-1">
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-text">
+                                                You will receive a <strong>${channelViewModel?.channel?.royaltyPercent}%</strong> for each sale on OpenSea, etc. Confirm this
+                                                value when you set up your collection on the marketplace. This just presets it for you.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                ` : $h``}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup edit-licensing-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Edit Features & Licensing</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        <div class="list">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Features and Licensing</div>
+                                        <div class="item-input-wrap input-dropdown-wrap">
+                                            <select name="disableForks" @change="${disableForksChange}">
+
+                                                ${!channelViewModel.channel.disableForks ? $h`
+                                                <option value="false" selected>Copyleft / CC0</option>
+                                                <option value="true">Copyright</option>
+                                                ` : $h`
+                                                <option value="false">Copyleft / CC0</option>
+                                                <option value="true" selected>Copyright</option>
+                                                `}
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                ${!channelViewModel.channel.disableForks ? $h`
+
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <div class="item-text">Use Creative Commons <a
+                                                    href="https://creativecommons.org/choose/zero/" class="external"
+                                                    target="_blank">CC0 tool</a> to generate licensing text.</div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                ` : $h`<span />`}
+
+
+
+                                <li class="license-editor">
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">License</div>
+
+                                            <div id="${licenseToolbarId}">
+
+                                                <!-- Add a bold button -->
+                                                <button class="ql-bold"></button>
+                                                <button class="ql-italic"></button>
+                                                <button class="ql-strike"></button>
+                                                <button class="ql-underline"></button>
+
+                                            </div>
+
+                                            <div class="editor bg-color-white text-color-black channel-editor"
+                                                id="${licenseEditorId}" tabindex="13"></div>
+
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup edit-production-config-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Configure Large Reader</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+                        <div class="list">
+                            <ul>
+
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Git Provider</div>
+                                        <div class="item-input-wrap input-dropdown-wrap">
+                                            <select name="gitProvider" @change="${gitProviderChange}" tabindex="14">
+
+                                                ${!channelViewModel.channel.gitProvider ||
+                                                channelViewModel.channel.gitProvider == "default" ? $h`
+                                                <option value="default" selected>Default</option>
+                                                ` : $h`
+                                                <option value="default">Default</option>
+                                                `}
+
+                                                ${channelViewModel.channel.gitProvider == "github" ? $h`
+                                                <option value="github" selected>GitHub</option>
+                                                ` : $h`
+                                                <option value="github">GitHub</option>
+                                                `}
+
+
+                                                ${channelViewModel.channel.gitProvider == "gitlab" ? $h`
+                                                <option value="gitlab" selected>GitLab</option>
+                                                ` : $h`
+                                                <option value="gitlab">GitLab</option>
+                                                `}
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Production Hostname</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="productionHostname" placeholder="http://localhost" value="${channelViewModel?.channel?.productionHostname}" tabindex="40" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Production Base URI</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="productionBaseURI" placeholder="/" value="${channelViewModel?.channel?.productionBaseURI}" tabindex="41" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Show Mint Page?</div>
+                                            <div class="item-input-wrap">
+
+                                                <select name="showMintPage" @change="${showMintChange}">
+
+                                                    ${channelViewModel.channel.showMintPage == true ? $h`
+                                                        <option value="false">No</option>
+                                                        <option value="true" selected>Yes</option>
+                                                    ` : $h`
+                                                        <option value="false" selected>No</option>
+                                                        <option value="true">Yes</option>
+                                                    `}
+    
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Show Activity Page?</div>
+                                            <div class="item-input-wrap">
+
+                                                <select name="showActivityPage" @change="${showActivityChange}">
+
+                                                    ${channelViewModel.channel.showActivityPage == true ? $h`
+                                                        <option value="false">No</option>
+                                                        <option value="true" selected>Yes</option>
+                                                    ` : $h`
+                                                        <option value="false" selected>No</option>
+                                                        <option value="true">Yes</option>
+                                                    `}
+    
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">External Links</div>
+                                            <div class="block">
+
+                                                ${externalLinks?.length > 0 ? $h`
+
+                                                    <ul style="padding-left: 0px;">
+                            
+                                                        ${externalLinks?.map( (el) => $h`
+                                                        <li>
+                                                            <span style="width: 100px; margin-right: 10px;">${el.name}</span>
+                            
+                                                            <a class="link" href="#" data-id="${el.id}" @click="${editExternalLink}">Edit</a> | 
+                                                            <a class="link" href="#" data-id="${el.id}" @click="${deleteExternalLink}">Delete</a>
+                                                        </li>
+                                                        `)}
+                            
+                                                    </ul>
+
+                        
+                                                ` : $h`
+                                                    No external links exist.
+                                                `}
+                            
+                                                <a class="button button-outline " @click="${addExternalLinkClick}" tabindex="10">Add External Link</a>
+                                                         
+                                                <input type="hidden" name="externalLinks" value="${JSON.stringify(externalLinks)}" />
+               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Marketplaces</div>
+                                            <div class="block">
+
+                                                ${marketplaces?.length > 0 ? $h`
+
+                                                    <ul style="padding-left: 0px;">
+                            
+                                                        ${marketplaces?.map( (m) => $h`
+                                                        <li>
+                                                            <span style="width: 100px; margin-right: 10px;">${m.name}</span>
+                            
+                                                            <a class="link" href="#" data-id="${m.id}" @click="${editMarketplace}">Edit</a> | 
+                                                            <a class="link" href="#" data-id="${m.id}" @click="${deleteMarketplace}">Delete</a>
+                                                        </li>
+                                                        `)}
+                            
+                                                    </ul>
+
+                        
+                                                ` : $h`
+                                                    No marketplaces exist.
+                                                `}
+                            
+                                                <a class="button button-outline " @click="${addMarketplaceClick}" tabindex="10">Add Marketplace</a>
+
+                    
+                                                
+                        
+                                                <input type="hidden" name="marketplaces" value="${JSON.stringify(marketplaces)}" />
+               
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -435,7 +921,7 @@
 </template>
 
 <style>
-    
+
 
 
 
@@ -499,7 +985,7 @@
             channelViewModel.channel.royaltyPercent = undefined
 
             if (value) {
-                channelViewModel.channel.royaltyPercent = value 
+                channelViewModel.channel.royaltyPercent = value
                 channelViewModel.channel.sellerFeeBasisPoints = parseInt(value * 100)
             }
 
@@ -508,7 +994,7 @@
         const mintPriceChange = async (e) => {
 
             setMintPrice(e.currentTarget.value)
- 
+
             await $update()
 
         }
@@ -529,7 +1015,7 @@
             let coverImage = await imageService.newFromBuffer(imageBuffer)
 
             const coverImageUpdatedEvent = new CustomEvent('cover-image-updated', {
-                detail: { 
+                detail: {
                     coverImage: coverImage
                 }
             })
@@ -555,7 +1041,7 @@
             let coverBanner = await imageService.newFromBuffer(imageBuffer)
 
             const coverBannerUpdatedEvent = new CustomEvent('cover-banner-updated', {
-                detail: { 
+                detail: {
                     coverBanner: coverBanner
                 }
             })
@@ -579,22 +1065,30 @@
         }
 
         const disableForksChange = async (e) => {
-            
+
             channelViewModel.channel.disableForks = $(e.currentTarget).val() == "true"
 
             showCC0Link = !channelViewModel.channel.disableForks
 
             await $update()
 
-        } 
+        }
 
+        const showMintChange = async (e) => {
+            channelViewModel.channel.showMintPage = $(e.currentTarget).val() == "true"
+            await $update()
+        }
+
+        const showActivityChange = async (e) => {
+            channelViewModel.channel.showActivityPage = $(e.currentTarget).val() == "true"
+            await $update()
+        }
+        
         const gitProviderChange = async (e) => {
-            
+
             channelViewModel.channel.gitProvider = $(e.currentTarget).val()
             await $update()
-        } 
-
-
+        }
 
 
         const editCategory = async function (e) {
@@ -613,23 +1107,6 @@
 
         }
 
-        const addCategoryClick = async (e) => {
-            
-            let category = {
-                id: uuidv4(),
-                traitType: '',
-                values: []
-            }
-
-            $f7.form.fillFromData('#save-attribute-form', category)
-
-            await $update()
-
-
-            $f7.popup.open('.edit-category-popup')
-            
-        }
-
         const deleteOptionClick = async (e) => {
 
             e.preventDefault()
@@ -642,41 +1119,21 @@
 
         }
 
-        // const addOption = async (e) => {
+        const addCategoryClick = async (e) => {
 
-        //     e.preventDefault()
+            let category = {
+                id: uuidv4(),
+                traitType: '',
+                values: []
+            }
 
-        //     let data = $f7.form.convertToData('#add-option-form')
+            $f7.form.fillFromData('#save-attribute-form', category)
 
-        //     editingCategory?.values?.push(data.value)
+            await $update()
 
-        //     $f7.form.fillFromData('#add-option-form', { value: ''})
+            $f7.popup.open('.edit-category-popup')
 
-
-        //     await $update()
-        // }
-
-        // const optionsChange = async (e) => {
-
-        //     let id = $(e.currentTarget).data('id')
-        //     if (!id) return
-
-        //     attributeOptions.find(ao => ao.id == id).values = JSON.parse(e.currentTarget.value).map(v => v["value"])
-
-        //     await $update()
-
-        // }
-
-        // const categoryNameChange = async (e) => {
-
-        //     let id = $(e.currentTarget).data('id')
-        //     if (!id) return
-
-        //     attributeOptions.find(ao => ao.id == id).traitType = $(e.currentTarget).val()
-
-        //     await $update()
-
-        // }
+        }
 
         const addAttributeSubmit = async (e) => {
 
@@ -687,7 +1144,123 @@
 
         }
 
-        $(document).on('popup:closed', '.edit-category-popup', async (e)=> {
+
+
+        const editExternalLink = async function (e) {
+
+            e.preventDefault()
+
+            let id = $(e.target).data('id')
+
+            let externalLink = externalLinks.find((el) => el.id == id)
+
+            $f7.form.fillFromData('#save-external-links-form', externalLink)
+
+            await $update()
+
+            $f7.popup.open('.edit-external-links-popup')
+
+        }
+
+        const deleteExternalLink = async (e) => {
+
+            e.preventDefault()
+
+            let id = $(e.currentTarget).data('id')
+
+            console.log(id)
+
+            externalLinks = externalLinks.filter(el => el.id != id)
+
+            await $update()
+
+        }
+
+        const addExternalLinkClick = async (e) => {
+
+            let externalLink = {
+                id: uuidv4(),
+                name: '',
+                link: ''
+            }
+
+            $f7.form.fillFromData('#save-external-links-form', externalLink)
+
+            await $update()
+
+            $f7.popup.open('.edit-external-links-popup')
+
+        }
+
+        const addExternalLinkSubmit = async (e) => {
+
+            e.preventDefault()
+
+            $f7.popup.close('.edit-external-links-popup')
+
+        }
+
+
+
+
+
+        const editMarketplace = async function (e) {
+
+            e.preventDefault()
+
+            let id = $(e.target).data('id')
+
+            let marketplace = marketplaces.find((el) => el.id == id)
+
+            $f7.form.fillFromData('#save-marketplaces-form', marketplace)
+
+            await $update()
+
+            $f7.popup.open('.edit-marketplaces-popup')
+
+        }
+
+        const deleteMarketplace = async (e) => {
+
+            e.preventDefault()
+
+            let id = $(e.currentTarget).data('id')
+
+            marketplaces = marketplaces.filter(m => m.id != id)
+
+            await $update()
+
+        }
+
+        const addMarketplaceClick = async (e) => {
+
+            let marketplace = {
+                id: uuidv4(),
+                name: '',
+                link: ''
+            }
+
+            $f7.form.fillFromData('#save-marketplaces-form', marketplace)
+
+            await $update()
+
+            $f7.popup.open('.edit-marketplaces-popup')
+
+        }
+
+        const addMarketplaceSubmit = async (e) => {
+
+            e.preventDefault()
+
+            $f7.popup.close('.edit-marketplaces-popup')
+
+        }
+
+
+
+
+
+        $(document).on('popup:closed', '.edit-category-popup', async (e) => {
 
             let data = $f7.form.convertToData('#save-attribute-form')
 
@@ -709,18 +1282,63 @@
             await $update()
         })
 
+        $(document).on('popup:open', '.edit-category-popup', async (e) => {
 
-        $(document).on('popup:open', '.edit-category-popup', async (e)=> {
-            
             new Tagify(document.getElementById(`options-input`))
             $('input[name="traitType"]').focus()
 
         })
 
-        $(document).on('focus', 'input[name="values"]', async (e)=> {
-            
-          console.log('focus')
+ 
+        $(document).on('popup:closed', '.edit-external-links-popup', async (e) => {
 
+            let data = $f7.form.convertToData('#save-external-links-form')
+
+            if (data.name) {
+                let externalLink = {
+                    id: data.id,
+                    name: data.name,
+                    link: data.link
+                }
+
+                let existing = externalLinks.find(el => el.id == externalLink.id)
+
+                if (existing) {
+                    Object.assign(existing, externalLink)
+                } else {
+                    externalLinks.push(externalLink)
+                }
+            }
+
+
+
+            await $update()
+        })
+
+        $(document).on('popup:closed', '.edit-marketplaces-popup', async (e) => {
+
+            let data = $f7.form.convertToData('#save-marketplaces-form')
+
+            if (data.name) {
+
+                let marketplace = {
+                    id: data.id,
+                    name: data.name,
+                    link: data.link
+                }
+
+                let existing = marketplaces.find(el => el.id == marketplace.id)
+
+                if (existing) {
+                    Object.assign(existing, marketplace)
+                } else {
+                    marketplaces.push(marketplace)
+                }
+            }
+
+
+
+            await $update()
         })
 
 
@@ -736,6 +1354,8 @@
         let showCC0Link = !channelViewModel.channel.disableForks
 
         let attributeOptions = []
+        let externalLinks = []
+        let marketplaces = []
 
         let mintPrice
         let mintPriceWei
@@ -743,11 +1363,20 @@
 
         //Set values if passed in
         if (channelViewModel) {
+
             setMintPrice(channelViewModel.channel.mintPrice)
             setRoyalty(channelViewModel.channel.royaltyPercent)
 
             if (channelViewModel?.channel?.attributeOptions?.length > 0) {
                 attributeOptions = channelViewModel.channel.attributeOptions
+            }
+
+            if (channelViewModel.channel.externalLinks?.length > 0) {
+                externalLinks = channelViewModel.channel.externalLinks
+            }
+
+            if (channelViewModel.channel.marketplaces?.length > 0) {
+                marketplaces = channelViewModel.channel.marketplaces
             }
 
         }

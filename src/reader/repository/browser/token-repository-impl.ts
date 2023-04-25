@@ -24,7 +24,7 @@ class TokenRepositoryBrowserImpl implements TokenRepository {
             let result = await axios.get(`${this.baseURI}sync/tokens/${_id}/token.json`)
             return Object.assign(new Token(), result.data)
         } catch(ex) {
-            console.log(ex)
+            // console.log(ex)
         }
 
     }

@@ -15,45 +15,49 @@
               <!-- Slides -->
               <div class="swiper-slide">
                 
-                <div class="block-title block-title-medium no-margin-bottom margin-top">Choose your features and licensing</div>
+                <div class="fixed-width-content center">
 
-                <div class="block split-row">
+                  <div class="block-title block-title-medium no-margin-bottom margin-top">Choose your features and licensing</div>
 
-                  <div class="block copyright-block no-margin-bottom">
-
-                    <strong>Copyright</strong>
-
-                    <ul>
-                      <li>Use your own licensing terms.</li>
-                      <li>Restrict who can host the content (DMCA).</li>
-                    </ul>
-
-                    <button class="button color-red button-outline" @click="${copyrightClick}">Disable forking</button>
-                    
+                  <div class="block split-row">
+  
+                    <div class="block copyright-block no-margin-bottom">
+  
+                      <strong>Copyright</strong>
+  
+                      <ul>
+                        <li>Use your own licensing terms.</li>
+                        <li>Restrict who can host the content (DMCA).</li>
+                      </ul>
+  
+                      <button class="button color-red button-outline" @click="${copyrightClick}">Disable forking</button>
+                      
+                    </div>
+  
+                    <div class="block copyleft-block">
+  
+                      <strong>Copyleft</strong>
+  
+                      <ul>
+                        <li>Free as in speech.</li>
+                        <li>Allow sharing, remixes, and derivatives.</li>
+                        <li>Anyone can host the content.</li>
+                        <li><a href="https://creativecommons.org/share-your-work/public-domain/cc0/"></a>CC0 Content</li>
+                      </ul>
+  
+                      <button class="button button-fill" @click="${copyleftClick}">Enable all features</button>
+  
+                    </div>
+  
                   </div>
-
-                  <div class="block copyleft-block">
-
-                    <strong>Copyleft</strong>
-
-                    <ul>
-                      <li>Free as in speech.</li>
-                      <li>Allow sharing, remixes, and derivatives.</li>
-                      <li>Anyone can host the content.</li>
-                      <li><a href="https://creativecommons.org/share-your-work/public-domain/cc0/"></a>CC0 Content</li>
-                    </ul>
-
-                    <button class="button button-fill" @click="${copyleftClick}">Enable all features</button>
-
-                  </div>
-
+                  
                 </div>
 
               </div>
 
               <div class="swiper-slide">
 
-                <form id="create-channel-form" @submit="${formSubmit}">
+                <form id="create-channel-form" @submit="${formSubmit}" class="fixed-width-content center">
       
                   <div class="block-title block-title-medium">Create Collection</div>
 
@@ -180,6 +184,14 @@
 
       e.preventDefault()
 
+      let form = document.getElementById('create-channel-form')
+
+      if (!form.checkValidity()) {
+        $f7.popup.open('.edit-basics-popup')
+        return
+      }
+
+
       //Get data
       let channel = Object.assign(new Channel(), $f7.form.convertToData('#create-channel-form'))
 
@@ -197,13 +209,27 @@
         channel.attributeOptions = []
       }
 
+      if (channel.externalLinks) {
+        channel.externalLinks = JSON.parse(channel.externalLinks)
+      } else {
+        channel.externalLinks = []
+      }
+
+      if (channel.marketplaces) {
+        channel.marketplaces = JSON.parse(channel.marketplaces)
+      } else {
+        channel.marketplaces = []
+      }
+
+
       //If the author doesn't exist insert a 
       if (channel.authorId) {
         await authorService.insertIfNew(channel.authorId)
       }
 
       channel.disableForks = channel.disableForks == "true"
-
+      channel.showMintPage = channel.showMintPage == "true"
+      channel.showActivityPage = channel.showActivityPage == "true"
 
       //Save
       try {
@@ -231,10 +257,11 @@
 
     $on('pageInit', async (e, page) => {
 
+      $('#create-channel-form').attr('novalidate','novalidate')
+
+
       //Make sure quill is configured
       await quillEditorService.init()
-
-
 
       // //Categories
       // let categoryTagify = new Tagify(document.getElementById('category'))

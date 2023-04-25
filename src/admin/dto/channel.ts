@@ -115,6 +115,32 @@ class Channel {
     @Allow()
     pubDate?:string
 
+
+    /** Production config */
+
+    @Allow()
+    productionHostname?:string
+
+    @Allow()
+    productionBaseURI?:string
+
+    @Allow()
+    showMintPage?:boolean
+
+    @Allow()
+    showActivityPage?:boolean
+
+    @Allow()
+    marketplaces?:MarketplaceConfig
+
+    @Allow()
+    externalLinks?:ExternalLinkConfig
+
+    /** End production config */
+
+
+
+
     @Allow()
     importSuccess?:boolean
 
@@ -125,6 +151,17 @@ class Channel {
     lastUpdated?:string
 
 }
+
+interface MarketplaceConfig {
+    name:string
+    link?:string
+}
+
+interface ExternalLinkConfig {
+    name:string
+    link?:string
+}
+
 
 export {
     Channel

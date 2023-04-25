@@ -36,6 +36,7 @@ import { Token } from "./dto/token.js"
 import { SchemaService } from "../reader/service/core/schema-service.js"
 import { ContractStateService } from "./service/contract-state-service.js"
 import { ItemService } from "../reader/service/item-service.js"
+import { TokenService } from "./service/token-service.js"
 
 
 
@@ -146,6 +147,7 @@ let sync = async () => {
   let transactionIndexerService:TransactionIndexerService = container.get("TransactionIndexerService")
   let transactionService:TransactionService = container.get("TransactionService")
   let blockService:BlockService = container.get("BlockService")
+  let tokenService:TokenService = container.get("TokenService")
 
   let tokenOwnerService:TokenOwnerService = container.get("TokenOwnerService")
   let processedTransactionService: ProcessedTransactionService = container.get("ProcessedTransactionService")
@@ -249,9 +251,9 @@ let sync = async () => {
 
     await createDirectories(config)
 
-    console.log(`${Object.keys(indexResult.processedTransactionViewModels).length} transactions to update. Writing files.`)
-    console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
-    console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
+    // console.log(`${Object.keys(indexResult.processedTransactionViewModels).length} transactions to update. Writing files.`)
+    // console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
+    // console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
 
 
     //Write transactions to file
@@ -567,8 +569,11 @@ let sync = async () => {
       fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
     }
 
+    let latest = await tokenService.getLatest()
+
     fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({
       _id: indexResult?.mostRecentTransaction?.transaction._id,
+      latestToken: latest?.tokenId,
       lastUpdated: new Date().toJSON()
     })))
 

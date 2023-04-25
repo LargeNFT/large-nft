@@ -129,244 +129,258 @@
                 </token-toolbar>
            
                 <div class="page-content">
+
+
+                    <div class="item-show">
+                                
+                        <div class="left">
+                    
+                            <div class="block animation-card ">
+                    
+                                <div class="animation-content <%= itemViewModel.item.coverImageAsAnimation ? 'animation-image' : ''%>">
+                    
+                                    <% if (itemViewModel.item.coverImageAsAnimation) { %>
+                                        <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>"  />
+                                    <% } else { %>
+                                        <%~itemViewModel.animationContentHTML %>
+                                    <% } %>
+                    
+                                </div>
+                    
+
+                                <div class="block split-row-both">
+                                    <div>
+                                        <a class="button button-outline back-token-button margin-bottom color-gray" href="#" >
+                                            <i class="icon f7-icons color-blue">arrow_left</i>
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <% if (itemViewModel.item.next) { %>
+                                            <a class="button button-fill continue-button margin-bottom" href="#">
+                                                Continue <i class="f7-icons">arrow_right</i>
+                                            </a>
+                                        <% } %>
+                                    </div>
+                            
+                                </div>
+                    
+                            </div> 
+                    
+                            <div class="hidden-on-load">
+
+                                ${transactionsViewModel?.transactions?.length > 0 ? $h`
+              
+                                  <div class="block-title block-title-medium">
+                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel?.lastUpdated).fromNow()}</div>
+                                    Activity
+                                  </div>
+                                  <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel?.rowItemViewModels}" token="<%= itemViewModel.item.tokenId %>"></transaction-row>
+                           
+                                ` : $h`
+
+                                  <div class="block-title block-title-medium">
+                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel?.lastUpdated).fromNow()}</div>
+                                    Activity
+                                  </div>
+                                  <div class="block">
+                                    No activity.
+                                  </div>
+                                
+                                `}
+              
+                            </div>
+
+                            <div class="hide-on-pageinit">
+
+                                <div class="card skeleton-text">
+                                    <div class="card-header">Activity</div>
+                                    <div class="card-content card-content-padding data-table">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                                    </div>
+
+                                  </div>
+
+                            </div>
+
+
+                        </div>
+                    
+                        <div class="right">
+                            
+                            <div class="card" >
+                                <form class="card-content card-content-padding" id="token_navigator_form">
+                                  <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="<%= itemViewModel?.item?.tokenId %>" min="0"  />
+                                  <span class="paging-label">Enter Token ID</span>
+                                  <button class="goto-button button button-small button-fill">Go</button>
+                                </form>
+                            </div>
+                    
+                            <% if (itemViewModel.item.previous || itemViewModel.item.next) { %>
+                    
+                                <div class="card large-only">
+                                  <div class="card-content card-content-padding">
+                                    <div class="segmented">
+                    
+                                      <% if (itemViewModel.item.previous) { %>
+                                        <a class="button button-outline back-token-button" data-transition="none">
+                                            <i class="icon f7-icons">arrow_left</i>
+                                          </a>
+                                      <% } else { %>
+                                        <a class="button button-outline" href="#"></a>
+                                      <% } %>
+                    
+                    
+                                      <% if (itemViewModel.item.next) { %>
+                                        <a class="button button-outline continue-button" data-transition="none">
+                                            <i class="f7-icons">arrow_right</i>
+                                          </a>
+                                      <% } else { %>
+                                        <a class="button button-outline" href="#"></a>
+                                      <% } %>
+                    
+                                    </div>
+                                  </div>
+                                </div>
+                    
+                            <% } %>
+                    
+                    
+                    
+                     
+                            <% if (itemViewModel.channel.contractAddress) { %>
+
+                                <div class="hidden-on-load">
+                                    <div class="card">
+                                        <div class="card-content card-content-padding">
+                                            ${token?.currentOwnerId ? $h`
+                                                Owned by <a href="${link(`u/?address=${token?.currentOwnerId}`)}">${tokenOwnerDisplay}</a>
+                                            ` : $h`
+                                                NFT has not been <a href="${link(`mint.html`)}">minted</a> yet.
+                                            `}
+                                        </div>
+                                    </div>
+                                </div>
+
+                              
+                                <div class="data-table card">
+                            
+                                    <div class="card-header">
+                                        Token Info
+                                    </div>
+                                
+                                    <div class="card-content">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="label-cell">Contract Address</td>
+                                                    <td><a href="https://etherscan.io/token/<%= itemViewModel.channel.contractAddress %>" class="external">${contractAddress}</a></td>
+                                                </tr>
+                                        
+                                                <tr>
+                                                    <td class="label-cell">Token ID</td>
+                                                    <td>#<%= itemViewModel?.item?.tokenId %></td>
+                                                </tr>
+                                    
+                                                <tr>
+                                                    <td class="label-cell">Metadata</td>
+                                                    <td><a href="${metadataURL}" class="external">View</a></td>
+                                                </tr>                                        
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            <% } %>
+                    
+
+                    
+                            <div class="card">
+                                
+                                <div class="card-header">
+                                    Attributes
+                                </div>
+                    
+                                <div class="card-content data-table">
+                    
+                                    <% itemViewModel.attributeSelections?.map( (as)=> { %>
+                    
+                                        <% if (as.attributeTotal?.categoryPercent) { %>
+                                            <div class="button-outline attribute-value">
+                                                <div class="trait-type"><%= as.traitType %></div>
+                                                <div class="value"><a href="${link(`attribute/?attributeKey=<%= getAttributeKey(as) %>`)}"><%= as.value %></a></div>
+                                                <div class="category-percent"><%= as.attributeTotal?.categoryPercent  %> have this trait</div>
+                                            </div>                                                
+                                        <% } %>
+                    
+                    
+                                    <% }) %>
+                    
+                                </div>
+                    
+                            </div>
+                    
+                    
+                            <% 
+                            if (marketplaces?.length > 0) {
+                            %>
+                                <div class="card">
+                                    <div class="card-header">
+                                        View on Marketplaces
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="list simple-list">
+                                            <ul>
+                                            
+                                            <% 
+                                                for (let marketplace of marketplaces) { 
+                                            %>  
+                                                <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
+                                            <%
+                                                }
+                                            %>
+                        
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            <%
+                                }
+                            %>                                
+                    
+                            <% if (!itemViewModel.item.coverImageAsAnimation) { %>
+                                <div class="card">
+                                    <div class="card-header">Cover Image</div>
+                                    <div class="card-content">
+                                        <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>" class="cover-image-preview" />
+                                    </div>
+                                </div>
+                            <% } %>
+                    
+                    
+                    
+                        </div>
+                    
+                        <div class="left">
+                            <%~ include("footer", {baseURL: baseURL}) %>          
+                        </div>
+
+
+                    </div>
+
+
+<!--                     
                     <div class="swiper" id="swiper-<%= itemViewModel.item.tokenId  %>" style="display:none;">
-                        <!-- Slides wrapper -->
                         <div class="swiper-wrapper">
-                            <!-- Slides -->
                             <div class="swiper-slide" data-url="<%= itemViewModel.item.previous ? link(`t/${itemViewModel.item.previous.tokenId}`) : link(`index.html`) %>">
                             </div> 
 
-                            <div class="swiper-slide">
-                                                                
-                                <div class="item-show">
-                                
-                                    <div class="left">
-                                
-                                        <div class="block animation-card ">
-                                
-                                            <div class="animation-content <%= itemViewModel.item.coverImageAsAnimation ? 'animation-image' : ''%>">
-                                
-                                                <% if (itemViewModel.item.coverImageAsAnimation) { %>
-                                                    <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>"  />
-                                                <% } else { %>
-                                                    <%~itemViewModel.animationContentHTML %>
-                                                <% } %>
-                                
-                                            </div>
-                                
-
-                                            <div class="block split-row-both">
-                                                <div>
-                                                    <a class="button button-outline back-token-button margin-bottom color-gray" href="#" >
-                                                        <i class="icon f7-icons color-blue">arrow_left</i>
-                                                    </a>
-                                                </div>
-                                                <div>
-                                                    <% if (itemViewModel.item.next) { %>
-                                                        <a class="button button-fill continue-button margin-bottom" href="#">
-                                                            Continue <i class="f7-icons">arrow_right</i>
-                                                        </a>
-                                                    <% } %>
-                                                </div>
-                                        
-                                            </div>
-                                
-                                        </div> 
-                                
-                                        <div class="hidden-on-load">
-
-                                            ${transactionsViewModel?.transactions?.length > 0 ? $h`
-                          
-                                              <div class="block-title block-title-medium">
-                                                <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
-                                                Activity
-                                              </div>
-                                              <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}" token="<%= itemViewModel.item.tokenId %>"></transaction-row>
-                                       
-                                            ` : $h`<span />`}
-                          
-                                        </div>
-            
-                                        <div class="hide-on-pageinit">
-            
-                                            <div class="card skeleton-text">
-                                                <div class="card-header">Activity</div>
-                                                <div class="card-content card-content-padding data-table">
-                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                                                    lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                                                </div>
-            
-                                              </div>
-            
-                                        </div>
-
-
-                                    </div>
-                                
-                                    <div class="right">
-                                        
-                                        <div class="card" >
-                                            <form class="card-content card-content-padding" id="token_navigator_form">
-                                              <input type="number" class="goto-input" style="width: 60px; border: 1px solid #cccccc; display: inline-block;" value="<%= itemViewModel?.item?.tokenId %>" min="0"  />
-                                              <span class="paging-label">Enter Token ID</span>
-                                              <button class="goto-button button button-small button-fill">Go</button>
-                                            </form>
-                                        </div>
-                                
-                                        <% if (itemViewModel.item.previous || itemViewModel.item.next) { %>
-                                
-                                            <div class="card large-only">
-                                              <div class="card-content card-content-padding">
-                                                <div class="segmented">
-                                
-                                                  <% if (itemViewModel.item.previous) { %>
-                                                    <a class="button button-outline" href="<%= !itemViewModel.item.previous ? link(`index.html`) : link(`t/${itemViewModel.item.previous.tokenId}`) %>" data-transition="none">
-                                                        <i class="icon f7-icons">arrow_left</i>
-                                                      </a>
-                                                  <% } else { %>
-                                                    <a class="button button-outline" href="#"></a>
-                                                  <% } %>
-                                
-                                
-                                                  <% if (itemViewModel.item.next) { %>
-                                                    <a class="button button-outline" href="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>" data-transition="none">
-                                                        <i class="f7-icons">arrow_right</i>
-                                                      </a>
-                                                  <% } else { %>
-                                                    <a class="button button-outline" href="#"></a>
-                                                  <% } %>
-                                
-                                                </div>
-                                              </div>
-                                            </div>
-                                
-                                        <% } %>
-                                
-                                
-                                
-                                 
-                                        <% if (itemViewModel.channel.contractAddress) { %>
-
-                                            <div class="hidden-on-load">
-                                                <div class="card">
-                                                    <div class="card-content card-content-padding">
-                                                        ${token?.currentOwnerId ? $h`
-                                                            Owned by <a href="${link(`u/?address=${token?.currentOwnerId}`)}">${tokenOwnerDisplay}</a>
-                                                        ` : $h`
-                                                            NFT has not been <a href="${link(`mint.html`)}">minted</a> yet.
-                                                        `}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                          
-                                            <div class="data-table card">
-                                        
-                                                <div class="card-header">
-                                                    Token Info
-                                                </div>
-                                            
-                                                <div class="card-content">
-                                                    <table>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="label-cell">Contract Address</td>
-                                                                <td><a href="https://etherscan.io/token/<%= itemViewModel.channel.contractAddress %>" class="external">${contractAddress}</a></td>
-                                                            </tr>
-                                                    
-                                                            <tr>
-                                                                <td class="label-cell">Token ID</td>
-                                                                <td>#<%= itemViewModel?.item?.tokenId %></td>
-                                                            </tr>
-                                                
-                                                            <tr>
-                                                                <td class="label-cell">Metadata</td>
-                                                                <td><a href="${metadataURL}" class="external">View</a></td>
-                                                            </tr>                                        
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-
-                                        <% } %>
-                                
-
-                                
-                                        <div class="card">
-                                            
-                                            <div class="card-header">
-                                                Attributes
-                                            </div>
-                                
-                                            <div class="card-content data-table">
-                                
-                                                <% itemViewModel.attributeSelections?.map( (as)=> { %>
-                                
-                                                    <% if (as.attributeTotal?.categoryPercent) { %>
-                                                        <div class="button-outline attribute-value">
-                                                            <div class="trait-type"><%= as.traitType %></div>
-                                                            <div class="value"><a href="${link(`attribute/?attributeKey=<%= getAttributeKey(as) %>`)}"><%= as.value %></a></div>
-                                                            <div class="category-percent"><%= as.attributeTotal?.categoryPercent  %> have this trait</div>
-                                                        </div>                                                
-                                                    <% } %>
-                                
-                                
-                                                <% }) %>
-                                
-                                            </div>
-                                
-                                        </div>
-                                
-                                
-                                        <% 
-                                        if (marketplaces?.length > 0) {
-                                        %>
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    View on Marketplaces
-                                                </div>
-                                                <div class="card-content">
-                                                    <div class="list simple-list">
-                                                        <ul>
-                                                        
-                                                        <% 
-                                                            for (let marketplace of marketplaces) { 
-                                                        %>  
-                                                            <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
-                                                        <%
-                                                            }
-                                                        %>
-                                    
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <%
-                                            }
-                                        %>                                
-                                
-                                        <% if (!itemViewModel.item.coverImageAsAnimation) { %>
-                                            <div class="card">
-                                                <div class="card-header">Cover Image</div>
-                                                <div class="card-content">
-                                                    <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>" class="cover-image-preview" />
-                                                </div>
-                                            </div>
-                                        <% } %>
-                                
-                                
-                                
-                                    </div>
-                                
-                                    <div class="left">
-                                        <%~ include("footer", {baseURL: baseURL}) %>          
-                                    </div>
-
-
-                                </div>
+                            <div class="swiper-slide">   
 
 
 
+
+                                
                             </div>
 
                             <% if (itemViewModel.item.next) { %>
@@ -375,7 +389,7 @@
                             <% } %>
 
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
 
@@ -406,7 +420,7 @@
 
 
             let title = `<%~ itemViewModel.item.title %>`
-            let tokenId = `<%~ itemViewModel.item.tokenId %>`
+            let tokenId = parseInt(`<%~ itemViewModel.item.tokenId %>`)
             
 
             let breadcrumbs = [{
@@ -444,37 +458,59 @@
 
             const initSwiper = () => {
 
-                swiper = $f7.swiper.create('#swiper-<%= itemViewModel.item.tokenId  %>', {
-                    initialSlide: 1,
-                    effect: 'fade',
-                    on: {
-                        slideChange() {
+                // swiper = $f7.swiper.create('#swiper-<%= itemViewModel.item.tokenId  %>', {
+                //     initialSlide: 1,
+                //     effect: 'fade',
+                //     on: {
+                //         slideChange() {
 
-                            const swiper = this
+                //             const swiper = this
 
-                            let slide = $(swiper.wrapperEl).children('.swiper-slide').eq(swiper.activeIndex)
+                //             let slide = $(swiper.wrapperEl).children('.swiper-slide').eq(swiper.activeIndex)
 
-                            let url = $(slide).data('url')
+                //             let url = $(slide).data('url')
 
-                            if (url) {
-                                $f7.views.main.router.navigate(url, {
-                                    transition: 'none',
-                                    history: true,
-                                    reloadAll: true
-                                })
-                            }
-                        }
-                    }
-                })
 
-                $('#swiper-<%= itemViewModel.item.tokenId  %>').show()
+                //             if (url) {
+                //                 $f7.views.main.router.navigate(url, {
+                //                     transition: 'none',
+                //                     history: true,
+                //                     reloadAll: true
+                //                 })
+                //             }
+                //         }
+                //     }
+                // })
+
+                // $('#swiper-<%= itemViewModel.item.tokenId  %>').show()
 
                 const prev = (e) => {
-                    swiper.slidePrev(0)
+
+                    let link = "<%= itemViewModel.item.previous ? link(`t/${itemViewModel.item.previous.tokenId}`) : link(`index.html`) %>"
+                    
+                    $f7.views.main.router.navigate(link, {
+                        transition: 'none',
+                        history: true,
+                        reloadAll: true
+                    })
+
+                    // swiper.slidePrev(0)
                 }
 
                 const next = (e) => {
-                    swiper.slideNext(0)
+
+                    let link = "<%= itemViewModel.item.next ? link(`t/${itemViewModel.item.next?.tokenId}`) : '' %>"
+                    
+                    if (link?.length > 0) {
+                        $f7.views.main.router.navigate(link, {
+                            transition: 'none',
+                            history: true,
+                            reloadAll: true
+                        })
+                    }
+
+
+                    // swiper.slideNext(0)
                 }
 
                 $('.fab-left-center').on('click', prev)
@@ -482,7 +518,6 @@
 
                 $('.back-token-button').on('click', prev)
                 $('.continue-button').on('click', next)
-
 
             }
 
@@ -492,10 +527,24 @@
 
                 try  {
 
-                    token = await tokenService.get("<%= itemViewModel.item.tokenId  %>")
-                    tokenOwnerDisplay = await tokenOwnerService.getDisplayName(token?.currentOwnerId)
+                    let latest = await transactionWebService.getLatest()
 
-                    transactionsViewModel = token.transactionsViewModel
+                    if (latest.latestToken && tokenId <= latest.latestToken) {
+
+                        token = await tokenService.get(tokenId)
+
+                        if (token) {
+                            tokenOwnerDisplay = await tokenOwnerService.getDisplayName(token.currentOwnerId)
+                            transactionsViewModel = token.transactionsViewModel
+                        }
+
+                    }
+
+                    if (!transactionsViewModel) {
+                        transactionsViewModel = {}
+                    }
+
+                    transactionsViewModel.lastUpdated = latest.lastUpdated
 
                 } catch(ex) { console.log(ex) }
 
@@ -518,6 +567,7 @@
 
                 await loadActivity()
 
+                // $('.swiper').show()
                 $('.hide-on-pageinit').hide()
 
             })          
@@ -534,15 +584,15 @@
                 document.dispatchEvent(ev)
 
 
-                $('.swiper').show()
+                // $('.swiper').show()
                 $('.hide-on-pageinit').hide()
 
             })
 
             $on('pageBeforeOut', async () => {
-                $('.swiper').hide()
-                console.log('Destroying swiper #swiper-<%= itemViewModel.item.tokenId  %>')
-                $f7.swiper.destroy('#swiper-<%= itemViewModel.item.tokenId  %>')
+                // $('.swiper').hide()
+                // console.log('Destroying swiper #swiper-<%= itemViewModel.item.tokenId  %>')
+                // $f7.swiper.destroy('#swiper-<%= itemViewModel.item.tokenId  %>')
             })
 
             const goTokenFormSubmit = async (e) => {

@@ -1017,6 +1017,7 @@ input[type="text"]:disabled {
   padding: 5px;
   margin-bottom: 10px;
   border-radius: 50%;
+  width: 100%;
 }
 
 .cover-banner-preview {

@@ -7,7 +7,7 @@
 
     <div class="page-content hide-toolbar-on-scroll">
 
-      <form id="edit-channel-form" @submit="${formSubmit}">
+      <form id="edit-channel-form" @submit="${formSubmit}" class="fixed-width-content center">
 
         <div class="block-title block-title-medium">Edit Collection</div>
 
@@ -116,11 +116,20 @@
 
       e.preventDefault()
 
-      let channel = Object.assign(new Channel(), channelViewModel.channel)
+      let form = document.getElementById('edit-channel-form')
+
+      if (!form.checkValidity()) {
+        $f7.popup.open('.edit-basics-popup')
+        return
+      }
+
+
+      // let channel = Object.assign(new Channel(), channelViewModel.channel)
 
 
       //Get data
-      channel = Object.assign(channel, $f7.form.convertToData('#edit-channel-form'))
+      let channel = Object.assign(new Channel(), $f7.form.convertToData('#edit-channel-form'))
+
 
       //Get content from quill
       channel.description = quillEditorService.activeEditor.getContents()
@@ -134,11 +143,25 @@
         channel.attributeOptions = JSON.parse(channel.attributeOptions)
       } else {
         channel.attributeOptions = []
+      }
 
+      if (channel.externalLinks) {
+        channel.externalLinks = JSON.parse(channel.externalLinks)
+      } else {
+        channel.externalLinks = []
+      }
+
+      if (channel.marketplaces) {
+        channel.marketplaces = JSON.parse(channel.marketplaces)
+      } else {
+        channel.marketplaces = []
       }
 
 
       channel.disableForks = channel.disableForks == "true"
+      channel.showMintPage = channel.showMintPage == "true"
+      channel.showActivityPage = channel.showActivityPage == "true"
+
 
 
       //Save
@@ -164,6 +187,9 @@
     }
 
     $on('pageInit', async (e, page) => {
+
+      $('#edit-channel-form').attr('novalidate','novalidate')
+
 
       //Categories
       let categoryTagify = new Tagify(document.getElementById('category'))

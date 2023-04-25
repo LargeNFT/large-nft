@@ -111,7 +111,7 @@
 
             <div class="fixed-width-content center">
 
-              <div class="card channel-card-show">
+              <div class="card card-outline channel-card-show">
 
                 <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
                   style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
@@ -164,197 +164,203 @@
                   ></mint-info>
                 <% } %>
 
-                <div class="block-title block-title-medium">Links</div>
-                <div class="list inset">   
+                <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
+                  <div class="card">
 
-                  <div class="list-group">
-                    <ul>
-
-                      <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
+                    <div class="card-content card-content-padding">
+                      <div class="list list-dividers-ios">   
   
+                        <div class="list-group">
+                          <ul>
+      
+                            <li class="item-divider">Links</li>
     
-                        <% if(channelViewModel.channel?.contractAddress) { %>
-  
-                          <li>
-                            <div class="item-content">
-                              <div class="item-inner">
-                                <div class="item-title">
-                                  <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                            <% if(channelViewModel.channel?.contractAddress) { %>
+      
+                              <li>
+                                <div class="item-content">
+                                  <div class="item-inner">
+                                    <div class="item-title">
+                                      <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                          </li>
-                        <% } %>
-    
-                        <% for (let externalLink of externalLinks) { %>
-  
-                          <li>
-                            <div class="item-content">
-                              <div class="item-inner">
-                                <div class="item-title">
-                                  <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                              </li>
+                            <% } %>
+        
+                            <% for (let externalLink of externalLinks) { %>
+      
+                              <li>
+                                <div class="item-content">
+                                  <div class="item-inner">
+                                    <div class="item-title">
+                                      <a class="link external" href="<%= externalLink.link %>"><%= externalLink.name %></a>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                          </li>
-  
-                        <% } %>
-
-
-                        <%
-                        if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
-                        %>
-                          
-                          <%
-                              for (let staticPage of channelViewModel.staticPagesViewModel.links) {
-                          %>
+                              </li>
+      
+                            <% } %>
     
+    
+                            <%
+                            if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
+                            %>
+                              
+                              <%
+                                  for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                              %>
+        
+                                    <li>
+                                      <div class="item-content">
+                                        <div class="item-inner">
+                                          <div class="item-title">
+                                            <a class="link" href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+        
+                              <%
+                                  }
+                              %> 
+        
+                            <%
+                            }
+                            %> 
+      
+                          </ul>
+                        </div>
+      
+                        <div class="list-group">
+                          <ul>
+      
+                            <% 
+                            if (marketplaces?.length > 0) {
+                            %>
+          
+                            <li class="item-divider">Marketplaces</li>
+      
+          
+                              <% 
+                              for (let marketplace of marketplaces) { 
+                              %>  
+        
                                 <li>
                                   <div class="item-content">
                                     <div class="item-inner">
                                       <div class="item-title">
-                                        <a class="link" href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a>
+                                        <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>
                                       </div>
                                     </div>
                                   </div>
                                 </li>
-    
-                          <%
+        
+                                    
+                              <%
                               }
-                          %> 
-    
-                        <%
-                        }
-                        %> 
-
-
-    
-                    <% } %>
-
-                    </ul>
-
-
-
-                  </div>
-
-                  <div class="list-group">
-                    <ul>
-
-                      <% 
-                      if (marketplaces?.length > 0) {
-                      %>
-    
-                      <li class="item-divider">Marketplaces</li>
-
-    
-                        <% 
-                        for (let marketplace of marketplaces) { 
-                        %>  
-  
-                          <li>
-                            <div class="item-content">
-                              <div class="item-inner">
-                                <div class="item-title">
-                                  <a class="link external" href="<%= marketplaceLink(marketplace) %>"><%= marketplace.name %></a>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-  
+                              %>
                               
-                        <%
-                        }
-                        %>
-                        
-                    <%
-                      }
-                    %>
-
-                    </ul>
-                  </div>
-
-                </div>
+                          <%
+                            }
+                          %>
+      
+                          </ul>
+                        </div>
+      
+                      </div>
+                    </div>
   
-                <div class="block-title block-title-medium">Overall Stats</div>
-                <div class="block block-strong inset stats">
+                  </div>
+        
+                <% } %>
+
+
+
+                <% if(channelViewModel.channel?.contractAddress) { %>
+                  <div class="block-title block-title-medium">Overall Stats</div>
+                  <div class="block block-strong inset stats">
+    
+                    <div class="stats-row margin-bottom">
   
-                  <div class="stats-row margin-bottom">
-
-                    <div>
-                      Number of Sales (Lifetime)
+                      <div>
+                        Number of Sales (Lifetime)
+                      </div>
+  
+                      <div class="price">
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.events ? homeViewModel?.salesReport?.totals?.events : 0)}</strong>
+                      </div>
                     </div>
-
-                    <div class="price">
-                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.events ? homeViewModel?.salesReport?.totals?.events : 0)}</strong>
-                    </div>
-                  </div>
-
-                  <div class="stats-row margin-bottom">
-
-                    <div>
-                      Average Sale
-                    </div>
-
-                    <div class="price">
-                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.averageEthValue ? homeViewModel?.salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.averageUsdValue ? homeViewModel?.salesReport?.totals?.averageUsdValue : 0, 2)}</span>
-                    </div>
-                    
-
-                  </div>
-
-                  <div class="stats-row margin-bottom">
-
-                    <div>
-                      Total Value of All Sales (Lifetime)
-                    </div>
-                    
-                    <div class="price">
-                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.ethValue ? homeViewModel?.salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.usdValue ? homeViewModel?.salesReport?.totals?.usdValue : 0, 2)}</span>
-                    </div>
-                  </div>
-
-                  <div class="stats-row margin-bottom">
+  
+                    <div class="stats-row margin-bottom">
+  
+                      <div>
+                        Average Sale
+                      </div>
+  
+                      <div class="price">
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.averageEthValue ? homeViewModel?.salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.averageUsdValue ? homeViewModel?.salesReport?.totals?.averageUsdValue : 0, 2)}</span>
+                      </div>
                       
-                    <div>
-                      Value of Sales (24 Hours)
+  
                     </div>
-
-                    <div class="price">
-                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.dayTotals?.ethValue ? homeViewModel?.salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.dayTotals?.usdValue ? homeViewModel?.salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+  
+                    <div class="stats-row margin-bottom">
+  
+                      <div>
+                        Total Value of All Sales (Lifetime)
+                      </div>
+                      
+                      <div class="price">
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.ethValue ? homeViewModel?.salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.usdValue ? homeViewModel?.salesReport?.totals?.usdValue : 0, 2)}</span>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="stats-row margin-bottom">
-
-                    <div>
-                      Value of Sales (Month)
+  
+                    <div class="stats-row margin-bottom">
+                        
+                      <div>
+                        Value of Sales (24 Hours)
+                      </div>
+  
+                      <div class="price">
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.dayTotals?.ethValue ? homeViewModel?.salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.dayTotals?.usdValue ? homeViewModel?.salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                      </div>
                     </div>
-
-                    
-                    <div class="col-50 large-100 price">
-                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.monthTotals?.ethValue ? homeViewModel?.salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.monthTotals?.usdValue ? homeViewModel?.salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+  
+                    <div class="stats-row margin-bottom">
+  
+                      <div>
+                        Value of Sales (Month)
+                      </div>
+  
+                      
+                      <div class="col-50 large-100 price">
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.monthTotals?.ethValue ? homeViewModel?.salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.monthTotals?.usdValue ? homeViewModel?.salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="stats-row margin-bottom">
-                    
-                    <div>
-                      Value of Sales (Year)
+  
+                    <div class="stats-row margin-bottom">
+                      
+                      <div>
+                        Value of Sales (Year)
+                      </div>
+  
+                      <div class="price">
+                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.yearTotals?.ethValue ? homeViewModel?.salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.yearTotals?.usdValue ? homeViewModel?.salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                      </div>
                     </div>
-
-                    <div class="price">
-                      <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.yearTotals?.ethValue ? homeViewModel?.salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.yearTotals?.usdValue ? homeViewModel?.salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
-                    </div>
+    
+  
+  
                   </div>
   
+                  <div class="block split-row-both">
+                    <a class="button button-outline margin-bottom" href="${link('leaderboard')}">Top Owners</a>
+                    <a class="button button-outline margin-bottom" href="${link('attributes')}">All Attributes</a>
+                  </div>
 
+                <% } %>
 
-                </div>
-
-                <div class="block split-row-both">
-                  <a class="button button-outline margin-bottom" href="${link('leaderboard')}">Top Owners</a>
-                  <a class="button button-outline margin-bottom" href="${link('attributes')}">All Attributes</a>
-                </div>
 
 
                 ${homeViewModel?.leaderboard?.tokenOwners?.length > 0 ? $h`

@@ -74,6 +74,9 @@ class TokenService {
         return this.tokenRepository.getTokenIdsByAttribute(traitType, value, options)
     }
 
+    async getLatest(options?:any): Promise<Token> {
+        return this.tokenRepository.getLatest(options)
+    }
 
 
 }

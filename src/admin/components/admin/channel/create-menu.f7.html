@@ -7,100 +7,105 @@
 
     <div class="page-content hide-toolbar-on-scroll">
 
-      <div class="block-title block-title-medium">Create New</div>
-      <div class="list media-list inset">
-        <ul>
-          <li>
-            <a href="/admin/channel/create" class="item-link">
-              <div class="item-content">
-                <div class="item-media">
-                  <i class="material-icons">create</i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title-row">
-                    <div class="item-title">Create New Collection</div>
-                  </div>
-              </div>
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
+      <div class="fixed-width-content center">
 
-
-      <div class="block-title block-title-medium">Fork Existing</div>
-      <div class="list media-list inset">
-        <ul>
-          <li>
-            <a href="/admin/channel/fork" class="item-link">
-              <div class="item-content">
-                <div class="item-media">
-                  <i class="material-icons">fork_left</i>
-                </div>
-                <div class="item-inner">
-                  <div class="item-title-row">
-                    <div class="item-title">From IPFS Hash</div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </li>
-
-
-            ${walletService?.address ? $h`
-              <li>
-                <a href="/admin/channel/fork-contract" class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <i class="material-icons">fork_left</i>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">From Contract</div>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            ` : $h`
-              <li>
-                <a class="item-link">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <i class="material-icons">fork_left</i>
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">From Contract </div>
-                      </div>
-                      <div class="item-text">Requires browser with wallet support.</div>
-
-                    </div>
-                  </div>
-                </a>
-              </li>
-            `}
-
+        <div class="block-title block-title-medium">Create New</div>
+        <div class="list media-list inset">
+          <ul>
             <li>
-              <a href="/admin/channel/fork-reader" class="item-link">
+              <a href="/admin/channel/create" class="item-link">
+                <div class="item-content">
+                  <div class="item-media">
+                    <i class="material-icons">create</i>
+                  </div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">Create New Collection</div>
+                    </div>
+                </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+  
+        <div class="block-title block-title-medium">Fork Existing</div>
+        <div class="list media-list inset">
+          <ul>
+            <li>
+              <a href="/admin/channel/fork" class="item-link">
                 <div class="item-content">
                   <div class="item-media">
                     <i class="material-icons">fork_left</i>
                   </div>
                   <div class="item-inner">
                     <div class="item-title-row">
-                      <div class="item-title">From Reader</div>
+                      <div class="item-title">From IPFS Hash</div>
                     </div>
                   </div>
                 </div>
               </a>
             </li>
+  
+  
+              ${walletService?.address ? $h`
+                <li>
+                  <a href="/admin/channel/fork-contract" class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <i class="material-icons">fork_left</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">From Contract</div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              ` : $h`
+                <li>
+                  <a class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <i class="material-icons">fork_left</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">From Contract </div>
+                        </div>
+                        <div class="item-text">Requires browser with wallet support.</div>
+  
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              `}
+  
+              <li>
+                <a href="/admin/channel/fork-reader" class="item-link">
+                  <div class="item-content">
+                    <div class="item-media">
+                      <i class="material-icons">fork_left</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">From Reader</div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+  
+  
+            
+  
+          </ul>
+        </div>
 
-
-          
-
-        </ul>
       </div>
+
+
 
     </div>
   </div>

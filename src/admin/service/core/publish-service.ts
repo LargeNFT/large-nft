@@ -184,8 +184,10 @@ class PublishService {
             action: "create",
             file_path: "/large-config.json",
             content: Buffer.from(JSON.stringify({
-                "showMintPage": channel.contractAddress?.length > 0,
-                "showActivityPage": channel.contractAddress?.length > 0
+                "showMintPage": channel.showMintPage,
+                "showActivityPage": channel.showActivityPage,
+                "hostname": channel.productionHostname,
+                "baseURL": channel.productionBaseURI
             } ))
         })
 

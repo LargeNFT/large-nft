@@ -73,6 +73,7 @@ class ExportService {
         delete channel.pubDate
         delete channel.publishReaderRepoId
         delete channel.publishReaderRepoPath
+        delete channel.publishReaderRepoBranch
         delete channel.publishReaderRepoStatus
 
 

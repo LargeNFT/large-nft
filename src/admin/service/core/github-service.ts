@@ -20,17 +20,6 @@ class GithubService implements GitProviderService {
 
     async createFork(channel: Channel): Promise<ForkInfo> {
 
-        //Look for an existing fork and just return it.
-        let existingFork = await this.getExistingFork(channel)
-
-        if (existingFork) {
-            return {
-                id: existingFork.id,
-                path: existingFork.path
-            }
-        }
-
-
         console.log(`Creating reader fork...`)
 
         let settings = await this.settingsService.get()
@@ -42,30 +31,66 @@ class GithubService implements GitProviderService {
             throw new Error("Gitlab personal access token not set")
         }
 
-        let url = `${GithubService.BASE_URL}/repos/${GithubService.READER_REPO_OWNER}/${GithubService.READER_REPO}/forks`
+        let branchName = channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
 
-        let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+        //Look for an existing fork and just return it.
+        let existingFork = await this.getExistingFork(channel)
 
+        if (!existingFork) {
+            
+            let url = `${GithubService.BASE_URL}/repos/${GithubService.READER_REPO_OWNER}/${GithubService.READER_REPO}/forks`
 
-        //Create a new one
-        let response = await axios.post(url, {
-            name: path,
-            default_branch_only: true
-        }, {
-            headers: {
-                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            //Create a new one
+            let response = await axios.post(url, {
+                name: "large-reader",
+                default_branch_only: true
+            }, {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+
+            existingFork = {
+                id: response.data.id,
+                httpUrlToRepo: `${response.data.html_url}.git`,
+                path: response.data.name,
+                defaultBranch: response.data.default_branch
             }
-        })
+
+        }
+
+
+        let branchInfo
+
+        try {
+
+            //Check if the branch for this project exists    
+            let response = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${GithubService.READER_REPO}/branches/${branchName}`, {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+
+            branchInfo = response.data
+
+        } catch(ex) { }
+
+
+        if (!branchInfo) {
+            await this.createBranch(channel, gitProvider)
+        }
 
         return {
-            id: response.data.id,
-            path: path
+            id: existingFork.id,
+            path: existingFork.path,
+            branch: branchName
         }
+
+
     }
 
     public async getExistingFork(channel: Channel): Promise<ExistingForkInfo> {
-
 
         let settings = await this.settingsService.get()
 
@@ -87,12 +112,8 @@ class GithubService implements GitProviderService {
 
         let forks = response.data
 
-
-
-        let name = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
-
-        //Search for one with the same path
-        let results = forks.filter(f => f.name == name && f.owner.login == gitProvider.username)
+        //Search for one with the same owner
+        let results = forks.filter(f => f.owner.login == gitProvider.username)
 
 
         if (results?.length == 1) {
@@ -131,34 +152,7 @@ class GithubService implements GitProviderService {
 
         this.logPublishProgress(`Pushing ${actions.length} files to repo...`)
 
-
-        const query = `
-            query GetBranch{
-                repository (name: "${channel.publishReaderRepoPath}", owner: "${gitProvider.username}") {
-                    ref (qualifiedName: "master") {
-                        target {
-                            ... on Commit {
-                                history(first: 1) {
-                                    nodes {
-                                        oid
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        `
-
-        const getOidResult = await axios.post(GithubService.GRAPHQL_URL, JSON.stringify({ query: query }), {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-            },
-        })
-
-        let oid = getOidResult.data.data.repository.ref.target.history.nodes[0].oid
-
+        let oid = await this.getMostRecentCommitOid(gitProvider)
 
         const additions = actions.map((a) => {
             return {
@@ -167,13 +161,14 @@ class GithubService implements GitProviderService {
             }
         })
 
+        let branchName = channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
         const mutation = `
             mutation createCommit($additions: [FileAddition!]!, $oid: GitObjectID!) {
                 createCommitOnBranch (input: {
                     branch : {
                         repositoryNameWithOwner: "${gitProvider.username}/${channel.publishReaderRepoPath}"
-                        branchName: "master"
+                        branchName: "${branchName}"
                     }
                     message: {
                         headline: "feat: Commit through Graphql"
@@ -214,6 +209,66 @@ class GithubService implements GitProviderService {
 
     }
 
+    private async createBranch(channel, gitProvider) {
+
+        console.log("Creating branch")
+
+        let oid = await this.getMostRecentCommitOid(gitProvider)
+
+        console.log(oid)
+        let branchName = channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+
+
+        const getRespositoryId = await axios.post(GithubService.GRAPHQL_URL, { 
+            query: `
+                query {
+                    repository(owner: "${gitProvider.username}", name: "large-reader") {
+                        id
+                    }
+                }
+            `
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+
+        const mutation = `
+            mutation {
+                createRef(input: {
+                    repositoryId: "${getRespositoryId.data.data.repository.id}",
+                    name: "refs/heads/${branchName}",
+                    oid: "${oid}"
+                }) {
+                    ref {
+                        name
+                            target {
+                            oid
+                            }
+                    }
+                }
+            }
+        `
+
+        const createBranchResult = await axios.post(
+            GithubService.GRAPHQL_URL,
+            {
+                query: mutation,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            }
+        )
+
+        console.log("Created branch")
+
+
+    }
 
     private async createCommit(currentCommitSha, newTreeSha, channel, message, gitProvider) {
 
@@ -261,23 +316,21 @@ class GithubService implements GitProviderService {
 
     }
 
-    private async createBlob(content, channel, gitProvider) {
+    // private async createBlob(content, channel, gitProvider) {
 
-        const createBlobResult = await axios.post(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/blobs`, {
-            content: content.toString('base64'),
-            encoding: 'base64'
-        }, {
-            headers: {
-                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-            }
-        })
-
-
-        return createBlobResult.data.sha
-
-    }
+    //     const createBlobResult = await axios.post(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/git/blobs`, {
+    //         content: content.toString('base64'),
+    //         encoding: 'base64'
+    //     }, {
+    //         headers: {
+    //             "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+    //         }
+    //     })
 
 
+    //     return createBlobResult.data.sha
+
+    // }
 
     async deleteReaderBackup(channel: Channel, gitProvider) {
 
@@ -294,16 +347,61 @@ class GithubService implements GitProviderService {
 
     }
 
+    async deleteContractBackup(channel: Channel, gitProvider) {
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        this.logPublishProgress(`Deleting existing contract files from repo...`)
+
+
+        await this.deleteDirectory(channel, gitProvider, "backup/contract")
+
+    }
+
     async getMostRecentCommit(channel, gitProvider) {
 
         //Get the most recent commit
-        let currentCommitResult = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/commits/master`, {
+        let currentCommitResult = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/commits/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}`, {
             headers: {
                 "Authorization": `Bearer ${gitProvider.personalAccessToken}`
             }
         })
 
         return currentCommitResult.data
+    }
+
+    async getMostRecentCommitOid(gitProvider) {
+
+        const query = `
+            query GetBranch{
+                repository (name: "large-reader", owner: "${gitProvider.username}") {
+                    ref (qualifiedName: "master") {
+                        target {
+                            ... on Commit {
+                                history(first: 1) {
+                                    nodes {
+                                        oid
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        `
+
+        const getOidResult = await axios.post(GithubService.GRAPHQL_URL, JSON.stringify({ query: query }), {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            },
+        })
+
+        return getOidResult.data.data.repository.ref.target.history.nodes[0].oid
+
+
     }
 
     async deleteDirectory(channel, gitProvider, directoryPath) {
@@ -362,22 +460,6 @@ class GithubService implements GitProviderService {
 
 
 
-    async deleteContractBackup(channel: Channel, gitProvider) {
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error("Gitlab personal access token not set")
-        }
-
-        this.logPublishProgress(`Deleting existing contract files from repo...`)
-
-
-        await this.deleteDirectory(channel, gitProvider, "backup/contract")
-
-    }
-
-
-
-
     private logPublishProgress(message: string) {
 
         console.log(message)
@@ -394,7 +476,6 @@ class GithubService implements GitProviderService {
 
     }
 
-
     chunkIt(gitActions: any[], perChunk: number) {
 
         let chunks = []
@@ -407,7 +488,6 @@ class GithubService implements GitProviderService {
 
         return chunks
     }
-
 
 }
 

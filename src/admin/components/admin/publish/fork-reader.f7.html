@@ -40,6 +40,7 @@
                       <p><strong>Configured Provider:</strong> ${channelViewModel?.gitProvider?.name}</p>
   
                       <p><strong>Repo ID:</strong> ${channelViewModel.channel.publishReaderRepoId}</p>
+                      <p><strong>Branch:</strong>   ${channelViewModel.channel.publishReaderRepoBranch}</p>
                       <p><strong>Repo Path:</strong> ${channelViewModel.channel.publishReaderRepoPath}</p>
                       <p><strong>Job Status:</strong> ${channelViewModel.channel.publishReaderRepoStatus}</p>
                     </div>
@@ -216,6 +217,7 @@
 
         channelViewModel.channel.publishReaderRepoId = response.id
         channelViewModel.channel.publishReaderRepoPath = response.path
+        channelViewModel.channel.publishReaderRepoBranch = response.branch
         channelViewModel.channel.publishReaderRepoStatus = "pending"
 
         await channelService.put(channelViewModel.channel)

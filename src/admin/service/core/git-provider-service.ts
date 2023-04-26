@@ -11,6 +11,7 @@ interface GitProviderService {
 interface ForkInfo {
     id: string
     path:string
+    branch:string
 }
 
 interface ExistingForkInfo {

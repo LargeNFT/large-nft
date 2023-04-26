@@ -46,7 +46,8 @@ class GitlabService implements GitProviderService {
         if (existingFork) {
             return {
                 id: existingFork.id,
-                path: existingFork.path
+                path: existingFork.path,
+                branch: "master"
             }
         }
         
@@ -62,7 +63,8 @@ class GitlabService implements GitProviderService {
 
         return {
             id: response.data.id,
-            path: path
+            path: path,
+            branch: "master"
         }
 
     }
@@ -129,10 +131,6 @@ class GitlabService implements GitProviderService {
 
     }
 
-
-
-
-
     async commit(channel:Channel, actions:any[], gitProvider) {
 
         for (let action of actions) {
@@ -164,10 +162,6 @@ class GitlabService implements GitProviderService {
 
 
     }
-
-
-
-
 
     async deleteReaderBackup(channel:Channel, gitProvider) {
 
@@ -266,7 +260,6 @@ class GitlabService implements GitProviderService {
 
     }
 
-
     private logPublishProgress(message:string) {
     
         console.log(message)
@@ -282,9 +275,6 @@ class GitlabService implements GitProviderService {
         }
     
     }
-
-
-
 
     chunkIt(gitActions: any[], perChunk: number) {
 

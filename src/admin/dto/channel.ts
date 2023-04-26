@@ -97,6 +97,8 @@ class Channel {
     @Allow()
     publishedCid?:string
 
+
+
     @Allow()
     gitProvider?:string
 
@@ -108,6 +110,9 @@ class Channel {
 
     @Allow()
     publishReaderRepoPath?:string
+
+    @Allow()
+    publishReaderRepoBranch?:string
 
     @Allow()
     publishReaderRepoStatus?:string

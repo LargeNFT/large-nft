@@ -145,9 +145,10 @@ let generate = async () => {
   }
 
 
-  //If there's no libraryURL configured then we need to include a copy of the admin app.
   if (!config.libraryURL) {
 
+    //Generate library 
+    //If there's no libraryURL configured then we need to include a copy of the admin app.
     console.time("Copying Large NFT Admin...")
 
     if (fs.existsSync(`${config.publicPath}/large`)) {
@@ -206,6 +207,7 @@ let generate = async () => {
 
 
     console.timeEnd("Copying Large NFT Admin...")
+
 
   } 
 

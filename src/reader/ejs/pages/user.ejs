@@ -142,90 +142,92 @@
 
                             ${tokenOwner ? $h`
                             
-                                <div class="block-title block-title-medium">Sales</div>
-                                <div class="block block-strong inset stats">
-                        
-                                    <div class="stats-row margin-bottom">
+                                <% if(channelViewModel.channel?.contractAddress) { %>
 
-                                        <div>
-                                            Number of Sales
-                                        </div>
-                
-                                        <div class="price">
-                                            <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.events ? tokenOwner.salesReport?.sales?.events : 0)}</strong>
+                                    <div class="block-title block-title-medium">Sales</div>
+                                    <div class="block block-strong inset stats">
+                            
+                                        <div class="stats-row margin-bottom">
+
+                                            <div>
+                                                Number of Sales
+                                            </div>
+                    
+                                            <div class="price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.events ? tokenOwner.salesReport?.sales?.events : 0)}</strong>
+                                            </div>
+
                                         </div>
 
+                                        <div class="stats-row margin-bottom">
+
+                                            <div>
+                                                Average Sale
+                                            </div>
+                    
+                                            <div class="price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.averageEthValue ? tokenOwner.salesReport?.sales?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.sales?.averageUsdValue ? tokenOwner.salesReport?.sales?.averageUsdValue : 0, 2)}</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="stats-row margin-bottom">
+
+                                            <div>
+                                                Total Value of All Sales
+                                            </div>
+                    
+                                            <div class="price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.ethValue ? tokenOwner.salesReport?.sales?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.sales?.usdValue ? tokenOwner.salesReport?.sales?.usdValue : 0, 2)}</span>
+                                            </div>
+
+                                        </div>                                     
+                                    
                                     </div>
 
-                                    <div class="stats-row margin-bottom">
 
-                                        <div>
-                                            Average Sale
-                                        </div>
-                
-                                        <div class="price">
-                                            <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.averageEthValue ? tokenOwner.salesReport?.sales?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.sales?.averageUsdValue ? tokenOwner.salesReport?.sales?.averageUsdValue : 0, 2)}</span>
+                                    <div class="block-title block-title-medium">Buys</div>
+                                    <div class="block block-strong inset stats">
+                            
+                                        <div class="stats-row margin-bottom">
+
+                                            <div>
+                                                Number of Buys
+                                            </div>
+                    
+                                            <div class="price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.events ? tokenOwner.salesReport?.buys?.events : 0)}</strong>
+                                            </div>
+
                                         </div>
 
+                                        <div class="stats-row margin-bottom">
+
+                                            <div>
+                                                Average Buy
+                                            </div>
+                    
+                                            <div class="price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.averageEthValue ? tokenOwner.salesReport?.buys?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.buys?.averageUsdValue ? tokenOwner.salesReport?.buys?.averageUsdValue : 0, 2)}</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="stats-row margin-bottom">
+
+                                            <div>
+                                                Total Value of All Buys
+                                            </div>
+                    
+                                            <div class="price">
+                                                <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.ethValue ? tokenOwner.salesReport?.buys?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.buys?.usdValue ? tokenOwner.salesReport?.buys?.usdValue : 0, 2)}</span>
+                                            </div>
+
+                                        </div>                                     
+                                    
                                     </div>
 
-                                    <div class="stats-row margin-bottom">
-
-                                        <div>
-                                            Total Value of All Sales
-                                        </div>
-                
-                                        <div class="price">
-                                            <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.sales?.ethValue ? tokenOwner.salesReport?.sales?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.sales?.usdValue ? tokenOwner.salesReport?.sales?.usdValue : 0, 2)}</span>
-                                        </div>
-
-                                    </div>                                     
-                                
-                                </div>
-
-
-                                <div class="block-title block-title-medium">Buys</div>
-                                <div class="block block-strong inset stats">
-                        
-                                    <div class="stats-row margin-bottom">
-
-                                        <div>
-                                            Number of Buys
-                                        </div>
-                
-                                        <div class="price">
-                                            <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.events ? tokenOwner.salesReport?.buys?.events : 0)}</strong>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="stats-row margin-bottom">
-
-                                        <div>
-                                            Average Buy
-                                        </div>
-                
-                                        <div class="price">
-                                            <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.averageEthValue ? tokenOwner.salesReport?.buys?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.buys?.averageUsdValue ? tokenOwner.salesReport?.buys?.averageUsdValue : 0, 2)}</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="stats-row margin-bottom">
-
-                                        <div>
-                                            Total Value of All Buys
-                                        </div>
-                
-                                        <div class="price">
-                                            <strong>${new Intl.NumberFormat('en-US').format(tokenOwner.salesReport?.buys?.ethValue ? tokenOwner.salesReport?.buys?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(tokenOwner.salesReport?.buys?.usdValue ? tokenOwner.salesReport?.buys?.usdValue : 0, 2)}</span>
-                                        </div>
-
-                                    </div>                                     
-                                
-                                </div>
-
-
+                                <% } %>
 
                                 <div class="block">
                                     <p class="segmented">

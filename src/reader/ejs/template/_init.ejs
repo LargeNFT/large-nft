@@ -14,7 +14,12 @@
 
         let initLibrary = () => {
             let baseURL = '<%= baseURL %>'
-            let libraryURL = '<%= libraryURL %>'
+
+            let libraryURL
+            <% if (libraryURL) { %>
+                libraryURL = '<%= libraryURL %>'
+            <% } %>
+
             let hostname = '<%= hostname %>'
             let channelId = '<%= channelId %>'
             let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
@@ -37,7 +42,6 @@
 
         let init = () => {
             let baseURL = '<%= baseURL %>'
-            let libraryURL = '<%= libraryURL %>'
             let hostname = '<%= hostname %>'
             let channelId = '<%= channelId %>'
             let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')

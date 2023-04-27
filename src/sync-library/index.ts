@@ -4,6 +4,8 @@ import "reflect-metadata"
 
 import fs from "fs"
 import path from "path"
+import * as Eta from 'eta'
+import indexEjs from './ejs/index.ejs'
 
 import { ProcessConfig } from "../reader/util/process-config.js"
 import { SpawnService } from "../sync/service/spawn-service.js"
@@ -16,11 +18,6 @@ import { SyncStatusService } from "./service/sync-status-service.js"
 
 
 
-/**
- * Starts a process that monitors the configured git repo(s) to generate, sync, and push the results to git. 
- * Then it calls the "deploy" script that allows the public folder to be distributed to a static web host.
- * The sync tasks stay running to monitor Ethereum for changes.
- */
 let syncLibrary = async () => {
 
   let config: any = await ProcessConfig.getSyncLibraryConfig()
@@ -66,8 +63,24 @@ let syncLibrary = async () => {
 
   await sequelize.sync()
 
+  let syncDir = path.resolve(process.env.INIT_CWD, config.syncDir)
 
   console.log(`Starting Sync Library to env: ${config.env}`)
+
+  let args = process.argv?.slice(2)
+
+  args.push("--sync-rate")
+  args.push("0")
+
+  args.push("--sync-dir")
+  args.push(syncDir)
+
+
+  //Generate library pages
+  if (config.generate) {
+    const indexResult = Eta.render(indexEjs, { })
+    fs.writeFileSync(`${syncDir}/index.html`, indexResult)
+  }
 
 
   for (let slug of Object.keys(config.readers)) {
@@ -75,11 +88,6 @@ let syncLibrary = async () => {
     let reader = config.readers[slug]
 
     const syncDirectory = path.resolve(config.syncDir, reader.repo)
-
-    let args = process.argv?.slice(2)
-
-    args.push("--sync-rate")
-    args.push("0")
 
     let publicPath = `${syncDirectory}/public`
 

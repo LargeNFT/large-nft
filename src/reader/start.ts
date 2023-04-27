@@ -15,6 +15,14 @@ import { ProcessConfig } from "./util/process-config.js"
 import { SpawnService } from "../sync/service/spawn-service.js"
 import { Container } from "inversify"
 
+
+
+
+
+
+
+
+
 let start = async () => {
 
   let config:any = await ProcessConfig.getConfig() 

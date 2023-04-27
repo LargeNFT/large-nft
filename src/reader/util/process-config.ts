@@ -74,6 +74,7 @@ class ProcessConfig {
 
         config.alchemy = theArgs.alchemy
         config.syncRate = theArgs.syncRate
+        config.syncDir = theArgs.syncDir
         config.env = theArgs.env
         config.clear = theArgs.clear
 

@@ -6,101 +6,112 @@
 
       ${mintingViewModel.minting ? $h`
 
-          <div class="block-title block-title-medium">Create a digital collectible!</div>
+          <div class="card">
+            <div class="card-header card-header-divider">Create a digital collectible!</div>
+            <div class="card-content card-content-padding">
 
-          <div class="list simple-list inset mint-list-info">
-            <ul>
-              <li>NFTs are minted in sequential order.</li>
-              <li>From the beginning of the story to the end.</li>
-              <li>Limited supply!</li>
-            </ul>
+              <div class="list simple-list inset mint-list-info">
+                <ul>
+                  <li>NFTs are minted in sequential order.</li>
+                  <li>From the beginning of the story to the end.</li>
+                  <li>Limited supply!</li>
+                </ul>
+              </div>
+
+            </div>
           </div>
 
           <div class="block block-strong inset">
-              <p>
-                <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
-              </p>              
+            <p>
+              <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+            </p>              
           </div>
 
-
-          <div class="block-title block-title-medium">
-            Select between 1-10 NFTs and click the mint button. 
-          </div>
-          <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
-            <ul>
-
-              <li class="item-content item-input">
-                <div class="item-inner">
-                  <div class="item-title item-label">Select number of NFTs to mint.</div>
-                  <div class="item-input-wrap">
-
-                    <div class="stepper">
-                      <!-- Stepper minus/decrement button -->
-                      <div class="stepper-button-minus"></div>
-                      <!-- Stepper input -->
-                      <div class="stepper-input-wrap">
-                        <!-- recommended to make input not editable (readonly) -->
-                        <input type="text" readonly value="1" />
+          
+          <div class="card">
+            <div class="card-header card-header-divider">Select between 1-10 NFTs and click the mint button.</div>
+            <div class="card-content card-content-padding">
+              <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
+                <ul>
+    
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Select number of NFTs to mint.</div>
+                      <div class="item-input-wrap">
+    
+                        <div class="stepper">
+                          <!-- Stepper minus/decrement button -->
+                          <div class="stepper-button-minus"></div>
+                          <!-- Stepper input -->
+                          <div class="stepper-input-wrap">
+                            <!-- recommended to make input not editable (readonly) -->
+                            <input type="text" readonly value="1" />
+                          </div>
+                          <!-- Stepper plus/increment button -->
+                          <div class="stepper-button-plus"></div>
+                        </div>
+                        <!-- <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
+                          <input type="range" value="1" min="0" max="10" step="1" />
+                        </div> -->
                       </div>
-                      <!-- Stepper plus/increment button -->
-                      <div class="stepper-button-plus"></div>
                     </div>
-                    <!-- <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
-                      <input type="range" value="1" min="0" max="10" step="1" />
-                    </div> -->
-                  </div>
-                </div>
-              </li>
-
-              <li>
-                <div class="item-content">
-                    <div class="item-inner">
-                        <div class="item-title mint-detail">
-                          <p>
-                            <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
-                          </p>
-                          <p>
-                            <strong>Quantity:</strong> ${quantity} 
-                          </p>
-                          <p>
-                            <strong>Total:</strong> ${total} ETH
-                          </p>
+                  </li>
+    
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title mint-detail">
+                              <p>
+                                <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
+                              </p>
+                              <p>
+                                <strong>Quantity:</strong> ${quantity} 
+                              </p>
+                              <p>
+                                <strong>Total:</strong> ${total} ETH
+                              </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-              </li>
-
-              <li style="display:none;">
-                <label class="item-checkbox item-content">
-
-                    <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
-                    
-                    <i class="icon icon-checkbox"></i>
-                    <div class="item-inner">
-
-                        <div class="item-title">
-                          <!-- Item header, must be first child of item-title -->
-                          <div class="item-header"></div>
-                          Exact Tokens Only
-                          <!-- Item footer, must be last child of item-title -->
-                          <div class="item-footer">If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</div>
+                  </li>
+    
+                  <li style="display:none;">
+                    <label class="item-checkbox item-content">
+    
+                        <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
+                        
+                        <i class="icon icon-checkbox"></i>
+                        <div class="item-inner">
+    
+                            <div class="item-title">
+                              <!-- Item header, must be first child of item-title -->
+                              <div class="item-header"></div>
+                              Exact Tokens Only
+                              <!-- Item footer, must be last child of item-title -->
+                              <div class="item-footer">If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</div>
+                            </div>
+    
                         </div>
-
+                    </label>
+                  </li>
+    
+                  <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                          <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
+                        </div>
                     </div>
-                </label>
-              </li>
+                  </li>
+                  
+                </ul>
+    
+              </form>
+            </div>
+          </div>
 
-              <li>
-                <div class="item-content">
-                    <div class="item-inner">
-                      <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
-                    </div>
-                </div>
-              </li>
-              
-            </ul>
 
-          </form>
+
+
 
           <div class="card mint-list-card"  style="display:none">
             <div class="card-header">Next Up</div>

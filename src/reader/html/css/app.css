@@ -159,6 +159,7 @@ ul.breadcrumb li a:hover {
 .channel-card-show .name,
 .channel-card-show .contract-address {
   text-align: left;
+  font-size: 14px;
 }
 
 .contract-address strong {
@@ -1074,7 +1075,7 @@ html {
   color: darkslategray;
   text-align: right;
   float: right;
-  width: 100%;
+  width: 50%;
   margin-top: 7px;
 }
 
@@ -1086,7 +1087,7 @@ html {
 
 
 
-.item-show {
+.main-split {
   display: grid;
   grid-template-columns: 75% 25%;
   gap: 10px;
@@ -1100,7 +1101,7 @@ html {
 
 @media only screen and (max-width: 1024px) {
 
-  .item-show {
+  .main-split {
     display: grid;
     grid-template-columns: 100%;
   }

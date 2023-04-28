@@ -88,13 +88,20 @@
 
                 <div class="page-content">
 
-                    <div class="card">
-                        <div class="card-content card-content-padding">
-                            <%~ staticPage.contentHTML %>
+                    <div class="fixed-width-content center">
+                        
+                        <div class="card">
+                            <div class="card-content card-content-padding">
+                                <%~ staticPage.contentHTML %>
+                            </div>
                         </div>
+    
+                        <%~ include("footer", {baseURL: baseURL}) %>
+
+
                     </div>
 
-                    <%~ include("footer", {baseURL: baseURL}) %>
+
 
                 </div>
 
@@ -111,10 +118,13 @@
             let owner
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+            let baseURI = globalThis.container.get("baseURI")
+
+
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURL
+                path: baseURI
             }, {
                 text: "<%=staticPage.name%>"
             }]

@@ -100,27 +100,29 @@
 
                             ${transactionsViewModel?.transactions?.length > 0 ? $h`
 
-                              <div class="block-title block-title-medium">
-                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
-                                    <span class="large-only">Activity</span>
-                              </div>
-
-
-                              <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
-
-                              <div class="block split-row-both">
-                                <div>
-                                    ${previousPage ? $h`
-                                      <a href="${baseURL}activity/?page=${previousPage}" class="button button-outline color-gray">Previous</a>
-                                    ` : $h` `}
+                                <div class="card data-table">
+                                    <div class="card-header">
+                                        Activity
+                                        <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                                    </div>
+                                    <div class="card-content card-content-padding">
+                                        <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
+                                    </div>
                                 </div>
-                                <div>
-                                    ${nextPage ? $h`
-                                      <a href="${baseURL}activity/?page=${nextPage}" class="button button-fill">Next</a>
-                                    ` : $h` `}
+
+                                <div class="block split-row-both">
+                                    <div>
+                                        ${previousPage ? $h`
+                                        <a href="${baseURL}activity/?page=${previousPage}" class="button button-outline color-gray">Previous</a>
+                                        ` : $h` `}
+                                    </div>
+                                    <div>
+                                        ${nextPage ? $h`
+                                        <a href="${baseURL}activity/?page=${nextPage}" class="button button-fill">Next</a>
+                                        ` : $h` `}
+                                    </div>
+                            
                                 </div>
-                        
-                              </div>
 
                         
                             ` : $h`

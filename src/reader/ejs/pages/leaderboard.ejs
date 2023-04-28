@@ -95,15 +95,14 @@
                             
                         <div class="hidden-on-load">
                         
-                            <div class="block-title block-title-medium">
-                                <div class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</div>
-                                <span class="large-only">Leaderboard</span>
-                            </div>
-
 
                             <div class="card data-table">
-                                <div class="card-content">
-                                    
+                                <div class="card-header">
+                                    Leaderboard
+                                    <div class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</div>
+                                </div>
+                                <div class="card-content card-content-padding">
+
                                     ${tokenOwners?.length > 0 ? $h`
                                         
                                         <table class="leaderboard-table">
@@ -126,9 +125,16 @@
                                 
                                         
                                     ` : $h`<span  />`}
-                                                            
+
+
                                 </div>
                             </div>
+
+
+
+
+
+
 
 
                             <div class="block split-row-both">

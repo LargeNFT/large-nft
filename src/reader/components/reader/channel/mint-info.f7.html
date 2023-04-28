@@ -1,25 +1,22 @@
 <template>
 
-  <div>
-    <div class="block-title block-title-medium">Mint NFTs</div>
+  <div class="card card-header-divider">
+    <div class="card-header">Mint NFTs</div>
+    <div class="card-content card-content-padding">
 
-    <div class="card">
-      <div class="card-content card-content-padding">
+      ${mintingViewModel ? $h`
+        <p>
+          <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+        </p>
 
-        ${mintingViewModel ? $h`
-          <p>
-            <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
-          </p>
+        <a href="${link('mint.html')}" class="link">Mint NFTs</a>
 
-          <a href="${link('mint.html')}" class="link">Mint NFTs</a>
+      ` : $h`
+        Minting information unavailable. 
+        <p>Note: Use a web browser with wallet support to see NFT information.</p>
+      `}
 
-        ` : $h`
-          Minting information unavailable. 
-          <p>Note: Use a web browser with wallet support to see NFT information.</p>
-        `}
 
-  
-      </div>
     </div>
   </div>
 

@@ -109,72 +109,336 @@
 
           <div class="page-content">
 
-            <div class="fixed-width-content center">
+            <div class="main-split">
 
-              <div class="card card-outline channel-card-show">
+              <div class="left">
 
-                <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                  style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
-                    <% } %>
-                      >
-  
-                      <a href="<%= link('index.html') %>">
-                        <% if (channelViewModel?.channel.coverImageId) { %>
-                          <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
-                        <% } else { %>
-                          <i class="f7-icons avatar">photo</i>
-                        <% } %>
-                      </a>
-  
-                </div>
-  
-                <div class="card-content card-content-padding">
-  
-                  <div class="title">
-                    <%= channelViewModel.channel.title %>
+                <div class="card channel-card-show">
+
+                  <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
+                    style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
+                      <% } %>
+                        >
+    
+                        <a href="<%= link('index.html') %>">
+                          <% if (channelViewModel?.channel.coverImageId) { %>
+                            <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
+                          <% } else { %>
+                            <i class="f7-icons avatar">photo</i>
+                          <% } %>
+                        </a>
+    
                   </div>
-  
-                  <% if(channelViewModel?.authorDisplayName) { %>
-                    <div class="name">
-                      By <a href="https://etherscan.io/address/<%=channelViewModel?.author._id%>" class="external">
-                        <%= channelViewModel?.authorDisplayName %>
-                      </a>
+    
+                  <div class="card-content card-content-padding">
+    
+                    <div class="title">
+                      <%= channelViewModel.channel.title %>
                     </div>
+    
+                    <% if(channelViewModel?.authorDisplayName) { %>
+                      <div class="name">
+                        By <%= channelViewModel?.authorDisplayName %>
+                      </div>
+                    <% } %>
+    
+                    <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
+                      <%~ channelViewModel.channel?.descriptionHTML %>
+                    </div>
+    
+    
+                    <div class="start-buttons">
+                      <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
+                    </div>
+    
+    
+                  </div>
+    
+                </div>
+    
+                <div class="hidden-on-load">
+    
+                  <% if (showMintPage) { %>
+                    <mint-info
+                      baseurl="<%= baseURL %>"
+                    ></mint-info>
+                  <% } %>
+
+
+                  <% if(channelViewModel.channel?.contractAddress) { %>
+
+
+                    <div class="card card-header-divider">
+                      <div class="card-header">Overall Stats</div>
+                      <div class="card-content card-content-padding">
+
+                        <div class="block block-strong inset stats">
+      
+                          <div class="stats-row margin-bottom">
+        
+                            <div>
+                              Number of Sales (Lifetime)
+                            </div>
+        
+                            <div class="price">
+                              <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.events ? homeViewModel?.salesReport?.totals?.events : 0)}</strong>
+                            </div>
+                          </div>
+        
+                          <div class="stats-row margin-bottom">
+        
+                            <div>
+                              Average Sale
+                            </div>
+        
+                            <div class="price">
+                              <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.averageEthValue ? homeViewModel?.salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.averageUsdValue ? homeViewModel?.salesReport?.totals?.averageUsdValue : 0, 2)}</span>
+                            </div>
+                            
+        
+                          </div>
+        
+                          <div class="stats-row margin-bottom">
+        
+                            <div>
+                              Total Value of All Sales (Lifetime)
+                            </div>
+                            
+                            <div class="price">
+                              <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.ethValue ? homeViewModel?.salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.usdValue ? homeViewModel?.salesReport?.totals?.usdValue : 0, 2)}</span>
+                            </div>
+                          </div>
+        
+                          <div class="stats-row margin-bottom">
+                              
+                            <div>
+                              Value of Sales (24 Hours)
+                            </div>
+        
+                            <div class="price">
+                              <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.dayTotals?.ethValue ? homeViewModel?.salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.dayTotals?.usdValue ? homeViewModel?.salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                            </div>
+                          </div>
+        
+                          <div class="stats-row margin-bottom">
+        
+                            <div>
+                              Value of Sales (Month)
+                            </div>
+        
+                            
+                            <div class="col-50 large-100 price">
+                              <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.monthTotals?.ethValue ? homeViewModel?.salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.monthTotals?.usdValue ? homeViewModel?.salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                            </div>
+                          </div>
+        
+                          <div class="stats-row margin-bottom">
+                            
+                            <div>
+                              Value of Sales (Year)
+                            </div>
+        
+                            <div class="price">
+                              <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.yearTotals?.ethValue ? homeViewModel?.salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.yearTotals?.usdValue ? homeViewModel?.salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
+                            </div>
+                          </div>
+          
+        
+        
+                        </div>
+        
+                        <div class="block split-row-both">
+                          <a class="button button-outline margin-bottom" href="${link('leaderboard')}">Top Owners</a>
+                          <a class="button button-outline margin-bottom" href="${link('attributes')}">All Attributes</a>
+                        </div>
+
+                      </div>
+                    </div>
+
+  
                   <% } %>
   
-                  <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
-                    <%~ channelViewModel.channel?.descriptionHTML %>
-                  </div>
   
   
-                  <div class="start-buttons">
-                    <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
-                  </div>
-  
-  
-                </div>
-  
-              </div>
-  
-              <div class="hidden-on-load">
-  
-                <% if (showMintPage) { %>
-                  <mint-info
-                    baseurl="<%= baseURL %>"
-                  ></mint-info>
-                <% } %>
+                  ${homeViewModel?.leaderboard?.tokenOwners?.length > 0 ? $h`
+                    
+                    <div class="card data-table">
+                      <div class="card-header">Leaderboard</div>
+                      <div class="card-content card-content-padding">
 
-                <% if(channelViewModel.channel?.contractAddress || externalLinks?.length > 0) { %>
-                  <div class="card">
+                        <table class="leaderboard-table">
+                          <thead>
+                              <tr>
+                                  <th class="label-cell">Rank</th>
+                                  <th class="address-cell">Address</th>
+                                  <th class="numeric-cell">Owned</th>
+                                  <th class="numeric-cell">Buys</th>
+                                  <th class="numeric-cell">Sales</th>
+                                  <th class="text-cell">Last Active</th>
 
-                    <div class="card-content card-content-padding">
-                      <div class="list list-dividers-ios">   
+                              </tr>
+                          </thead>
+                  
+                          <leaderboard-rows token_owners="${homeViewModel?.leaderboard?.tokenOwners}"></leaderboard-rows>
+
+                      </table>
+
+                      </div>
+                    </div>
+
+                    
+                    <div class="block save-row">
+                      <div class="large-only"></div>
+                      <a href="${link('leaderboard')}" class="button button-fill">View Leaderboard</a>
+                    </div>
+                    
+                  ` : $h`<span />`}
   
-                        <div class="list-group">
-                          <ul>
-      
-                            <li class="item-divider">Links</li>
+  
+  
+                  ${homeViewModel?.largestSales && homeViewModel.largestSales?.sales?.length > 0 ? $h`
+
+                    <div class="card card-header-divider data-table">
+                      <div class="card-header">Largest Sales</div>
+                      <div class="card-content card-content-padding">
+                        <largest-sales largest_sales="${homeViewModel?.largestSales}"></largest-sales>
+                      </div>
+                    </div>
+  
+  
+                    <div class="block save-row">
+                      <div class="large-only"></div>
+                      <a href="${link('sales')}" class="button button-fill">View Top 100</a>
+                    </div>
+  
+                  ` : $h` `}
+  
+  
+                  ${homeViewModel?.recent?.transactions?.length > 0 ? $h`
     
+                    <div class="card data-table">
+                      <div class="card-header">
+                        Recent Activity
+                        <div class="last-updated">Updated: ${moment(homeViewModel?.recent.lastUpdated).fromNow()}</div>
+                      </div>
+                      <div class="card-content card-content-padding">
+                        <transaction-row transactions="${homeViewModel.recent}" items="${homeViewModel?.recent.rowItemViewModels}"></transaction-row>
+                      </div>
+                    </div>
+
+  
+  
+                    <div class="block save-row">
+                      <div class="large-only"></div>
+                      <a href="${link('activity')}" class="button button-fill">View All</a>
+                    </div>
+              
+                  ` : $h`<span />`}
+    
+    
+                </div>
+                
+                <div class="hide-on-pageinit">
+    
+                  <div class="card skeleton-text">
+                    <div class="card-header">Overall Stats</div>
+                    <div class="card-content card-content-padding data-table">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+  
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+  
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+  
+                    </div>
+  
+                  </div>
+  
+  
+                  <div class="card skeleton-text">
+                    <div class="card-header">Overall Stats</div>
+                    <div class="card-content card-content-padding data-table">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                    </div>
+  
+                  </div>
+  
+  
+                  <div class="card skeleton-text">
+                    <div class="card-header">Overall Stats</div>
+                    <div class="card-content card-content-padding data-table">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                    </div>
+  
+                  </div>
+  
+  
+                  <div class="card skeleton-text">
+                      <div class="card-header">Recent Activity</div>
+                      <div class="card-content card-content-padding data-table">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                          lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                      </div>
+    
+                  </div>
+    
+                </div>
+    
+  
+                <% 
+                  if (channelViewModel.staticPagesViewModel.index?.length > 0) {
+    
+                    for (let staticPage of channelViewModel.staticPagesViewModel.index) {
+                 %>
+    
+                  <div class="card static-page-card">   
+                    <div class="card-content card-content-padding">
+                      <%~ staticPage.contentHTML %>
+                    </div>               
+                  </div>
+    
+                <%
+                    }
+                  }                  
+                %>
+    
+    
+  
+  
+                <% if (channelViewModel?.channel.licenseHTML?.length > 13) { %>
+    
+                  <div class="block-title block-title-small">License</div>
+                  <div class="card">
+                    <div class="card-content card-content-padding license">
+                      <%~ channelViewModel?.channel.licenseHTML %>
+                    </div>
+                  </div>
+    
+                <% } %>
+  
+
+              </div>
+
+              <div class="right">
+
+
+                <div class="hidden-on-load">
+      
+                  <% if(channelViewModel.channel?.contractAddress) { %>
+
+                    <div class="card card-header-divider">
+                      <div class="card-header">Links</div>
+                      <div class="card-content card-content-padding">
+                        <div class="list">
+                          <ul>
+              
                             <% if(channelViewModel.channel?.contractAddress) { %>
       
                               <li>
@@ -231,17 +495,23 @@
       
                           </ul>
                         </div>
-      
-                        <div class="list-group">
+                      </div>
+                    </div>
+
+                  <% } %>
+
+
+
+
+                  <% 
+                    if (marketplaces?.length > 0) {
+                  %>
+
+                    <div class="card card-header-divider">
+                      <div class="card-header">Marketplaces</div>
+                      <div class="card-content card-content-padding">
+                        <div class="list">           
                           <ul>
-      
-                            <% 
-                            if (marketplaces?.length > 0) {
-                            %>
-          
-                            <li class="item-divider">Marketplaces</li>
-      
-          
                               <% 
                               for (let marketplace of marketplaces) { 
                               %>  
@@ -255,274 +525,30 @@
                                     </div>
                                   </div>
                                 </li>
-        
-                                    
                               <%
                               }
                               %>
-                              
-                          <%
-                            }
-                          %>
-      
                           </ul>
                         </div>
-      
                       </div>
                     </div>
-  
-                  </div>
-        
-                <% } %>
 
 
 
-                <% if(channelViewModel.channel?.contractAddress) { %>
-                  <div class="block-title block-title-medium">Overall Stats</div>
-                  <div class="block block-strong inset stats">
-    
-                    <div class="stats-row margin-bottom">
+          
+                  <% } %>
   
-                      <div>
-                        Number of Sales (Lifetime)
-                      </div>
-  
-                      <div class="price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.events ? homeViewModel?.salesReport?.totals?.events : 0)}</strong>
-                      </div>
-                    </div>
-  
-                    <div class="stats-row margin-bottom">
-  
-                      <div>
-                        Average Sale
-                      </div>
-  
-                      <div class="price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.averageEthValue ? homeViewModel?.salesReport?.totals?.averageEthValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.averageUsdValue ? homeViewModel?.salesReport?.totals?.averageUsdValue : 0, 2)}</span>
-                      </div>
-                      
-  
-                    </div>
-  
-                    <div class="stats-row margin-bottom">
-  
-                      <div>
-                        Total Value of All Sales (Lifetime)
-                      </div>
-                      
-                      <div class="price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.totals?.ethValue ? homeViewModel?.salesReport?.totals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.totals?.usdValue ? homeViewModel?.salesReport?.totals?.usdValue : 0, 2)}</span>
-                      </div>
-                    </div>
-  
-                    <div class="stats-row margin-bottom">
-                        
-                      <div>
-                        Value of Sales (24 Hours)
-                      </div>
-  
-                      <div class="price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.dayTotals?.ethValue ? homeViewModel?.salesReport?.dayTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.dayTotals?.usdValue ? homeViewModel?.salesReport?.dayTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
-                      </div>
-                    </div>
-  
-                    <div class="stats-row margin-bottom">
-  
-                      <div>
-                        Value of Sales (Month)
-                      </div>
-  
-                      
-                      <div class="col-50 large-100 price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.monthTotals?.ethValue ? homeViewModel?.salesReport?.monthTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.monthTotals?.usdValue ? homeViewModel?.salesReport?.monthTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
-                      </div>
-                    </div>
-  
-                    <div class="stats-row margin-bottom">
-                      
-                      <div>
-                        Value of Sales (Year)
-                      </div>
-  
-                      <div class="price">
-                        <strong>${new Intl.NumberFormat('en-US').format(homeViewModel?.salesReport?.yearTotals?.ethValue ? homeViewModel?.salesReport?.yearTotals?.ethValue : 0)}</strong> ETH <span class="dollars">${transactionWebService.abbreviateDollars(homeViewModel?.salesReport?.yearTotals?.usdValue ? homeViewModel?.salesReport?.yearTotals?.usdValue?.toFixed(2) : 0, 2)}</span>
-                      </div>
-                    </div>
-    
-  
-  
-                  </div>
-  
-                  <div class="block split-row-both">
-                    <a class="button button-outline margin-bottom" href="${link('leaderboard')}">Top Owners</a>
-                    <a class="button button-outline margin-bottom" href="${link('attributes')}">All Attributes</a>
-                  </div>
-
-                <% } %>
+                </div>
 
 
-
-                ${homeViewModel?.leaderboard?.tokenOwners?.length > 0 ? $h`
-                  
-                  <div class="block-title block-title-medium">Leaderboard</div>
-                  <div class="card data-table">
-                    <div class="card-content">
-                        
-                        <table class="leaderboard-table">
-                            <thead>
-                                <tr>
-                                    <th class="label-cell">Rank</th>
-                                    <th class="address-cell">Address</th>
-                                    <th class="numeric-cell">Owned</th>
-                                    <th class="numeric-cell">Buys</th>
-                                    <th class="numeric-cell">Sales</th>
-                                    <th class="text-cell">Last Active</th>
-  
-                                </tr>
-                            </thead>
-                    
-                            <leaderboard-rows token_owners="${homeViewModel?.leaderboard?.tokenOwners}"></leaderboard-rows>
-  
-                        </table>
-                                                
-                    </div>
-                  </div>
-
-                  
-                  <div class="block save-row">
-                    <div class="large-only"></div>
-                    <a href="${link('leaderboard')}" class="button button-fill">View Leaderboard</a>
-                  </div>
-                  
-                ` : $h`<span />`}
-
-
-
-                ${homeViewModel?.largestSales && homeViewModel.largestSales?.sales?.length > 0 ? $h`
-                  <div class="block-title block-title-medium">Largest Sales</div>
-
-                  <largest-sales largest_sales="${homeViewModel?.largestSales}"></largest-sales>
-
-
-                  <div class="block save-row">
-                    <div class="large-only"></div>
-                    <a href="${link('sales')}" class="button button-fill">View Top 100</a>
-                  </div>
-
-                ` : $h` `}
-
-
-                ${homeViewModel?.recent?.transactions?.length > 0 ? $h`
-  
-                  <div class="block-title block-title-medium">
-                    <div class="last-updated">Updated: ${moment(homeViewModel?.recent.lastUpdated).fromNow()}</div>
-                    Recent Activity
-                  </div>
-                  
-
-                  <transaction-row transactions="${homeViewModel.recent}" items="${homeViewModel?.recent.rowItemViewModels}"></transaction-row>
-
-                  <div class="block save-row">
-                    <div class="large-only"></div>
-                    <a href="${link('activity')}" class="button button-fill">View All</a>
-                  </div>
-            
-                ` : $h`<span />`}
-  
-  
               </div>
-              
-              <div class="hide-on-pageinit">
-  
-                <div class="card skeleton-text">
-                  <div class="card-header">Overall Stats</div>
-                  <div class="card-content card-content-padding data-table">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
 
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-
-                  </div>
-
-                </div>
-
-
-                <div class="card skeleton-text">
-                  <div class="card-header">Overall Stats</div>
-                  <div class="card-content card-content-padding data-table">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                  </div>
-
-                </div>
-
-
-                <div class="card skeleton-text">
-                  <div class="card-header">Overall Stats</div>
-                  <div class="card-content card-content-padding data-table">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                      lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                  </div>
-
-                </div>
-
-
-                <div class="card skeleton-text">
-                    <div class="card-header">Recent Activity</div>
-                    <div class="card-content card-content-padding data-table">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                    </div>
-  
-                </div>
-  
+              <div class="left">
+                <%~ include("footer", {baseURL: baseURL}) %>
               </div>
-  
-
-              <% 
-                if (channelViewModel.staticPagesViewModel.index?.length > 0) {
-  
-                  for (let staticPage of channelViewModel.staticPagesViewModel.index) {
-               %>
-  
-                <div class="card static-page-card">   
-                  <div class="card-content card-content-padding">
-                    <%~ staticPage.contentHTML %>
-                  </div>               
-                </div>
-  
-              <%
-                  }
-                }                  
-              %>
-  
-  
-
-
-              <% if (channelViewModel?.channel.licenseHTML?.length > 13) { %>
-  
-                <div class="block-title block-title-small">License</div>
-                <div class="card">
-                  <div class="card-content card-content-padding license">
-                    <%~ channelViewModel?.channel.licenseHTML %>
-                  </div>
-                </div>
-  
-              <% } %>
-
-
-              <%~ include("footer", {baseURL: baseURL}) %>
-
 
             </div>
+
 
           </div>
 

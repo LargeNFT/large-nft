@@ -131,7 +131,7 @@
                 <div class="page-content">
 
 
-                    <div class="item-show">
+                    <div class="main-split">
                                 
                         <div class="left">
                     
@@ -170,21 +170,28 @@
 
                                 ${transactionsViewModel?.transactions?.length > 0 ? $h`
               
-                                  <div class="block-title block-title-medium">
-                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel?.lastUpdated).fromNow()}</div>
-                                    Activity
-                                  </div>
-                                  <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel?.rowItemViewModels}" token="<%= itemViewModel.item.tokenId %>"></transaction-row>
+                                    <div class="card data-table">
+                                        <div class="card-header">
+                                            Activity
+                                            <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                                        </div>
+                                        <div class="card-content card-content-padding">
+                                            <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel?.rowItemViewModels}" token="<%= itemViewModel.item.tokenId %>"></transaction-row>
+                                        </div>
+                                    </div>
+
                            
                                 ` : $h`
 
-                                  <div class="block-title block-title-medium">
-                                    <div class="last-updated">Last updated: ${moment(transactionsViewModel?.lastUpdated).fromNow()}</div>
-                                    Activity
-                                  </div>
-                                  <div class="block">
-                                    No activity.
-                                  </div>
+                                    <div class="card data-table">
+                                        <div class="card-header">
+                                            Activity
+                                            <div class="last-updated">Last updated: ${moment(transactionsViewModel?.lastUpdated).fromNow()}</div>
+                                        </div>
+                                        <div class="card-content card-content-padding">
+                                            No activity.
+                                        </div>
+                                    </div>
                                 
                                 `}
               

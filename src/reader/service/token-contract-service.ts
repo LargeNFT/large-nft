@@ -19,9 +19,60 @@ class TokenContractService {
     private lastMintedTokenId=0
 
 
-    public get channelContract() : ChannelContract {
+    async getBalance(address) : Promise<number> {
+        if (!address) return 0
 
-        let contract:ChannelContract = this.walletService.getContract("Channel")
+        let channelContract = await this.getChannelContract()
+
+        return parseInt(await channelContract.balanceOf(address))
+    }
+
+    async getMetadata(tokenId) : Promise<any> {
+        return this.metadataRepository.get(tokenId)      
+    }
+
+    async mint(quantity:number, totalMintCost:string) {
+
+        let channelContract = await this.getChannelContract()
+
+
+        await channelContract.mint(quantity, { value: totalMintCost })
+    }
+
+    async mintFromStartOrFail(quantity:number, start:number, totalMintCost:string) {
+        let channelContract = await this.getChannelContract()
+        await channelContract.mintFromStartOrFail(quantity, start, { value: totalMintCost })
+    }
+
+    
+    async mintAsOwner(quantity:number) {
+        let channelContract = await this.getChannelContract()
+        await channelContract.mint(quantity, {})
+    }
+
+    async ownerOf(tokenId:number)  {
+        let channelContract = await this.getChannelContract()
+        return channelContract.ownerOf(tokenId)
+    }
+
+    async getTotalMinted() {
+        let channelContract = await this.getChannelContract()
+        return channelContract.totalMinted()
+    }
+
+    async getTotalSupply() {
+        let channelContract = await this.getChannelContract()
+        return channelContract.totalSupply()
+    }
+
+    async owner() {
+        let channelContract = await this.getChannelContract()
+        return channelContract.owner()
+    }
+
+    async getChannelContract() : Promise<ChannelContract> {
+
+        let contract:ChannelContract = await this.walletService.getContract("Channel")
 
         //Add event listener for mints if it's not already added. Maybe won't work if we ever add a second listener anywhere
         if (this.walletService.provider && this.walletService.provider.listeners()?.length == 0) {
@@ -54,46 +105,9 @@ class TokenContractService {
 
         }
 
-        return this.walletService.getContract("Channel")
+        return contract
     }
 
-    async getBalance(address) : Promise<number> {
-        if (!address) return 0
-        return parseInt(await this.channelContract.balanceOf(address))
-    }
-
-    async getMetadata(tokenId) : Promise<any> {
-        return this.metadataRepository.get(tokenId)      
-    }
-
-    async mint(quantity:number, totalMintCost:string) {
-        await this.channelContract.mint(quantity, { value: totalMintCost })
-    }
-
-    async mintFromStartOrFail(quantity:number, start:number, totalMintCost:string) {
-        await this.channelContract.mintFromStartOrFail(quantity, start, { value: totalMintCost })
-    }
-
-    
-    async mintAsOwner(quantity:number) {
-        await this.channelContract.mint(quantity, {})
-    }
-
-    async ownerOf(tokenId:number)  {
-        return this.channelContract.ownerOf(tokenId)
-    }
-
-    async getTotalMinted() {
-        return this.channelContract.totalMinted()
-    }
-
-    async getTotalSupply() {
-        return this.channelContract.totalSupply()
-    }
-
-    async owner() {
-        return this.channelContract.owner()
-    }
 
 }
 

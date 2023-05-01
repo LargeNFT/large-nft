@@ -4,18 +4,19 @@ import "reflect-metadata"
 
 import fs from "fs"
 import path from "path"
-import * as Eta from 'eta'
-import indexEjs from './ejs/index.ejs'
+
 
 import { ProcessConfig } from "../reader/util/process-config.js"
 import { SpawnService } from "../sync/service/spawn-service.js"
 
-import { FileStatus, SyncStatus } from "./dto/sync-status.js"
+import { SyncStatus } from "./dto/sync-status.js"
 
 
 import { getMainContainer, GetMainContainerCommand } from "./inversify.config.js"
 import { SyncStatusService } from "./service/sync-status-service.js"
 
+import _initEjs from '../reader/ejs/template/_init.ejs'
+import { GenerateService } from "../reader/service/core/generate-service.js"
 
 
 let syncLibrary = async () => {
@@ -43,6 +44,7 @@ let syncLibrary = async () => {
 
   let spawnService: SpawnService = container.get("SpawnService")
   let syncStatusService: SyncStatusService = container.get("SyncStatusService")
+  let generateService: GenerateService = container.get("GenerateService")
 
 
   if (!fs.existsSync(`${process.env.INIT_CWD}/data`)) {
@@ -75,12 +77,11 @@ let syncLibrary = async () => {
   args.push("--sync-dir")
   args.push(syncDir)
 
-
   //Generate library pages
   if (config.generate) {
-    const indexResult = Eta.render(indexEjs, { })
-    fs.writeFileSync(`${syncDir}/index.html`, indexResult)
+    await generateService.generateLibraryPages(config, syncDir)
   }
+
 
 
   for (let slug of Object.keys(config.readers)) {

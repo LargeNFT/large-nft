@@ -286,6 +286,8 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+            globalThis.channelId = "<%= channelViewModel.channel._id %>"
+
             let tokenOwnerService = globalThis.container.get("TokenOwnerService")
             let itemWebService = globalThis.container.get("ItemWebService")
             let walletService = globalThis.container.get("WalletService")

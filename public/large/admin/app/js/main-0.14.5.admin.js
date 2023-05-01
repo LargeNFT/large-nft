@@ -248,7 +248,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4f8c74353d';
+framework7Component.id = 'eee423dcbd';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -443,7 +443,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1fbf5b2799';
+framework7Component.id = '20d9686cce';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -552,7 +552,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '991893f062';
+framework7Component.id = '3656c62928';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -760,7 +760,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f1cb0b2be6';
+framework7Component.id = '69a93bafca';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -926,7 +926,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8629ac442f';
+framework7Component.id = '9c0fb091de';
 framework7Component.style = `
 
 
@@ -1251,7 +1251,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a1e1cbf700';
+framework7Component.id = 'abb726dba6';
 framework7Component.style = `
 
 
@@ -1489,7 +1489,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c063c143c9';
+framework7Component.id = '7fe781b0c5';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1818,7 +1818,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f04017d2fe';
+framework7Component.id = '829aa8fb08';
 framework7Component.style = `
 
 `;
@@ -2296,7 +2296,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '07c1157d2b';
+framework7Component.id = 'f76eddb89a';
 framework7Component.style = `
 
 
@@ -2638,7 +2638,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8e7db501d5';
+framework7Component.id = '099606258d';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3907,7 +3907,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '32e995d2b8';
+framework7Component.id = '51c89fbbd2';
 framework7Component.style = `
 
 
@@ -4151,7 +4151,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '82f13ea29f';
+framework7Component.id = '916cbedc61';
 framework7Component.style = `
 
 
@@ -4414,7 +4414,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e7dc28e4a2';
+framework7Component.id = '214c9c9e58';
 framework7Component.style = `
   
 
@@ -4569,7 +4569,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3aa44ccc5a';
+framework7Component.id = '75805e87d3';
 framework7Component.style = `
     
 `;
@@ -5025,7 +5025,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ce21209d4f';
+framework7Component.id = '357fb1647b';
 framework7Component.style = `
 
 
@@ -5114,7 +5114,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '395a7f7ac5';
+framework7Component.id = '34c14eba90';
 framework7Component.style = `
     
 `;
@@ -5498,7 +5498,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1697fbff99';
+framework7Component.id = 'da8cc14295';
 framework7Component.style = `
 
 
@@ -5571,7 +5571,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '37619430b7';
+framework7Component.id = '0a0399e192';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5698,7 +5698,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6123fbc125';
+framework7Component.id = '7f72a88b6d';
 framework7Component.style = `
 
 `;
@@ -5856,7 +5856,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '72b3c01ed9';
+framework7Component.id = 'a5adde45c3';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6136,7 +6136,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4975216da4';
+framework7Component.id = '2a8682ffee';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6439,7 +6439,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b8eff2d43f';
+framework7Component.id = '713b75d219';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6866,7 +6866,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8c597a8a7e';
+framework7Component.id = '3300227884';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7213,7 +7213,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '29c14f60f6';
+framework7Component.id = '7b71b7d58c';
 framework7Component.style = `
 
 
@@ -7510,7 +7510,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5fff7157a1';
+framework7Component.id = '7d90c082a7';
 framework7Component.style = `
 
 
@@ -7736,7 +7736,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'fb7d79dd5e';
+framework7Component.id = 'b68f5bedb0';
 framework7Component.style = `
 
   `;
@@ -8210,7 +8210,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'abb71c337b';
+framework7Component.id = '4cb11da18d';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8508,7 +8508,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e58b8cb3fb';
+framework7Component.id = 'c6411ebab6';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8740,7 +8740,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '880999de06';
+framework7Component.id = '1d2bf52092';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -9020,7 +9020,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e748f637cd';
+framework7Component.id = 'd314be9fb2';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9357,7 +9357,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '185b54c47d';
+framework7Component.id = '9f009508d6';
 framework7Component.style = `
 
 
@@ -9437,7 +9437,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '305d7be175';
+framework7Component.id = '69a939f679';
 framework7Component.style = `
 
 

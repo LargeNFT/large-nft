@@ -115,6 +115,8 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
+            globalThis.channelId = "<%= channelViewModel.channel._id %>"
+
             let owner
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)

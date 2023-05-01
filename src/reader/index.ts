@@ -34,37 +34,8 @@ let initReader = async (baseURI:string, hostname:string, version:string, routabl
             scope: `${hostname}${baseURI}`
         })
 
-        let contract
-        let contractABI
-    
-
-        let contractResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract.json`, { responseType: 'json'})
-        let contractABIResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract-abi.json`, { responseType: 'json'})
-    
-
-
-        if (contractResponse.status === 200) {
-            contract = contractResponse.data
-        }
-    
-        if (contractResponse.status === 200) {
-            contractABI = contractABIResponse.data
-        }
-    
-    
         let container:Container = new Container()
     
-        function contracts() {
-                
-            if (!contract.contractAddress) return []
-        
-            //Override address
-            contractABI['Channel'].address = contract.contractAddress
-      
-            return contractABI
-        }
-      
-        container.bind("contracts").toConstantValue(contracts())
         container.bind("channelId").toConstantValue(() => {
             return channelId
         })

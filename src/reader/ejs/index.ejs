@@ -414,7 +414,6 @@
   
                 <% if (channelViewModel?.channel.licenseHTML?.length > 13) { %>
     
-                  <div class="block-title block-title-small">License</div>
                   <div class="card">
                     <div class="card-content card-content-padding license">
                       <%~ channelViewModel?.channel.licenseHTML %>
@@ -427,7 +426,6 @@
               </div>
 
               <div class="right">
-
 
                 <div class="hidden-on-load">
       
@@ -563,12 +561,15 @@
     <script type="module" id="page-init-scripts">
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
-              
+
+            globalThis.channelId = "<%= channelViewModel.channel._id %>"
+
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let itemWebService = globalThis.container.get("ItemWebService")
             let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
 
             let baseURI = globalThis.container.get("baseURI")
+
 
             let breadcrumbs
 

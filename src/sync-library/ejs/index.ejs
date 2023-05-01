@@ -1,1 +1,134 @@
-<html></html>
+<% 
+
+    let channelViewModel = it.baseViewModel.channelViewModel 
+    let hostname = it.baseViewModel.hostname
+    let baseURL = it.baseViewModel.baseURL
+    let routablePages = it.baseViewModel.routablePages
+    let base64Version = it.baseViewModel.base64Version
+
+    let logo = it.baseViewModel.logo
+
+
+    const link = (href) => {
+        return `${baseURL + href}`
+    }   
+
+
+    const absoluteLink = (href) => {
+      return `${hostname + baseURL + href}`
+    }   
+    
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <style>
+      html {
+        visibility: hidden;
+        opacity: 0;
+      }
+    </style>
+
+
+    <title>
+      <%= it.title %>
+    </title>
+
+
+    <%~ it.baseViewModel.headEndContents %>
+    
+
+  </head>
+
+  <body>
+
+    <div id="app">
+
+      <div class="view view-main">
+
+        <div class="page" data-name="home">
+
+          <nav-bar
+            logo="${logo}"
+            library_url="<%=it.baseViewModel.libraryURL ? it.baseViewModel.libraryURL : ''%>"
+            large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
+            title="<%= it.title %>"
+            show_mint_page="false"
+            show_activity_page="false"
+          >
+          </nav-bar>
+
+
+          <div class="page-content">
+
+            <div class="main-split">
+
+              <div class="left">
+
+              </div>
+
+              <div class="right">
+
+              </div>
+
+              <div class="left">
+                <%~ include("footer", {baseURL: baseURL}) %>
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <%~ it.baseViewModel.bodyContents %>
+    
+    <script type="module" id="page-init-scripts">
+
+      const init = (props, { $, $f7, $h, $on, $update }) => {
+              
+            let baseURI = globalThis.container.get("baseURI")
+
+            let breadcrumbs
+
+            const link = (href) => {
+              return baseURI + href
+            }   
+
+   
+            $on('pageInit', async () => {
+
+            })
+
+            $f7.preloader.hide()
+
+            return $render
+
+      }
+
+
+    </script>
+
+    <%~ 
+      include("_init", {
+        hostname: hostname,
+        baseURL: baseURL,
+        libraryURL: it.baseViewModel.libraryURL,
+        routablePages: routablePages,
+        base64Version: base64Version
+      }) 
+    %>
+
+
+
+  </body>
+
+</html>

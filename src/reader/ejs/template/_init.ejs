@@ -13,20 +13,19 @@
     <script type="module" id="page-scripts">
 
         let initLibrary = () => {
+
             let baseURL = '<%= baseURL %>'
 
-            let libraryURL
             <% if (libraryURL) { %>
-                libraryURL = '<%= libraryURL %>'
+                let libraryURL = '<%= libraryURL %>'
             <% } %>
 
             let hostname = '<%= hostname %>'
-            let channelId = '<%= channelId %>'
             let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
         
             let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
         
-            let app = library.initLibrary(libraryURL, baseURL, hostname, version, routablePages, channelId)
+            let app = library.initLibrary(libraryURL, baseURL, hostname, version, routablePages)
         }
 
         initLibrary()

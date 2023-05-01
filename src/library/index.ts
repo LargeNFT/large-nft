@@ -5,7 +5,6 @@ import "reflect-metadata"
 import { Container } from "inversify"
 
 
-
 import { getMainContainer } from "../reader/inversify.config.js"
 
 
@@ -20,12 +19,11 @@ import {Workbox} from 'workbox-window'
 import { StaticPage } from "../reader/dto/static-page.js"
 import { SchemaService } from "../reader/service/core/schema-service.js"
 
-import axios from "axios"
 
 import '../reader/html/css/app.css'
 
 
-let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, version:string, routablePages:StaticPage[], channelId:string) => {
+let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, version:string, routablePages:StaticPage[]) => {
 
     console.log("Initializing Library")
     
@@ -35,39 +33,14 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
             scope: `${libraryURL}/r/`
         })
 
-        let contract
-        let contractABI
-    
 
-        let contractResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract.json`, { responseType: 'json'})
-        let contractABIResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract-abi.json`, { responseType: 'json'})
-    
-
-
-        if (contractResponse.status === 200) {
-            contract = contractResponse.data
-        }
-    
-        if (contractResponse.status === 200) {
-            contractABI = contractABIResponse.data
-        }
-    
     
         let container:Container = new Container()
+
     
-        function contracts() {
-                
-            if (!contract.contractAddress) return []
-        
-            //Override address
-            contractABI['Channel'].address = contract.contractAddress
       
-            return contractABI
-        }
-      
-        container.bind("contracts").toConstantValue(contracts())
         container.bind("channelId").toConstantValue(() => {
-            return channelId
+            return globalThis.channelId
         })
 
         container = await getMainContainer(container, baseURI, hostname, version, routablePages)

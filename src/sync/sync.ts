@@ -19,7 +19,6 @@ import { ProcessConfig } from "../reader/util/process-config.js"
 
 import { TokenOwner } from "./dto/token-owner.js"
 import { TokenOwnerPageService } from "../sync/service/token-owner-page-service.js"
-import { Transaction } from "./dto/transaction.js"
 
 
 
@@ -45,29 +44,28 @@ let sync = async () => {
 
   if (config.alchemy) {
 
-    let contract = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract.json`, 'utf8'))
-    let contractAbi = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract-abi.json`, 'utf8'))
-
 
     let container = new Container()
-
-
 
     container.bind("channelId").toConstantValue(() => {
       return channelId
     })
 
 
-    function contracts() {
+
+    container.bind("contracts").toConstantValue(async () => {
+
+      let contract = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract.json`, 'utf8'))
+      let contractAbi = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract-abi.json`, 'utf8'))
+
       if (!contract.contractAddress) return []
 
       //Override address
       contractAbi['Channel'].address = contract.contractAddress
 
       return contractAbi
-    }
 
-    container.bind("contracts").toConstantValue(contracts())
+    })
 
 
     let command: GetMainContainerCommand = {

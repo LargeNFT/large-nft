@@ -185,6 +185,8 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+            globalThis.channelId = "<%= channelViewModel.channel._id %>"
+
             let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
             let transactionWebService = globalThis.container.get("TransactionWebService")
 

@@ -143,6 +143,7 @@ import { ContractStateRepository } from "../sync/repository/contract-state-repos
 import { TokenService } from "./service/token-service.js";
 import { RowItemViewModelRepositoryBrowserImpl } from "./repository/browser/row-item-view-model-repository-impl.js";
 import { RowItemViewModelRepository } from "./repository/row-item-view-model-repository.js";
+import axios from "axios";
 
 let container: Container
 
@@ -468,7 +469,32 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
 
   })
 
+  container.bind("contracts").toConstantValue(async () => {
 
+    let contract
+    let contractABI
+
+
+    let contractResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract.json`, { responseType: 'json'})
+    let contractABIResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract-abi.json`, { responseType: 'json'})
+
+
+    if (contractResponse.status === 200) {
+        contract = contractResponse.data
+    }
+
+    if (contractResponse.status === 200) {
+        contractABI = contractABIResponse.data
+    }
+
+    if (!contract.contractAddress) return []
+
+    //Override address
+    contractABI['Channel'].address = contract.contractAddress
+
+    return contractABI
+
+  })
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 

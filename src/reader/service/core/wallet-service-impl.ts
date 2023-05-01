@@ -1,6 +1,7 @@
 import { Contract, ethers } from "ethers"
 import { inject, injectable } from "inversify"
 import { WalletService } from "./wallet-service.js"
+import axios from "axios"
 
 
 @injectable()
@@ -14,9 +15,11 @@ class WalletServiceImpl implements WalletService {
   
 
   constructor(
-    @inject("contracts") private contracts:Contract[],
+    @inject("contracts") private contracts:Function,
     @inject("provider") private getProvider:Function,
-    @inject("framework7") private $f7
+    @inject("framework7") private $f7,
+    @inject("hostname") private hostname,
+    @inject("baseURI") private baseURI
   ) {
 
   }
@@ -102,14 +105,15 @@ class WalletServiceImpl implements WalletService {
     return this.provider.getSigner()
   }
 
+  async getContract(name:string)  {
 
-  getContract(name:string)  {
+    let contracts = await this.contracts()
 
-    //If it's cached and the same wallet just return it.
-    if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
+    // //If it's cached and the same wallet just return it.
+    // if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
 
     //Initialize and return
-    let c = this.contracts[name]
+    let c = contracts[name]
     this.ethersContracts[name] = new ethers.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
 
     // console.log(`Getting contract ${name}`)

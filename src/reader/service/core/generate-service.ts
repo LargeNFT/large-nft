@@ -18,6 +18,8 @@ import { StaticPageRepository } from "../../repository/static-page-repository.js
 
 import tokenEjs from '../../ejs/pages/token.ejs'
 import indexEjs from '../../ejs/index.ejs'
+import libraryIndexEjs from '../../../sync-library/ejs/index.ejs'
+
 import _initEjs from '../../ejs/template/_init.ejs'
 import _metaTagsEjs from '../../ejs/template/_meta_tags.ejs'
 import _metaTagsJsEjs from '../../ejs/template/_meta_tags_js.ejs'
@@ -568,6 +570,66 @@ class GenerateService {
         Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
     }
     
+    async generateLibraryPages(config, syncDir) {
+
+      if (!fs.existsSync(`${syncDir}/l`)) {
+        fs.mkdirSync(`${syncDir}/l`)
+      }
+
+      //Load init eta template
+      Eta.templates.define("_init", Eta.compile(_initEjs))
+
+
+      /** Hook: headStart */
+      let headStartContents
+
+      try {
+          headStartContents = await fs.promises.readFile(config.headStart)
+      } catch(ex) {}
+
+      Eta.templates.define("headStart", Eta.compile(headStartContents ? headStartContents?.toString() : ''))
+
+
+      //Load the default footer or use a configured template.
+      /** Hook: footer */
+      let footer
+
+      try {
+          footer = await fs.promises.readFile(config.footer)
+      } catch(ex) {}
+
+      Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
+
+
+
+      let baseViewModel:any = {
+        routablePages: [],
+        baseURL: config.baseURL,
+        hostname: config.hostname,
+        base64Version: Buffer.from(JSON.stringify(config.VERSION)).toString('base64'),
+        logo: config.logo,
+        libraryURL: config.libraryURL,
+        largeURL: config.largeURL,
+        headEndContents: `
+          <script defer src="${config.libraryURL}/large/library/browser/js/runtime-${config.VERSION}.library.js"></script>
+          <script defer src="${config.libraryURL}/large/library/browser/js/vendors-${config.VERSION}.library.js"></script>
+          <script defer src="${config.libraryURL}/large/library/browser/js/main-${config.VERSION}.library.js"></script>
+        `,
+        bodyContents: ``
+      }
+      
+
+      const indexResult = Eta.render(libraryIndexEjs, {
+        baseViewModel: baseViewModel,
+        title: "Library"
+      })
+
+
+      fs.writeFileSync(`${syncDir}/l/index.html`, indexResult)
+
+
+
+    }
 
 }
 

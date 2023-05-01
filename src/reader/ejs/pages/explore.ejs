@@ -132,6 +132,8 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+            globalThis.channelId = "<%= channelViewModel.channel._id %>"
+
             let itemWebService = globalThis.container.get("ItemWebService")
             let componentStateService = globalThis.container.get("ComponentStateService")
             const ComponentState = globalThis.ComponentState

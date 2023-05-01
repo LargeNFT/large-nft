@@ -21,6 +21,7 @@ import { SchemaService } from "../reader/service/core/schema-service.js"
 
 
 import '../reader/html/css/app.css'
+import { RoutingService } from "../admin/service/core/routing-service.js"
 
 
 let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, version:string, routablePages:StaticPage[]) => {
@@ -29,28 +30,23 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
     
     if ('serviceWorker' in navigator) {
 
-        const wb = new Workbox(`${libraryURL}/r/library-sw-${version}.js?baseURI=${libraryURL}`, {
-            scope: `${libraryURL}/r/`
+        const wb = new Workbox(`${libraryURL}/sw-library-${version}.js?baseURI=${libraryURL}`, {
+            scope: `${libraryURL}/`
         })
-
-
     
         let container:Container = new Container()
 
-    
-      
-        container.bind("channelId").toConstantValue(() => {
-            return globalThis.channelId
-        })
 
-        container = await getMainContainer(container, baseURI, hostname, version, routablePages)
+        let routes = await getRoutes(baseURI)
 
+
+        container = await getMainContainer(container, baseURI, hostname, version, routes)
 
         if (navigator.serviceWorker.controller) {
-            startApp(container, baseURI, version, hostname, routablePages)
+            startApp(container, hostname)
         } else {
             wb.addEventListener('controlling', e => {
-                startApp(container, baseURI, version, hostname, routablePages)
+                startApp(container, hostname)
             })
         }
 
@@ -61,7 +57,7 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
 
 } 
 
-let startApp = async (container:Container, baseURI:string, version:string, hostname:string, routablePages:StaticPage[]) => {
+let startApp = async (container:Container, hostname:string) => {
 
     // let container = getMainContainer(baseURI, version, routablePages)            
     let app:Framework7 = container.get("framework7")
@@ -92,6 +88,29 @@ let startApp = async (container:Container, baseURI:string, version:string, hostn
 
 
 }
+
+let getRoutes = (baseURI) => {
+
+
+    const routes = []
+
+    //Map the base route without a slash if it's longer than just a slash
+    if (baseURI != "/" && baseURI.endsWith("/")) {
+
+      routes.push({
+        path: `${baseURI.substring(0, baseURI.length -1)}`,
+        async async({ resolve, reject }) {
+          await RoutingService.resolveWithSpinner(resolve, 'index.html')
+        }
+      })
+
+    }
+
+
+    return routes
+
+}
+
 
 
 export { initLibrary }

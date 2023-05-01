@@ -636,7 +636,7 @@ let getReaderConfigs = () => {
 
   }
 
-  let librarySwFilename = `r/library-sw-${VERSION.replace('"', '').replace('"', '')}.js`
+  let librarySwFilename = `sw-library-${VERSION.replace('"', '').replace('"', '')}.js`
 
   let libraryServiceWorkerConfig = {
     entry: './src/library/sw.ts',

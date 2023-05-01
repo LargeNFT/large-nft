@@ -145,13 +145,19 @@ import { RowItemViewModelRepositoryBrowserImpl } from "./repository/browser/row-
 import { RowItemViewModelRepository } from "./repository/row-item-view-model-repository.js";
 import axios from "axios";
 
-let container: Container
 
-async function getMainContainer(customContainer:Container, baseURI:string, hostname:string, version:string, routablePages:StaticPage[]) {
+
+let container: Container
+let baseURI:string 
+let hostname:string 
+
+async function getMainContainer(customContainer:Container, theBaseURI:string, theHostname:string, version:string, routes:any[]) {
 
   if (container) return container
 
   container = customContainer
+  baseURI = theBaseURI
+  hostname = theHostname
 
   function framework7() {
 
@@ -177,240 +183,11 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
 
-    const resolveWithSpinner = (resolve, url, options?) => {
-      
-      // let currentUrl = window.location.pathname.split('/').pop()
-
-      //Navigating to same page freezes it. So don't.
-      // if (url != currentUrl)  {
-        app.preloader.show()
-      // } 
-
-      // console.log(url)
-
-      resolve({ 
-        componentUrl: `${baseURI}${url}`, 
-        options: options
-      })
-
-      app.preloader.hide()
 
 
-    }
+    
 
-
-    const routes = []
-
-    //Map the base route without a slash if it's longer than just a slash
-    if (baseURI != "/" && baseURI.endsWith("/")) {
-
-      routes.push({
-        path: `${baseURI.substring(0, baseURI.length -1)}`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'index.html')
-        }
-      })
-
-    }
-
-
-    routes.push(...[
-      {
-        path: `${baseURI}`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'index.html')
-        }
-      },
-      {
-        path: `${baseURI}index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}mint.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'mint.html')
-        }
-      },
-
-      {
-        path: `${baseURI}search.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'search.html')
-        }
-      },
-
-
-
-      {
-        path: `${baseURI}explore.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'explore.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}activity`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'activity/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}activity/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'activity/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}leaderboard`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'leaderboard/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}leaderboard/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'leaderboard/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}sales`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'sales/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}sales/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'sales/index.html')
-        }
-      },
-
-
-
-      {
-        path: `${baseURI}attributes`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'attributes/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}attributes/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'attributes/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}attribute`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'attribute/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}attribute/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'attribute/index.html')
-        }
-      },
-
-
-
-      {
-        path: `${baseURI}u`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'u/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}u/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'u/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}u/activity`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'u/activity/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}u/activity/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'u/activity/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}list-:page.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, 'list-{{page}}.html')
-        }
-      },
-
-      {
-        path: `${baseURI}t/:tokenId`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
-        }
-      },
-
-
-      {
-        path: `${baseURI}t/:tokenId/index.html`,
-        async async({ resolve, reject }) {
-          await resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
-        }
-      }
-
-    ])
-
-
-    if (routablePages?.length > 0) {
-
-      for (let routablePage of routablePages) {
-        
-        routes.push({
-          path: `${baseURI}${routablePage.slug}.html`,
-          async async({ resolve, reject }) {
-            await resolveWithSpinner(resolve, `${routablePage.slug}.html`)
-          }
-        })
-
-      }
-
-    }
-
-    routes.push({
-      path: '(.*)',
-      //@ts-ignore
-      async async({ resolve, reject, to }) {
-        console.log(`404 error: ${to.path}`)
-        await resolveWithSpinner(resolve, '404.html')
-      }
-    })
-
-    let app = new Framework7({
+    globalThis.app = new Framework7({
       el: '#app', // App root element
       id: 'large-reader', // App bundle ID
       name: 'Large Reader', // App name
@@ -439,7 +216,7 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
       routes: routes
     })
 
-    return app
+    return globalThis.app
   }
 
 
@@ -448,12 +225,9 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   container.bind("hostname").toConstantValue(hostname)
   container.bind("version").toConstantValue(version)
 
-
-
   container.bind("PouchDB").toConstantValue(PouchDB)
   container.bind("PouchFind").toConstantValue(PouchFind)
   container.bind("PouchQuickSearch").toConstantValue(PouchQuickSearch)
-
 
   container.bind("provider").toConstantValue(() => {
 
@@ -495,6 +269,11 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
     return contractABI
 
   })
+
+  container.bind("channelId").toConstantValue(() => {
+    return globalThis.channelId
+  })
+
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 
@@ -567,6 +346,8 @@ async function getMainContainer(customContainer:Container, baseURI:string, hostn
   globalThis.he = he
   globalThis.moment = moment
   globalThis.ComponentState = ComponentState 
+  globalThis.baseURI = baseURI
+  globalThis.hostname = hostname
 
   return container
 }

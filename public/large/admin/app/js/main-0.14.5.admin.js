@@ -248,7 +248,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'eee423dcbd';
+framework7Component.id = 'b5313dc5ec';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -443,7 +443,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '20d9686cce';
+framework7Component.id = '0cf80e83a7';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -552,7 +552,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3656c62928';
+framework7Component.id = '2c23bb6afe';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -760,7 +760,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '69a93bafca';
+framework7Component.id = '6480c1c9c0';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -926,7 +926,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9c0fb091de';
+framework7Component.id = '47b51ee052';
 framework7Component.style = `
 
 
@@ -1251,7 +1251,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'abb726dba6';
+framework7Component.id = 'a86e6a7793';
 framework7Component.style = `
 
 
@@ -1489,7 +1489,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7fe781b0c5';
+framework7Component.id = '302cb11179';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1818,7 +1818,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '829aa8fb08';
+framework7Component.id = 'cce919c060';
 framework7Component.style = `
 
 `;
@@ -2296,7 +2296,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f76eddb89a';
+framework7Component.id = 'acb8c7f071';
 framework7Component.style = `
 
 
@@ -2638,7 +2638,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '099606258d';
+framework7Component.id = 'fbe204b2d5';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3907,7 +3907,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '51c89fbbd2';
+framework7Component.id = 'ca117e7027';
 framework7Component.style = `
 
 
@@ -4151,7 +4151,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '916cbedc61';
+framework7Component.id = 'd730e0bea6';
 framework7Component.style = `
 
 
@@ -4414,7 +4414,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '214c9c9e58';
+framework7Component.id = '61adbc865b';
 framework7Component.style = `
   
 
@@ -4569,7 +4569,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '75805e87d3';
+framework7Component.id = '3ee38d342a';
 framework7Component.style = `
     
 `;
@@ -5025,7 +5025,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '357fb1647b';
+framework7Component.id = '11f68d98c0';
 framework7Component.style = `
 
 
@@ -5114,7 +5114,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '34c14eba90';
+framework7Component.id = 'c2297e3763';
 framework7Component.style = `
     
 `;
@@ -5498,7 +5498,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'da8cc14295';
+framework7Component.id = 'b154584e28';
 framework7Component.style = `
 
 
@@ -5571,7 +5571,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0a0399e192';
+framework7Component.id = '4fd78215a8';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5698,7 +5698,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7f72a88b6d';
+framework7Component.id = '2215092e4c';
 framework7Component.style = `
 
 `;
@@ -5856,7 +5856,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a5adde45c3';
+framework7Component.id = '440822ca05';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6136,7 +6136,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2a8682ffee';
+framework7Component.id = '2ee96689cd';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6439,7 +6439,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '713b75d219';
+framework7Component.id = '4d7088bb51';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6866,7 +6866,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3300227884';
+framework7Component.id = '047d2109b0';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7213,7 +7213,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7b71b7d58c';
+framework7Component.id = '7f3f495378';
 framework7Component.style = `
 
 
@@ -7510,7 +7510,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7d90c082a7';
+framework7Component.id = '37ba2a184a';
 framework7Component.style = `
 
 
@@ -7736,7 +7736,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b68f5bedb0';
+framework7Component.id = '97b214cdef';
 framework7Component.style = `
 
   `;
@@ -8210,7 +8210,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4cb11da18d';
+framework7Component.id = '0c08bf2749';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8508,7 +8508,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c6411ebab6';
+framework7Component.id = 'dc0f6c9f91';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8740,7 +8740,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1d2bf52092';
+framework7Component.id = '1acd4f6a83';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -9020,7 +9020,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd314be9fb2';
+framework7Component.id = '2fc1ca2224';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9357,7 +9357,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9f009508d6';
+framework7Component.id = '2b6cd07b90';
 framework7Component.style = `
 
 
@@ -9437,7 +9437,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '69a939f679';
+framework7Component.id = 'fea2d29914';
 framework7Component.style = `
 
 
@@ -17211,10 +17211,37 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 let RoutingService = class RoutingService {
     uiService;
     app;
-    constructor(uiService, app) {
+    baseURI;
+    constructor(uiService, app, baseURI) {
         this.uiService = uiService;
         this.app = app;
+        this.baseURI = baseURI;
     }
+    static resolveWithSpinner(resolve, url, options) {
+        if (!globalThis.app)
+            return;
+        globalThis.app.preloader.show();
+        // } 
+        // console.log(url)
+        resolve({
+            componentUrl: `${globalThis.baseURI}${url}`,
+            options: options
+        });
+        globalThis.app.preloader.hide();
+    }
+    resolveWithSpinner = (resolve, url, options) => {
+        // let currentUrl = window.location.pathname.split('/').pop()
+        //Navigating to same page freezes it. So don't.
+        // if (url != currentUrl)  {
+        this.app.preloader.show();
+        // } 
+        // console.log(url)
+        resolve({
+            componentUrl: `${this.baseURI}${url}`,
+            options: options
+        });
+        this.app.preloader.hide();
+    };
     navigate(navigateParams, routeOptions, viewName = 'main') {
         console.log(`${viewName}: navigating to ${navigateParams.path}`);
         if (!routeOptions)
@@ -17300,7 +17327,8 @@ let RoutingService = class RoutingService {
 RoutingService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("framework7")),
-    __metadata("design:paramtypes", [_ui_service_js__WEBPACK_IMPORTED_MODULE_3__.UiService, Object])
+    __param(2, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("baseURI")),
+    __metadata("design:paramtypes", [_ui_service_js__WEBPACK_IMPORTED_MODULE_3__.UiService, Object, Object])
 ], RoutingService);
 
 

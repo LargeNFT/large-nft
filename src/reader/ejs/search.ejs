@@ -139,7 +139,14 @@
         }]
 
         $on('pageInit', async () => {
-          console.log('init')
+
+          await channelWebService.loadChannel(
+                "<%= channelViewModel.channel._id %>",
+                '<%= baseURL %>',
+                '<%= hostname %>'
+          )
+
+
           // const params = new Proxy(new URLSearchParams(window.location.search), {
           //   get: (searchParams, prop) => searchParams.get(prop),
           // })
@@ -198,8 +205,7 @@
         baseURL: baseURL,
         libraryURL: it.baseViewModel.libraryURL,
         routablePages: routablePages,
-        base64Version: base64Version,
-        channelId: channelId
+        base64Version: base64Version
       }) 
     %>
 

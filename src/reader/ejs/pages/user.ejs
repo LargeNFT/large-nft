@@ -286,8 +286,7 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
-            globalThis.channelId = "<%= channelViewModel.channel._id %>"
-
+            let channelWebService = globalThis.container.get("ChannelWebService")
             let tokenOwnerService = globalThis.container.get("TokenOwnerService")
             let itemWebService = globalThis.container.get("ItemWebService")
             let walletService = globalThis.container.get("WalletService")
@@ -478,6 +477,12 @@
 
             $on('pageInit', async () => {
 
+                await channelWebService.loadChannel(
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
+                )
+
                 window.addEventListener('resize', resizeListener)
 
                 address = $f7.views.main.router.currentRoute?.query?.address
@@ -499,6 +504,12 @@
 
 
             $on('pageReinit', async () => {
+
+                await channelWebService.loadChannel(
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
+                )
 
                 address = $f7.views.main.router.currentRoute?.query?.address
 
@@ -552,8 +563,7 @@
             baseURL: baseURL,
             libraryURL: it.baseViewModel.libraryURL,
             routablePages: routablePages,
-            base64Version: base64Version,
-            channelId: channelId
+            base64Version: base64Version
         }) 
     %>
 

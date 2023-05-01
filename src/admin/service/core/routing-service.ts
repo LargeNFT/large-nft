@@ -10,9 +10,50 @@ class RoutingService {
 
     constructor(
         private uiService:UiService,
-        @inject("framework7") public app
+        @inject("framework7") public app,
+        @inject("baseURI") public baseURI
+
      ) {}
 
+    static resolveWithSpinner(resolve, url, options?) {
+
+        if (!globalThis.app) return 
+        
+        globalThis.app.preloader.show()
+        // } 
+  
+        // console.log(url)
+  
+        resolve({ 
+          componentUrl: `${globalThis.baseURI}${url}`, 
+          options: options
+        })
+  
+        globalThis.app.preloader.hide()
+
+    }
+
+    public resolveWithSpinner = (resolve, url, options?) => {
+      
+        // let currentUrl = window.location.pathname.split('/').pop()
+  
+        //Navigating to same page freezes it. So don't.
+        // if (url != currentUrl)  {
+          this.app.preloader.show()
+        // } 
+  
+        // console.log(url)
+  
+        resolve({ 
+          componentUrl: `${this.baseURI}${url}`, 
+          options: options
+        })
+  
+        this.app.preloader.hide()
+  
+  
+      }
+  
 
     public navigate(navigateParams:Router.NavigateParameters, routeOptions?: Router.RouteOptions, viewName:string='main') {
 

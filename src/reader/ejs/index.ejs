@@ -562,16 +562,15 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
 
-            globalThis.channelId = "<%= channelViewModel.channel._id %>"
-
+            let channelWebService = globalThis.container.get("ChannelWebService")
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let itemWebService = globalThis.container.get("ItemWebService")
             let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
 
-            let baseURI = globalThis.container.get("baseURI")
-
-
             let breadcrumbs
+
+            let baseURI = '<%= baseURL %>'
+
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
@@ -586,8 +585,6 @@
             const link = (href) => {
               return baseURI + href
             }   
-
-
 
             const loadActivity = async () => {
 
@@ -618,9 +615,13 @@
 
             }
 
-
-
             $on('pageInit', async () => {
+
+              await channelWebService.loadChannel(
+                "<%= channelViewModel.channel._id %>",
+                '<%= baseURL %>',
+                '<%= hostname %>'
+              )
 
               await loadActivity()
 
@@ -638,10 +639,8 @@
 
             })
 
-
             $on('pageBeforeOut', async () => {
             })
-
 
             <%~ 
               include("_meta_tags_js", {
@@ -675,8 +674,7 @@
         baseURL: baseURL,
         libraryURL: it.baseViewModel.libraryURL,
         routablePages: routablePages,
-        base64Version: base64Version,
-        channelId: channelId
+        base64Version: base64Version
       }) 
     %>
 

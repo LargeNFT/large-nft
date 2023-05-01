@@ -158,7 +158,9 @@ let generate = async () => {
     fs.cpSync(`${config.runDir}/node_modules/large-nft/public`, config.publicPath, { recursive: true })
   
     //Don't need this part.
-    fs.rmSync(`${config.publicPath}/r`, { recursive: true })
+    if (fs.existsSync(`${config.publicPath}/r`)) {
+      fs.rmSync(`${config.publicPath}/r`, { recursive: true })
+    }
 
 
 

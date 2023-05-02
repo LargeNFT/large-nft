@@ -3854,6 +3854,8 @@ self.addEventListener('fetch', event => {
         process = true;
     if (url.pathname.startsWith(`${baseURI}t`))
         process = true;
+    if (url.pathname.startsWith(`${baseURI}s`))
+        process = true;
     if (url.pathname.startsWith(`${baseURI}backup`))
         process = false;
     if (url.pathname.startsWith(`${baseURI}large`))

@@ -217,7 +217,7 @@ let generate = async () => {
 
 
 
-  fs.mkdirSync(config.publicPath, { recursive: true })
+  fs.mkdirSync(`${config.publicPath}/s`, { recursive: true })
 
 
   //Generate HTML

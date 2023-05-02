@@ -71,6 +71,7 @@ self.addEventListener('fetch', event => {
     //Skip backup folder
     if (url.pathname.endsWith(`.html`)) process = true
     if (url.pathname.startsWith(`${baseURI}t`)) process = true
+    if (url.pathname.startsWith(`${baseURI}s`)) process = true
 
     if (url.pathname.startsWith(`${baseURI}backup`)) process = false
     if (url.pathname.startsWith(`${baseURI}large`)) process = false

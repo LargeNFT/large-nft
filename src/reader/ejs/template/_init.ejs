@@ -42,10 +42,8 @@
             let baseURL = '<%= baseURL %>'
             let hostname = '<%= hostname %>'
             let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
-        
-            let routablePages = JSON.parse(`<%~ JSON.stringify(routablePages) %>`)
-        
-            let app = reader.initReader(baseURL, hostname, version, routablePages)
+                
+            let app = reader.initReader(baseURL, hostname, version)
         }
 
         init()

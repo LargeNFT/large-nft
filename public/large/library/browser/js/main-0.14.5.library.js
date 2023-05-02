@@ -222,7 +222,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '10b11f8701';
+framework7Component.id = '5739e15816';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -417,7 +417,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0583c0c70a';
+framework7Component.id = 'a47f9db2b8';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -526,7 +526,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'da6fc1d9c8';
+framework7Component.id = 'f0de55c3a1';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -734,7 +734,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5fd6febeb8';
+framework7Component.id = '8ea470fa2d';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -900,7 +900,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f516609081';
+framework7Component.id = '4918c3ecc5';
 framework7Component.style = `
 
 
@@ -1225,7 +1225,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ebe43db247';
+framework7Component.id = '400e009297';
 framework7Component.style = `
 
 
@@ -1463,7 +1463,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'fae905776b';
+framework7Component.id = 'ffb9f002bd';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1792,7 +1792,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '90bb816d15';
+framework7Component.id = '56a3f608b8';
 framework7Component.style = `
 
 `;
@@ -2270,7 +2270,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1533f7a50a';
+framework7Component.id = '76bda5f7f6';
 framework7Component.style = `
 
 
@@ -2612,7 +2612,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1f60aa4189';
+framework7Component.id = 'f37b7196bf';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3881,7 +3881,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2d0f47f6fa';
+framework7Component.id = '8072456a16';
 framework7Component.style = `
 
 
@@ -4125,7 +4125,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b09b5aedd6';
+framework7Component.id = '7d6d2bbfc9';
 framework7Component.style = `
 
 
@@ -4388,7 +4388,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f87f1a1621';
+framework7Component.id = '107ff4d0cf';
 framework7Component.style = `
   
 
@@ -4543,7 +4543,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '04e14806cc';
+framework7Component.id = '9f4fd2378b';
 framework7Component.style = `
     
 `;
@@ -4999,7 +4999,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6524ffd0fc';
+framework7Component.id = 'dbf357e0a0';
 framework7Component.style = `
 
 
@@ -5088,7 +5088,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '02ecf59f16';
+framework7Component.id = 'ce3b5c3087';
 framework7Component.style = `
     
 `;
@@ -5472,7 +5472,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '72d040dda1';
+framework7Component.id = 'e9475ebf16';
 framework7Component.style = `
 
 
@@ -5545,7 +5545,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '025470c679';
+framework7Component.id = '5238401707';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5672,7 +5672,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd0d34c8287';
+framework7Component.id = 'bff83e9751';
 framework7Component.style = `
 
 `;
@@ -5830,7 +5830,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3899a28180';
+framework7Component.id = '861abb6cbb';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6110,7 +6110,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '18cb58d65c';
+framework7Component.id = '7706e64abe';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6413,7 +6413,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '646651492d';
+framework7Component.id = 'aeb37c721a';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6840,7 +6840,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3d606a1999';
+framework7Component.id = '9e67c1cb4a';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7187,7 +7187,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8ca994db16';
+framework7Component.id = 'e4f2947138';
 framework7Component.style = `
 
 
@@ -7484,7 +7484,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8fa28f4e5f';
+framework7Component.id = '781eedbeb7';
 framework7Component.style = `
 
 
@@ -7710,7 +7710,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '05a8054b42';
+framework7Component.id = '2a95947768';
 framework7Component.style = `
 
   `;
@@ -8184,7 +8184,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '32922c5d22';
+framework7Component.id = '6f4af68b41';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8482,7 +8482,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e342eb757e';
+framework7Component.id = '3181db1270';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8714,7 +8714,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3fdbef6ef5';
+framework7Component.id = 'adac15249f';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -8994,7 +8994,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'bd4d88f0c0';
+framework7Component.id = 'b5f12ab39f';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9331,7 +9331,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9a2dd62328';
+framework7Component.id = '477aca7801';
 framework7Component.style = `
 
 
@@ -9411,7 +9411,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8a12d72de1';
+framework7Component.id = '4cdc11bfd8';
 framework7Component.style = `
 
 
@@ -9573,7 +9573,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b2171b24ae';
+framework7Component.id = 'f9f6611a58';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -9643,7 +9643,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '42f3b722ea';
+framework7Component.id = '3d8c0a702d';
 framework7Component.style = `
 
 
@@ -9722,7 +9722,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a2e51aa10b';
+framework7Component.id = '6f6926323d';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -9809,7 +9809,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7d38a93a1e';
+framework7Component.id = 'd99ca429ad';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -9894,7 +9894,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5f4a080396';
+framework7Component.id = 'd06876a9c2';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -10164,7 +10164,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b220387739';
+framework7Component.id = '87cbed1968';
 framework7Component.style = `
 
 `;
@@ -10239,7 +10239,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e869673182';
+framework7Component.id = 'c0b38c8836';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -10521,7 +10521,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'cd4c40cf87';
+framework7Component.id = 'd981961f36';
 framework7Component.style = `
 
 
@@ -10701,7 +10701,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '804a1a534d';
+framework7Component.id = '3375cbf648';
 framework7Component.style = `
 
 .block-search {
@@ -11017,7 +11017,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '21487ff04c';
+framework7Component.id = '208fb80763';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -11137,7 +11137,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '15903a14d8';
+framework7Component.id = '374e37f525';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -11207,7 +11207,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6cbd281748';
+framework7Component.id = 'b0c6ee4d1f';
 framework7Component.style = `
 
 
@@ -18877,10 +18877,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var RoutingService_1;
 
 
 
-let RoutingService = class RoutingService {
+let RoutingService = RoutingService_1 = class RoutingService {
     uiService;
     app;
     baseURI;
@@ -18893,27 +18894,212 @@ let RoutingService = class RoutingService {
         if (!globalThis.app)
             return;
         globalThis.app.preloader.show();
-        // } 
-        // console.log(url)
         resolve({
-            componentUrl: `${globalThis.baseURI}${url}`,
+            componentUrl: url,
             options: options
         });
         globalThis.app.preloader.hide();
     }
-    resolveWithSpinner = (resolve, url, options) => {
-        // let currentUrl = window.location.pathname.split('/').pop()
-        //Navigating to same page freezes it. So don't.
-        // if (url != currentUrl)  {
-        this.app.preloader.show();
-        // } 
-        // console.log(url)
-        resolve({
-            componentUrl: `${this.baseURI}${url}`,
-            options: options
+    static getReaderRoutes(baseURI) {
+        const routes = [];
+        //Map the base route without a slash if it's longer than just a slash
+        if (baseURI != "/" && baseURI.endsWith("/")) {
+            routes.push({
+                path: `${baseURI.substring(0, baseURI.length - 1)}`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, 'index.html');
+                }
+            });
+        }
+        RoutingService_1.addSharedRoutes(routes, baseURI);
+        routes.push({
+            path: '(.*)',
+            //@ts-ignore
+            async async({ resolve, reject, to }) {
+                console.log(`404 error: ${to.path}`);
+                await RoutingService_1.resolveWithSpinner(resolve, '404.html');
+            }
         });
-        this.app.preloader.hide();
-    };
+        return routes;
+    }
+    static getLibraryRoutes(libraryURL) {
+        const routes = [
+            {
+                path: libraryURL,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${libraryURL}/index.html`);
+                }
+            },
+            {
+                path: `${libraryURL}/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${libraryURL}/index.html`);
+                }
+            }
+        ];
+        //Map the base route without a slash if it's longer than just a slash
+        if (libraryURL != "/" && libraryURL.endsWith("/")) {
+            routes.push({
+                path: `${libraryURL.substring(0, libraryURL.length - 1)}`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${libraryURL}/index.html`);
+                }
+            });
+        }
+        RoutingService_1.addSharedRoutes(routes, "/r/*/");
+        routes.push({
+            path: '(.*)',
+            //@ts-ignore
+            async async({ resolve, reject, to }) {
+                console.log(`404 error: ${to.path}`);
+                await RoutingService_1.resolveWithSpinner(resolve, 'l/404.html');
+            }
+        });
+        console.log(routes);
+        return routes;
+    }
+    static addSharedRoutes(routes, baseURI) {
+        routes.push(...[
+            {
+                path: `${baseURI}`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}index.html`);
+                }
+            },
+            {
+                path: `${baseURI}index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}index.html`);
+                }
+            },
+            {
+                path: `${baseURI}mint.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}mint.html`);
+                }
+            },
+            {
+                path: `${baseURI}search.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}search.html`);
+                }
+            },
+            {
+                path: `${baseURI}explore.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}explore.html`);
+                }
+            },
+            {
+                path: `${baseURI}activity`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}activity/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}leaderboard`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}leaderboard/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}leaderboard/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}leaderboard/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}sales`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}sales/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}sales/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}sales/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attributes`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attributes/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attributes/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attributes/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attribute`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attribute/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attribute/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attribute/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u/activity`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u/activity/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}list-:page.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}list-{{page}}.html`);
+                }
+            },
+            {
+                path: `${baseURI}t/:tokenId`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}t/{{tokenId}}/index.html`, { force: true });
+                }
+            },
+            {
+                path: `${baseURI}t/:tokenId/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}t/{{tokenId}}/index.html`, { force: true });
+                }
+            },
+            {
+                path: `${baseURI}s/:slug.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}s/{{slug}}.html`);
+                }
+            }
+        ]);
+    }
     navigate(navigateParams, routeOptions, viewName = 'main') {
         console.log(`${viewName}: navigating to ${navigateParams.path}`);
         if (!routeOptions)
@@ -18996,7 +19182,7 @@ let RoutingService = class RoutingService {
         }
     }
 };
-RoutingService = __decorate([
+RoutingService = RoutingService_1 = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("framework7")),
     __param(2, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("baseURI")),
@@ -21763,12 +21949,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reflect_metadata__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reflect-metadata */ "./node_modules/reflect-metadata/Reflect.js");
 /* harmony import */ var reflect_metadata__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(reflect_metadata__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/container/container.js");
-/* harmony import */ var _reader_inversify_config_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../reader/inversify.config.js */ "./src/reader/inversify.config.ts");
-/* harmony import */ var _reader_html_css_framework7_bundle_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../reader/html/css/framework7-bundle.css */ "./src/reader/html/css/framework7-bundle.css");
-/* harmony import */ var _reader_html_css_framework7_icons_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../reader/html/css/framework7-icons.css */ "./src/reader/html/css/framework7-icons.css");
-/* harmony import */ var workbox_window__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! workbox-window */ "./node_modules/workbox-window/build/workbox-window.prod.es5.mjs");
+/* harmony import */ var _reader_inversify_config_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../reader/inversify.config.js */ "./src/reader/inversify.config.ts");
+/* harmony import */ var workbox_window__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! workbox-window */ "./node_modules/workbox-window/build/workbox-window.prod.es5.mjs");
+/* harmony import */ var _admin_service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../admin/service/core/routing-service.js */ "./src/admin/service/core/routing-service.ts");
+/* harmony import */ var _reader_html_css_framework7_bundle_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../reader/html/css/framework7-bundle.css */ "./src/reader/html/css/framework7-bundle.css");
+/* harmony import */ var _reader_html_css_framework7_icons_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reader/html/css/framework7-icons.css */ "./src/reader/html/css/framework7-icons.css");
 /* harmony import */ var _reader_html_css_app_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../reader/html/css/app.css */ "./src/reader/html/css/app.css");
-/* harmony import */ var _admin_service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../admin/service/core/routing-service.js */ "./src/admin/service/core/routing-service.ts");
+
+
 
 
 
@@ -21778,17 +21966,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-let initLibrary = async (libraryURL, baseURI, hostname, version, routablePages) => {
+let initLibrary = async (libraryURL, baseURI, hostname, version) => {
     console.log("Initializing Library");
     if ('serviceWorker' in navigator) {
-        const wb = new workbox_window__WEBPACK_IMPORTED_MODULE_5__.Workbox(`${libraryURL}/sw-library-${version}.js?baseURI=${libraryURL}`, {
-            scope: `${libraryURL}/`
+        const wb = new workbox_window__WEBPACK_IMPORTED_MODULE_3__.Workbox(`${hostname}/sw-library-${version}.js?baseURI=${libraryURL}`, {
+            scope: `/`
         });
         let container = new inversify__WEBPACK_IMPORTED_MODULE_7__.Container();
-        let routes = await getRoutes(baseURI);
-        container = await (0,_reader_inversify_config_js__WEBPACK_IMPORTED_MODULE_8__.getMainContainer)(container, baseURI, hostname, version, routes);
+        let routes = _admin_service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_8__.RoutingService.getLibraryRoutes(libraryURL);
+        container = await (0,_reader_inversify_config_js__WEBPACK_IMPORTED_MODULE_9__.getMainContainer)(container, baseURI, hostname, version, routes);
         if (navigator.serviceWorker.controller) {
             startApp(container, hostname);
         }
@@ -21818,19 +22004,6 @@ let startApp = async (container, hostname) => {
         view.router.navigate(internalUrl, { reloadCurrent: true });
     });
     app.init();
-};
-let getRoutes = (baseURI) => {
-    const routes = [];
-    //Map the base route without a slash if it's longer than just a slash
-    if (baseURI != "/" && baseURI.endsWith("/")) {
-        routes.push({
-            path: `${baseURI.substring(0, baseURI.length - 1)}`,
-            async async({ resolve, reject }) {
-                await _admin_service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_9__.RoutingService.resolveWithSpinner(resolve, 'index.html');
-            }
-        });
-    }
-    return routes;
 };
 
 

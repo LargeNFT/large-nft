@@ -8,36 +8,33 @@ import { Container } from "inversify"
 import { getMainContainer } from "../reader/inversify.config.js"
 
 
-//Import CSS
-import '../reader/html/css/framework7-bundle.css'
-import '../reader/html/css/framework7-icons.css'
-// import 'material-icons/iconfont/material-icons.css'
-
-
 import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
-import { StaticPage } from "../reader/dto/static-page.js"
 import { SchemaService } from "../reader/service/core/schema-service.js"
-
-
-import '../reader/html/css/app.css'
 import { RoutingService } from "../admin/service/core/routing-service.js"
 
 
-let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, version:string, routablePages:StaticPage[]) => {
+//Import CSS
+import '../reader/html/css/framework7-bundle.css'
+import '../reader/html/css/framework7-icons.css'
+import '../reader/html/css/app.css'
+
+
+
+let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, version:string) => {
 
     console.log("Initializing Library")
     
     if ('serviceWorker' in navigator) {
 
-        const wb = new Workbox(`${libraryURL}/sw-library-${version}.js?baseURI=${libraryURL}`, {
-            scope: `${libraryURL}/`
+        const wb = new Workbox(`${hostname}/sw-library-${version}.js?baseURI=${libraryURL}`, {
+            scope: `/`
         })
     
         let container:Container = new Container()
 
 
-        let routes = await getRoutes(baseURI)
+        let routes = RoutingService.getLibraryRoutes(libraryURL)
 
 
         container = await getMainContainer(container, baseURI, hostname, version, routes)
@@ -88,29 +85,6 @@ let startApp = async (container:Container, hostname:string) => {
 
 
 }
-
-let getRoutes = (baseURI) => {
-
-
-    const routes = []
-
-    //Map the base route without a slash if it's longer than just a slash
-    if (baseURI != "/" && baseURI.endsWith("/")) {
-
-      routes.push({
-        path: `${baseURI.substring(0, baseURI.length -1)}`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'index.html')
-        }
-      })
-
-    }
-
-
-    return routes
-
-}
-
 
 
 export { initLibrary }

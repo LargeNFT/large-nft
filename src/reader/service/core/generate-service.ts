@@ -19,6 +19,7 @@ import { StaticPageRepository } from "../../repository/static-page-repository.js
 import tokenEjs from '../../ejs/pages/token.ejs'
 import indexEjs from '../../ejs/index.ejs'
 import libraryIndexEjs from '../../../sync-library/ejs/index.ejs'
+import fourOhFourLibraryEjs from '../../../sync-library/ejs/404.ejs'
 
 import _initEjs from '../../ejs/template/_init.ejs'
 import _metaTagsEjs from '../../ejs/template/_meta_tags.ejs'
@@ -377,7 +378,7 @@ class GenerateService {
               baseViewModel: baseViewModel
             })
       
-            fs.writeFileSync(`${config.publicPath}/${staticPage.slug}.html`, staticPagesResult)
+            fs.writeFileSync(`${config.publicPath}/s/${staticPage.slug}.html`, staticPagesResult)
           }
         }
       
@@ -391,7 +392,7 @@ class GenerateService {
               baseViewModel: baseViewModel
             })
       
-            fs.writeFileSync(`${config.publicPath}/${staticPage.slug}.html`, staticPagesResult)
+            fs.writeFileSync(`${config.publicPath}/s/${staticPage.slug}.html`, staticPagesResult)
           }
         }
       
@@ -611,9 +612,9 @@ class GenerateService {
         libraryURL: config.libraryURL,
         largeURL: config.largeURL,
         headEndContents: `
-          <script defer src="${config.libraryURL}/large/library/browser/js/runtime-${config.VERSION}.library.js"></script>
-          <script defer src="${config.libraryURL}/large/library/browser/js/vendors-${config.VERSION}.library.js"></script>
-          <script defer src="${config.libraryURL}/large/library/browser/js/main-${config.VERSION}.library.js"></script>
+          <script defer src="${config.largeURL}/library/browser/js/runtime-${config.VERSION}.library.js"></script>
+          <script defer src="${config.largeURL}/library/browser/js/vendors-${config.VERSION}.library.js"></script>
+          <script defer src="${config.largeURL}/library/browser/js/main-${config.VERSION}.library.js"></script>
         `,
         bodyContents: ``
       }
@@ -627,7 +628,13 @@ class GenerateService {
 
       fs.writeFileSync(`${syncDir}/l/index.html`, indexResult)
 
-
+      //404 page
+      const fourOhFourResult = Eta.render(fourOhFourLibraryEjs, {
+        baseViewModel: baseViewModel,
+        title: "404 Page Not Found"
+      })
+    
+      fs.writeFileSync(`${syncDir}/l/404.html`, fourOhFourResult)
 
     }
 

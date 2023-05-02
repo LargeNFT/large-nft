@@ -14,17 +14,14 @@ import './html/css/framework7-icons.css'
 
 import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
-import { StaticPage } from "./dto/static-page.js"
 import { Container } from "inversify"
 import { SchemaService } from "./service/core/schema-service.js"
-
-import axios from "axios"
 
 import './html/css/app.css'
 import { RoutingService } from "../admin/service/core/routing-service.js"
 
 
-let initReader = async (baseURI:string, hostname:string, version:string, routablePages:StaticPage[]) => {
+let initReader = async (baseURI:string, hostname:string, version:string) => {
 
     console.log("Initializing Reader")
 
@@ -38,7 +35,7 @@ let initReader = async (baseURI:string, hostname:string, version:string, routabl
         let container:Container = new Container()
     
 
-        let routes = getRoutes(baseURI, routablePages)
+        let routes = RoutingService.getReaderRoutes(baseURI)
     
 
         container = await getMainContainer(container, baseURI, hostname, version, routes)
@@ -91,223 +88,6 @@ let startApp = async (container:Container, hostname:string) => {
 
 }
 
-let getRoutes = (baseURI, routablePages) => {
-
-
-    const routes = []
-
-    //Map the base route without a slash if it's longer than just a slash
-    if (baseURI != "/" && baseURI.endsWith("/")) {
-
-      routes.push({
-        path: `${baseURI.substring(0, baseURI.length -1)}`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'index.html')
-        }
-      })
-
-    }
-
-
-    routes.push(...[
-      {
-        path: `${baseURI}`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'index.html')
-        }
-      },
-      {
-        path: `${baseURI}index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}mint.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'mint.html')
-        }
-      },
-
-      {
-        path: `${baseURI}search.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'search.html')
-        }
-      },
-
-
-
-      {
-        path: `${baseURI}explore.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'explore.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}activity`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'activity/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}activity/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'activity/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}leaderboard`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'leaderboard/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}leaderboard/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'leaderboard/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}sales`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'sales/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}sales/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'sales/index.html')
-        }
-      },
-
-
-
-      {
-        path: `${baseURI}attributes`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'attributes/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}attributes/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'attributes/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}attribute`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'attribute/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}attribute/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'attribute/index.html')
-        }
-      },
-
-
-
-      {
-        path: `${baseURI}u`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'u/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}u/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'u/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}u/activity`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'u/activity/index.html')
-        }
-      },
-
-      {
-        path: `${baseURI}u/activity/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'u/activity/index.html')
-        }
-      },
-
-
-      {
-        path: `${baseURI}list-:page.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, 'list-{{page}}.html')
-        }
-      },
-
-      {
-        path: `${baseURI}t/:tokenId`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
-        }
-      },
-
-
-      {
-        path: `${baseURI}t/:tokenId/index.html`,
-        async async({ resolve, reject }) {
-          await RoutingService.resolveWithSpinner(resolve, `t/{{tokenId}}/index.html`, { force: true })
-        }
-      }
-
-    ])
-
-        
-    if (routablePages?.length > 0) {
-    
-        for (let routablePage of routablePages) {
-          
-          routes.push({
-            path: `${baseURI}${routablePage.slug}.html`,
-            async async({ resolve, reject }) {
-              await RoutingService.resolveWithSpinner(resolve, `${routablePage.slug}.html`)
-            }
-          })
-  
-        }
-  
-      }
-  
-      routes.push({
-        path: '(.*)',
-        //@ts-ignore
-        async async({ resolve, reject, to }) {
-          console.log(`404 error: ${to.path}`)
-          await RoutingService.resolveWithSpinner(resolve, '404.html')
-        }
-      })
-
-      return routes
-
-}
 
 export { initReader }
 

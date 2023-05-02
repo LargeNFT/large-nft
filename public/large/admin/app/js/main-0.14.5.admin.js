@@ -248,7 +248,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b5313dc5ec';
+framework7Component.id = 'fcc582677d';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -443,7 +443,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0cf80e83a7';
+framework7Component.id = '2cd1df86be';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -552,7 +552,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2c23bb6afe';
+framework7Component.id = '45d8ff11f4';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -760,7 +760,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6480c1c9c0';
+framework7Component.id = 'f93e4e7590';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -926,7 +926,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '47b51ee052';
+framework7Component.id = '7d38401807';
 framework7Component.style = `
 
 
@@ -1251,7 +1251,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a86e6a7793';
+framework7Component.id = '4c0dcac434';
 framework7Component.style = `
 
 
@@ -1489,7 +1489,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '302cb11179';
+framework7Component.id = 'e083860561';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1818,7 +1818,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'cce919c060';
+framework7Component.id = 'a1773024a9';
 framework7Component.style = `
 
 `;
@@ -2296,7 +2296,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'acb8c7f071';
+framework7Component.id = 'd5c00d3a55';
 framework7Component.style = `
 
 
@@ -2638,7 +2638,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'fbe204b2d5';
+framework7Component.id = 'a72673cad0';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3907,7 +3907,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ca117e7027';
+framework7Component.id = '78eca2b535';
 framework7Component.style = `
 
 
@@ -4151,7 +4151,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd730e0bea6';
+framework7Component.id = '50c68704cd';
 framework7Component.style = `
 
 
@@ -4414,7 +4414,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '61adbc865b';
+framework7Component.id = '3c36de9d02';
 framework7Component.style = `
   
 
@@ -4569,7 +4569,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3ee38d342a';
+framework7Component.id = '1359c6cdf8';
 framework7Component.style = `
     
 `;
@@ -5025,7 +5025,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '11f68d98c0';
+framework7Component.id = '71d7f41eb4';
 framework7Component.style = `
 
 
@@ -5114,7 +5114,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c2297e3763';
+framework7Component.id = '289e3eda61';
 framework7Component.style = `
     
 `;
@@ -5498,7 +5498,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b154584e28';
+framework7Component.id = 'c44ca4ecb2';
 framework7Component.style = `
 
 
@@ -5571,7 +5571,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4fd78215a8';
+framework7Component.id = 'e8abac0137';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5698,7 +5698,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2215092e4c';
+framework7Component.id = '07535874c8';
 framework7Component.style = `
 
 `;
@@ -5856,7 +5856,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '440822ca05';
+framework7Component.id = '0f6dac36cf';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6136,7 +6136,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2ee96689cd';
+framework7Component.id = '7a89b8c0f2';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6439,7 +6439,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4d7088bb51';
+framework7Component.id = '3821450b39';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6866,7 +6866,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '047d2109b0';
+framework7Component.id = '2b6c2137de';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7213,7 +7213,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7f3f495378';
+framework7Component.id = 'c75a273bd3';
 framework7Component.style = `
 
 
@@ -7510,7 +7510,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '37ba2a184a';
+framework7Component.id = 'b4e4b3457f';
 framework7Component.style = `
 
 
@@ -7736,7 +7736,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '97b214cdef';
+framework7Component.id = 'ec3bea7a2d';
 framework7Component.style = `
 
   `;
@@ -8210,7 +8210,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0c08bf2749';
+framework7Component.id = '3a1d896e73';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8508,7 +8508,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'dc0f6c9f91';
+framework7Component.id = '4ab3774734';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8740,7 +8740,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1acd4f6a83';
+framework7Component.id = '1decee69c3';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -9020,7 +9020,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2fc1ca2224';
+framework7Component.id = 'f4dc7bb047';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9357,7 +9357,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2b6cd07b90';
+framework7Component.id = '6609aa4126';
 framework7Component.style = `
 
 
@@ -9437,7 +9437,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'fea2d29914';
+framework7Component.id = 'ddadd3ecb4';
 framework7Component.style = `
 
 
@@ -17205,10 +17205,11 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var RoutingService_1;
 
 
 
-let RoutingService = class RoutingService {
+let RoutingService = RoutingService_1 = class RoutingService {
     uiService;
     app;
     baseURI;
@@ -17221,27 +17222,212 @@ let RoutingService = class RoutingService {
         if (!globalThis.app)
             return;
         globalThis.app.preloader.show();
-        // } 
-        // console.log(url)
         resolve({
-            componentUrl: `${globalThis.baseURI}${url}`,
+            componentUrl: url,
             options: options
         });
         globalThis.app.preloader.hide();
     }
-    resolveWithSpinner = (resolve, url, options) => {
-        // let currentUrl = window.location.pathname.split('/').pop()
-        //Navigating to same page freezes it. So don't.
-        // if (url != currentUrl)  {
-        this.app.preloader.show();
-        // } 
-        // console.log(url)
-        resolve({
-            componentUrl: `${this.baseURI}${url}`,
-            options: options
+    static getReaderRoutes(baseURI) {
+        const routes = [];
+        //Map the base route without a slash if it's longer than just a slash
+        if (baseURI != "/" && baseURI.endsWith("/")) {
+            routes.push({
+                path: `${baseURI.substring(0, baseURI.length - 1)}`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, 'index.html');
+                }
+            });
+        }
+        RoutingService_1.addSharedRoutes(routes, baseURI);
+        routes.push({
+            path: '(.*)',
+            //@ts-ignore
+            async async({ resolve, reject, to }) {
+                console.log(`404 error: ${to.path}`);
+                await RoutingService_1.resolveWithSpinner(resolve, '404.html');
+            }
         });
-        this.app.preloader.hide();
-    };
+        return routes;
+    }
+    static getLibraryRoutes(libraryURL) {
+        const routes = [
+            {
+                path: libraryURL,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${libraryURL}/index.html`);
+                }
+            },
+            {
+                path: `${libraryURL}/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${libraryURL}/index.html`);
+                }
+            }
+        ];
+        //Map the base route without a slash if it's longer than just a slash
+        if (libraryURL != "/" && libraryURL.endsWith("/")) {
+            routes.push({
+                path: `${libraryURL.substring(0, libraryURL.length - 1)}`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${libraryURL}/index.html`);
+                }
+            });
+        }
+        RoutingService_1.addSharedRoutes(routes, "/r/*/");
+        routes.push({
+            path: '(.*)',
+            //@ts-ignore
+            async async({ resolve, reject, to }) {
+                console.log(`404 error: ${to.path}`);
+                await RoutingService_1.resolveWithSpinner(resolve, 'l/404.html');
+            }
+        });
+        console.log(routes);
+        return routes;
+    }
+    static addSharedRoutes(routes, baseURI) {
+        routes.push(...[
+            {
+                path: `${baseURI}`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}index.html`);
+                }
+            },
+            {
+                path: `${baseURI}index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}index.html`);
+                }
+            },
+            {
+                path: `${baseURI}mint.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}mint.html`);
+                }
+            },
+            {
+                path: `${baseURI}search.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}search.html`);
+                }
+            },
+            {
+                path: `${baseURI}explore.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}explore.html`);
+                }
+            },
+            {
+                path: `${baseURI}activity`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}activity/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}leaderboard`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}leaderboard/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}leaderboard/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}leaderboard/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}sales`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}sales/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}sales/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}sales/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attributes`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attributes/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attributes/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attributes/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attribute`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attribute/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}attribute/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}attribute/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u/activity`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}u/activity/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}u/activity/index.html`);
+                }
+            },
+            {
+                path: `${baseURI}list-:page.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}list-{{page}}.html`);
+                }
+            },
+            {
+                path: `${baseURI}t/:tokenId`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}t/{{tokenId}}/index.html`, { force: true });
+                }
+            },
+            {
+                path: `${baseURI}t/:tokenId/index.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}t/{{tokenId}}/index.html`, { force: true });
+                }
+            },
+            {
+                path: `${baseURI}s/:slug.html`,
+                async async({ resolve, reject }) {
+                    await RoutingService_1.resolveWithSpinner(resolve, `${baseURI}s/{{slug}}.html`);
+                }
+            }
+        ]);
+    }
     navigate(navigateParams, routeOptions, viewName = 'main') {
         console.log(`${viewName}: navigating to ${navigateParams.path}`);
         if (!routeOptions)
@@ -17324,7 +17510,7 @@ let RoutingService = class RoutingService {
         }
     }
 };
-RoutingService = __decorate([
+RoutingService = RoutingService_1 = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __param(1, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("framework7")),
     __param(2, (0,inversify__WEBPACK_IMPORTED_MODULE_2__.inject)("baseURI")),

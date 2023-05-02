@@ -72,12 +72,13 @@ self.addEventListener('fetch', event => {
     
     //Skip backup folder
     if (theUrl.endsWith(`.html`)) process = true
-    if (theUrl.startsWith(`${baseURI}t`)) process = true
+    // if (theUrl.startsWith(`${baseURI}t`)) process = true
+    // if (theUrl.startsWith(`${baseURI}s`)) process = true
 
-    if (theUrl.startsWith(`${baseURI}backup`)) process = false
-    if (theUrl.startsWith(`${baseURI}large`)) process = false
-    if (theUrl.startsWith(`${baseURI}sync`)) process = false
-    if (theUrl.startsWith(`${baseURI}t/`) && theUrl.endsWith(`.json`)) process = false
+    // if (theUrl.startsWith(`${baseURI}backup`)) process = false
+    // if (theUrl.startsWith(`${baseURI}large`)) process = false
+    // if (theUrl.startsWith(`${baseURI}sync`)) process = false
+    // if (theUrl.startsWith(`${baseURI}t/`) && theUrl.endsWith(`.json`)) process = false
 
 
     // if (url.pathname.startsWith(`${baseURL}/index`)) process = true

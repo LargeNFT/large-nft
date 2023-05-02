@@ -86,7 +86,7 @@
 
       <div class="view view-main">
 
-        <div class="page" data-name="home">
+        <div class="page" data-name="library-home">
 
           <nav-bar
             logo="${logo}"
@@ -477,7 +477,7 @@
                                       <div class="item-content">
                                         <div class="item-inner">
                                           <div class="item-title">
-                                            <a class="link" href="<%= link(`${staticPage.slug}.html`) %>"><%= staticPage.name %></a>
+                                            <a class="link" href="<%= link(`s/${staticPage.slug}.html`) %>"><%= staticPage.name %></a>
                                           </div>
                                         </div>
                                       </div>
@@ -537,7 +537,6 @@
                   <% } %>
   
                 </div>
-
 
               </div>
 
@@ -627,14 +626,6 @@
 
               $('.hide-on-pageinit').hide()
 
-
-              //Make links external
-              let links = document.getElementById(`channel-show-description-<%= channelViewModel.channel._id %>`).getElementsByTagName('a')
-
-              for (let link of links) {
-                link.classList.add('external')
-              }
-
               await $update()
 
             })
@@ -659,7 +650,7 @@
 
             $f7.preloader.hide()
 
-            return $render;
+            return $render
 
           
 

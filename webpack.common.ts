@@ -659,7 +659,7 @@ let getReaderConfigs = () => {
         dry: false,
         dangerouslyAllowCleanPatternsOutsideProject: true,
         cleanOnceBeforeBuildPatterns: [
-          resolve('public/r/library-sw*')
+          resolve('public/sw-library*')
         ],
 
       }),

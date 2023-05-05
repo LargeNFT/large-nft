@@ -18,6 +18,12 @@ import { RoutingService } from "../admin/service/core/routing-service.js"
 import '../reader/html/css/framework7-bundle.css'
 import '../reader/html/css/framework7-icons.css'
 import '../reader/html/css/app.css'
+import './html/css/app.css'
+
+
+import { HomeWebService } from "./service/web/home-web-service.js"
+import { HomeRepository } from "./repository/home-repository.js"
+import { HomeRepositoryBrowserImpl } from "./repository/web/home-repository-impl.js"
 
 
 
@@ -32,6 +38,9 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
         })
     
         let container:Container = new Container()
+
+        container.bind<HomeWebService>("HomeWebService").to(HomeWebService).inSingletonScope()
+        container.bind<HomeRepository>("HomeRepository").to(HomeRepositoryBrowserImpl).inSingletonScope()
 
 
         let routes = RoutingService.getLibraryRoutes(libraryURL)

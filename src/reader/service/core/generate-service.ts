@@ -85,9 +85,9 @@ class GenerateService {
         if (config.libraryURL) {
 
           generateViewModel.headEndContents = `
-            <script defer src="${config.libraryURL}/large/library/browser/js/runtime-${config.VERSION}.library.js"></script>
-            <script defer src="${config.libraryURL}/large/library/browser/js/vendors-${config.VERSION}.library.js"></script>
-            <script defer src="${config.libraryURL}/large/library/browser/js/main-${config.VERSION}.library.js"></script>
+            <script defer src="/large/library/browser/js/runtime-${config.VERSION}.library.js"></script>
+            <script defer src="/large/library/browser/js/vendors-${config.VERSION}.library.js"></script>
+            <script defer src="/large/library/browser/js/main-${config.VERSION}.library.js"></script>
           `
 
         } else {
@@ -622,7 +622,7 @@ class GenerateService {
 
       const indexResult = Eta.render(libraryIndexEjs, {
         baseViewModel: baseViewModel,
-        title: "Library"
+        title: config.title
       })
 
 

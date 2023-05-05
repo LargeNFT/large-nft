@@ -11,7 +11,7 @@ class RoutingService {
     constructor(
         private uiService:UiService,
         @inject("framework7") public app,
-        @inject("baseURI") public baseURI
+        @inject("baseURI") public baseURI:Function
 
      ) {}
 
@@ -66,13 +66,22 @@ class RoutingService {
 
     static getLibraryRoutes (libraryURL) {
 
+
         const routes = [
           {
-            path: libraryURL,
+            path: `${libraryURL}`,
             async async({ resolve, reject }) {
               await RoutingService.resolveWithSpinner(resolve, `${libraryURL}/index.html`)
             }
           },
+
+          {
+            path: `${libraryURL}/`,
+            async async({ resolve, reject }) {
+              await RoutingService.resolveWithSpinner(resolve, `${libraryURL}/index.html`)
+            }
+          },
+
 
           {
             path: `${libraryURL}/index.html`,
@@ -83,21 +92,9 @@ class RoutingService {
 
         ]
 
-        //Map the base route without a slash if it's longer than just a slash
-        if (libraryURL != "/" && libraryURL.endsWith("/")) {
+
     
-          routes.push(
-            {
-              path: `${libraryURL.substring(0, libraryURL.length -1)}`,
-              async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${libraryURL}/index.html`)
-              }
-            }
-          )
-    
-        }
-    
-        RoutingService.addSharedRoutes(routes, "/r/*/")
+        RoutingService.addSharedRoutes(routes, "/r/:reader_slug/")
     
         routes.push({
           path: '(.*)',
@@ -108,25 +105,32 @@ class RoutingService {
           }
         })
 
-
-        console.log(routes)
-
         return routes
     }
 
     private static addSharedRoutes(routes, baseURI) {
             
+        let resolvedBaseURI
+
+        if (baseURI.indexOf(':reader_slug') > 0) {
+          resolvedBaseURI = baseURI.replace(":reader_slug", "{{reader_slug}}")
+        } else {
+          resolvedBaseURI = baseURI
+        }
+
+
         routes.push(...[
             {
               path: `${baseURI}`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}index.html`)
               }
             },
             {
               path: `${baseURI}index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}index.html`)
+                console.log()
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}index.html`)
               }
             },
       
@@ -134,133 +138,132 @@ class RoutingService {
             {
               path: `${baseURI}mint.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}mint.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}mint.html`)
               }
             },
       
             {
               path: `${baseURI}search.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}search.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}search.html`)
               }
             },      
             {
               path: `${baseURI}explore.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}explore.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}explore.html`)
               }
             },
             {
               path: `${baseURI}activity`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}activity/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}activity/index.html`)
               }
             },
             {
               path: `${baseURI}activity/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}activity/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}activity/index.html`)
               }
             },
             {
               path: `${baseURI}leaderboard`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}leaderboard/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}leaderboard/index.html`)
               }
             },
             {
               path: `${baseURI}leaderboard/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}leaderboard/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}leaderboard/index.html`)
               }
             },
             {
               path: `${baseURI}sales`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}sales/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}sales/index.html`)
               }
             },
             {
               path: `${baseURI}sales/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}sales/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}sales/index.html`)
               }
             },
             {
               path: `${baseURI}attributes`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}attributes/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}attributes/index.html`)
               }
             },
             {
               path: `${baseURI}attributes/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}attributes/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}attributes/index.html`)
               }
             },
             {
               path: `${baseURI}attribute`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}attribute/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}attribute/index.html`)
               }
             },
             {
               path: `${baseURI}attribute/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}attribute/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}attribute/index.html`)
               }
             },
             {
               path: `${baseURI}u`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}u/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}u/index.html`)
               }
             },
             {
               path: `${baseURI}u/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}u/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}u/index.html`)
               }
             },
             {
               path: `${baseURI}u/activity`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}u/activity/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}u/activity/index.html`)
               }
             },
             {
               path: `${baseURI}u/activity/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}u/activity/index.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}u/activity/index.html`)
               }
             },
             {
               path: `${baseURI}list-:page.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}list-{{page}}.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}list-{{page}}.html`)
               }
             },
             {
               path: `${baseURI}t/:tokenId`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}t/{{tokenId}}/index.html`, { force: true })
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}t/{{tokenId}}/index.html`, { force: true })
               }
             },
             {
               path: `${baseURI}t/:tokenId/index.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}t/{{tokenId}}/index.html`, { force: true })
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}t/{{tokenId}}/index.html`, { force: true })
               }
             },
             {
               path: `${baseURI}s/:slug.html`,
               async async({ resolve, reject }) {
-                await RoutingService.resolveWithSpinner(resolve, `${baseURI}s/{{slug}}.html`)
+                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}s/{{slug}}.html`)
               }
             }
       
         ])
-
 
     }
 

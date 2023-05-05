@@ -87,6 +87,8 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
+                    baseURI="${baseURI}"
+                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -168,11 +170,12 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
             let channelWebService = globalThis.container.get("ChannelWebService")
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
+
+
+
             let transactionWebService = globalThis.container.get("TransactionWebService")
-
-            let baseURL = '<%= baseURL %>'
-
-
 
             let display = 25
 
@@ -182,10 +185,10 @@
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURL
+                path: baseURI
             }, {
                 text: "Activity",
-                path: `${baseURL}activity`
+                path: `${baseURI}activity`
             }]
 
             let nextPage
@@ -194,7 +197,7 @@
             let transactionsViewModel 
 
             const link = (href) => {
-              return baseURL + href
+              return baseURI + href
             }   
 
 
@@ -266,11 +269,17 @@
 
             $on('pageInit', async () => {
 
+
                 await channelWebService.loadChannel(
-                    "<%= channelViewModel.channel._id %>",
-                    '<%= baseURL %>',
-                    '<%= hostname %>'
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
                 )
+
+                baseURI = globalThis.container.get("baseURI")()
+                hostname = globalThis.container.get("hostname")()
+
+                await $update()
 
                 await loadActivity()
 

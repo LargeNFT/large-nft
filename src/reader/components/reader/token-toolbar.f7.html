@@ -81,7 +81,7 @@
 
     export default (props, { $on, $, $f7, $update }) => {
     
-        let baseURI = globalThis.container.get("baseURI")
+        let baseURI = globalThis.container.get("baseURI")()
         let readerSettingsService = globalThis.container.get("ReaderSettingsService")
 
         let tokenId = props.token_id

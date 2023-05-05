@@ -39,7 +39,7 @@ export default (props, { $, $on, $f7, $update }) => {
     let mintWebService = globalThis.container.get("MintWebService")
 
     let transactionWebService = globalThis.container.get("TransactionWebService")
-    let baseURI = globalThis.container.get("baseURI")
+    let baseURI = globalThis.container.get("baseURI")()
 
     const link = (href) => {
         return baseURI + href

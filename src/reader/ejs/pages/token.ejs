@@ -119,6 +119,8 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
+                    baseURI="${baseURI}"
+                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -412,7 +414,11 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
             
+
             let channelWebService = globalThis.container.get("ChannelWebService")
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
+
 
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let walletService = globalThis.container.get("WalletService")
@@ -422,8 +428,6 @@
             let readerSettingsService = globalThis.container.get("ReaderSettingsService")
             let tokenService = globalThis.container.get("TokenService")
             let tokenOwnerService = globalThis.container.get("TokenOwnerService")
-
-            let baseURI = '<%= baseURL %>'
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
@@ -570,10 +574,15 @@
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
-                    "<%= channelViewModel.channel._id %>",
-                    '<%= baseURL %>',
-                    '<%= hostname %>'
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
                 )
+
+                baseURI = globalThis.container.get("baseURI")()
+                hostname = globalThis.container.get("hostname")()
+
+                await $update()
 
                 await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
                 $('#token_navigator_form').on('submit', goTokenFormSubmit)
@@ -590,10 +599,15 @@
             $on('pageReinit', async () => {
 
                 await channelWebService.loadChannel(
-                    "<%= channelViewModel.channel._id %>",
-                    '<%= baseURL %>',
-                    '<%= hostname %>'
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
                 )
+
+                baseURI = globalThis.container.get("baseURI")()
+                hostname = globalThis.container.get("hostname")()
+
+                await $update()
 
                 initSwiper()
 

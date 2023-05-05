@@ -16,11 +16,11 @@ class TransactionWebService {
 
 
     constructor(
-        @inject("baseURI") private baseURI
+        @inject("baseURI") private baseURI:Function
     ) {}
 
     async getHomeViewModel() {
-        let result = await axios.get(`${this.baseURI}sync/home.json`)
+        let result = await axios.get(`${this.baseURI()}sync/home.json`)
         return result.data
     }
 
@@ -30,7 +30,7 @@ class TransactionWebService {
         let latest = await this.getLatest()
 
 
-        let result = await axios.get(`${this.baseURI}sync/transactions/activity/${page}.json`)
+        let result = await axios.get(`${this.baseURI()}sync/transactions/activity/${page}.json`)
 
         let transactionsViewModel = result.data
 
@@ -43,7 +43,7 @@ class TransactionWebService {
 
     async listByAddress(address:string, page:number) : Promise<TransactionsViewModel> {
         
-        let result = await axios.get(`${this.baseURI}sync/tokenOwner/${address}/activity/${page}.json`)
+        let result = await axios.get(`${this.baseURI()}sync/tokenOwner/${address}/activity/${page}.json`)
 
         let transactionsViewModel = result.data
 
@@ -56,7 +56,7 @@ class TransactionWebService {
 
 
     async getLatest() {
-        let result = await axios.get(`${this.baseURI}sync/transactions/latest.json`, {
+        let result = await axios.get(`${this.baseURI()}sync/transactions/latest.json`, {
             // query URL without using browser cache
             headers: {
               'Cache-Control': 'no-cache',
@@ -69,7 +69,7 @@ class TransactionWebService {
 
     async getRecentActivity() : Promise<TransactionsViewModel> {
 
-        let result = await axios.get(`${this.baseURI}sync/transactions/recentActivity.json`, {
+        let result = await axios.get(`${this.baseURI()}sync/transactions/recentActivity.json`, {
             // query URL without using browser cache
             headers: {
               'Cache-Control': 'no-cache',

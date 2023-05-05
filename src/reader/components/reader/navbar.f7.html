@@ -6,171 +6,174 @@
         <div class="navbar-inner sliding">
                 
           <div class="left">
-            <a href="/">
+            <a href="${libraryURL ? libraryURL : '/'}">
               <i class="f7-icons">house</i>
             </a>
           </div>
 
 
-          <div class="title">
-            ${title}
-          </div>
+          <div class="title">${title}</div>
           
           <div class="right">
             
-            <div class="small-only">
-
-              <a href="#" class="link popover-open" data-popover=".popover-menu">
-                <i class="f7-icons">menu</i>
-              </a> 
-
-              <div class="popover popover-menu">
-                <div class="popover-angle"></div>
-                <div class="popover-inner">                    
-                  <div class="list">
-                    <ul>
-
-                      ${showConnect ? $h`
-        
-                          <li>
-                            <div class="item-content">
-                              <div class="item-inner">
-                                  <div class="item-title">
-                                      ${walletAddress != undefined ? $h`
-                                        <a href="#" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
-                                    ` : $h`
-                                        <button class="button button-outline button-fill" @click=${connectWallet}>
-                                          Connect Wallet
-                                        </button>
-                                    `} 
-                                  </div>
-                              </div>
-                            </div>
-                          </li>
-
-                          ${showMintPage ? $h`
-                            <li>
-                              <a href="${baseURI}mint.html" class="item-link popover-close">
-                                <div class="item-content">
-                                  <div class="item-inner">
-                                      <div class="item-title">
-                                          Mint
-                                      </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                          ` : $h`<span />`}
-
-                              
-                        ` : $h`<span />`}
-
-
-
-
-                      <li>
-                        <a href="${forkLink}" class="item-link external popover-close">
-                          <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title">
-                                  Fork
-                                </div>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-  
-
-
-
-                      <li>
-                        <a href="${baseURI}explore.html" class="item-link popover-close">
-                          <div class="item-content">
-                            <div class="item-inner">
-                                <div class="item-title">
-                                    Explore
-                                </div>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-
-
-                      ${showActivityPage ? $h`
-                        <li>
-                          <a href="${baseURI}activity" class="item-link popover-close">
-                            <div class="item-content">
-                              <div class="item-inner">
-                                  <div class="item-title">
-                                      Activity
-                                  </div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-
-                        <li>
-                          <a href="${baseURI}leaderboard" class="item-link popover-close">
-                            <div class="item-content">
-                              <div class="item-inner">
-                                  <div class="item-title">
-                                      Leaderboard
-                                  </div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-
-
-                      ` : $h`<span />`}
-
-                    </ul>
+            ${!hideMenu ? $h`
               
-                  </div>
-      
-                </div>
-              </div>
+              <div class="small-only">
 
-            </div>
-
-            <div class="large-only">
+                <a href="#" class="link popover-open" data-popover=".popover-menu">
+                  <i class="f7-icons">menu</i>
+                </a> 
   
-              <a href="${forkLink}" class="external link">
-                Fork
-              </a>
-
-              <a class="link ${active == 'Explore' ? $h`link-active` : $h` `}" href="${baseURI}explore.html">
-                Explore
-              </a>      
-
-              ${showActivityPage ? $h`
-                <a class="link ${active == 'Activity' ? $h`link-active` : $h` `}" href="${baseURI}activity">
-                  Activity
-                </a> 
-
-                <a class="link ${active == 'Leaderboard' ? $h`link-active` : $h` `}" href="${baseURI}leaderboard" >
-                  Leaderboard
-                </a> 
-
-              ` : $h`<span />`}
-
-              ${showConnect ? $h`
-
-                ${showMintPage ? $h`
-                  <a class="link ${active == 'Mint' ? $h`link-active` : $h` `}" href="${baseURI}mint.html" >
-                    Mint
+                <div class="popover popover-menu">
+                  <div class="popover-angle"></div>
+                  <div class="popover-inner">                    
+                    <div class="list">
+                      <ul>
+  
+                        ${showConnect ? $h`
+          
+                            <li>
+                              <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                        ${walletAddress != undefined ? $h`
+                                          <a href="#" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
+                                      ` : $h`
+                                          <button class="button button-outline button-fill" @click=${connectWallet}>
+                                            Connect Wallet
+                                          </button>
+                                      `} 
+                                    </div>
+                                </div>
+                              </div>
+                            </li>
+  
+                            ${showMintPage ? $h`
+                              <li>
+                                <a href="${baseURI}mint.html" class="item-link popover-close">
+                                  <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            Mint
+                                        </div>
+                                    </div>
+                                  </div>
+                                </a>
+                              </li>
+                            ` : $h`<span />`}
+  
+                                
+                          ` : $h`<span />`}
+  
+  
+  
+  
+                        <li>
+                          <a href="${forkLink}" class="item-link external popover-close">
+                            <div class="item-content">
+                              <div class="item-inner">
+                                  <div class="item-title">
+                                    Fork
+                                  </div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+    
+  
+  
+  
+                        <li>
+                          <a href="${baseURI}explore.html" class="item-link popover-close">
+                            <div class="item-content">
+                              <div class="item-inner">
+                                  <div class="item-title">
+                                      Explore
+                                  </div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+  
+  
+                        ${showActivityPage ? $h`
+                          <li>
+                            <a href="${baseURI}activity" class="item-link popover-close">
+                              <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                        Activity
+                                    </div>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+  
+                          <li>
+                            <a href="${baseURI}leaderboard" class="item-link popover-close">
+                              <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                        Leaderboard
+                                    </div>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+  
+  
+                        ` : $h`<span />`}
+  
+                      </ul>
+                
+                    </div>
+        
+                  </div>
+                </div>
+  
+              </div>
+  
+              <div class="large-only">
+    
+                <a href="${forkLink}" class="external link">
+                  Fork
+                </a>
+  
+                <a class="link ${active == 'Explore' ? $h`link-active` : $h` `}" href="${baseURI}explore.html">
+                  Explore
+                </a>      
+  
+                ${showActivityPage ? $h`
+                  <a class="link ${active == 'Activity' ? $h`link-active` : $h` `}" href="${baseURI}activity">
+                    Activity
                   </a> 
+  
+                  <a class="link ${active == 'Leaderboard' ? $h`link-active` : $h` `}" href="${baseURI}leaderboard" >
+                    Leaderboard
+                  </a> 
+  
                 ` : $h`<span />`}
-
-                ${walletAddress != undefined ? $h`
-                    <a href="${baseURI}u/?address=${walletAddress}" class="link" >${truncateEthAddress(walletAddress)}</a>
-                ` : $h`
-                    <a class="link" @click="${connectWallet}">Connect Wallet</a>
-                `} 
-     
-              ` : $h`<span style="display: none;" />`}
-
-            </div>
+  
+                ${showConnect ? $h`
+  
+                  ${showMintPage ? $h`
+                    <a class="link ${active == 'Mint' ? $h`link-active` : $h` `}" href="${baseURI}mint.html" >
+                      Mint
+                    </a> 
+                  ` : $h`<span />`}
+  
+                  ${walletAddress != undefined ? $h`
+                      <a href="${baseURI}u/?address=${walletAddress}" class="link" >${truncateEthAddress(walletAddress)}</a>
+                  ` : $h`
+                      <a class="link" @click="${connectWallet}">Connect Wallet</a>
+                  `} 
+       
+                ` : $h`<span style="display: none;" />`}
+  
+              </div>
+              
+              
+            ` : $h` `}
             
           </div>
 
@@ -228,8 +231,9 @@
 
         let walletService = globalThis.container.get("WalletService")
         let uiService = globalThis.container.get("UiService")
-        let baseURI = globalThis.container.get("baseURI")
-        let hostname = globalThis.container.get("hostname")
+        
+        let baseURI = props.baseURI
+        let hostname = props.hostname
 
         let symbol = props.symbol
         let logo = props.logo
@@ -239,6 +243,7 @@
         let largeURL = props.large_url
         let showMintPage = props.show_mint_page == "true"
         let showActivityPage = props.show_activity_page == "true"
+        let hideMenu = props.hide_menu == "true"
         let breadcrumbs = props.breadcrumbs
         
         let walletAddress

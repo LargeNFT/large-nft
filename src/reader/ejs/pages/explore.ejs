@@ -86,6 +86,8 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
+                    baseURI="${baseURI}"
+                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -132,13 +134,18 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+
             let channelWebService = globalThis.container.get("ChannelWebService")
+            
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
+
+
             let itemWebService = globalThis.container.get("ItemWebService")
             let componentStateService = globalThis.container.get("ComponentStateService")
 
             const ComponentState = globalThis.ComponentState
 
-            let baseURL = '<%= baseURL %>'
             let totalItemCount = parseInt('<%= channelViewModel.itemCount %>')
 
             let firstPageExploreItems = JSON.parse('<%~ JSON.stringify(it.firstPageExploreItems) %>')
@@ -151,7 +158,7 @@
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURL
+                path: baseURI
             }, {
                 text: "Explore"
             }]
@@ -186,11 +193,17 @@
 
             $on('pageInit', async () => {
 
+
                 await channelWebService.loadChannel(
-                    "<%= channelViewModel.channel._id %>",
-                    '<%= baseURL %>',
-                    '<%= hostname %>'
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
                 )
+
+                baseURI = globalThis.container.get("baseURI")()
+                hostname = globalThis.container.get("hostname")()
+
+                await $update()
 
 
                 window.addEventListener('resize', resizeListener)
@@ -373,7 +386,7 @@
             }
 
             const link = (href) => {
-                return `${baseURL + href}`
+                return `${baseURI + href}`
             } 
 
  

@@ -7,23 +7,23 @@ import { TokenOwnerPage, TokenOwnerPageTotals } from "../../dto/token-owner-page
 class TokenOwnerPageRepositoryBrowserImpl implements TokenOwnerPageRepository {
 
     constructor(
-        @inject("baseURI") private baseURI,
-        @inject("hostname") private hostname
+        @inject("baseURI") private baseURI:Function,
+        @inject("hostname") private hostname:Function
     ) {}
 
     async getHome(): Promise<TokenOwnerPage> {
-        const response = await axios.get(`${this.hostname}${this.baseURI}sync/tokenOwner/pages/home.json`)    
+        const response = await axios.get(`${this.hostname()}${this.baseURI()}sync/tokenOwner/pages/home.json`)    
         return response.data
     }
 
     async getTotals(): Promise<TokenOwnerPageTotals> {
-        const response = await axios.get(`${this.hostname}${this.baseURI}sync/tokenOwner/pages/total.json`)    
+        const response = await axios.get(`${this.hostname()}${this.baseURI()}sync/tokenOwner/pages/total.json`)    
         return response.data
     }
 
     async get(pageNumber: number): Promise<TokenOwnerPage> {   
 
-        const response = await axios.get(`${this.hostname}${this.baseURI}sync/tokenOwner/pages/${pageNumber}.json`)
+        const response = await axios.get(`${this.hostname()}${this.baseURI()}sync/tokenOwner/pages/${pageNumber}.json`)
             
         return response.data
     }

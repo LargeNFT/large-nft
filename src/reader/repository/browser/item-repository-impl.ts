@@ -42,8 +42,8 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
     private databaseService: DatabaseService
     
     constructor(
-        @inject("baseURI") private baseURI,
-        @inject("hostname") private hostname
+        @inject("baseURI") private baseURI:Function,
+        @inject("hostname") private hostname:Function
     ) {}
 
     async load() {
@@ -120,7 +120,7 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
 
         let itemPage:ItemPage
 
-        const response = await axios.get(`${this.hostname}${this.baseURI}attributes/items/${escape(traitType)}/${escape(value)}/${pageNumber}.json`)
+        const response = await axios.get(`${this.hostname()}${this.baseURI()}attributes/items/${escape(traitType)}/${escape(value)}/${pageNumber}.json`)
         
         itemPage = response.data
 
@@ -131,7 +131,7 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
 
         let itemPage:ItemPage
 
-        const response = await axios.get(`${this.hostname}${this.baseURI}sync/tokenOwner/${address}/tokens/${pageNumber}.json`)
+        const response = await axios.get(`${this.hostname()}${this.baseURI()}sync/tokenOwner/${address}/tokens/${pageNumber}.json`)
         
         itemPage = response.data
 
@@ -143,7 +143,7 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
         let items:RowItemViewModel[] = []
 
         for (let tokenId of tokenIds) {
-            const response = await axios.get(`${this.hostname}${this.baseURI}t/${tokenId}/rowItemViewModel.json`)
+            const response = await axios.get(`${this.hostname()}${this.baseURI()}t/${tokenId}/rowItemViewModel.json`)
             items.push(response.data)
         }
 
@@ -152,7 +152,7 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
 
     async getRowItemViewModelsByTokenId(tokenId:number) : Promise<RowItemViewModel> {
 
-        const response = await axios.get(`${this.hostname}${this.baseURI}t/${tokenId}/rowItemViewModel.json`)
+        const response = await axios.get(`${this.hostname()}${this.baseURI()}t/${tokenId}/rowItemViewModel.json`)
         return response.data
 
     }

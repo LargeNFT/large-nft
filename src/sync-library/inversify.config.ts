@@ -43,6 +43,13 @@ import { AnimationService } from "../reader/service/animation-service.js";
 import { ItemPageService } from "../reader/service/item-page-service.js";
 import { ItemPageRepository } from "../reader/repository/item-page-repository.js";
 import { ItemPageRepositoryNodeImpl } from "../reader/repository/node/item-page-repository-impl.js";
+import { Channel } from "./dto/channel.js";
+import { LibraryChannelRepository } from "./repository/library-channel-repository.js";
+import { LibraryChannelRepositoryNodeImpl } from "./repository/node/library-channel-repository-impl.js";
+import { LibraryChannelService } from "./service/library-channel-service.js";
+import { SyncLibraryService } from "./service/sync-library-service.js";
+import { HomeWebService } from "../library/service/web/home-web-service.js";
+import { HomeRepository } from "../library/repository/home-repository.js";
 
 
 const require = createRequire(import.meta.url)
@@ -99,7 +106,7 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
       database: "library",
       dialect: 'sqlite',
       storage: `${baseDir}/data/library.sqlite`,
-      models: [SyncStatus]
+      models: [SyncStatus, Channel]
     })
   
     await sequelize.sync()
@@ -117,6 +124,8 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
 
   container.bind<SyncStatusRepository>("SyncStatusRepository").to(SyncStatusRepositoryNodeImpl).inSingletonScope()
+  container.bind<LibraryChannelRepository>("LibraryChannelRepository").to(LibraryChannelRepositoryNodeImpl).inSingletonScope()
+
   container.bind<ChannelRepository>("ChannelRepository").to(ChannelRepositoryNodeImpl).inSingletonScope()
   container.bind<AuthorRepository>("AuthorRepository").to(AuthorRepositoryNodeImpl).inSingletonScope()
   container.bind<ImageRepository>("ImageRepository").to(ImageRepositoryNodeImpl).inSingletonScope()
@@ -128,7 +137,12 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   container.bind<ItemService>("ItemService").to(ItemService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
+  
   container.bind<SyncStatusService>("SyncStatusService").to(SyncStatusService).inSingletonScope()
+  container.bind<LibraryChannelService>("LibraryChannelService").to(LibraryChannelService).inSingletonScope()
+  container.bind<SyncLibraryService>("SyncLibraryService").to(SyncLibraryService).inSingletonScope()
+
+  
   container.bind<ChannelService>("ChannelService").to(ChannelService).inSingletonScope()
   container.bind<ImageService>("ImageService").to(ImageService).inSingletonScope()
   container.bind<SchemaService>("SchemaService").to(SchemaService).inSingletonScope()

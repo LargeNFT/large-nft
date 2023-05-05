@@ -98,7 +98,7 @@ class ChannelWebService {
 
     }
 
-    async loadChannel(channelId, baseURI, hostname) {
+    loadChannel(channelId, baseURI, hostname) {
 
         globalThis.channelId = channelId
         globalThis.baseURI = baseURI

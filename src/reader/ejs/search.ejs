@@ -87,7 +87,8 @@
               show_mint_page="<%=showMintPage%>"
               show_activity_page="<%=showActivityPage%>"
               breadcrumbs="${breadcrumbs}"
-
+              baseURI="${baseURI}"
+              hostname="${hostname}"
           >
           </nav-bar>
 
@@ -119,11 +120,13 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {   
 
-        globalThis.channelId = "<%= channelViewModel.channel._id %>"
+        let channelWebService = globalThis.container.get("ChannelWebService")
+        let baseURI = globalThis.container.get("baseURI")()
+        let hostname = globalThis.container.get("hostname")()
+
 
 
         let itemWebService = globalThis.container.get("ItemWebService")
-        let baseURI = globalThis.container.get("baseURI")
 
         let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
@@ -140,11 +143,17 @@
 
         $on('pageInit', async () => {
 
+
           await channelWebService.loadChannel(
-                "<%= channelViewModel.channel._id %>",
-                '<%= baseURL %>',
-                '<%= hostname %>'
+              "<%= channelViewModel.channel._id %>",
+              '<%= baseURL %>',
+              '<%= hostname %>'
           )
+
+          baseURI = globalThis.container.get("baseURI")()
+          hostname = globalThis.container.get("hostname")()
+
+          await $update()
 
 
           // const params = new Proxy(new URLSearchParams(window.location.search), {

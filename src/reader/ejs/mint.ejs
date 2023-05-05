@@ -91,6 +91,8 @@
               show_mint_page="<%=showMintPage%>"
               show_activity_page="<%=showActivityPage%>"
               breadcrumbs="${breadcrumbs}"
+              baseURI="${baseURI}"
+              hostname="${hostname}"
           >
           </nav-bar>
 
@@ -161,12 +163,14 @@
       const init = (props, { $, $f7, $h, $on, $update }) => {  
 
         let channelWebService = globalThis.container.get("ChannelWebService")
+        let baseURI = globalThis.container.get("baseURI")()
+        let hostname = globalThis.container.get("hostname")()
+
         let itemWebService = globalThis.container.get("ItemWebService")
         let mintWebService = globalThis.container.get("MintWebService")
         let walletService = globalThis.container.get("WalletService")
 
         let totalItemCount = parseInt('<%= channelViewModel.itemCount %>')
-        let baseURL = '<%= baseURL %>'
 
         const PER_PAGE = 35
 
@@ -186,7 +190,7 @@
 
         let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURL
+                path: baseURI
             }, {
                 text: "Mint"
         }]
@@ -233,11 +237,17 @@
 
         $on('pageInit', async () => {
 
-          await channelWebService.loadChannel(
-                "<%= channelViewModel.channel._id %>",
-                '<%= baseURL %>',
-                '<%= hostname %>'
+          channelWebService.loadChannel(
+                  "<%= channelViewModel.channel._id %>",
+                  '<%= baseURL %>',
+                  '<%= hostname %>'
           )
+
+          baseURI = globalThis.container.get("baseURI")()
+          hostname = globalThis.container.get("hostname")()
+
+          await $update()
+
 
           window.addEventListener('resize', resizeListener)
           
@@ -369,7 +379,7 @@
         }
 
         const link = (href) => {
-          return `${baseURL + href}`
+          return `${baseURI + href}`
         } 
 
         document.addEventListener('mint-view-model-loaded', async (e) => {

@@ -7,13 +7,13 @@ import { ItemPageRepository } from "../item-page-repository.js"
 class ItemPageRepositoryBrowserImpl implements ItemPageRepository {
 
     constructor(
-        @inject("baseURI") private baseURI,
-        @inject("hostname") private hostname
+        @inject("baseURI") private baseURI:Function,
+        @inject("hostname") private hostname:Function
     ) {}
 
     async get(pageNumber: number): Promise<ItemPage> {   
 
-        const response = await axios.get(`${this.hostname}${this.baseURI}itemPages/${pageNumber}.json`)
+        const response = await axios.get(`${this.hostname()}${this.baseURI()}itemPages/${pageNumber}.json`)
             
         return response.data
     }

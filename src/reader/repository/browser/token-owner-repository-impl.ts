@@ -15,7 +15,7 @@ class TokenOwnerRepositoryBrowserImpl implements TokenOwnerRepository {
     private databaseService:DatabaseService
 
     @inject('baseURI') 
-    private baseURI
+    private baseURI:Function
 
 
     async load() {
@@ -34,7 +34,7 @@ class TokenOwnerRepositoryBrowserImpl implements TokenOwnerRepository {
 
         try {
             //Download it.
-            let result:any = await axios.get(`${this.baseURI}sync/tokenOwner/${_id}/ens.json`)
+            let result:any = await axios.get(`${this.baseURI()}sync/tokenOwner/${_id}/ens.json`)
             name = result.data?.name
         } catch(ex) {}
 
@@ -46,7 +46,7 @@ class TokenOwnerRepositoryBrowserImpl implements TokenOwnerRepository {
         
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/tokenOwner/${_id}/tokenOwner.json`)
+            let result = await axios.get(`${this.baseURI()}sync/tokenOwner/${_id}/tokenOwner.json`)
             return Object.assign(new TokenOwner(), result.data)
         } catch(ex) {
             console.log(ex)

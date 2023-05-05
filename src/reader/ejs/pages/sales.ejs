@@ -86,6 +86,8 @@
                     active="Largest Sales"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    baseURI="${baseURI}"
+                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -184,7 +186,10 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+
             let channelWebService = globalThis.container.get("ChannelWebService")
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
 
             let transactionWebService = globalThis.container.get("TransactionWebService")
 
@@ -193,14 +198,13 @@
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
-            let baseURL = '<%= baseURL %>'
 
             let largestSales
 
             let lastUpdated
 
             const link = (href) => {
-              return baseURL + href
+              return baseURI + href
             }   
 
 
@@ -230,10 +234,15 @@
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
-                    "<%= channelViewModel.channel._id %>",
-                    '<%= baseURL %>',
-                    '<%= hostname %>'
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
                 )
+
+                baseURI = globalThis.container.get("baseURI")()
+                hostname = globalThis.container.get("hostname")()
+
+                await $update()
 
                 await loadLargestSales()
 

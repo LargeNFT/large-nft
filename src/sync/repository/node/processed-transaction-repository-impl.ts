@@ -100,9 +100,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         //Transactions
         return ProcessedTransaction.findAll(query)
 
-
-
-
     }
 
     async findEventsBetweenBlocks(startBlock: number, endBlock: number, options?: any): Promise<ProcessedEvent[]> {
@@ -122,9 +119,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
         //events
         return ProcessedEvent.findAll(query)
-
-
-
 
     }
 

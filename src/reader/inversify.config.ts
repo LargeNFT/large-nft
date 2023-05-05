@@ -116,7 +116,6 @@ import { TokenContractService } from "./service/token-contract-service.js";
 import { SchemaService } from "./service/core/schema-service.js";
 import { QuillService } from "./service/core/quill-service.js";
 import { ReaderSettingsService } from "./service/reader-settings-service.js";
-import { StaticPage } from "./dto/static-page.js";
 
 
 import { ERCEventService } from "./service/erc-event-service.js";
@@ -148,16 +147,16 @@ import axios from "axios";
 
 
 let container: Container
-let baseURI:string 
-let hostname:string 
+
 
 async function getMainContainer(customContainer:Container, theBaseURI:string, theHostname:string, version:string, routes:any[]) {
 
   if (container) return container
 
   container = customContainer
-  baseURI = theBaseURI
-  hostname = theHostname
+  
+  globalThis.baseURI = theBaseURI
+  globalThis.hostname = theHostname
 
   function framework7() {
 
@@ -221,8 +220,7 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
 
 
   container.bind("framework7").toConstantValue(framework7())
-  container.bind("baseURI").toConstantValue(baseURI)
-  container.bind("hostname").toConstantValue(hostname)
+
   container.bind("version").toConstantValue(version)
 
   container.bind("PouchDB").toConstantValue(PouchDB)
@@ -249,8 +247,8 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
     let contractABI
 
 
-    let contractResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract.json`, { responseType: 'json'})
-    let contractABIResponse = await axios.get(`${hostname}${baseURI}backup/contract/contract-abi.json`, { responseType: 'json'})
+    let contractResponse = await axios.get(`${globalThis.hostname}${globalThis.baseURI}backup/contract/contract.json`, { responseType: 'json'})
+    let contractABIResponse = await axios.get(`${globalThis.hostname}${globalThis.baseURI}backup/contract/contract-abi.json`, { responseType: 'json'})
 
 
     if (contractResponse.status === 200) {
@@ -268,6 +266,14 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
 
     return contractABI
 
+  })
+
+  container.bind("baseURI").toConstantValue(() => {
+    return globalThis.baseURI
+  })
+
+  container.bind("hostname").toConstantValue(() => {
+    return globalThis.hostname
   })
 
   container.bind("channelId").toConstantValue(() => {
@@ -346,8 +352,7 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
   globalThis.he = he
   globalThis.moment = moment
   globalThis.ComponentState = ComponentState 
-  globalThis.baseURI = baseURI
-  globalThis.hostname = hostname
+
 
   return container
 }

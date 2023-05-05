@@ -25,8 +25,8 @@ class ProcessConfig {
 
             config.hostname = config?.env?.dev?.hostname || baseConfig.hostname
             config.baseURL = config?.env?.dev?.baseURL || baseConfig.baseURL
-            config.libraryURL = config?.env?.dev?.libraryURL 
-            config.largeURL = config?.env?.dev?.largeURL 
+            config.libraryURL = config?.env?.dev?.libraryURL || config?.libraryURL 
+            config.largeURL = config?.env?.dev?.largeURL || config?.largeURL 
 
             config.maxItems = baseConfig.maxItems
 

@@ -25,8 +25,8 @@ class ChannelRepositoryBrowserImpl implements ChannelRepository {
     private databaseService: DatabaseService
 
     constructor(
-        @inject("baseURI") private baseURI,
-        @inject("hostname") private hostname
+        @inject("baseURI") private baseURI:Function,
+        @inject("hostname") private hostname:Function
     ) {}
 
     async load() {
@@ -56,7 +56,7 @@ class ChannelRepositoryBrowserImpl implements ChannelRepository {
         // let channel:Channel = channels.rows[0].doc
         // console.log(channel)
 
-        const contractResponse = await axios.get(`${this.hostname}${this.baseURI}backup/contract/contract.json`)
+        const contractResponse = await axios.get(`${this.hostname()}${this.baseURI()}backup/contract/contract.json`)
         // console.log(contractResponse)
 
         if (contractResponse?.data) {

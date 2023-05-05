@@ -85,6 +85,8 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
+                    baseURI="${baseURI}"
+                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -256,13 +258,17 @@
 
             let channelWebService = globalThis.container.get("ChannelWebService")
 
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
+
+
+
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let processedTransactionService = globalThis.container.get("ProcessedTransactionService")
             let itemWebService = globalThis.container.get("ItemWebService")
 
             let walletService = globalThis.container.get("WalletService")
 
-            let baseURL = '<%= baseURL %>'
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
@@ -292,16 +298,16 @@
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURL
+                path: baseURI
             }, {
                 text: "Attributes",
-                path: `${baseURL}attributes`
+                path: `${baseURI}attributes`
             }]
 
 
 
             const link = (href) => {
-              return baseURL + href
+              return baseURI + href
             }   
 
             const loadSalesReport = async () => {
@@ -485,10 +491,15 @@
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
-                    "<%= channelViewModel.channel._id %>",
-                    '<%= baseURL %>',
-                    '<%= hostname %>'
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
                 )
+
+                baseURI = globalThis.container.get("baseURI")()
+                hostname = globalThis.container.get("hostname")()
+
+                await $update()
 
                 window.addEventListener('resize', resizeListener)
 
@@ -509,8 +520,17 @@
 
             $on('pageReinit', async () => {
 
-                await channelWebService.loadChannel("<%= channelViewModel.channel._id %>")
+                await channelWebService.loadChannel(
+                        "<%= channelViewModel.channel._id %>",
+                        '<%= baseURL %>',
+                        '<%= hostname %>'
+                )
 
+                baseURI = globalThis.container.get("baseURI")()
+                hostname = globalThis.container.get("hostname")()
+
+                await $update()
+                
                 address = $f7.views.main.router.currentRoute?.query?.address
 
                 await loadSalesReport()

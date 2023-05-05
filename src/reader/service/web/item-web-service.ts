@@ -58,8 +58,6 @@ class ItemWebService {
     @inject("AttributeTotalService")
     private attributeTotalService: AttributeTotalService
 
-    @inject("baseURI")
-    private baseURI: string
 
 
     private allTokensCache:number[]

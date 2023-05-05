@@ -8,8 +8,8 @@ class DatabaseService {
     dbCache = {}
 
     constructor(
-        @inject('baseURI') private baseURI:string,
-        @inject('hostname') private hostname:string,
+        @inject('baseURI') private baseURI:Function,
+        @inject('hostname') private hostname:Function,
         @inject('PouchDB') private PouchDB,
         @inject('channelId') private channelId:Function,
 
@@ -131,9 +131,9 @@ class DatabaseService {
         let response
 
         if (config.initialRecordsPath) {
-            response = await fetch(`${this.hostname}${this.baseURI}${config.initialRecordsPath}`)
+            response = await fetch(`${this.hostname()}${this.baseURI()}${config.initialRecordsPath}`)
         } else {
-            response = await fetch(`${this.hostname}${this.baseURI}backup/export/backup/${config.name}.json`)
+            response = await fetch(`${this.hostname()}${this.baseURI()}backup/export/backup/${config.name}.json`)
         }
 
         let initialRecords = await response.json()

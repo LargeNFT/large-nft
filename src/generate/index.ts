@@ -105,6 +105,7 @@ let generate = async () => {
 
   await generateService.defineEtaTemplates(config)
 
+
   let baseViewModel:any = {
     channelViewModel: channelViewModel,
     attributeReport: await generateService.generateAttributeTotals(config, channelViewModel),

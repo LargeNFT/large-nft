@@ -17,9 +17,7 @@ class WalletServiceImpl implements WalletService {
   constructor(
     @inject("contracts") private contracts:Function,
     @inject("provider") private getProvider:Function,
-    @inject("framework7") private $f7,
-    @inject("hostname") private hostname,
-    @inject("baseURI") private baseURI
+    @inject("framework7") private $f7
   ) {
 
   }

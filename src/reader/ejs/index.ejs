@@ -86,7 +86,7 @@
 
       <div class="view view-main">
 
-        <div class="page" data-name="library-home">
+        <div class="page" data-name="reader-home">
 
           <nav-bar
             logo="${logo}"
@@ -96,6 +96,8 @@
             show_mint_page="<%=showMintPage%>"
             show_activity_page="<%=showActivityPage%>"
             breadcrumbs="${breadcrumbs}"
+            baseURI="${baseURI}"
+            hostname="${hostname}"
           >
           </nav-bar>
 
@@ -562,14 +564,15 @@
       const init = (props, { $, $f7, $h, $on, $update }) => {
 
             let channelWebService = globalThis.container.get("ChannelWebService")
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
+
+
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let itemWebService = globalThis.container.get("ItemWebService")
             let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
 
             let breadcrumbs
-
-            let baseURI = '<%= baseURL %>'
-
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
@@ -617,10 +620,15 @@
             $on('pageInit', async () => {
 
               await channelWebService.loadChannel(
-                "<%= channelViewModel.channel._id %>",
-                '<%= baseURL %>',
-                '<%= hostname %>'
+                      "<%= channelViewModel.channel._id %>",
+                      '<%= baseURL %>',
+                      '<%= hostname %>'
               )
+
+              baseURI = globalThis.container.get("baseURI")()
+              hostname = globalThis.container.get("hostname")()
+
+              await $update()
 
               await loadActivity()
 

@@ -12,7 +12,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
 
 
     @inject('baseURI') 
-    private baseURI
+    private baseURI:Function
 
     async get(_id: string): Promise<TransactionViewModel> {
 
@@ -21,7 +21,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
 
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/transactions/${_id}.json`)
+            let result = await axios.get(`${this.baseURI()}sync/transactions/${_id}.json`)
             processedTransaction = result.data
 
         } catch(ex) {
@@ -39,7 +39,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
     
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/sales/overall.json`)
+            let result = await axios.get(`${this.baseURI()}sync/sales/overall.json`)
             salesReport = result.data
 
         } catch(ex) {
@@ -56,7 +56,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
     
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/attributes/${this.attributeKeyToInteger(`${traitType}::::${value}`)}/attribute.json`)
+            let result = await axios.get(`${this.baseURI()}sync/attributes/${this.attributeKeyToInteger(`${traitType}::::${value}`)}/attribute.json`)
             attributeSalesReport = result.data
 
         } catch(ex) {
@@ -72,7 +72,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
     
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/attributes/totals.json`)
+            let result = await axios.get(`${this.baseURI()}sync/attributes/totals.json`)
             attributeOverallSales = result.data
 
         } catch(ex) {
@@ -105,7 +105,7 @@ class ProcessedTransactionRepositoryBrowserImpl implements ProcessedTransactionR
     
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/sales/largest-${limit}.json`)
+            let result = await axios.get(`${this.baseURI()}sync/sales/largest-${limit}.json`)
             largestSales = result.data
 
         } catch(ex) {

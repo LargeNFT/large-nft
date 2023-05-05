@@ -57,24 +57,141 @@
             title="<%= it.title %>"
             show_mint_page="false"
             show_activity_page="false"
+            hide_menu="true"
+            baseURI="${baseURI}"
+            hostname="${hostname}"
           >
           </nav-bar>
 
+          <div class="toolbar toolbar-bottom">
+            <div class="toolbar-inner">
+              <%~ include("footer", {baseURL: baseURL}) %>
+            </div>
+          </div>
 
-          <div class="page-content">
+
+
+          <div class="page-content hide-toolbar-on-scroll">
 
             <div class="main-split">
 
               <div class="left">
+                
+                <div class="hidden-on-load">
+
+                  <div class="card data-table">
+  
+                    <div class="card-header">Collections</div>
+
+                    <div class="card-content">
+  
+                        <table class="collections-table">
+  
+                          <thead>
+                            <tr>
+                              <th>Collection</th>
+                              <th>24H</th>
+                              <th class="medium-only">Month</th>
+                              <th class="medium-only">Year</th>
+                              <th class="medium-only">Total</th>
+                            </tr>
+                          </thead>
+  
+                          <tbody>
+    
+                            ${channels?.map( channelValue => $h`
+                              <tr>
+                                <td class="label-cell">
+                                  <a href="/r/${channelValue._id}/">
+                                    ${channelValue.coverImageId ? $h`
+                                      <img src="/r/${channelValue._id}/backup/generated/images/${channelValue.coverImageId}.webp" class="avatar" />
+                                    ` : $h`
+                                      <i class="material-icons avatar">image</i>
+                                    `}
+    
+                                    ${channelValue.title}
+                                  </a>
+  
+                                </td> 
+                                <td>
+  
+                                  <strong>${parseFloat(channelValue.dayTotalsEthValue || 0).toFixed(5)}</strong> ETH
+                                  <br />
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.dayTotalsUsdValue || 0)}</span>
+  
+                                </td>
+  
+                                <td class="medium-only">
+  
+                                  <strong>${parseFloat(channelValue.monthTotalsEthValue || 0).toFixed(5)}</strong> ETH
+                                  <br />
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.monthTotalsUsdValue || 0)}</span>
+  
+                                </td>
+  
+                                <td class="medium-only">
+  
+                                  <strong>${parseFloat(channelValue.yearTotalsEthValue || 0).toFixed(5)}</strong> ETH
+                                  <br />
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.yearTotalsUsdValue || 0)}</span>
+  
+                                </td>
+  
+                                <td class="medium-only">
+  
+                                  <strong>${parseFloat(channelValue.totalEthValue || 0).toFixed(5)}</strong> ETH
+                                  <br />
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.totalUsdValue || 0)}</span>
+  
+                                </td>
+  
+                              </tr>  
+                            `)}
+    
+                            </tbody>
+                        </table>
+    
+                    </div>
+                  
+                  </div>
+
+                </div>
+
+
 
               </div>
 
               <div class="right">
 
-              </div>
+                <div class="card card-header-divider">
+                  <div class="card-header">Links</div>
+                  <div class="card-content card-content-padding">
+                    <div class="list">
+                      <ul>
+                        <li>
+                          <div class="item-content">
+                            <div class="item-inner">
+                              <div class="item-title">
+                                <a class="link external" href="https://discord.gg/yJtjqHvqXm">Discord</a>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="item-content">
+                            <div class="item-inner">
+                              <div class="item-title">
+                                <a class="link external" href="https://twitter.com/large_nft">Twitter</a>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+  
+                      </ul>
+                    </div>
+                  </div>
+                </div>
 
-              <div class="left">
-                <%~ include("footer", {baseURL: baseURL}) %>
               </div>
 
             </div>
@@ -94,18 +211,56 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
-            let baseURI = globalThis.container.get("baseURI")
+            channelWebService.loadChannel(
+              undefined,
+              '/',
+              '<%= hostname %>'
+            )
+
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
+
+            let homeWebService = globalThis.container.get("HomeWebService")
+            let channelWebService = globalThis.container.get("ChannelWebService")
+
+            let uiService = globalThis.container.get("UiService")
+
 
             let breadcrumbs
+
+            let channels = []
 
             const link = (href) => {
               return baseURI + href
             }   
 
-   
-            $on('pageInit', async () => {
+
+            $on('pageAfterOut', (e, page) => {
+            })
+
+            $on('pageInit', async (e, page) => {
+
+
+
+              uiService.showSpinner()
+
+              channelsShown = 0
+              pageCounter = 0
+              hasMoreChannels = true
+              loadingInProgress = false
+
+
+              channels = await homeWebService.get()
+
+              await $update()
+
+              $('.hidden-on-load').removeClass('hidden-on-load')
+
+              uiService.hideSpinner()
 
             })
+
+            
 
             $f7.preloader.hide()
 

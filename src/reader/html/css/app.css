@@ -1150,7 +1150,9 @@ html {
   font-weight: bold;
 }
 
-
+.navbar .f7-icons {
+  margin-right: 5px;
+}
 
 .dollar-value {
   font-size: 14px;

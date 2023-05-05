@@ -93,6 +93,8 @@
                     active="Transaction"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
+                    baseURI="${baseURI}"
+                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -121,12 +123,17 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
+
+            let channelWebService = globalThis.container.get("ChannelWebService")
+
+            
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
+
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
 
             // let eventWebService = globalThis.container.get("EventWebService")
-
-            let baseURL = '<%= baseURL %>'
 
             $on('pageInit', async () => {
 

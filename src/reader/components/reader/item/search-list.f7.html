@@ -116,7 +116,7 @@
   export default (props, { $, $on, $f7, $update }) => {
 
     let itemWebService = globalThis.container.get("ItemWebService")
-    let baseURI = globalThis.container.get("baseURI")
+    let baseURI = globalThis.container.get("baseURI")()
 
     const link = (href) => {
       return baseURI + href

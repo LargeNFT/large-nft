@@ -10,7 +10,7 @@ class TokenRepositoryBrowserImpl implements TokenRepository {
   
 
     @inject('baseURI') 
-    private baseURI
+    private baseURI:Function
 
 
     constructor() {}
@@ -21,7 +21,7 @@ class TokenRepositoryBrowserImpl implements TokenRepository {
         
         try {
             //Download it.
-            let result = await axios.get(`${this.baseURI}sync/tokens/${_id}/token.json`)
+            let result = await axios.get(`${this.baseURI()}sync/tokens/${_id}/token.json`)
             return Object.assign(new Token(), result.data)
         } catch(ex) {
             // console.log(ex)

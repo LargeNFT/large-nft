@@ -17,6 +17,9 @@ import { SyncStatusService } from "./service/sync-status-service.js"
 
 import _initEjs from '../reader/ejs/template/_init.ejs'
 import { GenerateService } from "../reader/service/core/generate-service.js"
+import { Channel } from "./dto/channel.js"
+import { LibraryChannelService } from "./service/library-channel-service.js"
+import { SyncLibraryService } from "./service/sync-library-service.js"
 
 
 let syncLibrary = async () => {
@@ -44,12 +47,16 @@ let syncLibrary = async () => {
 
   let spawnService: SpawnService = container.get("SpawnService")
   let syncStatusService: SyncStatusService = container.get("SyncStatusService")
-  let generateService: GenerateService = container.get("GenerateService")
+  let syncLibraryService: SyncLibraryService = container.get("SyncLibraryService")
 
+  let libraryChannelService: LibraryChannelService = container.get("LibraryChannelService")
+  let generateService: GenerateService = container.get("GenerateService")
 
   if (!fs.existsSync(`${process.env.INIT_CWD}/data`)) {
     fs.mkdirSync(`${process.env.INIT_CWD}/data`)
   }
+
+
 
   //Init database
   let sequelizeInit:Function = container.get("sequelize")
@@ -61,11 +68,18 @@ let syncLibrary = async () => {
 
   if (config.clear) {
     await SyncStatus.drop()
+    await Channel.drop()
   }
 
   await sequelize.sync()
 
   let syncDir = path.resolve(process.env.INIT_CWD, config.syncDir)
+
+  // if (!fs.existsSync(`${syncDir}/l`)) {
+  //   fs.mkdirSync(`${syncDir}/l`, { recursive: true })
+  // }
+
+
 
   console.log(`Starting Sync Library to env: ${config.env}`)
 
@@ -77,51 +91,20 @@ let syncLibrary = async () => {
   args.push("--sync-dir")
   args.push(syncDir)
 
+
   //Generate library pages
-  if (config.generate) {
-    await generateService.generateLibraryPages(config, syncDir)
-  }
+  await generateService.generateLibraryPages(config, syncDir)
 
 
 
   for (let slug of Object.keys(config.readers)) {
-
+    
     let reader = config.readers[slug]
-
-    const syncDirectory = path.resolve(config.syncDir, reader.repo)
-
-    let publicPath = `${syncDirectory}/public`
-
-
-    await sequelize.transaction(async (t1) => {
-
-      let options = { transaction: t1 }
-
-      //Get current sync status
-      let syncStatus:SyncStatus = await syncStatusService.getOrCreate(slug, options)
-
-      if (config.generate) {
-        await spawnService.spawnGenerate(process.env.INIT_CWD, syncDirectory, args)
-      } 
-
-      await spawnService.spawnSync(process.env.INIT_CWD, syncDirectory, args)
-
-
-      if (config.env == "production") {
-        //Save new sync status
-        await syncStatusService.handleChangedFiles(slug, publicPath, syncStatus?.lastModified)
-      }
-
-
-  
-      syncStatus.lastModified = new Date()
-
-      await syncStatusService.put(syncStatus, options)
-
-
-    })
+    await syncLibraryService.syncAndGenerateChannel(slug, reader, args, config)
 
   }
+
+  await syncLibraryService.updateLibraryHome(syncDir)
 
 
   async function runLoop() {
@@ -132,55 +115,17 @@ let syncLibrary = async () => {
 
       let reader = config.readers[slug]
 
-      const syncDirectory = path.resolve(config.syncDir, reader.repo)
-
-      //Sync
-
-      //Remove clear
-      let args = process.argv?.slice(2)
-
-      let indexOfClear = args.indexOf("--clear")
-
-      if (indexOfClear > -1) {
-        args.splice(indexOfClear, 2)
-      }
-
-      args.push("--sync-rate")
-      args.push("0")
-
-
-      let publicPath = `${syncDirectory}/public`
-
-      await sequelize.transaction(async (t1) => {
-
-        let options = { transaction: t1 }
-  
-        let syncStatus:SyncStatus = await syncStatusService.getOrCreate(slug, options)
-
-        await spawnService.spawnSync(process.env.INIT_CWD, syncDirectory, args)
-  
-  
-        //Save new sync status
-        if (config.env == "production") {
-          await syncStatusService.handleChangedFiles(slug, publicPath, syncStatus?.lastModified)
-        }
-
-
-        syncStatus.lastModified = new Date()
-  
-        await syncStatusService.put(syncStatus, options)
-  
-      })
-  
+      await syncLibraryService.syncChannel(slug, reader, config)
   
     }
+
+    await syncLibraryService.updateLibraryHome(syncDir)
 
     console.timeEnd('Syncing...')
 
     setTimeout(runLoop, config.syncPushRate)
 
   }
-
 
 
   if (config.env == "production") {
@@ -190,6 +135,13 @@ let syncLibrary = async () => {
 }
 
 
+
+
+
+
+
 syncLibrary()
 
 export default syncLibrary
+
+

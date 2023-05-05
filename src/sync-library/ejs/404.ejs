@@ -57,6 +57,8 @@
             title="<%= it.title %>"
             show_mint_page="false"
             show_activity_page="false"
+            baseURI="${baseURI}"
+            hostname="${hostname}"
           >
           </nav-bar>
 
@@ -102,7 +104,14 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
-            let baseURI = globalThis.container.get("baseURI")
+            channelWebService.loadChannel(
+              undefined,
+              '/',
+              '<%= hostname %>'
+            )
+
+            let baseURI = globalThis.container.get("baseURI")()
+            let hostname = globalThis.container.get("hostname")()
 
             let breadcrumbs
 

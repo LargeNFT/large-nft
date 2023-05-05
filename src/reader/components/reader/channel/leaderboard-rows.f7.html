@@ -55,7 +55,7 @@
     let transactionWebService = globalThis.container.get("TransactionWebService")
     let walletService = globalThis.container.get("WalletService")
 
-    let baseURI = globalThis.container.get("baseURI")
+    let baseURI = globalThis.container.get("baseURI")()
 
 
     let tokenOwners = props.token_owners

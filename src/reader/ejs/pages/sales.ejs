@@ -86,8 +86,6 @@
                     active="Largest Sales"
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
-                    baseURI="${baseURI}"
-                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -188,8 +186,8 @@
 
 
             let channelWebService = globalThis.container.get("ChannelWebService")
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
             let transactionWebService = globalThis.container.get("TransactionWebService")
 
@@ -204,7 +202,7 @@
             let lastUpdated
 
             const link = (href) => {
-              return baseURI + href
+              return baseURI() + href
             }   
 
 
@@ -238,9 +236,6 @@
                         '<%= baseURL %>',
                         '<%= hostname %>'
                 )
-
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
 

@@ -58,8 +58,6 @@
             show_mint_page="false"
             show_activity_page="false"
             hide_menu="true"
-            baseURI="${baseURI}"
-            hostname="${hostname}"
           >
           </nav-bar>
 
@@ -211,35 +209,32 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
-            channelWebService.loadChannel(
-              undefined,
-              '/',
-              '<%= hostname %>'
-            )
-
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
+            let channelWebService = globalThis.container.get("ChannelWebService")
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
             let homeWebService = globalThis.container.get("HomeWebService")
-            let channelWebService = globalThis.container.get("ChannelWebService")
 
             let uiService = globalThis.container.get("UiService")
-
 
             let breadcrumbs
 
             let channels = []
 
             const link = (href) => {
-              return baseURI + href
+              return baseURI() + href
             }   
-
 
             $on('pageAfterOut', (e, page) => {
             })
 
             $on('pageInit', async (e, page) => {
 
+              await channelWebService.loadChannel(
+                undefined,
+                undefined,
+                '<%= hostname %>'
+              )
 
 
               uiService.showSpinner()
@@ -248,7 +243,6 @@
               pageCounter = 0
               hasMoreChannels = true
               loadingInProgress = false
-
 
               channels = await homeWebService.get()
 

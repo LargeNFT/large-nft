@@ -87,8 +87,6 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
-                    baseURI="${baseURI}"
-                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -115,12 +113,12 @@
                                 <div class="block split-row-both">
                                     <div>
                                         ${previousPage ? $h`
-                                        <a href="${baseURL}activity/?page=${previousPage}" class="button button-outline color-gray">Previous</a>
+                                        <a href="${baseURI()}activity/?page=${previousPage}" class="button button-outline color-gray">Previous</a>
                                         ` : $h` `}
                                     </div>
                                     <div>
                                         ${nextPage ? $h`
-                                        <a href="${baseURL}activity/?page=${nextPage}" class="button button-fill">Next</a>
+                                        <a href="${baseURI()}activity/?page=${nextPage}" class="button button-fill">Next</a>
                                         ` : $h` `}
                                     </div>
                             
@@ -170,9 +168,9 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
             let channelWebService = globalThis.container.get("ChannelWebService")
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
 
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
 
             let transactionWebService = globalThis.container.get("TransactionWebService")
@@ -185,10 +183,10 @@
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURI
+                path: baseURI()
             }, {
                 text: "Activity",
-                path: `${baseURI}activity`
+                path: `${baseURI()}activity`
             }]
 
             let nextPage
@@ -197,7 +195,7 @@
             let transactionsViewModel 
 
             const link = (href) => {
-              return baseURI + href
+              return baseURI() + href
             }   
 
 
@@ -269,15 +267,11 @@
 
             $on('pageInit', async () => {
 
-
                 await channelWebService.loadChannel(
                         "<%= channelViewModel.channel._id %>",
                         '<%= baseURL %>',
                         '<%= hostname %>'
                 )
-
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
 

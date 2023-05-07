@@ -86,11 +86,8 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
-                    baseURI="${baseURI}"
-                    hostname="${hostname}"
                 >
                 </nav-bar>
-
 
                 <div class="page-content">
 
@@ -199,7 +196,6 @@
 
                 </div>
 
-
             </div>
 
         </div>
@@ -215,10 +211,9 @@
 
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
-
             let channelWebService = globalThis.container.get("ChannelWebService")            
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
             
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let tokenOwnerService = globalThis.container.get("TokenOwnerService")
@@ -238,10 +233,10 @@
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURI
+                path: baseURI()
             }, {
                 text: "Leaderboard",
-                path: `${baseURI}leaderboard`
+                path: `${baseURI()}leaderboard`
             }]
             
 
@@ -309,9 +304,6 @@
 
             }
 
-
-
-
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
@@ -319,9 +311,6 @@
                         '<%= baseURL %>',
                         '<%= hostname %>'
                 )
-
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
 
@@ -333,7 +322,6 @@
 
             })
 
-
             $on('pageReinit', async () => {
 
 
@@ -342,9 +330,6 @@
                         '<%= baseURL %>',
                         '<%= hostname %>'
                 )
-
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
 
@@ -359,7 +344,6 @@
                 $('.hide-on-pageinit').hide()
 
             })
-
 
             <%~ 
                 include("_meta_tags_js", {

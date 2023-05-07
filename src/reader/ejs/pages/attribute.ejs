@@ -85,8 +85,6 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
-                    baseURI="${baseURI}"
-                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -258,15 +256,12 @@
 
             let channelWebService = globalThis.container.get("ChannelWebService")
 
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
-
-
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let processedTransactionService = globalThis.container.get("ProcessedTransactionService")
             let itemWebService = globalThis.container.get("ItemWebService")
-
             let walletService = globalThis.container.get("WalletService")
 
 
@@ -298,16 +293,16 @@
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURI
+                path: baseURI()
             }, {
                 text: "Attributes",
-                path: `${baseURI}attributes`
+                path: `${baseURI()}attributes`
             }]
 
 
 
             const link = (href) => {
-              return baseURI + href
+              return baseURI() + href
             }   
 
             const loadSalesReport = async () => {
@@ -362,9 +357,6 @@
                 await $update()
 
             }
-
-
-
 
             const createVirtualList = () => {
 
@@ -496,9 +488,6 @@
                         '<%= hostname %>'
                 )
 
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
-
                 await $update()
 
                 window.addEventListener('resize', resizeListener)
@@ -520,14 +509,11 @@
 
             $on('pageReinit', async () => {
 
-                await channelWebService.loadChannel(
+                channelWebService.loadChannel(
                         "<%= channelViewModel.channel._id %>",
                         '<%= baseURL %>',
                         '<%= hostname %>'
                 )
-
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
                 

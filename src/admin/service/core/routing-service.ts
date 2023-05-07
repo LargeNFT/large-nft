@@ -91,8 +91,6 @@ class RoutingService {
           }
 
         ]
-
-
     
         RoutingService.addSharedRoutes(routes, "/r/:reader_slug/")
     
@@ -104,6 +102,8 @@ class RoutingService {
             await RoutingService.resolveWithSpinner(resolve, 'l/404.html')
           }
         })
+
+        console.log(routes)
 
         return routes
     }

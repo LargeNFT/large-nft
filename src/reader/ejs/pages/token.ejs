@@ -119,8 +119,6 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
-                    baseURI="${baseURI}"
-                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -416,8 +414,8 @@
             
 
             let channelWebService = globalThis.container.get("ChannelWebService")
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
 
             let transactionWebService = globalThis.container.get("TransactionWebService")
@@ -438,10 +436,10 @@
 
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURI
+                path: baseURI()
             }, {
                 text: "Explore",
-                path: `${baseURI}explore.html`
+                path: `${baseURI()}explore.html`
             },{
                 text: title ? title : `#${tokenId}`
             }]
@@ -457,7 +455,7 @@
             let token
             let tokenOwnerDisplay
 
-            let metadataURL = `${baseURI}backup/export/metadata/<%= itemViewModel.item.tokenId  %>.json`
+            let metadataURL = `${baseURI()}backup/export/metadata/<%= itemViewModel.item.tokenId  %>.json`
 
 
             let contractAddress = walletService.truncateEthAddress('<%= itemViewModel.channel.contractAddress %>')
@@ -465,7 +463,7 @@
             
 
             const link = (href) => {
-              return baseURI + href
+              return baseURI() + href
             }   
 
 
@@ -579,9 +577,6 @@
                         '<%= hostname %>'
                 )
 
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
-
                 await $update()
 
                 await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
@@ -604,8 +599,6 @@
                         '<%= hostname %>'
                 )
 
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
 

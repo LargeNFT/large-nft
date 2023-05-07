@@ -50,7 +50,7 @@
   
                             ${showMintPage ? $h`
                               <li>
-                                <a href="${baseURI}mint.html" class="item-link popover-close">
+                                <a href="${baseURI()}mint.html" class="item-link popover-close">
                                   <div class="item-content">
                                     <div class="item-inner">
                                         <div class="item-title">
@@ -69,7 +69,7 @@
   
   
                         <li>
-                          <a href="${forkLink}" class="item-link external popover-close">
+                          <a href="${getForkLink()}" class="item-link external popover-close">
                             <div class="item-content">
                               <div class="item-inner">
                                   <div class="item-title">
@@ -84,7 +84,7 @@
   
   
                         <li>
-                          <a href="${baseURI}explore.html" class="item-link popover-close">
+                          <a href="${baseURI()}explore.html" class="item-link popover-close">
                             <div class="item-content">
                               <div class="item-inner">
                                   <div class="item-title">
@@ -98,7 +98,7 @@
   
                         ${showActivityPage ? $h`
                           <li>
-                            <a href="${baseURI}activity" class="item-link popover-close">
+                            <a href="${baseURI()}activity" class="item-link popover-close">
                               <div class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title">
@@ -110,7 +110,7 @@
                           </li>
   
                           <li>
-                            <a href="${baseURI}leaderboard" class="item-link popover-close">
+                            <a href="${baseURI()}leaderboard" class="item-link popover-close">
                               <div class="item-content">
                                 <div class="item-inner">
                                     <div class="item-title">
@@ -135,20 +135,20 @@
   
               <div class="large-only">
     
-                <a href="${forkLink}" class="external link">
+                <a href="${getForkLink()}" class="external link">
                   Fork
                 </a>
   
-                <a class="link ${active == 'Explore' ? $h`link-active` : $h` `}" href="${baseURI}explore.html">
+                <a class="link ${active == 'Explore' ? $h`link-active` : $h` `}" href="${baseURI()}explore.html">
                   Explore
                 </a>      
   
                 ${showActivityPage ? $h`
-                  <a class="link ${active == 'Activity' ? $h`link-active` : $h` `}" href="${baseURI}activity">
+                  <a class="link ${active == 'Activity' ? $h`link-active` : $h` `}" href="${baseURI()}activity">
                     Activity
                   </a> 
   
-                  <a class="link ${active == 'Leaderboard' ? $h`link-active` : $h` `}" href="${baseURI}leaderboard" >
+                  <a class="link ${active == 'Leaderboard' ? $h`link-active` : $h` `}" href="${baseURI()}leaderboard" >
                     Leaderboard
                   </a> 
   
@@ -157,13 +157,13 @@
                 ${showConnect ? $h`
   
                   ${showMintPage ? $h`
-                    <a class="link ${active == 'Mint' ? $h`link-active` : $h` `}" href="${baseURI}mint.html" >
+                    <a class="link ${active == 'Mint' ? $h`link-active` : $h` `}" href="${baseURI()}mint.html" >
                       Mint
                     </a> 
                   ` : $h`<span />`}
   
                   ${walletAddress != undefined ? $h`
-                      <a href="${baseURI}u/?address=${walletAddress}" class="link" >${truncateEthAddress(walletAddress)}</a>
+                      <a href="${baseURI()}u/?address=${walletAddress}" class="link" >${truncateEthAddress(walletAddress)}</a>
                   ` : $h`
                       <a class="link" @click="${connectWallet}">Connect Wallet</a>
                   `} 
@@ -231,9 +231,9 @@
 
         let walletService = globalThis.container.get("WalletService")
         let uiService = globalThis.container.get("UiService")
-        
-        let baseURI = props.baseURI
-        let hostname = props.hostname
+
+        let baseURI = globalThis.container.get("baseURI")
+        let hostname = globalThis.container.get("hostname")
 
         let symbol = props.symbol
         let logo = props.logo
@@ -249,13 +249,17 @@
         let walletAddress
         let showConnect = true
 
-        let forkLink
+        const getForkLink = () => {
 
-        if (largeURL?.length > 0) {
-          forkLink = `${largeURL}/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}`
-        } else {
-          forkLink = `${baseURI}large/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname}${baseURI}`)}`
+          if (largeURL?.length > 0) {
+            return `${largeURL}/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname()}${baseURI()}`)}`
+          } else {
+            return `${baseURI()}large/index.html#!/admin/channel/fork-reader?path=${encodeURIComponent(`${hostname()}${baseURI()}`)}`
+          }
+
         }
+
+
 
 
         const truncateEthAddress = (address) => {

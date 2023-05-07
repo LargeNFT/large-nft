@@ -40,8 +40,6 @@ class SchemaService {
     @inject("RowItemViewModelRepository")
     private rowItemViewModelRepository:RowItemViewModelRepository
 
-
-
     @inject("AttributeTotalRepository")
     private attributeTotalRepository:AttributeTotalRepository
 
@@ -54,6 +52,34 @@ class SchemaService {
     }
 
     async load(dbs:string[]) {
+
+        const repositories = this.getRepositories()
+
+        for (let db of dbs) {
+
+            let repo = repositories.filter( r => r.dbName == db)[0]
+
+            if (!repo) continue
+
+            if (!repo.db) {
+                await repo.load()
+            }
+            
+        }
+
+    }
+
+    async reloadAll() {
+
+        const repositories = this.getRepositories()
+
+        for (let repo of repositories) {
+            await repo.load()
+        }
+
+    }
+
+    getRepositories() {
 
         const repositories = []
 
@@ -72,24 +98,13 @@ class SchemaService {
         repositories.push(this.componentStateRepository)
         repositories.push(this.rowItemViewModelRepository)
 
-        for (let db of dbs) {
-
-            let repo = repositories.filter( r => r.dbName == db)[0]
-
-            if (!repo) continue
-
-            if (!repo.db) {
-                await repo.load()
-            }
-            
-        }
+        return repositories
 
     }
 
-    async loadWallet(walletAddress:string) {
 
+    async loadWallet(walletAddress:string) {
         console.log(`Loading wallet: ${walletAddress}`)
-        
     }
 
 

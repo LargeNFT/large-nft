@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author.js";
 import { Channel } from "../../dto/channel.js";
@@ -11,9 +10,9 @@ import { CHUNK_SIZE } from "../../repository/item-repository.js";
 import { AuthorService } from "../author-service.js";
 import { ChannelService } from "../channel-service.js";
 import { PagingService } from "../core/paging-service.js";
+import { SchemaService } from "../core/schema-service.js";
 import { WalletService } from "../core/wallet-service.js";
 import { ImageService } from "../image-service.js";
-import { ItemService } from "../item-service.js";
 import { StaticPageService } from "../static-page-service.js";
 
 @injectable()
@@ -30,15 +29,17 @@ class ChannelWebService {
 
     @inject("PagingService")
     private pagingService:PagingService
-    
-    @inject("ItemService")
-    private itemService:ItemService
+
+    @inject("SchemaService")
+    private schemaService:SchemaService
 
     @inject("WalletService")
     private walletService:WalletService
 
     @inject("StaticPageService")
     private staticPageService:StaticPageService
+
+    private loadedChannelData
 
     constructor() {}
 
@@ -98,18 +99,27 @@ class ChannelWebService {
 
     }
 
-    loadChannel(channelId, baseURI, hostname) {
+    
+
+    async loadChannel(channelId, baseURI, hostname) {
 
         globalThis.channelId = channelId
         globalThis.baseURI = baseURI
-        globalThis.hostname = hostname       
-
-        //Load correct routing
-        
-
+        globalThis.hostname = hostname     
 
 
     }
+
+    async loadChannelData(channelId) {
+
+        if (channelId && this.loadedChannelData != channelId) {
+            await this.schemaService.reloadAll()
+        }
+
+        this.loadedChannelData = channelId
+
+    }
+
 
 
 }

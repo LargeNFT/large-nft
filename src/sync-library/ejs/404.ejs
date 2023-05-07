@@ -104,14 +104,9 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
-            channelWebService.loadChannel(
-              undefined,
-              '/',
-              '<%= hostname %>'
-            )
-
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
+            let channelWebService = globalThis.container.get("ChannelWebService")
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
             let breadcrumbs
 
@@ -121,6 +116,14 @@
 
    
             $on('pageInit', async () => {
+
+              await channelWebService.loadChannel(
+                undefined,
+                '/',
+                '<%= hostname %>'
+              )
+
+
 
             })
 

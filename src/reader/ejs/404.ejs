@@ -87,8 +87,6 @@
             title="<%=channelViewModel.channel.title%>"
             show_mint_page="<%=showMintPage%>"
             show_activity_page="<%=showActivityPage%>"
-            baseURI="${baseURI}"
-            hostname="${hostname}"
           >
           </nav-bar>
 
@@ -145,22 +143,19 @@
               
 
             let channelWebService = globalThis.container.get("ChannelWebService")
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
 
             $on('pageInit', async () => {
 
-              channelWebService.loadChannel(
+              await channelWebService.loadChannel(
                       "<%= channelViewModel.channel._id %>",
                       '<%= baseURL %>',
                       '<%= hostname %>'
               )
-
-              baseURI = globalThis.container.get("baseURI")()
-              hostname = globalThis.container.get("hostname")()
 
 
             })

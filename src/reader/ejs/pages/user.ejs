@@ -88,8 +88,6 @@
                     show_mint_page="<%=showMintPage%>"
                     show_activity_page="<%=showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
-                    baseURI="${baseURI}"
-                    hostname="${hostname}"
                 >
                 </nav-bar>
 
@@ -234,7 +232,7 @@
                                 <div class="block">
                                     <p class="segmented">
                                         <a class="button button-outline button-active" href="#">Owned</a>
-                                        <a class="button button-outline" href="${baseURI}u/activity?address=${address}">Activity</a>
+                                        <a class="button button-outline" href="${baseURI()}u/activity?address=${address}">Activity</a>
                                     </p>
                                 </div>
                             
@@ -289,9 +287,8 @@
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
             let channelWebService = globalThis.container.get("ChannelWebService")            
-            let baseURI = globalThis.container.get("baseURI")()
-            let hostname = globalThis.container.get("hostname")()
-
+            let baseURI = globalThis.container.get("baseURI")
+            let hostname = globalThis.container.get("hostname")
 
             let tokenOwnerService = globalThis.container.get("TokenOwnerService")
             let itemWebService = globalThis.container.get("ItemWebService")
@@ -314,25 +311,23 @@
 
             let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
-
             let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
-                path: baseURI
+                path: baseURI()
             }, {
                 text: "Leaderboard",
-                path: `${baseURI}leaderboard`
+                path: `${baseURI()}leaderboard`
             }]
 
 
             const link = (href) => {
-              return baseURI + href
+              return baseURI() + href
             }   
 
             const imageLink = (rowItemViewModel) => {
                 let imgExt = rowItemViewModel.coverImageGenerated ? 'svg' : 'jpg'
                 return link('backup/export/images/' + rowItemViewModel.coverImageId + "." + imgExt)
             }
-
 
             const loadUser = async () => {
                 
@@ -476,9 +471,6 @@
 
             }
 
-    
-
-
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
@@ -486,9 +478,6 @@
                         '<%= baseURL %>',
                         '<%= hostname %>'
                 )
-
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
 
@@ -511,7 +500,6 @@
 
             })
 
-
             $on('pageReinit', async () => {
 
                 await channelWebService.loadChannel(
@@ -519,9 +507,6 @@
                         '<%= baseURL %>',
                         '<%= hostname %>'
                 )
-
-                baseURI = globalThis.container.get("baseURI")()
-                hostname = globalThis.container.get("hostname")()
 
                 await $update()
 
@@ -539,7 +524,6 @@
 
 
             })
-
 
             $on('pageBeforeOut', async () => {
                 window.removeEventListener('resize', resizeListener)

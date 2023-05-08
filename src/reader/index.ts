@@ -18,10 +18,10 @@ import { Container } from "inversify"
 import { SchemaService } from "./service/core/schema-service.js"
 
 import './html/css/app.css'
-import { RoutingService } from "../admin/service/core/routing-service.js"
+import { RoutingService } from "./service/core/routing-service.js"
 
 
-let initReader = async (baseURI:string, hostname:string, version:string) => {
+let initReader = async (baseURI:string, hostname:string, version:string, channelId:string) => {
 
     console.log("Initializing Reader")
 
@@ -38,7 +38,7 @@ let initReader = async (baseURI:string, hostname:string, version:string) => {
         let routes = RoutingService.getReaderRoutes(baseURI)
     
 
-        container = await getMainContainer(container, baseURI, hostname, version, routes)
+        container = await getMainContainer(container, baseURI, hostname, version, routes, channelId)
 
 
         if (navigator.serviceWorker.controller) {
@@ -66,7 +66,7 @@ let startApp = async (container:Container, hostname:string) => {
     //Get URL
     let internalUrl = window.location.toString().replace(`${hostname}`, '')
 
-    console.log(`internal URL ${internalUrl}`)
+    // console.log(`internal URL ${internalUrl}`)
 
     const mainView = app.views.create('.view-main', {
         url: internalUrl
@@ -74,9 +74,6 @@ let startApp = async (container:Container, hostname:string) => {
 
 
     mainView.on("init", async (view) => {
-
-        let schemaService:SchemaService = await container.get("SchemaService")
-        await schemaService.load(['component-state'])
 
         console.log(`Navigating to ${internalUrl}`)
         //When the view loads lets reload the initial page so that we fire the component logic. 

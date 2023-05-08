@@ -149,7 +149,7 @@ import axios from "axios";
 let container: Container
 
 
-async function getMainContainer(customContainer:Container, theBaseURI:string, theHostname:string, version:string, routes:any[]) {
+async function getMainContainer(customContainer:Container, theBaseURI:string, theHostname:string, version:string, routes:any[], channelId:string) {
 
   if (container) return container
 
@@ -157,6 +157,7 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
   
   globalThis.baseURI = theBaseURI
   globalThis.hostname = theHostname
+  globalThis.channelId = channelId
 
   function framework7() {
 
@@ -217,7 +218,6 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
 
     return globalThis.app
   }
-
 
   container.bind("framework7").toConstantValue(framework7())
 

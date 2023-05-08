@@ -311,15 +311,16 @@
 
     </script>
 
-  <%~ 
-    include("_init", {
-      hostname: hostname,
-      baseURL: baseURL,
-      libraryURL: it.baseViewModel.libraryURL,
-      routablePages: routablePages,
-      base64Version: base64Version
-    }) 
-  %>
+    <%~ 
+      include("_init", {
+        hostname: hostname,
+        baseURL: baseURL,
+        libraryURL: it.baseViewModel.libraryURL,
+        routablePages: routablePages,
+        base64Version: base64Version,
+        channelId: channelId
+      }) 
+    %>
 
   </body>
 

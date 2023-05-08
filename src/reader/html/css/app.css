@@ -1241,8 +1241,18 @@ html {
   }
 
 
+
 }
 
+
+
+
+
+.largest-sales {
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  gap: 10px;
+}
 
 .largest-sales .date {
   color: darkslategray;
@@ -1252,6 +1262,20 @@ html {
 .largest-sales .rank {
   font-size: 22px;
 }
+
+
+
+@media only screen and (max-width: 1024px) {
+
+  .largest-sales {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 10px;
+  }
+
+}
+
+
 
 .attributes-table {
   width: 100%;

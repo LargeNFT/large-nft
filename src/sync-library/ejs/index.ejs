@@ -37,6 +37,19 @@
       <%= it.title %>
     </title>
 
+    <%~ 
+      include("_meta_tags", {
+        title: it.title,
+        url: 'index.html',
+        imageUrl: '',
+        descriptionHTML: '',
+        hostname: hostname,
+        baseURL: baseURL,
+        excerptHtml: it.baseViewModel.excerptHtml,
+        he: it.baseViewModel.he
+      }) 
+    %>
+
 
     <%~ it.baseViewModel.headEndContents %>
     
@@ -254,7 +267,20 @@
 
             })
 
-            
+            <%~ 
+              include("_meta_tags_js", {
+                title: it.title,
+                url: 'index.html',
+                imageUrl: '',
+                descriptionHTML: '',
+                hostname: hostname,
+                baseURL: baseURL,
+                excerptHtml: it.baseViewModel.excerptHtml,
+                he: it.baseViewModel.he
+              }) 
+            %>
+
+
 
             $f7.preloader.hide()
 

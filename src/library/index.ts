@@ -4,15 +4,10 @@ import "reflect-metadata"
 
 import { Container } from "inversify"
 
-
 import { getMainContainer } from "../reader/inversify.config.js"
-
 
 import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
-import { SchemaService } from "../reader/service/core/schema-service.js"
-import { RoutingService } from "../admin/service/core/routing-service.js"
-
 
 //Import CSS
 import '../reader/html/css/framework7-bundle.css'
@@ -20,20 +15,18 @@ import '../reader/html/css/framework7-icons.css'
 import '../reader/html/css/app.css'
 import './html/css/app.css'
 
-
 import { HomeWebService } from "./service/web/home-web-service.js"
 import { HomeRepository } from "./repository/home-repository.js"
 import { HomeRepositoryBrowserImpl } from "./repository/web/home-repository-impl.js"
+import { RoutingService } from "../reader/service/core/routing-service.js"
 
-
-
-let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, version:string) => {
+let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, version:string, channelId:string) => {
 
     console.log("Initializing Library")
     
     if ('serviceWorker' in navigator) {
 
-        const wb = new Workbox(`${hostname}/sw-library-${version}.js?baseURI=${libraryURL}`, {
+        const wb = new Workbox(`${hostname}/sw-library-${version}.js?baseURI=/`, {
             scope: `/`
         })
     
@@ -45,8 +38,7 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
 
         let routes = RoutingService.getLibraryRoutes(libraryURL)
 
-
-        container = await getMainContainer(container, baseURI, hostname, version, routes)
+        container = await getMainContainer(container, baseURI, hostname, version, routes, channelId)
 
         if (navigator.serviceWorker.controller) {
             startApp(container, hostname)
@@ -73,7 +65,7 @@ let startApp = async (container:Container, hostname:string) => {
     //Get URL
     let internalUrl = window.location.toString().replace(`${hostname}`, '')
 
-    console.log(`internal URL ${internalUrl}`)
+    // console.log(`internal URL ${internalUrl}`)
 
     const mainView = app.views.create('.view-main', {
         url: internalUrl
@@ -81,9 +73,6 @@ let startApp = async (container:Container, hostname:string) => {
 
 
     mainView.on("init", async (view) => {
-
-        let schemaService:SchemaService = await container.get("SchemaService")
-        await schemaService.load(['component-state'])
 
         console.log(`Navigating to ${internalUrl}`)
         //When the view loads lets reload the initial page so that we fire the component logic. 
@@ -94,7 +83,6 @@ let startApp = async (container:Container, hostname:string) => {
 
 
 }
-
 
 export { initLibrary }
 

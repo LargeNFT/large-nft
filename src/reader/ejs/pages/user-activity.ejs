@@ -159,12 +159,12 @@
                                 <div class="block split-row-both">
                                     <div>
                                         ${previousPage ? $h`
-                                            <a href="${baseURL}u/activity?page=${previousPage}&address=${address}" class="button button-outline color-gray">Previous</a>
+                                            <a href="${baseURI()}u/activity?page=${previousPage}&address=${address}" class="button button-outline color-gray">Previous</a>
                                             ` : $h` `}
                                     </div>
                                     <div>
                                         ${nextPage ? $h`
-                                            <a href="${baseURL}u/activity?page=${nextPage}&address=${address}" class="button button-fill">Next</a>
+                                            <a href="${baseURI()}u/activity?page=${nextPage}&address=${address}" class="button button-fill">Next</a>
                                             ` : $h` `}
                                     </div>
                             
@@ -275,7 +275,7 @@
 
                     breadcrumbs.push({
                         text: address,
-                        path: `${baseURL}u?address=${address}`
+                        path: `${baseURI()}u?address=${address}`
                     })
 
                     breadcrumbs.push({
@@ -375,7 +375,8 @@
             baseURL: baseURL,
             libraryURL: it.baseViewModel.libraryURL,
             routablePages: routablePages,
-            base64Version: base64Version
+            base64Version: base64Version,
+            channelId: channelId
         }) 
     %>
 

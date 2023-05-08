@@ -17,13 +17,14 @@
             let baseURL = '<%= baseURL %>'
 
             <% if (libraryURL) { %>
-                let libraryURL = '<%= libraryURL %>'
+            let libraryURL = '<%= libraryURL %>'
             <% } %>
 
             let hostname = '<%= hostname %>'
             let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
-                
-            let app = library.initLibrary(libraryURL, baseURL, hostname, version)
+            let channelId = '<%= channelId ? channelId : "" %>'    
+
+            let app = library.initLibrary(libraryURL, baseURL, hostname, version, channelId)
         }
 
         initLibrary()
@@ -42,8 +43,9 @@
             let baseURL = '<%= baseURL %>'
             let hostname = '<%= hostname %>'
             let version = atob('<%= base64Version %>').replace('"', '').replace('"', '')
-                
-            let app = reader.initReader(baseURL, hostname, version)
+            let channelId = '<%= channelId %>'    
+
+            let app = reader.initReader(baseURL, hostname, version, channelId)
         }
 
         init()

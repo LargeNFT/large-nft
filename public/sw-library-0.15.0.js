@@ -3847,20 +3847,23 @@ self.addEventListener('fetch', event => {
         return;
     }
     const url = new URL(event.request.url);
-    //Remove /r/<slug> from the URL
-    let theUrl = url.pathname.replace(/^\/r\/\w+\//, '');
+    const theURL = url.toString();
     let process = false;
-    //Skip backup folder
-    if (theUrl.endsWith(`.html`))
+    // Skip backup folder
+    if (theURL.endsWith(".html"))
         process = true;
-    // if (theUrl.startsWith(`${baseURI}t`)) process = true
-    // if (theUrl.startsWith(`${baseURI}s`)) process = true
-    // if (theUrl.startsWith(`${baseURI}backup`)) process = false
-    // if (theUrl.startsWith(`${baseURI}large`)) process = false
-    // if (theUrl.startsWith(`${baseURI}sync`)) process = false
-    // if (theUrl.startsWith(`${baseURI}t/`) && theUrl.endsWith(`.json`)) process = false
-    // if (url.pathname.startsWith(`${baseURL}/index`)) process = true
-    // if (url.pathname.startsWith(`${baseURL}/mint`)) process = true
+    if (new RegExp(`^${baseURI}r/[^/]+/t($|\\?)`).test(theURL))
+        process = true;
+    if (new RegExp(`^${baseURI}r/[^/]+/s($|\\?)`).test(theURL))
+        process = true;
+    if (new RegExp(`^${baseURI}r/[^/]+/backup($|\\?)`).test(theURL))
+        process = false;
+    if (theURL.startsWith(`${baseURI}large`))
+        process = false;
+    if (new RegExp(`^${baseURI}r/[^/]+/sync($|\\?)`).test(theURL))
+        process = false;
+    if (new RegExp(`^${baseURI}/r/(.*)/t/.*\.json$`).test(theURL))
+        process = false;
     // This is a navigation request, so respond with a complete HTML document.
     if (event.request.mode === 'navigate')
         process = false;

@@ -114,6 +114,7 @@ class ChannelWebService {
 
         if (channelId && this.loadedChannelData != channelId) {
             await this.schemaService.reloadAll()
+            await this.schemaService.load(['component-state'])
         }
 
         this.loadedChannelData = channelId

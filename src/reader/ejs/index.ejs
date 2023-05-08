@@ -244,7 +244,6 @@
                           </div>
           
         
-        
                         </div>
         
                         <div class="block split-row-both">
@@ -561,100 +560,99 @@
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
 
-            let channelWebService = globalThis.container.get("ChannelWebService")
+          let channelWebService = globalThis.container.get("ChannelWebService")
 
-            let baseURI = globalThis.container.get("baseURI")
-            let hostname = globalThis.container.get("hostname")
+          let baseURI = globalThis.container.get("baseURI")
+          let hostname = globalThis.container.get("hostname")
 
+          let transactionWebService = globalThis.container.get("TransactionWebService")
+          let itemWebService = globalThis.container.get("ItemWebService")
+          let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
 
-            let transactionWebService = globalThis.container.get("TransactionWebService")
-            let itemWebService = globalThis.container.get("ItemWebService")
-            let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
+          let breadcrumbs
 
-            let breadcrumbs
+          let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
 
-            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+          const PER_PAGE = 35
 
-            const PER_PAGE = 35
+          let homeViewModel
 
-            let homeViewModel
+          let loading = true
 
-            let loading = true
+          let firstPageExploreItems 
 
-            let firstPageExploreItems 
+          const link = (href) => {
+            return baseURI() + href
+          }   
 
-            const link = (href) => {
-              return baseURI() + href
-            }   
+          const loadActivity = async () => {
 
-            const loadActivity = async () => {
+            loading = true
 
-              loading = true
+            try  {
 
-              try  {
+              homeViewModel = await transactionWebService.getHomeViewModel()
 
-                homeViewModel = await transactionWebService.getHomeViewModel()
+              //Last updated won't be right because this only gets written when it actually changes.
+              let latest = await transactionWebService.getLatest()
+              
+              homeViewModel.largestSales.lastUpdated = latest.lastUpdated
 
-                //Last updated won't be right because this only gets written when it actually changes.
-                let latest = await transactionWebService.getLatest()
-                
-                homeViewModel.largestSales.lastUpdated = latest.lastUpdated
-
-    
-                await $update()
-
-                
-
-              } catch(ex) { console.log(ex) }
-
-              $('.hidden-on-load').removeClass('hidden-on-load')
-
-              loading = false
-
+  
               await $update()
 
+              
 
-            }
+            } catch(ex) { console.log(ex) }
 
-            $on('pageInit', async () => {
+            $('.hidden-on-load').removeClass('hidden-on-load')
 
-              await channelWebService.loadChannel(
-                      "<%= channelViewModel.channel._id %>",
-                      '<%= baseURL %>',
-                      '<%= hostname %>'
-              )
+            loading = false
 
-              await $update()
+            await $update()
 
-              await loadActivity()
 
-              $('.hide-on-pageinit').hide()
+          }
 
-              await $update()
+          $on('pageInit', async () => {
 
-            })
+            await channelWebService.loadChannel(
+                    "<%= channelViewModel.channel._id %>",
+                    '<%= baseURL %>',
+                    '<%= hostname %>'
+            )
 
-            $on('pageBeforeOut', async () => {
-            })
+            await $update()
 
-            <%~ 
-              include("_meta_tags_js", {
-                title: channelViewModel.channel.title,
-                url: 'index.html',
-                imageUrl: coverImageLink,
-                descriptionHTML: channelViewModel.channel.descriptionHTML,
-                hostname: hostname,
-                baseURL: baseURL,
-                excerptHtml: it.baseViewModel.excerptHtml,
-                he: it.baseViewModel.he
-              }) 
-            %>
+            await loadActivity()
 
-            document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"
+            $('.hide-on-pageinit').hide()
 
-            $f7.preloader.hide()
+            await $update()
 
-            return $render
+          })
+
+          $on('pageBeforeOut', async () => {
+          })
+
+          <%~ 
+            include("_meta_tags_js", {
+              title: channelViewModel.channel.title,
+              url: 'index.html',
+              imageUrl: coverImageLink,
+              descriptionHTML: channelViewModel.channel.descriptionHTML,
+              hostname: hostname,
+              baseURL: baseURL,
+              excerptHtml: it.baseViewModel.excerptHtml,
+              he: it.baseViewModel.he
+            }) 
+          %>
+
+          document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"
+
+          $f7.preloader.hide()
+
+          return $render
 
           
 
@@ -669,7 +667,8 @@
         baseURL: baseURL,
         libraryURL: it.baseViewModel.libraryURL,
         routablePages: routablePages,
-        base64Version: base64Version
+        base64Version: base64Version,
+        channelId: channelId
       }) 
     %>
 

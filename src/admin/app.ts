@@ -19,7 +19,6 @@ import './html/css/app.css'
 import { RoutingService } from "./service/core/routing-service.js"
 
 
-
 export default async(version) => {
                 
     let container = getMainContainer(version)

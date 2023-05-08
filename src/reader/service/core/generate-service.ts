@@ -577,31 +577,7 @@ class GenerateService {
         fs.mkdirSync(`${syncDir}/l`)
       }
 
-      //Load init eta template
-      Eta.templates.define("_init", Eta.compile(_initEjs))
-
-
-      /** Hook: headStart */
-      let headStartContents
-
-      try {
-          headStartContents = await fs.promises.readFile(config.headStart)
-      } catch(ex) {}
-
-      Eta.templates.define("headStart", Eta.compile(headStartContents ? headStartContents?.toString() : ''))
-
-
-      //Load the default footer or use a configured template.
-      /** Hook: footer */
-      let footer
-
-      try {
-          footer = await fs.promises.readFile(config.footer)
-      } catch(ex) {}
-
-      Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
-
-
+      await this.defineEtaTemplates(config)
 
       let baseViewModel:any = {
         routablePages: [],

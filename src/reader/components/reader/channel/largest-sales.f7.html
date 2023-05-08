@@ -2,28 +2,25 @@
 
     <div class="block block-strong inset largest-sales">
                     
-        <div class="sales-row">
-          ${largestSales?.sales?.map( (sale, index) => $h`
-            <div class="col-50 large-20 margin-bottom">
+      ${largestSales?.sales?.map( (sale, index) => $h`
+        <div class="margin-bottom">
 
-              <div class="rank">#${index+1}</div>
+          <div class="rank">#${index+1}</div>
 
-              <div class="square">
-                <a href="${link(`t/${sale.tokenId}`)}" class="item-link">
-                  <img src="${link(`backup/export/images/${largestSales.rowItemViewModels[sale.tokenId].coverImageId}.${largestSales.rowItemViewModels[sale.tokenId].coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.tokenId}" height="125" width="125"/>
-                </a>
-              </div>
+          <div class="square">
+            <a href="${link(`t/${sale.tokenId}`)}" class="item-link">
+              <img src="${link(`backup/export/images/${largestSales.rowItemViewModels[sale.tokenId].coverImageId}.${largestSales.rowItemViewModels[sale.tokenId].coverImageGenerated ? 'svg' : 'jpg'}`)}" alt="${sale.tokenId}" height="125" width="125"/>
+            </a>
+          </div>
 
-              <div class="sale-info margin-top">
-                <a href="${link(`t/${sale.tokenId}`)}" class="item-link">${largestSales.rowItemViewModels[sale.tokenId].title}</a><br />
-                ${new Intl.NumberFormat('en-US').format(sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.usdValue, 2)})
-                <div class="date">${moment(sale.date).format('LL')}</div>
-              </div>
+          <div class="sale-info margin-top">
+            <a href="${link(`t/${sale.tokenId}`)}" class="item-link">${largestSales.rowItemViewModels[sale.tokenId].title}</a><br />
+            ${new Intl.NumberFormat('en-US').format(sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.usdValue, 2)})
+            <div class="date">${moment(sale.date).format('LL')}</div>
+          </div>
 
-            </div>
-          `)}
         </div>
-
+      `)}
       </div>
 
   

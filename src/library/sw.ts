@@ -11,10 +11,6 @@ const RUNTIME = 'runtime'
 
 let parser = new DOMParser()
 
-const baseURI = new URL(location).searchParams.get('baseURI')
-
-
-console.log(`[SW] Base Path: ${baseURI}`)
 
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {
@@ -63,19 +59,19 @@ self.addEventListener('fetch', event => {
 
     const url = new URL(event.request.url)
 
-    const theURL = url.toString()
+    const theURL = url.pathname.toString()
 
     let process = false
     
     // Skip backup folder
     if (theURL.endsWith(".html")) process = true;
-    if (new RegExp(`^${baseURI}r/[^/]+/t($|\\?)`).test(theURL)) process = true;
-    if (new RegExp(`^${baseURI}r/[^/]+/s($|\\?)`).test(theURL)) process = true;
+    if (new RegExp(`/r/.*/t/.*`).test(theURL)) process = true;
+    if (new RegExp(`/r/.*/s/.*`).test(theURL)) process = true;
 
-    if (new RegExp(`^${baseURI}r/[^/]+/backup($|\\?)`).test(theURL)) process = false;
-    if (theURL.startsWith(`${baseURI}large`)) process = false;
-    if (new RegExp(`^${baseURI}r/[^/]+/sync($|\\?)`).test(theURL)) process = false;
-    if (new RegExp(`^${baseURI}/r/(.*)/t/.*\.json$`).test(theURL)) process = false;
+    if (new RegExp(`/r/.*/backup.*`).test(theURL)) process = false;
+    if (theURL.startsWith(`/large`)) process = false;
+    if (new RegExp(`/r/.*/sync.*`).test(theURL)) process = false;
+    if (new RegExp(`/r/.*/t/.*\.json$`).test(theURL)) process = false;
 
 
     // This is a navigation request, so respond with a complete HTML document.

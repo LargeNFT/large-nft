@@ -26,7 +26,7 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
     
     if ('serviceWorker' in navigator) {
 
-        const wb = new Workbox(`${hostname}/sw-library-${version}.js?baseURI=/`, {
+        const wb = new Workbox(`${hostname}/sw-library-${version}.js`, {
             scope: `/`
         })
     

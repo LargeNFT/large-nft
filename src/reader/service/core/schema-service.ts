@@ -56,18 +56,12 @@ class SchemaService {
         const repositories = this.getRepositories()
 
         for (let db of dbs) {
-
             let repo = repositories.filter( r => r.dbName == db)[0]
-
-            if (!repo) continue
-
-            if (!repo.db) {
-                await repo.load()
-            }
-            
+            await repo?.load()
         }
 
     }
+
 
     async reloadAll() {
 

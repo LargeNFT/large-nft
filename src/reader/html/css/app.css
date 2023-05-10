@@ -1154,8 +1154,13 @@ html {
   margin-right: 5px;
 }
 
+.eth-value {
+  font-size: 15px;
+  font-weight: 500;
+}
+
 .dollar-value {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .external-links label {

@@ -142,7 +142,7 @@ class SyncLibraryService {
     
     }
 
-    async updateLibraryHome(syncDir: string) {
+    async updateLibraryHome(config, syncDir: string) {
 
         let s = await this.sequelize()
 
@@ -155,6 +155,20 @@ class SyncLibraryService {
             //Write file to library folder
             fs.writeFileSync(`${syncDir}/l/home.json`, JSON.stringify(channelList))
 
+
+            if (config.env == "production") {
+
+                let syncStatus:SyncStatus = await this.syncStatusService.getOrCreate("l", options)
+        
+                //Save new sync status
+                await this.syncStatusService.handleChangedFiles(undefined, `${syncDir}/l`, syncStatus?.lastModified)
+
+
+                syncStatus.lastModified = new Date()
+    
+                await this.syncStatusService.put(syncStatus, options)
+
+            }
         })
 
     }

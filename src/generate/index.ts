@@ -103,7 +103,7 @@ let generate = async () => {
 
   let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, itemViewModels, additionalStaticPages)
 
-  await generateService.defineEtaTemplates(config)
+  await generateService.defineEtaTemplates(config, config.channelDir)
 
 
   let baseViewModel:any = {

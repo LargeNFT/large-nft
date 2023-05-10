@@ -13,12 +13,7 @@ class DatabaseService {
         @inject('PouchDB') private PouchDB,
         @inject('channelId') private channelId:Function,
 
-    ) {
-
-
-        // console.log("replicae")
-        // PouchDB.replicate('./pouch/items', 'http://localhost:5984/items', {live: true});
-    }
+    ) {}
 
     async getDatabase(config:DatabaseConfig) {
 
@@ -123,8 +118,6 @@ class DatabaseService {
         return this.dbCache[fullName]
 
     }
-
-
 
     private async loadInitialRecords(config: DatabaseConfig, fullName: string) {
 

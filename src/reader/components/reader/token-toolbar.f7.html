@@ -81,15 +81,15 @@
 
     export default (props, { $on, $, $f7, $update }) => {
     
-        let baseURI = globalThis.container.get("baseURI")()
+        let baseURI = globalThis.container.get("baseURI")
         let readerSettingsService = globalThis.container.get("ReaderSettingsService")
 
         let tokenId = props.token_id
         let itemCount = props.item_count
-        let currentPage
+        let currentPage = props.current_page
 
         const link = (href) => {
-            return baseURI + href
+            return baseURI() + href
         } 
 
         const rangeSliderChange = async (e) => {
@@ -125,16 +125,10 @@
 
         }
 
-        const init = async () => {
-            let readerSettings = await readerSettingsService.get()
-            currentPage = readerSettings.currentPage
-            await $update()
-        }
-
-
-        init()
-
-
+        app.on('current-page-updated', function (p) {
+            currentPage = p
+            $update()
+        })
 
         return $render
     }

@@ -129,6 +129,13 @@ class ProcessConfig {
             config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
         }
 
+
+        if (theArgs.env == "dev") {
+            config.hostname = config?.env?.dev?.hostname || config?.hostname 
+        } 
+
+
+
         config.VERSION = packageConfig.version
         config.baseDir = baseDir
         config.generate = theArgs.generate

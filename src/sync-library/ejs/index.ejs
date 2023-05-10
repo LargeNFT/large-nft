@@ -120,39 +120,39 @@
                                       <i class="material-icons avatar">image</i>
                                     `}
     
-                                    ${channelValue.title}
+                                    <span class="title">${channelValue.title}</span>
                                   </a>
   
                                 </td> 
                                 <td>
   
-                                  <strong>${parseFloat(channelValue.dayTotalsEthValue || 0).toFixed(5)}</strong> ETH
+                                  <span class="eth-value">${parseFloat(channelValue.dayTotalsEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
-                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.dayTotalsUsdValue || 0)}</span>
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.dayTotalsUsdValue || 0, 2)}</span>
   
                                 </td>
   
                                 <td class="medium-only">
   
-                                  <strong>${parseFloat(channelValue.monthTotalsEthValue || 0).toFixed(5)}</strong> ETH
+                                  <span class="eth-value">${parseFloat(channelValue.monthTotalsEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
-                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.monthTotalsUsdValue || 0)}</span>
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.monthTotalsUsdValue || 0, 2)}</span>
   
                                 </td>
   
                                 <td class="medium-only">
   
-                                  <strong>${parseFloat(channelValue.yearTotalsEthValue || 0).toFixed(5)}</strong> ETH
+                                  <span class="eth-value">${parseFloat(channelValue.yearTotalsEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
-                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.yearTotalsUsdValue || 0)}</span>
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.yearTotalsUsdValue || 0, 2)}</span>
   
                                 </td>
   
                                 <td class="medium-only">
   
-                                  <strong>${parseFloat(channelValue.totalEthValue || 0).toFixed(5)}</strong> ETH
+                                  <span class="eth-value">${parseFloat(channelValue.totalEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
-                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.totalUsdValue || 0)}</span>
+                                  <span class="dollar-value">$${homeWebService.abbreviateDollars(channelValue.totalUsdValue || 0, 2)}</span>
   
                                 </td>
   

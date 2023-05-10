@@ -116,7 +116,7 @@
 
           <td class="numeric-cell">
             
-            <strong>${transaction.transactionValue?.tokenPrice[event.tokenId]?.price.toFixed(5)}</strong> ${transaction.transactionValue?.tokenPrice[event.tokenId]?.currency} 
+            <span class="eth-value">${transaction.transactionValue?.tokenPrice[event.tokenId]?.price.toFixed(5)} ${transaction.transactionValue?.tokenPrice[event.tokenId]?.currency}</span>
             ${transaction.transactionValue?.tokenPrice[event.tokenId]?.usdValue ? $h`
               <br />
               <span class="dollar-value">${transactionWebService.abbreviateDollars(transaction.transactionValue?.tokenPrice[event.tokenId]?.usdValue, 2)}</span>

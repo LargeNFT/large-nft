@@ -133,7 +133,7 @@
                               <td class="numeric-cell">${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.events  || 0}</td>
                               <td>
 
-                                <strong>${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.ethValue.toFixed(5) || 0}</strong> ETH
+                                <span class="eth-value">${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.ethValue.toFixed(3) || 0} ETH</span>
                                 <br />
                                 <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.usdValue, 2)}</span>
 
@@ -141,7 +141,7 @@
                               <td>
 
 
-                                <strong>${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.averageEthValue.toFixed(5) || 0}</strong> ETH
+                                <span class="eth-value">${attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.averageEthValue.toFixed(3) || 0} ETH</span>
                                 <br />
                                 <span class="dollar-value">${transactionWebService.abbreviateDollars(attributesOverall?.find( row => row.traitType == `<%= traitType %>` && row.value == `<%= at.value %>`)?.averageUsdValue, 2)}</span>
 

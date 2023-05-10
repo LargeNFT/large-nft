@@ -568,6 +568,10 @@
           let transactionWebService = globalThis.container.get("TransactionWebService")
           let itemWebService = globalThis.container.get("ItemWebService")
           let tokenOwnerPageService = globalThis.container.get("TokenOwnerPageService")
+          let readerSettingsService = globalThis.container.get("ReaderSettingsService")
+
+          let walletService = globalThis.container.get("WalletService")
+          let mintWebService = globalThis.container.get("MintWebService")
 
           let breadcrumbs
 
@@ -576,6 +580,7 @@
           const PER_PAGE = 35
 
           let homeViewModel
+          let mintingViewModel 
 
           let loading = true
 
@@ -614,6 +619,29 @@
 
           }
 
+          const loadMintingViewModel = async () => {
+      
+            try  {
+
+              if (!walletService.provider) {
+                await walletService.initProvider()
+              }
+
+              //Might still not have a provider. 
+              if (walletService.provider) {
+                hasProvider = true
+                mintingViewModel = await mintWebService.getHomeMintingViewModel()
+              } 
+
+            } catch(ex) {
+              console.log(ex)
+            }
+            
+            $f7.emit('minting-view-model-updated', mintingViewModel)
+
+
+          }
+
           $on('pageInit', async () => {
 
             await channelWebService.loadChannel(
@@ -622,7 +650,14 @@
                     '<%= hostname %>'
             )
 
+            let readerSettings = await readerSettingsService.get()
+            $f7.emit('current-page-updated', readerSettings.currentPage)
+
             await $update()
+
+            <% if (showMintPage) { %>
+            await loadMintingViewModel()
+            <% } %>
 
             await loadActivity()
 

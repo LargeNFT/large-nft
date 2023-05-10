@@ -7,18 +7,15 @@ import path from "path"
 
 
 import { ProcessConfig } from "../reader/util/process-config.js"
-import { SpawnService } from "../sync/service/spawn-service.js"
 
 import { SyncStatus } from "./dto/sync-status.js"
 
 
 import { getMainContainer, GetMainContainerCommand } from "./inversify.config.js"
-import { SyncStatusService } from "./service/sync-status-service.js"
 
 import _initEjs from '../reader/ejs/template/_init.ejs'
 import { GenerateService } from "../reader/service/core/generate-service.js"
 import { Channel } from "./dto/channel.js"
-import { LibraryChannelService } from "./service/library-channel-service.js"
 import { SyncLibraryService } from "./service/sync-library-service.js"
 
 
@@ -34,7 +31,6 @@ let syncLibrary = async () => {
     throw new Error("No repositories configured.")
   }
 
-
   let command:GetMainContainerCommand = {
     channelDir: undefined,
     runDir: config.runDir,    
@@ -45,18 +41,12 @@ let syncLibrary = async () => {
 
   let container = await getMainContainer(config, command)
 
-  let spawnService: SpawnService = container.get("SpawnService")
-  let syncStatusService: SyncStatusService = container.get("SyncStatusService")
   let syncLibraryService: SyncLibraryService = container.get("SyncLibraryService")
-
-  let libraryChannelService: LibraryChannelService = container.get("LibraryChannelService")
   let generateService: GenerateService = container.get("GenerateService")
 
   if (!fs.existsSync(`${process.env.INIT_CWD}/data`)) {
     fs.mkdirSync(`${process.env.INIT_CWD}/data`)
   }
-
-
 
   //Init database
   let sequelizeInit:Function = container.get("sequelize")
@@ -104,7 +94,7 @@ let syncLibrary = async () => {
 
   }
 
-  await syncLibraryService.updateLibraryHome(syncDir)
+  await syncLibraryService.updateLibraryHome(config, syncDir)
 
 
   async function runLoop() {
@@ -119,7 +109,7 @@ let syncLibrary = async () => {
   
     }
 
-    await syncLibraryService.updateLibraryHome(syncDir)
+    await syncLibraryService.updateLibraryHome(config, syncDir)
 
     console.timeEnd('Syncing...')
 

@@ -7,6 +7,11 @@
     vertical-align: middle;
 }
 
+.label-cell title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 
 .collections-table {
     width: 100%;

@@ -417,10 +417,9 @@
             let baseURI = globalThis.container.get("baseURI")
             let hostname = globalThis.container.get("hostname")
 
-
             let transactionWebService = globalThis.container.get("TransactionWebService")
             let walletService = globalThis.container.get("WalletService")
-
+            
             let uiService = globalThis.container.get("UiService")
 
             let readerSettingsService = globalThis.container.get("ReaderSettingsService")
@@ -577,6 +576,9 @@
                         '<%= hostname %>'
                 )
 
+                let readerSettings = await readerSettingsService.get()
+                $f7.emit('current-page-updated', readerSettings.currentPage)
+
                 await $update()
 
                 await readerSettingsService.updateCurrentPage(parseInt(props.tokenId))
@@ -599,6 +601,8 @@
                         '<%= hostname %>'
                 )
 
+                let readerSettings = await readerSettingsService.get()
+                currentPage = readerSettings.currentPage
 
                 await $update()
 
@@ -630,7 +634,7 @@
                 const val = $(e.currentTarget).children('.goto-input').val()
 
                 try {
-                    $f7.views.main.router.navigate(`${baseURI}t/${parseInt(val.toString())}`)
+                    $f7.views.main.router.navigate(`${baseURI()}t/${parseInt(val.toString())}`)
                 } catch(ex) {
                     console.log(ex)
                     $f7.dialog.alert("Invalid Page")

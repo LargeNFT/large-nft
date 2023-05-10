@@ -30,11 +30,8 @@
 
   export default (props, { $, $on, $f7, $update }) => {
 
-    let walletService = globalThis.container.get("WalletService")
-    let mintWebService = globalThis.container.get("MintWebService")
-
     let hasProvider = false
-    let mintingViewModel 
+    let mintingViewModel
 
     let baseURL = props.baseurl 
 
@@ -42,29 +39,11 @@
         return `${baseURL + href}`
     } 
 
-    const load = async () => {
-      
-      try  {
-
-        if (!walletService.provider) {
-          await walletService.initProvider()
-        }
-
-        //Might still not have a provider. 
-        if (walletService.provider) {
-          hasProvider = true
-          mintingViewModel = await mintWebService.getHomeMintingViewModel()
-        } 
-
-      } catch(ex) {
-        console.log(ex)
-      }
-      
+    app.on('minting-view-model-updated', function (m) {
+      mintingViewModel = m
       $update()
+    })
 
-    }
-
-    load()
 
 
     return $render

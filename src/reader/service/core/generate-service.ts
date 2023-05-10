@@ -41,6 +41,7 @@ import transactionEjs from '../../ejs/pages/transaction.ejs'
 
 import leaderboardEjs from '../../ejs/pages/leaderboard.ejs'
 import largestSalesEjs from '../../ejs/pages/sales.ejs'
+import path from "path";
 
 
 
@@ -539,7 +540,7 @@ class GenerateService {
         return attributeTotals
     }
 
-    async defineEtaTemplates(config) {
+    async defineEtaTemplates(config, rootDir) {
 
         //Load init eta template
         Eta.templates.define("_init", Eta.compile(_initEjs))
@@ -548,13 +549,11 @@ class GenerateService {
 
 
         //Template hooks.
-        //TODO: This idea needs work and this mechanism is likely temporary.
-
         /** Hook: headStart */
         let headStartContents
 
         try {
-            headStartContents = await fs.promises.readFile(config.headStart)
+            headStartContents = await fs.promises.readFile(path.resolve(rootDir, config.headStart))
         } catch(ex) {}
 
         Eta.templates.define("headStart", Eta.compile(headStartContents ? headStartContents?.toString() : ''))
@@ -565,10 +564,13 @@ class GenerateService {
         let footer
 
         try {
-            footer = await fs.promises.readFile(config.footer)
+            footer = await fs.promises.readFile(path.resolve(rootDir, config.footer))
         } catch(ex) {}
 
+
+
         Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
+        
     }
     
     async generateLibraryPages(config, syncDir) {
@@ -577,7 +579,7 @@ class GenerateService {
         fs.mkdirSync(`${syncDir}/l`)
       }
 
-      await this.defineEtaTemplates(config)
+      await this.defineEtaTemplates(config, process.env.INIT_CWD)
 
       let baseViewModel:any = {
         routablePages: [],

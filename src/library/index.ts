@@ -32,6 +32,7 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
     
         let container:Container = new Container()
 
+        container.bind("libraryURL").toConstantValue(libraryURL)
         container.bind<HomeWebService>("HomeWebService").to(HomeWebService).inSingletonScope()
         container.bind<HomeRepository>("HomeRepository").to(HomeRepositoryBrowserImpl).inSingletonScope()
 

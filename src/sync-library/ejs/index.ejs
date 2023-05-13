@@ -101,10 +101,10 @@
                           <thead>
                             <tr>
                               <th>Collection</th>
-                              <th>24H</th>
-                              <th class="medium-only">Month</th>
-                              <th class="medium-only">Year</th>
-                              <th class="medium-only">Total</th>
+                              <th class="value">24H</th>
+                              <th class="medium-only value">Month</th>
+                              <th class="medium-only value">Year</th>
+                              <th class="medium-only value">Total</th>
                             </tr>
                           </thead>
   
@@ -112,7 +112,7 @@
     
                             ${channels?.map( channelValue => $h`
                               <tr>
-                                <td class="label-cell">
+                                <td>
                                   <a href="/r/${channelValue._id}/">
                                     ${channelValue.coverImageId ? $h`
                                       <img src="/r/${channelValue._id}/backup/generated/images/${channelValue.coverImageId}.webp" class="avatar" />
@@ -124,7 +124,7 @@
                                   </a>
   
                                 </td> 
-                                <td>
+                                <td class="value">
   
                                   <span class="eth-value">${parseFloat(channelValue.dayTotalsEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
@@ -132,7 +132,7 @@
   
                                 </td>
   
-                                <td class="medium-only">
+                                <td class="medium-only value">
   
                                   <span class="eth-value">${parseFloat(channelValue.monthTotalsEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
@@ -140,7 +140,7 @@
   
                                 </td>
   
-                                <td class="medium-only">
+                                <td class="medium-only value">
   
                                   <span class="eth-value">${parseFloat(channelValue.yearTotalsEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
@@ -148,7 +148,7 @@
   
                                 </td>
   
-                                <td class="medium-only">
+                                <td class="medium-only value">
   
                                   <span class="eth-value">${parseFloat(channelValue.totalEthValue || 0).toFixed(3)} ETH</span>
                                   <br />
@@ -168,7 +168,17 @@
 
                 </div>
 
+                <div class="hide-on-pageinit">
 
+                  <div class="card skeleton-text">
+                      <div class="card-header">Collections</div>
+                      <div class="card-content card-content-padding data-table">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                          lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
+                      </div>
+                  </div>
+
+                </div>
 
               </div>
 
@@ -250,7 +260,7 @@
               )
 
 
-              uiService.showSpinner()
+              uiService.showSpinner("Loading...")
 
               channelsShown = 0
               pageCounter = 0
@@ -262,6 +272,7 @@
               await $update()
 
               $('.hidden-on-load').removeClass('hidden-on-load')
+              $('.hide-on-pageinit').hide()
 
               uiService.hideSpinner()
 

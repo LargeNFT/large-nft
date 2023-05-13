@@ -1,4 +1,20 @@
-.avatar {
+
+.collections-table a {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+
+.collections-table title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.collections-table .avatar {
     width: 40px;
     height: 40px;
     font-size: 40px;
@@ -7,11 +23,12 @@
     vertical-align: middle;
 }
 
-.label-cell title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+
+.collections-table td.value, th.value {
+    width: 140px;
 }
+
+
 
 .collections-table {
     width: 100%;

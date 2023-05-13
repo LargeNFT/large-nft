@@ -6,10 +6,12 @@ import { HomeRepository } from "../home-repository.js"
 @injectable()
 class HomeRepositoryBrowserImpl implements HomeRepository {
 
-    constructor() {}
+    constructor(
+        @inject('libraryURL') private libraryURL
+    ) {}
 
     async get(pageNumber: number): Promise<HomeViewModel> {   
-        const response = await axios.get(`/l/home.json`)
+        const response = await axios.get(`${this.libraryURL}/home.json`)
             
         return response.data
     }

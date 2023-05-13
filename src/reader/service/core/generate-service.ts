@@ -575,8 +575,8 @@ class GenerateService {
     
     async generateLibraryPages(config, syncDir) {
 
-      if (!fs.existsSync(`${syncDir}/l`)) {
-        fs.mkdirSync(`${syncDir}/l`)
+      if (!fs.existsSync(`${syncDir}${config.libraryURL}`)) {
+        fs.mkdirSync(`${syncDir}${config.libraryURL}`)
       }
 
       await this.defineEtaTemplates(config, process.env.INIT_CWD)
@@ -604,7 +604,7 @@ class GenerateService {
       })
 
 
-      fs.writeFileSync(`${syncDir}/l/index.html`, indexResult)
+      fs.writeFileSync(`${syncDir}${config.libraryURL}/index.html`, indexResult)
 
       //404 page
       const fourOhFourResult = Eta.render(fourOhFourLibraryEjs, {
@@ -612,7 +612,7 @@ class GenerateService {
         title: "404 Page Not Found"
       })
     
-      fs.writeFileSync(`${syncDir}/l/404.html`, fourOhFourResult)
+      fs.writeFileSync(`${syncDir}${config.libraryURL}/404.html`, fourOhFourResult)
 
     }
 

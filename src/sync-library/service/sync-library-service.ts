@@ -153,15 +153,15 @@ class SyncLibraryService {
             let channelList:ChannelValue[] = await this.libraryChannelService.listByValue(options)
 
             //Write file to library folder
-            fs.writeFileSync(`${syncDir}/l/home.json`, JSON.stringify(channelList))
+            fs.writeFileSync(`${syncDir}${config.libraryURL}/home.json`, JSON.stringify(channelList))
 
 
             if (config.env == "production") {
 
-                let syncStatus:SyncStatus = await this.syncStatusService.getOrCreate("l", options)
+                let syncStatus:SyncStatus = await this.syncStatusService.getOrCreate(config.libraryURL, options)
         
                 //Save new sync status
-                await this.syncStatusService.handleChangedFiles(undefined, `${syncDir}/l`, syncStatus?.lastModified)
+                await this.syncStatusService.handleChangedFiles(undefined, `${syncDir}${config.libraryURL}`, syncStatus?.lastModified)
 
 
                 syncStatus.lastModified = new Date()

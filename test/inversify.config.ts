@@ -85,7 +85,6 @@ import c from '../contracts.json' assert { type: "json" }
 import { GitlabService } from "../src/admin/service/core/gitlab-service.js";
 import { GithubService } from "../src/admin/service/core/github-service.js";
 import { Channel } from "../src/admin/dto/channel.js";
-import { ExistingForkInfo, ForkInfo } from "../src/admin/service/core/git-provider-service.js";
 
 
 

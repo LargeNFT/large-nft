@@ -20,9 +20,9 @@ import { WalletService } from "./wallet-service.js"
 import { ExportService } from "./export-service.js"
 import Hash from 'ipfs-only-hash'
 import { GitService } from "./git-service.js"
-import { AnimationService } from "../animation-service.js"
 import { ContractMetadata } from "../../dto/contract-metadata.js"
-import contractABI from '../../../../contracts.json'
+//@ts-ignore
+import contractABI from '../../../../contracts.json' assert { type: "json" }
 
 
 @injectable()

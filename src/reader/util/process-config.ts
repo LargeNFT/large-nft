@@ -82,35 +82,6 @@ class ProcessConfig {
 
     }
 
-    static parseArgumentsIntoOptions(rawArgs) {
-
-        const args = arg(
-        {
-            '--env': String,
-            '--alchemy': String,
-            '--sync-rate': String,
-            '--sync-dir': String,
-            '--channel-dir': String,
-            '--clear': String,
-            '--generate': String
-        },
-        {
-            argv: rawArgs.slice(2),
-        }
-        )
-    
-        return {
-            env: args['--env'] || "production",
-            alchemy: args['--alchemy'] || "",
-            syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
-            syncDir: args['--sync-dir'] || "",
-            channelDir: args['--channel-dir'] || ".",
-            clear:  args['--clear'] == "true"
-        }
-    
-    }
-    
-
     static getSyncLibraryConfig(config?:any) {
 
         let theArgs = ProcessConfig.parseSyncLibraryArgsIntoOptions(process.argv)
@@ -147,7 +118,58 @@ class ProcessConfig {
         
     }
 
+    static getImportConfig(config?:any) {
 
+        let theArgs = ProcessConfig.parseImportArgsIntoOptions(process.argv)
+
+        let baseDir = process.env.INIT_CWD      
+
+        //A config object can be passed in. If not we will load large-config.json from the baseDir
+        if (!config) {
+            config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
+        }
+
+        config.VERSION = packageConfig.version
+        config.baseDir = baseDir
+        config.env = theArgs.env
+        config.forkType = theArgs.forkType
+        config.contract = theArgs.contract
+        config.alchemy = theArgs.alchemy
+
+        return config
+        
+    }
+
+
+
+    static parseArgumentsIntoOptions(rawArgs) {
+
+        const args = arg(
+        {
+            '--env': String,
+            '--alchemy': String,
+            '--sync-rate': String,
+            '--sync-dir': String,
+            '--channel-dir': String,
+            '--clear': String,
+            '--generate': String
+        },
+        {
+            argv: rawArgs.slice(2),
+        }
+        )
+    
+        return {
+            env: args['--env'] || "production",
+            alchemy: args['--alchemy'] || "",
+            syncRate: args['--sync-rate'] ? parseInt(args['--sync-rate'] ) : 30*1000,
+            syncDir: args['--sync-dir'] || "",
+            channelDir: args['--channel-dir'] || ".",
+            clear:  args['--clear'] == "true"
+        }
+    
+    }
+    
     static parseSyncLibraryArgsIntoOptions(rawArgs) {
 
         const args = arg(
@@ -175,7 +197,28 @@ class ProcessConfig {
     
     }
 
+    static parseImportArgsIntoOptions(rawArgs) {
 
+        const args = arg(
+        {
+            '--env': String,
+            '--fork-type': String,
+            '--contract': String,
+            '--alchemy': String
+        },
+        {
+            argv: rawArgs.slice(2),
+        }
+        )
+    
+        return {
+            env: args['--env'] || "production",
+            forkType: args['--fork-type'] || "existing",
+            contract: args['--contract'] || undefined,
+            alchemy: args['--alchemy'] || ""
+        }
+    
+    }
 
 
 

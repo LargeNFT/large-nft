@@ -241,7 +241,7 @@ class ImportService {
         let wallet = this.walletService.wallet
 
         //Look up channel since it has the basic ERC721 signature
-        let contract = new ethers.Contract(contractAddress, this._getERC721ABI(), wallet)
+        let contract = new ethers.Contract(contractAddress, this._getERC721ABI(), wallet ? wallet : this.walletService.provider)
 
         this.logForkProgress(forkStatus, `Fetching tokens for contract ${contract.address}`)
 
@@ -320,12 +320,10 @@ class ImportService {
 
             let item:Item = new Item()
             
-
             let image:Image
             let animation:Animation
 
             let imageDimensions
-
 
             let tempImage = document.createElement('img')
 

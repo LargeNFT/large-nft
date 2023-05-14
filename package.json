@@ -32,10 +32,9 @@
     "reflect-metadata": "0.1.13",
     "regenerator-runtime": "0.13.11",
 
-    "@fastify/static": "6.9.0",
-    "fastify": "4.15.0",
+    "@fastify/static": "6.10.1",
+    "fastify": "4.17.0",
 
-    "@isomorphic-git/cors-proxy": "2.7.1",
     "@nomicfoundation/hardhat-toolbox": "2.0.2",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
     "@nomicfoundation/hardhat-chai-matchers": "1.0.6",
@@ -44,7 +43,7 @@
     "@openzeppelin/hardhat-upgrades": "1.22.1",
     "erc721a": "3.3.0",
 
-    "@types/node": "18.15.9",
+    "@types/node": "20.1.3",
     "@types/pouchdb": "6.4.0",
     "@types/reflect-metadata": "0.1.0",
 
@@ -59,7 +58,7 @@
     "html-webpack-plugin": "5.5.0",
     "mini-css-extract-plugin": "2.7.5",
 
-    "core-js": "3.29.1",
+    "core-js": "3.30.2",
     "css-loader": "6.7.3",
     "file-loader": "6.2.0",
     "html-loader": "4.2.0",
@@ -68,9 +67,9 @@
     "framework7-loader": "3.0.2",
     "style-loader": "3.3.2",
 
-    "webpack": "5.76.3",
-    "webpack-cli": "5.0.1",
-    "webpack-dev-server": "4.13.1",
+    "webpack": "5.82.1",
+    "webpack-cli": "5.1.1",
+    "webpack-dev-server": "4.15.0",
     "webpack-merge": "5.8.0",
     "webpack-node-externals": "3.0.0",
 
@@ -80,7 +79,7 @@
     "esm": "3.2.25",
     "eta": "2.0.1",
 
-    "hardhat": "2.13.0",
+    "hardhat": "2.14.0",
     "ipfs": "0.66.0",
     "eth-gas-reporter": "0.2.25",
 
@@ -102,7 +101,7 @@
     "ts-mockito": "2.6.1",
     "ts-node": "10.9.1",
 
-    "typescript": "5.0.2",
+    "typescript": "5.0.4",
     "uint8arrays": "4.0.3",
 
     "workbox-window": "6.5.4"
@@ -129,11 +128,11 @@
     "ethers": "5.7.2",
     "excerpt-html": "1.2.2",
 
-    "framework7": "8.0.2",
+    "framework7": "8.0.5",
     "framework7-icons": "5.0.5",
     
-    "highlight.js": "11.7.0",
-    "hotkeys-js": "3.10.1",
+    "highlight.js": "11.8.0",
+    "hotkeys-js": "3.10.2",
     "html-truncate": "1.2.2",
     "https-browserify": "1.0.0",
     "inversify": "6.0.1",
@@ -141,11 +140,11 @@
     "ipfs-http-client": "60.0.0",
     "ipfs-only-hash": "4.0.0",
     "is-svg": "5.0.0",
-    "it-to-buffer": "3.0.1",
+    "it-to-buffer": "4.0.2",
     "juice": "9.0.0",
     "level-js": "6.1.0",
-    "material-icons": "1.13.3",
-    "memfs": "3.4.13",
+    "material-icons": "1.13.6",
+    "memfs": "3.5.1",
     "mini-svg-data-uri": "1.4.4",
     "moment": "2.29.4",
     "node-fetch": "3.3.1",
@@ -169,7 +168,7 @@
     "quill-paste-smart": "1.4.10",
     "reflect-metadata": "0.1.13",
 
-    "sequelize": "6.30.0",
+    "sequelize": "6.31.1",
     "sequelize-typescript": "2.1.5",
 
     "sqlite3": "5.1.6",

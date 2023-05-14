@@ -10,14 +10,12 @@ import { ChannelService } from "../src/admin/service/channel-service.js"
 import { ItemService } from "../src/admin/service/item-service.js"
 
 import { Channel } from "../src/admin/dto/channel.js"
-import { Item } from "../src/admin/dto/item.js"
 
 import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
 
 import { SchemaService } from "../src/admin/service/core/schema-service.js"
 import { PinningService } from "../src/admin/service/core/pinning-service.js"
 
-import toBuffer from "it-to-buffer"
 
 
 //Need a simulated quill js

@@ -12,6 +12,8 @@ import { ReaderConfig } from './dto/reader-config.js';
 import { UploadService } from "./service/core/upload-service.js";
 
 import { WalletService } from "./service/core/wallet-service.js"
+import { WalletServiceImpl } from './service/core/wallet-service-impl.js'
+
 import { ImageService } from "./service/image-service.js"
 import { AuthorService } from "./service/author-service.js"
 import { ChannelService } from "./service/channel-service.js"
@@ -23,7 +25,6 @@ import { ItemRepository } from './repository/item-repository.js'
 import { ImageRepository } from './repository/image-repository.js'
 import { AuthorRepository } from './repository/author-repository.js'
 import { SchemaService } from './service/core/schema-service.js'
-import { WalletServiceImpl } from './service/core/wallet-service-impl.js'
 
 import TYPES from './service/core/types.js'
 

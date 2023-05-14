@@ -392,6 +392,53 @@ let getReaderConfigs = () => {
     ]
   }
 
+  let importCollectionConfig = {
+    entry: "./src/admin/import.ts",
+    target: "node",
+    externalsPresets: { 
+      node: true 
+    },   
+    externals: ['pouchdb-node', 'ipfs-http-client'],
+    experiments: {
+      outputModule: true
+    },
+    resolve: {
+      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensionAlias: {
+        ".js": [".js", ".ts"]
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: '/node_modules/',
+          loader: 'ts-loader'
+        }
+      ]
+    },  
+    output: {
+      filename: 'large/admin/import.js',
+      libraryTarget: "module",
+      library: {
+        type: "module"
+      },
+      chunkFormat: 'module',
+      path: path.resolve(__dirname, 'public'),
+    },
+    plugins: [
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
+
+      new webpack.ProvidePlugin({
+        fetch: ['node-fetch', 'default'],
+      })
+
+    ]
+  }
+
+
   let browserConfig = {
     entry: "./src/reader/index.ts",
     module: {
@@ -680,6 +727,7 @@ let getReaderConfigs = () => {
   configs.push(startConfig)
   configs.push(syncLibraryConfig)
   configs.push(libraryServiceWorkerConfig)
+  configs.push(importCollectionConfig)
 
   return configs
 

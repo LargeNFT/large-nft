@@ -3,7 +3,7 @@
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-**The Complete Ethereum NFT Toolkit**
+**A decentralized, offline-first content management system for NFT communities.**
 
 An offline-first NFT toolkit to publish a book, fan-fiction, blog, or art as digital collectibles and sell on marketplaces like LooksRare, OpenSea, and more.
 
@@ -358,6 +358,21 @@ npm run sync --  --env dev --alchemy <API key>
 | --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
 | --sync-rate  | 30*1000  | Milliseconds between sync attempts. Default is 30 seconds. If set to zero the process will end once synchronized.
 | --clear | false  | Set to "true" to clear all processed data and re-start sync from block 0. Does not delete downloaded data. To clear the database entirely delete the ./sync/data.sqlite file in your project folder. 
+
+---
+
+# Large Library
+The Large Library brings together multiple reader apps to work as a single library applications.
+
+The Library starts with an overview page that lists each collection in the library and an overview of the recent sales information.
+
+[https://golarge.app/commons](The NFT Commons) is an example of Large Library in production.
+
+TODO: Show how to set up a library. 
+
+
+
+
 
 ---
 

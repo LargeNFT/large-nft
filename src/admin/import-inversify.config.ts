@@ -103,7 +103,7 @@ function getMainContainer(config) {
   container.bind("name").toConstantValue("Large")
   
   container.bind("PouchDB").toConstantValue(PouchDB)
-  container.bind("pouch-prefix").toConstantValue("./data/")
+  container.bind("pouch-prefix").toConstantValue("./data/pouch/importer")
 
   container.bind("footer-text").toConstantValue(globalThis.footerText)
 
@@ -152,24 +152,20 @@ function getMainContainer(config) {
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
 
 
-  function ipfsOptions() {
-    return {
-        repo: '../test/test-repo'
-    }
-  } 
-
   container.bind("ipfsInit").toConstantValue( async () => {
 
     const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
 
     //@ts-ignore
-    return IPFS.create(ipfsOptions())
+    return IPFS.create({
+      repo: '../data/ipfs-repo'
+    })
 
   })
 
   container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
     if (!url) return
-    return create({ url: url })
+    return create('/ip4/127.0.0.1/tcp/5001')
   })
 
 

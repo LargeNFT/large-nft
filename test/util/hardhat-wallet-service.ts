@@ -11,8 +11,10 @@ class HardhatWalletServiceImpl implements WalletService {
   public wallet: any
   public address
 
+  public provider
+
   constructor(
-    @inject("provider") private provider,
+    @inject("provider") private getProvider:Function,
     @inject("contracts") private contracts
   ) {}
 
@@ -20,9 +22,18 @@ class HardhatWalletServiceImpl implements WalletService {
 
     console.log('Init wallet')
 
+    if (!this.provider) {
+      await this.initProvider()
+    }
+
     this.wallet = await this.provider.getSigner()
     console.log("Init wallet complete") 
 
+  }
+
+
+  async initProvider() {
+    this.provider = this.getProvider()
   }
 
   async getWallet() {

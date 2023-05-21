@@ -310,7 +310,6 @@ class ImportService {
             }
 
         }
-
         
         for (let metadata of tokenMetadata) {
 
@@ -323,15 +322,13 @@ class ImportService {
             let image:Image
             let animation:Animation
 
-            let imageDimensions
-
-            let tempImage = document.createElement('img')
 
             if (metadata.image || metadata.image_url) {
 
                 //Fetch and create image
                 let imageURI = metadata.image ? metadata.image : metadata.image_url
                 let imageData = await this._fetchURI(imageURI)
+
 
                 //Figure out if it's an svg and save appropriately
                 if (isSvg(new TextDecoder().decode(imageData))) {
@@ -340,12 +337,12 @@ class ImportService {
 
                     image = await this.imageService.newFromBuffer(imageData)
 
-                    await this.imageService.loadImage(tempImage, imageData)
+                    // await this.imageService.loadImage(tempImage, imageData)
 
-                    imageDimensions = {
-                        width: tempImage.width,
-                        height: tempImage.height
-                    }
+                    // imageDimensions = {
+                    //     width: tempImage.width,
+                    //     height: tempImage.height
+                    // }
 
                 }
 
@@ -1110,7 +1107,6 @@ class ImportService {
 
         let tokenURI = await contract.tokenURI(tokenId)
 
-
         let metadata = JSON.parse(new TextDecoder().decode(await this._fetchURI(tokenURI)))
 
         metadata.tokenId = tokenId
@@ -1129,21 +1125,13 @@ class ImportService {
 
     private async _fetchURI(uri) {
 
-        
-
-        if (gatewayTools.containsCID(uri)) {
+        if (gatewayTools.containsCID(uri)?.containsCid) {
 
             uri = gatewayTools.convertToDesiredGateway(uri, '')
-
-            //Remove ipfs://
-            // uri = `/ipfs/${uri.substring(7,uri.length)}`
-            
-            // console.log(uri)
 
             //Get from IPFS
             const data = uint8ArrayConcat(await all(this.ipfsService.ipfs.cat(uri)))
 
-            //@ts-ignore
             return data
 
         } else {
@@ -1155,9 +1143,6 @@ class ImportService {
 
             return Buffer.from(result.data,'binary')
 
-            // console.log(result)
-
-            // return result.data
         }
 
 
@@ -1177,7 +1162,7 @@ class ImportService {
     private logForkProgress(forkStatus:ForkStatus, message?: string) {
 
         if (message) {
-            // console.log(message)
+            console.log(message)
         }
         
 

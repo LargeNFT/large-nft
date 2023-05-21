@@ -2,6 +2,9 @@ import "core-js/stable/index.js"
 import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
 import { getMainContainer } from "./import-inversify.config.js"
 
 import { ProcessConfig } from "../reader/util/process-config.js"
@@ -12,8 +15,7 @@ import { SchemaService } from "./service/core/schema-service.js"
 import { IpfsService } from "./service/core/ipfs-service.js"
 import { SettingsService } from "./service/core/settings-service.js"
 import { Settings } from "./dto/settings.js"
-
-
+import fs from "fs"
 
 let importCollection = async () => {
 
@@ -23,12 +25,17 @@ let importCollection = async () => {
     throw new Error("No contract specified")
   }
 
-  if (config.alchemy) {
+  if (!fs.existsSync(`${config.baseDir}/data/pouch`)) {
+    fs.mkdirSync(`${config.baseDir}/data/pouch`, { recursive: true })
+  }
 
+
+  if (config.alchemy) {
 
     let container = await getMainContainer(config)
 
     let importService:ImportService = container.get(ImportService)
+    
     let walletService: WalletService = container.get(TYPES.WalletService)
     let schemaService: SchemaService = container.get(SchemaService)
     let ipfsService: IpfsService = container.get(IpfsService)
@@ -48,24 +55,28 @@ let importCollection = async () => {
 
     if (!settings) {
       settings = new Settings()
-      // settings.ipfsHost = "http://localhost:5001/api/v0"
+      settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
       await settingsService.put(settings)
     }
 
     await ipfsService.init()
 
+    let channelId 
+
     switch (config.forkType) {
   
       case "existing":
-        await importService.importAsForkFromContract(config.contract)
+        channelId = await importService.importAsForkFromContract(config.contract)
         break
     
       case "fork": 
-        await importService.importExistingFromContract(config.contract)
+        channelId = await importService.importExistingFromContract(config.contract)
         break
   
     }
 
+
+    //Export 
 
 
   } else {

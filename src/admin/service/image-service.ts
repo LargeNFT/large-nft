@@ -243,16 +243,26 @@ class ImageService {
 
   async loadImage(image, imageData) {
 
+    console.log(1)
+
     return new Promise (function (resolved, rejected) {
+      console.log(2)
 
       //@ts-ignore
       image.onload = function(){
+        console.log(3)
+
         //@ts-ignore
         resolved()
       }
 
       //@ts-ignore
+      console.log(4)
+
       image.src = URL.createObjectURL(new Blob([imageData], {'type': 'image/jpg'}))
+
+      console.log(5)
+
 
     })
 

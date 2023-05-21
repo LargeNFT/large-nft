@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "description": "A decentralized, offline-first content management system for NFT communities.",
   "repository": {
     "type": "git",
@@ -49,9 +49,9 @@
 
     "arg": "5.0.2",
 
-    "axios-mock-adapter": "1.21.2",
+    "axios-mock-adapter": "1.21.4",
     "clean-webpack-plugin": "4.0.0",
-    "copy-webpack-plugin": "10.2.4",
+    "copy-webpack-plugin": "11.0.0",
 
     "html-inline-css-webpack-plugin": "1.11.1",
     "html-inline-script-webpack-plugin": "3.1.0",
@@ -59,15 +59,15 @@
     "mini-css-extract-plugin": "2.7.5",
 
     "core-js": "3.30.2",
-    "css-loader": "6.7.3",
+    "css-loader": "6.7.4",
     "file-loader": "6.2.0",
     "html-loader": "4.2.0",
     "ts-loader": "9.4.2",
     "url-loader": "4.1.1",
     "framework7-loader": "3.0.2",
-    "style-loader": "3.3.2",
+    "style-loader": "3.3.3",
 
-    "webpack": "5.82.1",
+    "webpack": "5.83.1",
     "webpack-cli": "5.1.1",
     "webpack-dev-server": "4.15.0",
     "webpack-merge": "5.8.0",
@@ -89,8 +89,6 @@
 
     "http-server": "14.1.1",
     
-    "jsdom": "21.1.1",
-
     "sharp": "0.32.0",
     "convert-svg-to-png": "0.6.4",
 
@@ -104,7 +102,10 @@
     "typescript": "5.0.4",
     "uint8arrays": "4.0.3",
 
-    "workbox-window": "6.5.4"
+    "workbox-window": "6.5.4",
+
+    "jsdom": "21.1.1"
+    
   },
   "dependencies": {
 
@@ -136,9 +137,11 @@
     "html-truncate": "1.2.2",
     "https-browserify": "1.0.0",
     "inversify": "6.0.1",
+
     "ipfs-core": "0.18.0",
     "ipfs-http-client": "60.0.0",
     "ipfs-only-hash": "4.0.0",
+    
     "is-svg": "5.0.0",
     "it-to-buffer": "4.0.2",
     "juice": "9.0.0",
@@ -177,5 +180,6 @@
     "url": "0.11.0",
     "util": "0.12.5",
     "uuid": "9.0.0"
+
   }
 }

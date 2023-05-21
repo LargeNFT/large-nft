@@ -95,20 +95,7 @@ async function getContainer() {
 
     container = new Container()
 
-    function provider() {
 
-        //@ts-ignore
-        const ethers = hre.ethers
-
-        //@ts-ignore
-        return new providers.Web3Provider(ethers.provider)  
-    }
-
-    function ipfsOptions() {
-        return {
-            repo: '../test/test-repo'
-        }
-    }
 
 
     function contracts() {    
@@ -117,7 +104,18 @@ async function getContainer() {
 
     container.bind("contracts").toConstantValue(contracts())
 
-    container.bind("provider").toConstantValue(provider())
+    container.bind("provider").toConstantValue(() => {
+
+        //@ts-ignore
+        const ethers = hre.ethers
+
+        //@ts-ignore
+        return new providers.Web3Provider(ethers.provider)  
+    
+    })
+    
+
+
     container.bind("pouch-prefix").toConstantValue("./test/pouch/")
 
     container.bind("PouchDB").toConstantValue(PouchDB)
@@ -156,6 +154,7 @@ async function getContainer() {
     container.bind(DatabaseService).toSelf().inSingletonScope()
     container.bind(SchemaService).toSelf().inSingletonScope()
 
+    //@ts-ignore
     container.bind<WalletService>(TYPES.WalletService).to(HardhatWalletServiceImpl).inSingletonScope();
 
     container.bind(GitlabService).toSelf().inSingletonScope()
@@ -206,7 +205,9 @@ async function getContainer() {
         const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
 
         //@ts-ignore
-        return IPFS.create(ipfsOptions())
+        return IPFS.create({
+            repo: '../test/test-repo'
+        })
     })
 
 

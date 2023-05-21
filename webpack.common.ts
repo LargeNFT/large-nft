@@ -43,7 +43,7 @@ let getAdminConfigs = () => {
 
   //Build config for the main admin application.
   let appConfig = {
-    entry: './src/admin/app.ts',
+    entry: './src/admin/index.ts',
     module: {
       rules: [
         {
@@ -94,7 +94,7 @@ let getAdminConfigs = () => {
     output: {
       filename: `large/admin/app/js/[name]-${VERSION.replace('"', '').replace('"', '')}.admin.js`,
       library: "admin",
-      path: path.resolve(__dirname, 'public'),
+      path: path.resolve(__dirname, 'public')
     },
     optimization: {
       usedExports: true,
@@ -184,6 +184,52 @@ let getAdminConfigs = () => {
     ]
   }
 
+  let importCollectionConfig = {
+    entry: "./src/admin/import.ts",
+    target: "node",
+    externalsPresets: { 
+      node: true 
+    },   
+    externals: ['pouchdb-node', 'ipfs-http-client', 'jsdom', 'canvas'],
+    experiments: {
+      outputModule: true
+    },
+    resolve: {
+      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensionAlias: {
+        ".js": [".js", ".ts"]
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: '/node_modules/',
+          loader: 'ts-loader'
+        }
+      ]
+    },  
+    output: {
+      filename: 'large/admin/import.js',
+      libraryTarget: "module",
+      library: {
+        type: "module"
+      },
+      chunkFormat: 'module',
+      path: path.resolve(__dirname, 'public'),
+    },
+    plugins: [
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
+
+      new webpack.ProvidePlugin({
+        fetch: ['node-fetch', 'default'],
+      })
+
+    ]
+  }
+
   function createContractFromTruffle(truffleJson)  {
   
     return {
@@ -196,7 +242,7 @@ let getAdminConfigs = () => {
   
   }
 
-  return [appConfig]
+  return [appConfig, importCollectionConfig]
 }
 
 let getReaderConfigs = () => {
@@ -392,53 +438,6 @@ let getReaderConfigs = () => {
     ]
   }
 
-  let importCollectionConfig = {
-    entry: "./src/admin/import.ts",
-    target: "node",
-    externalsPresets: { 
-      node: true 
-    },   
-    externals: ['pouchdb-node', 'ipfs-http-client'],
-    experiments: {
-      outputModule: true
-    },
-    resolve: {
-      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
-      extensionAlias: {
-        ".js": [".js", ".ts"]
-      }
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          exclude: '/node_modules/',
-          loader: 'ts-loader'
-        }
-      ]
-    },  
-    output: {
-      filename: 'large/admin/import.js',
-      libraryTarget: "module",
-      library: {
-        type: "module"
-      },
-      chunkFormat: 'module',
-      path: path.resolve(__dirname, 'public'),
-    },
-    plugins: [
-      // new CleanWebpackPlugin({
-      //   dangerouslyAllowCleanPatternsOutsideProject: true
-      // }),
-
-      new webpack.ProvidePlugin({
-        fetch: ['node-fetch', 'default'],
-      })
-
-    ]
-  }
-
-
   let browserConfig = {
     entry: "./src/reader/index.ts",
     module: {
@@ -577,8 +576,6 @@ let getReaderConfigs = () => {
     ]
   }
   
-
-
   let libraryConfig = {
     entry: "./src/library/index.ts",
     module: {
@@ -718,7 +715,6 @@ let getReaderConfigs = () => {
   }
   
 
-
   configs.push(libraryConfig)
   configs.push(serviceWorkerConfig)
   configs.push(browserConfig)
@@ -727,7 +723,7 @@ let getReaderConfigs = () => {
   configs.push(startConfig)
   configs.push(syncLibraryConfig)
   configs.push(libraryServiceWorkerConfig)
-  configs.push(importCollectionConfig)
+
 
   return configs
 

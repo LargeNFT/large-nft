@@ -16,8 +16,6 @@ class DatabaseService {
         // const fullName = `${this.pouchPrefix}${ethers.utils.getAddress(walletAddress)}-${name}`
         const fullName = `${this.pouchPrefix}-large-${name}`
 
-
-
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 
         //Create or open database

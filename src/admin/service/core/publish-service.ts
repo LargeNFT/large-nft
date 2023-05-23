@@ -45,7 +45,7 @@ class PublishService {
         this.logPublishProgress(undefined, "Preparing export...")
         let exportBundle:ExportBundle = await this.exportService.prepareExport(channel, this.walletService.address)
 
-        let feeRecipient = await this._getFeeReceipient(exportBundle)
+        let feeRecipient = await this.getFeeReceipient(exportBundle)
 
         this.logPublishProgress(undefined, `Fee Recipient: ${feeRecipient}`)
         this.logPublishProgress(undefined, "Preparing backup...")
@@ -352,7 +352,128 @@ class PublishService {
         })
         
         //Export to git
-        await this.gitService.deployReader(channel, gitActions)
+        await this.gitService.deployReader(exportBundle.channel, gitActions)
+
+    }
+
+    async exportToFS(channel:Channel, exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string, exportMedia:boolean = true, exportMetadata:boolean=true): Promise<any[]> {
+
+        let ipfsDirectory = this.getIPFSDirectory(exportBundle.channel)
+
+        let fsActions = []
+
+        if (exportMedia) {
+
+            //Save images
+            await this._publishImagesFS(fsActions, exportBundle.images)
+
+            //Save animations
+            await this._publishAnimationsFS(fsActions, exportBundle.animations)
+
+        }
+
+        //Get directory cids
+        let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
+        let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
+
+
+        if (exportMetadata) {
+            await this._publishNFTMetadataFS(fsActions, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory)
+        }
+
+
+        //Save contract metadata
+        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory)
+
+
+        //Write to Git
+        fsActions.push({
+            file_path: `/backup/export/contractMetadata.json`,
+            content: Buffer.from(JSON.stringify(contractMetadata))
+        })
+
+
+        //Only copy contract info to git. IPFS doesn't know about it.
+        if (channel.contractAddress) {
+                    
+            fsActions.push({
+                file_path: "/backup/contract/contract.json",
+                content: Buffer.from(JSON.stringify({ 
+                    contractAddress: channel.contractAddress,
+                    ipfsCid: channel.localCid
+                }))
+
+            })
+
+            //Also the ABI
+            fsActions.push({
+                file_path: "/backup/contract/contract-abi.json",
+                content: Buffer.from(JSON.stringify(contractABI))
+            })
+
+
+        } else {
+            fsActions.push({
+                file_path: "/backup/contract/contract.json",
+                content: Buffer.from(JSON.stringify({}))
+            })
+
+            fsActions.push({
+                file_path: "/backup/contract/contract-abi.json",
+                content: Buffer.from(JSON.stringify({}))
+            })
+        }
+
+
+        //Copy a large-config.json to GitHub
+        fsActions.push({
+            file_path: "/large-config.json",
+            content: Buffer.from(JSON.stringify({
+                "showMintPage": channel.showMintPage,
+                "showActivityPage": channel.showActivityPage,
+                "hostname": channel.productionHostname,
+                "baseURL": channel.productionBaseURI
+            } ))
+        })
+
+
+        fsActions.push({
+            file_path: `/backup/export/backup/channels.json`,
+            content: Buffer.from(JSON.stringify(backup.channels))
+        })
+        
+
+        fsActions.push({
+            file_path: `/backup/export/backup/authors.json`,
+            content: Buffer.from(JSON.stringify(backup.authors))
+        })
+
+        fsActions.push({
+            file_path: `/backup/export/backup/items.json`,
+            content: Buffer.from(JSON.stringify(backup.items))
+        })
+       
+        fsActions.push({
+            file_path: `/backup/export/backup/images.json`,
+            content: Buffer.from(JSON.stringify(backup.images))
+        })
+        
+        fsActions.push({
+            file_path: `/backup/export/backup/animations.json`,
+            content: Buffer.from(JSON.stringify(backup.animations))
+        })
+                
+        fsActions.push({
+            file_path: `/backup/export/backup/themes.json`,
+            content: Buffer.from(JSON.stringify(backup.themes))
+        })
+        
+        fsActions.push({
+            file_path: `/backup/export/backup/static-pages.json`,
+            content: Buffer.from(JSON.stringify(backup.staticPages))
+        })
+        
+        return fsActions
 
     }
 
@@ -420,7 +541,7 @@ class PublishService {
 
     }
 
-    private async _getFeeReceipient(exportBundle:ExportBundle) {
+    public async getFeeReceipient(exportBundle:ExportBundle) {
 
         let feeRecipient
 
@@ -434,6 +555,9 @@ class PublishService {
 
         return feeRecipient
     }
+
+
+
 
     private async _publishAnimationsIPFS(publishStatus:PublishStatus, ipfsDirectory:string, animations:Animation[], flush: boolean) {
 
@@ -499,10 +623,29 @@ class PublishService {
 
         }
 
-        return gitActions
+    }
+
+    private async _publishAnimationsFS(fsActions:any[], animations:Animation[]) {
+
+        for (let animation of animations) {
+
+            let animationContent = {
+                content: animation.content
+            }
+
+            //Add to git
+            fsActions.push({
+                file_path: `/backup/export/animations/${animation.cid}.html`,
+                content: Buffer.from(animationContent.content)
+            })
+
+        }
 
 
     }
+
+
+
 
     private async _publishImagesIPFS(publishStatus:PublishStatus, ipfsDirectory:string, images:Image[], flush: boolean) {
 
@@ -525,6 +668,7 @@ class PublishService {
                 const result = await this.ipfsService.ipfs.add({
                     content: await this.imageService.getImageContent(image)
                 })
+
 
                 //Move to MFS directory in IPFS
                 await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
@@ -555,7 +699,12 @@ class PublishService {
             let content 
 
             if (image.buffer) {
-                content = image.buffer 
+                if (content instanceof Uint8Array) {
+                    content = image.buffer
+                } else {
+                    //@ts-ignore
+                    content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
+                }
             } else if (image.svg) {
                 content = Buffer.from(image.svg)
             }
@@ -571,6 +720,38 @@ class PublishService {
 
 
     }
+
+    private async _publishImagesFS(fsActions:any[], images:Image[]) {
+
+        for (let image of images) {
+            
+            let content 
+
+            if (image.buffer) {
+
+                if (content instanceof Uint8Array) {
+                    content = image.buffer
+                } else {
+                    //@ts-ignore
+                    content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
+                }
+
+            } else if (image.svg) {
+                content = Buffer.from(image.svg)
+            }
+
+            //Add to git. 
+            fsActions.push({
+                file_path: `/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,
+                content: content
+            })
+
+        }
+
+
+    }
+
+
 
     private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
 
@@ -666,6 +847,35 @@ class PublishService {
         }
 
     }
+
+    private async _publishNFTMetadataFS(fsActions:any[], channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string) {
+
+        let metadataNFTMap = {}
+
+        for (let item of items) {
+
+            let coverImage:Image = await this.imageService.get(item.coverImageId)
+            let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
+            
+            let content = new TextEncoder().encode(JSON.stringify(nftMetadata))
+            let contentCid = await Hash.of(content)
+
+            metadataNFTMap[contentCid] = nftMetadata
+
+            let nft = metadataNFTMap[contentCid]
+
+            //Save to git
+            fsActions.push({
+                file_path: `/backup/export/metadata/${nft.tokenId}.json`,
+                content: Buffer.from(JSON.stringify(nftMetadata))
+            })
+
+        }
+
+    }
+
+
+
 
     async deployContract(channel: Channel) {
 

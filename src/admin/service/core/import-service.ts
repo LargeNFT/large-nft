@@ -284,36 +284,17 @@ class ImportService {
         }
 
 
-
-
         await this.schemaService.loadChannel(channel._id)
 
-        
+    
         //Fetch token metadata for all tokens
-        let tokenMetadata:TokenMetadata[] = []
-
-
         for (let tokenId of tokenIds) {
 
             this.logForkProgress(forkStatus, `Fetching metadata for #${tokenId}`)
 
             let metadata = await this._getTokenMetadata(contract, tokenId )
 
-            tokenMetadata.push( metadata )
-
-            if (metadata.image || metadata.image_url) {
-                forkStatus.images.total++
-            }
-
-            if (metadata.animation_url) {
-                forkStatus.animations.total++
-            }
-
-        }
-        
-        for (let metadata of tokenMetadata) {
-
-            console.time(`Importing token #${metadata.tokenId}`)
+            // console.time(`Importing token #${metadata.tokenId}`)
 
             this.logForkProgress(forkStatus, `Importing token #${metadata.tokenId}`)
 
@@ -322,28 +303,17 @@ class ImportService {
             let image:Image
             let animation:Animation
 
-
             if (metadata.image || metadata.image_url) {
 
                 //Fetch and create image
                 let imageURI = metadata.image ? metadata.image : metadata.image_url
                 let imageData = await this._fetchURI(imageURI)
 
-
                 //Figure out if it's an svg and save appropriately
                 if (isSvg(new TextDecoder().decode(imageData))) {
                     image = await this.imageService.newFromSvg(new TextDecoder().decode(imageData))
                 } else {
-
                     image = await this.imageService.newFromBuffer(imageData)
-
-                    // await this.imageService.loadImage(tempImage, imageData)
-
-                    // imageDimensions = {
-                    //     width: tempImage.width,
-                    //     height: tempImage.height
-                    // }
-
                 }
 
                 try {
@@ -358,6 +328,7 @@ class ImportService {
             } else {
                 throw new Error("No image in metadata")
             }
+
 
             //Create or save animation
             if (metadata.animation_url) {
@@ -428,9 +399,15 @@ class ImportService {
             forkStatus.items.saved++
             // this.logForkProgress(forkStatus, `Importing item ${item._id}`)
 
-            console.timeEnd(`Importing token #${metadata.tokenId}`)
+            // console.timeEnd(`Importing token #${metadata.tokenId}`)
 
+            if (metadata.image || metadata.image_url) {
+                forkStatus.images.total++
+            }
 
+            if (metadata.animation_url) {
+                forkStatus.animations.total++
+            }
 
         }
 
@@ -1107,7 +1084,10 @@ class ImportService {
 
         let tokenURI = await contract.tokenURI(tokenId)
 
-        let metadata = JSON.parse(new TextDecoder().decode(await this._fetchURI(tokenURI)))
+        let metadataData = await this._fetchURI(tokenURI)
+
+        //Some collections 
+        let metadata = JSON.parse(new TextDecoder().decode(metadataData))
 
         metadata.tokenId = tokenId
 
@@ -1124,17 +1104,17 @@ class ImportService {
     }
 
     private async _fetchURI(uri) {
+        
+        if (uri.startsWith("data:application/json;utf-8,")) {
 
-        if (gatewayTools.containsCID(uri)?.containsCid) {
+            return Buffer.from(uri.substring(28, uri.length))
 
-            uri = gatewayTools.convertToDesiredGateway(uri, '')
+        } else if (uri.startsWith("data:image/bmp;base64,")) {
 
-            //Get from IPFS
-            const data = uint8ArrayConcat(await all(this.ipfsService.ipfs.cat(uri)))
+            return Buffer.from(uri.substring(22, uri.length), "base64")
 
-            return data
 
-        } else {
+        } else if (uri.startsWith("http")) {
 
             //Get from old interwebs
             let result = await axios.get(uri, {
@@ -1143,8 +1123,23 @@ class ImportService {
 
             return Buffer.from(result.data,'binary')
 
-        }
 
+        } else {
+
+            let containResults = gatewayTools.containsCID(uri)
+
+            if (containResults?.containsCid) {
+
+                uri = gatewayTools.convertToDesiredGateway(uri, '')
+    
+                //Get from IPFS
+                const data = uint8ArrayConcat(await all(this.ipfsService.ipfs.cat(uri)))
+    
+                return data
+    
+            } 
+
+        }
 
     }
 

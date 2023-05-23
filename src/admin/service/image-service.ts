@@ -231,7 +231,14 @@ class ImageService {
     let content
 
     if (image.buffer) {
-        content = image.buffer?.data ? image.buffer?.data : image.buffer //difference between browser and node buffer?
+
+        if (content instanceof Uint8Array) {
+          content = image.buffer
+        } else {
+          //@ts-ignore
+          content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
+        }
+
     } else if (image.svg) {
         content = image.svg
     }
@@ -243,14 +250,10 @@ class ImageService {
 
   async loadImage(image, imageData) {
 
-    console.log(1)
-
     return new Promise (function (resolved, rejected) {
-      console.log(2)
 
       //@ts-ignore
       image.onload = function(){
-        console.log(3)
 
         //@ts-ignore
         resolved()

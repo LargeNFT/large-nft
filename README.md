@@ -107,6 +107,10 @@ Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 * *Browser support coming later. Currently not practical.
 
 
+**Large Library**
+* Host multiple collections in the same app.
+* Sync multiple collections.
+
 
 # Large NFT
 
@@ -371,7 +375,18 @@ The Library starts with an overview page that lists each collection in the libra
 TODO: Show how to set up a library. 
 
 
+# Collection Importer
+Collections can be imported to the Large Library with the command-line import tool.
 
+## API
+
+| Option | Default | Description | 
+| ------------- | ------------- | ------------- |
+| --env  | production | This loads either the dev or production settings for hostname and baseURL. |
+| --fork-type  | "existing" | Options are "existing" and "fork". The fork option clears the existing contract information. |
+| --contract  |   | Address of collection's Ethereum contract.
+| --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
+| --slug  |   | A slug for the collection (aka alice-in-wonderland)
 
 
 ---

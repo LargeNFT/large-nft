@@ -67,6 +67,7 @@ import { GitService } from "./service/core/git-service.js";
 import { GitlabService } from "./service/core/gitlab-service.js";
 import { GithubService } from "./service/core/github-service.js";
 import TYPES from "./service/core/types.js";
+import { PublishService } from "./service/core/publish-service.js";
 
 
 let container: Container
@@ -113,6 +114,8 @@ function getMainContainer(config) {
   container.bind(SchemaService).toSelf().inSingletonScope()
 
   container.bind(ExportService).toSelf().inSingletonScope()
+  container.bind(PublishService).toSelf().inSingletonScope()
+
   container.bind(AttributeCountService).toSelf().inSingletonScope()
 
   container.bind<WalletService>(TYPES.WalletService).to(WalletServiceImpl).inSingletonScope()

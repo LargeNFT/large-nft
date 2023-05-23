@@ -31,6 +31,7 @@ class ENSService {
 
 
         if (update || !ens) {
+            
             let ensName = await this.walletService.provider.lookupAddress(_id)
 
             console.log(`Looking up ENS for ${_id} ${ensName?.length > 0 ? `(${ensName})` : ''}`)

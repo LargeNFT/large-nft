@@ -90,7 +90,11 @@ let importCollection = async () => {
   
     }
 
+
     let channel = await channelService.get(channelId)
+
+    console.log(`Exporting ${channel.title} to sync folder...`)
+
 
     channel.showActivityPage = false
     channel.showMintPage = false

@@ -3,7 +3,7 @@
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-**A decentralized, offline-first content management system for NFT communities.**
+**Publish and sell digital collectibles!**
 
 An offline-first NFT toolkit to publish a book, fan-fiction, blog, or art as digital collectibles and sell on marketplaces like LooksRare, OpenSea, and more.
 

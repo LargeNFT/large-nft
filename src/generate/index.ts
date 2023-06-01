@@ -170,9 +170,9 @@ let generate = async () => {
   
     let indexContents = indexBuffer.toString()
   
-    indexContents = indexContents.replace(`../admin/app/js/runtime-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/runtime-${config.VERSION}.admin.js`)
-    indexContents = indexContents.replace(`../admin/app/js/vendors-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/vendors-${config.VERSION}.admin.js`)
-    indexContents = indexContents.replace(`../admin/app/js/main-${config.VERSION}.admin.js`, `${config.baseURL}large/admin/app/js/main-${config.VERSION}.admin.js`)
+    indexContents = indexContents.replace(`../admin/app/js/runtime.admin.js`, `${config.baseURL}large/admin/app/js/runtime.admin.js?v=${config.VERSION}`)
+    indexContents = indexContents.replace(`../admin/app/js/vendors.admin.js`, `${config.baseURL}large/admin/app/js/vendors.admin.js?v=${config.VERSION}`)
+    indexContents = indexContents.replace(`../admin/app/js/main.admin.js`, `${config.baseURL}large/admin/app/js/main.admin.js?v=${config.VERSION}`)
   
   
     //Footer for the admin

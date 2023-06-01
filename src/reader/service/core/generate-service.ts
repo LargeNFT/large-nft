@@ -86,17 +86,17 @@ class GenerateService {
         if (config.libraryURL) {
 
           generateViewModel.headEndContents = `
-            <script defer src="/large/library/browser/js/runtime-${config.VERSION}.library.js"></script>
-            <script defer src="/large/library/browser/js/vendors-${config.VERSION}.library.js"></script>
-            <script defer src="/large/library/browser/js/main-${config.VERSION}.library.js"></script>
+            <script defer src="/large/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
+            <script defer src="/large/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
+            <script defer src="/large/library/browser/js/main.library.js?v=${config.VERSION}"></script>
           `
 
         } else {
 
           generateViewModel.headEndContents = `
-            <script defer src="${config.baseURL}large/reader/browser/js/runtime-${config.VERSION}.reader.js"></script>
-            <script defer src="${config.baseURL}large/reader/browser/js/vendors-${config.VERSION}.reader.js"></script>
-            <script defer src="${config.baseURL}large/reader/browser/js/main-${config.VERSION}.reader.js"></script>
+            <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js?v=${config.VERSION}"></script>
+            <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js?v=${config.VERSION}"></script>
+            <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js?v=${config.VERSION}"></script>
             `
         }
 

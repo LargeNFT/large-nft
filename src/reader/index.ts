@@ -15,7 +15,6 @@ import './html/css/framework7-icons.css'
 import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
 import { Container } from "inversify"
-import { SchemaService } from "./service/core/schema-service.js"
 
 import './html/css/app.css'
 import { RoutingService } from "./service/core/routing-service.js"

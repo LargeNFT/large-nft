@@ -752,7 +752,6 @@ const markets: Markets = {
             },
         ],
     },
-    
     '0x000000000000Ad05Ccc4F10045630fb830B95127': {
         id: 'Blur',
         name: 'Blur',

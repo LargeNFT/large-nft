@@ -92,7 +92,7 @@ let getAdminConfigs = () => {
       }
     },
     output: {
-      filename: `large/admin/app/js/[name]-${VERSION.replace('"', '').replace('"', '')}.admin.js`,
+      filename: `large/admin/app/js/[name].admin.js`,
       library: "admin",
       path: path.resolve(__dirname, 'public')
     },
@@ -522,7 +522,7 @@ let getReaderConfigs = () => {
     ],
     output: {
       library: "reader",
-      filename: `large/reader/browser/js/[name]-${VERSION.replace('"', '').replace('"', '')}.reader.js`,
+      filename: `large/reader/browser/js/[name].reader.js`,
       path: path.resolve(__dirname, 'public')
     },
     optimization: {
@@ -660,7 +660,7 @@ let getReaderConfigs = () => {
     ],
     output: {
       library: "library",
-      filename: `large/library/browser/js/[name]-${VERSION.replace('"', '').replace('"', '')}.library.js`,
+      filename: `large/library/browser/js/[name].library.js`,
       path: path.resolve(__dirname, 'public')
     },
     optimization: {

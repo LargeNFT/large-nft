@@ -874,9 +874,6 @@ class PublishService {
 
     }
 
-
-
-
     async deployContract(channel: Channel) {
 
         if (!channel.localCid) {

@@ -390,7 +390,7 @@ The Large Library brings together multiple reader apps to work as a single libra
 
 The Library starts with an overview page that lists each collection in the library and an overview of the recent sales information.
 
-[https://golarge.app/commons](The NFT Commons) is an example of Large Library in production.
+[The NFT Commons](https://golarge.app/commons/) is an example of Large Library in production.
 
 TODO: Show how to set up a library. 
 

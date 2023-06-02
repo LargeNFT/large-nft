@@ -3,23 +3,60 @@
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-**Publish and sell digital collectibles!**
+**Publish and sell your work as digital collectibles!**
 
-An offline-first NFT toolkit to publish a book, fan-fiction, blog, or art as digital collectibles and sell on marketplaces like LooksRare, OpenSea, and more.
+A toolkit to publish a book, fan-fiction, blog, or art as digital collectibles. 
 
-Run on your own hardware or with popular cloud providers. 
+**Free and open source** 
+* 100% open source JavaScript/TypeScript
+* Run on your own hardware or with popular cloud providers. 
+
+**Create or Import**
+* Create collections with text, images, and mixed-media NFTs.
+* Fork existing ERC-721 collections.
+* Content is stored in your browser using [PouchDB](https://pouchdb.com).
+
+**Generate NFTs**
+* Automatically generate NFT metadata and publish to IPFS.
+* Publish collection data and backup to GitHub/GitLab.
+* Deploy an ERC-721 gas-optimized smart contract to Ethereum.
+    * Or use your own customized contract!
+
+**Sell**
+* Set a mint price. Keep 100% of fees. 
+* List NFTs for sale on OpenSea and other marketplaces. 
+
+**Publish Reader Website**
+* Generate an HTML website to read, browse, and mint the collection.
+* Sync ownership info from Ethereum in real-time. 
+* Track buys, sells, and transfers on third-party marketplaces:
+    * OpenSea
+    * LooksRare
+    * Blur
+    * X2Y2
+
+**Community Ownership**
+* See a leaderboard of your biggest fans and collectors.
+* The community can easily keep the website online and use it as a starting point for custom fan experiences.
 
 # Goals
 
-* Make it easy for any user to host the digital infrastructure for an NFT collection to ensure owners can be self-reliant.
-
 * Bring the permissionless properties of Ethereum to the rest of the NFT tech stack with a default viewer and marketplace that any user in the community can run.
 
-    * Free and open source code.
-    * Tools to build and launch an NFT collection.
-        * Use the built-in contract or provide your own. (customization in future release)
-    * Tools to launch a fan experience for an existing NFT collection.
-    * Tools to launch a custom marketplace for any NFT collection. (future release)
+* Make it easy for any user to host the digital infrastructure for an NFT collection to ensure owners can be self-reliant.
+
+* What if an NFT creator disappears?
+    * It's inevitable that every creator dies.
+    * It's inevitable that every company dies.
+    * The plan for technical implementation of the software stack should start with those assumptions. 
+    * Decentralization demands it. 
+    * Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
+
+* Free and open source code.
+* Tools to build and launch an NFT collection.
+    * Use the built-in contract or provide your own. (customization in future release)
+* Tools to launch a fan experience for an existing NFT collection.
+* Tools to launch a custom marketplace for any NFT collection. (future release)
 
 * Create and publish NFTs.
     * Build an NFT collection from scratch.
@@ -31,13 +68,6 @@ Run on your own hardware or with popular cloud providers.
 * Feel like an owner.
     * Empower users to experience feelings associated with ownership with their digital artifacts.
     * Help make sure users never lose the ability and rights to keep their digital property online for display and resale.
-
-* What if an NFT creator disappears?
-    * It's inevitable that every creator dies.
-    * It's inevitable that every company dies.
-    * The plan for technical implementation of the software stack should start with those assumptions. 
-    * Decentralization demands it. 
-    * Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
 
 * A single member of the community should be able to keep things going themselves.
     * What happens to your digital collectibles if you're the last one who cares?
@@ -88,7 +118,7 @@ Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 
 * A self-hosted web app to build and publish NFT collections right in your browser.
 * Create new collections from scratch or fork existing ones.
-* Data is stored right in local browser storage.
+* Data stored in local browser storage.
 * Can be whitelabeled.
 * Scale on your user's own hardware instead of cloud servers, so the hardware requirements as your community grows are minimal.
 
@@ -141,16 +171,6 @@ Large will be available at [http://localhost:9081/large](http://localhost:9081/l
 
 ![Large Admin](src/admin/html/images/large-start.jpg)
 
-* Create one or more collections with text, images, and mixed-media NFTs.
-* Content is stored in your browser using [PouchDB](https://pouchdb.com).
-* Generate NFT metadata and publish to IPFS.
-* Generate a reader-style website to view each collection.
-* Deploy an ERC-721 gas-optimized smart contract to Ethereum.
-* Set a mint price. Keep 100% of fees. 
-* List NFTs for sale on OpenSea and other NFT marketplaces. 
-* Collection data and website stored in GitHub/GitLab.
-
-The community can easily keep the website online and use it as a starting point for custom fan experiences.
 
 ### Create NFT Collection
 Create a collection with the Large admin panel. 
@@ -159,7 +179,7 @@ Create a collection with the Large admin panel.
 * Create attribute categories.
     * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
 
-### Create Content 
+### Create NFT Item Content 
 * Each item has a title, content, and a cover image.
 * If a cover image is not provided an SVG is generated from the text.
 * Choose a theme for each item.
@@ -428,9 +448,6 @@ To publish to a hosted IPFS node:
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST", "PUT", "OPTIONS"]'
 ```
-
-## Install CORS Proxy to publish to GitHub/GitLab
-Large publishes directly to your git provider from browser storage. By default both GitHub and GitLab make this difficult because of their CORS setup. To get around this please install and use the [CORS Proxy](https://github.com/isomorphic-git/cors-proxy). You configure the URL on the Large NFT settings page.
 
 
 

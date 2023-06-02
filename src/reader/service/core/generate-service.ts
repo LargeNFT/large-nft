@@ -590,9 +590,9 @@ class GenerateService {
         libraryURL: config.libraryURL,
         largeURL: config.largeURL,
         headEndContents: `
-          <script defer src="${config.largeURL}/library/browser/js/runtime-${config.VERSION}.library.js"></script>
-          <script defer src="${config.largeURL}/library/browser/js/vendors-${config.VERSION}.library.js"></script>
-          <script defer src="${config.largeURL}/library/browser/js/main-${config.VERSION}.library.js"></script>
+    <script defer src="${config.largeURL}/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
+    <script defer src="${config.largeURL}/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
+    <script defer src="${config.largeURL}/library/browser/js/main.library.js?v=${config.VERSION}"></script>
         `,
         bodyContents: ``
       }

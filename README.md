@@ -386,7 +386,7 @@ npm run sync --  --env dev --alchemy <API key>
 ---
 
 # Large Library
-The Large Library brings together multiple reader apps to work as a single library applications.
+The Large Library brings together multiple reader apps to work as a single library application.
 
 The Library starts with an overview page that lists each collection in the library and an overview of the recent sales information.
 

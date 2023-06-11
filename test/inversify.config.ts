@@ -152,7 +152,7 @@ async function getContainer() {
     container.bind(SchemaService).toSelf().inSingletonScope()
 
     //@ts-ignore
-    container.bind<WalletService>(TYPES.WalletService).to(HardhatWalletServiceImpl).inSingletonScope();
+    container.bind<WalletService>(TYPES.WalletService).to(HardhatWalletServiceImpl).inSingletonScope()
 
     container.bind(GitlabService).toSelf().inSingletonScope()
     container.bind(GithubService).toSelf().inSingletonScope()

@@ -199,12 +199,12 @@ async function getContainer() {
     //Spin up local IPFS
     container.bind("ipfsInit").toConstantValue( async () => {
 
-        const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
+        // const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
 
-        //@ts-ignore
-        return IPFS.create({
-            repo: '../test/test-repo'
-        })
+        // //@ts-ignore
+        // return IPFS.create({
+        //     repo: '../test/test-repo'
+        // })
     })
 
 

@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.16.3",
+  "version": "0.16.4",
   "description": "Publish your book, fan-fiction, blog, or art as a series of digital collectibles.",
   "repository": {
     "type": "git",
@@ -79,7 +79,6 @@
     "eta": "2.0.1",
 
     "hardhat": "2.14.1",
-    "ipfs": "0.66.1",
     "eth-gas-reporter": "0.2.25",
 
     "truffle-assertions": "0.9.2",

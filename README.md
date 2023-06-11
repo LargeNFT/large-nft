@@ -3,7 +3,7 @@
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-**Publish and sell your work as digital collectibles!**
+**Publish and sell your work as digital collectibles**
 
 * Publish your book, fan-fiction, blog, or art as a series of digital collectibles. 
 * Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. 

@@ -58,10 +58,6 @@ import sharp from "sharp"
 import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js"
 import { RowItemViewModel } from "../reader/dto/item-page.js"
 
-import { SyncStatusService } from "../sync-library/service/sync-status-service.js";
-import { SyncStatusRepository } from "../sync-library/repository/sync-status-repository.js";
-import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sync-status-repository-impl.js";
-
 
 
 let container:Container
@@ -116,8 +112,6 @@ function getMainContainer(command:GetMainContainerCommand) {
 
 
   container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
-
-  container.bind<SyncStatusRepository>("SyncStatusRepository").to(SyncStatusRepositoryNodeImpl).inSingletonScope()
 
 
   container.bind<ReaderSettingsRepository>("ReaderSettingsRepository").toConstantValue({
@@ -191,7 +185,6 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
 
   container.bind<SpawnService>("SpawnService").to(SpawnService).inSingletonScope()
-  container.bind<SyncStatusService>("SyncStatusService").to(SyncStatusService).inSingletonScope()
 
 
 

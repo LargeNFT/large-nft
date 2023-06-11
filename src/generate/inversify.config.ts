@@ -23,7 +23,6 @@ import { AnimationService } from "../reader/service/animation-service.js";
 import { AttributeTotalService } from "../reader/service/attribute-total-service.js";
 import { AuthorService } from "../reader/service/author-service.js";
 import { ChannelService } from "../reader/service/channel-service.js";
-import { ContractStateService } from "../sync/service/contract-state-service.js";
 import { ComponentStateService } from "../reader/service/core/component-state-service.js";
 import { DatabaseService } from "../reader/service/core/database-service.js";
 import { ImageGeneratorService } from "../reader/service/core/image-generator-service.js";
@@ -31,7 +30,6 @@ import { PagingService } from "../reader/service/core/paging-service.js";
 import { QueueService } from "../reader/service/core/queue-service.js";
 import { QuillService } from "../reader/service/core/quill-service.js";
 import { SchemaService } from "../reader/service/core/schema-service.js";
-import { TransactionIndexerService } from "../sync/service/transaction-indexer-service.js";
 import { UiService } from "../reader/service/core/ui-service.js";
 import { WalletService } from "../reader/service/core/wallet-service.js";
 import { WalletServiceImpl } from "../reader/service/core/wallet-service-impl.js";
@@ -49,36 +47,9 @@ import { ReaderSettings } from "../reader/dto/reader-settings.js";
 import { ComponentState } from "../reader/dto/component-state.js";
 import { ethers } from "ethers"
 import { GenerateService } from "../reader/service/core/generate-service.js";
-import { ContractStateRepositoryNodeImpl } from "../sync/repository/node/contract-state-repository-impl.js";
-import { TokenOwnerRepository } from "../sync/repository/token-owner-repository.js";
-import { TokenOwnerRepositoryNodeImpl } from "../sync/repository/node/token-owner-repository-impl.js";
-import { TokenOwnerService } from "../sync/service/token-owner-service.js";
-import { TransactionRepositoryNodeImpl } from "../sync/repository/node/transaction-repository-impl.js";
-import { TransactionRepository } from "../sync/repository/transaction-repository.js";
-import { TransactionService } from "../sync/service/transaction-service.js";
-import { BlockRepository } from "../sync/repository/block-repository.js";
-import { BlockService } from "../sync/service/block-service.js";
 
-import { TokenOwnerPageService } from "../sync/service/token-owner-page-service.js";
-import { TokenService } from "../sync/service/token-service.js";
-import { TokenRepository } from "../sync/repository/token-repository.js";
-import { TokenRepositoryNodeImpl } from "../sync/repository/node/token-repository-impl.js";
-import { ProcessedTransactionRepositoryNodeImpl } from "../sync/repository/node/processed-transaction-repository-impl.js";
-import { ProcessedTransactionService } from "../sync/service/processed-transaction-service.js";
-import { ENSService } from "../sync/service/ens-service.js";
-import { ENSRepository } from "../sync/repository/ens-repository.js";
-import { ENSRepositoryNodeImpl } from "../sync/repository/node/ens-repository-impl.js";
-import { BlockRepositoryNodeImpl } from "../sync/repository/node/block-repository-impl.js";
-import { ProcessedTransactionRepository } from "../sync/repository/processed-transaction-repository.js";
 
-import { Block } from "../sync/dto/block.js";
-import { ContractState } from "../sync/dto/contract-state.js";
-import { ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, ProcessedTransactionTrader } from "../sync/dto/processed-transaction.js";
-import { TokenOwner } from "../sync/dto/token-owner.js";
-import { Token } from "../sync/dto/token.js";
-import { Transaction } from "../sync/dto/transaction.js";
 
-import { ENS } from "../sync/dto/ens.js"
 import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-repository.js"
 import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js"
 import { SpawnService } from "../sync/service/spawn-service.js"
@@ -142,15 +113,10 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<StaticPageRepository>("StaticPageRepository").to(StaticPageRepositoryNodeImpl).inSingletonScope()
   container.bind<ItemPageRepository>("ItemPageRepository").to(ItemPageRepositoryNodeImpl).inSingletonScope()
   container.bind<AttributeTotalRepository>("AttributeTotalRepository").to(AttributeTotalRepositoryNodeImpl).inSingletonScope()
-  container.bind<TokenOwnerRepository>("TokenOwnerRepository").to(TokenOwnerRepositoryNodeImpl).inSingletonScope()
-  container.bind<TransactionRepository>("TransactionRepository").to(TransactionRepositoryNodeImpl).inSingletonScope()
-  container.bind<ProcessedTransactionRepository>("ProcessedTransactionRepository").to(ProcessedTransactionRepositoryNodeImpl).inSingletonScope()
 
-  container.bind<BlockRepository>("BlockRepository").to(BlockRepositoryNodeImpl).inSingletonScope()
+
   container.bind<TokenOwnerPageRepository>("TokenOwnerPageRepository").to(TokenOwnerPageRepositoryNodeImpl).inSingletonScope()
-  container.bind<TokenRepository>("TokenRepository").to(TokenRepositoryNodeImpl).inSingletonScope()
 
-  container.bind<ENSRepository>("ENSRepository").to(ENSRepositoryNodeImpl).inSingletonScope()
   container.bind<SyncStatusRepository>("SyncStatusRepository").to(SyncStatusRepositoryNodeImpl).inSingletonScope()
 
 
@@ -164,7 +130,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   })
 
   // container.bind<ERCEventRepository>("ERCEventRepository").to(ERCEventRepositoryNodeImpl).inSingletonScope()
-  container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryNodeImpl).inSingletonScope()
+  // container.bind<ContractStateRepository>("ContractStateRepository").to(ContractStateRepositoryNodeImpl).inSingletonScope()
 
   container.bind<ComponentStateRepository>("ComponentStateRepository").toConstantValue({
     get: function (_id: string): Promise<ComponentState> {
@@ -215,9 +181,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<ImageGeneratorService>("ImageGeneratorService").to(ImageGeneratorService).inSingletonScope()
 
   container.bind<ReaderSettingsService>("ReaderSettingsService").to(ReaderSettingsService).inSingletonScope()
-  container.bind<TransactionIndexerService>("TransactionIndexerService").to(TransactionIndexerService).inSingletonScope()
 
-  container.bind<ContractStateService>("ContractStateService").to(ContractStateService).inSingletonScope()
   container.bind<ERCEventService>("ERCEventService").to(ERCEventService).inSingletonScope()
   container.bind<AttributeTotalService>("AttributeTotalService").to(AttributeTotalService).inSingletonScope()
   container.bind<ComponentStateService>("ComponentStateService").to(ComponentStateService).inSingletonScope()
@@ -225,15 +189,7 @@ function getMainContainer(command:GetMainContainerCommand) {
 
   container.bind<QuillService>("QuillService").to(QuillService).inSingletonScope()
   container.bind<GenerateService>("GenerateService").to(GenerateService).inSingletonScope()
-  container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
 
-  container.bind<TransactionService>("TransactionService").to(TransactionService).inSingletonScope()
-  container.bind<ProcessedTransactionService>("ProcessedTransactionService").to(ProcessedTransactionService).inSingletonScope()
-
-  container.bind<BlockService>("BlockService").to(BlockService).inSingletonScope()
-  container.bind<TokenOwnerPageService>("TokenOwnerPageService").to(TokenOwnerPageService).inSingletonScope()
-  container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
-  container.bind<ENSService>("ENSService").to(ENSService).inSingletonScope()
   container.bind<SpawnService>("SpawnService").to(SpawnService).inSingletonScope()
   container.bind<SyncStatusService>("SyncStatusService").to(SyncStatusService).inSingletonScope()
 

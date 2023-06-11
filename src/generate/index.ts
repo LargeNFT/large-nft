@@ -2,7 +2,6 @@ import "core-js/stable/index.js"
 import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
-
 import fs from "fs"
 import * as Eta from 'eta'
 
@@ -16,9 +15,6 @@ import { getMainContainer, GetMainContainerCommand } from "./inversify.config.js
 
 let channelId
 
-import _initEjs from '../sync/ejs/template/_init.ejs'
-import _metaTagsEjs from '../sync/ejs/template/_meta_tags.ejs'
-import _metaTagsJsEjs from '../sync/ejs/template/_meta_tags_js.ejs'
 
 import { GenerateService, GenerateViewModel } from "../reader/service/core/generate-service.js"
 import { ProcessConfig } from "../reader/util/process-config.js"

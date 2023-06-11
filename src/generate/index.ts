@@ -33,6 +33,8 @@ const { convert } = pkg;
 
 let generate = async () => {
 
+  console.log("Starting generate")
+
   let config:any = await ProcessConfig.getConfig() 
 
   if (!config.externalLinks) {
@@ -92,6 +94,9 @@ let generate = async () => {
 
   let channelViewModel = await channelWebService.get(0, additionalStaticPages)
   channelId = channelViewModel.channel._id
+
+  console.log(`Generating Large Reader for '${channelViewModel.channel.title}'`)
+
 
   //Generate item pages
   let itemViewModels:ItemViewModel[] = await itemWebService.list(0, config.maxItems)

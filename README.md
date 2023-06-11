@@ -5,7 +5,9 @@
 
 **Publish and sell your work as digital collectibles!**
 
-Publish your book, fan-fiction, blog, or art as a series of digital collectibles. Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. Connect directly with your audience on Ethereum and other EVM-compatible networks. 
+* Publish your book, fan-fiction, blog, or art as a series of digital collectibles. 
+* Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. 
+* Connect directly with your audience on Ethereum and other EVM-compatible networks. 
 
 **Free and open source** 
 * 100% open source JavaScript/TypeScript

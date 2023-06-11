@@ -92,8 +92,10 @@ import { SyncStatusService } from "../sync-library/service/sync-status-service.j
 import { SyncStatusRepository } from "../sync-library/repository/sync-status-repository.js";
 import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sync-status-repository-impl.js";
 
-const require = createRequire(import.meta.url)
-const { Sequelize } = require('sequelize-typescript')
+// const require = createRequire(import.meta.url)
+// const { Sequelize } = require('sequelize-typescript')
+import { Sequelize } from 'sequelize-typescript'
+
 
 let container:Container
 

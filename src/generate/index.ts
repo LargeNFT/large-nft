@@ -12,7 +12,7 @@ import excerptHtml from 'excerpt-html'
 import he from 'he'
 
 
-import { getMainContainer, GetMainContainerCommand } from "../sync/inversify.config.js"
+import { getMainContainer, GetMainContainerCommand } from "./inversify.config.js"
 
 let channelId
 

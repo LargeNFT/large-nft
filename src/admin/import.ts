@@ -109,9 +109,9 @@ let importCollection = async () => {
 
     let feeRecipient = await publishService.getFeeReceipient(exportBundle)
 
-    await publishService.exportToIPFS(exportBundle, backup, feeRecipient, true, true)
+    await publishService.exportToIPFS(exportBundle, backup, feeRecipient)
 
-    let fsActions = await publishService.exportToFS(channel, exportBundle, backup, feeRecipient, true, true)
+    let fsActions = await publishService.exportToFS(config.baseDir, channel, exportBundle, backup, feeRecipient)
 
     let collectionDir = `${config.baseDir}/sync/${config.slug}`
 

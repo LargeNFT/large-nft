@@ -230,6 +230,53 @@ let getAdminConfigs = () => {
     ]
   }
 
+  let publishCollectionConfig = {
+    entry: "./src/admin/publish.ts",
+    target: "node",
+    externalsPresets: { 
+      node: true 
+    },   
+    externals: ['pouchdb-node', 'ipfs-http-client'],
+    experiments: {
+      outputModule: true
+    },
+    resolve: {
+      extensions: ['.*', '.js', '.jsx', '.tsx', '.ts'],
+      extensionAlias: {
+        ".js": [".js", ".ts"]
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: '/node_modules/',
+          loader: 'ts-loader'
+        }
+      ]
+    },  
+    output: {
+      filename: 'large/admin/publish.js',
+      libraryTarget: "module",
+      library: {
+        type: "module"
+      },
+      chunkFormat: 'module',
+      path: path.resolve(__dirname, 'public'),
+    },
+    plugins: [
+      // new CleanWebpackPlugin({
+      //   dangerouslyAllowCleanPatternsOutsideProject: true
+      // }),
+
+      new webpack.ProvidePlugin({
+        fetch: ['node-fetch', 'default'],
+      })
+
+    ]
+  }
+
+
   function createContractFromTruffle(truffleJson)  {
   
     return {
@@ -242,7 +289,7 @@ let getAdminConfigs = () => {
   
   }
 
-  return [appConfig, importCollectionConfig]
+  return [appConfig, importCollectionConfig, publishCollectionConfig]
 }
 
 let getReaderConfigs = () => {

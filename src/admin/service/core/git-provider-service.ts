@@ -4,23 +4,20 @@ import { Channel } from "../../dto/channel.js";
 
 interface GitProviderService {
     createFork(channel:Channel) : Promise<ForkInfo>
-    getExistingFork(channel:Channel) : Promise<ExistingForkInfo>
+    getIPFSActionStatus(channel: Channel) : Promise<string>
+    getIPFSActionResult(channel: Channel) : Promise<any>
     getForkRepoStatus(channel:Channel) : Promise<string>
 }
 
 interface ForkInfo {
     id: string
+    httpUrlToRepo?:string
     path:string
     branch:string
 }
 
-interface ExistingForkInfo {
-    httpUrlToRepo:string
-    id:string
-    path:string
-    defaultBranch:string
-}
+
 
 export {
-    GitProviderService, ForkInfo, ExistingForkInfo
+    GitProviderService, ForkInfo//, ExistingForkInfo
 }

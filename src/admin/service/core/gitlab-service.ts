@@ -3,7 +3,7 @@ import { default as axios } from 'axios'
 import { inject, injectable } from "inversify";
 
 import { Channel } from "../../dto/channel.js";
-import { ExistingForkInfo, ForkInfo, GitProviderService } from './git-provider-service.js';
+import { ForkInfo, GitProviderService } from './git-provider-service.js';
 
 import { SettingsService } from './settings-service.js';
 
@@ -21,6 +21,7 @@ class GitlabService implements GitProviderService {
     constructor(
         private settingsService:SettingsService,
     ) {}
+
 
     async createFork(channel:Channel) : Promise<ForkInfo> {
         
@@ -69,7 +70,7 @@ class GitlabService implements GitProviderService {
 
     }
 
-    public async getExistingFork(channel:Channel) : Promise<ExistingForkInfo> {
+    public async getExistingFork(channel:Channel) : Promise<ForkInfo> {
 
         let settings = await this.settingsService.get()
 
@@ -102,7 +103,7 @@ class GitlabService implements GitProviderService {
                 id: results[0].id,
                 httpUrlToRepo: results[0].http_url_to_repo,
                 path: results[0].path,
-                defaultBranch: results[0].default_branch
+                branch: results[0].default_branch
             }
         }
 
@@ -129,6 +130,14 @@ class GitlabService implements GitProviderService {
 
         return response.data.import_status
 
+    }
+
+    async getIPFSActionStatus(channel: Channel): Promise<string> {
+        throw new Error("Method not implemented.");
+    }
+
+    async getIPFSActionResult(channel: Channel): Promise<any> {
+        throw new Error('Method not implemented.');
     }
 
     async commit(channel:Channel, actions:any[], gitProvider) {
@@ -173,13 +182,13 @@ class GitlabService implements GitProviderService {
         this.logPublishProgress(`Deleting existing files from repo...`)
 
 
-        let treeLink = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=backup&pagination=keyset`
+        let treeLink = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&path=.upload&pagination=keyset`
         let linkHeaders
         let actions = []
 
         do {
 
-            //Get list of current files in backup folder
+            //Get list of current files in .upload folder
             let results = await axios.get(treeLink, {
                 headers: {
                     "Authorization": `Bearer ${gitProvider.personalAccessToken}`
@@ -204,6 +213,12 @@ class GitlabService implements GitProviderService {
 
 
         if (actions?.length > 0) {
+
+            actions.push({
+                action: "delete",
+                file_path: "large-config.json"
+            })
+
 
             this.logPublishProgress(`Deleting ${actions.length} files from repo...`)
 

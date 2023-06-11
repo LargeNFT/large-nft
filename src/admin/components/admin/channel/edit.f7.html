@@ -124,11 +124,11 @@
       }
 
 
-      // let channel = Object.assign(new Channel(), channelViewModel.channel)
+      let existingChannel = Object.assign(new Channel(), channelViewModel.channel)
 
 
       //Get data
-      let channel = Object.assign(new Channel(), $f7.form.convertToData('#edit-channel-form'))
+      let channel = Object.assign(existingChannel, $f7.form.convertToData('#edit-channel-form'))
 
 
       //Get content from quill

@@ -18,7 +18,6 @@ class IpfsService {
   initializing=false
 
   constructor(
-    @inject('ipfsInit') private ipfsInit,
     @inject('ipfsRemoteInit') private ipfsRemoteInit,
   ) {}
 
@@ -29,7 +28,6 @@ class IpfsService {
     
     this.initializing = true
     
-    console.log('Init IPFS')
 
     let settings
 
@@ -38,10 +36,14 @@ class IpfsService {
     } catch(ex) {}
 
     if (settings?.ipfsHost) {
+
+      console.log('Init IPFS')
+
       this.ipfs = await this.ipfsRemoteInit(settings?.ipfsHost)
-    } else {
-      this.ipfs = await this.ipfsInit()
-    }
+
+      console.log('Init IPFS complete')
+
+    } 
 
     this.initializing = false
 
@@ -58,7 +60,6 @@ class IpfsService {
     //   // this.updateInfo()
     // })
 
-    console.log('Init IPFS complete')
 
   }
   

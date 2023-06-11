@@ -38,7 +38,6 @@ class ExportService {
             await this.itemService.listByChannel(originalChannel._id, 100000, 0)
         ))
 
-
         //Get author
         let author
         
@@ -75,6 +74,8 @@ class ExportService {
         delete channel.publishReaderRepoPath
         delete channel.publishReaderRepoBranch
         delete channel.publishReaderRepoStatus
+        delete channel.publishReaderIPFSActionStatus
+        delete channel.publishReaderIPFSActionResult
 
 
         delete channel.productionHostname

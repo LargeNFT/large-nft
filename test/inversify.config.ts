@@ -95,9 +95,6 @@ async function getContainer() {
 
     container = new Container()
 
-
-
-
     function contracts() {    
         return c
     }

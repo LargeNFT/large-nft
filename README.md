@@ -5,7 +5,7 @@
 
 **Publish and sell your work as digital collectibles!**
 
-A toolkit to publish a book, fan-fiction, blog, or art as digital collectibles. 
+Publish your book, fan-fiction, blog, or art as a series of digital collectibles. Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. Connect directly with your audience on Ethereum and other EVM-compatible networks. 
 
 **Free and open source** 
 * 100% open source JavaScript/TypeScript
@@ -199,7 +199,7 @@ Apply custom CSS formatting to an NFT/item. Create themes and apply them to mult
 
 ### Export to GitHub/GitLab
 * Create a custom fork of the Large Reader.
-* Use personal access token authentication and a CORS proxy to push content directly from your browser to GitHub and GitLab. 
+* Use a personal access token to push content directly from your browser to GitHub and GitLab. 
 
 ### Deploy contract
 * Deploy ERC-721 smart contract with minting capability to Ethereum mainnet or other compatible network.
@@ -385,6 +385,7 @@ npm run sync --  --env dev --alchemy <API key>
 
 ---
 
+
 # Large Library
 The Large Library brings together multiple reader apps to work as a single library application.
 
@@ -393,6 +394,26 @@ The Library starts with an overview page that lists each collection in the libra
 [The NFT Commons](https://golarge.app/commons/) is an example of Large Library in production.
 
 TODO: Show how to set up a library. 
+
+
+### Start Large Library Sync
+Note the -- before passing options.
+```console
+npm run sync-library --  --env dev --alchemy <API key>
+```
+
+## API
+
+| Option | Default | Description | 
+| ------------- | ------------- | ------------- |
+| --env  | production | This loads either the dev or production settings for hostname and baseURL. Also in dev mode nothing is written to the 'public' branch. |
+| --sync-dir  | . | The root directory of the channel to sync. |
+| --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
+| --sync-push-rate  | 30*1000  | Milliseconds between sync attempts. Default is 30 seconds. 
+| --clear | false  | Set to "true" to clear all data and restart tracking the library. 
+
+---
+
 
 
 # Collection Importer
@@ -407,7 +428,6 @@ Collections can be imported to the Large Library with the command-line import to
 | --contract  |   | Address of collection's Ethereum contract.
 | --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
 | --slug  |   | A slug for the collection (aka alice-in-wonderland)
-
 
 ---
 

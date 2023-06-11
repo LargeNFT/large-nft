@@ -11,11 +11,12 @@ import { ThemeRepository } from "../../repository/theme-repository.js";
 import { TokenMetadataCacheRepository } from "../../repository/token-metadata-cache-repository.js";
 import { QueryCacheRepository } from "../../repository/query-cache-repository.js";
 import { AttributeCountRepository } from "../../repository/attribute-count-repository.js";
+import { Channel } from "../../dto/channel.js";
 
 @injectable()
 class SchemaService {
 
-    // loadedChannelId:string
+    loadedChannelId:string
 
     constructor(
         private authorRepository:AuthorRepository,
@@ -56,9 +57,93 @@ class SchemaService {
         await this.staticPageRepository.load(channelId)
         await this.attributeCountRepository.load(channelId)
 
+        this.loadedChannelId = channelId
+
         console.timeEnd(`Loading channel: ${channelId}`)
 
     }
+
+    async loadChannelBackup(channelBackup:ChannelBackup) {
+
+        console.time(`Loading channel from backup`)
+
+
+        await this.loadChannel(channelBackup.channel._id)
+
+
+
+        console.log(`Loading:
+            Items: ${channelBackup.items ? channelBackup.items.length : 0}
+            Animations: ${channelBackup.animations ? channelBackup.animations.length : 0}
+            Images: ${channelBackup.images ? channelBackup.images.length : 0}
+            Themes: ${channelBackup.themes ? channelBackup.themes.length : 0}
+            Static Pages: ${channelBackup.staticPages ? channelBackup.staticPages.length : 0}
+            Attribute Counts: ${channelBackup.attributeCounts ? channelBackup.attributeCounts.length : 0}
+        `)
+
+        const prepareRows = (rows) => {
+
+            rows.map(row => {
+                delete row._rev
+                delete row['_rev_tree'] 
+            })
+
+        }
+
+
+        prepareRows(channelBackup.items)
+        prepareRows(channelBackup.animations)
+        prepareRows(channelBackup.images)
+        prepareRows(channelBackup.themes)
+        prepareRows(channelBackup.staticPages)
+        prepareRows(channelBackup.attributeCounts)
+
+
+        await this.itemRepository.db.bulkDocs(channelBackup.items)
+        await this.animationRepository.db.bulkDocs(channelBackup.animations)
+        await this.imageRepository.db.bulkDocs(channelBackup.images)
+        await this.themeRepository.db.bulkDocs(channelBackup.themes)
+        await this.staticPageRepository.db.bulkDocs(channelBackup.staticPages)
+        await this.attributeCountRepository.db.bulkDocs(channelBackup.attributeCounts)
+        
+        await this.channelRepository.db.bulkDocs([channelBackup.channel])
+
+        // console.log(await this.itemRepository.db.info().then(info => info.doc_count))
+        // console.log(await this.animationRepository.db.info().then(info => info.doc_count))
+        // console.log(await this.imageRepository.db.info().then(info => info.doc_count))
+        // console.log(await this.themeRepository.db.info().then(info => info.doc_count))
+        // console.log(await this.staticPageRepository.db.info().then(info => info.doc_count))
+        // console.log(await this.attributeCountRepository.db.info().then(info => info.doc_count))
+
+        console.timeEnd(`Loading channel from backup`)
+
+
+    }
+
+
+    async backupChannel() : Promise<ChannelBackup> {
+
+        let channel = await this.channelRepository.get(this.loadedChannelId)
+
+        let itemDocs = await this.itemRepository.db.allDocs({ include_docs: true })
+        let animationsDocs = await this.animationRepository.db.allDocs({ include_docs: true })
+        let imagesDocs = await this.imageRepository.db.allDocs({ include_docs: true })
+        let themesDocs = await this.themeRepository.db.allDocs({ include_docs: true })
+        let staticPagesDocs = await this.staticPageRepository.db.allDocs({ include_docs: true })
+        let attributeCountsDocs = await this.attributeCountRepository.db.allDocs({ include_docs: true })
+
+        return {
+            channel: channel,
+            items: itemDocs.rows.map(r => r.doc),
+            animations: animationsDocs.rows.map(r => r.doc),
+            images: imagesDocs.rows.map(r => r.doc),
+            themes: themesDocs.rows.map(r => r.doc),
+            staticPages: staticPagesDocs.rows.map(r => r.doc),
+            attributeCounts: attributeCountsDocs.rows.map(r => r.doc)
+        }
+
+    }
+
 
     async dropChannel(channelId:string) {
 
@@ -77,6 +162,17 @@ class SchemaService {
 
 }
 
+interface ChannelBackup {
+    channel:Channel,
+    items: any,
+    animations: any,
+    images: any,
+    themes: any,
+    staticPages: any,
+    attributeCounts: any
+}
+
+
 export {
-    SchemaService
+    SchemaService, ChannelBackup
 }

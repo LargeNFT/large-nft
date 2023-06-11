@@ -3,7 +3,6 @@ import { Container } from "inversify";
 
 import fs from "fs"
 
-// import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
 
 import PouchDB from 'pouchdb-node';
@@ -153,18 +152,6 @@ function getMainContainer(config) {
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
-
-
-  container.bind("ipfsInit").toConstantValue( async () => {
-
-    const IPFS = await Function('return import("ipfs")')() as Promise<typeof import('ipfs')>
-
-    //@ts-ignore
-    return IPFS.create({
-      repo: '../data/ipfs-repo'
-    })
-
-  })
 
   container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
     if (!url) return

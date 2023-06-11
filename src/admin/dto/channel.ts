@@ -118,6 +118,12 @@ class Channel {
     publishReaderRepoStatus?:string
 
     @Allow()
+    publishReaderIPFSActionStatus?:string
+
+    @Allow()
+    publishReaderIPFSActionResult?:any
+
+    @Allow()
     pubDate?:string
 
 

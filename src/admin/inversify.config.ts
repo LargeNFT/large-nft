@@ -47,7 +47,6 @@ import { ChannelController } from './controller/channel-controller.js'
 import { ItemController } from './controller/item-controller.js'
 import { AuthorController } from './controller/author-controller.js';
 import { SettingsController } from './controller/settings-controller.js';
-import { PublishService } from './service/core/publish-service.js';
 import { ConnectController } from './controller/connect-controller.js';
 import { PublishController } from './controller/publish-controller.js';
 import { PagingService } from './service/core/paging-service.js';
@@ -61,7 +60,7 @@ import { ImportService } from './service/core/import-service.js';
 import { ERCEventService } from './service/core/erc-event-service.js';
 import { QueryCacheService } from './service/core/query-cache-service.js';
 
-import * as IPFS from 'ipfs-core'
+// import * as IPFS from 'ipfs-core'
 import { create } from 'ipfs-http-client'
 
 
@@ -109,6 +108,7 @@ import { GithubService } from './service/core/github-service.js';
 
 import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
+import { PublishService } from './service/core/publish-service.js';
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
@@ -277,35 +277,6 @@ function getMainContainer(version:string) {
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
 
 
-  container.bind("ipfsInit").toConstantValue( async () => {
-
-    return IPFS.create({
-      // repo: Math.random().toString(36).substring(7),
-      repo: 'large',
-      preload: { enabled: false },
-      relay: {
-        enabled: true, // enable relay dialer/listener (STOP)
-        hop: {
-          enabled: true // make this node a relay (HOP)
-        }
-      },
-      config: {
-        Addresses: {
-          Swarm: [
-            // This is a public webrtc-star server
-            // '/dns4/quiet-eyrie-88477.herokuapp.com/tcp/443/wss/p2p-webrtc-star',
-            // '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star',
-            // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
-            // '/ip4/127.0.0.1/tcp/4003/ws/p2p/12D3KooWSDvhHLC79A3V2jZXzeHFv4vBDirQWJuHZLza8grvo3Cm'
-            // '/ip4/127.0.0.1/tcp/9092/wss/p2p-webrtc-star'
-
-          ]
-        }
-      }
-
-    })
-
-  })
 
   container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
     if (!url) return

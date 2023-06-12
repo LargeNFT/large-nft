@@ -232,6 +232,18 @@ let generate = async () => {
   await generateService.generateAttributeItems(config, baseViewModel.attributeReport)
 
 
+  if (!fs.existsSync(`${config.channelDir}/sync/transactions`)) {
+    fs.mkdirSync(`${config.channelDir}/sync/transactions`, { recursive: true })
+  }
+
+  if (!fs.existsSync(`${config.channelDir}/sync/home.json`)) {
+    fs.writeFileSync(`${config.channelDir}/sync/home.json`, Buffer.from(JSON.stringify({})))
+  }
+
+  if (!fs.existsSync(`${config.channelDir}/sync/transactions/latest.json`)) {
+    fs.writeFileSync(`${config.channelDir}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({})))
+  }
+
   console.log("Generation complete")
 
 }

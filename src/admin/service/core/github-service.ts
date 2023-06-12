@@ -263,7 +263,7 @@ class GithubService implements GitProviderService {
             
             let result = await this.getMostRecentActionRun(channel, gitProvider)
 
-            if (result.conclusion == "success" && (!channel.publishReaderIPFSActionResult?.dateCreated || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSActionResult.dateCreated)))) {
+            if (result?.conclusion == "success" && (!channel.publishReaderIPFSActionResult?.dateCreated || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSActionResult.dateCreated)))) {
                 return "finished"
             }
 

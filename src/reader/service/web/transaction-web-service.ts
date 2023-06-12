@@ -20,7 +20,16 @@ class TransactionWebService {
     ) {}
 
     async getHomeViewModel() {
-        let result = await axios.get(`${this.baseURI()}sync/home.json`)
+
+        let result = await axios.get(`${this.baseURI()}sync/home.json`, {
+            // query URL without using browser cache
+            headers: {
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache',
+              'Expires': '0',
+            },
+        })
+
         return result.data
     }
 

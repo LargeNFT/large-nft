@@ -232,8 +232,8 @@ let generate = async () => {
   await generateService.generateAttributeItems(config, baseViewModel.attributeReport)
 
 
-  if (!fs.existsSync(`${config.channelDir}/sync/transactions`)) {
-    fs.mkdirSync(`${config.channelDir}/sync/transactions`, { recursive: true })
+  if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
+    fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
   }
 
   if (!fs.existsSync(`${config.publicPath}/sync/home.json`)) {

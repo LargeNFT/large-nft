@@ -236,14 +236,14 @@ let generate = async () => {
     fs.mkdirSync(`${config.channelDir}/sync/transactions`, { recursive: true })
   }
 
-  if (!fs.existsSync(`${config.channelDir}/sync/home.json`)) {
-    console.log(`Creating ${config.channelDir}/sync/home.json`)
-    fs.writeFileSync(`${config.channelDir}/sync/home.json`, Buffer.from(JSON.stringify({})))
+  if (!fs.existsSync(`${config.publicPath}/sync/home.json`)) {
+    console.log(`Creating ${config.publicPath}/sync/home.json`)
+    fs.writeFileSync(`${config.publicPath}/sync/home.json`, Buffer.from(JSON.stringify({})))
   }
 
-  if (!fs.existsSync(`${config.channelDir}/sync/transactions/latest.json`)) {
-    console.log(`Creating ${config.channelDir}/sync/transactions/latest.json`)
-    fs.writeFileSync(`${config.channelDir}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({})))
+  if (!fs.existsSync(`${config.publicPath}/sync/transactions/latest.json`)) {
+    console.log(`Creating ${config.publicPath}/sync/transactions/latest.json`)
+    fs.writeFileSync(`${config.publicPath}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({})))
   }
 
   console.log("Generation complete")

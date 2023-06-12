@@ -277,6 +277,7 @@ class PublishService {
                 "showMintPage": channel.showMintPage,
                 "showActivityPage": channel.showActivityPage,
                 "hostname": channel.productionHostname,
+                "libraryURL": channel.productionBaseLibraryURI,
                 "baseURL": channel.productionBaseURI,
                 "externalLinks": channel.externalLinks,
                 "marketplaces": channel.marketplaces

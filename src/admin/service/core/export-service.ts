@@ -79,6 +79,7 @@ class ExportService {
 
 
         delete channel.productionHostname
+        delete channel.productionBaseLibraryURI
         delete channel.productionBaseURI
         delete channel.showMintPage
         delete channel.showActivityPage

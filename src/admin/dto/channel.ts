@@ -136,6 +136,9 @@ class Channel {
     productionBaseURI?:string
 
     @Allow()
+    productionBaseLibraryURI?:string
+
+    @Allow()
     showMintPage?:boolean
 
     @Allow()

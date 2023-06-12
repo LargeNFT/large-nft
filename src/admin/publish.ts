@@ -70,6 +70,10 @@ let publish = async () => {
   //export to IPFS
   let result = await publishService.publish(channelBackup.channel, process.env.INIT_CWD )
 
+  if (fs.existsSync(`${process.env.INIT_CWD   }/large-config.json`)) {
+    fs.rmSync(`${process.env.INIT_CWD   }/large-config.json`)
+  }
+
 
   //Write files to local filesystem
   for (let action of result.fsActions) {

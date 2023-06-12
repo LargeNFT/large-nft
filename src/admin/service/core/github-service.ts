@@ -46,7 +46,7 @@ class GithubService implements GitProviderService {
             owner: gitProvider.username,
             name: this.getBranchName(channel),
             include_all_branches: false,
-            'private': true
+            'private': false
 
         }, {
             headers: {

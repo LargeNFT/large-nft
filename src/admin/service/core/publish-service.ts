@@ -277,9 +277,10 @@ class PublishService {
                 "showMintPage": channel.showMintPage,
                 "showActivityPage": channel.showActivityPage,
                 "hostname": channel.productionHostname,
-                "baseURL": channel.productionBaseURI
-            } )),
-            keepExisting: true
+                "baseURL": channel.productionBaseURI,
+                "externalLinks": channel.externalLinks,
+                "marketplaces": channel.marketplaces
+            } ))
         })
 
 

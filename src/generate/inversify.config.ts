@@ -5,7 +5,6 @@ import { AttributeTotalRepository } from "../reader/repository/attribute-total-r
 import { AuthorRepository } from "../reader/repository/author-repository.js";
 import { ChannelRepository } from "../reader/repository/channel-repository.js";
 import { ComponentStateRepository } from "../reader/repository/component-state-repository.js";
-import { ContractStateRepository } from "../sync/repository/contract-state-repository.js";
 import { ImageRepository } from "../reader/repository/image-repository.js";
 import { ItemPageRepository } from "../reader/repository/item-page-repository.js";
 import { ItemRepository } from "../reader/repository/item-repository.js";
@@ -45,7 +44,6 @@ import { ItemWebService } from "../reader/service/web/item-web-service.js";
 import { SearchbarService } from "../reader/service/web/searchbar-service.js";
 import { ReaderSettings } from "../reader/dto/reader-settings.js";
 import { ComponentState } from "../reader/dto/component-state.js";
-import { ethers } from "ethers"
 import { GenerateService } from "../reader/service/core/generate-service.js";
 
 

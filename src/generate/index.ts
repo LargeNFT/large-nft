@@ -237,10 +237,12 @@ let generate = async () => {
   }
 
   if (!fs.existsSync(`${config.channelDir}/sync/home.json`)) {
+    console.log(`Creating ${config.channelDir}/sync/home.json`)
     fs.writeFileSync(`${config.channelDir}/sync/home.json`, Buffer.from(JSON.stringify({})))
   }
 
   if (!fs.existsSync(`${config.channelDir}/sync/transactions/latest.json`)) {
+    console.log(`Creating ${config.channelDir}/sync/transactions/latest.json`)
     fs.writeFileSync(`${config.channelDir}/sync/transactions/latest.json`, Buffer.from(JSON.stringify({})))
   }
 

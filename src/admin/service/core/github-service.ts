@@ -313,20 +313,26 @@ class GithubService implements GitProviderService {
 
     async getProductionURIInfo(channel: Channel): Promise<any> {
         
-        let settings = await this.settingsService.get()
 
-        let gitProvider = settings.gitProviders["github"]
+        function getGitHubUsername(url) {
 
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error("Gitlab personal access token not set")
-        }
+            const path = url.replace("https://github.com/", "");
+          
+            // Split the remaining path into parts
+            const parts = path.split("/");
+          
+            // Extract the username and repository name
+            const username = parts[0];
+            
+            return username
+
+          }
+
 
         return {
-            hostname: `https://${gitProvider.username}.github.io`,
+            hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.github.io`,
             baseURI: `/${this.getBranchName(channel)}/`
         }
-
-
 
     }
 

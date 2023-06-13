@@ -140,6 +140,10 @@ class GitlabService implements GitProviderService {
         throw new Error('Method not implemented.');
     }
 
+    async getProductionURIInfo(channel: Channel): Promise<any> {
+        throw new Error("Method not implemented.");
+    }
+
     async commit(channel:Channel, actions:any[], gitProvider) : Promise<string> {
 
         for (let action of actions) {

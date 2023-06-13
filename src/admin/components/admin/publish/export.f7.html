@@ -152,7 +152,7 @@
                                         ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" ? $h`
                                             <strong>IPFS cid:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
                                             <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}<br />
-                                            <strong>Archive:</strong> <a href="${channelViewModel.channel.publishReaderIPFSStatus?.archive}">${channelViewModel.channel.publishReaderIPFSStatus?.archive}</a>
+                                            <strong>Archive:</strong> <a href="${channelViewModel.channel.publishReaderIPFSStatus?.archive}" class="link external">${channelViewModel.channel.publishReaderIPFSStatus?.archive}</a>
                                         ` : $h` `}
 
                                     </div>
@@ -448,6 +448,8 @@
                 //Get the new IPFS hash
                 channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
                 channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
+
+                await $update()
 
                 await channelService.put(channelViewModel.channel)
 

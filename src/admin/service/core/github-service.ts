@@ -20,6 +20,7 @@ class GithubService implements GitProviderService {
         private settingsService: SettingsService,
     ) { }
 
+
     async createFork(channel: Channel): Promise<ForkInfo> {
 
         console.log(`Creating reader fork...`)
@@ -299,7 +300,7 @@ class GithubService implements GitProviderService {
 
             let result = JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString())
 
-            result.archive = `${channel.httpUrlToRepo}`
+            result.archive = `${channel.httpUrlToRepo}/blob/master/ipfs/${result.cid}.car`
 
             return result
 
@@ -310,7 +311,24 @@ class GithubService implements GitProviderService {
 
     }
 
+    async getProductionURIInfo(channel: Channel): Promise<any> {
+        
+        let settings = await this.settingsService.get()
 
+        let gitProvider = settings.gitProviders["github"]
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        return {
+            hostname: `https://${gitProvider.username}.github.io`,
+            baseURI: `/${this.getBranchName(channel)}/`
+        }
+
+
+
+    }
 
     private async getMostRecentActionRun(channel, gitProvider) {
 

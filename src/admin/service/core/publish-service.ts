@@ -121,15 +121,6 @@ class PublishService {
         await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
         
 
-        //Adding and then copying otherwise the CID does not match what we'd expect. 
-        // let contractResult = await this.ipfsService.ipfs.add({
-        //     content: new TextEncoder().encode(JSON.stringify(contractMetadata))
-        // })
-
-        // await this.ipfsService.ipfs.files.cp(`/ipfs/${contractResult.cid.toString()}`, contractMetadataPath, { create: true, parents: true, flush:flush })
-
-
-
         let stat = await this.ipfsService.ipfs.files.stat(contractMetadataPath)
         
         publishStatus.contractMetadata.saved = 1
@@ -269,6 +260,8 @@ class PublishService {
             })
         }
 
+        let productionURIInfo = await this.gitService.getProductionURIInfo(channel)
+
 
         //Copy a large-config.json to GitHub
         fsActions.push({
@@ -276,9 +269,9 @@ class PublishService {
             content: Buffer.from(JSON.stringify({
                 "showMintPage": channel.showMintPage,
                 "showActivityPage": channel.showActivityPage,
-                "hostname": channel.productionHostname,
+                "hostname": channel.productionHostname ? channel.productionHostname : productionURIInfo.hostname,
                 "libraryURL": channel.productionBaseLibraryURI,
-                "baseURL": channel.productionBaseURI,
+                "baseURL": channel.productionBaseURI ? channel.productionBaseURI : productionURIInfo.baseURI,
                 "externalLinks": channel.externalLinks,
                 "marketplaces": channel.marketplaces
             } ))

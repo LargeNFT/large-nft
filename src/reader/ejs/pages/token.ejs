@@ -182,16 +182,18 @@
 
                            
                                 ` : $h`
-
-                                    <div class="card data-table">
-                                        <div class="card-header">
-                                            Activity
-                                            <div class="last-updated">Last updated: ${moment(transactionsViewModel?.lastUpdated).fromNow()}</div>
+                                    
+                                    ${latest?.lastUpdated $h`
+                                        <div class="card data-table">
+                                            <div class="card-header">
+                                                Activity
+                                                <div class="last-updated">Last updated: ${moment(transactionsViewModel?.lastUpdated).fromNow()}</div>
+                                            </div>
+                                            <div class="card-content card-content-padding">
+                                                No activity.
+                                            </div>
                                         </div>
-                                        <div class="card-content card-content-padding">
-                                            No activity.
-                                        </div>
-                                    </div>
+                                    ` : $h` `}
                                 
                                 `}
               
@@ -450,6 +452,7 @@
             let swiper
 
             let transactionsViewModel
+            let latest
 
             let token
             let tokenOwnerDisplay
@@ -537,9 +540,9 @@
 
                 try  {
 
-                    let latest = await transactionWebService.getLatest()
+                    latest = await transactionWebService.getLatest()
 
-                    if (latest.latestToken && tokenId <= latest.latestToken) {
+                    if (latest?.latestToken && tokenId <= latest.latestToken) {
 
                         token = await tokenService.get(tokenId)
 

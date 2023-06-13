@@ -106,7 +106,7 @@ class GitService implements GitProviderService {
 
             case "github":
 
-                await this.githubService.deleteReaderBackup(channel, gitProvider)
+                // await this.githubService.deleteReaderBackup(channel, gitProvider)
                 await this.githubService.commit(channel, gitActions, gitProvider)
 
                 break

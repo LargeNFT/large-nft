@@ -36,7 +36,7 @@
     
                         <div class="card card-header-divider">
                             <div class="card-content card-content-padding">      
-                                                      
+
                                 ${publishing ? $h`
                                     <div class="publish-label">
                                         Exporting...
@@ -148,8 +148,8 @@
                                     <div class="pin-status">
                                         
                                         <strong>Last Exported</strong><br />
-                                        <strong>IPFS Hash:</strong> ${channelViewModel.channel.localCid}<br />
-                                        <strong>Date:</strong> ${moment(channelViewModel.channel.localPubDate).format('MMMM Do YYYY, h:mm:ss a')}
+                                        <strong>IPFS Hash:</strong> ${channelViewModel.channel.publishReaderIPFSActionResult?.cid}<br />
+                                        <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSActionResult?.date).format('MMMM Do YYYY, h:mm:ss a')}
 
                                     </div>
     
@@ -323,7 +323,7 @@
         let publishOutput = ""
 
 
-        let showCurrentCid = channelViewModel.channel.localCid?.length > 0
+        let showCurrentCid = channelViewModel.channel.publishReaderIPFSActionStatus == "complete"
 
         let pageUnloaded = false
 
@@ -424,7 +424,6 @@
 
 
         const checkIPFSActionStatus = async (e) => {
-
             if (pageUnloaded) return
             if (!settings) return
             if (channelViewModel.channel.publishReaderIPFSActionStatus == "complete") return
@@ -437,14 +436,12 @@
 
             let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
 
+
             if (ipfsActionStatus == "finished") { //TODO
 
                 //Get the new IPFS hash
-
-
-                channelViewModel.channel.localCid = ""
+                channelViewModel.channel.publishReaderIPFSActionResult = await gitService.getIPFSActionResult(channelViewModel.channel)
                 channelViewModel.channel.publishReaderIPFSActionStatus = "complete"
-                channelViewModel.channel.localPubDate = new Date().toJSON()
 
                 await channelService.put(channelViewModel.channel)
 

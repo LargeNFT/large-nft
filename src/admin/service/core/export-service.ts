@@ -64,8 +64,6 @@ class ExportService {
 
         //Remove publishing related field from channel
         delete channel.contractAddress
-        delete channel.localCid
-        delete channel.localPubDate
         delete channel.pinJobId
         delete channel.pinJobStatus
         delete channel.publishedCid

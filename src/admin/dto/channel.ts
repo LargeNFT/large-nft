@@ -89,14 +89,7 @@ class Channel {
     pinJobStatus?:string
 
     @Allow()
-    localCid?:string
-
-    @Allow()
-    localPubDate?:string
-
-    @Allow()
     publishedCid?:string
-
 
 
     @Allow()

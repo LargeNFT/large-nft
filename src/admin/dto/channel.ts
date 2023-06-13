@@ -111,10 +111,7 @@ class Channel {
     publishReaderRepoStatus?:string
 
     @Allow()
-    publishReaderIPFSActionStatus?:string
-
-    @Allow()
-    publishReaderIPFSActionResult?:any
+    publishReaderIPFSStatus?:any
 
     @Allow()
     pubDate?:string

@@ -97,15 +97,24 @@ let publish = async () => {
 
   }
 
+  //Export JSON with info
+  if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs.json`)) {
+    fs.rmSync(`${process.env.INIT_CWD   }/ipfs.json`)
+  }
+
+
+    //Export JSON with info
+    if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs.car`)) {
+      fs.rmSync(`${process.env.INIT_CWD   }/ipfs.car`)
+    }
+
+
 
   //Export car file
   const out = await ipfsService.ipfs.dag.export(result.cid)
   Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs.car`))
 
-  //Export JSON with info
-  if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs.json`)) {
-    fs.rmSync(`${process.env.INIT_CWD   }/ipfs.json`)
-  }
+
 
 
   fs.writeFileSync(`${process.env.INIT_CWD}/ipfs.json`, Buffer.from(JSON.stringify({

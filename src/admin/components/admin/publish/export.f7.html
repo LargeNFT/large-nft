@@ -143,13 +143,15 @@
                                 `}
     
     
-                                ${showCurrentCid ? $h`
+                                ${channelViewModel.channel.publishReaderIPFSStatus?.status ? $h`
     
-                                    <div class="pin-status">
-                                        
-                                        <strong>Last Exported</strong><br />
-                                        <strong>IPFS Hash:</strong> ${channelViewModel.channel.publishReaderIPFSActionResult?.cid}<br />
-                                        <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSActionResult?.date).format('MMMM Do YYYY, h:mm:ss a')}
+                                    <div class="pin-status">                                        
+                                        <strong>Status:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.status}<br />
+
+                                        ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" ? $h`
+                                            <strong>IPFS Hash:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
+                                            <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}
+                                        ` : $h` `}
 
                                     </div>
     
@@ -160,12 +162,8 @@
     
                                     
                                     ${showRefresh ? $h`
-    
-                                        <div class="chip chip-outline">
-                                            <div class="chip-label">Success!</div>
-                                        </div>
-    
-                                        <button type="submit" class="button button-fill color-gray text-color-white" id="export-refresh-button">
+        
+                                        <button type="submit" class="button button-fill button-small color-gray text-color-white deploy-button">
                                             <i class="material-icons">refresh</i> Export Again
                                         </button>
     
@@ -271,13 +269,13 @@
         width: 180px;
     }
 
-    #export-refresh-button {
+    /* #export-refresh-button {
         width: 45px;
         height: 30px;
         display: inline-block;
         margin-left: 5px;
         padding-top: 2.5px;
-    }
+    } */
 
     #export-next-button {
         width: 200px;
@@ -323,11 +321,9 @@
         let publishOutput = ""
 
 
-        let showCurrentCid = channelViewModel.channel.publishReaderIPFSActionStatus == "complete"
-
         let pageUnloaded = false
 
-        let showRefresh = false
+        let showRefresh = channelViewModel?.channel.publishReaderIPFSStatus?.status == "pending"
 
         let hasItems = channelViewModel.itemCount > 0 
         let gitConfigured = channelViewModel?.gitProvider?.personalAccessToken?.length > 0
@@ -372,7 +368,6 @@
 
             let formData = $f7.form.convertToData('#export-form')
 
-            showCurrentCid = false
             publishing = true
 
             await $update()
@@ -386,7 +381,10 @@
                 
                 await gitService.deployReader(channelViewModel.channel)
 
-                channelViewModel.channel.publishReaderIPFSActionStatus = "pending"
+                channelViewModel.channel.publishReaderIPFSStatus = {
+                    status: "pending"
+                }
+
                 await channelService.put(channelViewModel.channel)
 
             } catch(ex) {
@@ -399,6 +397,8 @@
 
             publishing = false
             showRefresh = true
+
+            await checkIPFSActionStatus()
 
             await $update()
 
@@ -424,9 +424,10 @@
 
 
         const checkIPFSActionStatus = async (e) => {
+
             if (pageUnloaded) return
             if (!settings) return
-            if (channelViewModel.channel.publishReaderIPFSActionStatus == "complete") return
+            if (channelViewModel.channel.publishReaderIPFSStatus.status == "complete") return
             if (publishing) return
 
             console.log('Checking IPFS action workflow status...')
@@ -436,16 +437,15 @@
 
             let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
 
+            console.log(ipfsActionStatus)
 
             if (ipfsActionStatus == "finished") { //TODO
 
                 //Get the new IPFS hash
-                channelViewModel.channel.publishReaderIPFSActionResult = await gitService.getIPFSActionResult(channelViewModel.channel)
-                channelViewModel.channel.publishReaderIPFSActionStatus = "complete"
+                channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
+                channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
 
                 await channelService.put(channelViewModel.channel)
-
-                showCurrentCid = true
 
                 let elem = document.getElementsByClassName('content-card-padding')[0]
                 $f7.preloader.hideIn(elem)
@@ -455,7 +455,7 @@
 
             await $update()
 
-            if (channelViewModel.channel.publishReaderIPFSActionStatus != "complete") {
+            if (channelViewModel.channel.publishReaderIPFSStatus.status != "complete") {
                 setTimeout(checkIPFSActionStatus, 5000)
             }
 

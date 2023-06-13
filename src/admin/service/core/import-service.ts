@@ -142,8 +142,8 @@ class ImportService {
 
         importBundle.channels[0].contractAddress = contractAddress
 
-        importBundle.channels[0].publishReaderIPFSActionResult = {}
-        importBundle.channels[0].publishReaderIPFSActionResult.cid = ipfsCid
+        importBundle.channels[0].publishReaderIPFSStatus = {}
+        importBundle.channels[0].publishReaderIPFSStatus.cid = ipfsCid
 
         return this._importExisting(
             importBundle.authors, 
@@ -166,7 +166,7 @@ class ImportService {
 
 
         delete importBundle.channels[0].contractAddress
-        delete importBundle.channels[0].publishReaderIPFSActionResult
+        delete importBundle.channels[0].publishReaderIPFSStatus
 
         //Set the new name
         importBundle.channels[0].title = title

@@ -263,7 +263,7 @@ class GithubService implements GitProviderService {
             
             let result = await this.getMostRecentActionRun(channel, gitProvider)
 
-            if (result?.conclusion == "success" && (!channel.publishReaderIPFSActionResult?.dateCreated || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSActionResult.dateCreated)))) {
+            if (result?.conclusion == "success" && (!channel.publishReaderIPFSStatus?.dateCreated || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSStatus.dateCreated)))) {
                 return "finished"
             }
 
@@ -293,7 +293,9 @@ class GithubService implements GitProviderService {
                 }
             })
 
-            return ipfsJsonResults.data
+            console.log(JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString()))
+
+            return JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString())
 
         } catch(ex) {
             console.log(ex)

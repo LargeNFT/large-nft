@@ -61,7 +61,7 @@ class PinningService {
     async pinByHash(pinningApi:PinningApi, channel:Channel) {
 
         let body = {
-            cid: channel.publishReaderIPFSActionResult?.cid, //never tested
+            cid: channel.publishReaderIPFSStatus?.cid, //never tested
             name: channel.title
         }
 

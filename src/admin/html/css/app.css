@@ -1219,3 +1219,7 @@ input[type="text"]:disabled {
   grid-template-columns: 80% 20%;
   gap: 10px;
 }
+
+.pin-status {
+  margin-top: 15px;
+}

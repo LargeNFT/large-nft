@@ -245,7 +245,7 @@ class PublishService {
                 file_path: `${baseDir}/backup/contract/contract.json`,
                 content: Buffer.from(JSON.stringify({ 
                     contractAddress: channel.contractAddress,
-                    ipfsCid: channel.publishReaderIPFSActionResult?.cid
+                    ipfsCid: channel.publishReaderIPFSStatus?.cid
                 }))
 
             })
@@ -335,7 +335,7 @@ class PublishService {
             file_path: "/backup/contract/contract.json",
             content: Buffer.from(JSON.stringify({ 
                 contractAddress: channel.contractAddress,
-                ipfsCid: channel.publishReaderIPFSActionResult?.cid
+                ipfsCid: channel.publishReaderIPFSStatus?.cid
             }))
         })
 
@@ -722,7 +722,7 @@ class PublishService {
 
     async deployContract(channel: Channel) {
 
-        if (!channel.publishReaderIPFSActionResult?.cid) {
+        if (!channel.publishReaderIPFSStatus?.cid) {
             throw new Error("Not published to IPFS")
         }
 
@@ -734,7 +734,7 @@ class PublishService {
 
         //Deploy contract
         let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')        
-        let receipt = await this.deploy(channel.title, channel.symbol, channel.publishReaderIPFSActionResult?.cid, mintPriceWei.toString(), count)
+        let receipt = await this.deploy(channel.title, channel.symbol, channel.publishReaderIPFSStatus?.cid, mintPriceWei.toString(), count)
 
         //Update address locally
         channel.contractAddress = receipt.contractAddress

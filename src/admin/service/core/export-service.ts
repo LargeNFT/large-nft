@@ -72,8 +72,7 @@ class ExportService {
         delete channel.publishReaderRepoPath
         delete channel.publishReaderRepoBranch
         delete channel.publishReaderRepoStatus
-        delete channel.publishReaderIPFSActionStatus
-        delete channel.publishReaderIPFSActionResult
+        delete channel.publishReaderIPFSStatus
 
 
         delete channel.productionHostname

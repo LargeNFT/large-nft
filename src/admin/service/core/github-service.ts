@@ -291,13 +291,17 @@ class GithubService implements GitProviderService {
         try {
 
             //Get ipfs.json from repo
-            const ipfsJsonResults = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/contents/ipfs.json`, {
+            const ipfsJsonResults = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/contents/ipfs/ipfs.json`, {
                 headers: {
                     "Authorization": `Bearer ${gitProvider.personalAccessToken}`
                 }
             })
 
-            return JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString())
+            let result = JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString())
+
+            result.archive = `${channel.httpUrlToRepo}`
+
+            return result
 
         } catch(ex) {
             console.log(ex)

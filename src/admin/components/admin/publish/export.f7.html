@@ -147,11 +147,12 @@
                                 ${channelViewModel.channel.publishReaderIPFSStatus?.status ? $h`
     
                                     <div class="pin-status"> 
-                                        <strong>Status:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.status}<br />
+                                        <strong>Build Status:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.status}<br />
 
                                         ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" ? $h`
-                                            <strong>IPFS Hash:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
-                                            <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}
+                                            <strong>IPFS cid:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
+                                            <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}<br />
+                                            <strong>Archive:</strong> <a href="${channelViewModel.channel.publishReaderIPFSStatus?.archive}">${channelViewModel.channel.publishReaderIPFSStatus?.archive}</a>
                                         ` : $h` `}
 
                                     </div>

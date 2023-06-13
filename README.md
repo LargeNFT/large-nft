@@ -457,21 +457,5 @@ These project(s) showcase the basic features of the Large Reader. These projects
 * [Alice's Adventures in Wonderland](https://readalice.com)
 
 
-# CORS
-
-## Enable CORS to publish to IPFS
-To publish to a hosted IPFS node:
-
-1. Set the Remote IPFS API url in the Large Admin settings.
-    * http://localhost:5001/api/v0 for local.
-2. Configure the local node to set the proper CORS headers. Otherwise the browser will block any requests.
-
-```console
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["GET", "POST", "PUT", "OPTIONS"]'
-```
-
-
-
 # Tests
 Need more tests.

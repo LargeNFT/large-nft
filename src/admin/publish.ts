@@ -77,7 +77,7 @@ let publish = async () => {
   }
 
   if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs`)) {
-    fs.rmdirSync(`${process.env.INIT_CWD   }/ipfs`)
+    fs.rmdirSync(`${process.env.INIT_CWD   }/ipfs`, { recursive: true })
   } 
 
   fs.mkdirSync(`${process.env.INIT_CWD   }/ipfs`, { recursive: true })
@@ -105,20 +105,12 @@ let publish = async () => {
 
   }
 
-  //Export JSON with info
-  if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs.json`)) {
-    fs.rmSync(`${process.env.INIT_CWD   }/ipfs.json`)
-  }
-
-
   //Export car file
   const out = await ipfsService.ipfs.dag.export(result.cid)
   Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.cid}.car`))
 
 
-
-
-  fs.writeFileSync(`${process.env.INIT_CWD}/ipfs.json`, Buffer.from(JSON.stringify({
+  fs.writeFileSync(`${process.env.INIT_CWD}/ipfs/ipfs.json`, Buffer.from(JSON.stringify({
     cid: result.cid,
     date: new Date().toUTCString()
   })))

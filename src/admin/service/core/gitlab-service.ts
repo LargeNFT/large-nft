@@ -140,7 +140,7 @@ class GitlabService implements GitProviderService {
         throw new Error('Method not implemented.');
     }
 
-    async commit(channel:Channel, actions:any[], gitProvider) {
+    async commit(channel:Channel, actions:any[], gitProvider) : Promise<string> {
 
         for (let action of actions) {
             action.encoding = "base64"
@@ -168,7 +168,7 @@ class GitlabService implements GitProviderService {
 
         }
 
-
+        return ""
 
     }
 

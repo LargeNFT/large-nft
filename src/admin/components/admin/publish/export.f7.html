@@ -318,6 +318,7 @@
         let settings = props.settings
 
         let publishing = false
+        let checkingStatus = false
         let publishStatus 
         let publishOutput = ""
 
@@ -380,10 +381,11 @@
             //Now publish
             try {
                 
-                await gitService.deployReader(channelViewModel.channel)
+                let headSha = await gitService.deployReader(channelViewModel.channel)
 
                 channelViewModel.channel.publishReaderIPFSStatus = {
-                    status: "pending"
+                    status: "pending",
+                    headSha: headSha
                 }
 
                 await channelService.put(channelViewModel.channel)
@@ -430,15 +432,15 @@
             if (!settings) return
             if (channelViewModel.channel.publishReaderIPFSStatus.status == "complete") return
             if (publishing) return
+            if (checkingStatus) return 
 
             console.log('Checking IPFS action workflow status...')
 
+            checkingStatus = true
+
             channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
-
             let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
-
-            console.log(ipfsActionStatus)
 
             if (ipfsActionStatus == "finished") { //TODO
 
@@ -451,11 +453,12 @@
                 let elem = document.getElementsByClassName('content-card-padding')[0]
                 $f7.preloader.hideIn(elem)
 
-
             }
 
             await $update()
 
+            checkingStatus = false
+            
             if (channelViewModel.channel.publishReaderIPFSStatus.status != "complete") {
                 setTimeout(checkIPFSActionStatus, 5000)
             }

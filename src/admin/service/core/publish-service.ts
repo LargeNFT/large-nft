@@ -452,25 +452,6 @@ class PublishService {
 
     }
 
-    // private async _publishAnimationsGit(gitActions:any[], animations:Animation[]) {
-
-    //     for (let animation of animations) {
-
-    //         let animationContent = {
-    //             content: animation.content
-    //         }
-
-    //         //Add to git
-    //         gitActions.push({
-    //             action: "create",
-    //             file_path: `/backup/export/animations/${animation.cid}.html`,
-    //             content: Buffer.from(animationContent.content)
-    //         })
-
-    //     }
-
-    // }
-
     private async _publishAnimationsFS(baseDir:string, fsActions:any[], animations:Animation[]) {
 
         for (let animation of animations) {
@@ -537,35 +518,6 @@ class PublishService {
 
 
     }
-
-    // private async _publishImagesGit(gitActions:any[], images:Image[]) {
-
-    //     for (let image of images) {
-            
-    //         let content 
-
-    //         if (image.buffer) {
-    //             if (content instanceof Uint8Array) {
-    //                 content = image.buffer
-    //             } else {
-    //                 //@ts-ignore
-    //                 content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
-    //             }
-    //         } else if (image.svg) {
-    //             content = Buffer.from(image.svg)
-    //         }
-
-    //         //Add to git. 
-    //         gitActions.push({
-    //             action: "create",
-    //             file_path: `/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,
-    //             content: content
-    //         })
-
-    //     }
-
-
-    // }
 
     private async _publishImagesFS(baseDir:string, fsActions:any[], images:Image[]) {
 
@@ -666,33 +618,6 @@ class PublishService {
         return gitActions
 
     }
-
-    // private async _publishNFTMetadataGit(gitActions:any[], channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string) {
-
-    //     let metadataNFTMap = {}
-
-    //     for (let item of items) {
-
-    //         let coverImage:Image = await this.imageService.get(item.coverImageId)
-    //         let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
-            
-    //         let content = new TextEncoder().encode(JSON.stringify(nftMetadata))
-    //         let contentCid = await Hash.of(content)
-
-    //         metadataNFTMap[contentCid] = nftMetadata
-
-    //         let nft = metadataNFTMap[contentCid]
-
-    //         //Save to git
-    //         gitActions.push({
-    //             action: "create",
-    //             file_path: `/backup/export/metadata/${nft.tokenId}.json`,
-    //             content: Buffer.from(JSON.stringify(nftMetadata))
-    //         })
-
-    //     }
-
-    // }
 
     private async _publishNFTMetadataFS(baseDir:string, fsActions:any[], channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string) {
 

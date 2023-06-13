@@ -11,7 +11,7 @@ import { GithubService } from "./github-service.js";
 import { SchemaService } from "./schema-service.js";
 
 @injectable()
-class GitService implements GitProviderService {
+class GitService {
 
     fs
 
@@ -98,16 +98,12 @@ class GitService implements GitProviderService {
             case "gitlab":
 
                 await this.gitlabService.deleteReaderBackup(channel, gitProvider)
-                await this.gitlabService.commit(channel, gitActions, gitProvider)
+                return this.gitlabService.commit(channel, gitActions, gitProvider)
                 
-                break
-
             case "github":
 
                 // await this.githubService.deleteReaderBackup(channel, gitProvider)
-                await this.githubService.commit(channel, gitActions, gitProvider)
-
-                break
+                return this.githubService.commit(channel, gitActions, gitProvider)
         }
 
 

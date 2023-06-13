@@ -70,9 +70,17 @@ let publish = async () => {
   //export to IPFS
   let result = await publishService.publish(channelBackup.channel, process.env.INIT_CWD )
 
+  
+
   if (fs.existsSync(`${process.env.INIT_CWD   }/large-config.json`)) {
     fs.rmSync(`${process.env.INIT_CWD   }/large-config.json`)
   }
+
+  if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs`)) {
+    fs.rmdirSync(`${process.env.INIT_CWD   }/ipfs`)
+  } 
+
+  fs.mkdirSync(`${process.env.INIT_CWD   }/ipfs`, { recursive: true })
 
 
   //Write files to local filesystem
@@ -103,16 +111,9 @@ let publish = async () => {
   }
 
 
-    //Export JSON with info
-    if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs.car`)) {
-      fs.rmSync(`${process.env.INIT_CWD   }/ipfs.car`)
-    }
-
-
-
   //Export car file
   const out = await ipfsService.ipfs.dag.export(result.cid)
-  Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs.car`))
+  Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.cid}.car`))
 
 
 

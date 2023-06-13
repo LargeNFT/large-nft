@@ -133,7 +133,7 @@ class GithubService implements GitProviderService {
 
     }
 
-    async commit(channel, actions, gitProvider) {
+    async commit(channel, actions, gitProvider) : Promise<string> {
 
         this.logPublishProgress(`Pushing ${actions.length} files to repo...`)
 
@@ -188,6 +188,10 @@ class GithubService implements GitProviderService {
         )
 
         this.logPublishProgress(`Successfully pushed ${actions.length} files to repo...`)
+
+        let latestCommit = await this.getMostRecentCommit(channel, gitProvider)
+        
+        return latestCommit.sha
 
 
     }
@@ -263,7 +267,7 @@ class GithubService implements GitProviderService {
             
             let result = await this.getMostRecentActionRun(channel, gitProvider)
 
-            if (result?.conclusion == "success" && (!channel.publishReaderIPFSStatus?.dateCreated || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSStatus.dateCreated)))) {
+            if (result?.conclusion == "success" && (!channel.publishReaderIPFSStatus?.date || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSStatus.date)))) {
                 return "finished"
             }
 
@@ -293,8 +297,6 @@ class GithubService implements GitProviderService {
                 }
             })
 
-            console.log(JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString()))
-
             return JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString())
 
         } catch(ex) {
@@ -308,9 +310,7 @@ class GithubService implements GitProviderService {
 
     private async getMostRecentActionRun(channel, gitProvider) {
 
-        let headSha = await this.getMostRecentCommit(channel, gitProvider)
-
-        const workflowRunResults = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/actions/workflows/main.yml/runs?per_page=1&page=1`, {
+        const workflowRunResults = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/actions/workflows/main.yml/runs?per_page=1&page=1&head_sha=${channel.publishReaderIPFSStatus.headSha}`, {
             headers: {
                 "Authorization": `Bearer ${gitProvider.personalAccessToken}`
             }

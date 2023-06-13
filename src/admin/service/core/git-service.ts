@@ -10,8 +10,6 @@ import { ForkInfo, GitProviderService } from "./git-provider-service.js";
 import { GithubService } from "./github-service.js";
 import { SchemaService } from "./schema-service.js";
 
-
-
 @injectable()
 class GitService implements GitProviderService {
 
@@ -117,7 +115,6 @@ class GitService implements GitProviderService {
         this.logPublishProgress(`Export to git complete`)
 
     }
-
 
     async deployReaderContract(channel:Channel, gitActions:any[]) {
 

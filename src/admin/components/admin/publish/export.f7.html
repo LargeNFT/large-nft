@@ -35,6 +35,7 @@
         
     
                         <div class="card card-header-divider">
+                            <div class="card-header">Export Status</div>
                             <div class="card-content card-content-padding">      
 
                                 ${publishing ? $h`
@@ -145,7 +146,7 @@
     
                                 ${channelViewModel.channel.publishReaderIPFSStatus?.status ? $h`
     
-                                    <div class="pin-status">                                        
+                                    <div class="pin-status"> 
                                         <strong>Status:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.status}<br />
 
                                         ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" ? $h`

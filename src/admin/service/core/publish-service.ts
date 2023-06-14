@@ -260,8 +260,11 @@ class PublishService {
             })
         }
 
+        console.log("getting production info")
+
         let productionURIInfo = await this.gitService.getProductionURIInfo(channel)
 
+        console.log(productionURIInfo)
 
         //Copy a large-config.json to GitHub
         fsActions.push({

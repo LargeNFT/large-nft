@@ -1,11 +1,11 @@
 import { default as axios } from 'axios'
 
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify"
 
-import { Channel } from "../../dto/channel.js";
-import { ForkInfo, GitProviderService } from './git-provider-service.js';
+import { Channel } from "../../dto/channel.js"
+import { ForkInfo, GitProviderService } from './git-provider-service.js'
 
-import { SettingsService } from './settings-service.js';
+import { SettingsService } from './settings-service.js'
 
 import parse from "parse-link-header"
 
@@ -21,7 +21,6 @@ class GitlabService implements GitProviderService {
     constructor(
         private settingsService:SettingsService,
     ) {}
-
 
     async createFork(channel:Channel) : Promise<ForkInfo> {
         
@@ -39,7 +38,7 @@ class GitlabService implements GitProviderService {
         let url = `${GitlabService.BASE_URL}/projects/${GitlabService.READER_REPO_ID}/fork`
 
 
-        let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+        let path = `${channel.title}`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
         //Look for an existing fork and just return it.
         let existingFork = await this.getExistingFork(channel)
@@ -92,7 +91,7 @@ class GitlabService implements GitProviderService {
 
         let forks = response.data
 
-        let path = `${channel.title} Reader`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+        let path = `${channel.title}`.replace(/[^a-z0-9]/gi, '-').toLowerCase()
 
         //Search for one with the same path
         let results = forks.filter( f => f.path == path && f.owner.username == gitProvider.username)
@@ -133,15 +132,37 @@ class GitlabService implements GitProviderService {
     }
 
     async getIPFSActionStatus(channel: Channel): Promise<string> {
-        throw new Error("Method not implemented.");
+        // throw new Error("Method not implemented.");
+        return
     }
 
     async getIPFSActionResult(channel: Channel): Promise<any> {
-        throw new Error('Method not implemented.');
+        // throw new Error('Method not implemented.');
+        return
     }
 
     async getProductionURIInfo(channel: Channel): Promise<any> {
-        throw new Error("Method not implemented.");
+        
+        function getGitHubUsername(url) {
+
+            const path = url.replace("https://gitlab.com/", "")
+          
+            // Split the remaining path into parts
+            const parts = path.split("/")
+          
+            // Extract the username and repository name
+            const username = parts[0]
+            
+            return username
+
+        }
+
+
+        return {
+            hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.gitlab.io`,
+            baseURI: `/${this.getBranchName(channel)}/`
+        }
+
     }
 
     async commit(channel:Channel, actions:any[], gitProvider) : Promise<string> {
@@ -295,6 +316,10 @@ class GitlabService implements GitProviderService {
     
     }
 
+    getBranchName(channel) {
+        return channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+    }
+
     chunkIt(gitActions: any[], perChunk: number) {
 
         let chunks = []
@@ -308,13 +333,6 @@ class GitlabService implements GitProviderService {
         return chunks
     }
     
-
-
-
-
-
-
-
 
 }
 

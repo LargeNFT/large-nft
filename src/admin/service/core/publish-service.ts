@@ -260,11 +260,7 @@ class PublishService {
             })
         }
 
-        console.log("getting production info")
-
         let productionURIInfo = await this.gitService.getProductionURIInfo(channel)
-
-        console.log(productionURIInfo)
 
         //Copy a large-config.json to GitHub
         fsActions.push({
@@ -322,30 +318,30 @@ class PublishService {
 
     }
 
-    async exportContract(channel:Channel) : Promise<void> {
+    // async exportContract(channel:Channel) : Promise<void> {
 
-        let gitActions = []
+    //     let gitActions = []
 
-        gitActions.push({
-            action: "create",
-            file_path: "/backup/contract/contract.json",
-            content: Buffer.from(JSON.stringify({ 
-                contractAddress: channel.contractAddress,
-                ipfsCid: channel.publishReaderIPFSStatus?.cid
-            }))
-        })
+    //     gitActions.push({
+    //         action: "create",
+    //         file_path: "/backup/contract/contract.json",
+    //         content: Buffer.from(JSON.stringify({ 
+    //             contractAddress: channel.contractAddress,
+    //             ipfsCid: channel.publishReaderIPFSStatus?.cid
+    //         }))
+    //     })
 
-        //Also the ABI
-        gitActions.push({
-            action: "create",
-            file_path: "/backup/contract/contract-abi.json",
-            content: Buffer.from(JSON.stringify(contractABI))
-        })
+    //     //Also the ABI
+    //     gitActions.push({
+    //         action: "create",
+    //         file_path: "/backup/contract/contract-abi.json",
+    //         content: Buffer.from(JSON.stringify(contractABI))
+    //     })
 
-        await this.gitService.deployReaderContract(channel, gitActions)
+    //     await this.gitService.deployReaderContract(channel, gitActions)
 
 
-    }
+    // }
 
     getIPFSDirectory(channel:Channel) {
         return `/export/${channel._id}`
@@ -659,6 +655,8 @@ class PublishService {
 
         //Update address locally
         channel.contractAddress = receipt.contractAddress
+        channel.showActivityPage = true
+        channel.showMintPage = true
         await this.channelService.put(channel)
 
     }

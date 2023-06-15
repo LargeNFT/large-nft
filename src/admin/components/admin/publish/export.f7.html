@@ -448,10 +448,9 @@
                 //Get the new IPFS hash
                 channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
                 channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
+                await channelService.put(channelViewModel.channel)
 
                 await $update()
-
-                await channelService.put(channelViewModel.channel)
 
                 let elem = document.getElementsByClassName('content-card-padding')[0]
                 $f7.preloader.hideIn(elem)

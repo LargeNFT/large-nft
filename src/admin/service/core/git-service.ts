@@ -132,16 +132,12 @@ class GitService {
             case "gitlab":
 
                 await this.gitlabService.deleteContractBackup(channel, gitProvider)
-                await this.gitlabService.commit(channel, gitActions, gitProvider)
-
-                break
+                return this.gitlabService.commit(channel, gitActions, gitProvider)
 
             case "github":
 
-                await this.githubService.deleteContractBackup(channel, gitProvider)
-                await this.githubService.commit(channel, gitActions, gitProvider)
-
-                break
+                // await this.githubService.deleteContractBackup(channel, gitProvider)
+                return this.githubService.commit(channel, gitActions, gitProvider)
 
         }
 

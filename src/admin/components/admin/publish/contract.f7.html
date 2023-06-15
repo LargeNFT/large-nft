@@ -64,7 +64,7 @@
                             After deploying the contract the Reader can be re-published and it will become aware of Ethereum and show users the 
                             appropriate controls to begin minting NFTs.
                           </p>
-                          <a href="#" class="button button-outline button-small deploy-button" @click="${pushContractToGitClick}">Push Contract Info To Git</a>
+                          <a class="button button-outline button-small deploy-button" href="/admin/publish/export/${channelViewModel.channel._id}">Go to export</a>
   
   
                         `}                        
@@ -185,30 +185,7 @@
           await $update()
         }
 
-        const pushContractToGitClick = async (e) => {
 
-          e.preventDefault()
-
-          let elem = document.getElementsByClassName('card-content-padding')[1]
-
-          $f7.preloader.showIn(elem)
-
-          try {
-            await publishService.exportContract(channelViewModel.channel)
-
-            $f7.dialog.alert("Git repo updated with contract info.", "Success")
-
-
-          }catch(ex) {
-            console.log(ex)
-            $f7.dialog.alert(ex.errors, "There was an error")
-          }
-
-
-          $f7.preloader.hideIn(elem)
-
-
-        }
 
         const resetContract = async (e) => {
 
@@ -221,6 +198,7 @@
           $update()
 
         }
+
 
 
         return $render

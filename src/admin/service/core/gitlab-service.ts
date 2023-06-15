@@ -132,13 +132,74 @@ class GitlabService implements GitProviderService {
     }
 
     async getIPFSActionStatus(channel: Channel): Promise<string> {
-        // throw new Error("Method not implemented.");
-        return
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider = settings.gitProviders["gitlab"]
+
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        let jobs = await this.getJobForCommit(channel, gitProvider)
+
+        if (jobs?.length > 0 && jobs[0].status == "success") {
+            return "finished"
+        }
+
+    }
+
+    async getJobForCommit(channel:Channel, gitProvider) : Promise<any[]> {
+
+        let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/jobs`
+
+        const res = await axios.get(url, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+        return res.data?.filter(job => job.commit?.id == channel.publishReaderIPFSStatus.headSha)
+
     }
 
     async getIPFSActionResult(channel: Channel): Promise<any> {
-        // throw new Error('Method not implemented.');
-        return
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider = settings.gitProviders["gitlab"]
+
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+
+        try {
+
+            let jobs = await this.getJobForCommit(channel, gitProvider)
+
+            let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/jobs/${jobs[0].id}/artifacts/ipfs/ipfs.json`
+
+            const res = await axios.get(url, {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+
+            let result = res.data
+
+            result.archive = `https://gitlab.com/${gitProvider.username}/${channel.publishReaderRepoPath}/-/jobs/${jobs[0].id}/artifacts/file/ipfs/${result.cid}.car`
+
+            return result
+
+        } catch(ex) {
+            console.log(ex)
+        }
+
+
+
     }
 
     async getProductionURIInfo(channel: Channel): Promise<any> {
@@ -193,7 +254,12 @@ class GitlabService implements GitProviderService {
 
         }
 
-        return ""
+        let latestCommit = await this.getMostRecentCommit(channel, gitProvider)
+        
+        this.logPublishProgress(`Commit successful: ${latestCommit}`)
+
+
+        return latestCommit
 
     }
 
@@ -220,13 +286,15 @@ class GitlabService implements GitProviderService {
                 }
             })
 
+
             //Skip directories because gitlab chokes on them.
-            let resultActions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
+            let resultActions = results?.data?.reverse()?.map( result => {
                 return {
                     action: 'delete',
                     file_path: result.path
                 }
             })
+
 
             actions.push(...resultActions)
 
@@ -236,14 +304,23 @@ class GitlabService implements GitProviderService {
 
         } while(treeLink)
 
+        
+        // //Check on large-config.json
+        // let results = await axios.get(`${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&pagination=keyset`, {
+        //     headers: {
+        //         "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+        //     }
+        // })
+
+        // if (results?.data?.filter(result => result.name.indexOf('large-config.json') > 0)?.length > 0) {
+        //     actions.push({
+        //         action: "delete",
+        //         file_path: "large-config.json"
+        //     })    
+        // }
+
 
         if (actions?.length > 0) {
-
-            actions.push({
-                action: "delete",
-                file_path: "large-config.json"
-            })
-
 
             this.logPublishProgress(`Deleting ${actions.length} files from repo...`)
 
@@ -251,7 +328,7 @@ class GitlabService implements GitProviderService {
 
             await axios.post(url, {
                 branch: "master",
-                commit_message: `Deleting existing reader for ${channel.title}`,
+                commit_message: `Deleting .upload`,
                 actions: actions
             } , {
                 headers: {
@@ -300,6 +377,25 @@ class GitlabService implements GitProviderService {
 
     }
 
+    async getMostRecentCommit(channel, gitProvider) {
+
+
+        let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
+
+        const res = await axios.get(url, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+        let commits = res.data
+
+        if (commits?.length > 0) {
+            return commits[0].id
+        }
+
+    }
+
     private logPublishProgress(message:string) {
     
         console.log(message)
@@ -335,8 +431,6 @@ class GitlabService implements GitProviderService {
     
 
 }
-
-
 
 
 export {

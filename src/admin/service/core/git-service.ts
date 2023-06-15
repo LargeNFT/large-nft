@@ -102,8 +102,7 @@ class GitService {
                 
             case "github":
 
-                // await this.githubService.deleteReaderBackup(channel, gitProvider)
-                return this.githubService.commit(channel, gitActions, gitProvider)
+            return this.githubService.commit(channel, gitActions, gitProvider)
         }
 
 

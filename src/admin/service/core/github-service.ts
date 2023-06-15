@@ -136,7 +136,7 @@ class GithubService implements GitProviderService {
 
     async commit(channel, actions, gitProvider) : Promise<string> {
 
-        this.logPublishProgress(`Pushing ${actions.length} files to repo...`)
+        this.logPublishProgress(`Commiting reader data for ${channel.title} to GitHub: ${actions.length} actions`)
 
         let oid = await this.getMostRecentCommitOid(channel, gitProvider)
 
@@ -188,10 +188,10 @@ class GithubService implements GitProviderService {
             }
         )
 
-        this.logPublishProgress(`Successfully pushed ${actions.length} files to repo...`)
-
         let latestCommit = await this.getMostRecentCommit(channel, gitProvider)
         
+        this.logPublishProgress(`Commit successful: ${latestCommit.sha}`)
+
         return latestCommit.sha
 
 

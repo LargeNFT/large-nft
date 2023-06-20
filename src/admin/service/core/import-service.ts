@@ -108,11 +108,18 @@ class ImportService {
         let staticPages:StaticPage[] = await this._readFile(`/fork/backup/static-pages.json`)
         let contractMetadata:ContractMetadata = await this._readFile(`/fork/contractMetadata.json`)
 
+        let tokenMetadata = {}
+
         let mediaDownloader = new IPFSDownloader(this.ipfsService)
 
         if (forkType == "existing") {
 
-            return this._importExisting(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
+            for (let item of items) {
+                // this.logForkProgress(forkStatus, `Downloading metadata for token #${item.tokenId}`)
+                tokenMetadata[item.tokenId] =  await this._readFile(`/fork/metadata/${item.tokenId}.json`)
+            }
+
+            return this._importExisting(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, tokenMetadata, cid)
         
         } else {
 
@@ -156,6 +163,7 @@ class ImportService {
             importBundle.forkStatus, 
             importBundle.mediaDownloader, 
             importBundle.contractMetadata,
+            importBundle.tokenMetadata,
             ipfsCid)
 
     }
@@ -212,6 +220,12 @@ class ImportService {
 
         let mediaDownloader = new URLDownloader(baseURI)
 
+        let tokenMetadata = {}
+
+        for (let item of items) {
+            tokenMetadata[item.tokenId] =  await this._fetchFile(`${baseURI}backup/export/metadata/${item.tokenId}.json`)
+        }
+
         return {
             authors: authors,
             channels: channels,
@@ -222,7 +236,8 @@ class ImportService {
             staticPages: staticPages,
             mediaDownloader: mediaDownloader,
             forkStatus: forkStatus,
-            contractMetadata: contractMetadata
+            contractMetadata: contractMetadata,
+            tokenMetadata
 
         }
 
@@ -651,8 +666,6 @@ class ImportService {
             this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`)
         }
 
-
-
         for (let item of items) {
             
             let oldId = item._id
@@ -727,9 +740,7 @@ class ImportService {
 
         }
 
-        
-
-
+    
         // console.log(channel)
 
 
@@ -772,7 +783,7 @@ class ImportService {
         return channelId
     }
 
-    private async _importExisting(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, cid?:string) {
+    private async _importExisting(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, tokenMetadata:any, cid?:string) {
 
         if (!authors || !channels || !images || !items) {
             throw new Error("Invalid collection hash")
@@ -811,6 +822,7 @@ class ImportService {
 
             await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))           
 
+
             forkStatus.authors.saved++
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
         }
@@ -829,6 +841,9 @@ class ImportService {
 
 
         await this.channelWebService.put(channel)  
+
+
+
 
         channelId = channel._id
 
@@ -868,7 +883,7 @@ class ImportService {
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.animations.saved++
-            this.logForkProgress(forkStatus, `Inserted animation ${animationObj._id}`)
+            this.logForkProgress(forkStatus)
 
         }
 
@@ -901,7 +916,7 @@ class ImportService {
             } catch (ex) {} //ignore duplicates   
 
             forkStatus.images.saved++
-            this.logForkProgress(forkStatus, `Inserted image ${imageObj._id}`)
+            this.logForkProgress(forkStatus)
 
         }
 
@@ -939,6 +954,8 @@ class ImportService {
 
         for (let item of items) {
             
+            item.originalJSONMetadata = tokenMetadata[item.tokenId]
+
             //Get image data and re-insert it into the content ops
             if (item.content?.ops?.length > 0) {
 
@@ -993,7 +1010,7 @@ class ImportService {
 
 
             forkStatus.items.saved++
-            this.logForkProgress(forkStatus, `Inserted item ${item._id}`)
+            this.logForkProgress(forkStatus)
 
         }
 
@@ -1013,7 +1030,6 @@ class ImportService {
 
         await this.channelService.buildAttributeCounts(channel._id)
 
-
         //Update existing token cache if it exists or create a new one.
         let existingTokenIdStatsCache 
 
@@ -1029,6 +1045,7 @@ class ImportService {
 
 
         channel.importSuccess = true
+
         await this.channelWebService.put(channel) 
 
         // await this.ipfsService.ipfs.files.flush(`/export/${channel._id}/`)

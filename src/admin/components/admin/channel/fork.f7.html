@@ -329,7 +329,13 @@
       forking = true 
       $update()
 
-      channel = await importService.importFromIPFS(formData.hash, forkType, formData.authorId)
+      try {
+        channel = await importService.importFromIPFS(formData.hash, forkType, formData.authorId)
+      } catch(ex) {
+        console.log(ex)
+        $f7.dialog.alert(ex.message, "There was an error")
+      }
+
 
       forking = false
       $update()

@@ -252,6 +252,9 @@
       if (channelViewModel.channel.publishReaderRepoStatus == "complete" && channelViewModel.channel.publishReaderRepoId > 0) return
       if (forking) return
 
+      let gitProvider = await channelService.getGitProviderCredentials(channelViewModel.channel, settings)
+      if (gitProvider.personalAccessToken.length < 1) return
+
       console.log('Checking repo fork status...')
 
       channelViewModel.channel = await channelService.get(channelViewModel.channel._id)

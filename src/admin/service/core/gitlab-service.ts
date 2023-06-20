@@ -288,7 +288,7 @@ class GitlabService implements GitProviderService {
 
 
             //Skip directories because gitlab chokes on them.
-            let resultActions = results?.data?.reverse()?.map( result => {
+            let resultActions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
                 return {
                     action: 'delete',
                     file_path: result.path
@@ -305,21 +305,6 @@ class GitlabService implements GitProviderService {
         } while(treeLink)
 
         
-        // //Check on large-config.json
-        // let results = await axios.get(`${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/tree?recursive=true&pagination=keyset`, {
-        //     headers: {
-        //         "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-        //     }
-        // })
-
-        // if (results?.data?.filter(result => result.name.indexOf('large-config.json') > 0)?.length > 0) {
-        //     actions.push({
-        //         action: "delete",
-        //         file_path: "large-config.json"
-        //     })    
-        // }
-
-
         if (actions?.length > 0) {
 
             this.logPublishProgress(`Deleting ${actions.length} files from repo...`)

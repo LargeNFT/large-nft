@@ -147,6 +147,8 @@ class GithubService implements GitProviderService {
             }
         })
 
+        let headline = `Commiting reader data for ${channel.title}`
+
         const mutation = `
             mutation createCommit($additions: [FileAddition!]!, $oid: GitObjectID!) {
                 createCommitOnBranch (input: {
@@ -155,7 +157,7 @@ class GithubService implements GitProviderService {
                         branchName: "master"
                     }
                     message: {
-                        headline: "feat: Commit through Graphql"
+                        headline: "${headline}"
                     }
                     fileChanges: {
                         additions: $additions
@@ -268,7 +270,7 @@ class GithubService implements GitProviderService {
             
             let result = await this.getMostRecentActionRun(channel, gitProvider)
 
-            if (result?.conclusion == "success" && (!channel.publishReaderIPFSStatus?.date || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSStatus.date)))) {
+            if (result?.conclusion == "success" && (!channel.publishReaderIPFSStatus?.date || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSStatus?.date)))) {
                 return "finished"
             }
 
@@ -337,6 +339,8 @@ class GithubService implements GitProviderService {
     }
 
     private async getMostRecentActionRun(channel, gitProvider) {
+
+        if (!channel.publishReaderIPFSStatus?.headSha) return
 
         const workflowRunResults = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/actions/workflows/main.yml/runs?per_page=1&page=1&head_sha=${channel.publishReaderIPFSStatus.headSha}`, {
             headers: {

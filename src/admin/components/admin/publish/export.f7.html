@@ -393,7 +393,7 @@
 
             } catch(ex) {
                 console.log(ex)
-                $f7.dialog.alert(ex.errors, "There was an error")
+                $f7.dialog.alert(ex.message, "There was an error")
             }
             
 
@@ -431,9 +431,13 @@
 
             if (pageUnloaded) return
             if (!settings) return
-            if (channelViewModel.channel.publishReaderIPFSStatus.status == "complete") return
+            if (channelViewModel.channel.publishReaderIPFSStatus?.status == "complete") return
             if (publishing) return
             if (checkingStatus) return 
+
+            let gitProvider = await channelService.getGitProviderCredentials(channelViewModel.channel, settings)
+            if (gitProvider.personalAccessToken.length < 1) return
+
 
             console.log('Checking IPFS action workflow status...')
 
@@ -461,7 +465,7 @@
 
             checkingStatus = false
             
-            if (channelViewModel.channel.publishReaderIPFSStatus.status != "complete") {
+            if (channelViewModel.channel.publishReaderIPFSStatus?.status != "complete") {
                 setTimeout(checkIPFSActionStatus, 5000)
             }
 

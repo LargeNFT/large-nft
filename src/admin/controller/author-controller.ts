@@ -19,12 +19,13 @@ class AuthorController {
         private schemaService:SchemaService
     ) {}
 
-    @routeMap("/admin/author/show/:id")
+    @routeMap("/admin/:channelId/author/show/:id")
     async show() : Promise<ModelView> {
 
         return new ModelView(async (routeTo:RouteTo) => {
 
-            await this.schemaService.load()
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.channelId)
 
 
             let authorViewModel
@@ -53,13 +54,13 @@ class AuthorController {
     }
 
 
-    @routeMap("/admin/author/edit/:id")
+    @routeMap("/admin/:channelId/author/edit/:id")
     async edit() : Promise<ModelView> {
 
         return new ModelView(async (routeTo:RouteTo) => {
 
-            await this.schemaService.load()
-
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.channelId)
 
             let authorViewModel
 

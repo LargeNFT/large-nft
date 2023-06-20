@@ -39,7 +39,7 @@ class AuthorService {
       throw new ValidationException(errors)
     }
 
-    await this.authorRepository.put(author)
+    return this.authorRepository.put(author)
   }
 
   async insertIfNew(walletAddress: string) {

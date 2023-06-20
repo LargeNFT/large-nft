@@ -23,8 +23,13 @@ class DatabaseService {
 
         const details = await this.dbCache[fullName].info()
 
+
+        //Check if it's a brand new database
+        let isEmpty = details.doc_count == 0 && details.update_seq == 0
+
+
         //If it's empty build the indexes
-        if (details.doc_count == 0 && details.update_seq == 0) {
+        if (isEmpty) {
 
             //Create indexes
             if (changesets) {

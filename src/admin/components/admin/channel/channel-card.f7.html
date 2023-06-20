@@ -40,7 +40,7 @@
         ${channelViewModel?.authorDisplayName ? $h`
         <div class="name">
           By <a
-            href="/admin/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
+            href="/admin/${channelViewModel.channel._id}/author/show/${channelViewModel?.author._id}">${channelViewModel?.authorDisplayName}</a>
         </div>
         ` : ``}
 

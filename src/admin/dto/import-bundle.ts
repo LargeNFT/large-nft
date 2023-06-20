@@ -25,6 +25,7 @@ interface ImportBundle {
     forkStatus:ForkStatus
 
     contractMetadata:ContractMetadata
+    tokenMetadata:any
 
 
 }

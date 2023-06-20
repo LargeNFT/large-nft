@@ -10,6 +10,10 @@ import { ForkInfo, GitProviderService } from "./git-provider-service.js";
 import { GithubService } from "./github-service.js";
 import { SchemaService } from "./schema-service.js";
 
+//TODO: Refactor this so we're not specifically switching between github and gitlab 
+//Inject the proper service and then call the method on it. This will make it easier to add more 
+//providers later.
+
 @injectable()
 class GitService {
 
@@ -19,11 +23,8 @@ class GitService {
     defaultBranch:string
 
     constructor(
-        // @inject('fs') private getFS:Function,
-        // @inject('git') public git,
         private settingsService:SettingsService,
         private channelService:ChannelService,
-        private authorService:AuthorService,
         private gitlabService:GitlabService,
         private githubService:GithubService,
         private schemaService:SchemaService
@@ -47,51 +48,66 @@ class GitService {
 
         let gitActions:any[] = []
 
-
+        this.logPublishProgress(`Creating channel backup...`)
         let backup = await this.schemaService.backupChannel()
 
 
         gitActions.push({
             action: "create",
-            file_path: `/.upload/channel`,
+            file_path: `/.upload/channel.json`,
             content: Buffer.from(JSON.stringify(backup.channel))
         })
 
         gitActions.push({
             action: "create",
-            file_path: `/.upload/items`,
+            file_path: `/.upload/items.json`,
             content: Buffer.from(JSON.stringify(backup.items))
         })
 
         gitActions.push({
             action: "create",
-            file_path: `/.upload/animations`,
-            content: Buffer.from(JSON.stringify(backup.animations))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/images`,
-            content: Buffer.from(JSON.stringify(backup.images))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/themes`,
+            file_path: `/.upload/themes.json`,
             content: Buffer.from(JSON.stringify(backup.themes))
         })
 
         gitActions.push({
             action: "create",
-            file_path: `/.upload/staticPages`,
+            file_path: `/.upload/staticPages.json`,
             content: Buffer.from(JSON.stringify(backup.staticPages))
         })
 
         gitActions.push({
             action: "create",
-            file_path: `/.upload/attributeCounts`,
+            file_path: `/.upload/attributeCounts.json`,
             content: Buffer.from(JSON.stringify(backup.attributeCounts))
         })
+
+
+        this.logPublishProgress(`Packaging ${backup.images?.length} images...`)
+
+        let i=0
+        for (let image of backup.images) {
+            gitActions.push({
+                action: "create",
+                file_path: `/.upload/images/${i}.json`,
+                content: Buffer.from(JSON.stringify(image))
+            })
+            i++
+        }
+
+
+        this.logPublishProgress(`Packaging ${backup.animations?.length} animations...`)
+
+        i=0
+        for (let animation of backup.animations) {
+            gitActions.push({
+                action: "create",
+                file_path: `/.upload/animations/${i}.json`,
+                content: Buffer.from(JSON.stringify(animation))
+            })
+            i++
+        }
+
 
         switch(gitProvider.name) {
 
@@ -101,8 +117,8 @@ class GitService {
                 return this.gitlabService.commit(channel, gitActions, gitProvider)
                 
             case "github":
-
-            return this.githubService.commit(channel, gitActions, gitProvider)
+                await this.githubService.deleteReaderBackup(channel, gitProvider)
+                return this.githubService.commit(channel, gitActions, gitProvider)
         }
 
 
@@ -271,6 +287,53 @@ class GitService {
         }
     
     }
+
+
+    private chunkArrayByBytes(items, chunkSizeBytes) {
+
+        let chunks = []
+
+
+        //First create a map with the size of each item
+        let itemSizes = {}
+        items.forEach(item => {
+
+            itemSizes[item._id] = Buffer.byteLength(JSON.stringify(item), 'utf8')
+
+            console.log(item)
+
+            if (itemSizes[item._id] > chunkSizeBytes) {
+                throw new Error(`Image larger than 15MB found. Upload can not proceed.`)
+            }
+        })
+
+
+        let currentChunk = []
+        let currentChunkSize = 0
+
+        for (let item of items) {
+
+            //If this one would put us over the limit, create a new chunk
+            if (currentChunkSize + itemSizes[item._id] >= chunkSizeBytes) {
+                chunks.push(currentChunk) 
+                currentChunk = []
+                currentChunkSize = 0
+            }
+
+            currentChunk.push(item)
+            currentChunkSize += itemSizes[item._id]
+
+        }
+
+        //If there's anything in the last chunk then add it
+        if (currentChunk.length > 0) {
+            chunks.push(currentChunk) 
+        }
+
+        return chunks
+
+    }
+      
 
 
 }

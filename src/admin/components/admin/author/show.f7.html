@@ -32,7 +32,7 @@
                         <p>${authorViewModel.author.description}</p>
 
                         <div class="row">
-                            <a href="/admin/author/edit/${authorViewModel.author.walletAddress}"
+                            <a href="/admin/${props.channelId}/author/edit/${authorViewModel.author.walletAddress}"
                                 class="button button-outline button-small button-round col-20">Edit</a>
                         </div>
 
@@ -41,7 +41,7 @@
 
                 ` : $h`
                     <div class="block">
-                        Create your Large <a href="/admin/author/edit/${authorViewModel.author.walletAddress}">author profile</a>. 
+                        Create your Large <a href="/admin/${props.channelId}/author/edit/${authorViewModel.author.walletAddress}">author profile</a>. 
                     </div>
                 `}
 

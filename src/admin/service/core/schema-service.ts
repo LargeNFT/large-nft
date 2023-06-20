@@ -12,6 +12,7 @@ import { TokenMetadataCacheRepository } from "../../repository/token-metadata-ca
 import { QueryCacheRepository } from "../../repository/query-cache-repository.js";
 import { AttributeCountRepository } from "../../repository/attribute-count-repository.js";
 import { Channel } from "../../dto/channel.js";
+import { DatabaseService } from "./database-service.js";
 
 @injectable()
 class SchemaService {
@@ -29,7 +30,8 @@ class SchemaService {
         private staticPageRepository:StaticPageRepository,
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository,
         private queryCacheRepository:QueryCacheRepository,
-        private attributeCountRepository:AttributeCountRepository
+        private attributeCountRepository:AttributeCountRepository,
+        private databaseService:DatabaseService
     ) {}
 
     async load() {
@@ -47,6 +49,8 @@ class SchemaService {
     }
 
     async loadChannel(channelId:string) {
+
+        if (this.loadedChannelId == channelId) return
 
         console.time(`Loading channel: ${channelId}`)
 
@@ -149,12 +153,44 @@ class SchemaService {
 
         console.log(`Dropping channel: ${channelId}`)
 
-        await this.itemRepository.db.destroy()
-        await this.animationRepository.db.destroy()
-        await this.imageRepository.db.destroy()
-        await this.themeRepository.db.destroy()
-        await this.staticPageRepository.db.destroy()
-        await this.attributeCountRepository.db.destroy()
+        //Delete all files and then compact()
+        let clearDatabase = async (db) => {
+
+            let updatedRows = []
+
+            let result = await db.allDocs()
+
+            for (let row of result.rows) {
+
+                if (row.id.startsWith("_design") || row.id.startsWith("_local")) continue
+
+                updatedRows.push({
+                    _id: row.id,
+                    _rev: row.value.rev,
+                    _deleted: true
+                })
+            }
+
+            const details = await db.info()
+
+            //Remove
+            await db.bulkDocs(updatedRows)
+
+            //Compact
+            await db.compact()
+
+            //Clear cached copy
+            delete this.databaseService.dbCache[details.db_name]
+
+        }
+
+        await clearDatabase(this.itemRepository.db)
+        await clearDatabase(this.animationRepository.db)
+        await clearDatabase(this.imageRepository.db)
+        await clearDatabase(this.themeRepository.db)
+        await clearDatabase(this.staticPageRepository.db)
+        await clearDatabase(this.attributeCountRepository.db)
+
 
     }
 

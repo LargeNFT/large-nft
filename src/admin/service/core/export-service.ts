@@ -58,7 +58,7 @@ class ExportService {
         ))
 
         //Get static pages
-        let staticPages = JSON.parse(JSON.stringify(
+        let staticPages:StaticPage[] = JSON.parse(JSON.stringify(
             await this.staticPageService.listByChannel(originalChannel._id, 1000, 0)
         ))
 
@@ -133,6 +133,7 @@ class ExportService {
             delete item["_rev_tree"]
 
         }
+
 
         //Look up all the images
         imageCids = [...new Set(imageCids)] //deduplicate
@@ -304,6 +305,22 @@ class ExportService {
         //Get images in post content
         if (item.content?.ops) {
             for (let op of item.content.ops) {
+                if (op.insert && op.insert.ipfsimage && op.insert.ipfsimage?.cid?.length > 0) {
+                    imageCids.push(op.insert.ipfsimage.cid)
+                }
+            }
+        }
+
+        return imageCids
+    }
+
+    getImageCidsByStaticPage(staticPage:StaticPage) {
+
+        let imageCids:string[] = []
+
+        //Get images in post content
+        if (staticPage.content?.ops) {
+            for (let op of staticPage.content.ops) {
                 if (op.insert && op.insert.ipfsimage && op.insert.ipfsimage?.cid?.length > 0) {
                     imageCids.push(op.insert.ipfsimage.cid)
                 }

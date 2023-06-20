@@ -196,7 +196,9 @@ class ChannelWebService {
 
     async put(channel:Channel, coverImage?:Image, coverBanner?:Image) : Promise<void> {
         
-        await this.channelService.put(channel)
+        let response = await this.channelService.put(channel)
+
+        channel._rev = response.rev
 
         //Load the right channel dbs
         await this.schemaService.loadChannel(channel._id)

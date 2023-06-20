@@ -40,15 +40,33 @@ let publish = async () => {
   await schemaService.load()
 
 
+  //Load images
+  let imageFilenames = fs.readdirSync("./.upload/images")
+
+  let images = []
+  for (let filename of imageFilenames) {
+    images.push(JSON.parse(fs.readFileSync(`./.upload/images/${filename}`).toString()))
+  }
+
+  //Load animations
+  let animationFilenames = fs.readdirSync("./.upload/animations")
+
+  let animations = []
+  for (let filename of animationFilenames) {
+    animations.push(JSON.parse(fs.readFileSync(`./.upload/animations/${filename}`).toString()))
+  }
+
+
+
   //Read channel backup
   let channelBackup:ChannelBackup = {
-    channel: JSON.parse(fs.readFileSync("./.upload/channel").toString()),
-    items: JSON.parse(fs.readFileSync("./.upload/items").toString()),
-    animations: JSON.parse(fs.readFileSync("./.upload/animations").toString()),
-    images: JSON.parse(fs.readFileSync("./.upload/images").toString()),
-    themes: JSON.parse(fs.readFileSync("./.upload/themes").toString()),
-    staticPages: JSON.parse(fs.readFileSync("./.upload/staticPages").toString()),
-    attributeCounts: JSON.parse(fs.readFileSync("./.upload/attributeCounts").toString())
+    channel: JSON.parse(fs.readFileSync("./.upload/channel.json").toString()),
+    items: JSON.parse(fs.readFileSync("./.upload/items.json").toString()),
+    animations: animations,
+    images: images,
+    themes: JSON.parse(fs.readFileSync("./.upload/themes.json").toString()),
+    staticPages: JSON.parse(fs.readFileSync("./.upload/staticPages.json").toString()),
+    attributeCounts: JSON.parse(fs.readFileSync("./.upload/attributeCounts.json").toString())
   }
 
   await schemaService.loadChannelBackup(channelBackup)

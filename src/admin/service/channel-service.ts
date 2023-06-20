@@ -86,7 +86,7 @@ class ChannelService {
       throw new ValidationException(errors)
     }
 
-    await this.channelRepository.put(channel)
+    return this.channelRepository.put(channel)
 
   }
 

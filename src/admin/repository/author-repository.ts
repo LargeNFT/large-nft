@@ -22,7 +22,7 @@ class AuthorRepository {
     }
 
     async put(author: Author) {
-        await this.db.put(author)
+        return this.db.put(author)
     }
 
 }

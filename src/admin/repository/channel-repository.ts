@@ -37,7 +37,7 @@ class ChannelRepository {
     }
 
     async put(channel: Channel) {
-        await this.db.put(channel)
+        return this.db.put(channel)
     }
 
     async list(limit: number, skip: number): Promise<Channel[]> {

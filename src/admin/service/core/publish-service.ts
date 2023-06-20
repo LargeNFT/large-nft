@@ -268,9 +268,9 @@ class PublishService {
             content: Buffer.from(JSON.stringify({
                 "showMintPage": channel.showMintPage,
                 "showActivityPage": channel.showActivityPage,
-                "hostname": channel.productionHostname ? channel.productionHostname : productionURIInfo.hostname,
+                "hostname": channel.productionHostname ? channel.productionHostname : productionURIInfo?.hostname,
                 "libraryURL": channel.productionBaseLibraryURI,
-                "baseURL": channel.productionBaseURI ? channel.productionBaseURI : productionURIInfo.baseURI,
+                "baseURL": channel.productionBaseURI ? channel.productionBaseURI : productionURIInfo?.baseURI,
                 "externalLinks": channel.externalLinks,
                 "marketplaces": channel.marketplaces
             } ))
@@ -591,14 +591,15 @@ class PublishService {
                 this.logPublishProgress(publishStatus, `${ipfsFilename} already exists. Skipping...`)
             }
 
-            let nft = metadataNFTMap[contentCid]
+            // let nft = metadataNFTMap[contentCid]
 
-            //Save to git
-            gitActions.push({
-                action: "create",
-                file_path: `/backup/export/metadata/${nft.tokenId}.json`,
-                content: Buffer.from(JSON.stringify(nftMetadata))
-            })
+
+            // //Save to git
+            // gitActions.push({
+            //     action: "create",
+            //     file_path: `/backup/export/metadata/${nft.tokenId}.json`,
+            //     content: Buffer.from(JSON.stringify(nftMetadata))
+            // })
 
 
             publishStatus.nftMetadata.saved++
@@ -620,12 +621,15 @@ class PublishService {
             let coverImage:Image = await this.imageService.get(item.coverImageId)
             let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
             
+
             let content = new TextEncoder().encode(JSON.stringify(nftMetadata))
             let contentCid = await Hash.of(content)
 
             metadataNFTMap[contentCid] = nftMetadata
 
             let nft = metadataNFTMap[contentCid]
+
+
 
             //Save to git
             fsActions.push({

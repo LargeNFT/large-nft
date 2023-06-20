@@ -233,18 +233,30 @@ class GitlabService implements GitProviderService {
             action.content = action.content.toString('base64')
         }
 
+        let total = 0
 
         let chunks = this.chunkIt(actions, 500)
 
-        for (let chunk of chunks) {
+        for (const [i, chunk] of chunks.entries()) {
 
-            this.logPublishProgress(`Commiting reader data for ${channel.title} to GitLab: ${chunk.length} actions`)
+            total += chunk.length
+
+
+            this.logPublishProgress(`Commiting reader data for ${channel.title} to GitHub: committing ${chunk.length} actions. ${total} / ${actions.length}`)
 
             let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
     
+
+            let headline
+            if (i === chunks.length - 1) {
+                headline = `Commiting reader data complete`
+            } else {
+                headline = `Commiting reader data for ${channel.title}`
+            }
+
             const res = await axios.post(url, {
                 branch: "master",
-                commit_message: `Commiting reader data for ${channel.title}`,
+                commit_message: headline,
                 actions: chunk,
             } , {
                 headers: {

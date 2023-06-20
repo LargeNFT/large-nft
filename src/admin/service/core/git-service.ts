@@ -261,7 +261,9 @@ class GitService {
 
     async getProductionURIInfo(channel: Channel) : Promise<any> {
         
-        switch(channel.gitProvider) {
+        let gitProvider = channel.gitProvider ? channel.gitProvider : "github"
+
+        switch(gitProvider) {
             case "gitlab":
                 return this.gitlabService.getProductionURIInfo(channel)
             case "github":

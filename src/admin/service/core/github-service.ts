@@ -47,7 +47,7 @@ class GithubService implements GitProviderService {
             owner: gitProvider.username,
             name: this.getBranchName(channel),
             include_all_branches: false,
-            'private': false
+            'private': true
 
         }, {
             headers: {
@@ -136,63 +136,92 @@ class GithubService implements GitProviderService {
 
     async commit(channel, actions, gitProvider) : Promise<string> {
 
-        this.logPublishProgress(`Commiting reader data for ${channel.title} to GitHub: ${actions.length} actions`)
+        let total = 0
 
-        let oid = await this.getMostRecentCommitOid(channel, gitProvider)
+        let chunks = this.chunkIt(actions, 100)
 
-        const additions = actions.map((a) => {
-            return {
-                path: a.file_path.slice(1),
-                contents: Buffer.from(a.content).toString('base64')
+        let latestCommit
+
+
+        for (const [i, chunk] of chunks.entries()) {
+
+            total += chunk.length
+
+            this.logPublishProgress(`Commiting reader data for ${channel.title} to GitHub: committing ${chunk.length} actions. ${total} / ${actions.length}`)
+
+
+            let oid = await this.getMostRecentCommitOid(channel, gitProvider)
+
+            const additions = chunk.map((a) => {
+                return {
+                    path: a.file_path.slice(1),
+                    contents: Buffer.from(a.content).toString('base64')
+                }
+            })
+    
+
+
+            let headline = ""
+            if (i === chunks.length - 1) {
+                headline = `Commiting reader data complete`
+            } else {
+                headline = `Commiting reader data for ${channel.title}`
             }
-        })
-
-        let headline = `Commiting reader data for ${channel.title}`
-
-        const mutation = `
-            mutation createCommit($additions: [FileAddition!]!, $oid: GitObjectID!) {
-                createCommitOnBranch (input: {
-                    branch : {
-                        repositoryNameWithOwner: "${gitProvider.username}/${this.getBranchName(channel)}"
-                        branchName: "master"
-                    }
-                    message: {
-                        headline: "${headline}"
-                    }
-                    fileChanges: {
-                        additions: $additions
-                    }
-                    expectedHeadOid: $oid
-                    }) {
-                    commit {
-                        commitUrl
+    
+            const mutation = `
+                mutation createCommit($additions: [FileAddition!]!, $oid: GitObjectID!) {
+                    createCommitOnBranch (input: {
+                        branch : {
+                            repositoryNameWithOwner: "${gitProvider.username}/${this.getBranchName(channel)}"
+                            branchName: "master"
+                        }
+                        message: {
+                            headline: "${headline}"
+                        }
+                        fileChanges: {
+                            additions: $additions
+                        }
+                        expectedHeadOid: $oid
+                        }) {
+                        commit {
+                            commitUrl
+                        }
                     }
                 }
+            `;
+    
+            const variables = {
+                oid: oid,
+                additions: additions
             }
-        `;
+    
+            const createCommitResult = await axios.post(
+                GithubService.GRAPHQL_URL,
+                {
+                    query: mutation,
+                    variables: variables
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                    }
+                }
+            )
+    
+            latestCommit = await this.getMostRecentCommit(channel, gitProvider)
 
-        const variables = {
-            oid: oid,
-            additions: additions
+            
+            this.logPublishProgress(`Commit successful: ${latestCommit.sha}`)
+
+
+
+
+
         }
 
-        const createCommitResult = await axios.post(
-            GithubService.GRAPHQL_URL,
-            {
-                query: mutation,
-                variables: variables
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-                }
-            }
-        )
 
-        let latestCommit = await this.getMostRecentCommit(channel, gitProvider)
         
-        this.logPublishProgress(`Commit successful: ${latestCommit.sha}`)
 
         return latestCommit.sha
 

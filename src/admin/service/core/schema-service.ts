@@ -41,7 +41,7 @@ class SchemaService {
         //Open and cache databases
         await this.authorRepository.load()
         await this.channelRepository.load()
-        await this.imageRepository.load()
+        // await this.imageRepository.load()
         await this.settingsRepository.load()
         await this.tokenMetadataCacheRepository.load()
         await this.queryCacheRepository.load()

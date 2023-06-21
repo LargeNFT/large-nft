@@ -261,8 +261,23 @@ class GitService {
 
     async getProductionURIInfo(channel: Channel) : Promise<any> {
         
-        //Default to github. Probably a better way to do this.
-        let gitProvider = channel.gitProvider ? channel.gitProvider : "github"
+        let settings = await this.settingsService.get()
+
+        let gitProvider
+
+        //If it's "default" or blank then look at the global default
+        if (!channel.gitProvider || channel.gitProvider == "default") {
+
+            if (settings.defaultGitProvider) {
+                gitProvider = settings.defaultGitProvider
+            } else {
+                gitProvider = "github"
+            }
+            
+        } else {
+            gitProvider = channel.gitProvider
+        }
+
 
         switch(gitProvider) {
             case "gitlab":

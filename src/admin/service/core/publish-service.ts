@@ -262,6 +262,8 @@ class PublishService {
 
         let productionURIInfo = await this.gitService.getProductionURIInfo(channel)
 
+        console.log(productionURIInfo)
+
         //Copy a large-config.json to GitHub
         fsActions.push({
             file_path: `${baseDir}/large-config.json`,

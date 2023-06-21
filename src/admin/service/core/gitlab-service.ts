@@ -242,7 +242,7 @@ class GitlabService implements GitProviderService {
             total += chunk.length
 
 
-            this.logPublishProgress(`Commiting reader data for ${channel.title} to GitHub: committing ${chunk.length} actions. ${total} / ${actions.length}`)
+            this.logPublishProgress(`Commiting reader data for ${channel.title} to GitLab: committing ${chunk.length} actions. ${total} / ${actions.length}`)
 
             let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/repository/commits`
     

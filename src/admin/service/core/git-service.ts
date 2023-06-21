@@ -261,13 +261,8 @@ class GitService {
 
     async getProductionURIInfo(channel: Channel) : Promise<any> {
         
-        let settings = await this.settingsService.get()
-
-        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error(`${gitProvider.name} personal access token not set`)
-        }
+        //Default to github. Probably a better way to do this.
+        let gitProvider = channel.gitProvider ? channel.gitProvider : "github"
 
         switch(gitProvider) {
             case "gitlab":

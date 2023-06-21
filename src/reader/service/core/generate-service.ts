@@ -138,8 +138,7 @@ class GenerateService {
             
             let png = await this.convert(item.coverImage.svg, {
               height: 1200,
-              width: 1200
-            }, {
+              width: 1200,
               puppeteer: { 
                 args: ['--no-sandbox', '--disable-setuid-sandbox'] 
               }

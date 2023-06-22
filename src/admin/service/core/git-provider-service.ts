@@ -9,6 +9,7 @@ interface GitProviderService {
     getIPFSActionResult(channel: Channel) : Promise<any>
     getForkRepoStatus(channel:Channel) : Promise<string>
     getProductionURIInfo(channel:Channel) : Promise<any>
+    createVariables(channel: Channel): Promise<any>
 }
 
 interface ForkInfo {

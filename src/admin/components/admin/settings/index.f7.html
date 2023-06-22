@@ -6,203 +6,257 @@
 
         <div class="page-content hide-toolbar-on-scroll">
 
-            <form id="edit-settings-form" @submit="${formSubmit}">
+            <div class="fixed-width-content center">
+
+                <form id="edit-settings-form" @submit="${formSubmit}">
             
-                <input type="hidden" name="_id" value="${settings?._id}" />
-                <input type="hidden" name="_rev" value="${settings?._rev}" />
-
-                <div class="block-title block-title-medium">Settings</div>
-                <div class="card">
-                    <div class="card-header">Remote IPFS API</div>
-                    <div class="card-content">
-                        <div class="list">
-                            <ul>
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">URL</div>
-                                        <div class="item-input-wrap">
-                                            <input type="text" name="ipfsHost" value="${settings?.ipfsHost}" placeholder="http://localhost:5001/api/v0" />
-                                            <span class="input-clear-button"></span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">Git Settings</div>
-                    <div class="card-content card-content-padding">
-
-                        <div class="list">
-
-                            <ul>
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Default Git Provider</div>
-                                            <div class="item-input-wrap">
-                                                <select @change="${providerChange}" class="value-input" name="gitProvider">     
-                                                    
-                                                    ${!settings?.defaultGitProvider || settings?.defaultGitProvider == "github" ? $h`
-                                                        <option value="github" selected>GitHub</option>
-                                                    ` : $h`
-                                                        <option value="github">GitHub</option>
-                                                    `}
-
-
-                                                    ${settings?.defaultGitProvider == "gitlab" ? $h`
-                                                        <option value="gitlab" selected>GitLab</option>
-                                                    ` : $h`
-                                                        <option value="gitlab">GitLab</option>
-                                                    `}
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                            </ul>
-                        </div>
-
-                        <br />
-
-                    </div>
-                </div>
-
-
-                <div class="card">
-                    <div class="card-header">Configure GitHub</div>
-                    <div class="card-content card-content-padding">
-
-                        <strong>GitHub Instructions</strong>
-
-                        <ol>
-                            <li>Create a <a href="http://github.com" class="external" target="_blank">GitHub</a> account.</li>
-                            <li>Create a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external" target="_blank">"Personal access token (classic)"</a> and 
-                                save it below.</li>
-                            <li>If you are logged into GitHub <a href="https://github.com/settings/tokens" class="external" target="_blank">this link</a> will take you directly to the create form. </li>
-
-                        </ol>
-
-                        <p>Give the token a name and select an expiration date.</p>
-
-                        <ul>
-                            <li>Check the "repo" permission. </li>
-                        </ul>  
-
-
-
-                        <div class="list">
-
-                            <ul>
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Username (NOT email)</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" name="gitHubUsername" placeholder="Username"
-                                                    value="${settings.gitProviders?.github?.username}"  />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Personal Access Token</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" name="gitHubPersonalAccessToken" placeholder="Personal access token"
-                                                    value="${settings.gitProviders?.github?.personalAccessToken}"  />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                            </ul>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">Configure GitLab</div>
-                    <div class="card-content card-content-padding">
-
-                        <strong>GitLab Instructions</strong>
-
-                        <ol>
-                            <li>Create a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account.</li>
-                            <li>Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
-                                save it below.</li>
-                            <li>If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
-                                take you directly to the create form. </li>
-
-                        </ol>
+                    <input type="hidden" name="_id" value="${settings?._id}" />
+                    <input type="hidden" name="_rev" value="${settings?._rev}" />
+    
+                    <div class="block-title block-title-medium">Settings</div>
 
     
-                        <p>Give the token a name and select an expiration date. Under "Select scopes" check the boxes beside:</p>
-                        
-                        <ul>
-                            <li>api</li>
-                            <li>read_api</li>
-                            <li>read_repository</li>
-                            <li>write_repository</li>
-                        </ul>  
-
-
-                        <div class="list">
-
-                            <ul>
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Username (NOT email)</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" name="gitLabUsername" placeholder="Username"
-                                                    value="${settings.gitProviders?.gitlab?.username}"  />
+                    <div class="card">
+                        <div class="card-header">Git Settings</div>
+                        <div class="card-content card-content-padding">
+    
+                            <div class="list">
+    
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Default Git Provider</div>
+                                                <div class="item-input-wrap">
+                                                    <select @change="${providerChange}" class="value-input" name="gitProvider">     
+                                                        
+                                                        ${!settings?.defaultGitProvider || settings?.defaultGitProvider == "github" ? $h`
+                                                            <option value="github" selected>GitHub</option>
+                                                        ` : $h`
+                                                            <option value="github">GitHub</option>
+                                                        `}
+    
+    
+                                                        ${settings?.defaultGitProvider == "gitlab" ? $h`
+                                                            <option value="gitlab" selected>GitLab</option>
+                                                        ` : $h`
+                                                            <option value="gitlab">GitLab</option>
+                                                        `}
+    
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Personal Access Token</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" name="gitLabPersonalAccessToken" placeholder="Personal access token"
-                                                    value="${settings.gitProviders?.gitlab?.personalAccessToken}"  />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                            </ul>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+    
+                            <br />
+    
                         </div>
-
                     </div>
-                </div>
 
-                <div class="block cancel-save-row">
-      
-                    <div class="large-only"></div>
-      
-                    <a href="/" class="button button-outline color-gray" tabindex="30">
-                      Cancel
-                    </a>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="list accordion-list">
+                                <ul>
+                                    <li class="accordion-item">
+                                        <a href="" class="item-link item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">Configure GitHub</div>
+                                            </div>
+                                        </a>
+                                        <div class="accordion-item-content">
 
-                    <button type="submit" class="button button-fill" tabindex="31" id="saveButton">
-                      Save
-                    </button>
-      
-                </div>
+                                            <div class="block block-strong block-outline">
+
+                                                <strong>GitHub Instructions</strong>
+    
+                                                <ol>
+                                                    <li>Create a <a href="http://github.com" class="external" target="_blank">GitHub</a> account.</li>
+                                                    <li>Create a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" class="external" target="_blank">"Personal access token (classic)"</a> and 
+                                                        save it below.</li>
+                                                    <li>If you are logged into GitHub <a href="https://github.com/settings/tokens" class="external" target="_blank">this link</a> will take you directly to the create form. </li>
+                        
+                                                </ol>
+                        
+                                                <p>Give the token a name and select an expiration date.</p>
+                        
+                                                <ul>
+                                                    <li>Check the "repo" permission. </li>
+                                                </ul>  
+                        
+                        
+                        
+                                                <div class="list">
+                        
+                                                    <ul>
+                                                        <li>
+                                                            <div class="item-content item-input">
+                                                                <div class="item-inner">
+                                                                    <div class="item-title item-label">Username (NOT email)</div>
+                                                                    <div class="item-input-wrap">
+                                                                        <input type="text" name="gitHubUsername" placeholder="Username"
+                                                                            value="${settings.gitProviders?.github?.username}"  />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="item-content item-input">
+                                                                <div class="item-inner">
+                                                                    <div class="item-title item-label">Personal Access Token</div>
+                                                                    <div class="item-input-wrap">
+                                                                        <input type="text" name="gitHubPersonalAccessToken" placeholder="Personal access token"
+                                                                            value="${settings.gitProviders?.github?.personalAccessToken}"  />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                    <li class="accordion-item">
+                                        <a href="" class="item-link item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">Configure GitLab</div>
+                                            </div>
+                                        </a>
+                                        <div class="accordion-item-content">
+
+                                            <div class="block block-strong block-outline">
+
+                                                <strong>GitLab Instructions</strong>
+    
+                                                <ol>
+                                                    <li>Create a <a href="http://gitlab.com" class="external" target="_blank">Gitlab</a> account.</li>
+                                                    <li>Create a <a href="https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html" class="external" target="_blank">"Personal access token"</a> and 
+                                                        save it below.</li>
+                                                    <li>If you are logged into Gitlab <a href="https://gitlab.com/-/profile/personal_access_tokens" class="external" target="_blank">this link</a> will
+                                                        take you directly to the create form. </li>
+                        
+                                                </ol>
+                        
+                            
+                                                <p>Give the token a name and select an expiration date. Under "Select scopes" check the boxes beside:</p>
+                                                
+                                                <ul>
+                                                    <li>api</li>
+                                                    <li>read_api</li>
+                                                    <li>read_repository</li>
+                                                    <li>write_repository</li>
+                                                </ul>  
+                        
+                        
+                                                <div class="list">
+                        
+                                                    <ul>
+                                                        <li>
+                                                            <div class="item-content item-input">
+                                                                <div class="item-inner">
+                                                                    <div class="item-title item-label">Username (NOT email)</div>
+                                                                    <div class="item-input-wrap">
+                                                                        <input type="text" name="gitLabUsername" placeholder="Username"
+                                                                            value="${settings.gitProviders?.gitlab?.username}"  />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="item-content item-input">
+                                                                <div class="item-inner">
+                                                                    <div class="item-title item-label">Personal Access Token</div>
+                                                                    <div class="item-input-wrap">
+                                                                        <input type="text" name="gitLabPersonalAccessToken" placeholder="Personal access token"
+                                                                            value="${settings.gitProviders?.gitlab?.personalAccessToken}"  />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">Remote IPFS API</div>
+                        <div class="card-content">
+                            <div class="list">
+                                <ul>
+                                    <li class="item-content item-input item-input-with-info">
+
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">URL</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="ipfsHost" value="${settings?.ipfsHost}" placeholder="Example: https://localhost:5001/api/v0" />
+                                                <span class="input-clear-button"></span>
+                                                <!-- element with additional information -->
+                                                <div class="item-input-info">Note: Must be https:// unless you are running Large locally.</div>
+                                            </div>
+                                        </div>
 
 
-            </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="card">
+                        <div class="card-header">Alchemy</div>
+                        <div class="card-content">
+                            <div class="list">
+                                <ul>
+                                    <li class="item-content item-input">
+
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Enter your <a href="https://www.alchemy.com/" class="external" target="_blank">Alchemy</a> API key</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="alchemyKey" value="${settings?.alchemyKey}" placeholder="API key..." />
+                                                <span class="input-clear-button"></span>
+                                            </div>
+                                        </div>
+
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="block cancel-save-row">
+          
+                        <div class="large-only"></div>
+          
+                        <a href="/" class="button button-outline color-gray" tabindex="30">
+                          Cancel
+                        </a>
+    
+                        <button type="submit" class="button button-fill" tabindex="31" id="saveButton">
+                          Save
+                        </button>
+          
+                    </div>
+    
+    
+                </form>
+
+            </div>
 
         </div>
 
@@ -265,7 +319,8 @@
                         username: formData.gitHubUsername,
                         personalAccessToken: formData.gitHubPersonalAccessToken
                     }
-                }
+                },
+                alchemyKey: formData.alchemyKey
             }
 
             //Save

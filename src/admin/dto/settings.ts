@@ -28,6 +28,9 @@ class Settings {
     personalAccessToken?:string
 
     @Allow()
+    alchemyKey?:string
+
+    @Allow()
     dateCreated?:string
 
     @Allow()

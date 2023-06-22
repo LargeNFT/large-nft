@@ -69,6 +69,81 @@ class GitlabService implements GitProviderService {
 
     }
 
+    async createVariables(channel: Channel): Promise<any> {
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider = settings.gitProviders["gitlab"]
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+
+        //Alchemy
+        if (settings.alchemyKey) {
+            //Create
+            await this._createVariable(channel, gitProvider, "ALCHEMY_API_KEY", settings.alchemyKey)
+        }
+
+    }
+
+    private async _createVariable(channel, gitProvider, key, value) {
+
+
+        //First see if it exists.
+        let existing = await this._getVariables(channel, gitProvider, key )
+
+        let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/variables`
+
+        if (existing) {
+
+            //Update
+            return axios.put(`${url}/${key}`, {
+                key: key,
+                value: value,
+                masked: true
+            } , {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+
+        } else {
+
+            return axios.post(url, {
+                key: key,
+                value: value,
+                masked: true
+            } , {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+
+        }
+
+    }
+
+    private async _getVariables(channel, gitProvider, key) {
+
+        let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/variables/${key}`
+
+        try {
+            
+            let response = await axios.get(url, {
+                headers: {
+                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                }
+            })
+    
+            return response?.data
+
+        } catch(ex) {
+        }
+
+
+    }
+    
     public async getExistingFork(channel:Channel) : Promise<ForkInfo> {
 
         let settings = await this.settingsService.get()

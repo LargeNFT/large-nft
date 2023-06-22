@@ -122,6 +122,8 @@ and limitations under the License.
 
 /*! https://mths.be/he v1.2.0 by @mathias | MIT license */
 
+/*! node-domexception. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
+
 /**
  * Returns an array of the selectors.
  *

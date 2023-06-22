@@ -112,13 +112,15 @@ class GitService {
         switch(gitProvider.name) {
 
             case "gitlab":
-
+                await this.gitlabService.createVariables(channel)
                 await this.gitlabService.deleteReaderBackup(channel, gitProvider)
                 return this.gitlabService.commit(channel, gitActions, gitProvider)
                 
             case "github":
-                await this.githubService.deleteReaderBackup(channel, gitProvider)
-                return this.githubService.commit(channel, gitActions, gitProvider)
+                await this.githubService.createVariables(channel)
+                // await this.githubService.deleteReaderBackup(channel, gitProvider)
+                // return this.githubService.commit(channel, gitActions, gitProvider)
+                return
         }
 
 
@@ -201,6 +203,26 @@ class GitService {
         }
 
     }
+
+    async createVariables(channel: Channel): Promise<any> {
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error(`${gitProvider.name} personal access token not set`)
+        }
+
+        switch(gitProvider.name) {
+            case "gitlab":
+                return this.gitlabService.createVariables(channel)
+            case "github":
+                return this.githubService.createVariables(channel)
+        }
+
+    }
+
 
     async getForkRepoStatus(channel: Channel): Promise<string> {
 
@@ -288,8 +310,6 @@ class GitService {
 
     }
 
-
-
     private logPublishProgress(message:string) {
     
         console.log(message)
@@ -305,7 +325,6 @@ class GitService {
         }
     
     }
-
 
     private chunkArrayByBytes(items, chunkSizeBytes) {
 
@@ -352,7 +371,6 @@ class GitService {
 
     }
       
-
 
 }
 

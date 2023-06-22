@@ -15,33 +15,35 @@
 
     <div class="page-content infinite-scroll-content hide-toolbar-on-scroll" @infinite=${infiniteScroll} id="channel-index-infinite-scroll">
 
+      <div class="fixed-width-content center">
 
-      <div class="card card-outline card-header-divider welcome">
-        <div class="card-header">Welcome and thank you for using Large!</div>
-        <div class="card-content card-content-padding">
-
-          <p>
-            Large is free software and designed to run on your own hardware with a standalone IPFS and Ethereum node.
-          </p>
-
-          <p>
-            <strong>All data</strong> is in local storage in your browser and we can NEVER retreive it for you if you lose it. We do not have it and this is by design. 
-          </p>
-
-          <p>Help make Large better by submitting bugs and feedback on <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a>.</p>
-
+        <div class="card card-outline card-header-divider welcome">
+          <div class="card-header">Welcome and thank you for using Large!</div>
+          <div class="card-content card-content-padding">
+  
+            <p>
+              Large is free software and designed to run on your own hardware with a standalone IPFS and Ethereum node.
+            </p>
+  
+            <p>
+              <strong>All data</strong> is in local storage in your browser and we can NEVER retreive it for you if you lose it. We do not have it and this is by design. 
+            </p>
+  
+            <p>Help make Large better by submitting bugs and feedback on <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a>.</p>
+  
+          </div>
+  
+  
+  
         </div>
-
-
+  
+  
+        <div class="list list-strong list-dividers media-list virtual-list inset" id="channel-index-list">
+        </div>
+  
+        <div class="preloader infinite-scroll-preloader"></div>
 
       </div>
-
-
-      <div class="list list-strong list-dividers media-list virtual-list inset" id="channel-index-list">
-      </div>
-
-      <div class="preloader infinite-scroll-preloader"></div>
-
 
 
     </div>

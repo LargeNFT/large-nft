@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.16.36",
+  "version": "0.16.37",
   "description": "Publish your book, fan-fiction, blog, or art as a series of digital collectibles.",
   "repository": {
     "type": "git",
@@ -127,7 +127,7 @@
     "ethers": "5.7.2",
     "excerpt-html": "1.2.2",
 
-    "framework7": "8.0.5",
+    "framework7": "8.1.0",
     "framework7-icons": "5.0.5",
     
     "highlight.js": "11.8.0",
@@ -180,7 +180,9 @@
 
     "url": "0.11.0",
     "util": "0.12.5",
-    "uuid": "9.0.0"
+    "uuid": "9.0.0",
+
+    "libsodium-wrappers": "0.7.11"
 
   }
 }

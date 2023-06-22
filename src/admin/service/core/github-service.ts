@@ -1,11 +1,15 @@
 import axios from "axios";
 import { injectable } from "inversify";
 import moment from "moment";
+import _sodium from 'libsodium-wrappers';
+
 
 import { Channel } from "../../dto/channel.js";
 import { ForkInfo, GitProviderService } from './git-provider-service.js';
 
 import { SettingsService } from './settings-service.js';
+
+
 
 @injectable()
 class GithubService implements GitProviderService {
@@ -66,6 +70,70 @@ class GithubService implements GitProviderService {
             branch: "master"
         }
     }
+
+    async createVariables(channel: Channel): Promise<any> {
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider = settings.gitProviders["github"]
+
+
+        if (gitProvider.personalAccessToken.length < 1) {
+            throw new Error("Gitlab personal access token not set")
+        }
+    
+        //Alchemy
+        if (settings.alchemyKey) {
+            //Create
+            await this._createVariable(channel, gitProvider, "ALCHEMY_API_KEY", settings.alchemyKey)
+        }
+
+
+    }
+
+    private async _createVariable(channel, gitProvider, key, value) {
+
+        let theUrl = `${GithubService.BASE_URL}/repos/${gitProvider.username}/${this.getBranchName(channel)}/actions/secrets/public-key`
+
+        //Update
+        let publicKeyResponse = await axios.get(theUrl, {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+
+        const secret = value // replace with the secret you want to encrypt
+        let publicKey = publicKeyResponse.data
+
+
+        await _sodium.ready
+
+        // Convert Secret & Base64 key to Uint8Array.
+        let binkey = _sodium.from_base64(publicKey.key, _sodium.base64_variants.ORIGINAL)
+        let binsec = _sodium.from_string(secret)
+        
+        //Encrypt the secret using LibSodium
+        let encBytes = _sodium.crypto_box_seal(binsec, binkey)
+        
+        // Convert encrypted Uint8Array to Base64
+        let encryptedValue = _sodium.to_base64(encBytes, _sodium.base64_variants.ORIGINAL)
+        
+
+        let url = `${GithubService.BASE_URL}/repos/${gitProvider.username}/${this.getBranchName(channel)}/actions/secrets/${key}`
+
+        //Update
+        return axios.put(url, {
+            key_id: publicKey.key_id,
+            encrypted_value: encryptedValue,
+        } , {
+            headers: {
+                "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            }
+        })
+
+    }
+
 
 
     public async getExistingFork(channel: Channel): Promise<ForkInfo> {
@@ -383,7 +451,6 @@ class GithubService implements GitProviderService {
         
     }
 
-
     private async createCommit(currentCommitSha, newTreeSha, channel, message, gitProvider) {
 
 
@@ -554,8 +621,6 @@ class GithubService implements GitProviderService {
 
         }
     }
-
-
 
     private logPublishProgress(message: string) {
 

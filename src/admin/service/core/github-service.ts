@@ -410,30 +410,6 @@ class GithubService implements GitProviderService {
 
     }
 
-    async getProductionURIInfo(channel: Channel): Promise<any> {
-        
-
-        function getGitHubUsername(url) {
-
-            const path = url.replace("https://github.com/", "");
-          
-            // Split the remaining path into parts
-            const parts = path.split("/");
-          
-            // Extract the username and repository name
-            const username = parts[0];
-            
-            return username
-
-          }
-
-
-        return {
-            hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.github.io`,
-            baseURI: `/${this.getBranchName(channel)}/`
-        }
-
-    }
 
     private async getMostRecentActionRun(channel, gitProvider) {
 

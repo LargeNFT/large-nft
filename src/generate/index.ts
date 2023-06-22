@@ -226,11 +226,15 @@ let generate = async () => {
   await generateService.generatePages(config, channelViewModel, generateViewModel, baseViewModel)
 
   //Generate webp version of channel cover image
-  await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId)
-  await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
+  if (channelViewModel.channel.coverImageId) {
+    await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId)
+  }
+
+  if (channelViewModel.channel.coverBannerId) {
+    await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
+  }
 
   await generateService.generateAttributeItems(config, baseViewModel.attributeReport)
-
 
   if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
     fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })

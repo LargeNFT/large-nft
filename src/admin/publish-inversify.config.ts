@@ -28,9 +28,9 @@ import { WalletService } from "./service/core/wallet-service.js";
 //@ts-ignore
 import c from '../../contracts.json' assert { type: "json" }
 import { QueryCacheService } from "./service/core/query-cache-service.js";
-import { GitService } from "./service/core/git-service.js";
-import { GitlabService } from "./service/core/gitlab-service.js";
-import { GithubService } from "./service/core/github-service.js";
+// import { GitService } from "./service/core/git-service.js";
+// import { GitlabService } from "./service/core/gitlab-service.js";
+// import { GithubService } from "./service/core/github-service.js";
 import { QueryCacheRepository } from "./repository/query-cache-repository.js";
 import { PinningService } from "./service/core/pinning-service.js";
 import { PinningApiRepository } from "./repository/pinning-api-repository.js";
@@ -103,9 +103,9 @@ function getMainContainer() {
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(PinningService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
-  container.bind(GitService).toSelf().inSingletonScope()
-  container.bind(GitlabService).toSelf().inSingletonScope()
-  container.bind(GithubService).toSelf().inSingletonScope()
+  // container.bind(GitService).toSelf().inSingletonScope()
+  // container.bind(GitlabService).toSelf().inSingletonScope()
+  // container.bind(GithubService).toSelf().inSingletonScope()
   // container.bind(ERCEventService).toSelf().inSingletonScope()
 
   // container.bind(ChannelWebService).toSelf().inSingletonScope()

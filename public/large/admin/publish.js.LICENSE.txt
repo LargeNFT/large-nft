@@ -122,8 +122,6 @@ and limitations under the License.
 
 /*! https://mths.be/he v1.2.0 by @mathias | MIT license */
 
-/*! node-domexception. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
-
 /**
  * Returns an array of the selectors.
  *
@@ -140,10 +138,6 @@ and limitations under the License.
  * @copyright Chen, Yi-Cyuan 2015-2018
  * @license MIT
  */
-
-//! moment.js
-
-//! moment.js locale configuration
 
 //! stable.js 0.1.8, https://github.com/Two-Screen/stable
 

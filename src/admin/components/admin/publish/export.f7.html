@@ -443,23 +443,31 @@
 
             checkingStatus = true
 
-            channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+            try {
 
-            let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
+                channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
-            if (ipfsActionStatus == "finished") { //TODO
+                let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
 
-                //Get the new IPFS hash
-                channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
-                channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
-                await channelService.put(channelViewModel.channel)
+                if (ipfsActionStatus == "finished") { //TODO
 
-                await $update()
+                    //Get the new IPFS hash
+                    channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
+                    channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
+                    await channelService.put(channelViewModel.channel)
 
-                let elem = document.getElementsByClassName('content-card-padding')[0]
-                $f7.preloader.hideIn(elem)
+                    await $update()
 
+                    let elem = document.getElementsByClassName('content-card-padding')[0]
+                    $f7.preloader.hideIn(elem)
+
+                }
+
+            } catch(ex) {
+                console.log(ex)
             }
+
+            
 
             await $update()
 

@@ -143,7 +143,7 @@ class GitlabService implements GitProviderService {
 
 
     }
-    
+
     public async getExistingFork(channel:Channel) : Promise<ForkInfo> {
 
         let settings = await this.settingsService.get()
@@ -194,6 +194,8 @@ class GitlabService implements GitProviderService {
             throw new Error("Gitlab personal access token not set")
         }
 
+        if (!channel.publishReaderRepoId) return
+
         let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}`
 
         let response = await axios.get(url, {
@@ -217,6 +219,8 @@ class GitlabService implements GitProviderService {
             throw new Error("Gitlab personal access token not set")
         }
 
+        if (!channel.publishReaderRepoId) return
+
         let jobs = await this.getJobForCommit(channel, gitProvider)
 
         if (jobs?.length > 0 && jobs[0].status == "success") {
@@ -226,6 +230,7 @@ class GitlabService implements GitProviderService {
     }
 
     async getJobForCommit(channel:Channel, gitProvider) : Promise<any[]> {
+
 
         let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/jobs`
 
@@ -277,29 +282,7 @@ class GitlabService implements GitProviderService {
 
     }
 
-    async getProductionURIInfo(channel: Channel): Promise<any> {
-        
-        function getGitHubUsername(url) {
 
-            const path = url.replace("https://gitlab.com/", "")
-          
-            // Split the remaining path into parts
-            const parts = path.split("/")
-          
-            // Extract the username and repository name
-            const username = parts[0]
-            
-            return username
-
-        }
-
-
-        return {
-            hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.gitlab.io`,
-            baseURI: `/${this.getBranchName(channel)}/`
-        }
-
-    }
 
     async commit(channel:Channel, actions:any[], gitProvider) : Promise<string> {
 

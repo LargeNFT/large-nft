@@ -257,25 +257,34 @@
 
       console.log('Checking repo fork status...')
 
-      channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
-      let forkRepoStatus = await gitService.getForkRepoStatus(channelViewModel.channel)
+      try {
 
-      if (forkRepoStatus == "finished") { //TODO
+        channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
-        //Grab the URL
-        let forkResult = await gitService.getExistingFork(channelViewModel.channel)
+        let forkRepoStatus = await gitService.getForkRepoStatus(channelViewModel.channel)
 
-        channelViewModel.channel.publishReaderRepoStatus = "complete"
-        channelViewModel.channel.httpUrlToRepo = forkResult.httpUrlToRepo
+        if (forkRepoStatus == "finished") { //TODO
 
-        await channelService.put(channelViewModel.channel)
+          //Grab the URL
+          let forkResult = await gitService.getExistingFork(channelViewModel.channel)
 
-        let elem = document.getElementsByClassName('content-card-padding')[0]
-        $f7.preloader.hideIn(elem)
+          channelViewModel.channel.publishReaderRepoStatus = "complete"
+          channelViewModel.channel.httpUrlToRepo = forkResult.httpUrlToRepo
+
+          await channelService.put(channelViewModel.channel)
+
+          let elem = document.getElementsByClassName('content-card-padding')[0]
+          $f7.preloader.hideIn(elem)
 
 
+        }
+        
+      } catch(ex) {
+        console.log(ex)
       }
+
+      
 
       await $update()
 

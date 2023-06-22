@@ -19,10 +19,10 @@ import { WalletService } from "./wallet-service.js"
 
 import { ExportService } from "./export-service.js"
 import Hash from 'ipfs-only-hash'
-import { GitService } from "./git-service.js"
 import { ContractMetadata } from "../../dto/contract-metadata.js"
 //@ts-ignore
 import contractABI from '../../../../contracts.json' assert { type: "json" }
+import { SettingsService } from "./settings-service.js"
 
 
 @injectable()
@@ -34,7 +34,7 @@ class PublishService {
         private ipfsService: IpfsService,
         private imageService: ImageService,
         private exportService:ExportService,
-        private gitService:GitService,
+        private settingsService:SettingsService,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) { }
@@ -260,9 +260,76 @@ class PublishService {
             })
         }
 
-        let productionURIInfo = await this.gitService.getProductionURIInfo(channel)
+        const getProductionURIInfo = async (channel) => {
 
-        console.log(productionURIInfo)
+            let settings = await this.settingsService.get()
+
+            let gitProvider
+    
+            //If it's "default" or blank then look at the global default
+            if (!channel.gitProvider || channel.gitProvider == "default") {
+    
+                if (settings.defaultGitProvider) {
+                    gitProvider = settings.defaultGitProvider
+                } else {
+                    gitProvider = "github"
+                }
+                
+            } else {
+                gitProvider = channel.gitProvider
+            }
+    
+            switch(gitProvider) {
+
+                case "gitlab":
+
+                    function getGitLabUsername(url) {
+
+                        const path = url.replace("https://gitlab.com/", "")
+                    
+                        // Split the remaining path into parts
+                        const parts = path.split("/")
+                    
+                        // Extract the username and repository name
+                        const username = parts[0]
+                        
+                        return username
+            
+                    }
+            
+            
+                    return {
+                        hostname: `https://${getGitLabUsername(channel.httpUrlToRepo)}.gitlab.io`,
+                        baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
+                }
+
+                case "github":
+
+                    function getGitHubUsername(url) {
+
+                        const path = url.replace("https://github.com/", "");
+                    
+                        // Split the remaining path into parts
+                        const parts = path.split("/");
+                    
+                        // Extract the username and repository name
+                        const username = parts[0];
+                        
+                        return username
+            
+                    }
+            
+            
+                    return {
+                        hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.github.io`,
+                        baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
+                }
+
+            }
+
+        }
+
+        let productionURIInfo = await getProductionURIInfo(channel)
 
         //Copy a large-config.json to GitHub
         fsActions.push({
@@ -320,30 +387,6 @@ class PublishService {
 
     }
 
-    // async exportContract(channel:Channel) : Promise<void> {
-
-    //     let gitActions = []
-
-    //     gitActions.push({
-    //         action: "create",
-    //         file_path: "/backup/contract/contract.json",
-    //         content: Buffer.from(JSON.stringify({ 
-    //             contractAddress: channel.contractAddress,
-    //             ipfsCid: channel.publishReaderIPFSStatus?.cid
-    //         }))
-    //     })
-
-    //     //Also the ABI
-    //     gitActions.push({
-    //         action: "create",
-    //         file_path: "/backup/contract/contract-abi.json",
-    //         content: Buffer.from(JSON.stringify(contractABI))
-    //     })
-
-    //     await this.gitService.deployReaderContract(channel, gitActions)
-
-
-    // }
 
     getIPFSDirectory(channel:Channel) {
         return `/export/${channel._id}`
@@ -465,9 +508,6 @@ class PublishService {
 
     }
 
-
-
-
     private async _publishImagesIPFS(publishStatus:PublishStatus, ipfsDirectory:string, images:Image[], flush: boolean) {
 
         for (let image of images) {
@@ -542,8 +582,6 @@ class PublishService {
 
 
     }
-
-
 
     private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
 

@@ -30,7 +30,7 @@ let publish = async () => {
 
 
   if (fs.existsSync(`${process.env.INIT_CWD   }/data/pouch`)) {
-    fs.rmdirSync(`${process.env.INIT_CWD   }/data/pouch`, { recursive: true })
+    fs.rmSync(`${process.env.INIT_CWD   }/data/pouch`, { recursive: true })
   }
 
   fs.mkdirSync(`${process.env.INIT_CWD   }/data/pouch`, { recursive: true })

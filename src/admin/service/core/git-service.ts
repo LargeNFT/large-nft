@@ -118,9 +118,8 @@ class GitService {
                 
             case "github":
                 await this.githubService.createVariables(channel)
-                // await this.githubService.deleteReaderBackup(channel, gitProvider)
-                // return this.githubService.commit(channel, gitActions, gitProvider)
-                return
+                await this.githubService.deleteReaderBackup(channel, gitProvider)
+                return this.githubService.commit(channel, gitActions, gitProvider)
         }
 
 
@@ -281,34 +280,34 @@ class GitService {
 
     }
 
-    async getProductionURIInfo(channel: Channel) : Promise<any> {
+    // async getProductionURIInfo(channel: Channel) : Promise<any> {
         
-        let settings = await this.settingsService.get()
+    //     let settings = await this.settingsService.get()
 
-        let gitProvider
+    //     let gitProvider
 
-        //If it's "default" or blank then look at the global default
-        if (!channel.gitProvider || channel.gitProvider == "default") {
+    //     //If it's "default" or blank then look at the global default
+    //     if (!channel.gitProvider || channel.gitProvider == "default") {
 
-            if (settings.defaultGitProvider) {
-                gitProvider = settings.defaultGitProvider
-            } else {
-                gitProvider = "github"
-            }
+    //         if (settings.defaultGitProvider) {
+    //             gitProvider = settings.defaultGitProvider
+    //         } else {
+    //             gitProvider = "github"
+    //         }
             
-        } else {
-            gitProvider = channel.gitProvider
-        }
+    //     } else {
+    //         gitProvider = channel.gitProvider
+    //     }
 
 
-        switch(gitProvider) {
-            case "gitlab":
-                return this.gitlabService.getProductionURIInfo(channel)
-            case "github":
-                return this.githubService.getProductionURIInfo(channel)
-        }
+    //     switch(gitProvider) {
+    //         case "gitlab":
+    //             return this.gitlabService.getProductionURIInfo(channel)
+    //         case "github":
+    //             return this.githubService.getProductionURIInfo(channel)
+    //     }
 
-    }
+    // }
 
     private logPublishProgress(message:string) {
     

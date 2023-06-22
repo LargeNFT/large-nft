@@ -432,6 +432,7 @@
             if (pageUnloaded) return
             if (!settings) return
             if (channelViewModel.channel.publishReaderIPFSStatus?.status == "complete") return
+            if (channelViewModel.channel.contractAddress) return //not waiting if we already have the contract
             if (publishing) return
             if (checkingStatus) return 
 

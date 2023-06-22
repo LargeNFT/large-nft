@@ -152,14 +152,17 @@ let publish = async () => {
   }
 
   //Export car file
-  const out = await ipfsService.ipfs.dag.export(result.cid)
-  Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.cid}.car`))
+  if (result.cid) {
+    const out = await ipfsService.ipfs.dag.export(result.cid)
+    Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.cid}.car`))
+  
+  
+    fs.writeFileSync(`${process.env.INIT_CWD}/ipfs/ipfs.json`, Buffer.from(JSON.stringify({
+      cid: result.cid,
+      date: new Date().toUTCString()
+    })))
+  }
 
-
-  fs.writeFileSync(`${process.env.INIT_CWD}/ipfs/ipfs.json`, Buffer.from(JSON.stringify({
-    cid: result.cid,
-    date: new Date().toUTCString()
-  })))
 
 
 

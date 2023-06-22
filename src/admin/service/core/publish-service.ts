@@ -53,8 +53,11 @@ class PublishService {
         let backup:BackupBundle = await this.exportService.createBackup(exportBundle)
 
 
-        //export to IPFS
-        let cid: string = await this.exportToIPFS(exportBundle, backup, feeRecipient)
+        //export to IPFS but only if we don't have a contractAddress
+        let cid
+        if (!channel.contractAddress) {
+            cid = await this.exportToIPFS(exportBundle, backup, feeRecipient)
+        }
 
         let fsActions = await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient)
 

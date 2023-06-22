@@ -19,6 +19,10 @@ import { ChannelBackup, SchemaService } from "./service/core/schema-service.js"
 import { SettingsService } from "./service/core/settings-service.js"
 import { Settings } from "./dto/settings.js"
 import path from "path"
+import { ImageService } from "./service/image-service.js"
+import { AnimationService } from "./service/animation-service.js"
+import { ImageRepository } from "./repository/image-repository.js"
+import { AnimationRepository } from "./repository/animation-repository.js"
 
 let publish = async () => {
 
@@ -27,6 +31,8 @@ let publish = async () => {
   let ipfsService:IpfsService = container.get(IpfsService)
   let schemaService: SchemaService = container.get(SchemaService)
   let settingsService: SettingsService = container.get(SettingsService)
+  let imageRepository: ImageRepository = container.get(ImageRepository)
+  let animationRepository: AnimationRepository = container.get(AnimationRepository)
 
 
   if (fs.existsSync(`${process.env.INIT_CWD   }/data/pouch`)) {
@@ -40,36 +46,58 @@ let publish = async () => {
   await schemaService.load()
 
 
-  //Load images
-  let imageFilenames = fs.readdirSync("./.upload/images")
-
-  let images = []
-  for (let filename of imageFilenames) {
-    images.push(JSON.parse(fs.readFileSync(`./.upload/images/${filename}`).toString()))
-  }
-
-  //Load animations
-  let animationFilenames = fs.readdirSync("./.upload/animations")
-
-  let animations = []
-  for (let filename of animationFilenames) {
-    animations.push(JSON.parse(fs.readFileSync(`./.upload/animations/${filename}`).toString()))
-  }
-
-
 
   //Read channel backup
   let channelBackup:ChannelBackup = {
     channel: JSON.parse(fs.readFileSync("./.upload/channel.json").toString()),
     items: JSON.parse(fs.readFileSync("./.upload/items.json").toString()),
-    animations: animations,
-    images: images,
     themes: JSON.parse(fs.readFileSync("./.upload/themes.json").toString()),
     staticPages: JSON.parse(fs.readFileSync("./.upload/staticPages.json").toString()),
     attributeCounts: JSON.parse(fs.readFileSync("./.upload/attributeCounts.json").toString())
   }
 
   await schemaService.loadChannelBackup(channelBackup)
+
+
+  //Load images
+  console.log(`Loading images...`)
+
+  let imageFilenames = fs.readdirSync("./.upload/images")
+
+  for (let filename of imageFilenames) {
+  
+    let image = JSON.parse(fs.readFileSync(`./.upload/images/${filename}`).toString())
+
+    if (!image._id?.startsWith("_design"))  {
+      delete image._rev
+      delete image['_rev_tree'] 
+    }
+
+
+
+    await imageRepository.put(image)
+
+  }
+
+  //Load animations
+  console.log(`Loading animations...`)
+
+  let animationFilenames = fs.readdirSync("./.upload/animations")
+
+  for (let filename of animationFilenames) {
+
+    let animation = JSON.parse(fs.readFileSync(`./.upload/animations/${filename}`).toString())
+
+    if (!animation._id?.startsWith("_design"))  {
+      delete animation._rev
+      delete animation['_rev_tree'] 
+    }
+
+    await animationRepository.put(animation)
+
+  }
+
+
 
   let settings
 

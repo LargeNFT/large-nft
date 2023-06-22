@@ -74,12 +74,8 @@ class SchemaService {
 
         await this.loadChannel(channelBackup.channel._id)
 
-
-
         console.log(`Loading:
             Items: ${channelBackup.items ? channelBackup.items.length : 0}
-            Animations: ${channelBackup.animations ? channelBackup.animations.length : 0}
-            Images: ${channelBackup.images ? channelBackup.images.length : 0}
             Themes: ${channelBackup.themes ? channelBackup.themes.length : 0}
             Static Pages: ${channelBackup.staticPages ? channelBackup.staticPages.length : 0}
             Attribute Counts: ${channelBackup.attributeCounts ? channelBackup.attributeCounts.length : 0}
@@ -96,22 +92,23 @@ class SchemaService {
 
 
         prepareRows(channelBackup.items)
-        prepareRows(channelBackup.animations)
-        prepareRows(channelBackup.images)
         prepareRows(channelBackup.themes)
         prepareRows(channelBackup.staticPages)
         prepareRows(channelBackup.attributeCounts)
 
 
         await this.itemRepository.db.bulkDocs(channelBackup.items)
-        await this.animationRepository.db.bulkDocs(channelBackup.animations)
-        await this.imageRepository.db.bulkDocs(channelBackup.images)
         await this.themeRepository.db.bulkDocs(channelBackup.themes)
         await this.staticPageRepository.db.bulkDocs(channelBackup.staticPages)
         await this.attributeCountRepository.db.bulkDocs(channelBackup.attributeCounts)
         
         await this.channelRepository.db.bulkDocs([channelBackup.channel])
 
+
+
+
+
+        
         // console.log(await this.itemRepository.db.info().then(info => info.doc_count))
         // console.log(await this.animationRepository.db.info().then(info => info.doc_count))
         // console.log(await this.imageRepository.db.info().then(info => info.doc_count))
@@ -201,8 +198,8 @@ class SchemaService {
 interface ChannelBackup {
     channel:Channel,
     items: any,
-    animations: any,
-    images: any,
+    animations?: any,
+    images?: any,
     themes: any,
     staticPages: any,
     attributeCounts: any

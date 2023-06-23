@@ -26,8 +26,6 @@ import { TokenOwnerPageService } from "./service/token-owner-page-service.js"
 let channelId
 
 import { ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, ProcessedTransactionTrader } from "./dto/processed-transaction.js"
-import { BlockService } from "./service/block-service.js"
-import { TransactionService } from "./service/transaction-service.js"
 import { TokenOwnerService } from "./service/token-owner-service.js"
 import { ProcessedTransactionService, ProcessedTransactionsPage, TransactionViewModel } from "./service/processed-transaction-service.js"
 import { ContractState } from "./dto/contract-state.js"
@@ -140,8 +138,6 @@ let sync = async () => {
 
 
     let transactionIndexerService: TransactionIndexerService = container.get("TransactionIndexerService")
-    let transactionService: TransactionService = container.get("TransactionService")
-    let blockService: BlockService = container.get("BlockService")
     let tokenService: TokenService = container.get("TokenService")
 
     let tokenOwnerService: TokenOwnerService = container.get("TokenOwnerService")

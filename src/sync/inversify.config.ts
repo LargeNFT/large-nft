@@ -95,13 +95,16 @@ import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sy
 const require = createRequire(import.meta.url)
 const { Sequelize } = require('sequelize-typescript')
 
+// import { Sequelize } from 'sequelize-typescript'
+
+
 
 let container:Container
 
-function getMainContainer(command:GetMainContainerCommand) {
+async function getMainContainer(command:GetMainContainerCommand) {
 
   if (container) return container
-  
+
   container = command.customContainer
   
   container.bind("pluginModules").toConstantValue([])

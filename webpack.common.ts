@@ -341,7 +341,7 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/sync/index.ts",
-    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp', 'mariadb', 'sequelize-typescript'],
+    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp', 'mariadb'],
     externalsPresets: { 
       node: true 
     },    
@@ -349,7 +349,7 @@ let getReaderConfigs = () => {
       outputModule: true
     },
     resolve: {
-      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensions: ['.*', '.js', '.jsx', '.tsx', '.ts'],
       extensionAlias: {
         ".js": [".js", ".ts"]
       }

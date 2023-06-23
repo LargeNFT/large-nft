@@ -341,7 +341,7 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/sync/index.ts",
-    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp', 'mariadb'],
+    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp', 'mariadb', 'sequelize-typescript'],
     externalsPresets: { 
       node: true 
     },    

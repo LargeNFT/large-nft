@@ -4,8 +4,6 @@ import "reflect-metadata"
 
 import { Readable } from 'stream'
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
 
 import { getMainContainer } from "./publish-inversify.config.js"
 

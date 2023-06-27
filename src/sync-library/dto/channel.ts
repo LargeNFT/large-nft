@@ -1,5 +1,3 @@
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
 
 const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey } = require('sequelize-typescript')
 

@@ -1,7 +1,3 @@
-
-// import { createRequire } from 'module'
-// const require = createRequire(import.meta.url)
-
 const { Table, Column, Model, HasMany, CreatedAt, UpdatedAt, DataType, PrimaryKey, Index, ForeignKey, BelongsTo, AllowNull, BelongsToMany } = require('sequelize-typescript')
 
 import { ERCEvent } from './erc-event.js'

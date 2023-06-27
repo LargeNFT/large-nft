@@ -1,5 +1,4 @@
 import { Container } from "inversify";
-import { createRequire } from "module";
 import { SyncStatus } from "./dto/sync-status.js";
 import { SyncStatusRepositoryNodeImpl } from "./repository/node/sync-status-repository-impl.js";
 import { SyncStatusRepository } from "./repository/sync-status-repository.js";
@@ -52,7 +51,6 @@ import { HomeWebService } from "../library/service/web/home-web-service.js";
 import { HomeRepository } from "../library/repository/home-repository.js";
 
 
-const require = createRequire(import.meta.url)
 const { Sequelize } = require('sequelize-typescript')
 
 let container:Container

@@ -2,8 +2,6 @@ import "core-js/stable/index.js"
 import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
 
 import { getMainContainer } from "./import-inversify.config.js"
 

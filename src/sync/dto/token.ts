@@ -1,6 +1,3 @@
-// import { createRequire } from 'module'
-// const require = createRequire(import.meta.url)
-
 import { TransactionsViewModel, TransactionViewModel } from '../service/processed-transaction-service.js'
 import { ProcessedTransaction, ProcessedTransactionToken } from './processed-transaction.js'
 import { TokenOwner } from './token-owner.js'

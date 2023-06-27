@@ -87,16 +87,13 @@ import sharp from "sharp"
 import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js"
 import { RowItemViewModel } from "../reader/dto/item-page.js"
 
-import { createRequire } from 'module'
+
 import { SyncStatusService } from "../sync-library/service/sync-status-service.js";
 import { SyncStatusRepository } from "../sync-library/repository/sync-status-repository.js";
 import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sync-status-repository-impl.js";
 
-const require = createRequire(import.meta.url)
+
 const { Sequelize } = require('sequelize-typescript')
-
-// import { Sequelize } from 'sequelize-typescript'
-
 
 
 let container:Container

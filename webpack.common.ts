@@ -341,7 +341,7 @@ let getReaderConfigs = () => {
 
   let syncConfig = {
     entry: "./src/sync/index.ts",
-    externals: ['pg', 'sqlite3', 'tedious', 'pg-hstore', 'sharp', 'mariadb'],
+    externals: ['sequelize', 'sequelize-typescript', 'sharp' ],
     externalsPresets: { 
       node: true 
     },    
@@ -390,7 +390,8 @@ let getReaderConfigs = () => {
 
   let startConfig = {
     entry: "./src/reader/start.ts",
-    externals: ['fastify', '@fastify/static', 'sharp'],
+
+    externals: ['fastify', '@fastify/static', 'sequelize', 'sequelize-typescript', 'sharp'],
     externalsPresets: { 
       node: true 
     },    

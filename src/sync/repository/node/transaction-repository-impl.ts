@@ -2,10 +2,9 @@ import {  inject, injectable } from "inversify"
 import { Transaction } from "../../dto/transaction.js"
 import { TransactionRepository } from "../transaction-repository.js"
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
 
 const { Op } = require("sequelize")
+
 
 @injectable()
 class TransactionRepositoryNodeImpl implements TransactionRepository {

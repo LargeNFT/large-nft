@@ -2,8 +2,6 @@ import {  inject, injectable } from "inversify"
 import { Block } from "../../dto/block.js"
 import { BlockRepository } from "../block-repository.js"
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
 
 const { Op } = require("sequelize")
 

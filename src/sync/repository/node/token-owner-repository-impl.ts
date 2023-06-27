@@ -2,10 +2,9 @@ import {  inject, injectable } from "inversify"
 import { TokenOwner } from "../../dto/token-owner.js"
 import { TokenOwnerRepository } from "../token-owner-repository.js"
 
-import { createRequire } from 'module'
-const require = createRequire(import.meta.url)
 
 const { Op } = require("sequelize")
+
 
 @injectable()
 class TokenOwnerRepositoryNodeImpl implements TokenOwnerRepository {

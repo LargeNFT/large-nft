@@ -4,14 +4,8 @@ import moment from "moment"
 import {  AttributeSaleReport, AttributeSalesRow, OwnersByAttribute, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, ProcessedTransactionTrader, Sale, SalesReport, SalesRow, TokenOwnerSalesReport } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
 
-
-import { createRequire } from 'module'
-
-
-
-const require = createRequire(import.meta.url)
-
 const { Op } = require("sequelize")
+// import { Op } from "sequelize"
 
 
 @injectable()

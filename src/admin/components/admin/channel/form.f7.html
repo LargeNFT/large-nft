@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="item-inner">
                                   <div class="item-title-row">
-                                    <div class="item-title">Mint Info</div>
+                                    <div class="item-title">Mint & Contract Info</div>
                                   </div>
                                   <div class="item-subtitle">
                                     Set mint price and default royalty %.
@@ -626,6 +626,22 @@
                                     </div>
                                 </li>
                                 ` : $h``}
+
+                                <li>
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Contract Address</div>
+                                            <div class="item-input-wrap">
+
+                                                <input type="text" name="contractAddress" placeholder="Leave blank to deploy a new contract during export."
+                                                    @change="${contractAddressChange}" tabindex="13"
+                                                    value="${channelViewModel?.channel?.contractAddress}" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -1013,6 +1029,11 @@
 
         const royaltyChange = async (e) => {
             setRoyalty(e.currentTarget.value)
+            await $update()
+        }
+
+        const contractAddressChange = async (e) => {
+            channelViewModel.channel.contractAddress = e.currentTarget.value
             await $update()
         }
 

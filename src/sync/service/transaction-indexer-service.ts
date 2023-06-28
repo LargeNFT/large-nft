@@ -345,11 +345,8 @@ class TransactionIndexerService {
 
         for (let _id of Object.keys(result.processedTransactionViewModels)) {
             transactionsToSave.push(result.processedTransactionViewModels[_id].transaction)
-
             eventsToSave.push(...result.processedTransactionViewModels[_id].events)
-
         }
-
 
         //Save transactions
         await this.processedTransactionService.putAll(transactionsToSave, options)
@@ -392,7 +389,6 @@ class TransactionIndexerService {
 
         
     }
-
 
     private createProcessedEvents(currentTransaction: ProcessedTransaction) : ProcessedEvent[] {
 
@@ -573,10 +569,6 @@ class TransactionIndexerService {
 
     }
 
-    private shouldIndex(contractState: ContractState) {
-        return contractState.lastIndexedBlock < this.blockNumber
-    }
-
     private getStartBlock(contractState: ContractState) {
         if (!contractState.lastIndexedBlock) return 0
 
@@ -589,7 +581,6 @@ class TransactionIndexerService {
     private getEndBlock() {
         return this.blockNumber
     }
-
 
     private async _getTokenOwner(ownerAddress, result:ERCIndexResult, options?:any) {
        

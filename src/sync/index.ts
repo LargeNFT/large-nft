@@ -204,10 +204,7 @@ let sync = async () => {
             console.log('No results to process.')
           }
 
-
-
           //Save contract state
-          // console.log(`Saving contract state`)
           await contractStateService.put(transactionIndexerService.contractState)
 
 
@@ -242,17 +239,11 @@ let sync = async () => {
 
       await createDirectories(config)
 
-      // console.log(`${Object.keys(indexResult.processedTransactionViewModels).length} transactions to update. Writing files.`)
-      // console.log(`${Object.keys(indexResult.tokensToUpdate).length} tokens to update. Writing files.`)
-      // console.log(`${Object.keys(indexResult.ownersToUpdate).length} owners to update. Writing files.`)
-
-
       //Write transactions to file
       await writeTransactionsToDisk(indexResult)
       await writeTokensToDisk(indexResult, options)
       await writeTokenOwnersToDisk(indexResult, options)
       await writeActivityFeedToDisk(indexResult, options)
-
 
       //Generate token owner pages for leaderboard
       await writeTokenOwnerPagesToDisk(options)

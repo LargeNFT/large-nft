@@ -144,7 +144,7 @@
 
         let deploying = false 
 
-        let showDeploy = channelViewModel.channel.publishReaderIPFSStatus?.cid != undefined
+        let showDeploy = channelViewModel.channel.publishReaderIPFSStatus?.cid != undefined || channelViewModel.channel.contractAddress
 
         let breadcrumbs = [{
             text: "Home",

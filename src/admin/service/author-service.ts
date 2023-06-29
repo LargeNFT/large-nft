@@ -16,6 +16,10 @@ class AuthorService {
     @inject(TYPES.WalletService) private walletService: WalletService
   ) { }
 
+  async load(channelId:string) {
+    this.db = await this.authorRepository.load(channelId)
+  }
+
   async get(_id: string): Promise<Author> {
     return this.authorRepository.get(_id)
   }

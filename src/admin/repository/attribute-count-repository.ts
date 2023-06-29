@@ -17,6 +17,10 @@ class AttributeCountRepository {
         this.db = await this.databaseService.getDatabase(`${channelId}-attribute-counts`)
     }
 
+    async loadEmpty(channelId:string) {
+        this.db = await this.databaseService.getEmptyDatabase(`${channelId}-attribute-counts`)
+    }
+
     async get(_id: string): Promise<AttributeCount> {
         return Object.assign(new AttributeCount(), await this.db.get(_id))
     }

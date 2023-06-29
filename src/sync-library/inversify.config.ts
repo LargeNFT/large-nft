@@ -47,8 +47,6 @@ import { LibraryChannelRepository } from "./repository/library-channel-repositor
 import { LibraryChannelRepositoryNodeImpl } from "./repository/node/library-channel-repository-impl.js";
 import { LibraryChannelService } from "./service/library-channel-service.js";
 import { SyncLibraryService } from "./service/sync-library-service.js";
-import { HomeWebService } from "../library/service/web/home-web-service.js";
-import { HomeRepository } from "../library/repository/home-repository.js";
 
 
 const { Sequelize } = require('sequelize-typescript')

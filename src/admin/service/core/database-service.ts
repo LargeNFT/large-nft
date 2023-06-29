@@ -107,6 +107,18 @@ class DatabaseService {
 
     }
 
+    async getEmptyDatabase(name:string) {
+
+        // const fullName = `${this.pouchPrefix}${ethers.utils.getAddress(walletAddress)}-${name}`
+        const fullName = `${this.pouchPrefix}-large-${name}`
+
+        //Create or open database
+        this.dbCache[fullName] = new this.PouchDB(fullName, { auto_compaction: true })
+
+        return this.dbCache[fullName]
+
+    }
+
     async getLatestRevision(db, _id:string) {
         
         let latest

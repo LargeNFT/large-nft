@@ -39,13 +39,10 @@ class SchemaService {
         console.log(`Loading databases`)
 
         //Open and cache databases
-        await this.authorRepository.load()
         await this.channelRepository.load()
-        // await this.imageRepository.load()
         await this.settingsRepository.load()
         await this.tokenMetadataCacheRepository.load()
         await this.queryCacheRepository.load()
-        // await this.pinningApiRepository.load()
     }
 
     async loadChannel(channelId:string) {
@@ -54,6 +51,7 @@ class SchemaService {
 
         console.time(`Loading channel: ${channelId}`)
 
+        await this.authorRepository.load(channelId)
         await this.itemRepository.load(channelId)
         await this.animationRepository.load(channelId)
         await this.imageRepository.load(channelId)
@@ -67,18 +65,42 @@ class SchemaService {
 
     }
 
+    async loadEmptyChannel(channelId:string) {
+
+        if (this.loadedChannelId == channelId) return
+
+        console.time(`Loading empty channel: ${channelId}`)
+
+        await this.authorRepository.loadEmpty(channelId)
+        await this.itemRepository.loadEmpty(channelId)
+        await this.animationRepository.loadEmpty(channelId)
+        await this.imageRepository.loadEmpty(channelId)
+        await this.themeRepository.loadEmpty(channelId)
+        await this.staticPageRepository.loadEmpty(channelId)
+        await this.attributeCountRepository.loadEmpty(channelId)
+
+        this.loadedChannelId = channelId
+
+        console.timeEnd(`Loading empty channel: ${channelId}`)
+
+    }
+
+
+
     async loadChannelBackup(channelBackup:ChannelBackup) {
 
         console.time(`Loading channel from backup`)
 
 
-        await this.loadChannel(channelBackup.channel._id)
+        await this.loadEmptyChannel(channelBackup.channel._id)
 
         console.log(`Loading:
             Items: ${channelBackup.items ? channelBackup.items.length : 0}
             Themes: ${channelBackup.themes ? channelBackup.themes.length : 0}
             Static Pages: ${channelBackup.staticPages ? channelBackup.staticPages.length : 0}
             Attribute Counts: ${channelBackup.attributeCounts ? channelBackup.attributeCounts.length : 0}
+            Authors: ${channelBackup.authors ? channelBackup.authors.length : 0}
+
         `)
 
         const prepareRows = (rows) => {
@@ -95,13 +117,15 @@ class SchemaService {
         prepareRows(channelBackup.themes)
         prepareRows(channelBackup.staticPages)
         prepareRows(channelBackup.attributeCounts)
+        prepareRows(channelBackup.authors)
 
 
         await this.itemRepository.db.bulkDocs(channelBackup.items)
         await this.themeRepository.db.bulkDocs(channelBackup.themes)
         await this.staticPageRepository.db.bulkDocs(channelBackup.staticPages)
         await this.attributeCountRepository.db.bulkDocs(channelBackup.attributeCounts)
-        
+        await this.authorRepository.db.bulkDocs(channelBackup.authors)
+
         await this.channelRepository.db.bulkDocs([channelBackup.channel])
 
 
@@ -132,6 +156,7 @@ class SchemaService {
         let themesDocs = await this.themeRepository.db.allDocs({ include_docs: true })
         let staticPagesDocs = await this.staticPageRepository.db.allDocs({ include_docs: true })
         let attributeCountsDocs = await this.attributeCountRepository.db.allDocs({ include_docs: true })
+        let authorDocs = await this.authorRepository.db.allDocs({ include_docs: true })
 
         return {
             channel: channel,
@@ -140,7 +165,8 @@ class SchemaService {
             images: imagesDocs.rows.map(r => r.doc),
             themes: themesDocs.rows.map(r => r.doc),
             staticPages: staticPagesDocs.rows.map(r => r.doc),
-            attributeCounts: attributeCountsDocs.rows.map(r => r.doc)
+            attributeCounts: attributeCountsDocs.rows.map(r => r.doc),
+            authors: authorDocs.rows.map(r => r.doc)
         }
 
     }
@@ -181,6 +207,7 @@ class SchemaService {
 
         }
 
+        await clearDatabase(this.authorRepository.db)
         await clearDatabase(this.itemRepository.db)
         await clearDatabase(this.animationRepository.db)
         await clearDatabase(this.imageRepository.db)
@@ -198,6 +225,7 @@ class SchemaService {
 interface ChannelBackup {
     channel:Channel,
     items: any,
+    authors:any,
     animations?: any,
     images?: any,
     themes: any,

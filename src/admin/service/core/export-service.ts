@@ -143,9 +143,6 @@ class ExportService {
         let images:Image[] = await this.imageService.getByIds(imageCids)
         let animations:Animation[] = await this.animationService.getByIds(animationCids)
 
-        // console.log(images)
-        // console.log(animations)
-
         //Clean up themes
         for (let theme of themes) {
 

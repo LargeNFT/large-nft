@@ -10,15 +10,13 @@ import { getMainContainer } from "./publish-inversify.config.js"
 import { PublishService } from "./service/core/publish-service.js"
 import fs from "fs"
 
-//@ts-ignore
-import contractABI from '../../contracts.json' assert { type: "json" }
+
 import { IpfsService } from "./service/core/ipfs-service.js"
 import { ChannelBackup, SchemaService } from "./service/core/schema-service.js"
 import { SettingsService } from "./service/core/settings-service.js"
 import { Settings } from "./dto/settings.js"
 import path from "path"
-import { ImageService } from "./service/image-service.js"
-import { AnimationService } from "./service/animation-service.js"
+
 import { ImageRepository } from "./repository/image-repository.js"
 import { AnimationRepository } from "./repository/animation-repository.js"
 
@@ -29,6 +27,7 @@ let publish = async () => {
   let ipfsService:IpfsService = container.get(IpfsService)
   let schemaService: SchemaService = container.get(SchemaService)
   let settingsService: SettingsService = container.get(SettingsService)
+
   let imageRepository: ImageRepository = container.get(ImageRepository)
   let animationRepository: AnimationRepository = container.get(AnimationRepository)
 
@@ -48,6 +47,7 @@ let publish = async () => {
   //Read channel backup
   let channelBackup:ChannelBackup = {
     channel: JSON.parse(fs.readFileSync("./.upload/channel.json").toString()),
+    authors: JSON.parse(fs.readFileSync("./.upload/authors.json").toString()),
     items: JSON.parse(fs.readFileSync("./.upload/items.json").toString()),
     themes: JSON.parse(fs.readFileSync("./.upload/themes.json").toString()),
     staticPages: JSON.parse(fs.readFileSync("./.upload/staticPages.json").toString()),
@@ -55,7 +55,6 @@ let publish = async () => {
   }
 
   await schemaService.loadChannelBackup(channelBackup)
-
 
   //Load images
   console.log(`Loading images...`)
@@ -66,14 +65,11 @@ let publish = async () => {
   
     let image = JSON.parse(fs.readFileSync(`./.upload/images/${filename}`).toString())
 
-    if (!image._id?.startsWith("_design"))  {
-      delete image._rev
-      delete image['_rev_tree'] 
-    }
-
-
+    delete image._rev
+    delete image['_rev_tree'] 
 
     await imageRepository.put(image)
+
 
   }
 
@@ -86,15 +82,12 @@ let publish = async () => {
 
     let animation = JSON.parse(fs.readFileSync(`./.upload/animations/${filename}`).toString())
 
-    if (!animation._id?.startsWith("_design"))  {
-      delete animation._rev
-      delete animation['_rev_tree'] 
-    }
+    delete animation._rev
+    delete animation['_rev_tree'] 
 
     await animationRepository.put(animation)
 
   }
-
 
 
   let settings

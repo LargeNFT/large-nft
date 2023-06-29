@@ -33,6 +33,11 @@ class ThemeRepository {
     async load(channelId:string) {
         this.db = await this.databaseService.getDatabase(`${channelId}-theme`, this.changesets)
     }
+
+    async loadEmpty(channelId:string) {
+        this.db = await this.databaseService.getEmptyDatabase(`${channelId}-theme`)
+    }
+
     async get(_id: string): Promise<Theme> {
         return Object.assign(new Theme(), await this.db.get(_id))
     }

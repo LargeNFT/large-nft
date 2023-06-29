@@ -34,6 +34,11 @@ class StaticPageRepository {
     async load(channelId:string) {
         this.db = await this.databaseService.getDatabase(`${channelId}-static-page`, this.changesets)
     }
+
+    async loadEmpty(channelId:string) {
+        this.db = await this.databaseService.getEmptyDatabase(`${channelId}-static-page`)
+    }
+
     async get(_id: string): Promise<StaticPage> {
         return Object.assign(new StaticPage(), await this.db.get(_id))
     }

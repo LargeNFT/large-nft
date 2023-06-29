@@ -23,6 +23,10 @@ class ItemRepository {
         this.db = await this.databaseService.getDatabase(`${channelId}-item`, this.changesets)
     }
 
+    async loadEmpty(channelId:string) {
+        this.db = await this.databaseService.getEmptyDatabase(`${channelId}-item`)
+    }
+
     async get(_id: string): Promise<Item> {
         return Object.assign(new Item(), await this.db.get(_id))
     }

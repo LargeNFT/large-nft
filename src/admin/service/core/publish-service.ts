@@ -45,9 +45,13 @@ class PublishService {
         this.logPublishProgress(undefined, "Preparing export...")
         let exportBundle:ExportBundle = await this.exportService.prepareExport(channel, this.walletService.address)
 
+        
         let feeRecipient = await this.getFeeReceipient(exportBundle)
 
-        this.logPublishProgress(undefined, `Fee Recipient: ${feeRecipient}`)
+        if (feeRecipient) {
+            this.logPublishProgress(undefined, `Fee Recipient: ${feeRecipient}`)
+        }
+
         this.logPublishProgress(undefined, "Preparing backup...")
 
         let backup:BackupBundle = await this.exportService.createBackup(exportBundle)

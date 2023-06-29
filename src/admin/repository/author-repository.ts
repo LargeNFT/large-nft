@@ -13,8 +13,12 @@ class AuthorRepository {
     ) { }
 
 
-    async load() {
-        this.db = await this.databaseService.getDatabase("author")
+    async load(channelId:string) {
+        this.db = await this.databaseService.getDatabase(`${channelId}-author`)
+    }
+
+    async loadEmpty(channelId:string) {
+        this.db = await this.databaseService.getEmptyDatabase(`${channelId}-author`)
     }
     
     async get(_id: string): Promise<Author> {

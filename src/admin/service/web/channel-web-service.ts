@@ -50,6 +50,7 @@ class ChannelWebService {
 
         //Load the right image db so we can get the cover and banner
         await this.imageService.load(channel._id)
+        await this.authorService.load(channel._id)
 
 
         if (channel.coverImageId) {
@@ -202,6 +203,7 @@ class ChannelWebService {
 
         //Load the right channel dbs
         await this.schemaService.loadChannel(channel._id)
+
 
         //Save cover image
         if (coverImage) {

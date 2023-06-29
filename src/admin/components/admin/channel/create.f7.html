@@ -222,11 +222,6 @@
       }
 
 
-      //If the author doesn't exist insert a 
-      if (channel.authorId) {
-        await authorService.insertIfNew(channel.authorId)
-      }
-
       channel.disableForks = channel.disableForks == "true"
       channel.showMintPage = channel.showMintPage == "true"
       channel.showActivityPage = channel.showActivityPage == "true"
@@ -235,6 +230,11 @@
       try {
 
         await channelWebService.put(channel, coverImage, coverBanner)
+
+
+        if (channel.authorId) {
+            await this.authorService.insertIfNew(channel.authorId)
+        }
 
         const toast = $f7.toast.show({
           text: 'Collection saved',

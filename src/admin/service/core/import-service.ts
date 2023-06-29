@@ -495,25 +495,6 @@ class ImportService {
         channel.forkType = "fork"
         channel.forkedFromFeeRecipient = contractMetadata.fee_recipient
 
-        //Loop through the contents and insert each one like it's an unseen row
-        for (let author of authors) {
-
-            delete author._rev 
-            delete author["_rev_tree"]
-
-            //Author might already exist. Get it so we can update.
-            let existingAuthor
-
-            try {
-                existingAuthor = await this.authorService.get(author.walletAddress)
-            } catch(ex) {}
-
-            await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))        
-
-
-            forkStatus.authors.saved++
-            this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
-        }
 
 
         //Insert channel
@@ -560,6 +541,19 @@ class ImportService {
 
 
         await this.schemaService.loadChannel(channel._id)
+
+
+        //Loop through the contents and insert each one like it's an unseen row
+        for (let author of authors) {
+            
+            delete author._rev 
+            delete author["_rev_tree"]
+
+            await this.authorService.put(Object.assign(new Author(), author))           
+
+            forkStatus.authors.saved++
+            this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
+        }
 
 
         for (let animation of animations) {
@@ -807,25 +801,7 @@ class ImportService {
         channel.forkType = "existing"
         channel.forkedFromFeeRecipient = contractMetadata.fee_recipient
 
-        //Loop through the contents and insert each one like it's an unseen row
-        for (let author of authors) {
 
-            delete author._rev 
-            delete author["_rev_tree"]
-
-            //Author might already exist. Get it so we can update.
-            let existingAuthor
-
-            try {
-                existingAuthor = await this.authorService.get(author.walletAddress)
-            } catch(ex) {}
-
-            await this.authorService.put(Object.assign(existingAuthor ? existingAuthor : new Author(), author))           
-
-
-            forkStatus.authors.saved++
-            this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
-        }
 
         //Remove any existing rev info
         delete channel._rev
@@ -861,6 +837,19 @@ class ImportService {
         }
 
         await this.schemaService.loadChannel(channelId)
+
+        //Loop through the contents and insert each one like it's an unseen row
+        for (let author of authors) {
+
+            delete author._rev 
+            delete author["_rev_tree"]
+
+            await this.authorService.put(Object.assign(new Author(), author))           
+
+            forkStatus.authors.saved++
+            this.logForkProgress(forkStatus, `Inserted author ${author._id}`)
+        }
+
 
         for (let animation of animations) {
 

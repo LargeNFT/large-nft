@@ -365,6 +365,8 @@ class GithubService implements GitProviderService {
 
         try {
             
+            console.log(channel)
+
             let result = await this.getMostRecentActionRun(channel, gitProvider)
 
             if (result?.conclusion == "success" && (!channel.publishReaderIPFSStatus?.date || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSStatus?.date)))) {

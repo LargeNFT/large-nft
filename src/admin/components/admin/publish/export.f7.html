@@ -448,6 +448,7 @@
 
                 channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
 
+                
                 let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
 
                 if (ipfsActionStatus == "finished") { //TODO

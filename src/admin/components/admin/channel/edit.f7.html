@@ -116,10 +116,10 @@
 
       e.preventDefault()
 
-      let form = document.getElementById('edit-channel-form')
+      let form = document.getElementById('create-channel-form')
 
-      if (!form.checkValidity()) {
-        $f7.popup.open('.edit-basics-popup')
+      if (!form.reportValidity()) {
+        document.getElementById('collection-title').scrollIntoView()
         return
       }
 

@@ -180,15 +180,23 @@ class ChannelService {
     if (!channel.gitProvider || channel.gitProvider == "default") {
 
       if (settings.defaultGitProvider) {
+
         return settings.gitProviders[settings.defaultGitProvider]
+
       } else {
-        return settings.gitProviders['github']
+
+        if (settings.gitProviders && settings.gitProviders['github']) {
+          return settings.gitProviders['github']
+        }
+        
       }
       
     }
 
     //Check if the channel has a specific one set.
-    return settings.gitProviders[channel.gitProvider]
+    if (channel.gitProvider) {
+      return settings.gitProviders[channel.gitProvider]
+    }
 
   }
 

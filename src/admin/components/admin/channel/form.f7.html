@@ -10,23 +10,109 @@
 
         <div class="card">
             <div class="card-content">
+                <div class="card-content card-content-padding">
+                    <div class="list media-list">
+                        <ul>
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Title</div>
+                                        <div class="item-input-wrap">
+                                            ${channelViewModel.editable ? $h`
+                                            <input type="text" name="title" placeholder="Collection title"
+                                                value="${channelViewModel?.channel?.title}" required minlength="3"
+                                                tabindex="1" id="collection-title" />
+                                            ` : $h`
+                                            <input type="text" name="title" placeholder="Collection title"
+                                                value="${channelViewModel?.channel?.title}" required minlength="3"
+                                                tabindex="1" id="collection-title" disabled />
+                                            `}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+    
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Symbol</div>
+                                        <div class="item-input-wrap">
+    
+                                            ${channelViewModel.editable ? $h`
+                                            <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
+                                                value="${channelViewModel?.channel?.symbol}" tabindex="2"
+                                                required id="collection-symbol" />
+                                            ` : $h`
+                                            <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
+                                                value="${channelViewModel?.channel?.symbol}" tabindex="2" required
+                                                disabled id="collection-symbol" />
+                                            `}
+    
+    
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+    
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Description</div>
+    
+                                        <div id="${descriptionToolbarId}">
+    
+                                            <select class="ql-header">
+                                                <option selected></option>
+                                                <option value="1">Heading</option>
+                                                <option value="2">Subheading</option>
+                                                <option value="3">Normal</option>
+                                            </select>
+    
+    
+                                            <!-- Add a bold button -->
+                                            <button class="ql-bold"></button>
+                                            <button class="ql-italic"></button>
+                                            <button class="ql-strike"></button>
+                                            <button class="ql-underline"></button>
+    
+                                        </div>
+    
+                                        <div class="editor bg-color-white text-color-black channel-editor"
+                                            id="${descriptionEditorId}" tabindex="3"></div>
+    
+                                    </div>
+                                </div>
+                            </li>
+    
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Language</div>
+                                    <!-- additional "input-dropdown-wrap" class -->
+                                    <div class="item-input-wrap input-dropdown-wrap">
+                                        <select name="language" tabindex="9">
+                                            ${languages.map( language => $h`
+                                            ${channelViewModel?.channel?.language == language ? $h`
+                                            <option value="${language}" selected>${language}</option>
+                                            ` : $h`
+                                            <option value="${language}">${language}</option>
+                                            `}
+                                            `)}
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+    
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-content">
                 <div class="list media-list">
                     <ul>
-                        <li>
-                            <a class="item-link" data-popup=".edit-basics-popup" class="popup-open">
-                              <div class="item-content">
-                                <div class="item-media">                                    
-                                    <i class="f7-icons">pencil</i>
-                                </div>
-                                <div class="item-inner">
-                                  <div class="item-title-row">
-                                    <div class="item-title">Basic Info</div>
-                                  </div>
-                                  <div class="item-subtitle">Name, symbol, description, etc.</div>
-                                </div>
-                              </div>
-                            </a>
-                        </li>
 
                         <li>
                             <a class="item-link" data-popup=".edit-images-popup" class="popup-open">
@@ -123,7 +209,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="popup edit-category-popup">
             <div class="view">
@@ -286,123 +371,7 @@
                 </div>
             </div>
         </div>
-
-
-
-        <div class="popup edit-basics-popup">
-            <div class="view">
-                <div class="page">
-                    <div class="navbar">
-                        <div class="navbar-bg"></div>
-                        <div class="navbar-inner">
-                            <div class="title">Edit Basic Info</div>
-                            <div class="right">
-                                <!-- Link to close popup -->
-                                <a class="link popup-close">Close</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="page-content">
-                        <div class="list">
-                            <ul>
-
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Title</div>
-                                            <div class="item-input-wrap">
-                                                ${channelViewModel.editable ? $h`
-                                                <input type="text" name="title" placeholder="Collection title"
-                                                    value="${channelViewModel?.channel?.title}" required minlength="3"
-                                                    tabindex="1" />
-                                                ` : $h`
-                                                <input type="text" name="title" placeholder="Collection title"
-                                                    value="${channelViewModel?.channel?.title}" required minlength="3"
-                                                    tabindex="1" disabled />
-                                                `}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Symbol</div>
-                                            <div class="item-input-wrap">
-
-                                                ${channelViewModel.editable ? $h`
-                                                <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
-                                                    value="${channelViewModel?.channel?.symbol}" tabindex="2"
-                                                    required />
-                                                ` : $h`
-                                                <input type="text" name="symbol" placeholder="Symbol (eg BAYC)"
-                                                    value="${channelViewModel?.channel?.symbol}" tabindex="2" required
-                                                    disabled />
-                                                `}
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Description</div>
-
-                                            <div id="${descriptionToolbarId}">
-
-                                                <select class="ql-header">
-                                                    <option selected></option>
-                                                    <option value="1">Heading</option>
-                                                    <option value="2">Subheading</option>
-                                                    <option value="3">Normal</option>
-                                                </select>
-
-
-                                                <!-- Add a bold button -->
-                                                <button class="ql-bold"></button>
-                                                <button class="ql-italic"></button>
-                                                <button class="ql-strike"></button>
-                                                <button class="ql-underline"></button>
-
-                                            </div>
-
-                                            <div class="editor bg-color-white text-color-black channel-editor"
-                                                id="${descriptionEditorId}" tabindex="3"></div>
-
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                <li class="item-content item-input">
-                                    <div class="item-inner">
-                                        <div class="item-title item-label">Language</div>
-                                        <!-- additional "input-dropdown-wrap" class -->
-                                        <div class="item-input-wrap input-dropdown-wrap">
-                                            <select name="language" tabindex="9">
-                                                ${languages.map( language => $h`
-                                                ${channelViewModel?.channel?.language == language ? $h`
-                                                <option value="${language}" selected>${language}</option>
-                                                ` : $h`
-                                                <option value="${language}">${language}</option>
-                                                `}
-                                                `)}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        
         <div class="popup edit-images-popup">
             <div class="view">
                 <div class="page">
@@ -1123,7 +1092,6 @@
             await $update()
         }
 
-
         const editCategory = async function (e) {
 
             e.preventDefault()
@@ -1176,8 +1144,6 @@
 
 
         }
-
-
 
         const editExternalLink = async function (e) {
 
@@ -1232,10 +1198,6 @@
             $f7.popup.close('.edit-external-links-popup')
 
         }
-
-
-
-
 
         const editMarketplace = async function (e) {
 
@@ -1300,9 +1262,10 @@
             let category = {
                 id: data.id,
                 traitType: data.traitType,
-                values: JSON.parse(data.values).map(v => v["value"])
+                values: data.values ? JSON.parse(data.values).map(v => v["value"]) : []
             }
 
+            if (!category.traitType) return
 
             let existing = attributeOptions.find(ao => ao.id == category.id)
 

@@ -278,12 +278,7 @@ class ItemWebService {
                         count: at.tokenIds.filter(x => parentFilteredIds.includes(x)).length 
                     })
 
-                } else {
-
-                    console.log(`${ao.traitType} / ${v} totals not found.`)
-
-                }
-
+                } 
 
             }
             

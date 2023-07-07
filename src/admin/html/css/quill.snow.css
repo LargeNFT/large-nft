@@ -4,6 +4,27 @@
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
  */
+
+ :root {
+  --stroke-color: #444;
+  --fill-color: #444;
+  --picker-label-color: rgba(0,0,0,0.6);
+  --editor-placeholder-color: rgba(0,0,0,0.6);
+  --active-color: #06c;
+
+}
+
+.dark {
+  --stroke-color: #fff;
+  --fill-color: #fff;
+  --picker-label-color: rgba(255,255,255);
+  --editor-placeholder-color: rgba(255,255,255);
+  --active-color: rgb(128, 166, 204);
+}
+
+
+
+
  .ql-container {
     box-sizing: border-box;
     font-family: Helvetica, Arial, sans-serif;
@@ -387,7 +408,7 @@
     text-align: right;
   }
   .ql-editor.ql-blank::before {
-    color: rgba(0,0,0,0.6);
+    color: var(--editor-placeholder-color);
     content: attr(data-placeholder);
     font-style: italic;
     left: 15px;
@@ -439,7 +460,7 @@
   .ql-snow .ql-toolbar .ql-picker-item:hover,
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: #06c;
+    color: var(--active-color);
   }
   .ql-snow.ql-toolbar button:hover .ql-fill,
   .ql-snow .ql-toolbar button:hover .ql-fill,
@@ -469,7 +490,7 @@
   .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
-    fill: #06c;
+    fill: var(--active-color);
   }
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -499,7 +520,7 @@
   .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
   .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
   .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
-    stroke: #06c;
+    stroke: var(--active-color);
   }
   @media (pointer: coarse) {
     .ql-snow.ql-toolbar button:hover:not(.ql-active),
@@ -554,7 +575,7 @@
   }
   .ql-snow .ql-stroke {
     fill: none;
-    stroke: #444;
+    stroke: var(--stroke-color);
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 2;
@@ -567,7 +588,7 @@
   }
   .ql-snow .ql-fill,
   .ql-snow .ql-stroke.ql-fill {
-    fill: #444;
+    fill: var(--fill-color);
   }
   .ql-snow .ql-empty {
     fill: none;
@@ -652,6 +673,7 @@
     vertical-align: middle;
   }
   .ql-snow .ql-picker-label {
+    color: var(--picker-label-color);
     cursor: pointer;
     display: inline-block;
     height: 100%;

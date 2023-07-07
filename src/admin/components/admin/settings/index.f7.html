@@ -183,8 +183,6 @@
                                                 </div>
                                             </div>
 
-                                            
-
                                         </div>
                                     </li>
                                 </ul>
@@ -217,7 +215,7 @@
                     </div>
 
                     <div class="card">
-                        <div class="card-header">Alchemy</div>
+                        <div class="card-header">Alchemy (Ethereum Provider)</div>
                         <div class="card-content">
                             <div class="list">
                                 <ul>
@@ -238,6 +236,49 @@
                         </div>
                     </div>
 
+
+                    <div class="card">
+                        <div class="card-header">Hugging Face (AI Provider)</div>
+                        <div class="card-content">
+
+
+                            <div class="block block-strong block-outline">
+
+                                <strong>Hugging Face Instructions</strong>
+
+                                <ol>
+                                    <li>Create a <a href="http://huggingface.co" class="external" target="_blank">Hugging Face</a> account.</li>
+                                    <li>Create a <a href="https://huggingface.co/settings/tokens" class="external" target="_blank">new token</a> and 
+                                        save it below.</li>
+        
+                                </ol>
+        
+                                <p>Give the token a name and choose "Read" in the role dropdown.</p>        
+  
+                            </div>
+
+
+
+
+
+                            <div class="list">
+                                <ul>
+                                    <li class="item-content item-input">
+
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Enter your <a href="https://huggingface.co/settings/tokens" class="external" target="_blank">Hugging Face</a> API key</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="huggingFace" value="${settings?.huggingFace}" placeholder="API token..." />
+                                                <span class="input-clear-button"></span>
+                                            </div>
+                                        </div>
+
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="block cancel-save-row">
           
@@ -320,7 +361,8 @@
                         personalAccessToken: formData.gitHubPersonalAccessToken
                     }
                 },
-                alchemyKey: formData.alchemyKey
+                alchemyKey: formData.alchemyKey,
+                huggingFace: formData.huggingFace
             }
 
             //Save

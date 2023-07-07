@@ -13,9 +13,13 @@ class SettingsService {
 
     async get(): Promise<Settings> {
 
-        let settings = await this.settingsRepository.get()
-        if (settings) return settings
+        let settings 
 
+        try {
+            settings = await this.settingsRepository.get()
+        } catch(ex) {}
+        
+        if (settings) return settings
 
         return {
             _id: 'single',

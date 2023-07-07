@@ -109,6 +109,7 @@ import { GithubService } from './service/core/github-service.js';
 import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
 import { PublishService } from './service/core/publish-service.js';
+import { HuggingFaceService } from './service/core/hugging-face-service.js';
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
@@ -261,6 +262,7 @@ function getMainContainer(version:string) {
   container.bind(GitService).toSelf().inSingletonScope()
   container.bind(GitlabService).toSelf().inSingletonScope()
   container.bind(GithubService).toSelf().inSingletonScope()
+  container.bind(HuggingFaceService).toSelf().inSingletonScope()
 
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()

@@ -31,6 +31,9 @@ class Settings {
     alchemyKey?:string
 
     @Allow()
+    huggingFace?:string
+
+    @Allow()
     dateCreated?:string
 
     @Allow()

@@ -116,7 +116,10 @@
                 <div class="card channel-card-show">
 
                   <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                    style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
+                        style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
+                      <% } else { %>
+                        style="background: #cccccc;"
+
                       <% } %>
                         >
     

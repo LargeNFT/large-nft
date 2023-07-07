@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.16.48",
+  "version": "0.17.0",
   "description": "Publish your book, fan-fiction, blog, or art as a series of digital collectibles.",
   "repository": {
     "type": "git",
@@ -127,7 +127,7 @@
     "ethers": "5.7.2",
     "excerpt-html": "1.2.2",
 
-    "framework7": "8.1.0",
+    "framework7": "8.2.0",
     "framework7-icons": "5.0.5",
     
     "highlight.js": "11.8.0",
@@ -143,7 +143,7 @@
     "it-to-buffer": "4.0.2",
     "juice": "9.0.0",
     "level-js": "6.1.0",
-    "material-icons": "1.13.6",
+    "material-icons": "1.13.8",
     "memfs": "3.5.1",
     "mini-svg-data-uri": "1.4.4",
     "moment": "2.29.4",
@@ -165,7 +165,7 @@
     "quill-blot-formatter": "1.0.5",
     "quill-delta-to-html": "0.12.1",
     "quill-delta-to-markdown": "0.6.0",
-    "quill-image-drop-and-paste": "1.2.14",
+    "quill-image-drop-and-paste": "1.3.0",
     "quill-paste-smart": "1.4.10",
 
     "reflect-metadata": "0.1.13",
@@ -183,7 +183,9 @@
     "util": "0.12.5",
     "uuid": "9.0.0",
 
-    "libsodium-wrappers": "0.7.11"
+    "libsodium-wrappers": "0.7.11",
+
+    "@huggingface/inference": "2.6.1"
 
   }
 }

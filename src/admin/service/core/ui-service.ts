@@ -33,7 +33,6 @@ class UiService {
     showSpinner(message?:string) {
 
         if (this.spinnerDialog) this.hideSpinner()
-
         this.spinnerDialog = this.app.dialog.preloader(message ? message : "Loading")
     }
 

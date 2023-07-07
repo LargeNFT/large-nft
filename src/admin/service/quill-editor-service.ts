@@ -10,6 +10,7 @@ import { Dom7 } from "framework7"
 import { ImageService } from './image-service.js'
 import { readAndCompressImage } from 'browser-image-resizer';
 import { UiService } from './core/ui-service.js';
+import { HuggingFaceService } from './core/hugging-face-service.js';
 
 
 var $$ = Dom7;
@@ -27,6 +28,7 @@ class QuillEditorService {
 
   constructor(
     private imageService: ImageService,
+    private huggingFaceService: HuggingFaceService,
     private uiService:UiService
   ) {
 
@@ -119,7 +121,7 @@ class QuillEditorService {
 
 
 
-    let BlockEmbed = Quill.import('blots/block/embed');
+    let BlockEmbed = Quill.import('blots/block/embed')
 
     class DividerBlot extends BlockEmbed {
       static blotName?: string
@@ -242,11 +244,24 @@ class QuillEditorService {
     return this.activeEditor
   }
 
+
+  async generateAIImage(prompt:string, negativePrompt?:string): Promise<void> {
+    
+    this.uiService.showSpinner("Generating AI image. This may take a few minutes...")
+
+    let result:Blob = await this.huggingFaceService.generateImage(prompt, negativePrompt)
+
+    await this.insertBlobInEditor(result, this.activeEditor)
+
+    this.uiService.hideSpinner()
+
+  }
+
+
   imageClick() {
 
   }
 
-  //TODO: move to service
   async imageSelected(fileElement: Element): Promise<void> {
 
     this.uiService.showSpinner("Processing image...")
@@ -276,7 +291,14 @@ class QuillEditorService {
       maxWidth: 1024
     })
 
-    let imageArrayBuffer:ArrayBuffer = await resizedImageBlob.arrayBuffer()
+    return this.insertBlobInEditor(resizedImageBlob, editor)
+
+
+  }
+
+  async insertBlobInEditor(blob:Blob, editor) {
+
+    let imageArrayBuffer:ArrayBuffer = await blob.arrayBuffer()
 
     let image:Image = await this.imageService.newFromBuffer(new Uint8Array(imageArrayBuffer))
     
@@ -292,20 +314,38 @@ class QuillEditorService {
 
     editor.insertText(range.index, '\n', Quill.sources.USER)
 
+    const resizeImage = (originalWidth, originalHeight) => {
+
+      var maxWidth = 500
+      var maxHeight = 500
+      
+      var widthRatio = maxWidth / originalWidth;
+      var heightRatio = maxHeight / originalHeight;
+      
+      var resizeRatio = Math.min(widthRatio, heightRatio);
+      
+      var newWidth = Math.floor(originalWidth * resizeRatio);
+      var newHeight = Math.floor(originalHeight * resizeRatio);
+      
+      return {
+        width: newWidth,
+        height: newHeight
+      }
+    }
+
+    let calculatedDimensions = resizeImage(dimensions.width, dimensions.height)
+
     editor.insertEmbed(range.index, 'ipfsimage', { 
       cid: image.cid,
       src: src,
-      height: dimensions.height,
-      width: dimensions.width
+      height: calculatedDimensions.height,
+      width: calculatedDimensions.width
     }, Quill.sources.USER)
 
     editor.setSelection(range.index + 2, Quill.sources.SILENT)
 
     return image
-
-
   }
-
 
 
   async imageDropAndPasteHandler(imageDataUrl, type, imageData) {

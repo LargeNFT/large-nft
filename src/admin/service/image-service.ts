@@ -259,13 +259,7 @@ class ImageService {
         resolved()
       }
 
-      //@ts-ignore
-      console.log(4)
-
       image.src = URL.createObjectURL(new Blob([imageData], {'type': 'image/jpg'}))
-
-      console.log(5)
-
 
     })
 

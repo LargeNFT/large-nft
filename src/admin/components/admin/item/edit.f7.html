@@ -15,6 +15,7 @@
           animation_css_editor_id="animation-edit-css-editor"
           themes=${themes}
           cancel_link=${cancelLink}
+          show_hugging_face=${showHuggingFace}
         />
 
 
@@ -44,10 +45,12 @@
   import { QuillService } from "../../../service/quill-service"
   import { IpfsService } from "../../../service/core/ipfs-service"
   import { GitService } from "../../../service/core/git-service"
+  import { HuggingFaceService } from "../../../service/core/hugging-face-service"
 
   import { ItemService } from "../../../service/item-service"
   import { ImageService } from "../../../service/image-service"
   import { ItemWebService } from "../../../service/web/item-web-service"
+  import { SettingsService } from "../../../service/core/settings-service"
 
   import { UiService } from "../../../service/core/ui-service"
 
@@ -72,6 +75,8 @@
     let itemWebService = ContainerService.getInstance(ItemWebService)
     let ipfsService = ContainerService.getInstance(IpfsService)
     let gitService = ContainerService.getInstance(GitService)
+    let settingsService = ContainerService.getInstance(SettingsService)
+    let huggingFaceService = ContainerService.getInstance(HuggingFaceService)
 
     let imageService = ContainerService.getInstance(ImageService)
 
@@ -82,6 +87,7 @@
 
     let ipfsReady = false
     let cancelLink = `/admin/channel/show/${itemViewModel.item.channelId}/${itemViewModel.item.tokenId}`
+    let showHuggingFace = false
 
 
     let coverImageCSSQuillEditor
@@ -252,6 +258,8 @@
 
       $('.image-button').off('click')
       $('.image-button-input').off('click')
+      $('.ai-button').off('click')
+
 
       $('.image-button').on('click', function (e) {
         e.preventDefault()
@@ -268,7 +276,14 @@
 
 
 
+      $('.ai-button').on('click', async function (e) {
+        e.preventDefault()
 
+        const aiPromptEvent = new CustomEvent('set-ai-prompt')
+        document.dispatchEvent(aiPromptEvent)
+
+        $f7.popup.open('.ai-popup')
+      })
 
 
 
@@ -328,8 +343,19 @@
       await ipfsService.init()
       ipfsReady = ipfsService.ipfs != undefined
 
+
       const ipfsReadyEvent = new CustomEvent('ipfs-ready')
       document.dispatchEvent(ipfsReadyEvent)
+
+
+      const settings = await settingsService.get()
+      showHuggingFace = settings?.huggingFace != undefined
+
+      if (settings?.huggingFace?.length > 0) {
+        await huggingFaceService.init()
+        const huggingFaceReady = new CustomEvent('hugging-face-ready')
+        document.dispatchEvent(huggingFaceReady)
+      }
 
 
       uiService.hideSpinner()

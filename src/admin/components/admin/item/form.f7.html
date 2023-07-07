@@ -56,9 +56,12 @@
                                             <button class="ql-script" value="sub"></button>
                                             <button class="ql-script" value="super"></button>
     
-                                            <button class="text-editor-button image-button"><i
-                                                    class="material-icons">image</i></button>
+                                            <button class="text-editor-button image-button"><i class="material-icons">image</i></button>
                                             <label><input type="file" class="image-button-input" /></label>
+
+                                            <button class="text-editor-button ai-button" ${showHuggingFace ? $h`style='display: visible;'` : $h``}>AI</button>                                                
+
+
                                         </div>
     
                                         <div class="editor bg-color-white text-color-black" id="${editorId}"></div>
@@ -265,14 +268,84 @@
 
         </div>
 
-
-
         <input type="hidden" name="attributeSelections" value="${JSON.stringify(attributeSelections)}" />
 
+        <div class="popup ai-popup">
+            <div class="view">
+                <div class="page">
+                    <div class="navbar">
+                        <div class="navbar-bg"></div>
+                        <div class="navbar-inner">
+                            <div class="title">Generate AI Image</div>
+                            <div class="right">
+                                <!-- Link to close popup -->
+                                <a class="link popup-close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content">
+
+                        <form id="generate-form" @submit="${generateFormSubmit}">
+                        
+                            <div class="list">
+                                <ul>
+    
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Model</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="model" value="stabilityai/stable-diffusion-2" tabindex="40"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Prompt</div>
+                                                <div class="item-input-wrap">
+                                                    <textarea name="prompt" tabindex="41">${aiPrompt}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+    
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Negative Prompt</div>
+                                                <div class="item-input-wrap">
+                                                    <textarea name="negativePrompt" tabindex="42"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+    
+    
+    
+                                </ul>
+                            </div>
+    
+                            <div class="block save-row">
+              
+                                <div class="large-only"></div>
+                  
+                                <button type="submit" class="button button-fill" tabindex="43">
+                                  Generate
+                                </button>
+                  
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-
-
 
 </template>
 
@@ -304,11 +377,13 @@
     import { ContainerService } from "../../../service/core/container-service"
     import { QuillEditorService } from "../../../service/quill-editor-service"
     import { QuillService } from "../../../service/quill-service"
+    import { UiService } from "../../../service/core/ui-service"
 
     import { ImageService } from "../../../service/image-service"
+
     import { ItemWebService } from "../../../service/web/item-web-service"
 
-    import { v4 as uuidv4 } from 'uuid';
+    import { v4 as uuidv4 } from 'uuid'
 
 
     export default (props, { $, $on, $f7, $update }) => {
@@ -316,11 +391,8 @@
         let quillEditorService = ContainerService.getInstance(QuillEditorService)
         let quillService = ContainerService.getInstance(QuillService)
         let itemWebService = ContainerService.getInstance(ItemWebService)
-
         let imageService = ContainerService.getInstance(ImageService)
-
-
-
+        let uiService = ContainerService.getInstance(UiService)
 
         const loadCoverImages = async () => {
 
@@ -404,7 +476,6 @@
 
 
         }
-
   
         const titleOnInput = (e) => {
 
@@ -416,7 +487,6 @@
 
         }
 
-
         const coverImageAsAnimationOnClick = (e) => {
             
             showAnimationCss = $(e.currentTarget).prop('checked')
@@ -425,6 +495,21 @@
 
         }
 
+        const generateFormSubmit = async (e) => {
+            
+            e.preventDefault()
+            let formData = $f7.form.convertToData('#generate-form')
+
+            try {
+                await quillEditorService.generateAIImage(formData.model, formData.prompt, formData.negativePrompt)
+                $f7.popup.close('.ai-popup')
+            } catch (ex) {
+                uiService.hideSpinner()
+                $f7.dialog.alert(ex.message, "There was an error")
+            }
+
+
+        }
 
         let itemViewModel = props.item
         let editorId = props.editor
@@ -441,6 +526,8 @@
         let coverImageCSSEditorId = props.cover_image_css_editor_id
         let animationCSSEditorId = props.animation_css_editor_id
 
+        let showHuggingFace = props.show_hugging_face
+        let aiPrompt
 
         let showAnimationCss = !itemViewModel.item.coverImageAsAnimation
 
@@ -467,6 +554,30 @@
             ipfsReady = true
             await $update()
         })
+
+        $(document).on('hugging-face-ready', async (e) => {
+            showHuggingFace = true
+            await $update()
+        })
+
+        $(document).on('set-ai-prompt', async (e) => {
+
+            let range = quillEditorService.activeEditor.getSelection()
+
+            if (range) {
+                if (range.length > 0) {
+                    aiPrompt = quillEditorService.activeEditor.getText(range.index, range.length)
+                    console.log('User has highlighted: ', aiPrompt)
+                } else {
+                    aiPrompt = ''
+                }
+            }
+            
+            await $update()
+
+
+        })
+
 
         return $render
     }

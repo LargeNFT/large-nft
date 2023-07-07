@@ -231,9 +231,8 @@
 
         await channelWebService.put(channel, coverImage, coverBanner)
 
-
         if (channel.authorId) {
-            await this.authorService.insertIfNew(channel.authorId)
+            await authorService.insertIfNew(channel.authorId)
         }
 
         const toast = $f7.toast.show({

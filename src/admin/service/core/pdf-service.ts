@@ -2,8 +2,8 @@ import { injectable } from 'inversify'
 
 import { UploadService } from './upload-service.js'
 
-const pdf = require('pdf-parse');
-
+// const pdf = require('pdf-parse');
+// import pdf from 'pdf-parse'
 
 @injectable()
 class PDFService {
@@ -19,7 +19,7 @@ class PDFService {
     }
 
     async getDocument(existingBytes:Uint8Array) {
-        return pdf(existingBytes)
+        // return pdf(existingBytes)
     }
 
 }

@@ -27,7 +27,7 @@ describe('AuthorService', async () => {
         service = container.get(AuthorService)
         schemaService = container.get(SchemaService)
 
-        await schemaService.load()
+        await schemaService.loadChannel("xyz")
 
        
     })

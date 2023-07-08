@@ -13,11 +13,53 @@
                     <input type="hidden" name="_id" value="${settings?._id}" />
                     <input type="hidden" name="_rev" value="${settings?._rev}" />
     
-                    <div class="block-title block-title-medium">Settings</div>
+                    <div class="block-title block-title-medium">1. Configure an AI provider.</div>
 
-    
+                    <div class="block">
+                        To enable AI generation features configure your Hugging Face token.
+                    </div>
+
                     <div class="card">
-                        <div class="card-header">Git Settings</div>
+                        <div class="card-content">
+
+                            <div class="block block-strong">
+
+                                <strong>Hugging Face</strong> Instructions
+
+                                <ol>
+                                    <li>Create a <a href="http://huggingface.co" class="external" target="_blank">Hugging Face</a> account.</li>
+                                    <li>Create a <a href="https://huggingface.co/settings/tokens" class="external" target="_blank">new token</a> and 
+                                        save it below.</li>
+        
+                                </ol>
+        
+                                <p>Give the token a name and choose "Read" in the role dropdown.</p>        
+  
+                            </div>
+
+
+                            <div class="list">
+                                <ul>
+                                    <li class="item-content item-input">
+
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Enter your <a href="https://huggingface.co/settings/tokens" class="external" target="_blank">Hugging Face</a> API key</div>
+                                            <div class="item-input-wrap">
+                                                <input type="password" name="huggingFace" value="${settings?.huggingFace}" placeholder="API token..." />
+                                                <span class="input-clear-button"></span>
+                                            </div>
+                                        </div>
+
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block-title block-title-medium">2. Configure Git when ready to export a collection for hosting.</div>
+
+                    <div class="card">
                         <div class="card-content card-content-padding">
     
                             <div class="list">
@@ -108,7 +150,7 @@
                                                                 <div class="item-inner">
                                                                     <div class="item-title item-label">Personal Access Token</div>
                                                                     <div class="item-input-wrap">
-                                                                        <input type="text" name="gitHubPersonalAccessToken" placeholder="Personal access token"
+                                                                        <input type="password" name="gitHubPersonalAccessToken" placeholder="Personal access token"
                                                                             value="${settings.gitProviders?.github?.personalAccessToken}"  />
                                                                     </div>
                                                                 </div>
@@ -172,7 +214,7 @@
                                                                 <div class="item-inner">
                                                                     <div class="item-title item-label">Personal Access Token</div>
                                                                     <div class="item-input-wrap">
-                                                                        <input type="text" name="gitLabPersonalAccessToken" placeholder="Personal access token"
+                                                                        <input type="password" name="gitLabPersonalAccessToken" placeholder="Personal access token"
                                                                             value="${settings.gitProviders?.gitlab?.personalAccessToken}"  />
                                                                     </div>
                                                                 </div>
@@ -190,6 +232,7 @@
                         </div>
                     </div>
 
+                    <div class="block-title block-title-medium">3. Configure IPFS to import existing collections.</div>
                     <div class="card">
                         <div class="card-header">Remote IPFS API</div>
                         <div class="card-content">
@@ -214,9 +257,15 @@
                         </div>
                     </div>
 
+                    <div class="block-title block-title-medium">4. Configure Ethereum connection.</div>
+                    <div class="block">
+                        Large can create a masked/secret variable on the collection's git provider that allows the sync job to run and collection live transaction data. (alpha)
+                    </div>
+
                     <div class="card">
                         <div class="card-header">Alchemy (Ethereum Provider)</div>
                         <div class="card-content">
+
                             <div class="list">
                                 <ul>
                                     <li class="item-content item-input">
@@ -237,48 +286,6 @@
                     </div>
 
 
-                    <div class="card">
-                        <div class="card-header">Hugging Face (AI Provider)</div>
-                        <div class="card-content">
-
-
-                            <div class="block block-strong block-outline">
-
-                                <strong>Hugging Face Instructions</strong>
-
-                                <ol>
-                                    <li>Create a <a href="http://huggingface.co" class="external" target="_blank">Hugging Face</a> account.</li>
-                                    <li>Create a <a href="https://huggingface.co/settings/tokens" class="external" target="_blank">new token</a> and 
-                                        save it below.</li>
-        
-                                </ol>
-        
-                                <p>Give the token a name and choose "Read" in the role dropdown.</p>        
-  
-                            </div>
-
-
-
-
-
-                            <div class="list">
-                                <ul>
-                                    <li class="item-content item-input">
-
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Enter your <a href="https://huggingface.co/settings/tokens" class="external" target="_blank">Hugging Face</a> API key</div>
-                                            <div class="item-input-wrap">
-                                                <input type="text" name="huggingFace" value="${settings?.huggingFace}" placeholder="API token..." />
-                                                <span class="input-clear-button"></span>
-                                            </div>
-                                        </div>
-
-
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="block cancel-save-row">
           

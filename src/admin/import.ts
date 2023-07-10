@@ -60,17 +60,9 @@ let importCollection = async () => {
     //Load schema
     await schemaService.load()
 
-    let settings
-
-    try {
-      settings = await settingsService.get()
-    } catch(ex) {}
-
-    if (!settings) {
-      settings = new Settings()
-      settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
-      await settingsService.put(settings)
-    }
+    let settings = new Settings()
+    settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
+    await settingsService.put(settings)
 
     await ipfsService.init()
 

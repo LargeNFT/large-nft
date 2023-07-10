@@ -253,7 +253,7 @@
       if (forking) return
 
       let gitProvider = await channelService.getGitProviderCredentials(channelViewModel.channel, settings)
-      if (gitProvider.personalAccessToken.length < 1) return
+      if (!gitProvider || !gitProvider.personalAccessToken || gitProvider.personalAccessToken.length < 1) return
 
       console.log('Checking repo fork status...')
 

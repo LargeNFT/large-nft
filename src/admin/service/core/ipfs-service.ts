@@ -28,7 +28,6 @@ class IpfsService {
     
     this.initializing = true
     
-
     let settings
 
     try {

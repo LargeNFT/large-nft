@@ -112,7 +112,6 @@ class GenerateService {
 
         //For now just the one
         if (item.coverImage.generated) {
-
             //Create PNG from SVG to show on Twitter/Discord preview
             await this.generatePNGFromSVG(config, item)
 
@@ -276,7 +275,7 @@ class GenerateService {
       
       
 
-      
+
       
       
         //Attribute page
@@ -400,6 +399,7 @@ class GenerateService {
           }
         }
       
+
       
         //Generate token pages
         let minTokenId = Math.min(...generateViewModel.itemViewModels.map(i => i.item.tokenId))
@@ -456,9 +456,10 @@ class GenerateService {
           //Write rowItemViewModel
           fs.writeFileSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}/rowItemViewModel.json`, Buffer.from(JSON.stringify(rowItemViewModel)))
       
+
           //Generate any images we need
           await this.generateImages(config, itemViewModel)
-      
+
       
           console.timeEnd(`Generating /t/${rowItemViewModel.tokenId}`)
       

@@ -93,6 +93,11 @@ class GitService {
 
         let i=0
         for (let image of backup.images) {
+
+            if (image.buffer instanceof ArrayBuffer) {
+                image.buffer = new Uint8Array(image.buffer)
+            }
+
             gitActions.push({
                 action: "create",
                 file_path: `/.upload/images/${i}.json`,

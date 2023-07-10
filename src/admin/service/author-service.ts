@@ -72,7 +72,10 @@ class AuthorService {
     return this.walletService.truncateEthAddress(author._id)
   }
 
-
+  async getLatestRevision(_id:string) : Promise<Author> {
+    return this.authorRepository.getLatestRevision(_id)
+  }
+  
 
 }
 

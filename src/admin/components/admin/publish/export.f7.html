@@ -149,10 +149,10 @@
                                     <div class="pin-status"> 
                                         <strong>Build Status:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.status}<br />
 
-                                        ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" ? $h`
+                                        ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" && channelViewModel.channel.publishReaderIPFSStatus?.cid ? $h`
                                             <strong>IPFS cid:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
-                                            <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}<br />
-                                            <strong>Archive:</strong> <a href="${channelViewModel.channel.publishReaderIPFSStatus?.archive}" class="link external">${channelViewModel.channel.publishReaderIPFSStatus?.archive}</a>
+                                            <strong>Archive:</strong> <a href="${channelViewModel.channel.publishReaderIPFSStatus?.archive}" class="link external">${channelViewModel.channel.publishReaderIPFSStatus?.archive}</a><br />
+                                            <strong>Date:</strong> ${moment(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}
                                         ` : $h` `}
 
                                     </div>
@@ -432,12 +432,11 @@
             if (pageUnloaded) return
             if (!settings) return
             if (channelViewModel.channel.publishReaderIPFSStatus?.status == "complete") return
-            if (channelViewModel.channel.contractAddress) return //not waiting if we already have the contract
             if (publishing) return
             if (checkingStatus) return 
-
+            
             let gitProvider = await channelService.getGitProviderCredentials(channelViewModel.channel, settings)
-            if (gitProvider.personalAccessToken.length < 1) return
+            if (!gitProvider || !gitProvider.personalAccessToken || gitProvider.personalAccessToken.length < 1) return
 
 
             console.log('Checking IPFS action workflow status...')
@@ -451,10 +450,14 @@
                 
                 let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
 
+
                 if (ipfsActionStatus == "finished") { //TODO
 
                     //Get the new IPFS hash
-                    channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
+                    if (!channelViewModel.channel.contractAddress) {
+                        channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
+                    }
+
                     channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
                     await channelService.put(channelViewModel.channel)
 

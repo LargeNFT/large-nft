@@ -844,7 +844,11 @@ class ImportService {
             delete author._rev 
             delete author["_rev_tree"]
 
-            await this.authorService.put(Object.assign(new Author(), author))           
+            //Check if it exists
+            let authorObj = await this.authorService.getLatestRevision(author._id)
+            authorObj["_deleted"] = false
+
+            await this.authorService.put(Object.assign(authorObj, author))           
 
             forkStatus.authors.saved++
             this.logForkProgress(forkStatus, `Inserted author ${author._id}`)

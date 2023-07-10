@@ -128,18 +128,6 @@ class SchemaService {
 
         await this.channelRepository.db.bulkDocs([channelBackup.channel])
 
-
-
-
-
-        
-        // console.log(await this.itemRepository.db.info().then(info => info.doc_count))
-        // console.log(await this.animationRepository.db.info().then(info => info.doc_count))
-        // console.log(await this.imageRepository.db.info().then(info => info.doc_count))
-        // console.log(await this.themeRepository.db.info().then(info => info.doc_count))
-        // console.log(await this.staticPageRepository.db.info().then(info => info.doc_count))
-        // console.log(await this.attributeCountRepository.db.info().then(info => info.doc_count))
-
         console.timeEnd(`Loading channel from backup`)
 
 

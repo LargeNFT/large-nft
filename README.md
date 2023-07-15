@@ -6,6 +6,8 @@
 ## An offline-first publishing platform for the free and open web
 Bringing the permissionless properties of Ethereum to the rest of the publishing tech stack with a reader and marketplace that any user in the community can run on their own machines.
 
+[Use a hosted version](https://golarage.app)
+
 **Publish and sell your work as digital collectibles**
 
 * Publish your book, fan-fiction, blog, or art as a series of digital collectibles. 

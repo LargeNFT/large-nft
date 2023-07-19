@@ -135,7 +135,6 @@ class ProcessConfig {
         config.forkType = theArgs.forkType
         config.contract = theArgs.contract
         config.alchemy = theArgs.alchemy
-        config.slug = theArgs.slug
 
         return config
         
@@ -206,7 +205,6 @@ class ProcessConfig {
             '--fork-type': String,
             '--contract': String,
             '--alchemy': String,
-            '--slug': String
         },
         {
             argv: rawArgs.slice(2),
@@ -217,8 +215,7 @@ class ProcessConfig {
             env: args['--env'] || "production",
             forkType: args['--fork-type'] || "existing",
             contract: args['--contract'] || undefined,
-            alchemy: args['--alchemy'] || "",
-            slug: args['--slug'] || ""
+            alchemy: args['--alchemy'] || ""
         }
     
     }

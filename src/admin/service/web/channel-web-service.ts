@@ -16,7 +16,6 @@ import { ItemService } from "../item-service.js";
 import { ItemWebService } from "./item-web-service.js";
 import { QueryCacheService } from "../../service/core/query-cache-service.js";
 import { SchemaService } from "../../service/core/schema-service.js";
-import { GitService } from "../core/git-service.js";
 import { SettingsService } from "../core/settings-service.js";
 
 @injectable()
@@ -29,7 +28,6 @@ class ChannelWebService {
         private itemService:ItemService,
         private itemWebService:ItemWebService,
         private queryCacheService:QueryCacheService,
-        private gitService:GitService,
         private schemaService:SchemaService,
         private settingsService:SettingsService
     ) { }

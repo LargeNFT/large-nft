@@ -28,17 +28,17 @@ let importCollection = async () => {
     throw new Error("No contract specified")
   }
 
-  if (!config.slug) {
-    throw new Error("Specify a collection slug (aka alice-in-wonderland)")
+  if (!config.alchemy) {
+    throw new Error("Alchemy API key not specified")
   }
+
+
 
   if (!fs.existsSync(`${config.baseDir}/data/pouch`)) {
     fs.mkdirSync(`${config.baseDir}/data/pouch`, { recursive: true })
   }
 
-  if (!fs.existsSync(`${config.baseDir}/sync/${config.slug}`)) {
-    fs.mkdirSync(`${config.baseDir}/sync/${config.slug}`, { recursive: true })
-  }
+
 
   if (config.alchemy) {
 
@@ -81,7 +81,14 @@ let importCollection = async () => {
     }
 
 
+
     let channel = await channelService.get(channelId)
+
+    let slug = channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()
+
+    if (!fs.existsSync(`${config.baseDir}/sync/${slug}`)) {
+      fs.mkdirSync(`${config.baseDir}/sync/${slug}`, { recursive: true })
+    }
 
     console.log(`Exporting ${channel.title} to sync folder...`)
 
@@ -135,7 +142,12 @@ let importCollection = async () => {
 }
 
 
-importCollection()
+try {
+  importCollection()
+} catch(ex) {
+  console.log(ex.message)
+}
+
 
 export default importCollection
 

@@ -404,6 +404,9 @@ TODO: Show how to set up a library.
 
 
 ### Start Large Library Sync
+
+TODO: This command currently needs to be set up manually so this can't be run easily yet.
+
 Note the -- before passing options.
 ```console
 npm run sync-library --  --env dev --alchemy <API key>
@@ -424,7 +427,12 @@ npm run sync-library --  --env dev --alchemy <API key>
 
 
 # Collection Importer
-Collections can be imported to the Large Library with the command-line import tool.
+Collections can be imported to a Large Library with the command-line import tool.
+
+```console
+npm run import -- --alchemy <API key> --contract <contract address>
+```
+
 
 ## API
 
@@ -434,7 +442,6 @@ Collections can be imported to the Large Library with the command-line import to
 | --fork-type  | "existing" | Options are "existing" and "fork". The fork option clears the existing contract information. |
 | --contract  |   | Address of collection's Ethereum contract.
 | --alchemy  |   | Pass a valid API key to connect the sync process to an Alchemy hosted Ethereum node. 
-| --slug  |   | A slug for the collection (aka alice-in-wonderland)
 
 ---
 

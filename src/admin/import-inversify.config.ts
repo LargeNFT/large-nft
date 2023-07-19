@@ -132,9 +132,9 @@ function getMainContainer(config) {
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(PinningService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
-  container.bind(GitService).toSelf().inSingletonScope()
-  container.bind(GitlabService).toSelf().inSingletonScope()
-  container.bind(GithubService).toSelf().inSingletonScope()
+  // container.bind(GitService).toSelf().inSingletonScope()
+  // container.bind(GitlabService).toSelf().inSingletonScope()
+  // container.bind(GithubService).toSelf().inSingletonScope()
   container.bind(ERCEventService).toSelf().inSingletonScope()
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()

@@ -29,7 +29,6 @@ import { QueryCache } from "../../dto/query-cache.js";
 import { AttributeCountService } from "../../service/attribute-count-service.js";
 import { AttributeCount } from "../../dto/attribute.js";
 import { ExportService } from "../core/export-service.js";
-import { GitService } from "../core/git-service.js";
 import { IpfsService } from "../core/ipfs-service.js";
 
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
@@ -50,7 +49,6 @@ class ItemWebService {
         private themeService:ThemeService,
         private queryCacheService:QueryCacheService,
         private exportService:ExportService,
-        private gitService:GitService,
         private ipfsService:IpfsService,
         private attributeCountService:AttributeCountService
     ) { }

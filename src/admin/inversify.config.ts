@@ -27,7 +27,6 @@ import { SchemaService } from './service/core/schema-service.js'
 
 import TYPES from './service/core/types.js'
 
-import { PinningService } from './service/core/pinning-service.js'
 import { PinningApiRepository } from './repository/pinning-api-repository.js'
 import { AttributeCountRepository } from './repository/attribute-count-repository.js'
 
@@ -109,7 +108,6 @@ import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
 import { PublishService } from './service/core/publish-service.js';
 import { HuggingFaceService } from './service/core/hugging-face-service.js';
-import { TokenImageCacheRepository } from './repository/token-image-cache-repository.js';
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
@@ -233,7 +231,7 @@ function getMainContainer(version:string) {
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(SchemaService).toSelf().inSingletonScope()
-  container.bind(PinningService).toSelf().inSingletonScope()
+  // container.bind(PinningService).toSelf().inSingletonScope()
   container.bind(RoutingService).toSelf().inSingletonScope()
   container.bind(PagingService).toSelf().inSingletonScope()
 
@@ -275,7 +273,6 @@ function getMainContainer(version:string) {
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
-  container.bind(TokenImageCacheRepository).toSelf().inSingletonScope()
 
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()

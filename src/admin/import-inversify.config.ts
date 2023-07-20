@@ -62,12 +62,9 @@ import { PinningService } from "./service/core/pinning-service.js";
 import { SettingsService } from "./service/core/settings-service.js";
 import { ChannelWebService } from "./service/web/channel-web-service.js";
 import { ItemWebService } from "./service/web/item-web-service.js";
-import { GitService } from "./service/core/git-service.js";
-import { GitlabService } from "./service/core/gitlab-service.js";
-import { GithubService } from "./service/core/github-service.js";
+
 import TYPES from "./service/core/types.js";
 import { PublishService } from "./service/core/publish-service.js";
-import { TokenImageCacheRepository } from "./repository/token-image-cache-repository.js";
 
 
 let container: Container
@@ -151,7 +148,6 @@ function getMainContainer(config) {
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
-  container.bind(TokenImageCacheRepository).toSelf().inSingletonScope()
 
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()

@@ -13,7 +13,6 @@ import { QueryCacheRepository } from "../../repository/query-cache-repository.js
 import { AttributeCountRepository } from "../../repository/attribute-count-repository.js";
 import { Channel } from "../../dto/channel.js";
 import { DatabaseService } from "./database-service.js";
-import { TokenImageCacheRepository } from "../../repository/token-image-cache-repository.js";
 
 @injectable()
 class SchemaService {
@@ -30,7 +29,6 @@ class SchemaService {
         private themeRepository:ThemeRepository,
         private staticPageRepository:StaticPageRepository,
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository,
-        private tokenImageCacheRepository:TokenImageCacheRepository,
         private queryCacheRepository:QueryCacheRepository,
         private attributeCountRepository:AttributeCountRepository,
         private databaseService:DatabaseService
@@ -44,7 +42,6 @@ class SchemaService {
         await this.channelRepository.load()
         await this.settingsRepository.load()
         await this.tokenMetadataCacheRepository.load()
-        await this.tokenImageCacheRepository.load()
         await this.queryCacheRepository.load()
 
     }

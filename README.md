@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
 ## An offline-first publishing platform for the free and open web
-Bringing the permissionless properties of Ethereum to the rest of the publishing tech stack with a CMS, reader, and marketplace any user in the community can run on their own machines.
+Bringing the permissionless properties of Ethereum to the rest of the publishing tech stack with a content management system and marketplace any user in the community can run on their own machines.
 
 [Use a hosted version](https://golarage.app)
 

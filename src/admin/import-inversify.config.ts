@@ -1,15 +1,15 @@
 import { ethers, providers } from "ethers"
 import { Container } from "inversify";
 
-import fs from "fs"
+// import fs from "fs"
 
 import { create } from 'ipfs-http-client'
 
 import PouchDB from 'pouchdb-node';
-import PouchFind from 'pouchdb-find'
+// import PouchFind from 'pouchdb-find'
 
 // Enable find plugin
-PouchDB.plugin(PouchFind)
+// PouchDB.plugin(PouchFind)
 
 
 import { WalletService } from "./service/core/wallet-service.js"
@@ -67,6 +67,7 @@ import { GitlabService } from "./service/core/gitlab-service.js";
 import { GithubService } from "./service/core/github-service.js";
 import TYPES from "./service/core/types.js";
 import { PublishService } from "./service/core/publish-service.js";
+import { TokenImageCacheRepository } from "./repository/token-image-cache-repository.js";
 
 
 let container: Container
@@ -150,6 +151,8 @@ function getMainContainer(config) {
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
+  container.bind(TokenImageCacheRepository).toSelf().inSingletonScope()
+
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
 

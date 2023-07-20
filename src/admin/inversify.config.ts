@@ -7,7 +7,6 @@ import { QueueService } from './service/core/queue-service.js';
 
 import { QuillService } from "./service/quill-service.js";
 import { QuillEditorService } from "./service/quill-editor-service.js";
-import { ReaderConfig } from './dto/reader-config.js';
 
 import { UploadService } from "./service/core/upload-service.js";
 
@@ -110,6 +109,7 @@ import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
 import { PublishService } from './service/core/publish-service.js';
 import { HuggingFaceService } from './service/core/hugging-face-service.js';
+import { TokenImageCacheRepository } from './repository/token-image-cache-repository.js';
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
@@ -275,6 +275,8 @@ function getMainContainer(version:string) {
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
+  container.bind(TokenImageCacheRepository).toSelf().inSingletonScope()
+
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
 

@@ -46,6 +46,8 @@ import { QueryCacheService } from "./query-cache-service.js"
 import { SchemaService } from "./schema-service.js"
 import { ItemWebService } from "../web/item-web-service.js"
 import { ChannelWebService } from "../web/channel-web-service.js"
+import { TokenImageCacheRepository } from "../../repository/token-image-cache-repository.js"
+import { TokenImageCache } from "../../dto/token-image-cache.js"
 
 const gatewayTools = new IPFSGatewayTools()
 
@@ -69,6 +71,8 @@ class ImportService {
         private staticPageService:StaticPageService,
         private ercEventService:ERCEventService,
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository,
+        private tokenImageCacheRepository:TokenImageCacheRepository,
+
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
     ) {}
@@ -311,9 +315,9 @@ class ImportService {
 
             let metadata = await this._getTokenMetadata(contract, tokenId )
 
-            // console.time(`Importing token #${metadata.tokenId}`)
-
             this.logForkProgress(forkStatus, `Importing token #${metadata.tokenId}`)
+
+            console.time(`Importing token #${metadata.tokenId}`)
 
             let item:Item = new Item()
             
@@ -324,23 +328,50 @@ class ImportService {
 
                 //Fetch and create image
                 let imageURI = metadata.image ? metadata.image : metadata.image_url
-                let imageData = await this._fetchURI(imageURI)
+                let tokenImageCache:TokenImageCache = await this._getTokenImage(imageURI, tokenId)
 
-                //Figure out if it's an svg and save appropriately
-                if (isSvg(new TextDecoder().decode(imageData))) {
-                    image = await this.imageService.newFromSvg(new TextDecoder().decode(imageData))
+
+                if (tokenImageCache.svg) {
+                    image = await this.imageService.newFromSvg(tokenImageCache.svg)
                 } else {
-                    image = await this.imageService.newFromBuffer(imageData)
+
+                    let bufferContent
+
+                    if (tokenImageCache.buffer instanceof Uint8Array) {
+                        bufferContent = image.buffer
+                      } else {
+                        //@ts-ignore
+                        bufferContent = Buffer.from(Object.values(tokenImageCache.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
+                      }
+
+                    image = await this.imageService.newFromBuffer(bufferContent)
                 }
 
+                forkStatus.images.saved++
+
+
+                //Check if image exists
+                let existing
                 try {
-                    await this.imageService.put(image)
-                } catch(ex) {} //ignore duplicates
-                
+                    existing = await this.imageService.get(image._id)
+                } catch(ex) {}
+
+
+
+
+                //Only write it if it doesn't exist yet.
+                if (!existing) {
+
+                    try {
+                        await this.imageService.put(image)
+                        this.logForkProgress(forkStatus, `Importing image ${image._id}`)
+                    } catch(ex) {} //ignore duplicates
+
+                }
+
                 item.coverImageId = image._id
 
-                forkStatus.images.saved++
-                this.logForkProgress(forkStatus, `Importing image ${image._id}`)
+
 
             } else {
                 throw new Error("No image in metadata")
@@ -425,6 +456,9 @@ class ImportService {
             if (metadata.animation_url) {
                 forkStatus.animations.total++
             }
+
+            console.timeEnd(`Importing token #${metadata.tokenId}`)
+
 
         }
 
@@ -1114,6 +1148,49 @@ class ImportService {
         return metadata
 
     }
+
+
+    private async _getTokenImage(url:string, tokenId:number) : Promise<TokenImageCache> {
+
+        //Check the cache
+        let existing
+
+        try {
+            existing = await this.tokenImageCacheRepository.get(url)
+        } catch(ex) {}
+        
+        if (existing) {
+            console.log(`Returning cached token image #${tokenId}`)
+            return existing
+        } 
+
+
+        
+        let imageData = await this._fetchURI(url)
+
+
+        let tokenImageCache:TokenImageCache = {
+            _id: url,
+            dateCreated: new Date().toJSON()
+        }
+
+
+        //Figure out if it's an svg and save appropriately
+        if (isSvg(new TextDecoder().decode(imageData))) {
+            tokenImageCache.svg = new TextDecoder().decode(imageData)
+        } else {
+            tokenImageCache.buffer = imageData
+        }
+
+        //Cache it
+        await this.tokenImageCacheRepository.put(tokenImageCache)
+
+
+        return this.tokenImageCacheRepository.get(url)
+
+    }
+
+
 
     private async _fetchURI(uri) {
         

@@ -60,9 +60,17 @@ let importCollection = async () => {
     //Load schema
     await schemaService.load()
 
-    let settings = new Settings()
-    settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
-    await settingsService.put(settings)
+    let settings
+
+    try {
+      settings = await settingsService.get()
+    } catch (ex) {}
+
+    if (!settings) {
+      settings = new Settings()
+      settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
+      await settingsService.put(settings)
+    }
 
     await ipfsService.init()
 
@@ -100,14 +108,19 @@ let importCollection = async () => {
 
 
     //Export 
+    console.log("Exporting bundle...")
     let exportBundle:ExportBundle = await exportService.prepareExport(channel, walletService.address)
+
+    console.log("Creating backup...")
     let backup:BackupBundle = await exportService.createBackup(exportBundle)
 
 
     let feeRecipient = await publishService.getFeeReceipient(exportBundle)
 
-    await publishService.exportToIPFS(exportBundle, backup, feeRecipient)
+    console.log("Exporting to IPFS...")
+    // await publishService.exportToIPFS(exportBundle, backup, feeRecipient)
 
+    console.log("Exporting to file system...")
     let fsActions = await publishService.exportToFS(config.baseDir, channel, exportBundle, backup, feeRecipient)
 
     let collectionDir = `${config.baseDir}/sync/${config.slug}`

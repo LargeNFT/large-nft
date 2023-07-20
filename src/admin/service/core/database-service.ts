@@ -13,7 +13,6 @@ class DatabaseService {
 
     async getDatabase(name:string, changesets?:Changeset[]) {
 
-        // const fullName = `${this.pouchPrefix}${ethers.utils.getAddress(walletAddress)}-${name}`
         const fullName = `${this.pouchPrefix}-large-${name}`
 
         if (this.dbCache[fullName]) return this.dbCache[fullName]
@@ -23,10 +22,8 @@ class DatabaseService {
 
         const details = await this.dbCache[fullName].info()
 
-
         //Check if it's a brand new database
         let isEmpty = details.doc_count == 0 && details.update_seq == 0
-
 
         //If it's empty build the indexes
         if (isEmpty) {

@@ -6,6 +6,7 @@ import { PublishService } from "./service/core/publish-service.js";
 
 import PouchDB from 'pouchdb-node';
 import PouchFind from 'pouchdb-find'
+
 import { ImageService } from "./service/image-service.js";
 import { ThemeService } from "./service/theme-service.js";
 import { SvgService } from "./service/svg-service.js";
@@ -32,8 +33,6 @@ import { QueryCacheService } from "./service/core/query-cache-service.js";
 // import { GitlabService } from "./service/core/gitlab-service.js";
 // import { GithubService } from "./service/core/github-service.js";
 import { QueryCacheRepository } from "./repository/query-cache-repository.js";
-import { PinningService } from "./service/core/pinning-service.js";
-import { PinningApiRepository } from "./repository/pinning-api-repository.js";
 import { IpfsService } from "./service/core/ipfs-service.js";
 import { SettingsService } from "./service/core/settings-service.js";
 import { SettingsRepository } from "./repository/settings-repository.js";
@@ -73,7 +72,10 @@ function getMainContainer() {
   container.bind("contracts").toConstantValue(contracts())
   // container.bind("name").toConstantValue("Large")
   
-  container.bind("PouchDB").toConstantValue(PouchDB)
+  container.bind("PouchDB").toConstantValue(() => {
+    return PouchDB
+  })
+  
   container.bind("pouch-prefix").toConstantValue("./data/pouch/importer")
 
   // container.bind("footer-text").toConstantValue(globalThis.footerText)
@@ -101,7 +103,6 @@ function getMainContainer() {
   container.bind(StaticPageService).toSelf().inSingletonScope()
   container.bind(QueryCacheService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
-  container.bind(PinningService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
   // container.bind(GitService).toSelf().inSingletonScope()
   // container.bind(GitlabService).toSelf().inSingletonScope()
@@ -116,7 +117,6 @@ function getMainContainer() {
   container.bind(ItemRepository).toSelf().inSingletonScope()
   container.bind(ImageRepository).toSelf().inSingletonScope()
   container.bind(AuthorRepository).toSelf().inSingletonScope()
-  container.bind(PinningApiRepository).toSelf().inSingletonScope()
   container.bind(SettingsRepository).toSelf().inSingletonScope()
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()

@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import { Channel } from "../../dto/channel.js";
 import { MintingViewModel } from "../../dto/viewmodel/minting-view-model.js";
@@ -7,7 +7,6 @@ import { SchemaService } from "../core/schema-service.js";
 import { WalletService } from "../core/wallet-service.js";
 import { ItemService } from "../item-service.js";
 import { TokenContractService } from "../token-contract-service.js";
-import { ItemWebService } from "./item-web-service.js";
 
 @injectable()
 class MintWebService {
@@ -18,8 +17,6 @@ class MintWebService {
     @inject("ChannelService")
     private channelService:ChannelService
     
-    @inject("ItemWebService")
-    private itemWebService:ItemWebService
 
     @inject("ItemService")
     private itemService:ItemService
@@ -41,13 +38,13 @@ class MintWebService {
 
         if (channel.contractAddress) {
 
-            let totalMinted:BigNumber = await this.tokenContractService.getTotalMinted()       
+            let totalMinted:BigInt = await this.tokenContractService.getTotalMinted()       
 
             let lastMinted = []
 
-            if (totalMinted?.gt(0)) {
+            if (Number(totalMinted) > 0 ) {
 
-                let items = await this.itemService.listByTokenId(totalMinted.toNumber())
+                let items = await this.itemService.listByTokenId(Number(totalMinted))
 
                 for (let item of items) {
 
@@ -69,11 +66,11 @@ class MintWebService {
             }            
 
             return {
-                totalMinted: totalMinted.toNumber(),
+                totalMinted: Number(totalMinted),
                 totalSupply: channel.itemCount,
                 mintPrice: channel.mintPrice,
                 lastMinted: lastMinted,
-                minting: totalMinted.toNumber() < channel.itemCount
+                minting: Number(totalMinted) < channel.itemCount
             }
             
         }
@@ -88,10 +85,10 @@ class MintWebService {
 
         if (channel.contractAddress) {
 
-            let totalMinted:BigNumber = await this.tokenContractService.getTotalMinted()       
+            let totalMinted:BigInt = await this.tokenContractService.getTotalMinted()       
 
             return {
-                totalMinted: totalMinted.toNumber(),
+                totalMinted: Number(totalMinted),
                 totalSupply: channel.itemCount,
                 mintPrice: channel.mintPrice
             }
@@ -133,9 +130,11 @@ class MintWebService {
 
     calculateTotalMint(channel, quantity) {
 
-        let mintPriceWei = globalThis.ethers.utils.parseUnits(channel.mintPrice, 'ether')
+        let mintPriceWei = globalThis.ethers.parseUnits(channel.mintPrice, 'ether')
 
-        return mintPriceWei.mul(quantity).toString()
+        let total = mintPriceWei * quantity
+
+        return total.toString()
  
     }
 

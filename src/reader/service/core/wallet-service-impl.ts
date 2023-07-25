@@ -1,7 +1,6 @@
-import { Contract, ethers } from "ethers"
+import { ethers } from "ethers"
 import { inject, injectable } from "inversify"
 import { WalletService } from "./wallet-service.js"
-import axios from "axios"
 
 
 @injectable()
@@ -94,7 +93,7 @@ class WalletServiceImpl implements WalletService {
       let accounts = await this.provider.send("eth_accounts", []);
 
       if (accounts?.length > 0) {
-        return ethers.utils.getAddress(accounts[0]) 
+        return ethers.getAddress(accounts[0]) 
       }
 
   }

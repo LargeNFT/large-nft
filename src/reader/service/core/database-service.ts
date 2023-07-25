@@ -17,12 +17,15 @@ class DatabaseService {
 
     async getDatabase(config:DatabaseConfig) {
 
+        let PouchDB = this.PouchDB()
+
+
         const fullName = `./pouch/${this.channelId()}/${config.name}`
 
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 
         //Create or open database
-        this.dbCache[fullName] = new this.PouchDB(fullName)
+        this.dbCache[fullName] = new PouchDB(fullName)
 
         const details = await this.dbCache[fullName].info()
 

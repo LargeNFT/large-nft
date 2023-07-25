@@ -117,7 +117,7 @@
                                               <div class="sale-info margin-top">
                                                 <a href="${link(`t/${sale.tokenId}`)}" class="item-link">${largestSales.rowItemViewModels[sale.tokenId].title}</a><br />
                                                 ${new Intl.NumberFormat('en-US').format(sale.ethValue)} ETH (${transactionWebService.abbreviateDollars(sale.usdValue, 2)})
-                                                <div class="date">${moment(sale.date).format('LL')}</div>
+                                                <div class="date">${dayjs(sale.date).format('LL')}</div>
                     
                     
                                               </div>

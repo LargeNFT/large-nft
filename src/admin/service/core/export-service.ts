@@ -66,7 +66,6 @@ class ExportService {
         delete channel.contractAddress
         delete channel.pinJobId
         delete channel.pinJobStatus
-        delete channel.publishedCid
         delete channel.pubDate
         delete channel.publishReaderRepoId
         delete channel.publishReaderRepoPath

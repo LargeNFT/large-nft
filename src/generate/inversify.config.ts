@@ -67,7 +67,10 @@ function getMainContainer(command:GetMainContainerCommand) {
   container = command.customContainer
   
   container.bind("pluginModules").toConstantValue([])
-  container.bind("PouchDB").toConstantValue({})
+  container.bind("PouchDB").toConstantValue(() => {
+    return {}
+  })
+  
   container.bind("framework7").toConstantValue({})
   container.bind("baseURI").toConstantValue(command.baseURI)
   container.bind("hostname").toConstantValue(command.hostname)
@@ -76,17 +79,6 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind("sharp").toConstantValue(sharp)
 
   container.bind("provider").toConstantValue(() => {
-
-
-    // if (command.alchemy) {
-
-    //   return new ethers.providers.StaticJsonRpcProvider({
-    //     url: `https://eth-mainnet.alchemyapi.io/v2/${command.alchemy}`,
-    //     skipFetchSetup: true
-    //    });
-    
-    // }
-
   })
 
 

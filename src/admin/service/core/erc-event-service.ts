@@ -1,4 +1,4 @@
-import { BigNumber, Contract, ethers, Event } from "ethers";
+import { Contract, ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import TYPES from "./types.js";
 
@@ -51,10 +51,9 @@ class ERCEventService {
     }
 
 
+  
 
-
-
-    async getEvents(contract:Contract, startBlock:number, endBlock:number){
+    async getEvents(contract:Contract, startBlock:number, endBlock:number) : Promise<EventsResult> {
 
         let events = []
 
@@ -64,14 +63,10 @@ class ERCEventService {
 
             try {
             
-                events = await contract.queryFilter({
-                    address: contract.address,
-                    topics: [
-                        ethers.utils.id("Transfer(address,address,uint256)"),
-                        ethers.utils.hexZeroPad("0x0000000000000000000000000000000000000000", 32)
-                        
-                    ]
-                }, 
+                events = await contract.queryFilter([
+                    ethers.id("Transfer(address,address,uint256)"),
+                    ethers.zeroPadValue("0x0000000000000000000000000000000000000000", 32)
+                ], 
                     startBlock, 
                     endBlock
                 )
@@ -110,25 +105,11 @@ class ERCEventService {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     async getTokensForContract(contract:Contract) : Promise<Set<number>> {
 
-        let events:Event[] = await this.getMintEventsForContract(contract)
+        let events:any[] = await this.getMintEventsForContract(contract)
 
-        let tokens = events.map( e => BigNumber.from(e.topics[3]).toNumber() ).sort( (a, b) => a -b)
+        let tokens = events.map( e => Number( BigInt(e.topics[3]) )).sort( (a, b) => a -b)
 
         return new Set(tokens)
 
@@ -144,6 +125,11 @@ class ERCEventService {
 }
 
 
+interface EventsResult {
+    events:any[]
+    endBlock:number
+}
+
 export {
-    ERCEventService
+    ERCEventService, EventsResult
 }

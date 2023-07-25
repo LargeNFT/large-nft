@@ -1,4 +1,4 @@
-import "core-js/stable/index.js"
+// import "core-js/stable/index.js"
 import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
@@ -6,7 +6,6 @@ import { Container } from "inversify"
 
 import { getMainContainer } from "../reader/inversify.config.js"
 
-import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
 
 //Import CSS
@@ -59,7 +58,7 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
 let startApp = async (container:Container, hostname:string) => {
 
     // let container = getMainContainer(baseURI, version, routablePages)            
-    let app:Framework7 = container.get("framework7")
+    let app:any = container.get("framework7")
     
     //Create the main view
 
@@ -77,7 +76,7 @@ let startApp = async (container:Container, hostname:string) => {
 
         console.log(`Navigating to ${internalUrl}`)
         //When the view loads lets reload the initial page so that we fire the component logic. 
-        view.router.navigate(internalUrl, { reloadCurrent: true })
+        view.router.navigate(internalUrl, { reloadCurrent: true, animate: false })
     })
     
     app.init()

@@ -194,7 +194,7 @@ class ChannelWebService {
     }
 
     async put(channel:Channel, coverImage?:Image, coverBanner?:Image) : Promise<void> {
-        
+
         let response = await this.channelService.put(channel)
 
         channel._rev = response.rev
@@ -212,7 +212,6 @@ class ChannelWebService {
         }
 
 
-
         //Save cover banner
         if (coverBanner) {
             try {
@@ -220,7 +219,6 @@ class ChannelWebService {
                 await this.imageService.put(Object.assign(new Image(), coverBanner))
             } catch (ex) {  }
         }
-
 
         let queryCache:QueryCache
         try {
@@ -236,7 +234,6 @@ class ChannelWebService {
                 count: 0
             }
         }
-
 
         //Update cache
         await this.queryCacheService.put(queryCache)

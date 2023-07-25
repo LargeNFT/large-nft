@@ -1,5 +1,7 @@
 import assert from 'assert'
 import hre from "hardhat"
+const ethers = hre.ethers
+
 
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers"
 import { expect } from "chai"
@@ -11,7 +13,7 @@ describe('Channel Contract', async (accounts) => {
 
         // we will call this function in our tests to deploy a new contract and add an owner
         let contractFactory = await hre.ethers.getContractFactory("Channel")
-        let contract = await contractFactory.deploy("Test", "TST", "xyz", ethers.utils.parseUnits('0.08', 'ether'), 10)
+        let contract = await contractFactory.deploy("Test", "TST", "xyz", ethers.parseUnits('0.08', 'ether'), 10)
 
         // (await contract).deployed();
         const accounts = await ethers.getSigners()
@@ -56,13 +58,13 @@ describe('Channel Contract', async (accounts) => {
 
         const { contract, accounts } = await loadFixture(deployFunction)
 
-        await expect(contract.connect(accounts[5]).mint( 1, { value: ethers.utils.parseUnits('0.0799', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[5]).mint( 1, { value: ethers.parseUnits('0.0799', 'ether') })).to.be.revertedWith("Send exact ETH")
 
-        await expect(contract.connect(accounts[5]).mint( 2, { value: ethers.utils.parseUnits('0.15', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[5]).mint( 2, { value: ethers.parseUnits('0.15', 'ether') })).to.be.revertedWith("Send exact ETH")
 
-        await expect(contract.connect(accounts[5]).mintFromStartOrFail( 1, 1, { value: ethers.utils.parseUnits('0.0799', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[5]).mintFromStartOrFail( 1, 1, { value: ethers.parseUnits('0.0799', 'ether') })).to.be.revertedWith("Send exact ETH")
 
-        await expect(contract.connect(accounts[5]).mintFromStartOrFail( 2, 1, { value: ethers.utils.parseUnits('0.15', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[5]).mintFromStartOrFail( 2, 1, { value: ethers.parseUnits('0.15', 'ether') })).to.be.revertedWith("Send exact ETH")
 
 
     })
@@ -72,11 +74,11 @@ describe('Channel Contract', async (accounts) => {
         const { contract, accounts } = await loadFixture(deployFunction)
 
 
-        await expect(contract.connect(accounts[4]).mint( 1, { value: ethers.utils.parseUnits('0.09', 'ether') })).to.be.revertedWith("Send exact ETH")
-        await expect(contract.connect(accounts[4]).mint( 2, { value: ethers.utils.parseUnits('0.19', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[4]).mint( 1, { value: ethers.parseUnits('0.09', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[4]).mint( 2, { value: ethers.parseUnits('0.19', 'ether') })).to.be.revertedWith("Send exact ETH")
 
-        await expect(contract.connect(accounts[4]).mintFromStartOrFail( 1, 1, { value: ethers.utils.parseUnits('0.09', 'ether') })).to.be.revertedWith("Send exact ETH")
-        await expect(contract.connect(accounts[4]).mintFromStartOrFail( 2, 1, { value: ethers.utils.parseUnits('0.19', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[4]).mintFromStartOrFail( 1, 1, { value: ethers.parseUnits('0.09', 'ether') })).to.be.revertedWith("Send exact ETH")
+        await expect(contract.connect(accounts[4]).mintFromStartOrFail( 2, 1, { value: ethers.parseUnits('0.19', 'ether') })).to.be.revertedWith("Send exact ETH")
 
     })
 
@@ -85,15 +87,16 @@ describe('Channel Contract', async (accounts) => {
 
         const { contract, accounts } = await loadFixture(deployFunction)
 
-        let tx = await contract.connect(accounts[0]).mint( 3, { value: ethers.utils.parseUnits('0.24', 'ether') })
+        let tx = await contract.connect(accounts[0]).mint( 3, { value: ethers.parseUnits('0.24', 'ether') })
 
         let receipt = await tx.wait()
 
-        verifyMintEvent(receipt.events, 3)
+        verifyMintEvent(receipt.logs, 3)
 
-        let contractBalance = await contract.provider.getBalance(contract.address)
+        let contractBalance = await ethers.provider.getBalance(contract)
 
-        assert.strictEqual(contractBalance.toString(), ethers.utils.parseUnits( (3 * 0.08).toString() , 'ether').toString())
+
+        assert.strictEqual(contractBalance.toString(), ethers.parseUnits( (3 * 0.08).toString() , 'ether').toString())
 
         assert.strictEqual(await contract.ownerOf( 1), accounts[0].address)
         assert.strictEqual(await contract.ownerOf( 2), accounts[0].address)
@@ -111,7 +114,7 @@ describe('Channel Contract', async (accounts) => {
 
         const { contract, accounts } = await loadFixture(deployFunction)
 
-        await expect(contract.connect(accounts[1]).mintFromStartOrFail( 3, 2, { value: ethers.utils.parseUnits('0.24', 'ether') })).to.be.revertedWith("Token is past start")
+        await expect(contract.connect(accounts[1]).mintFromStartOrFail( 3, 2, { value: ethers.parseUnits('0.24', 'ether') })).to.be.revertedWith("Token is past start")
 
     })
 
@@ -119,7 +122,7 @@ describe('Channel Contract', async (accounts) => {
 
         const { contract, accounts } = await loadFixture(deployFunction)
 
-        await expect(contract.connect(accounts[1]).mintFromStartOrFail( 3, 0, { value: ethers.utils.parseUnits('0.24', 'ether') })).to.be.revertedWith("No start passed")
+        await expect(contract.connect(accounts[1]).mintFromStartOrFail( 3, 0, { value: ethers.parseUnits('0.24', 'ether') })).to.be.revertedWith("No start passed")
 
     })
 
@@ -129,20 +132,20 @@ describe('Channel Contract', async (accounts) => {
 
 
         //Mint 3 
-        await contract.connect(accounts[1]).mint( 3, { value: ethers.utils.parseUnits('0.24', 'ether') })
+        await contract.connect(accounts[1]).mint( 3, { value: ethers.parseUnits('0.24', 'ether') })
 
 
         //Mint 3 more starting at #4
-        let tx = await contract.connect(accounts[1]).mintFromStartOrFail( 3, 4, { value: ethers.utils.parseUnits('0.24', 'ether') })
+        let tx = await contract.connect(accounts[1]).mintFromStartOrFail( 3, 4, { value: ethers.parseUnits('0.24', 'ether') })
         let receipt = await tx.wait()
 
         //Verify token id #6 minted
-        verifyMintEvent(receipt.events, 6)
+        verifyMintEvent(receipt.logs, 6)
 
-        let contractBalance = await contract.provider.getBalance(contract.address)
+        let contractBalance = await ethers.provider.getBalance(contract)
 
         //Verify contract balance
-        assert.strictEqual(contractBalance.toString(), ethers.utils.parseUnits( (6 * 0.08).toString() , 'ether').toString())
+        assert.strictEqual(contractBalance.toString(), ethers.parseUnits( (6 * 0.08).toString() , 'ether').toString())
         
         //Verify ownership of 4/5/6
         assert.strictEqual(await contract.ownerOf( 4), accounts[1].address)
@@ -161,18 +164,18 @@ describe('Channel Contract', async (accounts) => {
         const { contract, accounts } = await loadFixture(deployFunction)
 
         //First mint 6
-        await contract.connect(accounts[1]).mint( 6, { value: ethers.utils.parseUnits('0.48', 'ether') })
+        await contract.connect(accounts[1]).mint( 6, { value: ethers.parseUnits('0.48', 'ether') })
 
 
         let tx = await contract.connect(accounts[0]).mint(2)
         let receipt = await tx.wait()
 
-        verifyMintEvent(receipt.events, 8)
+        verifyMintEvent(receipt.logs, 8)
 
-        let contractBalance = await contract.provider.getBalance(contract.address)
+        let contractBalance = await ethers.provider.getBalance(contract)
 
         //Verify contract balance
-        assert.strictEqual(contractBalance.toString(), ethers.utils.parseUnits( (6 * 0.08).toString() , 'ether').toString())
+        assert.strictEqual(contractBalance.toString(), ethers.parseUnits( (6 * 0.08).toString() , 'ether').toString())
 
         assert.strictEqual(await contract.ownerOf( 7), accounts[0].address)
         assert.strictEqual(await contract.ownerOf( 8), accounts[0].address)
@@ -185,18 +188,18 @@ describe('Channel Contract', async (accounts) => {
 
 
         //First mint 8
-        await contract.connect(accounts[3]).mint( 8, { value: ethers.utils.parseUnits('0.64', 'ether') })
+        await contract.connect(accounts[3]).mint( 8, { value: ethers.parseUnits('0.64', 'ether') })
 
-        let tx = await contract.connect(accounts[3]).mint(2, { value: ethers.utils.parseUnits('0.16', 'ether') })
+        let tx = await contract.connect(accounts[3]).mint(2, { value: ethers.parseUnits('0.16', 'ether') })
         let receipt = await tx.wait()
 
-        verifyMintEvent(receipt.events, 10)
+        verifyMintEvent(receipt.logs, 10)
 
 
-        let contractBalance = await contract.provider.getBalance(contract.address)
+        let contractBalance = await ethers.provider.getBalance(contract)
 
         //Verify contract balance
-        assert.strictEqual(contractBalance.toString(), ethers.utils.parseUnits( (10 * 0.08).toString() , 'ether').toString())
+        assert.strictEqual(contractBalance.toString(), ethers.parseUnits( (10 * 0.08).toString() , 'ether').toString())
 
         
         assert.strictEqual(await contract.ownerOf( 9), accounts[3].address)
@@ -215,9 +218,9 @@ describe('Channel Contract', async (accounts) => {
         const { contract, accounts } = await loadFixture(deployFunction)
 
         //First mint 10
-        await contract.connect(accounts[4]).mint( 10, { value: ethers.utils.parseUnits('0.80', 'ether') })
+        await contract.connect(accounts[4]).mint( 10, { value: ethers.parseUnits('0.80', 'ether') })
 
-        await expect(contract.connect(accounts[4]).mint( 1, { value: ethers.utils.parseUnits('0.08', 'ether') })).to.be.revertedWith("Minting closed")
+        await expect(contract.connect(accounts[4]).mint( 1, { value: ethers.parseUnits('0.08', 'ether') })).to.be.revertedWith("Minting closed")
 
     })
 
@@ -226,7 +229,7 @@ describe('Channel Contract', async (accounts) => {
         const { contract, accounts } = await loadFixture(deployFunction)
 
         //First mint 10
-        await contract.connect(accounts[4]).mint( 10, { value: ethers.utils.parseUnits('0.80', 'ether') })
+        await contract.connect(accounts[4]).mint( 10, { value: ethers.parseUnits('0.80', 'ether') })
 
         await expect(contract.connect(accounts[4]).withdraw()).to.be.revertedWith("Ownable: caller is not the owner")
 
@@ -237,7 +240,7 @@ describe('Channel Contract', async (accounts) => {
         const { contract, accounts } = await loadFixture(deployFunction)
 
         //First mint 10
-        await contract.connect(accounts[4]).mint( 10, { value: ethers.utils.parseUnits('0.80', 'ether') })
+        await contract.connect(accounts[4]).mint( 10, { value: ethers.parseUnits('0.80', 'ether') })
 
 
         // let beforeBalance = await web3.eth.getBalance(user0)
@@ -247,10 +250,10 @@ describe('Channel Contract', async (accounts) => {
 
 
         //Check contract balance
-        let contractBalance = await contract.provider.getBalance(contract.address)
+        let contractBalance = await ethers.provider.getBalance(contract)
 
         //Check user balance
-        let afterBalance = await contract.provider.getBalance(accounts[0].address)
+        let afterBalance = await ethers.provider.getBalance(accounts[0])
 
         assert.strictEqual(contractBalance.toString(), '0')
         // console.log(afterBalance.toString())
@@ -344,9 +347,10 @@ function verifyMintEvent(logs, tokenId) {
 
   let eventCount = 0
   for (let l of logs) {
-    if (l.event === 'MintEvent') {
+    if (l.fragment.name === 'MintEvent') {
       try {
-        assert.strictEqual(l.args.tokenId.toNumber(), tokenId)
+        // console.log(l.args.tokenId.toString())
+        assert.strictEqual(l.args.tokenId.toString(), tokenId.toString())
         eventCount += 1
       } catch (ex) { }
     }

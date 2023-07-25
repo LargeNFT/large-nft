@@ -103,7 +103,7 @@
                                 <div class="card data-table">
                                     <div class="card-header">
                                         Activity
-                                        <div class="last-updated">Last updated: ${moment(transactionsViewModel.lastUpdated).fromNow()}</div>
+                                        <div class="last-updated">Last updated: ${dayjs(transactionsViewModel.lastUpdated).fromNow()}</div>
                                     </div>
                                     <div class="card-content card-content-padding">
                                         <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>

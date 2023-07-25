@@ -24,7 +24,7 @@ import { Animation } from "../../dto/animation.js"
 import { ForkStatus } from "../../dto/viewmodel/fork-status.js"
 import { Theme } from "../../dto/theme.js";
 import { StaticPage } from "../../dto/static-page.js";
-import { BigNumber, Contract, ethers } from "ethers";
+import { ethers } from "ethers";
 
 import { concat as uint8ArrayConcat } from 'uint8arrays/concat'
 import { ImportBundle, MediaDownloader } from "../../dto/import-bundle.js";

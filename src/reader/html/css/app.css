@@ -7,8 +7,6 @@
   --f7-fab-size: 45px;
 
   --scrollbar-width: calc(100vw - 100%);
-
-  /* --f7-table-selected-row-bg-color: #fffd9f; */
 }
 
 html {
@@ -552,6 +550,11 @@ ul.breadcrumb li a:hover {
 
 .start-buttons {
   margin-top: 15px;
+}
+
+.start-buttons .button {
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .explore-button, .ready-button {

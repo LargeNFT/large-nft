@@ -6,8 +6,7 @@
       <table>
         <thead>
           <tr>
-            <th class="image"></th>
-            <th class="label-cell medium-only">Item</th>
+            <th class="label-cell medium-only" colspan="2">Item</th>
             <th>Event</th>
             <th class="numeric-cell">Price</th>
             <th class="numeric-cell medium-only">From/To</th>
@@ -82,7 +81,7 @@
     
     return () => $h`
     
-        <tr class="${index % 2 == 0 ? "alt-row" : ''}">
+        <tr ${index % 2 == 0 ? 'class="alt-row"' : ''}>
 
           <td class="image">
             <a href="${baseURI}t/${event.tokenId}">
@@ -111,7 +110,7 @@
               
             `}
 
-            <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
+            <p class="date">${dayjs(transaction.timestamp * 1000).fromNow()}</p>
           </td>
 
           <td class="numeric-cell">
@@ -186,7 +185,7 @@
           <td>
             <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a> <br />
             
-            <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
+            <p class="date">${dayjs(transaction.timestamp * 1000).fromNow()}</p>
           </td>
 
           <td class="numeric-cell"></td>
@@ -220,7 +219,7 @@
           <td>
              <a href="https://etherscan.io/tx/${transaction._id}" class="external" target="_blank">${event.event}</a>  <br />
 
-             <p class="date">${moment(transaction.timestamp * 1000).fromNow()}</p>
+             <p class="date">${dayjs(transaction.timestamp * 1000).fromNow()}</p>
           </td>
 
           <td class="numeric-cell"></td>

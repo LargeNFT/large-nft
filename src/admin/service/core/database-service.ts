@@ -13,12 +13,14 @@ class DatabaseService {
 
     async getDatabase(name:string, changesets?:Changeset[]) {
 
+        let PouchDB = this.PouchDB()
+
         const fullName = `${this.pouchPrefix}-large-${name}`
 
         if (this.dbCache[fullName]) return this.dbCache[fullName]
 
         //Create or open database
-        this.dbCache[fullName] = new this.PouchDB(fullName, { auto_compaction: true })
+        this.dbCache[fullName] = new PouchDB(fullName, { auto_compaction: true })
 
         const details = await this.dbCache[fullName].info()
 
@@ -106,11 +108,12 @@ class DatabaseService {
 
     async getEmptyDatabase(name:string) {
 
-        // const fullName = `${this.pouchPrefix}${ethers.utils.getAddress(walletAddress)}-${name}`
+        let PouchDB = this.PouchDB()
+
         const fullName = `${this.pouchPrefix}-large-${name}`
 
         //Create or open database
-        this.dbCache[fullName] = new this.PouchDB(fullName, { auto_compaction: true })
+        this.dbCache[fullName] = new PouchDB(fullName, { auto_compaction: true })
 
         return this.dbCache[fullName]
 

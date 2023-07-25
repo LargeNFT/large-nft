@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify"
 // import { ERCEventRepository } from "../repository/erc-event-repository.js"
-import { BigNumber, Event } from "ethers"
+// import { Event } from "ethers"
 import { ERCEvent } from "../../sync/dto/erc-event.js"
 
 
@@ -9,7 +9,7 @@ class ERCEventService {
 
     constructor() {}
 
-    async translateEventToERCEvent(event: Event) : Promise<ERCEvent> {
+    async translateEventToERCEvent(event: any) : Promise<ERCEvent> {
     
         let ercEvent = new ERCEvent()
     
@@ -22,9 +22,22 @@ class ERCEventService {
         ercEvent.eventSignature = event.eventSignature
         ercEvent.dateCreated = new Date().toJSON()
     
-        //Convert BigNumber args to strings
-        ercEvent.args = event.args.map(a => BigNumber.isBigNumber(a) ? a.toString() : a)
-    
+        //Convert BigNumber args to strings    
+        ercEvent.args = event.args.map(a => {
+
+            let convert
+
+            try {
+                convert = BigInt(a)
+            } catch(ex) {}
+
+            if (convert) return convert.toString()
+            return a
+
+        })
+
+
+
         ercEvent.namedArgs = {}
 
         //Check wether it's a transfer and if it's newer than the most recently recorded transfer

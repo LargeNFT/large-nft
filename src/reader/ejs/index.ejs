@@ -125,7 +125,7 @@
     
                         <a href="<%= link('index.html') %>">
                           <% if (channelViewModel?.channel.coverImageId) { %>
-                            <img src="<%= link(`backup/generated/images/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
+                            <img src="<%= link(`backup/generated/images/100x100/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
                           <% } else { %>
                             <i class="f7-icons avatar">photo</i>
                           <% } %>
@@ -151,7 +151,9 @@
     
     
                     <div class="start-buttons">
-                      <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Start</a>
+                      <a href="<%= link(`t/${it.firstPost.item.tokenId}`) %>" class="button button-fill text-color-white ready-button" data-transition="f7-cover">Browse Collection</a>
+                      <a href="<%= link(`explore.html`) %>" class="button button-outline ready-button" data-transition="f7-cover">Explore</a>
+
                     </div>
     
     
@@ -318,7 +320,7 @@
                     <div class="card data-table">
                       <div class="card-header">
                         Recent Activity
-                        <div class="last-updated">Updated: ${moment(homeViewModel?.recent.lastUpdated).fromNow()}</div>
+                        <div class="last-updated">Updated: ${dayjs(homeViewModel?.recent.lastUpdated).fromNow()}</div>
                       </div>
                       <div class="card-content card-content-padding">
                         <transaction-row transactions="${homeViewModel.recent}" items="${homeViewModel?.recent.rowItemViewModels}"></transaction-row>
@@ -659,6 +661,8 @@
 
             await $update()
 
+            //Set empty alt for any decorative image tags that are missing it. 
+            $("img:not([alt])").attr("alt", "")
           })
 
           $on('pageBeforeOut', async () => {

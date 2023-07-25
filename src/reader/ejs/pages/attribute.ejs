@@ -151,7 +151,7 @@
     
                                     <div class="card data-table">
                                         <div class="card-header">
-                                            Leaderboard <span class="last-updated">Last updated: ${moment(lastUpdated).fromNow()}</span>
+                                            Leaderboard <span class="last-updated">Last updated: ${dayjs(lastUpdated).fromNow()}</span>
     
                                         </div>
                                         <div class="card-content">
@@ -182,7 +182,7 @@
                                                         </td>
                                             
                                                         <td>
-                                                            ${u.lastActive ? moment(u.lastActive).fromNow() : ""}
+                                                            ${u.lastActive ? dayjs(u.lastActive).fromNow() : ""}
                                                         </td>
                                             
                                                         <td class="numeric-cell">

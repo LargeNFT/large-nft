@@ -17,8 +17,11 @@ import { AuthorService } from "../src/admin/service/author-service.js"
 import { AnimationService } from "../src/admin/service/animation-service.js"
 import { ItemWebService } from "../src/admin/service/web/item-web-service.js";
 import { ChannelWebService } from "../src/admin/service/web/channel-web-service.js"
-import { ethers } from "ethers"
 
+
+import { ethers } from "ethers"
+// import hre from "hardhat"
+// const ethers = hre.ethers
 
 let id1
 let id2
@@ -59,7 +62,7 @@ describe('ItemService', async () => {
             title: "The Sound of Music",
             link: "google.com",
             symbol: "SOM",
-            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+            mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
             authorId:3,
             category: ['Gazebos']
         })
@@ -68,7 +71,7 @@ describe('ItemService', async () => {
             title: "Titanic",
             link: "alexa.com",
             symbol: "SOM",
-            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+            mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
             authorId:3,
             category: ['Sunk']
         })
@@ -354,12 +357,9 @@ describe('ItemService', async () => {
         //Upload pretend image data
         let image = await imageService.newFromBuffer(Buffer.from("pretend that this is image data4343243werwer"))
 
-
-
         //Create animation
         let animation = await animationService.newFromText("Hel343lo")
         await animationService.put(animation)
-
 
         //Add author
         let author:Author = Object.assign(new Author(), {
@@ -367,13 +367,11 @@ describe('ItemService', async () => {
             walletAddress: "xyze"
         })
 
-
-
         //Create category with attributes
         attributeChannel = Object.assign(new Channel(), {
             title: "The Sound of Music322",
             symbol: "SOM",
-            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether'),
+            mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
             link: "google.com",
             authorId: author._id,
             category: ['Gazebos'],
@@ -392,7 +390,10 @@ describe('ItemService', async () => {
             coverImageId: image?.cid?.toString()
         }) 
 
+
+
         await channelWebService.put(attributeChannel)
+
 
         await schemaService.loadChannel(attributeChannel._id)
 
@@ -423,7 +424,6 @@ describe('ItemService', async () => {
         })
 
         await service.put(item)
-
 
         const metadata = await service.exportNFTMetadata(attributeChannel, item, image, "zyx", 'xyz')
 

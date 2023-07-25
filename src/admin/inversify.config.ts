@@ -1,8 +1,9 @@
 import AppComponent from './components/admin/app.f7.html'
 
+import { ethers } from "ethers"
+
 import { UiService } from './service/core/ui-service.js';
 
-import { providers } from "ethers"
 import { QueueService } from './service/core/queue-service.js';
 
 import { QuillService } from "./service/quill-service.js";
@@ -27,7 +28,6 @@ import { SchemaService } from './service/core/schema-service.js'
 
 import TYPES from './service/core/types.js'
 
-import { PinningApiRepository } from './repository/pinning-api-repository.js'
 import { AttributeCountRepository } from './repository/attribute-count-repository.js'
 
 import { ItemService } from './service/item-service.js'
@@ -108,6 +108,7 @@ import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
 import { PublishService } from './service/core/publish-service.js';
 import { HuggingFaceService } from './service/core/hugging-face-service.js';
+import { DeployService } from './service/core/deploy-service.js';
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
@@ -178,7 +179,7 @@ function getMainContainer(version:string) {
       window.web3Provider = window.ethereum
 
       //@ts-ignore
-      return new providers.Web3Provider(window.ethereum)
+      return new ethers.BrowserProvider(window.ethereum)
 
     }
 
@@ -188,7 +189,10 @@ function getMainContainer(version:string) {
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
   
-  container.bind("PouchDB").toConstantValue(PouchDB)
+  container.bind("PouchDB").toConstantValue(() => {
+    return PouchDB
+  })
+  
   container.bind("pouch-prefix").toConstantValue("./pouch/")
 
   container.bind("footer-text").toConstantValue(globalThis.footerText)
@@ -226,6 +230,7 @@ function getMainContainer(version:string) {
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(QuillEditorService).toSelf().inSingletonScope()
   container.bind(PublishService).toSelf().inSingletonScope()
+  container.bind(DeployService).toSelf().inSingletonScope()
 
   container.bind(UploadService).toSelf().inSingletonScope()
   container.bind(IpfsService).toSelf().inSingletonScope()
@@ -268,7 +273,6 @@ function getMainContainer(version:string) {
   container.bind(ItemRepository).toSelf().inSingletonScope()
   container.bind(ImageRepository).toSelf().inSingletonScope()
   container.bind(AuthorRepository).toSelf().inSingletonScope()
-  container.bind(PinningApiRepository).toSelf().inSingletonScope()
   container.bind(SettingsRepository).toSelf().inSingletonScope()
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()

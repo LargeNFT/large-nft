@@ -1,4 +1,3 @@
-import { BigNumber, ethers } from "ethers"
 import { inject, injectable } from "inversify"
 import { Channel } from "../../dto/channel.js"
 import { Animation } from "../../dto/animation.js"
@@ -35,8 +34,7 @@ class PublishService {
         private imageService: ImageService,
         private exportService:ExportService,
         private settingsService:SettingsService,
-        @inject(TYPES.WalletService) private walletService: WalletService,
-        @inject("contracts") private contracts,
+        @inject(TYPES.WalletService) private walletService: WalletService
     ) { }
 
     async publish(channel: Channel, baseDir:string) {
@@ -58,22 +56,34 @@ class PublishService {
 
 
         //export to IPFS but only if we don't have a contractAddress
-        let cid
+        let cids:CidInfo
         if (!channel.contractAddress) {
-            cid = await this.exportToIPFS(exportBundle, backup, feeRecipient)
+
+            cids = await this.exportToIPFS(exportBundle, backup, feeRecipient)
+
+        } else {
+
+            cids = {
+                cid: channel.publishReaderIPFSStatus.cid,
+                imageDirectoryCid: channel.publishReaderIPFSStatus.imageDirectoryCid,
+                animationDirectoryCid: channel.publishReaderIPFSStatus.animationDirectoryCid
+            }
+
         }
 
-        let fsActions = await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient)
+
+
+
+        let fsActions = await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids)
 
         return {
-            cid: cid,
+            cids: cids,
             fsActions: fsActions
         }
 
     }
 
-
-    async exportToIPFS(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string): Promise<string> {
+    async exportToIPFS(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string): Promise<CidInfo> {
 
         let flush = true
         let ipfsDirectory = this.getIPFSDirectory(exportBundle.channel)
@@ -202,13 +212,15 @@ class PublishService {
         this.logPublishProgress(publishStatus, `Published to local IPFS at ${result.cid.toString()}`)
 
 
-        return result.cid.toString()
+        return {
+            cid: result.cid.toString(),
+            imageDirectoryCid: imageDirectory.cid.toString(),
+            animationDirectoryCid: animationDirectory.cid.toString()
+        }
 
     }
 
-    async exportToFS(baseDir:string, channel:Channel, exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string): Promise<any[]> {
-
-        let ipfsDirectory = this.getIPFSDirectory(exportBundle.channel)
+    async exportToFS(baseDir:string, channel:Channel, exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string, cids?:CidInfo): Promise<any[]> {
 
         let fsActions = []
 
@@ -218,15 +230,10 @@ class PublishService {
         //Save animations
         await this._publishAnimationsFS(baseDir, fsActions, exportBundle.animations)
 
-        //Get directory cids
-        let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
-        let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
-
-        await this._publishNFTMetadataFS(baseDir, fsActions, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory)
-
+        await this._publishNFTMetadataFS(baseDir, fsActions, exportBundle.channel, exportBundle.items, cids.animationDirectoryCid, cids.imageDirectoryCid)
 
         //Save contract metadata
-        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory)
+        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids.imageDirectoryCid)
 
 
         //Write to Git
@@ -394,10 +401,8 @@ class PublishService {
 
     }
 
-
     getIPFSDirectory(channel:Channel) {
         return `/export/${channel._id}`
-
     }
 
     public async getAnimationDirectoryCid(directory) {
@@ -688,51 +693,6 @@ class PublishService {
 
     }
 
-    async deployContract(channel: Channel) {
-
-        if (!channel.publishReaderIPFSStatus?.cid) {
-            throw new Error("Not published to IPFS")
-        }
-
-        let count = await this.channelService.countItemsByChannel(channel._id)
-
-        if (count <= 0) {
-            throw new Error("No NFTs")
-        }
-
-        //Deploy contract
-        let mintPriceWei = ethers.utils.parseUnits(channel.mintPrice, 'ether')        
-        let receipt = await this.deploy(channel.title, channel.symbol, channel.publishReaderIPFSStatus?.cid, mintPriceWei.toString(), count)
-
-        //Update address locally
-        channel.contractAddress = receipt.contractAddress
-        channel.showActivityPage = true
-        channel.showMintPage = true
-        await this.channelService.put(channel)
-
-    }
-
-    private async deploy(name: string, symbol: string, ipfsCid: string, mintFee: string, maxTokenId: number) {
-
-        if (!name || !symbol || !mintFee || !maxTokenId || !ipfsCid) throw new Error("Missing inputs to deploy")
-
-        let wallet = this.walletService.wallet
-        if (!wallet) throw new Error("No wallet!")
-
-        const c = this.contracts['Channel']
-
-        const factory = new ethers.ContractFactory(c.abi, c.bytecode, wallet)
-        
-        let contract = await factory.deploy(
-            name, 
-            symbol, 
-            ipfsCid, 
-            BigNumber.from(mintFee.toString()), 
-            BigNumber.from(maxTokenId.toString())
-        )
-        
-        return contract.deployTransaction.wait()
-    }
 
     private logPublishProgress(publishStatus:PublishStatus, message?: string) {
 
@@ -758,6 +718,13 @@ class PublishService {
 
 }
 
+
+interface CidInfo {
+    cid: string
+    imageDirectoryCid:string
+    animationDirectoryCid:string
+}
+
 export {
-    PublishService
+    PublishService, CidInfo
 }

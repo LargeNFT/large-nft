@@ -965,10 +965,10 @@
 
             if (!value) return
 
-            let wei = ethers.utils.parseUnits(value, 'ether')
+            let wei = ethers.parseUnits(value, 'ether')
 
             try {
-                mintPrice = ethers.utils.formatUnits(wei)
+                mintPrice = ethers.formatUnits(wei)
                 mintPriceWei = wei.toString()
             } catch (ex) {
                 console.log(ex)

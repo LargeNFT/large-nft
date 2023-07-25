@@ -276,82 +276,17 @@ class GithubService implements GitProviderService {
                     }
                 }
             )
-    
-            latestCommit = await this.getMostRecentCommit(channel, gitProvider)
 
+            latestCommit = createCommitResult.data.data.createCommitOnBranch.commit.commitUrl.split("/").pop()
             
-            this.logPublishProgress(`Commit successful: ${latestCommit.sha}`)
-
-
-
-
+            this.logPublishProgress(`Commit successful: ${latestCommit}`)
 
         }
 
 
-        
-
-        return latestCommit.sha
-
+        return latestCommit
 
     }
-
-    // private async createBranch(channel, gitProvider) {
-
-    //     console.log("Creating branch")
-
-    //     let oid = await this.getMostRecentCommitOid(channel, gitProvider)
-
-    //     const getRespositoryId = await axios.post(GithubService.GRAPHQL_URL, { 
-    //         query: `
-    //             query {
-    //                 repository(owner: "${gitProvider.username}", name: "large-reader") {
-    //                     id
-    //                 }
-    //             }
-    //         `
-    //     }, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-    //         }
-    //     })
-
-
-    //     const mutation = `
-    //         mutation {
-    //             createRef(input: {
-    //                 repositoryId: "${getRespositoryId.data.data.repository.id}",
-    //                 name: "refs/heads/${this.getBranchName(channel)}",
-    //                 oid: "${oid}"
-    //             }) {
-    //                 ref {
-    //                     name
-    //                         target {
-    //                         oid
-    //                         }
-    //                 }
-    //             }
-    //         }
-    //     `
-
-    //     const createBranchResult = await axios.post(
-    //         GithubService.GRAPHQL_URL,
-    //         {
-    //             query: mutation,
-    //         },
-    //         {
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-    //             }
-    //         }
-    //     )
-
-    //     console.log("Created branch")
-
-
-    // }
 
     async getIPFSActionStatus(channel: Channel): Promise<string> {
     
@@ -638,3 +573,63 @@ class GithubService implements GitProviderService {
 export {
     GithubService
 }
+
+
+
+
+    // private async createBranch(channel, gitProvider) {
+
+    //     console.log("Creating branch")
+
+    //     let oid = await this.getMostRecentCommitOid(channel, gitProvider)
+
+    //     const getRespositoryId = await axios.post(GithubService.GRAPHQL_URL, { 
+    //         query: `
+    //             query {
+    //                 repository(owner: "${gitProvider.username}", name: "large-reader") {
+    //                     id
+    //                 }
+    //             }
+    //         `
+    //     }, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+    //         }
+    //     })
+
+
+    //     const mutation = `
+    //         mutation {
+    //             createRef(input: {
+    //                 repositoryId: "${getRespositoryId.data.data.repository.id}",
+    //                 name: "refs/heads/${this.getBranchName(channel)}",
+    //                 oid: "${oid}"
+    //             }) {
+    //                 ref {
+    //                     name
+    //                         target {
+    //                         oid
+    //                         }
+    //                 }
+    //             }
+    //         }
+    //     `
+
+    //     const createBranchResult = await axios.post(
+    //         GithubService.GRAPHQL_URL,
+    //         {
+    //             query: mutation,
+    //         },
+    //         {
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+    //             }
+    //         }
+    //     )
+
+    //     console.log("Created branch")
+
+
+    // }

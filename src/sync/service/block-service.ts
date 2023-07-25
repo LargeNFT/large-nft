@@ -4,7 +4,7 @@ import { WalletService } from "../../reader/service/core/wallet-service.js"
 
 //@ts-ignore
 import linkETHUSDABI from '../../reader/external-abi/link-eth-usd.json' assert { type: "json" }
-import { BigNumber, ethers } from "ethers"
+import { ethers } from "ethers"
 import { BlockRepository } from "../repository/block-repository.js"
 
 
@@ -98,9 +98,9 @@ class BlockService {
 
         let ethUsdContract = new ethers.Contract("0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419", linkETHUSDABI, this.walletService.provider)
 
-        let answer:BigNumber = await ethUsdContract.latestAnswer({blockTag: blockNumber})
+        let answer = await ethUsdContract.latestAnswer({blockTag: blockNumber})
         
-        return answer.toNumber() / 10**8 //chainlink returns 8 decimals
+        return Number(answer) / 10**8 //chainlink returns 8 decimals
 
     }
 

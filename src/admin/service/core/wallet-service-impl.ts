@@ -104,6 +104,8 @@ class WalletServiceImpl implements WalletService {
     let c = this.contracts[name]
     this.ethersContracts[name] = new ethers.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
 
+
+
     // console.log(`Getting contract ${name}`)
 
     return this.ethersContracts[name]

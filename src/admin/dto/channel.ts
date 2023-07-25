@@ -88,9 +88,6 @@ class Channel {
     @Allow()
     pinJobStatus?:string
 
-    @Allow()
-    publishedCid?:string
-
 
     @Allow()
     gitProvider?:string

@@ -1,4 +1,4 @@
-import { BigNumber, utils } from "ethers";
+import { ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import { MetadataRepository } from "../repository/metadata-repository.js";
 import { WalletService } from "./core/wallet-service.js";
@@ -81,7 +81,7 @@ class TokenContractService {
                 address: contract.address,
                 topics: [
                     // the name of the event, parnetheses containing the data type of each event, no spaces
-                    utils.id("MintEvent(uint256)")
+                    ethers.id("MintEvent(uint256)")
                 ]
             }
             
@@ -117,8 +117,8 @@ interface ChannelContract {
     ownerOf(tokenId:number) : string
     tokenURI(tokenId:number) : string
     balanceOf(address) : string
-    totalMinted() : BigNumber
-    totalSupply() : BigNumber
+    totalMinted() : BigInt
+    totalSupply() : BigInt
     owner() : string
     address:string
 }

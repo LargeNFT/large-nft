@@ -1,4 +1,4 @@
-import { BigNumber, Contract, ethers, providers } from "ethers";
+import { Contract, ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import { Block } from "../dto/block.js";
 
@@ -79,10 +79,11 @@ class TransactionIndexerService {
 
         let s = await this.sequelize()
 
+        let address = await contract.getAddress()
 
-        console.log(`Starting transaction indexer for ${contract.address}`)
+        console.log(`Starting transaction indexer for ${address}`)
 
-        this.contractAddress = ethers.utils.getAddress(contract.address)
+        this.contractAddress = ethers.getAddress(address)
 
         //Look up contract state
         this.contractState = await this._getContractState(this.contractAddress, options)
@@ -96,7 +97,6 @@ class TransactionIndexerService {
         this.topics = this._getFilterTopics(contract)
 
         this.contract = contract
-
 
     }
 
@@ -120,6 +120,7 @@ class TransactionIndexerService {
 
         //Remove transactions/events between start/end block numbers then re-insert
         await this.processedTransactionService.deleteBetweenBlocks(result, this.BLOCK_CONFIRMATIONS, options)
+
 
         //Set most recent.
         result.mostRecentTransaction = await this.processedTransactionService.getLatestViewModel(result.startBlock, options)
@@ -185,7 +186,7 @@ class TransactionIndexerService {
                 processedTransaction.tokenTraders = []
                 processedTransaction.tokenIds = []
                 processedTransaction.tokenTraderIds = []
-                processedTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.utils.getAddress(this.contract.address), block.ethUSDPrice)
+                processedTransaction.transactionValue = await this.transactionService.getTransactionValue(transaction, ethers.getAddress(await this.contract.getAddress()), block.ethUSDPrice)
 
 
                 for (let event of e) {
@@ -464,7 +465,7 @@ class TransactionIndexerService {
 
     }
 
-    async getEvents(startBlock:number, endBlock:number) : Promise<EventsResult> {
+    async getEvents(startBlock:number, endBlock:number) {
 
         let events = []
 
@@ -474,10 +475,7 @@ class TransactionIndexerService {
 
             try {
             
-                events = await this.contract.queryFilter({
-                    address: this.contractAddress,
-                    topics: this.topics
-                },
+                events = await this.contract.queryFilter(this.topics,
                     startBlock,
                     endBlock
                 )
@@ -513,7 +511,6 @@ class TransactionIndexerService {
     }
 
     private _getFilterTopics(contract: Contract) {
-
 
         //Grab the ones that have () in them. Because the list is duplicated. 
         let eventKeys = Object.keys(contract.filters).filter(v => v.includes("("))
@@ -679,12 +676,13 @@ interface ERCIndexResult {
     isCurrent?:boolean
 }
 
+
+
+
 interface EventsResult {
     events:any[]
     endBlock:number
 }
-
-
 
 export {
     TransactionIndexerService, ERCIndexResult

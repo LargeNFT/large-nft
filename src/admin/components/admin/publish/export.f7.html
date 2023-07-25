@@ -294,7 +294,6 @@
     import { ChannelService } from "../../../service/channel-service"
     import { PublishService } from "../../../service/core/publish-service"
 
-    import { PinningService } from "../../../service/core/pinning-service"
     import { GitlabService } from "../../../service/core/gitlab-service"
     import { GitService } from "../../../service/core/git-service"
 
@@ -309,7 +308,6 @@
     export default (props, { $, $h, $on, $f7, $update }) => {
 
         let channelService = ContainerService.getInstance(ChannelService)
-        let pinningService = ContainerService.getInstance(PinningService)
         let ipfsService = ContainerService.getInstance(IpfsService)
         let queueService = ContainerService.getInstance(QueueService)
         let gitlabService = ContainerService.getInstance(GitlabService)
@@ -389,6 +387,8 @@
                     headSha: headSha
                 }
 
+                console.log(channelViewModel.channel.publishReaderIPFSStatus)
+
                 await channelService.put(channelViewModel.channel)
 
             } catch(ex) {
@@ -450,13 +450,13 @@
                 
                 let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
 
-
                 if (ipfsActionStatus == "finished") { //TODO
 
                     //Get the new IPFS hash
                     if (!channelViewModel.channel.contractAddress) {
                         channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
-                    }
+                    } 
+
 
                     channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
                     await channelService.put(channelViewModel.channel)

@@ -3,7 +3,6 @@ import "regenerator-runtime/runtime"
 import "reflect-metadata"
 
 import { Container } from "inversify";
-import { providers } from "ethers"
 
 
 import { HardhatWalletServiceImpl } from "./util/hardhat-wallet-service.js";
@@ -106,8 +105,7 @@ async function getContainer() {
         //@ts-ignore
         const ethers = hre.ethers
 
-        //@ts-ignore
-        return new providers.Web3Provider(ethers.provider)  
+        return ethers.provider 
     
     })
     
@@ -115,7 +113,9 @@ async function getContainer() {
 
     container.bind("pouch-prefix").toConstantValue("./test/pouch/")
 
-    container.bind("PouchDB").toConstantValue(PouchDB)
+    container.bind("PouchDB").toConstantValue(() => {
+        return PouchDB
+    })
 
     container.bind("fs").toConstantValue(() => {
         return fs

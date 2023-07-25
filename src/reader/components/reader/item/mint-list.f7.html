@@ -13,7 +13,6 @@
               <div class="list simple-list inset mint-list-info">
                 <ul>
                   <li>NFTs are minted in sequential order.</li>
-                  <li>From the beginning of the story to the end.</li>
                   <li>Limited supply!</li>
                 </ul>
               </div>
@@ -203,7 +202,7 @@
     } 
   
     const updateTotal = async () => {
-      total = globalThis.ethers.utils.formatUnits(mintPriceWei.mul(quantity))
+      total = globalThis.ethers.formatUnits(mintPriceWei * quantity)
       await $update()
     }
 
@@ -276,7 +275,7 @@
 
         mintingViewModel = await mintWebService.getMintingViewModel()
 
-        mintPriceWei = globalThis.ethers.utils.parseUnits(mintingViewModel.mintPrice, 'ether')
+        mintPriceWei = globalThis.ethers.parseUnits(mintingViewModel.mintPrice, 'ether')
 
         await updateTotal()
 

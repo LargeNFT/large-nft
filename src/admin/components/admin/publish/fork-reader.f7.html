@@ -138,7 +138,6 @@
   import { ChannelService } from "../../../service/channel-service"
   import { PublishService } from "../../../service/core/publish-service"
 
-  import { PinningService } from "../../../service/core/pinning-service"
   import { GitService } from "../../../service/core/git-service"
 
   import { QueueService } from "../../../service/core/queue-service"
@@ -152,7 +151,6 @@
   export default (props, { $, $h, $on, $f7, $update }) => {
 
     let channelService = ContainerService.getInstance(ChannelService)
-    let pinningService = ContainerService.getInstance(PinningService)
     let ipfsService = ContainerService.getInstance(IpfsService)
     let queueService = ContainerService.getInstance(QueueService)
     let gitService = ContainerService.getInstance(GitService)

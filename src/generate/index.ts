@@ -227,7 +227,7 @@ let generate = async () => {
   
   //Generate webp version of channel cover image
   if (channelViewModel.channel.coverImageId) {
-    await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId)
+    await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId, 100)
   }
 
   if (channelViewModel.channel.coverBannerId) {
@@ -235,6 +235,9 @@ let generate = async () => {
   }
 
   await generateService.generateAttributeItems(config, baseViewModel.attributeReport)
+
+  //Generate web manifest
+  await generateService.generateManifest(config, channelViewModel)
 
   if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
     fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })

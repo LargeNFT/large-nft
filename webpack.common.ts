@@ -7,6 +7,8 @@ import fs from 'fs'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
 
+
+
 const require = createRequire(import.meta.url)
 
 const __filename = fileURLToPath(import.meta.url)
@@ -14,10 +16,16 @@ const __dirname = dirname(__filename)
 
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+
+const TerserPlugin = require("terser-webpack-plugin")
+
+
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 
 let configs = []
 
@@ -53,7 +61,7 @@ let getAdminConfigs = () => {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
+          use: [MiniCssExtractPlugin.loader, 'css-loader']
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
@@ -97,6 +105,9 @@ let getAdminConfigs = () => {
       path: path.resolve(__dirname, 'public')
     },
     optimization: {
+      minimizer: [
+        new CssMinimizerPlugin(), new TerserPlugin()
+      ],
       usedExports: true,
       runtimeChunk: 'single',
       splitChunks: {
@@ -143,13 +154,11 @@ let getAdminConfigs = () => {
       }),
   
       new MiniCssExtractPlugin({
-        filename: "[name].css",
-        chunkFilename: "[id].css"
+        filename: "large/admin/app/css/[name].css",
+        chunkFilename: "large/admin/app/css/[id].css"
       }),
   
-      new HTMLInlineCSSWebpackPlugin(),
-  
-  
+
       {
         apply: (compiler) => {
   
@@ -487,6 +496,28 @@ let getReaderConfigs = () => {
     ]
   }
 
+
+  let optimization = {
+
+    minimizer: [
+      new CssMinimizerPlugin(), new TerserPlugin()
+    ],
+
+    usedExports: true,
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        },
+
+      }
+    }
+  }
+
+  
   let browserConfig = {
     entry: "./src/reader/index.ts",
     module: {
@@ -498,7 +529,7 @@ let getReaderConfigs = () => {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
+          use: [MiniCssExtractPlugin.loader, 'css-loader']
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
@@ -562,11 +593,13 @@ let getReaderConfigs = () => {
       }),
   
       new MiniCssExtractPlugin({
-        filename: "[name].css",
-        chunkFilename: "[id].css"
+        filename: "large/reader/browser/css/[name].css",
+        chunkFilename: "large/reader/browser/css/[id].css"
       }),
   
-      new HTMLInlineCSSWebpackPlugin()
+
+      // new BundleAnalyzerPlugin()
+
   
     ],
     output: {
@@ -574,20 +607,7 @@ let getReaderConfigs = () => {
       filename: `large/reader/browser/js/[name].reader.js`,
       path: path.resolve(__dirname, 'public')
     },
-    optimization: {
-      usedExports: true,
-      runtimeChunk: 'single',
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all'
-          },
-
-        }
-      }
-    },
+    optimization: optimization,
 
   }
 
@@ -622,7 +642,11 @@ let getReaderConfigs = () => {
       new webpack.DefinePlugin({
         VERSION: VERSION
       })
-    ]
+    ],
+
+    optimization: {
+      minimizer: [new TerserPlugin()],
+    }
   }
   
   let libraryConfig = {
@@ -636,7 +660,7 @@ let getReaderConfigs = () => {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
+          use: [MiniCssExtractPlugin.loader, 'css-loader']
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
@@ -700,11 +724,10 @@ let getReaderConfigs = () => {
       }),
   
       new MiniCssExtractPlugin({
-        filename: "[name].css",
-        chunkFilename: "[id].css"
+        filename: "large/library/browser/css/[name].css",
+        chunkFilename: "large/library/browser/css/[id].css"
       }),
   
-      new HTMLInlineCSSWebpackPlugin()
   
     ],
     output: {
@@ -712,20 +735,7 @@ let getReaderConfigs = () => {
       filename: `large/library/browser/js/[name].library.js`,
       path: path.resolve(__dirname, 'public')
     },
-    optimization: {
-      usedExports: true,
-      runtimeChunk: 'single',
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all'
-          },
-
-        }
-      }
-    },
+    optimization: optimization,
 
   }
 
@@ -760,7 +770,11 @@ let getReaderConfigs = () => {
       new webpack.DefinePlugin({
         VERSION: VERSION
       })
-    ]
+    ],
+
+    optimization: {
+      minimizer: [new TerserPlugin()],
+    }
   }
   
 

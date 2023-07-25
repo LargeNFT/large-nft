@@ -1,5 +1,8 @@
-import { ethers, providers } from "ethers"
+import { ethers } from "ethers"
+
+
 import { Container } from "inversify";
+
 
 // import fs from "fs"
 
@@ -28,7 +31,6 @@ import { AuthorRepository } from './repository/author-repository.js'
 import { SchemaService } from './service/core/schema-service.js'
 
 
-import { PinningApiRepository } from './repository/pinning-api-repository.js'
 import { AttributeCountRepository } from './repository/attribute-count-repository.js'
 
 import { ItemService } from './service/item-service.js'
@@ -58,13 +60,18 @@ import { QueryCacheRepository } from './repository/query-cache-repository.js';
 //@ts-ignore
 import c from '../../contracts.json' assert { type: "json" }
 import { QuillService } from "./service/quill-service.js";
-import { PinningService } from "./service/core/pinning-service.js";
 import { SettingsService } from "./service/core/settings-service.js";
 import { ChannelWebService } from "./service/web/channel-web-service.js";
 import { ItemWebService } from "./service/web/item-web-service.js";
 
 import TYPES from "./service/core/types.js";
 import { PublishService } from "./service/core/publish-service.js";
+
+
+import {Headers} from 'node-fetch'
+
+//@ts-ignore
+globalThis.Headers = Headers
 
 
 let container: Container
@@ -87,12 +94,7 @@ function getMainContainer(config) {
   container.bind("provider").toConstantValue(() => {
 
     if (config.alchemy) {
-
-      return new ethers.providers.StaticJsonRpcProvider({
-        url: `https://eth-mainnet.alchemyapi.io/v2/${config.alchemy}`,
-        skipFetchSetup: true
-       });
-    
+      return new ethers.AlchemyProvider('homestead', config.alchemy)
     }
 
   })
@@ -100,7 +102,10 @@ function getMainContainer(config) {
   container.bind("contracts").toConstantValue(contracts())
   container.bind("name").toConstantValue("Large")
   
-  container.bind("PouchDB").toConstantValue(PouchDB)
+  container.bind("PouchDB").toConstantValue(() => {
+    return PouchDB
+  })
+  
   container.bind("pouch-prefix").toConstantValue("./data/pouch/importer")
 
   container.bind("footer-text").toConstantValue(globalThis.footerText)
@@ -128,7 +133,6 @@ function getMainContainer(config) {
   container.bind(StaticPageService).toSelf().inSingletonScope()
   container.bind(QueryCacheService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
-  container.bind(PinningService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
   // container.bind(GitService).toSelf().inSingletonScope()
   // container.bind(GitlabService).toSelf().inSingletonScope()
@@ -143,7 +147,6 @@ function getMainContainer(config) {
   container.bind(ItemRepository).toSelf().inSingletonScope()
   container.bind(ImageRepository).toSelf().inSingletonScope()
   container.bind(AuthorRepository).toSelf().inSingletonScope()
-  container.bind(PinningApiRepository).toSelf().inSingletonScope()
   container.bind(SettingsRepository).toSelf().inSingletonScope()
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()

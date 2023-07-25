@@ -1,9 +1,16 @@
 import { Container } from "inversify";
-import { ethers, providers } from "ethers"
+import { ethers } from "ethers"
 import Framework7 from 'framework7';
 
-import moment from "moment"
-import PouchDB from 'pouchdb-browser';
+import axios from "axios"
+
+
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime.js'
+dayjs.extend(relativeTime)
+
+
+import PouchDB from 'pouchdb-browser'
 import PouchFind from 'pouchdb-find'
 import PouchQuickSearch from 'pouchdb-quick-search'
 
@@ -22,15 +29,15 @@ import VirtualList from 'framework7/components/virtual-list'
 import ListIndex from 'framework7/components/list-index'
 import Range from 'framework7/components/range'
 import Accordion from 'framework7/components/accordion'
-import Autocomplete from 'framework7/components/autocomplete'
-import PhotoBrowser from 'framework7/components/photo-browser'
-import Swiper from 'framework7/components/swiper'
+// import Autocomplete from 'framework7/components/autocomplete'
+// import PhotoBrowser from 'framework7/components/photo-browser'
+// import Swiper from 'framework7/components/swiper'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
 import Form from 'framework7/components/form'
 import Grid from 'framework7/components/grid'
-import Searchbar from 'framework7/components/searchbar'
+// import Searchbar from 'framework7/components/searchbar'
 import Popup from 'framework7/components/popup'
 import Panel from 'framework7/components/panel'
 import Popover from 'framework7/components/popover'
@@ -41,7 +48,7 @@ import Stepper from 'framework7/components/stepper'
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
-  Range, Accordion, Searchbar, Autocomplete, Popup, PhotoBrowser, Swiper, InfiniteScroll, Panel, Popover, Stepper])
+  Range, Accordion, Popup, InfiniteScroll, Panel, Popover, Stepper])
 
 
 
@@ -142,7 +149,6 @@ import { ContractStateRepository } from "../sync/repository/contract-state-repos
 import { TokenService } from "./service/token-service.js";
 import { RowItemViewModelRepositoryBrowserImpl } from "./repository/browser/row-item-view-model-repository-impl.js";
 import { RowItemViewModelRepository } from "./repository/row-item-view-model-repository.js";
-import axios from "axios";
 
 
 
@@ -223,7 +229,10 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
 
   container.bind("version").toConstantValue(version)
 
-  container.bind("PouchDB").toConstantValue(PouchDB)
+  container.bind("PouchDB").toConstantValue(() => {
+    return PouchDB
+  })
+
   container.bind("PouchFind").toConstantValue(PouchFind)
   container.bind("PouchQuickSearch").toConstantValue(PouchQuickSearch)
 
@@ -235,7 +244,7 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
       window.web3Provider = window.ethereum
 
       //@ts-ignore
-      return new providers.Web3Provider(window.ethereum)
+      return new ethers.BrowserProvider(window.ethereum)
 
     }
 
@@ -350,7 +359,7 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
   globalThis.container = container
   globalThis.ethers = ethers
   globalThis.he = he
-  globalThis.moment = moment
+  globalThis.dayjs = dayjs
   globalThis.ComponentState = ComponentState 
 
 

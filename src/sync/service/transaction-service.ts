@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify"
 
-import { ParamType } from "ethers/lib/utils.js"
-import { ethers } from "ethers"
+import { ParamType } from "ethers"
+import { AbiCoder, ethers } from "ethers"
 import { TransactionRepository } from "../../sync/repository/transaction-repository.js"
 import { Transaction } from "../../sync/dto/transaction.js"
 import { TransactionValue } from "../../sync/dto/processed-transaction.js"
@@ -122,7 +122,7 @@ class TransactionService {
     async getTransactionValue(transaction:Transaction, contractAddress:string, ethUSDPrice:number) : Promise<TransactionValue> {
 
         if (!transaction.receipt.to) return
-        const recipient = ethers.utils.getAddress(transaction.receipt.to)
+        const recipient = ethers.getAddress(transaction.receipt.to)
 
         if ((recipient in markets)) {
             const market = markets[recipient]
@@ -152,7 +152,7 @@ class TransactionService {
 
         // Look for whether a non-ETH token was used
         transaction.receipt.logs.forEach((log: any) => {
-            const logAddress = ethers.utils.getAddress(log.address)
+            const logAddress = ethers.getAddress(log.address)
             if (logAddress in currencies) {
                 currencyAddress = logAddress
             }
@@ -170,13 +170,13 @@ class TransactionService {
             // The Transfer event has 3 args, all indexed,
             // so we know `data` is empty
             if (log.data === '0x' && log.topics[0] === transferEventSignature) {
-                const tokenId = ethers.BigNumber.from(log.topics[3]).toString()
+                const tokenId = BigInt(log.topics[3]).toString()
                 result.tokenIds.push(parseInt(tokenId))
                 previousTransferTokenIds.push(tokenId) 
 
             } else {
 
-                // const logAddress = ethers.utils.getAddress(log.address)
+                // const logAddress = ethers.getAddress(log.address)
 
                 let salesEventSignature = saleEventSignatures.find(sig => sig.signature == log.topics[0])
 
@@ -205,7 +205,7 @@ class TransactionService {
                             let theLog:any = transaction.receipt.logs[i]
         
                             if (theLog.data === '0x' && theLog.topics[0] === transferEventSignature) {
-                                tokenIds = [ethers.BigNumber.from(theLog.topics[3]).toString()]
+                                tokenIds = [BigInt(theLog.topics[3]).toString()]
                                 afterTransferCursorIndex = i
                                 previousTransferTokenIds.length = 0
                                 break
@@ -270,7 +270,7 @@ class TransactionService {
 
         // Look for whether a non-ETH token was used
         transaction.receipt.logs.forEach((log: any) => {
-            const logAddress = ethers.utils.getAddress(log.address)
+            const logAddress = ethers.getAddress(log.address)
             if (logAddress in currencies) {
                 currencyAddress = logAddress
             }
@@ -289,12 +289,12 @@ class TransactionService {
             // The Transfer event has 3 args, all indexed,
             // so we know `data` is empty
             if (log.data === '0x' && log.topics[0] === transferEventSignature) {
-                const tokenId = ethers.BigNumber.from(log.topics[3]).toString()
+                const tokenId = BigInt(log.topics[3]).toString()
                 result.tokenIds.push(parseInt(tokenId))
                 previousTransferTokenIds.push(tokenId) 
             } else {
 
-                const logAddress = ethers.utils.getAddress(log.address)
+                const logAddress = ethers.getAddress(log.address)
 
                 let salesEventSignature = saleEventSignatures.find(sig => sig.signature == log.topics[0])
  
@@ -320,7 +320,7 @@ class TransactionService {
                             let theLog:any = transaction.receipt.logs[i]
         
                             if (theLog.data === '0x' && theLog.topics[0] === transferEventSignature) {
-                                tokenIds = [ethers.BigNumber.from(theLog.topics[3]).toString()]
+                                tokenIds = [BigInt(theLog.topics[3]).toString()]
                                 afterTransferCursorIndex = i
                                 previousTransferTokenIds.length = 0
                                 break
@@ -364,7 +364,7 @@ class TransactionService {
 
     decodeSale(market:Market, currency:Currency, log, contractAddress) {
 
-        const decodedLogData:any = ethers.utils.defaultAbiCoder.decode(market.logDecoder as ParamType[], log.data) as unknown as DecodedOSLogData
+        const decodedLogData:any = AbiCoder.defaultAbiCoder().decode(market.logDecoder as ParamType[], log.data) as unknown as DecodedOSLogData
 
 
         let price = 0
@@ -374,7 +374,7 @@ class TransactionService {
 
             case 'Blur':
 
-                price = parseFloat(ethers.utils.formatUnits(
+                price = parseFloat(ethers.formatUnits(
                     decodedLogData.sell.price,
                     currency.decimals,
                 ))
@@ -389,13 +389,13 @@ class TransactionService {
                     )
                 break;
             case 'X2Y2':
-                price = parseFloat(ethers.utils.formatUnits(
+                price = parseFloat(ethers.formatUnits(
                     decodedLogData.amount,
                     currency.decimals,
                 ))
                 break
             default:
-                price = parseFloat(ethers.utils.formatUnits(
+                price = parseFloat(ethers.formatUnits(
                     decodedLogData.price,
                     currency.decimals,
                 ))
@@ -425,7 +425,7 @@ class TransactionService {
                     let theLog:any = transaction.receipt.logs[i]
 
                     if (theLog.data === '0x' && theLog.topics[0] === transferEventSignature) {
-                        return ethers.BigNumber.from(theLog.topics[3]).toString()
+                        return BigInt(theLog.topics[3]).toString()
                     }
                 }
 
@@ -1032,12 +1032,12 @@ function calcPriceReducer(
     current: IndividualConsideration | IndividualOffer,
 ) {
     
-    const currency = currencies[ethers.utils.getAddress(getValueFromOfferOrConsideration(current,'token'))]
+    const currency = currencies[ethers.getAddress(getValueFromOfferOrConsideration(current,'token'))]
 
     if (currency !== undefined) {
         const result =
             previous +
-            Number(ethers.utils.formatUnits(
+            Number(ethers.formatUnits(
                 getValueFromOfferOrConsideration(current, 'amount'),
                 currency.decimals,
             ));

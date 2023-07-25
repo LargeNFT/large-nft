@@ -83,12 +83,19 @@ class GenerateService {
             headEndContents: ``
         }
 
+
+
         if (config.libraryURL) {
 
+          //https://web.dev/defer-non-critical-css/
+          
           generateViewModel.headEndContents = `
             <script defer src="/large/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
             <script defer src="/large/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
             <script defer src="/large/library/browser/js/main.library.js?v=${config.VERSION}"></script>
+
+            <link rel="preload" href="/large/library/browser/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
           `
 
         } else {
@@ -97,7 +104,9 @@ class GenerateService {
             <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js?v=${config.VERSION}"></script>
             <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js?v=${config.VERSION}"></script>
             <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js?v=${config.VERSION}"></script>
-            `
+
+            <link rel="preload" href="/large/reader/browser/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+          `
         }
 
 
@@ -109,6 +118,8 @@ class GenerateService {
     async generateImages(config, item:ItemViewModel) {
 
         await fs.promises.mkdir(`${config.publicPath}/backup/generated/images/50x50`, { recursive: true })
+        await fs.promises.mkdir(`${config.publicPath}/backup/generated/images/100x100`, { recursive: true })
+
 
         //For now just the one
         if (item.coverImage.generated) {
@@ -466,7 +477,47 @@ class GenerateService {
         }
       
     }
-      
+    
+    async generateManifest(config, channelViewModel) {
+
+      fs.writeFileSync(`${config.publicPath}/manifest-icon.svg`, `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1' style="background-color:rgb(28,28,29);">
+            
+            <style>
+              .logo { fill:#FCB827; font-size: 400px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; }
+            </style>
+            
+            <g>
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="logo">${channelViewModel.channel.symbol}</text>    
+
+            </g>
+        </svg>`)
+
+
+      fs.writeFileSync(`${config.publicPath}/app.webmanifest`, JSON.stringify({
+        "name": channelViewModel.channel.title,
+        "short-name": channelViewModel.channel.symbol,
+        "description": `Browse ${channelViewModel.channel.title}`,
+        "display": "standalone",
+        "theme_color": "#FCB827",
+        "background_color": "#808080",
+        "icons": [
+          {
+            "src": "manifest-icon.svg",
+            "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+            "type": "image/svg+xml",
+            "purpose": "any"
+          }
+        ],
+
+        "start_url": "index.html"
+      }))
+
+    
+    }
+    
+  
+
+
     async writeAttributeRowItems(traitType:string, value:string, rowItemViewModels:any[], filepath:string) {
 
         const escape = (s) => {

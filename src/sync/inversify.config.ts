@@ -93,6 +93,13 @@ import { SyncStatusRepository } from "../sync-library/repository/sync-status-rep
 import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sync-status-repository-impl.js";
 
 
+import {Headers} from 'node-fetch'
+
+//@ts-ignore
+globalThis.Headers = Headers
+
+
+
 const { Sequelize } = require('sequelize-typescript')
 
 
@@ -117,12 +124,7 @@ async function getMainContainer(command:GetMainContainerCommand) {
 
 
     if (command.alchemy) {
-
-      return new ethers.providers.StaticJsonRpcProvider({
-        url: `https://eth-mainnet.alchemyapi.io/v2/${command.alchemy}`,
-        skipFetchSetup: true
-       });
-    
+      return new ethers.AlchemyProvider('homestead', command.alchemy)
     }
 
   })

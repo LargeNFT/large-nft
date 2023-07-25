@@ -48,6 +48,11 @@ import { LibraryChannelRepositoryNodeImpl } from "./repository/node/library-chan
 import { LibraryChannelService } from "./service/library-channel-service.js";
 import { SyncLibraryService } from "./service/sync-library-service.js";
 
+import {Headers} from 'node-fetch'
+
+//@ts-ignore
+globalThis.Headers = Headers
+
 
 const { Sequelize } = require('sequelize-typescript')
 
@@ -80,12 +85,7 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   container.bind("provider").toConstantValue(() => {
 
     if (command.alchemy) {
-
-      return new ethers.providers.StaticJsonRpcProvider({
-        url: `https://eth-mainnet.alchemyapi.io/v2/${command.alchemy}`,
-        skipFetchSetup: true
-       });
-    
+      return new ethers.AlchemyProvider('homestead', config.alchemy)
     }
 
   })

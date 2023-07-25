@@ -117,9 +117,8 @@
   
     import { ContainerService } from "../../../service/core/container-service"
     import { ChannelService } from "../../../service/channel-service"
-    import { PublishService } from "../../../service/core/publish-service"
+    import { DeployService } from "../../../service/core/deploy-service"
 
-    import { PinningService } from "../../../service/core/pinning-service"
     import { GitlabService } from "../../../service/core/gitlab-service"
 
     import { QueueService } from   "../../../service/core/queue-service"
@@ -133,11 +132,10 @@
     export default (props, { $, $h, $on, $f7, $update }) => {
   
         let channelService = ContainerService.getInstance(ChannelService)
-        let pinningService = ContainerService.getInstance(PinningService)
         let ipfsService = ContainerService.getInstance(IpfsService)
         let queueService = ContainerService.getInstance(QueueService)
         let gitlabService = ContainerService.getInstance(GitlabService)
-        let publishService = ContainerService.getInstance(PublishService)
+        let deployService = ContainerService.getInstance(DeployService)
         let walletService
 
         let channelViewModel = props.channelViewModel
@@ -175,7 +173,7 @@
           
           let promiseView = {
             title: `Deploying contract ${name}. Approve transaction and wait for it to be mined.`,
-            promise: publishService.deployContract(channelViewModel.channel)
+            promise: deployService.deployContract(channelViewModel.channel)
           }
 
           //Wait for it to be mined

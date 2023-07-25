@@ -260,7 +260,7 @@ let sync = async () => {
 
       let homeViewModel: any = {}
 
-      homeViewModel.recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.list(15, 0, options), new Date().toJSON())
+      homeViewModel.recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.list(5, 0, options), new Date().toJSON())
       homeViewModel.largestSales = await processedTransactionService.getLargestSales(15)
 
       //Write top 10 to put on homepage

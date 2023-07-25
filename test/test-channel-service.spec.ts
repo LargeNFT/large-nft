@@ -14,7 +14,6 @@ import { Channel } from "../src/admin/dto/channel.js"
 import { IpfsService } from "../src/admin/service/core/ipfs-service.js"
 
 import { SchemaService } from "../src/admin/service/core/schema-service.js"
-import { PinningService } from "../src/admin/service/core/pinning-service.js"
 
 
 
@@ -40,7 +39,6 @@ let itemService:ItemService
 
 let ipfsService:IpfsService
 let schemaService:SchemaService
-let pinningService:PinningService
 
 // let apiKey = process.env.PINATA_API_KEY
 // let secretApiKey = process.env.PINATA_SECRET_API_KEY
@@ -57,7 +55,6 @@ describe('ChannelService', async () => {
         itemService = container.get(ItemService)
         ipfsService = container.get(IpfsService)
         schemaService = container.get(SchemaService)
-        pinningService = container.get(PinningService)
 
         await schemaService.load()
 
@@ -84,7 +81,7 @@ describe('ChannelService', async () => {
                 title: "The Sound of Music",
                 link: "google.com",
                 symbol: "SOM",
-                mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+                mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
                 authorId: "3",
                 category: ['Gazebos']
             })
@@ -107,7 +104,7 @@ describe('ChannelService', async () => {
             title: "The Sound of Music",
             link: "google.com",
             symbol: "SOM",
-            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+            mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
             authorId: 3,
             category: ['Gazebos'],
             sellerFeeBasisPoints: 100,
@@ -155,7 +152,7 @@ describe('ChannelService', async () => {
             title: "Titanic",
             link: "alexa.com",
             symbol: "SOM",
-            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+            mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
             authorId: 3,
             category: ['Sunk']
         }))
@@ -165,7 +162,7 @@ describe('ChannelService', async () => {
             title: "Batman",
             link: "pontoon.com",
             symbol: "SOM",
-            mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+            mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
             authorId: 3,
             category: ['Not Sunk']
         }))
@@ -271,7 +268,7 @@ describe('ChannelService', async () => {
     //         await service.put(Object.assign(new Channel(), {
     //             title: (i).toString() + " it has to be longer ",
     //             symbol: "SOM",
-    //             mintPrice: ethers.utils.parseUnits( "0.08" , 'ether').toString(),
+    //             mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
     //             link: "alexa.com",
     //             authorId: 3,
     //             category: ['Sunk']

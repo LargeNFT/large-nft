@@ -7,7 +7,7 @@ import { Readable } from 'stream'
 
 import { getMainContainer } from "./publish-inversify.config.js"
 
-import { PublishService } from "./service/core/publish-service.js"
+import { CidInfo, PublishService } from "./service/core/publish-service.js"
 import fs from "fs"
 
 
@@ -136,13 +136,15 @@ let publish = async () => {
   }
 
   //Export car file
-  if (result.cid) {
-    const out = await ipfsService.ipfs.dag.export(result.cid)
-    Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.cid}.car`))
+  if (result.cids) {
+    const out = await ipfsService.ipfs.dag.export(result.cids.cid)
+    Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.cids.cid}.car`))
   
   
     fs.writeFileSync(`${process.env.INIT_CWD}/ipfs/ipfs.json`, Buffer.from(JSON.stringify({
-      cid: result.cid,
+      cid: result.cids.cid.toString(),
+      imageDirectoryCid: result.cids.animationDirectoryCid.toString(),
+      animationDirectoryCid: result.cids.imageDirectoryCid.toString(),
       date: new Date().toUTCString()
     })))
   }

@@ -1,4 +1,4 @@
-import { ethers } from "ethers"
+import { Network, ethers } from "ethers"
 
 
 import { Container } from "inversify";
@@ -94,8 +94,9 @@ function getMainContainer(config) {
   container.bind("provider").toConstantValue(() => {
 
     if (config.alchemy) {
-      return new ethers.AlchemyProvider('homestead', config.alchemy)
+      return new ethers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${config.alchemy}`, Network.from(1), { staticNetwork: Network.from(1) })
     }
+
 
   })
 

@@ -36518,8 +36518,6 @@ let WalletServiceImpl = class WalletServiceImpl {
     }
     async getContract(name) {
         let contracts = await this.contracts();
-        // //If it's cached and the same wallet just return it.
-        // if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
         //Initialize and return
         let c = contracts[name];
         this.ethersContracts[name] = new ethers__WEBPACK_IMPORTED_MODULE_1__.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider);
@@ -45467,7 +45465,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  *  The current version of Ethers.
  */
-const version = "6.6.4";
+const version = "6.6.5";
 //# sourceMappingURL=_version.js.map
 
 /***/ }),
@@ -47237,9 +47235,16 @@ class ParamType {
             format = "sighash";
         }
         if (format === "json") {
-            let result = {
+            const name = this.name || undefined; // @TODO: Make this "" (minor bump)
+            if (this.isArray()) {
+                const result = JSON.parse(this.arrayChildren.format("json"));
+                result.name = name;
+                result.type += `[${(this.arrayLength < 0 ? "" : String(this.arrayLength))}]`;
+                return JSON.stringify(result);
+            }
+            const result = {
                 type: ((this.baseType === "tuple") ? "tuple" : this.type),
-                name: (this.name || undefined)
+                name
             };
             if (typeof (this.indexed) === "boolean") {
                 result.indexed = this.indexed;
@@ -47417,7 +47422,12 @@ class ParamType {
             return obj;
         }
         if (typeof (obj) === "string") {
-            return ParamType.from(lex(obj), allowIndexed);
+            try {
+                return ParamType.from(lex(obj), allowIndexed);
+            }
+            catch (error) {
+                (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_1__.assertArgument)(false, "invalid param type", "obj", obj);
+            }
         }
         else if (obj instanceof TokenString) {
             let type = "", baseType = "";
@@ -47737,7 +47747,12 @@ class EventFragment extends NamedFragment {
             return obj;
         }
         if (typeof (obj) === "string") {
-            return EventFragment.from(lex(obj));
+            try {
+                return EventFragment.from(lex(obj));
+            }
+            catch (error) {
+                (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_1__.assertArgument)(false, "invalid event fragment", "obj", obj);
+            }
         }
         else if (obj instanceof TokenString) {
             const name = consumeName("event", obj);
@@ -47805,7 +47820,12 @@ class ConstructorFragment extends Fragment {
             return obj;
         }
         if (typeof (obj) === "string") {
-            return ConstructorFragment.from(lex(obj));
+            try {
+                return ConstructorFragment.from(lex(obj));
+            }
+            catch (error) {
+                (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_1__.assertArgument)(false, "invalid constuctor fragment", "obj", obj);
+            }
         }
         else if (obj instanceof TokenString) {
             consumeKeywords(obj, setify(["constructor"]));
@@ -47857,7 +47877,12 @@ class FallbackFragment extends Fragment {
             return obj;
         }
         if (typeof (obj) === "string") {
-            return FallbackFragment.from(lex(obj));
+            try {
+                return FallbackFragment.from(lex(obj));
+            }
+            catch (error) {
+                (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_1__.assertArgument)(false, "invalid fallback fragment", "obj", obj);
+            }
         }
         else if (obj instanceof TokenString) {
             const errorObj = obj.toString();
@@ -48004,7 +48029,12 @@ class FunctionFragment extends NamedFragment {
             return obj;
         }
         if (typeof (obj) === "string") {
-            return FunctionFragment.from(lex(obj));
+            try {
+                return FunctionFragment.from(lex(obj));
+            }
+            catch (error) {
+                (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_1__.assertArgument)(false, "invalid function fragment", "obj", obj);
+            }
         }
         else if (obj instanceof TokenString) {
             const name = consumeName("function", obj);
@@ -48069,7 +48099,12 @@ class StructFragment extends NamedFragment {
      */
     static from(obj) {
         if (typeof (obj) === "string") {
-            return StructFragment.from(lex(obj));
+            try {
+                return StructFragment.from(lex(obj));
+            }
+            catch (error) {
+                (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_1__.assertArgument)(false, "invalid struct fragment", "obj", obj);
+            }
         }
         else if (obj instanceof TokenString) {
             const name = consumeName("struct", obj);
@@ -48996,15 +49031,17 @@ getSelector(fragment: ErrorFragment | FunctionFragment): string {
             if (param.type === "bool" && typeof (value) === "boolean") {
                 value = (value ? "0x01" : "0x00");
             }
-            if (param.type.match(/^u?int/)) {
-                value = (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_9__.toBeHex)(value);
+            else if (param.type.match(/^u?int/)) {
+                value = (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_9__.toBeHex)(value); // @TODO: Should this toTwos??
             }
-            // Check addresses are valid
-            if (param.type === "address") {
+            else if (param.type.match(/^bytes/)) {
+                value = (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_5__.zeroPadBytes)(value, 32);
+            }
+            else if (param.type === "address") {
+                // Check addresses are valid
                 this.#abiCoder.encode(["address"], [value]);
             }
             return (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_5__.zeroPadValue)((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_5__.hexlify)(value), 32);
-            //@TOOD should probably be return toHex(value, 32)
         };
         values.forEach((value, index) => {
             const param = fragment.inputs[index];
@@ -50403,6 +50440,9 @@ class PreparedTopicFilter {
                 }
                 return param.walkAsync(args[index], (type, value) => {
                     if (type === "address") {
+                        if (Array.isArray(value)) {
+                            return Promise.all(value.map((v) => (0,_address_index_js__WEBPACK_IMPORTED_MODULE_1__.resolveAddress)(v, resolver)));
+                        }
                         return (0,_address_index_js__WEBPACK_IMPORTED_MODULE_1__.resolveAddress)(value, resolver);
                     }
                     return value;
@@ -50532,7 +50572,8 @@ function buildWrappedMethod(contract, key) {
     const getFragment = function (...args) {
         const fragment = contract.interface.getFunction(key, args);
         (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_4__.assert)(fragment, "no matching fragment", "UNSUPPORTED_OPERATION", {
-            operation: "fragment"
+            operation: "fragment",
+            info: { key, args }
         });
         return fragment;
     };
@@ -50612,7 +50653,8 @@ function buildWrappedMethod(contract, key) {
         get: () => {
             const fragment = contract.interface.getFunction(key);
             (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_4__.assert)(fragment, "no matching fragment", "UNSUPPORTED_OPERATION", {
-                operation: "fragment"
+                operation: "fragment",
+                info: { key }
             });
             return fragment;
         }
@@ -50623,7 +50665,8 @@ function buildWrappedEvent(contract, key) {
     const getFragment = function (...args) {
         const fragment = contract.interface.getEvent(key, args);
         (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_4__.assert)(fragment, "no matching fragment", "UNSUPPORTED_OPERATION", {
-            operation: "fragment"
+            operation: "fragment",
+            info: { key, args }
         });
         return fragment;
     };
@@ -50642,7 +50685,8 @@ function buildWrappedEvent(contract, key) {
         get: () => {
             const fragment = contract.interface.getEvent(key);
             (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_4__.assert)(fragment, "no matching fragment", "UNSUPPORTED_OPERATION", {
-                operation: "fragment"
+                operation: "fragment",
+                info: { key }
             });
             return fragment;
         }
@@ -50958,7 +51002,7 @@ class BaseContract {
         // Return a Proxy that will respond to functions
         return new Proxy(this, {
             get: (target, _prop, receiver) => {
-                if (_prop in target || passProperties.indexOf(_prop) >= 0) {
+                if (_prop in target || passProperties.indexOf(_prop) >= 0 || typeof (_prop) === "symbol") {
                     return Reflect.get(target, _prop, receiver);
                 }
                 const prop = String(_prop);
@@ -50969,7 +51013,7 @@ class BaseContract {
                 throw new Error(`unknown contract method: ${prop}`);
             },
             has: (target, prop) => {
-                if (prop in target || passProperties.indexOf(prop) >= 0) {
+                if (prop in target || passProperties.indexOf(prop) >= 0 || typeof (prop) === "symbol") {
                     return Reflect.has(target, prop);
                 }
                 return target.interface.hasFunction(String(prop));
@@ -51107,11 +51151,12 @@ class BaseContract {
                 catch (error) { }
             }
             if (foundFragment) {
-                return new _wrappers_js__WEBPACK_IMPORTED_MODULE_6__.EventLog(log, this.interface, foundFragment);
+                try {
+                    return new _wrappers_js__WEBPACK_IMPORTED_MODULE_6__.EventLog(log, this.interface, foundFragment);
+                }
+                catch (error) { }
             }
-            else {
-                return new _providers_provider_js__WEBPACK_IMPORTED_MODULE_2__.Log(log, provider);
-            }
+            return new _providers_provider_js__WEBPACK_IMPORTED_MODULE_2__.Log(log, provider);
         });
     }
     /**
@@ -73308,7 +73353,7 @@ function parseReferrerPolicyFromHeader(headers) {
   \**********************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"name":"large-nft","version":"0.17.0","description":"An offline-first publishing platform for the free and open web.","repository":{"type":"git","url":"git+https://github.com/LargeNFT/large-nft"},"scripts":{"start":"node node_modules/.bin/http-server -a localhost -p 8000 -c-1","start:dev":"node --loader ts-node/esm node_modules/webpack/bin/webpack.js serve --config=webpack.dev-server.ts ","test":"mocha --timeout 9999999999 && npx hardhat test test/hardhat/test-channel-contract.spec.js","build":"node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.prod.ts","build:dev":"node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.dev.ts","electron":"electron src/admin/electron.ts"},"keywords":[],"author":"Large Authors","license":"MIT","bugs":{"url":"https://github.com/LargeNFT/large-nft/issues"},"type":"module","types":"./dist/index.d.ts","homepage":"https://github.com/LargeNFT/large-nft#readme","sideEffects":["**/*.css"],"devDependencies":{"reflect-metadata":"0.1.13","regenerator-runtime":"0.13.11","@fastify/static":"6.10.1","fastify":"4.17.0","@nomicfoundation/hardhat-toolbox":"3.0.0","@nomiclabs/hardhat-etherscan":"3.1.7","@nomicfoundation/hardhat-chai-matchers":"2.0.1","@openzeppelin/contracts":"4.9.2","@openzeppelin/hardhat-upgrades":"2.0.1","erc721a":"3.3.0","@types/node":"20.1.3","@types/pouchdb":"6.4.0","@types/reflect-metadata":"0.1.0","arg":"5.0.2","axios-mock-adapter":"1.21.4","clean-webpack-plugin":"4.0.0","copy-webpack-plugin":"11.0.0","html-inline-css-webpack-plugin":"1.11.1","html-inline-script-webpack-plugin":"3.1.0","html-webpack-plugin":"5.5.0","mini-css-extract-plugin":"2.7.5","css-minimizer-webpack-plugin":"5.0.1","core-js":"3.30.2","css-loader":"6.7.4","file-loader":"6.2.0","html-loader":"4.2.0","ts-loader":"9.4.2","url-loader":"4.1.1","framework7-loader":"3.0.2","style-loader":"3.3.3","webpack":"5.88.0","webpack-cli":"5.1.4","webpack-dev-server":"4.15.1","webpack-merge":"5.9.0","webpack-node-externals":"3.0.0","webpack-bundle-analyzer":"4.9.0","dotenv":"16.0.3","electron":"23.2.0","esm":"3.2.25","eta":"2.0.1","hardhat":"2.14.1","eth-gas-reporter":"0.2.25","truffle-assertions":"0.9.2","he":"1.2.0","http-server":"14.1.1","sharp":"0.32.0","convert-svg-to-png":"0.6.4","terser-webpack-plugin":"5.3.7","mocha":"10.2.0","ts-mockito":"2.6.1","ts-node":"10.9.1","typescript":"5.0.4","uint8arrays":"4.0.3","workbox-window":"7.0.0","jsdom":"21.1.1"},"dependencies":{"@pinata/ipfs-gateway-tools":"1.3.0","@svgdotjs/svg.js":"3.1.2","@types/validator":"13.7.14","@xmldom/xmldom":"0.8.6","@yaireo/tagify":"4.9.8","assert":"2.0.0","axios":"1.3.4","blob-polyfill":"7.0.20220408","browser-image-resizer":"2.4.1","browserify-zlib":"0.2.0","buffer":"6.0.3","class-validator":"0.14.0","crypto-browserify":"3.12.0","dgram-browserify":"0.0.13","ethers":"6.6.4","excerpt-html":"1.2.2","framework7":"8.2.0","framework7-icons":"5.0.5","highlight.js":"11.8.0","hotkeys-js":"3.10.2","html-truncate":"1.2.2","https-browserify":"1.0.0","inversify":"6.0.1","ipfs-http-client":"60.0.0","ipfs-only-hash":"4.0.0","is-svg":"5.0.0","it-to-buffer":"4.0.2","juice":"9.0.0","level-js":"6.1.0","material-icons":"1.13.8","memfs":"3.5.1","mini-svg-data-uri":"1.4.4","moment":"2.29.4","node-fetch":"3.3.1","os-browserify":"0.3.0","parse-link-header":"2.0.0","path-browserify":"1.0.1","pdf-parse":"1.1.1","pouchdb-browser":"8.0.1","pouchdb-node":"8.0.1","pouchdb-collate":"8.0.1","pouchdb-find":"8.0.1","pouchdb-quick-search":"1.3.0","process":"0.11.10","quill":"1.3.7","quill-blot-formatter":"1.0.5","quill-delta-to-html":"0.12.1","quill-delta-to-markdown":"0.6.0","quill-image-drop-and-paste":"1.3.0","quill-paste-smart":"1.4.10","reflect-metadata":"0.1.13","sequelize":"6.32.1","sequelize-typescript":"2.1.5","sqlite3":"5.1.6","pg-hstore":"2.3.4","stream-browserify":"3.0.0","stream-http":"3.2.0","url":"0.11.0","util":"0.12.5","uuid":"9.0.0","libsodium-wrappers":"0.7.11","@huggingface/inference":"2.6.1","dayjs":"1.11.9"}}');
+module.exports = JSON.parse('{"name":"large-nft","version":"0.17.0","description":"An offline-first publishing platform for the free and open web.","repository":{"type":"git","url":"git+https://github.com/LargeNFT/large-nft"},"scripts":{"start":"node node_modules/.bin/http-server -a localhost -p 8000 -c-1","start:dev":"node --loader ts-node/esm node_modules/webpack/bin/webpack.js serve --config=webpack.dev-server.ts ","test":"mocha --timeout 9999999999 && npx hardhat test test/hardhat/test-channel-contract.spec.js","build":"node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.prod.ts","build:dev":"node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.dev.ts","electron":"electron src/admin/electron.ts"},"keywords":[],"author":"Large Authors","license":"MIT","bugs":{"url":"https://github.com/LargeNFT/large-nft/issues"},"type":"module","types":"./dist/index.d.ts","homepage":"https://github.com/LargeNFT/large-nft#readme","sideEffects":["**/*.css"],"devDependencies":{"reflect-metadata":"0.1.13","regenerator-runtime":"0.13.11","@fastify/static":"6.10.1","fastify":"4.17.0","@nomicfoundation/hardhat-toolbox":"3.0.0","@nomiclabs/hardhat-etherscan":"3.1.7","@nomicfoundation/hardhat-chai-matchers":"2.0.1","@openzeppelin/contracts":"4.9.2","@openzeppelin/hardhat-upgrades":"2.0.1","erc721a":"3.3.0","@types/node":"20.1.3","@types/pouchdb":"6.4.0","@types/reflect-metadata":"0.1.0","arg":"5.0.2","axios-mock-adapter":"1.21.4","clean-webpack-plugin":"4.0.0","copy-webpack-plugin":"11.0.0","html-inline-css-webpack-plugin":"1.11.1","html-inline-script-webpack-plugin":"3.1.0","html-webpack-plugin":"5.5.0","mini-css-extract-plugin":"2.7.5","css-minimizer-webpack-plugin":"5.0.1","core-js":"3.30.2","css-loader":"6.7.4","file-loader":"6.2.0","html-loader":"4.2.0","ts-loader":"9.4.2","url-loader":"4.1.1","framework7-loader":"3.0.2","style-loader":"3.3.3","webpack":"5.88.0","webpack-cli":"5.1.4","webpack-dev-server":"4.15.1","webpack-merge":"5.9.0","webpack-node-externals":"3.0.0","webpack-bundle-analyzer":"4.9.0","dotenv":"16.0.3","electron":"23.2.0","esm":"3.2.25","eta":"2.0.1","hardhat":"2.14.1","eth-gas-reporter":"0.2.25","truffle-assertions":"0.9.2","he":"1.2.0","http-server":"14.1.1","sharp":"0.32.0","convert-svg-to-png":"0.6.4","terser-webpack-plugin":"5.3.7","mocha":"10.2.0","ts-mockito":"2.6.1","ts-node":"10.9.1","typescript":"5.0.4","uint8arrays":"4.0.3","workbox-window":"7.0.0","jsdom":"21.1.1"},"dependencies":{"@pinata/ipfs-gateway-tools":"1.3.0","@svgdotjs/svg.js":"3.1.2","@types/validator":"13.7.14","@xmldom/xmldom":"0.8.6","@yaireo/tagify":"4.9.8","assert":"2.0.0","axios":"1.3.4","blob-polyfill":"7.0.20220408","browser-image-resizer":"2.4.1","browserify-zlib":"0.2.0","buffer":"6.0.3","class-validator":"0.14.0","crypto-browserify":"3.12.0","dgram-browserify":"0.0.13","ethers":"6.6.5","excerpt-html":"1.2.2","framework7":"8.2.0","framework7-icons":"5.0.5","highlight.js":"11.8.0","hotkeys-js":"3.10.2","html-truncate":"1.2.2","https-browserify":"1.0.0","inversify":"6.0.1","ipfs-http-client":"60.0.0","ipfs-only-hash":"4.0.0","is-svg":"5.0.0","it-to-buffer":"4.0.2","juice":"9.0.0","level-js":"6.1.0","material-icons":"1.13.8","memfs":"3.5.1","mini-svg-data-uri":"1.4.4","moment":"2.29.4","node-fetch":"3.3.1","os-browserify":"0.3.0","parse-link-header":"2.0.0","path-browserify":"1.0.1","pdf-parse":"1.1.1","pouchdb-browser":"8.0.1","pouchdb-node":"8.0.1","pouchdb-collate":"8.0.1","pouchdb-find":"8.0.1","pouchdb-quick-search":"1.3.0","process":"0.11.10","quill":"1.3.7","quill-blot-formatter":"1.0.5","quill-delta-to-html":"0.12.1","quill-delta-to-markdown":"0.6.0","quill-image-drop-and-paste":"1.3.0","quill-paste-smart":"1.4.10","reflect-metadata":"0.1.13","sequelize":"6.32.1","sequelize-typescript":"2.1.5","sqlite3":"5.1.6","pg-hstore":"2.3.4","stream-browserify":"3.0.0","stream-http":"3.2.0","url":"0.11.0","util":"0.12.5","uuid":"9.0.0","libsodium-wrappers":"0.7.11","@huggingface/inference":"2.6.1","dayjs":"1.11.9"}}');
 
 /***/ }),
 

@@ -94,6 +94,7 @@ import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sy
 
 
 import {Headers} from 'node-fetch'
+import { Network } from "ethers";
 
 //@ts-ignore
 globalThis.Headers = Headers
@@ -122,9 +123,8 @@ async function getMainContainer(command:GetMainContainerCommand) {
 
   container.bind("provider").toConstantValue(() => {
 
-
     if (command.alchemy) {
-      return new ethers.AlchemyProvider('homestead', command.alchemy)
+      return new ethers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${command.alchemy}`, Network.from(1), { staticNetwork: Network.from(1) })
     }
 
   })

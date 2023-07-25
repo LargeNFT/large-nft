@@ -64,8 +64,6 @@ class TransactionIndexerService {
 
     blockNumber: number
 
-    topics: string[]
-
     contractState: ContractState
     contract: Contract
     contractAddress: string
@@ -93,8 +91,6 @@ class TransactionIndexerService {
             await this.walletService.initProvider()
         }
 
-        //Get the event topics for the filter. 
-        this.topics = this._getFilterTopics(contract)
 
         this.contract = contract
 
@@ -128,6 +124,7 @@ class TransactionIndexerService {
         const eventsResult:EventsResult = await this.getEvents(result.startBlock, result.endBlock)
 
         const events = eventsResult.events
+
         result.endBlock = eventsResult.endBlock
 
         result.isCurrent = this.blockNumber == result.endBlock
@@ -349,9 +346,10 @@ class TransactionIndexerService {
             eventsToSave.push(...result.processedTransactionViewModels[_id].events)
         }
 
+
         //Save transactions
         await this.processedTransactionService.putAll(transactionsToSave, options)
-        
+
         //Save events
         await this.processedTransactionService.putEvents(eventsToSave, options)
 
@@ -475,17 +473,17 @@ class TransactionIndexerService {
 
             try {
             
-                events = await this.contract.queryFilter(this.topics,
+                events = await this.contract.queryFilter("*",
                     startBlock,
                     endBlock
                 )
-    
+
                 tryAgain = false
     
             } catch(ex) {
-                
+
                 //Catch the error with their suggested range and try it again.
-                let message = JSON.parse(ex.body)?.error?.message
+                let message = ex?.error?.message
     
                 let startEnd = message.substring(message.indexOf('[') + 1, message.indexOf(']'))?.split(',')
     
@@ -510,20 +508,6 @@ class TransactionIndexerService {
 
     }
 
-    private _getFilterTopics(contract: Contract) {
-
-        //Grab the ones that have () in them. Because the list is duplicated. 
-        let eventKeys = Object.keys(contract.filters).filter(v => v.includes("("))
-
-        let topics = []
-
-        for (let eventKey of eventKeys) {
-            //@ts-ignore
-            topics.concat(eventKey.topics)
-        }
-
-        return topics
-    }
 
     /**
      * Gets contract state by address and creates a new record if it doesn't exist.

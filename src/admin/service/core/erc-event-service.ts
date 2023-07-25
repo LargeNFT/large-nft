@@ -76,7 +76,7 @@ class ERCEventService {
             } catch(ex) {
                 
                 //Catch the error with their suggested range and try it again.
-                let message = JSON.parse(ex.body)?.error?.message
+                let message = ex?.error?.message
     
                 let startEnd = message.substring(message.indexOf('[') + 1, message.indexOf(']'))?.split(',')
     

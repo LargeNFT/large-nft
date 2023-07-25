@@ -113,7 +113,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4aa8d9931c';
+framework7Component.id = 'a5edcbd147';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -308,7 +308,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '43252a59a5';
+framework7Component.id = 'e9841a874a';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -417,7 +417,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a6d02b87d2';
+framework7Component.id = '2c45af7ac1';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -625,7 +625,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3403723962';
+framework7Component.id = '141069fdae';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -791,7 +791,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9bf8f17d58';
+framework7Component.id = '0e68ef2ff7';
 framework7Component.style = `
 
 
@@ -1114,7 +1114,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3f5214a9fe';
+framework7Component.id = '1df05492c9';
 framework7Component.style = `
 
 
@@ -1351,7 +1351,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b5521aa6ec';
+framework7Component.id = '941bbbb86f';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1686,7 +1686,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e77474cba7';
+framework7Component.id = '4027c55c25';
 framework7Component.style = `
 
 `;
@@ -2170,7 +2170,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0bfa743abf';
+framework7Component.id = 'c0255a4b51';
 framework7Component.style = `
 
 
@@ -2525,7 +2525,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '30b3f01967';
+framework7Component.id = '836e9be61e';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3796,7 +3796,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '57ecefdf9a';
+framework7Component.id = 'adbab944d5';
 framework7Component.style = `
 
 
@@ -4040,7 +4040,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b7e4fd0580';
+framework7Component.id = '515fc5fd50';
 framework7Component.style = `
 
 
@@ -4303,7 +4303,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'de511e8f4b';
+framework7Component.id = '688d272018';
 framework7Component.style = `
   
 
@@ -4458,7 +4458,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9f9eabc0d9';
+framework7Component.id = '0edb44c825';
 framework7Component.style = `
     
 `;
@@ -4914,7 +4914,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ff29bad92d';
+framework7Component.id = '193a868231';
 framework7Component.style = `
 
 
@@ -5003,7 +5003,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '433fc5fa55';
+framework7Component.id = '1310aa25b2';
 framework7Component.style = `
     
 `;
@@ -5387,7 +5387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'adeef7f2cd';
+framework7Component.id = 'cb839dd2e3';
 framework7Component.style = `
 
 
@@ -5460,7 +5460,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5f9f2f61f4';
+framework7Component.id = 'ef1d405659';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5587,7 +5587,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'cc95b2d5cf';
+framework7Component.id = '7971371232';
 framework7Component.style = `
 
 `;
@@ -5745,7 +5745,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9029eec028';
+framework7Component.id = '34d66e2245';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6047,7 +6047,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '45c8bd1693';
+framework7Component.id = '9ba9b92f21';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6372,7 +6372,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3328b624e5';
+framework7Component.id = '4447c06f89';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6907,7 +6907,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '33e1eb4c01';
+framework7Component.id = '37ecc2b7c6';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7254,7 +7254,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e7dd381325';
+framework7Component.id = '67b2ea0e2d';
 framework7Component.style = `
 
 
@@ -7551,7 +7551,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b9b4175978';
+framework7Component.id = '114b864b31';
 framework7Component.style = `
 
 
@@ -7761,7 +7761,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ade980eff9';
+framework7Component.id = '2ee1173786';
 framework7Component.style = `
 
   `;
@@ -8166,7 +8166,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2a85a024f6';
+framework7Component.id = 'e6a6402bb8';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8467,7 +8467,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'dc0573f77b';
+framework7Component.id = 'e1196f69ee';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8680,7 +8680,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8acbcb518a';
+framework7Component.id = '26af9d7fa6';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -8960,7 +8960,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a3c44d78e7';
+framework7Component.id = 'ee2ae57c47';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9401,7 +9401,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f8d583f421';
+framework7Component.id = 'a1db388047';
 framework7Component.style = `
 
 
@@ -9481,7 +9481,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '92e3d1e9a6';
+framework7Component.id = 'd53ef2c378';
 framework7Component.style = `
 
 
@@ -13822,7 +13822,7 @@ let ERCEventService = class ERCEventService {
             }
             catch (ex) {
                 //Catch the error with their suggested range and try it again.
-                let message = JSON.parse(ex.body)?.error?.message;
+                let message = ex?.error?.message;
                 let startEnd = message.substring(message.indexOf('[') + 1, message.indexOf(']'))?.split(',');
                 if (startEnd?.length > 1) {
                     endBlock = parseInt(startEnd[1]);
@@ -15538,7 +15538,7 @@ let ImportService = class ImportService {
         let wallet = this.walletService.wallet;
         //Look up channel since it has the basic ERC721 signature
         let contract = new ethers__WEBPACK_IMPORTED_MODULE_7__.Contract(contractAddress, this._getERC721ABI(), wallet ? wallet : this.walletService.provider);
-        this.logForkProgress(forkStatus, `Fetching tokens for contract ${contract.address}`);
+        this.logForkProgress(forkStatus, `Fetching tokens for contract ${contractAddress}`);
         let tokenIds = await this.ercEventService.getTokensForContract(contract);
         forkStatus.channels.total = 1;
         forkStatus.items.total = tokenIds.size;

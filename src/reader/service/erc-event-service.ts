@@ -1,6 +1,5 @@
 import { inject, injectable } from "inversify"
-// import { ERCEventRepository } from "../repository/erc-event-repository.js"
-// import { Event } from "ethers"
+
 import { ERCEvent } from "../../sync/dto/erc-event.js"
 
 
@@ -10,33 +9,20 @@ class ERCEventService {
     constructor() {}
 
     async translateEventToERCEvent(event: any) : Promise<ERCEvent> {
-    
+
         let ercEvent = new ERCEvent()
     
         ercEvent.removed = event.removed
         ercEvent.address = event.address
         ercEvent.data = event.data
         ercEvent.topics = event.topics
-        ercEvent.logIndex = event.logIndex
-        ercEvent.event = event.event
+        ercEvent.logIndex = event.index
+        ercEvent.event = event.fragment.name
         ercEvent.eventSignature = event.eventSignature
         ercEvent.dateCreated = new Date().toJSON()
     
-        //Convert BigNumber args to strings    
-        ercEvent.args = event.args.map(a => {
-
-            let convert
-
-            try {
-                convert = BigInt(a)
-            } catch(ex) {}
-
-            if (convert) return convert.toString()
-            return a
-
-        })
-
-
+        //Convert BigInt args to strings    
+        ercEvent.args = event.args.map(a => a.toString())
 
         ercEvent.namedArgs = {}
 
@@ -61,6 +47,7 @@ class ERCEventService {
                 break
         }
     
+
         if (ercEvent.isTransfer && ercEvent.namedArgs.fromAddress == "0x0000000000000000000000000000000000000000") {
             ercEvent.isMint = true
         }

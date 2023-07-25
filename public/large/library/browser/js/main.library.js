@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '05399f3e72';
+framework7Component.id = 'f4c3400679';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8851b5ddd8';
+framework7Component.id = '5f64ede30c';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8676916947';
+framework7Component.id = '299f393d52';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4aae10cb2b';
+framework7Component.id = 'e1b772b3b2';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '60c4405736';
+framework7Component.id = '7583905d46';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -726,7 +726,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '03cc197c33';
+framework7Component.id = '939bffec73';
 framework7Component.style = `
 
 `;
@@ -801,7 +801,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ff49e5db0c';
+framework7Component.id = '7f15a9d464';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1082,7 +1082,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4b45f6f982';
+framework7Component.id = 'e59f981ba6';
 framework7Component.style = `
 
 
@@ -1262,7 +1262,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '806d8db9e7';
+framework7Component.id = '19f095b1f9';
 framework7Component.style = `
 
 .block-search {
@@ -1582,7 +1582,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '561e73c5e5';
+framework7Component.id = 'd4c1e05f51';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1700,7 +1700,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8e0d5c19ef';
+framework7Component.id = 'd28810ae3c';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1770,7 +1770,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '24b1fb071b';
+framework7Component.id = 'c59ce3f7a3';
 framework7Component.style = `
 
 
@@ -5203,8 +5203,6 @@ let WalletServiceImpl = class WalletServiceImpl {
     }
     async getContract(name) {
         let contracts = await this.contracts();
-        // //If it's cached and the same wallet just return it.
-        // if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
         //Initialize and return
         let c = contracts[name];
         this.ethersContracts[name] = new ethers__WEBPACK_IMPORTED_MODULE_1__.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider);
@@ -5257,8 +5255,6 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-// import { ERCEventRepository } from "../repository/erc-event-repository.js"
-// import { Event } from "ethers"
 
 let ERCEventService = class ERCEventService {
     constructor() { }
@@ -5268,21 +5264,12 @@ let ERCEventService = class ERCEventService {
         ercEvent.address = event.address;
         ercEvent.data = event.data;
         ercEvent.topics = event.topics;
-        ercEvent.logIndex = event.logIndex;
-        ercEvent.event = event.event;
+        ercEvent.logIndex = event.index;
+        ercEvent.event = event.fragment.name;
         ercEvent.eventSignature = event.eventSignature;
         ercEvent.dateCreated = new Date().toJSON();
-        //Convert BigNumber args to strings    
-        ercEvent.args = event.args.map(a => {
-            let convert;
-            try {
-                convert = BigInt(a);
-            }
-            catch (ex) { }
-            if (convert)
-                return convert.toString();
-            return a;
-        });
+        //Convert BigInt args to strings    
+        ercEvent.args = event.args.map(a => a.toString());
         ercEvent.namedArgs = {};
         //Check wether it's a transfer and if it's newer than the most recently recorded transfer
         switch (ercEvent.event) {

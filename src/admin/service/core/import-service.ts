@@ -261,7 +261,7 @@ class ImportService {
         //Look up channel since it has the basic ERC721 signature
         let contract = new ethers.Contract(contractAddress, this._getERC721ABI(), wallet ? wallet : this.walletService.provider)
 
-        this.logForkProgress(forkStatus, `Fetching tokens for contract ${contract.address}`)
+        this.logForkProgress(forkStatus, `Fetching tokens for contract ${contractAddress}`)
 
 
         let tokenIds = await this.ercEventService.getTokensForContract(contract)

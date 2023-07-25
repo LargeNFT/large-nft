@@ -197,7 +197,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
 
     async putEvent(event: ProcessedEvent, options?:any): Promise<ProcessedEvent> {
-        
         await event.save(options)
         return event 
 

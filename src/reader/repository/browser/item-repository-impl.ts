@@ -25,10 +25,10 @@ class ItemRepositoryBrowserImpl implements ItemRepository {
                 })
         
         
-                await db.search({
-                    build: true,
-                    fields: ['contentHTML', 'title', 'tokenId']
-                })
+                // await db.search({
+                //     build: true,
+                //     fields: ['contentHTML', 'title', 'tokenId']
+                // })
         
                 
             }

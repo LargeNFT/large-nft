@@ -17,13 +17,13 @@ import { SchemaService } from "../core/schema-service.js";
 import { ImageService } from "../image-service.js";
 import { ItemService } from "../item-service.js";
 
-import he from "he"
 import { ItemPage, ItemResults, RowItemViewModel } from "../../dto/item-page.js";
 import { ItemPageService } from "../item-page-service.js";
 import { AttributeTotal } from "../../dto/attribute-total.js";
 import { AttributeTotalService } from "../attribute-total-service.js";
 import { AttributeOptions, AttributeOptionsViewModel } from "../../dto/attribute.js";
 
+import he from "he"
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
 
 const parser = new DOMParser()

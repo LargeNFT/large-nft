@@ -1,7 +1,9 @@
 import { inject, injectable } from "inversify";
+import svgToMiniDataURI from 'mini-svg-data-uri'
+
+
 import { ImageRepository } from "../repository/image-repository.js";
 import { Image } from "../dto/image.js";
-import svgToMiniDataURI from 'mini-svg-data-uri'
 
 
 @injectable()

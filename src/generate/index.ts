@@ -27,7 +27,7 @@ import { ItemViewModel } from "../reader/dto/viewmodel/item-view-model.js"
 import { ItemWebService } from "../reader/service/web/item-web-service.js"
 
 
-const { convert } = pkg;
+const { convert } = pkg
 
 
 
@@ -101,6 +101,7 @@ let generate = async () => {
   //Generate item pages
   let itemViewModels:ItemViewModel[] = await itemWebService.list(0, config.maxItems)
   await generateService.generateItemPages(config, itemViewModels)
+
 
   let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, itemViewModels, additionalStaticPages)
 

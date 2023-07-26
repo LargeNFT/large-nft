@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { inject, injectable } from "inversify";
 import { Channel } from "../../dto/channel.js";
 import { MintingViewModel } from "../../dto/viewmodel/minting-view-model.js";
@@ -7,6 +6,7 @@ import { SchemaService } from "../core/schema-service.js";
 import { WalletService } from "../core/wallet-service.js";
 import { ItemService } from "../item-service.js";
 import { TokenContractService } from "../token-contract-service.js";
+import { ethers } from "ethers";
 
 @injectable()
 class MintWebService {
@@ -65,6 +65,7 @@ class MintWebService {
 
             }            
 
+
             return {
                 totalMinted: Number(totalMinted),
                 totalSupply: channel.itemCount,
@@ -102,7 +103,7 @@ class MintWebService {
 
         await this.schemaService.load(["channels"])
         let channel:Channel = await this.channelService.get()
-        let totalWei = this.calculateTotalMint(channel, quantity)
+        let totalWei = await this.calculateTotalMint(channel, quantity)
 
         let owner = await this.tokenContractService.owner()
 
@@ -123,22 +124,30 @@ class MintWebService {
         await this.schemaService.load(["channels"])
         let channel:Channel = await this.channelService.get()
         
-        let totalWei = this.calculateTotalMint(channel, quantity)
+        let totalWei = await this.calculateTotalMint(channel, quantity)
 
         await this.tokenContractService.mintFromStartOrFail(quantity, start, totalWei)
     }
 
-    calculateTotalMint(channel, quantity) {
+    async calculateTotalMint(channel, quantity) {
 
-        let mintPriceWei = globalThis.ethers.parseUnits(channel.mintPrice, 'ether')
+        let mintPriceWei = ethers.parseUnits(channel.mintPrice, 'ether')
 
-        let total = mintPriceWei * quantity
+        let total = Number(mintPriceWei) * quantity
 
         return total.toString()
  
     }
 
+    async updateTotal(mintPriceWei:BigInt, quantity:number) : Promise<string>{
+        return ethers.formatUnits(Number(mintPriceWei) * quantity)
+    }
 
+
+    async parseUnits(mintPrice:string) : Promise<BigInt> {
+       return ethers.parseUnits(mintPrice, 'ether')
+
+    }
 
 }
 

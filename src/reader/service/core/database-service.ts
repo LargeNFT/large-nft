@@ -17,7 +17,7 @@ class DatabaseService {
 
     async getDatabase(config:DatabaseConfig) {
 
-        let PouchDB = this.PouchDB()
+        let PouchDB = await this.PouchDB()
 
 
         const fullName = `./pouch/${this.channelId()}/${config.name}`

@@ -178,11 +178,14 @@
 
 <script>
 
+
+
   export default (props, { $, $on, $f7, $update }) => {
 
     let mintWebService = globalThis.container.get("MintWebService")
     let walletService = globalThis.container.get("WalletService")
     let queueService = globalThis.container.get("QueueService")
+
     let baseURI = globalThis.container.get("baseURI")()
 
 
@@ -202,7 +205,7 @@
     } 
   
     const updateTotal = async () => {
-      total = globalThis.ethers.formatUnits(mintPriceWei * quantity)
+      total = mintWebService.updateTotal(mintPriceWei, quantity)
       await $update()
     }
 
@@ -275,7 +278,7 @@
 
         mintingViewModel = await mintWebService.getMintingViewModel()
 
-        mintPriceWei = globalThis.ethers.parseUnits(mintingViewModel.mintPrice, 'ether')
+        mintPriceWei = mintWebService.parseUnits(mintingViewModel.mintPrice, 'ether')
 
         await updateTotal()
 

@@ -1,5 +1,8 @@
 import { Container } from "inversify";
 
+import sharp from "sharp"
+import { ethers } from "ethers"
+
 import { AnimationRepository } from "../reader/repository/animation-repository.js";
 import { AttributeTotalRepository } from "../reader/repository/attribute-total-repository.js";
 import { AuthorRepository } from "../reader/repository/author-repository.js";
@@ -41,7 +44,6 @@ import { StaticPageService } from "../reader/service/static-page-service.js";
 import { AuthorWebService } from "../reader/service/web/author-web-service.js";
 import { ChannelWebService } from "../reader/service/web/channel-web-service.js";
 import { ItemWebService } from "../reader/service/web/item-web-service.js";
-import { SearchbarService } from "../reader/service/web/searchbar-service.js";
 import { ReaderSettings } from "../reader/dto/reader-settings.js";
 import { ComponentState } from "../reader/dto/component-state.js";
 import { GenerateService } from "../reader/service/core/generate-service.js";
@@ -52,7 +54,6 @@ import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-
 import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js"
 import { SpawnService } from "../sync/service/spawn-service.js"
 
-import sharp from "sharp"
 import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js"
 import { RowItemViewModel } from "../reader/dto/item-page.js"
 
@@ -87,6 +88,11 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind('sequelize').toConstantValue(async (channelDir, channelId) => {
     return
   })
+
+  container.bind("ethers").toConstantValue(async () => {
+    return ethers
+  })
+
 
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
@@ -148,7 +154,6 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
-  container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
 
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
   container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()

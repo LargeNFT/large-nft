@@ -27,7 +27,7 @@ const TerserPlugin = require("terser-webpack-plugin")
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 
-let configs = []
+let configs:any[] = []
 
 
 import packageConfig from './package.json' assert { type: "json" }
@@ -504,17 +504,17 @@ let getReaderConfigs = () => {
     ],
 
     usedExports: true,
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        },
-
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all'
+          }
+        }
       }
-    }
+
   }
 
   

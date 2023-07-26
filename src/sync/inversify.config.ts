@@ -44,7 +44,6 @@ import { StaticPageService } from "../reader/service/static-page-service.js";
 import { AuthorWebService } from "../reader/service/web/author-web-service.js";
 import { ChannelWebService } from "../reader/service/web/channel-web-service.js";
 import { ItemWebService } from "../reader/service/web/item-web-service.js";
-import { SearchbarService } from "../reader/service/web/searchbar-service.js";
 import { ReaderSettings } from "../reader/dto/reader-settings.js";
 import { ComponentState } from "../reader/dto/component-state.js";
 import { ethers } from "ethers"
@@ -127,6 +126,10 @@ async function getMainContainer(command:GetMainContainerCommand) {
       return new ethers.JsonRpcProvider(`https://eth-mainnet.g.alchemy.com/v2/${command.alchemy}`, Network.from(1), { staticNetwork: Network.from(1) })
     }
 
+  })
+
+  container.bind("ethers").toConstantValue(async () => {
+    return ethers
   })
 
 
@@ -224,7 +227,6 @@ async function getMainContainer(command:GetMainContainerCommand) {
   container.bind<ChannelWebService>("ChannelWebService").to(ChannelWebService).inSingletonScope()
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
-  container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
 
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
   container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()

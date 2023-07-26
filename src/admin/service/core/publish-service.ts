@@ -60,7 +60,7 @@ class PublishService {
         if (!channel.contractAddress) {
 
             cids = await this.exportToIPFS(exportBundle, backup, feeRecipient)
-
+            
         } else {
 
             cids = {

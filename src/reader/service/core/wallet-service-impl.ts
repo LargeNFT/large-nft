@@ -1,6 +1,6 @@
-import { ethers } from "ethers"
 import { inject, injectable } from "inversify"
 import { WalletService } from "./wallet-service.js"
+import { ethers } from "ethers"
 
 
 @injectable()
@@ -16,6 +16,7 @@ class WalletServiceImpl implements WalletService {
   constructor(
     @inject("contracts") private contracts:Function,
     @inject("provider") private getProvider:Function,
+
     @inject("framework7") private $f7
   ) {
 
@@ -23,7 +24,7 @@ class WalletServiceImpl implements WalletService {
 
   async initProvider() {
 
-    this.provider = this.getProvider()
+    this.provider = await this.getProvider()
 
     globalThis.ethereum?.on('accountsChanged', async (accounts) => {
           
@@ -39,7 +40,7 @@ class WalletServiceImpl implements WalletService {
 
     globalThis.ethereum?.on('networkChanged', async (networkId) => {
       this.ethersContracts = {}
-      this.provider = this.getProvider()
+      this.provider = await this.getProvider()
 
       await this.initWallet()
 

@@ -1,24 +1,29 @@
 import { Container } from "inversify";
-import { ethers } from "ethers"
 import Framework7 from 'framework7';
 
 import axios from "axios"
+import he from 'he'
+import { ethers } from "ethers"
 
-
-import dayjs from "dayjs"
-import relativeTime from 'dayjs/plugin/relativeTime.js'
-dayjs.extend(relativeTime)
-
-
-import PouchDB from 'pouchdb-browser'
+import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
-import PouchQuickSearch from 'pouchdb-quick-search'
+// import PouchQuickSearch from 'pouchdb-quick-search'
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
 
 //Enable quicksearch
-PouchDB.plugin(PouchQuickSearch)
+// PouchDB.plugin(PouchQuickSearch)
+
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime.js'
+dayjs.extend(relativeTime)
+
+import localizedFormat from 'dayjs/plugin/localizedFormat.js'
+dayjs.extend(localizedFormat)
+
+
+
 
 
 // Import additional components
@@ -75,7 +80,6 @@ import LeaderboardRows from './components/reader/channel/leaderboard-rows.f7.htm
 import SearchList from './components/reader/item/search-list.f7.html'
 import InfiniteScrollContent from './components/reader/item/infinite-scroll-content.f7.html'
 
-import he from 'he'
 
 import { WalletService } from "./service/core/wallet-service.js";
 import { WalletServiceImpl } from "./service/core/wallet-service-impl.js";
@@ -107,7 +111,6 @@ import { ChannelWebService } from "./service/web/channel-web-service.js";
 import { ItemWebService } from "./service/web/item-web-service.js";
 import { AuthorWebService } from "./service/web/author-web-service.js";
 import { MintWebService } from "./service/web/mint-web-service.js";
-import { SearchbarService } from "./service/web/searchbar-service.js";
 import { StaticPageService } from "./service/static-page-service.js";
 import { ItemPageService } from "./service/item-page-service.js";
 import { QueueService } from "./service/core/queue-service.js";
@@ -229,26 +232,28 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
 
   container.bind("version").toConstantValue(version)
 
-  container.bind("PouchDB").toConstantValue(() => {
+  container.bind("PouchDB").toConstantValue(async () => {
     return PouchDB
   })
 
-  container.bind("PouchFind").toConstantValue(PouchFind)
-  container.bind("PouchQuickSearch").toConstantValue(PouchQuickSearch)
 
-  container.bind("provider").toConstantValue(() => {
+  container.bind("provider").toConstantValue(async () => {
 
     if (typeof window !== "undefined" && window['ethereum']) {
 
       //@ts-ignore
       window.web3Provider = window.ethereum
 
-      //@ts-ignore
-      return new ethers.BrowserProvider(window.ethereum)
+      return new ethers.BrowserProvider(window['ethereum'])
 
     }
 
   })
+
+  container.bind("ethers").toConstantValue(async () => {
+    return ethers
+  })
+
 
   container.bind("contracts").toConstantValue(async () => {
 
@@ -320,7 +325,6 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
   container.bind<ItemWebService>("ItemWebService").to(ItemWebService).inSingletonScope()
   container.bind<AuthorWebService>("AuthorWebService").to(AuthorWebService).inSingletonScope()
   container.bind<MintWebService>("MintWebService").to(MintWebService).inSingletonScope()
-  container.bind<SearchbarService>("SearchbarService").to(SearchbarService).inSingletonScope()
   container.bind<StaticPageService>("StaticPageService").to(StaticPageService).inSingletonScope()
   container.bind<ItemPageService>("ItemPageService").to(ItemPageService).inSingletonScope()
   container.bind<QueueService>("QueueService").to(QueueService).inSingletonScope()
@@ -346,7 +350,7 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
   container.bind<ERCEventService>("ERCEventService").to(ERCEventService).inSingletonScope()
 
   //@ts-ignore
-  container.bind<GenerateService>("GenerateService").to({}).inSingletonScope()
+  container.bind("GenerateService").to({}).inSingletonScope()
   container.bind<TokenOwnerService>("TokenOwnerService").to(TokenOwnerService).inSingletonScope()
   container.bind<TokenService>("TokenService").to(TokenService).inSingletonScope()
 
@@ -357,7 +361,6 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
 
   //Attach container to window so we can easily access it from the browser console
   globalThis.container = container
-  globalThis.ethers = ethers
   globalThis.he = he
   globalThis.dayjs = dayjs
   globalThis.ComponentState = ComponentState 

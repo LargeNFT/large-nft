@@ -181,7 +181,7 @@
         let pageCounter=0
 
         let virtualList
-        let swiper
+        // let swiper
         let items = []
         let mintingViewModel 
 
@@ -204,10 +204,10 @@
             virtualList.update()
           }
 
-          if (swiper) {
-            swiper.params.slidesPerView = viewPortWidth >= 1024 ? 5 : 2
-            swiper.update()
-          }
+          // if (swiper) {
+          //   swiper.params.slidesPerView = viewPortWidth >= 1024 ? 5 : 2
+          //   swiper.update()
+          // }
 
 
           console.log("Resized...")
@@ -426,25 +426,25 @@
             }
 
 
-            swiper = $f7.swiper.create('#latest-mints-swiper', {
-              pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-                dynamicBullets: true
-              },
-              scrollbar: {
-                el: '.swiper-scrollbar',
-                dragSize: 50,
-                draggable: true,
-                hide: false
-              },
-              spaceBetween:0,
-              slidesPerView:getWidth() >= 1024 ? 5 : 2,
-            })
+            // swiper = $f7.swiper.create('#latest-mints-swiper', {
+            //   pagination: {
+            //     el: ".swiper-pagination",
+            //     clickable: true,
+            //     dynamicBullets: true
+            //   },
+            //   scrollbar: {
+            //     el: '.swiper-scrollbar',
+            //     dragSize: 50,
+            //     draggable: true,
+            //     hide: false
+            //   },
+            //   spaceBetween:0,
+            //   slidesPerView:getWidth() >= 1024 ? 5 : 2,
+            // })
 
-            if (document.getElementById('latest-mints-swiper')) {
-              document.getElementById('latest-mints-swiper').style.display="block"
-            }
+            // if (document.getElementById('latest-mints-swiper')) {
+            //   document.getElementById('latest-mints-swiper').style.display="block"
+            // }
 
 
             selectPreviews(1)
@@ -496,9 +496,9 @@
 
           await $update()
 
-          if (document.getElementById('latest-mints-swiper')) {
-              document.getElementById('latest-mints-swiper').style.display="block"
-          }
+          // if (document.getElementById('latest-mints-swiper')) {
+          //     document.getElementById('latest-mints-swiper').style.display="block"
+          // }
 
         })
 

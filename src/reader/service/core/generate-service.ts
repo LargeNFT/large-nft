@@ -645,9 +645,13 @@ class GenerateService {
         libraryURL: config.libraryURL,
         largeURL: config.largeURL,
         headEndContents: `
-    <script defer src="${config.largeURL}/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
-    <script defer src="${config.largeURL}/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
-    <script defer src="${config.largeURL}/library/browser/js/main.library.js?v=${config.VERSION}"></script>
+        <script defer src="${config.largeURL}/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
+        <script defer src="${config.largeURL}/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
+        <script defer src="${config.largeURL}/library/browser/js/main.library.js?v=${config.VERSION}"></script>
+
+        <link rel="preload" href="${config.largeURL}/library/browser/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+
         `,
         bodyContents: ``
       }

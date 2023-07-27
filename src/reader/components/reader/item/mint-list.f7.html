@@ -205,7 +205,7 @@
     } 
   
     const updateTotal = async () => {
-      total = mintWebService.updateTotal(mintPriceWei, quantity)
+      total = await mintWebService.updateTotal(mintPriceWei, quantity)
       await $update()
     }
 
@@ -278,7 +278,7 @@
 
         mintingViewModel = await mintWebService.getMintingViewModel()
 
-        mintPriceWei = mintWebService.parseUnits(mintingViewModel.mintPrice, 'ether')
+        mintPriceWei = await mintWebService.parseUnits(mintingViewModel.mintPrice, 'ether')
 
         await updateTotal()
 

@@ -7,8 +7,8 @@ import { getMainContainer } from "./inversify.config.js"
 
 
 //Import CSS
-import './html/css/framework7-bundle.css'
-import './html/css/framework7-icons.css'
+import 'framework7/css/bundle'
+import 'framework7-icons/css/framework7-icons.css'
 
 import './html/css/quill.snow.css'
 import 'material-icons/iconfont/material-icons.css'

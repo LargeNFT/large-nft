@@ -9,8 +9,9 @@ import { getMainContainer } from "../reader/inversify.config.js"
 import {Workbox} from 'workbox-window'
 
 //Import CSS
-import '../reader/html/css/framework7-bundle.css'
-import '../reader/html/css/framework7-icons.css'
+import 'framework7/css/bundle'
+import 'framework7-icons/css/framework7-icons.css'
+
 import '../reader/html/css/app.css'
 import './html/css/app.css'
 

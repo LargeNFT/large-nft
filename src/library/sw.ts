@@ -1,24 +1,20 @@
 
 //@ts-nocheck
-const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
-import he from 'he'
-
-
+import he from "he"
 
 const DEBUG = false
-const RUNTIME = 'runtime'
 
-let parser = new DOMParser()
+const baseURI = new URL(location).searchParams.get('baseURI');
 
+
+console.log(`[SW] Base Path: ${baseURI}`)
 
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {
 
     // Perform install steps.
-    if (DEBUG) {
-        console.log('[SW] Install event!!')
-    }
+    if (DEBUG) console.log('[SW] Install event!!')
 
     event.waitUntil(self.skipWaiting())
 
@@ -26,9 +22,8 @@ self.addEventListener('install', event => {
 
 // After the install event.
 self.addEventListener('activate', event => {
-    if (DEBUG) {
-        console.log('[SW] Activate event')
-    }
+
+    if (DEBUG) console.log('[SW] Activate event')
 
     event.waitUntil(self.clients.claim())
 
@@ -82,49 +77,36 @@ self.addEventListener('fetch', event => {
     }
 
     if (process) {
-        event.respondWith(getResource(request))
+        event.respondWith(getResponse(request))
     }
     
 })
 
 
-const getResource = async (request:Request) => {
+const getResponse = async (request:Request) => {
 
     let response = await fetch(request)
 
-    let updatedResponse = await updateResponse(response)
-
-    return updatedResponse
-
-}
-
-
-
-const updateResponse = async (response:Response) => {
-
     let responseText = await response.text()
 
-    let page
+    const pageContent = responseText.substring(
+        responseText.indexOf("<!--pageContent-->") + 19, 
+        responseText.lastIndexOf("<!--/pageContent-->")
+    )
 
-    try {
-        page = parser.parseFromString(responseText, 'text/html')
-    } catch(ex) {}
-    
- 
-    let pageElement = page.getElementsByClassName('page')[0]
+    const scriptContent = responseText.substring(
+        responseText.indexOf("//pageInitScripts") + 18, 
+        responseText.lastIndexOf("///pageInitScripts")
+    )
 
-    let script = page.getElementById('page-init-scripts')
- 
-    let content = he.unescape(new XMLSerializer().serializeToString(pageElement))
- 
     let component = `
         <template>
-            ${content}
+            ${he.unescape(pageContent)}
         </template>
 
         <script>
 
-            ${script.textContent}
+            ${scriptContent}
 
             export default init
         </script>
@@ -132,9 +114,6 @@ const updateResponse = async (response:Response) => {
 
     return new Response(component, response)
 
-
-
 }
-
 
 

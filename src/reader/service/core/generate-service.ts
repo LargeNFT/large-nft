@@ -90,22 +90,25 @@ class GenerateService {
           //https://web.dev/defer-non-critical-css/
           
           generateViewModel.headEndContents = `
-            <script defer src="/large/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
-            <script defer src="/large/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
-            <script defer src="/large/library/browser/js/main.library.js?v=${config.VERSION}"></script>
+          <script defer src="/large/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
+          <script defer src="/large/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
+          <script defer src="/large/library/browser/js/main.library.js?v=${config.VERSION}"></script>
 
-            <link rel="preload" href="/large/library/browser/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+          <link rel="preload" href="/large/library/browser/css/vendors.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+          <link rel="preload" href="/large/library/browser/css/main.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
           `
 
         } else {
 
           generateViewModel.headEndContents = `
-            <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js?v=${config.VERSION}"></script>
-            <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js?v=${config.VERSION}"></script>
-            <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js?v=${config.VERSION}"></script>
+          <script defer src="${config.baseURL}large/reader/browser/js/runtime.reader.js?v=${config.VERSION}"></script>
+          <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js?v=${config.VERSION}"></script>
+          <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js?v=${config.VERSION}"></script>
 
-            <link rel="preload" href="/large/reader/browser/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+          <link rel="preload" href="/large/reader/browser/css/vendors.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+          <link rel="preload" href="/large/reader/browser/css/main.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
           `
         }
 
@@ -645,11 +648,12 @@ class GenerateService {
         libraryURL: config.libraryURL,
         largeURL: config.largeURL,
         headEndContents: `
-        <script defer src="${config.largeURL}/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
-        <script defer src="${config.largeURL}/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
-        <script defer src="${config.largeURL}/library/browser/js/main.library.js?v=${config.VERSION}"></script>
+      <script defer src="${config.largeURL}/library/browser/js/runtime.library.js?v=${config.VERSION}"></script>
+      <script defer src="${config.largeURL}/library/browser/js/vendors.library.js?v=${config.VERSION}"></script>
+      <script defer src="${config.largeURL}/library/browser/js/main.library.js?v=${config.VERSION}"></script>
 
-        <link rel="preload" href="${config.largeURL}/library/browser/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <link rel="preload" href="${config.largeURL}/library/browser/css/vendors.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <link rel="preload" href="${config.largeURL}/library/browser/css/main.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
 
         `,

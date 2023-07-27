@@ -1,15 +1,9 @@
 
 //@ts-nocheck
-const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
-import he from 'he'
-
-
+import he from "he"
 
 const DEBUG = false
-const RUNTIME = 'runtime'
-
-let parser = new DOMParser()
 
 const baseURI = new URL(location).searchParams.get('baseURI');
 
@@ -20,9 +14,7 @@ console.log(`[SW] Base Path: ${baseURI}`)
 self.addEventListener('install', event => {
 
     // Perform install steps.
-    if (DEBUG) {
-        console.log('[SW] Install event!!')
-    }
+    if (DEBUG) console.log('[SW] Install event!!')
 
     event.waitUntil(self.skipWaiting())
 
@@ -30,9 +22,8 @@ self.addEventListener('install', event => {
 
 // After the install event.
 self.addEventListener('activate', event => {
-    if (DEBUG) {
-        console.log('[SW] Activate event')
-    }
+
+    if (DEBUG) console.log('[SW] Activate event')
 
     event.waitUntil(self.clients.claim())
 
@@ -42,12 +33,10 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
 
     const request = event.request
-    // console.log(request)
+
     // Ignore not GET request.
     if (request.method !== 'GET') {
-        if (DEBUG) {
-            console.log(`[SW] Ignore non GET request ${request.method}`)
-        }
+        if (DEBUG) console.log(`[SW] Ignore non GET request ${request.method}`)
         return
     }
 
@@ -55,19 +44,14 @@ self.addEventListener('fetch', event => {
 
     // Ignore difference origin.
     if (requestUrl.origin !== location.origin) {
-        if (DEBUG) {
-            console.log(`[SW] Ignore difference origin ${requestUrl.origin}`)
-        }
+        if (DEBUG) console.log(`[SW] Ignore difference origin ${requestUrl.origin}`)
         return
     }
 
     const url = new URL(event.request.url)
 
-
     let process = false
     
-    // console.log(url.pathname)
-
     //Skip backup folder
     if (url.pathname.endsWith(`.html`)) process = true
     if (url.pathname.startsWith(`${baseURI}t`)) process = true
@@ -78,10 +62,6 @@ self.addEventListener('fetch', event => {
     if (url.pathname.startsWith(`${baseURI}sync`)) process = false
     if (url.pathname.startsWith(`${baseURI}t/`) && url.pathname.endsWith(`.json`)) process = false
 
-
-    // if (url.pathname.startsWith(`${baseURL}/index`)) process = true
-    // if (url.pathname.startsWith(`${baseURL}/mint`)) process = true
-
     // This is a navigation request, so respond with a complete HTML document.
     if (event.request.mode === 'navigate') process = false 
 
@@ -90,49 +70,36 @@ self.addEventListener('fetch', event => {
     }
 
     if (process) {
-        event.respondWith(getResource(request))
+        event.respondWith(getResponse(request))
     }
     
 })
 
 
-const getResource = async (request:Request) => {
+const getResponse = async (request:Request) => {
 
     let response = await fetch(request)
 
-    let updatedResponse = await updateResponse(response)
-
-    return updatedResponse
-
-}
-
-
-
-const updateResponse = async (response:Response) => {
-
     let responseText = await response.text()
 
-    let page
+    const pageContent = responseText.substring(
+        responseText.indexOf("<!--pageContent-->") + 19, 
+        responseText.lastIndexOf("<!--/pageContent-->")
+    )
 
-    try {
-        page = parser.parseFromString(responseText, 'text/html')
-    } catch(ex) {}
-    
- 
-    let pageElement = page.getElementsByClassName('page')[0]
+    const scriptContent = responseText.substring(
+        responseText.indexOf("//pageInitScripts") + 18, 
+        responseText.lastIndexOf("///pageInitScripts")
+    )
 
-    let script = page.getElementById('page-init-scripts')
- 
-    let content = he.unescape(new XMLSerializer().serializeToString(pageElement))
- 
     let component = `
         <template>
-            ${content}
+            ${he.unescape(pageContent)}
         </template>
 
         <script>
 
-            ${script.textContent}
+            ${scriptContent}
 
             export default init
         </script>
@@ -140,9 +107,9 @@ const updateResponse = async (response:Response) => {
 
     return new Response(component, response)
 
-
-
 }
+
+
 
 
 

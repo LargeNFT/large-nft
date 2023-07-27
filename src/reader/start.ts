@@ -48,6 +48,9 @@ let start = async () => {
 
   console.log('Generating reader...')
     
+  fastify.register(require('@fastify/compress'))
+
+
   //Start web server
   fastify.register(require('@fastify/static'), {
     root: `${config.runDir}/public`

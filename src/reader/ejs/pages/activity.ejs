@@ -74,8 +74,7 @@
 
         <div class="view view-main">
 
-
-
+            <!--pageContent-->
             <div class="page" data-name="explore">
 
                 <nav-bar
@@ -156,6 +155,7 @@
               
             
             </div>
+            <!--/pageContent-->
 
         </div>
 
@@ -165,6 +165,7 @@
 
     <script type="module" id="page-init-scripts">
 
+        //pageInitScripts
         const init = (props, { $, $f7, $h, $on, $update }) => {
 
             let channelWebService = globalThis.container.get("ChannelWebService")
@@ -305,7 +306,7 @@
             return $render
 
         }
-
+        ///pageInitScripts
 
     </script>
 

@@ -32,7 +32,8 @@
     "regenerator-runtime": "0.13.11",
 
     "@fastify/static": "6.10.1",
-    "fastify": "4.17.0",
+    "@fastify/compress": "6.4.0",
+    "fastify": "4.21.0",
 
     "@nomicfoundation/hardhat-toolbox": "3.0.0",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
@@ -104,8 +105,6 @@
 
     "typescript": "5.0.4",
     "uint8arrays": "4.0.3",
-
-    "workbox-window": "7.0.0",
 
     "jsdom": "21.1.1"
     
@@ -193,7 +192,10 @@
 
     "@huggingface/inference": "2.6.1",
 
-    "dayjs": "1.11.9"
+    "dayjs": "1.11.9",
+
+    "workbox-window": "7.0.0"
+
 
 
   }

@@ -65,7 +65,8 @@ let getAdminConfigs = () => {
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-          type: 'asset/resource',
+          type: 'asset/resource'
+
         },
         {
           test: /\.f7.html$/,
@@ -75,7 +76,7 @@ let getAdminConfigs = () => {
     },
     resolve: {
 
-      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensions: ['.*', '.js', '.jsx', '.tsx', '.ts'],
       extensionAlias: {
         ".js": [".js", ".ts"]
       },
@@ -533,7 +534,7 @@ let getReaderConfigs = () => {
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-          type: 'asset/resource',
+          type: 'asset/resource'
         },
         {
           test: /\.f7.html$/,
@@ -542,7 +543,7 @@ let getReaderConfigs = () => {
       ]
     },
     resolve: {
-      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensions: ['.*', '.js', '.jsx', '.tsx', '.ts'],
       extensionAlias: {
         ".js": [".js", ".ts"]
       },
@@ -606,6 +607,7 @@ let getReaderConfigs = () => {
       library: "reader",
       filename: `large/reader/browser/js/[name].reader.js`,
       path: path.resolve(__dirname, 'public')
+
     },
     optimization: optimization,
 
@@ -664,7 +666,7 @@ let getReaderConfigs = () => {
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-          type: 'asset/resource',
+          type: 'asset/resource'
         },
         {
           test: /\.f7.html$/,
@@ -673,7 +675,7 @@ let getReaderConfigs = () => {
       ]
     },
     resolve: {
-      extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+      extensions: ['.*', '.js', '.jsx', '.tsx', '.ts'],
       extensionAlias: {
         ".js": [".js", ".ts"]
       },
@@ -735,7 +737,7 @@ let getReaderConfigs = () => {
       filename: `large/library/browser/js/[name].library.js`,
       path: path.resolve(__dirname, 'public')
     },
-    optimization: optimization,
+    optimization: optimization
 
   }
 

@@ -431,21 +431,33 @@ class GenerateService {
       }
       
 
-      const indexResult = Eta.render(libraryIndexEjs, {
-        baseViewModel: baseViewModel,
-        title: config.title
-      })
+
+      await this.renderPage(
+        config,
+        libraryIndexEjs,
+        {
+          baseViewModel: baseViewModel,
+          title: config.title
+        },
+        `${syncDir}${config.libraryURL}/index.html`
+      )
 
 
-      fs.writeFileSync(`${syncDir}${config.libraryURL}/index.html`, indexResult)
+
+
 
       //404 page
-      const fourOhFourResult = Eta.render(fourOhFourLibraryEjs, {
-        baseViewModel: baseViewModel,
-        title: "404 Page Not Found"
-      })
-    
-      fs.writeFileSync(`${syncDir}${config.libraryURL}/404.html`, fourOhFourResult)
+      await this.renderPage(
+        config,
+        fourOhFourLibraryEjs,
+        {
+          baseViewModel: baseViewModel,
+          title: "404 Page Not Found"
+        },
+        `${syncDir}${config.libraryURL}/404.html`
+      )
+
+
 
     }
 
@@ -789,8 +801,11 @@ class GenerateService {
       fs.writeFileSync(filepath, result.replace(scriptContent, ""))
 
 
-      const partialPath = filepath.replace(config.publicPath, `${config.publicPath}/partial`)
+      const partialPath = filepath
+                              .replace(config.publicPath, `${config.publicPath}/partial`)
+                              .replace(config.libraryURL, `${config.libraryURL}/partial`)
 
+                              
       //Create partial directory
       const partialDirName = path.dirname(partialPath)
 

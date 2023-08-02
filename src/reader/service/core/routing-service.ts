@@ -21,20 +21,29 @@ class RoutingService {
         const routes = []
 
         //Map the base route without a slash if it's longer than just a slash
-        // if (baseURI != "/" && baseURI.endsWith("/")) {
+        if (baseURI != "/" && baseURI.endsWith("/")) {
     
-        //   routes.push({
-        //     path: `${baseURI.substring(0, baseURI.length -1)}`,
-        //     async async({ resolve, reject, to }) {
-        //       console.log("HERE")
-        //       await RoutingService.resolveWithSpinner(resolve, 'index.html')
-        //     }
-        //   })
+          routes.push({
+            path: `${baseURI.substring(0, baseURI.length -1)}`,
+            async async({ resolve, reject, to }) {
+              await RoutingService.resolveWithSpinner(resolve, 'index.html')
+            }
+          })
     
-        // }
+        }
     
         RoutingService.addSharedRoutes(routes, baseURI)
     
+
+        routes.push({
+          path: '(.*)',
+          //@ts-ignore
+          async async({ resolve, reject, to }) {
+            console.log(`404 error: ${to.path}`)
+            await RoutingService.resolveWithSpinner(resolve, '404.html')
+          }
+        })
+
           
         return routes
 
@@ -43,20 +52,20 @@ class RoutingService {
 
     static getLibraryRoutes (libraryURL) {
 
-        libraryURL += "partial/"
+        let resolvedLibraryURL = `${libraryURL}/partial`
 
         const routes = [
           {
             path: `${libraryURL}`,
             async async({ resolve, reject, to }) {
-              await RoutingService.resolveWithSpinner(resolve, `${libraryURL}/index.html`)
+              await RoutingService.resolveWithSpinner(resolve, `${resolvedLibraryURL}/index.html`)
             }
           },
 
           {
             path: `${libraryURL}/`,
             async async({ resolve, reject, to }) {
-              await RoutingService.resolveWithSpinner(resolve, `${libraryURL}/index.html`)
+              await RoutingService.resolveWithSpinner(resolve, `${resolvedLibraryURL}/index.html`)
             }
           },
 
@@ -64,7 +73,7 @@ class RoutingService {
           {
             path: `${libraryURL}/index.html`,
             async async({ resolve, reject, to }) {
-              await RoutingService.resolveWithSpinner(resolve,`${libraryURL}/index.html`)
+              await RoutingService.resolveWithSpinner(resolve,`${resolvedLibraryURL}/index.html`)
             }
           }
 
@@ -72,6 +81,16 @@ class RoutingService {
     
         RoutingService.addSharedRoutes(routes, "/r/:reader_slug/")
     
+        routes.push({
+          path: '(.*)',
+          //@ts-ignore
+          async async({ resolve, reject, to }) {
+            console.log(`404 error: ${to.path}`)
+            await RoutingService.resolveWithSpinner(resolve, `${resolvedLibraryURL}/404.html`)
+          }
+        })
+
+
         return routes
     }
 
@@ -229,15 +248,6 @@ class RoutingService {
               path: `${baseURI}s/:slug.html`,
               async async({ resolve, reject, to }) {
                 await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}s/{{slug}}.html`)
-              }
-            },
-
-            {
-              path: '(.*)',
-              //@ts-ignore
-              async async({ resolve, reject, to }) {
-                console.log(`404 error: ${to.path}`)
-                await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}/404.html`)
               }
             }
       

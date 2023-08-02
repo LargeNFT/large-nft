@@ -62,7 +62,8 @@
 
       <div class="view view-main">
 
-        <div class="page" data-name="home">
+        <!--pageContent-->
+        <div class="page" data-name="library-home">
 
           <nav-bar
             library_url="<%=it.baseViewModel.libraryURL ? it.baseViewModel.libraryURL : ''%>"
@@ -221,6 +222,7 @@
           </div>
 
         </div>
+        <!--/pageContent-->
 
       </div>
 
@@ -229,6 +231,8 @@
     <%~ it.baseViewModel.bodyContents %>
     
     <script type="module" id="page-init-scripts">
+
+      //pageInitScripts
 
       const init = (props, { $, $f7, $h, $on, $update }) => {
               
@@ -299,6 +303,7 @@
 
       }
 
+      ///pageInitScripts
 
     </script>
 

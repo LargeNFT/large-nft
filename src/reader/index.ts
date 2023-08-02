@@ -1,22 +1,14 @@
-// import "core-js/stable/index.js"
 import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
 
-import { getMainContainer } from "./inversify.config.js"
-
-
-//Import CSS
-import 'framework7/css/bundle'
-import 'framework7-icons/css/framework7-icons.css'
-
-
-// import Framework7 from "framework7"
 import {Workbox} from 'workbox-window'
 import { Container } from "inversify"
 
-import './html/css/app.css'
+
+import { getMainContainer } from "./inversify.config.js"
 import { RoutingService } from "./service/core/routing-service.js"
+
 
 
 let initReader = async (baseURI:string, hostname:string, version:string, channelId:string) => {
@@ -39,13 +31,7 @@ let initReader = async (baseURI:string, hostname:string, version:string, channel
         container = await getMainContainer(container, baseURI, hostname, version, routes, channelId)
 
 
-        if (navigator.serviceWorker.controller) {
-            startApp(container, hostname)
-        } else {
-            wb.addEventListener('controlling', e => {
-                startApp(container, hostname)
-            })
-        }
+        startApp(container, hostname)
 
         wb.register()
 
@@ -56,7 +42,6 @@ let initReader = async (baseURI:string, hostname:string, version:string, channel
 
 let startApp = async (container:Container, hostname:string) => {
 
-    // let container = getMainContainer(baseURI, version, routablePages)            
     let app:any = container.get("framework7")
     
     //Create the main view
@@ -64,12 +49,9 @@ let startApp = async (container:Container, hostname:string) => {
     //Get URL
     let internalUrl = window.location.toString().replace(`${hostname}`, '')
 
-    // console.log(`internal URL ${internalUrl}`)
-
     const mainView = app.views.create('.view-main', {
         url: internalUrl
     })
-
 
     mainView.on("init", async (view) => {
 

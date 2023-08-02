@@ -23,37 +23,50 @@ import localizedFormat from 'dayjs/plugin/localizedFormat.js'
 dayjs.extend(localizedFormat)
 
 
-
+//Import CSS
+import 'framework7/css/bundle'
+import 'framework7-icons/css/framework7-icons.css'
+import './html/css/app.css'
 
 
 // Import additional components
-import Dialog from 'framework7/components/dialog';
-import Toast from 'framework7/components/toast';
-import Preloader from 'framework7/components/preloader';
+import Dialog from 'framework7/components/dialog'
+import Toast from 'framework7/components/toast'
+import Preloader from 'framework7/components/preloader'
 import VirtualList from 'framework7/components/virtual-list'
 import ListIndex from 'framework7/components/list-index'
 import Range from 'framework7/components/range'
 import Accordion from 'framework7/components/accordion'
-// import Autocomplete from 'framework7/components/autocomplete'
-// import PhotoBrowser from 'framework7/components/photo-browser'
-// import Swiper from 'framework7/components/swiper'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
 import Card from 'framework7/components/card'
 import Chip from 'framework7/components/chip'
 import Form from 'framework7/components/form'
 import Grid from 'framework7/components/grid'
-// import Searchbar from 'framework7/components/searchbar'
 import Popup from 'framework7/components/popup'
-import Panel from 'framework7/components/panel'
 import Popover from 'framework7/components/popover'
 import Stepper from 'framework7/components/stepper'
 
+// import 'framework7/components/stepper/css'
+// import 'framework7/components/popover/css'
+// import 'framework7/components/popup/css'
+// import 'framework7/components/grid/css'
+// import 'framework7/components/form/css'
+// import 'framework7/components/chip/css'
+// import 'framework7/components/card/css'
+// import 'framework7/components/infinite-scroll/css'
+// import 'framework7/components/accordion/css'
+// import 'framework7/components/range/css'
+// import 'framework7/components/list-index/css'
+// import 'framework7/components/virtual-list/css'
+// import 'framework7/components/preloader/css'
+// import 'framework7/components/dialog/css'
+// import 'framework7/components/toast/css'
 
 
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
-  Range, Accordion, Popup, InfiniteScroll, Panel, Popover, Stepper])
+  Range, Accordion, Popup, InfiniteScroll, Popover, Stepper])
 
 
 
@@ -191,8 +204,6 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
 
     Framework7.registerComponent("search-list", SearchList)
     Framework7.registerComponent("infinite-scroll-content", InfiniteScrollContent)
-
-
 
     
 

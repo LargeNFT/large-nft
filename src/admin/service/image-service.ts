@@ -5,7 +5,6 @@ import { Image } from "../dto/image.js"
 import { ValidationException } from "../util/validation-exception.js"
 import { validate, ValidationError } from 'class-validator'
 import { ImageRepository } from "../repository/image-repository.js"
-// import { Blob } from 'blob-polyfill'
 import Hash from 'ipfs-only-hash'
 import { SvgService } from "./svg-service.js"
 import { QuillService } from "./quill-service.js"
@@ -17,7 +16,6 @@ import { ThemeService } from "./theme-service.js"
 
 import truncate from "html-truncate"
 
-// const truncate = require('html-truncate')
 
 import svgToMiniDataURI from 'mini-svg-data-uri'
 

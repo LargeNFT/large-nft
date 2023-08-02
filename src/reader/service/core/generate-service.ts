@@ -1,6 +1,9 @@
 import { inject, injectable } from "inversify";
+
+import he from "he"
 import fs from "fs"
 import * as Eta from 'eta'
+
 import { ethers } from "ethers"
 
 
@@ -21,6 +24,7 @@ import indexEjs from '../../ejs/index.ejs'
 import libraryIndexEjs from '../../../sync-library/ejs/index.ejs'
 import fourOhFourLibraryEjs from '../../../sync-library/ejs/404.ejs'
 
+import _headEjs from '../../ejs/template/_head.ejs'
 import _initEjs from '../../ejs/template/_init.ejs'
 import _metaTagsEjs from '../../ejs/template/_meta_tags.ejs'
 import _metaTagsJsEjs from '../../ejs/template/_meta_tags_js.ejs'
@@ -245,241 +249,7 @@ class GenerateService {
 
     }
 
-    async generatePages(config, channelViewModel, generateViewModel, baseViewModel) {
 
-        const indexResult = Eta.render(indexEjs, {
-          title: channelViewModel.channel.title,
-          // firstPageExploreItems: generateViewModel.firstPageExploreItems,
-          firstPost: generateViewModel.itemViewModels[0],
-          baseViewModel: baseViewModel
-        })
-      
-        fs.writeFileSync(`${config.publicPath}/index.html`, indexResult)
-      
-
-        //Mint page
-        if (config.showMintPage) {
-      
-          const mintResult = Eta.render(mintEjs, {
-            title: channelViewModel.channel.title,
-            baseViewModel: baseViewModel
-          })
-      
-          fs.writeFileSync(`${config.publicPath}/mint.html`, mintResult)
-      
-        }
-      
-      
-        //Search page
-        const searchResult = Eta.render(searchEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.writeFileSync(`${config.publicPath}/search.html`, searchResult)
-      
-        //Attribute Report
-        const attributesResult = Eta.render(attributesEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-
-        fs.mkdirSync(`${config.publicPath}/attributes`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/attributes/index.html`, attributesResult)
-      
-      
-
-
-      
-      
-        //Attribute page
-        const attributeResult = Eta.render(attributeEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.mkdirSync(`${config.publicPath}/attribute`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/attribute/index.html`, attributeResult)
-      
-      
-      
-      
-        //Explore
-        const exploreResult = Eta.render(exploreEjs, {
-          title: channelViewModel.channel.title,
-          firstPageExploreItems: generateViewModel.firstPageExploreItems,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.writeFileSync(`${config.publicPath}/explore.html`, exploreResult)
-      
-      
-        //Activity page
-        const activityResult = Eta.render(activityEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.mkdirSync(`${config.publicPath}/activity`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/activity/index.html`, activityResult)
-      
-        //Leaderboard page
-        const leaderboardResult = Eta.render(leaderboardEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.mkdirSync(`${config.publicPath}/leaderboard`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/leaderboard/index.html`, leaderboardResult)
-      
-      
-        //Largest Sales page
-        const largestSalesResult = Eta.render(largestSalesEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.mkdirSync(`${config.publicPath}/sales`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/sales/index.html`, largestSalesResult)
-      
-      
-      
-        //Token Owner page
-        const userResult = Eta.render(userEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.mkdirSync(`${config.publicPath}/u`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/u/index.html`, userResult)
-      
-        //Token Owner activity page
-        const userActivityResult = Eta.render(userActivityEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.mkdirSync(`${config.publicPath}/u/activity`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/u/activity/index.html`, userActivityResult)
-      
-      
-        //Transaction page
-        const transactionResult = Eta.render(transactionEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.mkdirSync(`${config.publicPath}/transaction`, { recursive: true })
-        fs.writeFileSync(`${config.publicPath}/transaction/index.html`, transactionResult)
-      
-      
-      
-        //404 page
-        const fourOhFourResult = Eta.render(fourOhFourEjs, {
-          title: channelViewModel.channel.title,
-          baseViewModel: baseViewModel
-        })
-      
-        fs.writeFileSync(`${config.publicPath}/404.html`, fourOhFourResult)
-      
-      
-        //Build static pages
-      
-        //links
-        if (channelViewModel.staticPagesViewModel?.links?.length > 0) {
-          for (let staticPage of channelViewModel.staticPagesViewModel?.links) {
-      
-            const staticPagesResult = Eta.render(staticPageEjs, {
-              title: channelViewModel.channel.title,
-              staticPage: staticPage,
-              baseViewModel: baseViewModel
-            })
-      
-            fs.writeFileSync(`${config.publicPath}/s/${staticPage.slug}.html`, staticPagesResult)
-          }
-        }
-      
-        //"none"
-        if (channelViewModel.staticPagesViewModel?.none?.length > 0) {
-          for (let staticPage of channelViewModel.staticPagesViewModel?.none) {
-      
-            const staticPagesResult = Eta.render(staticPageEjs, {
-              title: channelViewModel.channel.title,
-              staticPage: staticPage,
-              baseViewModel: baseViewModel
-            })
-      
-            fs.writeFileSync(`${config.publicPath}/s/${staticPage.slug}.html`, staticPagesResult)
-          }
-        }
-      
-
-      
-        //Generate token pages
-        let minTokenId = Math.min(...generateViewModel.itemViewModels.map(i => i.item.tokenId))
-        let maxTokenId = Math.max(...generateViewModel.itemViewModels.map(i => i.item.tokenId))
-      
-      
-      
-        let rowItemViewModels = []
-      
-        //Write all row item view models
-        for (let itemViewModel of generateViewModel.itemViewModels) {
-          rowItemViewModels.push(this.itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage))
-        }
-      
-
-        fs.writeFileSync(`${config.publicPath}/t/all.json`, Buffer.from(JSON.stringify(rowItemViewModels)))
-      
-        
-        //Read the template file 
-        for (let itemViewModel of generateViewModel.itemViewModels) {
-      
-          let rowItemViewModel = this.itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage)
-      
-          let previous 
-          let next 
-      
-          if (rowItemViewModel.tokenId != minTokenId) {
-            previous = generateViewModel.itemViewModels.filter( ivm => ivm.item.tokenId == rowItemViewModel.tokenId - 1)[0]
-          }
-      
-          if (rowItemViewModel.tokenId != maxTokenId) {
-            next = generateViewModel.itemViewModels.filter( ivm => ivm.item.tokenId == rowItemViewModel.tokenId + 1)[0]
-          }
-      
-      
-          //Generate the token page
-          console.time(`Generating /t/${rowItemViewModel.tokenId}`)
-      
-          const result = Eta.render(tokenEjs, {
-            title: rowItemViewModel.title,
-            itemViewModel: itemViewModel,
-            baseViewModel: baseViewModel,
-            previous: previous,
-            next: next,
-            ethers: ethers
-          })
-      
-      
-          fs.mkdirSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}`, { recursive: true })
-      
-          //Write the HTML page
-          fs.writeFileSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}/index.html`, result)
-      
-          //Write rowItemViewModel
-          fs.writeFileSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}/rowItemViewModel.json`, Buffer.from(JSON.stringify(rowItemViewModel)))
-      
-
-          //Generate any images we need
-          await this.generateImages(config, itemViewModel)
-
-      
-          console.timeEnd(`Generating /t/${rowItemViewModel.tokenId}`)
-      
-        }
-      
-    }
     
     async generateManifest(config, channelViewModel) {
 
@@ -678,6 +448,365 @@ class GenerateService {
       fs.writeFileSync(`${syncDir}${config.libraryURL}/404.html`, fourOhFourResult)
 
     }
+
+    async generatePages(config, channelViewModel, generateViewModel, baseViewModel) {
+
+      fs.mkdirSync(`${config.publicPath}/attributes`, { recursive: true })
+      fs.mkdirSync(`${config.publicPath}/attribute`, { recursive: true })
+
+      fs.mkdirSync(`${config.publicPath}/activity`, { recursive: true })
+      fs.mkdirSync(`${config.publicPath}/leaderboard`, { recursive: true })
+      fs.mkdirSync(`${config.publicPath}/sales`, { recursive: true })
+      fs.mkdirSync(`${config.publicPath}/u`, { recursive: true })
+      fs.mkdirSync(`${config.publicPath}/u/activity`, { recursive: true })
+      fs.mkdirSync(`${config.publicPath}/transaction`, { recursive: true })
+
+      await this.renderPage(
+        config,
+        indexEjs,
+        {
+          title: channelViewModel.channel.title,
+          firstPost: generateViewModel.itemViewModels[0],
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/index.html`
+      )
+
+
+      //Mint page
+      if (config.showMintPage) {
+        
+        await this.renderPage(
+          config,
+          mintEjs,
+          {
+            title: channelViewModel.channel.title,
+            baseViewModel: baseViewModel
+          },
+          `${config.publicPath}/mint.html`
+        )
+
+      }
+    
+    
+      //Search page
+      await this.renderPage(
+        config,
+        searchEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/search.html`
+      )
+
+
+
+
+
+
+      //Attribute Report
+      await this.renderPage(
+        config,
+        attributesEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/attributes/index.html`
+      )
+
+
+
+    
+    
+      //Attribute page
+      await this.renderPage(
+        config,
+        attributeEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/attribute/index.html`
+      )
+
+
+    
+    
+      //Explore
+      await this.renderPage(
+        config,
+        exploreEjs,
+        {
+          title: channelViewModel.channel.title,
+          firstPageExploreItems: generateViewModel.firstPageExploreItems,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/explore.html`
+      )
+
+
+
+      //Activity page
+      await this.renderPage(
+        config,
+        activityEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/activity/index.html`
+      )
+
+
+
+      //Leaderboard page
+      await this.renderPage(
+        config,
+        leaderboardEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/leaderboard/index.html`
+      )
+
+
+
+      //Largest Sales page
+      await this.renderPage(
+        config,
+        largestSalesEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/sales/index.html`
+      )
+
+
+
+    
+      //Token Owner page
+      await this.renderPage(
+        config,
+        userEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/u/index.html`
+      )
+
+
+
+
+
+
+    
+      //Token Owner activity page
+      await this.renderPage(
+        config,
+        userActivityEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/u/activity/index.html`
+      )
+
+
+    
+      //Transaction page
+      await this.renderPage(
+        config,
+        transactionEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/transaction/index.html`
+      )
+
+
+
+
+    
+      //404 page
+      await this.renderPage(
+        config,
+        fourOhFourEjs,
+        {
+          title: channelViewModel.channel.title,
+          baseViewModel: baseViewModel
+        },
+        `${config.publicPath}/404.html`
+      )
+
+
+
+
+    
+      //Build static pages
+    
+      //links
+      if (channelViewModel.staticPagesViewModel?.links?.length > 0) {
+        for (let staticPage of channelViewModel.staticPagesViewModel?.links) {
+
+          await this.renderPage(
+            config,
+            staticPageEjs,
+            {
+              title: channelViewModel.channel.title,
+              staticPage: staticPage,
+              baseViewModel: baseViewModel
+            },
+            `${config.publicPath}/s/${staticPage.slug}.html`
+          )
+
+        }
+      }
+    
+      //"none"
+      if (channelViewModel.staticPagesViewModel?.none?.length > 0) {
+        for (let staticPage of channelViewModel.staticPagesViewModel?.none) {
+    
+          await this.renderPage(
+            config,
+            staticPageEjs,
+            {
+              title: channelViewModel.channel.title,
+              staticPage: staticPage,
+              baseViewModel: baseViewModel
+            },
+            `${config.publicPath}/s/${staticPage.slug}.html`
+          )
+
+
+        }
+      }
+    
+
+    
+      //Generate token pages
+      let minTokenId = Math.min(...generateViewModel.itemViewModels.map(i => i.item.tokenId))
+      let maxTokenId = Math.max(...generateViewModel.itemViewModels.map(i => i.item.tokenId))
+    
+    
+    
+      let rowItemViewModels = []
+    
+      //Write all row item view models
+      for (let itemViewModel of generateViewModel.itemViewModels) {
+        rowItemViewModels.push(this.itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage))
+      }
+    
+
+      fs.writeFileSync(`${config.publicPath}/t/all.json`, Buffer.from(JSON.stringify(rowItemViewModels)))
+    
+      
+      //Read the template file 
+      for (let itemViewModel of generateViewModel.itemViewModels) {
+    
+        let rowItemViewModel = this.itemWebService.translateRowItemViewModel(itemViewModel.item, itemViewModel.coverImage)
+    
+        let previous 
+        let next 
+    
+        if (rowItemViewModel.tokenId != minTokenId) {
+          previous = generateViewModel.itemViewModels.filter( ivm => ivm.item.tokenId == rowItemViewModel.tokenId - 1)[0]
+        }
+    
+        if (rowItemViewModel.tokenId != maxTokenId) {
+          next = generateViewModel.itemViewModels.filter( ivm => ivm.item.tokenId == rowItemViewModel.tokenId + 1)[0]
+        }
+    
+    
+        //Generate the token page
+        console.time(`Generating /t/${rowItemViewModel.tokenId}`)
+        
+        fs.mkdirSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}`, { recursive: true })
+
+        await this.renderPage(
+          config,
+          tokenEjs,
+          {
+            title: rowItemViewModel.title,
+            itemViewModel: itemViewModel,
+            baseViewModel: baseViewModel,
+            previous: previous,
+            next: next,
+            ethers: ethers
+          },
+          `${config.publicPath}/t/${rowItemViewModel.tokenId}/index.html`
+        )
+
+    
+        //Write rowItemViewModel
+        fs.writeFileSync(`${config.publicPath}/t/${rowItemViewModel.tokenId}/rowItemViewModel.json`, Buffer.from(JSON.stringify(rowItemViewModel)))
+    
+
+        //Generate any images we need
+        await this.generateImages(config, itemViewModel)
+
+    
+        console.timeEnd(`Generating /t/${rowItemViewModel.tokenId}`)
+    
+      }
+    
+    }
+
+    async renderPage(config, ejsTemplate, model, filepath) {
+
+      const result = Eta.render(ejsTemplate, model)
+
+      //Create partial
+      const pageContent = result.substring(
+        result.indexOf("<!--pageContent-->") + 19, 
+        result.lastIndexOf("<!--/pageContent-->")
+      )
+
+      const scriptContent = result.substring(
+        result.indexOf("//pageInitScripts") + 18, 
+        result.lastIndexOf("///pageInitScripts")
+      )
+
+      let partialResult = `
+          <template>
+              ${he.unescape(pageContent)}
+          </template>
+
+          <script>
+
+              ${scriptContent}
+
+              export default init
+          </script>
+      `
+
+      //Write file
+      fs.writeFileSync(filepath, result.replace(scriptContent, ""))
+
+
+      const partialPath = filepath.replace(config.publicPath, `${config.publicPath}/partial`)
+
+      //Create partial directory
+      const partialDirName = path.dirname(partialPath)
+
+      if (!fs.existsSync(partialDirName)) {
+          fs.mkdirSync(partialDirName, { recursive: true })
+      }
+  
+      //Write partial
+      fs.writeFileSync(partialPath, partialResult)
+
+
+    }
+
+
+
+
 
 }
 

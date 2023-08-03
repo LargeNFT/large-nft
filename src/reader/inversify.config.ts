@@ -3,7 +3,7 @@ import Framework7 from 'framework7';
 
 import axios from "axios"
 import he from 'he'
-import { ethers } from "ethers"
+import { BrowserProvider } from "ethers"
 
 import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
@@ -255,14 +255,10 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
       //@ts-ignore
       window.web3Provider = window.ethereum
 
-      return new ethers.BrowserProvider(window['ethereum'])
+      return new BrowserProvider(window['ethereum'])
 
     }
 
-  })
-
-  container.bind("ethers").toConstantValue(async () => {
-    return ethers
   })
 
 

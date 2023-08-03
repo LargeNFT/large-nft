@@ -50,12 +50,12 @@ class BlockService {
                 block.number = data.number
                 block.timestamp = data.timestamp
                 block.nonce = data.nonce
-                block.difficulty = data.difficulty
-                block.gasLimit = data.gasLimit
-                block.gasUsed = data.gasUsed
+                block.difficulty = data.difficulty?.toString()
+                block.gasLimit = data.gasLimit?.toString()
+                block.gasUsed = data.gasUsed?.toString()
                 block.miner = data.miner
                 block.extraData = data.extraData
-                block.baseFeePerGas = data.baseFeePerGas
+                block.baseFeePerGas = data.baseFeePerGas?.toString()
 
                 //Get ETH price at block
                 block.ethUSDPrice = await this.getETHUSDAtBlock(block.number)

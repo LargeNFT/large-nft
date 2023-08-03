@@ -249,8 +249,6 @@ class GenerateService {
 
     }
 
-
-    
     async generateManifest(config, channelViewModel) {
 
       fs.writeFileSync(`${config.publicPath}/manifest-icon.svg`, `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1' style="background-color:rgb(28,28,29);">
@@ -272,6 +270,7 @@ class GenerateService {
         "description": `Browse ${channelViewModel.channel.title}`,
         "display": "standalone",
         "theme_color": "#FCB827",
+        "theme-color": "#FCB827",
         "background_color": "#808080",
         "icons": [
           {
@@ -288,9 +287,6 @@ class GenerateService {
     
     }
     
-  
-
-
     async writeAttributeRowItems(traitType:string, value:string, rowItemViewModels:any[], filepath:string) {
 
         const escape = (s) => {
@@ -805,7 +801,7 @@ class GenerateService {
                               .replace(config.publicPath, `${config.publicPath}/partial`)
                               .replace(config.libraryURL, `${config.libraryURL}/partial`)
 
-                              
+
       //Create partial directory
       const partialDirName = path.dirname(partialPath)
 

@@ -208,7 +208,7 @@ let generate = async () => {
     fs.writeFileSync(`${config.publicPath}/large/index.html`, indexContents)
 
     //Move SW
-    // fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
+    fs.renameSync(`${config.publicPath}/large/reader/browser/sw-${config.VERSION}.js`, `${config.publicPath}/sw-${config.VERSION}.js`)
 
 
     console.timeEnd("Copying Large NFT Admin...")

@@ -36,11 +36,15 @@ let initLibrary = async (libraryURL:string, baseURI:string, hostname:string, ver
 
         container = await getMainContainer(container, baseURI, hostname, version, routes, channelId)
 
-        startApp(container, hostname)
-
+        if (navigator.serviceWorker.controller) {
+            startApp(container, hostname)
+        } else {
+            wb.addEventListener('controlling', e => {
+                startApp(container, hostname)
+            })
+        }
 
         wb.register()
-
     }
 
 

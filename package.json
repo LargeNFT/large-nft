@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.17.5",
+  "version": "0.17.7",
   "description": "An offline-first publishing platform for the free and open web.",
   "repository": {
     "type": "git",
@@ -194,8 +194,9 @@
 
     "dayjs": "1.11.9",
 
-    "workbox-window": "7.0.0"
-
+    "workbox-window": "7.0.0",
+    "workbox-strategies": "7.0.0",
+    "workbox-routing": "7.0.0"
 
 
   }

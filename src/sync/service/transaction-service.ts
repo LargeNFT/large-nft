@@ -51,25 +51,24 @@ class TransactionService {
                 transaction.blockNumber = transactionData.blockNumber
                 transaction.transactionIndex = transactionData.transactionIndex
                 transaction.from = transactionData.from
-                transaction.gasLimit = transactionData.gasLimit
-                transaction.gasPrice = transactionData.gasPrice
+                transaction.gasLimit = transactionData.gasLimit?.toString()
+                transaction.gasPrice = transactionData.gasPrice?.toString()
                 transaction.nonce = transactionData.nonce
-                transaction.value = transactionData.value
+                transaction.value = transactionData.value?.toString()
                 transaction.networkId = transactionData.networkId
-                transaction.r = transactionData.r
-                transaction.s = transactionData.s
-                transaction.v = transactionData.v
+                transaction.r = transactionData.r?.toString()
+                transaction.s = transactionData.s?.toString()
+                transaction.v = transactionData.v ? Number(transactionData.v) : undefined
                 transaction.raw = transactionData.raw
 
                 transaction.receipt = {
                     to: transactionReceiptData.to,
                     contractAddress: transactionReceiptData.contractAddress,
-                    cumulativeGasUsed: transactionReceiptData.cumulativeGasUsed,
-                    effectiveGasPrice: transactionReceiptData.effectiveGasPrice,
-                    gasUsed: transactionReceiptData.gasUsed,
+                    cumulativeGasUsed: transactionReceiptData.cumulativeGasUsed?.toString(),
+                    effectiveGasPrice: transactionReceiptData.effectiveGasPrice?.toString(),
+                    gasUsed: transactionReceiptData.gasUsed?.toString(),
                     logs: transactionReceiptData.logs
                 }
-
 
                 await this.transactionRepository.put(transaction, options)
 

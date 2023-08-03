@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { MetadataRepository } from "../repository/metadata-repository.js";
 import { WalletService } from "./core/wallet-service.js";
+import { id } from "ethers"
 
 
 @injectable()
@@ -11,9 +12,6 @@ class TokenContractService {
 
     @inject("WalletService")
     private walletService:WalletService
-
-    @inject("ethers") 
-    private getEthers:Function
 
     constructor(
     ) {}
@@ -74,8 +72,6 @@ class TokenContractService {
 
     async getChannelContract() : Promise<ChannelContract> {
 
-        let ethers = await this.getEthers()
-
 
         let contract:ChannelContract = await this.walletService.getContract("Channel")
 
@@ -86,7 +82,7 @@ class TokenContractService {
                 address: contract.address,
                 topics: [
                     // the name of the event, parnetheses containing the data type of each event, no spaces
-                    ethers.id("MintEvent(uint256)")
+                    id("MintEvent(uint256)")
                 ]
             }
             

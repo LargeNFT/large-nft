@@ -655,17 +655,16 @@
             let readerSettings = await readerSettingsService.get()
             $f7.emit('current-page-updated', readerSettings.currentPage)
 
-            await $update()
-
+            
             <% if (showMintPage) { %>
-            await loadMintingViewModel()
+            loadMintingViewModel().then(() => $update())
             <% } %>
 
-            await loadActivity()
+            loadActivity().then(() => $update())
 
             $('.hide-on-pageinit').hide()
 
-            await $update()
+            $update()
 
             //Set empty alt for any decorative image tags that are missing it. 
             $("img:not([alt])").attr("alt", "")

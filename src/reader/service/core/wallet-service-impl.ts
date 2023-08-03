@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify"
 import { WalletService } from "./wallet-service.js"
-import { ethers } from "ethers"
+import { getAddress, Contract } from "ethers"
 
 
 @injectable()
@@ -16,7 +16,6 @@ class WalletServiceImpl implements WalletService {
   constructor(
     @inject("contracts") private contracts:Function,
     @inject("provider") private getProvider:Function,
-
     @inject("framework7") private $f7
   ) {
 
@@ -94,7 +93,7 @@ class WalletServiceImpl implements WalletService {
       let accounts = await this.provider.send("eth_accounts", []);
 
       if (accounts?.length > 0) {
-        return ethers.getAddress(accounts[0]) 
+        return getAddress(accounts[0]) 
       }
 
   }
@@ -109,7 +108,7 @@ class WalletServiceImpl implements WalletService {
 
     //Initialize and return
     let c = contracts[name]
-    this.ethersContracts[name] = new ethers.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
+    this.ethersContracts[name] = new Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
 
     // console.log(`Getting contract ${name}`)
 

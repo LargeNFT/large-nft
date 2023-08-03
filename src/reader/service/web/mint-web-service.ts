@@ -6,7 +6,7 @@ import { SchemaService } from "../core/schema-service.js";
 import { WalletService } from "../core/wallet-service.js";
 import { ItemService } from "../item-service.js";
 import { TokenContractService } from "../token-contract-service.js";
-import { ethers } from "ethers";
+import { parseUnits, formatUnits } from "ethers";
 
 @injectable()
 class MintWebService {
@@ -131,7 +131,7 @@ class MintWebService {
 
     async calculateTotalMint(channel, quantity) {
 
-        let mintPriceWei = ethers.parseUnits(channel.mintPrice, 'ether')
+        let mintPriceWei = parseUnits(channel.mintPrice, 'ether')
 
         let total = Number(mintPriceWei) * quantity
 
@@ -140,12 +140,12 @@ class MintWebService {
     }
 
     async updateTotal(mintPriceWei:BigInt, quantity:number) : Promise<string>{
-        return ethers.formatUnits(Number(mintPriceWei) * quantity)
+        return formatUnits(Number(mintPriceWei) * quantity)
     }
 
 
     async parseUnits(mintPrice:string) : Promise<BigInt> {
-       return ethers.parseUnits(mintPrice, 'ether')
+       return parseUnits(mintPrice, 'ether')
 
     }
 

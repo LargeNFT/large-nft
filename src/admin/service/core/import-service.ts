@@ -1083,7 +1083,7 @@ class ImportService {
 
     private async _getTokenMetadata(contract, tokenId:number) : Promise<TokenMetadata> {
 
-        let cacheId = `${contract.address}-${tokenId}`
+        let cacheId = `${await contract.getAddress()}-${tokenId}`
 
         //Check the cache
         let existing

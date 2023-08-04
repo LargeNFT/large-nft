@@ -27,7 +27,6 @@ import { SettingsService } from "../src/admin/service/core/settings-service.js";
 import { GitService } from "../src/admin/service/core/git-service.js";
 
 import { ChannelRepository } from "../src/admin/repository/channel-repository.js";
-import { PinningApiRepository } from "../src/admin/repository/pinning-api-repository.js";
 
 import { StaticPageRepository } from "../src/admin/repository/static-page-repository.js";
 
@@ -37,7 +36,6 @@ import { AuthorRepository } from "../src/admin/repository/author-repository.js";
 
 import { SchemaService } from "../src/admin/service/core/schema-service.js";
 import { WalletService } from "../src/admin/service/core/wallet-service.js";
-import { PinningService } from "../src/admin/service/core/pinning-service.js";
 import { ExportService } from "../src/admin/service/core/export-service.js";
 
 import { StaticPageService } from "../src/admin/service/static-page-service.js";
@@ -163,7 +161,6 @@ async function getContainer() {
     container.bind(IpfsService).toSelf().inSingletonScope()
     container.bind(ItemService).toSelf().inSingletonScope()
     container.bind(QuillService).toSelf().inSingletonScope()
-    container.bind(PinningService).toSelf().inSingletonScope()
     container.bind(PublishService).toSelf().inSingletonScope()
     container.bind(AnimationService).toSelf().inSingletonScope()
     container.bind(SvgService).toSelf().inSingletonScope()
@@ -186,7 +183,6 @@ async function getContainer() {
     container.bind(ItemRepository).toSelf().inSingletonScope()
     container.bind(ImageRepository).toSelf().inSingletonScope()
     container.bind(AuthorRepository).toSelf().inSingletonScope()
-    container.bind(PinningApiRepository).toSelf().inSingletonScope()
     container.bind(SettingsRepository).toSelf().inSingletonScope()
     container.bind(AnimationRepository).toSelf().inSingletonScope()
     container.bind(ThemeRepository).toSelf().inSingletonScope()

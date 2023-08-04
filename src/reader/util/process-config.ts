@@ -140,6 +140,47 @@ class ProcessConfig {
         
     }
 
+    static getPublishConfig(config?:any) {
+
+        let theArgs = ProcessConfig.parsePublishArgsIntoOptions(process.argv)
+
+        let baseDir = process.env.INIT_CWD      
+
+        //A config object can be passed in. If not we will load large-config.json from the baseDir
+        if (!config) {
+            config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
+        }
+
+        config.VERSION = packageConfig.version
+        config.baseDir = baseDir
+        config.import = theArgs.import
+
+        return config
+        
+    }
+
+
+
+    static getExportConfig(config?:any) {
+
+        let theArgs = ProcessConfig.parseExportArgsIntoOptions(process.argv)
+
+        let baseDir = process.env.INIT_CWD      
+
+        //A config object can be passed in. If not we will load large-config.json from the baseDir
+        if (!config) {
+            config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
+        }
+
+        config.VERSION = packageConfig.version
+        config.baseDir = baseDir
+        config.env = theArgs.env
+        config.channel = theArgs.channel
+
+        return config
+        
+    }
+
 
 
     static parseArgumentsIntoOptions(rawArgs) {
@@ -204,7 +245,7 @@ class ProcessConfig {
             '--env': String,
             '--fork-type': String,
             '--contract': String,
-            '--alchemy': String,
+            '--alchemy': String
         },
         {
             argv: rawArgs.slice(2),
@@ -220,8 +261,43 @@ class ProcessConfig {
     
     }
 
+    static parsePublishArgsIntoOptions(rawArgs) {
+
+        const args = arg(
+        {
+            '--import': String,
+        },
+        {
+            argv: rawArgs.slice(2),
+        }
+        )
+    
+        return {
+            import:  args['--import'] == "true"
+
+        }
+    
+    }
 
 
+    static parseExportArgsIntoOptions(rawArgs) {
+
+        const args = arg(
+        {
+            '--env': String,
+            '--channel': String
+        },
+        {
+            argv: rawArgs.slice(2),
+        }
+        )
+    
+        return {
+            env: args['--env'] || "production",
+            channel: args['--fork-type'] || undefined
+        }
+    
+    }
 
 
 

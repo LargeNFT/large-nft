@@ -1,6 +1,6 @@
 // contracts/Channel.sol
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.13;
+pragma solidity 0.8.21;
 
 import "erc721a/contracts/extensions/ERC721AQueryable.sol";
 
@@ -75,7 +75,7 @@ contract Channel is ERC721AQueryable, Ownable {
 
     }
 
-    function tokenURI(uint256 tokenId) public view virtual override(ERC721A, IERC721Metadata) returns (string memory) {
+    function tokenURI(uint256 tokenId) public view virtual override(ERC721A, IERC721A) returns (string memory) {
         
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 

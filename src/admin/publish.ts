@@ -19,10 +19,14 @@ import path from "path"
 
 import { ImageRepository } from "./repository/image-repository.js"
 import { AnimationRepository } from "./repository/animation-repository.js"
+import { ChannelService } from "./service/channel-service.js"
+import { Channel } from "./dto/channel.js"
 
 let publish = async () => {
 
   let container = await getMainContainer()
+
+  let channelService:ChannelService = container.get(ChannelService)
   let publishService:PublishService = container.get(PublishService)
   let ipfsService:IpfsService = container.get(IpfsService)
   let schemaService: SchemaService = container.get(SchemaService)
@@ -32,62 +36,83 @@ let publish = async () => {
   let animationRepository: AnimationRepository = container.get(AnimationRepository)
 
 
-  if (fs.existsSync(`${process.env.INIT_CWD   }/data/pouch`)) {
-    fs.rmSync(`${process.env.INIT_CWD   }/data/pouch`, { recursive: true })
-  }
-
-  fs.mkdirSync(`${process.env.INIT_CWD   }/data/pouch`, { recursive: true })
-
-
   //Load schema
-  await schemaService.load()
+  let channel:Channel
 
+  //Load from the .upload folder if it exists. Otherwise check the existing database.
+  if (fs.existsSync("./.upload/channel.json")) {
 
-
-  //Read channel backup
-  let channelBackup:ChannelBackup = {
-    channel: JSON.parse(fs.readFileSync("./.upload/channel.json").toString()),
-    authors: JSON.parse(fs.readFileSync("./.upload/authors.json").toString()),
-    items: JSON.parse(fs.readFileSync("./.upload/items.json").toString()),
-    themes: JSON.parse(fs.readFileSync("./.upload/themes.json").toString()),
-    staticPages: JSON.parse(fs.readFileSync("./.upload/staticPages.json").toString()),
-    attributeCounts: JSON.parse(fs.readFileSync("./.upload/attributeCounts.json").toString())
-  }
-
-  await schemaService.loadChannelBackup(channelBackup)
-
-  //Load images
-  console.log(`Loading images...`)
-
-  let imageFilenames = fs.readdirSync("./.upload/images")
-
-  for (let filename of imageFilenames) {
+    if (fs.existsSync(`${process.env.INIT_CWD   }/data/pouch`)) {
+      fs.rmSync(`${process.env.INIT_CWD   }/data/pouch`, { recursive: true })
+    }
   
-    let image = JSON.parse(fs.readFileSync(`./.upload/images/${filename}`).toString())
+    fs.mkdirSync(`${process.env.INIT_CWD   }/data/pouch`, { recursive: true })
+  
+    await schemaService.load()
+  
+    //Read channel backup
+    let channelBackup:ChannelBackup = {
+      channel: JSON.parse(fs.readFileSync("./.upload/channel.json").toString()),
+      authors: JSON.parse(fs.readFileSync("./.upload/authors.json").toString()),
+      items: JSON.parse(fs.readFileSync("./.upload/items.json").toString()),
+      themes: JSON.parse(fs.readFileSync("./.upload/themes.json").toString()),
+      staticPages: JSON.parse(fs.readFileSync("./.upload/staticPages.json").toString()),
+      attributeCounts: JSON.parse(fs.readFileSync("./.upload/attributeCounts.json").toString())
+    }
+  
+    await schemaService.loadChannelBackup(channelBackup)
+  
+    //Load images
+    console.log(`Loading images...`)
+  
+    let imageFilenames = fs.readdirSync("./.upload/images")
+  
+    for (let filename of imageFilenames) {
+    
+      let image = JSON.parse(fs.readFileSync(`./.upload/images/${filename}`).toString())
+  
+      delete image._rev
+      delete image['_rev_tree'] 
+  
+      await imageRepository.put(image)
+  
+  
+    }
+  
+    //Load animations
+    console.log(`Loading animations...`)
+  
+    let animationFilenames = fs.readdirSync("./.upload/animations")
+  
+    for (let filename of animationFilenames) {
+  
+      let animation = JSON.parse(fs.readFileSync(`./.upload/animations/${filename}`).toString())
+  
+      delete animation._rev
+      delete animation['_rev_tree'] 
+  
+      await animationRepository.put(animation)
+  
+    }
 
-    delete image._rev
-    delete image['_rev_tree'] 
+    channel = channelBackup.channel
+    
+  } else {
 
-    await imageRepository.put(image)
+    //Load what's already in there because it was imported with the import tool.
+    await schemaService.load()
 
+    let channelResults:Channel[] = await channelService.list(1, 0)
+    
+    if (channelResults?.length == 0) {
+      throw new Error("Could not load channel.")
+    }
+
+    channel = channelResults[0]
 
   }
 
-  //Load animations
-  console.log(`Loading animations...`)
 
-  let animationFilenames = fs.readdirSync("./.upload/animations")
-
-  for (let filename of animationFilenames) {
-
-    let animation = JSON.parse(fs.readFileSync(`./.upload/animations/${filename}`).toString())
-
-    delete animation._rev
-    delete animation['_rev_tree'] 
-
-    await animationRepository.put(animation)
-
-  }
 
 
   let settings = new Settings()
@@ -98,7 +123,7 @@ let publish = async () => {
   await ipfsService.init()
 
   //export to IPFS
-  let result = await publishService.publish(channelBackup.channel, process.env.INIT_CWD )
+  let result = await publishService.publish(channel, process.env.INIT_CWD )
 
   
 

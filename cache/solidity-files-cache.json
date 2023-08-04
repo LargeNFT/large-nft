@@ -2,11 +2,11 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/ptoner/repos/large-nft/contracts/Channel.sol": {
-      "lastModificationDate": 1688648125808,
-      "contentHash": "86b3572e22b293bfd9c179722cdff433",
+      "lastModificationDate": 1691177680422,
+      "contentHash": "600ebd829b8e75a46b29a84ffffd4425",
       "sourceName": "contracts/Channel.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -34,18 +34,18 @@
         "./util/console.sol"
       ],
       "versionPragmas": [
-        "0.8.13"
+        "0.8.21"
       ],
       "artifacts": [
         "Channel"
       ]
     },
     "/home/ptoner/repos/large-nft/contracts/util/console.sol": {
-      "lastModificationDate": 1669498754534,
+      "lastModificationDate": 1688648125808,
       "contentHash": "6d100bef23b78f08bf8c4d474b53d75d",
       "sourceName": "contracts/util/console.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -80,7 +80,7 @@
       "contentHash": "5a20b2cad87ddb61c7a3a6af21289e28",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -113,11 +113,11 @@
       ]
     },
     "/home/ptoner/repos/large-nft/node_modules/erc721a/contracts/extensions/ERC721AQueryable.sol": {
-      "lastModificationDate": 1688648271408,
-      "contentHash": "eecad27775fa046162ae5a36756cea69",
+      "lastModificationDate": 1691176186066,
+      "contentHash": "3ef0cd5882c4d9deb6b6348146b2a17b",
       "sourceName": "erc721a/contracts/extensions/ERC721AQueryable.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -151,11 +151,11 @@
       ]
     },
     "/home/ptoner/repos/large-nft/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1679874352766,
+      "lastModificationDate": 1690046271689,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -186,11 +186,11 @@
       ]
     },
     "/home/ptoner/repos/large-nft/node_modules/erc721a/contracts/ERC721A.sol": {
-      "lastModificationDate": 1688648270636,
-      "contentHash": "4e1e03605be2eaa8f08fa49b3d437638",
+      "lastModificationDate": 1691176186066,
+      "contentHash": "227e9db819fd61602f833edafcda7d4a",
       "sourceName": "erc721a/contracts/ERC721A.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -213,26 +213,22 @@
         }
       },
       "imports": [
-        "./IERC721A.sol",
-        "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
-        "@openzeppelin/contracts/utils/Address.sol",
-        "@openzeppelin/contracts/utils/Context.sol",
-        "@openzeppelin/contracts/utils/Strings.sol",
-        "@openzeppelin/contracts/utils/introspection/ERC165.sol"
+        "./IERC721A.sol"
       ],
       "versionPragmas": [
         "^0.8.4"
       ],
       "artifacts": [
-        "ERC721A"
+        "ERC721A",
+        "ERC721A__IERC721Receiver"
       ]
     },
     "/home/ptoner/repos/large-nft/node_modules/erc721a/contracts/extensions/IERC721AQueryable.sol": {
-      "lastModificationDate": 1688648271816,
-      "contentHash": "698d2a990469b13a48200d33d2edeeac",
+      "lastModificationDate": 1691176186070,
+      "contentHash": "e422c9bdd6c1996b422c8d6e2a60a59c",
       "sourceName": "erc721a/contracts/extensions/IERC721AQueryable.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -265,11 +261,11 @@
       ]
     },
     "/home/ptoner/repos/large-nft/node_modules/erc721a/contracts/IERC721A.sol": {
-      "lastModificationDate": 1688648271456,
-      "contentHash": "f0a577a6e7c8283ef7cd353fe760608c",
+      "lastModificationDate": 1691176186070,
+      "contentHash": "c31a05698ddc2f109ba8723105d854c6",
       "sourceName": "erc721a/contracts/IERC721A.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,
@@ -291,10 +287,7 @@
           }
         }
       },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC721/IERC721.sol",
-        "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "^0.8.4"
       ],
@@ -592,11 +585,11 @@
       ]
     },
     "/home/ptoner/repos/large-nft/contracts/Migrations.sol": {
-      "lastModificationDate": 1669498754534,
+      "lastModificationDate": 1688648125808,
       "contentHash": "50b3b1dc92806dc8f604fc8c5c65518f",
       "sourceName": "contracts/Migrations.sol",
       "solcConfig": {
-        "version": "0.8.13",
+        "version": "0.8.21",
         "settings": {
           "optimizer": {
             "enabled": true,

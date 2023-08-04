@@ -14,11 +14,8 @@ import { IpfsService } from "./service/core/ipfs-service.js"
 import { SettingsService } from "./service/core/settings-service.js"
 import { Settings } from "./dto/settings.js"
 import fs from "fs"
-import { PublishService } from "./service/core/publish-service.js"
-import { BackupBundle, ExportBundle } from "./dto/export-bundle.js"
-import { ExportService } from "./service/core/export-service.js"
+
 import { ChannelService } from "./service/channel-service.js"
-import path from "path"
 
 let importCollection = async () => {
 
@@ -45,8 +42,6 @@ let importCollection = async () => {
     let container = await getMainContainer(config)
 
     let importService:ImportService = container.get(ImportService)
-    let publishService:PublishService = container.get(PublishService)
-    let exportService:ExportService = container.get(ExportService)
     let channelService:ChannelService = container.get(ChannelService)
 
     let walletService: WalletService = container.get(TYPES.WalletService)
@@ -89,7 +84,6 @@ let importCollection = async () => {
     }
 
 
-
     let channel = await channelService.get(channelId)
 
     let slug = channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()
@@ -98,51 +92,8 @@ let importCollection = async () => {
       fs.mkdirSync(`${config.baseDir}/sync/${slug}`, { recursive: true })
     }
 
-    console.log(`Exporting ${channel.title} to sync folder...`)
+    console.log(`Import complete: ${channelId}`)
 
-
-    channel.showActivityPage = false
-    channel.showMintPage = false
-    channel.productionHostname = config.hostname
-    channel.productionBaseURI = `/r/${config.slug}`
-
-
-    //Export 
-    console.log("Exporting bundle...")
-    let exportBundle:ExportBundle = await exportService.prepareExport(channel, walletService.address)
-
-    console.log("Creating backup...")
-    let backup:BackupBundle = await exportService.createBackup(exportBundle)
-
-
-    let feeRecipient = await publishService.getFeeReceipient(exportBundle)
-
-    console.log("Exporting to IPFS...")
-    // await publishService.exportToIPFS(exportBundle, backup, feeRecipient)
-
-    console.log("Exporting to file system...")
-    let fsActions = await publishService.exportToFS(config.baseDir, channel, exportBundle, backup, feeRecipient)
-
-    let collectionDir = `${config.baseDir}/sync/${config.slug}`
-
-    for (let action of fsActions) {
-
-      if (!fs.existsSync(path.dirname(`${collectionDir}${action.file_path}`))) {
-        fs.mkdirSync(path.dirname(`${collectionDir}${action.file_path}`), { recursive: true })
-      }
-
-      fs.writeFileSync(`${collectionDir}${action.file_path}`, action.content)
-    }
-
-    //Update large-config with library info.
-    let buffer = fs.readFileSync(`${collectionDir}/large-config.json`)
-
-    let largeConfig = JSON.parse(buffer.toString())
-
-    largeConfig.libraryURL = config.libraryURL
-    largeConfig.largeURL = config.largeURL
-
-    fs.writeFileSync(`${collectionDir}/large-config.json`, Buffer.from(JSON.stringify(largeConfig)))
 
   } else {
     console.log("No ethereum connection configured.")

@@ -9,10 +9,10 @@ import { Container } from "inversify";
 import { create } from 'ipfs-http-client'
 
 import PouchDB from 'pouchdb-node';
-// import PouchFind from 'pouchdb-find'
+import PouchFind from 'pouchdb-find'
 
 // Enable find plugin
-// PouchDB.plugin(PouchFind)
+PouchDB.plugin(PouchFind)
 
 
 import { WalletService } from "./service/core/wallet-service.js"

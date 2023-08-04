@@ -286,7 +286,6 @@ let getAdminConfigs = () => {
     ]
   }
 
-
   function createContractFromTruffle(truffleJson)  {
   
     return {

@@ -15,22 +15,17 @@
     },
     {
       "inputs": [],
-      "name": "ApprovalToCurrentOwner",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "ApproveToCaller",
-      "type": "error"
-    },
-    {
-      "inputs": [],
       "name": "BalanceQueryForZeroAddress",
       "type": "error"
     },
     {
       "inputs": [],
       "name": "InvalidQueryRange",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MintERC2309QuantityExceedsLimit",
       "type": "error"
     },
     {
@@ -46,6 +41,11 @@
     {
       "inputs": [],
       "name": "OwnerQueryForNonexistentToken",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "OwnershipNotInitializedForExtraData",
       "type": "error"
     },
     {
@@ -128,6 +128,37 @@
       "inputs": [
         {
           "indexed": true,
+          "internalType": "uint256",
+          "name": "fromTokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "toTokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "ConsecutiveTransfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
           "internalType": "address",
           "name": "from",
           "type": "address"
@@ -163,7 +194,7 @@
       ],
       "name": "approve",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -211,6 +242,11 @@
               "internalType": "bool",
               "name": "burned",
               "type": "bool"
+            },
+            {
+              "internalType": "uint24",
+              "name": "extraData",
+              "type": "uint24"
             }
           ],
           "internalType": "struct IERC721A.TokenOwnership",
@@ -247,6 +283,11 @@
               "internalType": "bool",
               "name": "burned",
               "type": "bool"
+            },
+            {
+              "internalType": "uint24",
+              "name": "extraData",
+              "type": "uint24"
             }
           ],
           "internalType": "struct IERC721A.TokenOwnership[]",
@@ -352,7 +393,7 @@
       ],
       "name": "safeTransferFrom",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -380,7 +421,7 @@
       ],
       "name": "safeTransferFrom",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -392,7 +433,7 @@
         },
         {
           "internalType": "bool",
-          "name": "approved",
+          "name": "_approved",
           "type": "bool"
         }
       ],
@@ -533,7 +574,7 @@
       ],
       "name": "transferFrom",
       "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "payable",
       "type": "function"
     }
   ],

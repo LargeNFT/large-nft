@@ -110,55 +110,45 @@ let publish = async () => {
 
     channel = channelResults[0]
 
+    await schemaService.loadChannel(channel._id)
+
+
+  }
+
+  let settings
+
+  try {
+    settings = await settingsService.get()
+  } catch (ex) {}
+
+  if (!settings) {
+    settings = new Settings()
+    settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
+    await settingsService.put(settings)
   }
 
 
 
-
-  let settings = new Settings()
-  settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
-  await settingsService.put(settings)
-
-
   await ipfsService.init()
 
-  //export to IPFS
-  let result = await publishService.publish(channel, process.env.INIT_CWD )
-
-  
 
   if (fs.existsSync(`${process.env.INIT_CWD   }/large-config.json`)) {
     fs.rmSync(`${process.env.INIT_CWD   }/large-config.json`)
   }
 
   if (fs.existsSync(`${process.env.INIT_CWD   }/ipfs`)) {
-    fs.rmdirSync(`${process.env.INIT_CWD   }/ipfs`, { recursive: true })
+    fs.rmSync(`${process.env.INIT_CWD   }/ipfs`, { recursive: true })
   } 
 
   fs.mkdirSync(`${process.env.INIT_CWD   }/ipfs`, { recursive: true })
 
 
-  //Write files to local filesystem
-  for (let action of result.fsActions) {
-
-    if (!fs.existsSync(path.dirname(action.file_path))) {
-      fs.mkdirSync(path.dirname(action.file_path), { recursive: true })
-    }
-
-    if (action.keepExisting) {
-
-      if (!fs.existsSync(action.file_path)) {
-        console.log(`Writing file: ${action.file_path}`)
-        fs.writeFileSync(action.file_path, action.content)
-      }
-
-    } else {
-      console.log(`Writing file: ${action.file_path}`)
-      fs.writeFileSync(action.file_path, action.content)
-    }
 
 
-  }
+  //export to IPFS
+  let result = await publishService.publish(channel, process.env.INIT_CWD )
+
+  
 
   //Export car file
   if (result.cids) {

@@ -104,16 +104,14 @@ import Swiper from 'framework7/components/swiper'
 import { GitService } from './service/core/git-service.js';
 import { GithubService } from './service/core/github-service.js';
 
-import PouchDB from 'pouchdb-browser';
-import PouchFind from 'pouchdb-find'
-import { PublishService } from './service/core/publish-service.js';
 import { HuggingFaceService } from './service/core/hugging-face-service.js';
 import { DeployService } from './service/core/deploy-service.js';
 
+import PouchDB from 'pouchdb-browser';
+import PouchFind from 'pouchdb-find'
+
 //Enable find plugin
 PouchDB.plugin(PouchFind)
-
-
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
@@ -229,7 +227,6 @@ function getMainContainer(version:string) {
   container.bind(QueueService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(QuillEditorService).toSelf().inSingletonScope()
-  container.bind(PublishService).toSelf().inSingletonScope()
   container.bind(DeployService).toSelf().inSingletonScope()
 
   container.bind(UploadService).toSelf().inSingletonScope()

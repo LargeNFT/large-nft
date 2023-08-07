@@ -8,16 +8,22 @@ import { Theme } from "./theme.js"
 import { StaticPage } from "./static-page.js"
 
 
+
 interface ExportBundle {
 
     channel: Channel
-    items: Item[]
     author: Author
-    themes: Theme[]
-    staticPages: StaticPage[]
 
-    images: Image[]
-    animations: Animation[]
+    itemIds:string[]
+    themeIds:string[]
+    staticPageIds:string[]
+
+    // items: Item[]
+    // themes: Theme[]
+    // staticPages: StaticPage[]
+
+    imageCids: string[]
+    animationCids: string[]
 
     ownerAddress:string
 
@@ -32,7 +38,6 @@ interface BackupBundle {
     staticPages: StaticPage[],
     images:Image[],
     animations:Animation[] 
-
 }
 
 export {

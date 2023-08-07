@@ -27,6 +27,10 @@ class ItemService {
     async get(_id: string): Promise<Item> {
         return this.itemRepository.get(_id)
     }
+    
+    async getIds() : Promise<string[]> {
+        return this.itemRepository.getIds()
+    }
 
     async getLatestRevision(_id:string) : Promise<Item> {
         return this.itemRepository.getLatestRevision(_id)

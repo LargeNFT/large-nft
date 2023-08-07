@@ -31,6 +31,14 @@ class ItemRepository {
         return Object.assign(new Item(), await this.db.get(_id))
     }
 
+    async getIds() : Promise<string[]> {
+
+        let result = await this.db.allDocs({ include_docs: false})
+
+        return result.rows.filter(row => !row.id.startsWith("_design") && !row.id.startsWith("_local")).map( r => r.id)
+
+    }
+
     async getLatestRevision(_id:string) : Promise<Item> {
         return Object.assign(new Item(), await this.databaseService.getLatestRevision(this.db, _id))
     }
@@ -60,7 +68,7 @@ class ItemRepository {
 
         let result = await this.db.query('by_channel_token', {
             reduce: false,
-            include_docs: true,
+            include_docs: true ,
             startkey: [channelId, 0],
             endkey: [channelId, {}],
             limit: limit,
@@ -127,7 +135,6 @@ class ItemRepository {
 
     }
 
-
     async getByImageId(imageId:string) : Promise<Item[]> {
 
         let result = await this.db.query('by_image_id', {
@@ -140,7 +147,6 @@ class ItemRepository {
 
 
     }
-
 
     async getByAnimationId(animationId:string) : Promise<Item[]> {
 

@@ -113,7 +113,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2717f1f147';
+framework7Component.id = '27cb0a2662';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -308,7 +308,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8bbbb30cc6';
+framework7Component.id = '8a52551b9e';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -417,7 +417,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6c24feaefa';
+framework7Component.id = '167730d926';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -625,7 +625,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '01849325ae';
+framework7Component.id = '21ea412e11';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -791,7 +791,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e08392ede5';
+framework7Component.id = '807d25a642';
 framework7Component.style = `
 
 
@@ -1114,7 +1114,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5c7cb1614a';
+framework7Component.id = '8ea8c10cb5';
 framework7Component.style = `
 
 
@@ -1351,7 +1351,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3b1607eb64';
+framework7Component.id = 'c158496f32';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1686,7 +1686,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f8b27a9c43';
+framework7Component.id = '5c171891c0';
 framework7Component.style = `
 
 `;
@@ -2170,7 +2170,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a9760fdbbb';
+framework7Component.id = 'cfff209cdc';
 framework7Component.style = `
 
 
@@ -2525,7 +2525,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'eda7c96f85';
+framework7Component.id = '230b495c32';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3796,7 +3796,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '56e86038d9';
+framework7Component.id = '7430ac3cb7';
 framework7Component.style = `
 
 
@@ -4040,7 +4040,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '49d0a05b39';
+framework7Component.id = '41bab51c37';
 framework7Component.style = `
 
 
@@ -4303,7 +4303,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3acf9e017a';
+framework7Component.id = '6b5194cb7c';
 framework7Component.style = `
   
 
@@ -4458,7 +4458,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '746c53d46b';
+framework7Component.id = '13f3a0f69a';
 framework7Component.style = `
     
 `;
@@ -4914,7 +4914,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6256b6fae0';
+framework7Component.id = 'c71df61af1';
 framework7Component.style = `
 
 
@@ -5003,7 +5003,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e578bfb900';
+framework7Component.id = 'd1c1f5be75';
 framework7Component.style = `
     
 `;
@@ -5387,7 +5387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c6c897d6c3';
+framework7Component.id = '0f82efb128';
 framework7Component.style = `
 
 
@@ -5460,7 +5460,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4bd684f814';
+framework7Component.id = '665514ef90';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5587,7 +5587,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0ddc02e086';
+framework7Component.id = 'bba52c9127';
 framework7Component.style = `
 
 `;
@@ -5745,7 +5745,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2e3d2e95be';
+framework7Component.id = 'e2a0f60876';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6047,7 +6047,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '298f9a2eb0';
+framework7Component.id = 'e9ddd120b6';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6372,7 +6372,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '82aff811a2';
+framework7Component.id = 'cfe1d6a2a6';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6907,7 +6907,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8abfb1eb27';
+framework7Component.id = 'ee062e8383';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7254,7 +7254,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b5ff3ab6dd';
+framework7Component.id = '25c02e3c2a';
 framework7Component.style = `
 
 
@@ -7551,7 +7551,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b1772cce39';
+framework7Component.id = '106b7ffd38';
 framework7Component.style = `
 
 
@@ -7761,7 +7761,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7e76093f6f';
+framework7Component.id = '4073e0facb';
 framework7Component.style = `
 
   `;
@@ -8166,7 +8166,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '884090901c';
+framework7Component.id = '6940a17d11';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8467,7 +8467,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'fc02fdf951';
+framework7Component.id = 'd289f0eafa';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8680,7 +8680,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9993c4fc24';
+framework7Component.id = '6df1be488a';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -8960,7 +8960,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5997636712';
+framework7Component.id = '442b5349c8';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9401,7 +9401,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '87c5ebb4d9';
+framework7Component.id = '0a0c27da21';
 framework7Component.style = `
 
 
@@ -9481,7 +9481,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '19d8d9a140';
+framework7Component.id = 'f34336d8fe';
 framework7Component.style = `
 
 
@@ -11718,51 +11718,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/admin/service/core/queue-service.ts");
 /* harmony import */ var _service_quill_service_js__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./service/quill-service.js */ "./src/admin/service/quill-service.ts");
 /* harmony import */ var _service_quill_editor_service_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/quill-editor-service.js */ "./src/admin/service/quill-editor-service.ts");
-/* harmony import */ var _service_core_upload_service_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/core/upload-service.js */ "./src/admin/service/core/upload-service.ts");
-/* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/admin/service/core/wallet-service-impl.ts");
-/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/image-service.js */ "./src/admin/service/image-service.ts");
-/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/author-service.js */ "./src/admin/service/author-service.ts");
-/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/admin/service/channel-service.ts");
-/* harmony import */ var _service_core_ipfs_service_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/core/ipfs-service.js */ "./src/admin/service/core/ipfs-service.ts");
+/* harmony import */ var _service_core_upload_service_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/core/upload-service.js */ "./src/admin/service/core/upload-service.ts");
+/* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/admin/service/core/wallet-service-impl.ts");
+/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/image-service.js */ "./src/admin/service/image-service.ts");
+/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/author-service.js */ "./src/admin/service/author-service.ts");
+/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/admin/service/channel-service.ts");
+/* harmony import */ var _service_core_ipfs_service_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/core/ipfs-service.js */ "./src/admin/service/core/ipfs-service.ts");
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/container/container.js");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/admin/service/core/database-service.ts");
-/* harmony import */ var _repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./repository/channel-repository.js */ "./src/admin/repository/channel-repository.ts");
-/* harmony import */ var _repository_item_repository_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./repository/item-repository.js */ "./src/admin/repository/item-repository.ts");
-/* harmony import */ var _repository_image_repository_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./repository/image-repository.js */ "./src/admin/repository/image-repository.ts");
-/* harmony import */ var _repository_author_repository_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./repository/author-repository.js */ "./src/admin/repository/author-repository.ts");
-/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/admin/service/core/schema-service.ts");
-/* harmony import */ var _service_core_types_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./service/core/types.js */ "./src/admin/service/core/types.ts");
-/* harmony import */ var _repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_80__ = __webpack_require__(/*! ./repository/attribute-count-repository.js */ "./src/admin/repository/attribute-count-repository.ts");
-/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/item-service.js */ "./src/admin/service/item-service.ts");
-/* harmony import */ var _service_attribute_count_service_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/attribute-count-service.js */ "./src/admin/service/attribute-count-service.ts");
-/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/admin/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/admin/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/admin/service/web/author-web-service.ts");
-/* harmony import */ var _service_core_gitlab_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/core/gitlab-service.js */ "./src/admin/service/core/gitlab-service.ts");
-/* harmony import */ var _repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./repository/settings-repository.js */ "./src/admin/repository/settings-repository.ts");
-/* harmony import */ var _service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/core/routing-service.js */ "./src/admin/service/core/routing-service.ts");
-/* harmony import */ var _service_core_settings_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/core/settings-service.js */ "./src/admin/service/core/settings-service.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/admin/service/core/database-service.ts");
+/* harmony import */ var _repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./repository/channel-repository.js */ "./src/admin/repository/channel-repository.ts");
+/* harmony import */ var _repository_item_repository_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./repository/item-repository.js */ "./src/admin/repository/item-repository.ts");
+/* harmony import */ var _repository_image_repository_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./repository/image-repository.js */ "./src/admin/repository/image-repository.ts");
+/* harmony import */ var _repository_author_repository_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./repository/author-repository.js */ "./src/admin/repository/author-repository.ts");
+/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/admin/service/core/schema-service.ts");
+/* harmony import */ var _service_core_types_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/core/types.js */ "./src/admin/service/core/types.ts");
+/* harmony import */ var _repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./repository/attribute-count-repository.js */ "./src/admin/repository/attribute-count-repository.ts");
+/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/item-service.js */ "./src/admin/service/item-service.ts");
+/* harmony import */ var _service_attribute_count_service_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/attribute-count-service.js */ "./src/admin/service/attribute-count-service.ts");
+/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/admin/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/admin/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/admin/service/web/author-web-service.ts");
+/* harmony import */ var _service_core_gitlab_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/core/gitlab-service.js */ "./src/admin/service/core/gitlab-service.ts");
+/* harmony import */ var _repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./repository/settings-repository.js */ "./src/admin/repository/settings-repository.ts");
+/* harmony import */ var _service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./service/core/routing-service.js */ "./src/admin/service/core/routing-service.ts");
+/* harmony import */ var _service_core_settings_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/core/settings-service.js */ "./src/admin/service/core/settings-service.ts");
 /* harmony import */ var _controller_channel_controller_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./controller/channel-controller.js */ "./src/admin/controller/channel-controller.ts");
 /* harmony import */ var _controller_item_controller_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./controller/item-controller.js */ "./src/admin/controller/item-controller.ts");
 /* harmony import */ var _controller_author_controller_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./controller/author-controller.js */ "./src/admin/controller/author-controller.ts");
 /* harmony import */ var _controller_settings_controller_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./controller/settings-controller.js */ "./src/admin/controller/settings-controller.ts");
 /* harmony import */ var _controller_connect_controller_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./controller/connect-controller.js */ "./src/admin/controller/connect-controller.ts");
 /* harmony import */ var _controller_publish_controller_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./controller/publish-controller.js */ "./src/admin/controller/publish-controller.ts");
-/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/admin/service/core/paging-service.ts");
-/* harmony import */ var _service_svg_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/svg-service.js */ "./src/admin/service/svg-service.ts");
-/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/admin/service/animation-service.ts");
-/* harmony import */ var _repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./repository/animation-repository.js */ "./src/admin/repository/animation-repository.ts");
-/* harmony import */ var _service_core_import_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/core/import-service.js */ "./src/admin/service/core/import-service.ts");
-/* harmony import */ var _service_core_erc_event_service_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/core/erc-event-service.js */ "./src/admin/service/core/erc-event-service.ts");
-/* harmony import */ var _service_core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/core/query-cache-service.js */ "./src/admin/service/core/query-cache-service.ts");
+/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/admin/service/core/paging-service.ts");
+/* harmony import */ var _service_svg_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/svg-service.js */ "./src/admin/service/svg-service.ts");
+/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/admin/service/animation-service.ts");
+/* harmony import */ var _repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./repository/animation-repository.js */ "./src/admin/repository/animation-repository.ts");
+/* harmony import */ var _service_core_import_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/core/import-service.js */ "./src/admin/service/core/import-service.ts");
+/* harmony import */ var _service_core_erc_event_service_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/core/erc-event-service.js */ "./src/admin/service/core/erc-event-service.ts");
+/* harmony import */ var _service_core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/core/query-cache-service.js */ "./src/admin/service/core/query-cache-service.ts");
 /* harmony import */ var ipfs_http_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-http-client */ "./node_modules/ipfs-http-client/src/index.js");
-/* harmony import */ var _service_theme_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/theme-service.js */ "./src/admin/service/theme-service.ts");
-/* harmony import */ var _repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./repository/theme-repository.js */ "./src/admin/repository/theme-repository.ts");
-/* harmony import */ var _repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./repository/static-page-repository.js */ "./src/admin/repository/static-page-repository.ts");
-/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/admin/service/static-page-service.ts");
-/* harmony import */ var _service_core_export_service_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/core/export-service.js */ "./src/admin/service/core/export-service.ts");
-/* harmony import */ var _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./repository/token-metadata-cache-repository.js */ "./src/admin/repository/token-metadata-cache-repository.ts");
-/* harmony import */ var _repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./repository/query-cache-repository.js */ "./src/admin/repository/query-cache-repository.ts");
+/* harmony import */ var _service_theme_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/theme-service.js */ "./src/admin/service/theme-service.ts");
+/* harmony import */ var _repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./repository/theme-repository.js */ "./src/admin/repository/theme-repository.ts");
+/* harmony import */ var _repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./repository/static-page-repository.js */ "./src/admin/repository/static-page-repository.ts");
+/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/admin/service/static-page-service.ts");
+/* harmony import */ var _service_core_export_service_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/core/export-service.js */ "./src/admin/service/core/export-service.ts");
+/* harmony import */ var _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./repository/token-metadata-cache-repository.js */ "./src/admin/repository/token-metadata-cache-repository.ts");
+/* harmony import */ var _repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./repository/query-cache-repository.js */ "./src/admin/repository/query-cache-repository.ts");
 /* harmony import */ var _components_admin_channel_channel_card_f7_html__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/admin/channel/channel-card.f7.html */ "./src/admin/components/admin/channel/channel-card.f7.html");
 /* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
 /* harmony import */ var framework7_components_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framework7/components/dialog */ "./node_modules/framework7/components/dialog/dialog.js");
@@ -11786,13 +11786,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var framework7_components_grid__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! framework7/components/grid */ "./node_modules/framework7/components/grid/grid.js");
 /* harmony import */ var framework7_components_infinite_scroll__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! framework7/components/infinite-scroll */ "./node_modules/framework7/components/infinite-scroll/infinite-scroll.js");
 /* harmony import */ var framework7_components_swiper__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! framework7/components/swiper */ "./node_modules/framework7/components/swiper/swiper.js");
-/* harmony import */ var _service_core_git_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/core/git-service.js */ "./src/admin/service/core/git-service.ts");
-/* harmony import */ var _service_core_github_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/core/github-service.js */ "./src/admin/service/core/github-service.ts");
+/* harmony import */ var _service_core_git_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/core/git-service.js */ "./src/admin/service/core/git-service.ts");
+/* harmony import */ var _service_core_github_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/core/github-service.js */ "./src/admin/service/core/github-service.ts");
+/* harmony import */ var _service_core_hugging_face_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/core/hugging-face-service.js */ "./src/admin/service/core/hugging-face-service.ts");
+/* harmony import */ var _service_core_deploy_service_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/deploy-service.js */ "./src/admin/service/core/deploy-service.ts");
 /* harmony import */ var pouchdb_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pouchdb-browser */ "./node_modules/pouchdb-browser/lib/index.es.js");
 /* harmony import */ var pouchdb_find__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! pouchdb-find */ "./node_modules/pouchdb-find/lib/index-browser.es.js");
-/* harmony import */ var _service_core_publish_service_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/publish-service.js */ "./src/admin/service/core/publish-service.ts");
-/* harmony import */ var _service_core_hugging_face_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/core/hugging-face-service.js */ "./src/admin/service/core/hugging-face-service.ts");
-/* harmony import */ var _service_core_deploy_service_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./service/core/deploy-service.js */ "./src/admin/service/core/deploy-service.ts");
 
 
 
@@ -11849,7 +11848,6 @@ __webpack_require__.r(__webpack_exports__);
 //Init framework7
 
 // Import additional components
-
 
 
 
@@ -11947,48 +11945,47 @@ function getMainContainer(version) {
     container.bind(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_36__.QueueService).toSelf().inSingletonScope();
     container.bind(_service_quill_service_js__WEBPACK_IMPORTED_MODULE_37__.QuillService).toSelf().inSingletonScope();
     container.bind(_service_quill_editor_service_js__WEBPACK_IMPORTED_MODULE_38__.QuillEditorService).toSelf().inSingletonScope();
-    container.bind(_service_core_publish_service_js__WEBPACK_IMPORTED_MODULE_39__.PublishService).toSelf().inSingletonScope();
-    container.bind(_service_core_deploy_service_js__WEBPACK_IMPORTED_MODULE_40__.DeployService).toSelf().inSingletonScope();
-    container.bind(_service_core_upload_service_js__WEBPACK_IMPORTED_MODULE_41__.UploadService).toSelf().inSingletonScope();
-    container.bind(_service_core_ipfs_service_js__WEBPACK_IMPORTED_MODULE_42__.IpfsService).toSelf().inSingletonScope();
-    container.bind(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_43__.DatabaseService).toSelf().inSingletonScope();
-    container.bind(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_44__.SchemaService).toSelf().inSingletonScope();
+    container.bind(_service_core_deploy_service_js__WEBPACK_IMPORTED_MODULE_39__.DeployService).toSelf().inSingletonScope();
+    container.bind(_service_core_upload_service_js__WEBPACK_IMPORTED_MODULE_40__.UploadService).toSelf().inSingletonScope();
+    container.bind(_service_core_ipfs_service_js__WEBPACK_IMPORTED_MODULE_41__.IpfsService).toSelf().inSingletonScope();
+    container.bind(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_42__.DatabaseService).toSelf().inSingletonScope();
+    container.bind(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_43__.SchemaService).toSelf().inSingletonScope();
     // container.bind(PinningService).toSelf().inSingletonScope()
-    container.bind(_service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_45__.RoutingService).toSelf().inSingletonScope();
-    container.bind(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_46__.PagingService).toSelf().inSingletonScope();
-    container.bind(_service_core_erc_event_service_js__WEBPACK_IMPORTED_MODULE_47__.ERCEventService).toSelf().inSingletonScope();
-    container.bind(_service_core_export_service_js__WEBPACK_IMPORTED_MODULE_48__.ExportService).toSelf().inSingletonScope();
-    container.bind(_service_attribute_count_service_js__WEBPACK_IMPORTED_MODULE_49__.AttributeCountService).toSelf().inSingletonScope();
-    container.bind(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_50__.ChannelWebService).toSelf().inSingletonScope();
-    container.bind(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_51__.ItemWebService).toSelf().inSingletonScope();
-    container.bind(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_52__.AuthorWebService).toSelf().inSingletonScope();
-    container.bind(_service_core_types_js__WEBPACK_IMPORTED_MODULE_53__["default"].WalletService).to(_service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_54__.WalletServiceImpl).inSingletonScope();
-    container.bind(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_55__.AnimationService).toSelf().inSingletonScope();
-    container.bind(_service_author_service_js__WEBPACK_IMPORTED_MODULE_56__.AuthorService).toSelf().inSingletonScope();
-    container.bind(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_57__.ChannelService).toSelf().inSingletonScope();
-    container.bind(_service_image_service_js__WEBPACK_IMPORTED_MODULE_58__.ImageService).toSelf().inSingletonScope();
-    container.bind(_service_item_service_js__WEBPACK_IMPORTED_MODULE_59__.ItemService).toSelf().inSingletonScope();
-    container.bind(_service_svg_service_js__WEBPACK_IMPORTED_MODULE_60__.SvgService).toSelf().inSingletonScope();
-    container.bind(_service_core_import_service_js__WEBPACK_IMPORTED_MODULE_61__.ImportService).toSelf().inSingletonScope();
-    container.bind(_service_theme_service_js__WEBPACK_IMPORTED_MODULE_62__.ThemeService).toSelf().inSingletonScope();
-    container.bind(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_63__.StaticPageService).toSelf().inSingletonScope();
-    container.bind(_service_core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_64__.QueryCacheService).toSelf().inSingletonScope();
-    container.bind(_service_core_settings_service_js__WEBPACK_IMPORTED_MODULE_65__.SettingsService).toSelf().inSingletonScope();
-    container.bind(_service_core_git_service_js__WEBPACK_IMPORTED_MODULE_66__.GitService).toSelf().inSingletonScope();
-    container.bind(_service_core_gitlab_service_js__WEBPACK_IMPORTED_MODULE_67__.GitlabService).toSelf().inSingletonScope();
-    container.bind(_service_core_github_service_js__WEBPACK_IMPORTED_MODULE_68__.GithubService).toSelf().inSingletonScope();
-    container.bind(_service_core_hugging_face_service_js__WEBPACK_IMPORTED_MODULE_69__.HuggingFaceService).toSelf().inSingletonScope();
-    container.bind(_repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_70__.AnimationRepository).toSelf().inSingletonScope();
-    container.bind(_repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_71__.ChannelRepository).toSelf().inSingletonScope();
-    container.bind(_repository_item_repository_js__WEBPACK_IMPORTED_MODULE_72__.ItemRepository).toSelf().inSingletonScope();
-    container.bind(_repository_image_repository_js__WEBPACK_IMPORTED_MODULE_73__.ImageRepository).toSelf().inSingletonScope();
-    container.bind(_repository_author_repository_js__WEBPACK_IMPORTED_MODULE_74__.AuthorRepository).toSelf().inSingletonScope();
-    container.bind(_repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_75__.SettingsRepository).toSelf().inSingletonScope();
-    container.bind(_repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_76__.ThemeRepository).toSelf().inSingletonScope();
-    container.bind(_repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_77__.StaticPageRepository).toSelf().inSingletonScope();
-    container.bind(_repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__.TokenMetadataCacheRepository).toSelf().inSingletonScope();
-    container.bind(_repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_79__.QueryCacheRepository).toSelf().inSingletonScope();
-    container.bind(_repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_80__.AttributeCountRepository).toSelf().inSingletonScope();
+    container.bind(_service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_44__.RoutingService).toSelf().inSingletonScope();
+    container.bind(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_45__.PagingService).toSelf().inSingletonScope();
+    container.bind(_service_core_erc_event_service_js__WEBPACK_IMPORTED_MODULE_46__.ERCEventService).toSelf().inSingletonScope();
+    container.bind(_service_core_export_service_js__WEBPACK_IMPORTED_MODULE_47__.ExportService).toSelf().inSingletonScope();
+    container.bind(_service_attribute_count_service_js__WEBPACK_IMPORTED_MODULE_48__.AttributeCountService).toSelf().inSingletonScope();
+    container.bind(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_49__.ChannelWebService).toSelf().inSingletonScope();
+    container.bind(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_50__.ItemWebService).toSelf().inSingletonScope();
+    container.bind(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_51__.AuthorWebService).toSelf().inSingletonScope();
+    container.bind(_service_core_types_js__WEBPACK_IMPORTED_MODULE_52__["default"].WalletService).to(_service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_53__.WalletServiceImpl).inSingletonScope();
+    container.bind(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_54__.AnimationService).toSelf().inSingletonScope();
+    container.bind(_service_author_service_js__WEBPACK_IMPORTED_MODULE_55__.AuthorService).toSelf().inSingletonScope();
+    container.bind(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_56__.ChannelService).toSelf().inSingletonScope();
+    container.bind(_service_image_service_js__WEBPACK_IMPORTED_MODULE_57__.ImageService).toSelf().inSingletonScope();
+    container.bind(_service_item_service_js__WEBPACK_IMPORTED_MODULE_58__.ItemService).toSelf().inSingletonScope();
+    container.bind(_service_svg_service_js__WEBPACK_IMPORTED_MODULE_59__.SvgService).toSelf().inSingletonScope();
+    container.bind(_service_core_import_service_js__WEBPACK_IMPORTED_MODULE_60__.ImportService).toSelf().inSingletonScope();
+    container.bind(_service_theme_service_js__WEBPACK_IMPORTED_MODULE_61__.ThemeService).toSelf().inSingletonScope();
+    container.bind(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_62__.StaticPageService).toSelf().inSingletonScope();
+    container.bind(_service_core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_63__.QueryCacheService).toSelf().inSingletonScope();
+    container.bind(_service_core_settings_service_js__WEBPACK_IMPORTED_MODULE_64__.SettingsService).toSelf().inSingletonScope();
+    container.bind(_service_core_git_service_js__WEBPACK_IMPORTED_MODULE_65__.GitService).toSelf().inSingletonScope();
+    container.bind(_service_core_gitlab_service_js__WEBPACK_IMPORTED_MODULE_66__.GitlabService).toSelf().inSingletonScope();
+    container.bind(_service_core_github_service_js__WEBPACK_IMPORTED_MODULE_67__.GithubService).toSelf().inSingletonScope();
+    container.bind(_service_core_hugging_face_service_js__WEBPACK_IMPORTED_MODULE_68__.HuggingFaceService).toSelf().inSingletonScope();
+    container.bind(_repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_69__.AnimationRepository).toSelf().inSingletonScope();
+    container.bind(_repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_70__.ChannelRepository).toSelf().inSingletonScope();
+    container.bind(_repository_item_repository_js__WEBPACK_IMPORTED_MODULE_71__.ItemRepository).toSelf().inSingletonScope();
+    container.bind(_repository_image_repository_js__WEBPACK_IMPORTED_MODULE_72__.ImageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_author_repository_js__WEBPACK_IMPORTED_MODULE_73__.AuthorRepository).toSelf().inSingletonScope();
+    container.bind(_repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_74__.SettingsRepository).toSelf().inSingletonScope();
+    container.bind(_repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_75__.ThemeRepository).toSelf().inSingletonScope();
+    container.bind(_repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_76__.StaticPageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_77__.TokenMetadataCacheRepository).toSelf().inSingletonScope();
+    container.bind(_repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__.QueryCacheRepository).toSelf().inSingletonScope();
+    container.bind(_repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_79__.AttributeCountRepository).toSelf().inSingletonScope();
     container.bind("ipfsRemoteInit").toConstantValue(async (url) => {
         if (!url)
             return;
@@ -12477,6 +12474,10 @@ let ItemRepository = class ItemRepository {
     async get(_id) {
         return Object.assign(new _dto_item_js__WEBPACK_IMPORTED_MODULE_1__.Item(), await this.db.get(_id));
     }
+    async getIds() {
+        let result = await this.db.allDocs({ include_docs: false });
+        return result.rows.filter(row => !row.id.startsWith("_design") && !row.id.startsWith("_local")).map(r => r.id);
+    }
     async getLatestRevision(_id) {
         return Object.assign(new _dto_item_js__WEBPACK_IMPORTED_MODULE_1__.Item(), await this.databaseService.getLatestRevision(this.db, _id));
     }
@@ -12732,6 +12733,10 @@ let StaticPageRepository = class StaticPageRepository {
     async get(_id) {
         return Object.assign(new _dto_static_page_js__WEBPACK_IMPORTED_MODULE_0__.StaticPage(), await this.db.get(_id));
     }
+    async getIds() {
+        let result = await this.db.allDocs({ include_docs: false });
+        return result.rows.filter(row => !row.id.startsWith("_design") && !row.id.startsWith("_local")).map(r => r.id);
+    }
     async getLatestRevision(_id) {
         return Object.assign(new _dto_static_page_js__WEBPACK_IMPORTED_MODULE_0__.StaticPage(), await this.databaseService.getLatestRevision(this.db, _id));
     }
@@ -12817,6 +12822,10 @@ let ThemeRepository = class ThemeRepository {
     }
     async get(_id) {
         return Object.assign(new _dto_theme_js__WEBPACK_IMPORTED_MODULE_0__.Theme(), await this.db.get(_id));
+    }
+    async getIds() {
+        let result = await this.db.allDocs({ include_docs: false });
+        return result.rows.filter(row => !row.id.startsWith("_design") && !row.id.startsWith("_local")).map(r => r.id);
     }
     async getLatestRevision(_id) {
         return Object.assign(new _dto_theme_js__WEBPACK_IMPORTED_MODULE_0__.Theme(), await this.databaseService.getLatestRevision(this.db, _id));
@@ -13880,48 +13889,10 @@ let ExportService = class ExportService {
     }
     async prepareExport(originalChannel, ownerAddress) {
         //Clone
-        let channel = JSON.parse(JSON.stringify(originalChannel));
-        let items = JSON.parse(JSON.stringify(await this.itemService.listByChannel(originalChannel._id, 100000, 0)));
+        let channel = await this.getExportChannel(originalChannel);
         //Get author
-        let author;
-        try {
-            author = await this.authorService.get(originalChannel.authorId);
-        }
-        catch (ex) { }
-        if (author) {
-            author = JSON.parse(JSON.stringify(author));
-        }
-        //Get themes
-        let themes = JSON.parse(JSON.stringify(await this.themeService.listByChannel(originalChannel._id, 1000, 0)));
-        //Get static pages
-        let staticPages = JSON.parse(JSON.stringify(await this.staticPageService.listByChannel(originalChannel._id, 1000, 0)));
-        //Remove publishing related field from channel
-        delete channel.contractAddress;
-        delete channel.pinJobId;
-        delete channel.pinJobStatus;
-        delete channel.pubDate;
-        delete channel.publishReaderRepoId;
-        delete channel.publishReaderRepoPath;
-        delete channel.publishReaderRepoBranch;
-        delete channel.publishReaderRepoStatus;
-        delete channel.publishReaderIPFSStatus;
-        delete channel.productionHostname;
-        delete channel.productionBaseLibraryURI;
-        delete channel.productionBaseURI;
-        delete channel.showMintPage;
-        delete channel.showActivityPage;
-        delete channel.marketplaces;
-        delete channel.externalLinks;
-        delete channel.importSuccess;
-        delete channel.lastUpdated;
-        delete channel._rev;
-        delete channel["_rev_tree"];
-        //Remove publishing related fields from author
-        if (author) {
-            delete author._rev;
-            delete author.lastUpdated;
-            delete author["_rev_tree"];
-        }
+        let author = await this.getExportAuthor(originalChannel.authorId);
+        let itemIds = await this.itemService.getIds();
         //Assign  
         let imageCids = [];
         let animationCids = [];
@@ -13938,69 +13909,42 @@ let ExportService = class ExportService {
             imageCids.push(author.coverPhotoId);
         }
         //Gather NFT data
-        for (let item of items) {
+        for (let itemId of itemIds) {
+            let item = await this.itemService.get(itemId);
             //Build animation URL if we have content
             if (item.animationId && !item.coverImageAsAnimation) {
                 animationCids.push(item.animationId);
             }
             imageCids.push(...this.getImageCidsByItem(item));
-            //Delete publishing related fields
-            delete item._rev;
-            delete item.lastUpdated;
-            delete item["_rev_tree"];
         }
         //Look up all the images
         imageCids = [...new Set(imageCids)]; //deduplicate
         animationCids = [...new Set(animationCids)]; //deduplicate
-        let images = await this.imageService.getByIds(imageCids);
-        let animations = await this.animationService.getByIds(animationCids);
-        //Clean up themes
-        for (let theme of themes) {
-            delete theme._rev;
-            delete theme["_rev_tree"];
-        }
-        //Clean up staticPages
-        for (let staticPage of staticPages) {
-            delete staticPage._rev;
-            delete staticPage["_rev_tree"];
-        }
         return {
-            animations: animations,
-            images: images,
+            animationCids: animationCids,
+            imageCids: imageCids,
             channel: channel,
-            items: items,
             author: author,
-            themes: themes,
-            staticPages: staticPages,
+            itemIds: itemIds,
+            themeIds: await this.themeService.getIds(),
+            staticPageIds: await this.staticPageService.getIds(),
             ownerAddress: ownerAddress
         };
     }
     async createBackup(exportBundle) {
-        let channel = JSON.parse(JSON.stringify(exportBundle.channel));
-        let items = exportBundle.items;
         let author = exportBundle.author;
-        let themes = exportBundle.themes;
-        let staticPages = exportBundle.staticPages;
-        //If we're exporting an existing collection delete the "forkedBy" fields
-        if (channel.forkType == "existing") {
-            delete channel.forkType;
-            delete channel.forkedFromCid;
-            delete channel.forkedFromFeeRecipient;
-            delete channel.forkedFromId;
+        let channel = this.getBackupChannel(exportBundle.channel, exportBundle.itemIds.length);
+        let items = [];
+        let themes = [];
+        let staticPages = [];
+        for (let themeId of exportBundle.themeIds) {
+            themes.push(this.prepareTheme(await this.themeService.get(themeId)));
         }
-        //Generate bundles with extra info for each item
-        for (let item of items) {
-            let previous = items.filter(i => i.tokenId == parseInt(item.tokenId.toString()) - 1);
-            let next = items.filter(i => i.tokenId == parseInt(item.tokenId.toString()) + 1);
-            //Add the previous and next items so they can used in navigation
-            item['previous'] = previous?.length > 0 ? {
-                _id: previous[0]._id,
-                tokenId: previous[0].tokenId
-            } : undefined;
-            item['next'] = next?.length > 0 ? {
-                _id: next[0]._id,
-                tokenId: next[0].tokenId
-            } : undefined;
+        for (let staticPageId of exportBundle.staticPageIds) {
+            staticPages.push(this.prepareStaticPage(await this.staticPageService.get(staticPageId)));
+        }
+        for (let itemId of exportBundle.itemIds) {
+            let item = this.prepareItem(await this.itemService.get(itemId));
             //Remove the image src data from the content. Will restore from local copy when importing.
             //Reduce backup filesize
             if (item.content?.ops?.length > 0) {
@@ -14013,10 +13957,25 @@ let ExportService = class ExportService {
                 }
                 item.content.ops = ops;
             }
+            items.push(item);
+        }
+        for (let item of items) {
+            let previous = items.filter(i => i.tokenId == parseInt(item.tokenId.toString()) - 1);
+            let next = items.filter(i => i.tokenId == parseInt(item.tokenId.toString()) + 1);
+            //Add the previous and next items so they can used in navigation
+            item['previous'] = previous?.length > 0 ? {
+                _id: previous[0]._id,
+                tokenId: previous[0].tokenId
+            } : undefined;
+            item['next'] = next?.length > 0 ? {
+                _id: next[0]._id,
+                tokenId: next[0].tokenId
+            } : undefined;
         }
         let images = [];
         let animations = [];
-        for (let image of exportBundle.images) {
+        for (let imageCid of exportBundle.imageCids) {
+            let image = await this.imageService.get(imageCid);
             let clonedImage = JSON.parse(JSON.stringify(image));
             //Remove publishing related field from image
             delete clonedImage._rev;
@@ -14025,7 +13984,8 @@ let ExportService = class ExportService {
             delete clonedImage.svg;
             images.push(clonedImage);
         }
-        for (let animation of exportBundle.animations) {
+        for (let animationCid of exportBundle.animationCids) {
+            let animation = await this.animationService.get(animationCid);
             let clonedAnimation = JSON.parse(JSON.stringify(animation));
             //Remove publishing related fields
             delete clonedAnimation._rev;
@@ -14037,8 +13997,6 @@ let ExportService = class ExportService {
         if (author) {
             authors.push(author);
         }
-        //Add itemCount to channel
-        channel['itemCount'] = items?.length;
         //Save pouch dbs
         return {
             channels: [channel],
@@ -14077,6 +14035,75 @@ let ExportService = class ExportService {
             }
         }
         return imageCids;
+    }
+    async getExportChannel(originalChannel) {
+        let channel = JSON.parse(JSON.stringify(originalChannel));
+        //Remove publishing related field from channel
+        delete channel.contractAddress;
+        delete channel.pinJobId;
+        delete channel.pinJobStatus;
+        delete channel.pubDate;
+        delete channel.publishReaderRepoId;
+        delete channel.publishReaderRepoPath;
+        delete channel.publishReaderRepoBranch;
+        delete channel.publishReaderRepoStatus;
+        delete channel.publishReaderIPFSStatus;
+        delete channel.productionHostname;
+        delete channel.productionBaseLibraryURI;
+        delete channel.productionBaseURI;
+        delete channel.showMintPage;
+        delete channel.showActivityPage;
+        delete channel.marketplaces;
+        delete channel.externalLinks;
+        delete channel.importSuccess;
+        delete channel.lastUpdated;
+        delete channel._rev;
+        delete channel["_rev_tree"];
+        return channel;
+    }
+    async getExportAuthor(authorId) {
+        let author;
+        try {
+            author = await this.authorService.get(authorId);
+        }
+        catch (ex) { }
+        if (author) {
+            author = JSON.parse(JSON.stringify(author));
+            delete author._rev;
+            delete author.lastUpdated;
+            delete author["_rev_tree"];
+        }
+        return author;
+    }
+    prepareTheme(theme) {
+        delete theme._rev;
+        delete theme["_rev_tree"];
+        return JSON.parse(JSON.stringify(theme));
+    }
+    prepareStaticPage(staticPage) {
+        delete staticPage._rev;
+        delete staticPage["_rev_tree"];
+        return JSON.parse(JSON.stringify(staticPage));
+    }
+    prepareItem(item) {
+        //Delete publishing related fields
+        delete item._rev;
+        delete item.lastUpdated;
+        delete item["_rev_tree"];
+        return JSON.parse(JSON.stringify(item));
+    }
+    getBackupChannel(exportChannel, itemCount) {
+        let channel = JSON.parse(JSON.stringify(exportChannel));
+        //If we're exporting an existing collection delete the "forkedBy" fields
+        if (channel.forkType == "existing") {
+            delete channel.forkType;
+            delete channel.forkedFromCid;
+            delete channel.forkedFromFeeRecipient;
+            delete channel.forkedFromId;
+        }
+        //Add itemCount to channel
+        channel['itemCount'] = itemCount;
+        return channel;
     }
 };
 ExportService = __decorate([
@@ -16667,17 +16694,22 @@ class PagingViewModel {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   PublishService: () => (/* binding */ PublishService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var _channel_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../channel-service.js */ "./src/admin/service/channel-service.ts");
-/* harmony import */ var _image_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../image-service.js */ "./src/admin/service/image-service.ts");
-/* harmony import */ var _item_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../item-service.js */ "./src/admin/service/item-service.ts");
-/* harmony import */ var _ipfs_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ipfs-service.js */ "./src/admin/service/core/ipfs-service.ts");
-/* harmony import */ var _types_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./types.js */ "./src/admin/service/core/types.ts");
-/* harmony import */ var _export_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./export-service.js */ "./src/admin/service/core/export-service.ts");
-/* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
-/* harmony import */ var _contracts_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../contracts.json */ "./contracts.json");
-/* harmony import */ var _settings_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./settings-service.js */ "./src/admin/service/core/settings-service.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! fs */ "./node_modules/memfs/lib/index.js");
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ "./node_modules/path-browserify/index.js");
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _channel_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../channel-service.js */ "./src/admin/service/channel-service.ts");
+/* harmony import */ var _image_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../image-service.js */ "./src/admin/service/image-service.ts");
+/* harmony import */ var _item_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../item-service.js */ "./src/admin/service/item-service.ts");
+/* harmony import */ var _ipfs_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ipfs-service.js */ "./src/admin/service/core/ipfs-service.ts");
+/* harmony import */ var _types_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./types.js */ "./src/admin/service/core/types.ts");
+/* harmony import */ var _export_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./export-service.js */ "./src/admin/service/core/export-service.ts");
+/* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
+/* harmony import */ var _contracts_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../contracts.json */ "./contracts.json");
+/* harmony import */ var _settings_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./settings-service.js */ "./src/admin/service/core/settings-service.ts");
+/* harmony import */ var _animation_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../animation-service.js */ "./src/admin/service/animation-service.ts");
 /* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -16699,7 +16731,10 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 
+
+
 //@ts-ignore
+
 
 
 let PublishService = class PublishService {
@@ -16707,14 +16742,16 @@ let PublishService = class PublishService {
     itemService;
     ipfsService;
     imageService;
+    animationService;
     exportService;
     settingsService;
     walletService;
-    constructor(channelService, itemService, ipfsService, imageService, exportService, settingsService, walletService) {
+    constructor(channelService, itemService, ipfsService, imageService, animationService, exportService, settingsService, walletService) {
         this.channelService = channelService;
         this.itemService = itemService;
         this.ipfsService = ipfsService;
         this.imageService = imageService;
+        this.animationService = animationService;
         this.exportService = exportService;
         this.settingsService = settingsService;
         this.walletService = walletService;
@@ -16723,7 +16760,7 @@ let PublishService = class PublishService {
         //Export metadata
         this.logPublishProgress(undefined, "Preparing export...");
         let exportBundle = await this.exportService.prepareExport(channel, this.walletService.address);
-        let feeRecipient = await this.getFeeReceipient(exportBundle);
+        let feeRecipient = await this.getFeeReceipient(exportBundle.channel, exportBundle.ownerAddress);
         if (feeRecipient) {
             this.logPublishProgress(undefined, `Fee Recipient: ${feeRecipient}`);
         }
@@ -16735,16 +16772,17 @@ let PublishService = class PublishService {
             cids = await this.exportToIPFS(exportBundle, backup, feeRecipient);
         }
         else {
-            cids = {
-                cid: channel.publishReaderIPFSStatus.cid,
-                imageDirectoryCid: channel.publishReaderIPFSStatus.imageDirectoryCid,
-                animationDirectoryCid: channel.publishReaderIPFSStatus.animationDirectoryCid
-            };
+            if (channel.publishReaderIPFSStatus.cid) {
+                cids = {
+                    cid: channel.publishReaderIPFSStatus.cid,
+                    imageDirectoryCid: channel.publishReaderIPFSStatus.imageDirectoryCid,
+                    animationDirectoryCid: channel.publishReaderIPFSStatus.animationDirectoryCid
+                };
+            }
         }
-        let fsActions = await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids);
+        await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids);
         return {
-            cids: cids,
-            fsActions: fsActions
+            cids: cids
         };
     }
     async exportToIPFS(exportBundle, backup, feeRecipient) {
@@ -16758,28 +16796,28 @@ let PublishService = class PublishService {
         catch (ex) { }
         let publishStatus = {
             contractMetadata: { saved: 0, total: 1 },
-            nftMetadata: { saved: 0, total: exportBundle.items.length },
-            images: { saved: 0, total: exportBundle.images.length },
-            animations: { saved: 0, total: exportBundle.animations.length },
+            nftMetadata: { saved: 0, total: exportBundle.itemIds.length },
+            images: { saved: 0, total: exportBundle.imageCids.length },
+            animations: { saved: 0, total: exportBundle.animationCids.length },
             backups: {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 },
                 items: { saved: 0, total: backup.items.length },
-                images: { saved: 0, total: exportBundle.images.length },
-                animations: { saved: 0, total: exportBundle.animations.length },
+                images: { saved: 0, total: exportBundle.imageCids.length },
+                animations: { saved: 0, total: exportBundle.animationCids.length },
                 themes: { saved: 0, total: backup.themes.length },
                 staticPages: { saved: 0, total: backup.staticPages.length }
             }
         };
         this.logPublishProgress(publishStatus);
         //Save images
-        await this._publishImagesIPFS(publishStatus, ipfsDirectory, exportBundle.images, true);
+        await this._publishImagesIPFS(publishStatus, ipfsDirectory, exportBundle.imageCids, true);
         //Save animations
-        await this._publishAnimationsIPFS(publishStatus, ipfsDirectory, exportBundle.animations, true);
+        await this._publishAnimationsIPFS(publishStatus, ipfsDirectory, exportBundle.animationCids, true);
         //Get directory cids
         let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory);
         let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory);
-        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true);
+        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.itemIds, animationDirectory, imageDirectory, true);
         //Save contract metadata
         let contractMetadataPath = `${ipfsDirectory}/contractMetadata.json`;
         let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory);
@@ -16829,22 +16867,21 @@ let PublishService = class PublishService {
         };
     }
     async exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids) {
-        let fsActions = [];
         //Save images
-        await this._publishImagesFS(baseDir, fsActions, exportBundle.images);
+        await this._publishImagesFS(baseDir, exportBundle.imageCids);
         //Save animations
-        await this._publishAnimationsFS(baseDir, fsActions, exportBundle.animations);
-        await this._publishNFTMetadataFS(baseDir, fsActions, exportBundle.channel, exportBundle.items, cids.animationDirectoryCid, cids.imageDirectoryCid);
+        await this._publishAnimationsFS(baseDir, exportBundle.animationCids);
+        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.itemIds, cids.animationDirectoryCid, cids.imageDirectoryCid);
         //Save contract metadata
         let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids.imageDirectoryCid);
         //Write to Git
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/contractMetadata.json`,
             content: Buffer.from(JSON.stringify(contractMetadata))
         });
         //Only copy contract info to git. IPFS doesn't know about it.
         if (channel.contractAddress) {
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract.json`,
                 content: Buffer.from(JSON.stringify({
                     contractAddress: channel.contractAddress,
@@ -16852,17 +16889,17 @@ let PublishService = class PublishService {
                 }))
             });
             //Also the ABI
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract-abi.json`,
-                content: Buffer.from(JSON.stringify(_contracts_json__WEBPACK_IMPORTED_MODULE_1__))
+                content: Buffer.from(JSON.stringify(_contracts_json__WEBPACK_IMPORTED_MODULE_3__))
             });
         }
         else {
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract.json`,
                 content: Buffer.from(JSON.stringify({}))
             });
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract-abi.json`,
                 content: Buffer.from(JSON.stringify({}))
             });
@@ -16913,7 +16950,7 @@ let PublishService = class PublishService {
         };
         let productionURIInfo = await getProductionURIInfo(channel);
         //Copy a large-config.json to GitHub
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/large-config.json`,
             content: Buffer.from(JSON.stringify({
                 "showMintPage": channel.showMintPage,
@@ -16925,35 +16962,34 @@ let PublishService = class PublishService {
                 "marketplaces": channel.marketplaces
             }))
         });
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/channels.json`,
             content: Buffer.from(JSON.stringify(backup.channels))
         });
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/authors.json`,
             content: Buffer.from(JSON.stringify(backup.authors))
         });
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/items.json`,
             content: Buffer.from(JSON.stringify(backup.items))
         });
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/images.json`,
             content: Buffer.from(JSON.stringify(backup.images))
         });
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/animations.json`,
             content: Buffer.from(JSON.stringify(backup.animations))
         });
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/themes.json`,
             content: Buffer.from(JSON.stringify(backup.themes))
         });
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/static-pages.json`,
             content: Buffer.from(JSON.stringify(backup.staticPages))
         });
-        return fsActions;
     }
     getIPFSDirectory(channel) {
         return `/export/${channel._id}`;
@@ -16980,21 +17016,22 @@ let PublishService = class PublishService {
         catch (ex) { }
         return cid;
     }
-    async getFeeReceipient(exportBundle) {
+    async getFeeReceipient(channel, ownerAddress) {
         let feeRecipient;
-        if (exportBundle.channel.forkType == "existing") {
-            if (exportBundle.channel.forkedFromFeeRecipient) {
-                feeRecipient = exportBundle.channel.forkedFromFeeRecipient;
+        if (channel.forkType == "existing") {
+            if (channel.forkedFromFeeRecipient) {
+                feeRecipient = channel.forkedFromFeeRecipient;
             }
         }
         else {
-            feeRecipient = exportBundle.ownerAddress;
+            feeRecipient = ownerAddress;
         }
         return feeRecipient;
     }
-    async _publishAnimationsIPFS(publishStatus, ipfsDirectory, animations, flush) {
-        this.logPublishProgress(publishStatus, `Exporting ${animations.length} animations`);
-        for (let animation of animations) {
+    async _publishAnimationsIPFS(publishStatus, ipfsDirectory, animationCids, flush) {
+        this.logPublishProgress(publishStatus, `Exporting ${animationCids.length} animations`);
+        for (let animationCid of animationCids) {
+            let animation = await this.animationService.get(animationCid);
             let ipfsFilename = `${ipfsDirectory}/animations/${animation.cid}.html`;
             let animationContent = {
                 content: animation.content
@@ -17019,20 +17056,21 @@ let PublishService = class PublishService {
             publishStatus.animations.saved++;
         }
     }
-    async _publishAnimationsFS(baseDir, fsActions, animations) {
-        for (let animation of animations) {
+    async _publishAnimationsFS(baseDir, animationCids) {
+        for (let animationCid of animationCids) {
+            let animation = await this.animationService.get(animationCid);
             let animationContent = {
                 content: animation.content
             };
-            //Add to git
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/animations/${animation.cid}.html`,
                 content: Buffer.from(animationContent.content)
             });
         }
     }
-    async _publishImagesIPFS(publishStatus, ipfsDirectory, images, flush) {
-        for (let image of images) {
+    async _publishImagesIPFS(publishStatus, ipfsDirectory, imageCids, flush) {
+        for (let imageCid of imageCids) {
+            let image = await this.imageService.get(imageCid);
             let ipfsFilename = `${ipfsDirectory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`;
             //Check if it's already in IPFS
             let stat;
@@ -17059,8 +17097,9 @@ let PublishService = class PublishService {
             publishStatus.images.saved++;
         }
     }
-    async _publishImagesFS(baseDir, fsActions, images) {
-        for (let image of images) {
+    async _publishImagesFS(baseDir, imageCids) {
+        for (let imageCid of imageCids) {
+            let image = await this.imageService.get(imageCid);
             let content;
             if (image.buffer) {
                 if (content instanceof Uint8Array) {
@@ -17074,23 +17113,23 @@ let PublishService = class PublishService {
             else if (image.svg) {
                 content = Buffer.from(image.svg);
             }
-            //Add to git. 
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,
                 content: content
             });
         }
     }
-    async _publishNFTMetadataIPFS(publishStatus, ipfsDirectory, channel, items, animationDirectoryCid, imageDirectoryCid, flush) {
+    async _publishNFTMetadataIPFS(publishStatus, ipfsDirectory, channel, itemIds, animationDirectoryCid, imageDirectoryCid, flush) {
         let gitActions = [];
-        this.logPublishProgress(publishStatus, `Exporting ${items.length} metadata files`);
+        this.logPublishProgress(publishStatus, `Exporting ${itemIds.length} metadata files`);
         let metadataNFTMap = {};
-        for (let item of items) {
+        for (let itemId of itemIds) {
+            let item = this.exportService.prepareItem(await this.itemService.get(itemId));
             let ipfsFilename = `${ipfsDirectory}/metadata/${item.tokenId}.json`;
             let coverImage = await this.imageService.get(item.coverImageId);
             let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid);
             let content = new TextEncoder().encode(JSON.stringify(nftMetadata));
-            let contentCid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__.of(content);
+            let contentCid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_2__.of(content);
             metadataNFTMap[contentCid] = nftMetadata;
             //Check if it's already in IPFS
             let stat;
@@ -17120,20 +17159,36 @@ let PublishService = class PublishService {
         }
         return gitActions;
     }
-    async _publishNFTMetadataFS(baseDir, fsActions, channel, items, animationDirectoryCid, imageDirectoryCid) {
+    async _publishNFTMetadataFS(baseDir, channel, itemIds, animationDirectoryCid, imageDirectoryCid) {
         let metadataNFTMap = {};
-        for (let item of items) {
+        for (let itemId of itemIds) {
+            let item = this.exportService.prepareItem(await this.itemService.get(itemId));
             let coverImage = await this.imageService.get(item.coverImageId);
             let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid);
             let content = new TextEncoder().encode(JSON.stringify(nftMetadata));
-            let contentCid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__.of(content);
+            let contentCid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_2__.of(content);
             metadataNFTMap[contentCid] = nftMetadata;
             let nft = metadataNFTMap[contentCid];
             //Save to git
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/metadata/${nft.tokenId}.json`,
                 content: Buffer.from(JSON.stringify(nftMetadata))
             });
+        }
+    }
+    _writeFSAction(action) {
+        if (!fs__WEBPACK_IMPORTED_MODULE_0___default().existsSync(path__WEBPACK_IMPORTED_MODULE_1___default().dirname(action.file_path))) {
+            fs__WEBPACK_IMPORTED_MODULE_0___default().mkdirSync(path__WEBPACK_IMPORTED_MODULE_1___default().dirname(action.file_path), { recursive: true });
+        }
+        if (action.keepExisting) {
+            if (!fs__WEBPACK_IMPORTED_MODULE_0___default().existsSync(action.file_path)) {
+                console.log(`Writing file: ${action.file_path}`);
+                fs__WEBPACK_IMPORTED_MODULE_0___default().writeFileSync(action.file_path, action.content);
+            }
+        }
+        else {
+            console.log(`Writing file: ${action.file_path}`);
+            fs__WEBPACK_IMPORTED_MODULE_0___default().writeFileSync(action.file_path, action.content);
         }
     }
     logPublishProgress(publishStatus, message) {
@@ -17153,14 +17208,15 @@ let PublishService = class PublishService {
     }
 };
 PublishService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.injectable)(),
-    __param(6, (0,inversify__WEBPACK_IMPORTED_MODULE_3__.inject)(_types_js__WEBPACK_IMPORTED_MODULE_4__["default"].WalletService)),
-    __metadata("design:paramtypes", [_channel_service_js__WEBPACK_IMPORTED_MODULE_5__.ChannelService,
-        _item_service_js__WEBPACK_IMPORTED_MODULE_6__.ItemService,
-        _ipfs_service_js__WEBPACK_IMPORTED_MODULE_7__.IpfsService,
-        _image_service_js__WEBPACK_IMPORTED_MODULE_8__.ImageService,
-        _export_service_js__WEBPACK_IMPORTED_MODULE_9__.ExportService,
-        _settings_service_js__WEBPACK_IMPORTED_MODULE_10__.SettingsService, Object])
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
+    __param(7, (0,inversify__WEBPACK_IMPORTED_MODULE_5__.inject)(_types_js__WEBPACK_IMPORTED_MODULE_6__["default"].WalletService)),
+    __metadata("design:paramtypes", [_channel_service_js__WEBPACK_IMPORTED_MODULE_7__.ChannelService,
+        _item_service_js__WEBPACK_IMPORTED_MODULE_8__.ItemService,
+        _ipfs_service_js__WEBPACK_IMPORTED_MODULE_9__.IpfsService,
+        _image_service_js__WEBPACK_IMPORTED_MODULE_10__.ImageService,
+        _animation_service_js__WEBPACK_IMPORTED_MODULE_11__.AnimationService,
+        _export_service_js__WEBPACK_IMPORTED_MODULE_12__.ExportService,
+        _settings_service_js__WEBPACK_IMPORTED_MODULE_13__.SettingsService, Object])
 ], PublishService);
 
 
@@ -18062,20 +18118,21 @@ WalletServiceImpl = __decorate([
 /* harmony export */   ImageService: () => (/* binding */ ImageService)
 /* harmony export */ });
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var html_truncate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! html-truncate */ "./node_modules/html-truncate/lib/truncate.js");
+/* harmony import */ var html_truncate__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(html_truncate__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mini-svg-data-uri */ "./node_modules/mini-svg-data-uri/index.js");
+/* harmony import */ var mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! he */ "./node_modules/he/he.js");
+/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(he__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _dto_image_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../dto/image.js */ "./src/admin/dto/image.ts");
 /* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/admin/util/validation-exception.ts");
 /* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
 /* harmony import */ var _repository_image_repository_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../repository/image-repository.js */ "./src/admin/repository/image-repository.ts");
-/* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
+/* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
 /* harmony import */ var _svg_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./svg-service.js */ "./src/admin/service/svg-service.ts");
 /* harmony import */ var _quill_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./quill-service.js */ "./src/admin/service/quill-service.ts");
-/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! he */ "./node_modules/he/he.js");
-/* harmony import */ var he__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(he__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _theme_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./theme-service.js */ "./src/admin/service/theme-service.ts");
-/* harmony import */ var html_truncate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! html-truncate */ "./node_modules/html-truncate/lib/truncate.js");
-/* harmony import */ var html_truncate__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(html_truncate__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mini-svg-data-uri */ "./node_modules/mini-svg-data-uri/index.js");
-/* harmony import */ var mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _item_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./item-service.js */ "./src/admin/service/item-service.ts");
 /* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18098,17 +18155,20 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 let ImageService = class ImageService {
     imageRepository;
     svgService;
     quillService;
     themeService;
+    itemService;
     db;
-    constructor(imageRepository, svgService, quillService, themeService) {
+    constructor(imageRepository, svgService, quillService, themeService, itemService) {
         this.imageRepository = imageRepository;
         this.svgService = svgService;
         this.quillService = quillService;
         this.themeService = themeService;
+        this.itemService = itemService;
     }
     async load(channelId) {
         this.db = await this.imageRepository.load(channelId);
@@ -18137,14 +18197,14 @@ let ImageService = class ImageService {
     async newFromBuffer(buffer) {
         const image = new _dto_image_js__WEBPACK_IMPORTED_MODULE_6__.Image();
         image.buffer = buffer;
-        image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__.of(buffer);
+        image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_3__.of(buffer);
         image.generated = false;
         return image;
     }
     async newFromSvg(svg) {
         const image = new _dto_image_js__WEBPACK_IMPORTED_MODULE_6__.Image();
         image.svg = svg;
-        image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__.of(image.svg);
+        image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_3__.of(image.svg);
         image.generated = true;
         return image;
     }
@@ -18183,7 +18243,7 @@ let ImageService = class ImageService {
         });
     }
     svgToDataURL(svgStr) {
-        return mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_3___default()(svgStr);
+        return mini_svg_data_uri__WEBPACK_IMPORTED_MODULE_1___default()(svgStr);
         // return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
     }
     async newFromItem(item) {
@@ -18209,7 +18269,7 @@ let ImageService = class ImageService {
         }
         const image = new _dto_image_js__WEBPACK_IMPORTED_MODULE_6__.Image();
         image.svg = await this.svgService.fromText(item.title, excerpt, item.coverImageCSS, allThemeCss);
-        image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__.of(image.svg);
+        image.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_3__.of(image.svg);
         // console.log(new TextEncoder().encode(image.svg))
         // console.log(image.cid)
         image.generated = true;
@@ -18219,14 +18279,14 @@ let ImageService = class ImageService {
     getExcerptByFirstParagraph(excerpt, options) {
         //Strip tags except for <p>
         // excerpt = excerpt.replace(/<(?![p|br]\s*\/?)[^>]+>/g, '')
-        excerpt = he__WEBPACK_IMPORTED_MODULE_1___default().unescape(excerpt);
+        excerpt = he__WEBPACK_IMPORTED_MODULE_2___default().unescape(excerpt);
         const pruneLength = typeof options.pruneLength === 'number' ? options.pruneLength : 140;
         if (pruneLength > 0) {
-            excerpt = html_truncate__WEBPACK_IMPORTED_MODULE_2___default()(excerpt, pruneLength, {
+            excerpt = html_truncate__WEBPACK_IMPORTED_MODULE_0___default()(excerpt, pruneLength, {
                 ellipsis: ""
             });
         }
-        excerpt = he__WEBPACK_IMPORTED_MODULE_1___default().encode(excerpt, { allowUnsafeSymbols: true });
+        excerpt = he__WEBPACK_IMPORTED_MODULE_2___default().encode(excerpt, { allowUnsafeSymbols: true });
         return excerpt;
     }
     async getByIds(ids) {
@@ -18281,7 +18341,8 @@ ImageService = __decorate([
     __metadata("design:paramtypes", [_repository_image_repository_js__WEBPACK_IMPORTED_MODULE_8__.ImageRepository,
         _svg_service_js__WEBPACK_IMPORTED_MODULE_9__.SvgService,
         _quill_service_js__WEBPACK_IMPORTED_MODULE_10__.QuillService,
-        _theme_service_js__WEBPACK_IMPORTED_MODULE_11__.ThemeService])
+        _theme_service_js__WEBPACK_IMPORTED_MODULE_11__.ThemeService,
+        _item_service_js__WEBPACK_IMPORTED_MODULE_12__.ItemService])
 ], ImageService);
 
 
@@ -18332,6 +18393,9 @@ let ItemService = class ItemService {
     }
     async get(_id) {
         return this.itemRepository.get(_id);
+    }
+    async getIds() {
+        return this.itemRepository.getIds();
     }
     async getLatestRevision(_id) {
         return this.itemRepository.getLatestRevision(_id);
@@ -18914,6 +18978,9 @@ let StaticPageService = class StaticPageService {
     async get(_id) {
         return this.staticPageRepository.get(_id);
     }
+    async getIds() {
+        return this.staticPageRepository.getIds();
+    }
     async getLatestRevision(_id) {
         return this.staticPageRepository.getLatestRevision(_id);
     }
@@ -19141,6 +19208,9 @@ let ThemeService = class ThemeService {
     }
     async get(_id) {
         return this.themeRepository.get(_id);
+    }
+    async getIds() {
+        return this.themeRepository.getIds();
     }
     async getLatestRevision(_id) {
         return this.themeRepository.getLatestRevision(_id);

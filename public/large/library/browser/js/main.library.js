@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f8c244a340';
+framework7Component.id = '1a10036008';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2a33539aa7';
+framework7Component.id = '80b39cf308';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '92a8f7e383';
+framework7Component.id = '2be95c82fb';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7809e60726';
+framework7Component.id = '5c92837944';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5b6b7c837f';
+framework7Component.id = '61ed2630ed';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -726,7 +726,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c5962d2690';
+framework7Component.id = '542afdbf22';
 framework7Component.style = `
 
 `;
@@ -801,7 +801,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '40a8580a2f';
+framework7Component.id = 'ed626821d1';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1082,7 +1082,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'cad3963592';
+framework7Component.id = 'eb9d198f53';
 framework7Component.style = `
 
 
@@ -1262,7 +1262,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7376f1eff7';
+framework7Component.id = '0aec7c498b';
 framework7Component.style = `
 
 .block-search {
@@ -1582,7 +1582,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3611f60b39';
+framework7Component.id = '5a9c888ded';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1700,7 +1700,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'aa73f0d713';
+framework7Component.id = '047c6f2fec';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1770,7 +1770,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ca4073f549';
+framework7Component.id = '3aa867cab1';
 framework7Component.style = `
 
 
@@ -3971,7 +3971,8 @@ let changesets = [
 /* harmony export */   AnimationService: () => (/* binding */ AnimationService)
 /* harmony export */ });
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _item_service_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./item-service.js */ "./src/reader/service/item-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3982,8 +3983,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 let AnimationService = class AnimationService {
     animationRepository;
+    itemService;
     constructor() { }
     async get(_id) {
         return this.animationRepository.get(_id);
@@ -3993,8 +3996,12 @@ __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("AnimationRepository"),
     __metadata("design:type", Object)
 ], AnimationService.prototype, "animationRepository", void 0);
+__decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("ItemService"),
+    __metadata("design:type", _item_service_js__WEBPACK_IMPORTED_MODULE_1__.ItemService)
+], AnimationService.prototype, "itemService", void 0);
 AnimationService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.injectable)(),
     __metadata("design:paramtypes", [])
 ], AnimationService);
 

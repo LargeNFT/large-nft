@@ -22,6 +22,10 @@ class ThemeService {
     return this.themeRepository.get(_id)
   }
 
+  async getIds() : Promise<string[]> {
+    return this.themeRepository.getIds()
+  }
+
   async getLatestRevision(_id:string) : Promise<Theme> {
     return this.themeRepository.getLatestRevision(_id)
   }

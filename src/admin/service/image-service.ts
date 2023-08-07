@@ -1,6 +1,11 @@
 
 
 import { injectable } from "inversify"
+
+import truncate from "html-truncate"
+import svgToMiniDataURI from 'mini-svg-data-uri'
+import he from 'he'
+
 import { Image } from "../dto/image.js"
 import { ValidationException } from "../util/validation-exception.js"
 import { validate, ValidationError } from 'class-validator'
@@ -9,15 +14,10 @@ import Hash from 'ipfs-only-hash'
 import { SvgService } from "./svg-service.js"
 import { QuillService } from "./quill-service.js"
 
-import he from 'he'
 import { Item } from "../dto/item.js"
 import { Theme } from "../dto/theme.js"
 import { ThemeService } from "./theme-service.js"
-
-import truncate from "html-truncate"
-
-
-import svgToMiniDataURI from 'mini-svg-data-uri'
+import { ItemService } from "./item-service.js"
 
 
 @injectable()
@@ -29,7 +29,8 @@ class ImageService {
     private imageRepository: ImageRepository,
     private svgService:SvgService,
     private quillService:QuillService,
-    private themeService:ThemeService
+    private themeService:ThemeService,
+    private itemService:ItemService
   ) { }
 
   async load(channelId:string) {
@@ -112,8 +113,6 @@ class ImageService {
 
   }
 
-
-
   public bufferToBlob(buffer: Uint8Array): Promise<Blob> {
 
     if (Blob != undefined) {
@@ -146,7 +145,6 @@ class ImageService {
 
     // return "data:image/svg+xml;base64," + Buffer.from(svgStr).toString("base64")
   }
-
 
   public async newFromItem(item:Item) {
 
@@ -195,7 +193,6 @@ class ImageService {
 
   }
 
-
   //Grabbing from the 
   private getExcerptByFirstParagraph (excerpt, options) {
 
@@ -218,7 +215,6 @@ class ImageService {
 
 
   }
-
 
   async getByIds(ids:string[]) {
     return this.imageRepository.getByIds(ids)
@@ -245,7 +241,6 @@ class ImageService {
 
   }
 
-
   async loadImage(image, imageData) {
 
     return new Promise (function (resolved, rejected) {
@@ -263,8 +258,6 @@ class ImageService {
 
 
   }
-
-
 
   async phlipImage(inputImage) {
 
@@ -293,6 +286,8 @@ class ImageService {
     return binary
 
   }
+
+
 
 
 }

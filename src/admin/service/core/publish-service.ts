@@ -1,4 +1,8 @@
 import { inject, injectable } from "inversify"
+
+import fs from "fs"
+import path from "path"
+
 import { Channel } from "../../dto/channel.js"
 import { Animation } from "../../dto/animation.js"
 import { Item } from "../../dto/item.js"
@@ -22,6 +26,7 @@ import { ContractMetadata } from "../../dto/contract-metadata.js"
 //@ts-ignore
 import contractABI from '../../../../contracts.json' assert { type: "json" }
 import { SettingsService } from "./settings-service.js"
+import { AnimationService } from "../animation-service.js"
 
 
 @injectable()
@@ -32,6 +37,7 @@ class PublishService {
         private itemService: ItemService,
         private ipfsService: IpfsService,
         private imageService: ImageService,
+        private animationService:AnimationService,
         private exportService:ExportService,
         private settingsService:SettingsService,
         @inject(TYPES.WalletService) private walletService: WalletService
@@ -43,8 +49,8 @@ class PublishService {
         this.logPublishProgress(undefined, "Preparing export...")
         let exportBundle:ExportBundle = await this.exportService.prepareExport(channel, this.walletService.address)
 
-        
-        let feeRecipient = await this.getFeeReceipient(exportBundle)
+
+        let feeRecipient = await this.getFeeReceipient(exportBundle.channel, exportBundle.ownerAddress)
 
         if (feeRecipient) {
             this.logPublishProgress(undefined, `Fee Recipient: ${feeRecipient}`)
@@ -63,22 +69,22 @@ class PublishService {
             
         } else {
 
-            cids = {
-                cid: channel.publishReaderIPFSStatus.cid,
-                imageDirectoryCid: channel.publishReaderIPFSStatus.imageDirectoryCid,
-                animationDirectoryCid: channel.publishReaderIPFSStatus.animationDirectoryCid
+            if (channel.publishReaderIPFSStatus.cid) {
+
+                cids = {
+                    cid: channel.publishReaderIPFSStatus.cid,
+                    imageDirectoryCid: channel.publishReaderIPFSStatus.imageDirectoryCid,
+                    animationDirectoryCid: channel.publishReaderIPFSStatus.animationDirectoryCid
+                }
+
             }
 
         }
 
-
-
-
-        let fsActions = await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids)
+        await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids)
 
         return {
-            cids: cids,
-            fsActions: fsActions
+            cids: cids
         }
 
     }
@@ -99,16 +105,16 @@ class PublishService {
 
             contractMetadata: { saved: 0, total: 1 },
             
-            nftMetadata: { saved: 0, total: exportBundle.items.length },
-            images: { saved: 0, total: exportBundle.images.length  },
-            animations: { saved: 0, total: exportBundle.animations.length},
+            nftMetadata: { saved: 0, total: exportBundle.itemIds.length },
+            images: { saved: 0, total: exportBundle.imageCids.length  },
+            animations: { saved: 0, total: exportBundle.animationCids.length},
         
             backups: {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 }, 
                 items: { saved: 0, total: backup.items.length },
-                images: { saved: 0, total: exportBundle.images.length },
-                animations: { saved: 0, total: exportBundle.animations.length },
+                images: { saved: 0, total: exportBundle.imageCids.length },
+                animations: { saved: 0, total: exportBundle.animationCids.length },
                 themes: { saved: 0, total: backup.themes.length },
                 staticPages: { saved: 0, total: backup.staticPages.length }
             }
@@ -118,17 +124,17 @@ class PublishService {
 
 
         //Save images
-        await this._publishImagesIPFS(publishStatus, ipfsDirectory, exportBundle.images, true)
+        await this._publishImagesIPFS(publishStatus, ipfsDirectory, exportBundle.imageCids, true)
 
         //Save animations
-        await this._publishAnimationsIPFS(publishStatus, ipfsDirectory, exportBundle.animations, true)
+        await this._publishAnimationsIPFS(publishStatus, ipfsDirectory, exportBundle.animationCids, true)
 
 
         //Get directory cids
         let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
         let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
 
-        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
+        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.itemIds, animationDirectory, imageDirectory, true)
 
         //Save contract metadata
         let contractMetadataPath = `${ipfsDirectory}/contractMetadata.json`
@@ -220,24 +226,22 @@ class PublishService {
 
     }
 
-    async exportToFS(baseDir:string, channel:Channel, exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string, cids?:CidInfo): Promise<any[]> {
-
-        let fsActions = []
+    async exportToFS(baseDir:string, channel:Channel, exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string, cids?:CidInfo) {
 
         //Save images
-        await this._publishImagesFS(baseDir, fsActions, exportBundle.images)
+        await this._publishImagesFS(baseDir, exportBundle.imageCids)
 
         //Save animations
-        await this._publishAnimationsFS(baseDir, fsActions, exportBundle.animations)
+        await this._publishAnimationsFS(baseDir, exportBundle.animationCids)
 
-        await this._publishNFTMetadataFS(baseDir, fsActions, exportBundle.channel, exportBundle.items, cids.animationDirectoryCid, cids.imageDirectoryCid)
+        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.itemIds, cids.animationDirectoryCid, cids.imageDirectoryCid)
 
         //Save contract metadata
         let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids.imageDirectoryCid)
 
 
         //Write to Git
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/contractMetadata.json`,
             content: Buffer.from(JSON.stringify(contractMetadata))
         })
@@ -246,7 +250,7 @@ class PublishService {
         //Only copy contract info to git. IPFS doesn't know about it.
         if (channel.contractAddress) {
                     
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract.json`,
                 content: Buffer.from(JSON.stringify({ 
                     contractAddress: channel.contractAddress,
@@ -256,19 +260,19 @@ class PublishService {
             })
 
             //Also the ABI
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract-abi.json`,
                 content: Buffer.from(JSON.stringify(contractABI))
             })
 
 
         } else {
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract.json`,
                 content: Buffer.from(JSON.stringify({}))
             })
 
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/contract/contract-abi.json`,
                 content: Buffer.from(JSON.stringify({}))
             })
@@ -346,7 +350,7 @@ class PublishService {
         let productionURIInfo = await getProductionURIInfo(channel)
 
         //Copy a large-config.json to GitHub
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/large-config.json`,
             content: Buffer.from(JSON.stringify({
                 "showMintPage": channel.showMintPage,
@@ -360,44 +364,42 @@ class PublishService {
         })
 
 
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/channels.json`,
             content: Buffer.from(JSON.stringify(backup.channels))
         })
         
 
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/authors.json`,
             content: Buffer.from(JSON.stringify(backup.authors))
         })
 
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/items.json`,
             content: Buffer.from(JSON.stringify(backup.items))
         })
        
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/images.json`,
             content: Buffer.from(JSON.stringify(backup.images))
         })
         
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/animations.json`,
             content: Buffer.from(JSON.stringify(backup.animations))
         })
                 
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/themes.json`,
             content: Buffer.from(JSON.stringify(backup.themes))
         })
         
-        fsActions.push({
+        await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/static-pages.json`,
             content: Buffer.from(JSON.stringify(backup.staticPages))
         })
         
-
-        return fsActions
 
     }
 
@@ -439,26 +441,28 @@ class PublishService {
 
     }
 
-    public async getFeeReceipient(exportBundle:ExportBundle) {
+    public async getFeeReceipient(channel:Channel, ownerAddress:string) {
 
         let feeRecipient
 
-        if (exportBundle.channel.forkType == "existing") {  
-            if (exportBundle.channel.forkedFromFeeRecipient) {
-                feeRecipient = exportBundle.channel.forkedFromFeeRecipient 
+        if (channel.forkType == "existing") {  
+            if (channel.forkedFromFeeRecipient) {
+                feeRecipient = channel.forkedFromFeeRecipient 
             }
         } else {
-            feeRecipient = exportBundle.ownerAddress
+            feeRecipient = ownerAddress
         }
 
         return feeRecipient
     }
 
-    private async _publishAnimationsIPFS(publishStatus:PublishStatus, ipfsDirectory:string, animations:Animation[], flush: boolean) {
+    private async _publishAnimationsIPFS(publishStatus:PublishStatus, ipfsDirectory:string, animationCids:string[], flush: boolean) {
 
-        this.logPublishProgress(publishStatus, `Exporting ${animations.length} animations`)
+        this.logPublishProgress(publishStatus, `Exporting ${animationCids.length} animations`)
 
-        for (let animation of animations) {
+        for (let animationCid of animationCids) {
+
+            let animation = await this.animationService.get(animationCid)
 
             let ipfsFilename = `${ipfsDirectory}/animations/${animation.cid}.html`
 
@@ -501,16 +505,17 @@ class PublishService {
 
     }
 
-    private async _publishAnimationsFS(baseDir:string, fsActions:any[], animations:Animation[]) {
+    private async _publishAnimationsFS(baseDir:string, animationCids:string[]) {
 
-        for (let animation of animations) {
+        for (let animationCid of animationCids) {
+
+            let animation = await this.animationService.get(animationCid)
 
             let animationContent = {
                 content: animation.content
             }
 
-            //Add to git
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/animations/${animation.cid}.html`,
                 content: Buffer.from(animationContent.content)
             })
@@ -520,10 +525,12 @@ class PublishService {
 
     }
 
-    private async _publishImagesIPFS(publishStatus:PublishStatus, ipfsDirectory:string, images:Image[], flush: boolean) {
+    private async _publishImagesIPFS(publishStatus:PublishStatus, ipfsDirectory:string, imageCids:string[], flush: boolean) {
 
-        for (let image of images) {
+        for (let imageCid of imageCids) {
             
+            let image = await this.imageService.get(imageCid)
+
             let ipfsFilename = `${ipfsDirectory}/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}` 
 
 
@@ -565,10 +572,12 @@ class PublishService {
 
     }
 
-    private async _publishImagesFS(baseDir:string, fsActions:any[], images:Image[]) {
+    private async _publishImagesFS(baseDir:string, imageCids:string[]) {
 
-        for (let image of images) {
+        for (let imageCid of imageCids) {
             
+            let image:Image = await this.imageService.get(imageCid)
+
             let content 
 
             if (image.buffer) {
@@ -584,8 +593,7 @@ class PublishService {
                 content = Buffer.from(image.svg)
             }
 
-            //Add to git. 
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,
                 content: content
             })
@@ -595,17 +603,19 @@ class PublishService {
 
     }
 
-    private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
+    private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, itemIds:string[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
 
         let gitActions = []
 
 
-        this.logPublishProgress(publishStatus, `Exporting ${items.length} metadata files`)
+        this.logPublishProgress(publishStatus, `Exporting ${itemIds.length} metadata files`)
 
 
         let metadataNFTMap = {}
 
-        for (let item of items) {
+        for (let itemId of itemIds) {
+
+            let item = this.exportService.prepareItem(await this.itemService.get(itemId))
 
             let ipfsFilename = `${ipfsDirectory}/metadata/${item.tokenId}.json`
 
@@ -664,11 +674,13 @@ class PublishService {
 
     }
 
-    private async _publishNFTMetadataFS(baseDir:string, fsActions:any[], channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string) {
+    private async _publishNFTMetadataFS(baseDir:string, channel:Channel, itemIds:string[], animationDirectoryCid:string, imageDirectoryCid:string) {
 
         let metadataNFTMap = {}
 
-        for (let item of items) {
+        for (let itemId of itemIds) {
+
+            let item = this.exportService.prepareItem(await this.itemService.get(itemId))
 
             let coverImage:Image = await this.imageService.get(item.coverImageId)
             let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
@@ -681,10 +693,8 @@ class PublishService {
 
             let nft = metadataNFTMap[contentCid]
 
-
-
             //Save to git
-            fsActions.push({
+            await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/metadata/${nft.tokenId}.json`,
                 content: Buffer.from(JSON.stringify(nftMetadata))
             })
@@ -693,6 +703,26 @@ class PublishService {
 
     }
 
+
+    private _writeFSAction(action:FSAction) {
+
+        if (!fs.existsSync(path.dirname(action.file_path))) {
+            fs.mkdirSync(path.dirname(action.file_path), { recursive: true })
+          }
+      
+          if (action.keepExisting) {
+      
+            if (!fs.existsSync(action.file_path)) {
+              console.log(`Writing file: ${action.file_path}`)
+              fs.writeFileSync(action.file_path, action.content)
+            }
+      
+          } else {
+            console.log(`Writing file: ${action.file_path}`)
+            fs.writeFileSync(action.file_path, action.content)
+          }
+
+    }
 
     private logPublishProgress(publishStatus:PublishStatus, message?: string) {
 
@@ -723,6 +753,12 @@ interface CidInfo {
     cid: string
     imageDirectoryCid:string
     animationDirectoryCid:string
+}
+
+interface FSAction {
+    file_path: string
+    content: any
+    keepExisting?: boolean
 }
 
 export {

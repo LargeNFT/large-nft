@@ -43,6 +43,14 @@ class StaticPageRepository {
         return Object.assign(new StaticPage(), await this.db.get(_id))
     }
 
+    async getIds() : Promise<string[]> {
+
+        let result = await this.db.allDocs({ include_docs: false})
+
+        return result.rows.filter(row => !row.id.startsWith("_design") && !row.id.startsWith("_local")).map( r => r.id)
+
+    }
+
     async getLatestRevision(_id:string) : Promise<StaticPage> {
         return Object.assign(new StaticPage(), await this.databaseService.getLatestRevision(this.db, _id))
     }

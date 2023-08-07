@@ -27,80 +27,21 @@ class ExportService {
         private animationService:AnimationService,
         private staticPageService:StaticPageService
     ) {}
-
     
     async prepareExport(originalChannel: Channel, ownerAddress:string) : Promise<ExportBundle> {
         
         //Clone
-        let channel = JSON.parse(JSON.stringify(originalChannel))
+        let channel = await this.getExportChannel(originalChannel)
         
-        let items: Item[] = JSON.parse(JSON.stringify(
-            await this.itemService.listByChannel(originalChannel._id, 100000, 0)
-        ))
-
         //Get author
-        let author
-        
-        try {
-            author = await this.authorService.get(originalChannel.authorId)
-        } catch(ex) {}
+        let author = await this.getExportAuthor(originalChannel.authorId)
 
-
-        if (author) {
-            author = JSON.parse(JSON.stringify(author))
-        }
-
-
-
-        //Get themes
-        let themes = JSON.parse(JSON.stringify(
-            await this.themeService.listByChannel(originalChannel._id, 1000, 0)
-        ))
-
-        //Get static pages
-        let staticPages:StaticPage[] = JSON.parse(JSON.stringify(
-            await this.staticPageService.listByChannel(originalChannel._id, 1000, 0)
-        ))
-
-        //Remove publishing related field from channel
-        delete channel.contractAddress
-        delete channel.pinJobId
-        delete channel.pinJobStatus
-        delete channel.pubDate
-        delete channel.publishReaderRepoId
-        delete channel.publishReaderRepoPath
-        delete channel.publishReaderRepoBranch
-        delete channel.publishReaderRepoStatus
-        delete channel.publishReaderIPFSStatus
-
-
-        delete channel.productionHostname
-        delete channel.productionBaseLibraryURI
-        delete channel.productionBaseURI
-        delete channel.showMintPage
-        delete channel.showActivityPage
-        delete channel.marketplaces
-        delete channel.externalLinks
-
-
-
-        delete channel.importSuccess
-        delete channel.lastUpdated
-        delete channel._rev
-        delete channel["_rev_tree"]
-
-        //Remove publishing related fields from author
-        if (author) {
-            delete author._rev
-            delete author.lastUpdated
-            delete author["_rev_tree"]
-        }
+        let itemIds = await this.itemService.getIds()
 
         //Assign  
         let imageCids:string[] = []
         let animationCids:string[] = []
         
-
         //Add cover image
         if (channel.coverImageId?.length > 0) {
             imageCids.push(channel.coverImageId)
@@ -117,7 +58,9 @@ class ExportService {
         }
 
         //Gather NFT data
-        for (let item of items) {
+        for (let itemId of itemIds) {
+
+            let item = await this.itemService.get(itemId)
 
             //Build animation URL if we have content
             if (item.animationId && !item.coverImageAsAnimation) {
@@ -126,92 +69,54 @@ class ExportService {
 
             imageCids.push(...this.getImageCidsByItem(item))
 
-            //Delete publishing related fields
-            delete item._rev
-            delete item.lastUpdated
-            delete item["_rev_tree"]
-
         }
-
 
         //Look up all the images
         imageCids = [...new Set(imageCids)] //deduplicate
         animationCids = [...new Set(animationCids)] //deduplicate
 
-
-        let images:Image[] = await this.imageService.getByIds(imageCids)
-        let animations:Animation[] = await this.animationService.getByIds(animationCids)
-
-        //Clean up themes
-        for (let theme of themes) {
-
-            delete theme._rev
-            delete theme["_rev_tree"]
-        }
-
-        //Clean up staticPages
-        for (let staticPage of staticPages) {
-
-            delete staticPage._rev
-            delete staticPage["_rev_tree"]
-        }
-
-
         return {
 
-            animations: animations,
-            images: images,
+            animationCids: animationCids,
+            imageCids: imageCids,
 
             channel: channel,
-            items: items,
             author: author,
-            themes: themes,
-            staticPages: staticPages,
+
+            itemIds: itemIds,
+            themeIds: await this.themeService.getIds(),
+            staticPageIds: await this.staticPageService.getIds(),
 
             ownerAddress: ownerAddress
         }
 
     }
 
-
     async createBackup(exportBundle: ExportBundle) : Promise<BackupBundle> {
 
-        let channel: Channel = JSON.parse( JSON.stringify(exportBundle.channel) )
-        let items: Item[] = exportBundle.items
         let author: Author = exportBundle.author
-        let themes:Theme[] = exportBundle.themes
-        let staticPages:StaticPage[] = exportBundle.staticPages
 
-    
-        //If we're exporting an existing collection delete the "forkedBy" fields
-        if (channel.forkType == "existing") {
-            delete channel.forkType
-            delete channel.forkedFromCid
-            delete channel.forkedFromFeeRecipient
-            delete channel.forkedFromId
+        let channel: Channel = this.getBackupChannel(exportBundle.channel, exportBundle.itemIds.length)
+
+        let items:Item[] = []
+        let themes:Theme[] = []
+        let staticPages:StaticPage[] = []
+
+        for (let themeId of exportBundle.themeIds) {
+            themes.push(this.prepareTheme(await this.themeService.get(themeId)))
         }
 
-        //Generate bundles with extra info for each item
-        for (let item of items) {
+        for (let staticPageId of exportBundle.staticPageIds) {
+            staticPages.push(this.prepareStaticPage(await this.staticPageService.get(staticPageId)))
+        }
 
-            let previous = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) -1)
-            let next = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) + 1)
 
-            //Add the previous and next items so they can used in navigation
-            item['previous'] = previous?.length > 0 ? { 
-                _id: previous[0]._id,
-                tokenId: previous[0].tokenId
-            }  : undefined
+        for (let itemId of exportBundle.itemIds) {
 
-            item['next'] = next?.length > 0 ? { 
-                _id: next[0]._id,
-                tokenId: next[0].tokenId
-            } : undefined
-
+            let item = this.prepareItem(await this.itemService.get(itemId))
 
             //Remove the image src data from the content. Will restore from local copy when importing.
             //Reduce backup filesize
-
             if (item.content?.ops?.length > 0) {
 
                 let ops = []
@@ -229,13 +134,33 @@ class ExportService {
 
             }
 
+            items.push(item)
+
         }
 
+        for (let item of items) {
+
+            let previous = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) -1)
+            let next = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) + 1)
+
+            //Add the previous and next items so they can used in navigation
+            item['previous'] = previous?.length > 0 ? { 
+                _id: previous[0]._id,
+                tokenId: previous[0].tokenId
+            }  : undefined
+
+            item['next'] = next?.length > 0 ? { 
+                _id: next[0]._id,
+                tokenId: next[0].tokenId
+            } : undefined
+        }
 
         let images:Image[] = []
         let animations:Animation[] = []
+        
+        for (let imageCid of exportBundle.imageCids) {
 
-        for (let image of exportBundle.images) {
+            let image = await this.imageService.get(imageCid)
 
             let clonedImage = JSON.parse( JSON.stringify(image) )
 
@@ -248,8 +173,9 @@ class ExportService {
             images.push( clonedImage )
         }
 
+        for (let animationCid of exportBundle.animationCids) {
 
-        for (let animation of exportBundle.animations) {
+            let animation = await this.animationService.get(animationCid)
 
             let clonedAnimation = JSON.parse( JSON.stringify(animation) )
 
@@ -264,16 +190,11 @@ class ExportService {
 
         }
 
-
         let authors = []
 
         if (author) {
             authors.push(author)
         }
-
-
-        //Add itemCount to channel
-        channel['itemCount'] = items?.length
 
         //Save pouch dbs
         return {
@@ -287,7 +208,6 @@ class ExportService {
         }
 
     }
-
 
     getImageCidsByItem(item:Item) {
 
@@ -324,6 +244,109 @@ class ExportService {
         }
 
         return imageCids
+    }
+
+    private async getExportChannel(originalChannel: Channel) : Promise<Channel> {
+
+        let channel = JSON.parse(JSON.stringify(originalChannel))
+
+        //Remove publishing related field from channel
+        delete channel.contractAddress
+        delete channel.pinJobId
+        delete channel.pinJobStatus
+        delete channel.pubDate
+        delete channel.publishReaderRepoId
+        delete channel.publishReaderRepoPath
+        delete channel.publishReaderRepoBranch
+        delete channel.publishReaderRepoStatus
+        delete channel.publishReaderIPFSStatus
+
+        delete channel.productionHostname
+        delete channel.productionBaseLibraryURI
+        delete channel.productionBaseURI
+        delete channel.showMintPage
+        delete channel.showActivityPage
+        delete channel.marketplaces
+        delete channel.externalLinks
+
+        delete channel.importSuccess
+        delete channel.lastUpdated
+        delete channel._rev
+        delete channel["_rev_tree"]
+
+        return channel
+
+    }
+
+    private async getExportAuthor(authorId:string) : Promise<Author> {
+
+        let author:Author
+
+        try {
+            author = await this.authorService.get(authorId)
+        } catch(ex) {}
+
+
+        if (author) {
+            author = JSON.parse(JSON.stringify(author))
+
+            delete author._rev
+            delete author.lastUpdated
+            delete author["_rev_tree"]
+
+        }
+
+        
+
+        return author
+    }
+
+    private prepareTheme(theme:Theme) : Theme {
+
+        delete theme._rev
+        delete theme["_rev_tree"]
+
+        return JSON.parse(JSON.stringify(theme))
+
+    }
+
+    private prepareStaticPage(staticPage:StaticPage) : StaticPage {
+
+        delete staticPage._rev
+        delete staticPage["_rev_tree"]
+
+        return JSON.parse(JSON.stringify(staticPage))
+
+    }
+
+    public prepareItem(item:Item) : Item {
+
+        //Delete publishing related fields
+        delete item._rev
+        delete item.lastUpdated
+        delete item["_rev_tree"]
+
+        return JSON.parse(JSON.stringify(item))
+
+    }
+
+    private getBackupChannel(exportChannel:Channel, itemCount:number) : Channel {
+
+        let channel: Channel = JSON.parse( JSON.stringify(exportChannel) )
+
+        //If we're exporting an existing collection delete the "forkedBy" fields
+        if (channel.forkType == "existing") {
+            delete channel.forkType
+            delete channel.forkedFromCid
+            delete channel.forkedFromFeeRecipient
+            delete channel.forkedFromId
+        }
+
+        //Add itemCount to channel
+        channel['itemCount'] = itemCount
+
+        return channel
+
     }
 
 

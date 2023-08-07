@@ -20,6 +20,10 @@ class StaticPageService {
     return this.staticPageRepository.get(_id)
   }
 
+  async getIds() : Promise<string[]> {
+    return this.staticPageRepository.getIds()
+  }
+
   async getLatestRevision(_id:string) : Promise<StaticPage> {
     return this.staticPageRepository.getLatestRevision(_id)
   }

@@ -82,6 +82,8 @@ import c from '../contracts.json' assert { type: "json" }
 import { GitlabService } from "../src/admin/service/core/gitlab-service.js";
 import { GithubService } from "../src/admin/service/core/github-service.js";
 import { Channel } from "../src/admin/dto/channel.js";
+import { OriginalMetadataService } from "../src/admin/service/original-metadata-service.js";
+import { OriginalMetadataRepository } from "../src/admin/repository/original-metadata-repository.js";
 
 
 
@@ -176,6 +178,8 @@ async function getContainer() {
     container.bind(AttributeCountService).toSelf().inSingletonScope()
     container.bind(ChannelWebService).toSelf().inSingletonScope()
     container.bind(ItemWebService).toSelf().inSingletonScope()
+    container.bind(OriginalMetadataService).toSelf().inSingletonScope()
+
     // container.bind(GitService).toSelf().inSingletonScope()
 
 
@@ -190,6 +194,7 @@ async function getContainer() {
     container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
     container.bind(QueryCacheRepository).toSelf().inSingletonScope()
     container.bind(AttributeCountRepository).toSelf().inSingletonScope()
+    container.bind(OriginalMetadataRepository).toSelf().inSingletonScope()
 
 
     //Spin up local IPFS

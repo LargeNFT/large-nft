@@ -17,12 +17,12 @@ class ERCEventService {
         ercEvent.data = event.data
         ercEvent.topics = event.topics
         ercEvent.logIndex = event.index
-        ercEvent.event = event.fragment.name
+        ercEvent.event = event.fragment?.name
         ercEvent.eventSignature = event.eventSignature
         ercEvent.dateCreated = new Date().toJSON()
     
         //Convert BigInt args to strings    
-        ercEvent.args = event.args.map(a => a.toString())
+        ercEvent.args = event.args?.map(a => a.toString())
 
         ercEvent.namedArgs = {}
 
@@ -48,11 +48,11 @@ class ERCEventService {
         }
     
 
-        if (ercEvent.isTransfer && ercEvent.namedArgs.fromAddress == "0x0000000000000000000000000000000000000000") {
+        if (ercEvent.isTransfer && ercEvent.namedArgs?.fromAddress == "0x0000000000000000000000000000000000000000") {
             ercEvent.isMint = true
         }
 
-        if (ercEvent.isTransfer && ercEvent.namedArgs.toAddress == "0x0000000000000000000000000000000000000000") {
+        if (ercEvent.isTransfer && ercEvent.namedArgs?.toAddress == "0x0000000000000000000000000000000000000000") {
             ercEvent.isBurn = true
         }
 

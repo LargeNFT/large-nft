@@ -109,6 +109,8 @@ import { DeployService } from './service/core/deploy-service.js';
 
 import PouchDB from 'pouchdb-browser';
 import PouchFind from 'pouchdb-find'
+import { OriginalMetadataService } from './service/original-metadata-service.js';
+import { OriginalMetadataRepository } from './repository/original-metadata-repository.js';
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
@@ -263,6 +265,7 @@ function getMainContainer(version:string) {
   container.bind(GitlabService).toSelf().inSingletonScope()
   container.bind(GithubService).toSelf().inSingletonScope()
   container.bind(HuggingFaceService).toSelf().inSingletonScope()
+  container.bind(OriginalMetadataService).toSelf().inSingletonScope()
 
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()
@@ -277,6 +280,7 @@ function getMainContainer(version:string) {
 
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
+  container.bind(OriginalMetadataRepository).toSelf().inSingletonScope()
 
 
 

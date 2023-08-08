@@ -17,7 +17,7 @@ class Item {
     attributeSelections?: AttributeSelection[] 
     coverImageId?:string
     coverImageAsAnimation?:string 
-    originalJSONMetadata?:any
+    originalJSONMetadataId?:any
     animationId?:string
     datePublished?:string
     dateCreated?:string

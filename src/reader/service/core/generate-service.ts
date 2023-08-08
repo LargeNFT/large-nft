@@ -3,6 +3,9 @@ import { inject, injectable } from "inversify";
 import he from "he"
 import fs from "fs"
 import * as Eta from 'eta'
+import path from "path";
+
+import Jimp from "jimp/es";
 
 import { ethers } from "ethers"
 
@@ -45,7 +48,7 @@ import transactionEjs from '../../ejs/pages/transaction.ejs'
 
 import leaderboardEjs from '../../ejs/pages/leaderboard.ejs'
 import largestSalesEjs from '../../ejs/pages/sales.ejs'
-import path from "path";
+
 
 
 
@@ -63,7 +66,6 @@ class GenerateService {
         @inject("ItemRepository") private itemRepository: ItemRepository,
         @inject("StaticPageRepository") private staticPageRepository:StaticPageRepository,
         @inject("convert-svg-to-png") private convert,
-        @inject("sharp") private sharp
     ) { }
 
     async load() {
@@ -179,15 +181,16 @@ class GenerateService {
     
             console.log(`Creating webp at: ${filename}`)    
 
+            //@ts-ignore
+            let file = await Jimp.read(imagePath)
+
             if (size) {
+
                 //Generate and resize
-                await this.sharp(imagePath)
-                .resize(size)
-                .toFile(filename)
+                file.resize(size, size).write(filename)
             } else {
-                //Generate and resize
-                await this.sharp(imagePath)
-                .toFile(filename)
+                //Generate
+                file.write(filename)
             }
 
         } else {

@@ -134,7 +134,6 @@ class TransactionIndexerService {
 
         let processedCount =0
 
-
         if (groupedEvents.size > 0) {
 
             console.log(`Found ${events.length} events up to block ${result.endBlock}`)
@@ -171,8 +170,6 @@ class TransactionIndexerService {
 
                 }
 
-
-
                 let processedTransaction = new ProcessedTransaction()
 
                 processedTransaction._id = transaction.hash    
@@ -204,7 +201,8 @@ class TransactionIndexerService {
 
                     transactionUser.lastActive = new Date(processedTransaction.timestamp * 1000).toJSON()
 
-                    if (ercEvent.namedArgs.tokenId) {
+
+                    if (ercEvent.namedArgs?.tokenId) {
 
                         let tokenId = parseInt(ercEvent.namedArgs.tokenId)
 
@@ -219,6 +217,7 @@ class TransactionIndexerService {
                             token.currentOwnerId = toOwner._id
                         }
 
+
                     }
 
                     //Add raw event to transaction before saving
@@ -226,7 +225,7 @@ class TransactionIndexerService {
 
                 }
 
-                
+
                 //Create processed events
                 let processedEvents:ProcessedEvent[] = this.createProcessedEvents(processedTransaction)
 
@@ -254,7 +253,6 @@ class TransactionIndexerService {
                     result.tokensToUpdate[tokenId].transactionsViewModel.rowItemViewModels[tokenId] = await this.itemService.getRowItemViewModelsByTokenId(tokenId)
 
                 }
-
 
                 //Grab token senders
                 let from = new Set(processedEvents?.map(pe => pe.fromAddress))

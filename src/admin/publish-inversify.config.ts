@@ -42,6 +42,8 @@ import { AttributeCountRepository } from "./repository/attribute-count-repositor
 import { ExportService } from "./service/core/export-service.js";
 
 import { create } from 'ipfs-http-client'
+import { OriginalMetadataService } from "./service/original-metadata-service.js";
+import { OriginalMetadataRepository } from "./repository/original-metadata-repository.js";
 
 // Enable find plugin
 PouchDB.plugin(PouchFind)
@@ -104,6 +106,8 @@ function getMainContainer() {
   container.bind(QueryCacheService).toSelf().inSingletonScope()
   container.bind(QuillService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
+  container.bind(OriginalMetadataService).toSelf().inSingletonScope()
+
   // container.bind(GitService).toSelf().inSingletonScope()
   // container.bind(GitlabService).toSelf().inSingletonScope()
   // container.bind(GithubService).toSelf().inSingletonScope()
@@ -123,6 +127,8 @@ function getMainContainer() {
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
+  container.bind(OriginalMetadataRepository).toSelf().inSingletonScope()
+
 
   container.bind("ipfsRemoteInit").toConstantValue( async (url) => {
     if (!url) return

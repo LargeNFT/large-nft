@@ -10,9 +10,6 @@ class AnimationService {
   @inject("AnimationRepository")
   private animationRepository:AnimationRepository
 
-  @inject("ItemService")
-  private itemService:ItemService
-
   constructor() { }
 
   async get(_id: string): Promise<Animation> {

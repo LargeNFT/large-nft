@@ -68,7 +68,7 @@ class Item {
     coverImageAsAnimation?:boolean
 
     @Allow()
-    originalJSONMetadata?:any
+    originalJSONMetadataId?:string
 
     @Allow()
     imageIds?:string[]

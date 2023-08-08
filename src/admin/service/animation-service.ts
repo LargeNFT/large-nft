@@ -7,7 +7,6 @@ import Hash from 'ipfs-only-hash'
 import { AnimationRepository } from "../repository/animation-repository.js"
 import { Item } from "../dto/item.js"
 
-import he from 'he'
 import { ImageService } from "./image-service.js"
 import { QuillService } from "./quill-service.js"
 import { ThemeService } from "./theme-service.js"

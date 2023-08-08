@@ -118,17 +118,18 @@ class ProcessConfig {
         
     }
 
-    static getImportConfig(config?:any) {
+    static getImportConfig() {
 
         let theArgs = ProcessConfig.parseImportArgsIntoOptions(process.argv)
 
         let baseDir = process.env.INIT_CWD      
 
         //A config object can be passed in. If not we will load large-config.json from the baseDir
-        if (!config) {
-            config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
-        }
+        // if (!config) {
+        //     config = JSON.parse(fs.readFileSync(`${baseDir}/large-config.json`, 'utf8'))
+        // }
 
+        let config:any = {}
         config.VERSION = packageConfig.version
         config.baseDir = baseDir
         config.env = theArgs.env

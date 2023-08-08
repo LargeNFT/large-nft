@@ -98,113 +98,37 @@ class ExportService {
 
         let channel: Channel = this.getBackupChannel(exportBundle.channel, exportBundle.itemIds.length)
 
-        let items:Item[] = []
-        let themes:Theme[] = []
-        let staticPages:StaticPage[] = []
-
-        for (let themeId of exportBundle.themeIds) {
-            themes.push(this.prepareTheme(await this.themeService.get(themeId)))
-        }
-
-        for (let staticPageId of exportBundle.staticPageIds) {
-            staticPages.push(this.prepareStaticPage(await this.staticPageService.get(staticPageId)))
-        }
-
-
-        for (let itemId of exportBundle.itemIds) {
-
-            let item = this.prepareItem(await this.itemService.get(itemId))
-
-            //Remove the image src data from the content. Will restore from local copy when importing.
-            //Reduce backup filesize
-            if (item.content?.ops?.length > 0) {
-
-                let ops = []
-
-                for (let op of item.content.ops) {
-
-                    if (op.insert && op.insert.ipfsimage) {
-                        delete op.insert.ipfsimage.src
-                    }
-
-                    ops.push(op)
-                }
-
-                item.content.ops = ops
-
-            }
-
-            items.push(item)
-
-        }
-
-        for (let item of items) {
-
-            let previous = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) -1)
-            let next = items.filter( i => i.tokenId == parseInt(item.tokenId.toString()) + 1)
-
-            //Add the previous and next items so they can used in navigation
-            item['previous'] = previous?.length > 0 ? { 
-                _id: previous[0]._id,
-                tokenId: previous[0].tokenId
-            }  : undefined
-
-            item['next'] = next?.length > 0 ? { 
-                _id: next[0]._id,
-                tokenId: next[0].tokenId
-            } : undefined
-        }
-
-        let images:Image[] = []
-        let animations:Animation[] = []
-        
-        for (let imageCid of exportBundle.imageCids) {
-
-            let image = await this.imageService.get(imageCid)
-
-            let clonedImage = JSON.parse( JSON.stringify(image) )
-
-            //Remove publishing related field from image
-            delete clonedImage._rev
-            delete clonedImage["_rev_tree"]
-            delete clonedImage.buffer
-            delete clonedImage.svg
-
-            images.push( clonedImage )
-        }
-
-        for (let animationCid of exportBundle.animationCids) {
-
-            let animation = await this.animationService.get(animationCid)
-
-            let clonedAnimation = JSON.parse( JSON.stringify(animation) )
-
-            //Remove publishing related fields
-            delete clonedAnimation._rev
-            delete clonedAnimation["_rev_tree"]
-            delete clonedAnimation.content
-
-
-            animations.push( clonedAnimation )
-
-
-        }
-
         let authors = []
 
         if (author) {
             authors.push(author)
         }
 
+        let items = await this.getBackupItems(exportBundle.itemIds)
+        let themes = await this.getBackupThemes(exportBundle.themeIds)
+        let staticPages = await this.getBackupStaticPages(exportBundle.staticPageIds)
+        let images = await this.getBackupImages(exportBundle.imageCids)
+        let animations = await this.getBackupAnimations(exportBundle.animationCids)
+
+
+
         //Save pouch dbs
         return {
             channels: [channel],
             authors: authors,
+
             items: items,
             themes: themes,
             staticPages: staticPages,
             images: images,
-            animations: animations      
+            animations: animations,
+
+            itemCount: exportBundle.itemIds.length,
+            themeCount: exportBundle.themeIds.length,
+            staticPageCount: exportBundle.staticPageIds.length,
+            imageCount: exportBundle.imageCids.length,
+            animationCount: exportBundle.animationCids.length
+            
         }
 
     }
@@ -296,8 +220,6 @@ class ExportService {
 
         }
 
-        
-
         return author
     }
 
@@ -346,6 +268,144 @@ class ExportService {
         channel['itemCount'] = itemCount
 
         return channel
+
+    }
+
+    private async getBackupThemes(themeIds:string[]) {
+        
+        let themes = []
+
+        for (let themeId of themeIds) {
+            themes.push(this.prepareTheme(await this.themeService.get(themeId)))
+        }
+
+        return themes
+
+    }
+
+    private async getBackupStaticPages(staticPageIds:string[]) {
+        
+        let staticPages = []
+
+        for (let staticPageId of staticPageIds) {
+            staticPages.push(this.prepareStaticPage(await this.staticPageService.get(staticPageId)))
+        }
+
+        return staticPages
+
+    }
+
+    private async getBackupItems(itemIds:string[]) {
+        
+        let items = []
+
+        let counter = 0
+
+        itemIds = itemIds.sort()
+
+        for (let itemId of itemIds) {
+
+            let item = this.prepareItem(await this.itemService.get(itemId))
+
+            //Remove the image src data from the content. Will restore from local copy when importing.
+            //Reduce backup filesize
+            if (item.content?.ops?.length > 0) {
+
+                let ops = []
+
+                for (let op of item.content.ops) {
+
+                    if (op.insert && op.insert.ipfsimage) {
+                        delete op.insert.ipfsimage.src
+                    }
+
+                    ops.push(op)
+                }
+
+                item.content.ops = ops
+
+            }
+            
+            items.push(item)
+
+            counter++
+
+            console.log(`Processing token #${item.tokenId} ${counter}/${itemIds.length}`)
+
+
+
+        }
+
+        console.log(`Tokens processed`)
+
+
+        return items
+
+    }
+
+    private async getBackupImages(imageIds:string[]) {
+        
+        let images = []
+
+        let counter = 0
+
+        for (let imageId of imageIds) {
+
+            let image = await this.imageService.get(imageId)
+
+            let clonedImage = JSON.parse( JSON.stringify(image) )
+
+            //Remove publishing related field from image
+            delete clonedImage._rev
+            delete clonedImage["_rev_tree"]
+            delete clonedImage.buffer
+            delete clonedImage.svg
+
+            images.push(clonedImage)
+
+            counter++
+
+            console.log(`Processing image #${clonedImage._id} ${counter}/${imageIds.length}`)
+
+
+        }
+
+        console.log(`Images processed`)
+
+
+        return images
+
+    }
+
+    private async getBackupAnimations(animationIds:string[]) {
+        
+        let animations=[]
+
+        let counter = 0
+        
+        for (let animationId of animationIds) {
+
+            let animation = await this.animationService.get(animationId)
+
+            let clonedAnimation = JSON.parse( JSON.stringify(animation) )
+
+            //Remove publishing related field from image
+            delete clonedAnimation._rev
+            delete clonedAnimation["_rev_tree"]
+            delete clonedAnimation.content
+
+            animations.push(clonedAnimation)
+
+            counter++
+
+            console.log(`Processing image #${clonedAnimation._id} ${counter}/${animationIds.length}`)
+
+        }
+
+        console.log(`Animations processed`)
+
+
+        return animations
 
     }
 

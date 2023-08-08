@@ -2,12 +2,12 @@
 
     const escapeExcerpt = (excerpt) => {
 
-        excerpt = excerpt.replace(/<(?![br]\s*\/?)[^>]+>/g, '')
+        excerpt = excerpt?.replace(/<(?![br]\s*\/?)[^>]+>/g, '')
 
-        excerpt = excerpt.replaceAll('<br />', '&#x0A;')
-        excerpt = excerpt.replaceAll('<br/>', '&#x0A;')
-        excerpt = excerpt.replaceAll('<br>', '&#x0A;')
-        excerpt = excerpt.replaceAll('"', '&quot;')
+        excerpt = excerpt?.replaceAll('<br />', '&#x0A;')
+        excerpt = excerpt?.replaceAll('<br/>', '&#x0A;')
+        excerpt = excerpt?.replaceAll('<br>', '&#x0A;')
+        excerpt = excerpt?.replaceAll('"', '&quot;')
 
         return excerpt
 

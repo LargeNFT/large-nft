@@ -14,6 +14,7 @@ import { Image } from "../dto/image.js";
 import { QueryCacheService } from "./core/query-cache-service.js";
 import { QueryCache } from "../dto/query-cache.js";
 import { AttributeCount, AttributeSelection } from "../dto/attribute.js";
+import { OriginalMetadataService } from "./original-metadata-service.js";
 
 @injectable()
 class ItemService {
@@ -21,7 +22,8 @@ class ItemService {
     constructor(
         private itemRepository: ItemRepository,
         private imageService:ImageService,
-        private queryCacheService:QueryCacheService
+        private queryCacheService:QueryCacheService,
+        private originalMetadataService:OriginalMetadataService
     ) { }
 
     async get(_id: string): Promise<Item> {
@@ -92,8 +94,11 @@ class ItemService {
 
         //We are publishing an existing collection that we are not editing then export the original metadata
         if (channel.forkType == "existing") {
+            
             console.log(`Exporting original metadata for token #${item.tokenId}`)
-            return item.originalJSONMetadata
+
+            let originalMetadata = await this.originalMetadataService.get(item.originalJSONMetadataId)
+            return JSON.parse(originalMetadata.content)
         }
 
 

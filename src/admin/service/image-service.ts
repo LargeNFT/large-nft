@@ -17,7 +17,6 @@ import { QuillService } from "./quill-service.js"
 import { Item } from "../dto/item.js"
 import { Theme } from "../dto/theme.js"
 import { ThemeService } from "./theme-service.js"
-import { ItemService } from "./item-service.js"
 
 
 @injectable()
@@ -29,8 +28,7 @@ class ImageService {
     private imageRepository: ImageRepository,
     private svgService:SvgService,
     private quillService:QuillService,
-    private themeService:ThemeService,
-    private itemService:ItemService
+    private themeService:ThemeService
   ) { }
 
   async load(channelId:string) {
@@ -229,8 +227,9 @@ class ImageService {
         if (content instanceof Uint8Array) {
           content = image.buffer
         } else {
-          //@ts-ignore
-          content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
+          // @ts-ignore
+          // content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
+          content = new Uint8Array(image.buffer.data)
         }
 
     } else if (image.svg) {

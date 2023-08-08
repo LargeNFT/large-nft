@@ -1,6 +1,5 @@
 import { Container } from "inversify";
 
-import sharp from "sharp"
 import { ethers } from "ethers"
 
 import { AnimationRepository } from "../reader/repository/animation-repository.js";
@@ -77,7 +76,6 @@ function getMainContainer(command:GetMainContainerCommand) {
   container.bind("hostname").toConstantValue(command.hostname)
 
   container.bind("channelDir").toConstantValue(command.channelDir)
-  container.bind("sharp").toConstantValue(sharp)
 
   container.bind("provider").toConstantValue(() => {
   })

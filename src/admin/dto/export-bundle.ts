@@ -18,10 +18,6 @@ interface ExportBundle {
     themeIds:string[]
     staticPageIds:string[]
 
-    // items: Item[]
-    // themes: Theme[]
-    // staticPages: StaticPage[]
-
     imageCids: string[]
     animationCids: string[]
 
@@ -31,13 +27,22 @@ interface ExportBundle {
 
 
 interface BackupBundle {
+
     channels: Channel[],
     authors: Author[],
     items: Item[],
     themes: Theme[],
     staticPages: StaticPage[],
-    images:Image[],
-    animations:Animation[] 
+    images: Image[],
+    animations: Animation[]
+
+    itemCount:number
+    themeCount:number
+    staticPageCount:number
+
+    imageCount:number
+    animationCount:number
+
 }
 
 export {

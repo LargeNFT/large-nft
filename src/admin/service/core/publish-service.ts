@@ -2,10 +2,10 @@ import { inject, injectable } from "inversify"
 
 import fs from "fs"
 import path from "path"
+import Hash from 'ipfs-only-hash'
 
 import { Channel } from "../../dto/channel.js"
-import { Animation } from "../../dto/animation.js"
-import { Item } from "../../dto/item.js"
+
 
 import { BackupBundle, ExportBundle } from "../../dto/export-bundle.js"
 import { Image } from "../../dto/image.js"
@@ -21,7 +21,6 @@ import { WalletService } from "./wallet-service.js"
 
 
 import { ExportService } from "./export-service.js"
-import Hash from 'ipfs-only-hash'
 import { ContractMetadata } from "../../dto/contract-metadata.js"
 //@ts-ignore
 import contractABI from '../../../../contracts.json' assert { type: "json" }
@@ -61,15 +60,18 @@ class PublishService {
         let backup:BackupBundle = await this.exportService.createBackup(exportBundle)
 
 
+
         //export to IPFS but only if we don't have a contractAddress
         let cids:CidInfo
         if (!channel.contractAddress) {
+
+            this.logPublishProgress(undefined, "Exporting to IPFS...")
 
             cids = await this.exportToIPFS(exportBundle, backup, feeRecipient)
             
         } else {
 
-            if (channel.publishReaderIPFSStatus.cid) {
+            if (channel.publishReaderIPFSStatus?.cid) {
 
                 cids = {
                     cid: channel.publishReaderIPFSStatus.cid,
@@ -80,6 +82,8 @@ class PublishService {
             }
 
         }
+
+        this.logPublishProgress(undefined, "Exporting to file system...")
 
         await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids)
 
@@ -112,11 +116,11 @@ class PublishService {
             backups: {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 }, 
-                items: { saved: 0, total: backup.items.length },
+                items: { saved: 0, total: backup.itemCount },
                 images: { saved: 0, total: exportBundle.imageCids.length },
                 animations: { saved: 0, total: exportBundle.animationCids.length },
-                themes: { saved: 0, total: backup.themes.length },
-                staticPages: { saved: 0, total: backup.staticPages.length }
+                themes: { saved: 0, total: backup.themeCount },
+                staticPages: { saved: 0, total: backup.staticPageCount }
             }
         }
 
@@ -170,7 +174,7 @@ class PublishService {
         //Write items backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/items.json`,  new TextEncoder().encode(JSON.stringify(backup.items)) , { create: true, parents: true, flush: flush })
         
-        publishStatus.backups.items.saved = backup.items.length
+        publishStatus.backups.items.saved = backup.itemCount
         this.logPublishProgress(publishStatus)
 
 
@@ -178,7 +182,7 @@ class PublishService {
         //Write images backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: flush })        
 
-        publishStatus.backups.images.saved = backup.images.length
+        publishStatus.backups.images.saved = backup.imageCount
         this.logPublishProgress(publishStatus)
 
 
@@ -186,7 +190,7 @@ class PublishService {
         //Write animations backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/animations.json`,  new TextEncoder().encode(JSON.stringify(backup.animations)) , { create: true, parents: true, flush: flush })
 
-        publishStatus.backups.animations.saved = backup.animations.length
+        publishStatus.backups.animations.saved = backup.animationCount
         this.logPublishProgress(publishStatus)
 
 
@@ -194,7 +198,7 @@ class PublishService {
         //Write themes backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/themes.json`,  new TextEncoder().encode(JSON.stringify(backup.themes)) , { create: true, parents: true, flush: flush })
         
-        publishStatus.backups.themes.saved = backup.themes.length
+        publishStatus.backups.themes.saved = backup.themeCount
         this.logPublishProgress(publishStatus)
 
 
@@ -202,7 +206,7 @@ class PublishService {
         //Write staticPages backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/static-pages.json`,  new TextEncoder().encode(JSON.stringify(backup.staticPages)) , { create: true, parents: true, flush: flush })
         
-        publishStatus.backups.staticPages.saved = backup.staticPages.length
+        publishStatus.backups.staticPages.saved = backup.staticPageCount
         this.logPublishProgress(publishStatus)
 
 
@@ -234,10 +238,11 @@ class PublishService {
         //Save animations
         await this._publishAnimationsFS(baseDir, exportBundle.animationCids)
 
-        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.itemIds, cids.animationDirectoryCid, cids.imageDirectoryCid)
+        //Save NFT metadata
+        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.itemIds, cids?.animationDirectoryCid, cids?.imageDirectoryCid)
 
         //Save contract metadata
-        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids.imageDirectoryCid)
+        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids?.imageDirectoryCid)
 
 
         //Write to Git
@@ -315,11 +320,12 @@ class PublishService {
             
                     }
             
-            
+                    if (!channel.httpUrlToRepo) return
+
                     return {
                         hostname: `https://${getGitLabUsername(channel.httpUrlToRepo)}.gitlab.io`,
                         baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
-                }
+                    }
 
                 case "github":
 
@@ -338,10 +344,12 @@ class PublishService {
                     }
             
             
+                    if (!channel.httpUrlToRepo) return
+
                     return {
                         hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.github.io`,
                         baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
-                }
+                    }
 
             }
 
@@ -578,20 +586,7 @@ class PublishService {
             
             let image:Image = await this.imageService.get(imageCid)
 
-            let content 
-
-            if (image.buffer) {
-
-                if (content instanceof Uint8Array) {
-                    content = image.buffer
-                } else {
-                    //@ts-ignore
-                    content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
-                }
-
-            } else if (image.svg) {
-                content = Buffer.from(image.svg)
-            }
+            let content = await this.imageService.getImageContent(image)
 
             await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,
@@ -676,8 +671,6 @@ class PublishService {
 
     private async _publishNFTMetadataFS(baseDir:string, channel:Channel, itemIds:string[], animationDirectoryCid:string, imageDirectoryCid:string) {
 
-        let metadataNFTMap = {}
-
         for (let itemId of itemIds) {
 
             let item = this.exportService.prepareItem(await this.itemService.get(itemId))
@@ -685,17 +678,9 @@ class PublishService {
             let coverImage:Image = await this.imageService.get(item.coverImageId)
             let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
             
-
-            let content = new TextEncoder().encode(JSON.stringify(nftMetadata))
-            let contentCid = await Hash.of(content)
-
-            metadataNFTMap[contentCid] = nftMetadata
-
-            let nft = metadataNFTMap[contentCid]
-
             //Save to git
             await this._writeFSAction({
-                file_path: `${baseDir}/backup/export/metadata/${nft.tokenId}.json`,
+                file_path: `${baseDir}/backup/export/metadata/${item.tokenId}.json`,
                 content: Buffer.from(JSON.stringify(nftMetadata))
             })
 

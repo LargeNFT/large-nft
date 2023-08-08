@@ -113,7 +113,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '27cb0a2662';
+framework7Component.id = 'e5789f40f2';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -308,7 +308,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8a52551b9e';
+framework7Component.id = 'cd22b2a6f2';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -417,7 +417,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '167730d926';
+framework7Component.id = 'aaaf38c42e';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -625,7 +625,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '21ea412e11';
+framework7Component.id = 'fd8712662e';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -791,7 +791,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '807d25a642';
+framework7Component.id = '7b350a729c';
 framework7Component.style = `
 
 
@@ -1114,7 +1114,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8ea8c10cb5';
+framework7Component.id = 'ba00f454e1';
 framework7Component.style = `
 
 
@@ -1351,7 +1351,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c158496f32';
+framework7Component.id = 'e2f8d0b790';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1686,7 +1686,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5c171891c0';
+framework7Component.id = 'ed8e397a73';
 framework7Component.style = `
 
 `;
@@ -2170,7 +2170,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'cfff209cdc';
+framework7Component.id = 'ff0d677300';
 framework7Component.style = `
 
 
@@ -2525,7 +2525,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '230b495c32';
+framework7Component.id = '8d515742d4';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3796,7 +3796,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7430ac3cb7';
+framework7Component.id = '30fcc716d1';
 framework7Component.style = `
 
 
@@ -4040,7 +4040,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '41bab51c37';
+framework7Component.id = '1573851b49';
 framework7Component.style = `
 
 
@@ -4303,7 +4303,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6b5194cb7c';
+framework7Component.id = 'b7ed8a9d7f';
 framework7Component.style = `
   
 
@@ -4458,7 +4458,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '13f3a0f69a';
+framework7Component.id = '70f105fbaa';
 framework7Component.style = `
     
 `;
@@ -4914,7 +4914,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c71df61af1';
+framework7Component.id = 'f166030492';
 framework7Component.style = `
 
 
@@ -5003,7 +5003,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd1c1f5be75';
+framework7Component.id = 'e9e280b250';
 framework7Component.style = `
     
 `;
@@ -5387,7 +5387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0f82efb128';
+framework7Component.id = '5258be0877';
 framework7Component.style = `
 
 
@@ -5460,7 +5460,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '665514ef90';
+framework7Component.id = '256a4bb199';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5587,7 +5587,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'bba52c9127';
+framework7Component.id = 'b1cb5a4b15';
 framework7Component.style = `
 
 `;
@@ -5745,7 +5745,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e2a0f60876';
+framework7Component.id = '6c266ba2e2';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6047,7 +6047,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e9ddd120b6';
+framework7Component.id = 'f19cfe6586';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6372,7 +6372,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'cfe1d6a2a6';
+framework7Component.id = '3b1f2b225a';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6907,7 +6907,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ee062e8383';
+framework7Component.id = 'd3abbfc5d9';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7254,7 +7254,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '25c02e3c2a';
+framework7Component.id = 'ea40652aa6';
 framework7Component.style = `
 
 
@@ -7551,7 +7551,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '106b7ffd38';
+framework7Component.id = 'd2144b6690';
 framework7Component.style = `
 
 
@@ -7761,7 +7761,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4073e0facb';
+framework7Component.id = '7bde2e20e7';
 framework7Component.style = `
 
   `;
@@ -8166,7 +8166,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6940a17d11';
+framework7Component.id = '09917a575e';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8467,7 +8467,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd289f0eafa';
+framework7Component.id = '908192cd71';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8680,7 +8680,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6df1be488a';
+framework7Component.id = 'e174b16ffb';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -8960,7 +8960,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '442b5349c8';
+framework7Component.id = '50329adfee';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9401,7 +9401,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0a0c27da21';
+framework7Component.id = 'cba78268e9';
 framework7Component.style = `
 
 
@@ -9481,7 +9481,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f34336d8fe';
+framework7Component.id = '43777a4b0b';
 framework7Component.style = `
 
 
@@ -11182,7 +11182,7 @@ class Item {
     coverImageCSS;
     animationCSS;
     coverImageAsAnimation;
-    originalJSONMetadata;
+    originalJSONMetadataId;
     imageIds;
     datePublished;
     dateCreated;
@@ -11274,8 +11274,8 @@ __decorate([
 ], Item.prototype, "coverImageAsAnimation", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
-    __metadata("design:type", Object)
-], Item.prototype, "originalJSONMetadata", void 0);
+    __metadata("design:type", String)
+], Item.prototype, "originalJSONMetadataId", void 0);
 __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", Array)
@@ -11292,6 +11292,60 @@ __decorate([
     (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
     __metadata("design:type", String)
 ], Item.prototype, "lastUpdated", void 0);
+
+
+
+/***/ }),
+
+/***/ "./src/admin/dto/original-metadata.ts":
+/*!********************************************!*\
+  !*** ./src/admin/dto/original-metadata.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OriginalMetadata: () => (/* binding */ OriginalMetadata)
+/* harmony export */ });
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/decorator/common/Allow.js");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/decorator/common/IsNotEmpty.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+class OriginalMetadata {
+    _id;
+    _rev;
+    content;
+    cid;
+    dateCreated;
+}
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], OriginalMetadata.prototype, "_id", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], OriginalMetadata.prototype, "_rev", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], OriginalMetadata.prototype, "content", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.IsNotEmpty)(),
+    __metadata("design:type", String)
+], OriginalMetadata.prototype, "cid", void 0);
+__decorate([
+    (0,class_validator__WEBPACK_IMPORTED_MODULE_0__.Allow)(),
+    __metadata("design:type", String)
+], OriginalMetadata.prototype, "dateCreated", void 0);
 
 
 
@@ -11726,20 +11780,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_core_ipfs_service_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./service/core/ipfs-service.js */ "./src/admin/service/core/ipfs-service.ts");
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/container/container.js");
 /* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/admin/service/core/database-service.ts");
-/* harmony import */ var _repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./repository/channel-repository.js */ "./src/admin/repository/channel-repository.ts");
-/* harmony import */ var _repository_item_repository_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./repository/item-repository.js */ "./src/admin/repository/item-repository.ts");
-/* harmony import */ var _repository_image_repository_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./repository/image-repository.js */ "./src/admin/repository/image-repository.ts");
-/* harmony import */ var _repository_author_repository_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./repository/author-repository.js */ "./src/admin/repository/author-repository.ts");
+/* harmony import */ var _repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./repository/channel-repository.js */ "./src/admin/repository/channel-repository.ts");
+/* harmony import */ var _repository_item_repository_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./repository/item-repository.js */ "./src/admin/repository/item-repository.ts");
+/* harmony import */ var _repository_image_repository_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./repository/image-repository.js */ "./src/admin/repository/image-repository.ts");
+/* harmony import */ var _repository_author_repository_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./repository/author-repository.js */ "./src/admin/repository/author-repository.ts");
 /* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/admin/service/core/schema-service.ts");
 /* harmony import */ var _service_core_types_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./service/core/types.js */ "./src/admin/service/core/types.ts");
-/* harmony import */ var _repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./repository/attribute-count-repository.js */ "./src/admin/repository/attribute-count-repository.ts");
+/* harmony import */ var _repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_80__ = __webpack_require__(/*! ./repository/attribute-count-repository.js */ "./src/admin/repository/attribute-count-repository.ts");
 /* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/item-service.js */ "./src/admin/service/item-service.ts");
 /* harmony import */ var _service_attribute_count_service_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./service/attribute-count-service.js */ "./src/admin/service/attribute-count-service.ts");
 /* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/admin/service/web/channel-web-service.ts");
 /* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/admin/service/web/item-web-service.ts");
 /* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/admin/service/web/author-web-service.ts");
 /* harmony import */ var _service_core_gitlab_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/core/gitlab-service.js */ "./src/admin/service/core/gitlab-service.ts");
-/* harmony import */ var _repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./repository/settings-repository.js */ "./src/admin/repository/settings-repository.ts");
+/* harmony import */ var _repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./repository/settings-repository.js */ "./src/admin/repository/settings-repository.ts");
 /* harmony import */ var _service_core_routing_service_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./service/core/routing-service.js */ "./src/admin/service/core/routing-service.ts");
 /* harmony import */ var _service_core_settings_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/core/settings-service.js */ "./src/admin/service/core/settings-service.ts");
 /* harmony import */ var _controller_channel_controller_js__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./controller/channel-controller.js */ "./src/admin/controller/channel-controller.ts");
@@ -11751,18 +11805,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/admin/service/core/paging-service.ts");
 /* harmony import */ var _service_svg_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/svg-service.js */ "./src/admin/service/svg-service.ts");
 /* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/admin/service/animation-service.ts");
-/* harmony import */ var _repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./repository/animation-repository.js */ "./src/admin/repository/animation-repository.ts");
+/* harmony import */ var _repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./repository/animation-repository.js */ "./src/admin/repository/animation-repository.ts");
 /* harmony import */ var _service_core_import_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/core/import-service.js */ "./src/admin/service/core/import-service.ts");
 /* harmony import */ var _service_core_erc_event_service_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./service/core/erc-event-service.js */ "./src/admin/service/core/erc-event-service.ts");
 /* harmony import */ var _service_core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/core/query-cache-service.js */ "./src/admin/service/core/query-cache-service.ts");
 /* harmony import */ var ipfs_http_client__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-http-client */ "./node_modules/ipfs-http-client/src/index.js");
 /* harmony import */ var _service_theme_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/theme-service.js */ "./src/admin/service/theme-service.ts");
-/* harmony import */ var _repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./repository/theme-repository.js */ "./src/admin/repository/theme-repository.ts");
-/* harmony import */ var _repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./repository/static-page-repository.js */ "./src/admin/repository/static-page-repository.ts");
+/* harmony import */ var _repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./repository/theme-repository.js */ "./src/admin/repository/theme-repository.ts");
+/* harmony import */ var _repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./repository/static-page-repository.js */ "./src/admin/repository/static-page-repository.ts");
 /* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/admin/service/static-page-service.ts");
 /* harmony import */ var _service_core_export_service_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./service/core/export-service.js */ "./src/admin/service/core/export-service.ts");
-/* harmony import */ var _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./repository/token-metadata-cache-repository.js */ "./src/admin/repository/token-metadata-cache-repository.ts");
-/* harmony import */ var _repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./repository/query-cache-repository.js */ "./src/admin/repository/query-cache-repository.ts");
+/* harmony import */ var _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./repository/token-metadata-cache-repository.js */ "./src/admin/repository/token-metadata-cache-repository.ts");
+/* harmony import */ var _repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./repository/query-cache-repository.js */ "./src/admin/repository/query-cache-repository.ts");
 /* harmony import */ var _components_admin_channel_channel_card_f7_html__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/admin/channel/channel-card.f7.html */ "./src/admin/components/admin/channel/channel-card.f7.html");
 /* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
 /* harmony import */ var framework7_components_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! framework7/components/dialog */ "./node_modules/framework7/components/dialog/dialog.js");
@@ -11792,6 +11846,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _service_core_deploy_service_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/deploy-service.js */ "./src/admin/service/core/deploy-service.ts");
 /* harmony import */ var pouchdb_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pouchdb-browser */ "./node_modules/pouchdb-browser/lib/index.es.js");
 /* harmony import */ var pouchdb_find__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! pouchdb-find */ "./node_modules/pouchdb-find/lib/index-browser.es.js");
+/* harmony import */ var _service_original_metadata_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/original-metadata-service.js */ "./src/admin/service/original-metadata-service.ts");
+/* harmony import */ var _repository_original_metadata_repository_js__WEBPACK_IMPORTED_MODULE_81__ = __webpack_require__(/*! ./repository/original-metadata-repository.js */ "./src/admin/repository/original-metadata-repository.ts");
 
 
 
@@ -11848,6 +11904,8 @@ __webpack_require__.r(__webpack_exports__);
 //Init framework7
 
 // Import additional components
+
+
 
 
 
@@ -11975,17 +12033,19 @@ function getMainContainer(version) {
     container.bind(_service_core_gitlab_service_js__WEBPACK_IMPORTED_MODULE_66__.GitlabService).toSelf().inSingletonScope();
     container.bind(_service_core_github_service_js__WEBPACK_IMPORTED_MODULE_67__.GithubService).toSelf().inSingletonScope();
     container.bind(_service_core_hugging_face_service_js__WEBPACK_IMPORTED_MODULE_68__.HuggingFaceService).toSelf().inSingletonScope();
-    container.bind(_repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_69__.AnimationRepository).toSelf().inSingletonScope();
-    container.bind(_repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_70__.ChannelRepository).toSelf().inSingletonScope();
-    container.bind(_repository_item_repository_js__WEBPACK_IMPORTED_MODULE_71__.ItemRepository).toSelf().inSingletonScope();
-    container.bind(_repository_image_repository_js__WEBPACK_IMPORTED_MODULE_72__.ImageRepository).toSelf().inSingletonScope();
-    container.bind(_repository_author_repository_js__WEBPACK_IMPORTED_MODULE_73__.AuthorRepository).toSelf().inSingletonScope();
-    container.bind(_repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_74__.SettingsRepository).toSelf().inSingletonScope();
-    container.bind(_repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_75__.ThemeRepository).toSelf().inSingletonScope();
-    container.bind(_repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_76__.StaticPageRepository).toSelf().inSingletonScope();
-    container.bind(_repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_77__.TokenMetadataCacheRepository).toSelf().inSingletonScope();
-    container.bind(_repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__.QueryCacheRepository).toSelf().inSingletonScope();
-    container.bind(_repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_79__.AttributeCountRepository).toSelf().inSingletonScope();
+    container.bind(_service_original_metadata_service_js__WEBPACK_IMPORTED_MODULE_69__.OriginalMetadataService).toSelf().inSingletonScope();
+    container.bind(_repository_animation_repository_js__WEBPACK_IMPORTED_MODULE_70__.AnimationRepository).toSelf().inSingletonScope();
+    container.bind(_repository_channel_repository_js__WEBPACK_IMPORTED_MODULE_71__.ChannelRepository).toSelf().inSingletonScope();
+    container.bind(_repository_item_repository_js__WEBPACK_IMPORTED_MODULE_72__.ItemRepository).toSelf().inSingletonScope();
+    container.bind(_repository_image_repository_js__WEBPACK_IMPORTED_MODULE_73__.ImageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_author_repository_js__WEBPACK_IMPORTED_MODULE_74__.AuthorRepository).toSelf().inSingletonScope();
+    container.bind(_repository_settings_repository_js__WEBPACK_IMPORTED_MODULE_75__.SettingsRepository).toSelf().inSingletonScope();
+    container.bind(_repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_76__.ThemeRepository).toSelf().inSingletonScope();
+    container.bind(_repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_77__.StaticPageRepository).toSelf().inSingletonScope();
+    container.bind(_repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_78__.TokenMetadataCacheRepository).toSelf().inSingletonScope();
+    container.bind(_repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_79__.QueryCacheRepository).toSelf().inSingletonScope();
+    container.bind(_repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_80__.AttributeCountRepository).toSelf().inSingletonScope();
+    container.bind(_repository_original_metadata_repository_js__WEBPACK_IMPORTED_MODULE_81__.OriginalMetadataRepository).toSelf().inSingletonScope();
     container.bind("ipfsRemoteInit").toConstantValue(async (url) => {
         if (!url)
             return;
@@ -12568,6 +12628,79 @@ ItemRepository = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_2__.injectable)(),
     __metadata("design:paramtypes", [_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_3__.DatabaseService])
 ], ItemRepository);
+
+
+
+/***/ }),
+
+/***/ "./src/admin/repository/original-metadata-repository.ts":
+/*!**************************************************************!*\
+  !*** ./src/admin/repository/original-metadata-repository.ts ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OriginalMetadataRepository: () => (/* binding */ OriginalMetadataRepository)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../service/core/database-service.js */ "./src/admin/service/core/database-service.ts");
+/* harmony import */ var _dto_original_metadata_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../dto/original-metadata.js */ "./src/admin/dto/original-metadata.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let OriginalMetadataRepository = class OriginalMetadataRepository {
+    databaseService;
+    changesets = [{
+            id: '0',
+            changeset: async (db) => {
+                await db.createIndex({
+                    index: {
+                        fields: ['dateCreated']
+                    }
+                });
+            }
+        }];
+    db;
+    constructor(databaseService) {
+        this.databaseService = databaseService;
+    }
+    async load(channelId) {
+        this.db = await this.databaseService.getDatabase(`${channelId}-original-metadata`, this.changesets);
+    }
+    async loadEmpty(channelId) {
+        this.db = await this.databaseService.getEmptyDatabase(`${channelId}-original-metadata`);
+    }
+    async get(_id) {
+        return Object.assign(new _dto_original_metadata_js__WEBPACK_IMPORTED_MODULE_0__.OriginalMetadata(), await this.db.get(_id));
+    }
+    async put(originalMetadata) {
+        await this.db.put(originalMetadata);
+    }
+    async delete(originalMetadata) {
+        await this.db.remove(originalMetadata);
+    }
+    async getByIds(ids) {
+        let results = await this.db.allDocs({
+            keys: ids,
+            include_docs: true
+        });
+        return results.rows?.map(d => d.doc);
+    }
+};
+OriginalMetadataRepository = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
+    __metadata("design:paramtypes", [_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_2__.DatabaseService])
+], OriginalMetadataRepository);
 
 
 
@@ -13934,69 +14067,15 @@ let ExportService = class ExportService {
     async createBackup(exportBundle) {
         let author = exportBundle.author;
         let channel = this.getBackupChannel(exportBundle.channel, exportBundle.itemIds.length);
-        let items = [];
-        let themes = [];
-        let staticPages = [];
-        for (let themeId of exportBundle.themeIds) {
-            themes.push(this.prepareTheme(await this.themeService.get(themeId)));
-        }
-        for (let staticPageId of exportBundle.staticPageIds) {
-            staticPages.push(this.prepareStaticPage(await this.staticPageService.get(staticPageId)));
-        }
-        for (let itemId of exportBundle.itemIds) {
-            let item = this.prepareItem(await this.itemService.get(itemId));
-            //Remove the image src data from the content. Will restore from local copy when importing.
-            //Reduce backup filesize
-            if (item.content?.ops?.length > 0) {
-                let ops = [];
-                for (let op of item.content.ops) {
-                    if (op.insert && op.insert.ipfsimage) {
-                        delete op.insert.ipfsimage.src;
-                    }
-                    ops.push(op);
-                }
-                item.content.ops = ops;
-            }
-            items.push(item);
-        }
-        for (let item of items) {
-            let previous = items.filter(i => i.tokenId == parseInt(item.tokenId.toString()) - 1);
-            let next = items.filter(i => i.tokenId == parseInt(item.tokenId.toString()) + 1);
-            //Add the previous and next items so they can used in navigation
-            item['previous'] = previous?.length > 0 ? {
-                _id: previous[0]._id,
-                tokenId: previous[0].tokenId
-            } : undefined;
-            item['next'] = next?.length > 0 ? {
-                _id: next[0]._id,
-                tokenId: next[0].tokenId
-            } : undefined;
-        }
-        let images = [];
-        let animations = [];
-        for (let imageCid of exportBundle.imageCids) {
-            let image = await this.imageService.get(imageCid);
-            let clonedImage = JSON.parse(JSON.stringify(image));
-            //Remove publishing related field from image
-            delete clonedImage._rev;
-            delete clonedImage["_rev_tree"];
-            delete clonedImage.buffer;
-            delete clonedImage.svg;
-            images.push(clonedImage);
-        }
-        for (let animationCid of exportBundle.animationCids) {
-            let animation = await this.animationService.get(animationCid);
-            let clonedAnimation = JSON.parse(JSON.stringify(animation));
-            //Remove publishing related fields
-            delete clonedAnimation._rev;
-            delete clonedAnimation["_rev_tree"];
-            delete clonedAnimation.content;
-            animations.push(clonedAnimation);
-        }
         let authors = [];
         if (author) {
             authors.push(author);
         }
+        let items = await this.getBackupItems(exportBundle.itemIds);
+        let themes = await this.getBackupThemes(exportBundle.themeIds);
+        let staticPages = await this.getBackupStaticPages(exportBundle.staticPageIds);
+        let images = await this.getBackupImages(exportBundle.imageCids);
+        let animations = await this.getBackupAnimations(exportBundle.animationCids);
         //Save pouch dbs
         return {
             channels: [channel],
@@ -14005,7 +14084,12 @@ let ExportService = class ExportService {
             themes: themes,
             staticPages: staticPages,
             images: images,
-            animations: animations
+            animations: animations,
+            itemCount: exportBundle.itemIds.length,
+            themeCount: exportBundle.themeIds.length,
+            staticPageCount: exportBundle.staticPageIds.length,
+            imageCount: exportBundle.imageCids.length,
+            animationCount: exportBundle.animationCids.length
         };
     }
     getImageCidsByItem(item) {
@@ -14104,6 +14188,80 @@ let ExportService = class ExportService {
         //Add itemCount to channel
         channel['itemCount'] = itemCount;
         return channel;
+    }
+    async getBackupThemes(themeIds) {
+        let themes = [];
+        for (let themeId of themeIds) {
+            themes.push(this.prepareTheme(await this.themeService.get(themeId)));
+        }
+        return themes;
+    }
+    async getBackupStaticPages(staticPageIds) {
+        let staticPages = [];
+        for (let staticPageId of staticPageIds) {
+            staticPages.push(this.prepareStaticPage(await this.staticPageService.get(staticPageId)));
+        }
+        return staticPages;
+    }
+    async getBackupItems(itemIds) {
+        let items = [];
+        let counter = 0;
+        itemIds = itemIds.sort();
+        for (let itemId of itemIds) {
+            let item = this.prepareItem(await this.itemService.get(itemId));
+            //Remove the image src data from the content. Will restore from local copy when importing.
+            //Reduce backup filesize
+            if (item.content?.ops?.length > 0) {
+                let ops = [];
+                for (let op of item.content.ops) {
+                    if (op.insert && op.insert.ipfsimage) {
+                        delete op.insert.ipfsimage.src;
+                    }
+                    ops.push(op);
+                }
+                item.content.ops = ops;
+            }
+            items.push(item);
+            counter++;
+            console.log(`Processing token #${item.tokenId} ${counter}/${itemIds.length}`);
+        }
+        console.log(`Tokens processed`);
+        return items;
+    }
+    async getBackupImages(imageIds) {
+        let images = [];
+        let counter = 0;
+        for (let imageId of imageIds) {
+            let image = await this.imageService.get(imageId);
+            let clonedImage = JSON.parse(JSON.stringify(image));
+            //Remove publishing related field from image
+            delete clonedImage._rev;
+            delete clonedImage["_rev_tree"];
+            delete clonedImage.buffer;
+            delete clonedImage.svg;
+            images.push(clonedImage);
+            counter++;
+            console.log(`Processing image #${clonedImage._id} ${counter}/${imageIds.length}`);
+        }
+        console.log(`Images processed`);
+        return images;
+    }
+    async getBackupAnimations(animationIds) {
+        let animations = [];
+        let counter = 0;
+        for (let animationId of animationIds) {
+            let animation = await this.animationService.get(animationId);
+            let clonedAnimation = JSON.parse(JSON.stringify(animation));
+            //Remove publishing related field from image
+            delete clonedAnimation._rev;
+            delete clonedAnimation["_rev_tree"];
+            delete clonedAnimation.content;
+            animations.push(clonedAnimation);
+            counter++;
+            console.log(`Processing image #${clonedAnimation._id} ${counter}/${animationIds.length}`);
+        }
+        console.log(`Animations processed`);
+        return animations;
     }
 };
 ExportService = __decorate([
@@ -15326,7 +15484,7 @@ HuggingFaceService = __decorate([
 /* harmony import */ var _repository_theme_repository_js__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ../../repository/theme-repository.js */ "./src/admin/repository/theme-repository.ts");
 /* harmony import */ var _theme_service_js__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ../theme-service.js */ "./src/admin/service/theme-service.ts");
 /* harmony import */ var _repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ../../repository/static-page-repository.js */ "./src/admin/repository/static-page-repository.ts");
-/* harmony import */ var _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ../../repository/token-metadata-cache-repository.js */ "./src/admin/repository/token-metadata-cache-repository.ts");
+/* harmony import */ var _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ../../repository/token-metadata-cache-repository.js */ "./src/admin/repository/token-metadata-cache-repository.ts");
 /* harmony import */ var _static_page_service_js__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ../static-page-service.js */ "./src/admin/service/static-page-service.ts");
 /* harmony import */ var _erc_event_service_js__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./erc-event-service.js */ "./src/admin/service/core/erc-event-service.ts");
 /* harmony import */ var is_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! is-svg */ "./node_modules/is-svg/index.js");
@@ -15335,6 +15493,7 @@ HuggingFaceService = __decorate([
 /* harmony import */ var _schema_service_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./schema-service.js */ "./src/admin/service/core/schema-service.ts");
 /* harmony import */ var _web_item_web_service_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../web/item-web-service.js */ "./src/admin/service/web/item-web-service.ts");
 /* harmony import */ var _web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../web/channel-web-service.js */ "./src/admin/service/web/channel-web-service.ts");
+/* harmony import */ var _original_metadata_service_js__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ../original-metadata-service.js */ "./src/admin/service/original-metadata-service.ts");
 /* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -15348,6 +15507,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var __param = (undefined && undefined.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
 
 
 
@@ -15400,10 +15560,11 @@ let ImportService = class ImportService {
     staticPageRepository;
     staticPageService;
     ercEventService;
+    originalMetadataService;
     tokenMetadataCacheRepository;
     walletService;
     contracts;
-    constructor(channelService, channelWebService, queryCacheService, schemaService, itemService, itemWebService, authorService, ipfsService, imageService, animationService, themeRepository, themeService, staticPageRepository, staticPageService, ercEventService, tokenMetadataCacheRepository, walletService, contracts) {
+    constructor(channelService, channelWebService, queryCacheService, schemaService, itemService, itemWebService, authorService, ipfsService, imageService, animationService, themeRepository, themeService, staticPageRepository, staticPageService, ercEventService, originalMetadataService, tokenMetadataCacheRepository, walletService, contracts) {
         this.channelService = channelService;
         this.channelWebService = channelWebService;
         this.queryCacheService = queryCacheService;
@@ -15419,6 +15580,7 @@ let ImportService = class ImportService {
         this.staticPageRepository = staticPageRepository;
         this.staticPageService = staticPageService;
         this.ercEventService = ercEventService;
+        this.originalMetadataService = originalMetadataService;
         this.tokenMetadataCacheRepository = tokenMetadataCacheRepository;
         this.walletService = walletService;
         this.contracts = contracts;
@@ -15626,7 +15788,10 @@ let ImportService = class ImportService {
                 });
                 this._addAttributeToChannel(attribute, channel);
             }
-            item.originalJSONMetadata = metadata;
+            //Save metadata
+            let originalMetadata = await this.originalMetadataService.newFromText(JSON.stringify(metadata));
+            await this.originalMetadataService.put(originalMetadata);
+            item.originalJSONMetadataId = originalMetadata._id;
             //Save item
             await this.itemWebService.put({
                 channel: channel,
@@ -15983,7 +16148,6 @@ let ImportService = class ImportService {
             this.logForkProgress(forkStatus, `Inserted static page ${staticPageObj._id}`);
         }
         for (let item of items) {
-            item.originalJSONMetadata = tokenMetadata[item.tokenId];
             //Get image data and re-insert it into the content ops
             if (item.content?.ops?.length > 0) {
                 let ops = [];
@@ -16005,6 +16169,11 @@ let ImportService = class ImportService {
                 item["_deleted"] = false;
                 item._rev = itemObj._rev;
             }
+            //Save metadata
+            let originalMetadata = await this.originalMetadataService.newFromText(JSON.stringify(tokenMetadata[item.tokenId]));
+            await this.originalMetadataService.put(originalMetadata);
+            item.originalJSONMetadataId = originalMetadata._id;
+            //Save image
             await this.itemWebService.put({
                 channel: channel,
                 item: Object.assign(new _dto_item_js__WEBPACK_IMPORTED_MODULE_10__.Item(), item),
@@ -16430,8 +16599,8 @@ let ImportService = class ImportService {
 };
 ImportService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_17__.injectable)(),
-    __param(16, (0,inversify__WEBPACK_IMPORTED_MODULE_18__.inject)(_types_js__WEBPACK_IMPORTED_MODULE_19__["default"].WalletService)),
-    __param(17, (0,inversify__WEBPACK_IMPORTED_MODULE_18__.inject)("contracts")),
+    __param(17, (0,inversify__WEBPACK_IMPORTED_MODULE_18__.inject)(_types_js__WEBPACK_IMPORTED_MODULE_19__["default"].WalletService)),
+    __param(18, (0,inversify__WEBPACK_IMPORTED_MODULE_18__.inject)("contracts")),
     __metadata("design:paramtypes", [_channel_service_js__WEBPACK_IMPORTED_MODULE_20__.ChannelService,
         _web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_21__.ChannelWebService,
         _query_cache_service_js__WEBPACK_IMPORTED_MODULE_22__.QueryCacheService,
@@ -16447,7 +16616,8 @@ ImportService = __decorate([
         _repository_static_page_repository_js__WEBPACK_IMPORTED_MODULE_32__.StaticPageRepository,
         _static_page_service_js__WEBPACK_IMPORTED_MODULE_33__.StaticPageService,
         _erc_event_service_js__WEBPACK_IMPORTED_MODULE_34__.ERCEventService,
-        _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_35__.TokenMetadataCacheRepository, Object, Object])
+        _original_metadata_service_js__WEBPACK_IMPORTED_MODULE_35__.OriginalMetadataService,
+        _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_36__.TokenMetadataCacheRepository, Object, Object])
 ], ImportService);
 class IPFSDownloader {
     ipfsService;
@@ -16700,13 +16870,13 @@ class PagingViewModel {
 /* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(fs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path */ "./node_modules/path-browserify/index.js");
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
 /* harmony import */ var _channel_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../channel-service.js */ "./src/admin/service/channel-service.ts");
 /* harmony import */ var _image_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../image-service.js */ "./src/admin/service/image-service.ts");
 /* harmony import */ var _item_service_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../item-service.js */ "./src/admin/service/item-service.ts");
 /* harmony import */ var _ipfs_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ipfs-service.js */ "./src/admin/service/core/ipfs-service.ts");
 /* harmony import */ var _types_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./types.js */ "./src/admin/service/core/types.ts");
 /* harmony import */ var _export_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./export-service.js */ "./src/admin/service/core/export-service.ts");
-/* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
 /* harmony import */ var _contracts_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../contracts.json */ "./contracts.json");
 /* harmony import */ var _settings_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./settings-service.js */ "./src/admin/service/core/settings-service.ts");
 /* harmony import */ var _animation_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../animation-service.js */ "./src/admin/service/animation-service.ts");
@@ -16769,10 +16939,11 @@ let PublishService = class PublishService {
         //export to IPFS but only if we don't have a contractAddress
         let cids;
         if (!channel.contractAddress) {
+            this.logPublishProgress(undefined, "Exporting to IPFS...");
             cids = await this.exportToIPFS(exportBundle, backup, feeRecipient);
         }
         else {
-            if (channel.publishReaderIPFSStatus.cid) {
+            if (channel.publishReaderIPFSStatus?.cid) {
                 cids = {
                     cid: channel.publishReaderIPFSStatus.cid,
                     imageDirectoryCid: channel.publishReaderIPFSStatus.imageDirectoryCid,
@@ -16780,6 +16951,7 @@ let PublishService = class PublishService {
                 };
             }
         }
+        this.logPublishProgress(undefined, "Exporting to file system...");
         await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids);
         return {
             cids: cids
@@ -16802,11 +16974,11 @@ let PublishService = class PublishService {
             backups: {
                 channels: { saved: 0, total: 1 },
                 authors: { saved: 0, total: 1 },
-                items: { saved: 0, total: backup.items.length },
+                items: { saved: 0, total: backup.itemCount },
                 images: { saved: 0, total: exportBundle.imageCids.length },
                 animations: { saved: 0, total: exportBundle.animationCids.length },
-                themes: { saved: 0, total: backup.themes.length },
-                staticPages: { saved: 0, total: backup.staticPages.length }
+                themes: { saved: 0, total: backup.themeCount },
+                staticPages: { saved: 0, total: backup.staticPageCount }
             }
         };
         this.logPublishProgress(publishStatus);
@@ -16836,23 +17008,23 @@ let PublishService = class PublishService {
         this.logPublishProgress(publishStatus);
         //Write items backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/items.json`, new TextEncoder().encode(JSON.stringify(backup.items)), { create: true, parents: true, flush: flush });
-        publishStatus.backups.items.saved = backup.items.length;
+        publishStatus.backups.items.saved = backup.itemCount;
         this.logPublishProgress(publishStatus);
         //Write images backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/images.json`, new TextEncoder().encode(JSON.stringify(backup.images)), { create: true, parents: true, flush: flush });
-        publishStatus.backups.images.saved = backup.images.length;
+        publishStatus.backups.images.saved = backup.imageCount;
         this.logPublishProgress(publishStatus);
         //Write animations backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/animations.json`, new TextEncoder().encode(JSON.stringify(backup.animations)), { create: true, parents: true, flush: flush });
-        publishStatus.backups.animations.saved = backup.animations.length;
+        publishStatus.backups.animations.saved = backup.animationCount;
         this.logPublishProgress(publishStatus);
         //Write themes backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/themes.json`, new TextEncoder().encode(JSON.stringify(backup.themes)), { create: true, parents: true, flush: flush });
-        publishStatus.backups.themes.saved = backup.themes.length;
+        publishStatus.backups.themes.saved = backup.themeCount;
         this.logPublishProgress(publishStatus);
         //Write staticPages backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/static-pages.json`, new TextEncoder().encode(JSON.stringify(backup.staticPages)), { create: true, parents: true, flush: flush });
-        publishStatus.backups.staticPages.saved = backup.staticPages.length;
+        publishStatus.backups.staticPages.saved = backup.staticPageCount;
         this.logPublishProgress(publishStatus);
         this.logPublishProgress(publishStatus, `Flushing to IPFS...`);
         await this.ipfsService.ipfs.files.flush(`/export/${exportBundle.channel._id}/`);
@@ -16871,9 +17043,10 @@ let PublishService = class PublishService {
         await this._publishImagesFS(baseDir, exportBundle.imageCids);
         //Save animations
         await this._publishAnimationsFS(baseDir, exportBundle.animationCids);
-        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.itemIds, cids.animationDirectoryCid, cids.imageDirectoryCid);
+        //Save NFT metadata
+        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.itemIds, cids?.animationDirectoryCid, cids?.imageDirectoryCid);
         //Save contract metadata
-        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids.imageDirectoryCid);
+        let contractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids?.imageDirectoryCid);
         //Write to Git
         await this._writeFSAction({
             file_path: `${baseDir}/backup/export/contractMetadata.json`,
@@ -16929,6 +17102,8 @@ let PublishService = class PublishService {
                         const username = parts[0];
                         return username;
                     }
+                    if (!channel.httpUrlToRepo)
+                        return;
                     return {
                         hostname: `https://${getGitLabUsername(channel.httpUrlToRepo)}.gitlab.io`,
                         baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
@@ -16942,6 +17117,8 @@ let PublishService = class PublishService {
                         const username = parts[0];
                         return username;
                     }
+                    if (!channel.httpUrlToRepo)
+                        return;
                     return {
                         hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.github.io`,
                         baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
@@ -17100,19 +17277,7 @@ let PublishService = class PublishService {
     async _publishImagesFS(baseDir, imageCids) {
         for (let imageCid of imageCids) {
             let image = await this.imageService.get(imageCid);
-            let content;
-            if (image.buffer) {
-                if (content instanceof Uint8Array) {
-                    content = image.buffer;
-                }
-                else {
-                    //@ts-ignore
-                    content = Buffer.from(Object.values(image.buffer)); //this is because pouchdb allDocs is returning a weird format of the data on node.
-                }
-            }
-            else if (image.svg) {
-                content = Buffer.from(image.svg);
-            }
+            let content = await this.imageService.getImageContent(image);
             await this._writeFSAction({
                 file_path: `${baseDir}/backup/export/images/${image.cid}.${image.buffer ? 'jpg' : 'svg'}`,
                 content: content
@@ -17160,18 +17325,13 @@ let PublishService = class PublishService {
         return gitActions;
     }
     async _publishNFTMetadataFS(baseDir, channel, itemIds, animationDirectoryCid, imageDirectoryCid) {
-        let metadataNFTMap = {};
         for (let itemId of itemIds) {
             let item = this.exportService.prepareItem(await this.itemService.get(itemId));
             let coverImage = await this.imageService.get(item.coverImageId);
             let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid);
-            let content = new TextEncoder().encode(JSON.stringify(nftMetadata));
-            let contentCid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_2__.of(content);
-            metadataNFTMap[contentCid] = nftMetadata;
-            let nft = metadataNFTMap[contentCid];
             //Save to git
             await this._writeFSAction({
-                file_path: `${baseDir}/backup/export/metadata/${nft.tokenId}.json`,
+                file_path: `${baseDir}/backup/export/metadata/${item.tokenId}.json`,
                 content: Buffer.from(JSON.stringify(nftMetadata))
             });
         }
@@ -17567,7 +17727,8 @@ RoutingService = __decorate([
 /* harmony import */ var _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../repository/token-metadata-cache-repository.js */ "./src/admin/repository/token-metadata-cache-repository.ts");
 /* harmony import */ var _repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../repository/query-cache-repository.js */ "./src/admin/repository/query-cache-repository.ts");
 /* harmony import */ var _repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../repository/attribute-count-repository.js */ "./src/admin/repository/attribute-count-repository.ts");
-/* harmony import */ var _database_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./database-service.js */ "./src/admin/service/core/database-service.ts");
+/* harmony import */ var _database_service_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./database-service.js */ "./src/admin/service/core/database-service.ts");
+/* harmony import */ var _repository_original_metadata_repository_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../repository/original-metadata-repository.js */ "./src/admin/repository/original-metadata-repository.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17577,6 +17738,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -17602,9 +17764,10 @@ let SchemaService = class SchemaService {
     tokenMetadataCacheRepository;
     queryCacheRepository;
     attributeCountRepository;
+    originalMetadataRepository;
     databaseService;
     loadedChannelId;
-    constructor(authorRepository, channelRepository, imageRepository, itemRepository, settingsRepository, animationRepository, themeRepository, staticPageRepository, tokenMetadataCacheRepository, queryCacheRepository, attributeCountRepository, databaseService) {
+    constructor(authorRepository, channelRepository, imageRepository, itemRepository, settingsRepository, animationRepository, themeRepository, staticPageRepository, tokenMetadataCacheRepository, queryCacheRepository, attributeCountRepository, originalMetadataRepository, databaseService) {
         this.authorRepository = authorRepository;
         this.channelRepository = channelRepository;
         this.imageRepository = imageRepository;
@@ -17616,6 +17779,7 @@ let SchemaService = class SchemaService {
         this.tokenMetadataCacheRepository = tokenMetadataCacheRepository;
         this.queryCacheRepository = queryCacheRepository;
         this.attributeCountRepository = attributeCountRepository;
+        this.originalMetadataRepository = originalMetadataRepository;
         this.databaseService = databaseService;
     }
     async load() {
@@ -17633,6 +17797,7 @@ let SchemaService = class SchemaService {
         await this.authorRepository.load(channelId);
         await this.itemRepository.load(channelId);
         await this.animationRepository.load(channelId);
+        await this.originalMetadataRepository.load(channelId);
         await this.imageRepository.load(channelId);
         await this.themeRepository.load(channelId);
         await this.staticPageRepository.load(channelId);
@@ -17647,6 +17812,7 @@ let SchemaService = class SchemaService {
         await this.authorRepository.loadEmpty(channelId);
         await this.itemRepository.loadEmpty(channelId);
         await this.animationRepository.loadEmpty(channelId);
+        await this.originalMetadataRepository.loadEmpty(channelId);
         await this.imageRepository.loadEmpty(channelId);
         await this.themeRepository.loadEmpty(channelId);
         await this.staticPageRepository.loadEmpty(channelId);
@@ -17730,6 +17896,7 @@ let SchemaService = class SchemaService {
         await clearDatabase(this.authorRepository.db);
         await clearDatabase(this.itemRepository.db);
         await clearDatabase(this.animationRepository.db);
+        await clearDatabase(this.originalMetadataRepository.db);
         await clearDatabase(this.imageRepository.db);
         await clearDatabase(this.themeRepository.db);
         await clearDatabase(this.staticPageRepository.db);
@@ -17749,7 +17916,8 @@ SchemaService = __decorate([
         _repository_token_metadata_cache_repository_js__WEBPACK_IMPORTED_MODULE_9__.TokenMetadataCacheRepository,
         _repository_query_cache_repository_js__WEBPACK_IMPORTED_MODULE_10__.QueryCacheRepository,
         _repository_attribute_count_repository_js__WEBPACK_IMPORTED_MODULE_11__.AttributeCountRepository,
-        _database_service_js__WEBPACK_IMPORTED_MODULE_12__.DatabaseService])
+        _repository_original_metadata_repository_js__WEBPACK_IMPORTED_MODULE_12__.OriginalMetadataRepository,
+        _database_service_js__WEBPACK_IMPORTED_MODULE_13__.DatabaseService])
 ], SchemaService);
 
 
@@ -18132,8 +18300,6 @@ WalletServiceImpl = __decorate([
 /* harmony import */ var _svg_service_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./svg-service.js */ "./src/admin/service/svg-service.ts");
 /* harmony import */ var _quill_service_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./quill-service.js */ "./src/admin/service/quill-service.ts");
 /* harmony import */ var _theme_service_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./theme-service.js */ "./src/admin/service/theme-service.ts");
-/* harmony import */ var _item_service_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./item-service.js */ "./src/admin/service/item-service.ts");
-/* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18155,20 +18321,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 let ImageService = class ImageService {
     imageRepository;
     svgService;
     quillService;
     themeService;
-    itemService;
     db;
-    constructor(imageRepository, svgService, quillService, themeService, itemService) {
+    constructor(imageRepository, svgService, quillService, themeService) {
         this.imageRepository = imageRepository;
         this.svgService = svgService;
         this.quillService = quillService;
         this.themeService = themeService;
-        this.itemService = itemService;
     }
     async load(channelId) {
         this.db = await this.imageRepository.load(channelId);
@@ -18299,8 +18462,9 @@ let ImageService = class ImageService {
                 content = image.buffer;
             }
             else {
-                //@ts-ignore
-                content = Buffer.from(Object.values(image.buffer)); //this is because pouchdb allDocs is returning a weird format of the data on node.
+                // @ts-ignore
+                // content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
+                content = new Uint8Array(image.buffer.data);
             }
         }
         else if (image.svg) {
@@ -18341,8 +18505,7 @@ ImageService = __decorate([
     __metadata("design:paramtypes", [_repository_image_repository_js__WEBPACK_IMPORTED_MODULE_8__.ImageRepository,
         _svg_service_js__WEBPACK_IMPORTED_MODULE_9__.SvgService,
         _quill_service_js__WEBPACK_IMPORTED_MODULE_10__.QuillService,
-        _theme_service_js__WEBPACK_IMPORTED_MODULE_11__.ThemeService,
-        _item_service_js__WEBPACK_IMPORTED_MODULE_12__.ItemService])
+        _theme_service_js__WEBPACK_IMPORTED_MODULE_11__.ThemeService])
 ], ImageService);
 
 
@@ -18366,6 +18529,7 @@ ImageService = __decorate([
 /* harmony import */ var _repository_item_repository_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../repository/item-repository.js */ "./src/admin/repository/item-repository.ts");
 /* harmony import */ var _image_service_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./image-service.js */ "./src/admin/service/image-service.ts");
 /* harmony import */ var _core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./core/query-cache-service.js */ "./src/admin/service/core/query-cache-service.ts");
+/* harmony import */ var _original_metadata_service_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./original-metadata-service.js */ "./src/admin/service/original-metadata-service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18382,14 +18546,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 let ItemService = class ItemService {
     itemRepository;
     imageService;
     queryCacheService;
-    constructor(itemRepository, imageService, queryCacheService) {
+    originalMetadataService;
+    constructor(itemRepository, imageService, queryCacheService, originalMetadataService) {
         this.itemRepository = itemRepository;
         this.imageService = imageService;
         this.queryCacheService = queryCacheService;
+        this.originalMetadataService = originalMetadataService;
     }
     async get(_id) {
         return this.itemRepository.get(_id);
@@ -18441,7 +18608,8 @@ let ItemService = class ItemService {
         //We are publishing an existing collection that we are not editing then export the original metadata
         if (channel.forkType == "existing") {
             console.log(`Exporting original metadata for token #${item.tokenId}`);
-            return item.originalJSONMetadata;
+            let originalMetadata = await this.originalMetadataService.get(item.originalJSONMetadataId);
+            return JSON.parse(originalMetadata.content);
         }
         let result = {
             tokenId: item.tokenId,
@@ -18505,8 +18673,86 @@ ItemService = __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
     __metadata("design:paramtypes", [_repository_item_repository_js__WEBPACK_IMPORTED_MODULE_4__.ItemRepository,
         _image_service_js__WEBPACK_IMPORTED_MODULE_5__.ImageService,
-        _core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_6__.QueryCacheService])
+        _core_query_cache_service_js__WEBPACK_IMPORTED_MODULE_6__.QueryCacheService,
+        _original_metadata_service_js__WEBPACK_IMPORTED_MODULE_7__.OriginalMetadataService])
 ], ItemService);
+
+
+
+/***/ }),
+
+/***/ "./src/admin/service/original-metadata-service.ts":
+/*!********************************************************!*\
+  !*** ./src/admin/service/original-metadata-service.ts ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OriginalMetadataService: () => (/* binding */ OriginalMetadataService)
+/* harmony export */ });
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ipfs-only-hash */ "./node_modules/ipfs-only-hash/index.js");
+/* harmony import */ var _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util/validation-exception.js */ "./src/admin/util/validation-exception.ts");
+/* harmony import */ var class_validator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! class-validator */ "./node_modules/class-validator/esm5/index.js");
+/* harmony import */ var _repository_original_metadata_repository_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../repository/original-metadata-repository.js */ "./src/admin/repository/original-metadata-repository.ts");
+/* harmony import */ var _dto_original_metadata_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../dto/original-metadata.js */ "./src/admin/dto/original-metadata.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+let OriginalMetadataService = class OriginalMetadataService {
+    originalMetadataRepository;
+    db;
+    constructor(originalMetadataRepository) {
+        this.originalMetadataRepository = originalMetadataRepository;
+    }
+    async get(_id) {
+        return this.originalMetadataRepository.get(_id);
+    }
+    async put(originalMetadata) {
+        if (!originalMetadata._id) {
+            originalMetadata._id = originalMetadata.cid;
+            originalMetadata.dateCreated = new Date().toJSON();
+        }
+        //Validate
+        let errors = await (0,class_validator__WEBPACK_IMPORTED_MODULE_1__.validate)(originalMetadata, {
+            forbidUnknownValues: true,
+            whitelist: true
+        });
+        if (errors.length > 0) {
+            throw new _util_validation_exception_js__WEBPACK_IMPORTED_MODULE_2__.ValidationException(errors);
+        }
+        await this.originalMetadataRepository.put(originalMetadata);
+    }
+    async delete(originalMetadata) {
+        await this.originalMetadataRepository.delete(originalMetadata);
+    }
+    async getByIds(ids) {
+        return this.originalMetadataRepository.getByIds(ids);
+    }
+    async newFromText(content) {
+        const originalMetadata = new _dto_original_metadata_js__WEBPACK_IMPORTED_MODULE_3__.OriginalMetadata();
+        originalMetadata.content = content;
+        originalMetadata.cid = await ipfs_only_hash__WEBPACK_IMPORTED_MODULE_0__.of(originalMetadata.content);
+        return originalMetadata;
+    }
+};
+OriginalMetadataService = __decorate([
+    (0,inversify__WEBPACK_IMPORTED_MODULE_4__.injectable)(),
+    __metadata("design:paramtypes", [_repository_original_metadata_repository_js__WEBPACK_IMPORTED_MODULE_5__.OriginalMetadataRepository])
+], OriginalMetadataService);
 
 
 

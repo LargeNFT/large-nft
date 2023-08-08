@@ -46,6 +46,7 @@ import { QueryCacheService } from "./query-cache-service.js"
 import { SchemaService } from "./schema-service.js"
 import { ItemWebService } from "../web/item-web-service.js"
 import { ChannelWebService } from "../web/channel-web-service.js"
+import { OriginalMetadataService } from "../original-metadata-service.js"
 
 
 const gatewayTools = new IPFSGatewayTools()
@@ -69,6 +70,7 @@ class ImportService {
         private staticPageRepository:StaticPageRepository,
         private staticPageService:StaticPageService,
         private ercEventService:ERCEventService,
+        private originalMetadataService:OriginalMetadataService,
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository,
         @inject(TYPES.WalletService) private walletService: WalletService,
         @inject("contracts") private contracts,
@@ -394,7 +396,13 @@ class ImportService {
 
             }
             
-            item.originalJSONMetadata = metadata
+
+            //Save metadata
+            let originalMetadata = await this.originalMetadataService.newFromText(JSON.stringify(metadata))
+
+            await this.originalMetadataService.put(originalMetadata)
+
+            item.originalJSONMetadataId = originalMetadata._id
 
             //Save item
             await this.itemWebService.put({
@@ -951,8 +959,7 @@ class ImportService {
         }
 
         for (let item of items) {
-            
-            item.originalJSONMetadata = tokenMetadata[item.tokenId]
+           
 
             //Get image data and re-insert it into the content ops
             if (item.content?.ops?.length > 0) {
@@ -987,6 +994,12 @@ class ImportService {
             }
 
 
+            //Save metadata
+            let originalMetadata = await this.originalMetadataService.newFromText(JSON.stringify(tokenMetadata[item.tokenId]))
+            await this.originalMetadataService.put(originalMetadata)
+            item.originalJSONMetadataId = originalMetadata._id
+
+            //Save image
             await this.itemWebService.put({
                 channel: channel,
                 item: Object.assign(new Item(), item),

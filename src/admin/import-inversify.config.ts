@@ -69,6 +69,8 @@ import { PublishService } from "./service/core/publish-service.js";
 
 
 import {Headers} from 'node-fetch'
+import { OriginalMetadataService } from "./service/original-metadata-service.js";
+import { OriginalMetadataRepository } from "./repository/original-metadata-repository.js";
 
 //@ts-ignore
 globalThis.Headers = Headers
@@ -142,6 +144,8 @@ function getMainContainer(config) {
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()
   container.bind(ItemWebService).toSelf().inSingletonScope()
+  container.bind(OriginalMetadataService).toSelf().inSingletonScope()
+
 
   container.bind(AnimationRepository).toSelf().inSingletonScope()
   container.bind(ChannelRepository).toSelf().inSingletonScope()
@@ -152,6 +156,8 @@ function getMainContainer(config) {
   container.bind(ThemeRepository).toSelf().inSingletonScope()
   container.bind(StaticPageRepository).toSelf().inSingletonScope()
   container.bind(TokenMetadataCacheRepository).toSelf().inSingletonScope()
+  container.bind(OriginalMetadataRepository).toSelf().inSingletonScope()
+
 
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()

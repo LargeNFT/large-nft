@@ -82,7 +82,6 @@ import { TokenOwnerPageRepository } from "../reader/repository/token-owner-page-
 import { TokenOwnerPageRepositoryNodeImpl } from "../reader/repository/node/token-owner-page-repository-impl.js"
 import { SpawnService } from "./service/spawn-service.js"
 
-import sharp from "sharp"
 import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js"
 import { RowItemViewModel } from "../reader/dto/item-page.js"
 
@@ -118,7 +117,6 @@ async function getMainContainer(command:GetMainContainerCommand) {
   container.bind("hostname").toConstantValue(command.hostname)
 
   container.bind("channelDir").toConstantValue(command.channelDir)
-  container.bind("sharp").toConstantValue(sharp)
 
   container.bind("provider").toConstantValue(() => {
 

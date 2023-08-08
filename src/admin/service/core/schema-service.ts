@@ -13,6 +13,7 @@ import { QueryCacheRepository } from "../../repository/query-cache-repository.js
 import { AttributeCountRepository } from "../../repository/attribute-count-repository.js";
 import { Channel } from "../../dto/channel.js";
 import { DatabaseService } from "./database-service.js";
+import { OriginalMetadataRepository } from "../../repository/original-metadata-repository.js";
 
 @injectable()
 class SchemaService {
@@ -31,6 +32,7 @@ class SchemaService {
         private tokenMetadataCacheRepository:TokenMetadataCacheRepository,
         private queryCacheRepository:QueryCacheRepository,
         private attributeCountRepository:AttributeCountRepository,
+        private originalMetadataRepository:OriginalMetadataRepository,
         private databaseService:DatabaseService
     ) {}
 
@@ -55,6 +57,7 @@ class SchemaService {
         await this.authorRepository.load(channelId)
         await this.itemRepository.load(channelId)
         await this.animationRepository.load(channelId)
+        await this.originalMetadataRepository.load(channelId)
         await this.imageRepository.load(channelId)
         await this.themeRepository.load(channelId)
         await this.staticPageRepository.load(channelId)
@@ -75,6 +78,7 @@ class SchemaService {
         await this.authorRepository.loadEmpty(channelId)
         await this.itemRepository.loadEmpty(channelId)
         await this.animationRepository.loadEmpty(channelId)
+        await this.originalMetadataRepository.loadEmpty(channelId)
         await this.imageRepository.loadEmpty(channelId)
         await this.themeRepository.loadEmpty(channelId)
         await this.staticPageRepository.loadEmpty(channelId)
@@ -199,6 +203,7 @@ class SchemaService {
         await clearDatabase(this.authorRepository.db)
         await clearDatabase(this.itemRepository.db)
         await clearDatabase(this.animationRepository.db)
+        await clearDatabase(this.originalMetadataRepository.db)
         await clearDatabase(this.imageRepository.db)
         await clearDatabase(this.themeRepository.db)
         await clearDatabase(this.staticPageRepository.db)

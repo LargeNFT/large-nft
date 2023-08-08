@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b99c4d5a16';
+framework7Component.id = '417b875568';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '959bddeb9f';
+framework7Component.id = 'f993ba137f';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '35882a2ce5';
+framework7Component.id = 'd709014be9';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '166a326ba3';
+framework7Component.id = '8d01c34adf';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5e98b5220b';
+framework7Component.id = 'f7eb4bca6a';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -726,7 +726,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '464066c71d';
+framework7Component.id = 'c4200ed732';
 framework7Component.style = `
 
 `;
@@ -801,7 +801,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c98411cb03';
+framework7Component.id = '56ff185f86';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1082,7 +1082,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8544970f8c';
+framework7Component.id = '508a9fda42';
 framework7Component.style = `
 
 
@@ -1262,7 +1262,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '18480c9347';
+framework7Component.id = '34200fa41d';
 framework7Component.style = `
 
 .block-search {
@@ -1582,7 +1582,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0581fd57f1';
+framework7Component.id = 'bb94f9bccd';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1700,7 +1700,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd6fc28c0d5';
+framework7Component.id = '0a6bab5ddb';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1770,7 +1770,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '64dc5b0044';
+framework7Component.id = '12c0cf1bed';
 framework7Component.style = `
 
 
@@ -1966,7 +1966,7 @@ class Item {
     attributeSelections;
     coverImageId;
     coverImageAsAnimation;
-    originalJSONMetadata;
+    originalJSONMetadataId;
     animationId;
     datePublished;
     dateCreated;
@@ -3839,8 +3839,7 @@ let changesets = [
 /* harmony export */   AnimationService: () => (/* binding */ AnimationService)
 /* harmony export */ });
 /* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var _item_service_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./item-service.js */ "./src/reader/service/item-service.ts");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3851,10 +3850,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
 let AnimationService = class AnimationService {
     animationRepository;
-    itemService;
     constructor() { }
     async get(_id) {
         return this.animationRepository.get(_id);
@@ -3864,12 +3861,8 @@ __decorate([
     (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("AnimationRepository"),
     __metadata("design:type", Object)
 ], AnimationService.prototype, "animationRepository", void 0);
-__decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("ItemService"),
-    __metadata("design:type", _item_service_js__WEBPACK_IMPORTED_MODULE_1__.ItemService)
-], AnimationService.prototype, "itemService", void 0);
 AnimationService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __metadata("design:paramtypes", [])
 ], AnimationService);
 
@@ -5121,11 +5114,11 @@ let ERCEventService = class ERCEventService {
         ercEvent.data = event.data;
         ercEvent.topics = event.topics;
         ercEvent.logIndex = event.index;
-        ercEvent.event = event.fragment.name;
+        ercEvent.event = event.fragment?.name;
         ercEvent.eventSignature = event.eventSignature;
         ercEvent.dateCreated = new Date().toJSON();
         //Convert BigInt args to strings    
-        ercEvent.args = event.args.map(a => a.toString());
+        ercEvent.args = event.args?.map(a => a.toString());
         ercEvent.namedArgs = {};
         //Check wether it's a transfer and if it's newer than the most recently recorded transfer
         switch (ercEvent.event) {
@@ -5146,10 +5139,10 @@ let ERCEventService = class ERCEventService {
                 ercEvent.namedArgs.approved = ercEvent.args[2];
                 break;
         }
-        if (ercEvent.isTransfer && ercEvent.namedArgs.fromAddress == "0x0000000000000000000000000000000000000000") {
+        if (ercEvent.isTransfer && ercEvent.namedArgs?.fromAddress == "0x0000000000000000000000000000000000000000") {
             ercEvent.isMint = true;
         }
-        if (ercEvent.isTransfer && ercEvent.namedArgs.toAddress == "0x0000000000000000000000000000000000000000") {
+        if (ercEvent.isTransfer && ercEvent.namedArgs?.toAddress == "0x0000000000000000000000000000000000000000") {
             ercEvent.isBurn = true;
         }
         // ercEvent._id = `${ercEvent.blockHash}-${ercEvent.transactionHash}-${ercEvent.logIndex}`

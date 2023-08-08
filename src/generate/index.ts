@@ -130,7 +130,7 @@ let generate = async () => {
   }
 
   console.time("Copying backup...")
-  fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
+  // fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
   console.timeEnd("Copying backup...")
 
 

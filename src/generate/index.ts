@@ -129,9 +129,12 @@ let generate = async () => {
     bodyContents: generateViewModel.bodyContents
   }
 
-  console.time("Copying backup...")
-  // fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
-  console.timeEnd("Copying backup...")
+  if (!fs.existsSync(`${config.publicPath}/backup`)) {
+    console.time("Copying backup...")
+    fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
+    console.timeEnd("Copying backup...")
+  }
+
 
 
   //Copy logo

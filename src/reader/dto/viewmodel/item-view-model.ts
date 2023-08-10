@@ -25,11 +25,6 @@ interface ItemViewModel {
 
     attributeSelections:AttributeSelectionViewModel[]
 
-    //For previous/next navigation
-    next?:Item
-    previous?:Item 
-
-
 }
 
 export {

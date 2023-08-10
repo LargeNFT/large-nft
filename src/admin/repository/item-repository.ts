@@ -33,9 +33,11 @@ class ItemRepository {
 
     async getIds() : Promise<string[]> {
 
-        let result = await this.db.allDocs({ include_docs: false})
+        let result = await this.db.allDocs({ include_docs: true })
 
-        return result.rows.filter(row => !row.id.startsWith("_design") && !row.id.startsWith("_local")).map( r => r.id)
+        let rows = result.rows.filter(row => !row.id.startsWith("_design") && !row.id.startsWith("_local"))
+
+        return rows.sort((a, b) => parseInt(a.value.tokenId) - parseInt(b.value.tokenId)).map( r => r.id)
 
     }
 

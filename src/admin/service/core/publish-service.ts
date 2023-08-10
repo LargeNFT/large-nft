@@ -26,6 +26,7 @@ import { ContractMetadata } from "../../dto/contract-metadata.js"
 import contractABI from '../../../../contracts.json' assert { type: "json" }
 import { SettingsService } from "./settings-service.js"
 import { AnimationService } from "../animation-service.js"
+import { Item } from "../../dto/item.js"
 
 
 @injectable()
@@ -109,7 +110,7 @@ class PublishService {
 
             contractMetadata: { saved: 0, total: 1 },
             
-            nftMetadata: { saved: 0, total: exportBundle.itemIds.length },
+            nftMetadata: { saved: 0, total: exportBundle.items.length },
             images: { saved: 0, total: exportBundle.imageCids.length  },
             animations: { saved: 0, total: exportBundle.animationCids.length},
         
@@ -138,7 +139,7 @@ class PublishService {
         let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
         let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
 
-        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.itemIds, animationDirectory, imageDirectory, true)
+        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
 
         //Save contract metadata
         let contractMetadataPath = `${ipfsDirectory}/contractMetadata.json`
@@ -239,7 +240,7 @@ class PublishService {
         await this._publishAnimationsFS(baseDir, exportBundle.animationCids)
 
         //Save NFT metadata
-        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.itemIds, cids?.animationDirectoryCid, cids?.imageDirectoryCid)
+        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.items, cids?.animationDirectoryCid, cids?.imageDirectoryCid)
 
         //Save contract metadata
         let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids?.imageDirectoryCid)
@@ -598,19 +599,19 @@ class PublishService {
 
     }
 
-    private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, itemIds:string[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
+    private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
 
         let gitActions = []
 
 
-        this.logPublishProgress(publishStatus, `Exporting ${itemIds.length} metadata files`)
+        this.logPublishProgress(publishStatus, `Exporting ${items.length} metadata files`)
 
 
         let metadataNFTMap = {}
 
-        for (let itemId of itemIds) {
+        for (let theItem of items) {
 
-            let item = this.exportService.prepareItem(await this.itemService.get(itemId))
+            let item = this.exportService.prepareItem(theItem)
 
             let ipfsFilename = `${ipfsDirectory}/metadata/${item.tokenId}.json`
 
@@ -669,11 +670,11 @@ class PublishService {
 
     }
 
-    private async _publishNFTMetadataFS(baseDir:string, channel:Channel, itemIds:string[], animationDirectoryCid:string, imageDirectoryCid:string) {
+    private async _publishNFTMetadataFS(baseDir:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string) {
 
-        for (let itemId of itemIds) {
+        for (let theItem of items) {
 
-            let item = this.exportService.prepareItem(await this.itemService.get(itemId))
+            let item = this.exportService.prepareItem(theItem)
 
             let coverImage:Image = await this.imageService.get(item.coverImageId)
             let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)

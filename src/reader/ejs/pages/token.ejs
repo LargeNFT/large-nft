@@ -155,7 +155,7 @@
                                         </a>
                                     </div>
                                     <div>
-                                        <% if (itemViewModel.item.next) { %>
+                                        <% if (next) { %>
                                             <a class="button button-fill continue-button margin-bottom" href="#">
                                                 Continue <i class="f7-icons">arrow_right</i>
                                             </a>
@@ -211,13 +211,13 @@
                                 </form>
                             </div>
                     
-                            <% if (itemViewModel.item.previous || itemViewModel.item.next) { %>
+                            <% if (previous || next) { %>
                     
                                 <div class="card large-only">
                                   <div class="card-content card-content-padding">
                                     <div class="segmented">
                     
-                                      <% if (itemViewModel.item.previous) { %>
+                                      <% if (previous) { %>
                                         <a class="button button-outline back-token-button" data-transition="none">
                                             <i class="icon f7-icons">arrow_left</i>
                                           </a>
@@ -226,7 +226,7 @@
                                       <% } %>
                     
                     
-                                      <% if (itemViewModel.item.next) { %>
+                                      <% if (next) { %>
                                         <a class="button button-outline continue-button" data-transition="none">
                                             <i class="f7-icons">arrow_right</i>
                                           </a>
@@ -436,8 +436,8 @@
             }]
 
 
-            let hasPrevious = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.previous?.tokenId != undefined) %>`)
-            let hasNext = JSON.parse(`<%~ JSON.stringify(itemViewModel?.item?.next?.tokenId != undefined) %>`)
+            let hasPrevious = JSON.parse(`<%~ JSON.stringify(previous?.item.tokenId != undefined) %>`)
+            let hasNext = JSON.parse(`<%~ JSON.stringify(next?.item.tokenId != undefined) %>`)
 
             let swiper
 
@@ -489,7 +489,7 @@
 
                 const prev = (e) => {
 
-                    let link = "<%= itemViewModel.item.previous ? link(`t/${itemViewModel.item.previous.tokenId}`) : link(`index.html`) %>"
+                    let link = "<%= previous ? link(`t/${previous.item.tokenId}`) : link(`index.html`) %>"
                     
                     $f7.views.main.router.navigate(link, {
                         transition: 'none',
@@ -502,8 +502,9 @@
 
                 const next = (e) => {
 
-                    let link = "<%= itemViewModel.item.next ? link(`t/${itemViewModel.item.next?.tokenId}`) : '' %>"
-                    
+                    let link = "<%= next ? link(`t/${next.item.tokenId}`) : '' %>"
+
+
                     if (link?.length > 0) {
                         $f7.views.main.router.navigate(link, {
                             transition: 'none',

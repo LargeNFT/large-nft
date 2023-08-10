@@ -483,7 +483,7 @@ class TransactionIndexerService {
                 //Catch the error with their suggested range and try it again.
                 let message = ex?.error?.message
     
-                let startEnd = message.substring(message.indexOf('[') + 1, message.indexOf(']'))?.split(',')
+                let startEnd = message?.substring(message.indexOf('[') + 1, message.indexOf(']'))?.split(',')
     
                 if (startEnd?.length > 1) {
     

@@ -36,7 +36,7 @@ class ExportService {
         //Get author
         let author = await this.getExportAuthor(originalChannel.authorId)
 
-        let itemIds = await this.itemService.getIds()
+        let items = await this.itemService.listByChannel(originalChannel._id, 100000, 0)
 
         //Assign  
         let imageCids:string[] = []
@@ -58,9 +58,7 @@ class ExportService {
         }
 
         //Gather NFT data
-        for (let itemId of itemIds) {
-
-            let item = await this.itemService.get(itemId)
+        for (let item of items) {
 
             //Build animation URL if we have content
             if (item.animationId && !item.coverImageAsAnimation) {
@@ -83,7 +81,7 @@ class ExportService {
             channel: channel,
             author: author,
 
-            itemIds: itemIds,
+            items: items,
             themeIds: await this.themeService.getIds(),
             staticPageIds: await this.staticPageService.getIds(),
 
@@ -96,7 +94,7 @@ class ExportService {
 
         let author: Author = exportBundle.author
 
-        let channel: Channel = this.getBackupChannel(exportBundle.channel, exportBundle.itemIds.length)
+        let channel: Channel = this.getBackupChannel(exportBundle.channel, exportBundle.items.length)
 
         let authors = []
 
@@ -104,7 +102,7 @@ class ExportService {
             authors.push(author)
         }
 
-        let items = await this.getBackupItems(exportBundle.itemIds)
+        let items = await this.getBackupItems(exportBundle.items)
         let themes = await this.getBackupThemes(exportBundle.themeIds)
         let staticPages = await this.getBackupStaticPages(exportBundle.staticPageIds)
         let images = await this.getBackupImages(exportBundle.imageCids)
@@ -123,7 +121,7 @@ class ExportService {
             images: images,
             animations: animations,
 
-            itemCount: exportBundle.itemIds.length,
+            itemCount: exportBundle.items.length,
             themeCount: exportBundle.themeIds.length,
             staticPageCount: exportBundle.staticPageIds.length,
             imageCount: exportBundle.imageCids.length,
@@ -295,17 +293,15 @@ class ExportService {
 
     }
 
-    private async getBackupItems(itemIds:string[]) {
+    private async getBackupItems(theItems:Item[]) {
         
         let items = []
 
         let counter = 0
 
-        itemIds = itemIds.sort()
+        for (let theItem of theItems) {
 
-        for (let itemId of itemIds) {
-
-            let item = this.prepareItem(await this.itemService.get(itemId))
+            let item = this.prepareItem(theItem)
 
             //Remove the image src data from the content. Will restore from local copy when importing.
             //Reduce backup filesize
@@ -330,7 +326,7 @@ class ExportService {
 
             counter++
 
-            console.log(`Processing token #${item.tokenId} ${counter}/${itemIds.length}`)
+            console.log(`Processing token #${item.tokenId} ${counter}/${theItems.length}`)
 
 
 

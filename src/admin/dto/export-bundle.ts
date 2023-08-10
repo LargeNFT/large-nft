@@ -13,8 +13,8 @@ interface ExportBundle {
 
     channel: Channel
     author: Author
-
-    itemIds:string[]
+    items:Item[]
+    
     themeIds:string[]
     staticPageIds:string[]
 

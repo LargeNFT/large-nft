@@ -28,6 +28,8 @@ class ItemRepositoryNodeImpl implements ItemRepository {
 
     async load() {
         this.items = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/items.json`, 'utf8'))
+
+        
     }
 
     async get(_id: string): Promise<Item> {        

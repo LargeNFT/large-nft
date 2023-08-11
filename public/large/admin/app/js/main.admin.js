@@ -113,7 +113,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '29453def39';
+framework7Component.id = '20f4ca17fe';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -308,7 +308,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2ff9b81872';
+framework7Component.id = 'db40c4f552';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -417,7 +417,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'fdf1154772';
+framework7Component.id = 'c5ae3733ac';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -625,7 +625,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '42a6165771';
+framework7Component.id = '3d5ba7a1e0';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -791,7 +791,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '94faba8829';
+framework7Component.id = '05c4accbce';
 framework7Component.style = `
 
 
@@ -1114,7 +1114,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6661325531';
+framework7Component.id = '829d9f5c8d';
 framework7Component.style = `
 
 
@@ -1351,7 +1351,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ae5c095e36';
+framework7Component.id = '28c5ab066c';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1686,7 +1686,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ea982c7e93';
+framework7Component.id = 'bf0c477063';
 framework7Component.style = `
 
 `;
@@ -2170,7 +2170,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd0c9cc5bea';
+framework7Component.id = '4fc520ffd3';
 framework7Component.style = `
 
 
@@ -2525,7 +2525,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b10c84a71c';
+framework7Component.id = 'ccdaa2438f';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3796,7 +3796,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd6973478b2';
+framework7Component.id = '0e57d7b16a';
 framework7Component.style = `
 
 
@@ -4040,7 +4040,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '05a139f1e4';
+framework7Component.id = '29fb124104';
 framework7Component.style = `
 
 
@@ -4303,7 +4303,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ba90a3a4f8';
+framework7Component.id = '1d446253ff';
 framework7Component.style = `
   
 
@@ -4458,7 +4458,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7badb17643';
+framework7Component.id = 'ab805fd36d';
 framework7Component.style = `
     
 `;
@@ -4914,7 +4914,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd3ba30d4c2';
+framework7Component.id = 'e6e35022fc';
 framework7Component.style = `
 
 
@@ -5003,7 +5003,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'feb54d5574';
+framework7Component.id = '13a14f9371';
 framework7Component.style = `
     
 `;
@@ -5387,7 +5387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9068428b7d';
+framework7Component.id = '35cac7ca8b';
 framework7Component.style = `
 
 
@@ -5460,7 +5460,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c3df9de7db';
+framework7Component.id = '03eb32e731';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5587,7 +5587,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6d25ed4d48';
+framework7Component.id = 'ecc712e9f2';
 framework7Component.style = `
 
 `;
@@ -5745,7 +5745,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '78c08d6e21';
+framework7Component.id = 'a4c30675b7';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -6047,7 +6047,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'fd5bec4cfe';
+framework7Component.id = '17a2a076b9';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6372,7 +6372,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0e6971916a';
+framework7Component.id = '220be05be6';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6907,7 +6907,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c283d72507';
+framework7Component.id = 'c6b47c4f7f';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7254,7 +7254,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b3436fd018';
+framework7Component.id = 'c16f5679a6';
 framework7Component.style = `
 
 
@@ -7551,7 +7551,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f7c8fe75d8';
+framework7Component.id = '0d6d18305c';
 framework7Component.style = `
 
 
@@ -7761,7 +7761,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f15f3bd4ff';
+framework7Component.id = '5920a708f6';
 framework7Component.style = `
 
   `;
@@ -8166,7 +8166,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b9564b1529';
+framework7Component.id = '902477f0d2';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8467,7 +8467,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '236068ba2a';
+framework7Component.id = 'fe9828c93c';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8680,7 +8680,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '12cb93b35f';
+framework7Component.id = '55c2a8be26';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -8960,7 +8960,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f0c9df4dea';
+framework7Component.id = '28a9e3fc8a';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9401,7 +9401,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6886263abc';
+framework7Component.id = 'e078a71f48';
 framework7Component.style = `
 
 
@@ -9481,7 +9481,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6edc8af24c';
+framework7Component.id = 'b9ceb88a9c';
 framework7Component.style = `
 
 
@@ -19111,7 +19111,9 @@ class CustomImageSpec extends quill_blot_formatter__WEBPACK_IMPORTED_MODULE_2__.
 /* harmony import */ var quill_delta_to_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! quill-delta-to-html */ "./node_modules/quill-delta-to-html/dist/commonjs/main.js");
 /* harmony import */ var quill_delta_to_markdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! quill-delta-to-markdown */ "./node_modules/quill-delta-to-markdown/index.js");
 /* harmony import */ var quill_delta_to_markdown__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(quill_delta_to_markdown__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
+/* harmony import */ var delta_markdown_for_quill__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! delta-markdown-for-quill */ "./node_modules/delta-markdown-for-quill/index.js");
+/* harmony import */ var delta_markdown_for_quill__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(delta_markdown_for_quill__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -19121,6 +19123,7 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -19147,9 +19150,12 @@ let QuillService = class QuillService {
     async generateMarkdown(content) {
         return (0,quill_delta_to_markdown__WEBPACK_IMPORTED_MODULE_1__.deltaToMarkdown)(content.ops);
     }
+    async deltaFromMarkdown(ops) {
+        return (0,delta_markdown_for_quill__WEBPACK_IMPORTED_MODULE_2__.toDelta)(ops);
+    }
 };
 QuillService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_3__.injectable)(),
     __metadata("design:paramtypes", [])
 ], QuillService);
 const renderCustom = (suppressSrc) => {

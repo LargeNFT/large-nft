@@ -7,7 +7,7 @@ import { Readable } from 'stream'
 
 import { getMainContainer } from "./publish-inversify.config.js"
 
-import { CidInfo, PublishService } from "./service/core/publish-service.js"
+import { PublishService } from "./service/core/publish-service.js"
 import fs from "fs"
 
 
@@ -15,25 +15,59 @@ import { IpfsService } from "./service/core/ipfs-service.js"
 import { ChannelBackup, SchemaService } from "./service/core/schema-service.js"
 import { SettingsService } from "./service/core/settings-service.js"
 import { Settings } from "./dto/settings.js"
-import path from "path"
 
 import { ImageRepository } from "./repository/image-repository.js"
 import { AnimationRepository } from "./repository/animation-repository.js"
 import { ChannelService } from "./service/channel-service.js"
 import { Channel } from "./dto/channel.js"
+import { Image } from "./dto/image.js"
+
+import { ProcessConfig } from "../reader/util/process-config.js"
+import { QuillService } from "./service/quill-service.js"
+import { ImageService } from "./service/image-service.js"
+import { ChannelRepository } from "./repository/channel-repository.js"
 
 let publish = async () => {
+
+  let config:any = await ProcessConfig.getPublishConfig() 
+
 
   let container = await getMainContainer()
 
   let channelService:ChannelService = container.get(ChannelService)
+  let channelRepository:ChannelRepository = container.get(ChannelRepository)
+
+  let imageService:ImageService = container.get(ImageService)
+
   let publishService:PublishService = container.get(PublishService)
+  let quillService:QuillService = container.get(QuillService)
+
   let ipfsService:IpfsService = container.get(IpfsService)
   let schemaService: SchemaService = container.get(SchemaService)
   let settingsService: SettingsService = container.get(SettingsService)
 
   let imageRepository: ImageRepository = container.get(ImageRepository)
   let animationRepository: AnimationRepository = container.get(AnimationRepository)
+
+
+
+
+  let settings
+
+  try {
+    settings = await settingsService.get()
+  } catch (ex) {}
+
+  if (!settings) {
+    settings = new Settings()
+    settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
+    await settingsService.put(settings)
+  }
+
+
+
+  await ipfsService.init()
+
 
 
   //Load schema
@@ -112,25 +146,68 @@ let publish = async () => {
 
     await schemaService.loadChannel(channel._id)
 
+  }
+
+  //Apply changes from config
+
+  //Channel description, cover image, banner
+
+  if (config.channel) {
+
+    if (config.channel.descriptionMarkdown) {
+
+      channel.description = {
+        ops: await quillService.deltaFromMarkdown(config.channel.descriptionMarkdown)
+      }
+
+    }
+  
+    if (config.channel.coverImage) {
+
+      let coverImage:Image = await imageService.newFromBuffer(fs.readFileSync(config.channel.coverImage))
+
+      let existing 
+
+      try {
+        existing = await imageService.get(coverImage.cid)
+      } catch(ex) {}
+
+      if (!existing) {
+        await imageService.put(coverImage)
+      }
+
+      channel.coverImageId = coverImage.cid
+    }
+
+
+    if (config.channel.coverBanner) {
+
+      let bannerImage:Image = await imageService.newFromBuffer(fs.readFileSync(config.channel.coverBanner))
+
+      let existing 
+
+      try {
+        existing = await imageService.get(bannerImage.cid)
+      } catch(ex) {}
+
+      if (!existing) {
+        await imageService.put(bannerImage)
+      }
+
+
+      channel.coverBannerId = bannerImage.cid
+    }
+
+    //Note: was trying to use the version with validation but it was failing telling me we are saving an invalid field. But I didn't see one.
+    //This solution is not great. Gotta throw together some unit tests around it.
+    await channelRepository.put(channel)
 
   }
 
-  let settings
-
-  try {
-    settings = await settingsService.get()
-  } catch (ex) {}
-
-  if (!settings) {
-    settings = new Settings()
-    settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
-    await settingsService.put(settings)
-  }
 
 
 
-  await ipfsService.init()
-
+  
 
   if (fs.existsSync(`${process.env.INIT_CWD   }/large-config.json`)) {
     fs.rmSync(`${process.env.INIT_CWD   }/large-config.json`)

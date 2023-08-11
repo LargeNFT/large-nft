@@ -75,7 +75,7 @@ class GenerateService {
         await this.staticPageRepository.load()
     }
 
-    async getGenerateViewModel(config, itemViewModels:ItemViewModel[], additionalStaticPages?:StaticPage[]): Promise<GenerateViewModel> {
+    async getGenerateViewModel(config, itemViewModels:ItemViewModel[]): Promise<GenerateViewModel> {
 
         //Get first page of items for explore page
         let itemResults: ItemResults = await this.itemWebService.exploreList({}, 0, PER_PAGE)
@@ -83,7 +83,7 @@ class GenerateService {
         let generateViewModel: GenerateViewModel = {
             itemViewModels: itemViewModels,
             firstPageExploreItems: itemResults.items,
-            routablePages: await this.staticPageService.listRoutablePages(additionalStaticPages),
+            routablePages: await this.staticPageService.listRoutablePages(),
             base64Version: Buffer.from(JSON.stringify(config.VERSION)).toString('base64'),
             bodyContents: ``,
             headEndContents: ``
@@ -181,17 +181,18 @@ class GenerateService {
     
             console.log(`Creating webp at: ${filename}`)    
 
-            //@ts-ignore
-            let file = await Jimp.read(imagePath)
+              //@ts-ignore
+              let file = await Jimp.read(imagePath)
 
-            if (size) {
+              if (size) {
+                  //Generate and resize
+                  file.resize(size, size).write(filename)
+              } else {
+                  //Generate
+                  file.write(filename)
+              }
 
-                //Generate and resize
-                file.resize(size, size).write(filename)
-            } else {
-                //Generate
-                file.write(filename)
-            }
+
 
         } else {
 

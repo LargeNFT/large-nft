@@ -43,11 +43,11 @@ class ChannelWebService {
 
     constructor() {}
 
-    async get(offset:number, additionalStaticPages?:StaticPage[]) : Promise<ChannelViewModel> {
-        return this.getViewModel(await this.channelService.get(), offset, additionalStaticPages)
+    async get(offset:number) : Promise<ChannelViewModel> {
+        return this.getViewModel(await this.channelService.get(), offset)
     }
 
-    async getViewModel(channel:Channel, offset:number, additionalStaticPages?:StaticPage[]) : Promise<ChannelViewModel> {
+    async getViewModel(channel:Channel, offset:number) : Promise<ChannelViewModel> {
  
         let author:Author
         let coverImage:Image
@@ -72,13 +72,13 @@ class ChannelWebService {
         }
 
 
-        if (additionalStaticPages?.length > 0) {
-            for (let staticPage of additionalStaticPages) {
-                for (let location of staticPage?.locations) {
-                    staticPagesViewModel[location].push(staticPage)
-                }
-            }
-        }
+        // if (additionalStaticPages?.length > 0) {
+        //     for (let staticPage of additionalStaticPages) {
+        //         for (let location of staticPage?.locations) {
+        //             staticPagesViewModel[location].push(staticPage)
+        //         }
+        //     }
+        // }
 
 
         if (channel.coverImageId) {

@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'de4bb68bb5';
+framework7Component.id = '2fbba395bf';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3ea0aaab58';
+framework7Component.id = '6969e1f6ac';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'dee9350524';
+framework7Component.id = '58edf8949e';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0b51860e3f';
+framework7Component.id = 'd5a37420a0';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6c6bd8bcdf';
+framework7Component.id = '397c6e8a99';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -726,7 +726,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd05c3f6c41';
+framework7Component.id = '6bb53d3ac3';
 framework7Component.style = `
 
 `;
@@ -801,7 +801,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1ae832007e';
+framework7Component.id = '194e92883d';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1082,7 +1082,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ff23d8090d';
+framework7Component.id = 'e43145fc57';
 framework7Component.style = `
 
 
@@ -1262,7 +1262,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '96b30a12c6';
+framework7Component.id = 'b027ab4d3d';
 framework7Component.style = `
 
 .block-search {
@@ -1582,7 +1582,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '077c248e84';
+framework7Component.id = 'd6960caa12';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1700,7 +1700,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ade96cef72';
+framework7Component.id = 'b6c99f2a4c';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1770,7 +1770,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5ae2c34e0a';
+framework7Component.id = 'aec8e689e7';
 framework7Component.style = `
 
 
@@ -5550,11 +5550,11 @@ let StaticPageService = class StaticPageService {
     async listByLocation(location, skip) {
         return this.staticPageRepository.listByLocation(location, skip);
     }
-    async listRoutablePages(additionalStaticPages) {
+    async listRoutablePages() {
         let results = [];
-        if (additionalStaticPages?.length > 0) {
-            results.push(...additionalStaticPages);
-        }
+        // if (additionalStaticPages?.length > 0) {
+        //   results.push(...additionalStaticPages)
+        // }
         results = results.concat(await this.staticPageRepository.listByLocation("navbar", 0));
         results = results.concat(await this.staticPageRepository.listByLocation("links", 0));
         //Clone these so we don't change the underlying objects
@@ -5972,10 +5972,10 @@ let ChannelWebService = class ChannelWebService {
     staticPageService;
     loadedChannelData;
     constructor() { }
-    async get(offset, additionalStaticPages) {
-        return this.getViewModel(await this.channelService.get(), offset, additionalStaticPages);
+    async get(offset) {
+        return this.getViewModel(await this.channelService.get(), offset);
     }
-    async getViewModel(channel, offset, additionalStaticPages) {
+    async getViewModel(channel, offset) {
         let author;
         let coverImage;
         if (channel.authorId) {
@@ -5989,13 +5989,13 @@ let ChannelWebService = class ChannelWebService {
         for (let location of locations) {
             staticPagesViewModel[location] = await this.staticPageService.listByLocation(location, 0);
         }
-        if (additionalStaticPages?.length > 0) {
-            for (let staticPage of additionalStaticPages) {
-                for (let location of staticPage?.locations) {
-                    staticPagesViewModel[location].push(staticPage);
-                }
-            }
-        }
+        // if (additionalStaticPages?.length > 0) {
+        //     for (let staticPage of additionalStaticPages) {
+        //         for (let location of staticPage?.locations) {
+        //             staticPagesViewModel[location].push(staticPage)
+        //         }
+        //     }
+        // }
         if (channel.coverImageId) {
             coverImage = await this.imageService.get(channel.coverImageId);
         }

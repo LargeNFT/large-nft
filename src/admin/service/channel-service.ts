@@ -72,7 +72,7 @@ class ChannelService {
 
     }
 
-
+    
     //Validate
     let errors:ValidationError[] = await validate(channel, {
       forbidUnknownValues: true,

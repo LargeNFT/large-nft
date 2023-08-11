@@ -21,7 +21,6 @@ import { ProcessConfig } from "../reader/util/process-config.js"
 import { ChannelWebService } from "../reader/service/web/channel-web-service.js"
 
 import pkg from 'convert-svg-to-png';
-import { StaticPage } from "../reader/dto/static-page.js"
 import path from "path"
 import { ItemViewModel } from "../reader/dto/viewmodel/item-view-model.js"
 import { ItemWebService } from "../reader/service/web/item-web-service.js"
@@ -76,23 +75,11 @@ let generate = async () => {
 
 
   //Create public path.
-  // await fs.promises.mkdir(`${config.publicPath}`, { recursive: true })
   await fs.promises.mkdir(`${config.publicPath}/t`, { recursive: true })
 
 
 
-  //Load any additional static pages.
-  let additionalStaticPages:StaticPage[] 
-
-  if (config.additionalStaticPages) {
-    try {
-      let contents = await fs.promises.readFile(config.additionalStaticPages)
-      additionalStaticPages = JSON.parse(contents.toString())
-    } catch(ex) {}
-  }
-
-
-  let channelViewModel = await channelWebService.get(0, additionalStaticPages)
+  let channelViewModel = await channelWebService.get(0)
   channelId = channelViewModel.channel._id
 
   console.log(`Generating Large Reader for '${channelViewModel.channel.title}'`)
@@ -103,7 +90,7 @@ let generate = async () => {
   await generateService.generateItemPages(config, itemViewModels)
 
 
-  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, itemViewModels, additionalStaticPages)
+  let generateViewModel:GenerateViewModel = await generateService.getGenerateViewModel(config, itemViewModels)
 
   await generateService.defineEtaTemplates(config, config.channelDir)
 

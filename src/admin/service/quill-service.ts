@@ -1,7 +1,8 @@
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html"
 import { deltaToMarkdown } from 'quill-delta-to-markdown'
+import { toDelta } from "delta-markdown-for-quill"
 
-import { injectable } from 'inversify';
+import { injectable } from 'inversify'
 
 
 @injectable()
@@ -39,6 +40,10 @@ class QuillService {
 
   async generateMarkdown(content: any) : Promise<string> {
     return deltaToMarkdown(content.ops)
+  }
+
+  async deltaFromMarkdown(ops:string) : Promise<string> {
+    return toDelta(ops)
   }
 
 

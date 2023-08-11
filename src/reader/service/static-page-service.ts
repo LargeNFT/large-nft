@@ -20,13 +20,13 @@ class StaticPageService {
     return this.staticPageRepository.listByLocation(location, skip)
   }
 
-  async listRoutablePages(additionalStaticPages?:StaticPage[]): Promise<StaticPage[]> {
+  async listRoutablePages(): Promise<StaticPage[]> {
 
     let results = []
 
-    if (additionalStaticPages?.length > 0) {
-      results.push(...additionalStaticPages)
-    }
+    // if (additionalStaticPages?.length > 0) {
+    //   results.push(...additionalStaticPages)
+    // }
     
     results = results.concat(await this.staticPageRepository.listByLocation("navbar", 0))
     results = results.concat(await this.staticPageRepository.listByLocation("links", 0))

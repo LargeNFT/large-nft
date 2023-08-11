@@ -449,7 +449,7 @@ let getReaderConfigs = () => {
 
   let syncLibraryConfig = {
     entry: "./src/sync-library/index.ts",
-    externals: ['sequelize', 'sequelize-typescript'],
+    externals: ['sequelize', 'sequelize-typescript', 'sharp'],
     externalsPresets: { 
       node: true 
     },    

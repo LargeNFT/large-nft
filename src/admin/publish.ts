@@ -160,6 +160,14 @@ let publish = async () => {
         ops: await quillService.deltaFromMarkdown(config.channel.descriptionMarkdown)
       }
 
+
+      //Translate description content
+      channel.descriptionHTML = await quillService.translateContent(channel.description)
+
+      //Generate markdown
+      channel.descriptionMarkdown = await quillService.generateMarkdown(channel.description)
+
+
     }
   
     if (config.channel.coverImage) {
@@ -199,7 +207,7 @@ let publish = async () => {
     }
 
     //Note: was trying to use the version with validation but it was failing telling me we are saving an invalid field. But I didn't see one.
-    //This solution is not great. Gotta throw together some unit tests around it.
+    //This solution is not great. Gotta throw together some unit tests around it. This is also why we're manually doing the description transformations above.
     await channelRepository.put(channel)
 
   }

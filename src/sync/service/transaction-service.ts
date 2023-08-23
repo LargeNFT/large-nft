@@ -121,6 +121,7 @@ class TransactionService {
     async getTransactionValue(transaction:Transaction, contractAddress:string, ethUSDPrice:number) : Promise<TransactionValue> {
 
         if (!transaction.receipt.to) return
+
         const recipient = ethers.getAddress(transaction.receipt.to)
 
         if ((recipient in markets)) {

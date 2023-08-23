@@ -34,7 +34,12 @@ import { SchemaService } from "../reader/service/core/schema-service.js"
 import { ContractStateService } from "./service/contract-state-service.js"
 import { ItemService } from "../reader/service/item-service.js"
 import { TokenService } from "./service/token-service.js"
+import { TransactionService } from "./service/transaction-service.js"
+import { BlockService } from "./service/block-service.js"
+import { Transaction } from "./dto/transaction.js"
 
+let transactionService:TransactionService
+let blockService:BlockService
 
 let sync = async () => {
 
@@ -48,8 +53,6 @@ let sync = async () => {
     container.bind("channelId").toConstantValue(() => {
       return channelId
     })
-
-
 
     container.bind("contracts").toConstantValue(async () => {
 
@@ -65,7 +68,6 @@ let sync = async () => {
 
     })
 
-
     let command: GetMainContainerCommand = {
       customContainer: container,
       channelDir: config.channelDir,
@@ -74,7 +76,6 @@ let sync = async () => {
       hostname: config.hostname,
       alchemy: config.alchemy
     }
-
 
     container = await getMainContainer(command)
 
@@ -89,9 +90,7 @@ let sync = async () => {
 
     // console.log(`Provider initialized`)
 
-
     let channelWebService: ChannelWebService = container.get("ChannelWebService")
-
 
     //Get channel
     let channelViewModel = await channelWebService.get(0)
@@ -134,7 +133,8 @@ let sync = async () => {
     await sequelize.sync()
     // console.timeEnd('Synchronizing database schema...')
 
-
+    transactionService = container.get("TransactionService")
+    blockService = container.get("BlockService")
 
 
     let transactionIndexerService: TransactionIndexerService = container.get("TransactionIndexerService")
@@ -564,9 +564,7 @@ let sync = async () => {
 
     //   let ethUSDPrice: number = await blockService.getETHUSDAtBlock(transaction.blockNumber)
 
-    //   console.log(ethUSDPrice)
-
-    //   let value = await transactionService.getTransactionValue(transaction, channelContract.address, ethUSDPrice)
+    //   let value = await transactionService.getTransactionValue(transaction, await channelContract.getAddress(), ethUSDPrice)
 
     //   console.log(value)
 

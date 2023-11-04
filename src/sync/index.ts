@@ -36,7 +36,6 @@ import { ItemService } from "../reader/service/item-service.js"
 import { TokenService } from "./service/token-service.js"
 import { TransactionService } from "./service/transaction-service.js"
 import { BlockService } from "./service/block-service.js"
-import { Transaction } from "./dto/transaction.js"
 
 let transactionService:TransactionService
 let blockService:BlockService

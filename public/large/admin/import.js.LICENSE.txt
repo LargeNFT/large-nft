@@ -126,7 +126,7 @@ and limitations under the License.
 
 /*! https://mths.be/he v1.2.0 by @mathias | MIT license */
 
-/*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
+/*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 /**
  * @license

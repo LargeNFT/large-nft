@@ -156,7 +156,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-
     async getEventsByTokens(tokenIds:number[], options?:any) : Promise<ProcessedEvent[]>  {
 
         let s = await this.sequelize()
@@ -191,10 +190,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         return results
 
     }
-
-
-
-
 
     async putEvent(event: ProcessedEvent, options?:any): Promise<ProcessedEvent> {
         await event.save(options)
@@ -382,7 +377,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     }
 
-
     async getSalesReport(): Promise<SalesReport> {
 
         let report:SalesReport = {}
@@ -400,8 +394,6 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
         return report
 
     }
-
-
 
     async getTokenOwnerSalesReport(_id:string): Promise<TokenOwnerSalesReport> {
 

@@ -1,6 +1,9 @@
 import { QuillDeltaToHtmlConverter } from "quill-delta-to-html"
 import { deltaToMarkdown } from 'quill-delta-to-markdown'
-import { toDelta } from "delta-markdown-for-quill"
+
+// import { toDelta } from "delta-markdown-for-quill"
+import pkg from 'delta-markdown-for-quill'
+const { toDelta } = pkg
 
 import { injectable } from 'inversify'
 

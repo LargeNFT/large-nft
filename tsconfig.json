@@ -3,7 +3,7 @@
     "experimentalDecorators": true,
     "lib": [ "ES6", "dom" ],
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "NodeNext",
     "types": ["reflect-metadata", "node", "mocha"],
     "skipLibCheck": true,
     "resolveJsonModule": true,

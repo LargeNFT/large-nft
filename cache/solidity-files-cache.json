@@ -12,6 +12,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -51,6 +52,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -86,6 +88,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -123,6 +126,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -161,6 +165,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -196,6 +201,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -234,6 +240,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -271,6 +278,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [
@@ -595,6 +603,7 @@
             "enabled": true,
             "runs": 100000
           },
+          "evmVersion": "paris",
           "outputSelection": {
             "*": {
               "*": [

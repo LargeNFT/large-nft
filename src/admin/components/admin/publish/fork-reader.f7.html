@@ -136,7 +136,6 @@
 
   import { ContainerService } from "../../../service/core/container-service"
   import { ChannelService } from "../../../service/channel-service"
-  import { PublishService } from "../../../service/core/publish-service"
 
   import { GitService } from "../../../service/core/git-service"
 
@@ -155,7 +154,6 @@
     let queueService = ContainerService.getInstance(QueueService)
     let gitService = ContainerService.getInstance(GitService)
 
-    let publishService = ContainerService.getInstance(PublishService)
 
     let channelViewModel = props.channelViewModel
     let settings = props.settings

@@ -1,6 +1,5 @@
 import { QueryCache } from "../../dto/query-cache.js";
-import { injectable } from "inversify";
-import moment from "moment";
+import { inject, injectable } from "inversify";
 import { Author } from "../../dto/author.js";
 import { Channel } from "../../dto/channel.js";
 import { Item } from "../../dto/item.js";
@@ -29,7 +28,8 @@ class ChannelWebService {
         private itemWebService:ItemWebService,
         private queryCacheService:QueryCacheService,
         private schemaService:SchemaService,
-        private settingsService:SettingsService
+        private settingsService:SettingsService,
+        @inject("dayjs") private dayjs
     ) { }
 
     async get(_id: string): Promise<ChannelViewModel> {
@@ -125,7 +125,7 @@ class ChannelWebService {
             authorPhoto: authorPhoto,
             itemCount: itemCount,
             editable: editable,
-            dateCreated: moment(channel.dateCreated).format("MMM Do YYYY"),
+            dateCreated: this.dayjs(channel.dateCreated).format("MMM DD YYYY"),
             gitProvider: gitProvider
         }
 

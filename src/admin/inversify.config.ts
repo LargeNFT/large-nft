@@ -112,6 +112,14 @@ import PouchFind from 'pouchdb-find'
 import { OriginalMetadataService } from './service/original-metadata-service.js';
 import { OriginalMetadataRepository } from './repository/original-metadata-repository.js';
 
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime.js'
+dayjs.extend(relativeTime)
+
+import localizedFormat from 'dayjs/plugin/localizedFormat.js'
+dayjs.extend(localizedFormat)
+
+
 //Enable find plugin
 PouchDB.plugin(PouchFind)
 
@@ -188,7 +196,10 @@ function getMainContainer(version:string) {
   container.bind("contracts").toConstantValue(contracts())
   container.bind("name").toConstantValue("Large")
   container.bind("framework7").toConstantValue(framework7())
-  
+  container.bind("dayjs").toConstantValue(dayjs)
+
+
+
   container.bind("PouchDB").toConstantValue(() => {
     return PouchDB
   })
@@ -261,6 +272,7 @@ function getMainContainer(version:string) {
   container.bind(StaticPageService).toSelf().inSingletonScope()
   container.bind(QueryCacheService).toSelf().inSingletonScope()
   container.bind(SettingsService).toSelf().inSingletonScope()
+
   container.bind(GitService).toSelf().inSingletonScope()
   container.bind(GitlabService).toSelf().inSingletonScope()
   container.bind(GithubService).toSelf().inSingletonScope()

@@ -291,7 +291,3 @@ and limitations under the License.
  *
  * rgbquant.ts - part of Image Quantization Library
  */
-
-//! moment.js
-
-//! moment.js locale configuration

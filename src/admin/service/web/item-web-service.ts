@@ -1,7 +1,6 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 
 
-import moment from "moment";
 import he from 'he'
 
 import { Author } from "../../dto/author.js";
@@ -50,7 +49,9 @@ class ItemWebService {
         private queryCacheService:QueryCacheService,
         private exportService:ExportService,
         private ipfsService:IpfsService,
-        private attributeCountService:AttributeCountService
+        private attributeCountService:AttributeCountService,
+        @inject("dayjs") private dayjs
+
     ) { }
 
     async get(_id: string): Promise<ItemViewModel> {
@@ -230,7 +231,7 @@ class ItemWebService {
             themes: themes,
             contentHTML: await this.quillService.translateContent(item.content),
             animationContentHTML: animationContentHTML,
-            dateDisplay: moment(item.dateCreated).format("MMM Do YYYY"),
+            dateDisplay: this.dayjs(item.dateCreated).format("MMM DD YYYY"),
             channel: channel,
             coverImage: coverImage,
             animation: animation,

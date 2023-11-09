@@ -1,5 +1,4 @@
 import {  inject, injectable } from "inversify"
-import moment from "moment"
 
 import {  AttributeSaleReport, AttributeSalesRow, OwnersByAttribute, ProcessedEvent, ProcessedTransaction, ProcessedTransactionToken, ProcessedTransactionTrader, Sale, SalesReport, SalesRow, TokenOwnerSalesReport } from "../../dto/processed-transaction.js"
 import { ProcessedTransactionRepository } from "../processed-transaction-repository.js"
@@ -13,6 +12,9 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
     @inject("sequelize")
     private sequelize:Function
+
+    @inject("dayjs")
+    private dayjs
 
     async get(_id: string, options?:any): Promise<ProcessedTransaction> {
 
@@ -381,9 +383,9 @@ class ProcessedTransactionRepositoryNodeImpl implements ProcessedTransactionRepo
 
         let report:SalesReport = {}
 
-        let yearDate:Date = moment().subtract(1, 'years').toDate()
-        let monthDate:Date = moment().subtract(1, 'month').toDate()
-        let dayDate:Date = moment().subtract(1, 'day').toDate()
+        let yearDate:Date = this.dayjs().subtract(1, 'years').toDate()
+        let monthDate:Date = this.dayjs().subtract(1, 'month').toDate()
+        let dayDate:Date = this.dayjs().subtract(1, 'day').toDate()
 
 
         report.totals = await this.getSalesRow()

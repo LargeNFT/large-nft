@@ -1,6 +1,5 @@
 import axios from "axios";
-import { injectable } from "inversify";
-import moment from "moment";
+import { inject, injectable } from "inversify";
 import _sodium from 'libsodium-wrappers';
 
 
@@ -22,6 +21,7 @@ class GithubService implements GitProviderService {
 
     constructor(
         private settingsService: SettingsService,
+        @inject("dayjs") private dayjs
     ) { }
 
 
@@ -302,7 +302,7 @@ class GithubService implements GitProviderService {
             
             let result = await this.getMostRecentActionRun(channel, gitProvider)
 
-            if ((result?.conclusion == "success" || result?.conclusion == "skipped" ) && (!channel.publishReaderIPFSStatus?.date || moment(result.created_at).isAfter(moment(channel.publishReaderIPFSStatus?.date)))) {
+            if ((result?.conclusion == "success" || result?.conclusion == "skipped" ) && (!channel.publishReaderIPFSStatus?.date || this.dayjs(result.created_at).isAfter(this.dayjs(channel.publishReaderIPFSStatus?.date)))) {
                 return "finished"
             }
 

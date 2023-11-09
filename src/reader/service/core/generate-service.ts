@@ -179,7 +179,9 @@ class GenerateService {
 
         if (!fs.existsSync(filename)) {
     
-            console.log(`Creating webp at: ${filename} from ${imagePath}`)    
+            try {
+
+              console.log(`Creating webp at: ${filename} from ${imagePath}`)    
 
               //@ts-ignore
               let file = await Jimp.read(imagePath)
@@ -192,7 +194,9 @@ class GenerateService {
                   file.write(filename)
               }
 
-
+            } catch(ex) {
+              console.log(`Error creating webp at: ${filename} from ${imagePath}`, ex.message)    
+            }
 
         } else {
 

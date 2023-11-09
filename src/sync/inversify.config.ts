@@ -94,6 +94,13 @@ import { SyncStatusRepositoryNodeImpl } from "../sync-library/repository/node/sy
 import {Headers} from 'node-fetch'
 import { Network } from "ethers";
 
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime.js'
+dayjs.extend(relativeTime)
+
+import localizedFormat from 'dayjs/plugin/localizedFormat.js'
+dayjs.extend(localizedFormat)
+
 //@ts-ignore
 globalThis.Headers = Headers
 
@@ -157,6 +164,8 @@ async function getMainContainer(command:GetMainContainerCommand) {
     return sequelize
 
   })
+
+  container.bind("dayjs").toConstantValue(dayjs)
 
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()

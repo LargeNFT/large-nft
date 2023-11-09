@@ -73,7 +73,12 @@ import PouchFind from 'pouchdb-find'
 // //Enable find plugin
 PouchDB.plugin(PouchFind)
 
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime.js'
+dayjs.extend(relativeTime)
 
+import localizedFormat from 'dayjs/plugin/localizedFormat.js'
+dayjs.extend(localizedFormat)
 
 let container:Container
 
@@ -146,6 +151,8 @@ async function getContainer() {
             
         }
     })
+
+    container.bind("dayjs").toConstantValue(dayjs)
 
 
     container.bind(DatabaseService).toSelf().inSingletonScope()

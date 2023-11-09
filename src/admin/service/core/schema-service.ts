@@ -105,6 +105,7 @@ class SchemaService {
             Static Pages: ${channelBackup.staticPages ? channelBackup.staticPages.length : 0}
             Attribute Counts: ${channelBackup.attributeCounts ? channelBackup.attributeCounts.length : 0}
             Authors: ${channelBackup.authors ? channelBackup.authors.length : 0}
+            Original Metadata: ${channelBackup.originalMetadata ? channelBackup.originalMetadata.length : 0}
 
         `)
 
@@ -123,6 +124,7 @@ class SchemaService {
         prepareRows(channelBackup.staticPages)
         prepareRows(channelBackup.attributeCounts)
         prepareRows(channelBackup.authors)
+        prepareRows(channelBackup.originalMetadata)
 
 
         await this.itemRepository.db.bulkDocs(channelBackup.items)
@@ -130,8 +132,8 @@ class SchemaService {
         await this.staticPageRepository.db.bulkDocs(channelBackup.staticPages)
         await this.attributeCountRepository.db.bulkDocs(channelBackup.attributeCounts)
         await this.authorRepository.db.bulkDocs(channelBackup.authors)
-
         await this.channelRepository.db.bulkDocs([channelBackup.channel])
+        await this.originalMetadataRepository.db.bulkDocs(channelBackup.originalMetadata)
 
         console.timeEnd(`Loading channel from backup`)
 
@@ -150,6 +152,8 @@ class SchemaService {
         let staticPagesDocs = await this.staticPageRepository.db.allDocs({ include_docs: true })
         let attributeCountsDocs = await this.attributeCountRepository.db.allDocs({ include_docs: true })
         let authorDocs = await this.authorRepository.db.allDocs({ include_docs: true })
+        let originalMetadataDocs = await this.originalMetadataRepository.db.allDocs({ include_docs: true })
+
 
         return {
             channel: channel,
@@ -159,7 +163,8 @@ class SchemaService {
             themes: themesDocs.rows.map(r => r.doc),
             staticPages: staticPagesDocs.rows.map(r => r.doc),
             attributeCounts: attributeCountsDocs.rows.map(r => r.doc),
-            authors: authorDocs.rows.map(r => r.doc)
+            authors: authorDocs.rows.map(r => r.doc),
+            originalMetadata: originalMetadataDocs.rows.map(r => r.doc)
         }
 
     }
@@ -219,6 +224,7 @@ class SchemaService {
 interface ChannelBackup {
     channel:Channel,
     items: any,
+    originalMetadata: any,
     authors:any,
     animations?: any,
     images?: any,

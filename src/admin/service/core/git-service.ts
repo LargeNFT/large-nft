@@ -66,6 +66,12 @@ class GitService {
 
         gitActions.push({
             action: "create",
+            file_path: `/.upload/originalMetadata.json`,
+            content: Buffer.from(JSON.stringify(backup.originalMetadata))
+        })
+
+        gitActions.push({
+            action: "create",
             file_path: `/.upload/authors.json`,
             content: Buffer.from(JSON.stringify(backup.authors))
         })

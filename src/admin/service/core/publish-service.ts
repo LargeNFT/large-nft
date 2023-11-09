@@ -179,6 +179,9 @@ class PublishService {
         this.logPublishProgress(publishStatus)
 
 
+        //Write original metadata backup
+        await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/originalMetadata.json`,  new TextEncoder().encode(JSON.stringify(backup.originalMetadata)) , { create: true, parents: true, flush: flush })
+        
 
         //Write images backup
         await this.ipfsService.ipfs.files.write(`${ipfsDirectory}/backup/images.json`,  new TextEncoder().encode(JSON.stringify(backup.images)) , { create: true, parents: true, flush: flush })        
@@ -387,6 +390,11 @@ class PublishService {
         await this._writeFSAction({
             file_path: `${baseDir}/backup/export/backup/items.json`,
             content: Buffer.from(JSON.stringify(backup.items))
+        })
+
+        await this._writeFSAction({
+            file_path: `${baseDir}/backup/export/backup/originalMetadata.json`,
+            content: Buffer.from(JSON.stringify(backup.originalMetadata))
         })
        
         await this._writeFSAction({

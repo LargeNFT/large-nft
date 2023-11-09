@@ -172,7 +172,7 @@ let getAdminConfigs = () => {
             for (let contract of contracts) {
   
               //Get Truffle contracts and put them in a format we can inject into our services
-              let truffleJson = require(`./build/contracts/${contract}.json`)
+              let truffleJson = require(`./artifacts/contracts/${contract}.sol/${contract}.json`)
   
               contractJSON[contract] = createContractFromTruffle(truffleJson)
   

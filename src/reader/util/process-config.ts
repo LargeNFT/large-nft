@@ -154,6 +154,8 @@ class ProcessConfig {
 
             if (fs.existsSync(`${baseDir}/large-publish.json`)) {
                 config = JSON.parse(fs.readFileSync(`${baseDir}/large-publish.json`, 'utf8'))
+            } else {
+                config = {}
             }
                     
         }

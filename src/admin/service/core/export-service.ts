@@ -15,6 +15,7 @@ import { ThemeService } from "../../service/theme-service.js"
 import { StaticPageService } from "../../service/static-page-service.js"
 import { ImageService } from "../../service/image-service.js"
 import { AnimationService } from "../../service/animation-service.js"
+import { OriginalMetadataService } from "../original-metadata-service.js"
 
 @injectable()
 class ExportService {
@@ -25,6 +26,7 @@ class ExportService {
         private themeService:ThemeService,
         private imageService:ImageService,
         private animationService:AnimationService,
+        private originalMetadataService:OriginalMetadataService,
         private staticPageService:StaticPageService
     ) {}
     
@@ -107,7 +109,7 @@ class ExportService {
         let staticPages = await this.getBackupStaticPages(exportBundle.staticPageIds)
         let images = await this.getBackupImages(exportBundle.imageCids)
         let animations = await this.getBackupAnimations(exportBundle.animationCids)
-
+        let originalMetadata = await this.getBackupOriginalMetadata(exportBundle.items.map( i => i.originalJSONMetadataId))
 
 
         //Save pouch dbs
@@ -120,6 +122,7 @@ class ExportService {
             staticPages: staticPages,
             images: images,
             animations: animations,
+            originalMetadata: originalMetadata,
 
             itemCount: exportBundle.items.length,
             themeCount: exportBundle.themeIds.length,
@@ -394,7 +397,7 @@ class ExportService {
 
             counter++
 
-            console.log(`Processing image #${clonedAnimation._id} ${counter}/${animationIds.length}`)
+            console.log(`Processing animation #${clonedAnimation._id} ${counter}/${animationIds.length}`)
 
         }
 
@@ -404,6 +407,39 @@ class ExportService {
         return animations
 
     }
+
+
+    private async getBackupOriginalMetadata(originalMetadataIds:string[]) {
+
+        let originalMetadatas=[]
+
+        let counter = 0
+        
+        for (let originalMetadataId of originalMetadataIds) {
+
+            let originalMetadata = await this.originalMetadataService.get(originalMetadataId)
+
+            let clonedMetadata = JSON.parse( JSON.stringify(originalMetadata) )
+
+            //Remove publishing related field from
+            delete clonedMetadata._rev
+            delete clonedMetadata["_rev_tree"]
+
+            originalMetadatas.push(clonedMetadata)
+
+            counter++
+
+            console.log(`Processing original metadata #${clonedMetadata._id} ${counter}/${originalMetadataIds.length}`)
+
+        }
+
+        console.log(`Original metadata processed`)
+
+
+        return originalMetadatas
+
+    }
+
 
 
 }

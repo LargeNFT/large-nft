@@ -47,6 +47,7 @@ import { SchemaService } from "./schema-service.js"
 import { ItemWebService } from "../web/item-web-service.js"
 import { ChannelWebService } from "../web/channel-web-service.js"
 import { OriginalMetadataService } from "../original-metadata-service.js"
+import { OriginalMetadata } from "../../dto/original-metadata.js"
 
 
 const gatewayTools = new IPFSGatewayTools()
@@ -106,6 +107,8 @@ class ImportService {
         let channels:Channel[] = await this._readFile(`/fork/backup/channels.json`)
         let images:Image[] = await this._readFile(`/fork/backup/images.json`)
         let items:Item[] = await this._readFile(`/fork/backup/items.json`)
+        let originalMetadata:OriginalMetadata[] = await this._readFile(`/fork/backup/originalMetadata.json`)
+
         let animations:Animation[] = await this._readFile(`/fork/backup/animations.json`)
         let themes:Theme[] = await this._readFile(`/fork/backup/themes.json`)
         let staticPages:StaticPage[] = await this._readFile(`/fork/backup/static-pages.json`)
@@ -122,7 +125,7 @@ class ImportService {
                 tokenMetadata[item.tokenId] =  await this._readFile(`/fork/metadata/${item.tokenId}.json`)
             }
 
-            return this._importExisting(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, tokenMetadata, cid)
+            return this._importExisting(authors, channels, images, items, originalMetadata, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, tokenMetadata, cid)
         
         } else {
 
@@ -133,7 +136,7 @@ class ImportService {
                 authors = [author]
             } 
 
-            return this._importAsFork(authors, channels, images, items, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
+            return this._importAsFork(authors, channels, images, items, originalMetadata, animations, themes, staticPages, forkStatus, mediaDownloader, contractMetadata, cid)
         }
 
     }
@@ -160,6 +163,7 @@ class ImportService {
             importBundle.channels, 
             importBundle.images, 
             importBundle.items, 
+            importBundle.originalMetadata,
             importBundle.animations, 
             importBundle.themes, 
             importBundle.staticPages, 
@@ -187,6 +191,7 @@ class ImportService {
             importBundle.channels, 
             importBundle.images, 
             importBundle.items, 
+            importBundle.originalMetadata,
             importBundle.animations, 
             importBundle.themes, 
             importBundle.staticPages, 
@@ -215,6 +220,8 @@ class ImportService {
         let channels:Channel[] = await this._fetchFile(`${baseURI}backup/export/backup/channels.json`)
         let images:Image[] = await this._fetchFile(`${baseURI}backup/export/backup/images.json`)
         let items:Item[] = await this._fetchFile(`${baseURI}backup/export/backup/items.json`)
+        let originalMetadata:OriginalMetadata[] = await this._fetchFile(`${baseURI}backup/export/backup/originalMetadata.json`)
+
         let animations:Animation[] = await this._fetchFile(`${baseURI}backup/export/backup/animations.json`)
         let themes:Theme[] = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`)
         let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`)
@@ -234,6 +241,7 @@ class ImportService {
             channels: channels,
             images: images,
             items: items,
+            originalMetadata: originalMetadata,
             animations: animations,
             themes: themes,
             staticPages: staticPages,
@@ -479,7 +487,7 @@ class ImportService {
 
     }
 
-    private async _importAsFork(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, cid?:string) {
+    private async _importAsFork(authors:Author[], channels:Channel[], images:Image[], items:Item[], originalMetadatas:OriginalMetadata[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, cid?:string) {
 
         let channelId 
         let channel
@@ -790,7 +798,7 @@ class ImportService {
         return channelId
     }
 
-    private async _importExisting(authors:Author[], channels:Channel[], images:Image[], items:Item[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, tokenMetadata:any, cid?:string) {
+    private async _importExisting(authors:Author[], channels:Channel[], images:Image[], items:Item[], originalMetadatas:OriginalMetadata[], animations:Animation[], themes:Theme[], staticPages:StaticPage[], forkStatus:ForkStatus, mediaDownloader:MediaDownloader, contractMetadata:ContractMetadata, tokenMetadata:any, cid?:string) {
 
         if (!authors || !channels || !images || !items) {
             throw new Error("Invalid collection hash")

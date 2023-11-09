@@ -84,11 +84,18 @@ let publish = async () => {
   
     await schemaService.load()
   
+
+    let originalMetadata = []
+    if (fs.existsSync("./.upload/originalMetadata.json")) {
+      originalMetadata = JSON.parse(fs.readFileSync("./.upload/originalMetadata.json").toString())
+    }
+
     //Read channel backup
     let channelBackup:ChannelBackup = {
       channel: JSON.parse(fs.readFileSync("./.upload/channel.json").toString()),
       authors: JSON.parse(fs.readFileSync("./.upload/authors.json").toString()),
       items: JSON.parse(fs.readFileSync("./.upload/items.json").toString()),
+      originalMetadata: originalMetadata,
       themes: JSON.parse(fs.readFileSync("./.upload/themes.json").toString()),
       staticPages: JSON.parse(fs.readFileSync("./.upload/staticPages.json").toString()),
       attributeCounts: JSON.parse(fs.readFileSync("./.upload/attributeCounts.json").toString())

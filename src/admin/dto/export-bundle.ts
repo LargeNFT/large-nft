@@ -6,6 +6,7 @@ import { Item } from "./item.js"
 import { Image } from "./image.js"
 import { Theme } from "./theme.js"
 import { StaticPage } from "./static-page.js"
+import { OriginalMetadata } from "./original-metadata.js"
 
 
 
@@ -35,6 +36,7 @@ interface BackupBundle {
     staticPages: StaticPage[],
     images: Image[],
     animations: Animation[]
+    originalMetadata:OriginalMetadata[]
 
     itemCount:number
     themeCount:number

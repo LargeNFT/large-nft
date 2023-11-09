@@ -8,6 +8,7 @@ import { ForkStatus } from "./viewmodel/fork-status.js"
 import { Image } from "./image.js"
 import { Animation } from "./animation.js"
 import { ContractMetadata } from "./contract-metadata.js"
+import { OriginalMetadata } from "./original-metadata.js"
 
 
 interface ImportBundle {
@@ -20,6 +21,7 @@ interface ImportBundle {
 
     images: Image[]
     animations: Animation[]
+    originalMetadata:OriginalMetadata[]
 
     mediaDownloader:MediaDownloader
     forkStatus:ForkStatus

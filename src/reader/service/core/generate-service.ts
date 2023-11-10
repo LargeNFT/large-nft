@@ -49,11 +49,6 @@ import transactionEjs from '../../ejs/pages/transaction.ejs'
 import leaderboardEjs from '../../ejs/pages/leaderboard.ejs'
 import largestSalesEjs from '../../ejs/pages/sales.ejs'
 
-
-
-
-
-
 const PER_PAGE = 40
 
 @injectable()
@@ -804,11 +799,11 @@ class GenerateService {
       //Write file
       fs.writeFileSync(filepath, result.replace(scriptContent, ""))
 
+      let partialPath = filepath.replace(config.publicPath, `${config.publicPath}/partial`)
 
-      const partialPath = filepath
-                              .replace(config.publicPath, `${config.publicPath}/partial`)
-                              .replace(config.libraryURL, `${config.libraryURL}/partial`)
-
+      if (config.libraryURL) {
+        partialPath = partialPath.replace(config.libraryURL, `${config.libraryURL}/partial`)
+      }
 
       //Create partial directory
       const partialDirName = path.dirname(partialPath)
@@ -822,10 +817,6 @@ class GenerateService {
 
 
     }
-
-
-
-
 
 }
 

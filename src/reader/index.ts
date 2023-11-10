@@ -15,7 +15,6 @@ let initReader = async (baseURI:string, hostname:string, version:string, channel
 
     console.log("Initializing Reader")
 
-
     if ('serviceWorker' in navigator) {
 
         const wb = new Workbox(`${hostname}${baseURI}sw-${version}.js?baseURI=${baseURI}`, {
@@ -24,9 +23,7 @@ let initReader = async (baseURI:string, hostname:string, version:string, channel
 
         let container:Container = new Container()
     
-
         let routes = RoutingService.getReaderRoutes(baseURI)
-    
 
         container = await getMainContainer(container, baseURI, hostname, version, routes, channelId)
 
@@ -39,10 +36,6 @@ let initReader = async (baseURI:string, hostname:string, version:string, channel
         }
 
         wb.register()
-
-
-        
-
 
     }
 

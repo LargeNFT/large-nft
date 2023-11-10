@@ -1,14 +1,12 @@
+import { injectable } from "inversify"
+
 import { Author } from "../../dto/author.js"
 import { Channel } from "../../dto/channel.js"
 import { ExportBundle, BackupBundle } from "../../dto/export-bundle.js"
 import { Item } from "../../dto/item.js"
 import { StaticPage } from "../../dto/static-page.js"
 import { Theme } from "../../dto/theme.js"
-import { Image } from "../../dto/image.js"
-import { Animation } from "../../dto/animation.js"
 
-
-import { injectable } from "inversify"
 import { ItemService } from "../../service/item-service.js"
 import { AuthorService } from "../../service/author-service.js"
 import { ThemeService } from "../../service/theme-service.js"
@@ -109,7 +107,7 @@ class ExportService {
         let staticPages = await this.getBackupStaticPages(exportBundle.staticPageIds)
         let images = await this.getBackupImages(exportBundle.imageCids)
         let animations = await this.getBackupAnimations(exportBundle.animationCids)
-        let originalMetadata = await this.getBackupOriginalMetadata(exportBundle.items.map( i => i.originalJSONMetadataId))
+        let originalMetadata = await this.getBackupOriginalMetadata(exportBundle.items.filter(i => i.originalJSONMetadataId != undefined).map( i => i.originalJSONMetadataId))
 
 
         //Save pouch dbs
@@ -408,7 +406,6 @@ class ExportService {
 
     }
 
-
     private async getBackupOriginalMetadata(originalMetadataIds:string[]) {
 
         let originalMetadatas=[]
@@ -439,8 +436,6 @@ class ExportService {
         return originalMetadatas
 
     }
-
-
 
 }
 

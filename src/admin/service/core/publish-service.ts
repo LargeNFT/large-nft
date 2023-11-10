@@ -139,6 +139,7 @@ class PublishService {
         let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
         let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
 
+
         await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
 
         //Save contract metadata
@@ -228,8 +229,8 @@ class PublishService {
 
         return {
             cid: result.cid.toString(),
-            imageDirectoryCid: imageDirectory.cid.toString(),
-            animationDirectoryCid: animationDirectory.cid.toString()
+            imageDirectoryCid: imageDirectory.toString(),
+            animationDirectoryCid: animationDirectory.toString()
         }
 
     }

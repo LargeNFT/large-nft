@@ -34,15 +34,11 @@ class IpfsService {
       settings = await this.settingsService.get()
     } catch(ex) {}
 
-    if (settings?.ipfsHost) {
+    console.log('Init IPFS')
 
-      console.log('Init IPFS')
+    this.ipfs = await this.ipfsRemoteInit(settings?.ipfsHost ? settings.ipfsHost : '/ip4/127.0.0.1/tcp/5001')
 
-      this.ipfs = await this.ipfsRemoteInit(settings?.ipfsHost)
-
-      console.log('Init IPFS complete')
-
-    } 
+    console.log('Init IPFS complete')
 
     this.initializing = false
 

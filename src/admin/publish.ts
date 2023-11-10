@@ -52,17 +52,17 @@ let publish = async () => {
 
 
 
-  let settings
+  // let settings
 
-  try {
-    settings = await settingsService.get()
-  } catch (ex) {}
+  // try {
+  //   settings = await settingsService.get()
+  // } catch (ex) {}
 
-  if (!settings) {
-    settings = new Settings()
-    settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
-    await settingsService.put(settings)
-  }
+  // if (!settings) {
+  //   settings = new Settings()
+  //   settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
+  //   await settingsService.put(settings)
+  // }
 
 
 

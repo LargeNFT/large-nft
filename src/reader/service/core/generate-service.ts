@@ -429,8 +429,6 @@ class GenerateService {
         bodyContents: ``
       }
       
-
-
       await this.renderPage(
         config,
         libraryIndexEjs,
@@ -440,10 +438,6 @@ class GenerateService {
         },
         `${syncDir}${config.libraryURL}/index.html`
       )
-
-
-
-
 
       //404 page
       await this.renderPage(
@@ -455,8 +449,6 @@ class GenerateService {
         },
         `${syncDir}${config.libraryURL}/404.html`
       )
-
-
 
     }
 

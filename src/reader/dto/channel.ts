@@ -19,8 +19,7 @@ class Channel {
     coverBannerId?:string
     mintPrice?:string
     attributeOptions:AttributeOptions[]
-    sellerFeeBasisPoints:string
-    royaltyPercent:string
+    // royaltyPercent:string
     itemCount:number
     dateCreated?:string
     lastUpdated?:string

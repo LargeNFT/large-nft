@@ -117,7 +117,7 @@ class ChannelService {
       name: channel.title,
       description: channel.descriptionMarkdown,
       external_link: channel.link,
-      seller_fee_basis_points: 0, //channel.sellerFeeBasisPoints, //TODO: Setting this to anything other than zero ruins OpenSea. Investigate.
+      seller_fee_basis_points: 0, //TODO: Setting this to anything other than zero ruins OpenSea. Investigate.
       fee_recipient:ownerAddress,
       license: channel.license
     }

@@ -1,8 +1,9 @@
 import { Container } from "inversify";
-import Framework7 from 'framework7';
 
+import Framework7 from 'framework7';
 import axios from "axios"
 import he from 'he'
+
 import { BrowserProvider } from "ethers"
 
 import PouchDB from 'pouchdb-browser';
@@ -46,28 +47,11 @@ import Popup from 'framework7/components/popup'
 import Popover from 'framework7/components/popover'
 import Stepper from 'framework7/components/stepper'
 
-// import 'framework7/components/stepper/css'
-// import 'framework7/components/popover/css'
-// import 'framework7/components/popup/css'
-// import 'framework7/components/grid/css'
-// import 'framework7/components/form/css'
-// import 'framework7/components/chip/css'
-// import 'framework7/components/card/css'
-// import 'framework7/components/infinite-scroll/css'
-// import 'framework7/components/accordion/css'
-// import 'framework7/components/range/css'
-// import 'framework7/components/list-index/css'
-// import 'framework7/components/virtual-list/css'
-// import 'framework7/components/preloader/css'
-// import 'framework7/components/dialog/css'
-// import 'framework7/components/toast/css'
-
 
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip, Form, Grid, 
   Range, Accordion, Popup, InfiniteScroll, Popover, Stepper])
-
 
 
 

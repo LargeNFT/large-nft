@@ -107,7 +107,6 @@ describe('ChannelService', async () => {
             mintPrice: ethers.parseUnits( "0.08" , 'ether').toString(),
             authorId: 3,
             category: ['Gazebos'],
-            sellerFeeBasisPoints: 100,
             feeRecipient: user0
         }) 
 
@@ -122,7 +121,7 @@ describe('ChannelService', async () => {
         assert.equal(fetched.title, "The Sound of Music")
         assert.equal(fetched.link, "google.com")
         assert.equal(fetched._id, id1)
-        assert.equal(fetched.sellerFeeBasisPoints, 100)
+        // assert.equal(fetched.sellerFeeBasisPoints, 100)
         
     })
 

@@ -14,9 +14,13 @@
     -->
   <!-- Required meta tags-->
   <meta charset="utf-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="icon" href="<%= require('./manifest-icon.svg?name=large/manifest-icon.svg') %>">
+  <link rel="manifest" href="<%= require('./app.webmanifest') %>">
+
+
   <!-- Color theme for statusbar -->
   <title><%= htmlWebpackPlugin.options.title %></title>
 

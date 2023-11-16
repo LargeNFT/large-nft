@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.18.7",
+  "version": "0.19.0",
   "description": "An offline-first publishing platform for the free and open web.",
   "repository": {
     "type": "git",
@@ -62,6 +62,8 @@
 
     "css-minimizer-webpack-plugin": "5.0.1",
 
+    "workbox-webpack-plugin": "7.0.0",
+
     "core-js": "3.30.2",
     "css-loader": "6.8.1",
     "file-loader": "6.2.0",
@@ -77,7 +79,6 @@
     "webpack-merge": "5.10.0",
     "webpack-node-externals": "3.0.0",
     "webpack-bundle-analyzer": "4.9.1",
-
     
 
     "dotenv": "16.3.1",
@@ -109,8 +110,9 @@
     "jsdom": "22.1.0",
 
     "bufferutil": "4.0.8",
-    "utf-8-validate": "6.0.3"
-    
+    "utf-8-validate": "6.0.3",
+
+    "query-string": "8.1.0"
   },
   "dependencies": {
 
@@ -201,6 +203,9 @@
     "workbox-window": "7.0.0",
     "workbox-strategies": "7.0.0",
     "workbox-routing": "7.0.0",
+    "workbox-recipes": "7.0.0",
+    "workbox-cacheable-response": "7.0.0",
+    "workbox-expiration": "7.0.0",
 
     "jimp": "0.22.10"
   }

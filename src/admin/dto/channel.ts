@@ -73,11 +73,11 @@ class Channel {
     @Allow()
     attributeOptions?:AttributeOptions[]
 
-    @Allow()
-    sellerFeeBasisPoints?:number
+    // @Allow()
+    // sellerFeeBasisPoints?:number
 
-    @Allow()
-    royaltyPercent?:string
+    // @Allow()
+    // royaltyPercent?:string
 
     @Allow()
     contractAddress?:string

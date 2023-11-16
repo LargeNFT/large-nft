@@ -9,6 +9,7 @@ import { createRequire } from 'module'
 
 
 
+
 const require = createRequire(import.meta.url)
 
 const __filename = fileURLToPath(import.meta.url)
@@ -25,6 +26,10 @@ const TerserPlugin = require("terser-webpack-plugin")
 
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
+const {InjectManifest} = require('workbox-webpack-plugin');
+
+import queryString from 'query-string'
 
 
 let configs:any[] = []
@@ -64,9 +69,18 @@ let getAdminConfigs = () => {
           use: [MiniCssExtractPlugin.loader, 'css-loader']
         },
         {
-          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-          type: 'asset/resource'
+          test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2|webmanifest)$/,
+          type: 'asset/resource',
+          generator: {
 
+            filename: (pathData, assetInfo) => {
+              const query = pathData.module.resourceResolveData.query
+              const { name } = queryString.parse(query.slice(1))
+              return name || 'large/admin/[hash][ext][query]'
+            }
+
+
+          }
         },
         {
           test: /\.f7.html$/,
@@ -147,8 +161,7 @@ let getAdminConfigs = () => {
       //Admin index page
       new HtmlWebpackPlugin({
         inject: false,
-        title: 'Large',
-        // favicon: 'src/html/favicon.ico',
+        title: 'Large NFT',
         template: 'src/admin/html/app.html',
         filename: 'large/index.html',
         base64Version: Buffer.from(JSON.stringify(require("./package.json").version)).toString('base64')
@@ -189,8 +202,15 @@ let getAdminConfigs = () => {
         
   
         }
-      }
-  
+      },
+
+      new InjectManifest({
+        exclude:[/\.map$/, /\.ts$/],
+        maximumFileSizeToCacheInBytes: 52428800,
+        swSrc: './src/admin/sw.ts',
+        swDest: `large/sw-admin-${VERSION.replace('"', '').replace('"', '')}.js`
+      })
+
     ]
   }
 
@@ -496,7 +516,6 @@ let getReaderConfigs = () => {
     ]
   }
 
-
   let optimization = {
 
     minimizer: [
@@ -533,7 +552,10 @@ let getReaderConfigs = () => {
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-          type: 'asset/resource'
+          type: 'asset/resource',
+          generator: {
+            filename: 'large/reader/[hash][ext][query]'
+          }
         },
         {
           test: /\.f7.html$/,
@@ -665,7 +687,10 @@ let getReaderConfigs = () => {
         },
         {
           test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/,
-          type: 'asset/resource'
+          type: 'asset/resource',
+          generator: {
+            filename: 'large/library/[hash][ext][query]'
+          }
         },
         {
           test: /\.f7.html$/,
@@ -793,3 +818,4 @@ let getReaderConfigs = () => {
 
 
 }
+

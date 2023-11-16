@@ -30,7 +30,7 @@
                         <li>Restrict who can host the content (DMCA).</li>
                       </ul>
   
-                      <button class="button color-red button-outline" @click="${copyrightClick}">Disable forking</button>
+                      <button class="button color-red button-outline" @click="${copyrightClick}">Copyright</button>
                       
                     </div>
   
@@ -45,7 +45,7 @@
                         <li><a href="https://creativecommons.org/share-your-work/public-domain/cc0/"></a>CC0 Content</li>
                       </ul>
   
-                      <button class="button button-fill" @click="${copyleftClick}">Enable all features</button>
+                      <button class="button button-fill" @click="${copyleftClick}">Copyleft</button>
   
                     </div>
   
@@ -166,7 +166,6 @@
     let channelViewModel = {
       channel: {
         mintPrice: "0.00",
-        royaltyPercent: "0",
         authorId: walletService.address
       },
 

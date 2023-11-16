@@ -160,7 +160,7 @@
                                     <div class="item-title">Mint & Contract Info</div>
                                   </div>
                                   <div class="item-subtitle">
-                                    Set mint price and default royalty %.
+                                    Set mint price and contract info.
                                   </div>
                                 </div>
                               </div>
@@ -558,43 +558,7 @@
                                 </li>
                                 ` : $h``}
 
-                                <li>
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Marketplace Creator Fee %</div>
-                                            <div class="item-input-wrap">
-
-                                                ${channelViewModel.editable ? $h`
-                                                <input type="number" name="royaltyPercent" placeholder="Royalty %"
-                                                    @change="${royaltyChange}" step="any" tabindex="12"
-                                                    value="${channelViewModel?.channel?.royaltyPercent}" />
-                                                ` : $h`
-                                                <input type="number" name="royaltyPercent" placeholder="Royalty %"
-                                                    @change="${royaltyChange}" step="any" tabindex="12"
-                                                    value="${channelViewModel?.channel?.royaltyPercent}" disabled />
-                                                `}
-
-                                                <input type="hidden" name="sellerFeeBasisPoints"
-                                                    value="${channelViewModel?.channel?.sellerFeeBasisPoints}" />
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-
-
-                                ${channelViewModel?.channel?.royaltyPercent ? $h`
-                                <li tabindex="-1">
-                                    <div class="item-content">
-                                        <div class="item-inner">
-                                            <div class="item-text">
-                                                You will receive a <strong>${channelViewModel?.channel?.royaltyPercent}%</strong> for each sale on OpenSea, etc. Confirm this
-                                                value when you set up your collection on the marketplace. This just presets it for you.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                ` : $h``}
+                                
 
                                 <li>
                                     <div class="item-content item-input">
@@ -976,17 +940,17 @@
 
         }
 
-        const setRoyalty = (value) => {
+        // const setRoyalty = (value) => {
 
-            channelViewModel.channel.sellerFeeBasisPoints = undefined
-            channelViewModel.channel.royaltyPercent = undefined
+        //     channelViewModel.channel.sellerFeeBasisPoints = undefined
+        //     channelViewModel.channel.royaltyPercent = undefined
 
-            if (value) {
-                channelViewModel.channel.royaltyPercent = value
-                channelViewModel.channel.sellerFeeBasisPoints = parseInt(value * 100)
-            }
+        //     if (value) {
+        //         channelViewModel.channel.royaltyPercent = value
+        //         channelViewModel.channel.sellerFeeBasisPoints = parseInt(value * 100)
+        //     }
 
-        }
+        // }
 
         const mintPriceChange = async (e) => {
 
@@ -996,10 +960,10 @@
 
         }
 
-        const royaltyChange = async (e) => {
-            setRoyalty(e.currentTarget.value)
-            await $update()
-        }
+        // const royaltyChange = async (e) => {
+        //     setRoyalty(e.currentTarget.value)
+        //     await $update()
+        // }
 
         const contractAddressChange = async (e) => {
             channelViewModel.channel.contractAddress = e.currentTarget.value
@@ -1361,7 +1325,7 @@
         if (channelViewModel) {
 
             setMintPrice(channelViewModel.channel.mintPrice)
-            setRoyalty(channelViewModel.channel.royaltyPercent)
+            // setRoyalty(channelViewModel.channel.royaltyPercent)
 
             if (channelViewModel?.channel?.attributeOptions?.length > 0) {
                 attributeOptions = channelViewModel.channel.attributeOptions

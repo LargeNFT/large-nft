@@ -7,94 +7,56 @@
 An open source and decentralized CMS for Ethereum & IPFS that runs offline-first in the browser. Blog in space.
 
 # Goal
-Bring the permissionless properties of Ethereum to the rest of the NFT tech stack and make it easy for any user to host the digital infrastructure for an NFT collection to ensure owners can be self-reliant.
+Bring the permissionless properties of Ethereum to the rest of the NFT publishing stack.
 
-* Publish content as a digital collectible series. 
-* Fork existing ERC-721 collections.
+* Publish content as a collection of Ethereum NFTs.
+* Import, fork, and display existing ERC-721 collections with full transaction logs.
 * Run on your own hardware or with popular cloud providers. 
+* 100% open source JavaScript/TypeScript.
 
 ### Components
 
 **Admin** 
-
-* Build and publish NFT collections right in your browser.
-* Create new collections from scratch or fork existing ones.
+* Create and publish NFT collections.
+    * Include text, images, and mixed-media NFTs.
+    * Generates NFT metadata.
+* Fork existing ERC-721 collections.
 * Data stored in local browser storage.
-* Can be whitelabeled.
-* Scale on your user's own hardware instead of cloud servers, so the hardware requirements as your community grows are minimal.
+    * Publish to GitHub & GitLab for long-term storage and integration with Large Reader and IPFS.
+* Deploy an ERC-721 gas-optimized smart contract to Ethereum.
+    * Or use your own customized contract!
+    * Set a mint price. Keep 100% of fees. 
+* Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. 
 
 
 **Reader** 
-
 * Generate a self-hosted PWA and deploy to any simple webhost.
-* Optimized for text-based content and has functionality similar to the Kindle apps.
-* Combine with Large Sync to display the full transaction history for every token, for every user, and a full collection leaderboard.
+    * Read, browse, and mint NFTs in the collection.
+    * Optimized for text-based content and has functionality similar to an e-reader.
+* Combine with Large Sync to display the full transaction history.
+* Uses PouchDB to enable offline searching, sorting, and filtering of content.
 
 **Sync** 
-
 * A lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule.
+    * Sales data for each token. 
+    * Sales data for every user. 
+    * A full collection leaderboard.
 * The sync is designed to run both in the browser* and in Node.
 * Supports <a href="https://www.alchemy.com/">Alchemy</a> and local Ethereum nodes.
 * *Browser support coming later. Currently not practical.
-
 
 **Library**
 * Host multiple collections in the same app.
 * Sync multiple collections.
 
 
-
-
-
-
 [Use a hosted version](https://golarge.app)
-
-**Publish and sell digital collectibles**
-
-* Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. 
-* Connect directly with your audience on Ethereum and other EVM-compatible networks. 
-
-**Free and open source** 
-* 100% open source JavaScript/TypeScript
-* 
-
-**Create or Import**
-* Create collections with text, images, and mixed-media NFTs.
-
-* Content is stored in your browser using [PouchDB](https://pouchdb.com).
-
-**Generate NFTs**
-* Automatically generate NFT metadata and publish to IPFS.
-* Publish collection data and backup to GitHub/GitLab.
-* Deploy an ERC-721 gas-optimized smart contract to Ethereum.
-    * Or use your own customized contract!
-
-**Sell**
-* Set a mint price. Keep 100% of fees. 
-* List NFTs for sale on OpenSea and other marketplaces. 
-
-**Publish Reader Website**
-* Generate an HTML website to read, browse, and mint the collection.
-* Sync ownership info from Ethereum in real-time. 
-* Track buys, sells, and transfers on third-party marketplaces:
-    * OpenSea
-    * LooksRare
-    * Blur
-    * X2Y2
-
-**Community Ownership**
-* See a leaderboard of your biggest fans and collectors.
-* The community can easily keep the website online and use it as a starting point for custom fan experiences.
-
 
 
 **Large NFT is alpha software and the API still changes frequently.**
 
 ### Community
 Join us on [Discord](https://discord.gg/yJtjqHvqXm)
-
-
-
 
 # Large NFT
 

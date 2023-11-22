@@ -278,8 +278,6 @@ class GithubService implements GitProviderService {
             )
 
 
-            console.log(createCommitResult)
-
             latestCommit = createCommitResult.data.data.createCommitOnBranch.commit.commitUrl.split("/").pop()
             
             this.logPublishProgress(`Commit successful: ${latestCommit}`)

@@ -90,7 +90,7 @@ class ItemService {
         return this.itemRepository.listByChannel(channelId, limit, skip)
     }
 
-    async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image, animationDirectoryCid:string, imageDirectoryCid:string): Promise<NFTMetadata> {
+    async exportNFTMetadata(channel:Channel, item:Item, coverImage:Image): Promise<NFTMetadata> {
 
         //We are publishing an existing collection that we are not editing then export the original metadata
         if (channel.forkType == "existing") {
@@ -111,13 +111,11 @@ class ItemService {
         }
 
         if (item.animationId && !item.coverImageAsAnimation) {
-            if (!animationDirectoryCid) throw new Error("Error exporting NFT metadata. Animation directory not found.")
-            result.animation_url = `ipfs://${animationDirectoryCid}/${item.animationId}.html`
+            result.animation_url = `ipfs://${item.animationId}`
         }
 
         if (item.coverImageId) {
-            if (!imageDirectoryCid) throw new Error("Error exporting NFT metadata. Image directory not found.")
-            result.image = `ipfs://${imageDirectoryCid}/${coverImage.cid}.${coverImage.buffer ? 'jpg' : 'svg'}`
+            result.image = `ipfs://${coverImage.cid}`
         }
 
         //Only show attributes that are valid at the category level. 

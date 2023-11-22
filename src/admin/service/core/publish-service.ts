@@ -75,9 +75,7 @@ class PublishService {
             if (channel.publishReaderIPFSStatus?.cid) {
 
                 cids = {
-                    cid: channel.publishReaderIPFSStatus.cid,
-                    imageDirectoryCid: channel.publishReaderIPFSStatus.imageDirectoryCid,
-                    animationDirectoryCid: channel.publishReaderIPFSStatus.animationDirectoryCid
+                    cid: channel.publishReaderIPFSStatus.cid
                 }
 
             }
@@ -134,17 +132,11 @@ class PublishService {
         //Save animations
         await this._publishAnimationsIPFS(publishStatus, ipfsDirectory, exportBundle.animationCids, true)
 
-
-        //Get directory cids
-        let imageDirectory = await this.getImageDirectoryCid(ipfsDirectory)
-        let animationDirectory = await this.getAnimationDirectoryCid(ipfsDirectory)
-
-
-        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.items, animationDirectory, imageDirectory, true)
+        await this._publishNFTMetadataIPFS(publishStatus, ipfsDirectory, exportBundle.channel, exportBundle.items, true)
 
         //Save contract metadata
         let contractMetadataPath = `${ipfsDirectory}/contractMetadata.json`
-        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, imageDirectory)
+        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient)
 
         //IPFS
         await this.ipfsService.ipfs.files.write(contractMetadataPath, new TextEncoder().encode(JSON.stringify(contractMetadata)), { create: true, parents: true, flush:flush })
@@ -228,9 +220,7 @@ class PublishService {
 
 
         return {
-            cid: result.cid.toString(),
-            imageDirectoryCid: imageDirectory.toString(),
-            animationDirectoryCid: animationDirectory.toString()
+            cid: result.cid.toString()
         }
 
     }
@@ -244,10 +234,10 @@ class PublishService {
         await this._publishAnimationsFS(baseDir, exportBundle.animationCids)
 
         //Save NFT metadata
-        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.items, cids?.animationDirectoryCid, cids?.imageDirectoryCid)
+        await this._publishNFTMetadataFS(baseDir, exportBundle.channel, exportBundle.items)
 
         //Save contract metadata
-        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient, cids?.imageDirectoryCid)
+        let contractMetadata:ContractMetadata = await this.channelService.exportContractMetadata(exportBundle.channel, feeRecipient)
 
 
         //Write to Git
@@ -567,14 +557,13 @@ class PublishService {
                     content: await this.imageService.getImageContent(image)
                 })
 
-
-                //Move to MFS directory in IPFS
-                await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
-
                 //Validate cid
                 if (result.cid.toString() != image.cid) {    
                     throw new Error(`Incorrect cid when saving image. Expected: ${image.cid}, Result: ${result.cid.toString()}`)
                 }
+
+                //Move to MFS directory in IPFS
+                await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
 
                 this.logPublishProgress(publishStatus, `Saving image to ${ipfsFilename} (${image.cid})`)
 
@@ -608,7 +597,7 @@ class PublishService {
 
     }
 
-    private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string, flush:boolean) {
+    private async _publishNFTMetadataIPFS(publishStatus:PublishStatus, ipfsDirectory:string, channel:Channel, items:Item[], flush:boolean) {
 
         let gitActions = []
 
@@ -626,7 +615,7 @@ class PublishService {
 
 
             let coverImage:Image = await this.imageService.get(item.coverImageId)
-            let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
+            let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage)
             
             let content = new TextEncoder().encode(JSON.stringify(nftMetadata))
             let contentCid = await Hash.of(content)
@@ -679,14 +668,14 @@ class PublishService {
 
     }
 
-    private async _publishNFTMetadataFS(baseDir:string, channel:Channel, items:Item[], animationDirectoryCid:string, imageDirectoryCid:string) {
+    private async _publishNFTMetadataFS(baseDir:string, channel:Channel, items:Item[]) {
 
         for (let theItem of items) {
 
             let item = this.exportService.prepareItem(theItem)
 
             let coverImage:Image = await this.imageService.get(item.coverImageId)
-            let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage, animationDirectoryCid, imageDirectoryCid)
+            let nftMetadata = await this.itemService.exportNFTMetadata(channel, item, coverImage)
             
             //Save to git
             await this._writeFSAction({
@@ -746,8 +735,6 @@ class PublishService {
 
 interface CidInfo {
     cid: string
-    imageDirectoryCid:string
-    animationDirectoryCid:string
 }
 
 interface FSAction {

@@ -1,26 +1,66 @@
 
-# Large 
+# Large NFT
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
 ## An offline-first publishing platform for the free and open web
-Bringing the permissionless properties of Ethereum to the rest of the publishing tech stack with a content management system and marketplace any user in the community can run on their own machines.
+An open source and decentralized CMS for Ethereum & IPFS that runs offline-first in the browser. Blog in space.
+
+# Goal
+Bring the permissionless properties of Ethereum to the rest of the NFT tech stack and make it easy for any user to host the digital infrastructure for an NFT collection to ensure owners can be self-reliant.
+
+* Publish content as a digital collectible series. 
+* Fork existing ERC-721 collections.
+* Run on your own hardware or with popular cloud providers. 
+
+### Components
+
+**Admin** 
+
+* Build and publish NFT collections right in your browser.
+* Create new collections from scratch or fork existing ones.
+* Data stored in local browser storage.
+* Can be whitelabeled.
+* Scale on your user's own hardware instead of cloud servers, so the hardware requirements as your community grows are minimal.
+
+
+**Reader** 
+
+* Generate a self-hosted PWA and deploy to any simple webhost.
+* Optimized for text-based content and has functionality similar to the Kindle apps.
+* Combine with Large Sync to display the full transaction history for every token, for every user, and a full collection leaderboard.
+
+**Sync** 
+
+* A lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule.
+* The sync is designed to run both in the browser* and in Node.
+* Supports <a href="https://www.alchemy.com/">Alchemy</a> and local Ethereum nodes.
+* *Browser support coming later. Currently not practical.
+
+
+**Library**
+* Host multiple collections in the same app.
+* Sync multiple collections.
+
+
+
+
+
 
 [Use a hosted version](https://golarge.app)
 
-**Publish and sell your work as digital collectibles**
+**Publish and sell digital collectibles**
 
-* Publish your book, fan-fiction, blog, or art as a series of digital collectibles. 
 * Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. 
 * Connect directly with your audience on Ethereum and other EVM-compatible networks. 
 
 **Free and open source** 
 * 100% open source JavaScript/TypeScript
-* Run on your own hardware or with popular cloud providers. 
+* 
 
 **Create or Import**
 * Create collections with text, images, and mixed-media NFTs.
-* Fork existing ERC-721 collections.
+
 * Content is stored in your browser using [PouchDB](https://pouchdb.com).
 
 **Generate NFTs**
@@ -46,107 +86,14 @@ Bringing the permissionless properties of Ethereum to the rest of the publishing
 * See a leaderboard of your biggest fans and collectors.
 * The community can easily keep the website online and use it as a starting point for custom fan experiences.
 
-# Goals
 
-* Bring the permissionless properties of Ethereum to the rest of the NFT tech stack with a default viewer and marketplace that any user in the community can run.
-
-* Make it easy for any user to host the digital infrastructure for an NFT collection to ensure owners can be self-reliant.
-
-* What if an NFT creator disappears?
-    * It's inevitable that every creator dies.
-    * It's inevitable that every company dies.
-    * The plan for technical implementation of the software stack should start with those assumptions. 
-    * Decentralization demands it. 
-    * Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
-
-* Free and open source code.
-* Tools to build and launch an NFT collection.
-    * Use the built-in contract or provide your own. (customization in future release)
-* Tools to launch a fan experience for an existing NFT collection.
-* Tools to launch a custom marketplace for any NFT collection. (future release)
-
-* Create and publish NFTs.
-    * Build an NFT collection from scratch.
-    * Build a fan experience for an existing NFT collection.
-
-* Share and remix existing ideas.
-    * If you can't fork it it's not web3.
-
-* Feel like an owner.
-    * Empower users to experience feelings associated with ownership with their digital artifacts.
-    * Help make sure users never lose the ability and rights to keep their digital property online for display and resale.
-
-* A single member of the community should be able to keep things going themselves.
-    * What happens to your digital collectibles if you're the last one who cares?
-    * Are you able to keep them online? 
-    * Are you able to rebuild the marketplace from scratch?
-    * Do you have legal rights to display the content?
-    * Permissionless ownership requires permisionless rights to display content.
-    * As an artist do you want the value you built to crumble because no one is there to pay hosting fees?
-    * Can you take your NFTs to space?
-
-* What if OpenSea disappears? What if they change their terms? What if every market disappears?
-    * Is it smart to have no backup plan if something drastic were to happen to the largest marketplace providers? A well-made collection should have a home base and it should (arguably) provide fee free trading just like the original Cryptopunks market.
-
-* An NFT collection should have a default viewer, marketplace, and any user should be able to run it.
-    * Otherwise we lose the permissionless and open source properties of Ethereum.
-
-* If anyone can run the whole stack it has to be designed with similar constraints as Ethereum in the sense that a single user should be able to run the entire thing on a consumer-grade machine. 
-
-* No dependency on app stores. Built for the open and free web. Large NFT and Large Reader are modern PWAs that run directly in the browser with a simple static webhost. Since it's built to work offline-first it can also be wrapped and distributed to app stores if you choose. 
-
-* Distributed through web or IPFS. To be distributed through IPFS and the web the full stack must run in a web browser.
-
-* Dependencies 
-    * A web browser.
-    * A simple static webhost.
-        * If we want transaction data then add an Ethereum node + small device to run Large Sync.
-    * A git provider (GitHub/GitLab).
-    * IPFS node.
-
-
-
-* Built with JavaScript so it can run in the browser and on any device.
-
-* Provide reasonable defaults for new NFTs collection and the ability to change and customize.
-    
-* Any user can run the entire stack for a particular collection. 
-
-* Provide a solid foundation for anyone to build on.
 
 **Large NFT is alpha software and the API still changes frequently.**
 
 ### Community
 Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 
-## Components
 
-**Large NFT** 
-
-* A self-hosted web app to build and publish NFT collections right in your browser.
-* Create new collections from scratch or fork existing ones.
-* Data stored in local browser storage.
-* Can be whitelabeled.
-* Scale on your user's own hardware instead of cloud servers, so the hardware requirements as your community grows are minimal.
-
-
-**Large Reader** 
-
-* Generate a self-hosted PWA and deploy to any simple webhost.
-* Optimized for text-based content and has functionality similar to the Kindle apps.
-* Combine with Large Sync to display the full transaction history for every token, for every user, and a full collection leaderboard.
-
-**Large Sync** 
-
-* A lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule.
-* The sync is designed to run both in the browser* and in Node.
-* Supports <a href="https://www.alchemy.com/">Alchemy</a> and local Ethereum nodes.
-* *Browser support coming later. Currently not practical.
-
-
-**Large Library**
-* Host multiple collections in the same app.
-* Sync multiple collections.
 
 
 # Large NFT
@@ -462,6 +409,75 @@ npm run start:dev -- --alchemy <API key>
 ```
 
 The generated web app will be available at [http://localhost:8081](http://localhost:8081) by default.
+
+
+# Goals
+
+* Bring the permissionless properties of Ethereum to the rest of the NFT tech stack with a default viewer and marketplace that any user in the community can run.
+
+* Make it easy for any user to host the digital infrastructure for an NFT collection to ensure owners can be self-reliant.
+
+* What if an NFT creator disappears?
+    * It's inevitable that every creator dies.
+    * It's inevitable that every company dies.
+    * The plan for technical implementation of the software stack should start with those assumptions. 
+    * Decentralization demands it. 
+    * Bitcoin continues to run even though Satoshi disappeared and so should an NFT collection.
+
+* Free and open source code.
+* Tools to build and launch an NFT collection.
+    * Use the built-in contract or provide your own. (customization in future release)
+* Tools to launch a fan experience for an existing NFT collection.
+* Tools to launch a custom marketplace for any NFT collection. (future release)
+
+* Create and publish NFTs.
+    * Build an NFT collection from scratch.
+    * Build a fan experience for an existing NFT collection.
+
+* Share and remix existing ideas.
+    * If you can't fork it it's not web3.
+
+* Feel like an owner.
+    * Empower users to experience feelings associated with ownership with their digital artifacts.
+    * Help make sure users never lose the ability and rights to keep their digital property online for display and resale.
+
+* A single member of the community should be able to keep things going themselves.
+    * What happens to your digital collectibles if you're the last one who cares?
+    * Are you able to keep them online? 
+    * Are you able to rebuild the marketplace from scratch?
+    * Do you have legal rights to display the content?
+    * Permissionless ownership requires permisionless rights to display content.
+    * As an artist do you want the value you built to crumble because no one is there to pay hosting fees?
+    * Can you take your NFTs to space?
+
+* What if OpenSea disappears? What if they change their terms? What if every market disappears?
+    * Is it smart to have no backup plan if something drastic were to happen to the largest marketplace providers? A well-made collection should have a home base and it should (arguably) provide fee free trading just like the original Cryptopunks market.
+
+* An NFT collection should have a default viewer, marketplace, and any user should be able to run it.
+    * Otherwise we lose the permissionless and open source properties of Ethereum.
+
+* If anyone can run the whole stack it has to be designed with similar constraints as Ethereum in the sense that a single user should be able to run the entire thing on a consumer-grade machine. 
+
+* No dependency on app stores. Built for the open and free web. Large NFT and Large Reader are modern PWAs that run directly in the browser with a simple static webhost. Since it's built to work offline-first it can also be wrapped and distributed to app stores if you choose. 
+
+* Distributed through web or IPFS. To be distributed through IPFS and the web the full stack must run in a web browser.
+
+* Dependencies 
+    * A web browser.
+    * A simple static webhost.
+        * If we want transaction data then add an Ethereum node + small device to run Large Sync.
+    * A git provider (GitHub/GitLab).
+    * IPFS node.
+
+
+
+* Built with JavaScript so it can run in the browser and on any device.
+
+* Provide reasonable defaults for new NFTs collection and the ability to change and customize.
+    
+* Any user can run the entire stack for a particular collection. 
+
+* Provide a solid foundation for anyone to build on.
 
 
 # Showcase

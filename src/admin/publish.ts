@@ -250,8 +250,6 @@ let publish = async () => {
   
     fs.writeFileSync(`${process.env.INIT_CWD}/ipfs/ipfs.json`, Buffer.from(JSON.stringify({
       cid: result.cids.cid.toString(),
-      imageDirectoryCid: result.cids.animationDirectoryCid.toString(),
-      animationDirectoryCid: result.cids.imageDirectoryCid.toString(),
       date: new Date().toUTCString()
     })))
   }

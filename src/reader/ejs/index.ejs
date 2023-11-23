@@ -320,17 +320,14 @@
   
                   ${homeViewModel?.recent?.transactions?.length > 0 ? $h`
     
-                    <div class="card data-table">
+                    <transaction-row transactions="${homeViewModel.recent}" items="${homeViewModel?.recent.rowItemViewModels}">
+
                       <div class="card-header">
                         Recent Activity
                         <div class="last-updated">Updated: ${dayjs(homeViewModel?.recent.lastUpdated).fromNow()}</div>
                       </div>
-                      <div class="card-content card-content-padding">
-                        <transaction-row transactions="${homeViewModel.recent}" items="${homeViewModel?.recent.rowItemViewModels}"></transaction-row>
-                      </div>
-                    </div>
 
-  
+                    </transaction-row>
   
                     <div class="block save-row">
                       <div class="large-only"></div>

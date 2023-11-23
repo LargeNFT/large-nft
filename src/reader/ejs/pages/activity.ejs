@@ -99,15 +99,14 @@
 
                             ${transactionsViewModel?.transactions?.length > 0 ? $h`
 
-                                <div class="card data-table">
+                                <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}">
                                     <div class="card-header">
                                         Activity
                                         <div class="last-updated">Last updated: ${dayjs(transactionsViewModel.lastUpdated).fromNow()}</div>
                                     </div>
-                                    <div class="card-content card-content-padding">
-                                        <transaction-row transactions="${transactionsViewModel}" items="${transactionsViewModel.rowItemViewModels}"></transaction-row>
-                                    </div>
-                                </div>
+                                </transaction-row>
+
+
 
                                 <div class="block split-row-both">
                                     <div>

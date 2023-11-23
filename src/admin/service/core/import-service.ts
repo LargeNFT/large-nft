@@ -107,12 +107,17 @@ class ImportService {
         let channels:Channel[] = await this._readFile(`/fork/backup/channels.json`)
         let images:Image[] = await this._readFile(`/fork/backup/images.json`)
         let items:Item[] = await this._readFile(`/fork/backup/items.json`)
-        let originalMetadata:OriginalMetadata[] = await this._readFile(`/fork/backup/originalMetadata.json`)
-
+        
         let animations:Animation[] = await this._readFile(`/fork/backup/animations.json`)
         let themes:Theme[] = await this._readFile(`/fork/backup/themes.json`)
         let staticPages:StaticPage[] = await this._readFile(`/fork/backup/static-pages.json`)
         let contractMetadata:ContractMetadata = await this._readFile(`/fork/contractMetadata.json`)
+
+        let originalMetadata:OriginalMetadata[]
+
+        try {
+            originalMetadata = await this._readFile(`/fork/backup/originalMetadata.json`)
+        } catch(ex) {}
 
         let tokenMetadata = {}
 
@@ -220,13 +225,19 @@ class ImportService {
         let channels:Channel[] = await this._fetchFile(`${baseURI}backup/export/backup/channels.json`)
         let images:Image[] = await this._fetchFile(`${baseURI}backup/export/backup/images.json`)
         let items:Item[] = await this._fetchFile(`${baseURI}backup/export/backup/items.json`)
-        let originalMetadata:OriginalMetadata[] = await this._fetchFile(`${baseURI}backup/export/backup/originalMetadata.json`)
 
         let animations:Animation[] = await this._fetchFile(`${baseURI}backup/export/backup/animations.json`)
         let themes:Theme[] = await this._fetchFile(`${baseURI}backup/export/backup/themes.json`)
         let staticPages:StaticPage[] = await this._fetchFile(`${baseURI}backup/export/backup/static-pages.json`)
 
         let contractMetadata:ContractMetadata = await this._fetchFile(`${baseURI}backup/export/contractMetadata.json`)
+
+        let originalMetadata:OriginalMetadata[]
+
+        try {
+            originalMetadata= await this._fetchFile(`${baseURI}backup/export/backup/originalMetadata.json`)
+        } catch(ex) {}
+
 
         let mediaDownloader = new URLDownloader(baseURI)
 

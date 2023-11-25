@@ -1153,10 +1153,6 @@ input[type="text"]:disabled {
   margin-right: 5px;
 }
 
-.welcome {
-  font-size: 1em;
-}
-
 
 .item-show {
   display: grid;

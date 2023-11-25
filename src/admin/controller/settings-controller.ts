@@ -21,28 +21,6 @@ class SettingsController {
   async show(): Promise<ModelView> {
 
     return new ModelView(async (routeTo: RouteTo) => {
-
-      //GitLab
-      let settings: Settings
-
-      try {
-        settings = await this.settingsService.get()
-      } catch (ex) { }
-
-      //If it doesn't exist create an empty one
-      if (!settings) {
-
-        settings = Object.assign(new Settings(), {
-          personalAccessToken: ''
-        })
-
-      }
-      
-      return {
-        settings: settings
-      }
-      
-
     }, AdminSettingsComponent)
   }
 

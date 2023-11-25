@@ -17,17 +17,37 @@
 
       <div class="fixed-width-content center">
 
-        <div class="card card-outline card-header-divider welcome">
-          <div class="card-header">Welcome and thank you for using Large!</div>
-          <div class="card-content card-content-padding">
-  
-            <strong>All data</strong> is in local storage in your browser and we can NEVER retreive it for you if you lose it. We do not have it and this is by design.
+        <div class="popup welcome-popup">
+          <div class="view">
+            <div class="page">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title">Welcome and thank you for using Large!</div>
+                  <div class="right">
+                    <!-- Link to close popup -->
+                    <a class="link popup-close">Close</a>
+                  </div>
+                </div>
+              </div>
+              <div class="page-content">
 
-  
-            <p>Help make Large better by submitting bugs and feedback on <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a>.</p>
-  
+                <div class="block">
+                  <strong>All data</strong> is in local storage (IndexedDB) in your browser and we can NEVER retreive it for you if it is lost. We do not have it and this is by design. 
+              
+                  <p>
+                    Some browsers <a href="https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria">impose limitations</a> on how long data is stored before it is wiped due to inactivity. 
+                    Installing Large NFT to your home screeen as a PWA makes it <a href="https://stackoverflow.com/questions/50795409/is-indexeddb-on-safari-guaranteed-to-be-persistent">less likely</a> for data to be lost but ultimately it's up to the browser. Publish critical data to GitHub/GitLab.
+                  </p>
+        
+                  <p>Help make Large better by submitting bugs and feedback on <a href="https://github.com/LargeNFT/large-nft" class="external">GitHub</a>.</p>
+          
+                </div>
+
+                
+              </div>
+            </div>
           </div>
-  
         </div>
   
 
@@ -60,11 +80,10 @@
 
 <script>
 
-  import moment from "moment"
-
   import { ContainerService } from "../../../service/core/container-service"
   import { UiService } from "../../../service/core/ui-service"
   import { ImageService } from "../../../service/image-service"
+  import { SettingsService } from "../../../service/core/settings-service"
 
   import { ChannelWebService } from "../../../service/web/channel-web-service"
 
@@ -77,6 +96,7 @@
     let channelWebService = ContainerService.getInstance(ChannelWebService)
     let imageService = ContainerService.getInstance(ImageService)
     let uiService = ContainerService.getInstance(UiService)
+    let settingsService = ContainerService.getInstance(SettingsService)
 
     let footerText = props.footerText
 
@@ -87,7 +107,6 @@
     let pageCounter
     let hasMoreChannels
     let loadingInProgress 
-
 
     let channels = []
     let virtualList
@@ -157,7 +176,8 @@
       unloadInfiniteScroll()
     })
 
-    $on('pageInit', (e, page) => {
+    $on('pageInit', async (e, page) => {
+
       channelsShown = 0
       pageCounter = 0
       hasMoreChannels = true
@@ -181,8 +201,6 @@
               </li>
             `
       })
-
-
 
       //Get the page
       $('#channel-index-infinite-scroll').trigger('infinite')
@@ -216,6 +234,25 @@
 
       })
 
+      let settings = await settingsService.get()
+
+      if (!settings.welcomeHide) {
+
+        const popup = $f7.popup.create({
+          el: '.welcome-popup',
+          on: {
+            close:  async (popup) => {
+
+              settings.welcomeHide = true
+              await settingsService.put(settings)
+
+            }
+          }
+        })
+
+        popup.open()
+
+      }
 
     })
 

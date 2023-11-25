@@ -1,4 +1,4 @@
-import { IsNotEmpty, Allow } from 'class-validator'
+import { IsNotEmpty, Allow, IsBoolean } from 'class-validator'
 
 
 class Settings {
@@ -32,6 +32,10 @@ class Settings {
 
     @Allow()
     huggingFace?:string
+
+    @Allow()
+    @IsBoolean()
+    welcomeHide?:boolean
 
     @Allow()
     dateCreated?:string

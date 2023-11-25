@@ -21,7 +21,7 @@ class SettingsService {
         
         if (settings) return settings
 
-        return {
+        return Object.assign(new Settings(), {
             _id: 'single',
             defaultGitProvider: 'github',
             gitProviders:{
@@ -31,8 +31,9 @@ class SettingsService {
                 github: {
                     name: "github" //username and password added when saved
                 }
-            }
-        }
+            },
+            welcomeHide: false
+        })
 
 
         

@@ -38,7 +38,7 @@
   
                       <div class="pin-status">
                         <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}</p>
-                        <p><strong>Date Exported:</strong> ${moment(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}</p>
+                        <p><strong>Date Exported:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}</p>
                       </div>
   
   
@@ -113,7 +113,7 @@
   
   <script>
   
-    import moment from "moment"
+    import dayjs from "dayjs"
   
     import { ContainerService } from "../../../service/core/container-service"
     import { ChannelService } from "../../../service/channel-service"

@@ -24,7 +24,7 @@
   
               ${itemViewModel.item.coverImageAsAnimation ? $h`
                 <div class="animation-content animation-image">
-                  <img src="${itemViewModel.coverImage?.url}" />
+                  <img src="${itemViewModel.coverImage?.url}" alt="Item cover image" />
                 </div>
                
               ` : $h`
@@ -207,7 +207,7 @@
               <div class="card-header">Cover Image</div>
               <div class="card-content">
                 <div class="square">
-                  <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" />
+                  <img src="${itemViewModel.coverImage?.url}" class="cover-image-preview" alt="Item cover image" />
                 </div>
               </div>
             </div>

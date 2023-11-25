@@ -8,91 +8,34 @@
     <div class="page-content hide-toolbar-on-scroll">
 
         <!-- Slider container -->
-        <div class="swiper" id="create-new-swiper">
-
-          <!-- Slides wrapper -->
-          <div class="swiper-wrapper">
-              <!-- Slides -->
-              <div class="swiper-slide">
-                
-                <div class="fixed-width-content center">
-
-                  <div class="block-title block-title-medium no-margin-bottom margin-top">Choose your features and licensing</div>
-
-                  <div class="block split-row">
-  
-                    <div class="block copyright-block no-margin-bottom">
-  
-                      <strong>Copyright</strong>
-  
-                      <ul>
-                        <li>Use your own licensing terms.</li>
-                        <li>Restrict who can host the content (DMCA).</li>
-                      </ul>
-  
-                      <button class="button color-red button-outline" @click="${copyrightClick}">Copyright</button>
-                      
-                    </div>
-  
-                    <div class="block copyleft-block">
-  
-                      <strong>Copyleft</strong>
-  
-                      <ul>
-                        <li>Free as in speech.</li>
-                        <li>Allow sharing, remixes, and derivatives.</li>
-                        <li>Anyone can host the content.</li>
-                        <li><a href="https://creativecommons.org/share-your-work/public-domain/cc0/"></a>CC0 Content</li>
-                      </ul>
-  
-                      <button class="button button-fill" @click="${copyleftClick}">Copyleft</button>
-  
-                    </div>
-  
-                  </div>
-                  
-                </div>
-
-              </div>
-
-              <div class="swiper-slide">
-
-                <form id="create-channel-form" @submit="${formSubmit}" class="fixed-width-content center">
+        <form id="create-channel-form" @submit="${formSubmit}" class="fixed-width-content center">
       
-                  <div class="block-title block-title-medium">Create Collection</div>
+          <div class="block-title block-title-medium">Create Collection</div>
 
 
-                  <${ChannelForm} 
-                    channel=${channelViewModel} 
-                    description_editor="create-channel-description-editor"
-                    description_toolbar="create-channel-description-toolbar" 
-                    license_editor="create-channel-license-editor"
-                    license_toolbar="create-channel-license-toolbar" 
-                  />
-      
-                  <div class="block cancel-save-row">
-      
-                    <div class="large-only"></div>
-      
-                    <a href="/admin/channel/create-menu" class="button button-outline color-gray" tabindex="30">
-                      Cancel
-                    </a>
+          <${ChannelForm} 
+            channel=${channelViewModel} 
+            description_editor="create-channel-description-editor"
+            description_toolbar="create-channel-description-toolbar" 
+            license_editor="create-channel-license-editor"
+            license_toolbar="create-channel-license-toolbar" 
+          />
 
-                    <button type="submit" class="button button-fill" tabindex="31" id="saveButton">
-                      Save
-                    </button>
-      
-                  </div>
-      
-                </form>
-      
-              </div>
+          <div class="block cancel-save-row">
 
-              <!-- Pagination, if required -->
-              <div class="swiper-pagination"></div>
+            <div class="large-only"></div>
+
+            <a href="/admin/channel/create-menu" class="button button-outline color-gray" tabindex="30">
+              Cancel
+            </a>
+
+            <button type="submit" class="button button-fill" tabindex="31" id="saveButton">
+              Save
+            </button>
+
           </div>
 
-        </div>
+        </form>
 
     </div>
   </div>
@@ -276,29 +219,29 @@
         theme: "snow"
       })
 
-      //Init swiper
-      swiper = $f7.swiper.create('.swiper', {
-        speed: 1000,
-        allowTouchMove: false,
-        createElements:true,
-        longSwipes: false,
-        preventInteractionOnTransition: true,
-        shortSwipes: false,
-        simulateTouch: false,
-        on: {
-          slideChange: function (s) {
+      // //Init swiper
+      // swiper = $f7.swiper.create('.swiper', {
+      //   speed: 1000,
+      //   allowTouchMove: false,
+      //   createElements:true,
+      //   longSwipes: false,
+      //   preventInteractionOnTransition: true,
+      //   shortSwipes: false,
+      //   simulateTouch: false,
+      //   on: {
+      //     slideChange: function (s) {
             
-            if (s.activeIndex == 0) {
-              document.getElementById('create-new-swiper').style.height = "700px"
-            } 
+      //       if (s.activeIndex == 0) {
+      //         document.getElementById('create-new-swiper').style.height = "700px"
+      //       } 
 
-            if (s.activeIndex == 1) {
-              document.getElementById('create-new-swiper').style.height = "2500px"
-            }
+      //       if (s.activeIndex == 1) {
+      //         document.getElementById('create-new-swiper').style.height = "2500px"
+      //       }
 
-          }
-        }
-      })
+      //     }
+      //   }
+      // })
 
 
 
@@ -306,22 +249,22 @@
     })
 
 
-    const copyrightClick = async (e) => {
+    // const copyrightClick = async (e) => {
 
-      channelViewModel.channel.disableForks = true
+    //   channelViewModel.channel.disableForks = true
 
-      await $update()
-      swiper.slideNext(1000)
+    //   await $update()
+    //   swiper.slideNext(1000)
 
-    }
+    // }
 
-    const copyleftClick = async (e) => {
+    // const copyleftClick = async (e) => {
 
-      channelViewModel.channel.disableForks = false
+    //   channelViewModel.channel.disableForks = false
 
-      await $update()
-      swiper.slideNext(1000)
-    }
+    //   await $update()
+    //   swiper.slideNext(1000)
+    // }
 
     const backClick = async (e) => {
       swiper.slidePrev(1000)

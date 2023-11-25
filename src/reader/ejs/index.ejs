@@ -264,39 +264,7 @@
                   <% } %>
   
   
-                  ${homeViewModel?.leaderboard?.tokenOwners?.length > 0 ? $h`
-                    
-                    <div class="card data-table">
-                      <div class="card-header">Leaderboard</div>
-                      <div class="card-content card-content-padding">
-
-                        <table class="leaderboard-table">
-                          <thead>
-                              <tr>
-                                  <th class="label-cell">Rank</th>
-                                  <th class="address-cell">Address</th>
-                                  <th class="numeric-cell">Owned</th>
-                                  <th class="numeric-cell">Buys</th>
-                                  <th class="numeric-cell">Sales</th>
-                                  <th class="text-cell">Last Active</th>
-
-                              </tr>
-                          </thead>
                   
-                          <leaderboard-rows token_owners="${homeViewModel?.leaderboard?.tokenOwners}"></leaderboard-rows>
-
-                      </table>
-
-                      </div>
-                    </div>
-
-                    
-                    <div class="block save-row">
-                      <div class="large-only"></div>
-                      <a href="${link('leaderboard')}" class="button button-fill">View Leaderboard</a>
-                    </div>
-                    
-                  ` : $h`<span />`}
   
   
   

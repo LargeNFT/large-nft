@@ -100,7 +100,7 @@ import Stepper from 'framework7/components/stepper'
 import SmartSelect from 'framework7/components/smart-select'
 import Grid from 'framework7/components/grid'
 import InfiniteScroll from 'framework7/components/infinite-scroll'
-import Swiper from 'framework7/components/swiper'
+// import Swiper from 'framework7/components/swiper'
 import { GitService } from './service/core/git-service.js';
 import { GithubService } from './service/core/github-service.js';
 
@@ -126,7 +126,7 @@ PouchDB.plugin(PouchFind)
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
   Form, Input, Checkbox, Radio, Toggle, Range, Stepper, SmartSelect, Grid, InfiniteScroll, Popup,Accordion,
-  Popover, Swiper
+  Popover
 ])
 
 Framework7.registerComponent("channel-card", ChannelCard)
@@ -147,8 +147,8 @@ function getMainContainer(version:string) {
     let app = new Framework7({
 
       el: '#app', // App root element
-      id: 'large', // App bundle ID
-      name: 'Large', // App name
+      id: 'large-nft', // App bundle ID
+      name: 'Large NFT', // App name
       theme: 'auto', // Automatic theme detection
 
       init: false,
@@ -159,9 +159,6 @@ function getMainContainer(version:string) {
         hideOnPageScroll: true
       },
 
-      colors: {
-
-      },
 
       darkMode: 'auto'
 

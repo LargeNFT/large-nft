@@ -262,13 +262,13 @@ let sync = async () => {
       homeViewModel.recent = await processedTransactionService.translateTransactionsToViewModels(await processedTransactionService.list(5, 0, options), new Date().toJSON())
       homeViewModel.largestSales = await processedTransactionService.getLargestSales(15)
 
-      //Write top 10 to put on homepage
-      let top10: TokenOwner[] = await tokenOwnerService.list(10, 0, options)
+      // //Write top 10 to put on homepage
+      // let top10: TokenOwner[] = await tokenOwnerService.list(10, 0, options)
 
-      if (top10?.length > 0) {
-        let top10Pages = await tokenOwnerPageService.buildTokenOwnerPages(top10, 10)
-        homeViewModel.leaderboard = top10Pages[0]
-      }
+      // if (top10?.length > 0) {
+      //   let top10Pages = await tokenOwnerPageService.buildTokenOwnerPages(top10, 10)
+      //   homeViewModel.leaderboard = top10Pages[0]
+      // }
 
       homeViewModel.salesReport = await processedTransactionService.getSalesReport()
 

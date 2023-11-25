@@ -52,7 +52,7 @@
                       ${itemViewModel.coverImage ? $h`
                         <div class="right">
                           <a class="title" href="${link(`token-${itemViewModel.item.tokenId}.html`)}">
-                            <img src="backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" />
+                            <img src="backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}" alt="Item cover image" />
                           </a>
                         </div>
                       ` : $h`<span />`}

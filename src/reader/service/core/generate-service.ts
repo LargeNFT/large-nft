@@ -257,11 +257,11 @@ class GenerateService {
       fs.writeFileSync(`${config.publicPath}/manifest-icon.svg`, `<svg viewBox='0 0 1200 1200' xmlns='http://www.w3.org/2000/svg' version='1.1' style="background-color:rgb(28,28,29);">
             
             <style>
-              .logo { fill:#FCB827; font-size: 400px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; }
+              .logo { fill:#FCB827; font-size: 800px; font-weight:600; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; }
             </style>
             
             <g>
-              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="logo">${channelViewModel.channel.symbol}</text>    
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="logo">${channelViewModel.channel.symbol.substring(0,1)}</text>    
 
             </g>
         </svg>`)
@@ -278,7 +278,7 @@ class GenerateService {
         "icons": [
           {
             "src": "manifest-icon.svg",
-            "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+            "sizes": "150x150",
             "type": "image/svg+xml",
             "purpose": "any"
           }

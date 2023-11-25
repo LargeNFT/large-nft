@@ -37,7 +37,7 @@
                                 <div class="item-inner">
                                     <div class="item-title">
                                         ${walletAddress != undefined ? $h`
-                                          <a href="#" class="button button-fill">${truncateEthAddress(walletAddress)}</a>
+                                          <a href="#">${truncateEthAddress(walletAddress)}</a>
                                       ` : $h`
                                           <button class="button button-outline button-fill" @click=${connectWallet}>
                                             Connect Wallet

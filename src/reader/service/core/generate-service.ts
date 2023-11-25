@@ -128,7 +128,7 @@ class GenerateService {
         //For now just the one
         if (item.coverImage.generated) {
             //Create PNG from SVG to show on Twitter/Discord preview
-            await this.generatePNGFromSVG(config, item)
+            await this.generatePNGForItem(config, item)
 
         } else {
 
@@ -142,7 +142,7 @@ class GenerateService {
 
     }
 
-    async generatePNGFromSVG(config, item:ItemViewModel) {
+    async generatePNGForItem(config, item:ItemViewModel) {
 
         let path = `${config.publicPath}/backup/generated/images/${item.coverImage._id}.png` 
 
@@ -150,15 +150,7 @@ class GenerateService {
     
             console.log(`Converting SVG to PNG: ${path}`)    
             
-            let png = await this.convert(item.coverImage.svg, {
-              height: 1200,
-              width: 1200,
-              puppeteer: { 
-                args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-              }
-            })
-      
-            await fs.promises.writeFile(path, png)
+            await this.generatePNGFromSVG(item.coverImage.svg, path, 1200, 1200)
 
         } else {
           console.log(`Skipping ${item.coverImage._id}.png`)
@@ -167,6 +159,21 @@ class GenerateService {
         return path
 
     }
+
+
+    async generatePNGFromSVG(svg:string, outputPath:string, height:number, width:number) {
+
+      let png = await this.convert(svg, {
+        height: height,
+        width: width,
+        puppeteer: { 
+          args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+        }
+      })
+
+      await fs.promises.writeFile(outputPath, png)
+    }
+
 
     async generateWebp(config, imagePath, imageId, size?) {
 
@@ -288,6 +295,14 @@ class GenerateService {
       }))
 
     
+    }
+
+    async generateAppleTouchIcon(config) {
+
+      let buffer = fs.readFileSync(`${config.publicPath}/manifest-icon.svg`)
+      
+      await this.generatePNGFromSVG(buffer.toString(), `${config.publicPath}/apple-touch-icon.png`, 180, 180)
+
     }
     
     async writeAttributeRowItems(traitType:string, value:string, rowItemViewModels:any[], filepath:string) {

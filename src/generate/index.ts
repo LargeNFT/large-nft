@@ -227,6 +227,9 @@ let generate = async () => {
   //Generate web manifest
   await generateService.generateManifest(config, channelViewModel)
 
+  //Generate apple touch icon
+  await generateService.generateAppleTouchIcon(config)
+
   if (!fs.existsSync(`${config.publicPath}/sync/transactions`)) {
     fs.mkdirSync(`${config.publicPath}/sync/transactions`, { recursive: true })
   }

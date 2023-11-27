@@ -107,8 +107,8 @@ class GenerateService {
           <script defer src="${config.baseURL}large/reader/browser/js/vendors.reader.js?v=${config.VERSION}"></script>
           <script defer src="${config.baseURL}large/reader/browser/js/main.reader.js?v=${config.VERSION}"></script>
 
-          <link rel="preload" href="/large/reader/browser/css/vendors.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-          <link rel="preload" href="/large/reader/browser/css/main.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+          <link rel="preload" href="${config.baseURL}large/reader/browser/css/vendors.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+          <link rel="preload" href="${config.baseURL}large/reader/browser/css/main.css?v=${config.VERSION}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
           `
         }
@@ -160,7 +160,6 @@ class GenerateService {
 
     }
 
-
     async generatePNGFromSVG(svg:string, outputPath:string, height:number, width:number) {
 
       let png = await this.convert(svg, {
@@ -173,7 +172,6 @@ class GenerateService {
 
       await fs.promises.writeFile(outputPath, png)
     }
-
 
     async generateWebp(config, imagePath, imageId, size?) {
 

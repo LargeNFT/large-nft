@@ -611,6 +611,7 @@
 
           $on('pageInit', async () => {
 
+            console.log("Loading channel")
             await channelWebService.loadChannel(
                     "<%= channelViewModel.channel._id %>",
                     '<%= baseURL %>',
@@ -622,10 +623,14 @@
 
             
             <% if (showMintPage) { %>
-            loadMintingViewModel().then(() => $update())
+              console.log("Loading mint view model")
+              await loadMintingViewModel()
+              await $update()
             <% } %>
 
-            loadActivity().then(() => $update())
+            console.log("Loading activity")
+            await loadActivity()
+            $update()
 
             $('.hide-on-pageinit').hide()
 

@@ -30,7 +30,7 @@ for (let config of configs) {
         mode: 'development',
         //@ts-ignore
         devtool: 'source-map',
-        watch: true
+        // watch: true
     }))
 }
 

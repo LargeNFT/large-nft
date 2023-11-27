@@ -20,13 +20,19 @@ class RoutingService {
 
         const routes = []
 
+        let resolvedBaseURI = `${baseURI}partial/`
+
+
         //Map the base route without a slash if it's longer than just a slash
         if (baseURI != "/" && baseURI.endsWith("/")) {
     
+
           routes.push({
             path: `${baseURI.substring(0, baseURI.length -1)}`,
             async async({ resolve, reject, to }) {
-              await RoutingService.resolveWithSpinner(resolve, 'index.html')
+              await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}index.html`)
+
+              // await RoutingService.resolveWithSpinner(resolve, 'index.html')
             }
           })
     
@@ -40,7 +46,7 @@ class RoutingService {
           //@ts-ignore
           async async({ resolve, reject, to }) {
             console.log(`404 error: ${to.path}`)
-            await RoutingService.resolveWithSpinner(resolve, '404.html')
+            await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}404.html`)
           }
         })
 
@@ -106,7 +112,6 @@ class RoutingService {
 
         resolvedBaseURI += "partial/"
 
-
         routes.push(...[
             {
               path: `${baseURI}`,
@@ -117,7 +122,6 @@ class RoutingService {
             {
               path: `${baseURI}index.html`,
               async async({ resolve, reject, to }) {
-                console.log()
                 await RoutingService.resolveWithSpinner(resolve, `${resolvedBaseURI}index.html`)
               }
             },

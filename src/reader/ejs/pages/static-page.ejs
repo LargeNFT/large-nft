@@ -1,31 +1,19 @@
 <% 
 
-    let channelViewModel = it.baseViewModel.channelViewModel 
-    let hostname = it.baseViewModel.hostname
-    let baseURL = it.baseViewModel.baseURL
-    let marketplaces = it.baseViewModel.marketplaces
-    let externalLinks = it.baseViewModel.externalLinks
-    let routablePages = it.baseViewModel.routablePages
-    let attributeReport = it.baseViewModel.attributeReport
-    let base64Version = it.baseViewModel.base64Version
-    let channelId = it.baseViewModel.channelId
-    let showMintPage = it.baseViewModel.showMintPage
     let staticPage = it.staticPage
-    let showActivityPage = it.baseViewModel.showActivityPage
-    let logo = it.baseViewModel.logo
 
 
     const link = (href) => {
-        return `${baseURL + href}`
+        return `${it.baseViewModel.baseURL + href}`
     }    
 
 
     const absoluteLink = (href) => {
-        return `${hostname + baseURL + href}`
+        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
     }   
 
 
-    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
 
 %>
@@ -36,7 +24,7 @@
 
 <head>
 
-    <%~ include("@headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
     <style>
     html {
@@ -57,8 +45,8 @@
         url: `${staticPage.slug}.html`,
         imageUrl: coverImageLink,
         descriptionHTML: staticPage.contentHTML,
-        hostname: hostname,
-        baseURL: baseURL,
+        hostname: it.baseViewModel.hostname,
+        baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
         he: it.baseViewModel.he
       }) 
@@ -82,8 +70,8 @@
                     library_url="<%=it.baseViewModel.libraryURL ? it.baseViewModel.libraryURL : ''%>"
                     large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
                     title="<%=staticPage.name%>"
-                    show_mint_page="<%=showMintPage%>"
-                    show_activity_page="<%=showActivityPage%>"
+                    show_mint_page="<%=it.baseViewModel.showMintPage%>"
+                    show_activity_page="<%=it.baseViewModel.showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
@@ -98,7 +86,7 @@
                             </div>
                         </div>
     
-                        <%~ include("@footer", {baseURL: baseURL}) %>
+                        <%~ include("@footer", {baseURL: it.baseViewModel.baseURL}) %>
 
 
                     </div>
@@ -128,11 +116,11 @@
 
             let owner
 
-            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+            let logo = JSON.parse(`<%~ JSON.stringify(it.baseViewModel.logo ? it.baseViewModel.logo : {})  %>`)
 
 
             let breadcrumbs = [{
-                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                text: JSON.parse(`<%~ JSON.stringify(it.baseViewModel.channelViewModel .channel.symbol)  %>`),
                 path: baseURI()
             }, {
                 text: "<%=staticPage.name%>"
@@ -141,9 +129,9 @@
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
-                        "<%= channelViewModel.channel._id %>",
-                        '<%= baseURL %>',
-                        '<%= hostname %>'
+                        "<%= it.baseViewModel.channelViewModel.channel._id %>",
+                        '<%= it.baseViewModel.baseURL %>',
+                        '<%= it.baseViewModel.hostname %>'
                 )
 
                 await $update()
@@ -159,8 +147,8 @@
                     url: `${staticPage.slug}.html`,
                     imageUrl: coverImageLink,
                     descriptionHTML: staticPage.contentHTML,
-                    hostname: hostname,
-                    baseURL: baseURL,
+                    hostname: it.baseViewModel.hostname,
+                    baseURL: it.baseViewModel.baseURL,
                     excerptHtml: it.baseViewModel.excerptHtml,
                     he: it.baseViewModel.he
                 }) 
@@ -180,12 +168,12 @@
 
     <%~ 
         include("@init", {
-            hostname: hostname,
-            baseURL: baseURL,
+            hostname: it.baseViewModel.hostname,
+            baseURL: it.baseViewModel.baseURL,
             libraryURL: it.baseViewModel.libraryURL,
-            routablePages: routablePages,
-            base64Version: base64Version,
-            channelId: channelId
+            routablePages: it.baseViewModel.routablePages,
+            base64Version: it.baseViewModel.base64Version,
+            channelId: it.baseViewModel.channelId
         }) 
     %>
 

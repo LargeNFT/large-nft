@@ -185,8 +185,6 @@ let generate = async () => {
         version: config.VERSION
       })
 
-      console.log(footerTemplate)
-
       indexContents = indexContents.replace(`<div id="app"></div>`, `
       
       <div id="app"></div>

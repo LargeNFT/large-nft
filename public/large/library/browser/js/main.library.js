@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '18b4fa2fee';
+framework7Component.id = '9f39760067';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '60d2b0d822';
+framework7Component.id = 'd2bfda80f3';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '55642548a0';
+framework7Component.id = '7f7d57e4b7';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '87e60084be';
+framework7Component.id = '191d513186';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '13c27698e2';
+framework7Component.id = '42b9e45888';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -727,7 +727,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b619577e91';
+framework7Component.id = '93ef74e99b';
 framework7Component.style = `
 
 `;
@@ -802,7 +802,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '26a22f7eae';
+framework7Component.id = 'e2925a10f6';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1083,7 +1083,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '46a5f49438';
+framework7Component.id = 'fd8f1aa708';
 framework7Component.style = `
 
 
@@ -1263,7 +1263,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '144569fb18';
+framework7Component.id = '84ed2b8236';
 framework7Component.style = `
 
 .block-search {
@@ -1583,7 +1583,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0735323c91';
+framework7Component.id = 'a59104a8db';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1701,7 +1701,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2eeedb1359';
+framework7Component.id = '7042fa586c';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1771,7 +1771,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'eae0b53c80';
+framework7Component.id = 'd054948f27';
 framework7Component.style = `
 
 

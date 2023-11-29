@@ -1,24 +1,12 @@
 <% 
-    let channelViewModel=it.baseViewModel.channelViewModel 
-    let hostname=it.baseViewModel.hostname 
-    let baseURL=it.baseViewModel.baseURL 
-    let marketplaces=it.baseViewModel.marketplaces 
-    let externalLinks=it.baseViewModel.externalLinks 
-    let routablePages=it.baseViewModel.routablePages 
-    let attributeReport=it.baseViewModel.attributeReport 
-    let base64Version=it.baseViewModel.base64Version 
-    let channelId=it.baseViewModel.channelId 
-    let showMintPage=it.baseViewModel.showMintPage 
-    let logo = it.baseViewModel.logo
-
-    let showActivityPage=it.baseViewModel.showActivityPage 
-    
+ 
+   
     const link=(href)=> {
-        return `${baseURL + href}`
+        return `${it.baseViewModel.baseURL + href}`
     }
 
     const absoluteLink = (href) => {
-        return `${hostname + baseURL + href}`
+        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
     }
 
     const escapeExcerpt = (excerpt) => {
@@ -26,7 +14,7 @@
         return it.baseViewModel.he.encode(excerpt.toString())
     }
 
-    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
 %>
 
@@ -36,7 +24,7 @@
 
 <head>
     
-    <%~ include("@headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
     <style>
@@ -47,17 +35,17 @@
     </style>
 
     <title>
-        User Activity for <%=channelViewModel.channel.title%>
+        User Activity for <%=it.baseViewModel.channelViewModel.channel.title%>
     </title>
 
     <%~ 
       include("@meta_tags", {
-        title: `User Activity for ${channelViewModel.channel.title}`,
+        title: `User Activity for ${it.baseViewModel.channelViewModel.channel.title}`,
         url: 'u/activity',
         imageUrl: coverImageLink,
-        descriptionHTML: `User Activity for ${channelViewModel.channel.title}`,
-        hostname: hostname,
-        baseURL: baseURL,
+        descriptionHTML: `User Activity for ${it.baseViewModel.channelViewModel.channel.title}`,
+        hostname: it.baseViewModel.hostname,
+        baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
         he: it.baseViewModel.he
       }) 
@@ -79,13 +67,13 @@
             <div class="page" data-name="user-activity">
 
                 <nav-bar 
-                    logo="${logo}" 
+                    logo="${logo}"
                     library_url="<%=it.baseViewModel.libraryURL ? it.baseViewModel.libraryURL : ''%>"
                     large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
                     title="User" 
                     active="User" 
-                    show_mint_page="<%=showMintPage%>"
-                    show_activity_page="<%=showActivityPage%>"
+                    show_mint_page="<%=it.baseViewModel.showMintPage%>"
+                    show_activity_page="<%=it.baseViewModel.showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
@@ -144,7 +132,7 @@
                             <div class="block">
                                 <p class="segmented">
                                     <a class="button button-outline"
-                                        href="<%= baseURL %>u/?address=${address}">Owned</a>
+                                        href="<%= it.baseViewModel.baseURL %>u/?address=${address}">Owned</a>
                                     <a class="button button-outline button-active" href="#">Activity</a>
                                 </p>
                             </div>
@@ -194,7 +182,7 @@
                         </div>
 
 
-                        <%~ include("@footer", {baseURL: baseURL}) %>
+                        <%~ include("@footer", {baseURL: it.baseViewModel.baseURL}) %>
 
                     </div>
 
@@ -232,10 +220,10 @@
             let nextPage
             let previousPage
 
-            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+            let logo = JSON.parse(`<%~ JSON.stringify(it.baseViewModel.logo ? it.baseViewModel.logo : {})  %>`)
 
             let breadcrumbs = [{
-                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                text: JSON.parse(`<%~ JSON.stringify(it.baseViewModel.channelViewModel.channel.symbol)  %>`),
                 path: baseURI()
             }, {
                 text: "Leaderboard",
@@ -310,9 +298,9 @@
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
-                        "<%= channelViewModel.channel._id %>",
-                        '<%= baseURL %>',
-                        '<%= hostname %>'
+                        "<%= it.baseViewModel.channelViewModel.channel._id %>",
+                        '<%= it.baseViewModel.baseURL %>',
+                        '<%= it.baseViewModel.hostname %>'
                 )
 
                 await $update()
@@ -329,9 +317,9 @@
 
 
                 await channelWebService.loadChannel(
-                        "<%= channelViewModel.channel._id %>",
-                        '<%= baseURL %>',
-                        '<%= hostname %>'
+                        "<%= it.baseViewModel.channelViewModel.channel._id %>",
+                        '<%= it.baseViewModel.baseURL %>',
+                        '<%= it.baseViewModel.hostname %>'
                 )
 
                 await $update()
@@ -350,18 +338,18 @@
 
             <%~ 
                 include("@meta_tags_js", {
-                    title: `User Activity for ${channelViewModel.channel.title}`,
+                    title: `User Activity for ${it.baseViewModel.channelViewModel.channel.title}`,
                     url: 'u/activity',
                     imageUrl: coverImageLink,
-                    descriptionHTML: `User Activity for ${channelViewModel.channel.title}`,
-                    hostname: hostname,
-                    baseURL: baseURL,
+                    descriptionHTML: `User Activity for ${it.baseViewModel.channelViewModel.channel.title}`,
+                    hostname: it.baseViewModel.hostname,
+                    baseURL: it.baseViewModel.baseURL,
                     excerptHtml: it.baseViewModel.excerptHtml,
                     he: it.baseViewModel.he
                 }) 
             %>
 
-            document.querySelector('title').innerHTML = "User Activity <%=channelViewModel.channel.title%>"
+            document.querySelector('title').innerHTML = "User Activity <%=it.baseViewModel.channelViewModel.channel.title%>"
 
             $f7.preloader.hide()
 
@@ -376,12 +364,12 @@
 
     <%~ 
         include("@init", {
-            hostname: hostname,
-            baseURL: baseURL,
+            hostname: it.baseViewModel.hostname,
+            baseURL: it.baseViewModel.baseURL,
             libraryURL: it.baseViewModel.libraryURL,
-            routablePages: routablePages,
-            base64Version: base64Version,
-            channelId: channelId
+            routablePages: it.baseViewModel.routablePages,
+            base64Version: it.baseViewModel.base64Version,
+            channelId: it.baseViewModel.channelId
         }) 
     %>
 

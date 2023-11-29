@@ -1,24 +1,11 @@
 <% 
 
-    let channelViewModel = it.baseViewModel.channelViewModel 
-    let hostname = it.baseViewModel.hostname
-    let baseURL = it.baseViewModel.baseURL
-    let marketplaces = it.baseViewModel.marketplaces
-    let externalLinks = it.baseViewModel.externalLinks
-    let routablePages = it.baseViewModel.routablePages
-    let attributeReport = it.baseViewModel.attributeReport
-    let base64Version = it.baseViewModel.base64Version
-    let channelId = it.baseViewModel.channelId
-    let showMintPage = it.baseViewModel.showMintPage
-    let showActivityPage = it.baseViewModel.showActivityPage
-    let logo = it.baseViewModel.logo
-
     const link = (href) => {
-        return `${baseURL + href}`
+        return `${it.baseViewModel.baseURL + href}`
     }    
 
     const absoluteLink = (href) => {
-        return `${hostname + baseURL + href}`
+        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
     }   
 
     const escapeExcerpt = (excerpt) => {
@@ -26,7 +13,7 @@
         return it.baseViewModel.he.encode(excerpt.toString())
     }
 
-    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
 
 %>
@@ -37,7 +24,7 @@
 
 <head>
 
-    <%~ include("@headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
     <style>
@@ -49,17 +36,17 @@
 
 
     <title>
-        Largest Sales for <%=channelViewModel.channel.title%>
+        Largest Sales for <%=it.baseViewModel.channelViewModel.channel.title%>
     </title>
 
     <%~ 
       include("@meta_tags", {
-        title: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
+        title: `Largest Sales for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         url: 'largest-sales',
         imageUrl: coverImageLink,
-        descriptionHTML: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
-        hostname: hostname,
-        baseURL: baseURL,
+        descriptionHTML: `Largest Sales for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
+        hostname: it.baseViewModel.hostname,
+        baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
         he: it.baseViewModel.he
       }) 
@@ -84,8 +71,8 @@
                     large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
                     title="Largest Sales"
                     active="Largest Sales"
-                    show_mint_page="<%=showMintPage%>"
-                    show_activity_page="<%=showActivityPage%>"
+                    show_mint_page="<%=it.baseViewModel.showMintPage%>"
+                    show_activity_page="<%=it.baseViewModel.showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
                 >
                 </nav-bar>
@@ -145,7 +132,7 @@
 
                             </div>
 
-                            <%~ include("@footer", {baseURL: baseURL}) %>
+                            <%~ include("@footer", {baseURL: it.baseViewModel.baseURL}) %>
 
                         </div>
                     </div>
@@ -177,14 +164,14 @@
             let walletService = globalThis.container.get("WalletService")
 
             let breadcrumbs = [{
-                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                text: JSON.parse(`<%~ JSON.stringify(it.baseViewModel.channelViewModel.channel.symbol)  %>`),
                 path: baseURI()
             }, {
                 text: "Largest Sales",
                 path: `${baseURI()}sales`
             }]
 
-            let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+            let logo = JSON.parse(`<%~ JSON.stringify(it.baseViewModel.logo ? it.baseViewModel.logo : {})  %>`)
 
 
             let largestSales
@@ -222,9 +209,9 @@
             $on('pageInit', async () => {
 
                 await channelWebService.loadChannel(
-                        "<%= channelViewModel.channel._id %>",
-                        '<%= baseURL %>',
-                        '<%= hostname %>'
+                        "<%= it.baseViewModel.channelViewModel.channel._id %>",
+                        '<%= it.baseViewModel.baseURL %>',
+                        '<%= it.baseViewModel.hostname %>'
                 )
 
                 await $update()
@@ -240,18 +227,18 @@
 
             <%~ 
                 include("@meta_tags_js", {
-                    title: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
+                    title: `Largest Sales for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
                     url: 'largest-sales',
                     imageUrl: coverImageLink,
-                    descriptionHTML: `Largest Sales for '${channelViewModel.channel.title}' NFTs`,
-                    hostname: hostname,
-                    baseURL: baseURL,
+                    descriptionHTML: `Largest Sales for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
+                    hostname: it.baseViewModel.hostname,
+                    baseURL: it.baseViewModel.baseURL,
                     excerptHtml: it.baseViewModel.excerptHtml,
                     he: it.baseViewModel.he
                 }) 
             %>
 
-            document.querySelector('title').innerHTML = "Largest Sales <%=channelViewModel.channel.title%>"
+            document.querySelector('title').innerHTML = "Largest Sales <%=it.baseViewModel.channelViewModel.channel.title%>"
 
             $f7.preloader.hide()
 
@@ -264,12 +251,12 @@
 
     <%~ 
         include("@init", {
-            hostname: hostname,
-            baseURL: baseURL,
+            hostname: it.baseViewModel.hostname,
+            baseURL: it.baseViewModel.baseURL,
             libraryURL: it.baseViewModel.libraryURL,
-            routablePages: routablePages,
-            base64Version: base64Version,
-            channelId: channelId
+            routablePages: it.baseViewModel.routablePages,
+            base64Version: it.baseViewModel.base64Version,
+            channelId: it.baseViewModel.channelId
         }) 
     %>
 

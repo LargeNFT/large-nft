@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f10bfc8e05';
+framework7Component.id = '82aee942cc';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6d0c2d46a6';
+framework7Component.id = '582a7ba97d';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6d76264ac3';
+framework7Component.id = '4e0aa55165';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5fd1d29ec4';
+framework7Component.id = 'e5ea8a5d3a';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '33ca981d07';
+framework7Component.id = '55654e6d2d';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -727,7 +727,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '437156c132';
+framework7Component.id = 'e3a77afd7d';
 framework7Component.style = `
 
 `;
@@ -802,7 +802,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a2e69f772c';
+framework7Component.id = '69c7a4ce45';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1083,7 +1083,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '12e4402103';
+framework7Component.id = 'c259b5bd86';
 framework7Component.style = `
 
 
@@ -1263,7 +1263,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '51c7354d6b';
+framework7Component.id = 'ccff767cc8';
 framework7Component.style = `
 
 .block-search {
@@ -1583,7 +1583,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '4b7318ccf7';
+framework7Component.id = '3f6f43f672';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1701,7 +1701,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f92f8f92ea';
+framework7Component.id = '468ed4dbfb';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1771,7 +1771,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6f8e9717ec';
+framework7Component.id = 'a758d88364';
 framework7Component.style = `
 
 

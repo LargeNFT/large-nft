@@ -1,33 +1,17 @@
 <% 
 
-    let channelViewModel = it.baseViewModel.channelViewModel 
-    let hostname = it.baseViewModel.hostname
-    let baseURL = it.baseViewModel.baseURL
-    let marketplaces = it.baseViewModel.marketplaces
-    let externalLinks = it.baseViewModel.externalLinks
-    let routablePages = it.baseViewModel.routablePages
-    let attributeReport = it.baseViewModel.attributeReport
-    let base64Version = it.baseViewModel.base64Version
-    let channelId = it.baseViewModel.channelId
-    let showMintPage = it.baseViewModel.showMintPage
-    let showActivityPage = it.baseViewModel.showActivityPage
-    let logo = it.baseViewModel.logo
-
-
-  
-
-    const link = (href) => {
-        return `${baseURL + href}`
+const link = (href) => {
+        return `${it.baseViewModel.baseURL + href}`
     }   
 
 
 
     const absoluteLink = (href) => {
-      return `${hostname + baseURL + href}`
+      return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
     }   
 
     
-    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+    let coverImageLink = it.baseViewModel.channelViewModel .coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel .coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel .coverImage._id}.${it.baseViewModel.channelViewModel .coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
 
 %>
@@ -37,7 +21,7 @@
 
   <head>
 
-    <%~ include("@headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
     <style>
@@ -55,12 +39,12 @@
 
     <%~ 
       include("@meta_tags", {
-        title: channelViewModel.channel.title,
+        title: it.baseViewModel.channelViewModel .channel.title,
         url: 'mint.html',
         imageUrl: coverImageLink,
-        descriptionHTML: `Mint '${channelViewModel.channel.title}' NFTs`,
-        hostname: hostname,
-        baseURL: baseURL,
+        descriptionHTML: `Mint '${it.baseViewModel.channelViewModel .channel.title}' NFTs`,
+        hostname: it.baseViewModel.hostname,
+        baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
         he: it.baseViewModel.he
       }) 
@@ -87,8 +71,8 @@
               large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
               title="Mint"
               active="Mint"
-              show_mint_page="<%=showMintPage%>"
-              show_activity_page="<%=showActivityPage%>"
+              show_mint_page="<%=it.baseViewModel.showMintPage%>"
+              show_activity_page="<%=it.baseViewModel.showActivityPage%>"
               breadcrumbs="${breadcrumbs}"
               base_uri="${baseURI}"
               hostname="${hostname}"
@@ -101,15 +85,15 @@
 
               <div class="card channel-card-show">
 
-                <div class="card-header banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                  style="background-image: url('<%= link(`backup/export/images/${channelViewModel.channel.coverBannerId}.jpg`) %>')"
+                <div class="card-header banner" <% if(it.baseViewModel.channelViewModel ?.channel.coverBannerId) { %>
+                  style="background-image: url('<%= link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverBannerId}.jpg`) %>')"
                     <% } %>
                       >
 
                       <a href="<%= link('index.html') %>">
 
-                        <% if (channelViewModel?.channel.coverImageId) { %>
-                          <img src="<%= link(`backup/export/images/${channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
+                        <% if (it.baseViewModel.channelViewModel?.channel.coverImageId) { %>
+                          <img src="<%= link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
                         <% } else { %>
                           <i class="f7-icons avatar">photo</i>
                         <% } %>
@@ -121,12 +105,12 @@
                 <div class="card-content card-content-padding">
 
                   <div class="title">
-                    <a href="<%= link('index.html') %>"><%= channelViewModel.channel.title %></a>
+                    <a href="<%= link('index.html') %>"><%= it.baseViewModel.channelViewModel.channel.title %></a>
                   </div>
 
-                  <% if(channelViewModel?.authorDisplayName) { %>
+                  <% if(it.baseViewModel.channelViewModel?.authorDisplayName) { %>
                     <div class="name">
-                      By <%= channelViewModel?.authorDisplayName %>
+                      By <%= it.baseViewModel.channelViewModel?.authorDisplayName %>
                     </div>
                   <% } %>
   
@@ -135,14 +119,14 @@
               </div>
               
               <mint-list 
-                baseurl="<%= baseURL %>"
+                baseurl="<%= it.baseViewModel.baseURL %>"
                 last_minted="${lastMinted}"
               >
 
               </mint-list>
 
 
-              <%~ include("@footer", {baseURL: baseURL}) %>
+              <%~ include("@footer", {baseURL: it.baseViewModel.baseURL}) %>
 
 
           </div>
@@ -172,7 +156,7 @@
         let mintWebService = globalThis.container.get("MintWebService")
         let walletService = globalThis.container.get("WalletService")
 
-        let totalItemCount = parseInt('<%= channelViewModel.itemCount %>')
+        let totalItemCount = parseInt('<%= it.baseViewModel.channelViewModel.itemCount %>')
 
         const PER_PAGE = 35
 
@@ -188,10 +172,10 @@
 
         let lastMinted 
 
-        let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+        let logo = JSON.parse(`<%~ JSON.stringify(it.baseViewModel.logo ? it.baseViewModel.logo : {})  %>`)
 
         let breadcrumbs = [{
-                text: JSON.parse(`<%~ JSON.stringify(channelViewModel.channel.symbol)  %>`),
+                text: JSON.parse(`<%~ JSON.stringify(it.baseViewModel.channelViewModel.channel.symbol)  %>`),
                 path: baseURI()
             }, {
                 text: "Mint"
@@ -240,9 +224,9 @@
         $on('pageInit', async () => {
 
           await channelWebService.loadChannel(
-                  "<%= channelViewModel.channel._id %>",
-                  '<%= baseURL %>',
-                  '<%= hostname %>'
+                  "<%= it.baseViewModel.channelViewModel.channel._id %>",
+                  '<%= it.baseViewModel.baseURL %>',
+                  '<%= it.baseViewModel.hostname %>'
           )
 
           await $update()
@@ -505,18 +489,18 @@
 
         <%~ 
           include("@meta_tags_js", {
-            title: channelViewModel.channel.title,
+            title: it.baseViewModel.channelViewModel.channel.title,
             url: 'mint.html',
             imageUrl: coverImageLink,
-            descriptionHTML: `Mint '${channelViewModel.channel.title}' NFTs`,
-            hostname: hostname,
-            baseURL: baseURL,
+            descriptionHTML: `Mint '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
+            hostname: it.baseViewModel.hostname,
+            baseURL: it.baseViewModel.baseURL,
             excerptHtml: it.baseViewModel.excerptHtml,
             he: it.baseViewModel.he
           }) 
         %>
 
-        document.querySelector('title').innerHTML = "Mint '<%=channelViewModel.channel.title%>' NFTs."
+        document.querySelector('title').innerHTML = "Mint '<%=it.baseViewModel.channelViewModel.channel.title%>' NFTs."
 
         $f7.preloader.hide()
     
@@ -531,12 +515,12 @@
 
     <%~ 
       include("@init", {
-        hostname: hostname,
-        baseURL: baseURL,
+        hostname: it.baseViewModel.hostname,
+        baseURL: it.baseViewModel.baseURL,
         libraryURL: it.baseViewModel.libraryURL,
-        routablePages: routablePages,
-        base64Version: base64Version,
-        channelId: channelId
+        routablePages: it.baseViewModel.routablePages,
+        base64Version: it.baseViewModel.base64Version,
+        channelId: it.baseViewModel.channelId
       }) 
     %>
 

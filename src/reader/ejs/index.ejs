@@ -1,25 +1,13 @@
 <% 
 
-    let channelViewModel = it.baseViewModel.channelViewModel 
-    let hostname = it.baseViewModel.hostname
-    let baseURL = it.baseViewModel.baseURL
-    let marketplaces = it.baseViewModel.marketplaces
-    let externalLinks = it.baseViewModel.externalLinks
-    let routablePages = it.baseViewModel.routablePages
-    let attributeReport = it.baseViewModel.attributeReport
-    let base64Version = it.baseViewModel.base64Version
-    let channelId = it.baseViewModel.channelId
-    let showMintPage = it.baseViewModel.showMintPage
-    let showActivityPage = it.baseViewModel.showActivityPage
-    let logo = it.baseViewModel.logo
 
     const link = (href) => {
-        return `${baseURL + href}`
+        return `${it.baseViewModel.baseURL + href}`
     }   
 
 
     const absoluteLink = (href) => {
-      return `${hostname + baseURL + href}`
+      return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
     }   
     
 
@@ -28,14 +16,14 @@
       let link = marketplace.link 
 
       //Replace contract if we find it 
-      if (channelViewModel.channel.contractAddress) {
-        link = link.replace("{contractId}", channelViewModel.channel.contractAddress)
+      if (it.baseViewModel.channelViewModel.channel.contractAddress) {
+        link = link.replace("{contractId}", it.baseViewModel.channelViewModel.channel.contractAddress)
       }
 
       return link
     }
 
-    let coverImageLink = channelViewModel.coverImage ? absoluteLink(`backup/${channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${channelViewModel.coverImage._id}.${channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
 
 %>
@@ -47,7 +35,7 @@
 
   <head>
 
-    <%~ include("@headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
     <style>
@@ -64,12 +52,12 @@
 
     <%~ 
       include("@meta_tags", {
-        title: channelViewModel.channel.title,
+        title: it.baseViewModel.channelViewModel.channel.title,
         url: 'index.html',
         imageUrl: coverImageLink,
-        descriptionHTML: channelViewModel.channel.descriptionHTML,
-        hostname: hostname,
-        baseURL: baseURL,
+        descriptionHTML: it.baseViewModel.channelViewModel.channel.descriptionHTML,
+        hostname: it.baseViewModel.hostname,
+        baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
         he: it.baseViewModel.he
       }) 
@@ -95,9 +83,9 @@
             logo="${logo}"
             library_url="<%=it.baseViewModel.libraryURL ? it.baseViewModel.libraryURL : ''%>"
             large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
-            title="<%=channelViewModel.channel.title%>"
-            show_mint_page="<%=showMintPage%>"
-            show_activity_page="<%=showActivityPage%>"
+            title="<%=it.baseViewModel.channelViewModel.channel.title%>"
+            show_mint_page="<%=it.baseViewModel.showMintPage%>"
+            show_activity_page="<%=it.baseViewModel.showActivityPage%>"
             breadcrumbs="${breadcrumbs}"
           >
           </nav-bar>
@@ -105,7 +93,7 @@
 
           <token-toolbar
             token_id="0"
-            item_count="<%= channelViewModel.channel.itemCount %>" 
+            item_count="<%= it.baseViewModel.channelViewModel.channel.itemCount %>" 
           >
           </token-toolbar>
 
@@ -118,8 +106,8 @@
 
                 <div class="card channel-card-show">
 
-                  <div class="card-header banner" id="banner" <% if(channelViewModel?.channel.coverBannerId) { %>
-                        style="background-image: url('<%= link(`backup/generated/images/${channelViewModel.channel.coverBannerId}.webp`) %>')"
+                  <div class="card-header banner" id="banner" <% if(it.baseViewModel.channelViewModel?.channel.coverBannerId) { %>
+                        style="background-image: url('<%= link(`backup/generated/images/${it.baseViewModel.channelViewModel.channel.coverBannerId}.webp`) %>')"
                       <% } else { %>
                         style="background: #cccccc;"
 
@@ -127,8 +115,8 @@
                         >
     
                         <a href="<%= link('index.html') %>">
-                          <% if (channelViewModel?.channel.coverImageId) { %>
-                            <img src="<%= link(`backup/generated/images/100x100/${channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
+                          <% if (it.baseViewModel.channelViewModel?.channel.coverImageId) { %>
+                            <img src="<%= link(`backup/generated/images/100x100/${it.baseViewModel.channelViewModel.channel.coverImageId}.webp`) %>" alt="Primary avatar" class="avatar" />
                           <% } else { %>
                             <i class="f7-icons avatar">photo</i>
                           <% } %>
@@ -139,17 +127,17 @@
                   <div class="card-content card-content-padding">
     
                     <div class="title">
-                      <%= channelViewModel.channel.title %>
+                      <%= it.baseViewModel.channelViewModel.channel.title %>
                     </div>
     
-                    <% if(channelViewModel?.authorDisplayName) { %>
+                    <% if(it.baseViewModel.channelViewModel?.authorDisplayName) { %>
                       <div class="name">
-                        By <%= channelViewModel?.authorDisplayName %>
+                        By <%= it.baseViewModel.channelViewModel?.authorDisplayName %>
                       </div>
                     <% } %>
     
-                    <div class="description" id="channel-show-description-<%=channelViewModel.channel._id%>">
-                      <%~ channelViewModel.channel?.descriptionHTML %>
+                    <div class="description" id="channel-show-description-<%=it.baseViewModel.channelViewModel.channel._id%>">
+                      <%~ it.baseViewModel.channelViewModel.channel?.descriptionHTML %>
                     </div>
     
     
@@ -166,14 +154,14 @@
     
                 <div class="hidden-on-load">
     
-                  <% if (showMintPage) { %>
+                  <% if (it.baseViewModel.showMintPage) { %>
                     <mint-info
-                      baseurl="<%= baseURL %>"
+                      baseurl="<%= it.baseViewModel.baseURL %>"
                     ></mint-info>
                   <% } %>
 
 
-                  <% if(channelViewModel.channel?.contractAddress) { %>
+                  <% if(it.baseViewModel.channelViewModel.channel?.contractAddress) { %>
 
                     <div class="card card-header-divider">
                       <div class="card-header">Overall Stats</div>
@@ -362,9 +350,9 @@
     
   
                 <% 
-                  if (channelViewModel.staticPagesViewModel.index?.length > 0) {
+                  if (it.baseViewModel.channelViewModel.staticPagesViewModel.index?.length > 0) {
     
-                    for (let staticPage of channelViewModel.staticPagesViewModel.index) {
+                    for (let staticPage of it.baseViewModel.channelViewModel.staticPagesViewModel.index) {
                  %>
     
                   <div class="card static-page-card">   
@@ -381,11 +369,11 @@
     
   
   
-                <% if (channelViewModel?.channel.licenseHTML?.length > 13) { %>
+                <% if (it.baseViewModel.channelViewModel?.channel.licenseHTML?.length > 13) { %>
     
                   <div class="card">
                     <div class="card-content card-content-padding license">
-                      <%~ channelViewModel?.channel.licenseHTML %>
+                      <%~ it.baseViewModel.channelViewModel?.channel.licenseHTML %>
                     </div>
                   </div>
     
@@ -398,7 +386,7 @@
 
                 <div class="hidden-on-load">
       
-                  <% if(channelViewModel.channel?.contractAddress) { %>
+                  <% if(it.baseViewModel.channelViewModel.channel?.contractAddress) { %>
 
                     <div class="card card-header-divider">
                       <div class="card-header">Links</div>
@@ -406,20 +394,20 @@
                         <div class="list">
                           <ul>
               
-                            <% if(channelViewModel.channel?.contractAddress) { %>
+                            <% if(it.baseViewModel.channelViewModel.channel?.contractAddress) { %>
       
                               <li>
                                 <div class="item-content">
                                   <div class="item-inner">
                                     <div class="item-title">
-                                      <a class="link external" href="https://etherscan.io/address/<%=channelViewModel.channel?.contractAddress%>">Etherscan</a>
+                                      <a class="link external" href="https://etherscan.io/address/<%=it.baseViewModel.channelViewModel.channel?.contractAddress%>">Etherscan</a>
                                     </div>
                                   </div>
                                 </div>
                               </li>
                             <% } %>
         
-                            <% for (let externalLink of externalLinks) { %>
+                            <% for (let externalLink of it.baseViewModel.externalLinks) { %>
       
                               <li>
                                 <div class="item-content">
@@ -435,11 +423,11 @@
     
     
                             <%
-                            if (channelViewModel?.staticPagesViewModel?.links?.length > 0) {
+                            if (it.baseViewModel.channelViewModel?.staticPagesViewModel?.links?.length > 0) {
                             %>
                               
                               <%
-                                  for (let staticPage of channelViewModel.staticPagesViewModel.links) {
+                                  for (let staticPage of it.baseViewModel.channelViewModel.staticPagesViewModel.links) {
                               %>
         
                                     <li>
@@ -469,7 +457,7 @@
 
 
                   <% 
-                    if (marketplaces?.length > 0) {
+                    if (it.baseViewModel.marketplaces?.length > 0) {
                   %>
 
                     <div class="card card-header-divider">
@@ -478,7 +466,7 @@
                         <div class="list">           
                           <ul>
                               <% 
-                              for (let marketplace of marketplaces) { 
+                              for (let marketplace of it.baseViewModel.marketplaces) { 
                               %>  
         
                                 <li>
@@ -505,7 +493,7 @@
               </div>
 
               <div class="left">
-                <%~ include("@footer", {baseURL: baseURL}) %>
+                <%~ include("@footer", {baseURL: it.baseViewModel.baseURL}) %>
               </div>
 
             </div>
@@ -543,7 +531,7 @@
 
           let breadcrumbs
 
-          let logo = JSON.parse(`<%~ JSON.stringify(logo ? logo : {})  %>`)
+          let logo = JSON.parse(`<%~ JSON.stringify(it.baseViewModel.logo ? it.baseViewModel.logo : {})  %>`)
 
           const PER_PAGE = 35
 
@@ -613,16 +601,16 @@
 
             console.log("Loading channel")
             await channelWebService.loadChannel(
-                    "<%= channelViewModel.channel._id %>",
-                    '<%= baseURL %>',
-                    '<%= hostname %>'
+                    "<%= it.baseViewModel.channelViewModel.channel._id %>",
+                    '<%= it.baseViewModel.baseURL %>',
+                    '<%= it.baseViewModel.hostname %>'
             )
 
             let readerSettings = await readerSettingsService.get()
             $f7.emit('current-page-updated', readerSettings.currentPage)
 
             
-            <% if (showMintPage) { %>
+            <% if (it.baseViewModel.showMintPage) { %>
               console.log("Loading mint view model")
               await loadMintingViewModel()
               await $update()
@@ -645,18 +633,18 @@
 
           <%~ 
             include("@meta_tags_js", {
-              title: channelViewModel.channel.title,
+              title: it.baseViewModel.channelViewModel.channel.title,
               url: 'index.html',
               imageUrl: coverImageLink,
-              descriptionHTML: channelViewModel.channel.descriptionHTML,
-              hostname: hostname,
-              baseURL: baseURL,
+              descriptionHTML: it.baseViewModel.channelViewModel.channel.descriptionHTML,
+              hostname: it.baseViewModel.hostname,
+              baseURL: it.baseViewModel.baseURL,
               excerptHtml: it.baseViewModel.excerptHtml,
               he: it.baseViewModel.he
             }) 
           %>
 
-          document.querySelector('title').innerHTML = "<%=channelViewModel.channel.title%>"
+          document.querySelector('title').innerHTML = "<%=it.baseViewModel.channelViewModel.channel.title%>"
 
           $f7.preloader.hide()
 
@@ -672,12 +660,12 @@
 
     <%~ 
       include("@init", {
-        hostname: hostname,
-        baseURL: baseURL,
+        hostname: it.baseViewModel.hostname,
+        baseURL: it.baseViewModel.baseURL,
         libraryURL: it.baseViewModel.libraryURL,
-        routablePages: routablePages,
-        base64Version: base64Version,
-        channelId: channelId
+        routablePages: it.baseViewModel.routablePages,
+        base64Version: it.baseViewModel.base64Version,
+        channelId: it.baseViewModel.channelId
       }) 
     %>
 

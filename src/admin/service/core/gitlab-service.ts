@@ -282,8 +282,6 @@ class GitlabService implements GitProviderService {
 
     }
 
-
-
     async commit(channel:Channel, actions:any[], gitProvider) : Promise<string> {
 
         for (let action of actions) {
@@ -350,27 +348,41 @@ class GitlabService implements GitProviderService {
         do {
 
             //Get list of current files in .upload folder
-            let results = await axios.get(treeLink, {
-                headers: {
-                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+            try {
+
+                let results = await axios.get(treeLink, {
+                    headers: {
+                        "Authorization": `Bearer ${gitProvider.personalAccessToken}`
+                    }
+                })
+
+                
+                //Skip directories because gitlab chokes on them.
+                let resultActions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
+                    return {
+                        action: 'delete',
+                        file_path: result.path
+                    }
+                })
+
+
+                actions.push(...resultActions)
+
+                linkHeaders = parse(results.headers["link"])
+
+                treeLink = linkHeaders?.next?.url
+
+
+            } catch(ex) {
+
+                //If the .upload folder doesn't exist we will get a 404
+                if (ex.response.data?.message =="404 invalid revision or path Not Found") {
+                    treeLink = undefined
                 }
-            })
+
+            }
 
 
-            //Skip directories because gitlab chokes on them.
-            let resultActions = results?.data?.reverse()?.filter(result => result.name.indexOf('.') > 0).map( result => {
-                return {
-                    action: 'delete',
-                    file_path: result.path
-                }
-            })
-
-
-            actions.push(...resultActions)
-
-            linkHeaders = parse(results.headers["link"])
-
-            treeLink = linkHeaders?.next?.url
 
         } while(treeLink)
 

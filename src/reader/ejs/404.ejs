@@ -46,7 +46,7 @@
 
   <head>
 
-    <%~ include("headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: baseURL}) %>
 
 
     <style>
@@ -174,7 +174,7 @@
     </script>
 
     <%~ 
-      include("_init", {
+      include("@init", {
         hostname: hostname,
         baseURL: baseURL,
         libraryURL: it.baseViewModel.libraryURL,

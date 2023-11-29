@@ -36,7 +36,7 @@
 
 <head>
 
-    <%~ include("headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: baseURL}) %>
 
     <style>
     html {
@@ -52,7 +52,7 @@
   
 
     <%~ 
-      include("_meta_tags", {
+      include("@meta_tags", {
         title: staticPage.name,
         url: `${staticPage.slug}.html`,
         imageUrl: coverImageLink,
@@ -98,7 +98,7 @@
                             </div>
                         </div>
     
-                        <%~ include("footer", {baseURL: baseURL}) %>
+                        <%~ include("@footer", {baseURL: baseURL}) %>
 
 
                     </div>
@@ -154,7 +154,7 @@
             })
 
             <%~ 
-                include("_meta_tags_js", {
+                include("@meta_tags_js", {
                     title: staticPage.name,
                     url: `${staticPage.slug}.html`,
                     imageUrl: coverImageLink,
@@ -179,7 +179,7 @@
     </script>
 
     <%~ 
-        include("_init", {
+        include("@init", {
             hostname: hostname,
             baseURL: baseURL,
             libraryURL: it.baseViewModel.libraryURL,

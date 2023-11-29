@@ -134,8 +134,6 @@ class GithubService implements GitProviderService {
 
     }
 
-
-
     public async getExistingFork(channel: Channel): Promise<ForkInfo> {
 
         let settings = await this.settingsService.get()
@@ -345,7 +343,6 @@ class GithubService implements GitProviderService {
 
 
     }
-
 
     private async getMostRecentActionRun(channel, gitProvider) {
 

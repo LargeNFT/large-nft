@@ -39,7 +39,7 @@
 
   <head>
 
-    <%~ include("headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: baseURL}) %>
 
 
     <style>
@@ -54,7 +54,7 @@
     </title>
 
     <%~ 
-      include("_meta_tags", {
+      include("@meta_tags", {
         title: `Attribute Report for '${channelViewModel.channel.title}' NFTs`,
         url: 'attributes.html',
         imageUrl: coverImageLink,
@@ -181,7 +181,7 @@
 
               </div>
 
-              <%~ include("footer", {baseURL: baseURL}) %>
+              <%~ include("@footer", {baseURL: baseURL}) %>
 
 
             </div>
@@ -286,7 +286,7 @@
             })
 
             <%~ 
-                include("_meta_tags_js", {
+                include("@meta_tags_js", {
                   title: `Attribute Report for '${channelViewModel.channel.title}' NFTs`,
                   url: 'attributes.html',
                   imageUrl: coverImageLink,
@@ -313,7 +313,7 @@
     </script>
 
     <%~ 
-      include("_init", {
+      include("@init", {
         hostname: hostname,
         baseURL: baseURL,
         libraryURL: it.baseViewModel.libraryURL,

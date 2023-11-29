@@ -3,7 +3,6 @@ import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
 import fs from "fs"
-import * as Eta from 'eta'
 
 import { Container } from "inversify"
 
@@ -52,6 +51,7 @@ let generate = async () => {
   container.bind("contracts").toConstantValue([])
   container.bind("convert-svg-to-png").toConstantValue(convert)
 
+  
 
   let command:GetMainContainerCommand = {
     customContainer: container,
@@ -70,6 +70,8 @@ let generate = async () => {
   let itemWebService:ItemWebService = container.get("ItemWebService")
 
   let generateService:GenerateService = container.get("GenerateService")
+  let eta:any = container.get("eta")
+
 
   await generateService.load()
 
@@ -178,11 +180,13 @@ let generate = async () => {
     //Inject admin footer template.
     if (adminFooter?.length > 0) {
   
-      let footerTemplate = Eta.render(adminFooter.toString(), { 
+      let footerTemplate = eta.renderString(adminFooter.toString(), { 
         baseURL: config.baseURL,
         version: config.VERSION
       })
-  
+
+      console.log(footerTemplate)
+
       indexContents = indexContents.replace(`<div id="app"></div>`, `
       
       <div id="app"></div>

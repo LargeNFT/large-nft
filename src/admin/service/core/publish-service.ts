@@ -84,7 +84,7 @@ class PublishService {
 
         this.logPublishProgress(undefined, "Exporting to file system...")
 
-        await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient, cids)
+        await this.exportToFS(baseDir, channel, exportBundle, backup, feeRecipient)
 
         return {
             cids: cids
@@ -225,7 +225,7 @@ class PublishService {
 
     }
 
-    async exportToFS(baseDir:string, channel:Channel, exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string, cids?:CidInfo) {
+    async exportToFS(baseDir:string, channel:Channel, exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string) {
 
         //Save images
         await this._publishImagesFS(baseDir, exportBundle.imageCids)
@@ -278,92 +278,25 @@ class PublishService {
             })
         }
 
-        const getProductionURIInfo = async (channel) => {
 
-            let settings = await this.settingsService.get()
 
-            let gitProvider
-    
-            //If it's "default" or blank then look at the global default
-            if (!channel.gitProvider || channel.gitProvider == "default") {
-    
-                if (settings.defaultGitProvider) {
-                    gitProvider = settings.defaultGitProvider
-                } else {
-                    gitProvider = "github"
-                }
-                
-            } else {
-                gitProvider = channel.gitProvider
-            }
-    
-            switch(gitProvider) {
+        let productionURIInfo = await this.getProductionURIInfo(channel)
 
-                case "gitlab":
-
-                    function getGitLabUsername(url) {
-
-                        const path = url.replace("https://gitlab.com/", "")
-                    
-                        // Split the remaining path into parts
-                        const parts = path.split("/")
-                    
-                        // Extract the username and repository name
-                        const username = parts[0]
-                        
-                        return username
-            
-                    }
-            
-                    if (!channel.httpUrlToRepo) return
-
-                    return {
-                        hostname: `https://${getGitLabUsername(channel.httpUrlToRepo)}.gitlab.io`,
-                        baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
-                    }
-
-                case "github":
-
-                    function getGitHubUsername(url) {
-
-                        const path = url.replace("https://github.com/", "");
-                    
-                        // Split the remaining path into parts
-                        const parts = path.split("/");
-                    
-                        // Extract the username and repository name
-                        const username = parts[0];
-                        
-                        return username
-            
-                    }
-            
-            
-                    if (!channel.httpUrlToRepo) return
-
-                    return {
-                        hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.github.io`,
-                        baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
-                    }
-
-            }
-
+        let largeConfig = {
+            "showMintPage": channel.showMintPage,
+            "showActivityPage": channel.showActivityPage,
+            "hostname": channel.productionHostname ? channel.productionHostname : productionURIInfo?.hostname,
+            "libraryURL": channel.productionBaseLibraryURI,
+            "baseURL": channel.productionBaseURI ? channel.productionBaseURI : productionURIInfo?.baseURI,
+            "externalLinks": channel.externalLinks,
+            "marketplaces": channel.marketplaces
         }
 
-        let productionURIInfo = await getProductionURIInfo(channel)
 
         //Copy a large-config.json to GitHub
         await this._writeFSAction({
             file_path: `${baseDir}/large-config.json`,
-            content: Buffer.from(JSON.stringify({
-                "showMintPage": channel.showMintPage,
-                "showActivityPage": channel.showActivityPage,
-                "hostname": channel.productionHostname ? channel.productionHostname : productionURIInfo?.hostname,
-                "libraryURL": channel.productionBaseLibraryURI,
-                "baseURL": channel.productionBaseURI ? channel.productionBaseURI : productionURIInfo?.baseURI,
-                "externalLinks": channel.externalLinks,
-                "marketplaces": channel.marketplaces
-            } ))
+            content: Buffer.from(JSON.stringify(largeConfig))
         })
 
 
@@ -687,6 +620,78 @@ class PublishService {
 
     }
 
+    //** TODO: Move to appropriate git services */
+    private async getProductionURIInfo(channel) {
+
+        let settings = await this.settingsService.get()
+
+        let gitProvider
+
+        //If it's "default" or blank then look at the global default
+        if (!channel.gitProvider || channel.gitProvider == "default") {
+
+            if (settings.defaultGitProvider) {
+                gitProvider = settings.defaultGitProvider
+            } else {
+                gitProvider = "github"
+            }
+            
+        } else {
+            gitProvider = channel.gitProvider
+        }
+
+        switch(gitProvider) {
+
+            case "gitlab":
+
+                function getGitLabUsername(url) {
+
+                    const path = url.replace("https://gitlab.com/", "")
+                
+                    // Split the remaining path into parts
+                    const parts = path.split("/")
+                
+                    // Extract the username and repository name
+                    const username = parts[0]
+                    
+                    return username
+        
+                }
+        
+                if (!channel.httpUrlToRepo) return
+
+                return {
+                    hostname: `https://${getGitLabUsername(channel.httpUrlToRepo)}.gitlab.io`,
+                    baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
+                }
+
+            case "github":
+
+                function getGitHubUsername(url) {
+
+                    const path = url.replace("https://github.com/", "");
+                
+                    // Split the remaining path into parts
+                    const parts = path.split("/");
+                
+                    // Extract the username and repository name
+                    const username = parts[0];
+                    
+                    return username
+        
+                }
+        
+        
+                if (!channel.httpUrlToRepo) return
+
+                return {
+                    hostname: `https://${getGitHubUsername(channel.httpUrlToRepo)}.github.io`,
+                    baseURI: `/${channel.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}/`
+                }
+
+        }
+
+    }
 
     private _writeFSAction(action:FSAction) {
 

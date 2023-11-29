@@ -37,7 +37,7 @@
 
 <head>
 
-    <%~ include("headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: baseURL}) %>
 
 
     <style>
@@ -52,7 +52,7 @@
     </title>
 
     <%~ 
-      include("_meta_tags", {
+      include("@meta_tags", {
         title: `Leaderboard for '${channelViewModel.channel.title}' NFTs`,
         url: 'leaderboard',
         imageUrl: coverImageLink,
@@ -168,7 +168,7 @@
 
                         </div>
 
-                        <%~ include("footer", {baseURL: baseURL}) %>
+                        <%~ include("@footer", {baseURL: baseURL}) %>
                     </div>
             
                 </div>
@@ -279,7 +279,7 @@
             })
 
             <%~ 
-                include("_meta_tags_js", {
+                include("@meta_tags_js", {
                     title: `Leaderboard for '${channelViewModel.channel.title}' NFTs`,
                     url: 'leaderboard',
                     imageUrl: coverImageLink,
@@ -303,7 +303,7 @@
     </script>
 
     <%~ 
-        include("_init", {
+        include("@init", {
             hostname: hostname,
             baseURL: baseURL,
             libraryURL: it.baseViewModel.libraryURL,

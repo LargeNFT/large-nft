@@ -38,7 +38,7 @@
 
 <head>
 
-    <%~ include("headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: baseURL}) %>
 
 
     <style>
@@ -54,7 +54,7 @@
     </title>
 
     <%~ 
-      include("_meta_tags", {
+      include("@meta_tags", {
         title: `User Profile for ${channelViewModel.channel.title}`,
         url: 'u',
         imageUrl: coverImageLink,
@@ -266,7 +266,7 @@
                         <br /><br />
 
 
-                        <%~ include("footer", {baseURL: baseURL}) %>
+                        <%~ include("@footer", {baseURL: baseURL}) %>
 
 
 
@@ -534,7 +534,7 @@
             })
 
             <%~ 
-                include("_meta_tags_js", {
+                include("@meta_tags_js", {
                     title: `User Profile for ${channelViewModel.channel.title}`,
                     url: 'u',
                     imageUrl: coverImageLink,
@@ -559,7 +559,7 @@
     </script>
 
     <%~ 
-        include("_init", {
+        include("@init", {
             hostname: hostname,
             baseURL: baseURL,
             libraryURL: it.baseViewModel.libraryURL,

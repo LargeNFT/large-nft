@@ -1,4 +1,6 @@
 import { Container } from "inversify";
+import { Eta } from "eta"
+
 import { SyncStatus } from "./dto/sync-status.js";
 import { SyncStatusRepositoryNodeImpl } from "./repository/node/sync-status-repository-impl.js";
 import { SyncStatusRepository } from "./repository/sync-status-repository.js";
@@ -76,6 +78,13 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   }
 
 
+  let eta
+
+  
+  if (!eta) {
+    eta = new Eta()
+  }
+
   container.bind("pluginModules").toConstantValue(pluginModules)
   container.bind("baseURI").toConstantValue(command.baseURI)
   container.bind("hostname").toConstantValue(command.hostname)
@@ -114,6 +123,7 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   
   })
   
+  container.bind("eta").toConstantValue(eta)
 
  
   

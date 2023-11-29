@@ -1,6 +1,7 @@
 import { Container } from "inversify";
 
 import { ethers } from "ethers"
+import { Eta } from "eta"
 
 import { AnimationRepository } from "../reader/repository/animation-repository.js";
 import { AttributeTotalRepository } from "../reader/repository/attribute-total-repository.js";
@@ -55,6 +56,7 @@ import { SpawnService } from "../sync/service/spawn-service.js"
 
 import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js"
 import { RowItemViewModel } from "../reader/dto/item-page.js"
+import path from "path";
 
 
 
@@ -82,6 +84,12 @@ function getMainContainer(command:GetMainContainerCommand) {
 
 
   let sequelize
+  let eta
+
+  
+  if (!eta) {
+    eta = new Eta()
+  }
 
   container.bind('sequelize').toConstantValue(async (channelDir, channelId) => {
     return
@@ -91,6 +99,7 @@ function getMainContainer(command:GetMainContainerCommand) {
     return ethers
   })
 
+  container.bind("eta").toConstantValue(eta)
 
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()

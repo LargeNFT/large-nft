@@ -71,7 +71,7 @@
 
 <head>
 
-    <%~ include("headStart", {baseURL: baseURL}) %>
+    <%~ include("@headStart", {baseURL: baseURL}) %>
 
 
     <style>
@@ -86,7 +86,7 @@
 
 
     <%~ 
-      include("_meta_tags", {
+      include("@meta_tags", {
         title: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
         url: `t/${itemViewModel.item.tokenId}`,
         imageUrl: coverImageLink,
@@ -354,7 +354,7 @@
                         </div>
                     
                         <div class="left">
-                            <%~ include("footer", {baseURL: baseURL}) %>          
+                            <%~ include("@footer", {baseURL: baseURL}) %>          
                         </div>
 
 
@@ -634,7 +634,7 @@
             }
 
             <%~ 
-                include("_meta_tags_js", {
+                include("@meta_tags_js", {
                     title: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
                     url: `t/${itemViewModel.item.tokenId}`,
                     imageUrl: coverImageLink,
@@ -660,7 +660,7 @@
     </script>
 
     <%~ 
-        include("_init", {
+        include("@init", {
             hostname: hostname,
             baseURL: baseURL,
             libraryURL: it.baseViewModel.libraryURL,

@@ -152,7 +152,7 @@
                                         ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" && channelViewModel.channel.publishReaderIPFSStatus?.cid ? $h`
                                             <strong>IPFS cid:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
                                             <strong>Archive:</strong> <a href="${channelViewModel.channel.publishReaderIPFSStatus?.archive}" class="link external">${channelViewModel.channel.publishReaderIPFSStatus?.archive}</a><br />
-                                            <strong>Date:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM Do YYYY, h:mm:ss a')}
+                                            <strong>Date:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}
                                         ` : $h` `}
 
                                     </div>

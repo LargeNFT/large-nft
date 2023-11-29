@@ -61,6 +61,7 @@ class GenerateService {
         @inject("ItemRepository") private itemRepository: ItemRepository,
         @inject("StaticPageRepository") private staticPageRepository:StaticPageRepository,
         @inject("convert-svg-to-png") private convert,
+        @inject("eta") private eta
     ) { }
 
     async load() {
@@ -383,9 +384,9 @@ class GenerateService {
     async defineEtaTemplates(config, rootDir) {
 
         //Load init eta template
-        Eta.templates.define("_init", Eta.compile(_initEjs))
-        Eta.templates.define("_meta_tags", Eta.compile(_metaTagsEjs))
-        Eta.templates.define("_meta_tags_js", Eta.compile(_metaTagsJsEjs))
+        this.eta.loadTemplate("@init", _initEjs)
+        this.eta.loadTemplate("@meta_tags", _metaTagsEjs)
+        this.eta.loadTemplate("@meta_tags_js", _metaTagsJsEjs)
 
 
         //Template hooks.
@@ -396,7 +397,7 @@ class GenerateService {
             headStartContents = await fs.promises.readFile(path.resolve(rootDir, config.headStart))
         } catch(ex) {}
 
-        Eta.templates.define("headStart", Eta.compile(headStartContents ? headStartContents?.toString() : ''))
+        this.eta.loadTemplate("@headStart", headStartContents ? headStartContents?.toString() : '')
 
 
         //Load the default footer or use a configured template.
@@ -409,7 +410,7 @@ class GenerateService {
 
 
 
-        Eta.templates.define("footer", Eta.compile(footer ? footer?.toString() : footerEjs))
+        this.eta.loadTemplate("@footer", footer ? footer?.toString() : footerEjs)
         
     }
     
@@ -775,7 +776,7 @@ class GenerateService {
 
     async renderPage(config, ejsTemplate, model, filepath) {
 
-      const result = Eta.render(ejsTemplate, model)
+      const result = this.eta.renderString(ejsTemplate, model)
 
       //Create partial
       const pageContent = result.substring(

@@ -3,6 +3,8 @@ import { StaleWhileRevalidate, CacheFirst, NetworkFirst } from 'workbox-strategi
 
 const DEBUG = false
 
+//@ts-ignore
+self.__WB_DISABLE_DEV_LOGS = true
 
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {

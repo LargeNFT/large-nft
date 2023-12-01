@@ -61,7 +61,6 @@ import TokenToolbar from './components/reader/token-toolbar.f7.html'
 import Transaction from './components/reader/transaction.f7.html'
 
 // import NftInfo from './components/reader/item/nft-info.f7.html'
-import MintList from './components/reader/item/mint-list.f7.html'
 
 import AttributeFilter from './components/reader/channel/attribute-filter.f7.html'
 import ExploreTotalInfo from './components/reader/channel/explore-total-info.f7.html'
@@ -172,7 +171,6 @@ async function getMainContainer(customContainer:Container, theBaseURI:string, th
     Framework7.registerComponent("token-toolbar", TokenToolbar)
 
     // Framework7.registerComponent("nft-info", NftInfo)
-    Framework7.registerComponent("mint-list", MintList)
     Framework7.registerComponent("attribute-filter", AttributeFilter)
     Framework7.registerComponent("explore-total-info", ExploreTotalInfo)
 

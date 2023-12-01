@@ -47326,7 +47326,7 @@ const scroll = shortcut('scroll');
 /**
  *  The current version of Ethers.
  */
-const version = "6.8.1";
+const version = "6.9.0";
 //# sourceMappingURL=_version.js.map
 
 /***/ }),
@@ -49067,9 +49067,6 @@ class ParamType {
         }
         else {
             if (this.isTuple()) {
-                if (format !== "sighash") {
-                    result += this.type;
-                }
                 result += "(" + this.components.map((comp) => comp.format(format)).join((format === "full") ? ", " : ",") + ")";
             }
             else {
@@ -54612,10 +54609,12 @@ async function getSubscription(_event, provider) {
     if (typeof (_event) === "string") {
         switch (_event) {
             case "block":
-            case "pending":
             case "debug":
             case "error":
-            case "network": {
+            case "finalized":
+            case "network":
+            case "pending":
+            case "safe": {
                 return { type: _event, tag: _event };
             }
         }
@@ -54913,10 +54912,10 @@ class AbstractProvider {
         switch (blockTag) {
             case "earliest":
                 return "0x0";
+            case "finalized":
             case "latest":
             case "pending":
             case "safe":
-            case "finalized":
                 return blockTag;
         }
         if ((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_1__.isHexString)(blockTag)) {
@@ -55099,12 +55098,20 @@ class AbstractProvider {
     async getFeeData() {
         const network = await this.getNetwork();
         const getFeeDataFunc = async () => {
-            const { _block, gasPrice } = await (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_0__.resolveProperties)({
+            const { _block, gasPrice, priorityFee } = await (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_0__.resolveProperties)({
                 _block: this.#getBlock("latest", false),
                 gasPrice: ((async () => {
                     try {
-                        const gasPrice = await this.#perform({ method: "getGasPrice" });
-                        return (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_8__.getBigInt)(gasPrice, "%response");
+                        const value = await this.#perform({ method: "getGasPrice" });
+                        return (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_8__.getBigInt)(value, "%response");
+                    }
+                    catch (error) { }
+                    return null;
+                })()),
+                priorityFee: ((async () => {
+                    try {
+                        const value = await this.#perform({ method: "getPriorityFee" });
+                        return (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_8__.getBigInt)(value, "%response");
                     }
                     catch (error) { }
                     return null;
@@ -55115,7 +55122,7 @@ class AbstractProvider {
             // These are the recommended EIP-1559 heuristics for fee data
             const block = this._wrapBlock(_block, network);
             if (block && block.baseFeePerGas) {
-                maxPriorityFeePerGas = BigInt("1000000000");
+                maxPriorityFeePerGas = (priorityFee != null) ? priorityFee : BigInt("1000000000");
                 maxFeePerGas = (block.baseFeePerGas * BN_2) + maxPriorityFeePerGas;
             }
             return new _provider_js__WEBPACK_IMPORTED_MODULE_6__.FeeData(gasPrice, maxFeePerGas, maxPriorityFeePerGas);
@@ -55493,6 +55500,9 @@ class AbstractProvider {
                 subscriber.pollingInterval = this.pollingInterval;
                 return subscriber;
             }
+            case "safe":
+            case "finalized":
+                return new _subscriber_polling_js__WEBPACK_IMPORTED_MODULE_15__.PollingBlockTagSubscriber(this, sub.type);
             case "event":
                 return new _subscriber_polling_js__WEBPACK_IMPORTED_MODULE_15__.PollingEventSubscriber(this, sub.filter);
             case "transaction":
@@ -57248,23 +57258,6 @@ function getGasStationPlugin(url) {
         }
     });
 }
-// Used by Optimism for a custom priority fee
-function getPriorityFeePlugin(maxPriorityFeePerGas) {
-    return new _plugins_network_js__WEBPACK_IMPORTED_MODULE_1__.FetchUrlFeeDataNetworkPlugin("data:", async (fetchFeeData, provider, request) => {
-        const feeData = await fetchFeeData();
-        // This should always fail
-        if (feeData.maxFeePerGas == null || feeData.maxPriorityFeePerGas == null) {
-            return feeData;
-        }
-        // Compute the corrected baseFee to recompute the updated values
-        const baseFee = feeData.maxFeePerGas - feeData.maxPriorityFeePerGas;
-        return {
-            gasPrice: feeData.gasPrice,
-            maxFeePerGas: (baseFee + maxPriorityFeePerGas),
-            maxPriorityFeePerGas
-        };
-    });
-}
 // See: https://chainlist.org
 let injected = false;
 function injectCommonNetworks() {
@@ -57307,6 +57300,9 @@ function injectCommonNetworks() {
         ensNetwork: 1,
     });
     registerEth("arbitrum-goerli", 421613, {});
+    registerEth("base", 8453, { ensNetwork: 1 });
+    registerEth("base-goerli", 84531, {});
+    registerEth("base-sepolia", 84532, {});
     registerEth("bnb", 56, { ensNetwork: 1 });
     registerEth("bnbt", 97, {});
     registerEth("linea", 59144, { ensNetwork: 1 });
@@ -57325,9 +57321,7 @@ function injectCommonNetworks() {
     });
     registerEth("optimism", 10, {
         ensNetwork: 1,
-        plugins: [
-            getPriorityFeePlugin(BigInt("1000000"))
-        ]
+        plugins: []
     });
     registerEth("optimism-goerli", 420, {});
     registerEth("xdai", 100, { ensNetwork: 1 });
@@ -57695,11 +57689,11 @@ class BrowserProvider extends _provider_jsonrpc_js__WEBPACK_IMPORTED_MODULE_0__.
 /* harmony import */ var _utils_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/index.js */ "./node_modules/ethers/lib.esm/utils/errors.js");
 /* harmony import */ var _utils_index_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/index.js */ "./node_modules/ethers/lib.esm/utils/utf8.js");
 /* harmony import */ var _utils_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/index.js */ "./node_modules/ethers/lib.esm/utils/data.js");
-/* harmony import */ var _utils_index_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/index.js */ "./node_modules/ethers/lib.esm/utils/maths.js");
+/* harmony import */ var _utils_index_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/index.js */ "./node_modules/ethers/lib.esm/utils/maths.js");
 /* harmony import */ var _utils_index_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../utils/index.js */ "./node_modules/ethers/lib.esm/utils/fetch.js");
 /* harmony import */ var _abstract_provider_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./abstract-provider.js */ "./node_modules/ethers/lib.esm/providers/abstract-provider.js");
 /* harmony import */ var _abstract_signer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./abstract-signer.js */ "./node_modules/ethers/lib.esm/providers/abstract-signer.js");
-/* harmony import */ var _network_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./network.js */ "./node_modules/ethers/lib.esm/providers/network.js");
+/* harmony import */ var _network_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./network.js */ "./node_modules/ethers/lib.esm/providers/network.js");
 /* harmony import */ var _subscriber_filterid_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./subscriber-filterid.js */ "./node_modules/ethers/lib.esm/providers/subscriber-filterid.js");
 /* harmony import */ var _subscriber_polling_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./subscriber-polling.js */ "./node_modules/ethers/lib.esm/providers/subscriber-polling.js");
 /**
@@ -57915,6 +57909,7 @@ class JsonRpcApiProvider extends _abstract_provider_js__WEBPACK_IMPORTED_MODULE_
     #drainTimer;
     #notReady;
     #network;
+    #pendingDetectNetwork;
     #scheduleDrain() {
         if (this.#drainTimer) {
             return;
@@ -57990,6 +57985,7 @@ class JsonRpcApiProvider extends _abstract_provider_js__WEBPACK_IMPORTED_MODULE_
         this.#payloads = [];
         this.#drainTimer = null;
         this.#network = null;
+        this.#pendingDetectNetwork = null;
         {
             let resolve = null;
             const promise = new Promise((_resolve) => {
@@ -57997,9 +57993,15 @@ class JsonRpcApiProvider extends _abstract_provider_js__WEBPACK_IMPORTED_MODULE_
             });
             this.#notReady = { promise, resolve };
         }
-        // Make sure any static network is compatbile with the provided netwrok
         const staticNetwork = this._getOption("staticNetwork");
-        if (staticNetwork) {
+        if (typeof (staticNetwork) === "boolean") {
+            (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_3__.assertArgument)(!staticNetwork || network !== "any", "staticNetwork cannot be used on special network 'any'", "options", options);
+            if (staticNetwork && network != null) {
+                this.#network = _network_js__WEBPACK_IMPORTED_MODULE_9__.Network.from(network);
+            }
+        }
+        else if (staticNetwork) {
+            // Make sure any static network is compatbile with the provided netwrok
             (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_3__.assertArgument)(network == null || staticNetwork.matches(network), "staticNetwork MUST match network object", "options", options);
             this.#network = staticNetwork;
         }
@@ -58031,7 +58033,7 @@ class JsonRpcApiProvider extends _abstract_provider_js__WEBPACK_IMPORTED_MODULE_
         // is fair), so we delete type if it is 0 and a non-EIP-1559 network
         if (req.method === "call" || req.method === "estimateGas") {
             let tx = req.transaction;
-            if (tx && tx.type != null && (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_9__.getBigInt)(tx.type)) {
+            if (tx && tx.type != null && (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_10__.getBigInt)(tx.type)) {
                 // If there are no EIP-1559 properties, it might be non-EIP-a559
                 if (tx.maxFeePerGas == null && tx.maxPriorityFeePerGas == null) {
                     const feeData = await this.getFeeData();
@@ -58060,30 +58062,50 @@ class JsonRpcApiProvider extends _abstract_provider_js__WEBPACK_IMPORTED_MODULE_
     async _detectNetwork() {
         const network = this._getOption("staticNetwork");
         if (network) {
-            return network;
+            if (network === true) {
+                if (this.#network) {
+                    return this.#network;
+                }
+            }
+            else {
+                return network;
+            }
+        }
+        if (this.#pendingDetectNetwork) {
+            return await this.#pendingDetectNetwork;
         }
         // If we are ready, use ``send``, which enabled requests to be batched
         if (this.ready) {
-            return _network_js__WEBPACK_IMPORTED_MODULE_10__.Network.from((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_9__.getBigInt)(await this.send("eth_chainId", [])));
+            this.#pendingDetectNetwork = (async () => {
+                const result = _network_js__WEBPACK_IMPORTED_MODULE_9__.Network.from((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_10__.getBigInt)(await this.send("eth_chainId", [])));
+                this.#pendingDetectNetwork = null;
+                return result;
+            })();
+            return await this.#pendingDetectNetwork;
         }
         // We are not ready yet; use the primitive _send
-        const payload = {
-            id: this.#nextId++, method: "eth_chainId", params: [], jsonrpc: "2.0"
-        };
-        this.emit("debug", { action: "sendRpcPayload", payload });
-        let result;
-        try {
-            result = (await this._send(payload))[0];
-        }
-        catch (error) {
-            this.emit("debug", { action: "receiveRpcError", error });
-            throw error;
-        }
-        this.emit("debug", { action: "receiveRpcResult", result });
-        if ("result" in result) {
-            return _network_js__WEBPACK_IMPORTED_MODULE_10__.Network.from((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_9__.getBigInt)(result.result));
-        }
-        throw this.getRpcError(payload, result);
+        this.#pendingDetectNetwork = (async () => {
+            const payload = {
+                id: this.#nextId++, method: "eth_chainId", params: [], jsonrpc: "2.0"
+            };
+            this.emit("debug", { action: "sendRpcPayload", payload });
+            let result;
+            try {
+                result = (await this._send(payload))[0];
+                this.#pendingDetectNetwork = null;
+            }
+            catch (error) {
+                this.#pendingDetectNetwork = null;
+                this.emit("debug", { action: "receiveRpcError", error });
+                throw error;
+            }
+            this.emit("debug", { action: "receiveRpcResult", result });
+            if ("result" in result) {
+                return _network_js__WEBPACK_IMPORTED_MODULE_9__.Network.from((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_10__.getBigInt)(result.result));
+            }
+            throw this.getRpcError(payload, result);
+        })();
+        return await this.#pendingDetectNetwork;
     }
     /**
      *  Sub-classes **MUST** call this. Until [[_start]] has been called, no calls
@@ -58172,7 +58194,7 @@ class JsonRpcApiProvider extends _abstract_provider_js__WEBPACK_IMPORTED_MODULE_
             if (key === "gasLimit") {
                 dstKey = "gas";
             }
-            result[dstKey] = (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_9__.toQuantity)((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_9__.getBigInt)(tx[key], `tx.${key}`));
+            result[dstKey] = (0,_utils_index_js__WEBPACK_IMPORTED_MODULE_10__.toQuantity)((0,_utils_index_js__WEBPACK_IMPORTED_MODULE_10__.getBigInt)(tx[key], `tx.${key}`));
         });
         // Make sure addresses and data are lowercase
         ["from", "to", "data"].forEach((key) => {
@@ -58199,6 +58221,8 @@ class JsonRpcApiProvider extends _abstract_provider_js__WEBPACK_IMPORTED_MODULE_
                 return { method: "eth_blockNumber", args: [] };
             case "getGasPrice":
                 return { method: "eth_gasPrice", args: [] };
+            case "getPriorityFee":
+                return { method: "eth_maxPriorityFeePerGas", args: [] };
             case "getBalance":
                 return {
                     method: "eth_getBalance",
@@ -60019,6 +60043,7 @@ class FilterIdPendingSubscriber extends FilterIdSubscriber {
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   PollingBlockSubscriber: () => (/* binding */ PollingBlockSubscriber),
+/* harmony export */   PollingBlockTagSubscriber: () => (/* binding */ PollingBlockTagSubscriber),
 /* harmony export */   PollingEventSubscriber: () => (/* binding */ PollingEventSubscriber),
 /* harmony export */   PollingOrphanSubscriber: () => (/* binding */ PollingOrphanSubscriber),
 /* harmony export */   PollingTransactionSubscriber: () => (/* binding */ PollingTransactionSubscriber)
@@ -60172,6 +60197,34 @@ class OnBlockSubscriber {
     }
     pause(dropWhilePaused) { this.stop(); }
     resume() { this.start(); }
+}
+class PollingBlockTagSubscriber extends OnBlockSubscriber {
+    #tag;
+    #lastBlock;
+    constructor(provider, tag) {
+        super(provider);
+        this.#tag = tag;
+        this.#lastBlock = -2;
+    }
+    pause(dropWhilePaused) {
+        if (dropWhilePaused) {
+            this.#lastBlock = -2;
+        }
+        super.pause(dropWhilePaused);
+    }
+    async _poll(blockNumber, provider) {
+        const block = await provider.getBlock(this.#tag);
+        if (block == null) {
+            return;
+        }
+        if (this.#lastBlock === -2) {
+            this.#lastBlock = block.number;
+        }
+        else if (block.number > this.#lastBlock) {
+            provider.emit(this.#tag, block.number);
+            this.#lastBlock = block.number;
+        }
+    }
 }
 /**
  *  @_ignore:
@@ -61488,7 +61541,7 @@ function stringify(value) {
  *  Returns true if the %%error%% matches an error thrown by ethers
  *  that matches the error %%code%%.
  *
- *  In TypeScript envornoments, this can be used to check that %%error%%
+ *  In TypeScript environments, this can be used to check that %%error%%
  *  matches an EthersError type, which means the expected properties will
  *  be set.
  *
@@ -61514,13 +61567,13 @@ function isCallException(error) {
 }
 /**
  *  Returns a new Error configured to the format ethers emits errors, with
- *  the %%message%%, [[api:ErrorCode]] %%code%% and additioanl properties
+ *  the %%message%%, [[api:ErrorCode]] %%code%% and additional properties
  *  for the corresponding EthersError.
  *
  *  Each error in ethers includes the version of ethers, a
- *  machine-readable [[ErrorCode]], and depneding on %%code%%, additional
- *  required properties. The error message will also include the %%meeage%%,
- *  ethers version, %%code%% and all aditional properties, serialized.
+ *  machine-readable [[ErrorCode]], and depending on %%code%%, additional
+ *  required properties. The error message will also include the %%message%%,
+ *  ethers version, %%code%% and all additional properties, serialized.
  */
 function makeError(message, code, info) {
     let shortMessage = message;
@@ -61738,7 +61791,7 @@ class EventPayload {
 /* harmony import */ var _geturl_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./geturl.js */ "./node_modules/ethers/lib.esm/utils/geturl-browser.js");
 /**
  *  Fetching content from the web is environment-specific, so Ethers
- *  provides an abstraction the each environment can implement to provide
+ *  provides an abstraction that each environment can implement to provide
  *  this service.
  *
  *  On [Node.js](link-node), the ``http`` and ``https`` libs are used to
@@ -61746,10 +61799,10 @@ class EventPayload {
  *  and populate the [[FetchResponse]].
  *
  *  In a browser, the [DOM fetch](link-js-fetch) is used, and the resulting
- *  ``Promise`` is waited on to retreive the payload.
+ *  ``Promise`` is waited on to retrieve the payload.
  *
  *  The [[FetchRequest]] is responsible for handling many common situations,
- *  such as redirects, server throttling, authentcation, etc.
+ *  such as redirects, server throttling, authentication, etc.
  *
  *  It also handles common gateways, such as IPFS and data URIs.
  *
@@ -61879,7 +61932,7 @@ class FetchRequest {
     #throttle;
     #getUrlFunc;
     /**
-     *  The fetch URI to requrest.
+     *  The fetch URL to request.
      */
     get url() { return this.#url; }
     set url(url) {
@@ -61893,15 +61946,15 @@ class FetchRequest {
      *  header.
      *
      *  If %%body%% is null, the body is cleared (along with the
-     *  intrinsic ``Content-Type``) and the .
+     *  intrinsic ``Content-Type``).
      *
-     *  If %%body%% is a string, the intrincis ``Content-Type`` is set to
+     *  If %%body%% is a string, the intrinsic ``Content-Type`` is set to
      *  ``text/plain``.
      *
-     *  If %%body%% is a Uint8Array, the intrincis ``Content-Type`` is set to
+     *  If %%body%% is a Uint8Array, the intrinsic ``Content-Type`` is set to
      *  ``application/octet-stream``.
      *
-     *  If %%body%% is any other object, the intrincis ``Content-Type`` is
+     *  If %%body%% is any other object, the intrinsic ``Content-Type`` is
      *  set to ``application/json``.
      */
     get body() {
@@ -61961,7 +62014,7 @@ class FetchRequest {
      *  The headers that will be used when requesting the URI. All
      *  keys are lower-case.
      *
-     *  This object is a copy, so any chnages will **NOT** be reflected
+     *  This object is a copy, so any changes will **NOT** be reflected
      *  in the ``FetchRequest``.
      *
      *  To set a header entry, use the ``setHeader`` method.
@@ -62054,7 +62107,7 @@ class FetchRequest {
         this.#allowInsecure = !!value;
     }
     /**
-     *  The timeout (in milliseconds) to wait for a complere response.
+     *  The timeout (in milliseconds) to wait for a complete response.
      *  //(default: 5 minutes)//
      */
     get timeout() { return this.#timeout; }
@@ -62262,7 +62315,7 @@ class FetchRequest {
      *  to %%location%%.
      */
     redirect(location) {
-        // Redirection; for now we only support absolute locataions
+        // Redirection; for now we only support absolute locations
         const current = this.url.split(":")[0].toLowerCase();
         const target = location.split(":")[0].toLowerCase();
         // Don't allow redirecting:
@@ -62401,7 +62454,7 @@ class FetchRequest {
 }
 ;
 /**
- *  The response for a FetchREquest.
+ *  The response for a FetchRequest.
  */
 class FetchResponse {
     #statusCode;
@@ -62531,7 +62584,7 @@ class FetchResponse {
         return this.headers[key.toLowerCase()];
     }
     /**
-     *  Returns true of the response has a body.
+     *  Returns true if the response has a body.
      */
     hasBody() {
         return (this.#body != null);

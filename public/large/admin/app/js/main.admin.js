@@ -113,7 +113,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5e1432f0fd';
+framework7Component.id = '5c5735d443';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -308,7 +308,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2aa131d239';
+framework7Component.id = 'a5774846e1';
 framework7Component.style = `
     .author-photo-preview {
         max-width: 100%;
@@ -417,7 +417,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '618a1809c6';
+framework7Component.id = 'c0c0b23557';
 framework7Component.style = `
     
   .profile-pic-edit, #profile-pic--edit-not-found {
@@ -625,7 +625,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '709415171d';
+framework7Component.id = '265173089f';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -791,7 +791,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '655abdd9a2';
+framework7Component.id = 'ff031a0b9e';
 framework7Component.style = `
 
 
@@ -1067,7 +1067,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '34f37ac255';
+framework7Component.id = '1cb9b6e7d4';
 framework7Component.style = `
 
 
@@ -1304,7 +1304,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '53434cb26b';
+framework7Component.id = '9ccbbb3490';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -1639,7 +1639,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b93b770e0f';
+framework7Component.id = 'd3f714af11';
 framework7Component.style = `
 
 `;
@@ -2123,7 +2123,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd070365598';
+framework7Component.id = 'ecb7506304';
 framework7Component.style = `
 
 
@@ -2478,7 +2478,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'f86eaabfac';
+framework7Component.id = 'b21856000a';
 framework7Component.style = `
   .ipfs-label,
   .fork-label {
@@ -3718,7 +3718,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '49fcc8ed74';
+framework7Component.id = 'e702dd4da3';
 framework7Component.style = `
 
 
@@ -3995,7 +3995,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c3826e958e';
+framework7Component.id = '3ae48ad8d8';
 framework7Component.style = `
 
 
@@ -4258,7 +4258,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e70a0f79af';
+framework7Component.id = 'cf260fb23f';
 framework7Component.style = `
   
 
@@ -4413,7 +4413,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a52f9adc03';
+framework7Component.id = '4c267e7781';
 framework7Component.style = `
     
 `;
@@ -4869,7 +4869,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e12a1e4c45';
+framework7Component.id = '8179757349';
 framework7Component.style = `
 
 
@@ -4958,7 +4958,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '1f8ec7c4d5';
+framework7Component.id = '1ef2b55039';
 framework7Component.style = `
     
 `;
@@ -5342,7 +5342,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c4aecec60a';
+framework7Component.id = 'fcc0d82d02';
 framework7Component.style = `
 
 
@@ -5415,7 +5415,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd00dd5e42d';
+framework7Component.id = 'ec284989b2';
 framework7Component.style = `    
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -5542,7 +5542,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '56dd3a9db1';
+framework7Component.id = '7e0f9c065c';
 framework7Component.style = `
 
 `;
@@ -5700,7 +5700,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c51a471b2e';
+framework7Component.id = '4e13a37f3c';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -5999,7 +5999,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '6570d1b658';
+framework7Component.id = 'c0e4d0fb05';
 framework7Component.style = `
   #create-item-editor {
     min-height: 175px;
@@ -6324,7 +6324,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '0cb716fe8c';
+framework7Component.id = '04a8f5602f';
 framework7Component.style = `
   #edit-item-editor {
     min-height: 175px;
@@ -6859,7 +6859,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2fbe07a938';
+framework7Component.id = 'ebd0e9bed0';
 framework7Component.style = `
     .cover-image-thumbnail {
         width: 250px;
@@ -7206,7 +7206,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '33cbc12a59';
+framework7Component.id = 'bc94011c88';
 framework7Component.style = `
 
 
@@ -7503,7 +7503,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7e74152f53';
+framework7Component.id = 'ada3b5f6f9';
 framework7Component.style = `
 
 
@@ -7713,7 +7713,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3e167974fe';
+framework7Component.id = '5a62291fbb';
 framework7Component.style = `
 
   `;
@@ -8118,7 +8118,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c337581ec2';
+framework7Component.id = '5a7629ef69';
 framework7Component.style = `
     .deploy-button {
         margin-top: 10px;
@@ -8416,7 +8416,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '2d9272b570';
+framework7Component.id = '0b7ccdf66c';
 framework7Component.style = `
   .publish-label,
   .ipfs-label,
@@ -8626,7 +8626,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c6f9a4f49d';
+framework7Component.id = 'cec8ebf002';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -8903,7 +8903,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd7f6c9124e';
+framework7Component.id = '4f7a99f309';
 framework7Component.style = `
 
     .publish-label, .ipfs-label, .forking-label {
@@ -9395,7 +9395,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7ad27e2fc4';
+framework7Component.id = 'b6ea27ec54';
 framework7Component.style = `
 
 
@@ -9475,7 +9475,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '5c3deb3292';
+framework7Component.id = 'ca77ccd3e3';
 framework7Component.style = `
 
 
@@ -11648,10 +11648,10 @@ function getMainContainer(version) {
     container = new inversify__WEBPACK_IMPORTED_MODULE_28__.Container();
     function framework7() {
         let app = new framework7__WEBPACK_IMPORTED_MODULE_6__["default"]({
-            el: '#app',
-            id: 'large-nft',
-            name: 'Large NFT',
-            theme: 'auto',
+            el: '#app', // App root element
+            id: 'large-nft', // App bundle ID
+            name: 'Large NFT', // App name
+            theme: 'auto', // Automatic theme detection
             init: false,
             //@ts-ignore
             component: _components_admin_app_f7_html__WEBPACK_IMPORTED_MODULE_29__["default"],
@@ -13257,7 +13257,7 @@ let ChannelService = class ChannelService {
             name: channel.title,
             description: channel.descriptionMarkdown,
             external_link: channel.link,
-            seller_fee_basis_points: 0,
+            seller_fee_basis_points: 0, //TODO: Setting this to anything other than zero ruins OpenSea. Investigate.
             fee_recipient: ownerAddress,
             license: channel.license
         };

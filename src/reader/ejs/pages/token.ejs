@@ -3,37 +3,6 @@
     let itemViewModel = it.itemViewModel
     let previous = it.previous
     let next = it.next
-
-    const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }    
-
-    const absoluteLink = (href) => {
-        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-
-
-    const marketplaceAssetLink = (marketplace, tokenId) => {
-
-        let link = marketplace.assetLink 
-  
-        //Replace contract if we find it 
-        if (it.baseViewModel.channelViewModel.channel.contractAddress) {
-          link = link.replace("{contractId}", it.baseViewModel.channelViewModel.channel.contractAddress )
-          link = link.replace("{contractIdLowercase}", it.baseViewModel.channelViewModel.channel.contractAddress.toLowerCase() )
-
-        }
-
-
-
-  
-        if (tokenId) {
-          link = link.replace("{tokenId}", tokenId)
-  
-        }
-  
-        return link
-    }
     
     const truncateEthAddress = (address) => {
         // Captures 0x + 4 characters, then the last 4 characters.
@@ -44,7 +13,7 @@
     }
 
 
-    let coverImageLink = itemViewModel.coverImage ? absoluteLink(`backup/${itemViewModel.coverImage.generated ? 'generated' : 'export'}/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+    let coverImageLink = itemViewModel.coverImage ? it.baseViewModel.absoluteLink(`backup/${itemViewModel.coverImage.generated ? 'generated' : 'export'}/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
 
     const getAttributeKey = (as) => {
         return encodeURIComponent(`${as.traitType}::::${as.value}`)
@@ -128,7 +97,7 @@
                                 <div class="animation-content <%= itemViewModel.item.coverImageAsAnimation ? 'animation-image' : ''%>">
                     
                                     <% if (itemViewModel.item.coverImageAsAnimation) { %>
-                                        <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>"  />
+                                        <img src="<%= it.baseViewModel.link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>"  />
                                     <% } else { %>
                                         <%~itemViewModel.animationContentHTML %>
                                     <% } %>
@@ -315,7 +284,7 @@
                                             <% 
                                                 for (let marketplace of it.baseViewModel.marketplaces) { 
                                             %>  
-                                                <li><a href="<%= marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
+                                                <li><a href="<%= it.baseViewModel.marketplaceAssetLink(marketplace, itemViewModel.item.tokenId) %>" class="external"><%= marketplace.name %></a></li>     
                                             <%
                                                 }
                                             %>
@@ -332,7 +301,7 @@
                                 <div class="card">
                                     <div class="card-header">Cover Image</div>
                                     <div class="card-content">
-                                        <img src="<%= link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>" class="cover-image-preview" />
+                                        <img src="<%= it.baseViewModel.link(`backup/export/images/${itemViewModel.coverImage._id}.${itemViewModel.coverImage.generated ? 'svg' : 'jpg'}`) %>" class="cover-image-preview" />
                                     </div>
                                 </div>
                             <% } %>
@@ -352,7 +321,7 @@
 <!--                     
                     <div class="swiper" id="swiper-<%= itemViewModel.item.tokenId  %>" style="display:none;">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide" data-url="<%= itemViewModel.item.previous ? link(`t/${itemViewModel.item.previous.tokenId}`) : link(`index.html`) %>">
+                            <div class="swiper-slide" data-url="<%= itemViewModel.item.previous ? it.baseViewModel.link(`t/${itemViewModel.item.previous.tokenId}`) : it.baseViewModel.link(`index.html`) %>">
                             </div> 
 
                             <div class="swiper-slide">   
@@ -364,7 +333,7 @@
                             </div>
 
                             <% if (itemViewModel.item.next) { %>
-                                <div class="swiper-slide" data-url="<%= link(`t/${itemViewModel.item.next.tokenId}`) %>">
+                                <div class="swiper-slide" data-url="<%= it.baseViewModel.link(`t/${itemViewModel.item.next.tokenId}`) %>">
                                 </div> 
                             <% } %>
 
@@ -474,7 +443,7 @@
 
                 const prev = (e) => {
 
-                    let link = "<%= previous ? link(`t/${previous.item.tokenId}`) : link(`index.html`) %>"
+                    let link = "<%= previous ? it.baseViewModel.link(`t/${previous.item.tokenId}`) : it.baseViewModel.link(`index.html`) %>"
                     
                     $f7.views.main.router.navigate(link, {
                         transition: 'none',
@@ -487,7 +456,7 @@
 
                 const next = (e) => {
 
-                    let link = "<%= next ? link(`t/${next.item.tokenId}`) : '' %>"
+                    let link = "<%= next ? it.baseViewModel.link(`t/${next.item.tokenId}`) : '' %>"
 
 
                     if (link?.length > 0) {

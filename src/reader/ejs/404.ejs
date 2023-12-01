@@ -1,33 +1,3 @@
-<% 
-
-    const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }   
-
-
-    const absoluteLink = (href) => {
-      return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-    
-    const escapeExcerpt = (excerpt) => {
-      excerpt = baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
-      return baseViewModel.he.encode(excerpt.toString())
-    }
-
-    const marketplaceLink = (marketplace) => {
-
-      let link = marketplace.link 
-
-      //Replace contract if we find it 
-      if (it.baseViewModel.channelViewModel.channel.contractAddress) {
-        link = link.replace("{contractId}", it.baseViewModel.channelViewModel.channel.contractAddress)
-      }
-
-      return link
-    }
-
-%>
-
 <!DOCTYPE html>
 <html>
 

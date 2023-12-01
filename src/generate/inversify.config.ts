@@ -56,7 +56,6 @@ import { SpawnService } from "../sync/service/spawn-service.js"
 
 import { RowItemViewModelRepository } from "../reader/repository/row-item-view-model-repository.js"
 import { RowItemViewModel } from "../reader/dto/item-page.js"
-import path from "path";
 
 
 

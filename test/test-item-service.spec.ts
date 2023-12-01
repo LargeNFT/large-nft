@@ -427,8 +427,8 @@ describe('ItemService', async () => {
 
         const metadata = await service.exportNFTMetadata(attributeChannel, item, image, "zyx", 'xyz')
 
-        assert.strictEqual(metadata.image, 'ipfs://xyz/QmUExZiPE59FBaVPxtLTwKWqpcy2f8qfE5d4SVuqRUYPbg.jpg')
-        assert.strictEqual(metadata.animation_url, 'ipfs://zyx/QmahFnt1WezHKTMZpc3mGJsYwKqcNsQhazFBzxG1ry7Etf.html')
+        assert.strictEqual(metadata.image, 'ipfs://QmUExZiPE59FBaVPxtLTwKWqpcy2f8qfE5d4SVuqRUYPbg')
+        assert.strictEqual(metadata.animation_url, 'ipfs://QmahFnt1WezHKTMZpc3mGJsYwKqcNsQhazFBzxG1ry7Etf')
 
         assert.strictEqual(metadata.attributes[0].trait_type, "Hair")
         assert.strictEqual(metadata.attributes[0].value, "Curly")

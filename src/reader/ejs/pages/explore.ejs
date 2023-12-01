@@ -1,22 +1,3 @@
-<% 
-
-    const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }    
-
-
-    const absoluteLink = (href) => {
-        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-
-
-
-    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
-
-
-%>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +22,7 @@
       include("@meta_tags", {
         title: `Explore '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         url: 'explore.html',
-        imageUrl: coverImageLink,
+        imageUrl: it.baseViewModel.channelCoverImageLink(),
         descriptionHTML: it.baseViewModel.channelViewModel.channel.descriptionHTML,
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
@@ -424,7 +405,7 @@
                 include("@meta_tags_js", {
                     title: `Explore '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
                     url: 'explore.html',
-                    imageUrl: coverImageLink,
+                    imageUrl: it.baseViewModel.channelCoverImageLink(),
                     descriptionHTML: it.baseViewModel.channelViewModel.channel.descriptionHTML,
                     hostname: it.baseViewModel.hostname,
                     baseURL: it.baseViewModel.baseURL,

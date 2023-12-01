@@ -1,21 +1,3 @@
-<% 
-
-const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }   
-
-
-
-    const absoluteLink = (href) => {
-      return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-
-    
-    let coverImageLink = it.baseViewModel.channelViewModel .coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel .coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel .coverImage._id}.${it.baseViewModel.channelViewModel .coverImage.generated ? 'png' : 'jpg'}`)  : ''
-
-
-%>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,10 +21,10 @@ const link = (href) => {
 
     <%~ 
       include("@meta_tags", {
-        title: it.baseViewModel.channelViewModel .channel.title,
+        title: it.baseViewModel.channelViewModel.channel.title,
         url: 'mint.html',
-        imageUrl: coverImageLink,
-        descriptionHTML: `Mint '${it.baseViewModel.channelViewModel .channel.title}' NFTs`,
+        imageUrl: it.baseViewModel.channelCoverImageLink(),
+        descriptionHTML: `Mint '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
@@ -86,14 +68,14 @@ const link = (href) => {
               <div class="card channel-card-show">
 
                 <div class="card-header banner" <% if(it.baseViewModel.channelViewModel ?.channel.coverBannerId) { %>
-                  style="background-image: url('<%= link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverBannerId}.jpg`) %>')"
+                  style="background-image: url('<%= it.baseViewModel.link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverBannerId}.jpg`) %>')"
                     <% } %>
                       >
 
-                      <a href="<%= link('index.html') %>">
+                      <a href="<%= it.baseViewModel.link('index.html') %>">
 
                         <% if (it.baseViewModel.channelViewModel?.channel.coverImageId) { %>
-                          <img src="<%= link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
+                          <img src="<%= it.baseViewModel.link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
                         <% } else { %>
                           <i class="f7-icons avatar">photo</i>
                         <% } %>
@@ -105,7 +87,7 @@ const link = (href) => {
                 <div class="card-content card-content-padding">
 
                   <div class="title">
-                    <a href="<%= link('index.html') %>"><%= it.baseViewModel.channelViewModel.channel.title %></a>
+                    <a href="<%= it.baseViewModel.link('index.html') %>"><%= it.baseViewModel.channelViewModel.channel.title %></a>
                   </div>
 
                   <% if(it.baseViewModel.channelViewModel?.authorDisplayName) { %>
@@ -118,13 +100,133 @@ const link = (href) => {
 
               </div>
               
-              <mint-list 
-                baseurl="<%= it.baseViewModel.baseURL %>"
-                last_minted="${lastMinted}"
-              >
+              <div class="hidden-on-load">
 
-              </mint-list>
+                ${mintingViewModel ? $h`
 
+                  ${mintingViewModel.minting ? $h`
+                        
+                      <div class="block block-strong inset">
+                        <p>
+                          <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+                        </p>              
+                      </div>
+            
+                      
+                      <div class="card">
+                        <div class="card-content">
+                          <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
+                            <ul>
+                
+                              <li class="item-content item-input">
+                                <div class="item-inner">
+                                  <div class="item-title item-label">Select number to mint</div>
+                                  <!-- additional "input-dropdown-wrap" class -->
+                                  <div class="item-input-wrap input-dropdown-wrap">
+                                    <select @change="${quantityChange}">
+                                      <option value="1" selected>1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                      <option value="6">6</option>
+                                      <option value="7">7</option>
+                                      <option value="8">8</option>
+                                      <option value="9">9</option>
+                                      <option value="10">10</option>
+                                    </select>
+                                  </div>
+
+                                </div>
+                              </li>
+                
+                              <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title mint-detail">
+                                          <p>
+                                            <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
+                                          </p>
+                                          <p>
+                                            <strong>Quantity:</strong> ${quantity} 
+                                          </p>
+                                          <p>
+                                            <strong>Total:</strong> ${total} ETH
+                                          </p>
+                                        </div>
+                                    </div>
+                                </div>
+                              </li>
+                
+                              <li>
+                                <label class="item-checkbox item-content">
+                
+                                    <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
+                                    
+                                    <i class="icon icon-checkbox"></i>
+                                    <div class="item-inner">
+                
+                                        <div class="item-title">
+                                          <!-- Item header, must be first child of item-title -->
+                                          <div class="item-header"></div>
+                                          Exact Tokens Only
+                                          <!-- Item footer, must be last child of item-title -->
+                                          <div class="item-footer">If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</div>
+                                        </div>
+                
+                                    </div>
+                                </label>
+                              </li>
+                
+                              <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                      <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
+                                    </div>
+                                </div>
+                              </li>
+                              
+                            </ul>
+                
+                          </form>
+                        </div>
+                      </div>
+            
+                      <div class="card mint-list-card">
+                        <div class="card-header">Next Up</div>
+                        <div class="card-content">
+            
+                          <div class="list cards-list virtual-list" id="mint-list">
+                            <ul class="item-flex"></ul>
+                          </div>
+                    
+                          <div class="preloader infinite-scroll-preloader"></div>
+            
+                        </div>
+                      </div>
+                      
+                  ` : $h`
+                    <div class="card">
+                      <div class="card-header">Minting Complete</div>
+                      <div class="card-content card-content-padding">
+                        Minting is complete. Thank you!
+                      </div>
+                    </div>
+                  
+                  `}
+                
+                ` : $h`
+                  <li class="card skeleton-text skeleton-effect-wave">
+                    <div class="card-header">Loading Loading Loading</div>
+                    <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
+                        interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
+                        Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
+                        aliquet urna, nec imperdiet felis sapien at enim.</div>
+                  </li>
+                `}
+
+
+              </div>
 
               <%~ include("@footer", {baseURL: it.baseViewModel.baseURL}) %>
 
@@ -148,13 +250,14 @@ const link = (href) => {
       const init = (props, { $, $f7, $h, $on, $update }) => {  
 
         let channelWebService = globalThis.container.get("ChannelWebService")
-        
-        let baseURI = globalThis.container.get("baseURI")
+
+        let baseURI = globalThis.container.get("baseURI")()
         let hostname = globalThis.container.get("hostname")
 
         let itemWebService = globalThis.container.get("ItemWebService")
         let mintWebService = globalThis.container.get("MintWebService")
         let walletService = globalThis.container.get("WalletService")
+        let queueService = globalThis.container.get("QueueService")
 
         let totalItemCount = parseInt('<%= it.baseViewModel.channelViewModel.itemCount %>')
 
@@ -166,9 +269,14 @@ const link = (href) => {
         let pageCounter=0
 
         let virtualList
-        // let swiper
         let items = []
-        let mintingViewModel 
+
+        let mintingViewModel
+
+        let total = 0 
+        let quantity = 1
+        let mintPriceWei
+        let exactTokensOnly = false
 
         let lastMinted 
 
@@ -176,10 +284,32 @@ const link = (href) => {
 
         let breadcrumbs = [{
                 text: JSON.parse(`<%~ JSON.stringify(it.baseViewModel.channelViewModel.channel.symbol)  %>`),
-                path: baseURI()
+                path: baseURI
             }, {
                 text: "Mint"
         }]
+
+        // const mintFetcher = {
+
+        //   intervalId: null,
+
+        //   start: (callback) => {
+        //     if (this.intervalId === null) {
+        //       console.log('Starting mint fetcher')
+        //       this.intervalId = setInterval(callback, 5000)
+        //     } 
+        //   },
+
+        //   stop: () => {
+        //     if (this.intervalId !== null) {
+        //       clearInterval(this.intervalId)
+        //       this.intervalId = null
+        //       console.log('Stopping mint fetcher')
+        //     } 
+        //   }
+
+        // }
+
 
         const resizeListener = (e) => {
           const viewPortWidth = getWidth()
@@ -223,22 +353,48 @@ const link = (href) => {
 
         $on('pageInit', async () => {
 
+          $f7.preloader.show()
+
           await channelWebService.loadChannel(
                   "<%= it.baseViewModel.channelViewModel.channel._id %>",
                   '<%= it.baseViewModel.baseURL %>',
                   '<%= it.baseViewModel.hostname %>'
           )
 
-          await $update()
+          const stepperMintAmount = $f7.stepper.create({
+              el: '.stepper',
+              min: 1,
+              max: 10,
+              value: 1
+          })
+
+          await populate()
+
+          // mintFetcher.start( async () => {
+          //   console.log("HERE")
+          //   // await populate()
+          // })
+
+          $('.hidden-on-load').removeClass('hidden-on-load')
+          $('.hide-on-pageinit').hide()
 
 
           window.addEventListener('resize', resizeListener)
-          
+
         })
+
 
         $on('pageBeforeOut', async () => {
           window.removeEventListener('resize', resizeListener)
+          // mintFetcher.stop()
         })        
+
+        const quantityChange = async (e) => {
+          quantity = parseInt($(e.currentTarget).val())
+          await updateTotal()
+          selectPreviews(quantity)
+        }
+
 
         const createVirtualList = () => {
           
@@ -362,19 +518,102 @@ const link = (href) => {
         }
 
         const link = (href) => {
-          return `${baseURI() + href}`
+          return `${baseURI + href}`
         } 
 
-        document.addEventListener('mint-view-model-loaded', async (e) => {
+        const updateTotal = async () => {
+          total = await mintWebService.updateTotal(mintPriceWei, quantity)
+          await $update()
+        }
+
+        const mintOnSubmit = async (e) => {
+
+          e.preventDefault()
+
+          //Make sure we are connected
+          await walletService.connect()
+
+
+          let mintFunction
+
+          if (exactTokensOnly) {
+            let start = parseInt(mintingViewModel.totalMinted + 1)
+            mintFunction = mintWebService.mintFromStartOrFail(quantity, start)
+          } else {
+            mintFunction = mintWebService.mint(quantity)
+          }
+
+
+          let promiseView = {
+            title: `Minting token(s). Approve transaction and wait for it to be mined.`,
+            promise: mintFunction
+          }
+
+          //Wait for it to be mined
+          try {
+            await queueService.queuePromiseView(promiseView)
+          } catch(ex) {
+
+            if (ex.message.indexOf("Token is past start") > -1) {
+              $f7.dialog.alert("Selected tokens have already been minted please try again.", "There was an error")
+            } else {
+              $f7.dialog.alert(ex.message, "There was an error")
+            }
+
+          }
+
+          await populate()
+
+        }
+
+        const exactTokensOnChange = async (e) => {
+          exactTokensOnly = e.currentTarget.checked
+        
+          await $update()
+        }
+
+        const populate = async () => {
+
+          console.log("Populating...")
+
+          await walletService.connect()
+
+          try {
+
+            mintingViewModel = await mintWebService.getMintingViewModel()
+
+            mintPriceWei = await mintWebService.parseUnits(mintingViewModel.mintPrice, 'ether')
+
+            await updateTotal()
+
+            await mintViewModelLoaded()
+            await mintViewModelRefreshed()
+
+            //Reselect the right quantity
+            selectPreviews(quantity)
+
+            await $update()
+
+          } catch(ex) {
+
+            $f7.dialog.confirm("Problem connecting to contract on Ethereum Mainnet. Is your wallet connected to the right network?", "Problem connecting to network", populate, () => {
+              $f7.views.main.router.navigate(baseURI)
+            })
+
+          }
+
+          $f7.preloader.hide()
+
+        }
+
+        const mintViewModelLoaded = async (e) => {
 
           console.log("Loaded...")
-          
-          mintingViewModel = e?.mintingViewModel
 
           if (mintingViewModel) {
 
             //Get the total minted 
-            let totalMinted = e?.mintingViewModel.totalMinted
+            let totalMinted = mintingViewModel.totalMinted
 
             //Get the start page
             let startPage = parseInt(totalMinted / PER_PAGE)
@@ -411,50 +650,14 @@ const link = (href) => {
             }
 
 
-            // swiper = $f7.swiper.create('#latest-mints-swiper', {
-            //   pagination: {
-            //     el: ".swiper-pagination",
-            //     clickable: true,
-            //     dynamicBullets: true
-            //   },
-            //   scrollbar: {
-            //     el: '.swiper-scrollbar',
-            //     dragSize: 50,
-            //     draggable: true,
-            //     hide: false
-            //   },
-            //   spaceBetween:0,
-            //   slidesPerView:getWidth() >= 1024 ? 5 : 2,
-            // })
-
-            // if (document.getElementById('latest-mints-swiper')) {
-            //   document.getElementById('latest-mints-swiper').style.display="block"
-            // }
-
-
-            selectPreviews(1)
-
-
-            const stepperMintAmount = $f7.stepper.create({
-                el: '.stepper',
-                min: 1,
-                max: 10,
-                value: 1
-            })
-
-
-            await $update()
-
           }
 
-        })
+        }
 
-        document.addEventListener('mint-view-model-refreshed', async (e) => {
-
-          mintingViewModel = e?.mintingViewModel
+        const mintViewModelRefreshed = async (e) => {
 
           for (let latest of mintingViewModel.lastMinted) {
-                 
+                
             let removed = false
 
             //Loop through virtual list items and get the index to remove
@@ -476,22 +679,19 @@ const link = (href) => {
 
           }
 
-          //Reselect the right quantity
-          selectPreviews(e.quantity)
 
-          await $update()
 
-          // if (document.getElementById('latest-mints-swiper')) {
-          //     document.getElementById('latest-mints-swiper').style.display="block"
-          // }
+        }
 
-        })
+
+
+
 
         <%~ 
           include("@meta_tags_js", {
             title: it.baseViewModel.channelViewModel.channel.title,
             url: 'mint.html',
-            imageUrl: coverImageLink,
+            imageUrl: it.baseViewModel.channelCoverImageLink(),
             descriptionHTML: `Mint '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
             hostname: it.baseViewModel.hostname,
             baseURL: it.baseViewModel.baseURL,

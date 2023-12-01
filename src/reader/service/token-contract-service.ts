@@ -13,6 +13,8 @@ class TokenContractService {
     @inject("WalletService")
     private walletService:WalletService
 
+    private mintEventListenerAdded=false
+
     constructor(
     ) {}
 
@@ -32,22 +34,22 @@ class TokenContractService {
     }
 
     async mint(quantity:number, totalMintCost:string) {
-
         let channelContract = await this.getChannelContract()
-
-
-        await channelContract.mint(quantity, { value: totalMintCost })
+        let tx = await channelContract.mint(quantity, { value: totalMintCost })
+        return tx.wait()
     }
 
     async mintFromStartOrFail(quantity:number, start:number, totalMintCost:string) {
         let channelContract = await this.getChannelContract()
-        await channelContract.mintFromStartOrFail(quantity, start, { value: totalMintCost })
+        let tx = await channelContract.mintFromStartOrFail(quantity, start, { value: totalMintCost })
+        return tx.wait()
     }
 
     
     async mintAsOwner(quantity:number) {
         let channelContract = await this.getChannelContract()
-        await channelContract.mint(quantity, {})
+        let tx = await channelContract.mint(quantity, {})
+        return tx.wait()
     }
 
     async ownerOf(tokenId:number)  {
@@ -72,42 +74,46 @@ class TokenContractService {
 
     async getChannelContract() : Promise<ChannelContract> {
 
-
         let contract:ChannelContract = await this.walletService.getContract("Channel")
 
-        //Add event listener for mints if it's not already added. Maybe won't work if we ever add a second listener anywhere
-        if (this.walletService.provider && this.walletService.provider.listeners()?.length == 0) {
+        // //Add event listener for mints if it's not already added. 
+        // if (this.walletService.provider && !this.mintEventListenerAdded) {
+                        
+        //     console.log("Registering mint listener...")
+
+        //     let filter = {
+        //         address: contract.address,
+        //         topics: [
+        //             // the name of the event, parnetheses containing the data type of each event, no spaces
+        //             id("MintEvent(uint256)")
+        //         ]
+        //     }
             
-            let filter = {
-                address: contract.address,
-                topics: [
-                    // the name of the event, parnetheses containing the data type of each event, no spaces
-                    id("MintEvent(uint256)")
-                ]
-            }
-            
-            this.walletService.provider.on( filter, async (e) => {
+        //     this.walletService.provider.on( filter, async (e) => {
 
-                let tokenId = parseInt(e.data)
+        //         let tokenId = parseInt(e.data)
 
-                if (tokenId > this.lastMintedTokenId) {
-                    this.lastMintedTokenId = tokenId
+        //         if (tokenId > this.lastMintedTokenId) {
+        //             this.lastMintedTokenId = tokenId
 
-                    let mintEvent = new CustomEvent('mint-event')
+        //             let mintEvent = new CustomEvent('mint-event')
 
-                    //@ts-ignore
-                    mintEvent.tokenId = tokenId
+        //             //@ts-ignore
+        //             mintEvent.tokenId = tokenId
               
-                    document.dispatchEvent(mintEvent)
+        //             document.dispatchEvent(mintEvent)
 
-                }
+        //         }
 
-            })
+        //     })
 
-        }
+        //     this.mintEventListenerAdded = true
+
+        // }
 
         return contract
     }
+
 
 
 }
@@ -122,6 +128,8 @@ interface ChannelContract {
     totalSupply() : BigInt
     owner() : string
     address:string
+    on(filter, listener)
+    queryFilter(event, fromBlock, toBlock)
 }
 
 

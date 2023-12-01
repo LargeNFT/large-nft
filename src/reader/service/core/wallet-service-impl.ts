@@ -11,15 +11,12 @@ class WalletServiceImpl implements WalletService {
   public ethersContracts:any = {}
 
   public provider 
-  
 
   constructor(
     @inject("contracts") private contracts:Function,
     @inject("provider") private getProvider:Function,
     @inject("framework7") private $f7
-  ) {
-
-  }
+  ) {}
 
   async initProvider() {
 
@@ -54,7 +51,6 @@ class WalletServiceImpl implements WalletService {
 
     delete this.address
 
-
     if (!this.provider) {
       await this.initProvider()
     }
@@ -69,9 +65,7 @@ class WalletServiceImpl implements WalletService {
     
     console.log("Init wallet complete") 
 
-
   }
-
 
   async connect() {
     
@@ -115,7 +109,6 @@ class WalletServiceImpl implements WalletService {
     return this.ethersContracts[name]
   }
 
-
   truncateEthAddress(address) : string {
     if (!address) return
     // Captures 0x + 4 characters, then the last 4 characters.
@@ -124,7 +117,6 @@ class WalletServiceImpl implements WalletService {
     if (!match) return address
     return `${match[1]}…${match[2]}`
   }
-
 
 }
 

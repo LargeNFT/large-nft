@@ -96,7 +96,6 @@ let generate = async () => {
 
   await generateService.defineEtaTemplates(config, config.channelDir)
 
-
   let baseViewModel:any = {
     channelViewModel: channelViewModel,
     attributeReport: await generateService.generateAttributeTotals(config, channelViewModel),
@@ -115,7 +114,52 @@ let generate = async () => {
     libraryURL: config.libraryURL,
     largeURL: config.largeURL,
     headEndContents: generateViewModel.headEndContents,
-    bodyContents: generateViewModel.bodyContents
+    bodyContents: generateViewModel.bodyContents,
+
+    channelCoverImageLink: () => { 
+      return baseViewModel.channelViewModel.coverImage ? baseViewModel.absoluteLink(`backup/${baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${baseViewModel.channelViewModel.coverImage._id}.${baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
+    },
+
+    link: (href) => {
+        return `${baseViewModel.baseURL + href}`
+    },   
+
+
+    absoluteLink: (href) => {
+      return `${baseViewModel.hostname + baseViewModel.baseURL + href}`
+    },
+    
+    marketplaceLink: (marketplace) => {
+
+      let link = marketplace.link 
+
+      //Replace contract if we find it 
+      if (baseViewModel.channelViewModel.channel.contractAddress) {
+        link = link.replace("{contractId}", baseViewModel.channelViewModel.channel.contractAddress)
+      }
+
+      return link
+    },
+
+    marketplaceAssetLink: (marketplace, tokenId) => {
+
+      let link = marketplace.assetLink 
+
+      //Replace contract if we find it 
+      if (baseViewModel.channelViewModel.channel.contractAddress) {
+        link = link.replace("{contractId}", baseViewModel.channelViewModel.channel.contractAddress )
+        link = link.replace("{contractIdLowercase}", baseViewModel.channelViewModel.channel.contractAddress.toLowerCase() )
+
+      }
+
+      if (tokenId) {
+        link = link.replace("{tokenId}", tokenId)
+
+      }
+
+      return link
+  }
+
   }
 
   if (!fs.existsSync(`${config.publicPath}/backup`)) {

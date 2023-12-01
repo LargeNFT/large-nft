@@ -16,7 +16,6 @@ class MintWebService {
 
     @inject("ChannelService")
     private channelService:ChannelService
-    
 
     @inject("ItemService")
     private itemService:ItemService
@@ -97,8 +96,6 @@ class MintWebService {
         }
     }
 
-
-
     async mint(quantity:number) {
 
         await this.schemaService.load(["channels"])
@@ -111,9 +108,9 @@ class MintWebService {
 
         if (this.walletService.address.toLowerCase() == owner.toLowerCase()) {
             console.log('Minting as owner')
-            await this.tokenContractService.mintAsOwner(quantity)
+            return this.tokenContractService.mintAsOwner(quantity)
         } else {
-            await this.tokenContractService.mint(quantity, totalWei)
+            return this.tokenContractService.mint(quantity, totalWei)
         }
 
         
@@ -126,7 +123,7 @@ class MintWebService {
         
         let totalWei = await this.calculateTotalMint(channel, quantity)
 
-        await this.tokenContractService.mintFromStartOrFail(quantity, start, totalWei)
+        return this.tokenContractService.mintFromStartOrFail(quantity, start, totalWei)
     }
 
     async calculateTotalMint(channel, quantity) {
@@ -142,7 +139,6 @@ class MintWebService {
     async updateTotal(mintPriceWei:BigInt, quantity:number) : Promise<string>{
         return formatUnits(Number(mintPriceWei) * quantity)
     }
-
 
     async parseUnits(mintPrice:string) : Promise<BigInt> {
        return parseUnits(mintPrice, 'ether')

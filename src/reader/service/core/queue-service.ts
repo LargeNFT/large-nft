@@ -30,9 +30,7 @@ class QueueService {
         let result = await promiseView.promise
 
         try {
-          console.log("Transaction hash is ", result)
-
-
+          // console.log("Transaction hash is ", result)
           self._showSuccess(result, queueItem)
         } catch(ex) {
           self._showError(ex, queueItem)

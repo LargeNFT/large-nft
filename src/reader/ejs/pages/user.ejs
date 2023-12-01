@@ -1,23 +1,11 @@
 <% 
 
-
-    const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }    
-
-    const absoluteLink = (href) => {
-        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-
     const escapeExcerpt = (excerpt) => {
         return it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
         
         //return it.baseViewModel.he.encode(excerpt.toString())
     }
-
-    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
-
-
+    
 %>
 
 
@@ -45,7 +33,7 @@
       include("@meta_tags", {
         title: `User Profile for ${it.baseViewModel.channelViewModel.channel.title}`,
         url: 'u',
-        imageUrl: coverImageLink,
+        imageUrl: it.baseViewModel.channelCoverImageLink(),
         descriptionHTML: `User Profile for ${it.baseViewModel.channelViewModel.channel.title}`,
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
@@ -525,7 +513,7 @@
                 include("@meta_tags_js", {
                     title: `User Profile for ${it.baseViewModel.channelViewModel.channel.title}`,
                     url: 'u',
-                    imageUrl: coverImageLink,
+                    imageUrl: it.baseViewModel.channelCoverImageLink(),
                     descriptionHTML: `User Profile for ${it.baseViewModel.channelViewModel.channel.title}`,
                     hostname: it.baseViewModel.hostname,
                     baseURL: it.baseViewModel.baseURL,

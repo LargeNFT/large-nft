@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9f39760067';
+framework7Component.id = '8fb412947c';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd2bfda80f3';
+framework7Component.id = 'ba44ca81c2';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7f7d57e4b7';
+framework7Component.id = 'd1ae488856';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '191d513186';
+framework7Component.id = 'd4bb22383d';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '42b9e45888';
+framework7Component.id = '9700d9d83c';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -727,7 +727,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '93ef74e99b';
+framework7Component.id = 'b578706e22';
 framework7Component.style = `
 
 `;
@@ -802,310 +802,8 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'e2925a10f6';
+framework7Component.id = '3995508032';
 framework7Component.style = `
-`;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
-
-/***/ }),
-
-/***/ "./src/reader/components/reader/item/mint-list.f7.html":
-/*!*************************************************************!*\
-  !*** ./src/reader/components/reader/item/mint-list.f7.html ***!
-  \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/** @jsx $jsx */
-
-function framework7Component(props, {
-  $,
-  $on,
-  $f7,
-  $update
-}) {
-  let mintWebService = globalThis.container.get("MintWebService");
-  let walletService = globalThis.container.get("WalletService");
-  let queueService = globalThis.container.get("QueueService");
-  let baseURI = globalThis.container.get("baseURI")();
-  let mintingViewModel;
-  let total = 0;
-  let quantity = 1;
-  let mintPriceWei;
-  let exactTokensOnly = false;
-  let baseURL = props.baseurl;
-  const link = href => {
-    return `${baseURL + href}`;
-  };
-  const updateTotal = async () => {
-    total = await mintWebService.updateTotal(mintPriceWei, quantity);
-    await $update();
-  };
-  $on('stepper:change', async e => {
-    quantity = parseInt(e.detail);
-    await updateTotal();
-    selectPreviews(quantity);
-  });
-  const selectPreviews = amount => {
-    let selected = 0;
-    $('.flex-card').each(ele => {
-      //Remove selected from all
-      $(ele).removeClass('selected');
-      if (selected < amount) {
-        $(ele).addClass('selected');
-        selected++;
-        // console.log(ele)
-      }
-    });
-  };
-
-  const mintOnSubmit = async e => {
-    e.preventDefault();
-
-    //Make sure we are connected
-    await walletService.connect();
-    let mintFunction;
-    if (exactTokensOnly) {
-      let start = parseInt(mintingViewModel.totalMinted + 1);
-      mintFunction = mintWebService.mintFromStartOrFail(quantity, start);
-    } else {
-      mintFunction = mintWebService.mint(quantity);
-    }
-    let promiseView = {
-      title: `Minting token(s). Approve transaction and wait for it to be mined.`,
-      promise: mintFunction
-    };
-
-    //Wait for it to be mined
-    await queueService.queuePromiseView(promiseView);
-  };
-  const exactTokensOnChange = async e => {
-    exactTokensOnly = e.currentTarget.checked;
-    await $update();
-  };
-  $f7.preloader.show();
-  const populate = async () => {
-    await walletService.connect();
-    try {
-      mintingViewModel = await mintWebService.getMintingViewModel();
-      mintPriceWei = await mintWebService.parseUnits(mintingViewModel.mintPrice, 'ether');
-      await updateTotal();
-      let e = new CustomEvent('mint-view-model-loaded');
-      e.mintingViewModel = mintingViewModel;
-      document.dispatchEvent(e);
-      $f7.preloader.hide();
-    } catch (ex) {
-      $f7.dialog.confirm("Problem connecting to contract on Ethereum Mainnet. Is your wallet connected to the right network?", "Problem connecting to network", populate, () => {
-        $f7.views.main.router.navigate(baseURI);
-      });
-      $f7.preloader.hide();
-    }
-  };
-  populate();
-  let mintEventHandler = async e => {
-    if (e.tokenId > mintingViewModel?.totalMinted) {
-      mintingViewModel = await mintWebService.getMintingViewModel();
-      await $update();
-      let e = new CustomEvent('mint-view-model-refreshed');
-      e.mintingViewModel = mintingViewModel;
-      e.quantity = quantity;
-      document.dispatchEvent(e);
-    }
-  };
-  document.removeEventListener('mint-event', mintEventHandler);
-  document.addEventListener('mint-event', mintEventHandler);
-  return function ($ctx) {
-      var $ = $ctx.$;
-      var $h = $ctx.$h;
-      var $root = $ctx.$root;
-      var $f7 = $ctx.$f7;
-      var $f7route = $ctx.$f7route;
-      var $f7router = $ctx.$f7router;
-      var $theme = $ctx.$theme;
-      var $update = $ctx.$update;
-      var $store = $ctx.$store;
-
-      return $h`
-
-  <div>
-    
-    ${mintingViewModel ? $h`
-
-      ${mintingViewModel.minting ? $h`
-
-          <div class="card">
-            <div class="card-header card-header-divider">Create a digital collectible!</div>
-            <div class="card-content card-content-padding">
-
-              <div class="list simple-list inset mint-list-info">
-                <ul>
-                  <li>NFTs are minted in sequential order.</li>
-                  <li>Limited supply!</li>
-                </ul>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="block block-strong inset">
-            <p>
-              <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
-            </p>              
-          </div>
-
-          
-          <div class="card">
-            <div class="card-header card-header-divider">Select between 1-10 NFTs and click the mint button.</div>
-            <div class="card-content card-content-padding">
-              <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
-                <ul>
-    
-                  <li class="item-content item-input">
-                    <div class="item-inner">
-                      <div class="item-title item-label">Select number of NFTs to mint.</div>
-                      <div class="item-input-wrap">
-    
-                        <div class="stepper">
-                          <!-- Stepper minus/decrement button -->
-                          <div class="stepper-button-minus"></div>
-                          <!-- Stepper input -->
-                          <div class="stepper-input-wrap">
-                            <!-- recommended to make input not editable (readonly) -->
-                            <input type="text" readonly value="1" />
-                          </div>
-                          <!-- Stepper plus/increment button -->
-                          <div class="stepper-button-plus"></div>
-                        </div>
-                        <!-- <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
-                          <input type="range" value="1" min="0" max="10" step="1" />
-                        </div> -->
-                      </div>
-                    </div>
-                  </li>
-    
-                  <li>
-                    <div class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title mint-detail">
-                              <p>
-                                <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
-                              </p>
-                              <p>
-                                <strong>Quantity:</strong> ${quantity} 
-                              </p>
-                              <p>
-                                <strong>Total:</strong> ${total} ETH
-                              </p>
-                            </div>
-                        </div>
-                    </div>
-                  </li>
-    
-                  <li style="display:none;">
-                    <label class="item-checkbox item-content">
-    
-                        <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
-                        
-                        <i class="icon icon-checkbox"></i>
-                        <div class="item-inner">
-    
-                            <div class="item-title">
-                              <!-- Item header, must be first child of item-title -->
-                              <div class="item-header"></div>
-                              Exact Tokens Only
-                              <!-- Item footer, must be last child of item-title -->
-                              <div class="item-footer">If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</div>
-                            </div>
-    
-                        </div>
-                    </label>
-                  </li>
-    
-                  <li>
-                    <div class="item-content">
-                        <div class="item-inner">
-                          <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
-                        </div>
-                    </div>
-                  </li>
-                  
-                </ul>
-    
-              </form>
-            </div>
-          </div>
-
-
-
-
-
-          <div class="card mint-list-card"  style="display:none">
-            <div class="card-header">Next Up</div>
-            <div class="card-content">
-
-              <div class="list cards-list virtual-list" id="mint-list">
-                <ul class="item-flex"></ul>
-              </div>
-        
-              <div class="preloader infinite-scroll-preloader"></div>
-
-            </div>
-          </div>
-          
-      ` : $h`
-        <div class="card">
-          <div class="card-header">Minting Complete</div>
-          <div class="card-content card-content-padding">
-            Minting is complete. Thank you!
-          </div>
-        </div>
-      
-      `}
-    
-    ` : $h`
-      <li class="card skeleton-text skeleton-effect-wave">
-        <div class="card-header">Loading Loading Loading</div>
-        <div class="card-content card-content-padding">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis et massa ac
-            interdum. Cras consequat felis at consequat hendrerit. Aliquam vestibulum vitae lorem ac iaculis.
-            Praesent nec pharetra massa, at blandit lectus. Sed tincidunt, lectus eu convallis elementum, nibh nisi
-            aliquet urna, nec imperdiet felis sapien at enim.</div>
-      </li>
-    `}
-    
-  </div>
-
-
-
-`
-    }
-    ;
-}
-framework7Component.id = 'fd8f1aa708';
-framework7Component.style = `
-
-
-
-.mint-list-card .card-header {
-  font-size: 27px;
-  font-weight: bold;
-}
-
-.mint-list-card .block {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.mint-list-info li {
-  white-space: unset;
-  line-height: unset;
-  height: unset;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
@@ -1263,7 +961,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '84ed2b8236';
+framework7Component.id = 'c624e6d8fa';
 framework7Component.style = `
 
 .block-search {
@@ -1583,7 +1281,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'a59104a8db';
+framework7Component.id = '7ac019e64a';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1701,7 +1399,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7042fa586c';
+framework7Component.id = '9c9bce1735';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1771,7 +1469,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd054948f27';
+framework7Component.id = 'bf27e3d895';
 framework7Component.style = `
 
 
@@ -2333,10 +2031,10 @@ class Token {
 /* harmony export */ });
 /* unused harmony export container */
 /* harmony import */ var framework7__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! framework7 */ "./node_modules/framework7/framework7.esm.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 /* harmony import */ var he__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! he */ "./node_modules/he/he.js");
 /* harmony import */ var he__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(he__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ethers */ "./node_modules/ethers/lib.esm/providers/provider-browser.js");
+/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ethers */ "./node_modules/ethers/lib.esm/providers/provider-browser.js");
 /* harmony import */ var pouchdb_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! pouchdb-browser */ "./node_modules/pouchdb-browser/lib/index.es.js");
 /* harmony import */ var pouchdb_find__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! pouchdb-find */ "./node_modules/pouchdb-find/lib/index-browser.es.js");
 /* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
@@ -2365,61 +2063,60 @@ class Token {
 /* harmony import */ var framework7_components_stepper__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! framework7/components/stepper */ "./node_modules/framework7/components/stepper/stepper.js");
 /* harmony import */ var _components_reader_navbar_f7_html__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./components/reader/navbar.f7.html */ "./src/reader/components/reader/navbar.f7.html");
 /* harmony import */ var _components_reader_token_toolbar_f7_html__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./components/reader/token-toolbar.f7.html */ "./src/reader/components/reader/token-toolbar.f7.html");
-/* harmony import */ var _components_reader_transaction_f7_html__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./components/reader/transaction.f7.html */ "./src/reader/components/reader/transaction.f7.html");
-/* harmony import */ var _components_reader_item_mint_list_f7_html__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/reader/item/mint-list.f7.html */ "./src/reader/components/reader/item/mint-list.f7.html");
-/* harmony import */ var _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/reader/channel/attribute-filter.f7.html */ "./src/reader/components/reader/channel/attribute-filter.f7.html");
-/* harmony import */ var _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/reader/channel/explore-total-info.f7.html */ "./src/reader/components/reader/channel/explore-total-info.f7.html");
-/* harmony import */ var _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./components/reader/channel/mint-info.f7.html */ "./src/reader/components/reader/channel/mint-info.f7.html");
-/* harmony import */ var _components_reader_channel_largest_sales_f7_html__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./components/reader/channel/largest-sales.f7.html */ "./src/reader/components/reader/channel/largest-sales.f7.html");
-/* harmony import */ var _components_reader_channel_transaction_row_f7_html__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./components/reader/channel/transaction-row.f7.html */ "./src/reader/components/reader/channel/transaction-row.f7.html");
-/* harmony import */ var _components_reader_channel_leaderboard_rows_f7_html__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./components/reader/channel/leaderboard-rows.f7.html */ "./src/reader/components/reader/channel/leaderboard-rows.f7.html");
-/* harmony import */ var _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./components/reader/item/search-list.f7.html */ "./src/reader/components/reader/item/search-list.f7.html");
-/* harmony import */ var _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./components/reader/item/infinite-scroll-content.f7.html */ "./src/reader/components/reader/item/infinite-scroll-content.f7.html");
-/* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/reader/service/core/wallet-service-impl.ts");
-/* harmony import */ var _repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./repository/browser/channel-repository-impl.js */ "./src/reader/repository/browser/channel-repository-impl.ts");
-/* harmony import */ var _repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./repository/browser/item-repository-impl.js */ "./src/reader/repository/browser/item-repository-impl.ts");
-/* harmony import */ var _repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./repository/browser/author-repository-impl.js */ "./src/reader/repository/browser/author-repository-impl.ts");
-/* harmony import */ var _repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./repository/browser/metadata-repository-impl.js */ "./src/reader/repository/browser/metadata-repository-impl.ts");
-/* harmony import */ var _repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./repository/browser/image-repository-impl.js */ "./src/reader/repository/browser/image-repository-impl.ts");
-/* harmony import */ var _repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./repository/browser/animation-repository-impl.js */ "./src/reader/repository/browser/animation-repository-impl.ts");
-/* harmony import */ var _repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./repository/browser/static-page-repository-impl.js */ "./src/reader/repository/browser/static-page-repository-impl.ts");
-/* harmony import */ var _repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./repository/browser/item-page-repository-impl.js */ "./src/reader/repository/browser/item-page-repository-impl.ts");
-/* harmony import */ var _repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./repository/browser/attribute-total-repository-impl.js */ "./src/reader/repository/browser/attribute-total-repository-impl.ts");
-/* harmony import */ var _repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./repository/browser/reader-settings-repository-impl.js */ "./src/reader/repository/browser/reader-settings-repository-impl.ts");
-/* harmony import */ var _repository_browser_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./repository/browser/token-repository-impl.js */ "./src/reader/repository/browser/token-repository-impl.ts");
-/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
-/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
-/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
-/* harmony import */ var _service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/web/mint-web-service.js */ "./src/reader/service/web/mint-web-service.ts");
-/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
-/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
-/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
-/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
-/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
-/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
-/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
-/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
-/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
-/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
-/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
-/* harmony import */ var _service_token_contract_service_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./service/token-contract-service.js */ "./src/reader/service/token-contract-service.ts");
-/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
-/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
-/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
-/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
-/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
-/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
-/* harmony import */ var _repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./repository/browser/component-state-repository-impl.js */ "./src/reader/repository/browser/component-state-repository-impl.ts");
-/* harmony import */ var _dto_component_state_js__WEBPACK_IMPORTED_MODULE_83__ = __webpack_require__(/*! ./dto/component-state.js */ "./src/reader/dto/component-state.ts");
-/* harmony import */ var _service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_81__ = __webpack_require__(/*! ./service/token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
-/* harmony import */ var _repository_browser_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./repository/browser/token-owner-page-repository-impl.js */ "./src/reader/repository/browser/token-owner-page-repository-impl.ts");
-/* harmony import */ var _service_web_transaction_web_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/web/transaction-web-service.js */ "./src/reader/service/web/transaction-web-service.ts");
-/* harmony import */ var _service_processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_82__ = __webpack_require__(/*! ./service/processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
-/* harmony import */ var _repository_browser_processed_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./repository/browser/processed-transaction-repository-impl.js */ "./src/reader/repository/browser/processed-transaction-repository-impl.ts");
-/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
-/* harmony import */ var _repository_browser_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./repository/browser/token-owner-repository-impl.js */ "./src/reader/repository/browser/token-owner-repository-impl.ts");
-/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_80__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
-/* harmony import */ var _repository_browser_row_item_view_model_repository_impl_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./repository/browser/row-item-view-model-repository-impl.js */ "./src/reader/repository/browser/row-item-view-model-repository-impl.ts");
+/* harmony import */ var _components_reader_transaction_f7_html__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./components/reader/transaction.f7.html */ "./src/reader/components/reader/transaction.f7.html");
+/* harmony import */ var _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./components/reader/channel/attribute-filter.f7.html */ "./src/reader/components/reader/channel/attribute-filter.f7.html");
+/* harmony import */ var _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./components/reader/channel/explore-total-info.f7.html */ "./src/reader/components/reader/channel/explore-total-info.f7.html");
+/* harmony import */ var _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./components/reader/channel/mint-info.f7.html */ "./src/reader/components/reader/channel/mint-info.f7.html");
+/* harmony import */ var _components_reader_channel_largest_sales_f7_html__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./components/reader/channel/largest-sales.f7.html */ "./src/reader/components/reader/channel/largest-sales.f7.html");
+/* harmony import */ var _components_reader_channel_transaction_row_f7_html__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./components/reader/channel/transaction-row.f7.html */ "./src/reader/components/reader/channel/transaction-row.f7.html");
+/* harmony import */ var _components_reader_channel_leaderboard_rows_f7_html__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./components/reader/channel/leaderboard-rows.f7.html */ "./src/reader/components/reader/channel/leaderboard-rows.f7.html");
+/* harmony import */ var _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./components/reader/item/search-list.f7.html */ "./src/reader/components/reader/item/search-list.f7.html");
+/* harmony import */ var _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./components/reader/item/infinite-scroll-content.f7.html */ "./src/reader/components/reader/item/infinite-scroll-content.f7.html");
+/* harmony import */ var _service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./service/core/wallet-service-impl.js */ "./src/reader/service/core/wallet-service-impl.ts");
+/* harmony import */ var _repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./repository/browser/channel-repository-impl.js */ "./src/reader/repository/browser/channel-repository-impl.ts");
+/* harmony import */ var _repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./repository/browser/item-repository-impl.js */ "./src/reader/repository/browser/item-repository-impl.ts");
+/* harmony import */ var _repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./repository/browser/author-repository-impl.js */ "./src/reader/repository/browser/author-repository-impl.ts");
+/* harmony import */ var _repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./repository/browser/metadata-repository-impl.js */ "./src/reader/repository/browser/metadata-repository-impl.ts");
+/* harmony import */ var _repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./repository/browser/image-repository-impl.js */ "./src/reader/repository/browser/image-repository-impl.ts");
+/* harmony import */ var _repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./repository/browser/animation-repository-impl.js */ "./src/reader/repository/browser/animation-repository-impl.ts");
+/* harmony import */ var _repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./repository/browser/static-page-repository-impl.js */ "./src/reader/repository/browser/static-page-repository-impl.ts");
+/* harmony import */ var _repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./repository/browser/item-page-repository-impl.js */ "./src/reader/repository/browser/item-page-repository-impl.ts");
+/* harmony import */ var _repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./repository/browser/attribute-total-repository-impl.js */ "./src/reader/repository/browser/attribute-total-repository-impl.ts");
+/* harmony import */ var _repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./repository/browser/reader-settings-repository-impl.js */ "./src/reader/repository/browser/reader-settings-repository-impl.ts");
+/* harmony import */ var _repository_browser_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./repository/browser/token-repository-impl.js */ "./src/reader/repository/browser/token-repository-impl.ts");
+/* harmony import */ var _service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./service/web/channel-web-service.js */ "./src/reader/service/web/channel-web-service.ts");
+/* harmony import */ var _service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./service/web/item-web-service.js */ "./src/reader/service/web/item-web-service.ts");
+/* harmony import */ var _service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./service/web/author-web-service.js */ "./src/reader/service/web/author-web-service.ts");
+/* harmony import */ var _service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./service/web/mint-web-service.js */ "./src/reader/service/web/mint-web-service.ts");
+/* harmony import */ var _service_static_page_service_js__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./service/static-page-service.js */ "./src/reader/service/static-page-service.ts");
+/* harmony import */ var _service_item_page_service_js__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./service/item-page-service.js */ "./src/reader/service/item-page-service.ts");
+/* harmony import */ var _service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_61__ = __webpack_require__(/*! ./service/core/queue-service.js */ "./src/reader/service/core/queue-service.ts");
+/* harmony import */ var _service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_63__ = __webpack_require__(/*! ./service/core/paging-service.js */ "./src/reader/service/core/paging-service.ts");
+/* harmony import */ var _service_core_database_service_js__WEBPACK_IMPORTED_MODULE_64__ = __webpack_require__(/*! ./service/core/database-service.js */ "./src/reader/service/core/database-service.ts");
+/* harmony import */ var _service_animation_service_js__WEBPACK_IMPORTED_MODULE_65__ = __webpack_require__(/*! ./service/animation-service.js */ "./src/reader/service/animation-service.ts");
+/* harmony import */ var _service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_66__ = __webpack_require__(/*! ./service/core/ui-service.js */ "./src/reader/service/core/ui-service.ts");
+/* harmony import */ var _service_item_service_js__WEBPACK_IMPORTED_MODULE_67__ = __webpack_require__(/*! ./service/item-service.js */ "./src/reader/service/item-service.ts");
+/* harmony import */ var _service_image_service_js__WEBPACK_IMPORTED_MODULE_68__ = __webpack_require__(/*! ./service/image-service.js */ "./src/reader/service/image-service.ts");
+/* harmony import */ var _service_channel_service_js__WEBPACK_IMPORTED_MODULE_69__ = __webpack_require__(/*! ./service/channel-service.js */ "./src/reader/service/channel-service.ts");
+/* harmony import */ var _service_author_service_js__WEBPACK_IMPORTED_MODULE_70__ = __webpack_require__(/*! ./service/author-service.js */ "./src/reader/service/author-service.ts");
+/* harmony import */ var _service_token_contract_service_js__WEBPACK_IMPORTED_MODULE_71__ = __webpack_require__(/*! ./service/token-contract-service.js */ "./src/reader/service/token-contract-service.ts");
+/* harmony import */ var _service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_72__ = __webpack_require__(/*! ./service/core/schema-service.js */ "./src/reader/service/core/schema-service.ts");
+/* harmony import */ var _service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_73__ = __webpack_require__(/*! ./service/core/quill-service.js */ "./src/reader/service/core/quill-service.ts");
+/* harmony import */ var _service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_76__ = __webpack_require__(/*! ./service/reader-settings-service.js */ "./src/reader/service/reader-settings-service.ts");
+/* harmony import */ var _service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_77__ = __webpack_require__(/*! ./service/erc-event-service.js */ "./src/reader/service/erc-event-service.ts");
+/* harmony import */ var _service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_74__ = __webpack_require__(/*! ./service/attribute-total-service.js */ "./src/reader/service/attribute-total-service.ts");
+/* harmony import */ var _service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_75__ = __webpack_require__(/*! ./service/core/component-state-service.js */ "./src/reader/service/core/component-state-service.ts");
+/* harmony import */ var _repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./repository/browser/component-state-repository-impl.js */ "./src/reader/repository/browser/component-state-repository-impl.ts");
+/* harmony import */ var _dto_component_state_js__WEBPACK_IMPORTED_MODULE_82__ = __webpack_require__(/*! ./dto/component-state.js */ "./src/reader/dto/component-state.ts");
+/* harmony import */ var _service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_80__ = __webpack_require__(/*! ./service/token-owner-page-service.js */ "./src/reader/service/token-owner-page-service.ts");
+/* harmony import */ var _repository_browser_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./repository/browser/token-owner-page-repository-impl.js */ "./src/reader/repository/browser/token-owner-page-repository-impl.ts");
+/* harmony import */ var _service_web_transaction_web_service_js__WEBPACK_IMPORTED_MODULE_62__ = __webpack_require__(/*! ./service/web/transaction-web-service.js */ "./src/reader/service/web/transaction-web-service.ts");
+/* harmony import */ var _service_processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_81__ = __webpack_require__(/*! ./service/processed-transaction-service.js */ "./src/reader/service/processed-transaction-service.ts");
+/* harmony import */ var _repository_browser_processed_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./repository/browser/processed-transaction-repository-impl.js */ "./src/reader/repository/browser/processed-transaction-repository-impl.ts");
+/* harmony import */ var _service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_78__ = __webpack_require__(/*! ./service/token-owner-service.js */ "./src/reader/service/token-owner-service.ts");
+/* harmony import */ var _repository_browser_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./repository/browser/token-owner-repository-impl.js */ "./src/reader/repository/browser/token-owner-repository-impl.ts");
+/* harmony import */ var _service_token_service_js__WEBPACK_IMPORTED_MODULE_79__ = __webpack_require__(/*! ./service/token-service.js */ "./src/reader/service/token-service.ts");
+/* harmony import */ var _repository_browser_row_item_view_model_repository_impl_js__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./repository/browser/row-item-view-model-repository-impl.js */ "./src/reader/repository/browser/row-item-view-model-repository-impl.ts");
 
 
 
@@ -2516,7 +2213,6 @@ framework7__WEBPACK_IMPORTED_MODULE_9__["default"].use([framework7_components_di
 
 
 
-
 let container;
 async function getMainContainer(customContainer, theBaseURI, theHostname, version, routes, channelId) {
     if (container)
@@ -2529,21 +2225,20 @@ async function getMainContainer(customContainer, theBaseURI, theHostname, versio
         framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("nav-bar", _components_reader_navbar_f7_html__WEBPACK_IMPORTED_MODULE_25__["default"]);
         framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("token-toolbar", _components_reader_token_toolbar_f7_html__WEBPACK_IMPORTED_MODULE_26__["default"]);
         // Framework7.registerComponent("nft-info", NftInfo)
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("mint-list", _components_reader_item_mint_list_f7_html__WEBPACK_IMPORTED_MODULE_27__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("attribute-filter", _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_28__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("explore-total-info", _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_29__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("mint-info", _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_30__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("largest-sales", _components_reader_channel_largest_sales_f7_html__WEBPACK_IMPORTED_MODULE_31__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("transaction-viewer", _components_reader_transaction_f7_html__WEBPACK_IMPORTED_MODULE_32__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("transaction-row", _components_reader_channel_transaction_row_f7_html__WEBPACK_IMPORTED_MODULE_33__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("leaderboard-rows", _components_reader_channel_leaderboard_rows_f7_html__WEBPACK_IMPORTED_MODULE_34__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("search-list", _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_35__["default"]);
-        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("infinite-scroll-content", _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_36__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("attribute-filter", _components_reader_channel_attribute_filter_f7_html__WEBPACK_IMPORTED_MODULE_27__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("explore-total-info", _components_reader_channel_explore_total_info_f7_html__WEBPACK_IMPORTED_MODULE_28__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("mint-info", _components_reader_channel_mint_info_f7_html__WEBPACK_IMPORTED_MODULE_29__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("largest-sales", _components_reader_channel_largest_sales_f7_html__WEBPACK_IMPORTED_MODULE_30__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("transaction-viewer", _components_reader_transaction_f7_html__WEBPACK_IMPORTED_MODULE_31__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("transaction-row", _components_reader_channel_transaction_row_f7_html__WEBPACK_IMPORTED_MODULE_32__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("leaderboard-rows", _components_reader_channel_leaderboard_rows_f7_html__WEBPACK_IMPORTED_MODULE_33__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("search-list", _components_reader_item_search_list_f7_html__WEBPACK_IMPORTED_MODULE_34__["default"]);
+        framework7__WEBPACK_IMPORTED_MODULE_9__["default"].registerComponent("infinite-scroll-content", _components_reader_item_infinite_scroll_content_f7_html__WEBPACK_IMPORTED_MODULE_35__["default"]);
         globalThis.app = new framework7__WEBPACK_IMPORTED_MODULE_9__["default"]({
-            el: '#app',
-            id: 'large-reader',
-            name: 'Large Reader',
-            theme: 'auto',
+            el: '#app', // App root element
+            id: 'large-reader', // App bundle ID
+            name: 'Large Reader', // App name
+            theme: 'auto', // Automatic theme detection
             init: false,
             view: {
                 browserHistory: true,
@@ -2573,14 +2268,14 @@ async function getMainContainer(customContainer, theBaseURI, theHostname, versio
         if (typeof window !== "undefined" && window['ethereum']) {
             //@ts-ignore
             window.web3Provider = window.ethereum;
-            return new ethers__WEBPACK_IMPORTED_MODULE_37__.BrowserProvider(window['ethereum']);
+            return new ethers__WEBPACK_IMPORTED_MODULE_36__.BrowserProvider(window['ethereum']);
         }
     });
     container.bind("contracts").toConstantValue(async () => {
         let contract;
         let contractABI;
-        let contractResponse = await axios__WEBPACK_IMPORTED_MODULE_38__["default"].get(`${globalThis.hostname}${globalThis.baseURI}backup/contract/contract.json`, { responseType: 'json' });
-        let contractABIResponse = await axios__WEBPACK_IMPORTED_MODULE_38__["default"].get(`${globalThis.hostname}${globalThis.baseURI}backup/contract/contract-abi.json`, { responseType: 'json' });
+        let contractResponse = await axios__WEBPACK_IMPORTED_MODULE_37__["default"].get(`${globalThis.hostname}${globalThis.baseURI}backup/contract/contract.json`, { responseType: 'json' });
+        let contractABIResponse = await axios__WEBPACK_IMPORTED_MODULE_37__["default"].get(`${globalThis.hostname}${globalThis.baseURI}backup/contract/contract-abi.json`, { responseType: 'json' });
         if (contractResponse.status === 200) {
             contract = contractResponse.data;
         }
@@ -2602,59 +2297,59 @@ async function getMainContainer(customContainer, theBaseURI, theHostname, versio
     container.bind("channelId").toConstantValue(() => {
         return globalThis.channelId;
     });
-    container.bind("WalletService").to(_service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_39__.WalletServiceImpl).inSingletonScope();
-    container.bind("ChannelRepository").to(_repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__.ChannelRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ItemRepository").to(_repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__.ItemRepositoryBrowserImpl).inSingletonScope();
-    container.bind("AuthorRepository").to(_repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__.AuthorRepositoryBrowserImpl).inSingletonScope();
-    container.bind("MetadataRepository").to(_repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__.MetadataRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ImageRepository").to(_repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__.ImageRepositoryBrowserImpl).inSingletonScope();
-    container.bind("AnimationRepository").to(_repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__.AnimationRepositoryBrowserImpl).inSingletonScope();
-    container.bind("StaticPageRepository").to(_repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__.StaticPageRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ItemPageRepository").to(_repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__.ItemPageRepositoryBrowserImpl).inSingletonScope();
-    container.bind("TokenOwnerPageRepository").to(_repository_browser_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__.TokenOwnerPageRepositoryBrowserImpl).inSingletonScope();
-    container.bind("AttributeTotalRepository").to(_repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__.AttributeTotalRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ReaderSettingsRepository").to(_repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_50__.ReaderSettingsRepositoryBrowserImpl).inSingletonScope();
+    container.bind("WalletService").to(_service_core_wallet_service_impl_js__WEBPACK_IMPORTED_MODULE_38__.WalletServiceImpl).inSingletonScope();
+    container.bind("ChannelRepository").to(_repository_browser_channel_repository_impl_js__WEBPACK_IMPORTED_MODULE_39__.ChannelRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ItemRepository").to(_repository_browser_item_repository_impl_js__WEBPACK_IMPORTED_MODULE_40__.ItemRepositoryBrowserImpl).inSingletonScope();
+    container.bind("AuthorRepository").to(_repository_browser_author_repository_impl_js__WEBPACK_IMPORTED_MODULE_41__.AuthorRepositoryBrowserImpl).inSingletonScope();
+    container.bind("MetadataRepository").to(_repository_browser_metadata_repository_impl_js__WEBPACK_IMPORTED_MODULE_42__.MetadataRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ImageRepository").to(_repository_browser_image_repository_impl_js__WEBPACK_IMPORTED_MODULE_43__.ImageRepositoryBrowserImpl).inSingletonScope();
+    container.bind("AnimationRepository").to(_repository_browser_animation_repository_impl_js__WEBPACK_IMPORTED_MODULE_44__.AnimationRepositoryBrowserImpl).inSingletonScope();
+    container.bind("StaticPageRepository").to(_repository_browser_static_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_45__.StaticPageRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ItemPageRepository").to(_repository_browser_item_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_46__.ItemPageRepositoryBrowserImpl).inSingletonScope();
+    container.bind("TokenOwnerPageRepository").to(_repository_browser_token_owner_page_repository_impl_js__WEBPACK_IMPORTED_MODULE_47__.TokenOwnerPageRepositoryBrowserImpl).inSingletonScope();
+    container.bind("AttributeTotalRepository").to(_repository_browser_attribute_total_repository_impl_js__WEBPACK_IMPORTED_MODULE_48__.AttributeTotalRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ReaderSettingsRepository").to(_repository_browser_reader_settings_repository_impl_js__WEBPACK_IMPORTED_MODULE_49__.ReaderSettingsRepositoryBrowserImpl).inSingletonScope();
     //@ts-ignore
     container.bind("ContractStateRepository").to({}).inSingletonScope();
-    container.bind("ComponentStateRepository").to(_repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_51__.ComponentStateRepositoryBrowserImpl).inSingletonScope();
-    container.bind("TokenOwnerRepository").to(_repository_browser_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_52__.TokenOwnerRepositoryBrowserImpl).inSingletonScope();
-    container.bind("TokenRepository").to(_repository_browser_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_53__.TokenRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ProcessedTransactionRepository").to(_repository_browser_processed_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_54__.ProcessedTransactionRepositoryBrowserImpl).inSingletonScope();
-    container.bind("RowItemViewModelRepository").to(_repository_browser_row_item_view_model_repository_impl_js__WEBPACK_IMPORTED_MODULE_55__.RowItemViewModelRepositoryBrowserImpl).inSingletonScope();
-    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_56__.ChannelWebService).inSingletonScope();
-    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_57__.ItemWebService).inSingletonScope();
-    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_58__.AuthorWebService).inSingletonScope();
-    container.bind("MintWebService").to(_service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_59__.MintWebService).inSingletonScope();
-    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_60__.StaticPageService).inSingletonScope();
-    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_61__.ItemPageService).inSingletonScope();
-    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_62__.QueueService).inSingletonScope();
-    container.bind("TransactionWebService").to(_service_web_transaction_web_service_js__WEBPACK_IMPORTED_MODULE_63__.TransactionWebService).inSingletonScope();
-    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_64__.PagingService).inSingletonScope();
-    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_65__.DatabaseService).inSingletonScope();
-    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_66__.AnimationService).inSingletonScope();
-    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_67__.UiService).inSingletonScope();
-    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_68__.ItemService).inSingletonScope();
-    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_69__.ImageService).inSingletonScope();
-    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_70__.ChannelService).inSingletonScope();
-    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_71__.AuthorService).inSingletonScope();
-    container.bind("TokenContractService").to(_service_token_contract_service_js__WEBPACK_IMPORTED_MODULE_72__.TokenContractService).inSingletonScope();
-    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_73__.SchemaService).inSingletonScope();
-    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_74__.QuillService).inSingletonScope();
-    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_75__.AttributeTotalService).inSingletonScope();
-    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_76__.ComponentStateService).inSingletonScope();
-    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_77__.ReaderSettingsService).inSingletonScope();
-    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_78__.ERCEventService).inSingletonScope();
+    container.bind("ComponentStateRepository").to(_repository_browser_component_state_repository_impl_js__WEBPACK_IMPORTED_MODULE_50__.ComponentStateRepositoryBrowserImpl).inSingletonScope();
+    container.bind("TokenOwnerRepository").to(_repository_browser_token_owner_repository_impl_js__WEBPACK_IMPORTED_MODULE_51__.TokenOwnerRepositoryBrowserImpl).inSingletonScope();
+    container.bind("TokenRepository").to(_repository_browser_token_repository_impl_js__WEBPACK_IMPORTED_MODULE_52__.TokenRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ProcessedTransactionRepository").to(_repository_browser_processed_transaction_repository_impl_js__WEBPACK_IMPORTED_MODULE_53__.ProcessedTransactionRepositoryBrowserImpl).inSingletonScope();
+    container.bind("RowItemViewModelRepository").to(_repository_browser_row_item_view_model_repository_impl_js__WEBPACK_IMPORTED_MODULE_54__.RowItemViewModelRepositoryBrowserImpl).inSingletonScope();
+    container.bind("ChannelWebService").to(_service_web_channel_web_service_js__WEBPACK_IMPORTED_MODULE_55__.ChannelWebService).inSingletonScope();
+    container.bind("ItemWebService").to(_service_web_item_web_service_js__WEBPACK_IMPORTED_MODULE_56__.ItemWebService).inSingletonScope();
+    container.bind("AuthorWebService").to(_service_web_author_web_service_js__WEBPACK_IMPORTED_MODULE_57__.AuthorWebService).inSingletonScope();
+    container.bind("MintWebService").to(_service_web_mint_web_service_js__WEBPACK_IMPORTED_MODULE_58__.MintWebService).inSingletonScope();
+    container.bind("StaticPageService").to(_service_static_page_service_js__WEBPACK_IMPORTED_MODULE_59__.StaticPageService).inSingletonScope();
+    container.bind("ItemPageService").to(_service_item_page_service_js__WEBPACK_IMPORTED_MODULE_60__.ItemPageService).inSingletonScope();
+    container.bind("QueueService").to(_service_core_queue_service_js__WEBPACK_IMPORTED_MODULE_61__.QueueService).inSingletonScope();
+    container.bind("TransactionWebService").to(_service_web_transaction_web_service_js__WEBPACK_IMPORTED_MODULE_62__.TransactionWebService).inSingletonScope();
+    container.bind("PagingService").to(_service_core_paging_service_js__WEBPACK_IMPORTED_MODULE_63__.PagingService).inSingletonScope();
+    container.bind("DatabaseService").to(_service_core_database_service_js__WEBPACK_IMPORTED_MODULE_64__.DatabaseService).inSingletonScope();
+    container.bind("AnimationService").to(_service_animation_service_js__WEBPACK_IMPORTED_MODULE_65__.AnimationService).inSingletonScope();
+    container.bind("UiService").to(_service_core_ui_service_js__WEBPACK_IMPORTED_MODULE_66__.UiService).inSingletonScope();
+    container.bind("ItemService").to(_service_item_service_js__WEBPACK_IMPORTED_MODULE_67__.ItemService).inSingletonScope();
+    container.bind("ImageService").to(_service_image_service_js__WEBPACK_IMPORTED_MODULE_68__.ImageService).inSingletonScope();
+    container.bind("ChannelService").to(_service_channel_service_js__WEBPACK_IMPORTED_MODULE_69__.ChannelService).inSingletonScope();
+    container.bind("AuthorService").to(_service_author_service_js__WEBPACK_IMPORTED_MODULE_70__.AuthorService).inSingletonScope();
+    container.bind("TokenContractService").to(_service_token_contract_service_js__WEBPACK_IMPORTED_MODULE_71__.TokenContractService).inSingletonScope();
+    container.bind("SchemaService").to(_service_core_schema_service_js__WEBPACK_IMPORTED_MODULE_72__.SchemaService).inSingletonScope();
+    container.bind("QuillService").to(_service_core_quill_service_js__WEBPACK_IMPORTED_MODULE_73__.QuillService).inSingletonScope();
+    container.bind("AttributeTotalService").to(_service_attribute_total_service_js__WEBPACK_IMPORTED_MODULE_74__.AttributeTotalService).inSingletonScope();
+    container.bind("ComponentStateService").to(_service_core_component_state_service_js__WEBPACK_IMPORTED_MODULE_75__.ComponentStateService).inSingletonScope();
+    container.bind("ReaderSettingsService").to(_service_reader_settings_service_js__WEBPACK_IMPORTED_MODULE_76__.ReaderSettingsService).inSingletonScope();
+    container.bind("ERCEventService").to(_service_erc_event_service_js__WEBPACK_IMPORTED_MODULE_77__.ERCEventService).inSingletonScope();
     //@ts-ignore
     container.bind("GenerateService").to({}).inSingletonScope();
-    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_79__.TokenOwnerService).inSingletonScope();
-    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_80__.TokenService).inSingletonScope();
-    container.bind("TokenOwnerPageService").to(_service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_81__.TokenOwnerPageService).inSingletonScope();
-    container.bind("ProcessedTransactionService").to(_service_processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_82__.ProcessedTransactionService).inSingletonScope();
+    container.bind("TokenOwnerService").to(_service_token_owner_service_js__WEBPACK_IMPORTED_MODULE_78__.TokenOwnerService).inSingletonScope();
+    container.bind("TokenService").to(_service_token_service_js__WEBPACK_IMPORTED_MODULE_79__.TokenService).inSingletonScope();
+    container.bind("TokenOwnerPageService").to(_service_token_owner_page_service_js__WEBPACK_IMPORTED_MODULE_80__.TokenOwnerPageService).inSingletonScope();
+    container.bind("ProcessedTransactionService").to(_service_processed_transaction_service_js__WEBPACK_IMPORTED_MODULE_81__.ProcessedTransactionService).inSingletonScope();
     //Attach container to window so we can easily access it from the browser console
     globalThis.container = container;
     globalThis.he = (he__WEBPACK_IMPORTED_MODULE_0___default());
     globalThis.dayjs = (dayjs__WEBPACK_IMPORTED_MODULE_3___default());
-    globalThis.ComponentState = _dto_component_state_js__WEBPACK_IMPORTED_MODULE_83__.ComponentState;
+    globalThis.ComponentState = _dto_component_state_js__WEBPACK_IMPORTED_MODULE_82__.ComponentState;
     return container;
 }
 
@@ -4517,7 +4212,7 @@ let QueueService = class QueueService {
         let after = async function () {
             let result = await promiseView.promise;
             try {
-                console.log("Transaction hash is ", result);
+                // console.log("Transaction hash is ", result)
                 self._showSuccess(result, queueItem);
             }
             catch (ex) {
@@ -5712,9 +5407,8 @@ StaticPageService = __decorate([
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   TokenContractService: () => (/* binding */ TokenContractService)
 /* harmony export */ });
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
-/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
-/* harmony import */ var ethers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ethers */ "./node_modules/ethers/lib.esm/hash/id.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/inject.js");
+/* harmony import */ var inversify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! inversify */ "./node_modules/inversify/es/annotation/injectable.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5725,10 +5419,10 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
 let TokenContractService = class TokenContractService {
     metadataRepository;
     walletService;
+    mintEventListenerAdded = false;
     constructor() { }
     lastMintedTokenId = 0;
     async getBalance(address) {
@@ -5742,15 +5436,18 @@ let TokenContractService = class TokenContractService {
     }
     async mint(quantity, totalMintCost) {
         let channelContract = await this.getChannelContract();
-        await channelContract.mint(quantity, { value: totalMintCost });
+        let tx = await channelContract.mint(quantity, { value: totalMintCost });
+        return tx.wait();
     }
     async mintFromStartOrFail(quantity, start, totalMintCost) {
         let channelContract = await this.getChannelContract();
-        await channelContract.mintFromStartOrFail(quantity, start, { value: totalMintCost });
+        let tx = await channelContract.mintFromStartOrFail(quantity, start, { value: totalMintCost });
+        return tx.wait();
     }
     async mintAsOwner(quantity) {
         let channelContract = await this.getChannelContract();
-        await channelContract.mint(quantity, {});
+        let tx = await channelContract.mint(quantity, {});
+        return tx.wait();
     }
     async ownerOf(tokenId) {
         let channelContract = await this.getChannelContract();
@@ -5770,39 +5467,41 @@ let TokenContractService = class TokenContractService {
     }
     async getChannelContract() {
         let contract = await this.walletService.getContract("Channel");
-        //Add event listener for mints if it's not already added. Maybe won't work if we ever add a second listener anywhere
-        if (this.walletService.provider && this.walletService.provider.listeners()?.length == 0) {
-            let filter = {
-                address: contract.address,
-                topics: [
-                    // the name of the event, parnetheses containing the data type of each event, no spaces
-                    (0,ethers__WEBPACK_IMPORTED_MODULE_0__.id)("MintEvent(uint256)")
-                ]
-            };
-            this.walletService.provider.on(filter, async (e) => {
-                let tokenId = parseInt(e.data);
-                if (tokenId > this.lastMintedTokenId) {
-                    this.lastMintedTokenId = tokenId;
-                    let mintEvent = new CustomEvent('mint-event');
-                    //@ts-ignore
-                    mintEvent.tokenId = tokenId;
-                    document.dispatchEvent(mintEvent);
-                }
-            });
-        }
+        // //Add event listener for mints if it's not already added. 
+        // if (this.walletService.provider && !this.mintEventListenerAdded) {
+        //     console.log("Registering mint listener...")
+        //     let filter = {
+        //         address: contract.address,
+        //         topics: [
+        //             // the name of the event, parnetheses containing the data type of each event, no spaces
+        //             id("MintEvent(uint256)")
+        //         ]
+        //     }
+        //     this.walletService.provider.on( filter, async (e) => {
+        //         let tokenId = parseInt(e.data)
+        //         if (tokenId > this.lastMintedTokenId) {
+        //             this.lastMintedTokenId = tokenId
+        //             let mintEvent = new CustomEvent('mint-event')
+        //             //@ts-ignore
+        //             mintEvent.tokenId = tokenId
+        //             document.dispatchEvent(mintEvent)
+        //         }
+        //     })
+        //     this.mintEventListenerAdded = true
+        // }
         return contract;
     }
 };
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)("MetadataRepository"),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("MetadataRepository"),
     __metadata("design:type", Object)
 ], TokenContractService.prototype, "metadataRepository", void 0);
 __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.inject)("WalletService"),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_0__.inject)("WalletService"),
     __metadata("design:type", Object)
 ], TokenContractService.prototype, "walletService", void 0);
 TokenContractService = __decorate([
-    (0,inversify__WEBPACK_IMPORTED_MODULE_2__.injectable)(),
+    (0,inversify__WEBPACK_IMPORTED_MODULE_1__.injectable)(),
     __metadata("design:paramtypes", [])
 ], TokenContractService);
 
@@ -6651,17 +6350,17 @@ let MintWebService = class MintWebService {
         // console.log(owner.toLowerCase(), this.walletService.address.toLowerCase())
         if (this.walletService.address.toLowerCase() == owner.toLowerCase()) {
             console.log('Minting as owner');
-            await this.tokenContractService.mintAsOwner(quantity);
+            return this.tokenContractService.mintAsOwner(quantity);
         }
         else {
-            await this.tokenContractService.mint(quantity, totalWei);
+            return this.tokenContractService.mint(quantity, totalWei);
         }
     }
     async mintFromStartOrFail(quantity, start) {
         await this.schemaService.load(["channels"]);
         let channel = await this.channelService.get();
         let totalWei = await this.calculateTotalMint(channel, quantity);
-        await this.tokenContractService.mintFromStartOrFail(quantity, start, totalWei);
+        return this.tokenContractService.mintFromStartOrFail(quantity, start, totalWei);
     }
     async calculateTotalMint(channel, quantity) {
         let mintPriceWei = (0,ethers__WEBPACK_IMPORTED_MODULE_0__.parseUnits)(channel.mintPrice, 'ether');

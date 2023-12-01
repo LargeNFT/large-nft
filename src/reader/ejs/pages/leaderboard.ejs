@@ -1,20 +1,9 @@
 <% 
 
-    const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }    
-
-    const absoluteLink = (href) => {
-        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-
     const escapeExcerpt = (excerpt) => {
         excerpt = it.baseViewModel.excerptHtml(excerpt, { pruneLength: 500 })
         return it.baseViewModel.he.encode(excerpt.toString())
     }
-
-    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
-
 
 %>
 
@@ -42,7 +31,7 @@
       include("@meta_tags", {
         title: `Leaderboard for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         url: 'leaderboard',
-        imageUrl: coverImageLink,
+        imageUrl: it.baseViewModel.channelCoverImageLink(),
         descriptionHTML: `Leaderboard for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
@@ -269,7 +258,7 @@
                 include("@meta_tags_js", {
                     title: `Leaderboard for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
                     url: 'leaderboard',
-                    imageUrl: coverImageLink,
+                    imageUrl: it.baseViewModel.channelCoverImageLink(),
                     descriptionHTML: `Leaderboard for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
                     hostname: it.baseViewModel.hostname,
                     baseURL: it.baseViewModel.baseURL,

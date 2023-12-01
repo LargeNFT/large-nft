@@ -1,24 +1,3 @@
-<% 
-
-    let staticPage = it.staticPage
-
-
-    const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }    
-
-
-    const absoluteLink = (href) => {
-        return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-
-
-    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
-
-
-%>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,16 +14,16 @@
 
 
     <title>
-        <%= staticPage.name %>
+        <%= it.staticPage.name %>
     </title>
   
 
     <%~ 
       include("@meta_tags", {
-        title: staticPage.name,
-        url: `${staticPage.slug}.html`,
-        imageUrl: coverImageLink,
-        descriptionHTML: staticPage.contentHTML,
+        title: it.staticPage.name,
+        url: `${it.staticPage.slug}.html`,
+        imageUrl: it.baseViewModel.channelCoverImageLink(),
+        descriptionHTML: it.staticPage.contentHTML,
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
@@ -63,13 +42,13 @@
         <div class="view view-main">
 
             <!--pageContent-->
-            <div class="page" data-name="static-page-<%=staticPage._id %>">
+            <div class="page" data-name="static-page-<%=it.staticPage._id %>">
 
                 <nav-bar
                     logo="${logo}"
                     library_url="<%=it.baseViewModel.libraryURL ? it.baseViewModel.libraryURL : ''%>"
                     large_url="<%=it.baseViewModel.largeURL ? it.baseViewModel.largeURL : ''%>"
-                    title="<%=staticPage.name%>"
+                    title="<%=it.staticPage.name%>"
                     show_mint_page="<%=it.baseViewModel.showMintPage%>"
                     show_activity_page="<%=it.baseViewModel.showActivityPage%>"
                     breadcrumbs="${breadcrumbs}"
@@ -82,7 +61,7 @@
                         
                         <div class="card">
                             <div class="card-content card-content-padding">
-                                <%~ staticPage.contentHTML %>
+                                <%~ it.staticPage.contentHTML %>
                             </div>
                         </div>
     
@@ -123,7 +102,7 @@
                 text: JSON.parse(`<%~ JSON.stringify(it.baseViewModel.channelViewModel .channel.symbol)  %>`),
                 path: baseURI()
             }, {
-                text: "<%=staticPage.name%>"
+                text: "<%=it.staticPage.name%>"
             }]
             
             $on('pageInit', async () => {
@@ -143,10 +122,10 @@
 
             <%~ 
                 include("@meta_tags_js", {
-                    title: staticPage.name,
-                    url: `${staticPage.slug}.html`,
-                    imageUrl: coverImageLink,
-                    descriptionHTML: staticPage.contentHTML,
+                    title: it.staticPage.name,
+                    url: `${it.staticPage.slug}.html`,
+                    imageUrl: it.baseViewModel.channelCoverImageLink(),
+                    descriptionHTML: it.staticPage.contentHTML,
                     hostname: it.baseViewModel.hostname,
                     baseURL: it.baseViewModel.baseURL,
                     excerptHtml: it.baseViewModel.excerptHtml,
@@ -155,7 +134,7 @@
             %>
 
 
-            document.querySelector('title').innerHTML = "<%= staticPage.name %>"
+            document.querySelector('title').innerHTML = "<%= it.staticPage.name %>"
 
             $f7.preloader.hide()
 

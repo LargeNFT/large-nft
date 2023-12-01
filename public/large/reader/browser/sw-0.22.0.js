@@ -3695,6 +3695,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const DEBUG = false;
+//@ts-ignore
+self.__WB_DISABLE_DEV_LOGS = true;
 // When the service worker is first added to a computer.
 self.addEventListener('install', event => {
     // Perform install steps.

@@ -2194,4 +2194,24 @@ input[type="text"]:disabled {
   margin-top: 15px;
 }
 
+
+
+.mint-list-card .card-header {
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.mint-list-card .block {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mint-list-info li {
+  white-space: unset;
+  line-height: unset;
+  height: unset;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 /*# sourceMappingURL=main.css.map*/

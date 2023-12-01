@@ -1,24 +1,5 @@
 <% 
-
-
     let traitTypes = Array.from(new Set(it.baseViewModel.attributeReport?.map( at => at.traitType)))
-
-
-    const link = (href) => {
-        return `${it.baseViewModel.baseURL + href}`
-    }   
-
-
-
-
-    const absoluteLink = (href) => {
-      return `${it.baseViewModel.hostname + it.baseViewModel.baseURL + href}`
-    }   
-
-    
-    let coverImageLink = it.baseViewModel.channelViewModel.coverImage ? absoluteLink(`backup/${it.baseViewModel.channelViewModel.coverImage.generated ? 'generated' : 'export'}/images/${it.baseViewModel.channelViewModel.coverImage._id}.${it.baseViewModel.channelViewModel.coverImage.generated ? 'png' : 'jpg'}`)  : ''
-
-
 %>
 
 <!DOCTYPE html>
@@ -44,7 +25,7 @@
       include("@meta_tags", {
         title: `Attribute Report for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         url: 'attributes.html',
-        imageUrl: coverImageLink,
+        imageUrl: it.baseViewModel.channelCoverImageLink(),
         descriptionHTML: `Attribute Report for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
@@ -276,7 +257,7 @@
                 include("@meta_tags_js", {
                   title: `Attribute Report for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
                   url: 'attributes.html',
-                  imageUrl: coverImageLink,
+                  imageUrl: it.baseViewModel.channelCoverImageLink(),
                   descriptionHTML: `Attribute Report for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
                   hostname: it.baseViewModel.hostname,
                   baseURL: it.baseViewModel.baseURL,

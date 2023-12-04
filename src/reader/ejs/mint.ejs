@@ -65,90 +65,60 @@
 
             <div class="fixed-width-content center">
 
-              <div class="card channel-card-show">
-
-                <div class="card-header banner" <% if(it.baseViewModel.channelViewModel ?.channel.coverBannerId) { %>
-                  style="background-image: url('<%= it.baseViewModel.link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverBannerId}.jpg`) %>')"
-                    <% } %>
-                      >
-
-                      <a href="<%= it.baseViewModel.link('index.html') %>">
-
-                        <% if (it.baseViewModel.channelViewModel?.channel.coverImageId) { %>
-                          <img src="<%= it.baseViewModel.link(`backup/export/images/${it.baseViewModel.channelViewModel.channel.coverImageId}.jpg`) %>" class="avatar" />
-                        <% } else { %>
-                          <i class="f7-icons avatar">photo</i>
-                        <% } %>
-
-                      </a>
-
-                </div> 
-
-                <div class="card-content card-content-padding">
-
-                  <div class="title">
-                    <a href="<%= it.baseViewModel.link('index.html') %>"><%= it.baseViewModel.channelViewModel.channel.title %></a>
-                  </div>
-
-                  <% if(it.baseViewModel.channelViewModel?.authorDisplayName) { %>
-                    <div class="name">
-                      By <%= it.baseViewModel.channelViewModel?.authorDisplayName %>
-                    </div>
-                  <% } %>
-  
-                </div>
-
-              </div>
+              <div class="block-title block-title-large">Mint</div>
               
               <div class="hidden-on-load">
 
                 ${mintingViewModel ? $h`
 
                   ${mintingViewModel.minting ? $h`
-                        
-                      <div class="block block-strong inset">
-                        <p>
-                          <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
-                        </p>              
-                      </div>
-            
                       
+                    <div class="block block-strong inset">
+                      <p>
+                        <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+                      </p>              
+                    </div>
+
+
                       <div class="card">
                         <div class="card-content">
-                          <form class="list no-hairlines inset" @submit="${mintOnSubmit}">
-                            <ul>
-                
+                          <form class="list" @submit="${mintOnSubmit}">
+                            <ul>  
+                              
                               <li class="item-content item-input">
                                 <div class="item-inner">
-                                  <div class="item-title item-label">Select number to mint</div>
-                                  <!-- additional "input-dropdown-wrap" class -->
-                                  <div class="item-input-wrap input-dropdown-wrap">
-                                    <select @change="${quantityChange}">
-                                      <option value="1" selected>1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                      <option value="4">4</option>
-                                      <option value="5">5</option>
-                                      <option value="6">6</option>
-                                      <option value="7">7</option>
-                                      <option value="8">8</option>
-                                      <option value="9">9</option>
-                                      <option value="10">10</option>
-                                    </select>
-                                  </div>
+                                  <div class="item-title item-label">Select number of NFTs to mint.</div>
+                                  <div class="item-input-wrap">
+                
 
+
+                                    <div class="stepper stepper-init">
+                                      <div class="stepper-button-minus"></div>
+                                      <div class="stepper-input-wrap">
+                                        <input type="text" readonly min="1" max="10" step="1" value="1" />
+                                      </div>
+                                      <div class="stepper-button-plus"></div>
+                                    </div>
+
+                                    <!-- <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
+                                      <input type="range" value="1" min="0" max="10" step="1" />
+                                    </div> -->
+                                  </div>
                                 </div>
                               </li>
-                
+
+
+
                               <li>
                                 <div class="item-content">
                                     <div class="item-inner">
                                         <div class="item-title mint-detail">
+
                                           <p>
                                             <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
                                           </p>
                                           <p>
-                                            <strong>Quantity:</strong> ${quantity} 
+                                            <strong>Quantity:</strong> ${quantity}
                                           </p>
                                           <p>
                                             <strong>Total:</strong> ${total} ETH
@@ -261,12 +231,12 @@
 
         let totalItemCount = parseInt('<%= it.baseViewModel.channelViewModel.itemCount %>')
 
-        const PER_PAGE = 35
+        const PER_PAGE = 40
 
-        let itemsShown = 0
         let hasMoreItems = true
         let loadingInProgress = false
         let pageCounter=0
+        let lastPage = parseInt(totalItemCount / PER_PAGE)
 
         let virtualList
         let items = []
@@ -333,23 +303,6 @@
           return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
         }
 
-        const virtualListParams = {
-          el: '#mint-list',
-          createUl: false,
-          renderItem(item) {
-              return getTemplate(item)
-          },
-          height: 300,
-          items: items,                    
-          cols: getWidth() >= 1024 ? 5 : 2,
-          emptyTemplate: `
-              <li class="item-content">
-                  <div class="item-inner">
-                      Loading...
-                  </div>
-              </li>
-              `
-        }
 
         $on('pageInit', async () => {
 
@@ -361,14 +314,10 @@
                   '<%= it.baseViewModel.hostname %>'
           )
 
-          const stepperMintAmount = $f7.stepper.create({
-              el: '.stepper',
-              min: 1,
-              max: 10,
-              value: 1
-          })
-
           await populate()
+
+          //Reselect the right quantity
+          selectPreviews(quantity)
 
           // mintFetcher.start( async () => {
           //   console.log("HERE")
@@ -383,6 +332,11 @@
 
         })
 
+        $on('stepper:change', async (e) => {
+          quantity = parseInt(e.detail)
+          await updateTotal()
+          selectPreviews(quantity)
+        })
 
         $on('pageBeforeOut', async () => {
           window.removeEventListener('resize', resizeListener)
@@ -395,12 +349,27 @@
           selectPreviews(quantity)
         }
 
-
         const createVirtualList = () => {
           
           if (virtualList) return
 
-          virtualList = $f7.virtualList.create(virtualListParams)
+          virtualList = $f7.virtualList.create({
+            el: '#mint-list',
+            createUl: false,
+            renderItem(item) {
+                return getTemplate(item)
+            },
+            height: 300,
+            items: items,                    
+            cols: getWidth() >= 1024 ? 5 : 2,
+            emptyTemplate: `
+                <li class="item-content">
+                    <div class="item-inner">
+                        Loading...
+                    </div>
+                </li>
+                `
+          })
 
           if (virtualList.items?.length <= totalItemCount) {
               document.getElementById("mint-list-infinite-scroll").addEventListener( 'infinite', infiniteScroll )
@@ -416,8 +385,8 @@
 
           // Nothing more to load, detach infinite scroll events to prevent unnecessary loadings
           $f7.infiniteScroll.destroy('#mint-list-infinite-scroll')
-          $f7.virtualList.destroy('#mint-list')
-          virtualList = undefined
+          // $f7.virtualList.destroy('#mint-list')
+          // virtualList = undefined
 
           $('.infinite-scroll-preloader').hide()
         
@@ -437,10 +406,7 @@
               
               let itemPage = await itemWebService.itemPage(pageCounter)
 
-              //Count actual items                    
-              itemsShown += itemPage.items.length
-
-              if (itemsShown >= totalItemCount) {
+              if (pageCounter >= lastPage) {
                   hasMoreItems = false
               }
 
@@ -564,6 +530,11 @@
 
           await populate()
 
+          await removeMinted()
+
+          //Reselect the right quantity
+          selectPreviews(quantity)
+
         }
 
         const exactTokensOnChange = async (e) => {
@@ -587,10 +558,6 @@
             await updateTotal()
 
             await mintViewModelLoaded()
-            await mintViewModelRefreshed()
-
-            //Reselect the right quantity
-            selectPreviews(quantity)
 
             await $update()
 
@@ -617,7 +584,9 @@
 
             //Get the start page
             let startPage = parseInt(totalMinted / PER_PAGE)
-            let lastPage = parseInt(totalItemCount / PER_PAGE)
+
+            items = []
+            pageCounter = 0
 
             while (items.length < PER_PAGE && pageCounter <= lastPage) {
               
@@ -635,11 +604,8 @@
             createVirtualList()
 
             if (items?.length > 0) {
-              
-              //Count actual items                    
-              itemsShown += items.length
 
-              if (itemsShown >= totalItemCount) {
+              if (pageCounter >= lastPage) {
                   hasMoreItems = false
               }
 
@@ -654,38 +620,32 @@
 
         }
 
-        const mintViewModelRefreshed = async (e) => {
+        const removeMinted = async (e) => {
 
-          for (let latest of mintingViewModel.lastMinted) {
-                
-            let removed = false
+          let totalMinted = mintingViewModel.totalMinted
 
-            //Loop through virtual list items and get the index to remove
-            for (let i=0; i < virtualList.items?.length; i++) {
-              
-              // console.log(`${latest.item.tokenId} / ${virtualList.items[i].tokenId}`)
+          let toRemove = []
 
-              if (virtualList.items[i].tokenId == latest.item.tokenId) {
-                console.log("Deleting item")
-                virtualList.deleteItem(i)
-                removed = true
-                break
-              }
+          //Loop through virtual list items and get the index to remove
+          for (let i=0; i < virtualList.items?.length; i++) {
+            
+            // console.log(`${totalMinted} / ${virtualList.items[i].tokenId}`)
 
+            if (virtualList.items[i].tokenId <= totalMinted) {
+              // console.log(`Deleting item ${virtualList.items[i].tokenId}`)
+              toRemove.push(i)
             }
-
-            //If we didn't find this one we're not gonna find the next either since it's lower. Just break
-            if (!removed) break
 
           }
 
+          toRemove.sort((a, b) => b - a)
+
+          for (let r of toRemove) {
+            virtualList.deleteItem(r)
+          }
 
 
         }
-
-
-
-
 
         <%~ 
           include("@meta_tags_js", {

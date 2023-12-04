@@ -154,7 +154,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '8fb412947c';
+framework7Component.id = '1ca2ee9f25';
 framework7Component.style = `
 
 .item-content.attribute-select {
@@ -224,7 +224,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'ba44ca81c2';
+framework7Component.id = '80deaa036d';
 framework7Component.style = `
 
 
@@ -300,7 +300,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd1ae488856';
+framework7Component.id = '03c643667b';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -387,7 +387,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'd4bb22383d';
+framework7Component.id = 'ed5904c1ec';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -457,7 +457,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9700d9d83c';
+framework7Component.id = '4ea1221944';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -727,7 +727,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'b578706e22';
+framework7Component.id = 'efb77d300e';
 framework7Component.style = `
 
 `;
@@ -802,7 +802,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '3995508032';
+framework7Component.id = '016e87980c';
 framework7Component.style = `
 `;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
@@ -961,7 +961,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'c624e6d8fa';
+framework7Component.id = '0e16c67fb9';
 framework7Component.style = `
 
 .block-search {
@@ -1281,7 +1281,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '7ac019e64a';
+framework7Component.id = '88bf09d7b5';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (framework7Component);
 
 /***/ }),
@@ -1399,7 +1399,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = '9c9bce1735';
+framework7Component.id = '044a83ef00';
 framework7Component.style = `
 .page-number {
     width: 100%;
@@ -1469,7 +1469,7 @@ function framework7Component(props, {
     }
     ;
 }
-framework7Component.id = 'bf27e3d895';
+framework7Component.id = '75339a0391';
 framework7Component.style = `
 
 

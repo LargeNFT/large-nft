@@ -154,7 +154,7 @@ class GenerateService {
             await this.generatePNGFromSVG(item.coverImage.svg, path, 1200, 1200)
 
         } else {
-          console.log(`Skipping ${item.coverImage._id}.png`)
+          // console.log(`Skipping ${item.coverImage._id}.png`)
         }
 
         return path
@@ -201,7 +201,7 @@ class GenerateService {
 
         } else {
 
-          console.log(`Skipping thumbnail ${imageId}.png`)
+          // console.log(`Skipping thumbnail ${imageId}.png`)
 
         }
 

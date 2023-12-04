@@ -752,9 +752,14 @@ ul.breadcrumb li a:hover {
   display: inline-block;
 }
 
+.mint-detail {
+  font-size: 12px;
+}
+
 .mint-detail strong {
   width: 125px;
   display: inline-block;
+  vertical-align: top;
 }
 
 .block-mint {

@@ -73,94 +73,71 @@
 
                   ${mintingViewModel.minting ? $h`
                       
-                    <div class="block block-strong inset">
-                      <p>
-                        <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
-                      </p>              
-                    </div>
-
-
-                      <div class="card">
-                        <div class="card-content">
-                          <form class="list" @submit="${mintOnSubmit}">
-                            <ul>  
-                              
-                              <li class="item-content item-input">
-                                <div class="item-inner">
-                                  <div class="item-title item-label">Select number of NFTs to mint.</div>
-                                  <div class="item-input-wrap">
-                
-
-
-                                    <div class="stepper stepper-init">
-                                      <div class="stepper-button-minus"></div>
-                                      <div class="stepper-input-wrap">
-                                        <input type="text" readonly min="1" max="10" step="1" value="1" />
-                                      </div>
-                                      <div class="stepper-button-plus"></div>
-                                    </div>
-
-                                    <!-- <div class="range-slider range-slider-init" data-label="true" data-scale="true" data-scale-steps="5" >
-                                      <input type="range" value="1" min="0" max="10" step="1" />
-                                    </div> -->
-                                  </div>
-                                </div>
-                              </li>
-
-
-
-                              <li>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                        <div class="item-title mint-detail">
-
-                                          <p>
-                                            <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
-                                          </p>
-                                          <p>
-                                            <strong>Quantity:</strong> ${quantity}
-                                          </p>
-                                          <p>
-                                            <strong>Total:</strong> ${total} ETH
-                                          </p>
-                                        </div>
-                                    </div>
-                                </div>
-                              </li>
-                
-                              <li>
-                                <label class="item-checkbox item-content">
-                
-                                    <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
-                                    
-                                    <i class="icon icon-checkbox"></i>
-                                    <div class="item-inner">
-                
-                                        <div class="item-title">
-                                          <!-- Item header, must be first child of item-title -->
-                                          <div class="item-header"></div>
-                                          Exact Tokens Only
-                                          <!-- Item footer, must be last child of item-title -->
-                                          <div class="item-footer">If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</div>
-                                        </div>
-                
-                                    </div>
-                                </label>
-                              </li>
-                
-                              <li>
-                                <div class="item-content">
-                                    <div class="item-inner">
-                                      <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
-                                    </div>
-                                </div>
-                              </li>
-                              
-                            </ul>
-                
-                          </form>
-                        </div>
+                      <div class="block block-strong inset">
+                        <p>
+                          <strong>Total Minted:</strong> ${mintingViewModel.totalMinted} of ${mintingViewModel.totalSupply}
+                        </p>              
                       </div>
+
+                      <form class="list" @submit="${mintOnSubmit}">
+                        <ul>  
+                        
+                          <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title mint-detail">
+
+                                      <p>
+                                        <strong>Quantity:</strong>
+                                        <div class="stepper stepper-init">
+                                          <div class="stepper-button-minus"></div>
+                                          <div class="stepper-input-wrap">
+                                            <input type="text" readonly min="1" max="10" step="1" value="1" />
+                                          </div>
+                                          <div class="stepper-button-plus"></div>
+                                        </div>
+                                      </p>
+
+                                      <p>
+                                        <strong>Mint Fee:</strong> ${mintingViewModel.mintPrice} ETH
+                                      </p>
+                                      <p>
+                                        <strong>Total:</strong> ${total} ETH
+                                      </p>
+                                    </div>
+                                </div>
+                            </div>
+                          </li>
+            
+                          <li>
+                            <label class="item-checkbox item-content">
+            
+                                <input type="checkbox" checked="${exactTokensOnly}" @change=${exactTokensOnChange}/>
+                                
+                                <i class="icon icon-checkbox"></i>
+                                <div class="item-inner">
+            
+                                    <div class="item-title">
+                                      <div class="item-header"></div>
+                                      Exact Tokens Only
+                                      <div class="item-footer">If this box is checked the transaction will immediately fail if another transaction mints *any* of the selected tokens.</div>
+                                    </div>
+            
+                                </div>
+                            </label>
+                          </li>
+            
+                          <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                  <button class="button button-fill ${quantity < 1 ? 'disabled': ''}" id="mint-button">Mint</button>
+                                </div>
+                            </div>
+                          </li>
+                          
+                        </ul>
+            
+                      </form>
             
                       <div class="card mint-list-card">
                         <div class="card-header">Next Up</div>
@@ -246,7 +223,7 @@
         let total = 0 
         let quantity = 1
         let mintPriceWei
-        let exactTokensOnly = false
+        let exactTokensOnly = true
 
         let lastMinted 
 
@@ -259,26 +236,26 @@
                 text: "Mint"
         }]
 
-        // const mintFetcher = {
+        const mintFetcher = {
 
-        //   intervalId: null,
+          intervalId: null,
 
-        //   start: (callback) => {
-        //     if (this.intervalId === null) {
-        //       console.log('Starting mint fetcher')
-        //       this.intervalId = setInterval(callback, 5000)
-        //     } 
-        //   },
+          start: (callback) => {
+            if (mintFetcher.intervalId === null) {
+              console.log('Starting mint fetcher')
+              mintFetcher.intervalId = setInterval(callback, 5000)
+            } 
+          },
 
-        //   stop: () => {
-        //     if (this.intervalId !== null) {
-        //       clearInterval(this.intervalId)
-        //       this.intervalId = null
-        //       console.log('Stopping mint fetcher')
-        //     } 
-        //   }
+          stop: () => {
+            if (mintFetcher.intervalId !== null) {
+              clearInterval(mintFetcher.intervalId)
+              mintFetcher.intervalId = null
+              console.log('Stopping mint fetcher')
+            } 
+          }
 
-        // }
+        }
 
 
         const resizeListener = (e) => {
@@ -303,6 +280,26 @@
           return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
         }
 
+        const startMintFetcher = () => {
+
+          mintFetcher.start( async () => {
+
+            console.log("Grabbing mints...")
+
+            //Grab latest view model and remove any that have been minted.
+            mintingViewModel = await mintWebService.getMintingViewModel()
+
+            await removeMinted()
+
+            //Reselect the right quantity
+            selectPreviews(quantity)
+
+            await $update()
+
+          })
+
+        }
+
 
         $on('pageInit', async () => {
 
@@ -319,10 +316,7 @@
           //Reselect the right quantity
           selectPreviews(quantity)
 
-          // mintFetcher.start( async () => {
-          //   console.log("HERE")
-          //   // await populate()
-          // })
+          startMintFetcher()
 
           $('.hidden-on-load').removeClass('hidden-on-load')
           $('.hide-on-pageinit').hide()
@@ -340,7 +334,7 @@
 
         $on('pageBeforeOut', async () => {
           window.removeEventListener('resize', resizeListener)
-          // mintFetcher.stop()
+          mintFetcher.stop()
         })        
 
         const quantityChange = async (e) => {

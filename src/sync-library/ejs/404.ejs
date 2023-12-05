@@ -80,7 +80,7 @@
               </div>
 
               <div class="left">
-                <%~ include("footer", {baseURL: it.baseViewModel.baseURL}) %>
+                <%~ include("@footer", {baseURL: it.baseViewModel.baseURL}) %>
               </div>
 
             </div>
@@ -134,7 +134,7 @@
     </script>
 
     <%~ 
-      include("_init", {
+      include("@init", {
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
         libraryURL: it.baseViewModel.libraryURL,

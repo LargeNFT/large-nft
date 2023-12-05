@@ -6,22 +6,9 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
-    </style>
-
-
-    <title>
-        Activity for <%=it.baseViewModel.channelViewModel.channel.title%>
-    </title>
-
-
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: `Activity for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         title: `Activity for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         url: 'activity',
         imageUrl: it.baseViewModel.channelCoverImageLink(),

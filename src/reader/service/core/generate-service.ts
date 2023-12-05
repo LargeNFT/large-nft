@@ -2,7 +2,6 @@ import { inject, injectable } from "inversify";
 
 import he from "he"
 import fs from "fs"
-import * as Eta from 'eta'
 import path from "path";
 
 import Jimp from "jimp/es";
@@ -478,6 +477,7 @@ class GenerateService {
       fs.mkdirSync(`${config.publicPath}/u/activity`, { recursive: true })
       fs.mkdirSync(`${config.publicPath}/transaction`, { recursive: true })
 
+
       await this.renderPage(
         config,
         indexEjs,
@@ -617,11 +617,6 @@ class GenerateService {
       )
 
 
-
-
-
-
-    
       //Token Owner activity page
       await this.renderPage(
         config,
@@ -647,9 +642,6 @@ class GenerateService {
       )
 
 
-
-
-    
       //404 page
       await this.renderPage(
         config,
@@ -660,9 +652,6 @@ class GenerateService {
         },
         `${config.publicPath}/404.html`
       )
-
-
-
 
     
       //Build static pages

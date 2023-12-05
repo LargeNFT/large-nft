@@ -17,20 +17,9 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
-    </style>
-
-
-    <title>
-        User Activity for <%=it.baseViewModel.channelViewModel.channel.title%>
-    </title>
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: `User Profile for ${it.baseViewModel.channelViewModel.channel.title}`,
         title: `User Profile for ${it.baseViewModel.channelViewModel.channel.title}`,
         url: 'u',
         imageUrl: it.baseViewModel.channelCoverImageLink(),

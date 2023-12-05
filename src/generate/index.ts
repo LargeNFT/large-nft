@@ -259,6 +259,7 @@ let generate = async () => {
   //Generate HTML
   await generateService.generatePages(config, channelViewModel, generateViewModel, baseViewModel)
 
+
   //Generate webp version of channel cover image
   if (channelViewModel.channel.coverImageId) {
     await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId, 100)

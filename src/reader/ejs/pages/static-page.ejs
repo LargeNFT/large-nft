@@ -5,21 +5,9 @@
 
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
-    <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
-    </style>
-
-
-    <title>
-        <%= it.staticPage.name %>
-    </title>
-  
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: it.staticPage.name,
         title: it.staticPage.name,
         url: `${it.staticPage.slug}.html`,
         imageUrl: it.baseViewModel.channelCoverImageLink(),

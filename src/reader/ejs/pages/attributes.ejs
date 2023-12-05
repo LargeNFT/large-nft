@@ -10,19 +10,9 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-      html {
-        visibility: hidden;
-        opacity: 0;
-      }
-    </style>
-
-    <title>
-      <%= it.title %> Attribute Report
-    </title>
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: `Attribute Report for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         title: `Attribute Report for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         url: 'attributes.html',
         imageUrl: it.baseViewModel.channelCoverImageLink(),

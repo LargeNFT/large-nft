@@ -16,20 +16,10 @@
 
   <head>
 
-    <style>
-      html {
-        visibility: hidden;
-        opacity: 0;
-      }
-    </style>
-
-
-    <title>
-      <%= it.title %>
-    </title>
 
     <%~ 
       include("@meta_tags", {
+        pageTitle: it.title,
         title: it.title,
         url: 'index.html',
         imageUrl: '',

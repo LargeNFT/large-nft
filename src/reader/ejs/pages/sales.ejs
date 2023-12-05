@@ -17,20 +17,9 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
-    </style>
-
-
-    <title>
-        Largest Sales for <%=it.baseViewModel.channelViewModel.channel.title%>
-    </title>
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: `Largest Sales for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         title: `Largest Sales for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
         url: 'largest-sales',
         imageUrl: it.baseViewModel.channelCoverImageLink(),

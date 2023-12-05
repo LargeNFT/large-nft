@@ -6,21 +6,10 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-      html {
-        visibility: hidden;
-        opacity: 0;
-      }
-    </style>
-
-
-    <title>
-      <%= it.title %>
-    </title>
-
 
     <%~ 
       include("@meta_tags", {
+        pageTitle: `Mint ${it.baseViewModel.channelViewModel.channel.title}`,
         title: it.baseViewModel.channelViewModel.channel.title,
         url: 'mint.html',
         imageUrl: it.baseViewModel.channelCoverImageLink(),
@@ -28,7 +17,7 @@
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,
-        he: it.baseViewModel.he
+        he: it.baseViewModel.he,
       }) 
     %>
 

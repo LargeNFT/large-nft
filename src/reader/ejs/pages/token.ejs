@@ -31,19 +31,9 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
-    </style>
-
-
-    <title><%= itemViewModel.item.title ? itemViewModel.item.title + ' / ' : '' %><%= itemViewModel.channel.title %> #<%= itemViewModel.item.tokenId %></title>
-
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
         title: `${itemViewModel.item.title ? itemViewModel.item.title + ' / ' : ''}${itemViewModel.channel.title} #${itemViewModel.item.tokenId}`,
         url: `t/${itemViewModel.item.tokenId}`,
         imageUrl: coverImageLink,

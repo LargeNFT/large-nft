@@ -16,23 +16,14 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
-    </style>
-
-    <title>
-        Leaderboard for <%=it.baseViewModel.channelViewModel.channel.title%>
-    </title>
 
     <%~ 
       include("@meta_tags", {
-        title: `Leaderboard for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
+        title: `Leaderboard for ${it.baseViewModel.channelViewModel.channel.title}`,
+        title: `Leaderboard for ${it.baseViewModel.channelViewModel.channel.title}`,
         url: 'leaderboard',
         imageUrl: it.baseViewModel.channelCoverImageLink(),
-        descriptionHTML: `Leaderboard for '${it.baseViewModel.channelViewModel.channel.title}' NFTs`,
+        descriptionHTML: `Leaderboard for ${it.baseViewModel.channelViewModel.channel.title}`,
         hostname: it.baseViewModel.hostname,
         baseURL: it.baseViewModel.baseURL,
         excerptHtml: it.baseViewModel.excerptHtml,

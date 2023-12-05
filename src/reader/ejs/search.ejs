@@ -6,25 +6,9 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-      html {
-        visibility: hidden;
-        opacity: 0;
-      }
-    </style>
-
-    <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Color theme for statusbar -->
-    <title>
-      <%= it.title %>
-    </title>
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: "Search",
         title: it.baseViewModel.channelViewModel.channel.title,
         url: 'search.html',
         imageUrl: it.baseViewModel.channelCoverImageLink(),

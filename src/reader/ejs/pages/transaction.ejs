@@ -6,21 +6,9 @@
     <%~ include("@headStart", {baseURL: it.baseViewModel.baseURL}) %>
 
 
-    <style>
-    html {
-        visibility: hidden;
-        opacity: 0;
-    }
-    </style>
-
-
-    <title>
-        Transaction for <%=it.baseViewModel.channelViewModel.channel.title%>
-    </title>
-
-
     <%~ 
       include("@meta_tags", {
+        pageTitle: `Transaction for ${it.baseViewModel.channelViewModel.channel.title}`,
         title: `Transaction for ${it.baseViewModel.channelViewModel.channel.title}`,
         url: 'transaction',
         imageUrl: it.baseViewModel.channelCoverImageLink(),

@@ -30,6 +30,7 @@ import _headEjs from '../../ejs/template/_head.ejs'
 import _initEjs from '../../ejs/template/_init.ejs'
 import _metaTagsEjs from '../../ejs/template/_meta_tags.ejs'
 import _metaTagsJsEjs from '../../ejs/template/_meta_tags_js.ejs'
+
 import footerEjs from '../../ejs/footer.ejs'
 
 import mintEjs from '../../ejs/mint.ejs'

@@ -259,7 +259,7 @@ class ImportService {
             mediaDownloader: mediaDownloader,
             forkStatus: forkStatus,
             contractMetadata: contractMetadata,
-            tokenMetadata
+            tokenMetadata: tokenMetadata
 
         }
 
@@ -536,13 +536,6 @@ class ImportService {
         delete channel._rev 
         delete channel["_rev_tree"]
 
-        //Get the new author ID
-        channel.authorId = this.walletService.address?.toString()
-
-        //Add it if doesn't exist 
-        if (channel.authorId) {
-            await this.authorService.insertIfNew(channel.authorId)
-        }
     
         //Mark parent
         if (cid) {
@@ -570,9 +563,16 @@ class ImportService {
         }
 
 
-
-
         await this.schemaService.loadChannel(channel._id)
+
+
+        //Get the new author ID
+        channel.authorId = this.walletService.address?.toString()
+
+        //Add it if doesn't exist 
+        if (channel.authorId) {
+            await this.authorService.insertIfNew(channel.authorId)
+        }
 
 
         //Loop through the contents and insert each one like it's an unseen row

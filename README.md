@@ -4,7 +4,37 @@
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
 ## An offline-first publishing platform for the free and open web
-An open source and decentralized CMS for Ethereum & IPFS that runs offline-first in the browser. Blog in space.
+An open source, decentralized, and offline-first CMS for the Ethereum EVM and IPFS.
+
+## Installation 
+
+### Clone
+```console
+git clone https://github.com/LargeNFT/large-nft.git
+```
+
+### Run a local HTTP Server
+```console
+npm install
+npm run start
+```
+
+### Access in Browser
+Large Admin will be available at [http://localhost:8000/large](http://localhost:8000/large) by default.
+
+
+### Run a local dev Server
+```console
+npm run start:dev
+```
+
+### Access in Browser
+Large Admin will be available at [http://localhost:9081/large](http://localhost:9081/large) by default.
+
+![Large Admin](src/admin/html/images/large-start.png)
+
+Or [use a hosted version](https://golarge.app). Content is stored on user's local machine.
+
 
 # Goal
 Bring the permissionless properties of Ethereum to the rest of the NFT publishing stack.
@@ -14,7 +44,7 @@ Bring the permissionless properties of Ethereum to the rest of the NFT publishin
 * Run on your own hardware or with popular cloud providers. 
 * 100% open source JavaScript/TypeScript.
 
-### Components
+# Components
 
 **Admin** 
 * Create and publish NFT collections.
@@ -50,7 +80,6 @@ Bring the permissionless properties of Ethereum to the rest of the NFT publishin
 * Sync multiple collections.
 
 
-[Use a hosted version](https://golarge.app)
 
 
 **Large NFT is alpha software and the API still changes frequently.**
@@ -58,44 +87,48 @@ Bring the permissionless properties of Ethereum to the rest of the NFT publishin
 ### Community
 Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 
-# Large NFT
-
-## Installation 
-
-### Clone
-```console
-git clone https://github.com/LargeNFT/large-nft.git
-```
-
-### Run a local HTTP Server
-```console
-npm run start
-```
-
-### Access in Browser
-Large will be available at [http://localhost:8000/large](http://localhost:8000/large) by default.
 
 
-### Run a local dev Server
-```console
-npm run start:dev
-```
+# Large Admin
 
-### Access in Browser
-Large will be available at [http://localhost:9081/large](http://localhost:9081/large) by default.
+### Create & Import
+
+![Large Admin](src/admin/html/images/large-create-import.png)
+
+### Options include
+* Create a new collection.
+    * Create a brand new collection with new contect.
+* Fork existing collection.
+    * From an IPFS hash
+        * Collection must be one that was created with Large NFT.
+    * From Contract (requires connected wallet)
+        * Download existing collection from a mainnet contract.
+    * From Reader
+        * Fork collection from an existing Large Reader website.
 
 
-![Large Admin](src/admin/html/images/large-start.jpg)
+### Create New Collection
+
+* Choose a name, symbol, description.
+
+![Large Admin](src/admin/html/images/large-create-1.png)
+
+* Choose language and configure:
+    * Cover Image & Banner
+        * Configure images to be displayed on Large Reader for collection.
+    * Attributes
+        * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace).
+    * Mint & Contract Info
+        * Set mint price and contract info.
+    * Features & Licensing.
+        * Add copyleft or copyright information.
+    * Configure Large Reader.
+        * Configure production deployment details and set up marketplaces and external links like Twitter and Discord.
+
+![Large Admin](src/admin/html/images/large-create-2.png)
 
 
-### Create NFT Collection
-Create a collection with the Large admin panel. 
-
-* Choose a name, symbol, description, license, and NFT attributes.
-* Create attribute categories.
-    * Add attributes to give specific items special properties (eg Type, Hat, Shirt, Necklace)
-
-### Create NFT Item Content 
+### Create Item
 * Each item has a title, content, and a cover image.
 * If a cover image is not provided an SVG is generated from the text.
 * Choose a theme for each item.

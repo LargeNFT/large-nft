@@ -491,6 +491,7 @@
         uiService.hideSpinner()
 
       } catch(ex) {
+        console.log(ex)
         uiService.hideSpinner()
         $f7.dialog.alert(ex.message, "Error loading collection")
       }

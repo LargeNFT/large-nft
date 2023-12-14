@@ -14,9 +14,6 @@ class ENS extends Model {
     declare _id?:string
 
     @Column(DataType.STRING)
-    declare _rev?:string 
-
-    @Column(DataType.STRING)
     declare name?:string
 
     @Column(DataType.DATE)

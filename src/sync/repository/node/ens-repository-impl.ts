@@ -1,4 +1,4 @@
-import {  inject, injectable } from "inversify"
+import {  injectable } from "inversify"
 import { ENS } from "../../dto/ens.js"
 import { ENSRepository } from "../ens-repository.js"
 
@@ -11,7 +11,6 @@ class ENSRepositoryNodeImpl implements ENSRepository {
     }
 
     async put(ens: ENS, options?:any): Promise<ENS> {
-
         await ens.save(options)
         return ens
     }

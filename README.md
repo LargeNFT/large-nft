@@ -44,9 +44,16 @@ Bring the permissionless properties of Ethereum to the rest of the NFT publishin
 * Run on your own hardware or with popular cloud providers. 
 * 100% open source JavaScript/TypeScript.
 
+
+**Large NFT is alpha software and the API still changes frequently.**
+
+### Community
+Join us on [Discord](https://discord.gg/yJtjqHvqXm)
+
 # Components
 
-**Admin** 
+## Large Admin
+
 * Create and publish NFT collections.
     * Include text, images, and mixed-media NFTs.
     * Generates NFT metadata.
@@ -59,37 +66,6 @@ Bring the permissionless properties of Ethereum to the rest of the NFT publishin
 * Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. 
 
 
-**Reader** 
-* Generate a self-hosted PWA and deploy to any simple webhost.
-    * Read, browse, and mint NFTs in the collection.
-    * Optimized for text-based content and has functionality similar to an e-reader.
-* Combine with Large Sync to display the full transaction history.
-* Uses PouchDB to enable offline searching, sorting, and filtering of content.
-
-**Sync** 
-* A lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule.
-    * Sales data for each token. 
-    * Sales data for every user. 
-    * A full collection leaderboard.
-* The sync is designed to run both in the browser* and in Node.
-* Supports <a href="https://www.alchemy.com/">Alchemy</a> and local Ethereum nodes.
-* *Browser support coming later. Currently not practical.
-
-**Library**
-* Host multiple collections in the same app.
-* Sync multiple collections.
-
-
-
-
-**Large NFT is alpha software and the API still changes frequently.**
-
-### Community
-Join us on [Discord](https://discord.gg/yJtjqHvqXm)
-
-
-
-# Large Admin
 
 ### Create & Import
 
@@ -98,14 +74,7 @@ Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 ### Options include
 * Create a new collection.
     * Create a brand new collection with new contect.
-* Fork existing collection.
-    * From an IPFS hash
-        * Collection must be one that was created with Large NFT.
-    * From Contract (requires connected wallet)
-        * Download existing collection from a mainnet contract.
-    * From Reader
-        * Fork collection from an existing Large Reader website.
-
+* Fork existing collection (from IPFS hash, contract, or hosted Large Reader)
 
 ### Create New Collection
 
@@ -121,11 +90,20 @@ Join us on [Discord](https://discord.gg/yJtjqHvqXm)
     * Mint & Contract Info
         * Set mint price and contract info.
     * Features & Licensing.
-        * Add copyleft or copyright information.
+        * Add licensing information.
     * Configure Large Reader.
         * Configure production deployment details and set up marketplaces and external links like Twitter and Discord.
 
 ![Large Admin](src/admin/html/images/large-create-2.png)
+
+### Collection Overview
+
+* Display cover image, banner, title, description, and a scrollable list of the items in the collection.
+* Publish button.
+* Edit/Delete buttons.
+* Navigate to specific token by ID or by clicking on individual item.
+
+![Large Admin](src/admin/html/images/large-collection-overview.png)
 
 
 ### Create Item
@@ -134,13 +112,39 @@ Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 * Choose a theme for each item.
 * Automatically generates HTML animation for display on marketplaces.
 
+![Large Admin](src/admin/html/images/large-create-item.png)
+
+
 ### SVG and HTML Themes
 Apply custom CSS formatting to an NFT/item. Create themes and apply them to multiple items. 
 
-### Import and Fork Existing NFT Project
-* Instead of starting your project from scratch, import an existing project that was published to IPFS with Large.
-* Provide the IPFS hash.
-* Remix existing ideas.
+![Large Admin](src/admin/html/images/large-themes.png)
+
+![Large Admin](src/admin/html/images/large-themes-create.png)
+
+* Enter name of theme.
+* Enter CSS for created SVG and animation.
+    * CSS inside .svg-h1 {} is applied to SVG.
+    * CSS inside .animation-container {} is applied to generated HTML.
+
+![Large Admin](src/admin/html/images/large-themes-css.png)
+
+* Here is an example of a theme that applies a red border.
+
+![Large Admin](src/admin/html/images/large-themes-red.png)
+
+
+### Import/Fork Existing Collection
+
+* From an IPFS hash
+    * Collection must be one that was created with Large NFT.
+* From Contract (requires connected wallet)
+    * Download existing collection from a mainnet contract.
+        * Note: Potentially limited by CORS restrictions depending on where collection's images are hosted.
+* From Reader
+    * Fork collection from an existing Large Reader website.
+        * Note: This is potentially limited by CORS issues in the browser. Collection must be hosted on a server that does not trigger CORS warnings.
+
 
 ### Export collection metadata to IPFS.
 * Connect to browser-based node or configure remote IPFS api.
@@ -157,8 +161,17 @@ Apply custom CSS formatting to an NFT/item. Create themes and apply them to mult
 
 ---
 
-# Large Reader 
-Generate a search-engine friendly static website for an NFT collection. It is also a full-featured PWA (Progressive Web App) with a native look and feel on modern devices.
+## Large Reader 
+
+* Generate a self-hosted PWA and deploy to any simple webhost.
+    * Read, browse, and mint NFTs in the collection.
+    * Optimized for text-based content and has functionality similar to an e-reader.
+    * Full-featured PWA (Progressive Web App) with a native look and feel on modern devices.
+* Combine with Large Sync to display the full transaction history.
+* Uses PouchDB to enable offline searching, sorting, and filtering of content.
+
+
+Generate a search-engine friendly static website for a collection. It is also a 
 
 * Users do NOT need a web3 browser to read the collection.
 * Users do NOT need a web3 browser to view transaction data. 
@@ -290,8 +303,16 @@ npm run generate
 
 ---
 
-# Large Sync
-Large Sync is a Node.js app that reads and processes Ethereum NFT transactions to create historical reports for display in Large Reader.
+## Large Sync
+
+* A lightweight Node app that generates live Ethereum transaction data for Large Reader in real-time or on a schedule.
+    * Sales data for each token. 
+    * Sales data for every user. 
+    * A full collection leaderboard.
+* The sync is designed to run both in the browser* and in Node.
+* Supports <a href="https://www.alchemy.com/">Alchemy</a> and local Ethereum nodes.
+* *Browser support coming later. Currently not practical.
+
 
 * Full transaction history.
     * By token.
@@ -335,7 +356,11 @@ npm run sync --  --env dev --alchemy <API key>
 ---
 
 
-# Large Library
+## Large Library
+
+* Host multiple collections in the same app.
+* Sync multiple collections.
+
 The Large Library brings together multiple reader apps to work as a single library application.
 
 The Library starts with an overview page that lists each collection in the library and an overview of the recent sales information.
@@ -368,7 +393,7 @@ npm run sync-library --  --env dev --alchemy <API key>
 
 
 
-# Collection Importer
+## Importer
 Collections can be imported to a Large Library with the command-line import tool.
 
 ```console
@@ -481,4 +506,4 @@ These project(s) showcase the basic features of the Large Reader. These projects
 
 
 # Tests
-Need more tests.
+Some tests. Needs more tests.

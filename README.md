@@ -1,10 +1,10 @@
 
 # Large NFT
 
+An open source, decentralized, and offline-first CMS for Ethereum and IPFS.
+
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
-## An offline-first publishing platform for the free and open web
-An open source, decentralized, and offline-first CMS for the Ethereum EVM and IPFS.
 
 ## Installation 
 

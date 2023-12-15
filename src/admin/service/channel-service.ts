@@ -131,20 +131,6 @@ class ChannelService {
 
   }
 
-  // async pin(pinningApi:PinningApi, channel:Channel) {
-
-  //   let result = await this.pinningService.pinByHash(pinningApi, channel)
-  //   if (!result.ipfsHash) throw new Error("Problem publishing")
-
-  //   //Get the ID of the Pinata deploy job and update the channel
-  //   channel = await this.get(channel._id)
-  //   channel.pinJobId = result.id 
-  //   channel.pinJobStatus = result.status 
-  //   channel.publishedCid = result.ipfsHash
-
-  //   await this.put(channel)
-  // }
-
   async buildAttributeCounts(channelId:string) {
 
     let attributeCounts:AttributeCount[] = await this.itemService.getAttributeCountByChannel(channelId)

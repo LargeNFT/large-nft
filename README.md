@@ -66,12 +66,36 @@ Join us on [Discord](https://discord.gg/yJtjqHvqXm)
 * Reach customers on marketplaces like OpenSea, LooksRare, Blur, and X2Y2. 
 
 
+### Settings
+* Configure AI provider
+    * Supports [HuggingFace](http://huggingface.co/).
+
+![Large Admin](src/admin/html/images/large-settings-ai.png)
+
+* Configure Git provider(s)
+    * Large lets you publish your projects to a public or private git repo for long-term storage, backup, and hosting.
+    * Supports GitHub and GitLab.
+    * Choose the default provider to use for projects.
+
+![Large Admin](src/admin/html/images/large-settings-github.png)
+![Large Admin](src/admin/html/images/large-settings-gitlab.png)
+
+* Configure remote IPFS connection
+    * Used for importing existing collections hosted on IPFS.
+    
+![Large Admin](src/admin/html/images/large-settings-ipfs.png)
+
+* Configure Ethereum collection.
+    * Large can create a masked/secret variable on the collection's git provider that allows the sync job to run and collection live transaction data. Currently support Alchemy. (feature in progress)
+
+![Large Admin](src/admin/html/images/large-settings-ethereum.png)
+
+
 
 ### Create & Import
 
 ![Large Admin](src/admin/html/images/large-create-import.png)
 
-### Options include
 * Create a new collection.
     * Create a brand new collection with new contect.
 * Fork existing collection (from IPFS hash, contract, or hosted Large Reader)
@@ -145,14 +169,19 @@ Apply custom CSS formatting to an NFT/item. Create themes and apply them to mult
     * Fork collection from an existing Large Reader website.
         * Note: This is potentially limited by CORS issues in the browser. Collection must be hosted on a server that does not trigger CORS warnings.
 
+![Large Admin](src/admin/html/images/large-fork-reader.png)
+
+
+### Export to GitHub/GitLab
+* Create a custom fork of the Large Reader.
+* Use a personal access token to push content directly from your browser to GitHub and GitLab. 
+
 
 ### Export collection metadata to IPFS.
 * Connect to browser-based node or configure remote IPFS api.
 * NFT metadata, images, animations, and backup data are exported to IPFS.
 
-### Export to GitHub/GitLab
-* Create a custom fork of the Large Reader.
-* Use a personal access token to push content directly from your browser to GitHub and GitLab. 
+
 
 ### Deploy contract
 * Deploy ERC-721 smart contract with minting capability to Ethereum mainnet or other compatible network.

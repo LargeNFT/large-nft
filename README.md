@@ -1,7 +1,7 @@
 
 # Large NFT
 
-An open source, decentralized, and offline-first CMS for Ethereum and IPFS.
+An open source and decentralized CMS for Ethereum & IPFS that runs offline-first in the browser.
 
 [![npm version](https://img.shields.io/npm/v/large-nft)](https://www.npmjs.com/package/large-nft) [![made-with-javascript](https://img.shields.io/badge/Made%20with-JavaScript-1f425f.svg)](https://www.javascript.com) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE) 
 
@@ -176,10 +176,10 @@ Apply custom CSS formatting to an NFT/item. Create themes and apply them to mult
 * Create a custom fork of the Large Reader.
 * Use a personal access token to push content directly from your browser to GitHub and GitLab. 
 
-
+<!-- 
 ### Export collection metadata to IPFS.
 * Connect to browser-based node or configure remote IPFS api.
-* NFT metadata, images, animations, and backup data are exported to IPFS.
+* NFT metadata, images, animations, and backup data are exported to IPFS. -->
 
 
 

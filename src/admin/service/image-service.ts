@@ -227,9 +227,13 @@ class ImageService {
         if (content instanceof Uint8Array) {
           content = image.buffer
         } else {
-          // @ts-ignore
-          content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node.
-          // content = new Uint8Array(image.buffer.data) 
+
+          if (image.buffer.data?.length > 0) {
+            content = new Uint8Array(image.buffer.data) 
+          } else {
+            // @ts-ignore
+            content = Buffer.from(Object.values(image.buffer)) //this is because pouchdb allDocs is returning a weird format of the data on node, but just sometimes.
+          }
 
         }
 

@@ -371,12 +371,12 @@ class TransactionIndexerService {
             //Sort token IDs
             tokenOwner.tokenIds.sort()
 
-            try {
-                tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id, options)
-            } catch(ex) {
-                console.log(ex)
-                console.log(`Error getting ENS info for ${tokenOwner._id}`)
-            }
+            // try {
+            //     tokenOwner.ensName = await this.ensService.getOrDownloadByAddress(tokenOwner._id, options)
+            // } catch(ex) {
+            //     console.log(ex)
+            //     console.log(`Error getting ENS info for ${tokenOwner._id}`)
+            // }
 
             tokenOwnersToUpdate.push(tokenOwner)
 

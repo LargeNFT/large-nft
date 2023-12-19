@@ -6,6 +6,8 @@ import axios from "axios"
 import { v4 as uuidv4 } from 'uuid'
 import IPFSGatewayTools from "@pinata/ipfs-gateway-tools/dist/node.js"
 
+import fs from "fs"
+
 
 import { Author } from "../../dto/author.js";
 import { Channel } from "../../dto/channel.js";
@@ -325,143 +327,152 @@ class ImportService {
 
         await this.schemaService.loadChannel(channel._id)
 
-    
+        let skippedTokens = []
+
         //Fetch token metadata for all tokens
         for (let tokenId of tokenIds) {
 
             this.logForkProgress(forkStatus, `Fetching metadata for #${tokenId}`)
 
-            let metadata = await this._getTokenMetadata(contract, tokenId )
+            try {
 
-            this.logForkProgress(forkStatus, `Importing token #${metadata.tokenId}`)
+                let metadata = await this._getTokenMetadata(contract, tokenId )
 
-            console.time(`Importing token #${metadata.tokenId}`)
-
-            let item:Item = new Item()
-            
-            let image:Image
-            let animation:Animation
-
-            if (metadata.image || metadata.image_url) {
-
-                //Fetch and create image
-                let imageURI = metadata.image ? metadata.image : metadata.image_url
-                let imageData = await this._fetchURI(imageURI)
-
-                //Figure out if it's an svg and save appropriately
-                if (isSvg(new TextDecoder().decode(imageData))) {
-                    image = await this.imageService.newFromSvg(new TextDecoder().decode(imageData))
-                } else {
-                    image = await this.imageService.newFromBuffer(imageData)
+                if (!metadata.tokenId) {
+                    skippedTokens.push(tokenId)
+                    this.logForkProgress(forkStatus, `Metadata for #${tokenId} not found. Skipping import.`)
+                    continue
                 }
 
-                try {
-                    await this.imageService.put(image)
-                } catch(ex) {} //ignore duplicates
-                
-                item.coverImageId = image._id
-
-                forkStatus.images.saved++
-                this.logForkProgress(forkStatus, `Importing image ${image._id}`)
-
-
-            } else {
-                throw new Error("No image in metadata")
-            }
-
-
-            //Create or save animation
-            if (metadata.animation_url) {
-
-                item.coverImageAsAnimation = false
-
-                //Fetch and create animation
-                animation = await this.animationService.newFromText(new TextDecoder().decode(await this._fetchURI(metadata.animation_url)))
-
-
-                //Save animation
-                try {
-                    await this.animationService.put(animation)
-                } catch(ex) {} //ignore duplicates
-
-                
-                forkStatus.animations.saved++
-                this.logForkProgress(forkStatus, `Importing animation ${animation._id}`)
-
-                item.animationId = animation._id 
-
-
-            } else {
-                item.coverImageAsAnimation = true 
-            }
-
+                this.logForkProgress(forkStatus, `Importing token #${metadata.tokenId}`)
     
-            item.tokenId = metadata.tokenId 
-            item.title = metadata.name 
-            item.channelId = channel._id
-            item.attributeSelections = []
-
-
-            //Build attributes for item
-            for (let attribute of metadata.attributes) {
-
-                item.attributeSelections.push({
-                    traitType: attribute.trait_type,
-                    value: attribute.value
+                console.time(`Importing token #${metadata.tokenId}`)
+    
+                let item:Item = new Item()
+                
+                let image:Image
+                let animation:Animation
+    
+                if (metadata.image || metadata.image_url) {
+    
+                    //Fetch and create image
+                    let imageURI = metadata.image ? metadata.image : metadata.image_url
+                    let imageData = await this._fetchURI(imageURI)
+    
+                    //Figure out if it's an svg and save appropriately
+                    if (isSvg(new TextDecoder().decode(imageData))) {
+                        image = await this.imageService.newFromSvg(new TextDecoder().decode(imageData))
+                    } else {
+                        image = await this.imageService.newFromBuffer(imageData)
+                    }
+    
+                    try {
+                        await this.imageService.put(image)
+                    } catch(ex) {} //ignore duplicates
+                    
+                    item.coverImageId = image._id
+    
+                    forkStatus.images.saved++
+                    this.logForkProgress(forkStatus, `Importing image ${image._id}`)
+    
+    
+                } else {
+                    throw new Error("No image in metadata")
+                }
+    
+    
+                //Create or save animation
+                if (metadata.animation_url) {
+    
+                    item.coverImageAsAnimation = false
+    
+                    //Fetch and create animation
+                    animation = await this.animationService.newFromText(new TextDecoder().decode(await this._fetchURI(metadata.animation_url)))
+    
+    
+                    //Save animation
+                    try {
+                        await this.animationService.put(animation)
+                    } catch(ex) {} //ignore duplicates
+    
+                    
+                    forkStatus.animations.saved++
+                    this.logForkProgress(forkStatus, `Importing animation ${animation._id}`)
+    
+                    item.animationId = animation._id 
+    
+    
+                } else {
+                    item.coverImageAsAnimation = true 
+                }
+        
+                item.tokenId = metadata.tokenId 
+                item.title = metadata.name 
+                item.channelId = channel._id
+                item.attributeSelections = []
+    
+                //Build attributes for item
+                for (let attribute of metadata.attributes) {
+    
+                    item.attributeSelections.push({
+                        traitType: attribute.trait_type,
+                        value: attribute.value
+                    })
+    
+                    this._addAttributeToChannel(attribute, channel)
+    
+                }
+                
+                //Save metadata
+                let originalMetadata = await this.originalMetadataService.newFromText(JSON.stringify(metadata))
+    
+                await this.originalMetadataService.put(originalMetadata)
+    
+                item.originalJSONMetadataId = originalMetadata._id
+    
+                //Save item
+                await this.itemWebService.put({
+                    channel: channel,
+                    item: item,
+                    updateQueryCache: false,
+                    publish: false
                 })
+    
+                //Update token stats
+                tokenIdStatsQueryCache.result.count++
+    
+                if (!tokenIdStatsQueryCache.result.min || item.tokenId < tokenIdStatsQueryCache.result.min) {
+                    tokenIdStatsQueryCache.result.min = item.tokenId
+                }
+    
+                if (!tokenIdStatsQueryCache.result.max || item.tokenId > tokenIdStatsQueryCache.result.max) {
+                    tokenIdStatsQueryCache.result.max = item.tokenId
+                }
+    
+                forkStatus.items.saved++
+                // this.logForkProgress(forkStatus, `Importing item ${item._id}`)
+    
+                // console.timeEnd(`Importing token #${metadata.tokenId}`)
+    
+                if (metadata.image || metadata.image_url) {
+                    forkStatus.images.total++
+                }
+    
+                if (metadata.animation_url) {
+                    forkStatus.animations.total++
+                }
+    
+                console.timeEnd(`Importing token #${metadata.tokenId}`)
 
-                this._addAttributeToChannel(attribute, channel)
 
-
+            } catch(ex) {
+                console.log(`Error importing token ${tokenId}: ${ex.message}`)
             }
             
-
-            //Save metadata
-            let originalMetadata = await this.originalMetadataService.newFromText(JSON.stringify(metadata))
-
-            await this.originalMetadataService.put(originalMetadata)
-
-            item.originalJSONMetadataId = originalMetadata._id
-
-            //Save item
-            await this.itemWebService.put({
-                channel: channel,
-                item: item,
-                updateQueryCache: false,
-                publish: false
-            })
-
-            //Update token stats
-            tokenIdStatsQueryCache.result.count++
-
-            if (!tokenIdStatsQueryCache.result.min || item.tokenId < tokenIdStatsQueryCache.result.min) {
-                tokenIdStatsQueryCache.result.min = item.tokenId
-            }
-
-            if (!tokenIdStatsQueryCache.result.max || item.tokenId > tokenIdStatsQueryCache.result.max) {
-                tokenIdStatsQueryCache.result.max = item.tokenId
-            }
-
-            forkStatus.items.saved++
-            // this.logForkProgress(forkStatus, `Importing item ${item._id}`)
-
-            // console.timeEnd(`Importing token #${metadata.tokenId}`)
-
-            if (metadata.image || metadata.image_url) {
-                forkStatus.images.total++
-            }
-
-            if (metadata.animation_url) {
-                forkStatus.animations.total++
-            }
-
-            console.timeEnd(`Importing token #${metadata.tokenId}`)
-
 
         }
 
-
-        
+        this.logForkProgress(forkStatus, `Skipped tokens: ${skippedTokens}`)
 
 
         this.logForkProgress(forkStatus, `Building query cache for channel ${channel._id}`)
@@ -1125,12 +1136,11 @@ class ImportService {
         } catch(ex) {}
         
         if (existing) {
-
             console.log(`Returning cached token metadata #${tokenId}`)
             return existing.tokenMetadata
-
         } 
 
+        
         let tokenURI = await contract.tokenURI(tokenId)
 
         let metadataData = await this._fetchURI(tokenURI)

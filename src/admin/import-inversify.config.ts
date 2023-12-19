@@ -15,6 +15,15 @@ import PouchFind from 'pouchdb-find'
 PouchDB.plugin(PouchFind)
 
 
+
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime.js'
+dayjs.extend(relativeTime)
+
+import localizedFormat from 'dayjs/plugin/localizedFormat.js'
+dayjs.extend(localizedFormat)
+
+
 import { WalletService } from "./service/core/wallet-service.js"
 import { WalletServiceImpl } from './service/core/wallet-service-impl.js'
 
@@ -113,6 +122,7 @@ function getMainContainer(config) {
 
   container.bind("footer-text").toConstantValue(globalThis.footerText)
 
+  container.bind("dayjs").toConstantValue(dayjs)
 
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()

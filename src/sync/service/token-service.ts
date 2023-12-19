@@ -31,6 +31,11 @@ class TokenService {
         } catch(ex) {}
         
         if (!token) {
+
+            //Look up attributes from item
+            let item = await this.itemService.getByTokenId(token._id)
+            if (!item) return
+
             token = new Token()
             token._id = _id
             token.tokenId = _id
@@ -39,9 +44,6 @@ class TokenService {
                 transactions: [],
                 rowItemViewModels: {}
             }
-
-            //Look up attributes from item
-            let item = await this.itemService.getByTokenId(token._id)
 
             token.attributeSelections = item.attributeSelections
 

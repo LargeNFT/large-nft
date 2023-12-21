@@ -170,6 +170,7 @@ class TransactionIndexerService {
 
                 }
 
+
                 let processedTransaction = new ProcessedTransaction()
 
                 processedTransaction._id = transaction.hash    
@@ -225,7 +226,7 @@ class TransactionIndexerService {
 
                 }
 
-
+                
                 //Create processed events
                 let processedEvents:ProcessedEvent[] = this.createProcessedEvents(processedTransaction)
 
@@ -254,6 +255,7 @@ class TransactionIndexerService {
 
                 }
 
+
                 //Grab token senders
                 let from = new Set(processedEvents?.map(pe => pe.fromAddress))
                 let to = new Set(processedEvents?.map(pe => pe.toAddress))
@@ -280,7 +282,6 @@ class TransactionIndexerService {
                     this.tokenOwnerService.setTokenIds(result.ownersToUpdate[owner])
 
                 }
-
 
                 result.processedTransactionViewModels[processedTransaction._id] = {
                     events: processedEvents,

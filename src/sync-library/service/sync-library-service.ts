@@ -125,8 +125,21 @@ class SyncLibraryService {
 
         let channel: Channel = await this.libraryChannelService.getOrCreate(slug, options)
         
-        channel.totals = JSON.parse(fs.readFileSync(`${publicPath}/sync/sales/overall.json`).toString())
-        channel.latest = JSON.parse(fs.readFileSync(`${publicPath}/sync/transactions/latest.json`).toString())
+
+        let channelTotals
+        let channelLatest
+
+        try {
+          channelTotals = JSON.parse(fs.readFileSync(`${publicPath}/sync/sales/overall.json`).toString())
+        } catch(ex) {}
+
+        try {
+          channelLatest = JSON.parse(fs.readFileSync(`${publicPath}/sync/transactions/latest.json`).toString())
+        } catch(ex) {}
+
+
+        channel.totals = channelTotals
+        channel.latest = channelLatest
 
         let info = JSON.parse(fs.readFileSync(`${publicPath}/backup/export/backup/channels.json`).toString())[0]
 

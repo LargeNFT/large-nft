@@ -252,59 +252,7 @@
     
                 </div>
                 
-                <div class="hide-on-pageinit">
-    
-                  <div class="card skeleton-text">
-                    <div class="card-header">Overall Stats</div>
-                    <div class="card-content card-content-padding data-table">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-  
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-  
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-  
-                    </div>
-  
-                  </div>
-  
-  
-                  <div class="card skeleton-text">
-                    <div class="card-header">Overall Stats</div>
-                    <div class="card-content card-content-padding data-table">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                    </div>
-  
-                  </div>
-  
-  
-                  <div class="card skeleton-text">
-                    <div class="card-header">Overall Stats</div>
-                    <div class="card-content card-content-padding data-table">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                        lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                    </div>
-  
-                  </div>
-  
-  
-                  <div class="card skeleton-text">
-                      <div class="card-header">Recent Activity</div>
-                      <div class="card-content card-content-padding data-table">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                          lobortis et massa ac interdum. Cras consequat felis at consequat hendrerit.
-                      </div>
-    
-                  </div>
-    
-                </div>
-    
+               
   
                 <% 
                   if (it.baseViewModel.channelViewModel.staticPagesViewModel.index?.length > 0) {
@@ -575,10 +523,6 @@
 
             console.log("Loading activity")
             await loadActivity()
-            $update()
-
-            $('.hide-on-pageinit').hide()
-
             $update()
 
             //Set empty alt for any decorative image tags that are missing it. 

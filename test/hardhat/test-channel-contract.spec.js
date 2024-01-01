@@ -245,17 +245,27 @@ describe('Channel Contract', async (accounts) => {
 
         // let beforeBalance = await web3.eth.getBalance(user0)
 
+        //Check contract balance
+        let contractBalanceTotal = await ethers.provider.getBalance(contract)
+        assert.strictEqual(contractBalanceTotal.toString(), '800000000000000000')
+
+        //Check user balance
+        let beforeUserBalance = await ethers.provider.getBalance(accounts[0])
+        assert.strictEqual(beforeUserBalance.toString(), '9999995428080625000000')
+
+
         let receipt = await contract.connect(accounts[0]).withdraw()
         const gasUsed = receipt.gasUsed
 
 
         //Check contract balance
-        let contractBalance = await ethers.provider.getBalance(contract)
+        let afterContractBalance = await ethers.provider.getBalance(contract)
 
         //Check user balance
-        let afterBalance = await ethers.provider.getBalance(accounts[0])
+        let afterUserBalance = await ethers.provider.getBalance(accounts[0])
+        assert.strictEqual(afterUserBalance.toString(), '10000795376877767979683')
 
-        assert.strictEqual(contractBalance.toString(), '0')
+        assert.strictEqual(afterContractBalance.toString(), '0')
         // console.log(afterBalance.toString())
 
         // console.log(contractBalance)

@@ -300,18 +300,31 @@
                   '<%= it.baseViewModel.hostname %>'
           )
 
-          await populate()
+          if (await walletService.getAddress() != undefined) {
 
-          //Reselect the right quantity
-          selectPreviews(quantity)
+            await populate()
 
-          startMintFetcher()
+            //Reselect the right quantity
+            selectPreviews(quantity)
 
-          $('.hidden-on-load').removeClass('hidden-on-load')
-          $('.hide-on-pageinit').hide()
+            startMintFetcher()
+
+            $('.hidden-on-load').removeClass('hidden-on-load')
+            $('.hide-on-pageinit').hide()
+
+            window.addEventListener('resize', resizeListener)
+
+          } else {
+            
+            $f7.preloader.hide()
+
+            $f7.dialog.confirm("Problem connecting to contract on Ethereum Mainnet. Is your wallet connected to the right network?", "Problem connecting to network", populate, () => {
+              $f7.views.main.router.navigate(baseURI)
+            })
+
+          }
 
 
-          window.addEventListener('resize', resizeListener)
 
         })
 

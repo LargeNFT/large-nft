@@ -45,7 +45,7 @@ class TokenService {
             let item = await this.itemService.getByTokenId(token._id)
 
 
-            token.attributeSelections = item.attributeSelections
+            token.attributeSelections = item?.attributeSelections
 
         }
 

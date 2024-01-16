@@ -9,13 +9,14 @@ import { Image } from "../../dto/image.js";
 import { ChannelViewModel } from "../../dto/viewmodel/channel-view-model.js";
 import { ImageViewModel } from "../../dto/viewmodel/image-view-model.js";
 import { AuthorService } from "../author-service.js";
-import { ChannelService } from "../channel-service.js";
+import { ChannelContract, ChannelService } from "../channel-service.js";
 import { ImageService } from "../image-service.js";
 import { ItemService } from "../item-service.js";
 import { ItemWebService } from "./item-web-service.js";
 import { QueryCacheService } from "../../service/core/query-cache-service.js";
 import { SchemaService } from "../../service/core/schema-service.js";
 import { SettingsService } from "../core/settings-service.js";
+
 
 @injectable()
 class ChannelWebService {
@@ -240,9 +241,14 @@ class ChannelWebService {
 
     }
 
-
+    async getChannelContract(channel:Channel) : Promise<ChannelContract> {
+        return this.channelService.getChannelContract(channel)
+    }
 
 }
+
+
+
 
 export {
     ChannelWebService

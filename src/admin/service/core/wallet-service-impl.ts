@@ -95,20 +95,18 @@ class WalletServiceImpl implements WalletService {
     return this.provider.getSigner()
   }
 
-  getContract(name:string)  {
+  getContract(address:string)  {
 
     //If it's cached and the same wallet just return it.
-    if (this.ethersContracts[name] && this.ethersContracts[name].signer == this.wallet) return this.ethersContracts[name]
+    if (this.ethersContracts[address] && this.ethersContracts[address].signer == this.wallet) return this.ethersContracts[address]
 
     //Initialize and return
-    let c = this.contracts[name]
-    this.ethersContracts[name] = new ethers.Contract(c.address, c.abi, this.wallet ? this.wallet : this.provider)
-
-
+    let c = this.contracts["Channel"]
+    this.ethersContracts[address] = new ethers.Contract(address, c.abi, this.wallet ? this.wallet : this.provider)
 
     // console.log(`Getting contract ${name}`)
 
-    return this.ethersContracts[name]
+    return this.ethersContracts[address]
   }
 
 

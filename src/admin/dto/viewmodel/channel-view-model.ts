@@ -1,8 +1,5 @@
 import { Author } from "../author.js";
 import { Channel } from "../channel.js";
-import { Image } from "../image.js";
-import { StaticPage } from "../static-page.js";
-import { Theme } from "../theme.js";
 import { ImageViewModel } from "../viewmodel/image-view-model.js";
 
 interface ChannelViewModel {
@@ -20,7 +17,6 @@ interface ChannelViewModel {
     // staticPages:StaticPage[]
 
     itemCount:number
-
     gitProvider:{}
 
     editable:boolean

@@ -6,11 +6,13 @@ import truncate from "html-truncate"
 import svgToMiniDataURI from 'mini-svg-data-uri'
 import he from 'he'
 
+import Hash from 'ipfs-only-hash'
+
+
 import { Image } from "../dto/image.js"
 import { ValidationException } from "../util/validation-exception.js"
 import { validate, ValidationError } from 'class-validator'
 import { ImageRepository } from "../repository/image-repository.js"
-import Hash from 'ipfs-only-hash'
 import { SvgService } from "./svg-service.js"
 import { QuillService } from "./quill-service.js"
 
@@ -238,7 +240,7 @@ class ImageService {
         }
 
     } else if (image.svg) {
-        content = image.svg
+        content = new TextEncoder().encode(image.svg)
     }
 
     return content

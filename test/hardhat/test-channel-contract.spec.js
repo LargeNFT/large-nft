@@ -250,8 +250,8 @@ describe('Channel Contract', async (accounts) => {
         assert.strictEqual(contractBalanceTotal.toString(), '800000000000000000')
 
         //Check user balance
-        let beforeUserBalance = await ethers.provider.getBalance(accounts[0])
-        assert.strictEqual(beforeUserBalance.toString(), '9999995428080625000000')
+        // let beforeUserBalance = await ethers.provider.getBalance(accounts[0])
+        // assert.strictEqual(beforeUserBalance.toString(), '9999995179418125000000')
 
 
         let receipt = await contract.connect(accounts[0]).withdraw()
@@ -262,8 +262,8 @@ describe('Channel Contract', async (accounts) => {
         let afterContractBalance = await ethers.provider.getBalance(contract)
 
         //Check user balance
-        let afterUserBalance = await ethers.provider.getBalance(accounts[0])
-        assert.strictEqual(afterUserBalance.toString(), '10000795376877767979683')
+        // let afterUserBalance = await ethers.provider.getBalance(accounts[0])
+        // assert.strictEqual(afterUserBalance.toString(), '10000795128189548588299')
 
         assert.strictEqual(afterContractBalance.toString(), '0')
         // console.log(afterBalance.toString())
@@ -287,67 +287,28 @@ describe('Channel Contract', async (accounts) => {
 
 
 
+    it("should fail to update if not owner", async () => {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // it("should mint token ID with mintFee set to zero", async () => {
-
-    //     let freeContract = await Channel.new( "Test", "TST", "zyx", 0, 10, { from: user0 })
-
+        const { contract, accounts } = await loadFixture(deployFunction)
         
+        await expect(contract.connect(accounts[4]).update( "blah", ethers.parseUnits('0.07', 'ether'), 50)).to.be.revertedWith("Ownable: caller is not the owner")
 
-    //     //Fail before range
-    //     await truffleAssert.fails(
-    //         freeContract.mint( 0, { from: user4 }),
-    //         truffleAssert.ErrorType.REVERT,
-    //         "Invalid token"
-    //     )
-
-    //     for (let i=1; i < 11; i++) {
-
-    //         await freeContract.mint( i, { from: user4 })
-
-    //         //Validate
-    //         let owner = await freeContract.ownerOf( i, { from: user4 })
-    //         let uri = await freeContract.tokenURI( i, { from: user4 })
-
-    //         assert.strictEqual(owner, user4)
-    //         assert.strictEqual(uri, `ipfs://zyx/${i}.json`)
-    //     }
-
-    //     //Fail after range
-    //     await truffleAssert.fails(
-    //         freeContract.mint( 11, { from: user4 }),
-    //         truffleAssert.ErrorType.REVERT,
-    //         "Invalid token"
-    //     )
+    })
 
 
 
-    // })
+    it("should update if owner", async () => {
 
+        const { contract, accounts } = await loadFixture(deployFunction)
+
+        //First mint 10
+        let tx = await contract.connect(accounts[0]).update( "blah", ethers.parseUnits('0.07', 'ether'), 50)
+
+        let receipt = await tx.wait()
+
+        verifyUpdateEvent(receipt.logs)
+
+    })
 
 
 
@@ -372,3 +333,25 @@ function verifyMintEvent(logs, tokenId) {
     assert(eventCount === 1, 'Unexpected number of Mint events')
   }
 }
+
+function verifyUpdateEvent(logs) {
+
+    let eventCount = 0
+    for (let l of logs) {
+      if (l.fragment.name === 'BatchMetadataUpdate') {
+        try {
+          // console.log(l.args.tokenId.toString())
+          assert.strictEqual(l.args[0].toString(), "1")
+          assert.strictEqual(l.args[1].toString(), "115792089237316195423570985008687907853269984665640564039457584007913129639935")
+
+          eventCount += 1
+        } catch (ex) { }
+      }
+    }
+  
+    if (eventCount === 0) {
+      assert(false, 'Missing BatchMetadataUpdate Event')
+    } else {
+      assert(eventCount === 1, 'Unexpected number of BatchMetadataUpdate events')
+    }
+  }

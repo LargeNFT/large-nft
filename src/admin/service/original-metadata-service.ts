@@ -1,5 +1,4 @@
 import { injectable } from "inversify"
-import Hash from 'ipfs-only-hash'
 
 
 import { ValidationException } from "../util/validation-exception.js"
@@ -8,6 +7,7 @@ import { validate, ValidationError } from 'class-validator'
 import { OriginalMetadataRepository } from "../repository/original-metadata-repository.js"
 import { OriginalMetadata } from "../dto/original-metadata.js"
 
+import Hash from 'ipfs-only-hash'
 
 
 

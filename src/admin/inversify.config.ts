@@ -2,6 +2,11 @@ import AppComponent from './components/admin/app.f7.html'
 
 import { ethers } from "ethers"
 
+import { createHelia } from 'helia'
+import { IDBBlockstore } from 'blockstore-idb'
+import { IDBDatastore } from 'datastore-idb'
+
+
 import { UiService } from './service/core/ui-service.js';
 
 import { QueueService } from './service/core/queue-service.js';
@@ -117,11 +122,20 @@ import relativeTime from 'dayjs/plugin/relativeTime.js'
 dayjs.extend(relativeTime)
 
 import localizedFormat from 'dayjs/plugin/localizedFormat.js'
+import { PublishService } from './service/core/publish-service.js'
+import { PublishIPFSService } from './service/core/publish-ipfs-service.js'
+import { CarService } from './service/car-service.js'
+import { CarRepository } from './repository/car-repository.js'
 dayjs.extend(localizedFormat)
 
 
 //Enable find plugin
 PouchDB.plugin(PouchFind)
+
+
+
+
+
 
 // Install F7 Components using .use() method on Framework7 class:
 Framework7.use([Dialog, Toast, Preloader, VirtualList, ListIndex, Card, Chip,
@@ -206,6 +220,40 @@ function getMainContainer(version:string) {
   container.bind("footer-text").toConstantValue(globalThis.footerText)
 
 
+  container.bind("helia").toConstantValue( async () => {
+
+    const blockstore = new IDBBlockstore('./blockstore')
+    const datastore = new IDBDatastore('./datastore')
+
+    await datastore.open()
+    await blockstore.open()
+
+
+    
+    const helia = await createHelia({
+      blockstore: blockstore,
+      datastore: datastore,
+      libp2p: {
+        start: false,
+        connectionManager: {
+          minConnections: 0,
+        },
+        services: {},
+        peerDiscovery: [],
+      }
+    })
+
+    //Don't do networking in browser
+    await helia.libp2p.stop()
+
+    
+    return helia
+
+  })
+
+
+
+
   // let fs
     
   // //@ts-ignore
@@ -250,6 +298,9 @@ function getMainContainer(version:string) {
   container.bind(ERCEventService).toSelf().inSingletonScope()
   container.bind(ExportService).toSelf().inSingletonScope()
   container.bind(AttributeCountService).toSelf().inSingletonScope()
+  container.bind(PublishService).toSelf().inSingletonScope()
+  container.bind(PublishIPFSService).toSelf().inSingletonScope()
+  container.bind(CarService).toSelf().inSingletonScope()
 
 
   container.bind(ChannelWebService).toSelf().inSingletonScope()
@@ -290,7 +341,7 @@ function getMainContainer(version:string) {
   container.bind(QueryCacheRepository).toSelf().inSingletonScope()
   container.bind(AttributeCountRepository).toSelf().inSingletonScope()
   container.bind(OriginalMetadataRepository).toSelf().inSingletonScope()
-
+  container.bind(CarRepository).toSelf().inSingletonScope()
 
 
   container.bind("ipfsRemoteInit").toConstantValue( async (url) => {

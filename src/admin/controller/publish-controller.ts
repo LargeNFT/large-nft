@@ -5,6 +5,7 @@ import { RouteTo } from '../service/core/routing-service.js';
 
 import AdminPublishIndexComponent from '../components/admin/publish/index.f7.html'
 import AdminPublishExportComponent from '../components/admin/publish/export.f7.html'
+import AdminPublishIPFSComponent from '../components/admin/publish/ipfs.f7.html'
 
 import AdminPublishForkReaderComponent from '../components/admin/publish/fork-reader.f7.html'
 import AdminPublishPublishReaderComponent from '../components/admin/publish/publish-reader.f7.html'
@@ -72,6 +73,36 @@ class PublishController {
 
         }, AdminPublishExportComponent)
     }
+
+
+    @routeMap("/admin/publish/ipfs/:id")
+    async ipfs() : Promise<ModelView> {
+
+        return new ModelView(async (routeTo:RouteTo) => {
+            
+            //Load the right channel dbs
+            await this.schemaService.loadChannel(routeTo.params.id)
+
+            let channelViewModel = await this.channelWebService.get(routeTo.params.id)
+            
+
+            let settings
+
+            try {
+                settings = await this.settingsService.get()
+            } catch(ex) {}
+
+
+            return {
+                channelViewModel: channelViewModel,
+                settings:settings
+            }
+
+        }, AdminPublishIPFSComponent)
+    }
+
+
+
 
 
     
@@ -184,8 +215,12 @@ class PublishController {
 
             let channelViewModel = await this.channelWebService.get(routeTo.params.id)
             
+            let channelContract = await this.channelWebService.getChannelContract(channelViewModel.channel)
+
+
             return {
-                channelViewModel: channelViewModel
+                channelViewModel: channelViewModel,
+                channelContract: channelContract
             }
 
         }, AdminPublishContractComponent)

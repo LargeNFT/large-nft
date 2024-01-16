@@ -14,6 +14,7 @@ import { AttributeCountRepository } from "../../repository/attribute-count-repos
 import { Channel } from "../../dto/channel.js";
 import { DatabaseService } from "./database-service.js";
 import { OriginalMetadataRepository } from "../../repository/original-metadata-repository.js";
+import { CarRepository } from "../../repository/car-repository.js";
 
 @injectable()
 class SchemaService {
@@ -33,6 +34,7 @@ class SchemaService {
         private queryCacheRepository:QueryCacheRepository,
         private attributeCountRepository:AttributeCountRepository,
         private originalMetadataRepository:OriginalMetadataRepository,
+        private carRepository:CarRepository,
         private databaseService:DatabaseService
     ) {}
 
@@ -62,6 +64,7 @@ class SchemaService {
         await this.themeRepository.load(channelId)
         await this.staticPageRepository.load(channelId)
         await this.attributeCountRepository.load(channelId)
+        await this.carRepository.load(channelId)
 
         this.loadedChannelId = channelId
 
@@ -83,6 +86,7 @@ class SchemaService {
         await this.themeRepository.loadEmpty(channelId)
         await this.staticPageRepository.loadEmpty(channelId)
         await this.attributeCountRepository.loadEmpty(channelId)
+        await this.carRepository.loadEmpty(channelId)
 
         this.loadedChannelId = channelId
 
@@ -213,7 +217,7 @@ class SchemaService {
         await clearDatabase(this.themeRepository.db)
         await clearDatabase(this.staticPageRepository.db)
         await clearDatabase(this.attributeCountRepository.db)
-
+        await clearDatabase(this.carRepository.db)
 
     }
 

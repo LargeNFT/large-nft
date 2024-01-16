@@ -1,6 +1,6 @@
 {
   "name": "large-nft",
-  "version": "0.22.6",
+  "version": "0.24.0",
   "description": "An open source and decentralized CMS for Ethereum & IPFS that runs offline-first in the browser.",
   "repository": {
     "type": "git",
@@ -10,6 +10,7 @@
     "start": "node node_modules/.bin/http-server -a localhost -p 8000 -c-1",
     "start:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js serve --config=webpack.dev-server.ts ",
     "test": "mocha --timeout 9999999999 && npx hardhat test test/hardhat/test-channel-contract.spec.js",
+    "testone": "mocha --timeout 9999999999 test/test-car-service.spec.ts",
     "build": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.prod.ts",
     "build:dev": "node --loader ts-node/esm node_modules/webpack/bin/webpack.js --config=webpack.dev.ts",
     "compile:contract": "npx hardhat compile",
@@ -207,6 +208,17 @@
     "workbox-cacheable-response": "7.0.0",
     "workbox-expiration": "7.0.0",
 
-    "jimp": "0.22.10"
+    "jimp": "0.22.10",
+
+    "helia": "2.1.0",
+    "@helia/mfs": "2.0.0",
+    "@helia/unixfs": "2.0.0",
+    "@helia/car": "2.0.0",
+    "ipfs-unixfs-importer": "15.2.3",
+    "@ipld/car": "5.2.6",
+    "blockstore-fs": "1.1.9",
+    "blockstore-idb": "1.1.7",
+    "datastore-fs": "9.1.7",
+    "datastore-idb": "2.1.7"
   }
 }

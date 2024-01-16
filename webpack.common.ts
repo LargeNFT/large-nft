@@ -260,51 +260,51 @@ let getAdminConfigs = () => {
     ]
   }
 
-  let publishCollectionConfig = {
-    entry: "./src/admin/publish.ts",
-    target: "node",
-    externalsPresets: { 
-      node: true 
-    },   
-    externals: ['pouchdb-node', 'ipfs-http-client'],
-    experiments: {
-      outputModule: true
-    },
-    resolve: {
-      extensions: ['.*', '.js', '.jsx', '.tsx', '.ts'],
-      extensionAlias: {
-        ".js": [".js", ".ts"]
-      }
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          exclude: '/node_modules/',
-          loader: 'ts-loader'
-        }
-      ]
-    },  
-    output: {
-      filename: 'large/admin/publish.js',
-      libraryTarget: "module",
-      library: {
-        type: "module"
-      },
-      chunkFormat: 'module',
-      path: path.resolve(__dirname, 'public'),
-    },
-    plugins: [
-      // new CleanWebpackPlugin({
-      //   dangerouslyAllowCleanPatternsOutsideProject: true
-      // }),
+  // let publishCollectionConfig = {
+  //   entry: "./src/admin/publish.ts",
+  //   target: "node",
+  //   externalsPresets: { 
+  //     node: true 
+  //   },   
+  //   externals: ['pouchdb-node', 'ipfs-http-client'],
+  //   experiments: {
+  //     outputModule: true
+  //   },
+  //   resolve: {
+  //     extensions: ['.*', '.js', '.jsx', '.tsx', '.ts'],
+  //     extensionAlias: {
+  //       ".js": [".js", ".ts"]
+  //     }
+  //   },
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /\.tsx?$/,
+  //         exclude: '/node_modules/',
+  //         loader: 'ts-loader'
+  //       }
+  //     ]
+  //   },  
+  //   output: {
+  //     filename: 'large/admin/publish.js',
+  //     libraryTarget: "module",
+  //     library: {
+  //       type: "module"
+  //     },
+  //     chunkFormat: 'module',
+  //     path: path.resolve(__dirname, 'public'),
+  //   },
+  //   plugins: [
+  //     // new CleanWebpackPlugin({
+  //     //   dangerouslyAllowCleanPatternsOutsideProject: true
+  //     // }),
 
-      new webpack.ProvidePlugin({
-        fetch: ['node-fetch', 'default'],
-      })
+  //     new webpack.ProvidePlugin({
+  //       fetch: ['node-fetch', 'default'],
+  //     })
 
-    ]
-  }
+  //   ]
+  // }
 
   function createContractFromTruffle(truffleJson)  {
   
@@ -318,7 +318,7 @@ let getAdminConfigs = () => {
   
   }
 
-  return [appConfig, importCollectionConfig, publishCollectionConfig]
+  return [appConfig, importCollectionConfig]
 }
 
 let getReaderConfigs = () => {

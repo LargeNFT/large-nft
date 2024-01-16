@@ -656,7 +656,7 @@ class ItemWebService {
         let stat
 
         try {
-            stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
+            stat = await this.ipfsService.stat(ipfsFilename, { hash: true })
         } catch(ex) {}
 
         if (!stat?.cid?.toString()) {
@@ -664,12 +664,12 @@ class ItemWebService {
             let content = await this.imageService.getImageContent(image)
 
             //Add to IPFS
-            const result = await this.ipfsService.ipfs.add({
+            const result = await this.ipfsService.add({
                 content: content
             })
 
             //Move to MFS directory in IPFS
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
+            await this.ipfsService.filesCp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
 
             // //Add to git
             // let gitDirectory = this.gitService.getBaseDir(channel)
@@ -725,7 +725,7 @@ class ItemWebService {
         let stat
 
         try {
-            stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
+            stat = await this.ipfsService.stat(ipfsFilename, { hash: true })
         } catch(ex) { }
 
 
@@ -733,12 +733,12 @@ class ItemWebService {
             
             // console.log(`Publishing animation ${animation._id}`)
 
-            const result = await this.ipfsService.ipfs.add({
+            const result = await this.ipfsService.add({
                 content: animation.content
             })
 
             //Move to MFS directory in IPFS
-            await this.ipfsService.ipfs.files.cp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
+            await this.ipfsService.filesCp(`/ipfs/${result.cid.toString()}`, ipfsFilename, { create: true, parents: true, flush:flush })
     
             // //Add to git
             // let gitDirectory = this.gitService.getBaseDir(channel)
@@ -804,11 +804,11 @@ class ItemWebService {
         let stat
 
         try {
-            stat = await this.ipfsService.ipfs.files.stat(ipfsFilename, { hash: true })
+            stat = await this.ipfsService.stat(ipfsFilename, { hash: true })
         } catch(ex) { }
 
         if (stat?.cid?.toString()) {
-            await this.ipfsService.ipfs.files.rm(ipfsFilename,  { recursive: true, flush: true})
+            await this.ipfsService.filesRm(ipfsFilename,  { recursive: true, flush: true})
         }
 
     }

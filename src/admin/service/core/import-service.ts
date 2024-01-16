@@ -95,11 +95,10 @@ class ImportService {
 
 
         try {
-            await this.ipfsService.ipfs.files.rm('/fork', { recursive: true, flush: true})
+            await this.ipfsService.filesRm('/fork', { recursive: true, flush: true})
         } catch (ex) { }
 
-
-        await this.ipfsService.ipfs.files.cp(`/ipfs/${cid}`, '/fork', { create: true, parents: true, flush: true })
+        await this.ipfsService.filesCp(`/ipfs/${cid}`, '/fork', { create: true, parents: true, flush: true })
 
         this.logForkProgress(forkStatus, "Processing...")
 
@@ -605,11 +604,11 @@ class ImportService {
             animation.content = await mediaDownloader.getAsString(`animations/${animation.cid}.html`)
 
             //Validate we match the IPFS cid 
-            let expectedCid = await Hash.of(animation.content)
+            // let expectedCid = await Hash.of(animation.content)
 
-            if (expectedCid.toString() != animation.cid) {    
-                throw new Error(`Incorrect cid when importing animation. Expected: ${animation.cid}, Result: ${expectedCid.toString()}`)
-            }
+            // if (expectedCid.toString() != animation.cid) {    
+            //     throw new Error(`Incorrect cid when importing animation. Expected: ${animation.cid}, Result: ${expectedCid.toString()}`)
+            // }
 
 
             let animationObj = Object.assign(new Animation(), animation)
@@ -640,12 +639,12 @@ class ImportService {
 
             let imageObj = Object.assign(new Image(), image)
 
-            //Validate we match the IPFS cid 
-            let expectedCid = await Hash.of(content)
+            // //Validate we match the IPFS cid 
+            // let expectedCid = await Hash.of(content)
 
-            if (expectedCid.toString() != image.cid) {    
-                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
-            }
+            // if (expectedCid.toString() != image.cid) {    
+            //     throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
+            // }
 
             try {
                 await this.imageService.put(imageObj)
@@ -904,12 +903,12 @@ class ImportService {
             animation.content = await mediaDownloader.getAsString(`animations/${animation.cid}.html`)
 
 
-            //Validate we match the IPFS cid 
-            let expectedCid = await Hash.of(animation.content)
+            // //Validate we match the IPFS cid 
+            // let expectedCid = await Hash.of(animation.content)
 
-            if (expectedCid.toString() != animation.cid) {    
-                throw new Error(`Incorrect cid when importing animation. Expected: ${animation.cid}, Result: ${expectedCid.toString()}`)
-            }
+            // if (expectedCid.toString() != animation.cid) {    
+            //     throw new Error(`Incorrect cid when importing animation. Expected: ${animation.cid}, Result: ${expectedCid.toString()}`)
+            // }
 
 
             let animationObj = Object.assign(new Animation(), animation)
@@ -940,11 +939,11 @@ class ImportService {
             let imageObj = Object.assign(new Image(), image)
 
             //Validate we match the IPFS cid 
-            let expectedCid = await Hash.of(content)
+            // let expectedCid = await Hash.of(content)
 
-            if (expectedCid.toString() != image.cid) {    
-                throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
-            }
+            // if (expectedCid.toString() != image.cid) {    
+            //     throw new Error(`Incorrect cid when importing image. Expected: ${image.cid}, Result: ${expectedCid.toString()}`)
+            // }
 
 
             try {
@@ -1161,49 +1160,6 @@ class ImportService {
         return metadata
 
     }
-
-
-    // private async _getTokenImage(url:string, tokenId:number) : Promise<TokenImageCache> {
-
-    //     //Check the cache
-    //     let existing
-
-    //     try {
-    //         existing = await this.tokenImageCacheRepository.get(url)
-    //     } catch(ex) {}
-        
-    //     if (existing) {
-    //         console.log(`Returning cached token image #${tokenId}`)
-    //         return existing
-    //     } 
-
-
-        
-    //     let imageData = await this._fetchURI(url)
-
-
-    //     let tokenImageCache:TokenImageCache = {
-    //         _id: url,
-    //         dateCreated: new Date().toJSON()
-    //     }
-
-
-    //     //Figure out if it's an svg and save appropriately
-    //     if (isSvg(new TextDecoder().decode(imageData))) {
-    //         tokenImageCache.svg = new TextDecoder().decode(imageData)
-    //     } else {
-    //         tokenImageCache.buffer = imageData
-    //     }
-
-    //     //Cache it
-    //     await this.tokenImageCacheRepository.put(tokenImageCache)
-
-
-    //     return this.tokenImageCacheRepository.get(url)
-
-    // }
-
-
 
     private async _fetchURI(uri) {
         

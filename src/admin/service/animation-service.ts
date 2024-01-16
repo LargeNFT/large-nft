@@ -3,7 +3,6 @@ import { Animation } from "../dto/animation.js"
 
 import { ValidationException } from "../util/validation-exception.js"
 import { validate, ValidationError } from 'class-validator'
-import Hash from 'ipfs-only-hash'
 import { AnimationRepository } from "../repository/animation-repository.js"
 import { Item } from "../dto/item.js"
 
@@ -11,6 +10,9 @@ import { ImageService } from "./image-service.js"
 import { QuillService } from "./quill-service.js"
 import { ThemeService } from "./theme-service.js"
 import { Theme } from "../dto/theme.js"
+
+import Hash from 'ipfs-only-hash'
+
 
 const { forEach: each } = Array.prototype;
 
@@ -63,9 +65,10 @@ class AnimationService {
   
     const animation: Animation = new Animation()
     animation.content = content
-
-    animation.cid = await Hash.of(animation.content)
     
+    animation.cid = await Hash.of(animation.content)
+
+
     return animation
 
   }

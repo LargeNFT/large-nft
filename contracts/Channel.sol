@@ -5,10 +5,15 @@ pragma solidity 0.8.21;
 import "erc721a/contracts/extensions/ERC721AQueryable.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+// import "./util/console.sol";
 
-import "./util/console.sol";
 
-contract Channel is ERC721AQueryable, Ownable {
+interface ERC165 {
+    function supportsInterface(bytes4 interfaceID) external view returns (bool);
+}
+
+
+contract Channel is ERC721AQueryable, Ownable, ERC165 {
 
     string private _contractURI;
     string private _ipfsCid;
@@ -19,7 +24,8 @@ contract Channel is ERC721AQueryable, Ownable {
     //set the maximum number an address can mint at a time
     uint256 public MAX_MINT_AMOUNT = 10;
 
-    event MintEvent(uint256 tokenId);
+    event MintEvent(uint256 tokenId);  
+    event BatchMetadataUpdate(uint256 _fromTokenId, uint256 _toTokenId);
 
 
     constructor(string memory name, string memory symbol, string memory ipfsCid, uint256 mintFee, uint256 maxTokenId) ERC721A(name, symbol) {
@@ -97,6 +103,22 @@ contract Channel is ERC721AQueryable, Ownable {
     function totalMinted() public view returns (uint256) {
         return _totalMinted();
     }
+
+    function update(string memory ipfsCid, uint256 mintFee, uint256 maxTokenId) public onlyOwner {
+
+        _mintFee = mintFee;
+        _maxTokenId = maxTokenId;
+        _ipfsCid = ipfsCid;
+        _contractURI = string(abi.encodePacked("ipfs://", _ipfsCid, "/contractMetadata.json"));
+
+        emit BatchMetadataUpdate(1, type(uint256).max);
+    }
+
+    /// @dev See {IERC165-supportsInterface}. //https://eips.ethereum.org/EIPS/eip-4906
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, ERC721A, IERC721A) returns (bool) {
+        return interfaceId == bytes4(0x49064906) || super.supportsInterface(interfaceId);
+    }
+
 
     function uint2str(uint _i) public pure returns (string memory _uintAsString) {
         if (_i == 0) {

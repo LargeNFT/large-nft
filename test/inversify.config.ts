@@ -91,7 +91,12 @@ import { OriginalMetadataService } from "../src/admin/service/original-metadata-
 import { OriginalMetadataRepository } from "../src/admin/repository/original-metadata-repository.js";
 
 
+import { createHelia } from 'helia'
 
+import { FsBlockstore } from 'blockstore-fs'
+import { FsDatastore } from 'datastore-fs'
+import { CarService } from "../src/admin/service/car-service.js";
+import { CarRepository } from "../src/admin/repository/car-repository.js";
 
 async function getContainer() {
 
@@ -154,6 +159,24 @@ async function getContainer() {
 
     container.bind("dayjs").toConstantValue(dayjs)
 
+    let helia 
+
+    container.bind("helia").toConstantValue( async () => {
+  
+      if (helia) return helia
+  
+      const blockstore = new FsBlockstore('./test/ipfs/blockstore')
+      const datastore = new FsDatastore('./test/ipfs/datastore')
+      
+      helia = await createHelia({
+        blockstore: blockstore,
+        datastore: datastore
+      })
+      
+      return helia
+  
+    })
+
 
     container.bind(DatabaseService).toSelf().inSingletonScope()
     container.bind(SchemaService).toSelf().inSingletonScope()
@@ -186,6 +209,7 @@ async function getContainer() {
     container.bind(ChannelWebService).toSelf().inSingletonScope()
     container.bind(ItemWebService).toSelf().inSingletonScope()
     container.bind(OriginalMetadataService).toSelf().inSingletonScope()
+    container.bind(CarService).toSelf().inSingletonScope()
 
     // container.bind(GitService).toSelf().inSingletonScope()
 
@@ -202,6 +226,7 @@ async function getContainer() {
     container.bind(QueryCacheRepository).toSelf().inSingletonScope()
     container.bind(AttributeCountRepository).toSelf().inSingletonScope()
     container.bind(OriginalMetadataRepository).toSelf().inSingletonScope()
+    container.bind(CarRepository).toSelf().inSingletonScope()
 
 
     //Spin up local IPFS

@@ -14,28 +14,25 @@
     
     
                         <div class="card card-header-divider">
-                            <div class="card-header">Export</div>
+                            <div class="card-header">Push to Git Repo</div>
                             <div class="card-content card-content-padding">
     
                                 <p>
-                                    Export and publish collection to git and IPFS.
+                                    Export collection data to the configured git repo. The git provider will deploy an updated Large Reader.
+                                </p>
+
+                                <p>
+                                    <strong>Provider:</strong>  ${channelViewModel?.gitProvider.name} <br />
+                                    <strong>Repository:</strong>   <a href="${channelViewModel.channel.httpUrlToRepo}" class="link external" target="_blank">${channelViewModel.channel.httpUrlToRepo}</a><br />
+                                    <strong>Branch:</strong>   ${channelViewModel.channel.publishReaderRepoBranch}
                                 </p>
     
                             </div>
                         </div>
                         
-                        <div class="card card-header-divider">
-                            <div class="card-header">Git Repo</div>
-                            <div class="card-content card-content-padding">
-                                <strong>Provider:</strong>  ${channelViewModel?.gitProvider.name} <br />
-                                <strong>Repository:</strong>   <a href="${channelViewModel.channel.httpUrlToRepo}" class="link external" target="_blank">${channelViewModel.channel.httpUrlToRepo}</a><br />
-                                <strong>Branch:</strong>   ${channelViewModel.channel.publishReaderRepoBranch}
-                            </div>
-                        </div>
-        
     
                         <div class="card card-header-divider">
-                            <div class="card-header">Export Status</div>
+                            <div class="card-header">Status</div>
                             <div class="card-content card-content-padding">      
 
                                 ${publishing ? $h`
@@ -147,11 +144,9 @@
                                 ${channelViewModel.channel.publishReaderIPFSStatus?.status ? $h`
     
                                     <div class="pin-status"> 
-                                        <strong>Build Status:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.status}<br />
 
-                                        ${channelViewModel.channel.publishReaderIPFSStatus?.status == "complete" && channelViewModel.channel.publishReaderIPFSStatus?.cid ? $h`
-                                            <strong>IPFS cid:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
-                                            <strong>Archive:</strong> <a href="${channelViewModel.channel.publishReaderIPFSStatus?.archive}" class="link external">${channelViewModel.channel.publishReaderIPFSStatus?.archive}</a><br />
+                                        ${channelViewModel.channel.publishReaderIPFSStatus?.cid ? $h`
+                                            <strong>IPFS CID:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
                                             <strong>Date:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}
                                         ` : $h` `}
 
@@ -173,7 +168,7 @@
                                     ` : $h`
     
                                         ${!publishing ? $h`
-                                            <button type="submit" class="button button-fill button-small deploy-button" >Export</button>
+                                            <button type="submit" class="button button-fill button-small deploy-button" >Push to Git Repo</button>
                                         ` : $h`<span />`}  
     
                                     `}
@@ -341,7 +336,7 @@
             text: 'Publish',
             path: `/admin/publish/${channelViewModel.channel._id}`
         }, {
-            text: 'Export'
+            text: 'Push to Git Repo'
         }]
 
 

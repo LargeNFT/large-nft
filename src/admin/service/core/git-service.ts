@@ -9,6 +9,8 @@ import { ChannelService } from "../channel-service.js";
 import { ForkInfo, GitProviderService } from "./git-provider-service.js";
 import { GithubService } from "./github-service.js";
 import { SchemaService } from "./schema-service.js";
+import { CarService } from "../car-service.js";
+import { Car } from "../../dto/car.js";
 
 //TODO: Refactor this so we're not specifically switching between github and gitlab 
 //Inject the proper service and then call the method on it. This will make it easier to add more 
@@ -27,7 +29,7 @@ class GitService {
         private channelService:ChannelService,
         private gitlabService:GitlabService,
         private githubService:GithubService,
-        private schemaService:SchemaService
+        private carService:CarService
 
     ) {}
 
@@ -40,91 +42,23 @@ class GitService {
 
         let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
 
-
         if (gitProvider.personalAccessToken.length < 1) {
             throw new Error(`${gitProvider.name} personal access token not set`)
         }
 
-
         let gitActions:any[] = []
 
-        this.logPublishProgress(`Creating channel backup...`)
-        let backup = await this.schemaService.backupChannel()
+        let car:Car = await this.carService.get("ipfs")
 
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/channel.json`,
-            content: Buffer.from(JSON.stringify(backup.channel))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/items.json`,
-            content: Buffer.from(JSON.stringify(backup.items))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/originalMetadata.json`,
-            content: Buffer.from(JSON.stringify(backup.originalMetadata))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/authors.json`,
-            content: Buffer.from(JSON.stringify(backup.authors))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/themes.json`,
-            content: Buffer.from(JSON.stringify(backup.themes))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/staticPages.json`,
-            content: Buffer.from(JSON.stringify(backup.staticPages))
-        })
-
-        gitActions.push({
-            action: "create",
-            file_path: `/.upload/attributeCounts.json`,
-            content: Buffer.from(JSON.stringify(backup.attributeCounts))
-        })
-
-
-        this.logPublishProgress(`Packaging ${backup.images?.length} images...`)
-
-        let i=0
-        for (let image of backup.images) {
-
-            if (image.buffer instanceof ArrayBuffer) {
-                image.buffer = new Uint8Array(image.buffer)
-            }
-
-            gitActions.push({
-                action: "create",
-                file_path: `/.upload/images/${i}.json`,
-                content: Buffer.from(JSON.stringify(image))
-            })
-            i++
+        if (!car) {
+            throw new Error(`Generate an IPFS .car bundle before deploying to git provider.`)
         }
 
-
-        this.logPublishProgress(`Packaging ${backup.animations?.length} animations...`)
-
-        i=0
-        for (let animation of backup.animations) {
-            gitActions.push({
-                action: "create",
-                file_path: `/.upload/animations/${i}.json`,
-                content: Buffer.from(JSON.stringify(animation))
-            })
-            i++
-        }
-
+        gitActions.push({
+            action: "create",
+            file_path: `/.upload/${ channel.publishReaderIPFSStatus.cid }.car`,
+            content: car.content
+        })
 
         switch(gitProvider.name) {
 
@@ -259,43 +193,7 @@ class GitService {
 
     }
 
-    async getIPFSActionStatus(channel: Channel) : Promise<string> {
-        
-        let settings = await this.settingsService.get()
-
-        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error(`${gitProvider.name} personal access token not set`)
-        }
-
-        switch(gitProvider.name) {
-            case "gitlab":
-                return this.gitlabService.getIPFSActionStatus(channel)
-            case "github":
-                return this.githubService.getIPFSActionStatus(channel)
-        }
-
-    }
-
-    async getIPFSActionResult(channel: Channel) : Promise<any> {
-        
-        let settings = await this.settingsService.get()
-
-        let gitProvider = await this.channelService.getGitProviderCredentials(channel, settings)
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error(`${gitProvider.name} personal access token not set`)
-        }
-
-        switch(gitProvider.name) {
-            case "gitlab":
-                return this.gitlabService.getIPFSActionResult(channel)
-            case "github":
-                return this.githubService.getIPFSActionResult(channel)
-        }
-
-    }
+    
 
     // async getProductionURIInfo(channel: Channel) : Promise<any> {
         

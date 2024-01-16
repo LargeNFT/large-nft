@@ -4,7 +4,7 @@ interface WalletService {
   provider:any
   initWallet() : Promise<void>
   connect() : Promise<void>
-  getContract(name:string)
+  getContract(address:string)
   getWallet() : Promise<any>
   getAddress() : Promise<string>
   truncateEthAddress(address) : string

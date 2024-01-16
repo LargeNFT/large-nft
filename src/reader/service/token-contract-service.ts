@@ -75,42 +75,6 @@ class TokenContractService {
     async getChannelContract() : Promise<ChannelContract> {
 
         let contract:ChannelContract = await this.walletService.getContract("Channel")
-
-        // //Add event listener for mints if it's not already added. 
-        // if (this.walletService.provider && !this.mintEventListenerAdded) {
-                        
-        //     console.log("Registering mint listener...")
-
-        //     let filter = {
-        //         address: contract.address,
-        //         topics: [
-        //             // the name of the event, parnetheses containing the data type of each event, no spaces
-        //             id("MintEvent(uint256)")
-        //         ]
-        //     }
-            
-        //     this.walletService.provider.on( filter, async (e) => {
-
-        //         let tokenId = parseInt(e.data)
-
-        //         if (tokenId > this.lastMintedTokenId) {
-        //             this.lastMintedTokenId = tokenId
-
-        //             let mintEvent = new CustomEvent('mint-event')
-
-        //             //@ts-ignore
-        //             mintEvent.tokenId = tokenId
-              
-        //             document.dispatchEvent(mintEvent)
-
-        //         }
-
-        //     })
-
-        //     this.mintEventListenerAdded = true
-
-        // }
-
         return contract
     }
 
@@ -127,6 +91,7 @@ interface ChannelContract {
     totalMinted() : BigInt
     totalSupply() : BigInt
     owner() : string
+    update(): void
     address:string
     on(filter, listener)
     queryFilter(event, fromBlock, toBlock)

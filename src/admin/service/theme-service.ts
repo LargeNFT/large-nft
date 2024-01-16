@@ -5,7 +5,6 @@ import { validate, ValidationError } from "class-validator";
 import { ValidationException } from "../util/validation-exception.js";
 import { WalletService } from "./core/wallet-service.js";
 import TYPES from "./core/types.js";
-import Hash from 'ipfs-only-hash'
 import { v4 as uuidv4 } from 'uuid';
 
 @injectable()

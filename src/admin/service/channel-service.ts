@@ -20,6 +20,8 @@ import { AttributeCount } from "../dto/attribute.js";
 import { AttributeCountService } from "./attribute-count-service.js";
 import { SchemaService } from "./core/schema-service.js";
 import { Settings } from "../dto/settings.js";
+import { WalletService } from "./core/wallet-service.js";
+import TYPES from "./core/types.js";
 
 @injectable()
 class ChannelService {
@@ -31,7 +33,9 @@ class ChannelService {
     private quillService:QuillService,
     private schemaService:SchemaService,
     private queryCacheService:QueryCacheService,
-    private attributeCountService:AttributeCountService
+    private attributeCountService:AttributeCountService,
+    @inject(TYPES.WalletService) private walletService: WalletService,
+
 
   ) { }
 
@@ -183,10 +187,33 @@ class ChannelService {
 
   }
 
+  async getChannelContract(channel:Channel) : Promise<ChannelContract> {
 
+      if (!channel.contractAddress) return
+
+      let contract:ChannelContract = await this.walletService.getContract(channel.contractAddress)
+      return contract
+  }
+
+
+}
+
+interface ChannelContract {
+  mint(quantity:number, options:any)
+  mintFromStartOrFail(quantity:number, start:number,options:any)
+  ownerOf(tokenId:number) : string
+  tokenURI(tokenId:number) : string
+  balanceOf(address) : string
+  totalMinted() : BigInt
+  totalSupply() : BigInt
+  owner() : string
+  update(ipfsCid:string, mintFee:BigInt, maxTokenId:BigInt): void
+  address:string
+  on(filter, listener)
+  queryFilter(event, fromBlock, toBlock)
 }
 
 
 export {
-  ChannelService
+  ChannelService, ChannelContract
 }

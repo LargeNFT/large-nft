@@ -1,0 +1,425 @@
+<!--suppress JSAnnotator -->
+<template>
+
+    <div class="page" data-name="publish">
+
+        <${Navbar} breadcrumbs=${breadcrumbs}  />
+
+        <div class="page-content hide-toolbar-on-scroll">
+
+            <div class="fixed-width-content center">
+                ${showForm ? $h`
+
+                    <form @submit="${formSubmit}" id="create-car-form">
+    
+    
+                        <div class="card card-header-divider">
+                            <div class="card-header">IPFS</div>
+                            <div class="card-content card-content-padding">
+    
+                                <p>
+                                    Generate an IPFS archive (.car) for download. This archive can be imported into an IPFS node and represents all of the content in the collection. 
+                          Later it can be uploaded to your git provider for display in Large Reader.
+                                </p>
+    
+                            </div>
+                        </div>
+
+    
+                        <div class="card card-header-divider">
+                            <div class="card-header">Status</div>
+                            <div class="card-content card-content-padding">      
+
+                                ${publishing ? $h`
+                                    <div class="publish-label">
+                                        Bundling...
+                                    </div>
+    
+                                    ${publishStatus? $h`
+    
+                                        <div class="row">
+                                            <div class="margin-top"><strong>NFT Data</strong></div>
+                                            <div class="data-table">
+                                                <table>
+                                                    <thead>
+                                                    <th class="label-cell">Type</th>
+                                                    <th class="numeric-cell">Saved</th>
+                                                    <th class="numeric-cell">Total</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="${publishStatus.images.saved == publishStatus.images.total && publishStatus.images.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Images</td>
+                                                        <td class="numeric-cell">${publishStatus.images.saved}</td>
+                                                        <td class="numeric-cell">${publishStatus.images.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.animations.saved == publishStatus.animations.total && publishStatus.animations.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Animations</td>
+                                                        <td class="numeric-cell">${publishStatus.animations.saved}</td>
+                                                        <td class="numeric-cell">${publishStatus.animations.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.nftMetadata.saved == publishStatus.nftMetadata.total && publishStatus.nftMetadata.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">NFT Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.nftMetadata.saved}</td>
+                                                        <td class="numeric-cell">${publishStatus.nftMetadata.total}</td>
+                                                    </tr>
+                                                    
+                                                    </tbody>
+                                                </table>
+    
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-100" style="margin-top: 40px;"><strong>Database Backup</strong></div>
+                                        <div class="row">
+                                            <div class="data-table">
+                                                <table>
+                                                    <thead>
+                                                    <th class="label-cell">Type</th>
+                                                    <th class="numeric-cell">Total</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr class="${publishStatus.contractMetadata.saved == publishStatus.contractMetadata.total && publishStatus.contractMetadata.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Contract Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.contractMetadata.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.items.saved == publishStatus.backups.items.total && publishStatus.backups.items.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Items</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.items.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.images.saved == publishStatus.backups.images.total && publishStatus.backups.images.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Image Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.images.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.animations.saved == publishStatus.backups.animations.total && publishStatus.backups.animations.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Animations Metadata</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.animations.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.themes.saved == publishStatus.backups.themes.total && publishStatus.backups.themes.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Themes</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.themes.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.staticPages.saved == publishStatus.backups.staticPages.total && publishStatus.backups.staticPages.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Static Pages</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.staticPages.total}</td>
+                                                    </tr>
+                                                    <tr class="${publishStatus.backups.channels.saved == publishStatus.backups.channels.total && publishStatus.backups.channels.total > 0 ? 'complete' : ''}">
+                                                        <td class="label-cell">Channels</td>
+                                                        <td class="numeric-cell">${publishStatus.backups.channels.total}</td>
+                                                    </tr>
+    
+                                                    ${publishStatus.backups.authors.total ? $h`
+    
+                                                        <tr class="${publishStatus.backups.authors.saved == publishStatus.backups.authors.total && publishStatus.backups.authors.total > 0 ? 'complete' : ''}">
+                                                            <td class="label-cell">Authors</td>
+                                                            <td class="numeric-cell">${publishStatus.backups.authors.total}</td>
+                                                        </tr>
+                                                    ` : $h`<span/>`}
+    
+    
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+    
+                                        <div class="publish-status"></div>
+    
+                                    ` : $h`<span />`}
+    
+                                ` : $h`
+                                    <div class="publish-label" style="display:none;"></div>
+                                `}
+    
+                                ${publishOutput ? $h`
+                                    <div class="publish-output" innerHTML="${publishOutput}" id="ipfs-publish-process" ></div>
+                                ` : $h`
+                                    <div class="publish-output" style="display:none;"></div>
+                                `}
+    
+    
+                                ${channelViewModel.channel.publishReaderIPFSStatus?.cid ? $h`
+    
+                                    <div class="pin-status"> 
+
+                                            <strong>IPFS CID:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
+                                            <strong>Download Archive:</strong> <a href="#" @click="${downloadCAR}" class="link">${channelViewModel.channel.publishReaderIPFSStatus?.cid}.car</a><br />
+                                            <strong>Date:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}
+
+                                            <a href="#" download="${channelViewModel.channel.publishReaderIPFSStatus?.cid}.car" class="link external" style="display:none;" id="hidden-download"></a>
+
+
+                                    </div>
+    
+                                ` : $h`<span />`}
+    
+    
+                                ${!publishing ? $h`
+    
+                                    
+                                    ${showRefresh ? $h`
+        
+                                        <button type="submit" class="button button-fill button-small color-gray text-color-white deploy-button">
+                                            <i class="material-icons">refresh</i> Generate Again
+                                        </button>
+    
+    
+                                    ` : $h`
+    
+                                        ${!publishing && !ipfsService.initializing ? $h`
+                                            <button type="submit" class="button button-fill button-small deploy-button" >Generate .CAR bundle</button>
+                                        ` : $h`<span />`}  
+    
+                                    `}
+                                    
+                                ` : $h`
+                                    <p></p>
+                                `}
+                            </div>
+                        </div>
+    
+                    </form>
+    
+                ` : $h`
+    
+                    ${!hasItems ? $h`
+                
+                        <div class="card">
+                        <div class="card-content card-content-padding">
+                            <p>Add NFTs to the collection before publishing.</p>
+                        </div>
+                        </div>
+        
+                    ` : $h` `}
+        
+
+    
+                `}
+
+            </div>
+
+            
+
+        </div>
+
+    </div>
+
+</template>
+
+<style>
+    .deploy-button {
+        margin-top: 10px;
+        width: 200px;
+    }
+
+    .publish-label,
+    .ipfs-label,
+    .forking-label {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .publish-output {
+        border: 1px solid #cccccc;
+        font-size: 13px;
+        width: 100%;
+        max-width: 100%;
+        padding: 5px;
+        height: 100px;
+        overflow-y: scroll;
+    }
+
+    .publish-status {
+        font-size: 14px;
+        padding: 10px;
+        border: 1px solid #f1f1f1;
+    }
+
+    .publish-status .item label {
+        font-weight: bold;
+        display: inline-block;
+        width: 180px;
+    }
+
+    /* #export-refresh-button {
+        width: 45px;
+        height: 30px;
+        display: inline-block;
+        margin-left: 5px;
+        padding-top: 2.5px;
+    } */
+
+    #export-next-button {
+        width: 200px;
+        float: right;
+    }
+
+</style>
+
+<script>
+
+    import dayjs from "dayjs"
+
+    import { ContainerService } from "../../../service/core/container-service"
+    import { ChannelService } from "../../../service/channel-service"
+    import { PublishService } from "../../../service/core/publish-service"
+
+    import { GitlabService } from "../../../service/core/gitlab-service"
+    import { GitService } from "../../../service/core/git-service"
+
+    import { QueueService } from "../../../service/core/queue-service"
+
+    import { IpfsService } from "../../../service/core/ipfs-service"
+    import { CarService } from "../../../service/car-service"
+
+
+    import Navbar from "../../admin/navbar.f7.html"
+
+
+    export default (props, { $, $h, $on, $f7, $update }) => {
+
+        let channelService = ContainerService.getInstance(ChannelService)
+        let ipfsService = ContainerService.getInstance(IpfsService)
+        let publishService = ContainerService.getInstance(PublishService)
+        let queueService = ContainerService.getInstance(QueueService)
+        let carService = ContainerService.getInstance(CarService)
+
+
+        let channelViewModel = props.channelViewModel
+        let settings = props.settings
+
+        let publishing = false
+        let checkingStatus = false
+        let publishStatus 
+        let publishOutput = ""
+        let carBlobURL 
+
+
+        let pageUnloaded = false
+
+        let showRefresh = channelViewModel?.channel.publishReaderIPFSStatus?.status == "pending"
+
+        let hasItems = channelViewModel.itemCount > 0 
+        let gitConfigured = channelViewModel?.gitProvider?.personalAccessToken?.length > 0
+        let gitRepo = channelViewModel?.channel?.httpUrlToRepo?.length > 0
+
+        let showForm = hasItems && gitConfigured && gitRepo 
+
+        let breadcrumbs = [{
+            text: "Home",
+            path: "/"
+        },{
+            text: channelViewModel.channel.title,
+            path: `/admin/channel/show/${channelViewModel.channel._id}`
+        }, {
+            text: 'Publish',
+            path: `/admin/publish/${channelViewModel.channel._id}`
+        }, {
+            text: 'IPFS'
+        }]
+
+
+        let gitProvider
+
+        $on('pageInit', async () => {
+
+            pageUnloaded = false
+
+            await ipfsService.initLocal()
+
+
+            await $update()
+
+        })
+
+
+        $on('pageAfterOut', async (e, page) => {
+
+            console.log("Unloading page")
+
+            pageUnloaded = true
+        })
+
+        const formSubmit = async (e) => {
+
+            e.preventDefault()
+
+            let formData = $f7.form.convertToData('#create-car-form')
+
+            publishing = true
+
+            await $update()
+
+            let elem = document.getElementsByClassName('publish-label')[0]
+
+            $f7.preloader.showIn(elem)
+
+            //Now publish
+            try {
+                
+                //Now publish
+                let result = await publishService.publish(channelViewModel.channel)
+
+                await $update()
+
+
+                //Update IPFS info in channel
+                channelViewModel.channel.publishReaderIPFSStatus = {
+                    status: "complete",
+                    cid: result.cid.toString(),
+                    date: new Date().toJSON()
+                }
+
+                await channelService.put(channelViewModel.channel)
+
+                await $update()
+
+            } catch(ex) {
+                console.log(ex)
+                $f7.dialog.alert(ex.message, "There was an error")
+            }
+            
+
+            $f7.preloader.hideIn(elem)
+
+            publishing = false
+            showRefresh = true
+
+            await $update()
+
+        }
+
+        $(document).on('publish-progress', async (e) => {
+
+            if (e.detail.message) {
+                publishOutput = `<p>${e.detail.message}</p>`
+            }
+            
+            publishStatus = e.detail.publishStatus
+
+            $update()
+
+            let outputElement = document.getElementById('ipfs-publish-process')
+
+            if (outputElement) {
+                $(outputElement).scrollTop(outputElement.scrollHeight)
+            }
+            
+        })
+
+        const downloadCAR = async (e) => {
+
+            e.preventDefault()
+
+            const car = await carService.get("ipfs")
+            carBlobURL = URL.createObjectURL(new Blob([car.content], {type: "application/car"}))
+
+            $('#hidden-download').attr('href', carBlobURL)
+            $('#hidden-download').click()
+            
+
+        }
+        
+        return $render
+    }
+</script>

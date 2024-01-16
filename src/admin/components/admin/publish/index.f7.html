@@ -11,7 +11,34 @@
 
           ${channelViewModel.itemCount > 0 ? $h`
           
-            <div class="block-title block-title-medium">Configure Git</div>
+            <div class="block-title block-title-medium">IPFS</div>
+  
+            <div class="block list media-list">
+              <ul>
+                <li>
+                  <a href="/admin/publish/ipfs/${channelViewModel.channel._id}" class="item-link">
+                    <div class="item-content">
+                      <div class="item-media">
+                        <span class="material-icons">import_export</span>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Create IPFS bundle</div>
+                        </div>
+                        <div class="item-text">
+                          Generate an IPFS archive (.car) for download. This archive can be imported into an IPFS node and represents all of the content in the collection. 
+                          Later it can be uploaded to your git provider for display in Large Reader.
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+  
+              </ul>
+            </div>
+
+            
+            <div class="block-title block-title-medium">Git Repo</div>
             <div class="block list media-list">
               <ul>
                 <li>
@@ -22,9 +49,9 @@
                       </div>
                       <div class="item-inner">
                         <div class="item-title-row">
-                          <div class="item-title">Create/Connect Git Repository</div>
+                          <div class="item-title">Create/Connect Git Repo</div>
                         </div>
-                        <div class="item-subtitle">Create a remote git repository for the collection.</div>
+                        <div class="item-subtitle">Create or connect to a remote git repository.</div>
   
                         <div class="item-text">
                           
@@ -41,13 +68,7 @@
                     </div>
                   </a>
                 </li>
-              </ul>
-            </div>
-  
-            <div class="block-title block-title-medium">Export</div>
-  
-            <div class="block list media-list">
-              <ul>
+
                 <li>
                   <a href="/admin/publish/export/${channelViewModel.channel._id}" class="item-link">
                     <div class="item-content">
@@ -56,18 +77,20 @@
                       </div>
                       <div class="item-inner">
                         <div class="item-title-row">
-                          <div class="item-title">Export to Git Provider</div>
+                          <div class="item-title">Push to Git Repo</div>
                         </div>
                         <div class="item-text">
-                          Export collection data to the configured git repo. The git provider will create a new IPFS archive (.car) and deploy an updated Large Reader.
+                          Export collection data to the configured git repo. The git provider will deploy an updated Large Reader.
                         </div>
                       </div>
                     </div>
                   </a>
                 </li>
-  
+
               </ul>
             </div>
+  
+
   
   
             <div class="block-title block-title-medium">Contract (optional)</div>
@@ -88,8 +111,7 @@
                             <div class="item-title">Deploy Contract</div>
                           </div>
                           <div class="item-text">
-                            Deploy contract to connected network. Will publish the last IPFS hash from the first step. You can publish the 
-                            latest database without deploying the contract. 
+                            Deploy contract to connected network. This will deploy a new contract or update the existing one to point to the latest IPFS bundle. 
                           </div>
                         </div>
   

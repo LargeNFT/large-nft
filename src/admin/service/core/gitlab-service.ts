@@ -208,27 +208,6 @@ class GitlabService implements GitProviderService {
 
     }
 
-    async getIPFSActionStatus(channel: Channel): Promise<string> {
-
-        let settings = await this.settingsService.get()
-
-        let gitProvider = settings.gitProviders["gitlab"]
-
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error("Gitlab personal access token not set")
-        }
-
-        if (!channel.publishReaderRepoId) return
-
-        let jobs = await this.getJobForCommit(channel, gitProvider)
-
-        if (jobs?.length > 0 && jobs[0].status == "success") {
-            return "finished"
-        }
-
-    }
-
     async getJobForCommit(channel:Channel, gitProvider) : Promise<any[]> {
 
 
@@ -241,44 +220,6 @@ class GitlabService implements GitProviderService {
         })
 
         return res.data?.filter(job => job.commit?.id == channel.publishReaderIPFSStatus.headSha)
-
-    }
-
-    async getIPFSActionResult(channel: Channel): Promise<any> {
-
-        let settings = await this.settingsService.get()
-
-        let gitProvider = settings.gitProviders["gitlab"]
-
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error("Gitlab personal access token not set")
-        }
-
-
-        try {
-
-            let jobs = await this.getJobForCommit(channel, gitProvider)
-
-            let url = `${GitlabService.BASE_URL}/projects/${channel.publishReaderRepoId}/jobs/${jobs[0].id}/artifacts/ipfs/ipfs.json`
-
-            const res = await axios.get(url, {
-                headers: {
-                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-                }
-            })
-
-            let result = res.data
-
-            result.archive = `https://gitlab.com/${gitProvider.username}/${channel.publishReaderRepoPath}/-/jobs/${jobs[0].id}/artifacts/file/ipfs/${result.cid}.car`
-
-            return result
-
-        } catch(ex) {
-            console.log(ex)
-        }
-
-
 
     }
 

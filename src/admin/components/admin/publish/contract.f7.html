@@ -12,70 +12,124 @@
           ${channelViewModel.itemCount > 0 ? $h`
               
             ${walletService?.address ? $h`
-              <div class="block-title">Verify Mint Info</div>
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-content card-content-padding">
-  
+
+
+              <div class="card card-header-divider">
+                <div class="card-header">Verify Mint Info</div>
+                <div class="card-content card-content-padding">
+
+                  <p>
+                    <strong>Total Items:</strong> ${channelViewModel.itemCount} 
+                  </p>
+
+                  ${channelViewModel.channel.mintPrice ? $h`
+
                     <p>
                       <strong>Mint Price:</strong> ${channelViewModel.channel.mintPrice} ETH each
                     </p>
-  
-                    <p>
-                      <strong>Royalty:</strong> ${channelViewModel.channel.royaltyPercent}% 
-                    </p>
-  
-                  </div>
+                    
+                  ` : $h`<span />`}
+
                 </div>
               </div>
-              
-              <div class="block-title">Deploy Contract</div>
-              <div class="card">
-                <div class="card-content">
-                  <div class="card-content card-content-padding">
+
+
+              <div class="card card-header-divider">
+                <div class="card-header">Deploy Contract</div>
+                <div class="card-content card-content-padding">
+
+                  ${showDeploy ? $h`
   
-                    ${showDeploy ? $h`
+                    <div class="pin-status">
+                      <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}</p>
+                      <p><strong>Date Exported:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}</p>
+                    </div>
   
-                      <div class="pin-status">
-                        <p><strong>IPFS Hash:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}</p>
-                        <p><strong>Date Exported:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}</p>
+                    ${channelViewModel.channel.contractAddress ? $h`
+
+                      <p>
+                        <strong>Current Contract Address:</strong> ${channelViewModel.channel.contractAddress} 
+                      </p> 
+
+                      <br />
+
+                      <div class="block cancel-save-row">
+                        
+
+                        ${channelViewModel.channel?.publishReaderIPFSStatus?.cid && channelViewModel.channel?.mintPrice ? $h`
+                          <a @click="${updateContract}" class="button button-fill" tabindex="30">
+                            Update
+                          </a>
+                        ` : $h` `}
+    
+                        <button @click="${resetContract}" type="submit" class="button button-outline color-gray" tabindex="31">
+                          Reset
+                        </button>
+          
                       </div>
-  
-  
-                      ${channelViewModel.channel.contractAddress ? $h`
-                        <p>
-                          <strong>Current Contract Address:</strong> ${channelViewModel.channel.contractAddress} 
-                          <a @click="${resetContract}" class="button button-fill button-small deploy-button">Reset</a>
-                        </p> 
-                      ` : $h`<span/>`}
-  
-  
-                      ${deploying ? $h`
-                        <p>Deploying...</p>
-                      ` : $h`
-                      
-                        ${!channelViewModel.channel.contractAddress ? $h`
-                          <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
-                        ` : $h`
-                          
-                          <h1>Success!</h1>
-                          
-                          <p>
-                            After deploying the contract re-export to the configured Git provider. The app will rebuild and it will become aware of Ethereum and show users the 
-                            controls to begin minting NFTs if appropriate.
-                          </p>
-                          <a class="button button-outline button-small deploy-button" href="/admin/publish/export/${channelViewModel.channel._id}">Go to export</a>
-  
-  
-                        `}                        
-                      `}
-                      
+
+
+                    ` : $h`<span/>`}
+
+
+                    ${deploying ? $h`
+
+                      <p>Deploying...</p>
+
                     ` : $h`
-                      <p>Collection must be deployed to IPFS</p>
+                    
+                      ${!channelViewModel.channel.contractAddress ? $h`
+                        <button class="button button-fill button-small deploy-button" @click="${deployContractClick}">Deploy Contract</button>
+                      ` : $h`<span />`}                        
                     `}
-                  </div>
+                    
+                  ` : $h`
+                    <p>Collection must be deployed to IPFS</p>
+                  `}
                 </div>
               </div>
+
+
+              <div class="card card-header-divider">
+                <div class="card-header">Reader Contract Bundle</div>
+                <div class="card-content card-content-padding">      
+
+                  <p>Download contract information to export to your deployed collection. Must be exported AFTER deploying or updating a contract. Contract information does NOT change when collection changes are published.</p>
+
+                  ${publishing ? $h`
+                      <div class="publish-label">
+                          Bundling...
+                      </div>
+
+                  ` : $h`
+                      <div class="publish-label" style="display:none;"></div>
+                  `}
+
+                  ${publishOutput ? $h`
+                      <div class="publish-output" innerHTML="${publishOutput}" id="contract-publish-process" ></div>
+                  ` : $h`
+                      <div class="publish-output" style="display:none;"></div>
+                  `}
+
+
+                  ${channelViewModel.channel.contractAddress ? $h`
+
+                      <div class="pin-status"> 
+
+                              <strong>Download Archive:</strong> <a href="#" @click="${downloadCAR}" class="link">contract.car</a><br />
+
+                              <a href="#" download="contract.car" class="link external" style="display:none;" id="hidden-download"></a>
+
+                      </div>
+
+                  ` : $h`<span />`}
+                    
+                </div>
+              </div>
+
+
+
+
               
             ` : $h`
               <div class="card">
@@ -118,12 +172,14 @@
     import { ContainerService } from "../../../service/core/container-service"
     import { ChannelService } from "../../../service/channel-service"
     import { DeployService } from "../../../service/core/deploy-service"
+    import { CarService } from "../../../service/car-service"
 
     import { GitlabService } from "../../../service/core/gitlab-service"
 
     import { QueueService } from   "../../../service/core/queue-service"
 
     import { IpfsService } from "../../../service/core/ipfs-service"
+    import { PublishService } from "../../../service/core/publish-service"
 
 
     import Navbar from "../../admin/navbar.f7.html"
@@ -136,11 +192,19 @@
         let queueService = ContainerService.getInstance(QueueService)
         let gitlabService = ContainerService.getInstance(GitlabService)
         let deployService = ContainerService.getInstance(DeployService)
+        let carService = ContainerService.getInstance(CarService)
+        let publishService = ContainerService.getInstance(PublishService)
+
         let walletService
 
         let channelViewModel = props.channelViewModel
+        let channelContract = props.channelContract
 
         let deploying = false 
+        let publishing = false
+        let showRefresh = false
+        let publishOutput = ""
+        let existingCar
 
         let showDeploy = channelViewModel.channel.publishReaderIPFSStatus?.cid != undefined || channelViewModel.channel.contractAddress
 
@@ -159,11 +223,16 @@
 
 
         $on('pageInit', async (e, page) => {
+
           walletService = ContainerService.getWalletService()
+
+          await ipfsService.initLocal()
 
           await $update()
 
         })
+
+        
 
 
         const deployContractClick = async (e) => {
@@ -183,21 +252,61 @@
           await $update()
         }
 
+        const updateContract = async (e) => {
 
+          deploying = true
+          await $update()
 
-        const resetContract = async (e) => {
+          let promiseView = {
+            title: `Updating contract ${name}. Approve transaction and wait for it to be mined.`,
+            promise: deployService.updateContract(channelViewModel.channel)
+          }
 
-          channelViewModel.channel.contractAddress = undefined
+          //Wait for it to be mined
+          await queueService.queuePromiseView(promiseView)
 
-          await channelService.put(channelViewModel.channel)
-
-          channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
-
-          $update()
+          deploying = false
+          await $update()
 
         }
 
+        const resetContract = async (e) => {
 
+          $f7.dialog.confirm("Are you sure you want to clear the contract address? This will not remove the actual contract from the network it will just allow you to redploy a new copy.", "Reset Contract", async () => {
+
+            channelViewModel.channel.contractAddress = undefined
+
+            await channelService.put(channelViewModel.channel)
+
+            channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
+
+            const toast = $f7.toast.show({
+              text: 'Contract address cleared.',
+              closeTimeout: 2000,
+              closeButton: true,
+              position: 'bottom',
+              horizontalPosition: 'left'
+            })
+
+            await $update()
+
+          })
+
+
+
+
+        }
+
+        const downloadCAR = async (e) => {
+
+          e.preventDefault()
+
+          let car = await publishService.publishContract(channelViewModel.channel)
+
+          $('#hidden-download').attr('href', URL.createObjectURL(new Blob([car.content], {type: "application/car"})))
+          $('#hidden-download').click()
+
+        }
 
         return $render
     }

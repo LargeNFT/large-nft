@@ -14,7 +14,6 @@ import fs from "fs"
 import { IpfsService } from "./service/core/ipfs-service.js"
 import { ChannelBackup, SchemaService } from "./service/core/schema-service.js"
 import { SettingsService } from "./service/core/settings-service.js"
-import { Settings } from "./dto/settings.js"
 
 import { ImageRepository } from "./repository/image-repository.js"
 import { AnimationRepository } from "./repository/animation-repository.js"
@@ -30,7 +29,6 @@ import { ChannelRepository } from "./repository/channel-repository.js"
 let publish = async () => {
 
   let config:any = await ProcessConfig.getPublishConfig() 
-
 
   let container = await getMainContainer()
 
@@ -52,21 +50,7 @@ let publish = async () => {
 
 
 
-  // let settings
-
-  // try {
-  //   settings = await settingsService.get()
-  // } catch (ex) {}
-
-  // if (!settings) {
-  //   settings = new Settings()
-  //   settings.ipfsHost = '/ip4/127.0.0.1/tcp/5001'
-  //   await settingsService.put(settings)
-  // }
-
-
-
-  await ipfsService.init()
+  await ipfsService.initLocal()
 
 
 
@@ -240,27 +224,31 @@ let publish = async () => {
   //export to IPFS
   let result = await publishService.publish(channel, process.env.INIT_CWD )
 
-  
-
   //Export car file
-  if (result.cids) {
-    const out = await ipfsService.ipfs.dag.export(result.cids.cid)
-    Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.cids.cid}.car`))
+  if (result) {
+
+    const { writer, out } = await ipfsService.createCAR(result.cid)
+
+    
+    Readable.from(out).pipe(fs.createWriteStream(`${process.env.INIT_CWD}/ipfs/${result.toString()}.car`))
   
+    await ipfsService.exportCAR(result.cid, writer)
+    
   
-    fs.writeFileSync(`${process.env.INIT_CWD}/ipfs/ipfs.json`, Buffer.from(JSON.stringify({
-      cid: result.cids.cid.toString(),
-      date: new Date().toUTCString()
-    })))
+    // fs.writeFileSync(`${process.env.INIT_CWD}/ipfs/ipfs.json`, Buffer.from(JSON.stringify({
+    //   cid: result.toString(),
+    //   date: new Date().toUTCString()
+    // })))
+
+    console.log(`CAR file created: ${process.env.INIT_CWD}/ipfs/${result}.car`)
+
+
   }
-
-
 
 
 }
 
-
-publish()
+await publish()
 
 export default publish
 

@@ -4,8 +4,7 @@ import { ChannelService } from "./service/channel-service.js";
 import { DatabaseService } from "./service/core/database-service.js";
 import { PublishService } from "./service/core/publish-service.js";
 
-import PouchDB from 'pouchdb-node';
-import PouchFind from 'pouchdb-find'
+
 
 import { ImageService } from "./service/image-service.js";
 import { ThemeService } from "./service/theme-service.js";
@@ -29,9 +28,7 @@ import { WalletService } from "./service/core/wallet-service.js";
 //@ts-ignore
 import c from '../../contracts.json' assert { type: "json" }
 import { QueryCacheService } from "./service/core/query-cache-service.js";
-// import { GitService } from "./service/core/git-service.js";
-// import { GitlabService } from "./service/core/gitlab-service.js";
-// import { GithubService } from "./service/core/github-service.js";
+
 import { QueryCacheRepository } from "./repository/query-cache-repository.js";
 import { IpfsService } from "./service/core/ipfs-service.js";
 import { SettingsService } from "./service/core/settings-service.js";
@@ -44,9 +41,20 @@ import { ExportService } from "./service/core/export-service.js";
 import { create } from 'ipfs-http-client'
 import { OriginalMetadataService } from "./service/original-metadata-service.js";
 import { OriginalMetadataRepository } from "./repository/original-metadata-repository.js";
+import { PublishIPFSService } from "./service/core/publish-ipfs-service.js";
+
+import PouchDB from 'pouchdb-node';
+import PouchFind from 'pouchdb-find'
 
 // Enable find plugin
 PouchDB.plugin(PouchFind)
+
+import { createHelia } from 'helia'
+
+import { FsBlockstore } from 'blockstore-fs'
+import { FsDatastore } from 'datastore-fs'
+
+
 
 
 let container: Container
@@ -62,13 +70,10 @@ function getMainContainer() {
   function contracts() {
     return c
   }
+
   container.bind("framework7").toConstantValue({})
-
   container.bind("version").toConstantValue("")
-
   container.bind("provider").toConstantValue(() => {
-
-
   })
 
   container.bind("contracts").toConstantValue(contracts())
@@ -83,12 +88,34 @@ function getMainContainer() {
   // container.bind("footer-text").toConstantValue(globalThis.footerText)
 
 
+  let helia 
+
+  container.bind("helia").toConstantValue( async () => {
+
+    if (helia) return helia
+
+    const blockstore = new FsBlockstore('./data/ipfs/blockstore')
+    const datastore = new FsDatastore('./data/ipfs/datastore')
+    
+    helia = await createHelia({
+      blockstore: blockstore,
+      datastore: datastore
+    })
+    
+    return helia
+
+  })
+
+
+
   container.bind(IpfsService).toSelf().inSingletonScope()
   container.bind(DatabaseService).toSelf().inSingletonScope()
   container.bind(SchemaService).toSelf().inSingletonScope()
 
   container.bind(ExportService).toSelf().inSingletonScope()
+
   container.bind(PublishService).toSelf().inSingletonScope()
+  container.bind(PublishIPFSService).toSelf().inSingletonScope()
 
   container.bind(AttributeCountService).toSelf().inSingletonScope()
 

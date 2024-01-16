@@ -287,62 +287,6 @@ class GithubService implements GitProviderService {
 
     }
 
-    async getIPFSActionStatus(channel: Channel): Promise<string> {
-    
-        let settings = await this.settingsService.get()
-
-        let gitProvider = settings.gitProviders["github"]
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error("Gitlab personal access token not set")
-        }
-
-        try {
-            
-            let result = await this.getMostRecentActionRun(channel, gitProvider)
-
-            if ((result?.conclusion == "success" || result?.conclusion == "skipped" ) && (!channel.publishReaderIPFSStatus?.date || this.dayjs(result.created_at).isAfter(this.dayjs(channel.publishReaderIPFSStatus?.date)))) {
-                return "finished"
-            }
-
-        } catch(ex) {
-            console.log(ex)
-        }
-
-    }
-
-    async getIPFSActionResult(channel: Channel) : Promise<any> {
-
-        let settings = await this.settingsService.get()
-
-        let gitProvider = settings.gitProviders["github"]
-
-        if (gitProvider.personalAccessToken.length < 1) {
-            throw new Error(`${gitProvider.name} personal access token not set`)
-        }
-
-
-        try {
-
-            //Get ipfs.json from repo
-            const ipfsJsonResults = await axios.get(`${GithubService.BASE_URL}/repos/${gitProvider.username}/${channel.publishReaderRepoPath}/contents/ipfs/ipfs.json`, {
-                headers: {
-                    "Authorization": `Bearer ${gitProvider.personalAccessToken}`
-                }
-            })
-
-            let result = JSON.parse(Buffer.from(ipfsJsonResults.data.content, 'base64').toString())
-
-            result.archive = `${channel.httpUrlToRepo}/blob/master/ipfs/${result.cid}.car`
-
-            return result
-
-        } catch(ex) {
-            console.log(ex)
-        }
-
-
-    }
 
     private async getMostRecentActionRun(channel, gitProvider) {
 

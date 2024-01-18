@@ -48,7 +48,8 @@ class GitService {
 
         let gitActions:any[] = []
 
-        let car:Car = await this.carService.get("ipfs")
+        let car:Car = await this.carService.get("export")
+        let contractCar:Car = await this.carService.get("contract")
 
         if (!car) {
             throw new Error(`Generate an IPFS .car bundle before deploying to git provider.`)
@@ -56,9 +57,17 @@ class GitService {
 
         gitActions.push({
             action: "create",
-            file_path: `/.upload/${ channel.publishReaderIPFSStatus.cid }.car`,
+            file_path: `/backup/export.car`,
             content: car.content
         })
+
+        if (contractCar && channel.contractAddress) {
+            gitActions.push({
+                action: "create",
+                file_path: `/backup/contract.car`,
+                content: contractCar.content
+            })
+        }
 
         switch(gitProvider.name) {
 

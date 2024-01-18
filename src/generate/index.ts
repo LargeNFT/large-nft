@@ -3,11 +3,16 @@ import "regenerator-runtime/runtime.js"
 import "reflect-metadata"
 
 import fs from "fs"
-
-import { Container } from "inversify"
+import path from "path"
 
 import excerptHtml from 'excerpt-html'
 import he from 'he'
+
+import pkg from 'convert-svg-to-png';
+const { convert } = pkg
+
+
+import { Container } from "inversify"
 
 
 import { getMainContainer, GetMainContainerCommand } from "./inversify.config.js"
@@ -19,13 +24,13 @@ import { GenerateService, GenerateViewModel } from "../reader/service/core/gener
 import { ProcessConfig } from "../reader/util/process-config.js"
 import { ChannelWebService } from "../reader/service/web/channel-web-service.js"
 
-import pkg from 'convert-svg-to-png';
-import path from "path"
 import { ItemViewModel } from "../reader/dto/viewmodel/item-view-model.js"
 import { ItemWebService } from "../reader/service/web/item-web-service.js"
 
+import { CarIndexedReader } from '@ipld/car'
+import { recursive as exporter } from 'ipfs-unixfs-exporter'
 
-const { convert } = pkg
+
 
 
 
@@ -33,12 +38,41 @@ let generate = async () => {
 
   console.log("Starting generate")
 
+  let localDirs = await ProcessConfig.getLocalDirectories()
+
+  //Throw error if export not found.
+  if (!fs.existsSync(`${localDirs.runDir}/backup/export.car`)) {
+    throw new Error(`${localDirs.runDir}/backup/export.car not found.`)
+  }
+
+  //Export the data from the export CAR file.
+  await exportCAR(`${localDirs.runDir}/backup/export.car`, `${localDirs.publicPath}/backup/export`)
+
+
+  //Check for contract.car if it exists.
+  if (fs.existsSync(`${localDirs.runDir}/backup/contract.car`)) {
+
+    await exportCAR(`${localDirs.runDir}/backup/contract.car`, `${localDirs.publicPath}/backup/contract`)
+
+    //If large-config.json doesn't already exist grab the version from the contract bundle.
+    if (!fs.existsSync(`${localDirs.channelDir ? localDirs.channelDir : "."}/large-config.json`)) {
+      console.log("large-config.json not found. Exporting from bundle.")
+      fs.copyFileSync(`${localDirs.publicPath}/backup/contract/large-config.json`, `${localDirs.channelDir ? localDirs.channelDir : "."}/large-config.json`)
+    } else {
+      console.log("large-config.json exists. Using existing version.")
+    }
+
+  }
+
+  console.log("CAR file(s) expanded successfully")
+
+
+
   let config:any = await ProcessConfig.getConfig() 
 
   if (!config.externalLinks) {
     config.externalLinks = []
   }
-
 
   let container = new Container()
 
@@ -72,8 +106,8 @@ let generate = async () => {
   let generateService:GenerateService = container.get("GenerateService")
   let eta:any = container.get("eta")
 
-
   await generateService.load()
+
 
 
   //Create public path.
@@ -162,11 +196,11 @@ let generate = async () => {
 
   }
 
-  if (!fs.existsSync(`${config.publicPath}/backup`)) {
-    console.time("Copying backup...")
-    fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
-    console.timeEnd("Copying backup...")
-  }
+  // if (!fs.existsSync(`${config.publicPath}/backup`)) {
+  //   console.time("Copying backup...")
+  //   fs.cpSync(`${config.channelDir}/backup`, `${config.publicPath}/backup`, { recursive: true })
+  //   console.timeEnd("Copying backup...")
+  // }
 
 
 
@@ -262,11 +296,11 @@ let generate = async () => {
 
   //Generate webp version of channel cover image
   if (channelViewModel.channel.coverImageId) {
-    await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId, 100)
+    await generateService.generateWebp(config, `${config.channelDir}/public/backup/export/images/${channelViewModel.channel.coverImageId}.jpg` , channelViewModel.channel.coverImageId, 100)
   }
 
   if (channelViewModel.channel.coverBannerId) {
-    await generateService.generateWebp(config, `${config.channelDir}/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
+    await generateService.generateWebp(config, `${config.channelDir}/public/backup/export/images/${channelViewModel.channel.coverBannerId}.jpg` , channelViewModel.channel.coverBannerId)
   }
 
   await generateService.generateAttributeItems(config, baseViewModel.attributeReport)
@@ -293,6 +327,50 @@ let generate = async () => {
 
   console.log("Generation complete")
 
+}
+
+
+async function exportCAR(carPath:string, rootFolder:string) {
+
+  const reader = await CarIndexedReader.fromFile(carPath)
+  const roots = await reader.getRoots()
+  
+  const entries = exporter(roots[0], {
+    async get (cid) {
+      const block = await reader.get(cid)
+      return block.bytes
+    }
+  })
+  
+
+  for await (const entry of entries) {
+
+    // Split the path into parts using '/'
+    let parts = entry.path.split('/')
+
+    // Remove the first folder (element at index 0)
+    parts.shift()
+
+    // Join the remaining parts back into a string
+    let resultPath = `${rootFolder}/${parts.join('/')}`
+
+
+    if (!fs.existsSync(path.dirname(resultPath))) {
+      fs.mkdirSync(path.dirname(resultPath), { recursive: true})
+    }
+
+    if (entry.type === 'file' || entry.type === 'raw') {
+
+      let chunks = []
+
+      for await (const chunk of entry.content()) {
+        chunks.push(chunk)
+      }
+
+      fs.writeFileSync(resultPath, Buffer.concat(chunks))
+
+    } 
+  }
 }
 
 

@@ -45,7 +45,7 @@ class ChannelWebService {
 
         let author: Author
 
-        let editable = !channel.contractAddress
+        // let editable = !channel.contractAddress
 
         //Load the right image db so we can get the cover and banner
         await this.imageService.load(channel._id)
@@ -125,7 +125,7 @@ class ChannelWebService {
             authorDisplayName: this.authorService.getDisplayName(author),
             authorPhoto: authorPhoto,
             itemCount: itemCount,
-            editable: editable,
+            editable: true,
             dateCreated: this.dayjs(channel.dateCreated).format("MMM DD YYYY"),
             gitProvider: gitProvider
         }

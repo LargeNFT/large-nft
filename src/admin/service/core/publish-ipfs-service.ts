@@ -21,6 +21,8 @@ import { ContractMetadata } from "../../dto/contract-metadata.js"
 
 import { AnimationService } from "../animation-service.js"
 import { Item } from "../../dto/item.js"
+import { Car } from "../../dto/car.js"
+import { CarService } from "../car-service.js"
 
 
 @injectable()
@@ -33,6 +35,7 @@ class PublishIPFSService {
         private imageService: ImageService,
         private animationService:AnimationService,
         private exportService:ExportService,
+        private carService:CarService
     ) { }
 
     async exportToIPFS(exportBundle:ExportBundle, backup:BackupBundle, feeRecipient:string): Promise<CID> {
@@ -291,6 +294,35 @@ class PublishIPFSService {
 
         }
 
+    }
+
+
+    async createCarFromCID(_id:string, cid:CID) {
+
+        const { writer, out } = await this.ipfsService.createCAR(cid)
+        
+        const carBlobPromise = this.ipfsService.carWriterOutToBlob(out)
+
+        // await the heliaCar.export, where heliaCar will write blocks to the writer
+        await this.ipfsService.exportCAR(cid, writer)
+
+        let car:Car
+
+        try {
+            car = await this.carService.get(_id)
+        } catch(ex) {}
+
+        if (!car) {
+            car = new Car()
+            car._id = _id
+        }
+
+        car.cid = cid.toString()
+        car.content = new Uint8Array(await (await carBlobPromise).arrayBuffer())
+
+        await this.carService.put(car)
+
+        return car
     }
 
     private logPublishProgress(publishStatus:PublishStatus, message?: string) {

@@ -325,10 +325,10 @@ let getReaderConfigs = () => {
 
   let generateConfig = {
     entry: "./src/generate/index.ts",
+    target: "node",
     externalsPresets: { node: true },
     externals: {
-      'convert-svg-to-png': 'convert-svg-to-png',
-      'sharp': 'sharp'
+      'convert-svg-to-png': 'convert-svg-to-png'
     },
     experiments: {
       outputModule: true

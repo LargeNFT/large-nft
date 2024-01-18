@@ -4,9 +4,9 @@ import he from "he"
 import fs from "fs"
 import path from "path";
 
-import Jimp from "jimp/es";
 
 import { ethers } from "ethers"
+
 
 
 import { ItemResults, RowItemViewModel } from "../../dto/item-page.js";
@@ -61,14 +61,17 @@ class GenerateService {
         @inject("ItemRepository") private itemRepository: ItemRepository,
         @inject("StaticPageRepository") private staticPageRepository:StaticPageRepository,
         @inject("convert-svg-to-png") private convert,
-        @inject("eta") private eta
+        @inject("eta") private eta,
+        @inject("jimp") private jimp
     ) { }
 
     async load() {
         //@ts-ignore
         await this.itemRepository.load()
+
         //@ts-ignore
         await this.staticPageRepository.load()
+
     }
 
     async getGenerateViewModel(config, itemViewModels:ItemViewModel[]): Promise<GenerateViewModel> {
@@ -122,8 +125,8 @@ class GenerateService {
 
     async generateImages(config, item:ItemViewModel) {
 
-        await fs.promises.mkdir(`${config.publicPath}/backup/generated/images/50x50`, { recursive: true })
-        await fs.promises.mkdir(`${config.publicPath}/backup/generated/images/100x100`, { recursive: true })
+        fs.mkdirSync(`${config.publicPath}/backup/generated/images/50x50`, { recursive: true })
+        fs.mkdirSync(`${config.publicPath}/backup/generated/images/100x100`, { recursive: true })
 
 
         //For now just the one
@@ -171,7 +174,8 @@ class GenerateService {
         }
       })
 
-      await fs.promises.writeFile(outputPath, png)
+      fs.writeFileSync(outputPath, png)
+
     }
 
     async generateWebp(config, imagePath, imageId, size?) {
@@ -182,10 +186,8 @@ class GenerateService {
     
             try {
 
-              console.log(`Creating webp at: ${filename} from ${imagePath}`)    
-
               //@ts-ignore
-              let file = await Jimp.read(imagePath)
+              let file = await this.jimp.read(imagePath)
 
               if (size) {
                   //Generate and resize
@@ -194,6 +196,8 @@ class GenerateService {
                   //Generate
                   file.write(filename)
               }
+
+              console.log(`Created webp at: ${filename} from ${imagePath}`)    
 
             } catch(ex) {
               console.log(`Error creating webp at: ${filename} from ${imagePath}`, ex.message)    
@@ -362,11 +366,11 @@ class GenerateService {
 
     //Write item pages to files
     let pageCount = 0
-    await fs.promises.mkdir(`${config.publicPath}/itemPages`, { recursive: true })
+    await fs.mkdirSync(`${config.publicPath}/itemPages`, { recursive: true })
     
     for (let itemPage of itemPages) {
         // console.log(`Writing item page: public/itemPages/${pageCount}.json`)
-        await fs.promises.writeFile(`${config.publicPath}/itemPages/${pageCount}.json`, JSON.stringify(itemPage))
+        fs.writeFileSync(`${config.publicPath}/itemPages/${pageCount}.json`, JSON.stringify(itemPage))
         pageCount++
     }
     
@@ -376,7 +380,7 @@ class GenerateService {
 
         //Attribute report. Write to file.
         let attributeTotals = await this.itemWebService.buildAttributeTotals(channelViewModel.channel)
-        await fs.promises.writeFile(`${config.publicPath}/attributeTotals.json`, JSON.stringify(attributeTotals))
+        fs.writeFileSync(`${config.publicPath}/attributeTotals.json`, JSON.stringify(attributeTotals))
 
         return attributeTotals
     }
@@ -394,7 +398,7 @@ class GenerateService {
         let headStartContents
 
         try {
-            headStartContents = await fs.promises.readFile(path.resolve(rootDir, config.headStart))
+            headStartContents = fs.readFileSync(path.resolve(rootDir, config.headStart))
         } catch(ex) {}
 
         this.eta.loadTemplate("@headStart", headStartContents ? headStartContents?.toString() : '')
@@ -405,7 +409,7 @@ class GenerateService {
         let footer
 
         try {
-            footer = await fs.promises.readFile(path.resolve(rootDir, config.footer))
+            footer = fs.readFileSync(path.resolve(rootDir, config.footer))
         } catch(ex) {}
 
 
@@ -794,7 +798,7 @@ class GenerateService {
       `
 
       //Write file
-      fs.writeFileSync(filepath, result.replace(scriptContent, ""))
+      fs.writeFileSync(filepath, result.replace(scriptContent, "").replace(pageContent, ""))
 
       let partialPath = filepath.replace(config.publicPath, `${config.publicPath}/partial`)
 

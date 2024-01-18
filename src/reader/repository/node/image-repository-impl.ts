@@ -15,7 +15,7 @@ class ImageRepositoryNodeImpl implements ImageRepository {
     async get(_id:string): Promise<Image> {        
         
         if(this.images?.length == 0) {
-            this.images = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/images.json`, 'utf8'))
+            this.images = JSON.parse(fs.readFileSync(`${this.channelDir}/public/backup/export/backup/images.json`, 'utf8'))
         }
 
         let matches = this.images.filter( image => image._id == _id)
@@ -29,9 +29,9 @@ class ImageRepositoryNodeImpl implements ImageRepository {
         if (image) {
             //Load content
             if (image.generated) {
-                image.svg = fs.readFileSync(`${this.channelDir}/backup/export/images/${image.cid}.svg`, 'utf8')
+                image.svg = fs.readFileSync(`${this.channelDir}/public/backup/export/images/${image.cid}.svg`, 'utf8')
             } else {
-                image.buffer = fs.readFileSync(`${this.channelDir}/backup/export/images/${image.cid}.jpg`)
+                image.buffer = fs.readFileSync(`${this.channelDir}/public/backup/export/images/${image.cid}.jpg`)
             }
         }
 
@@ -42,7 +42,7 @@ class ImageRepositoryNodeImpl implements ImageRepository {
     async list() : Promise<Image[]> {
 
         if(this.images?.length == 0) {
-            this.images = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/images.json`, 'utf8'))
+            this.images = JSON.parse(fs.readFileSync(`${this.channelDir}/public/backup/export/backup/images.json`, 'utf8'))
         }
 
         return this.images

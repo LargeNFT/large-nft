@@ -55,8 +55,8 @@ let sync = async () => {
 
     container.bind("contracts").toConstantValue(async () => {
 
-      let contract = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract.json`, 'utf8'))
-      let contractAbi = JSON.parse(fs.readFileSync(`${config.channelDir}/backup/contract/contract-abi.json`, 'utf8'))
+      let contract = JSON.parse(fs.readFileSync(`${config.channelDir}/public/backup/contract/contract.json`, 'utf8'))
+      let contractAbi = JSON.parse(fs.readFileSync(`${config.channelDir}/public/backup/contract/contract-abi.json`, 'utf8'))
 
       if (!contract.contractAddress) return []
 

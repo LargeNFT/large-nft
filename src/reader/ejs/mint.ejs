@@ -300,29 +300,18 @@
                   '<%= it.baseViewModel.hostname %>'
           )
 
-          if (await walletService.getAddress() != undefined) {
 
-            await populate()
+          await populate()
 
-            //Reselect the right quantity
-            selectPreviews(quantity)
+          //Reselect the right quantity
+          selectPreviews(quantity)
 
-            startMintFetcher()
+          startMintFetcher()
 
-            $('.hidden-on-load').removeClass('hidden-on-load')
-            $('.hide-on-pageinit').hide()
+          $('.hidden-on-load').removeClass('hidden-on-load')
+          $('.hide-on-pageinit').hide()
 
-            window.addEventListener('resize', resizeListener)
-
-          } else {
-            
-            $f7.preloader.hide()
-
-            $f7.dialog.confirm("Problem connecting to contract on Ethereum Mainnet. Is your wallet connected to the right network?", "Problem connecting to network", populate, () => {
-              $f7.views.main.router.navigate(baseURI)
-            })
-
-          }
+          window.addEventListener('resize', resizeListener)
 
 
 
@@ -549,7 +538,12 @@
 
             mintingViewModel = await mintWebService.getMintingViewModel()
 
-            mintPriceWei = await mintWebService.parseUnits(mintingViewModel.mintPrice, 'ether')
+            if (mintingViewModel.mintPrice?.length > 0) {
+              mintPriceWei = await mintWebService.parseUnits(mintingViewModel.mintPrice, 'ether')
+            } else {
+              mintPriceWei = await mintWebService.parseUnits('0', 'ether')
+            }
+
 
             await updateTotal()
 
@@ -617,6 +611,8 @@
         }
 
         const removeMinted = async (e) => {
+
+          if (!virtualList) return
 
           let totalMinted = mintingViewModel.totalMinted
 

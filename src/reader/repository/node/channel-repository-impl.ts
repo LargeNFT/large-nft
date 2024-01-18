@@ -13,12 +13,12 @@ class ChannelRepositoryNodeImpl implements ChannelRepository {
 
     async get(): Promise<Channel> {        
         
-        const channels = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/channels.json`, 'utf8'))
+        const channels = JSON.parse(fs.readFileSync(`${this.channelDir}/public/backup/export/backup/channels.json`, 'utf8'))
         let channel:Channel = channels[0]
 
 
         try {
-            const contract = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/contract/contract.json`, 'utf8'))
+            const contract = JSON.parse(fs.readFileSync(`${this.channelDir}/public/backup/contract/contract.json`, 'utf8'))
 
             if (contract?.contractAddress) {
                 channel.contractAddress = contract.contractAddress

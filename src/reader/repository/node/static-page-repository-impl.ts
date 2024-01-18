@@ -13,7 +13,7 @@ class StaticPageRepositoryNodeImpl implements StaticPageRepository {
     ) {}
 
     async load() {
-        this.staticPages = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/static-pages.json`, 'utf8'))
+        this.staticPages = JSON.parse(fs.readFileSync(`${this.channelDir}/public/backup/export/backup/static-pages.json`, 'utf8'))
     }
 
 

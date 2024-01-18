@@ -30,6 +30,8 @@ and limitations under the License.
 
 /*! noble-curves - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
 /**
  * @preserve
  * Copyright 2015-2018 Igor Bezkrovnyi

@@ -16,8 +16,6 @@ import { SettingsService } from "./settings-service.js"
 import { PublishIPFSService } from "./publish-ipfs-service.js"
 
 import { CID, CarWriter } from '@ipld/car/writer'
-import { IpfsService } from "./ipfs-service.js"
-import { CarService } from "../car-service.js"
 import { Car } from "../../dto/car.js"
 
 
@@ -29,8 +27,6 @@ class PublishService {
         private exportService:ExportService,
         private settingsService:SettingsService,
         private publishIPFSService:PublishIPFSService,
-        private ipfsService: IpfsService,
-        private carService:CarService,
         @inject(TYPES.WalletService) private walletService: WalletService
     ) { }
 
@@ -61,7 +57,7 @@ class PublishService {
 
         let cid = await this.publishIPFSService.exportToIPFS(exportBundle, backup, feeRecipient)
             
-        let car = await this.createCarFromCID("ipfs", cid)
+        let car = await this.publishIPFSService.createCarFromCID("export", cid)
 
         return {
             cid: cid,
@@ -70,36 +66,6 @@ class PublishService {
 
 
     }
-
-    async createCarFromCID(_id:string, cid:CID) {
-
-        const { writer, out } = await this.ipfsService.createCAR(cid)
-        
-        const carBlobPromise = this.ipfsService.carWriterOutToBlob(out)
-
-        // await the heliaCar.export, where heliaCar will write blocks to the writer
-        await this.ipfsService.exportCAR(cid, writer)
-
-        let car:Car
-
-        try {
-            car = await this.carService.get(_id)
-        } catch(ex) {}
-
-        if (!car) {
-            car = new Car()
-            car._id = _id
-        }
-
-        car.cid = cid.toString()
-        car.content = new Uint8Array(await (await carBlobPromise).arrayBuffer())
-
-        await this.carService.put(car)
-
-        return car
-    }
-
-
 
     async publishContract(channel:Channel) : Promise<Car> {
 
@@ -140,10 +106,9 @@ class PublishService {
         let cid = await this.publishIPFSService.exportContractToIPFS(channel, contract, contractABIBuffer, largeConfig )
 
 
-        return this.createCarFromCID("contract", cid)
+        return this.publishIPFSService.createCarFromCID("contract", cid)
 
     }
-
   
     public async getFeeReceipient(channel:Channel, ownerAddress:string) {
 

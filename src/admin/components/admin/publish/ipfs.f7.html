@@ -141,10 +141,10 @@
                                     <div class="pin-status"> 
 
                                             <strong>IPFS CID:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
-                                            <strong>Download Archive:</strong> <a href="#" @click="${downloadCAR}" class="link">${channelViewModel.channel.publishReaderIPFSStatus?.cid}.car</a><br />
+                                            <strong>Download Archive:</strong> <a href="#" @click="${downloadCAR}" class="link">export.car</a><br />
                                             <strong>Date:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}
 
-                                            <a href="#" download="${channelViewModel.channel.publishReaderIPFSStatus?.cid}.car" class="link external" style="display:none;" id="hidden-download"></a>
+                                            <a href="#" class="link external" style="display:none;" id="hidden-download"></a>
 
 
                                     </div>
@@ -411,10 +411,11 @@
 
             e.preventDefault()
 
-            const car = await carService.get("ipfs")
+            const car = await carService.get("export")
             carBlobURL = URL.createObjectURL(new Blob([car.content], {type: "application/car"}))
 
             $('#hidden-download').attr('href', carBlobURL)
+            $('#hidden-download').attr('download', `export.car`)
             $('#hidden-download').click()
             
 

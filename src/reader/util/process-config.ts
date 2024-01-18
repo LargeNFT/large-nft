@@ -6,6 +6,18 @@ import arg from 'arg'
 
 class ProcessConfig {
 
+    static getLocalDirectories() {
+        let theArgs = ProcessConfig.parseArgumentsIntoOptions(process.argv)        
+
+        return {
+            runDir: process.env.INIT_CWD ? process.env.INIT_CWD : theArgs.channelDir,
+            publicPath: `${theArgs.channelDir}/public`,
+            channelDir: theArgs.channelDir
+        }
+
+    }
+
+
     static async getConfig(config?:any) {
 
         let theArgs = ProcessConfig.parseArgumentsIntoOptions(process.argv)

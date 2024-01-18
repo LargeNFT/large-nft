@@ -26,158 +26,18 @@
                                     <strong>Repository:</strong>   <a href="${channelViewModel.channel.httpUrlToRepo}" class="link external" target="_blank">${channelViewModel.channel.httpUrlToRepo}</a><br />
                                     <strong>Branch:</strong>   ${channelViewModel.channel.publishReaderRepoBranch}
                                 </p>
-    
+
+                                <p>
+                                    ${channelViewModel.channel.publishReaderIPFSStatus?.cid? $h`
+                                        <button type="submit" class="button button-fill button-small deploy-button">Push to Git Repo</button>
+                                    ` : $h`
+                                        No files available for export. Generate IPFS bundle first.
+                                    `}
+                                </p>
                             </div>
                         </div>
                         
-    
-                        <div class="card card-header-divider">
-                            <div class="card-header">Status</div>
-                            <div class="card-content card-content-padding">      
-
-                                ${publishing ? $h`
-                                    <div class="publish-label">
-                                        Exporting...
-                                    </div>
-    
-                                    ${publishStatus? $h`
-    
-                                        <div class="row">
-                                            <div class="margin-top"><strong>NFT Data</strong></div>
-                                            <div class="data-table">
-                                                <table>
-                                                    <thead>
-                                                    <th class="label-cell">Type</th>
-                                                    <th class="numeric-cell">Saved</th>
-                                                    <th class="numeric-cell">Total</th>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr class="${publishStatus.images.saved == publishStatus.images.total && publishStatus.images.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Images</td>
-                                                        <td class="numeric-cell">${publishStatus.images.saved}</td>
-                                                        <td class="numeric-cell">${publishStatus.images.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.animations.saved == publishStatus.animations.total && publishStatus.animations.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Animations</td>
-                                                        <td class="numeric-cell">${publishStatus.animations.saved}</td>
-                                                        <td class="numeric-cell">${publishStatus.animations.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.nftMetadata.saved == publishStatus.nftMetadata.total && publishStatus.nftMetadata.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">NFT Metadata</td>
-                                                        <td class="numeric-cell">${publishStatus.nftMetadata.saved}</td>
-                                                        <td class="numeric-cell">${publishStatus.nftMetadata.total}</td>
-                                                    </tr>
-                                                    
-                                                    </tbody>
-                                                </table>
-    
-                                            </div>
-                                        </div>
-    
-                                        <div class="col-100" style="margin-top: 40px;"><strong>Database Backup</strong></div>
-                                        <div class="row">
-                                            <div class="data-table">
-                                                <table>
-                                                    <thead>
-                                                    <th class="label-cell">Type</th>
-                                                    <th class="numeric-cell">Total</th>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr class="${publishStatus.contractMetadata.saved == publishStatus.contractMetadata.total && publishStatus.contractMetadata.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Contract Metadata</td>
-                                                        <td class="numeric-cell">${publishStatus.contractMetadata.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.backups.items.saved == publishStatus.backups.items.total && publishStatus.backups.items.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Items</td>
-                                                        <td class="numeric-cell">${publishStatus.backups.items.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.backups.images.saved == publishStatus.backups.images.total && publishStatus.backups.images.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Image Metadata</td>
-                                                        <td class="numeric-cell">${publishStatus.backups.images.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.backups.animations.saved == publishStatus.backups.animations.total && publishStatus.backups.animations.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Animations Metadata</td>
-                                                        <td class="numeric-cell">${publishStatus.backups.animations.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.backups.themes.saved == publishStatus.backups.themes.total && publishStatus.backups.themes.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Themes</td>
-                                                        <td class="numeric-cell">${publishStatus.backups.themes.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.backups.staticPages.saved == publishStatus.backups.staticPages.total && publishStatus.backups.staticPages.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Static Pages</td>
-                                                        <td class="numeric-cell">${publishStatus.backups.staticPages.total}</td>
-                                                    </tr>
-                                                    <tr class="${publishStatus.backups.channels.saved == publishStatus.backups.channels.total && publishStatus.backups.channels.total > 0 ? 'complete' : ''}">
-                                                        <td class="label-cell">Channels</td>
-                                                        <td class="numeric-cell">${publishStatus.backups.channels.total}</td>
-                                                    </tr>
-    
-                                                    ${publishStatus.backups.authors.total ? $h`
-    
-                                                        <tr class="${publishStatus.backups.authors.saved == publishStatus.backups.authors.total && publishStatus.backups.authors.total > 0 ? 'complete' : ''}">
-                                                            <td class="label-cell">Authors</td>
-                                                            <td class="numeric-cell">${publishStatus.backups.authors.total}</td>
-                                                        </tr>
-                                                    ` : $h`<span/>`}
-    
-    
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-    
-                                        <div class="publish-status"></div>
-    
-                                    ` : $h`<span />`}
-    
-                                ` : $h`
-                                    <div class="publish-label" style="display:none;"></div>
-                                `}
-    
-                                ${publishOutput ? $h`
-                                    <div class="publish-output" innerHTML="${publishOutput}" id="ipfs-publish-process" ></div>
-                                ` : $h`
-                                    <div class="publish-output" style="display:none;"></div>
-                                `}
-    
-    
-                                ${channelViewModel.channel.publishReaderIPFSStatus?.status ? $h`
-    
-                                    <div class="pin-status"> 
-
-                                        ${channelViewModel.channel.publishReaderIPFSStatus?.cid ? $h`
-                                            <strong>IPFS CID:</strong> ${channelViewModel.channel.publishReaderIPFSStatus?.cid}<br />
-                                            <strong>Date:</strong> ${dayjs(channelViewModel.channel.publishReaderIPFSStatus?.date).format('MMMM DD YYYY, h:mm:ss a')}
-                                        ` : $h` `}
-
-                                    </div>
-    
-                                ` : $h`<span />`}
-    
-    
-                                ${!publishing ? $h`
-    
-                                    
-                                    ${showRefresh ? $h`
-        
-                                        <button type="submit" class="button button-fill button-small color-gray text-color-white deploy-button">
-                                            <i class="material-icons">refresh</i> Export Again
-                                        </button>
-    
-    
-                                    ` : $h`
-    
-                                        ${!publishing ? $h`
-                                            <button type="submit" class="button button-fill button-small deploy-button" >Push to Git Repo</button>
-                                        ` : $h`<span />`}  
-    
-                                    `}
-                                    
-                                ` : $h`
-                                    <p></p>
-                                `}
-                            </div>
-                        </div>
+  
     
                     </form>
     
@@ -311,9 +171,12 @@
         let settings = props.settings
 
         let publishing = false
-        let checkingStatus = false
+        // let checkingStatus = false
         let publishStatus 
         let publishOutput = ""
+        let ipfsCar
+        let contractCar
+
 
 
         let pageUnloaded = false
@@ -348,8 +211,6 @@
 
             await $update()
 
-            await checkIPFSActionStatus()
-
         })
 
         $on('pageAfterOut', (e, page) => {
@@ -376,14 +237,7 @@
                 
                 let headSha = await gitService.deployReader(channelViewModel.channel)
 
-                channelViewModel.channel.publishReaderIPFSStatus = {
-                    status: "pending",
-                    headSha: headSha
-                }
-
-                console.log(channelViewModel.channel.publishReaderIPFSStatus)
-
-                await channelService.put(channelViewModel.channel)
+                $f7.dialog.alert("Files exported to git provider.", "Success")
 
             } catch(ex) {
                 console.log(ex)
@@ -395,8 +249,6 @@
 
             publishing = false
             showRefresh = true
-
-            await checkIPFSActionStatus()
 
             await $update()
 
@@ -419,66 +271,6 @@
             }
             
         })
-
-
-        const checkIPFSActionStatus = async (e) => {
-
-            if (pageUnloaded) return
-            if (!settings) return
-            if (channelViewModel.channel.publishReaderIPFSStatus?.status == "complete") return
-            if (publishing) return
-            if (checkingStatus) return 
-            
-            let gitProvider = await channelService.getGitProviderCredentials(channelViewModel.channel, settings)
-            if (!gitProvider || !gitProvider.personalAccessToken || gitProvider.personalAccessToken.length < 1) return
-
-
-            console.log('Checking IPFS action workflow status...')
-
-            checkingStatus = true
-
-            try {
-
-                channelViewModel.channel = await channelService.get(channelViewModel.channel._id)
-
-                
-                let ipfsActionStatus = await gitService.getIPFSActionStatus(channelViewModel.channel)
-
-                if (ipfsActionStatus == "finished") { //TODO
-
-                    //Get the new IPFS hash
-                    if (!channelViewModel.channel.contractAddress) {
-                        channelViewModel.channel.publishReaderIPFSStatus = await gitService.getIPFSActionResult(channelViewModel.channel)
-                    } 
-
-
-                    channelViewModel.channel.publishReaderIPFSStatus.status = "complete"
-                    await channelService.put(channelViewModel.channel)
-
-                    await $update()
-
-                    let elem = document.getElementsByClassName('content-card-padding')[0]
-                    $f7.preloader.hideIn(elem)
-
-                }
-
-            } catch(ex) {
-                console.log(ex)
-            }
-
-            
-
-            await $update()
-
-            checkingStatus = false
-            
-            if (channelViewModel.channel.publishReaderIPFSStatus?.status != "complete") {
-                setTimeout(checkIPFSActionStatus, 5000)
-            }
-
-        }
-
-
         
         return $render
     }

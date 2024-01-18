@@ -3,6 +3,18 @@ import { Container } from "inversify";
 import { ethers } from "ethers"
 import { Eta } from "eta"
 
+
+import configure from "@jimp/custom";
+import types from "@jimp/types";
+import resize from "@jimp/plugin-resize";
+
+
+//@ts-ignore
+const Jimp = configure({
+  types: [types],
+  plugins: [resize],
+});
+
 import { AnimationRepository } from "../reader/repository/animation-repository.js";
 import { AttributeTotalRepository } from "../reader/repository/attribute-total-repository.js";
 import { AuthorRepository } from "../reader/repository/author-repository.js";
@@ -67,6 +79,7 @@ function getMainContainer(command:GetMainContainerCommand) {
   
   container = command.customContainer
   
+
   container.bind("pluginModules").toConstantValue([])
   container.bind("PouchDB").toConstantValue(() => {
     return {}
@@ -80,6 +93,8 @@ function getMainContainer(command:GetMainContainerCommand) {
 
   container.bind("provider").toConstantValue(() => {
   })
+
+  container.bind("jimp").toConstantValue(Jimp)
 
 
   let sequelize
@@ -99,7 +114,6 @@ function getMainContainer(command:GetMainContainerCommand) {
   })
 
   container.bind("eta").toConstantValue(eta)
-
 
   container.bind<WalletService>("WalletService").to(WalletServiceImpl).inSingletonScope()
 

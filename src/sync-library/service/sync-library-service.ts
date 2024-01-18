@@ -141,7 +141,7 @@ class SyncLibraryService {
         channel.totals = channelTotals
         channel.latest = channelLatest
 
-        let info = JSON.parse(fs.readFileSync(`${publicPath}/backup/export/backup/channels.json`).toString())[0]
+        let info = JSON.parse(fs.readFileSync(`${publicPath}/public/backup/export/backup/channels.json`).toString())[0]
 
         channel.title = info.title
         channel.descriptionHTML = info.descriptionHTML

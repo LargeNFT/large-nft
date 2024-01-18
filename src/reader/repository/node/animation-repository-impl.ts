@@ -18,7 +18,7 @@ class AnimationRepositoryNodeImpl implements AnimationRepository {
     async get(_id:string): Promise<Animation> {        
         
         if(this.animations?.length == 0) {
-            this.animations = JSON.parse(fs.readFileSync(`${this.channelDir}/backup/export/backup/animations.json`, 'utf8'))
+            this.animations = JSON.parse(fs.readFileSync(`${this.channelDir}/public/backup/export/backup/animations.json`, 'utf8'))
         }
 
         let matches = this.animations.filter( image => image._id == _id)
@@ -31,7 +31,7 @@ class AnimationRepositoryNodeImpl implements AnimationRepository {
 
         if (animation) {
             //Load content
-            animation.content = fs.readFileSync(`${this.channelDir}/backup/export/animations/${animation.cid}.html`, 'utf8')
+            animation.content = fs.readFileSync(`${this.channelDir}/public/backup/export/animations/${animation.cid}.html`, 'utf8')
         }
 
 

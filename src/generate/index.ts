@@ -40,19 +40,21 @@ let generate = async () => {
 
   let localDirs = await ProcessConfig.getLocalDirectories()
 
+  console.log(localDirs)
+
   //Throw error if export not found.
-  if (!fs.existsSync(`${localDirs.runDir}/backup/export.car`)) {
-    throw new Error(`${localDirs.runDir}/backup/export.car not found.`)
+  if (!fs.existsSync(`${localDirs.channelDir}/backup/export.car`)) {
+    throw new Error(`${localDirs.channelDir}/backup/export.car not found.`)
   }
 
   //Export the data from the export CAR file.
-  await exportCAR(`${localDirs.runDir}/backup/export.car`, `${localDirs.publicPath}/backup/export`)
+  await exportCAR(`${localDirs.channelDir}/backup/export.car`, `${localDirs.publicPath}/backup/export`)
 
 
   //Check for contract.car if it exists.
-  if (fs.existsSync(`${localDirs.runDir}/backup/contract.car`)) {
+  if (fs.existsSync(`${localDirs.channelDir}/backup/contract.car`)) {
 
-    await exportCAR(`${localDirs.runDir}/backup/contract.car`, `${localDirs.publicPath}/backup/contract`)
+    await exportCAR(`${localDirs.channelDir}/backup/contract.car`, `${localDirs.publicPath}/backup/contract`)
 
     //If large-config.json doesn't already exist grab the version from the contract bundle.
     if (!fs.existsSync(`${localDirs.channelDir ? localDirs.channelDir : "."}/large-config.json`)) {

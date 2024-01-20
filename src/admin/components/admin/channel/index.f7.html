@@ -1,7 +1,6 @@
-<!--suppress JSAnnotator -->
 <template>
 
-  <div class="page" data-name="admin-posts">
+  <div class="page" data-name="channel-list">
 
     <${Navbar} breadcrumbs=${breadcrumbs} />
 
@@ -11,7 +10,6 @@
         <div class="fab-text">Create & Import</div>
       </a>
     </div>
-
 
     <div class="page-content infinite-scroll-content hide-toolbar-on-scroll" @infinite=${infiniteScroll} id="channel-index-infinite-scroll">
 
@@ -65,9 +63,7 @@
 
       </div>
 
-
     </div>
-
 
   </div>
 
@@ -87,9 +83,7 @@
 
   import { ChannelWebService } from "../../../service/web/channel-web-service"
 
-  import Navbar from "../../admin/navbar.f7.html"
-
-
+  import Navbar from "../../admin/homenav.f7.html"
 
   export default (props, { $, $h, $on, $f7, $update }) => {
 

@@ -154,21 +154,25 @@
     
                                 ${!publishing ? $h`
     
-                                    
-                                    ${showRefresh ? $h`
-        
-                                        <button type="submit" class="button button-fill button-small color-gray text-color-white deploy-button">
-                                            <i class="material-icons">refresh</i> Generate Again
-                                        </button>
-    
-    
+                                    ${initializing ? $h`
+                                        IPFS initializing...    
                                     ` : $h`
-    
-                                        ${!publishing && !ipfsService.initializing ? $h`
-                                            <button type="submit" class="button button-fill button-small deploy-button" >Generate .CAR bundle</button>
-                                        ` : $h`<span />`}  
-    
+                                    
+                                        ${showRefresh ? $h`
+            
+                                            <button type="submit" class="button button-fill button-small color-gray text-color-white deploy-button">
+                                                <i class="material-icons">refresh</i> Generate Again
+                                            </button>
+        
+        
+                                        ` : $h`
+
+                                            <button type="submit" class="button button-fill button-small deploy-button" >Generate .CAR bundle</button>    
+                                        `}
+
                                     `}
+
+
                                     
                                 ` : $h`
                                     <p></p>
@@ -288,6 +292,7 @@
         let channelViewModel = props.channelViewModel
         let settings = props.settings
 
+        let initializing = false
         let publishing = false
         let checkingStatus = false
         let publishStatus 
@@ -325,8 +330,13 @@
 
             pageUnloaded = false
 
+            initializing = true
+
+            await $update()
+
             await ipfsService.initLocal()
 
+            initializing = false
 
             await $update()
 

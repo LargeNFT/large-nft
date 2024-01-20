@@ -1,5 +1,7 @@
 import { Container } from "inversify";
 import { Eta } from "eta"
+import { ethers } from "ethers";
+
 
 import { SyncStatus } from "./dto/sync-status.js";
 import { SyncStatusRepositoryNodeImpl } from "./repository/node/sync-status-repository-impl.js";
@@ -28,7 +30,6 @@ import { AuthorRepository } from "../reader/repository/author-repository.js";
 import { AuthorRepositoryNodeImpl } from "../reader/repository/node/author-repository-impl.js";
 import { WalletService } from "../reader/service/core/wallet-service.js";
 import { WalletServiceImpl } from "../reader/service/core/wallet-service-impl.js";
-import { ethers } from "ethers";
 import { ImageService } from "../reader/service/image-service.js";
 import { ImageRepository } from "../reader/repository/image-repository.js";
 import { ImageRepositoryNodeImpl } from "../reader/repository/node/image-repository-impl.js";
@@ -54,6 +55,20 @@ import {Headers} from 'node-fetch'
 
 //@ts-ignore
 globalThis.Headers = Headers
+
+
+import configure from "@jimp/custom";
+import types from "@jimp/types";
+import resize from "@jimp/plugin-resize";
+
+
+//@ts-ignore
+const Jimp = configure({
+  types: [types],
+  plugins: [resize],
+});
+
+
 
 
 const { Sequelize } = require('sequelize-typescript')
@@ -125,7 +140,8 @@ async function getMainContainer(config, command:GetMainContainerCommand) {
   
   container.bind("eta").toConstantValue(eta)
 
- 
+  container.bind("jimp").toConstantValue(Jimp)
+
   
   container.bind<AuthorService>("AuthorService").to(AuthorService).inSingletonScope()
 
